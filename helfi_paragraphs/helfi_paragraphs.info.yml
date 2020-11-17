@@ -1,0 +1,18 @@
+name: 'HELfi paragraphs'
+type: module
+core: 8.x
+core_version_requirement: '^8 || ^9'
+dependencies:
+  - content_translation
+  - entity_reference_revisions
+  - features
+  - field
+  - language
+  - menu_ui
+  - node
+  - paragraphs
+  - path
+  - text
+  - user
+version: 9.x-1.x-dev
+package: HELfi

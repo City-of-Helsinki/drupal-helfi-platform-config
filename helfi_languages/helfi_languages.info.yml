@@ -1,0 +1,13 @@
+name: 'HELfi languages'
+type: module
+core: 8.x
+core_version_requirement: '^8 || ^9'
+version: 9.x-1.0
+package: HELfi
+dependencies:
+  - content_translation
+  - file
+  - language
+  - locale
+  - menu_link_content
+  - user
