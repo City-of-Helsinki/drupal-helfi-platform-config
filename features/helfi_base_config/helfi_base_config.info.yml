@@ -8,6 +8,7 @@ package: HELfi
 dependencies:
   - admin_toolbar
   - block
+  - features
   - gin_toolbar
   - hdbt_component_library
   - helfi_languages
