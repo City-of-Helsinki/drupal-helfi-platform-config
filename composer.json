@@ -3,5 +3,8 @@
   "description": "HELfi platform config",
   "type": "drupal-custom-module",
   "license": "GPL-2.0-or-later",
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "require": {
+    "drupal/features": "^3.11"
+  }
 }
