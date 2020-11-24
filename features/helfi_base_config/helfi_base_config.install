@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * Install HDBT and HDBT admin themes and make them as default themes.
+ */
+function helfi_base_config_install() {
+  \Drupal::service('theme_installer')->install(['hdbt', 'hdbt_admin']);
+
+  $system_theme = \Drupal::configFactory()->getEditable('system.theme');
+  $system_theme->set('default', 'hdbt')->set('admin', 'hdbt_admin')->save();
+}
