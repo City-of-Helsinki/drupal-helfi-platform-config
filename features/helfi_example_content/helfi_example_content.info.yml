@@ -1,0 +1,16 @@
+name: 'HELfi example content'
+type: module
+core: 8.x
+core_version_requirement: '^8 || ^9'
+version: 9.x-1.0
+package: HELfi
+dependencies:
+  - default_content
+  - helfi_languages
+  - helfi_paragraphs
+default_content:
+  node:
+    - b62f70bb-3e19-4c21-be5e-621b96169fe1
+  taxonomy_term:
+    - 96a2806c-8251-4d62-b86d-8ad0b65d16de
+    - f462f04c-35aa-46a0-bc75-acb5c24b9c55

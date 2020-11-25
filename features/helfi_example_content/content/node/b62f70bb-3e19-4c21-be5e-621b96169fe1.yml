@@ -1,0 +1,160 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
+  bundle: page
+  default_langcode: en
+  depends:
+    96a2806c-8251-4d62-b86d-8ad0b65d16de: taxonomy_term
+    f462f04c-35aa-46a0-bc75-acb5c24b9c55: taxonomy_term
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Example page'
+  created:
+    -
+      value: 1606157739
+  promote:
+    -
+      value: true
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: ''
+      langcode: en
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  body:
+    -
+      value: 'Example body.'
+      format: plain_text
+      summary: ''
+  field_paragraphs:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 83de5c57-731b-431d-a65d-768b7d581697
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1606157753
+          behavior_settings:
+            -
+              value: {  }
+          field_text:
+            -
+              value: 'Hello world1'
+              format: plain_text
+  field_tags:
+    -
+      entity: 96a2806c-8251-4d62-b86d-8ad0b65d16de
+    -
+      entity: f462f04c-35aa-46a0-bc75-acb5c24b9c55
+translations:
+  fi:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: Esimerkkisivu
+    created:
+      -
+        value: 1606157771
+    promote:
+      -
+        value: true
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: ''
+        langcode: fi
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    body:
+      -
+        value: Esimerkkisisältöä.
+        format: plain_text
+        summary: ''
+    field_paragraphs:
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: d06cad74-4a03-4e49-9cbe-0019fe178dcd
+            bundle: text
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1606157753
+            behavior_settings:
+              -
+                value: {  }
+            field_text:
+              -
+                value: 'Hello world'
+                format: plain_text
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 6196b131-0d48-4e9f-a715-b91a29653553
+            bundle: text
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1606157785
+            behavior_settings:
+              -
+                value: {  }
+            field_text:
+              -
+                value: 'Paragrapn 2 (vain suomeksi).'
+                format: plain_text
