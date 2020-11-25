@@ -11,6 +11,7 @@ dependencies:
   - features
   - gin_toolbar
   - hdbt_component_library
+  - hdbt_custom_blocks
   - helfi_languages
   - menu_link_content
   - system
