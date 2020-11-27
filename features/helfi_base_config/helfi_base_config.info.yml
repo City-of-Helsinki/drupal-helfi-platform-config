@@ -12,6 +12,7 @@ dependencies:
   - gin_toolbar
   - hdbt_component_library
   - hdbt_custom_blocks
+  - helfi_example_content
   - helfi_languages
   - menu_link_content
   - system
