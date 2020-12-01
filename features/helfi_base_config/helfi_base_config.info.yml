@@ -10,6 +10,7 @@ dependencies:
   - block
   - features
   - views
+  - taxonomy
   - gin_toolbar
   - hdbt_component_library
   - hdbt_custom_blocks
