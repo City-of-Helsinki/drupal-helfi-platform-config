@@ -9,6 +9,7 @@ dependencies:
   - admin_toolbar
   - block
   - features
+  - views
   - gin_toolbar
   - hdbt_component_library
   - hdbt_custom_blocks
