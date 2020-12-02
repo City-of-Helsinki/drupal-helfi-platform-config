@@ -16,6 +16,7 @@ dependencies:
   - hdbt_custom_blocks
   - helfi_example_content
   - helfi_languages
+  - helfi_media
   - menu_block_current_language
   - menu_link_content
   - system
