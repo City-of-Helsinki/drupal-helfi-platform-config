@@ -1,0 +1,13 @@
+langcode: fi
+status: true
+dependencies:
+  module:
+    - elasticsearch_connector
+id: test_server
+name: 'Test server'
+description: ''
+backend: elasticsearch
+backend_config:
+  cluster_settings:
+    cluster: test_cluster
+  fuzziness: auto
