@@ -6,7 +6,7 @@ dependencies:
   module:
     - search_api
 id: test_ahjo
-label: 'test ahjo'
+label: 'Test Ahjo search indexing'
 module: views
 description: ''
 tag: ''

@@ -4,7 +4,7 @@ dependencies:
   config:
     - field.storage.node.field_paragraphs
     - field.storage.paragraph.field_text
-    - search_api.server.test_server
+    - search_api.server.helfi_server
   module:
     - paragraphs
     - node
@@ -80,4 +80,4 @@ tracker_settings:
 options:
   index_directly: true
   cron_limit: 50
-server: test_server
+server: helfi_server

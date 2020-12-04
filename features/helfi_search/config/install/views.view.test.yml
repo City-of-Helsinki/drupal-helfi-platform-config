@@ -8,7 +8,7 @@ dependencies:
     - entity_reference_revisions
     - search_api
 id: test
-label: test
+label: Test content search indexing
 module: views
 description: ''
 tag: ''

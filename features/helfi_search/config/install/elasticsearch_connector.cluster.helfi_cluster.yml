@@ -1,8 +1,8 @@
 langcode: fi
 status: '1'
 dependencies: {  }
-cluster_id: test_cluster
-name: 'Test cluster'
+cluster_id: helfi_cluster
+name: 'HELfi cluster'
 url: 'http://elastic:9200'
 options:
   multiple_nodes_connection: false

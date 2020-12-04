@@ -5,7 +5,7 @@ dependencies:
     - helfi_ahjo
     - search_api
   config:
-    - search_api.server.test_server
+    - search_api.server.helfi_server
 id: ahjo_issues
 name: 'Ahjo issues'
 description: ''
@@ -51,4 +51,4 @@ tracker_settings:
 options:
   index_directly: true
   cron_limit: 50
-server: test_server
+server: helfi_server
