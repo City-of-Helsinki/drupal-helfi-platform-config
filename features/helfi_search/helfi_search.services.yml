@@ -1,0 +1,5 @@
+services:
+  helfi_search.event_subscriber:
+    class: Drupal\helfi_search\EventSubscriber\PostMigrateSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -1,14 +1,14 @@
 langcode: fi
 status: true
 dependencies:
-  module:
-    - node
-    - paragraphs
-    - search_api
   config:
     - field.storage.node.field_paragraphs
     - field.storage.paragraph.field_text
     - search_api.server.test_server
+  module:
+    - paragraphs
+    - node
+    - search_api
 id: pages
 name: Pages
 description: ''
@@ -72,8 +72,8 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
-  language_with_fallback: {  }
   rendered_item: {  }
+  language_with_fallback: {  }
 tracker_settings:
   default:
     indexing_order: fifo
