@@ -1,4 +1,4 @@
-name: HELfi media
+name: 'HELfi media'
 description: 'Media configuration for platform.'
 type: module
 core: 8.x
@@ -12,9 +12,11 @@ dependencies:
   - image
   - language
   - media
-  - media_library
   - media_entity_soundcloud
+  - media_library
   - path
   - responsive_image
+  - system
+  - user
 version: 9.x-1.0
 package: HELfi
