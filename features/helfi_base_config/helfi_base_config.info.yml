@@ -8,6 +8,7 @@ package: HELfi
 dependencies:
   - admin_toolbar
   - block
+  - config_translation
   - features
   - views
   - taxonomy
