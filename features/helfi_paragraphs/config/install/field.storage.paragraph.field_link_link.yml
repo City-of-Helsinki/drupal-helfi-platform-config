@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
+    - link
     - paragraphs
-    - text
-id: paragraph.field_text
-field_name: field_text
+id: paragraph.field_link_link
+field_name: field_link_link
 entity_type: paragraph
-type: text_long
+type: link
 settings: {  }
-module: text
+module: link
 locked: false
 cardinality: 1
 translatable: true

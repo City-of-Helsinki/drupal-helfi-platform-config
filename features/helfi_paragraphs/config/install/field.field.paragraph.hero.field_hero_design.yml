@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_hero_design
+    - paragraphs.paragraphs_type.hero
+  module:
+    - options
+id: paragraph.hero.field_hero_design
+field_name: field_hero_design
+entity_type: paragraph
+bundle: hero
+label: Design
+description: 'Choose the paragraph design from the dropdown. Depending on what design you choose there may be different fields that you need to fill.'
+required: true
+translatable: false
+default_value:
+  -
+    value: without-image-left
+default_value_callback: ''
+settings: {  }
+field_type: list_string

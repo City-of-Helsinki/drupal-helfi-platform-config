@@ -2,20 +2,19 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_paragraphs
-    - node.type.page
+    - field.storage.paragraph.field_hero_cta
     - paragraphs.paragraphs_type.hero
-    - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.link
   module:
     - entity_reference_revisions
-id: node.page.field_paragraphs
-field_name: field_paragraphs
-entity_type: node
-bundle: page
-label: Paragraphs
-description: ''
+id: paragraph.hero.field_hero_cta
+field_name: field_hero_cta
+entity_type: paragraph
+bundle: hero
+label: 'Link / Functionality'
+description: 'You can add a link or a functionality for the hero-block.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -23,16 +22,12 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      text: text
-      hero: hero
+      link: link
     target_bundles_drag_drop:
       hero:
-        enabled: true
         weight: 4
-      link:
-        weight: 5
         enabled: false
-      text:
+      link:
         enabled: true
-        weight: 2
+        weight: 3
 field_type: entity_reference_revisions

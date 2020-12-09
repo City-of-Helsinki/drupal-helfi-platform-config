@@ -2,14 +2,13 @@ langcode: en
 status: true
 dependencies:
   module:
-    - paragraphs
-    - text
-id: paragraph.field_text
-field_name: field_text
-entity_type: paragraph
-type: text_long
+    - node
+id: node.field_has_hero
+field_name: field_has_hero
+entity_type: node
+type: boolean
 settings: {  }
-module: text
+module: core
 locked: false
 cardinality: 1
 translatable: true

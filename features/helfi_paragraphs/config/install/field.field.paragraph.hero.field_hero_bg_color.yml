@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_hero_bg_color
+    - paragraphs.paragraphs_type.hero
+  module:
+    - options
+id: paragraph.hero.field_hero_bg_color
+field_name: field_hero_bg_color
+entity_type: paragraph
+bundle: hero
+label: 'Background color'
+description: 'Choose the background color for the hero element.'
+required: true
+translatable: false
+default_value:
+  -
+    value: coat-of-arms
+default_value_callback: ''
+settings: {  }
+field_type: list_string
