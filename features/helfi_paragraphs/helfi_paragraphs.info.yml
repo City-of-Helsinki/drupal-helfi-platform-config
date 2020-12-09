@@ -8,8 +8,10 @@ dependencies:
   - features
   - field
   - language
+  - media
   - menu_ui
   - node
+  - options
   - paragraphs
   - paragraphs_asymmetric_translation_widgets
   - path
