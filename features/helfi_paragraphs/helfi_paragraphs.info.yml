@@ -7,8 +7,11 @@ dependencies:
   - entity_reference_revisions
   - features
   - field
+  - helfi_media
   - language
+  - link
   - media
+  - media_library
   - menu_ui
   - node
   - options
