@@ -1,9 +1,9 @@
 langcode: en
 status: true
 dependencies: {  }
-id: text
-label: Text
+id: link
+label: Link
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Paragraph for printing out a link with selected design.'
 behavior_plugins: {  }
