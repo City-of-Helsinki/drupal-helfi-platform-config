@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_hero_title
+    - paragraphs.paragraphs_type.hero
+id: paragraph.hero.field_hero_title
+field_name: field_hero_title
+entity_type: paragraph
+bundle: hero
+label: Title
+description: 'Title for the hero block. This will be used as the level 1 heading for the page instead of the regular page title if hero is added on the page.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

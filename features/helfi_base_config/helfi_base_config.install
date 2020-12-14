@@ -6,8 +6,12 @@
  * Install HDBT and HDBT admin themes and make them as default themes.
  */
 function helfi_base_config_install() {
+  \Drupal::configFactory()->getEditable('system.menu.footer')->delete();
   \Drupal::service('theme_installer')->install(['hdbt', 'hdbt_admin']);
 
   $system_theme = \Drupal::configFactory()->getEditable('system.theme');
   $system_theme->set('default', 'hdbt')->set('admin', 'hdbt_admin')->save();
+
+  // Uninstall Stark.
+  \Drupal::service('theme_installer')->uninstall(['stark']);
 }

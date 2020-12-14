@@ -11,5 +11,5 @@ third_party_settings:
 id: media.remote_video
 target_entity_type_id: media
 target_bundle: remote_video
-default_langcode: site_default
+default_langcode: fi
 language_alterable: true
