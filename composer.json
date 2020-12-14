@@ -13,7 +13,8 @@
     "drupal/media_entity_soundcloud": "^3.0.0",
     "drupal/menu_block_current_language": "^1.4",
     "drupal/paragraphs": "^1.12",
-    "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4"
+    "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
+    "drupal/elasticsearch_connector": "^7.0@alpha"
   },
   "extra": {
     "patches": {
