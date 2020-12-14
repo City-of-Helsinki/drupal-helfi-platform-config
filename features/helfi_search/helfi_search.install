@@ -10,7 +10,4 @@ use Drupal\search_api\Entity\Index;
 function helfi_search_install() {
   $search_api_index = Index::load('pages');
   $search_api_index->indexItems();
-
-  $search_api_index = Index::load('ahjo_issues');
-  $search_api_index->indexItems();
 }
