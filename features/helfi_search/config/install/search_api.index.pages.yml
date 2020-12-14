@@ -9,6 +9,7 @@ dependencies:
     - paragraphs
     - node
     - search_api
+    - helfi_ahjo
 id: pages
 name: Pages
 description: ''
@@ -62,6 +63,10 @@ field_settings:
       module:
         - node
 datasource_settings:
+  'entity:ahjo_issue':
+    languages:
+      default: true
+      selected: {  }
   'entity:node':
     bundles:
       default: true
@@ -72,8 +77,8 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
-  rendered_item: {  }
   language_with_fallback: {  }
+  rendered_item: {  }
 tracker_settings:
   default:
     indexing_order: fifo
