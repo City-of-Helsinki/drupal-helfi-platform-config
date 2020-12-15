@@ -11,13 +11,13 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: button_primary
+      value: primary
       label: 'Button primary'
     -
-      value: button_secondary
+      value: secondary
       label: 'Button secondary'
     -
-      value: button_supplementary
+      value: supplementary
       label: 'Button supplementary'
   allowed_values_function: ''
 module: options

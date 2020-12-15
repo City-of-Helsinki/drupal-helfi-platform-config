@@ -14,38 +14,29 @@ targetEntityType: node
 bundle: page
 mode: default
 content:
-  field_has_hero:
-    type: boolean
-    weight: 0
-    region: content
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
   field_hero:
-    type: entity_reference_revisions_entity_view
     weight: 1
-    label: above
+    label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
     region: content
   field_paragraphs:
-    type: entity_reference_revisions_entity_view
     weight: 2
     label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
     region: content
   links:
-    weight: 3
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_has_hero: true
   langcode: true

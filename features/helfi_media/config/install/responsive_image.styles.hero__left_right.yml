@@ -1,0 +1,45 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.23_10_xs
+    - image.style.23_10_xs_2x
+    - image.style.3_2_s
+    - image.style.3_2_s_2x
+    - image.style.3_2_xs
+    - image.style.3_2_xs_2x
+id: hero__left_right
+label: 'Hero Left/Right'
+image_style_mappings:
+  -
+    breakpoint_id: hdbt.s
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 3_2_s
+  -
+    breakpoint_id: hdbt.s
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 3_2_s_2x
+  -
+    breakpoint_id: hdbt.xs
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 3_2_xs
+  -
+    breakpoint_id: hdbt.xs
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 3_2_xs_2x
+  -
+    breakpoint_id: hdbt.xxs
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xs
+  -
+    breakpoint_id: hdbt.xxs
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xs_2x
+breakpoint_group: hdbt
+fallback_image_style: 3_2_s
