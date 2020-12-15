@@ -12,8 +12,6 @@ dependencies:
     - image.style.23_10_xl_2x
     - image.style.23_10_xs
     - image.style.23_10_xs_2x
-  theme:
-    - hdbt
 id: hero__bottom
 label: 'Hero Bottom'
 image_style_mappings:
