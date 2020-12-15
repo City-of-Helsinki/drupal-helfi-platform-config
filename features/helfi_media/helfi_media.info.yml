@@ -10,6 +10,7 @@ dependencies:
   - file
   - focal_point
   - image
+  - image_style_quality
   - language
   - media
   - media_entity_soundcloud

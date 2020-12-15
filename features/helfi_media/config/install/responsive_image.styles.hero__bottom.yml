@@ -1,0 +1,79 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.23_10_l
+    - image.style.23_10_l_2x
+    - image.style.23_10_m
+    - image.style.23_10_m_2x
+    - image.style.23_10_s
+    - image.style.23_10_s_2x
+    - image.style.23_10_xl
+    - image.style.23_10_xl_2x
+    - image.style.23_10_xs
+    - image.style.23_10_xs_2x
+id: hero__bottom
+label: 'Hero Bottom'
+image_style_mappings:
+  -
+    breakpoint_id: hdbt.xl
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xl
+  -
+    breakpoint_id: hdbt.xl
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xl_2x
+  -
+    breakpoint_id: hdbt.l
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 23_10_l
+  -
+    breakpoint_id: hdbt.l
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 23_10_l_2x
+  -
+    breakpoint_id: hdbt.m
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 23_10_m
+  -
+    breakpoint_id: hdbt.m
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 23_10_m_2x
+  -
+    breakpoint_id: hdbt.s
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 23_10_s
+  -
+    breakpoint_id: hdbt.s
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 23_10_s_2x
+  -
+    breakpoint_id: hdbt.xs
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xs
+  -
+    breakpoint_id: hdbt.xs
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xs_2x
+  -
+    breakpoint_id: hdbt.xxs
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xs
+  -
+    breakpoint_id: hdbt.xxs
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xs_2x
+breakpoint_group: hdbt
+fallback_image_style: 23_10_m
