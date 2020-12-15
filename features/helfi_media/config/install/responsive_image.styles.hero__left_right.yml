@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - image.style.23_10_xs
+    - image.style.23_10_xs_2x
     - image.style.3_2_s
     - image.style.3_2_s_2x
     - image.style.3_2_xs
@@ -29,5 +31,15 @@ image_style_mappings:
     multiplier: 2x
     image_mapping_type: image_style
     image_mapping: 3_2_xs_2x
+  -
+    breakpoint_id: hdbt.xxs
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xs
+  -
+    breakpoint_id: hdbt.xxs
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 23_10_xs_2x
 breakpoint_group: hdbt
 fallback_image_style: 3_2_s
