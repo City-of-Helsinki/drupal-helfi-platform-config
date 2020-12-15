@@ -7,7 +7,6 @@ dependencies:
     - field.field.paragraph.hero.field_hero_desc
     - field.field.paragraph.hero.field_hero_design
     - field.field.paragraph.hero.field_hero_image
-    - field.field.paragraph.hero.field_hero_text_color
     - field.field.paragraph.hero.field_hero_title
     - paragraphs.paragraphs_type.hero
   module:
@@ -64,12 +63,6 @@ content:
     settings:
       media_types: {  }
     third_party_settings: {  }
-    region: content
-  field_hero_text_color:
-    weight: 4
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
   field_hero_title:
     weight: 2
