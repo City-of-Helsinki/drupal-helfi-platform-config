@@ -8,7 +8,7 @@ third_party_settings:
     image_field: _none
 id: image
 label: Image
-description: 'Media type image.'
+description: 'Use local image for reusable media.'
 source: image
 queue_thumbnail_downloads: false
 new_revision: true

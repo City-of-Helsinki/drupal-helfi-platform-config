@@ -3,6 +3,7 @@ status: true
 dependencies:
   module:
     - focal_point
+    - image_style_quality
 name: 23_10_l_2x
 label: '2.3:1 L (2x)'
 effects:
