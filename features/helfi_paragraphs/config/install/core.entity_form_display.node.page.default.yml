@@ -7,7 +7,7 @@ dependencies:
     - field.field.node.page.field_paragraphs
     - node.type.page
   module:
-    - paragraphs
+    - paragraphs_previewer
     - path
 id: node.page.default
 targetEntityType: node
@@ -28,7 +28,7 @@ content:
     type: boolean_checkbox
     region: content
   field_hero:
-    type: paragraphs
+    type: paragraphs_previewer
     weight: 3
     settings:
       title: Paragraph
@@ -47,7 +47,7 @@ content:
     third_party_settings: {  }
     region: content
   field_paragraphs:
-    type: paragraphs
+    type: paragraphs_previewer
     weight: 4
     settings:
       title: Paragraph
