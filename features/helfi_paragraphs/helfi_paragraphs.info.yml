@@ -5,11 +5,9 @@ core_version_requirement: '^8 || ^9'
 dependencies:
   - ckeditor
   - content_translation
-  - editor
   - entity_reference_revisions
   - features
   - field
-  - filter
   - helfi_media
   - language
   - link
@@ -20,7 +18,6 @@ dependencies:
   - options
   - paragraphs
   - paragraphs_asymmetric_translation_widgets
-  - paragraphs_previewer
   - path
   - text
   - user
