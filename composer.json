@@ -15,7 +15,6 @@
     "drupal/menu_block_current_language": "^1.4",
     "drupal/paragraphs": "^1.12",
     "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
-    "drupal/paragraphs_previewer": "^1.5",
     "drupal/elasticsearch_connector": "^7.0@alpha",
     "drupal/search_api": "^1.0"
   },
