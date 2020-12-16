@@ -1,4 +1,4 @@
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -45,7 +45,7 @@ field_settings:
       module:
         - paragraphs
   langcode:
-    label: 'Paragraphs » Paragraph » Kielikoodi'
+    label: 'Paragraphs » Paragraph » Langcode'
     datasource_id: 'entity:node'
     property_path: 'field_paragraphs:entity:langcode'
     type: string
