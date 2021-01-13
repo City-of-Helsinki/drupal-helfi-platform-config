@@ -8,7 +8,9 @@ package: HELfi
 dependencies:
   - admin_toolbar
   - block
+  - ctools
   - config_translation
+  - easy_breadcrumb
   - features
   - views
   - taxonomy
@@ -22,5 +24,7 @@ dependencies:
   - helfi_media
   - menu_block_current_language
   - menu_link_content
+  - pathauto
   - system
+  - token
   - twig_tweak
