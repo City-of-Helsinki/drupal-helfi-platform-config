@@ -2,17 +2,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_paragraphs
+    - field.storage.node.field_content
     - node.type.page
-    - paragraphs.paragraphs_type.hero
+    - paragraphs.paragraphs_type.link
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
-id: node.page.field_paragraphs
-field_name: field_paragraphs
+id: node.page.field_content
+field_name: field_content
 entity_type: node
 bundle: page
-label: Paragraphs
+label: Content
 description: ''
 required: false
 translatable: true
@@ -23,16 +23,16 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
+      link: link
       text: text
-      hero: hero
     target_bundles_drag_drop:
       hero:
-        enabled: true
         weight: 4
-      link:
-        weight: 5
         enabled: false
+      link:
+        enabled: true
+        weight: 5
       text:
         enabled: true
-        weight: 2
+        weight: 6
 field_type: entity_reference_revisions

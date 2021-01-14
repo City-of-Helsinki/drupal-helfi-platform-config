@@ -3,9 +3,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
-    - field.field.node.page.field_paragraphs
     - node.type.page
   module:
     - user
@@ -20,7 +20,7 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_content: true
   field_has_hero: true
   field_hero: true
-  field_paragraphs: true
   langcode: true
