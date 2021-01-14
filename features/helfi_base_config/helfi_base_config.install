@@ -7,6 +7,8 @@
  */
 function helfi_base_config_install() {
   \Drupal::configFactory()->getEditable('system.menu.footer')->delete();
+  // Remove an obsolete block that is named hdbt_admin.
+  \Drupal::configFactory()->getEditable('block.block.hdbt_admin')->delete();
   \Drupal::service('theme_installer')->install(['hdbt', 'hdbt_admin']);
 
   $system_theme = \Drupal::configFactory()->getEditable('system.theme');
