@@ -21,11 +21,8 @@ settings:
             - Subscript
             - '-'
             - RemoveFormat
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
+            - '-'
+            - Format
         -
           name: Lists
           items:
@@ -35,11 +32,16 @@ settings:
           name: Media
           items:
             - Blockquote
-            - Table
-            - HorizontalRule
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
         -
           name: Tools
           items:
+            - Undo
+            - Redo
             - Cut
             - Copy
             - Paste
