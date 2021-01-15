@@ -1,0 +1,141 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
+  bundle: page
+  default_langcode: fi
+  depends:
+    923ecd78-00ff-47f9-a017-012b781d6bab: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Hero: Diagonaalinen'
+  created:
+    -
+      value: 1610706042
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /hero-diagonaalinen
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 28bc6ebe-18ca-408d-8a3f-a9c3b8b2a967
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1610707608
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+              format: full_html
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 302567b2-84d2-4060-8b1c-befba3400005
+          bundle: hero
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1610707608
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_bg_color:
+            -
+              value: summer
+          field_hero_cta:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 3c8113c7-01b1-4703-a200-378485df6db8
+                  bundle: link
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1610707650
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_link_design:
+                    -
+                      value: secondary
+                  field_link_link:
+                    -
+                      uri: 'https://www.hel.fi'
+                      title: 'Klikkaa itsesi Helsingin kaupungin sivustolle'
+                      options: {  }
+          field_hero_desc:
+            -
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n"
+              format: full_html
+          field_hero_design:
+            -
+              value: diagonal
+          field_hero_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_hero_title:
+            -
+              value: 'Hero: Diagonaalinen'

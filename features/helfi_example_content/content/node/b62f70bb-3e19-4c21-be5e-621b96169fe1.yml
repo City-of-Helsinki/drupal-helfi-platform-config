@@ -134,8 +134,13 @@ translations:
                 value: {  }
             field_text:
               -
+<<<<<<< Updated upstream
                 value: 'Hello world'
                 format: plain_text
+=======
+                value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+                format: full_html
+>>>>>>> Stashed changes
       -
         entity:
           _meta:
@@ -156,5 +161,9 @@ translations:
                 value: {  }
             field_text:
               -
+<<<<<<< Updated upstream
                 value: 'Paragrapn 2 (vain suomeksi).'
+=======
+                value: 'Toinen teksti-paragraph, joka näkyy vain suomeksi.'
+>>>>>>> Stashed changes
                 format: plain_text

@@ -1,0 +1,134 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 8455251b-91bd-4c71-9756-94112e8912c1
+  bundle: page
+  default_langcode: fi
+  depends:
+    923ecd78-00ff-47f9-a017-012b781d6bab: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Hero: Taustakuva'
+  created:
+    -
+      value: 1610706042
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  path:
+    -
+      alias: /hero-taustakuva
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 92d4b85e-5be9-4f14-a3b0-40767ed1d5d5
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1610706613
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+              format: full_html
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 8d625a6a-0d03-414d-9f83-1c685e04d13f
+          bundle: hero
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1610706613
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_bg_color:
+            -
+              value: engel
+          field_hero_cta:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: ac78c81d-d3ad-4d62-96cd-7c3a9195e5c0
+                  bundle: link
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1610707530
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_link_design:
+                    -
+                      value: primary
+                  field_link_link:
+                    -
+                      uri: 'https://www.hel.fi'
+                      title: 'Klikkaa itsesi Helsingin kaupungin sivustolle'
+                      options: {  }
+          field_hero_design:
+            -
+              value: background-image
+          field_hero_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_hero_title:
+            -
+              value: 'Hero: Taustakuva'

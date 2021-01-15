@@ -1,0 +1,136 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
+  bundle: page
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Hero: Ilman kuvaa, tasattu vasemmalle'
+  created:
+    -
+      value: 1610705615
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /hero-ilman-kuvaa-tasattu-vasemmalle
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 87237f93-d1f2-4773-a8a6-0a9b4d5e74b8
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1610705679
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+              format: full_html
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: cf10e184-1781-4bef-a32b-ab20f770528a
+          bundle: hero
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1610705679
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_bg_color:
+            -
+              value: metro
+          field_hero_cta:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 157c5549-573c-43d6-a005-229da07c4635
+                  bundle: link
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1610705809
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_link_design:
+                    -
+                      value: secondary
+                  field_link_link:
+                    -
+                      uri: 'https://www.hel.fi'
+                      title: 'Klikkaa itsesi Helsingin kaupungin sivustolle'
+                      options: {  }
+          field_hero_desc:
+            -
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n"
+              format: full_html
+          field_hero_design:
+            -
+              value: without-image-left
+          field_hero_title:
+            -
+              value: 'Hero: Ilman kuvaa, tasattu vasemmalle'
