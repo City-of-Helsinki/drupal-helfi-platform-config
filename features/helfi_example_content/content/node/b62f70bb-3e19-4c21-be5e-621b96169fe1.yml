@@ -42,11 +42,6 @@ default:
   content_translation_outdated:
     -
       value: false
-  body:
-    -
-      value: 'Example body.'
-      format: plain_text
-      summary: ''
   field_paragraphs:
     -
       entity:
@@ -68,7 +63,7 @@ default:
               value: {  }
           field_text:
             -
-              value: 'Hello world1'
+              value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
               format: plain_text
   field_tags:
     -
@@ -108,11 +103,6 @@ translations:
     content_translation_outdated:
       -
         value: false
-    body:
-      -
-        value: Esimerkkisisältöä.
-        format: plain_text
-        summary: ''
     field_paragraphs:
       -
         entity:
@@ -134,13 +124,8 @@ translations:
                 value: {  }
             field_text:
               -
-<<<<<<< Updated upstream
-                value: 'Hello world'
-                format: plain_text
-=======
                 value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
                 format: full_html
->>>>>>> Stashed changes
       -
         entity:
           _meta:
@@ -161,9 +146,5 @@ translations:
                 value: {  }
             field_text:
               -
-<<<<<<< Updated upstream
-                value: 'Paragrapn 2 (vain suomeksi).'
-=======
                 value: 'Toinen teksti-paragraph, joka näkyy vain suomeksi.'
->>>>>>> Stashed changes
                 format: plain_text
