@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: page_content_pattern
+label: 'Page content pattern'
+type: 'canonical_entities:node'
+pattern: '[node:menu-link:parents:join:/]/[node:title]'
+selection_criteria:
+  0362231a-8e0f-447d-9e08-133aa92c3b46:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 0362231a-8e0f-447d-9e08-133aa92c3b46
+selection_logic: and
+weight: -5
+relationships: {  }
