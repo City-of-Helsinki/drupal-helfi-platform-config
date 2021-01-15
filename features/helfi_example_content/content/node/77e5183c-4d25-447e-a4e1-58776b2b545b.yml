@@ -1,0 +1,141 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
+  bundle: page
+  default_langcode: fi
+  depends:
+    923ecd78-00ff-47f9-a017-012b781d6bab: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Hero: Kuva alhaalla'
+  created:
+    -
+      value: 1610706042
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /hero-kuva-alhaalla
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: ec91c2cc-2a2a-4fd2-8958-7c2918f04af4
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1610706543
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+              format: full_html
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 9ee9879b-9ab5-413e-a0e7-363a0b7e430c
+          bundle: hero
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1610706543
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_bg_color:
+            -
+              value: coat-of-arms
+          field_hero_cta:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 3fcd2b8a-6049-4959-9f57-05bf3a7869a2
+                  bundle: link
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1610706569
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_link_design:
+                    -
+                      value: secondary
+                  field_link_link:
+                    -
+                      uri: 'https://www.hel.fi'
+                      title: 'Klikkaa itsesi Helsingin kaupungin sivustolle'
+                      options: {  }
+          field_hero_desc:
+            -
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n"
+              format: full_html
+          field_hero_design:
+            -
+              value: with-image-bottom
+          field_hero_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_hero_title:
+            -
+              value: 'Hero: Kuva alhaalla'

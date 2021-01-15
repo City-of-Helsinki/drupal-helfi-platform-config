@@ -1,0 +1,96 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 7974c92f-0a4f-4a6d-9ca3-684f64a73fd7
+  bundle: menu_link_content
+  default_langcode: fi
+translations:
+  en:
+    title:
+      -
+        value: 'Terms of use'
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1610711487
+  sv:
+    title:
+      -
+        value: Villkor
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1610711487
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Sivuston käyttöehdot'
+  menu_name:
+    -
+      value: footer-bottom-navigation
+  link:
+    -
+      uri: 'https://www.hel.fi'
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -48
+  expanded:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1610710562

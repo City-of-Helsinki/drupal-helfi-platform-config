@@ -1,0 +1,96 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 78a5a17b-df29-46fb-9ec7-eb1be526bd09
+  bundle: menu_link_content
+  default_langcode: fi
+translations:
+  en:
+    title:
+      -
+        value: Privacy
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1610711506
+  sv:
+    title:
+      -
+        value: Integritet
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1610711506
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: Tietosuojaseloste
+  menu_name:
+    -
+      value: footer-bottom-navigation
+  link:
+    -
+      uri: 'https://www.hel.fi'
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -47
+  expanded:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1610710574
