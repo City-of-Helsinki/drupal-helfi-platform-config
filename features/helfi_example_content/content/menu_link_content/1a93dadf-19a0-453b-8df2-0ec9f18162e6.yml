@@ -4,6 +4,51 @@ _meta:
   uuid: 1a93dadf-19a0-453b-8df2-0ec9f18162e6
   bundle: menu_link_content
   default_langcode: fi
+translations:
+  en:
+    title:
+      -
+        value: 'Information'
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1610711425
+  sv:
+    title:
+      -
+        value: 'Information'
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1610711425
 default:
   enabled:
     -

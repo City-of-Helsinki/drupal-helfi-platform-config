@@ -4,13 +4,58 @@ _meta:
   uuid: 243c4929-5da4-4741-a4b6-7beeb401626e
   bundle: menu_link_content
   default_langcode: fi
+translations:
+  en:
+    title:
+      -
+        value: Accessibility
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1610711425
+  sv:
+    title:
+      -
+        value: Tillgänglighet
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1610711425
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: Accessibility
+      value: Saavutettavuus
   menu_name:
     -
       value: footer-bottom-navigation
