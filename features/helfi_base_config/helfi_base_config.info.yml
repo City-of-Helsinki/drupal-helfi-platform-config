@@ -9,9 +9,9 @@ dependencies:
   - admin_toolbar
   - block
   - config_translation
+  - ctools
+  - easy_breadcrumb
   - features
-  - views
-  - taxonomy
   - gin_toolbar
   - hdbt_admin_editorial
   - hdbt_admin_tools
@@ -23,5 +23,10 @@ dependencies:
   - helfi_media
   - menu_block_current_language
   - menu_link_content
+  - node
+  - pathauto
   - system
+  - taxonomy
+  - token
   - twig_tweak
+  - views
