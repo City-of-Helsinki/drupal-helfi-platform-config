@@ -5,8 +5,11 @@ dependencies:
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
+    - field.field.node.page.field_liftup_image
+    - image.style.thumbnail
     - node.type.page
   module:
+    - focal_point
     - paragraphs
     - path
 id: node.page.default
@@ -22,7 +25,8 @@ content:
     third_party_settings: {  }
   field_content:
     type: paragraphs
-    weight: 26
+    weight: 12
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -38,7 +42,6 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
-    region: content
   field_has_hero:
     weight: 2
     settings:
@@ -47,7 +50,6 @@ content:
     type: boolean_checkbox
     region: content
   field_hero:
-    type: paragraphs
     weight: 3
     settings:
       title: Paragraph
@@ -64,6 +66,17 @@ content:
         collapse_edit_all: '0'
         duplicate: '0'
     third_party_settings: {  }
+    type: paragraphs
+    region: content
+  field_liftup_image:
+    weight: 4
+    settings:
+      preview_image_style: thumbnail
+      progress_indicator: throbber
+      offsets: '50,50'
+      preview_link: false
+    third_party_settings: {  }
+    type: image_focal_point
     region: content
   langcode:
     type: language_select
