@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Contains install functions for Helfi Base Config.
+ */
+
+/**
  * Implements hook_install().
  *
  * Install HDBT and HDBT admin themes and make them as default themes.
@@ -11,7 +16,7 @@ function helfi_base_config_install() {
 
   // Remove an obsolete block that is named hdbt_admin.
   \Drupal::configFactory()->getEditable('block.block.hdbt_admin')->delete();
-  
+
   $system_theme = \Drupal::configFactory()->getEditable('system.theme');
   $system_theme->set('default', 'hdbt')->set('admin', 'hdbt_admin')->save();
 
