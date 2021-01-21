@@ -37,7 +37,7 @@
         "https://www.drupal.org/project/features/issues/3147028": "https://www.drupal.org/files/issues/2020-10-14/3147028-features_templates.patch"
       },
       "drupal/eu_cookie_compliance": {
-        "Helfi-specific customizations to EU Cookie Compliance": "patches/eu_cookie_compliance_block.patch"
+        "Helfi-specific customizations to EU Cookie Compliance": "./public/modules/custom/helfi_platform_config/patches/eu_cookie_compliance_block.patch"
       }
     }
   }
