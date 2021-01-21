@@ -6,10 +6,9 @@ dependencies:
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
     - field.field.node.page.field_liftup_image
-    - image.style.thumbnail
     - node.type.page
   module:
-    - focal_point
+    - media_library
     - paragraphs
     - path
 id: node.page.default
@@ -69,14 +68,11 @@ content:
     type: paragraphs
     region: content
   field_liftup_image:
+    type: media_library_widget
     weight: 4
     settings:
-      preview_image_style: thumbnail
-      progress_indicator: throbber
-      offsets: '50,50'
-      preview_link: false
+      media_types: {  }
     third_party_settings: {  }
-    type: image_focal_point
     region: content
   langcode:
     type: language_select
