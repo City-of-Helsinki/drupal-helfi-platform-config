@@ -1,0 +1,9 @@
+name: 'HELfi GDPR compliance'
+type: module
+core: 8.x
+dependencies:
+  - block
+  - ctools
+  - eu_cookie_compliance
+  - system
+package: HELfi

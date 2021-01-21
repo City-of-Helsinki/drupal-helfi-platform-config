@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+id: marketing
+label: Marketing
+description:
+  value: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer auctor malesuada sapien vel vestibulum. In vel massa nec justo vestibulum ultricies at eget massa. Nullam nulla felis, cursus et imperdiet nec, laoreet quis urna.</p>\r\n"
+  format: full_html
+checkbox_default_state: unchecked
+weight: -8

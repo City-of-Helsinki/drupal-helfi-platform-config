@@ -18,7 +18,8 @@
     "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
     "drupal/pathauto": "^1.8",
     "drupal/elasticsearch_connector": "^7.0@alpha",
-    "drupal/search_api": "^1.0"
+    "drupal/search_api": "^1.0",
+    "drupal/eu_cookie_compliance": "^1.14"
   },
   "extra": {
     "patches": {
@@ -34,6 +35,9 @@
       "drupal/features": {
         "https://www.drupal.org/project/features/issues/3068461#comment-13908491": "https://www.drupal.org/files/issues/2020-11-19/features-ui_theme_agnostic_rtl-3068461-6.patch",
         "https://www.drupal.org/project/features/issues/3147028": "https://www.drupal.org/files/issues/2020-10-14/3147028-features_templates.patch"
+      },
+      "drupal/eu_cookie_compliance": {
+        "Helfi-specific customizations to EU Cookie Compliance": "patches/eu_cookie_compliance_block.patch"
       }
     }
   }
