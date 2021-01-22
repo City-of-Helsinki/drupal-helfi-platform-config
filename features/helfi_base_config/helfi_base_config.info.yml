@@ -16,7 +16,7 @@ dependencies:
   - hdbt_admin_editorial
   - hdbt_admin_tools
   - hdbt_component_library
-  - hdbt_custom_blocks
+  - hdbt_content
   - hdbt_hyphenopoly
   - helfi_example_content
   - helfi_languages
