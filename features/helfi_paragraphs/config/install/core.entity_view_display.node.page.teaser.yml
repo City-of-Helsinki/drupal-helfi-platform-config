@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
+    - field.field.node.page.field_liftup_image
     - node.type.page
   module:
     - user
@@ -14,11 +15,20 @@ targetEntityType: node
 bundle: page
 mode: teaser
 content:
+  field_liftup_image:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   field_content: true
   field_has_hero: true
