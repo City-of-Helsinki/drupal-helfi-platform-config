@@ -6,12 +6,15 @@
  * Install HDBT and HDBT admin themes and make them as default themes.
  */
 function helfi_base_config_install() {
+  // Remove the default frontpage view.
+  \Drupal::configFactory()->getEditable('views.view.frontpage')->delete();
+
   \Drupal::configFactory()->getEditable('system.menu.footer')->delete();
   \Drupal::service('theme_installer')->install(['hdbt', 'hdbt_admin']);
 
   // Remove an obsolete block that is named hdbt_admin.
   \Drupal::configFactory()->getEditable('block.block.hdbt_admin')->delete();
-  
+
   $system_theme = \Drupal::configFactory()->getEditable('system.theme');
   $system_theme->set('default', 'hdbt')->set('admin', 'hdbt_admin')->save();
 
