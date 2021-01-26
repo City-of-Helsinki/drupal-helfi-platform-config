@@ -8,6 +8,7 @@
     "drupal/crop": "^2.1",
     "drupal/default_content": "^2.0.0-alpha1",
     "drupal/easy_breadcrumb": "^1.13",
+    "drupal/elasticsearch_connector": "^7.0@alpha",
     "drupal/entity_browser": "^2.5",
     "drupal/features": "^3.11",
     "drupal/focal_point": "^1.5",
@@ -17,8 +18,9 @@
     "drupal/paragraphs": "^1.12",
     "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
     "drupal/pathauto": "^1.8",
-    "drupal/elasticsearch_connector": "^7.0@alpha",
-    "drupal/search_api": "^1.0"
+    "drupal/search_api": "^1.0",
+    "drupal/select2": "^1.12",
+    "select2/select2": "^4.0"
   },
   "extra": {
     "patches": {
@@ -33,7 +35,8 @@
       },
       "drupal/features": {
         "https://www.drupal.org/project/features/issues/3068461#comment-13908491": "https://www.drupal.org/files/issues/2020-11-19/features-ui_theme_agnostic_rtl-3068461-6.patch",
-        "https://www.drupal.org/project/features/issues/3147028": "https://www.drupal.org/files/issues/2020-10-14/3147028-features_templates.patch"
+        "https://www.drupal.org/project/features/issues/3147028": "https://www.drupal.org/files/issues/2020-10-14/3147028-features_templates.patch",
+        "https://www.drupal.org/project/features/issues/2869336": "https://www.drupal.org/files/issues/features_export-config-translation-2869336-2.patch"
       }
     }
   }
