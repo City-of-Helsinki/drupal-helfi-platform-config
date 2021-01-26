@@ -6,7 +6,7 @@ dependencies:
   - elasticsearch_connector
   - entity_reference_revisions
   - helfi_ahjo
-  - helfi_paragraphs
+  - helfi_content
   - node
   - paragraphs
   - search_api
