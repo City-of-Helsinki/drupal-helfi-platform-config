@@ -11,19 +11,6 @@ index 041bf25..c708f6f 100644
        label: 'Description'
      checkbox_default_state:
        type: string
-diff --git a/eu_cookie_compliance.info.yml b/eu_cookie_compliance.info.yml
-index 4bdf90c..f71badf 100644
---- a/eu_cookie_compliance.info.yml
-+++ b/eu_cookie_compliance.info.yml
-@@ -6,3 +6,8 @@ core_version_requirement: ^8.8 || ^9
- configure: eu_cookie_compliance.settings
- dependencies:
-   - drupal:filter
-+
-+# Information added by Drupal.org packaging script on 2020-11-28
-+version: '8.x-1.14'
-+project: 'eu_cookie_compliance'
-+datestamp: 1606569777
 diff --git a/eu_cookie_compliance.libraries.yml b/eu_cookie_compliance.libraries.yml
 index 639e371..7047fc7 100644
 --- a/eu_cookie_compliance.libraries.yml
