@@ -1,4 +1,4 @@
-name: 'HELfi media'
+name: 'HELfi Media'
 description: 'Media configuration for platform.'
 type: module
 core: 8.x
@@ -19,5 +19,4 @@ dependencies:
   - responsive_image
   - system
   - user
-version: 9.x-1.0
 package: HELfi
