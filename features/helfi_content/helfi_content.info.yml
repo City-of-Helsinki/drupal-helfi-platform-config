@@ -1,4 +1,4 @@
-name: 'HELfi Paragraphs'
+name: 'HELfi Content'
 type: module
 core: 8.x
 core_version_requirement: '^8 || ^9'
@@ -15,12 +15,15 @@ dependencies:
   - link
   - media
   - media_library
+  - menu_link_content
   - menu_ui
   - node
   - options
   - paragraphs
-  - paragraphs_asymmetric_translation_widgets
   - path
+  - pathauto
+  - select2
+  - taxonomy
   - text
   - user
 package: HELfi
