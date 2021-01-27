@@ -28,6 +28,15 @@ diff --git a/eu_cookie_compliance.module b/eu_cookie_compliance.module
 index 2888e82..6be1309 100644
 --- a/eu_cookie_compliance.module
 +++ b/eu_cookie_compliance.module
+@@ -343,7 +343,7 @@ function eu_cookie_compliance_build_data() {
+       $click_confirmation = FALSE;
+       $scroll_confirmation = FALSE;
+       if ($config->get('enable_save_preferences_button')) {
+-        $save_preferences_button_label = $config->get('save_preferences_button_label');
++        $save_preferences_button_label = t('Accept only essential cookies');
+         $primary_button_label = $config->get('accept_all_categories_button_label');
+       }
+       else {
 @@ -619,6 +619,7 @@ function _eu_cookie_compliance_extract_category_key_label_description($string) {
  
      $categories[$key] = ['label' => $label, 'description' => $description];
