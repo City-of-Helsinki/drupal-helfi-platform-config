@@ -47,10 +47,11 @@ function helfi_platform_config_import_language_config() {
     }
 
     $language_directory = scandir($language_config_directory);
+    $skip_dirs = ['..', '.', $site_default_langcode];
 
     // Sub-directory names (language codes).
     // The language code of the default language is excluded.
-    $langcodes = array_diff($language_directory, ['..', '.', $site_default_langcode]);
+    $langcodes = array_diff($language_directory, $skip_dirs);
 
     foreach ($langcodes as $langcode) {
       // All .yml files in the language's config subdirectory.
