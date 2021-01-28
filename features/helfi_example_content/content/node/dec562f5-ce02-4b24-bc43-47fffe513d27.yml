@@ -1,0 +1,173 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: dec562f5-ce02-4b24-bc43-47fffe513d27
+  bundle: article
+  default_langcode: fi
+  depends:
+    a917d861-e1f0-4582-8e1d-859ba4b418f2: taxonomy_term
+    4c0860df-950c-49b0-a7cc-f733301ce8f2: taxonomy_term
+    6f03bed3-6197-450c-8147-1441b5fce94c: taxonomy_term
+    ae204a83-0fe8-460d-aa04-49e0838b42d4: taxonomy_term
+    086b1e5a-bc82-4d8f-997a-ba6b3214415d: taxonomy_term
+    42fd3d39-8817-4a12-bcbd-459cbb663749: taxonomy_term
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Helsingin kaupunginosat'
+  created:
+    -
+      value: 1611734701
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /helsingin-kaupunginosat
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_author:
+    -
+      value: 'Heikki Helsinki'
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: f63d4873-9f47-4dab-9cdf-33453f1448c8
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1611734933
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<h2>Munkkiniemi</h2>\r\n\r\n<p>Etäisyydestä huolimatta se vaikuttaa kantakaupungin jatkeelta; kerrostalot ovat pääasiassa 30-luvulta.</p>\r\n\r\n<p>Munkkiniemen puistotie muodostaa pääakselin, jonka ympärille kerrostaloalue sijoittuu. Pohjoispuolella on perinteikäs Munkkiniemen yhteiskoulu. Eteläpuolella Villa Aalto vuodelta 1936, Aallon piirtämät Kansaneläkelaitoksen asuintalot 50-luvun alusta (muodostavat hyvän sisäpihan), Munkkiniemen kartano, Eliel Saarisen massiivinen Kadettikoulu vuodelta 1918, nykyisin Hallinnon kehittämiskeskus. Saarinen piirsi myös Suomen ensimmäisiin kuuluvat rivitalot osoitteessa Hollantilaisentie 12-20.</p>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 84ea4955-fe80-4685-a020-20abc2e8628a
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1611734933
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<h2>Munkkivuori</h2>\r\n\r\n<p>Munkkivuori on arkkitehtuuriltaan ja aluesuunnittelultaan yksi parhaita 50-luvun helsinkiläislähiöitä. Rakennukset on sijoitettu maastoon esimerkillisesti. Täällä todella aistii lähiösuunnittelun kultaisen vuosikymmenen. Autoliikenne on järjestetty ulkosyötteisesti Ulvilantieltä, joka kiertää koko alueen. Lamellitalojen seassa on paljon 8-kerroksisia pistetaloja, Ulvilantie 19a:ssa kolme 10-kerroksista tornia. Jokaisen talon vieressä on metsäistä puistoa.</p>\r\n\r\n<p>Alueen sijainnilla on myös merkitystä. Munkkivuori on lähellä keskustaa, lähes suora jatke kantakaupungille. Talin golfkenttä, Niemenmäki ja Munkkiniemi ovat laadukkaita lähinaapureita.</p>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7baf0cd6-54d9-4a77-a338-3cbf8f668763
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1611828169
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<h2>Kuusisaari</h2>\r\n\r\n<p>Rakentamisen väljyys on iso plussa, samoin mereen laskeutuvat rantatontit. Tärkeimmät nähtävyydet ovat Didrichsenin ja Villa Gyllenbergin taidemuseot sekä Aarne Ervin ateljee Kuusiniementie 5:ssä. Kuusisaaren asukkaiden keskitulo on Helsingin toiseksi korkein Kaivopuiston jälkeen.</p>\r\n\r\n<p>Omakotitalojen ja lähetystöjen lisäksi saarelta löytyy tasakattoisia rivitaloja tiilijulkisivuilla, suuri osa 60- ja 70-luvuilta. Vaikka Kuusisaari on erittäin varakkaiden asuinalue, talot ovat suureksi osaksi suhteellisen vaatimatonta asuntotuotantoa.</p>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a61105f7-ca23-48f7-b6c5-b06fe4ab6d09
+          bundle: link
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1611828180
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_link_design:
+            -
+              value: primary
+          field_link_link:
+            -
+              uri: 'https://fi.wikibooks.org/wiki/Helsingin_kaupunginosat'
+              title: 'Lue lisää kaupunginosista'
+              options: {  }
+  field_keywords:
+    -
+      entity: a917d861-e1f0-4582-8e1d-859ba4b418f2
+    -
+      entity: 4c0860df-950c-49b0-a7cc-f733301ce8f2
+    -
+      entity: 6f03bed3-6197-450c-8147-1441b5fce94c
+    -
+      entity: ae204a83-0fe8-460d-aa04-49e0838b42d4
+    -
+      entity: 086b1e5a-bc82-4d8f-997a-ba6b3214415d
+    -
+      entity: 42fd3d39-8817-4a12-bcbd-459cbb663749
+  field_lead:
+    -
+      value: 'Artikkeli Helsingin kaupunginosista. '

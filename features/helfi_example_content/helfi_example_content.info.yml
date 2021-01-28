@@ -9,7 +9,19 @@ dependencies:
   - helfi_content
 default_content:
   node:
+    - 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
+    - 3a313b2f-8b70-41a6-a655-3f9805cb1f48
+    - 77e5183c-4d25-447e-a4e1-58776b2b545b
+    - 8455251b-91bd-4c71-9756-94112e8912c1
     - b62f70bb-3e19-4c21-be5e-621b96169fe1
+    - c2b41989-c715-4ec4-8df1-42655293fdfc
+    - d5bf4eac-26d6-420e-bd19-7d66ff969181
+    - dec562f5-ce02-4b24-bc43-47fffe513d27
+    - efc11410-25ca-48ef-bfe0-f03860a3b7e7
   taxonomy_term:
-    - 96a2806c-8251-4d62-b86d-8ad0b65d16de
-    - f462f04c-35aa-46a0-bc75-acb5c24b9c55
+    - 4c0860df-950c-49b0-a7cc-f733301ce8f2
+    - 6f03bed3-6197-450c-8147-1441b5fce94c
+    - 42fd3d39-8817-4a12-bcbd-459cbb663749
+    - 086b1e5a-bc82-4d8f-997a-ba6b3214415d
+    - a917d861-e1f0-4582-8e1d-859ba4b418f2
+    - ae204a83-0fe8-460d-aa04-49e0838b42d4
