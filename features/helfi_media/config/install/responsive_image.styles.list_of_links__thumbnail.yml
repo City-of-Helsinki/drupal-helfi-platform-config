@@ -6,8 +6,6 @@ dependencies:
     - image.style.1_1_s_2x
     - image.style.1_1_xs
     - image.style.1_1_xs_2x
-  theme:
-    - hdbt
 id: list_of_links__thumbnail
 label: 'List of Links Thumbnail'
 image_style_mappings:
