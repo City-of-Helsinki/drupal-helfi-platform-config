@@ -5,6 +5,7 @@ dependencies:
     - field.storage.node.field_content
     - node.type.page
     - paragraphs.paragraphs_type.link
+    - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
@@ -25,6 +26,7 @@ settings:
     target_bundles:
       link: link
       text: text
+      list_of_links: list_of_links
     target_bundles_drag_drop:
       hero:
         weight: 4
@@ -32,6 +34,9 @@ settings:
       link:
         enabled: true
         weight: 5
+      list_of_links:
+        enabled: true
+        weight: 7
       text:
         enabled: true
         weight: 6

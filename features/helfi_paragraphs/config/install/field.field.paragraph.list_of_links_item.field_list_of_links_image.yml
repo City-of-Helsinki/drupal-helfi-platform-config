@@ -2,17 +2,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_hero_image
+    - field.storage.paragraph.field_list_of_links_image
     - media.type.image
-    - paragraphs.paragraphs_type.hero
-id: paragraph.hero.field_hero_image
-field_name: field_hero_image
+    - paragraphs.paragraphs_type.list_of_links_item
+id: paragraph.list_of_links_item.field_list_of_links_image
+field_name: field_list_of_links_image
 entity_type: paragraph
-bundle: hero
+bundle: list_of_links_item
 label: Image
-description: 'Image to be used as an illustration or as a background of the hero depending on what design you chose.'
+description: 'Image to be used as thumbnail of the link.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

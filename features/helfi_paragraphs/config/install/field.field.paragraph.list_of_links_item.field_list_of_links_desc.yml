@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_list_of_links_desc
+    - paragraphs.paragraphs_type.list_of_links_item
+id: paragraph.list_of_links_item.field_list_of_links_desc
+field_name: field_list_of_links_desc
+entity_type: paragraph
+bundle: list_of_links_item
+label: Description
+description: 'You can add very short description for the link.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
