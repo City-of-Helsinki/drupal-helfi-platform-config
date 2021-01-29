@@ -19,7 +19,8 @@
     "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
     "drupal/pathauto": "^1.8",
     "drupal/search_api": "^1.0",
-    "drupal/select2": "^1.12"
+    "drupal/select2": "^1.12",
+    "drupal/social_media": "^1.8"
   },
   "extra": {
     "patches": {

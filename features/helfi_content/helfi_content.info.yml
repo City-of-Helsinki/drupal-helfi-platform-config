@@ -24,6 +24,7 @@ dependencies:
   - path
   - pathauto
   - select2
+  - social_media
   - taxonomy
   - text
   - user
