@@ -10,17 +10,6 @@ social_media:
     drupalSettings: ''
     library: ''
     img: facebook
-  facebook_msg:
-    enable: 0
-    api_url: 'FB.ui({method: ''send'',link: ''[current-page:url]''})'
-    api_event: onclick
-    drupalSettings: 'application_id|Your Application ID'
-    library: social_media/facebook
-    text: 'Facebook messenger'
-    default_img: 1
-    weight: '2'
-    attributes: "target|_blank\r\nclass|facebook-msg"
-    img: ''
   linkedin:
     enable: 1
     api_url: 'http://www.linkedin.com/shareArticle?mini=true&url=[current-page:url]&title=[current-page:title]&source=[current-page:url]'
@@ -43,28 +32,6 @@ social_media:
     drupalSettings: ''
     library: ''
     img: twitter
-  pinterest:
-    enable: 0
-    api_url: 'https://www.pinterest.com/pin/create/button/?url=[current-page:url]&description=[current-page:title]'
-    api_event: href
-    text: Pinterest
-    default_img: 1
-    weight: '5'
-    attributes: "target|_blank\r\nclass|pinterest"
-    drupalSettings: ''
-    library: ''
-    img: ''
-  google_plus:
-    enable: 0
-    text: 'Google Plus'
-    api_url: 'https://plus.google.com/share?url=[current-page:url]'
-    api_event: href
-    default_img: 1
-    weight: '6'
-    attributes: "target|_blank\r\nclass|google-plus"
-    drupalSettings: ''
-    library: ''
-    img: ''
   email:
     enable: 1
     api_url: 'mailto:?subject=[current-page:title]&body=Check out this site [current-page:url]'
