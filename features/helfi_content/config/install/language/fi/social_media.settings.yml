@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'Jaa Facebook-palvelussa'
+  linkedin:
+    text: 'Jaa LinkedIn-palvelussa'
+  twitter:
+    text: 'Jaa Twitter-palvelussa'
+  email:
+    text: 'Lähetä sivu sähköpostitse'
