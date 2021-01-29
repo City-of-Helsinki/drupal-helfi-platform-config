@@ -3,19 +3,19 @@ status: true
 dependencies:
   module:
     - node
-id: page_content_pattern
-label: 'Page content pattern'
+id: article_content_pattern
+label: 'Article content pattern'
 type: 'canonical_entities:node'
 pattern: '[node:menu-link:parents:join:/]/[node:title]'
 selection_criteria:
-  0362231a-8e0f-447d-9e08-133aa92c3b46:
+  02f068b0-826e-4d95-b8c0-a552a60d1ee6:
     id: node_type
     bundles:
-      page: page
+      article: article
     negate: false
     context_mapping:
       node: node
-    uuid: 0362231a-8e0f-447d-9e08-133aa92c3b46
+    uuid: 02f068b0-826e-4d95-b8c0-a552a60d1ee6
 selection_logic: and
 weight: -5
 relationships: {  }
