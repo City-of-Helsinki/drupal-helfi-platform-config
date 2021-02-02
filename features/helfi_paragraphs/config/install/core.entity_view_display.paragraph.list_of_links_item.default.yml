@@ -1,0 +1,45 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.list_of_links_item.field_list_of_links_desc
+    - field.field.paragraph.list_of_links_item.field_list_of_links_image
+    - field.field.paragraph.list_of_links_item.field_list_of_links_link
+    - paragraphs.paragraphs_type.list_of_links_item
+  module:
+    - link
+id: paragraph.list_of_links_item.default
+targetEntityType: paragraph
+bundle: list_of_links_item
+mode: default
+content:
+  field_list_of_links_desc:
+    weight: 2
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_list_of_links_image:
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: list_of_links
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_list_of_links_link:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 255
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden: {  }

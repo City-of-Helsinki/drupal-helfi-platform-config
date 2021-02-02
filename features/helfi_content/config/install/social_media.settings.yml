@@ -1,0 +1,48 @@
+social_media:
+  facebook_share:
+    enable: 1
+    text: 'Share in Facebook'
+    api_url: 'http://www.facebook.com/share.php?u=[current-page:url]&title=[current-page:title]'
+    api_event: href
+    default_img: 0
+    weight: '1'
+    attributes: "target|_blank\r\nclass|facebook-share"
+    drupalSettings: ''
+    library: ''
+    img: facebook
+  linkedin:
+    enable: 1
+    api_url: 'http://www.linkedin.com/shareArticle?mini=true&url=[current-page:url]&title=[current-page:title]&source=[current-page:url]'
+    api_event: href
+    text: 'Share in Linkedin'
+    default_img: 0
+    weight: '3'
+    attributes: "target|_blank\r\nclass|linkedin"
+    drupalSettings: ''
+    library: ''
+    img: linkedin
+  twitter:
+    enable: 1
+    api_url: 'https://twitter.com/intent/tweet?url=[current-page:url]&status=[current-page:title]+[current-page:url]'
+    api_event: href
+    text: 'Share in Twitter'
+    default_img: 0
+    weight: '4'
+    attributes: "target|_blank\r\nclass|twitter"
+    drupalSettings: ''
+    library: ''
+    img: twitter
+  email:
+    enable: 1
+    api_url: 'mailto:?subject=[current-page:title]&body=Check out this site [current-page:url]'
+    api_event: href
+    text: 'Send as an email'
+    default_img: 0
+    weight: '7'
+    attributes: class|email
+    drupalSettings: ''
+    library: ''
+    img: email
+    enable_forward: 0
+    show_forward: '1'
+langcode: en

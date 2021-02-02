@@ -10,7 +10,7 @@ field_name: field_hero_image
 entity_type: paragraph
 bundle: hero
 label: Image
-description: 'Image to be used as an illustration or as an background of the hero depending on what design you chose.'
+description: 'Image to be used as an illustration or as a background of the hero depending on what design you chose.'
 required: false
 translatable: false
 default_value: {  }
@@ -22,6 +22,7 @@ settings:
       image: image
     sort:
       field: _none
+      direction: ASC
     auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference

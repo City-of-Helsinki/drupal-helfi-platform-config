@@ -4,9 +4,6 @@ _meta:
   uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
   bundle: page
   default_langcode: en
-  depends:
-    96a2806c-8251-4d62-b86d-8ad0b65d16de: taxonomy_term
-    f462f04c-35aa-46a0-bc75-acb5c24b9c55: taxonomy_term
 default:
   revision_uid:
     -
@@ -65,11 +62,6 @@ default:
             -
               value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
               format: full_html
-  field_tags:
-    -
-      entity: 96a2806c-8251-4d62-b86d-8ad0b65d16de
-    -
-      entity: f462f04c-35aa-46a0-bc75-acb5c24b9c55
 translations:
   fi:
     status:

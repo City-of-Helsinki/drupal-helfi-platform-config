@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: list_of_links
+label: 'List of links'
+icon_uuid: null
+icon_default: null
+description: 'List of internal or external links. Different designs available.'
+behavior_plugins: {  }

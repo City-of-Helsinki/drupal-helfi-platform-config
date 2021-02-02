@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.list_of_links.field_list_of_links_design
+    - field.field.paragraph.list_of_links.field_list_of_links_links
+    - field.field.paragraph.list_of_links.field_list_of_links_title
+    - paragraphs.paragraphs_type.list_of_links
+  module:
+    - paragraphs
+id: paragraph.list_of_links.default
+targetEntityType: paragraph
+bundle: list_of_links
+mode: default
+content:
+  field_list_of_links_design:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_list_of_links_links:
+    type: entity_reference_paragraphs
+    weight: 2
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_list_of_links_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
