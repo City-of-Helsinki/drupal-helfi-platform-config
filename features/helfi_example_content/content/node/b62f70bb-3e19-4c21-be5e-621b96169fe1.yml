@@ -4,64 +4,8 @@ _meta:
   uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
   bundle: page
   default_langcode: en
-default:
-  revision_uid:
-    -
-      target_id: 1
-  status:
-    -
-      value: true
-  uid:
-    -
-      target_id: 1
-  title:
-    -
-      value: 'Example page'
-  created:
-    -
-      value: 1606157739
-  promote:
-    -
-      value: true
-  sticky:
-    -
-      value: false
-  revision_translation_affected:
-    -
-      value: true
-  path:
-    -
-      alias: ''
-      langcode: en
-  content_translation_source:
-    -
-      value: und
-  content_translation_outdated:
-    -
-      value: false
-  field_content:
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 83de5c57-731b-431d-a65d-768b7d581697
-          bundle: text
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1606157753
-          behavior_settings:
-            -
-              value: {  }
-          field_text:
-            -
-              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
-              format: full_html
+  depends:
+    923ecd78-00ff-47f9-a017-012b781d6bab: media
 translations:
   fi:
     status:
@@ -87,8 +31,9 @@ translations:
         value: true
     path:
       -
-        alias: ''
+        alias: /esimerkkisivu
         langcode: fi
+        pathauto: 1
     content_translation_source:
       -
         value: en
@@ -116,14 +61,14 @@ translations:
                 value: {  }
             field_text:
               -
-                value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+                value: "<h2>Tason kaksi otsikko</h2>\r\n\r\n<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<h3>Tason kolme otsikko</h3>\r\n\r\n<p><strong>Veli kulta, veikkoseni,</strong> kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n\r\n<ol>\r\n\t<li>Ensimmäinen numerolistassa</li>\r\n\t<li>Toinen numerolistassa</li>\r\n\t<li>Kolmas numerolistassa</li>\r\n</ol>\r\n"
                 format: full_html
       -
         entity:
           _meta:
             version: '1.0'
             entity_type: paragraph
-            uuid: 6196b131-0d48-4e9f-a715-b91a29653553
+            uuid: 3f490cdd-8368-430a-8ea5-c338f2f047df
             bundle: text
             default_langcode: fi
           default:
@@ -132,11 +77,408 @@ translations:
                 value: true
             created:
               -
-                value: 1606157785
+                value: 1612258438
             behavior_settings:
               -
                 value: {  }
             field_text:
               -
-                value: 'Toinen teksti-paragraph, joka näkyy vain suomeksi.'
-                format: plain_text
+                value: "<p>Toinen teksti-paragraph, joka näkyy vain suomeksi. <a href=\"&lt;front&gt;\">Tässä sisällössä on myös kaikkea muuta.</a></p>\r\n\r\n<h4>Otsikko joka on tasoa neljä</h4>\r\n\r\n<ul>\r\n\t<li>Lista jossa on kohtia</li>\r\n\t<li>Toinen kohta listassa</li>\r\n\t<li>Kolmas kohta listassa</li>\r\n</ul>\r\n\r\n<p>Niit' ennen isoni lauloi kirvesvartta vuollessansa; niitä äitini opetti väätessänsä värttinätä, minun lasna lattialla eessä polven pyöriessä, maitopartana pahaisna, piimäsuuna pikkaraisna. Sampo ei puuttunut sanoja eikä Louhi luottehia: vanheni sanoihin sampo, katoi Louhi luottehisin, virsihin Vipunen kuoli, Lemminkäinen leikkilöihin.</p>\r\n"
+                format: full_html
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 3a9fb195-2bad-47d8-a1b6-98b4a1b345f5
+            bundle: list_of_links
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1612258054
+            behavior_settings:
+              -
+                value: {  }
+            field_list_of_links_design:
+              -
+                value: with-image
+            field_list_of_links_links:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: b3dd2b32-381d-46e4-b0e6-63a0c8d038ee
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612258054
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_image:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Esimerkkilinkki jossa on etusivu'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 3278b0a3-f1e3-4528-a567-0ef9b88689bd
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612258103
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Kuvallinen esimerkki josta puuttuu varsinainen kuva'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: e91a2ad0-ee64-4dda-9366-a6a400de2d7a
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612258189
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_image:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Kolmas esimerkkilinkki'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 83463e6f-ebb8-4a93-9b80-a18696b90e0e
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612258202
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_image:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Viimeinen esimerkki'
+                        options: {  }
+            field_list_of_links_title:
+              -
+                value: 'Kuvallinen linkkilista esimerkki'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 68b22c92-8fc1-43f0-ab8c-eb6a1fd5469e
+            bundle: list_of_links
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1612258956
+            behavior_settings:
+              -
+                value: {  }
+            field_list_of_links_design:
+              -
+                value: without-image
+            field_list_of_links_links:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: aa8eb04b-43ee-490b-bfd4-b2bc91ff679c
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612258956
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_desc:
+                      -
+                        value: 'Täältä löytyy etusivun sisältö'
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Linkki sivuston etusivulle'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: c7504ed8-4621-420b-a992-adcb12c412cd
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612259004
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_desc:
+                      -
+                        value: 'Kuvauskenttä on tässä'
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Esimerkki linkistä jossa on kuvas'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: dfa7066e-1188-4bed-aceb-756865f4f7a8
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612259032
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Kuvauskentän voi myös jättää tyhjäksi'
+                        options: {  }
+            field_list_of_links_title:
+              -
+                value: 'Linkkilista esimerkki jossa kuvaukset'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: fec33e80-42d3-4c74-bedd-d02ec27201e9
+            bundle: list_of_links
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1612259086
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_list_of_links_design:
+              -
+                value: without-image-desc
+            field_list_of_links_links:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 5936ddc5-ec45-4904-9e43-4406867278ce
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612259086
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Sisältää vain linkkejä'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 9f5dac4d-9204-4375-b9fa-ac8e347c2235
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612259103
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: 'Ei mitään muuta kuin linkkejä'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 3d3c2150-a746-46ae-9009-72eabab81517
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612259113
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_list_of_links_link:
+                      -
+                        uri: 'internal:/'
+                        title: Esimerkkilinkki
+                        options: {  }
+            field_list_of_links_title:
+              -
+                value: 'Yksinkertaisin linkkilista'
+    field_has_hero:
+      -
+        value: false
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Example page'
+  created:
+    -
+      value: 1606157739
+  promote:
+    -
+      value: true
+  sticky:
+    -
+      value: false
+  path:
+    -
+      alias: /example-page
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 83de5c57-731b-431d-a65d-768b7d581697
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1606157753
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+              format: full_html
+  field_has_hero:
+    -
+      value: false
