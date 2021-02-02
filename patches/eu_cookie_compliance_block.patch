@@ -1,0 +1,849 @@
+diff --git a/config/schema/cookie_category.schema.yml b/config/schema/cookie_category.schema.yml
+index 041bf25..c708f6f 100644
+--- a/config/schema/cookie_category.schema.yml
++++ b/config/schema/cookie_category.schema.yml
+@@ -11,7 +11,7 @@ eu_cookie_compliance.cookie_category.*:
+     uuid:
+       type: string
+     description:
+-      type: text
++      type: text_format
+       label: 'Description'
+     checkbox_default_state:
+       type: string
+diff --git a/eu_cookie_compliance.libraries.yml b/eu_cookie_compliance.libraries.yml
+index 639e371..7047fc7 100644
+--- a/eu_cookie_compliance.libraries.yml
++++ b/eu_cookie_compliance.libraries.yml
+@@ -29,3 +29,7 @@ admin:
+       css/eu_cookie_compliance_admin.css: {}
+   js:
+     js/eu_cookie_compliance_admin.js: {}
++eu_cookie_compliance_cookie_values:
++  version: 1.9
++  js:
++    js/eu_cookie_compliance_cookie_values.js: {}
+\ No newline at end of file
+diff --git a/eu_cookie_compliance.module b/eu_cookie_compliance.module
+index 2888e82..6be1309 100644
+--- a/eu_cookie_compliance.module
++++ b/eu_cookie_compliance.module
+@@ -343,7 +343,7 @@ function eu_cookie_compliance_build_data() {
+       $click_confirmation = FALSE;
+       $scroll_confirmation = FALSE;
+       if ($config->get('enable_save_preferences_button')) {
+-        $save_preferences_button_label = $config->get('save_preferences_button_label');
++        $save_preferences_button_label = t('Accept only essential cookies');
+         $primary_button_label = $config->get('accept_all_categories_button_label');
+       }
+       else {
+@@ -619,6 +619,7 @@ function _eu_cookie_compliance_extract_category_key_label_description($string) {
+ 
+     $categories[$key] = ['label' => $label, 'description' => $description];
+   }
++
+   return $categories;
+ }
+ 
+diff --git a/js/eu_cookie_compliance.js b/js/eu_cookie_compliance.js
+index 2a0e10c..783ea27 100644
+--- a/js/eu_cookie_compliance.js
++++ b/js/eu_cookie_compliance.js
+@@ -49,9 +49,11 @@
+           }
+         }
+ 
+-        // Otherwise, fallback to standard behavior which is to render the banner.
+         else {
+-          Drupal.eu_cookie_compliance.execute();
++          // If cookie form block is not on DOM, allow showing the popup
++          if (!$("#block-eucookiecomplianceblock")[0]) {
++            Drupal.eu_cookie_compliance.execute();
++          }
+         }
+         $(this).addClass('eu-cookie-compliance-status-' + Drupal.eu_cookie_compliance.getCurrentStatus());
+       });
+@@ -105,9 +107,9 @@
+       var closed = _euccCurrentStatus !== null && !versionChanged;
+       // Only worried about OPT_IN / GDPR method at present for the perm. settings tab.
+       if (_euccCurrentStatus == 0 && drupalSettings.eu_cookie_compliance.settings_tab_enabled && drupalSettings.eu_cookie_compliance.method === 'opt_in' && !versionChanged) {
+-         Drupal.eu_cookie_compliance.createPopup(drupalSettings.eu_cookie_compliance.popup_html_info, (_euccCurrentStatus !== null));
+-         $('.eu-cookie-withdraw-tab').click(Drupal.eu_cookie_compliance.toggleWithdrawBanner);
+-         Drupal.eu_cookie_compliance.attachAgreeEvents();
++        Drupal.eu_cookie_compliance.createPopup(drupalSettings.eu_cookie_compliance.popup_html_info, (_euccCurrentStatus !== null));
++        $('.eu-cookie-withdraw-tab').click(Drupal.eu_cookie_compliance.toggleWithdrawBanner);
++        Drupal.eu_cookie_compliance.attachAgreeEvents();
+       }
+       else if ((_euccCurrentStatus === 0 && drupalSettings.eu_cookie_compliance.method === 'default') || _euccCurrentStatus === null || (_euccCurrentStatus !== 1 && drupalSettings.eu_cookie_compliance.withdraw_enabled && drupalSettings.eu_cookie_compliance.withdraw_button_on_info_popup) || (_euccCurrentStatus !== 1 && versionChanged)) {
+         if (drupalSettings.eu_cookie_compliance.withdraw_enabled || !drupalSettings.eu_cookie_compliance.disagree_do_not_show_popup || _euccCurrentStatus === null) {
+@@ -171,7 +173,7 @@
+ 
+     if (!drupalSettings.eu_cookie_compliance.popup_use_bare_css) {
+       $banner.height(drupalSettings.eu_cookie_compliance.popup_height)
+-          .width(drupalSettings.eu_cookie_compliance.popup_width);
++        .width(drupalSettings.eu_cookie_compliance.popup_width);
+     }
+     $html.hide();
+     var height = 0;
+@@ -180,8 +182,8 @@
+       height = $html.outerHeight();
+ 
+       $html.show()
+-          .addClass('sliding-popup-top')
+-          .addClass('clearfix')
++        .addClass('sliding-popup-top')
++        .addClass('clearfix')
+         .css({ top: !drupalSettings.eu_cookie_compliance.fixed_top_position ? -(parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('padding-top')) + parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('margin-top')) + height) : -1 * height });
+       // For some reason, the tab outerHeight is -10 if we don't use a timeout
+       // function to reveal the tab.
+@@ -204,8 +206,8 @@
+       }
+       height = $html.outerHeight();
+       $html.show()
+-          .addClass('sliding-popup-bottom')
+-          .css({ bottom: -1 * height });
++        .addClass('sliding-popup-bottom')
++        .css({ bottom: -1 * height });
+       // For some reason, the tab outerHeight is -10 if we don't use a timeout
+       // function to reveal the tab.
+       setTimeout(function () {
+@@ -300,7 +302,7 @@
+     popup.attr('id', 'sliding-popup');
+     if (!drupalSettings.eu_cookie_compliance.popup_use_bare_css) {
+       popup.height(drupalSettings.eu_cookie_compliance.popup_height)
+-          .width(drupalSettings.eu_cookie_compliance.popup_width);
++        .width(drupalSettings.eu_cookie_compliance.popup_width);
+     }
+ 
+     popup.hide();
+@@ -312,7 +314,7 @@
+         .addClass('sliding-popup-top clearfix')
+         .css({ top: -1 * height });
+       if (closed !== true) {
+-        popup.animate({top: 0}, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
++        popup.animate({ top: 0 }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
+           popup.trigger('eu_cookie_compliance_popup_open');
+           $('body').addClass('eu-cookie-compliance-popup-open');
+           Drupal.eu_cookie_compliance.positionTab();
+@@ -335,9 +337,9 @@
+       height = popup.outerHeight();
+       popup.show()
+         .addClass('sliding-popup-bottom')
+-        .css({bottom: -1 * height});
++        .css({ bottom: -1 * height });
+       if (closed !== true) {
+-        popup.animate({bottom: 0}, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
++        popup.animate({ bottom: 0 }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
+           popup.trigger('eu_cookie_compliance_popup_open');
+           $('body').addClass('eu-cookie-compliance-popup-open');
+         });
+@@ -350,11 +352,11 @@
+     var scrollConfirms = drupalSettings.eu_cookie_compliance.popup_scrolling_confirmation;
+ 
+     if (drupalSettings.eu_cookie_compliance.method === 'categories' && drupalSettings.eu_cookie_compliance.enable_save_preferences_button) {
+-        // The agree button becomes an agree to all categories button when the 'save preferences' button is present.
+-        $('.agree-button').click(Drupal.eu_cookie_compliance.acceptAllAction);
++      // The agree button becomes an agree to all categories button when the 'save preferences' button is present.
++      $('.agree-button').click(Drupal.eu_cookie_compliance.acceptAllAction);
+     }
+     else {
+-        $('.agree-button').click(Drupal.eu_cookie_compliance.acceptAction);
++      $('.agree-button').click(Drupal.eu_cookie_compliance.acceptAction);
+     }
+     $('.decline-button').click(Drupal.eu_cookie_compliance.declineAction);
+ 
+@@ -388,8 +390,8 @@
+     var popupHideAgreed = drupalSettings.eu_cookie_compliance.popup_hide_agreed;
+     var clickingConfirms = drupalSettings.eu_cookie_compliance.popup_clicking_confirmation;
+     $('.hide-popup-button').click(function () {
+-          Drupal.eu_cookie_compliance.changeStatus(2);
+-        }
++      Drupal.eu_cookie_compliance.changeStatus(2);
++    }
+     );
+     if (clickingConfirms) {
+       $('a, input[type=submit], button[type=submit]').unbind('click.euCookieCompliance');
+@@ -427,9 +429,11 @@
+ 
+     if (drupalSettings.eu_cookie_compliance.method === 'categories') {
+       // Select Checked categories.
+-      var categories = $("#eu-cookie-compliance-categories input:checkbox:checked").map(function () {
+-        return $(this).val();
++
++      var categories = $('#eu-cookie-compliance-categories input[type="hidden"]').map(function (i, e) {
++        return e.value;
+       }).get();
++
+       Drupal.eu_cookie_compliance.setAcceptedCategories(categories);
+       // Load scripts for all categories. If no categories selected, none
+       // will be loaded.
+@@ -457,8 +461,8 @@
+   }
+ 
+   Drupal.eu_cookie_compliance.savePreferencesAction = function () {
+-    var categories = $("#eu-cookie-compliance-categories input:checkbox:checked").map(function () {
+-      return $(this).val();
++    var categories = $('#eu-cookie-compliance-categories input[type="hidden"]').map(function (i, e) {
++      return e.value;
+     }).get();
+     var agreedEnabled = drupalSettings.eu_cookie_compliance.popup_agreed_enabled;
+     var nextStatus = 1;
+@@ -497,11 +501,11 @@
+     var popup = $('#sliding-popup');
+     if (popup.hasClass('sliding-popup-top')) {
+       if (drupalSettings.eu_cookie_compliance.settings_tab_enabled) {
+-        popup.animate({top: !drupalSettings.eu_cookie_compliance.fixed_top_position ? -(parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('padding-top')) + parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('margin-top')) + popup.outerHeight()) : popup.outerHeight() * -1}, drupalSettings.eu_cookie_compliance.popup_delay, null).trigger('eu_cookie_compliance_popup_close');
++        popup.animate({ top: !drupalSettings.eu_cookie_compliance.fixed_top_position ? -(parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('padding-top')) + parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('margin-top')) + popup.outerHeight()) : popup.outerHeight() * -1 }, drupalSettings.eu_cookie_compliance.popup_delay, null).trigger('eu_cookie_compliance_popup_close');
+         $('.eu-cookie-withdraw-tab').click(Drupal.eu_cookie_compliance.toggleWithdrawBanner);
+       }
+       else {
+-        popup.animate({top: !drupalSettings.eu_cookie_compliance.fixed_top_position ? -(parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('padding-top')) + parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('margin-top')) + popup.outerHeight()) : popup.outerHeight() * -1}, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
++        popup.animate({ top: !drupalSettings.eu_cookie_compliance.fixed_top_position ? -(parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('padding-top')) + parseInt($(drupalSettings.eu_cookie_compliance.containing_element).css('margin-top')) + popup.outerHeight()) : popup.outerHeight() * -1 }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
+           popup.hide();
+         }).trigger('eu_cookie_compliance_popup_close');
+         $('body').removeClass('eu-cookie-compliance-popup-open');
+@@ -579,7 +583,7 @@
+ 
+   Drupal.eu_cookie_compliance.setPreferenceCheckboxes = function (categories) {
+     for (var i in categories) {
+-      $("#eu-cookie-compliance-categories input:checkbox[value='" + categories[i] + "']").prop("checked", true);
++      $("#eu-cookie-compliance-categories input:hidden[id='cookie-category-" + categories[i] + "']").val(categories[i]);
+     }
+   }
+ 
+@@ -753,7 +757,7 @@
+     Drupal.eu_cookie_compliance.setVersion();
+ 
+     // Store consent if applicable.
+-    if (drupalSettings.eu_cookie_compliance.store_consent && ((status === 1 && drupalSettings.eu_cookie_compliance.popup_agreed_enabled) || (status === 2  && !drupalSettings.eu_cookie_compliance.popup_agreed_enabled))) {
++    if (drupalSettings.eu_cookie_compliance.store_consent && ((status === 1 && drupalSettings.eu_cookie_compliance.popup_agreed_enabled) || (status === 2 && !drupalSettings.eu_cookie_compliance.popup_agreed_enabled))) {
+       var url = drupalSettings.path.baseUrl + drupalSettings.path.pathPrefix + 'eu-cookie-compliance/store_consent/banner';
+       $.post(url, {}, function (data) { });
+     }
+@@ -923,7 +927,7 @@
+   var euCookieComplianceHasLoadedScriptsForCategory = [];
+   $(function () {
+     if (Drupal.eu_cookie_compliance.hasAgreed()
+-        || (_euccCurrentStatus === null && drupalSettings.eu_cookie_compliance.method !== 'opt_in' && drupalSettings.eu_cookie_compliance.method !== 'categories')
++      || (_euccCurrentStatus === null && drupalSettings.eu_cookie_compliance.method !== 'opt_in' && drupalSettings.eu_cookie_compliance.method !== 'categories')
+     ) {
+       if (typeof euCookieComplianceLoadScripts === "function") {
+         euCookieComplianceLoadScripts();
+@@ -938,7 +942,8 @@
+ 
+   Drupal.eu_cookie_compliance.BlockCookies = function () {
+     var cookieStatus = Drupal.eu_cookie_compliance.getCookieStatus();
+-    if (cookieStatus === 1 || cookieStatus === 2) {
++    if ((cookieStatus === 1 || cookieStatus === 2)
++      && drupalSettings.eu_cookie_compliance.method !== 'categories') {
+       // Stop blocking the cookies if it's already been agreed to (e.g. in a different tab).
+       if (typeof euCookieComplianceBlockCookies !== 'undefined') {
+         clearInterval(euCookieComplianceBlockCookies);
+@@ -984,7 +989,7 @@
+   // Block cookies when the user hasn't agreed.
+   if (drupalSettings.eu_cookie_compliance.automatic_cookies_removal &&
+     (
+-      (drupalSettings.eu_cookie_compliance.method === 'opt_in' && (_euccCurrentStatus === null  || !Drupal.eu_cookie_compliance.hasAgreed()))
++      (drupalSettings.eu_cookie_compliance.method === 'opt_in' && (_euccCurrentStatus === null || !Drupal.eu_cookie_compliance.hasAgreed()))
+       || (drupalSettings.eu_cookie_compliance.method === 'opt_out' && !Drupal.eu_cookie_compliance.hasAgreed() && _euccCurrentStatus !== null)
+       || (drupalSettings.eu_cookie_compliance.method === 'categories')
+     )) {
+@@ -1001,8 +1006,8 @@
+   var filterQueue = function (forEventName) {
+     var handlers = [];
+     if (typeof Drupal.eu_cookie_compliance !== 'undefined' &&
+-        typeof Drupal.eu_cookie_compliance.queue !== 'undefined' &&
+-        Drupal.eu_cookie_compliance.queue.length) {
++      typeof Drupal.eu_cookie_compliance.queue !== 'undefined' &&
++      Drupal.eu_cookie_compliance.queue.length) {
+       // Loop over the list of arguments (objects) pushed into the queue.
+       for (var i = 0; i < Drupal.eu_cookie_compliance.queue.length; i++) {
+         if (Drupal.eu_cookie_compliance.queue[i].length) {
+@@ -1056,11 +1061,11 @@
+     };
+     prototype.unsubscribe = function (fn) {
+       this.handlers = this.handlers.filter(
+-          function (item) {
+-            if (item !== fn) {
+-              return item;
+-            }
++        function (item) {
++          if (item !== fn) {
++            return item;
+           }
++        }
+       );
+     };
+     prototype.fire = function (o, thisObj) {
+@@ -1088,11 +1093,11 @@
+     };
+     prototype.unsubscribe = function (fn) {
+       this.handlers = this.handlers.filter(
+-          function (item) {
+-            if (item !== fn) {
+-              return item;
+-            }
++        function (item) {
++          if (item !== fn) {
++            return item;
+           }
++        }
+       );
+     };
+     prototype.fire = function (o, thisObj) {
+@@ -1120,11 +1125,11 @@
+     };
+     prototype.unsubscribe = function (fn) {
+       this.handlers = this.handlers.filter(
+-          function (item) {
+-            if (item !== fn) {
+-              return item;
+-            }
++        function (item) {
++          if (item !== fn) {
++            return item;
+           }
++        }
+       );
+     };
+     prototype.fire = function (o, thisObj) {
+@@ -1152,11 +1157,11 @@
+     };
+     prototype.unsubscribe = function (fn) {
+       this.handlers = this.handlers.filter(
+-          function (item) {
+-            if (item !== fn) {
+-              return item;
+-            }
++        function (item) {
++          if (item !== fn) {
++            return item;
+           }
++        }
+       );
+     };
+     prototype.fire = function (o, thisObj) {
+@@ -1184,11 +1189,11 @@
+     };
+     prototype.unsubscribe = function (fn) {
+       this.handlers = this.handlers.filter(
+-          function (item) {
+-            if (item !== fn) {
+-              return item;
+-            }
++        function (item) {
++          if (item !== fn) {
++            return item;
+           }
++        }
+       );
+     };
+     prototype.fire = function (o, thisObj) {
+@@ -1216,11 +1221,11 @@
+     };
+     prototype.unsubscribe = function (fn) {
+       this.handlers = this.handlers.filter(
+-          function (item) {
+-            if (item !== fn) {
+-              return item;
+-            }
++        function (item) {
++          if (item !== fn) {
++            return item;
+           }
++        }
+       );
+     };
+     prototype.fire = function (o, thisObj) {
+@@ -1248,11 +1253,11 @@
+     };
+     prototype.unsubscribe = function (fn) {
+       this.handlers = this.handlers.filter(
+-          function (item) {
+-            if (item !== fn) {
+-              return item;
+-            }
++        function (item) {
++          if (item !== fn) {
++            return item;
+           }
++        }
+       );
+     };
+     prototype.fire = function (o, thisObj) {
+@@ -1280,11 +1285,11 @@
+     };
+     prototype.unsubscribe = function (fn) {
+       this.handlers = this.handlers.filter(
+-          function (item) {
+-            if (item !== fn) {
+-              return item;
+-            }
++        function (item) {
++          if (item !== fn) {
++            return item;
+           }
++        }
+       );
+     };
+     prototype.fire = function (o, thisObj) {
+diff --git a/js/eu_cookie_compliance_cookie_values.js b/js/eu_cookie_compliance_cookie_values.js
+new file mode 100644
+index 0000000..29bd5fd
+--- /dev/null
++++ b/js/eu_cookie_compliance_cookie_values.js
+@@ -0,0 +1,64 @@
++/**
++ * @file
++ * eu_cookie_compliance_cookie_values.js
++ *
++ * Get cookie values.
++ */
++
++(function ($, Drupal) {
++
++  'use strict';
++
++  Drupal.behaviors.euCookieComplianceCookieValues = {
++
++    attach: function (context, settings) {
++
++      $('body').once('eu-cookie-compliance-block').each(function () {
++
++        var cookieName = settings['eu_cookie_compliance_cookie_values']['cookieName'] === '' ? 'cookie-agreed' : settings['eu_cookie_compliance_cookie_values']['cookieName'];
++        var categories = settings['eu_cookie_compliance_cookie_values']['cookieCategories'];
++        var values = $.cookie(cookieName + '-categories');
++
++        var selectedCategories = undefined;
++        if (values) {
++          try {
++            selectedCategories = JSON.parse(values);
++          }
++          catch (e) {
++
++          }
++        }
++
++        // No suitable cookie categories set.
++        if (selectedCategories === undefined || selectedCategories === '[]') {
++          $('#edit-accept-all', '.eu-cookie-compliance-block-form .buttons').parent().removeClass('hidden');
++        }
++
++        var selectionCount = 0;
++
++        // Get required categories and reflect those on the form
++        var requiredCategories = [];
++        for (var _categoryName in drupalSettings.eu_cookie_compliance.cookie_categories_details) {
++          var _category = drupalSettings.eu_cookie_compliance.cookie_categories_details[_categoryName];
++          if (_category.checkbox_default_state === 'required' && $.inArray(_category.id, requiredCategories) === -1) {
++            $('#edit-categories-' + _category.id.replace("_", "-"), '#edit-categories').prop("checked", true).prop("disabled", true);
++            selectionCount++;
++          }
++        }
++
++        $.each(selectedCategories, function () {
++          $('#edit-categories-' + this.replace("_", "-"), '#edit-categories').prop("checked", true);
++          selectionCount++;
++        });
++
++        if (selectionCount > 0) {
++          $('#edit-withdraw', '.eu-cookie-compliance-block-form .buttons').parent().removeClass('hidden');
++        }
++
++        if (selectionCount < categories.length) {
++          $('#edit-accept-all', '.eu-cookie-compliance-block-form .buttons').parent().removeClass('hidden');
++        }
++      });
++    }
++  }
++})(jQuery, Drupal);
+diff --git a/src/CookieCategoryListBuilder.php b/src/CookieCategoryListBuilder.php
+index fa6760f..060eaa0 100644
+--- a/src/CookieCategoryListBuilder.php
++++ b/src/CookieCategoryListBuilder.php
+@@ -46,7 +46,7 @@ class CookieCategoryListBuilder extends DraggableListBuilder {
+     $row['sorter'] = ['#markup' => ''];
+     $row['label'] = $entity->label();
+     $row['id'] = ['#markup' => $entity->id()];
+-    $row['description'] = ['#markup' => $entity->get('description')];
++    $row['description'] = ['#markup' => $entity->get('description')['value']];
+     $row['checkbox_default_state'] = ['#markup' => isset($mapping[$entity->get('checkbox_default_state')]) ? $mapping[$entity->get('checkbox_default_state')] : $mapping['unchecked']];
+ 
+     return $row + parent::buildRow($entity);
+diff --git a/src/Form/CookieCategoryForm.php b/src/Form/CookieCategoryForm.php
+index c02a770..aa9b375 100644
+--- a/src/Form/CookieCategoryForm.php
++++ b/src/Form/CookieCategoryForm.php
+@@ -66,9 +66,10 @@ class CookieCategoryForm extends EntityForm {
+       '#changeable_state' => !$cookie_category->isNew(),
+     ];
+     $form['description'] = [
+-      '#type' => 'textarea',
++      '#type' => 'text_format',
++      '#format' => 'full_html',
+       '#title' => $this->t('Description'),
+-      '#default_value' => $cookie_category->get('description'),
++      '#default_value' => $cookie_category->get('description')['value'],
+       '#description' => $this->t("The description that will be shown to the website visitor."),
+       '#required' => FALSE,
+     ];
+@@ -91,6 +92,7 @@ class CookieCategoryForm extends EntityForm {
+   public function save(array $form, FormStateInterface $form_state) {
+     $cookie_category = $this->entity;
+     $status = $cookie_category->save();
++    $status = 0;
+ 
+     switch ($status) {
+       case SAVED_NEW:
+diff --git a/src/Form/EuCookieComplianceBlockForm.php b/src/Form/EuCookieComplianceBlockForm.php
+new file mode 100644
+index 0000000..f6603db
+--- /dev/null
++++ b/src/Form/EuCookieComplianceBlockForm.php
+@@ -0,0 +1,217 @@
++<?php
++
++namespace Drupal\eu_cookie_compliance\Form;
++
++use Drupal\Component\Serialization\Json;
++use Drupal\Core\Form\FormBase;
++use Drupal\Core\Form\FormStateInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\Core\StringTranslation\StringTranslationTrait;
++use Drupal\Core\StringTranslation\TranslationInterface;
++
++/**
++ * Generate the form displayed inside the EuCookieComplianceBlock.
++ */
++class EuCookieComplianceBlockForm extends FormBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getFormId() {
++    return 'eu_cookie_compliance_block_form';
++  }
++
++  /**
++   * Eu cookie compliance settings.
++   *
++   * @var \Drupal\Core\Config\ImmutableConfig
++   */
++  protected static $config;
++
++  /**
++   * Eu cookie compliance cookie.
++   *
++   * @var string
++   */
++  protected static $cookieName;
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container) {
++    self::$config = \Drupal::config('eu_cookie_compliance.settings');
++    self::$cookieName = !empty(self::$config->get('cookie_name')) ? self::$config->get('cookie_name') : 'cookie-agreed';
++    return new static();
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function buildForm(array $form, FormStateInterface $form_state) {
++    $config = self::$config;
++    $current_cookie_value = isset($_COOKIE[self::$cookieName]) ? $_COOKIE[self::$cookieName] : null;
++
++    if ($config->get('method') !== 'categories') {
++      return;
++    }
++
++    $eu_cookie_categories = \Drupal::entityTypeManager()->getStorage('cookie_category')->getCookieCategories();
++
++    $cookie_categories = [];
++    $cookie_categories_descriptions = [];
++    foreach ($eu_cookie_categories as $key => $value) {
++      $cookie_categories[$key] = $value['label'];
++      $cookie_categories_descriptions[$key] = ['#description' => $value['description']['value']];
++    }
++
++    // If user has already chosen something, show helpful information
++    if ($current_cookie_value !== null) {
++      if ($current_cookie_value == 0) {
++        $form['#markup'] = $this->t('<p>Your current setting is to <strong>only allow essential cookies, that are required for the site to function correctly.</strong> Submit the form below to make changes.</p>');
++      } else {
++        $form['#markup'] = $this->t('<p>Your current cookie settings are below. Submit the form to make changes.</p>');
++      }
++    } else {
++      $form['#markup'] = $this->t('<p><strong>You have not saved any cookie preferences.</strong> By default only essential cookies are saved. See details below.</p>');
++    }
++
++    // todo: hide the js popup if form block is rendered
++
++    $form['categories'] = [
++      '#type' => 'checkboxes',
++      '#options' => $cookie_categories,
++      '#attributes' => [
++        'class' => ['categories'],
++      ],
++    ];
++    $form['categories'] += $cookie_categories_descriptions;
++
++    if (self::$config->get('fix_first_cookie_category')) {
++      // Get the first key.
++      $key = '';
++      foreach ($cookie_categories as $key => $unused) {
++        break;
++      }
++      $form['categories'][$key] += [
++        '#attributes' => [
++          'checked' => TRUE,
++          'disabled' => TRUE,
++        ],
++      ];
++    }
++
++    $form['buttons'] = [
++      'save' => [
++        '#type' => 'submit',
++        '#value' => $config->get('save_preferences_button_label'),
++        '#attributes' => [
++          'class' => ['save'],
++        ],
++      ],
++      'accept_all' => [
++        '#type' => 'submit',
++        '#value' => $config->get('accept_all_categories_button_label'),
++        '#submit' => ['::submitAcceptAllHandler'],
++        '#attributes' => [
++          'class' => ['accept'],
++        ],
++        '#prefix' => '<span class="hidden">',
++        '#suffix' => '</span>',
++      ],
++      'withdraw' => [
++        '#type' => 'submit',
++        '#value' => $config->get('withdraw_action_button_label'),
++        '#submit' => ['::submitWithdrawHandler'],
++        '#attributes' => [
++          'class' => ['withdraw'],
++        ],
++        '#prefix' => '<span class="hidden">',
++        '#suffix' => '</span>',
++      ],
++      '#type' => 'container',
++      '#wrapper' => 'div',
++      '#attributes' => [
++        'class' => ['buttons'],
++      ],
++    ];
++
++    $form['#attached'] = [
++      'library' => [
++        'eu_cookie_compliance/eu_cookie_compliance_cookie_values',
++      ],
++      'drupalSettings' => [
++        'eu_cookie_compliance_cookie_values' => [
++          'cookieName' => self::$cookieName,
++          'cookieCategories' => array_keys($cookie_categories),
++        ],
++      ],
++    ];
++
++    return $form;
++  }
++
++  /**
++   * Default submission handler for saving selected categories.
++   */
++  public function submitForm(array &$form, FormStateInterface $form_state) {
++    $cookie_lifetime = self::$config->get('cookie_lifetime');
++    $values = array_reverse($form_state->getValue('categories'));
++
++    $selected = [];
++    foreach ($values as $key => $value) {
++      if ($value) {
++        $selected[] = $key;
++      }
++    }
++    $values = $this->stringify($selected);
++
++    $time = \Drupal::time()->getRequestTime() + ($cookie_lifetime * 24 * 60 * 60);
++    setrawcookie(self::$cookieName, '2', $time, '/');
++    setrawcookie(self::$cookieName . '-categories', $values, $time, '/');
++  }
++
++  /**
++   * Custom submission handler for accepting all categories.
++   *
++   * @param array $form
++   *   An associative array containing the structure of the form.
++   * @param \Drupal\Core\Form\FormStateInterface $form_state
++   *   The current state of the form.
++   */
++  public function submitAcceptAllHandler(array &$form, FormStateInterface $form_state) {
++    $cookie_lifetime = self::$config->get('cookie_lifetime');
++    $values = $this->stringify(array_keys($form_state->getValue('categories')));
++    $time = \Drupal::time()->getRequestTime() + ($cookie_lifetime * 24 * 60 * 60);
++    setrawcookie(self::$cookieName, '2', $time, '/');
++    setrawcookie(self::$cookieName . '-categories', $values, $time, '/');
++  }
++
++  /**
++   * Custom submission handler for withdrawing consent for all categories.
++   */
++  public function submitWithdrawHandler(array &$form, FormStateInterface $form_state) {
++    $first_read_only = !empty(self::$config->get('fix_first_cookie_category')) ? self::$config->get('fix_first_cookie_category') : FALSE;
++    if (!$first_read_only) {
++      setrawcookie(self::$cookieName, '', \Drupal::time()->getRequestTime() - 3600, '/');
++    }
++    setrawcookie(self::$cookieName . '-categories', '', \Drupal::time()->getRequestTime() - 3600, '/');
++  }
++
++  /**
++   * Replace reserved characters in json.
++   *
++   * @var array
++   *
++   * @return string
++   *   'Sanitized' string
++   */
++  private function stringify($values) {
++    $json = JSON::encode($values);
++    $json = str_replace('[', '%5B', $json);
++    $json = str_replace(']', '%5D', $json);
++    $json = str_replace('"', '%22', $json);
++    $json = str_replace(',', '%2C', $json);
++    return $json;
++  }
++
++}
+diff --git a/src/Plugin/Block/EuCookieComplianceBlock.php b/src/Plugin/Block/EuCookieComplianceBlock.php
+new file mode 100644
+index 0000000..8db047b
+--- /dev/null
++++ b/src/Plugin/Block/EuCookieComplianceBlock.php
+@@ -0,0 +1,84 @@
++<?php
++
++namespace Drupal\eu_cookie_compliance\Plugin\Block;
++
++use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Block\BlockBase;
++use Drupal\eu_cookie_compliance\Form\EuCookieComplianceBlockForm;
++
++/**
++ * EU Cookie Compliance Block.
++ *
++ * @Block(
++ *     id = "eu_cookie_compliance_block",
++ *     admin_label = @Translation("EU Cookie Compliance Block"),
++ * )
++ */
++class EuCookieComplianceBlock extends BlockBase {
++
++  /**
++   * Return block settings.
++   */
++  private function getBlockSettings() {
++    $config = $this->getConfiguration();
++    return !empty($config[$this->getBaseId() . '_settings']) ? $config[$this->getBaseId() . '_settings'] : NULL;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function build() {
++
++    $form = \Drupal::formBuilder()->getForm(EuCookieComplianceBlockForm::class);
++
++    if (!isset($form['categories'])) {
++      return;
++    }
++
++    $build = [];
++
++    $settings = $this->getBlockSettings();
++
++    $value = !empty($settings['description']['value']) ? $settings['description']['value'] : NULL;
++    $format = !empty($settings['description']['format']) ? $settings['description']['format'] : NULL;
++
++    if ($value && $format) {
++
++      $build['description'] = [
++        '#type' => 'processed_text',
++        '#format' => $format,
++        '#text' => $value,
++      ];
++    }
++    $build['form'] = $form;
++
++    return $build;
++
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function blockForm($form, FormStateInterface $form_state) {
++
++    $settings = $this->getBlockSettings();
++
++    $form[$this->getBaseId() . '_settings']['description'] = [
++      '#type' => 'text_format',
++      '#title' => $this->t('Description'),
++      '#default_value' => !empty($settings['description']['value']) ? $settings['description']['value'] : NULL,
++      '#format' => !empty($settings['description']['format']) ? $settings['description']['format'] : NULL,
++      '#description' => $this->t('Provide some information about the form shown and EU Cookie Compliance Categories.'),
++    ];
++    return $form;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function blockSubmit($form, FormStateInterface $form_state) {
++    $settingsKey = $this->getBaseId() . '_settings';
++    $this->configuration[$settingsKey] = $form_state->getValue($settingsKey);
++  }
++
++}
+diff --git a/templates/eu_cookie_compliance_popup_info.html.twig b/templates/eu_cookie_compliance_popup_info.html.twig
+index 196f6cf..a9eca9a 100644
+--- a/templates/eu_cookie_compliance_popup_info.html.twig
++++ b/templates/eu_cookie_compliance_popup_info.html.twig
+@@ -52,24 +52,20 @@
+ 
+     {% if cookie_categories %}
+       <div id="eu-cookie-compliance-categories" class="eu-cookie-compliance-categories">
++
++        {# Hide categories by using hidden fields in place of checkboxes on popup #}
+         {% for key, category in cookie_categories %}
+-          <div class="eu-cookie-compliance-category">
+-            <div>
+-              <input type="checkbox" name="cookie-categories" id="cookie-category-{{ key }}"
+-                     value="{{ key }}"
+-                     {% if category.checkbox_default_state in ['checked', 'required'] %} checked {% endif %}
+-                     {% if category.checkbox_default_state == 'required' %} disabled {% endif %} >
+-              <label for="cookie-category-{{ key }}">{{ category.label }}</label>
+-            </div>
+-            {% if category.description %}
+-              <div class="eu-cookie-compliance-category-description">{{ category.description }}</div>
+-            {% endif %}
+-          </div>
++          {% if category.checkbox_default_state in ['checked', 'required'] %}
++            <input type="hidden" name="cookie-categories[]" id="cookie-category-{{ key }}" value="{{ key }}">
++          {% else %}
++            <input type="hidden" name="cookie-categories[]" id="cookie-category-{{ key }}" value="">
++          {% endif %}
++          {# <label for="cookie-category-{{ key }}">{{ category.label }}</label> #}
+         {% endfor %}
++
+         {% if save_preferences_button_label %}
+           <div class="eu-cookie-compliance-categories-buttons">
+-            <button type="button"
+-                    class="eu-cookie-compliance-save-preferences-button">{{ save_preferences_button_label }}</button>
++            <button type="button" class="eu-cookie-compliance-save-preferences-button">{{ save_preferences_button_label }}</button>
+           </div>
+         {% endif %}
+       </div>
