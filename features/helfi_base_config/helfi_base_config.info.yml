@@ -21,6 +21,7 @@ dependencies:
   - helfi_example_content
   - helfi_languages
   - helfi_media
+  - helfi_gdpr_compliance
   - menu_block_current_language
   - menu_link_content
   - node
