@@ -20,4 +20,4 @@ effects:
     id: image_style_quality
     weight: 2
     data:
-      quality: 35
+      quality: 65
