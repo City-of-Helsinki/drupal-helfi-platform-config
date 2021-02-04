@@ -68,6 +68,36 @@ translations:
           _meta:
             version: '1.0'
             entity_type: paragraph
+            uuid: 980186cc-a55d-468c-982d-729e6040a04b
+            bundle: image
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1612459134
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_image:
+              -
+                entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+            field_image_caption:
+              -
+                value: 'Testikuvan testikuvateksti'
+            field_original_aspect_ratio:
+              -
+                value: false
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
             uuid: 3f490cdd-8368-430a-8ea5-c338f2f047df
             bundle: text
             default_langcode: fi
@@ -329,9 +359,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_list_of_links_design:
               -
                 value: without-image-desc
@@ -354,9 +381,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -380,9 +404,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -406,9 +427,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
