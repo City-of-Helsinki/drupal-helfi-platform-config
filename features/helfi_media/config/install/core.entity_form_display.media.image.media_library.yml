@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_form_mode.media.media_library
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_photographer
     - image.style.media_library
     - media.type.image
   module:
@@ -14,7 +15,7 @@ bundle: image
 mode: media_library
 content:
   field_media_image:
-    weight: 5
+    weight: 1
     settings:
       preview_image_style: media_library
       progress_indicator: throbber
@@ -23,6 +24,14 @@ content:
     third_party_settings: {  }
     type: image_focal_point
     region: content
+  field_photographer:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   name:
     type: string_textfield
     settings:
@@ -32,7 +41,7 @@ content:
     third_party_settings: {  }
     region: content
   translation:
-    weight: 10
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
