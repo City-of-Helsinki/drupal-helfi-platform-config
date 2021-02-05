@@ -2,29 +2,37 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.media.image
     - field.field.media.image.field_media_image
     - field.field.media.image.field_photographer
-    - image.style.large
     - media.type.image
+    - responsive_image.styles.original
   module:
-    - image
-id: media.image.default
+    - responsive_image
+id: media.image.image
 targetEntityType: media
 bundle: image
-mode: default
+mode: image
 content:
   field_media_image:
     label: hidden
     weight: 0
     settings:
-      image_style: large
+      responsive_image_style: original
       image_link: ''
     third_party_settings: {  }
-    type: image
+    type: responsive_image
     region: content
+  field_photographer:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
 hidden:
   created: true
-  field_photographer: true
   langcode: true
   name: true
   thumbnail: true

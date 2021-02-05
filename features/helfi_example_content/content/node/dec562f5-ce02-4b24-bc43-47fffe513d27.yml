@@ -5,6 +5,7 @@ _meta:
   bundle: article
   default_langcode: fi
   depends:
+    923ecd78-00ff-47f9-a017-012b781d6bab: media
     a917d861-e1f0-4582-8e1d-859ba4b418f2: taxonomy_term
     4c0860df-950c-49b0-a7cc-f733301ce8f2: taxonomy_term
     6f03bed3-6197-450c-8147-1441b5fce94c: taxonomy_term
@@ -91,13 +92,40 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<h2>Munkkivuori</h2>\r\n\r\n<p>Munkkivuori on arkkitehtuuriltaan ja aluesuunnittelultaan yksi parhaita 50-luvun helsinkiläislähiöitä. Rakennukset on sijoitettu maastoon esimerkillisesti. Täällä todella aistii lähiösuunnittelun kultaisen vuosikymmenen. Autoliikenne on järjestetty ulkosyötteisesti Ulvilantieltä, joka kiertää koko alueen. Lamellitalojen seassa on paljon 8-kerroksisia pistetaloja, Ulvilantie 19a:ssa kolme 10-kerroksista tornia. Jokaisen talon vieressä on metsäistä puistoa.</p>\r\n\r\n<p><span class=\"highlighted\">Alueen sijainnilla on myös merkitystä. Munkkivuori on lähellä keskustaa</span></p>\r\n\r\n<p>Alueen sijainnilla on myös merkitystä. Munkkivuori on lähellä keskustaa, lähes suora jatke kantakaupungille. Talin golfkenttä, Niemenmäki ja Munkkiniemi ovat laadukkaita lähinaapureita.</p>\r\n"
               format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: fc1317a0-f91f-4155-92e6-e779abe82a4f
+          bundle: image
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1612459334
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_image_caption:
+            -
+              value: 'Kuva artikkelin tekstin joukossa.'
+          field_original_aspect_ratio:
+            -
+              value: false
     -
       entity:
         _meta:
@@ -116,9 +144,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<h2>Kuusisaari</h2>\r\n\r\n<p>Rakentamisen väljyys on iso plussa, samoin mereen laskeutuvat rantatontit. Tärkeimmät nähtävyydet ovat Didrichsenin ja Villa Gyllenbergin taidemuseot sekä Aarne Ervin ateljee Kuusiniementie 5:ssä. Kuusisaaren asukkaiden keskitulo on Helsingin toiseksi korkein Kaivopuiston jälkeen.</p>\r\n\r\n<div class=\"quote\">\r\n<p class=\"quote__text\">Kotimme oikea porraskivi on siinä paikassa, jossa kadulta tai tieltä astumme puutarhaan... Askel ryytimaasta huoneisiin olkoon paljon pienempi kuin kadulta tai maantieltä puutarhaan.</p>\r\n\r\n<footer class=\"quote__author\">Alvar Aalto</footer>\r\n</div>\r\n\r\n<p>Omakotitalojen ja lähetystöjen lisäksi saarelta löytyy tasakattoisia rivitaloja tiilijulkisivuilla, suuri osa 60- ja 70-luvuilta. Vaikka Kuusisaari on erittäin varakkaiden asuinalue, talot ovat suureksi osaksi suhteellisen vaatimatonta asuntotuotantoa.</p>\r\n"
@@ -141,9 +166,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_link_design:
             -
               value: primary

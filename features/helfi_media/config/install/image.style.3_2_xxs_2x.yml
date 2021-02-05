@@ -4,19 +4,19 @@ dependencies:
   module:
     - focal_point
     - image_style_quality
-name: 23_10_m_2x
-label: '2.3:1 M (2x)'
+name: 3_2_xxs_2x
+label: '3:2 XXS (2x)'
 effects:
-  e7da735e-aa35-463b-b99a-b61aba89a53f:
-    uuid: e7da735e-aa35-463b-b99a-b61aba89a53f
+  04ed67a0-ed4c-4b01-b5be-cee1205f62d8:
+    uuid: 04ed67a0-ed4c-4b01-b5be-cee1205f62d8
     id: focal_point_scale_and_crop
     weight: 1
     data:
-      width: 2048
-      height: 890
+      width: 640
+      height: 427
       crop_type: focal_point
-  a9ed654a-a81b-4bfb-8f0e-0ca3188de581:
-    uuid: a9ed654a-a81b-4bfb-8f0e-0ca3188de581
+  e7aa43d0-465e-4fd2-b3bd-c5cfa976bdd0:
+    uuid: e7aa43d0-465e-4fd2-b3bd-c5cfa976bdd0
     id: image_style_quality
     weight: 2
     data:
