@@ -1,0 +1,585 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: d450f779-4ed7-40ec-9184-9f2a46465dbe
+  bundle: article
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: Palstat
+  created:
+    -
+      value: 1612452471
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  path:
+    -
+      alias: /palstat
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: d35a7064-97bb-44a1-82e8-2db46fb17886
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1612452481
+          behavior_settings:
+            -
+              value: {  }
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 21ac71eb-9094-43d8-987b-595c6555c364
+          bundle: columns
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1612452481
+          behavior_settings:
+            -
+              value: {  }
+          field_columns_design:
+            -
+              value: 50-50
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: be927b63-6b90-4134-8fa3-013f46757eaf
+                  bundle: text
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1612452502
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_text:
+                    -
+                      value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama.</p>\r\n"
+                      format: full_html
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 4de66f3c-1602-4853-9e37-03cedf727a03
+                  bundle: text
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1612452521
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_text:
+                    -
+                      value: "<p>Que quat oin elit sodalesm porta cras scras massan. Rosed afusce cursus felisq tortorp miproin snam bulum uam ris. Ligula elit tempusp suspendi proin mauris dum. Itor metusd quam enimlo iaculis teger esque aenean. Teger vitae tortor enimlo odioin tempor ultricie magnaves.&nbsp;</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: 'Palstat 50% / 50%'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 26e43f5a-4f2a-4bc2-9425-b85741d7c4ef
+          bundle: columns
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1612452532
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 30-70
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 104d3b7a-1acc-4d17-aa8e-46717f749f2a
+                  bundle: text
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1612452549
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie.</p>\r\n"
+                      format: full_html
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 1a3db882-04a8-4699-a33c-720dfb5fa83f
+                  bundle: text
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1612452560
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Que metusd quam vitae lacusp arcualiq. Cubilia conseq dictums turpisut euismo estnunc mus. Variusma nulla orciduis egesta uisque duis liquam. Faucibus luctus esent ntum maurisve orper. Massa ligulam variusma iquam maurisma eduis que. Diamin leopelle eratfus placerat ipsump maurisma dictumst. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: 'Palstat 30% / 70%'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 33957f60-ddb2-4374-acd2-34e73f7c7318
+          bundle: columns
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1612452564
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 70-30
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: bc40aeec-8b28-4efd-8758-ebca0422e8a8
+                  bundle: text
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1612452597
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama. Musetiam egetlor ris porta ntum imperdie lla ad faucib.&nbsp;&nbsp;</p>\r\n"
+                      format: full_html
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 4841dd49-b0ea-4a31-ad33-c14c49e9bc7b
+                  bundle: text
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1612452603
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Neque orciut fusce dolordo class non vestib. Vulput conubia laoreet sapienv vehicula vehicula mattisae faucib. Facilisi dui sque nullain nuncsed enean montes sapiendo culus lectusa.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: 'Palstat 70% / 30%'
+  field_lead:
+    -
+      value: 'Tällä sivulla esitellään Palstat paragraafia.'
+translations:
+  en:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: Columns
+    created:
+      -
+        value: 1612456334
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /columns
+        langcode: en
+        pathauto: 1
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    field_content:
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: d96ce214-3015-443a-a9a1-bb8b0e76365c
+            bundle: text
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1612452481
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 20275fde-7163-4a8a-bf1f-8e1967a32b50
+            bundle: columns
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1612452481
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_columns_design:
+              -
+                value: 50-50
+            field_columns_left_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 2eb6ba8b-e116-41b0-954b-5131d8695c77
+                    bundle: text
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612452502
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama.</p>\r\n"
+                        format: full_html
+            field_columns_right_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 498e9a61-8cb4-403f-8e44-a29a53fe65d4
+                    bundle: text
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612452521
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Que quat oin elit sodalesm porta cras scras massan. Rosed afusce cursus felisq tortorp miproin snam bulum uam ris. Ligula elit tempusp suspendi proin mauris dum. Itor metusd quam enimlo iaculis teger esque aenean. Teger vitae tortor enimlo odioin tempor ultricie magnaves.&nbsp;</p>\r\n"
+                        format: full_html
+            field_columns_title:
+              -
+                value: 'Columns 50% / 50%'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 4d29c224-9052-4956-85c2-5fdb48beeb70
+            bundle: columns
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1612452532
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_columns_design:
+              -
+                value: 30-70
+            field_columns_left_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 987d0430-5736-433c-8f63-1333789b2f9a
+                    bundle: text
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612452549
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie.</p>\r\n"
+                        format: full_html
+            field_columns_right_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 8ba57274-5a1e-45d5-b58f-0fade3fe2450
+                    bundle: text
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612452560
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Que metusd quam vitae lacusp arcualiq. Cubilia conseq dictums turpisut euismo estnunc mus. Variusma nulla orciduis egesta uisque duis liquam. Faucibus luctus esent ntum maurisve orper. Massa ligulam variusma iquam maurisma eduis que. Diamin leopelle eratfus placerat ipsump maurisma dictumst. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama.</p>\r\n"
+                        format: full_html
+            field_columns_title:
+              -
+                value: 'Columns 30% / 70%'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: ee2e5279-63a1-420e-9e51-339702bdeeb4
+            bundle: columns
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1612452564
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_columns_design:
+              -
+                value: 70-30
+            field_columns_left_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: e3f48e08-8f73-4168-8ff2-eeb2fdfb9c90
+                    bundle: text
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612452597
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama. Musetiam egetlor ris porta ntum imperdie lla ad faucib.&nbsp;&nbsp;</p>\r\n"
+                        format: full_html
+            field_columns_right_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 8eaba33e-a4f7-4def-90d6-55b77365a418
+                    bundle: text
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1612452603
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Neque orciut fusce dolordo class non vestib. Vulput conubia laoreet sapienv vehicula vehicula mattisae faucib. Facilisi dui sque nullain nuncsed enean montes sapiendo culus lectusa.</p>\r\n"
+                        format: full_html
+            field_columns_title:
+              -
+                value: 'Columns 70% / 30%'
+    field_lead:
+      -
+        value: 'Examples of Columns paragraphs.'

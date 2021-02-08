@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: columns
+label: Columns
+icon_uuid: null
+icon_default: null
+description: "With columns paragraph content producer can divide content in to two columns. The columns can be equal width or divided in to 30/70 proportion. \r\nThe content producer can choose what paragraphs to add into the columns."
+behavior_plugins: {  }

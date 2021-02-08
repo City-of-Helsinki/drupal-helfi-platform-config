@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_columns_design
+    - paragraphs.paragraphs_type.columns
+  module:
+    - options
+id: paragraph.columns.field_columns_design
+field_name: field_columns_design
+entity_type: paragraph
+bundle: columns
+label: Design
+description: 'Choose the paragraph design from the dropdown.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 50-50
+default_value_callback: ''
+settings: {  }
+field_type: list_string
