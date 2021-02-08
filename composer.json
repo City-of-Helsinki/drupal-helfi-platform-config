@@ -16,6 +16,7 @@
     "drupal/image_style_quality": "^1.4",
     "drupal/media_entity_soundcloud": "^3.0.0",
     "drupal/menu_block_current_language": "^1.4",
+    "drupal/notification_message": "^1.0@alpha",
     "drupal/paragraphs": "^1.12",
     "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
     "drupal/pathauto": "^1.8",
@@ -41,6 +42,10 @@
       },
       "drupal/eu_cookie_compliance": {
         "Helfi-specific customizations to EU Cookie Compliance": "https://gist.githubusercontent.com/tuutti/68890713f0d0d9e00499823150c41f7e/raw/c5be8d708d4c17cd0edefc1a2588514da6d33eda/eu_cookie_compliance_block.patch"
+      },
+      "drupal/notification_message": {
+          "Missing annotation": "https://www.drupal.org/files/issues/2021-02-03/notification_message-annotation_missing_config_export_definition-3196414-2.patch",
+          "Deprecated D9": "https://www.drupal.org/files/issues/2020-10-21/3178245.patch"
       }
     }
   }
