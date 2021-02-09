@@ -25,6 +25,7 @@ dependencies:
   - menu_block_current_language
   - menu_link_content
   - node
+  - notification_message
   - pathauto
   - system
   - taxonomy
