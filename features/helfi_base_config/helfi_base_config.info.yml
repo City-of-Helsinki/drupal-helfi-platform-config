@@ -9,6 +9,7 @@ dependencies:
   - block
   - config_translation
   - ctools
+  - datetime
   - easy_breadcrumb
   - features
   - gin_toolbar
