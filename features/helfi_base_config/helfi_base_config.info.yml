@@ -18,6 +18,7 @@ dependencies:
   - hdbt_component_library
   - hdbt_content
   - hdbt_hyphenopoly
+  - helfi_announcements
   - helfi_content
   - helfi_example_content
   - helfi_languages
