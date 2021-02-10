@@ -11,7 +11,7 @@
     "drupal/elasticsearch_connector": "^7.0@alpha",
     "drupal/entity_browser": "^2.5",
     "drupal/eu_cookie_compliance": "^1.14",
-    "drupal/features": "^3.11",
+    "drupal/features": "^3.12",
     "drupal/focal_point": "^1.5",
     "drupal/image_style_quality": "^1.4",
     "drupal/media_entity_soundcloud": "^3.0.0",
@@ -36,8 +36,6 @@
         "https://www.drupal.org/project/paragraphs_asymmetric_translation_widgets/issues/3171810#comment-13836806": "https://www.drupal.org/files/issues/2020-09-25/3171810-2.patch"
       },
       "drupal/features": {
-        "https://www.drupal.org/project/features/issues/3068461#comment-13908491": "https://www.drupal.org/files/issues/2020-11-19/features-ui_theme_agnostic_rtl-3068461-6.patch",
-        "https://www.drupal.org/project/features/issues/3147028": "https://www.drupal.org/files/issues/2020-10-14/3147028-features_templates.patch",
         "https://www.drupal.org/project/features/issues/2869336": "https://www.drupal.org/files/issues/features_export-config-translation-2869336-2.patch"
       },
       "drupal/eu_cookie_compliance": {
