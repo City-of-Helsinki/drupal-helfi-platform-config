@@ -4,8 +4,6 @@ dependencies:
   config:
     - image.style.1_1_thumbnail
     - image.style.1_1_thumbnail_2x
-  theme:
-    - hdbt
 id: gallery_thumbnail
 label: 'Gallery thumbnail'
 image_style_mappings:
