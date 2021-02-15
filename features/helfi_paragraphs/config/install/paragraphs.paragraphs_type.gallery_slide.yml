@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: gallery_slide
+label: 'Gallery slide'
+icon_uuid: null
+icon_default: null
+description: 'One slide in the gallery that can include image and caption.'
+behavior_plugins: {  }

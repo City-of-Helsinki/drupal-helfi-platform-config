@@ -81,9 +81,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_image:
               -
                 entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -246,6 +243,90 @@ translations:
           _meta:
             version: '1.0'
             entity_type: paragraph
+            uuid: 27675c48-4329-4d4b-bff0-038e05cb61c8
+            bundle: columns
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1613141892
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_columns_design:
+              -
+                value: 50-50
+            field_columns_left_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: d174882a-011b-4158-8b3d-60c197a64f67
+                    bundle: image
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613141907
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_image:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                    field_image_caption:
+                      -
+                        value: 'Kuvateksti tälle kuvalle.'
+                    field_original_aspect_ratio:
+                      -
+                        value: false
+            field_columns_right_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: e2be2702-6797-49ff-9a62-c4f4669775e9
+                    bundle: text
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613141918
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Aenean vel nisl enim. Ut dui quam, rhoncus a nunc quis, rhoncus egestas dolor. Aliquam finibus, ex at suscipit tempor, dui nibh maximus dui, nec sagittis libero justo a ex. Suspendisse quam neque, pellentesque a felis vitae, viverra interdum nunc. Aenean rhoncus nulla tortor, laoreet aliquet sapien dignissim ut. Sed id dolor id ligula posuere rutrum eget vel nisi. Fusce vel ultrices lacus. Aenean molestie neque ac tellus ornare, in egestas purus egestas. Aenean varius ante bibendum tempor tempor.</p>\r\n"
+                        format: full_html
+            field_columns_title:
+              -
+                value: 'Palstat josta löytyy tekstiä ja kuva'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
             uuid: 68b22c92-8fc1-43f0-ab8c-eb6a1fd5469e
             bundle: list_of_links
             default_langcode: fi
@@ -341,6 +422,265 @@ translations:
             field_list_of_links_title:
               -
                 value: 'Linkkilista esimerkki jossa kuvaukset'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: e49a39b2-7c05-4ecc-8f1f-3d430e4d0608
+            bundle: gallery
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1613139412
+            behavior_settings:
+              -
+                value: {  }
+            field_gallery_slides:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: d4c5e031-61be-4491-b1ac-7c3d96d7fbcc
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139412
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Ensimmäinen kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 9fe2a252-9bd8-424f-bb25-144245145d85
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139428
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Toinen kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: d5bece64-189b-4f47-bf2e-4242d26b943a
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139437
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Kolmas kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 9b8a99af-9b50-473c-82b1-caf526694007
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139446
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Neljäs kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 036dee0a-03e2-4800-a960-e01abc01082c
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139459
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Viides kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: d60d4a31-5942-44b6-aab2-5438cbd81e80
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139468
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Kuudes kuva galleriassa'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 9a81b418-94cc-401f-bbbd-170ffb22f3cc
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139478
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Seitsemäs kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 886b76e4-609f-4822-ba6e-d96dca45a2a5
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139489
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Kahdeksas kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 0662b615-0260-4b10-95ac-ce79359e5a43
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139499
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Yhdeksäs kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 32216051-5e79-4c87-bc1c-7ab7a9362d98
+                    bundle: gallery_slide
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613139507
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_gallery_slide_caption:
+                      -
+                        value: 'Kymmenes kuva galleriassa.'
+                    field_gallery_slide_media:
+                      -
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
       -
         entity:
           _meta:
@@ -495,8 +835,84 @@ default:
               value: true
           field_text:
             -
-              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+              value: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n"
               format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: ebddc433-d532-4e90-83d3-9d9ef1bfc1ad
+          bundle: gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1613141753
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_gallery_slides:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 6dc7b7d1-51aa-480e-b686-8bdafb200f2f
+                  bundle: gallery_slide
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613141753
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_gallery_slide_caption:
+                    -
+                      value: 'This gallery has only two images.'
+                  field_gallery_slide_media:
+                    -
+                      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 340b1e9f-0276-43a1-ac81-94287de9630f
+                  bundle: gallery_slide
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613141767
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_gallery_slide_caption:
+                    -
+                      value: 'No need for any more.'
+                  field_gallery_slide_media:
+                    -
+                      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
   field_has_hero:
     -
       value: false
