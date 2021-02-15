@@ -1,0 +1,10 @@
+uuid: 7be233ab-e8c5-41a6-9578-333fdd8671f3
+langcode: en
+status: true
+dependencies:
+  module:
+    - notification_message
+id: notification_message.token
+label: Token
+targetEntityType: notification_message
+cache: true
