@@ -42,9 +42,9 @@
         "Helfi-specific customizations to EU Cookie Compliance": "https://gist.githubusercontent.com/tuutti/68890713f0d0d9e00499823150c41f7e/raw/c5be8d708d4c17cd0edefc1a2588514da6d33eda/eu_cookie_compliance_block.patch"
       },
       "drupal/notification_message": {
-        "Missing annotation": "https://www.drupal.org/files/issues/2021-02-03/notification_message-annotation_missing_config_export_definition-3196414-2.patch",
-        "Deprecated D9": "https://www.drupal.org/files/issues/2020-10-21/3178245.patch",
-        "Helfi customizations": "https://gist.githubusercontent.com/etrml/923e7bec44d7f13fa9e7994a5a9ee279/raw/42c8d3873e7dce9fb19d53675d44d7bf02158f07/notification_message_helfi_customizations.patch"
+        "https://www.drupal.org/project/notification_message/issues/3196414": "https://www.drupal.org/files/issues/2021-02-03/notification_message-annotation_missing_config_export_definition-3196414-2.patch",
+        "https://www.drupal.org/project/notification_message/issues/3178245": "https://www.drupal.org/files/issues/2020-10-21/3178245.patch",
+        "Helfi-specific customizations to Notification Message": "https://gist.githubusercontent.com/etrml/923e7bec44d7f13fa9e7994a5a9ee279/raw/42c8d3873e7dce9fb19d53675d44d7bf02158f07/notification_message_helfi_customizations.patch"
       }
     }
   }
