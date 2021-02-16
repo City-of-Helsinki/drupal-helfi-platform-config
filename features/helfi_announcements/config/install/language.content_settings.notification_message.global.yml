@@ -1,4 +1,3 @@
-uuid: db6ce1c1-7214-49d0-a038-66649481894f
 langcode: en
 status: true
 dependencies:
@@ -11,8 +10,6 @@ third_party_settings:
     enabled: true
     bundle_settings:
       untranslatable_fields_hide: '0'
-_core:
-  default_config_hash: brOyW0z9QZv4RvA6rHx_HzSqV4jiFCva2gL0hz2subg
 id: notification_message.global
 target_entity_type_id: notification_message
 target_bundle: global
