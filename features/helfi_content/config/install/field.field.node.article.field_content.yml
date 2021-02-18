@@ -4,8 +4,8 @@ dependencies:
   config:
     - field.storage.node.field_content
     - node.type.article
-    - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.columns
+    - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.link
     - paragraphs.paragraphs_type.list_of_links
@@ -27,35 +27,38 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      columns: columns
-      text: text
       link: link
+      text: text
       image: image
-      gallery: gallery
+      columns: columns
       list_of_links: list_of_links
+      gallery: gallery
     target_bundles_drag_drop:
       columns:
         enabled: true
-        weight: -13
+        weight: 10
       gallery:
         enabled: true
-        weight: 8
+        weight: 11
+      gallery_slide:
+        weight: 12
+        enabled: false
       hero:
-        weight: -14
+        weight: 4
         enabled: false
       image:
         enabled: true
-        weight: -12
+        weight: 7
       link:
         enabled: true
-        weight: -10
+        weight: 5
       list_of_links:
-        weight: -9
-        enabled: false
+        enabled: true
+        weight: 10
       list_of_links_item:
-        weight: -8
+        weight: 11
         enabled: false
       text:
         enabled: true
-        weight: -11
+        weight: 6
 field_type: entity_reference_revisions

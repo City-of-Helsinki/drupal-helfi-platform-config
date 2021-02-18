@@ -3,19 +3,15 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_content
-    - node.type.page
+    - node.type.landing_page
     - paragraphs.paragraphs_type.columns
-    - paragraphs.paragraphs_type.gallery
-    - paragraphs.paragraphs_type.image
-    - paragraphs.paragraphs_type.link
     - paragraphs.paragraphs_type.list_of_links
-    - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
-id: node.page.field_content
+id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
-bundle: page
+bundle: landing_page
 label: Content
 description: ''
 required: false
@@ -27,38 +23,34 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      link: link
-      text: text
-      image: image
-      list_of_links: list_of_links
       columns: columns
-      gallery: gallery
+      list_of_links: list_of_links
     target_bundles_drag_drop:
       columns:
         enabled: true
         weight: 10
       gallery:
-        enabled: true
         weight: 11
+        enabled: false
       gallery_slide:
         weight: 12
         enabled: false
       hero:
-        weight: 4
+        weight: 13
         enabled: false
       image:
-        enabled: true
-        weight: 7
+        weight: 14
+        enabled: false
       link:
-        enabled: true
-        weight: 5
+        weight: 15
+        enabled: false
       list_of_links:
         enabled: true
-        weight: 7
+        weight: 16
       list_of_links_item:
-        weight: 11
+        weight: 17
         enabled: false
       text:
-        enabled: true
-        weight: 6
+        weight: 18
+        enabled: false
 field_type: entity_reference_revisions

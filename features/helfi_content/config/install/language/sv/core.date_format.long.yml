@@ -1,1 +1,2 @@
 label: 'Förvalt långt datum'
+pattern: 'j. F Y'

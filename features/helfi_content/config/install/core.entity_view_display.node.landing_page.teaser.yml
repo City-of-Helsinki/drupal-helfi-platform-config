@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.landing_page.field_content
+    - field.field.node.landing_page.field_has_hero
+    - field.field.node.landing_page.field_hero
+    - field.field.node.landing_page.field_liftup_image
+    - node.type.landing_page
+  module:
+    - user
+id: node.landing_page.teaser
+targetEntityType: node
+bundle: landing_page
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_content: true
+  field_has_hero: true
+  field_hero: true
+  field_liftup_image: true
+  langcode: true

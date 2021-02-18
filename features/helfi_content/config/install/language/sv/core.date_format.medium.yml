@@ -1,1 +1,2 @@
 label: 'Förvalt mellanlångt datum'
+pattern: 'd.m.Y - H:i'
