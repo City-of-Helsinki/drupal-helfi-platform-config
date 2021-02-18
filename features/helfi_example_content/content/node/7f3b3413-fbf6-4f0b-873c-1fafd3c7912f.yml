@@ -43,9 +43,9 @@ default:
       value: true
   path:
     -
-      alias: ''
+      alias: /esimerkki-laskeutumissivusta
       langcode: fi
-      pathauto: 0
+      pathauto: 1
   content_translation_source:
     -
       value: und
@@ -456,9 +456,9 @@ translations:
         value: false
     path:
       -
-        alias: ''
+        alias: /an-example-of-landing-page
         langcode: en
-        pathauto: 0
+        pathauto: 1
     content_translation_source:
       -
         value: fi
