@@ -1,0 +1,715 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7f3b3413-fbf6-4f0b-873c-1fafd3c7912f
+  bundle: landing_page
+  default_langcode: fi
+  depends:
+    c2b41989-c715-4ec4-8df1-42655293fdfc: node
+    efc11410-25ca-48ef-bfe0-f03860a3b7e7: node
+    3a313b2f-8b70-41a6-a655-3f9805cb1f48: node
+    0f14edf8-bb60-4c3b-8d02-4433aac0d3e6: node
+    77e5183c-4d25-447e-a4e1-58776b2b545b: node
+    8455251b-91bd-4c71-9756-94112e8912c1: node
+    d5bf4eac-26d6-420e-bd19-7d66ff969181: node
+    9fc5dfe5-2f61-4a62-af14-27a459673272: media
+    d450f779-4ed7-40ec-9184-9f2a46465dbe: node
+    b62f70bb-3e19-4c21-be5e-621b96169fe1: node
+    923ecd78-00ff-47f9-a017-012b781d6bab: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Esimerkki laskeutumissivusta'
+  created:
+    -
+      value: 1613550876
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  path:
+    -
+      alias: ''
+      langcode: fi
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 51e53c85-7821-4bb5-9d58-f8ebd5e4debe
+          bundle: list_of_links
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1613550887
+          behavior_settings:
+            -
+              value: {  }
+          field_list_of_links_design:
+            -
+              value: without-image-desc
+          field_list_of_links_links:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: ccb611f5-2918-4c6c-96e5-3f6bf17bee3c
+                  bundle: list_of_links_item
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613550998
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_list_of_links_link:
+                    -
+                      target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
+                      title: 'Hero: Ilman kuvaa, tasattu vasemmalle'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 2a7e3d97-01be-483a-8b62-2b7675102ae3
+                  bundle: list_of_links_item
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613550887
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_list_of_links_link:
+                    -
+                      target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
+                      title: 'Hero: Ilman kuvaa, tasattu keskelle'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 0dc24f51-10fc-4be5-bb09-cd11996af7a9
+                  bundle: list_of_links_item
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613558090
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_list_of_links_link:
+                    -
+                      target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
+                      title: 'Hero: Kuva oikealla'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 10aa0bbe-87b0-47bf-a048-843d7464858b
+                  bundle: list_of_links_item
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613558069
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_list_of_links_link:
+                    -
+                      target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
+                      title: 'Hero: Kuva vasemmalla'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: a9581510-dc5f-4895-b275-b75ad034e386
+                  bundle: list_of_links_item
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613572939
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_list_of_links_link:
+                    -
+                      target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
+                      title: 'Hero: Kuva alhaalla'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 57060fc9-a9ca-4058-80d3-455e1697d167
+                  bundle: list_of_links_item
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613572955
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_list_of_links_link:
+                    -
+                      target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
+                      title: 'Hero: Taustakuva'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: cc7d19ea-7b1a-4867-bd14-8558374b78c2
+                  bundle: list_of_links_item
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613572972
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_list_of_links_link:
+                    -
+                      target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
+                      title: 'Hero: Diagonaalinen'
+                      options: {  }
+          field_list_of_links_title:
+            -
+              value: 'Esimerkkejä Hero-komponenteista'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 79b42e90-d3df-4514-9a59-96a9942723be
+          bundle: list_of_links
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1613550887
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_list_of_links_design:
+            -
+              value: with-image
+          field_list_of_links_links:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 61e8210d-49c3-4ebe-b96f-ecb560949878
+                  bundle: list_of_links_item
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613550887
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_list_of_links_image:
+                    -
+                      entity: 9fc5dfe5-2f61-4a62-af14-27a459673272
+                  field_list_of_links_link:
+                    -
+                      target_uuid: d450f779-4ed7-40ec-9184-9f2a46465dbe
+                      title: 'Katso miltä palstat-komponentti näyttää käytännössä'
+                      options: {  }
+          field_list_of_links_title:
+            -
+              value: 'Esimerkki palstat-komponentista'
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 2b7e4ee6-8c66-4d44-addb-bc2986117984
+          bundle: hero
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1613553220
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_bg_color:
+            -
+              value: gold
+          field_hero_cta:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 09aaf8bd-bf29-4e39-9578-aa930791dffa
+                  bundle: link
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613553295
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_link_design:
+                    -
+                      value: primary
+                  field_link_link:
+                    -
+                      target_uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
+                      title: 'Katso myös esimerkkisivu'
+                      options: {  }
+          field_hero_desc:
+            -
+              value: "<p>Laskeutumissivu sisältötyyppiä suositellaan käytettäväksi silloin kun valitusta aiheesta, esim. palvelusta halutaan antaa tiivistettyä&nbsp;tietoa.</p>\r\n"
+              format: full_html
+          field_hero_design:
+            -
+              value: diagonal
+          field_hero_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_hero_title:
+            -
+              value: 'Esimerkki laskeutumissivusta'
+translations:
+  en:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'An example of landing page'
+    created:
+      -
+        value: 1613573701
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: ''
+        langcode: en
+        pathauto: 0
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    field_content:
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 61d28e2c-de12-4e54-a4d2-90297fe32753
+            bundle: list_of_links
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1613550887
+            behavior_settings:
+              -
+                value: {  }
+            field_list_of_links_design:
+              -
+                value: without-image-desc
+            field_list_of_links_links:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 9d9e4dae-0988-48a9-b2cf-576d831dd3a3
+                    bundle: list_of_links_item
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613550998
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
+                        title: 'Hero: Ilman kuvaa, tasattu vasemmalle'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 1d3c699d-0a65-4f29-bca8-222f720887c5
+                    bundle: list_of_links_item
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613550887
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
+                        title: 'Hero: Ilman kuvaa, tasattu keskelle'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 14f08122-1673-4989-829c-0e5779973852
+                    bundle: list_of_links_item
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613558090
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
+                        title: 'Hero: Kuva oikealla'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 77db627e-3f7b-4b65-b99a-49d7b5d397b5
+                    bundle: list_of_links_item
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613558069
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
+                        title: 'Hero: Kuva vasemmalla'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: e0ff79c5-cf67-4fd5-8e7c-1ed09594b362
+                    bundle: list_of_links_item
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613572939
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
+                        title: 'Hero: Kuva alhaalla'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: e9763e5c-f768-4122-b0ab-16f93d29aff2
+                    bundle: list_of_links_item
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613572955
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
+                        title: 'Hero: Taustakuva'
+                        options: {  }
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 2354bbd3-a24d-4c40-a976-ac67f6f110ce
+                    bundle: list_of_links_item
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613572972
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_link:
+                      -
+                        target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
+                        title: 'Hero: Diagonaalinen'
+                        options: {  }
+            field_list_of_links_title:
+              -
+                value: 'Examples of Hero components'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: c62ca8d2-8b4e-4cea-b0f7-dca2e8bf16ae
+            bundle: list_of_links
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1613550887
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_list_of_links_design:
+              -
+                value: with-image
+            field_list_of_links_links:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: cdcaecb3-0a28-4ba2-bfe1-fb432ad44864
+                    bundle: list_of_links_item
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613550887
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_list_of_links_image:
+                      -
+                        entity: 9fc5dfe5-2f61-4a62-af14-27a459673272
+                    field_list_of_links_link:
+                      -
+                        target_uuid: d450f779-4ed7-40ec-9184-9f2a46465dbe
+                        title: 'Find out how columns work in practice'
+                        options: {  }
+            field_list_of_links_title:
+              -
+                value: 'An example of Columns component'
+    field_has_hero:
+      -
+        value: true
+    field_hero:
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 54c637e5-88f6-4c12-9bce-043541b0dd45
+            bundle: hero
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1613553220
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_hero_bg_color:
+              -
+                value: gold
+            field_hero_cta:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: d2ae2095-cf29-429e-8a6f-c9e2e25e77ad
+                    bundle: link
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613553295
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_link_design:
+                      -
+                        value: primary
+                    field_link_link:
+                      -
+                        target_uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
+                        title: 'Check also the example page'
+                        options: {  }
+            field_hero_desc:
+              -
+                value: "<p>Use landing page when you want to&nbsp;f.e. create a collection of links and information about a certain subject.</p>\r\n"
+                format: full_html
+            field_hero_design:
+              -
+                value: diagonal
+            field_hero_image:
+              -
+                entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+            field_hero_title:
+              -
+                value: 'An example of landing page'
