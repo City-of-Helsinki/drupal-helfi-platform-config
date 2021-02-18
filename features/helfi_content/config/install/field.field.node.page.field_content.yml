@@ -36,29 +36,29 @@ settings:
     target_bundles_drag_drop:
       columns:
         enabled: true
-        weight: 10
+        weight: 3
       gallery:
         enabled: true
-        weight: 11
+        weight: 4
       gallery_slide:
-        weight: 12
+        weight: 5
         enabled: false
       hero:
-        weight: 4
+        weight: 0
         enabled: false
       image:
         enabled: true
-        weight: 7
+        weight: 2
       link:
         enabled: true
-        weight: 5
+        weight: 6
       list_of_links:
         enabled: true
         weight: 7
       list_of_links_item:
-        weight: 11
+        weight: 8
         enabled: false
       text:
         enabled: true
-        weight: 6
+        weight: 1
 field_type: entity_reference_revisions

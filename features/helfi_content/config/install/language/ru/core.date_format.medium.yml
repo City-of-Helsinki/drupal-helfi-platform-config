@@ -1,2 +1,2 @@
 label: 'Средняя дата по умолчанию'
-pattern: 'D, d.m.Y - H:i'
+pattern: 'd.m.Y - H:i'
