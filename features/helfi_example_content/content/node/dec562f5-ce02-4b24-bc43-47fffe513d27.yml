@@ -70,6 +70,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Munkkiniemi</h2>\r\n\r\n<p>Etäisyydestä huolimatta se vaikuttaa kantakaupungin jatkeelta; kerrostalot ovat pääasiassa 30-luvulta.</p>\r\n\r\n<p>Munkkiniemen puistotie muodostaa pääakselin, jonka ympärille kerrostaloalue sijoittuu. Pohjoispuolella on perinteikäs Munkkiniemen yhteiskoulu. Eteläpuolella Villa Aalto vuodelta 1936, Aallon piirtämät Kansaneläkelaitoksen asuintalot 50-luvun alusta (muodostavat hyvän sisäpihan), Munkkiniemen kartano, Eliel Saarisen massiivinen Kadettikoulu vuodelta 1918, nykyisin Hallinnon kehittämiskeskus. Saarinen piirsi myös Suomen ensimmäisiin kuuluvat rivitalot osoitteessa Hollantilaisentie 12-20.</p>\r\n"
@@ -92,6 +95,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Munkkivuori</h2>\r\n\r\n<p>Munkkivuori on arkkitehtuuriltaan ja aluesuunnittelultaan yksi parhaita 50-luvun helsinkiläislähiöitä. Rakennukset on sijoitettu maastoon esimerkillisesti. Täällä todella aistii lähiösuunnittelun kultaisen vuosikymmenen. Autoliikenne on järjestetty ulkosyötteisesti Ulvilantieltä, joka kiertää koko alueen. Lamellitalojen seassa on paljon 8-kerroksisia pistetaloja, Ulvilantie 19a:ssa kolme 10-kerroksista tornia. Jokaisen talon vieressä on metsäistä puistoa.</p>\r\n\r\n<p><span class=\"highlighted\">Alueen sijainnilla on myös merkitystä. Munkkivuori on lähellä keskustaa</span></p>\r\n\r\n<p>Alueen sijainnilla on myös merkitystä. Munkkivuori on lähellä keskustaa, lähes suora jatke kantakaupungille. Talin golfkenttä, Niemenmäki ja Munkkiniemi ovat laadukkaita lähinaapureita.</p>\r\n"
@@ -144,6 +150,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Kuusisaari</h2>\r\n\r\n<p>Rakentamisen väljyys on iso plussa, samoin mereen laskeutuvat rantatontit. Tärkeimmät nähtävyydet ovat Didrichsenin ja Villa Gyllenbergin taidemuseot sekä Aarne Ervin ateljee Kuusiniementie 5:ssä. Kuusisaaren asukkaiden keskitulo on Helsingin toiseksi korkein Kaivopuiston jälkeen.</p>\r\n\r\n<div class=\"quote\">\r\n<p class=\"quote__text\">Kotimme oikea porraskivi on siinä paikassa, jossa kadulta tai tieltä astumme puutarhaan... Askel ryytimaasta huoneisiin olkoon paljon pienempi kuin kadulta tai maantieltä puutarhaan.</p>\r\n\r\n<footer class=\"quote__author\">Alvar Aalto</footer>\r\n</div>\r\n\r\n<p>Omakotitalojen ja lähetystöjen lisäksi saarelta löytyy tasakattoisia rivitaloja tiilijulkisivuilla, suuri osa 60- ja 70-luvuilta. Vaikka Kuusisaari on erittäin varakkaiden asuinalue, talot ovat suureksi osaksi suhteellisen vaatimatonta asuntotuotantoa.</p>\r\n"
@@ -166,6 +175,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_link_design:
             -
               value: primary

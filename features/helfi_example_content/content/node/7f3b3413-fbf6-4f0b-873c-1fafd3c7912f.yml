@@ -38,9 +38,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   path:
     -
       alias: /esimerkki-laskeutumissivusta
@@ -71,6 +68,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: without-image-desc
@@ -93,6 +93,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
@@ -116,6 +119,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
@@ -139,6 +145,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
@@ -162,6 +171,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
@@ -185,6 +197,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
@@ -208,6 +223,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
@@ -231,6 +249,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
@@ -336,6 +357,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: with-image
@@ -358,6 +382,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_image:
                     -
                       entity: 9fc5dfe5-2f61-4a62-af14-27a459673272
@@ -391,6 +418,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_hero_bg_color:
             -
               value: gold
@@ -413,6 +443,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_link_design:
                     -
                       value: primary
@@ -484,6 +517,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_list_of_links_design:
               -
                 value: without-image-desc
@@ -506,6 +542,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
@@ -529,6 +568,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
@@ -552,6 +594,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
@@ -575,6 +620,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
@@ -598,6 +646,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
@@ -621,6 +672,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
@@ -644,6 +698,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
@@ -749,6 +806,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_list_of_links_design:
               -
                 value: with-image
@@ -771,6 +831,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_image:
                       -
                         entity: 9fc5dfe5-2f61-4a62-af14-27a459673272
@@ -804,6 +867,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_hero_bg_color:
               -
                 value: gold
@@ -826,6 +892,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_link_design:
                       -
                         value: primary
