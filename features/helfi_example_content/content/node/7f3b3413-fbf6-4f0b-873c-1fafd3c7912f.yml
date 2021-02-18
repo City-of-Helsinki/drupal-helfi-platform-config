@@ -38,6 +38,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   path:
     -
       alias: ''
@@ -241,6 +244,85 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
+          uuid: 477ffcf2-b83e-466c-8a20-aa1250ce697e
+          bundle: columns
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1613640908
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 50-50
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: f2069fc4-1f05-47dc-a7bf-2ff96362ccd6
+                  bundle: text
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613640946
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p><strong>Veli kulta, veikkoseni,</strong>&nbsp;kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+                      format: full_html
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: d1d3c80c-0853-4048-bd78-71c612f6668f
+                  bundle: text
+                  default_langcode: fi
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1613640950
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Niit' ennen isoni lauloi kirvesvartta vuollessansa; niitä äitini opetti väätessänsä värttinätä, minun lasna lattialla eessä polven pyöriessä, maitopartana pahaisna, piimäsuuna pikkaraisna. Sampo ei puuttunut sanoja eikä Louhi luottehia: vanheni sanoihin sampo, katoi Louhi luottehisin, virsihin Vipunen kuoli, Lemminkäinen leikkilöihin.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: 'Esimerkki palstat komponentista laskeutumissivulla'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
           uuid: 79b42e90-d3df-4514-9a59-96a9942723be
           bundle: list_of_links
           default_langcode: fi
@@ -254,9 +336,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_list_of_links_design:
             -
               value: with-image
@@ -279,9 +358,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_image:
                     -
                       entity: 9fc5dfe5-2f61-4a62-af14-27a459673272
@@ -315,9 +391,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_hero_bg_color:
             -
               value: gold
@@ -340,9 +413,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_link_design:
                     -
                       value: primary
@@ -384,9 +454,6 @@ translations:
     sticky:
       -
         value: false
-    revision_translation_affected:
-      -
-        value: true
     path:
       -
         alias: ''
@@ -590,6 +657,85 @@ translations:
           _meta:
             version: '1.0'
             entity_type: paragraph
+            uuid: 517099b4-ae49-4a8d-8c31-c758151ca89c
+            bundle: columns
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1613640615
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_columns_design:
+              -
+                value: 50-50
+            field_columns_left_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: c4e049a5-5e42-483c-a47e-00a543e68def
+                    bundle: text
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613640836
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Leoetiam enean lus bibendu tempor onec. Molestie iquam ante lacinia justov faucibus semnunc magnis. Mollis abitur ris lacusp arcualiq loremn isque. Eratphas morbi iumsed blandit posuered sodalesm.</p>\r\n"
+                        format: full_html
+            field_columns_right_column:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: c220fd80-0014-46e3-8c2b-e845feb97121
+                    bundle: text
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613640714
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_text:
+                      -
+                        value: "<p>Leoetiam enean lus bibendu tempor onec. Molestie iquam ante lacinia justov faucibus semnunc magnis. Mollis abitur ris lacusp arcualiq loremn isque. Eratphas morbi iumsed blandit posuered sodalesm.</p>\r\n"
+                        format: full_html
+            field_columns_title:
+              -
+                value: 'This is an example of how columns work on landing page'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
             uuid: c62ca8d2-8b4e-4cea-b0f7-dca2e8bf16ae
             bundle: list_of_links
             default_langcode: en
@@ -603,9 +749,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_list_of_links_design:
               -
                 value: with-image
@@ -628,9 +771,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_image:
                       -
                         entity: 9fc5dfe5-2f61-4a62-af14-27a459673272
@@ -664,9 +804,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_hero_bg_color:
               -
                 value: gold
@@ -689,9 +826,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_link_design:
                       -
                         value: primary
