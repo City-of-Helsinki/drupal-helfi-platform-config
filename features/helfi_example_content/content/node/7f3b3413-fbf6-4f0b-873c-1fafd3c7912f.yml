@@ -12,7 +12,6 @@ _meta:
     77e5183c-4d25-447e-a4e1-58776b2b545b: node
     8455251b-91bd-4c71-9756-94112e8912c1: node
     d5bf4eac-26d6-420e-bd19-7d66ff969181: node
-    9fc5dfe5-2f61-4a62-af14-27a459673272: media
     d450f779-4ed7-40ec-9184-9f2a46465dbe: node
     b62f70bb-3e19-4c21-be5e-621b96169fe1: node
     923ecd78-00ff-47f9-a017-012b781d6bab: media
@@ -387,7 +386,7 @@ default:
                       value: true
                   field_list_of_links_image:
                     -
-                      entity: 9fc5dfe5-2f61-4a62-af14-27a459673272
+                      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
                   field_list_of_links_link:
                     -
                       target_uuid: d450f779-4ed7-40ec-9184-9f2a46465dbe
@@ -836,7 +835,7 @@ translations:
                         value: true
                     field_list_of_links_image:
                       -
-                        entity: 9fc5dfe5-2f61-4a62-af14-27a459673272
+                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
                     field_list_of_links_link:
                       -
                         target_uuid: d450f779-4ed7-40ec-9184-9f2a46465dbe
