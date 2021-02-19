@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: accordion
+label: Accordion
+icon_uuid: null
+icon_default: null
+description: 'Accordion paragraph is used to store information that is perhaps not so relevant to all website users in a compact element that collapses the additional information behind a title.'
+behavior_plugins: {  }
