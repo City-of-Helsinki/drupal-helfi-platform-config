@@ -56,6 +56,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_text:
               -
                 value: "<h2>Tason kaksi otsikko</h2>\r\n\r\n<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<h3>Tason kolme otsikko</h3>\r\n\r\n<p><strong>Veli kulta, veikkoseni,</strong> kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n\r\n<ol>\r\n\t<li>Ensimmäinen numerolistassa</li>\r\n\t<li>Toinen numerolistassa</li>\r\n\t<li>Kolmas numerolistassa</li>\r\n</ol>\r\n"
@@ -78,6 +81,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_image:
               -
                 entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -105,6 +111,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_text:
               -
                 value: "<p>Toinen teksti-paragraph, joka näkyy vain suomeksi. <a href=\"&lt;front&gt;\">Tässä sisällössä on myös kaikkea muuta.</a></p>\r\n\r\n<h4>Otsikko joka on tasoa neljä</h4>\r\n\r\n<ul>\r\n\t<li>Lista jossa on kohtia</li>\r\n\t<li>Toinen kohta listassa</li>\r\n\t<li>Kolmas kohta listassa</li>\r\n</ul>\r\n\r\n<p>Niit' ennen isoni lauloi kirvesvartta vuollessansa; niitä äitini opetti väätessänsä värttinätä, minun lasna lattialla eessä polven pyöriessä, maitopartana pahaisna, piimäsuuna pikkaraisna. Sampo ei puuttunut sanoja eikä Louhi luottehia: vanheni sanoihin sampo, katoi Louhi luottehisin, virsihin Vipunen kuoli, Lemminkäinen leikkilöihin.</p>\r\n"
@@ -127,6 +136,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_list_of_links_design:
               -
                 value: with-image
@@ -149,6 +161,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_image:
                       -
                         entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -175,6 +190,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -198,6 +216,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_image:
                       -
                         entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -224,6 +245,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_image:
                       -
                         entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -328,6 +352,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_list_of_links_design:
               -
                 value: without-image
@@ -350,6 +377,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_desc:
                       -
                         value: 'Täältä löytyy etusivun sisältö'
@@ -376,6 +406,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_desc:
                       -
                         value: 'Kuvauskenttä on tässä'
@@ -402,6 +435,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -428,6 +464,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_gallery_slides:
               -
                 entity:
@@ -447,6 +486,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Ensimmäinen kuva galleriassa.'
@@ -471,6 +513,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Toinen kuva galleriassa.'
@@ -495,6 +540,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Kolmas kuva galleriassa.'
@@ -519,6 +567,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Neljäs kuva galleriassa.'
@@ -543,6 +594,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Viides kuva galleriassa.'
@@ -567,6 +621,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Kuudes kuva galleriassa'
@@ -591,6 +648,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Seitsemäs kuva galleriassa.'
@@ -615,6 +675,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Kahdeksas kuva galleriassa.'
@@ -639,6 +702,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Yhdeksäs kuva galleriassa.'
@@ -663,6 +729,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Kymmenes kuva galleriassa.'
@@ -687,6 +756,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_list_of_links_design:
               -
                 value: without-image-desc
@@ -709,6 +781,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -732,6 +807,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -755,6 +833,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
