@@ -34,6 +34,12 @@ settings:
       list_of_links: list_of_links
       gallery: gallery
     target_bundles_drag_drop:
+      accordion:
+        weight: 12
+        enabled: false
+      accordion_item:
+        weight: 13
+        enabled: false
       columns:
         enabled: true
         weight: 3
