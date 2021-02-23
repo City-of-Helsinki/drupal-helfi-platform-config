@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: banner
+label: Banner
+icon_uuid: null
+icon_default: null
+description: 'Banner is a simple full-width element that you can use to promote for example important links or phone numbers. '
+behavior_plugins: {  }
