@@ -14,6 +14,7 @@
     "drupal/features": "^3.12",
     "drupal/focal_point": "^1.5",
     "drupal/image_style_quality": "^1.4",
+    "drupal/linkit": "^6.0@beta",
     "drupal/media_entity_soundcloud": "^3.0.0",
     "drupal/menu_block_current_language": "^1.4",
     "drupal/paragraphs": "^1.12",
