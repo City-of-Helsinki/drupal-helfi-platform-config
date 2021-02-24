@@ -12,8 +12,9 @@ _meta:
     77e5183c-4d25-447e-a4e1-58776b2b545b: node
     8455251b-91bd-4c71-9756-94112e8912c1: node
     d5bf4eac-26d6-420e-bd19-7d66ff969181: node
-    d450f779-4ed7-40ec-9184-9f2a46465dbe: node
     923ecd78-00ff-47f9-a017-012b781d6bab: media
+    d450f779-4ed7-40ec-9184-9f2a46465dbe: node
+    b62f70bb-3e19-4c21-be5e-621b96169fe1: node
 default:
   revision_uid:
     -
@@ -242,6 +243,42 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
+          uuid: fa56c7ec-28db-4466-b4e2-f0738d9ecbca
+          bundle: banner
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1614096385
+          behavior_settings:
+            -
+              value: {  }
+          field_banner_desc:
+            -
+              value: "<p>Maecenas convallis faucibus finibus. Phasellus et arcu diam. <strong>Cras tempor </strong>arcu in felis maximus convallis. Duis congue eu risus a placerat. Etiam faucibus erat et placerat sagittis. Duis venenatis interdum elit, nec dapibus nulla rhoncus at.&nbsp;</p>\r\n"
+              format: full_html
+          field_banner_design:
+            -
+              value: align-center
+          field_banner_link:
+            -
+              uri: 'https://hel.fi'
+              title: 'Esimerkkilinkki joka vie ulkoiselle sivustolle'
+              options: {  }
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Tämä on esimerkkibanneri joka on keskitetty'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
           uuid: 477ffcf2-b83e-466c-8a20-aa1250ce697e
           bundle: columns
           default_langcode: fi
@@ -307,6 +344,45 @@ default:
           field_columns_title:
             -
               value: 'Esimerkki palstat komponentista laskeutumissivulla'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a30d41cf-1c7c-45f1-9dd7-9a7e0848fd35
+          bundle: banner
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1614096479
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_banner_desc:
+            -
+              value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"
+              format: full_html
+          field_banner_design:
+            -
+              value: align-left
+          field_banner_link:
+            -
+              uri: 'internal:/'
+              title: 'Linkki etusivulle'
+              options: {  }
+          field_banner_link_design:
+            -
+              value: secondary
+          field_banner_title:
+            -
+              value: 'Banneriesimerkki joka on tasattu vasemmalle'
     -
       entity:
         _meta:
@@ -380,9 +456,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_hero_bg_color:
             -
               value: gold
@@ -419,6 +492,9 @@ translations:
     sticky:
       -
         value: false
+    revision_translation_affected:
+      -
+        value: true
     path:
       -
         alias: /example-landing-page
@@ -692,6 +768,45 @@ translations:
           _meta:
             version: '1.0'
             entity_type: paragraph
+            uuid: f3dca7ab-98d4-4975-a355-e35b8560d563
+            bundle: banner
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1614096625
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_banner_desc:
+              -
+                value: "<p>Quisque at pellentesque risus. Suspendisse vel mattis felis. Suspendisse potenti. Vestibulum scelerisque viverra lacus eu ultricies. Ut euismod condimentum magna, a condimentum ligula tempus in. Mauris egestas ultrices faucibus. Nullam et tincidunt felis</p>\r\n"
+                format: full_html
+            field_banner_design:
+              -
+                value: align-center
+            field_banner_link:
+              -
+                uri: 'https://helfi/en'
+                title: 'External link example'
+                options: {  }
+            field_banner_link_design:
+              -
+                value: supplementary
+            field_banner_title:
+              -
+                value: 'Example banner for the English version'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
             uuid: c62ca8d2-8b4e-4cea-b0f7-dca2e8bf16ae
             bundle: list_of_links
             default_langcode: en
@@ -760,15 +875,39 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_hero_bg_color:
               -
                 value: gold
+            field_hero_cta:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: d2ae2095-cf29-429e-8a6f-c9e2e25e77ad
+                    bundle: link
+                    default_langcode: en
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613553295
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_link_design:
+                      -
+                        value: primary
+                    field_link_link:
+                      -
+                        target_uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
+                        title: 'Check also the example page'
+                        options: {  }
             field_hero_desc:
               -
-                value: "<p>Use landing page when you want to&nbsp;f.e. create a collection of links and information about a certain subject.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" href=\"/node/9\"><span class=\"hds-button__label\">Check also the example page</span></a></p>\r\n"
+                value: "<p>Use landing page when you want to f.e. create a collection of links and information about a certain subject.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" href=\"/node/9\"><span class=\"hds-button__label\">Check also the example page</span></a></p>\r\n"
                 format: full_html
             field_hero_design:
               -
