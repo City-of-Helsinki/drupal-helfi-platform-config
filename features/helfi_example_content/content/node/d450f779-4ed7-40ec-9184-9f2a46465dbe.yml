@@ -48,27 +48,6 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: d35a7064-97bb-44a1-82e8-2db46fb17886
-          bundle: text
-          default_langcode: fi
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1612452481
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
           uuid: 21ac71eb-9094-43d8-987b-595c6555c364
           bundle: columns
           default_langcode: fi
@@ -82,9 +61,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 50-50
@@ -107,9 +83,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama.</p>\r\n"
@@ -133,9 +106,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Que quat oin elit sodalesm porta cras scras massan. Rosed afusce cursus felisq tortorp miproin snam bulum uam ris. Ligula elit tempusp suspendi proin mauris dum. Itor metusd quam enimlo iaculis teger esque aenean. Teger vitae tortor enimlo odioin tempor ultricie magnaves.&nbsp;</p>\r\n"
@@ -161,9 +131,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 30-70
@@ -186,9 +153,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie.</p>\r\n"
@@ -212,9 +176,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Que metusd quam vitae lacusp arcualiq. Cubilia conseq dictums turpisut euismo estnunc mus. Variusma nulla orciduis egesta uisque duis liquam. Faucibus luctus esent ntum maurisve orper. Massa ligulam variusma iquam maurisma eduis que. Diamin leopelle eratfus placerat ipsump maurisma dictumst. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama.</p>\r\n"
@@ -240,9 +201,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 70-30
@@ -265,9 +223,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama. Musetiam egetlor ris porta ntum imperdie lla ad faucib.&nbsp;&nbsp;</p>\r\n"
@@ -291,9 +246,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Neque orciut fusce dolordo class non vestib. Vulput conubia laoreet sapienv vehicula vehicula mattisae faucib. Facilisi dui sque nullain nuncsed enean montes sapiendo culus lectusa.</p>\r\n"
@@ -319,9 +271,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 50-50
@@ -344,9 +293,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_image:
                     -
                       entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -375,9 +321,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Neque orciut fusce dolordo class non vestib. Vulput conubia laoreet sapienv vehicula vehicula mattisae faucib. Facilisi dui sque nullain nuncsed enean montes sapiendo culus lectusa.</p>\r\n"
@@ -403,9 +346,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 50-50
@@ -428,9 +368,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_image:
                     -
                       entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -459,9 +396,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_image:
                     -
                       entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -492,9 +426,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 70-30
@@ -517,9 +448,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_image:
                     -
                       entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -548,9 +476,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Oin iain urnavest convall viverr nibhnull lorem. Nas morbi mstut nullain dapibusc temporin oin placerat. Bibend tortor llam felisut egestas nequenu teger entum. Quamve ligulam ullamcor sceler sodalesm morbi ullamcor convalli imperdie. Morbi fringi nas isque nunccras montes. Luctus uam faucibus loreme nec aliquama. Musetiam egetlor ris porta ntum imperdie lla ad faucib.&nbsp;&nbsp;</p>\r\n"
@@ -576,9 +501,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 30-70
@@ -601,9 +523,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_image:
                     -
                       entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -632,9 +551,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Neque orciut fusce dolordo class non vestib. Vulput conubia laoreet sapienv vehicula vehicula mattisae faucib. Facilisi dui sque nullain nuncsed enean montes sapiendo culus lectusa.</p>\r\n"
@@ -665,9 +581,6 @@ translations:
     sticky:
       -
         value: false
-    revision_translation_affected:
-      -
-        value: true
     path:
       -
         alias: ''

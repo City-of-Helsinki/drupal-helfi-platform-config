@@ -59,9 +59,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
@@ -94,39 +91,9 @@ default:
           field_hero_bg_color:
             -
               value: metro
-          field_hero_cta:
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 157c5549-573c-43d6-a005-229da07c4635
-                  bundle: link
-                  default_langcode: fi
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1610705809
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_link_design:
-                    -
-                      value: secondary
-                  field_link_link:
-                    -
-                      uri: 'https://www.hel.fi'
-                      title: 'Klikkaa itsesi Helsingin kaupungin sivustolle'
-                      options: {  }
           field_hero_desc:
             -
-              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n"
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" href=\"https://hel.fi\"><span class=\"hds-button__label\">Klikkaa itsesi Helsingin kaupungin sivustolle</span></a></p>\r\n"
               format: full_html
           field_hero_design:
             -
