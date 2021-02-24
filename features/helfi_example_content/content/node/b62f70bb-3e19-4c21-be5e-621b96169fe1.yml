@@ -31,7 +31,7 @@ translations:
         value: true
     path:
       -
-        alias: /esimerkkisibu
+        alias: /esimerkkisivu
         langcode: fi
         pathauto: 1
     content_translation_source:

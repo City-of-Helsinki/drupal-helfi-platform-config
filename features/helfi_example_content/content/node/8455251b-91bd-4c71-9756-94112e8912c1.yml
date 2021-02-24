@@ -126,6 +126,14 @@ default:
           field_hero_image:
             -
               entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_hero_link:
+            -
+              uri: 'https://www.hel.fi'
+              title: 'Tästä pääset Helsingin kaupungin etusivulle'
+              options: {  }
+          field_hero_link_design:
+            -
+              value: primary
           field_hero_title:
             -
               value: 'Hero: Taustakuva'
