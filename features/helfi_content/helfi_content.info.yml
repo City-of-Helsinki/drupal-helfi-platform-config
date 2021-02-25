@@ -23,6 +23,7 @@ dependencies:
   - 'features:features'
   - 'helfi_media:helfi_media'
   - 'helfi_paragraphs:helfi_paragraphs'
+  - 'linkit:linkit'
   - 'paragraphs:paragraphs'
   - 'pathauto:pathauto'
   - 'select2:select2'

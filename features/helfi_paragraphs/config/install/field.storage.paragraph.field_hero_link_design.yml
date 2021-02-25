@@ -4,21 +4,21 @@ dependencies:
   module:
     - options
     - paragraphs
-id: paragraph.field_link_design
-field_name: field_link_design
+id: paragraph.field_hero_link_design
+field_name: field_hero_link_design
 entity_type: paragraph
 type: list_string
 settings:
   allowed_values:
     -
       value: primary
-      label: 'Button primary'
+      label: 'Full colour background'
     -
       value: secondary
-      label: 'Button secondary'
+      label: 'Only borders'
     -
       value: supplementary
-      label: 'Button supplementary'
+      label: 'No borders or background colour'
   allowed_values_function: ''
 module: options
 locked: false

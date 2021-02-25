@@ -155,37 +155,8 @@ default:
               value: true
           field_text:
             -
-              value: "<h2>Kuusisaari</h2>\r\n\r\n<p>Rakentamisen väljyys on iso plussa, samoin mereen laskeutuvat rantatontit. Tärkeimmät nähtävyydet ovat Didrichsenin ja Villa Gyllenbergin taidemuseot sekä Aarne Ervin ateljee Kuusiniementie 5:ssä. Kuusisaaren asukkaiden keskitulo on Helsingin toiseksi korkein Kaivopuiston jälkeen.</p>\r\n\r\n<div class=\"quote\">\r\n<p class=\"quote__text\">Kotimme oikea porraskivi on siinä paikassa, jossa kadulta tai tieltä astumme puutarhaan... Askel ryytimaasta huoneisiin olkoon paljon pienempi kuin kadulta tai maantieltä puutarhaan.</p>\r\n\r\n<footer class=\"quote__author\">Alvar Aalto</footer>\r\n</div>\r\n\r\n<p>Omakotitalojen ja lähetystöjen lisäksi saarelta löytyy tasakattoisia rivitaloja tiilijulkisivuilla, suuri osa 60- ja 70-luvuilta. Vaikka Kuusisaari on erittäin varakkaiden asuinalue, talot ovat suureksi osaksi suhteellisen vaatimatonta asuntotuotantoa.</p>\r\n"
+              value: "<h2>Kuusisaari</h2>\r\n\r\n<p>Rakentamisen väljyys on iso plussa, samoin mereen laskeutuvat rantatontit. Tärkeimmät nähtävyydet ovat Didrichsenin ja Villa Gyllenbergin taidemuseot sekä Aarne Ervin ateljee Kuusiniementie 5:ssä. Kuusisaaren asukkaiden keskitulo on Helsingin toiseksi korkein Kaivopuiston jälkeen.</p>\r\n\r\n<div class=\"quote\">\r\n<p class=\"quote__text\">Kotimme oikea porraskivi on siinä paikassa, jossa kadulta tai tieltä astumme puutarhaan... Askel ryytimaasta huoneisiin olkoon paljon pienempi kuin kadulta tai maantieltä puutarhaan.</p>\r\n\r\n<footer class=\"quote__author\">Alvar Aalto</footer>\r\n</div>\r\n\r\n<p>Omakotitalojen ja lähetystöjen lisäksi saarelta löytyy tasakattoisia rivitaloja tiilijulkisivuilla, suuri osa 60- ja 70-luvuilta. Vaikka Kuusisaari on erittäin varakkaiden asuinalue, talot ovat suureksi osaksi suhteellisen vaatimatonta asuntotuotantoa.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" href=\"https://fi.wikibooks.org/wiki/Helsingin_kaupunginosat\"><span class=\"hds-button__label\">Lue lisää kaupunginosista</span></a></p>\r\n"
               format: full_html
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: a61105f7-ca23-48f7-b6c5-b06fe4ab6d09
-          bundle: link
-          default_langcode: fi
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1611828180
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_link_design:
-            -
-              value: primary
-          field_link_link:
-            -
-              uri: 'https://fi.wikibooks.org/wiki/Helsingin_kaupunginosat'
-              title: 'Lue lisää kaupunginosista'
-              options: {  }
   field_keywords:
     -
       entity: a917d861-e1f0-4582-8e1d-859ba4b418f2

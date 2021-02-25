@@ -96,39 +96,9 @@ default:
           field_hero_bg_color:
             -
               value: coat-of-arms
-          field_hero_cta:
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 3fcd2b8a-6049-4959-9f57-05bf3a7869a2
-                  bundle: link
-                  default_langcode: fi
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1610706569
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_link_design:
-                    -
-                      value: secondary
-                  field_link_link:
-                    -
-                      uri: 'https://www.hel.fi'
-                      title: 'Klikkaa itsesi Helsingin kaupungin sivustolle'
-                      options: {  }
           field_hero_desc:
             -
-              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n"
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" href=\"https://hel.fi\"><span class=\"hds-button__label\">Klikkaa itsesi Helsingin kaupungin sivustolle</span></a></p>\r\n"
               format: full_html
           field_hero_design:
             -
@@ -136,6 +106,9 @@ default:
           field_hero_image:
             -
               entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_hero_link_design:
+            -
+              value: primary
           field_hero_title:
             -
               value: 'Hero: Kuva alhaalla'

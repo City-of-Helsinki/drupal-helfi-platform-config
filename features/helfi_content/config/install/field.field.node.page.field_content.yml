@@ -8,7 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
-    - paragraphs.paragraphs_type.link
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.text
   module:
@@ -28,7 +27,6 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      link: link
       text: text
       image: image
       list_of_links: list_of_links

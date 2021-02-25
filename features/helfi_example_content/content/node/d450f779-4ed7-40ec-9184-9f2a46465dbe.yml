@@ -48,27 +48,6 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: d35a7064-97bb-44a1-82e8-2db46fb17886
-          bundle: text
-          default_langcode: fi
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1612452481
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
           uuid: 21ac71eb-9094-43d8-987b-595c6555c364
           bundle: columns
           default_langcode: fi
@@ -670,7 +649,7 @@ translations:
         value: true
     path:
       -
-        alias: ''
+        alias: /columns
         langcode: en
         pathauto: 1
     content_translation_source:

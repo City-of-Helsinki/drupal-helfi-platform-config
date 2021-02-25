@@ -26,6 +26,9 @@ translations:
     sticky:
       -
         value: false
+    revision_translation_affected:
+      -
+        value: true
     path:
       -
         alias: /esimerkkisivu
@@ -277,6 +280,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_columns_design:
               -
                 value: 50-50
@@ -299,6 +305,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_image:
                       -
                         entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -327,6 +336,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_text:
                       -
                         value: "<p>Aenean vel nisl enim. Ut dui quam, rhoncus a nunc quis, rhoncus egestas dolor. Aliquam finibus, ex at suscipit tempor, dui nibh maximus dui, nec sagittis libero justo a ex. Suspendisse quam neque, pellentesque a felis vitae, viverra interdum nunc. Aenean rhoncus nulla tortor, laoreet aliquet sapien dignissim ut. Sed id dolor id ligula posuere rutrum eget vel nisi. Fusce vel ultrices lacus. Aenean molestie neque ac tellus ornare, in egestas purus egestas. Aenean varius ante bibendum tempor tempor.</p>\r\n"
@@ -1295,6 +1307,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n"
@@ -1317,6 +1332,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_gallery_slides:
             -
               entity:
@@ -1336,6 +1354,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_gallery_slide_caption:
                     -
                       value: 'This gallery has only two images.'
@@ -1360,6 +1381,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_gallery_slide_caption:
                     -
                       value: 'No need for any more.'
