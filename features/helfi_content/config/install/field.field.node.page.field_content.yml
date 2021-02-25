@@ -45,7 +45,7 @@ settings:
         weight: 3
       gallery:
         weight: 15
-        enabled: true
+        enabled: false
       gallery_slide:
         weight: 16
         enabled: false
@@ -59,7 +59,7 @@ settings:
         enabled: true
         weight: 6
       list_of_links:
-        enabled: true
+        enabled: false
         weight: 7
       list_of_links_item:
         weight: 8

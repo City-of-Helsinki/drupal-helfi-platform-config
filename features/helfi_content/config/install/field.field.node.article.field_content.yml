@@ -57,7 +57,7 @@ settings:
         enabled: false
         weight: 6
       list_of_links:
-        enabled: true
+        enabled: false
         weight: 7
       list_of_links_item:
         weight: 8
