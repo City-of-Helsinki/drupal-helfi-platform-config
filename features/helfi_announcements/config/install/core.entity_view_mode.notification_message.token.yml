@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - notification_message
+id: notification_message.token
+label: Token
+targetEntityType: notification_message
+cache: true

@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: global
+label: Global
+description: 'The <em>global</em> should be used to show notification messages throughout the site.'
+help: ''
+allow_condition: true
+condition_datatype: {  }

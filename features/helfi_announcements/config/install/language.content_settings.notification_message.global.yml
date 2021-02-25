@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - notification_message.type.global
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: notification_message.global
+target_entity_type_id: notification_message
+target_bundle: global
+default_langcode: fi
+language_alterable: true

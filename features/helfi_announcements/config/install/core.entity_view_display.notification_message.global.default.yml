@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - notification_message.type.global
+  module:
+    - text
+id: notification_message.global.default
+targetEntityType: notification_message
+bundle: global
+mode: default
+content:
+  message:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+hidden:
+  label: true
+  langcode: true
+  uid: true
