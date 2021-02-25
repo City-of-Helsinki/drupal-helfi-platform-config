@@ -7,7 +7,7 @@
   "require": {
     "drupal/crop": "^2.1",
     "drupal/default_content": "^2.0.0-alpha1",
-    "drupal/easy_breadcrumb": "1.x-dev#a961e9a2e856a6f52fc7a98ead57f003c9aeb450",
+    "drupal/easy_breadcrumb": "dev-1.x#a961e9a2e856a6f52fc7a98ead57f003c9aeb450",
     "drupal/elasticsearch_connector": "^7.0@alpha",
     "drupal/entity_browser": "^2.5",
     "drupal/eu_cookie_compliance": "^1.14",
