@@ -28,40 +28,37 @@ settings:
       banner: banner
       list_of_links: list_of_links
     target_bundles_drag_drop:
-      accordion:
-        weight: 13
-        enabled: false
-      accordion_item:
-        weight: 14
-        enabled: false
-      banner:
-        enabled: true
-        weight: 15
       columns:
         enabled: true
-        weight: 10
-      gallery:
-        weight: 11
-        enabled: false
-      gallery_slide:
-        weight: 12
-        enabled: false
-      hero:
-        weight: 13
-        enabled: false
-      image:
-        weight: 14
-        enabled: false
-      link:
-        weight: 15
-        enabled: false
+        weight: 1
+      banner:
+        enabled: true
+        weight: 2
       list_of_links:
         enabled: true
-        weight: 16
+        weight: 3
+      accordion:
+        weight: 4
+        enabled: false
+      accordion_item:
+        weight: 5
+        enabled: false
+      gallery:
+        weight: 6
+        enabled: false
+      gallery_slide:
+        weight: 7
+        enabled: false
+      hero:
+        weight: 8
+        enabled: false
+      image:
+        weight: 9
+        enabled: false
       list_of_links_item:
-        weight: 17
+        weight: 10
         enabled: false
       text:
-        weight: 18
+        weight: 11
         enabled: false
 field_type: entity_reference_revisions

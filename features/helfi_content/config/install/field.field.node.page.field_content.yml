@@ -34,37 +34,34 @@ settings:
       gallery: gallery
       accordion: accordion
     target_bundles_drag_drop:
-      accordion:
-        enabled: true
-        weight: 12
-      accordion_item:
-        weight: 13
-        enabled: false
-      columns:
-        enabled: true
-        weight: 3
-      gallery:
-        weight: 15
-        enabled: false
-      gallery_slide:
-        weight: 16
-        enabled: false
-      hero:
-        weight: 0
-        enabled: false
-      image:
-        enabled: true
-        weight: 2
-      link:
-        enabled: true
-        weight: 6
-      list_of_links:
-        enabled: false
-        weight: 7
-      list_of_links_item:
-        weight: 8
-        enabled: false
       text:
         enabled: true
         weight: 1
+      columns:
+        enabled: true
+        weight: 2
+      accordion:
+        enabled: true
+        weight: 3
+      image:
+        enabled: true
+        weight: 4
+      gallery:
+        enabled: true
+        weight: 5
+      list_of_links:
+        enabled: true
+        weight: 6
+      accordion_item:
+        weight: 7
+        enabled: false
+      gallery_slide:
+        weight: 8
+        enabled: false
+      hero:
+        weight: 9
+        enabled: false
+      list_of_links_item:
+        weight: 10
+        enabled: false
 field_type: entity_reference_revisions
