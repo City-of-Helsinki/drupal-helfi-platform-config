@@ -31,7 +31,6 @@ translations:
         value: true
     path:
       -
-        alias: /esimerkkisivu
         langcode: fi
         pathauto: 1
     content_translation_source:
@@ -1279,7 +1278,6 @@ default:
       value: true
   path:
     -
-      alias: /example-page
       langcode: en
       pathauto: 1
   content_translation_source:
