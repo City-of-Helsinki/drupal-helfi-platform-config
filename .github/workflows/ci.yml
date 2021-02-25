@@ -32,6 +32,7 @@ jobs:
           cd $DRUPAL_ROOT
           echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json
           composer require drupal/$MODULE_NAME
+          composer install
           php -d sendmail_path=$(which true); drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
           drush en $MODULE_NAME -y
 
