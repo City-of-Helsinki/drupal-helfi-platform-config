@@ -5,4 +5,4 @@ core: 8.x
 core_version_requirement: ^8 || ^9
 dependencies:
   - features
-  - helfi_base_config
+  - menu_block_current_language

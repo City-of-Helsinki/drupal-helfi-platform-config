@@ -7,7 +7,7 @@
   "require": {
     "drupal/crop": "^2.1",
     "drupal/default_content": "^2.0.0-alpha1",
-    "drupal/easy_breadcrumb": "dev-1.x#a961e9a2e856a6f52fc7a98ead57f003c9aeb450",
+    "drupal/easy_breadcrumb": "^1.13",
     "drupal/elasticsearch_connector": "^7.0@alpha",
     "drupal/entity_browser": "^2.5",
     "drupal/eu_cookie_compliance": "^1.14",
@@ -27,9 +27,6 @@
     "patches": {
       "drupal/core": {
         "[#UHF-181] Hide untranslated menu links": "https://www.drupal.org/files/issues/2019-10-30/3091246-allow-menu-tree-manipulators-alter-5.patch"
-      },
-      "drupal/social_media": {
-        "Schema file is missing which causes functional tests to fail": "https://www.drupal.org/files/issues/2020-06-08/2986819-3.patch"
       },
       "drupal/default_content": {
         "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"

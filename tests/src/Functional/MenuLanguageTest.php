@@ -37,6 +37,7 @@ class MenuLanguageTest extends ContentTranslationTestBase {
     'test_page_test',
     'menu_ui',
     'menu_link_content',
+    'menu_block_current_language',
     'helfi_platform_config',
   ];
 
@@ -61,6 +62,7 @@ class MenuLanguageTest extends ContentTranslationTestBase {
     $this->adminUser = $this->drupalCreateUser([
       'administer languages',
       'access administration pages',
+      'administer menu',
     ]);
     $this->drupalLogin($this->adminUser);
 
