@@ -28,6 +28,9 @@
       "drupal/core": {
         "[#UHF-181] Hide untranslated menu links": "https://www.drupal.org/files/issues/2019-10-30/3091246-allow-menu-tree-manipulators-alter-5.patch"
       },
+      "drupal/social_media": {
+        "Schema file is missing which causes functional tests to fail": "https://www.drupal.org/files/issues/2020-06-08/2986819-3.patch"
+      },
       "drupal/default_content": {
         "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"
       },
