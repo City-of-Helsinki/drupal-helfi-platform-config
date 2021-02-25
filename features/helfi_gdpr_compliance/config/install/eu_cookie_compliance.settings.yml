@@ -14,19 +14,19 @@ popup_agreed:
   format: full_html
 popup_agree_button_message: Accept
 popup_agreed_enabled: false
-popup_bg_hex: 0779bf
+popup_bg_hex: ''
 popup_clicking_confirmation: false
 popup_scrolling_confirmation: false
 popup_delay: 1000
 show_more_info: true
-popup_more_info_button_message: 'More info'
+popup_more_info_button_message: 'Show cookies'
 popup_enabled: true
-popup_find_more_button_message: 'More info'
+popup_find_more_button_message: 'Show cookies'
 popup_height: null
 popup_hide_agreed: false
 popup_hide_button_message: Hide
 popup_info:
-  value: "<h2>We use cookies on this site to enhance your user experience</h2>\r\n\r\n<p>By clicking the Accept button, you agree to us doing so.</p>\r\n"
+  value: "<h2>Hel.fi uses cookies&nbsp;</h2>\r\n\r\n<p>We use essential cookies on our website to make the site work. Also third party cookies are used if you give us your permission.</p>\r\n"
   format: full_html
 mobile_popup_info:
   value: ''
@@ -37,9 +37,9 @@ popup_link: /node/1
 popup_link_new_window: false
 popup_position: false
 fixed_top_position: true
-popup_text_hex: ffffff
-popup_width: 100%
-use_bare_css: false
+popup_text_hex: ''
+popup_width: ''
+use_bare_css: true
 disagree_do_not_show_popup: false
 reload_page: true
 cookie_name: ''
@@ -53,13 +53,13 @@ automatic_cookies_removal: true
 allowed_cookies: 'marketing:form-test-cookie'
 consent_storage_method: do_not_store
 withdraw_message:
-  value: "<h2>We use cookies on this site to enhance your user experience</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
+  value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
   format: full_html
 withdraw_action_button_label: 'Withdraw consent'
 withdraw_tab_button_label: 'Privacy settings'
 withdraw_enabled: false
 enable_save_preferences_button: true
-save_preferences_button_label: 'Save preferences'
+save_preferences_button_label: 'Allow only essential cookies'
 accept_all_categories_button_label: 'Accept all cookies'
 withdraw_button_on_info_popup: false
 domain_all_sites: true
