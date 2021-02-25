@@ -12,9 +12,9 @@ _meta:
     77e5183c-4d25-447e-a4e1-58776b2b545b: node
     8455251b-91bd-4c71-9756-94112e8912c1: node
     d5bf4eac-26d6-420e-bd19-7d66ff969181: node
+    923ecd78-00ff-47f9-a017-012b781d6bab: media
     d450f779-4ed7-40ec-9184-9f2a46465dbe: node
     b62f70bb-3e19-4c21-be5e-621b96169fe1: node
-    923ecd78-00ff-47f9-a017-012b781d6bab: media
 default:
   revision_uid:
     -
@@ -67,9 +67,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_list_of_links_design:
             -
               value: without-image-desc
@@ -92,9 +89,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
@@ -118,9 +112,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
@@ -144,9 +135,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
@@ -170,9 +158,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
@@ -196,9 +181,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
@@ -222,9 +204,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
@@ -248,9 +227,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
@@ -259,6 +235,42 @@ default:
           field_list_of_links_title:
             -
               value: 'Esimerkkejä Hero-komponenteista'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: fa56c7ec-28db-4466-b4e2-f0738d9ecbca
+          bundle: banner
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1614096385
+          behavior_settings:
+            -
+              value: {  }
+          field_banner_desc:
+            -
+              value: "<p>Maecenas convallis faucibus finibus. Phasellus et arcu diam. <strong>Cras tempor </strong>arcu in felis maximus convallis. Duis congue eu risus a placerat. Etiam faucibus erat et placerat sagittis. Duis venenatis interdum elit, nec dapibus nulla rhoncus at.&nbsp;</p>\r\n"
+              format: full_html
+          field_banner_design:
+            -
+              value: align-center
+          field_banner_link:
+            -
+              uri: 'https://hel.fi'
+              title: 'Esimerkkilinkki joka vie ulkoiselle sivustolle'
+              options: {  }
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Tämä on esimerkkibanneri joka on keskitetty'
     -
       entity:
         _meta:
@@ -277,9 +289,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 50-50
@@ -302,9 +311,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p><strong>Veli kulta, veikkoseni,</strong>&nbsp;kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
@@ -328,9 +334,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Niit' ennen isoni lauloi kirvesvartta vuollessansa; niitä äitini opetti väätessänsä värttinätä, minun lasna lattialla eessä polven pyöriessä, maitopartana pahaisna, piimäsuuna pikkaraisna. Sampo ei puuttunut sanoja eikä Louhi luottehia: vanheni sanoihin sampo, katoi Louhi luottehisin, virsihin Vipunen kuoli, Lemminkäinen leikkilöihin.</p>\r\n"
@@ -338,6 +341,45 @@ default:
           field_columns_title:
             -
               value: 'Esimerkki palstat komponentista laskeutumissivulla'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a30d41cf-1c7c-45f1-9dd7-9a7e0848fd35
+          bundle: banner
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1614096479
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_banner_desc:
+            -
+              value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"
+              format: full_html
+          field_banner_design:
+            -
+              value: align-left
+          field_banner_link:
+            -
+              uri: 'internal:/'
+              title: 'Linkki etusivulle'
+              options: {  }
+          field_banner_link_design:
+            -
+              value: secondary
+          field_banner_title:
+            -
+              value: 'Banneriesimerkki joka on tasattu vasemmalle'
     -
       entity:
         _meta:
@@ -356,9 +398,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_list_of_links_design:
             -
               value: with-image
@@ -381,9 +420,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_image:
                     -
                       entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -417,9 +453,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_hero_bg_color:
             -
               value: gold
@@ -442,9 +475,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_link_design:
                     -
                       value: primary
@@ -486,9 +516,12 @@ translations:
     sticky:
       -
         value: false
+    revision_translation_affected:
+      -
+        value: true
     path:
       -
-        alias: /an-example-of-landing-page
+        alias: /example-landing-page
         langcode: en
         pathauto: 1
     content_translation_source:
@@ -516,9 +549,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_list_of_links_design:
               -
                 value: without-image-desc
@@ -541,9 +571,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
@@ -567,9 +594,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
@@ -593,9 +617,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
@@ -619,9 +640,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
@@ -645,9 +663,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
@@ -671,9 +686,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
@@ -697,9 +709,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
@@ -726,9 +735,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_columns_design:
               -
                 value: 50-50
@@ -751,9 +757,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_text:
                       -
                         value: "<p>Leoetiam enean lus bibendu tempor onec. Molestie iquam ante lacinia justov faucibus semnunc magnis. Mollis abitur ris lacusp arcualiq loremn isque. Eratphas morbi iumsed blandit posuered sodalesm.</p>\r\n"
@@ -777,9 +780,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_text:
                       -
                         value: "<p>Leoetiam enean lus bibendu tempor onec. Molestie iquam ante lacinia justov faucibus semnunc magnis. Mollis abitur ris lacusp arcualiq loremn isque. Eratphas morbi iumsed blandit posuered sodalesm.</p>\r\n"
@@ -787,6 +787,45 @@ translations:
             field_columns_title:
               -
                 value: 'This is an example of how columns work on landing page'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: f3dca7ab-98d4-4975-a355-e35b8560d563
+            bundle: banner
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1614096625
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_banner_desc:
+              -
+                value: "<p>Quisque at pellentesque risus. Suspendisse vel mattis felis. Suspendisse potenti. Vestibulum scelerisque viverra lacus eu ultricies. Ut euismod condimentum magna, a condimentum ligula tempus in. Mauris egestas ultrices faucibus. Nullam et tincidunt felis</p>\r\n"
+                format: full_html
+            field_banner_design:
+              -
+                value: align-center
+            field_banner_link:
+              -
+                uri: 'https://helfi/en'
+                title: 'External link example'
+                options: {  }
+            field_banner_link_design:
+              -
+                value: supplementary
+            field_banner_title:
+              -
+                value: 'Example banner for the English version'
       -
         entity:
           _meta:
@@ -805,9 +844,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_list_of_links_design:
               -
                 value: with-image
@@ -830,9 +866,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_image:
                       -
                         entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -866,9 +899,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_hero_bg_color:
               -
                 value: gold
@@ -891,9 +921,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_link_design:
                       -
                         value: primary

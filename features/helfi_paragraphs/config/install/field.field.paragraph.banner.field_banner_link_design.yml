@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_banner_link_design
+    - paragraphs.paragraphs_type.banner
+  module:
+    - options
+id: paragraph.banner.field_banner_link_design
+field_name: field_banner_link_design
+entity_type: paragraph
+bundle: banner
+label: 'Link design'
+description: 'Choose what kind of design you want to use for the link button. If you don''t add a link to the banner you can ignore this field.'
+required: true
+translatable: false
+default_value:
+  -
+    value: primary
+default_value_callback: ''
+settings: {  }
+field_type: list_string

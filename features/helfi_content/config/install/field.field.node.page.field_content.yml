@@ -49,7 +49,7 @@ settings:
         weight: 15
         enabled: true
       gallery_slide:
-        weight: 5
+        weight: 16
         enabled: false
       hero:
         weight: 0

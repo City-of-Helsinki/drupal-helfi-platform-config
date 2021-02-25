@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.node.field_content
     - node.type.landing_page
+    - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.list_of_links
   module:
@@ -24,8 +25,18 @@ settings:
     negate: 0
     target_bundles:
       columns: columns
+      banner: banner
       list_of_links: list_of_links
     target_bundles_drag_drop:
+      accordion:
+        weight: 13
+        enabled: false
+      accordion_item:
+        weight: 14
+        enabled: false
+      banner:
+        enabled: true
+        weight: 15
       columns:
         enabled: true
         weight: 10
