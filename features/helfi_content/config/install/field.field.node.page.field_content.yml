@@ -8,7 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
-    - paragraphs.paragraphs_type.link
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.text
   module:
@@ -28,7 +27,6 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      link: link
       text: text
       image: image
       list_of_links: list_of_links
@@ -36,37 +34,34 @@ settings:
       gallery: gallery
       accordion: accordion
     target_bundles_drag_drop:
-      accordion:
-        enabled: true
-        weight: 12
-      accordion_item:
-        weight: 13
-        enabled: false
-      columns:
-        enabled: true
-        weight: 3
-      gallery:
-        weight: 15
-        enabled: true
-      gallery_slide:
-        weight: 16
-        enabled: false
-      hero:
-        weight: 0
-        enabled: false
-      image:
-        enabled: true
-        weight: 2
-      link:
-        enabled: true
-        weight: 6
-      list_of_links:
-        enabled: true
-        weight: 7
-      list_of_links_item:
-        weight: 8
-        enabled: false
       text:
         enabled: true
         weight: 1
+      columns:
+        enabled: true
+        weight: 2
+      accordion:
+        enabled: true
+        weight: 3
+      image:
+        enabled: true
+        weight: 4
+      gallery:
+        enabled: true
+        weight: 5
+      list_of_links:
+        enabled: true
+        weight: 6
+      accordion_item:
+        weight: 7
+        enabled: false
+      gallery_slide:
+        weight: 8
+        enabled: false
+      hero:
+        weight: 9
+        enabled: false
+      list_of_links_item:
+        weight: 10
+        enabled: false
 field_type: entity_reference_revisions

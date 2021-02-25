@@ -1,2 +1,2 @@
 label: 'Короткая дата по умолчанию'
-pattern: 'd.m.Y'
+pattern: d.m.Y

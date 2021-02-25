@@ -94,43 +94,16 @@ default:
           field_hero_bg_color:
             -
               value: metro
-          field_hero_cta:
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 157c5549-573c-43d6-a005-229da07c4635
-                  bundle: link
-                  default_langcode: fi
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1610705809
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_link_design:
-                    -
-                      value: secondary
-                  field_link_link:
-                    -
-                      uri: 'https://www.hel.fi'
-                      title: 'Klikkaa itsesi Helsingin kaupungin sivustolle'
-                      options: {  }
           field_hero_desc:
             -
-              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n"
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" href=\"https://hel.fi\"><span class=\"hds-button__label\">Klikkaa itsesi Helsingin kaupungin sivustolle</span></a></p>\r\n"
               format: full_html
           field_hero_design:
             -
               value: without-image-left
+          field_hero_link_design:
+            -
+              value: primary
           field_hero_title:
             -
               value: 'Hero: Ilman kuvaa, tasattu vasemmalle'

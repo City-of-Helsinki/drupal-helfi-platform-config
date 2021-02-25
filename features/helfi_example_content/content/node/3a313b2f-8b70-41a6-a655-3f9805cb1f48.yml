@@ -96,39 +96,9 @@ default:
           field_hero_bg_color:
             -
               value: coat-of-arms
-          field_hero_cta:
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 266b7044-dacd-49aa-b7c8-512484887def
-                  bundle: link
-                  default_langcode: fi
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1610706403
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_link_design:
-                    -
-                      value: primary
-                  field_link_link:
-                    -
-                      uri: 'https://www.hel.fi'
-                      title: 'Klikkaa itsesi Helsingin kaupungin sivustolle'
-                      options: {  }
           field_hero_desc:
             -
-              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n"
+              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" href=\"https://hel.fi\"><span class=\"hds-button__label\">Klikkaa itsesi Helsingin kaupungin sivustolle</span></a></p>\r\n"
               format: full_html
           field_hero_design:
             -
@@ -136,6 +106,9 @@ default:
           field_hero_image:
             -
               entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_hero_link_design:
+            -
+              value: primary
           field_hero_title:
             -
               value: 'Hero: Kuva oikealla'
