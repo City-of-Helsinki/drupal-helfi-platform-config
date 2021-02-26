@@ -39,7 +39,6 @@ default:
       value: true
   path:
     -
-      alias: /helsingin-kaupunginosat
       langcode: fi
       pathauto: 1
   content_translation_source:
