@@ -3,7 +3,6 @@ status: true
 dependencies:
   module:
     - linkit
-    - media
 name: HTML
 format: full_html
 weight: 0
@@ -43,12 +42,3 @@ filters:
     weight: 0
     settings:
       title: true
-  media_embed:
-    id: media_embed
-    provider: media
-    status: false
-    weight: 100
-    settings:
-      default_view_mode: default
-      allowed_media_types: {  }
-      allowed_view_modes: {  }
