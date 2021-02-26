@@ -31,8 +31,9 @@ translations:
         value: true
     path:
       -
+        alias: /esimerkkisivu
         langcode: fi
-        pathauto: 1
+        pathauto: 0
     content_translation_source:
       -
         value: en

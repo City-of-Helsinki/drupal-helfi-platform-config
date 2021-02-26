@@ -648,8 +648,9 @@ translations:
         value: true
     path:
       -
+        alias: /columns
         langcode: en
-        pathauto: 1
+        pathauto: 0
     content_translation_source:
       -
         value: fi
