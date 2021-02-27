@@ -36,9 +36,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   path:
     -
       alias: /esimerkki-laskeutumissivusta
@@ -69,9 +66,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_list_of_links_design:
             -
               value: without-image-desc
@@ -94,9 +88,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
@@ -120,9 +111,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
@@ -146,9 +134,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
@@ -172,9 +157,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
@@ -198,9 +180,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
@@ -224,9 +203,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
@@ -250,9 +226,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_link:
                     -
                       target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
@@ -279,9 +252,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_banner_desc:
             -
               value: "<p>Maecenas convallis faucibus finibus. Phasellus et arcu diam. <strong>Cras tempor </strong>arcu in felis maximus convallis. Duis congue eu risus a placerat. Etiam faucibus erat et placerat sagittis. Duis venenatis interdum elit, nec dapibus nulla rhoncus at.&nbsp;</p>\r\n"
@@ -318,9 +288,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
               value: 50-50
@@ -343,9 +310,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p><strong>Veli kulta, veikkoseni,</strong>&nbsp;kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
@@ -369,9 +333,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
                       value: "<p>Niit' ennen isoni lauloi kirvesvartta vuollessansa; niitä äitini opetti väätessänsä värttinätä, minun lasna lattialla eessä polven pyöriessä, maitopartana pahaisna, piimäsuuna pikkaraisna. Sampo ei puuttunut sanoja eikä Louhi luottehia: vanheni sanoihin sampo, katoi Louhi luottehisin, virsihin Vipunen kuoli, Lemminkäinen leikkilöihin.</p>\r\n"
@@ -397,9 +358,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_banner_desc:
             -
               value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"
@@ -436,9 +394,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_list_of_links_design:
             -
               value: with-image
@@ -461,9 +416,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_list_of_links_image:
                     -
                       entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -475,6 +427,142 @@ default:
           field_list_of_links_title:
             -
               value: 'Esimerkki palstat-komponentista'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 76b5dc01-a2b3-45c4-bb7b-94639dd04ccd
+          bundle: liftup_with_image
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1614428787
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_liftup_with_image_desc:
+            -
+              value: "<p>Curabitur vel fringilla libero. Vivamus placerat, purus in venenatis scelerisque, turpis purus posuere lorem, eget iaculis orci justo in nulla.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" href=\"https://hel.fi\"><span class=\"hds-button__label\">Hel.fi ulkoinen linkki</span></a></p>\r\n"
+              format: full_html
+          field_liftup_with_image_design:
+            -
+              value: image-on-right
+          field_liftup_with_image_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_liftup_with_image_title:
+            -
+              value: 'Kuvallinen nosto jossa kuva oikealla'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 94a0d90a-994b-4ed1-a762-d3fa0ca9d41f
+          bundle: liftup_with_image
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1614428928
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_liftup_with_image_desc:
+            -
+              value: "<p>Aliquam molestie tristique dolor, in interdum lacus molestie vel. Nulla nec sagittis orci. Nulla facilisis fringilla nibh, vitae molestie ligula ornare non.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" href=\"/node/10\"><span class=\"hds-button__label\">Esimerkkisivu</span></a></p>\r\n"
+              format: full_html
+          field_liftup_with_image_design:
+            -
+              value: image-on-left
+          field_liftup_with_image_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_liftup_with_image_title:
+            -
+              value: 'Kuvallinen nosto jossa kuva vasemmalla'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 36b8516a-1017-431a-9a73-d2c6fea886fa
+          bundle: liftup_with_image
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1614428973
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_liftup_with_image_desc:
+            -
+              value: "<p>Donec a ipsum enim. Nulla vel lorem non ante tempor mollis at nec ex. Sed ornare est rhoncus nisl suscipit sollicitudin. Etiam ut massa sed nulla bibendum laoreet.</p>\r\n\r\n<p><a class=\"hds-button hds-button--supplementary\" href=\"https://oodi.fi\" target=\"_blank\"><span class=\"hds-button__label\">Oodin sivustolle tästä</span></a></p>\r\n"
+              format: full_html
+          field_liftup_with_image_design:
+            -
+              value: background-text-on-right
+          field_liftup_with_image_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_liftup_with_image_title:
+            -
+              value: 'Taustakuvallinen teksti oikealla'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: fc4e09fd-1742-4aba-ac74-253ce5d7924a
+          bundle: liftup_with_image
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1614429029
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_liftup_with_image_desc:
+            -
+              value: "<p>Sed auctor pellentesque ante ut porta. Nulla tristique nisi ut sem ultrices, eu fermentum orci dictum. Curabitur sodales viverra sem quis sollicitudin.</p>\r\n"
+              format: full_html
+          field_liftup_with_image_design:
+            -
+              value: background-text-on-left
+          field_liftup_with_image_image:
+            -
+              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_liftup_with_image_title:
+            -
+              value: 'Taustakuvallinen teksti vasemmalla'
   field_has_hero:
     -
       value: true
@@ -497,9 +585,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_hero_bg_color:
             -
               value: gold
@@ -572,9 +657,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_list_of_links_design:
               -
                 value: without-image-desc
@@ -597,9 +679,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
@@ -623,9 +702,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
@@ -649,9 +725,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
@@ -675,9 +748,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
@@ -701,9 +771,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
@@ -727,9 +794,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
@@ -753,9 +817,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
@@ -782,9 +843,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_columns_design:
               -
                 value: 50-50
@@ -807,9 +865,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_text:
                       -
                         value: "<p>Leoetiam enean lus bibendu tempor onec. Molestie iquam ante lacinia justov faucibus semnunc magnis. Mollis abitur ris lacusp arcualiq loremn isque. Eratphas morbi iumsed blandit posuered sodalesm.</p>\r\n"
@@ -833,9 +888,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_text:
                       -
                         value: "<p>Leoetiam enean lus bibendu tempor onec. Molestie iquam ante lacinia justov faucibus semnunc magnis. Mollis abitur ris lacusp arcualiq loremn isque. Eratphas morbi iumsed blandit posuered sodalesm.</p>\r\n"
@@ -861,9 +913,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_banner_desc:
               -
                 value: "<p>Quisque at pellentesque risus. Suspendisse vel mattis felis. Suspendisse potenti. Vestibulum scelerisque viverra lacus eu ultricies. Ut euismod condimentum magna, a condimentum ligula tempus in. Mauris egestas ultrices faucibus. Nullam et tincidunt felis</p>\r\n"
@@ -900,9 +949,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_list_of_links_design:
               -
                 value: with-image
@@ -925,9 +971,6 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_image:
                       -
                         entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -946,7 +989,7 @@ translations:
             entity_type: paragraph
             uuid: 3e3c3368-60c0-4f7f-8112-b4ca6d465503
             bundle: list_of_links
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -971,7 +1014,7 @@ translations:
                     entity_type: paragraph
                     uuid: 70b3f4b4-77b9-44c7-b587-2b420f7d6cdc
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -996,6 +1039,74 @@ translations:
             field_list_of_links_title:
               -
                 value: 'Esimerkki palstat-komponentista'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 224cb643-4cb7-4136-a0fc-4ec7aaf2fce4
+            bundle: liftup_with_image
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1614429101
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_liftup_with_image_desc:
+              -
+                value: "<p>Sed auctor pellentesque ante ut porta. Nulla tristique nisi ut sem ultrices, eu fermentum orci dictum. Curabitur sodales viverra sem quis sollicitudin.</p>\r\n\r\n<p><a class=\"link\" href=\"https://hel.fi\" target=\"_blank\">Hel.fi website</a></p>\r\n"
+                format: full_html
+            field_liftup_with_image_design:
+              -
+                value: image-on-right
+            field_liftup_with_image_image:
+              -
+                entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+            field_liftup_with_image_title:
+              -
+                value: 'Liftup with image on the right'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 70eb12d7-58a9-498a-9982-d4ddcae339de
+            bundle: liftup_with_image
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1614429144
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_liftup_with_image_desc:
+              -
+                value: "<p>Nullam tempor dui vel sodales mattis. Pellentesque faucibus nunc vitae vehicula mattis. In nisl odio, accumsan eu urna efficitur, viverra euismod erat. Aliquam venenatis vulputate vestibulum.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"b62f70bb-3e19-4c21-be5e-621b96169fe1\" data-link-text=\"Example page\" href=\"/node/10\"><span class=\"hds-button__label\">Example page</span></a></p>\r\n"
+                format: full_html
+            field_liftup_with_image_design:
+              -
+                value: background-text-on-left
+            field_liftup_with_image_image:
+              -
+                entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+            field_liftup_with_image_title:
+              -
+                value: 'Liftup with image as background'
     field_has_hero:
       -
         value: true
@@ -1018,9 +1129,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_hero_bg_color:
               -
                 value: gold
