@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_liftup_with_image_desc
+    - paragraphs.paragraphs_type.liftup_with_image
+  module:
+    - text
+id: paragraph.liftup_with_image.field_liftup_with_image_desc
+field_name: field_liftup_with_image_desc
+entity_type: paragraph
+bundle: liftup_with_image
+label: Description
+description: 'Optional short description for liftup block.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

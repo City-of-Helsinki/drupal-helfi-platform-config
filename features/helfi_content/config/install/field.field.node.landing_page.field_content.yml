@@ -6,6 +6,7 @@ dependencies:
     - node.type.landing_page
     - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.columns
+    - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
   module:
     - entity_reference_revisions
@@ -27,38 +28,42 @@ settings:
       columns: columns
       banner: banner
       list_of_links: list_of_links
+      liftup_with_image: liftup_with_image
     target_bundles_drag_drop:
-      columns:
-        enabled: true
-        weight: 1
-      banner:
-        enabled: true
-        weight: 2
-      list_of_links:
-        enabled: true
-        weight: 3
       accordion:
-        weight: 4
+        weight: -21
         enabled: false
       accordion_item:
-        weight: 5
+        weight: -20
         enabled: false
+      banner:
+        enabled: true
+        weight: -24
+      columns:
+        enabled: true
+        weight: -25
       gallery:
-        weight: 6
+        weight: -19
         enabled: false
       gallery_slide:
-        weight: 7
+        weight: -18
         enabled: false
       hero:
-        weight: 8
+        weight: -17
         enabled: false
       image:
-        weight: 9
+        weight: -16
         enabled: false
+      liftup_with_image:
+        enabled: true
+        weight: -22
+      list_of_links:
+        enabled: true
+        weight: -23
       list_of_links_item:
-        weight: 10
+        weight: -15
         enabled: false
       text:
-        weight: 11
+        weight: -14
         enabled: false
 field_type: entity_reference_revisions

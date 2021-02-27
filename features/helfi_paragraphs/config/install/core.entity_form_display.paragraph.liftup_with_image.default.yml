@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.liftup_with_image.field_liftup_with_image_desc
+    - field.field.paragraph.liftup_with_image.field_liftup_with_image_design
+    - field.field.paragraph.liftup_with_image.field_liftup_with_image_image
+    - field.field.paragraph.liftup_with_image.field_liftup_with_image_title
+    - paragraphs.paragraphs_type.liftup_with_image
+  module:
+    - media_library
+    - text
+id: paragraph.liftup_with_image.default
+targetEntityType: paragraph
+bundle: liftup_with_image
+mode: default
+content:
+  field_liftup_with_image_desc:
+    weight: 3
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_liftup_with_image_design:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_liftup_with_image_image:
+    type: media_library_widget
+    weight: 2
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_liftup_with_image_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
