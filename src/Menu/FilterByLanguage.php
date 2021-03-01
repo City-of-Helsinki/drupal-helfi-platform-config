@@ -15,6 +15,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class FilterByLanguage implements EventSubscriberInterface {
 
   /**
+   * List of menu names to filter.
+   *
+   * @var string[]
+   */
+  protected $menuNames = [
+    'main',
+  ];
+
+  /**
    * Responds to MenuLinkTreeEvents::ALTER_MANUPULATORS event.
    *
    * @param \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent $event
@@ -22,6 +31,20 @@ final class FilterByLanguage implements EventSubscriberInterface {
    */
   public function filter(MenuLinkTreeManipulatorsAlterEvent $event) : void {
     $manipulators = &$event->getManipulators();
+
+    $menuName = NULL;
+    foreach ($event->getTree() as $item) {
+      if (!$item->link) {
+        continue;
+      }
+      $menuName = $item->link->getMenuName();
+      break;
+    }
+
+    if (!in_array($menuName, $this->menuNames)) {
+      return;
+    }
+
     $manipulators[] = [
       'callable' => 'menu_block_current_language_tree_manipulator::filterLanguages',
       'args' => [['menu_link_content']],
