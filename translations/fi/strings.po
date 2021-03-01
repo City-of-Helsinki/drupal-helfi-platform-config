@@ -1,0 +1,6 @@
+# Example:
+# https://www.drupal.org/community/contributor-guide/reference-information/localize-drupal-org/working-with-offline/po-and
+# msgid "Text string"
+# msgstr "Text string translation"
+msgid "Test string"
+msgstr "Testi string"
