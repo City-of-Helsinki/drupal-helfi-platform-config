@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_platform_config\Menu;
 
-use Drupal\Core\Menu\MenuLinkTreeEvents;
 use Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -34,7 +33,7 @@ final class FilterByLanguage implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() : array {
     return [
-      MenuLinkTreeEvents::ALTER_MANIPULATORS => [
+      'menu.link_tree.alter_manipulators' => [
         ['filter'],
       ],
     ];
