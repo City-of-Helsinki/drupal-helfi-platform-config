@@ -1,0 +1,6 @@
+services:
+  helfi_platform_config.locale_commands:
+    class: \Drupal\helfi_platform_config\Commands\LocaleCommands
+    arguments: ['@language_manager', '@file_system', '@string_translation']
+    tags:
+      - { name: drush.command }
