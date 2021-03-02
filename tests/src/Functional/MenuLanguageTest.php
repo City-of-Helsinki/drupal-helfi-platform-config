@@ -113,7 +113,7 @@ class MenuLanguageTest extends ContentTranslationTestBase {
       'expanded' => 1,
     ]);
 
-    $this->drupalGet('admin/structure/menu/manage/main', ['query' => ['language' => 'en']]);
+    $this->drupalget('admin/structure/menu/manage/main', ['query' => ['language' => 'en']]);
     $this->assertSession()->linkExists($link->label());
 
     // Make sure link is not visible when translation doesnt exist.

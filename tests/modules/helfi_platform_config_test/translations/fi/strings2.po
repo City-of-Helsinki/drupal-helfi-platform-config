@@ -1,0 +1,4 @@
+msgid ""
+msgstr ""
+msgid "Test string 2"
+msgstr "Test string 2 fi"

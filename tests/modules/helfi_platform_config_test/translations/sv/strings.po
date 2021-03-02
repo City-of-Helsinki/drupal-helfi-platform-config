@@ -1,0 +1,4 @@
+msgid ""
+msgstr ""
+msgid "Test string"
+msgstr "Test string sv"
