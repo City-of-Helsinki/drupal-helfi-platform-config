@@ -386,7 +386,7 @@ default:
                       value: true
                   field_text:
                     -
-                      value: "<p><strong>Nämä linkit aukeavat samaan ikkunaan</strong></p>\r\n\r\n<p>Vivamus aliquet ligula sit amet mauris condimentum, <a class=\"link\" href=\"&lt;front&gt;\">vel tempus ex elementum</a>. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. <a class=\"link\" data-link-text=\"Fusce nec arcu ut massa sodales accumsan nec quis nulla.\" href=\"&lt;front&gt;\">Fusce nec arcu ut massa sodales accumsan nec quis nulla.</a>Nam vel rutrum nunc.</p>\r\n"
+                      value: "<p><strong>Nämä linkit aukeavat samaan ikkunaan</strong></p>\r\n\r\n<p>Vivamus aliquet ligula sit amet mauris condimentum, <a class=\"link\" href=\"/\">vel tempus ex elementum</a>. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. <a class=\"link\" data-link-text=\"Fusce nec arcu ut massa sodales accumsan nec quis nulla.\" href=\"/\">Fusce nec arcu ut massa sodales accumsan nec quis nulla.</a>Nam vel rutrum nunc.</p>\r\n"
                       format: full_html
           field_columns_right_column:
             -
@@ -412,7 +412,7 @@ default:
                       value: true
                   field_text:
                     -
-                      value: "<p><strong>Nämä linkit aukeavat uuteen ikkunaan</strong></p>\r\n\r\n<p>Vivamus aliquet ligula sit amet mauris condimentum, <a class=\"link\" href=\"&lt;front&gt;\" target=\"_blank\">vel tempus ex elementum.</a> Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. <a class=\"link\" href=\"&lt;front&gt;\" target=\"_blank\">Fusce nec arcu ut massa sodales accumsan nec quis nulla.</a> Nam vel rutrum nunc.</p>\r\n"
+                      value: "<p><strong>Nämä linkit aukeavat uuteen ikkunaan</strong></p>\r\n\r\n<p>Vivamus aliquet ligula sit amet mauris condimentum, <a class=\"link\" href=\"/\" target=\"_blank\">vel tempus ex elementum.</a> Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. <a class=\"link\" href=\"/\" target=\"_blank\">Fusce nec arcu ut massa sodales accumsan nec quis nulla.</a> Nam vel rutrum nunc.</p>\r\n"
                       format: full_html
           field_columns_title:
             -
