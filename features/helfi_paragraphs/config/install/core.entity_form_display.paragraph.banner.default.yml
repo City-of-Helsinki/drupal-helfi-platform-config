@@ -9,7 +9,7 @@ dependencies:
     - field.field.paragraph.banner.field_banner_title
     - paragraphs.paragraphs_type.banner
   module:
-    - link
+    - hdbt_admin_editorial
     - text
 id: paragraph.banner.default
 targetEntityType: paragraph
@@ -35,8 +35,9 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      link_target: ''
     third_party_settings: {  }
-    type: link_default
+    type: link_target_field_widget
     region: content
   field_banner_link_design:
     weight: 4
