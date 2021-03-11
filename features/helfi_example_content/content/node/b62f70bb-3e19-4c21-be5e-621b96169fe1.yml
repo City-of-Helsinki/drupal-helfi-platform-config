@@ -119,7 +119,7 @@ translations:
                 value: true
             field_text:
               -
-                value: "<p>Toinen teksti-paragraph, joka näkyy vain suomeksi. <a href=\"&lt;front&gt;\">Tässä sisällössä on myös kaikkea muuta.</a></p>\r\n\r\n<h4>Otsikko joka on tasoa neljä</h4>\r\n\r\n<ul>\r\n\t<li>Lista jossa on kohtia</li>\r\n\t<li>Toinen kohta listassa</li>\r\n\t<li>Kolmas kohta listassa</li>\r\n</ul>\r\n\r\n<p>Niit' ennen isoni lauloi kirvesvartta vuollessansa; niitä äitini opetti väätessänsä värttinätä, minun lasna lattialla eessä polven pyöriessä, maitopartana pahaisna, piimäsuuna pikkaraisna. Sampo ei puuttunut sanoja eikä Louhi luottehia: vanheni sanoihin sampo, katoi Louhi luottehisin, virsihin Vipunen kuoli, Lemminkäinen leikkilöihin.</p>\r\n"
+                value: "<p>Toinen teksti-paragraph, joka näkyy vain suomeksi. <a href=\"/\">Tässä sisällössä on myös kaikkea muuta.</a></p>\r\n\r\n<h4>Otsikko joka on tasoa neljä</h4>\r\n\r\n<ul>\r\n\t<li>Lista jossa on kohtia</li>\r\n\t<li>Toinen kohta listassa</li>\r\n\t<li>Kolmas kohta listassa</li>\r\n</ul>\r\n\r\n<p>Niit' ennen isoni lauloi kirvesvartta vuollessansa; niitä äitini opetti väätessänsä värttinätä, minun lasna lattialla eessä polven pyöriessä, maitopartana pahaisna, piimäsuuna pikkaraisna. Sampo ei puuttunut sanoja eikä Louhi luottehia: vanheni sanoihin sampo, katoi Louhi luottehisin, virsihin Vipunen kuoli, Lemminkäinen leikkilöihin.</p>\r\n"
                 format: full_html
       -
         entity:

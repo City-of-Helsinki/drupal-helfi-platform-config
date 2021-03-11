@@ -11,7 +11,7 @@ dependencies:
     - field.field.paragraph.hero.field_hero_title
     - paragraphs.paragraphs_type.hero
   module:
-    - link
+    - hdbt_admin_editorial
     - media_library
     - text
 id: paragraph.hero.default
@@ -51,8 +51,9 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      link_target: ''
     third_party_settings: {  }
-    type: link_default
+    type: link_target_field_widget
     region: content
   field_hero_link_design:
     weight: 5
