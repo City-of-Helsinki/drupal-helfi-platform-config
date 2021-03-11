@@ -21,7 +21,7 @@ mode: default
 content:
   field_hero_bg_color:
     weight: 5
-    label: hidden
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_key
@@ -35,7 +35,7 @@ content:
     region: content
   field_hero_design:
     weight: 4
-    label: hidden
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_key
@@ -45,12 +45,12 @@ content:
     weight: 0
     label: hidden
     settings:
-      view_mode: default
+      view_mode: hero
       link: false
     third_party_settings: {  }
     region: content
   field_hero_link:
-    weight: 6
+    weight: 3
     label: hidden
     settings:
       trim_length: 80
@@ -62,8 +62,8 @@ content:
     type: link
     region: content
   field_hero_link_design:
-    weight: 7
-    label: hidden
+    weight: 6
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_key
