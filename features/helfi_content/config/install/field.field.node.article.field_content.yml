@@ -32,34 +32,34 @@ settings:
       list_of_links: list_of_links
       gallery: gallery
     target_bundles_drag_drop:
-      text:
-        enabled: true
-        weight: 1
-      columns:
-        enabled: true
-        weight: 2
-      image:
-        enabled: true
-        weight: 3
-      gallery:
-        enabled: true
-        weight: 4
-      list_of_links:
-        enabled: true
-        weight: 5
       accordion:
         weight: 6
         enabled: false
       accordion_item:
         weight: 7
         enabled: false
+      columns:
+        enabled: true
+        weight: 2
+      gallery:
+        enabled: true
+        weight: 4
       gallery_slide:
         weight: 8
         enabled: false
       hero:
         weight: 9
         enabled: false
+      image:
+        enabled: true
+        weight: 3
+      list_of_links:
+        enabled: true
+        weight: 5
       list_of_links_item:
         weight: 10
         enabled: false
+      text:
+        enabled: true
+        weight: 1
 field_type: entity_reference_revisions
