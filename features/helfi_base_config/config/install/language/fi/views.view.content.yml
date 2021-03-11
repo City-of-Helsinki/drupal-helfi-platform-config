@@ -22,8 +22,12 @@ display:
           label: Otsikko
         type:
           label: Sisältötyyppi
+          separator: ', '
         name:
           label: Tekijä
+        langcode:
+          label: Kieli
+          separator: ', '
         status:
           label: Tila
           settings:
