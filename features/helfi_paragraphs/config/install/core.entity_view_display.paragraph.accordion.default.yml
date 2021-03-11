@@ -16,14 +16,14 @@ mode: default
 content:
   field_accordion_design:
     weight: 0
-    label: hidden
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_key
     region: content
   field_accordion_heading_level:
     weight: 1
-    label: hidden
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_key

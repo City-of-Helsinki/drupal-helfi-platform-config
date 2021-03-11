@@ -6,6 +6,7 @@ package: HELfi
 dependencies:
   - 'admin_toolbar:admin_toolbar'
   - 'ctools:ctools'
+  - 'diff:diff'
   - 'drupal:block'
   - 'drupal:config_translation'
   - 'drupal:menu_link_content'

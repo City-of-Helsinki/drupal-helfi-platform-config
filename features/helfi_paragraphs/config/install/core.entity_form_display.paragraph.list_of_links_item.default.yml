@@ -7,7 +7,7 @@ dependencies:
     - field.field.paragraph.list_of_links_item.field_list_of_links_link
     - paragraphs.paragraphs_type.list_of_links_item
   module:
-    - link
+    - hdbt_admin_editorial
     - media_library
 id: paragraph.list_of_links_item.default
 targetEntityType: paragraph
@@ -34,8 +34,9 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      link_target: ''
     third_party_settings: {  }
-    type: link_default
+    type: link_target_field_widget
     region: content
 hidden:
   created: true

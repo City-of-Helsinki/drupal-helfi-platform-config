@@ -19,6 +19,7 @@ dependencies:
   - 'drupal:user'
   - 'entity_reference_revisions:entity_reference_revisions'
   - 'features:features'
+  - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'helfi_media:helfi_media'
   - 'paragraphs:paragraphs'
   - 'paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets'
