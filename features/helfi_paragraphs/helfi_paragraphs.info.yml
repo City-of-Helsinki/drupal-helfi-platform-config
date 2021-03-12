@@ -23,4 +23,5 @@ dependencies:
   - 'helfi_media:helfi_media'
   - 'paragraphs:paragraphs'
   - 'paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets'
+  - 'select2_icon:select2_icon'
 package: HELfi

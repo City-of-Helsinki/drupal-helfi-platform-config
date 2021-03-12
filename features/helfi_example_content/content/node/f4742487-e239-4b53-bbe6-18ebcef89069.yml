@@ -67,19 +67,21 @@ default:
               format: full_html
           field_banner_design:
             -
-              value: align-center
+              value: align-left
           field_banner_link:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa samaan ikkunaan'
-              options:
-                target_new: 0
+              options: {  }
           field_banner_link_design:
             -
               value: primary
           field_banner_title:
             -
               value: Banneriesimerkki
+          field_icon:
+            -
+              icon: info-circle
     -
       entity:
         _meta:
@@ -98,19 +100,21 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_banner_desc:
             -
               value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"
               format: full_html
           field_banner_design:
             -
-              value: align-center
+              value: align-left
           field_banner_link:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa uuteen ikkunaan'
-              options:
-                target_new: true
+              options: {  }
           field_banner_link_design:
             -
               value: primary
@@ -135,6 +139,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_banner_desc:
             -
               value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"
@@ -146,8 +153,7 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa samaan ikkunaan'
-              options:
-                target_new: 0
+              options: {  }
           field_banner_link_design:
             -
               value: secondary
@@ -172,6 +178,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_banner_desc:
             -
               value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"
@@ -183,8 +192,7 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa uuteen ikkunaan'
-              options:
-                target_new: true
+              options: {  }
           field_banner_link_design:
             -
               value: secondary
@@ -209,6 +217,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_banner_desc:
             -
               value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"
@@ -220,8 +231,7 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa samaan ikkunaan'
-              options:
-                target_new: 0
+              options: {  }
           field_banner_link_design:
             -
               value: supplementary
@@ -246,6 +256,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_banner_desc:
             -
               value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"
@@ -257,8 +270,7 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa uuteen ikkunaan'
-              options:
-                target_new: true
+              options: {  }
           field_banner_link_design:
             -
               value: supplementary
@@ -283,6 +295,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: without-image-desc
@@ -305,6 +320,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'internal:/'
@@ -329,6 +347,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'internal:/'
@@ -439,6 +460,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_hero_bg_color:
             -
               value: coat-of-arms
