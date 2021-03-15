@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.3_2_xs
+    - image.style.3_2_xs_2x
+    - image.style.3_2_xxs
+    - image.style.3_2_xxs_2x
+id: content_cards
+label: 'Content cards'
+image_style_mappings:
+  -
+    breakpoint_id: hdbt.xs
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 3_2_xs
+  -
+    breakpoint_id: hdbt.xs
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 3_2_xs_2x
+  -
+    breakpoint_id: hdbt.xxs
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: 3_2_xxs
+  -
+    breakpoint_id: hdbt.xxs
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: 3_2_xxs_2x
+breakpoint_group: hdbt
+fallback_image_style: 3_2_xs
