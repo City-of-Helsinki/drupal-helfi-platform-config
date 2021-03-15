@@ -1,7 +1,7 @@
 langcode: en
 status: true
 dependencies: {  }
-id: long
-label: 'Default long date'
+id: time
+label: 'Default time'
 locked: false
-pattern: 'j.n.Y - H:i'
+pattern: 'H:i'
