@@ -7,9 +7,11 @@ dependencies:
     - field.field.paragraph.banner.field_banner_link
     - field.field.paragraph.banner.field_banner_link_design
     - field.field.paragraph.banner.field_banner_title
+    - field.field.paragraph.banner.field_icon
     - paragraphs.paragraphs_type.banner
   module:
     - hdbt_admin_editorial
+    - select2_icon
     - text
 id: paragraph.banner.default
 targetEntityType: paragraph
@@ -17,7 +19,7 @@ bundle: banner
 mode: default
 content:
   field_banner_desc:
-    weight: 2
+    weight: 3
     settings:
       rows: 3
       placeholder: ''
@@ -31,7 +33,7 @@ content:
     type: options_select
     region: content
   field_banner_link:
-    weight: 3
+    weight: 4
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -40,7 +42,7 @@ content:
     type: link_target_field_widget
     region: content
   field_banner_link_design:
-    weight: 4
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -52,6 +54,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_icon:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: select2_icon_widget
     region: content
 hidden:
   created: true

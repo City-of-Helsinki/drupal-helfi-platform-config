@@ -1199,6 +1199,9 @@ translations:
                     field_accordion_item_heading:
                       -
                         value: 'Harmaan haitarin ensimmäinen otsikko tasoa 3'
+                    field_icon:
+                      -
+                        icon: info-circle
               -
                 entity:
                   _meta:
@@ -1249,6 +1252,9 @@ translations:
                     field_accordion_item_heading:
                       -
                         value: 'Toinen otsikko tasoa 3'
+                    field_icon:
+                      -
+                        icon: info-circle
     field_has_hero:
       -
         value: false
@@ -1274,13 +1280,11 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   path:
     -
+      alias: /example-page
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und

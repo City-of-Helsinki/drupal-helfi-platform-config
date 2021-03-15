@@ -4,9 +4,11 @@ dependencies:
   config:
     - field.field.paragraph.accordion_item.field_accordion_item_content
     - field.field.paragraph.accordion_item.field_accordion_item_heading
+    - field.field.paragraph.accordion_item.field_icon
     - paragraphs.paragraphs_type.accordion_item
   module:
     - entity_reference_revisions
+    - select2_icon
 id: paragraph.accordion_item.default
 targetEntityType: paragraph
 bundle: accordion_item
@@ -28,5 +30,12 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_icon:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: select2_icon_formatter
     region: content
 hidden: {  }

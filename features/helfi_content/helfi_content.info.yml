@@ -27,5 +27,6 @@ dependencies:
   - 'paragraphs:paragraphs'
   - 'pathauto:pathauto'
   - 'select2:select2'
+  - 'select2_icon:select2_icon'
   - 'social_media:social_media'
 package: HELfi

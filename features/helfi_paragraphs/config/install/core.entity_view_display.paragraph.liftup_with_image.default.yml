@@ -16,22 +16,22 @@ bundle: liftup_with_image
 mode: default
 content:
   field_liftup_with_image_desc:
-    weight: 2
+    weight: 3
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_liftup_with_image_design:
-    weight: 3
-    label: inline
+    weight: 0
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: list_key
     region: content
   field_liftup_with_image_image:
     type: entity_reference_entity_view
-    weight: 1
+    weight: 2
     label: hidden
     settings:
       view_mode: image
@@ -39,7 +39,7 @@ content:
     third_party_settings: {  }
     region: content
   field_liftup_with_image_title:
-    weight: 0
+    weight: 1
     label: hidden
     settings:
       link_to_entity: false
