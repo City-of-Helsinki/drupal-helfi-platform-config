@@ -20,21 +20,21 @@ bundle: banner
 mode: default
 content:
   field_banner_desc:
-    weight: 2
+    weight: 1
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_banner_design:
-    weight: 0
-    label: hidden
+    weight: 3
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_key
     region: content
   field_banner_link:
-    weight: 3
+    weight: 2
     label: hidden
     settings:
       trim_length: 80
@@ -47,13 +47,13 @@ content:
     region: content
   field_banner_link_design:
     weight: 4
-    label: hidden
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_key
     region: content
   field_banner_title:
-    weight: 1
+    weight: 0
     label: hidden
     settings:
       link_to_entity: false

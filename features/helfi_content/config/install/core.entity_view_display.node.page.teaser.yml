@@ -17,20 +17,16 @@ mode: teaser
 content:
   field_liftup_image:
     type: entity_reference_entity_view
-    weight: 1
+    weight: 0
     region: content
     label: hidden
     settings:
-      view_mode: default
+      view_mode: content_card
       link: false
-    third_party_settings: {  }
-  links:
-    weight: 0
-    region: content
-    settings: {  }
     third_party_settings: {  }
 hidden:
   field_content: true
   field_has_hero: true
   field_hero: true
   langcode: true
+  links: true
