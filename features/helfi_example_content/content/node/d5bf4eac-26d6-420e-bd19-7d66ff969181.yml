@@ -33,6 +33,7 @@ default:
       value: true
   path:
     -
+      alias: /hero-diagonaalinen
       langcode: fi
       pathauto: 1
   content_translation_source:

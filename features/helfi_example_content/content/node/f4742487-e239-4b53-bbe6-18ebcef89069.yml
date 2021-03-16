@@ -61,6 +61,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_banner_desc:
             -
               value: "<p>Vivamus aliquet ligula sit amet mauris condimentum, vel tempus ex elementum. Sed ex dolor, dapibus in justo a, ullamcorper scelerisque lacus. Vestibulum lacinia nulla in purus condimentum tempor. Fusce nec arcu ut massa sodales accumsan nec quis nulla. Nam vel rutrum nunc.</p>\r\n"

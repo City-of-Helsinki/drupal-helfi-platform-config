@@ -33,8 +33,9 @@ default:
       value: true
   path:
     -
+      alias: /palstat
       langcode: fi
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und
