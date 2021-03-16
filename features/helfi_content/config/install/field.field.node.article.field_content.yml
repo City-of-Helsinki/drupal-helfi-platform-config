@@ -5,6 +5,7 @@ dependencies:
     - field.storage.node.field_content
     - node.type.article
     - paragraphs.paragraphs_type.columns
+    - paragraphs.paragraphs_type.content_cards
     - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.list_of_links
@@ -27,39 +28,49 @@ settings:
     negate: 0
     target_bundles:
       text: text
-      image: image
       columns: columns
-      list_of_links: list_of_links
+      image: image
       gallery: gallery
+      list_of_links: list_of_links
+      content_cards: content_cards
     target_bundles_drag_drop:
       accordion:
-        weight: 6
+        weight: -21
         enabled: false
       accordion_item:
-        weight: 7
+        weight: -20
+        enabled: false
+      banner:
+        weight: -16
         enabled: false
       columns:
         enabled: true
-        weight: 2
+        weight: -26
+      content_cards:
+        enabled: true
+        weight: -22
       gallery:
         enabled: true
-        weight: 4
+        weight: -24
       gallery_slide:
-        weight: 8
+        weight: -19
         enabled: false
       hero:
-        weight: 9
+        weight: -18
         enabled: false
       image:
         enabled: true
-        weight: 3
+        weight: -25
+      liftup_with_image:
+        weight: -15
+        enabled: false
       list_of_links:
         enabled: true
-        weight: 5
+        weight: -23
       list_of_links_item:
-        weight: 10
+        weight: -17
         enabled: false
       text:
         enabled: true
-        weight: 1
+        weight: -27
 field_type: entity_reference_revisions
