@@ -32,5 +32,6 @@ dependencies:
   - 'menu_block_current_language:menu_block_current_language'
   - 'pathauto:pathauto'
   - 'simple_sitemap:simple_sitemap'
+  - 'select2_icon:select2_icon'
   - 'token:token'
   - 'twig_tweak:twig_tweak'
