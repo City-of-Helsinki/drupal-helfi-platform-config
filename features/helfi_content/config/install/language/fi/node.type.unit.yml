@@ -1,0 +1,2 @@
+name: Toimipiste
+description: 'Sisältötyyppi joka hakee automaattisesti dataa TPR-integraation kautta sisällöksi. Kyseistä dataa voidaan rikastaa muokkaamalla ja lisäämällä puuttuvaa dataa Drupalissa.'
