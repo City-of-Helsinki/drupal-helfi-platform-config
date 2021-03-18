@@ -1,0 +1,6 @@
+helfi_token_button:
+  version: 1.x
+  js:
+    js/helfi_token_button.js: {}
+  dependencies:
+    - core/jquery

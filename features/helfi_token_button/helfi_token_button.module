@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ */
+function helfi_token_button_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id)
+{
+  /* @var Drupal\Core\Entity\FieldableEntityInterface $entity */
+  $formObject = $form_state->getFormObject();
+  if ($formObject instanceof \Drupal\Core\Entity\EntityFormInterface) {
+    $entity = $formObject->getEntity();
+    if (
+      $entity->getEntityTypeId() === 'node'
+      && in_array($entity->bundle(), ['page'])
+    ) {
+      $form['#attached']['library'][] = 'helfi_token_button/helfi_token_button';
+    }
+  }
+}
