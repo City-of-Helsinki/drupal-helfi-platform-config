@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.article.field_keywords
     - field.field.node.article.field_lead
     - field.field.node.article.field_liftup_image
+    - field.field.node.article.field_metatags
     - node.type.article
   module:
     - user
@@ -30,5 +31,6 @@ hidden:
   field_content: true
   field_keywords: true
   field_lead: true
+  field_metatags: true
   langcode: true
   links: true

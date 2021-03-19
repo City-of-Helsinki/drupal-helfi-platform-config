@@ -26,6 +26,7 @@ dependencies:
   - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'helfi_media:helfi_media'
   - 'linkit:linkit'
+  - 'metatag:metatag'
   - 'paragraphs:paragraphs'
   - 'paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets'
   - 'pathauto:pathauto'

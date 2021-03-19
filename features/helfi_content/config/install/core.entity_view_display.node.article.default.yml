@@ -7,9 +7,11 @@ dependencies:
     - field.field.node.article.field_keywords
     - field.field.node.article.field_lead
     - field.field.node.article.field_liftup_image
+    - field.field.node.article.field_metatags
     - node.type.article
   module:
     - entity_reference_revisions
+    - metatag
     - user
 id: node.article.default
 targetEntityType: node
@@ -47,6 +49,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
+  field_metatags:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 0
