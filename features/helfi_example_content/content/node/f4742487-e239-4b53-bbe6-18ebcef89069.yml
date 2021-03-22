@@ -75,7 +75,8 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa samaan ikkunaan'
-              options: {  }
+              options:
+                target_new: 0
           field_banner_link_design:
             -
               value: primary
@@ -117,7 +118,8 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa uuteen ikkunaan'
-              options: {  }
+              options:
+                target_new: 1
           field_banner_link_design:
             -
               value: primary
@@ -156,7 +158,8 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa samaan ikkunaan'
-              options: {  }
+              options:
+                target_new: 0
           field_banner_link_design:
             -
               value: secondary
@@ -195,7 +198,8 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa uuteen ikkunaan'
-              options: {  }
+              options:
+                target_new: 1
           field_banner_link_design:
             -
               value: secondary
@@ -234,7 +238,8 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa samaan ikkunaan'
-              options: {  }
+              options:
+                target_new: 0
           field_banner_link_design:
             -
               value: supplementary
@@ -273,7 +278,8 @@ default:
             -
               uri: 'internal:/'
               title: 'Tämä linkki aukeaa uuteen ikkunaan'
-              options: {  }
+              options:
+                target_new: 1
           field_banner_link_design:
             -
               value: supplementary
@@ -475,6 +481,12 @@ default:
           field_hero_image:
             -
               entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+          field_hero_link_design:
+            -
+              value: primary
+          field_hero_title:
+            -
+              value: Linkkiesimerkit
           field_hero_link:
             -
               uri: 'https://www.hel.fi'
@@ -486,9 +498,3 @@ default:
               title: 'Tämä linkki aukeaa samaan ikkunaan'
               options:
                 target_new: 0
-          field_hero_link_design:
-            -
-              value: primary
-          field_hero_title:
-            -
-              value: Linkkiesimerkit

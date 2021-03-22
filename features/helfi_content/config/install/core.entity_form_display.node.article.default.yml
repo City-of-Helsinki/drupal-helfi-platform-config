@@ -7,9 +7,11 @@ dependencies:
     - field.field.node.article.field_keywords
     - field.field.node.article.field_lead
     - field.field.node.article.field_liftup_image
+    - field.field.node.article.field_metatags
     - node.type.article
   module:
     - media_library
+    - metatag
     - paragraphs
     - path
     - select2
@@ -75,6 +77,13 @@ content:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
+    region: content
+  field_metatags:
+    weight: 51
+    settings:
+      sidebar: false
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   langcode:
     type: language_select

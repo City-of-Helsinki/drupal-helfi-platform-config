@@ -6,9 +6,11 @@ dependencies:
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
     - field.field.node.page.field_liftup_image
+    - field.field.node.page.field_metatags
     - node.type.page
   module:
     - media_library
+    - metatag
     - paragraphs
     - path
 id: node.page.default
@@ -69,10 +71,17 @@ content:
     region: content
   field_liftup_image:
     type: media_library_widget
-    weight: 4
+    weight: 3
     settings:
       media_types: {  }
     third_party_settings: {  }
+    region: content
+  field_metatags:
+    weight: 51
+    settings:
+      sidebar: false
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   langcode:
     type: language_select
@@ -133,7 +142,7 @@ content:
     third_party_settings: {  }
   url_redirects:
     weight: 50
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden: {  }
