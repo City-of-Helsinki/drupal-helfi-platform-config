@@ -27,9 +27,6 @@ settings:
       hero:
         enabled: true
         weight: 4
-      link:
-        weight: 5
-        enabled: false
       text:
         weight: 6
         enabled: false

@@ -1,2 +1,2 @@
 label: 'Päivämäärä keskipitkässä muodossa'
-pattern: 'd.m.Y - H:i'
+pattern: 'j. F\t\a Y'

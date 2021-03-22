@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_liftup_with_image_title
+    - paragraphs.paragraphs_type.liftup_with_image
+id: paragraph.liftup_with_image.field_liftup_with_image_title
+field_name: field_liftup_with_image_title
+entity_type: paragraph
+bundle: liftup_with_image
+label: Title
+description: 'Title for the liftup with image block.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -31,7 +31,6 @@ default:
       value: true
   path:
     -
-      alias: /hero-ilman-kuvaa-tasattu-vasemmalle
       langcode: fi
       pathauto: 1
   content_translation_source:

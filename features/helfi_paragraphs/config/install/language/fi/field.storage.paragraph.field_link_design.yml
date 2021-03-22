@@ -1,8 +1,0 @@
-settings:
-  allowed_values:
-    -
-      label: 'Painike, täysvärinen'
-    -
-      label: 'Painike, kehystetty'
-    -
-      label: 'Painike, läpinäkyvä'

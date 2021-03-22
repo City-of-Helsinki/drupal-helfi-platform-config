@@ -39,9 +39,6 @@ settings:
       image:
         weight: 14
         enabled: false
-      link:
-        weight: 15
-        enabled: false
       list_of_links:
         weight: 16
         enabled: false

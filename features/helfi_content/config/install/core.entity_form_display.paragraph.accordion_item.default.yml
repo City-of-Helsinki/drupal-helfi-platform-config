@@ -4,9 +4,11 @@ dependencies:
   config:
     - field.field.paragraph.accordion_item.field_accordion_item_content
     - field.field.paragraph.accordion_item.field_accordion_item_heading
+    - field.field.paragraph.accordion_item.field_icon
     - paragraphs.paragraphs_type.accordion_item
   module:
     - paragraphs
+    - select2_icon
 id: paragraph.accordion_item.default
 targetEntityType: paragraph
 bundle: accordion_item
@@ -14,7 +16,7 @@ mode: default
 content:
   field_accordion_item_content:
     type: paragraphs
-    weight: 1
+    weight: 2
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -38,6 +40,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_icon:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: select2_icon_widget
     region: content
 hidden:
   created: true

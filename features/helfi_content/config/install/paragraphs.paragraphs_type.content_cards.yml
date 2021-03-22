@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: content_cards
+label: 'Content cards'
+icon_uuid: null
+icon_default: null
+description: 'With content cards you can reference to content inside this site. The information about the content is automatically fetched through the reference.'
+behavior_plugins: {  }

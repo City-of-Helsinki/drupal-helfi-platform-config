@@ -33,7 +33,6 @@ default:
       value: true
   path:
     -
-      alias: /hero-taustakuva
       langcode: fi
       pathauto: 1
   content_translation_source:

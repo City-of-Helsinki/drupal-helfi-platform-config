@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+id: global
+label: Global
+tags:
+  canonical_url: '[current-page:url]'
+  image_src: '[site:base-url]/themes/custom/hdbt/src/images/og-global.png'
+  title: '[current-page:title] | [site:name]'
+  twitter_cards_page_url: '[current-page:url]'
+  twitter_cards_title: '[current-page:title] | [site:name]'
+  twitter_cards_type: summary_large_image

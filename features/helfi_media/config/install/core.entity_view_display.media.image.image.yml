@@ -27,7 +27,7 @@ content:
     type: string
     weight: 1
     region: content
-    label: hidden
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }

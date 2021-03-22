@@ -22,8 +22,12 @@ display:
           label: Заголовок
         type:
           label: 'Тип материала'
+          separator: ', '
         name:
           label: Автор
+        langcode:
+          label: Язык
+          separator: ', '
         status:
           label: Статус
           settings:

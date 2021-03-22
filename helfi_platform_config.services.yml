@@ -1,0 +1,5 @@
+services:
+  helfi_platform_config.menu_language_filter:
+    class: Drupal\helfi_platform_config\Menu\FilterByLanguage
+    tags:
+      - { name: event_subscriber }

@@ -5,7 +5,7 @@ social_media:
     api_url: 'http://www.facebook.com/share.php?u=[current-page:url]&title=[current-page:title]'
     api_event: href
     default_img: 0
-    weight: '1'
+    weight: 1
     attributes: "target|_blank\r\nclass|facebook-share"
     drupalSettings: ''
     library: ''
@@ -16,7 +16,7 @@ social_media:
     api_event: href
     text: 'Share in Linkedin'
     default_img: 0
-    weight: '3'
+    weight: 3
     attributes: "target|_blank\r\nclass|linkedin"
     drupalSettings: ''
     library: ''
@@ -27,7 +27,7 @@ social_media:
     api_event: href
     text: 'Share in Twitter'
     default_img: 0
-    weight: '4'
+    weight: 4
     attributes: "target|_blank\r\nclass|twitter"
     drupalSettings: ''
     library: ''
@@ -38,11 +38,11 @@ social_media:
     api_event: href
     text: 'Send as an email'
     default_img: 0
-    weight: '7'
+    weight: 7
     attributes: class|email
     drupalSettings: ''
     library: ''
     img: email
     enable_forward: 0
-    show_forward: '1'
+    show_forward: 1
 langcode: en
