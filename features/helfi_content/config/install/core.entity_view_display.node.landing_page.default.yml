@@ -6,9 +6,11 @@ dependencies:
     - field.field.node.landing_page.field_has_hero
     - field.field.node.landing_page.field_hero
     - field.field.node.landing_page.field_liftup_image
+    - field.field.node.landing_page.field_metatags
     - node.type.landing_page
   module:
     - entity_reference_revisions
+    - metatag
     - user
 id: node.landing_page.default
 targetEntityType: node
@@ -32,6 +34,13 @@ content:
       link: ''
     third_party_settings: {  }
     type: entity_reference_revisions_entity_view
+    region: content
+  field_metatags:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 0
