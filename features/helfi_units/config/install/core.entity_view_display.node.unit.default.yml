@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.unit.field_unit_long_description
+    - field.field.node.unit.field_unit_short_description
+    - field.field.node.unit.field_unit_visible_title
+    - node.type.unit
+  module:
+    - text
+    - user
+id: node.unit.default
+targetEntityType: node
+bundle: unit
+mode: default
+content:
+  field_unit_long_description:
+    weight: 103
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_unit_short_description:
+    weight: 102
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_unit_visible_title:
+    weight: 101
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

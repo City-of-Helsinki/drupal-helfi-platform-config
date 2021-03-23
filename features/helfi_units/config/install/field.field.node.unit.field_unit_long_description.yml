@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_unit_long_description
+    - node.type.unit
+  module:
+    - text
+id: node.unit.field_unit_long_description
+field_name: field_unit_long_description
+entity_type: node
+bundle: unit
+label: 'Long description'
+description: 'Long description for the unit. The default value comes from TPR.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

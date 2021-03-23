@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_unit_visible_title
+    - node.type.unit
+  module:
+    - text
+id: node.unit.field_unit_visible_title
+field_name: field_unit_visible_title
+entity_type: node
+bundle: unit
+label: 'Visible title'
+description: 'The title that is shown on the unit page.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

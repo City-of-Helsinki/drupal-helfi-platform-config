@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.unit_page.field_unit_page_units
+    - node.type.unit_page
+  module:
+    - user
+id: node.unit_page.default
+targetEntityType: node
+bundle: unit_page
+mode: default
+content:
+  field_unit_page_units:
+    weight: 101
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

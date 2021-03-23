@@ -57,6 +57,8 @@ settings:
       language_list: un
     stylescombo:
       styles: ''
+    tokenbrowser:
+      token_types: {  }
 image_upload:
   status: false
   scheme: public

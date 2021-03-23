@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_unit_page_units
+    - node.type.unit
+    - node.type.unit_page
+id: node.unit_page.field_unit_page_units
+field_name: field_unit_page_units
+entity_type: node
+bundle: unit_page
+label: Unit(s)
+description: 'Create the unit(s) that you want to display on this page.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      unit: unit
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

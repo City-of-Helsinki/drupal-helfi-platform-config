@@ -34,7 +34,9 @@ dependencies:
   - 'paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets'
   - 'pathauto:pathauto'
   - 'redirect:redirect'
+  - 'scheduler:scheduler'
   - 'select2:select2'
   - 'select2_icon:select2_icon'
   - 'social_media:social_media'
+  - 'token_filter:token_filter'
 package: HELfi
