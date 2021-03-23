@@ -3,12 +3,14 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_unit_page_parent
-field_name: field_unit_page_parent
+    - text
+id: node.field_unit_main_image_url
+field_name: field_unit_main_image_url
 entity_type: node
-type: boolean
-settings: {  }
-module: core
+type: text
+settings:
+  max_length: 2048
+module: text
 locked: false
 cardinality: 1
 translatable: true

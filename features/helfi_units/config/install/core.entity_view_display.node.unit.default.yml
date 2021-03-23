@@ -2,7 +2,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.unit.field_unit_alternative_image
     - field.field.node.unit.field_unit_long_description
+    - field.field.node.unit.field_unit_main_image_url
     - field.field.node.unit.field_unit_short_description
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
@@ -14,9 +16,25 @@ targetEntityType: node
 bundle: unit
 mode: default
 content:
+  field_unit_alternative_image:
+    type: entity_reference_entity_view
+    weight: 104
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
   field_unit_long_description:
     weight: 103
     label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_unit_main_image_url:
+    weight: 105
+    label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default

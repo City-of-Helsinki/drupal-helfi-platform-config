@@ -1,7 +1,0 @@
-langcode: und
-status: true
-dependencies: {  }
-id: unit-menu
-label: 'Unit menu'
-description: 'Submenu that is visible on unit pages that have child pages.'
-locked: false

@@ -2,17 +2,27 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.unit.field_unit_alternative_image
     - field.field.node.unit.field_unit_long_description
+    - field.field.node.unit.field_unit_main_image_url
     - field.field.node.unit.field_unit_short_description
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
   module:
+    - media_library
     - text
 id: node.unit.default
 targetEntityType: node
 bundle: unit
 mode: default
 content:
+  field_unit_alternative_image:
+    type: media_library_widget
+    weight: 26
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
   field_unit_long_description:
     weight: 4
     settings:
@@ -20,6 +30,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_unit_main_image_url:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
     region: content
   field_unit_short_description:
     weight: 3

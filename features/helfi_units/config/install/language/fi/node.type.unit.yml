@@ -1,2 +1,2 @@
 name: Toimipiste
-description: 'Yksittäinen toimipiste. Tätä sisältöä ei tulisi luoda käyttäen normaalia sisällönsyöttölomaketta vaan osana toimipiste-sivua.'
+description: 'Yksittäinen toimipiste jonka sisältämä tieto tulee pääosin integraation kautta järjestelmään. Halutessasi voit rikastaa tätä tietoa.'

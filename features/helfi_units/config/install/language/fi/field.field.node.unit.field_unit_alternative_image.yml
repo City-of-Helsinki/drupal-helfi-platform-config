@@ -1,0 +1,2 @@
+label: 'Vaihtoehtoinen kuva'
+description: 'Vaihtoehtoinen kuva pääkuvan tilalle jos haluat käyttää eri kuvaa pääkuvana kuin mikä on asetettu pääkuvakenttään tai jos integraation kautta toimipisteelle ei ole asetettu pääkuvaa.'

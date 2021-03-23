@@ -23,7 +23,7 @@ third_party_settings:
     unpublish_revision: false
 name: Unit
 type: unit
-description: 'A single unit. These should not be done using the normal content workflow but as a part of the unit page.'
+description: 'Unit page that has information imported from an integration. You can enrich some of that information if you wish do to do so.'
 help: ''
 new_revision: true
 preview_mode: 1
