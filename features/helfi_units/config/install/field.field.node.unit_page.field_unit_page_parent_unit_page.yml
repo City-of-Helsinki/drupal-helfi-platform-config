@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_unit_page_parent_unit_page
+    - node.type.unit_page
+id: node.unit_page.field_unit_page_parent_unit_page
+field_name: field_unit_page_parent_unit_page
+entity_type: node
+bundle: unit_page
+label: 'Parent unit page'
+description: 'If this page is a child page for some other unit page you need to choose the parent unit page here to create the relationship between the pages.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      unit_page: unit_page
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

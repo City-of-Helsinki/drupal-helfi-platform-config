@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.unit_page.field_unit_page_parent
+    - field.field.node.unit_page.field_unit_page_parent_unit_page
     - field.field.node.unit_page.field_unit_page_units
     - node.type.unit_page
   module:
@@ -12,7 +14,7 @@ bundle: unit_page
 mode: default
 content:
   field_unit_page_units:
-    weight: 101
+    weight: 1
     label: hidden
     settings:
       link: true
@@ -21,9 +23,11 @@ content:
     type: entity_reference_entity_view
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_unit_page_parent: true
+  field_unit_page_parent_unit_page: true
   langcode: true
