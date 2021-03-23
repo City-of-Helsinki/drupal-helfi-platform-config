@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.parent_unit
     - field.field.node.unit.field_unit_alternative_image
     - field.field.node.unit.field_unit_is_parent
     - field.field.node.unit.field_unit_long_description
@@ -13,62 +14,48 @@ dependencies:
   module:
     - text
     - user
-id: node.unit.default
+id: node.unit.parent_unit
 targetEntityType: node
 bundle: unit
-mode: default
+mode: parent_unit
 content:
   field_unit_alternative_image:
     type: entity_reference_entity_view
-    weight: 5
+    weight: 4
     label: hidden
     settings:
       view_mode: hero
       link: false
     third_party_settings: {  }
     region: content
-  field_unit_long_description:
-    weight: 6
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
   field_unit_main_image_url:
-    weight: 4
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
-  field_unit_parent_unit:
-    type: entity_reference_entity_view
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      view_mode: parent_unit
-      link: false
-    third_party_settings: {  }
-  field_unit_short_description:
     weight: 3
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_unit_visible_title:
+  field_unit_short_description:
     weight: 2
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  links:
+  field_unit_visible_title:
     weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_unit_is_parent: true
+  field_unit_long_description: true
+  field_unit_parent_unit: true
   langcode: true
