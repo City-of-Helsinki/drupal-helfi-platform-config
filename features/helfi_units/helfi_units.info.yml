@@ -18,4 +18,6 @@ dependencies:
   - 'helfi_media:helfi_media'
   - 'inline_entity_form:inline_entity_form'
   - 'scheduler:scheduler'
+  - 'token:token'
+  - 'token_filter:token_filter'
 package: HELfi
