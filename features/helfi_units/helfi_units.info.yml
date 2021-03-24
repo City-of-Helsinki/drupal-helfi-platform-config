@@ -16,6 +16,7 @@ dependencies:
   - 'drupal:text'
   - 'drupal:user'
   - 'helfi_media:helfi_media'
+  - 'imagecache_external:imagecache_external'
   - 'inline_entity_form:inline_entity_form'
   - 'scheduler:scheduler'
   - 'token:token'
