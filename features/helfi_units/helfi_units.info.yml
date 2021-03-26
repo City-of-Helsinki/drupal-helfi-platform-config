@@ -4,6 +4,8 @@ type: module
 core_version_requirement: '^8.9 || ^9'
 dependencies:
   - 'aet:aet'
+  - 'ctools:ctools'
+  - 'drupal:block'
   - 'drupal:content_translation'
   - 'drupal:field'
   - 'drupal:language'
@@ -17,6 +19,7 @@ dependencies:
   - 'drupal:user'
   - 'helfi_media:helfi_media'
   - 'imagecache_external:imagecache_external'
+  - 'pathauto:pathauto'
   - 'scheduler:scheduler'
   - 'token:token'
   - 'token_filter:token_filter'

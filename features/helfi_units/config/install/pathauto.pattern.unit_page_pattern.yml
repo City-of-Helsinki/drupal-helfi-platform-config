@@ -1,0 +1,21 @@
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+id: unit_page_pattern
+label: 'Unit page pattern'
+type: 'canonical_entities:node'
+pattern: '[node:menu-link:parents:join-path]/[node:field_unit_visible_title]'
+selection_criteria:
+  542e821f-eafe-4e05-bf79-fe1042e4f418:
+    id: node_type
+    bundles:
+      unit: unit
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 542e821f-eafe-4e05-bf79-fe1042e4f418
+selection_logic: and
+weight: -5
+relationships: {  }
