@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.unit.field_unit_alternative_image
+    - field.field.node.unit.field_unit_is_parent
+    - field.field.node.unit.field_unit_long_description
+    - field.field.node.unit.field_unit_main_image_url
+    - field.field.node.unit.field_unit_parent_unit
+    - field.field.node.unit.field_unit_short_description
+    - field.field.node.unit.field_unit_visible_title
+    - node.type.unit
+  module:
+    - user
+id: node.unit.teaser
+targetEntityType: node
+bundle: unit
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_unit_alternative_image: true
+  field_unit_is_parent: true
+  field_unit_long_description: true
+  field_unit_main_image_url: true
+  field_unit_parent_unit: true
+  field_unit_short_description: true
+  field_unit_visible_title: true
+  langcode: true
