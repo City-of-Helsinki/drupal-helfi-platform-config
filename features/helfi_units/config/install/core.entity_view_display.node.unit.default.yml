@@ -20,22 +20,32 @@ mode: default
 content:
   field_unit_alternative_image:
     type: entity_reference_entity_view
-    weight: 5
+    weight: 6
     label: hidden
     settings:
       view_mode: hero
       link: false
     third_party_settings: {  }
     region: content
+  field_unit_is_parent:
+    type: boolean
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings: {  }
   field_unit_long_description:
-    weight: 6
+    weight: 7
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_unit_main_image_url:
-    weight: 4
+    weight: 5
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -43,7 +53,7 @@ content:
     region: content
   field_unit_parent_unit:
     type: entity_reference_entity_view
-    weight: 0
+    weight: 1
     region: content
     label: hidden
     settings:
@@ -51,24 +61,23 @@ content:
       link: false
     third_party_settings: {  }
   field_unit_short_description:
-    weight: 3
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_unit_visible_title:
-    weight: 2
+    weight: 3
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   links:
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_unit_is_parent: true
   langcode: true
