@@ -7,3 +7,4 @@ dependencies:
   - features
   - menu_block_current_language
   - helfi_api_base
+  - imagecache_external
