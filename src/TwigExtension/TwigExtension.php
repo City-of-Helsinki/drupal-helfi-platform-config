@@ -49,6 +49,13 @@ class TwigExtension extends AbstractExtension {
    *   in an <img> tag. Requesting the URL will cause the image to be created.
    */
   public function imageCacheExternal($path, $style) {
+    // Remove hard-dependency to imagecache_external module due to
+    // schema errors in tests.
+    // @see https://www.drupal.org/project/imagecache_external/issues/3046230.
+    if (!function_exists('imagecache_external_generate_path')) {
+      trigger_error('Imagecache external module is not enabled.');
+      return;
+    }
     $local_path = imagecache_external_generate_path($path);
 
     if (!$image_style = ImageStyle::load($style)) {
