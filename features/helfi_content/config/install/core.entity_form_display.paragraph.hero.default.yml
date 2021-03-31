@@ -37,7 +37,7 @@ content:
     weight: 0
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: design_field_widget
     region: content
   field_hero_image:
     type: media_library_widget
@@ -59,7 +59,7 @@ content:
     weight: 5
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: design_field_widget
     region: content
   field_hero_title:
     weight: 2

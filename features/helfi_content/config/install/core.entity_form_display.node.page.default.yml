@@ -13,6 +13,7 @@ dependencies:
     - metatag
     - paragraphs
     - path
+    - scheduler
 id: node.page.default
 targetEntityType: node
 bundle: page
@@ -111,9 +112,9 @@ content:
     third_party_settings: {  }
   scheduler_settings:
     weight: 20
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   status:
     type: boolean_checkbox
     settings:

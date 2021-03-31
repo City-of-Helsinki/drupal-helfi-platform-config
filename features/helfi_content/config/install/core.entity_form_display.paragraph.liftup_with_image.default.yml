@@ -8,6 +8,7 @@ dependencies:
     - field.field.paragraph.liftup_with_image.field_liftup_with_image_title
     - paragraphs.paragraphs_type.liftup_with_image
   module:
+    - hdbt_admin_editorial
     - media_library
     - text
 id: paragraph.liftup_with_image.default
@@ -27,7 +28,7 @@ content:
     weight: 0
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: design_field_widget
     region: content
   field_liftup_with_image_image:
     type: media_library_widget
