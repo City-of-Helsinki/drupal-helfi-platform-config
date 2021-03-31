@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_unit_alternative_address
+    - node.type.unit
+  module:
+    - address
+id: node.unit.field_unit_alternative_address
+field_name: field_unit_alternative_address
+entity_type: node
+bundle: unit
+label: 'Alternative address'
+description: 'If you want to override the address (TPR) field value or if there isn''t information provided by TPR you can use this field to provide an address for the unit.'
+required: false
+translatable: true
+default_value:
+  -
+    langcode: fi
+    country_code: FI
+    administrative_area: null
+    locality: ''
+    dependent_locality: null
+    postal_code: ''
+    sorting_code: null
+    address_line1: ''
+    address_line2: ''
+    organization: null
+    given_name: null
+    additional_name: null
+    family_name: null
+default_value_callback: ''
+settings:
+  available_countries:
+    FI: FI
+  langcode_override: fi
+  field_overrides:
+    givenName:
+      override: hidden
+    additionalName:
+      override: hidden
+    familyName:
+      override: hidden
+    organization:
+      override: hidden
+    sortingCode:
+      override: hidden
+    dependentLocality:
+      override: hidden
+    administrativeArea:
+      override: hidden
+  fields: {  }
+field_type: address

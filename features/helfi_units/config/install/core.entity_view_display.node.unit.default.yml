@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.unit.field_unit_address_tpr
+    - field.field.node.unit.field_unit_alternative_address
     - field.field.node.unit.field_unit_alternative_image
     - field.field.node.unit.field_unit_is_parent
     - field.field.node.unit.field_unit_long_description
@@ -11,6 +13,7 @@ dependencies:
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
   module:
+    - address
     - text
     - user
 id: node.unit.default
@@ -18,6 +21,20 @@ targetEntityType: node
 bundle: unit
 mode: default
 content:
+  field_unit_address_tpr:
+    weight: 8
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_unit_alternative_address:
+    weight: 9
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: address_default
+    region: content
   field_unit_alternative_image:
     type: entity_reference_entity_view
     weight: 6

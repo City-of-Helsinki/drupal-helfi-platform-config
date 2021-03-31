@@ -3,6 +3,7 @@ description: 'Provides unit pages and unit content types and functionality relat
 type: module
 core_version_requirement: '^8.9 || ^9'
 dependencies:
+  - 'address:address'
   - 'aet:aet'
   - 'ctools:ctools'
   - 'drupal:block'

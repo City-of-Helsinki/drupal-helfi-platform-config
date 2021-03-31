@@ -3,6 +3,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.parent_unit
+    - field.field.node.unit.field_unit_address_tpr
+    - field.field.node.unit.field_unit_alternative_address
     - field.field.node.unit.field_unit_alternative_image
     - field.field.node.unit.field_unit_is_parent
     - field.field.node.unit.field_unit_long_description
@@ -55,6 +57,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_unit_address_tpr: true
+  field_unit_alternative_address: true
   field_unit_is_parent: true
   field_unit_long_description: true
   field_unit_parent_unit: true

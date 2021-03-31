@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.unit.field_unit_address_tpr
+    - field.field.node.unit.field_unit_alternative_address
     - field.field.node.unit.field_unit_alternative_image
     - field.field.node.unit.field_unit_is_parent
     - field.field.node.unit.field_unit_long_description
@@ -11,6 +13,7 @@ dependencies:
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
   module:
+    - address
     - media_library
     - path
     - text
@@ -21,10 +24,24 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 14
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_unit_address_tpr:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_unit_alternative_address:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: address_default
+    region: content
   field_unit_alternative_image:
     type: media_library_widget
     weight: 8
@@ -90,13 +107,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -104,7 +121,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 9
+    weight: 10
     region: content
     third_party_settings: {  }
   title:
@@ -117,7 +134,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 15
+    weight: 16
     region: content
     settings:
       match_operator: CONTAINS
@@ -127,12 +144,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
