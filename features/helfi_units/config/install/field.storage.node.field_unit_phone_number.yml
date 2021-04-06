@@ -2,14 +2,15 @@ langcode: en
 status: true
 dependencies:
   module:
-    - address
     - node
-id: node.field_unit_alternative_address
-field_name: field_unit_alternative_address
+    - text
+id: node.field_unit_phone_number
+field_name: field_unit_phone_number
 entity_type: node
-type: address
-settings: {  }
-module: address
+type: text
+settings:
+  max_length: 255
+module: text
 locked: false
 cardinality: 1
 translatable: true

@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_unit_postal_address_tpr
+    - node.type.unit
+  module:
+    - text
+id: node.unit.field_unit_postal_address_tpr
+field_name: field_unit_postal_address_tpr
+entity_type: node
+bundle: unit
+label: 'Postal address (TPR)'
+description: 'Here is the postal address token used to fetch postal address information for the unit from TPR. If you want to override the information or if there isn''t any information available from TPR you can write alternative postal address to the alternative postal address field.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

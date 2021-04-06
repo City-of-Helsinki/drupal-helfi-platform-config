@@ -4,12 +4,16 @@ dependencies:
   config:
     - core.entity_view_mode.node.parent_unit
     - field.field.node.unit.field_unit_address_tpr
-    - field.field.node.unit.field_unit_alternative_address
+    - field.field.node.unit.field_unit_alt_address
+    - field.field.node.unit.field_unit_alt_postal_address
     - field.field.node.unit.field_unit_alternative_image
+    - field.field.node.unit.field_unit_email
     - field.field.node.unit.field_unit_is_parent
     - field.field.node.unit.field_unit_long_description
     - field.field.node.unit.field_unit_main_image_url
     - field.field.node.unit.field_unit_parent_unit
+    - field.field.node.unit.field_unit_phone_number
+    - field.field.node.unit.field_unit_postal_address_tpr
     - field.field.node.unit.field_unit_short_description
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
@@ -58,8 +62,12 @@ content:
     third_party_settings: {  }
 hidden:
   field_unit_address_tpr: true
-  field_unit_alternative_address: true
+  field_unit_alt_address: true
+  field_unit_alt_postal_address: true
+  field_unit_email: true
   field_unit_is_parent: true
   field_unit_long_description: true
   field_unit_parent_unit: true
+  field_unit_phone_number: true
+  field_unit_postal_address_tpr: true
   langcode: true

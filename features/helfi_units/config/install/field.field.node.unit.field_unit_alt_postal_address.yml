@@ -2,16 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_unit_alternative_address
+    - field.storage.node.field_unit_alt_postal_address
     - node.type.unit
   module:
     - address
-id: node.unit.field_unit_alternative_address
-field_name: field_unit_alternative_address
+id: node.unit.field_unit_alt_postal_address
+field_name: field_unit_alt_postal_address
 entity_type: node
 bundle: unit
-label: 'Alternative address'
-description: 'If you want to override the address (TPR) field value or if there isn''t information provided by TPR you can use this field to provide an address for the unit.'
+label: 'Alternative postal address'
+description: 'If you want to override the postal address (TPR) field value or if there isn''t information provided by TPR you can use this field to provide a postal address for the unit.'
 required: false
 translatable: true
 default_value:
