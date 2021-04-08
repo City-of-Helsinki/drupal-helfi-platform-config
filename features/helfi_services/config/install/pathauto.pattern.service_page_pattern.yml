@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: service_page_pattern
+label: 'Service page pattern'
+type: 'canonical_entities:node'
+pattern: '[node:menu-link:parents:join-path]/[node:field_service_visible_title]'
+selection_criteria:
+  964bac8b-d6fb-4654-a535-8f2e3541903f:
+    id: node_type
+    bundles:
+      service: service
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 964bac8b-d6fb-4654-a535-8f2e3541903f
+selection_logic: and
+weight: -5
+relationships: {  }
