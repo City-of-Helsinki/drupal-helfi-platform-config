@@ -39,6 +39,17 @@ jobs:
       - name: Enable all features
         run: |
           cd $DRUPAL_ROOT
-          drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           # Enable all features.
           for d in features/*; do drush en $d | cut -d/ -f2; done
+
+      - name: Run PHPCS
+        run: |
+          cd $DRUPAL_ROOT
+          vendor/bin/phpcs public/modules/custom/$MODULE_NAME --standard=Drupal
+
+      - name: Run PHPUnit tests
+        run: |
+          cd $DRUPAL_ROOT
+          drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
+          chromedriver --port=4444 > /dev/null 2>&1 &
+          vendor/bin/phpunit -c $DRUPAL_ROOT/phpunit.xml.dist --verbose --group $MODULE_NAME

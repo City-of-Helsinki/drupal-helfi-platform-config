@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function helfi_platform_config_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+  // Replace node title on nodes with the visible title field.
+  // TODO: Needs work on caches, wrong title is displayed if user visits content listing.
+  if ($entity->hasField('field_unit_visible_title')) {
+    $entity->set('title', \Drupal::token()->replace((string) $entity->get('field_unit_visible_title')->value));
+  }
+}

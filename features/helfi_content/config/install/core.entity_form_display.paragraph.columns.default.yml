@@ -8,6 +8,7 @@ dependencies:
     - field.field.paragraph.columns.field_columns_title
     - paragraphs.paragraphs_type.columns
   module:
+    - hdbt_admin_editorial
     - paragraphs
 id: paragraph.columns.default
 targetEntityType: paragraph
@@ -18,7 +19,7 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: design_field_widget
     region: content
   field_columns_left_column:
     type: paragraphs

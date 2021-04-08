@@ -6,7 +6,7 @@ dependencies:
     - field.field.media.image.field_media_image
     - field.field.media.image.field_photographer
     - media.type.image
-    - responsive_image.styles.hero__background
+    - responsive_image.styles.hero__left_right
   module:
     - responsive_image
 id: media.image.hero
@@ -18,7 +18,7 @@ content:
     label: hidden
     weight: 0
     settings:
-      responsive_image_style: hero__background
+      responsive_image_style: hero__left_right
       image_link: ''
     third_party_settings: {  }
     type: responsive_image

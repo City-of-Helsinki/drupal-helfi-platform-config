@@ -3,3 +3,8 @@ services:
     class: Drupal\helfi_platform_config\Menu\FilterByLanguage
     tags:
       - { name: event_subscriber }
+
+  helfi_platform_config.image_cache_external:
+    class: Drupal\helfi_platform_config\TwigExtension\TwigExtension
+    tags:
+      - { name: twig.extension }

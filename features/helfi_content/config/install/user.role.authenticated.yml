@@ -10,3 +10,4 @@ permissions:
   - 'display eu cookie compliance popup'
   - 'use text format full_html'
   - 'view media'
+  - 'view remote entities'
