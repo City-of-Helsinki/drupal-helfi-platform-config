@@ -14,21 +14,7 @@ label: 'Alternative postal address'
 description: 'If you want to override the postal address (TPR) field value or if there isn''t information provided by TPR you can use this field to provide a postal address for the unit.'
 required: false
 translatable: true
-default_value:
-  -
-    langcode: fi
-    country_code: FI
-    administrative_area: null
-    locality: ''
-    dependent_locality: null
-    postal_code: ''
-    sorting_code: null
-    address_line1: ''
-    address_line2: ''
-    organization: null
-    given_name: null
-    additional_name: null
-    family_name: null
+default_value: {  }
 default_value_callback: ''
 settings:
   available_countries:
