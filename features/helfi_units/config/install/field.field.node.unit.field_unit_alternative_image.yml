@@ -9,7 +9,7 @@ id: node.unit.field_unit_alternative_image
 field_name: field_unit_alternative_image
 entity_type: node
 bundle: unit
-label: 'Alternative image'
+label: 'Alternative main image'
 description: 'Alternative image for the main image if you wish to replace the set main image or if there is no image set for the main image field.'
 required: false
 translatable: true

@@ -2,15 +2,22 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.unit.field_unit_address_tpr
+    - field.field.node.unit.field_unit_alt_address
+    - field.field.node.unit.field_unit_alt_postal_address
     - field.field.node.unit.field_unit_alternative_image
+    - field.field.node.unit.field_unit_email
     - field.field.node.unit.field_unit_is_parent
     - field.field.node.unit.field_unit_long_description
     - field.field.node.unit.field_unit_main_image_url
     - field.field.node.unit.field_unit_parent_unit
+    - field.field.node.unit.field_unit_phone_number
+    - field.field.node.unit.field_unit_postal_address_tpr
     - field.field.node.unit.field_unit_short_description
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
   module:
+    - address
     - media_library
     - path
     - text
@@ -21,16 +28,44 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 14
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_unit_address_tpr:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_unit_alt_address:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: address_default
+    region: content
+  field_unit_alt_postal_address:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: address_default
+    region: content
   field_unit_alternative_image:
     type: media_library_widget
     weight: 8
     settings:
       media_types: {  }
     third_party_settings: {  }
+    region: content
+  field_unit_email:
+    weight: 11
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
     region: content
   field_unit_is_parent:
     weight: 3
@@ -65,6 +100,22 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_unit_phone_number:
+    weight: 12
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_unit_postal_address_tpr:
+    weight: 13
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
   field_unit_short_description:
     weight: 5
     settings:
@@ -90,13 +141,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 10
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp
-    weight: 11
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -104,7 +155,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 9
+    weight: 15
     region: content
     third_party_settings: {  }
   title:
@@ -117,7 +168,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 15
+    weight: 21
     region: content
     settings:
       match_operator: CONTAINS
@@ -127,12 +178,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp
-    weight: 12
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 13
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
