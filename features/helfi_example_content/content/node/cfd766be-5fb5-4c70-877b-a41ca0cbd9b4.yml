@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: cfd766be-5fb5-4c70-877b-a41ca0cbd9b4
+  bundle: service
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: Esimerkkipalvelu
+  created:
+    -
+      value: 1618227531
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /esimerkkipalvelu
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_service_is_parent:
+    -
+      value: false
+  field_service_long_description:
+    -
+      value: "<p>Pitkä kuvaus - gsed molesti blandi consequa rfusce liberofu mauris suscip portamor. Bus scum turpisf sduis sapien isised sque dapibusc. Luctus variusma disse llus maurisma mauris egesta uris quamve lacini.&nbsp;</p>\r\n\r\n<p>Maurisin magnap turpisut aliquam aliquam at abitur dui. Fermen quam lum metussed euismodd puruscra arcused sque. Elemen oin quam etiam tfusce rproin sisut fringi. Luctus aesent abitur tiam non aesent oin.</p>\r\n\r\n<p>Convalli auris curae fusce llus llus. Ris parturi abitur natoque ullam ipsum dictumdu. Ullamcor mussed viverr in rutrumnu anunc disse volutpat tortor isse. Llam sque cras tesque ent que uada.</p>\r\n"
+      format: full_html
+  field_service_short_description:
+    -
+      value: "<p>Lyhyt kuvaus - pellent duinulla class rutrumnu egetlor luctus. Risusm sduis libero puruscra lus lorem.</p>\r\n"
+      format: full_html
+  field_service_visible_title:
+    -
+      value: Esimerkkipalvelu
+      format: full_html

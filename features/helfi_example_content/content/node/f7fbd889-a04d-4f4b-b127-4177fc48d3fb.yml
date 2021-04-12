@@ -1,0 +1,92 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: f7fbd889-a04d-4f4b-b127-4177fc48d3fb
+  bundle: unit
+  default_langcode: fi
+  depends:
+    923ecd78-00ff-47f9-a017-012b781d6bab: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: Esimerkkitoimipiste
+  created:
+    -
+      value: 1618225690
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /esimerkkitoimipiste
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_unit_alternative_image:
+    -
+      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+  field_unit_alt_address:
+    -
+      langcode: fi
+      country_code: FI
+      administrative_area: ''
+      locality: Helsinki
+      dependent_locality: ''
+      postal_code: '00170'
+      sorting_code: ''
+      address_line1: 'Pohjoisesplanadi 11-13'
+      address_line2: ''
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''
+  field_unit_alt_postal_address:
+    -
+      langcode: fi
+      country_code: FI
+      administrative_area: ''
+      locality: 'Helsingin kaupunki'
+      dependent_locality: ''
+      postal_code: '00099'
+      sorting_code: ''
+      address_line1: 'PL 10'
+      address_line2: ''
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''
+  field_unit_is_parent:
+    -
+      value: false
+  field_unit_long_description:
+    -
+      value: "<p>Pitkä kuvaus - convalli auris curae fusce llus llus. Ris parturi abitur natoque ullam ipsum dictumdu. Ullamcor mussed viverr in rutrumnu anunc disse volutpat tortor isse. Llam sque cras tesque ent que uada.</p>\r\n\r\n<p>Arcu mauris sapienma element gravidas setiam adipisci onec roin. Metusdo rutrum metusd esque phasel quis fringi onec semmaec ante. Ornareve loremn magnis musetiam ligula culus enas enean mattisae. Lus isised oin mussed nisiinte sque quispr faucibus. Gsed cing dignis sem utcras ivamus. Class auris convall metussed quamsusp naeos natis metus.<br />\r\n&nbsp;</p>\r\n"
+      format: full_html
+  field_unit_short_description:
+    -
+      value: "<p>Lyhyt kuvaus -&nbsp;magnap turpisut aliquam aliquam at abitur dui. Fermen quam lum metussed euismodd puruscra arcused sque. Elemen oin quam etiam tfusce rproin sisut fringi. Luctus aesent abitur tiam non aesent oin.</p>\r\n"
+      format: full_html
+  field_unit_visible_title:
+    -
+      value: Esimerkkitoimipiste
+      format: full_html
