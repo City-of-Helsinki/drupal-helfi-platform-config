@@ -10,6 +10,8 @@ dependencies:
     - image.style.23_10_s_2x
     - image.style.23_10_xs
     - image.style.23_10_xs_2x
+    - image.style.23_10_xxs
+    - image.style.23_10_xxs_2x
 id: hero__diagonal
 label: 'Hero Diagonal'
 image_style_mappings:
@@ -57,11 +59,11 @@ image_style_mappings:
     breakpoint_id: hdbt.xxs
     multiplier: 1x
     image_mapping_type: image_style
-    image_mapping: 23_10_xs
+    image_mapping: 23_10_xxs
   -
     breakpoint_id: hdbt.xxs
     multiplier: 2x
     image_mapping_type: image_style
-    image_mapping: 23_10_xs_2x
+    image_mapping: 23_10_xxs_2x
 breakpoint_group: hdbt
 fallback_image_style: 23_10_m
