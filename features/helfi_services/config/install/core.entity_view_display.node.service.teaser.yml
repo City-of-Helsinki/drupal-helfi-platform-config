@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.service.field_service_is_parent
+    - field.field.node.service.field_service_long_description
+    - field.field.node.service.field_service_parent_service
+    - field.field.node.service.field_service_short_description
+    - field.field.node.service.field_service_visible_title
+    - node.type.service
+  module:
+    - user
+id: node.service.teaser
+targetEntityType: node
+bundle: service
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_service_is_parent: true
+  field_service_long_description: true
+  field_service_parent_service: true
+  field_service_short_description: true
+  field_service_visible_title: true
+  langcode: true
