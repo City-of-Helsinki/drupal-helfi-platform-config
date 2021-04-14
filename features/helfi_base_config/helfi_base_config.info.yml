@@ -5,7 +5,7 @@ core_version_requirement: '^8.9 || ^9'
 package: HELfi
 dependencies:
   - 'admin_toolbar:admin_toolbar'
-  - 'config_replace|config_replace'
+  - 'config_replace:config_replace'
   - 'ctools:ctools'
   - 'diff:diff'
   - 'drupal:block'
