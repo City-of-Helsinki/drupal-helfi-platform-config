@@ -7,3 +7,5 @@ dependencies:
   - features
   - menu_block_current_language
   - helfi_api_base
+'interface translation project': helfi_platform_config
+'interface translation server pattern': modules/custom/helfi_platform_config/translations/%language/strings.po

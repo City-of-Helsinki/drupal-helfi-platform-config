@@ -1,0 +1,2 @@
+label: 'Käyntiosoite (TPR)'
+description: 'Tähän kirjoitetaan käyntiosoite korvauskuvio, jonka avulla osoitetieto haetaan TPR:stä. Jos haluat ylikirjoittaa tiedon tai tietoa ei ole saatavilla TPR:stä käytä siihen kenttää "Vaihtoehtoinen käyntiosoite".'
