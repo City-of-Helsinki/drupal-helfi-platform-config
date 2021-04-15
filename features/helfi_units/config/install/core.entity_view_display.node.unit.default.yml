@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.unit.field_unit_phone_number
     - field.field.node.unit.field_unit_postal_address_tpr
     - field.field.node.unit.field_unit_short_description
+    - field.field.node.unit.field_unit_tpr_reference
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
   module:
@@ -129,4 +130,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_unit_tpr_reference: true
   langcode: true
