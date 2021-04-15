@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.service.field_service_long_description
     - field.field.node.service.field_service_parent_service
     - field.field.node.service.field_service_short_description
+    - field.field.node.service.field_service_tpr_reference
     - field.field.node.service.field_service_visible_title
     - node.type.service
   module:
@@ -62,4 +63,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_service_tpr_reference: true
   langcode: true

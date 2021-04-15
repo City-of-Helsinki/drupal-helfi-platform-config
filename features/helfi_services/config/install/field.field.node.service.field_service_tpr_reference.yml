@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_service_tpr_reference
+    - node.type.service
+id: node.service.field_service_tpr_reference
+field_name: field_service_tpr_reference
+entity_type: node
+bundle: service
+label: 'TPR service reference'
+description: 'Reference to the service entity in Drupal created based on TPR-data. Using this reference units and services are linked together.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:tpr_service'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+field_type: entity_reference
