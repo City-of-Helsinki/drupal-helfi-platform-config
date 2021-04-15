@@ -4,8 +4,9 @@ package: Custom
 core: 8.x
 core_version_requirement: ^8 || ^9
 dependencies:
-  - features
-  - menu_block_current_language
-  - helfi_api_base
+  - 'drupal:language'
+  - 'features:features'
+  - 'menu_block_current_language:menu_block_current_language'
+  - 'helfi_api_base:helfi_api_base'
 'interface translation project': helfi_platform_config
-'interface translation server pattern': modules/custom/helfi_platform_config/translations/%language/strings.po
+'interface translation server pattern': modules/custom/%project/translations/%language/strings.po
