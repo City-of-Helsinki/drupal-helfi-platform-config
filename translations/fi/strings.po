@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-16 11:00+0300\n"
-"PO-Revision-Date: 2021-04-16 11:00+0300\n"
+"POT-Creation-Date: 2021-04-16 12:09+0300\n"
+"PO-Revision-Date: 2021-04-16 12:09+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1087,6 +1087,9 @@ msgstr "Sisältö"
 msgid "Heading"
 msgstr "Otsikko"
 
+msgid "@title [%language translation]"
+msgstr "@title [%language]"
+
 msgid "Find and manage content"
 msgstr "Etsi ja hallitse sisältöä"
 
@@ -1543,6 +1546,42 @@ msgstr "XML-sivustokartta"
 
 msgid "Regenerate all sitemaps after hitting <em>Save</em>"
 msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
+
+msgid "Add URL redirect"
+msgstr "Lisää uudelleenohjaus"
+
+msgid "Integrations"
+msgstr "Integraatiot"
+
+msgid "Site settings"
+msgstr "Sivuston asetukset"
+
+msgid "Main menu"
+msgstr "Päävalikko"
+
+msgid "Footer top navigation menu links"
+msgstr "Alatunnisteen yläosan valikkolinkit"
+
+msgid "Footer bottom navigation menu links"
+msgstr "Alatunnisteen alaosan valikkolinkit"
+
+msgid "HDBT - Component library"
+msgstr "HDBT - Komponenttikirjasto"
+
+msgid "User interface translations"
+msgstr "Käyttöliittymän kääntäminen"
+
+msgid "HDBT Component Library"
+msgstr "HDBT komponenttikirjasto"
+
+msgid "View HDBT Component Library"
+msgstr "Näytä HDBT komponenttikirjasto"
+
+msgid "Edit footer top navigation links"
+msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
+
+msgid "Edit footer bottom navigation links"
+msgstr "Muokkaa alatunnisteen alaosan valikkolinkkejä"
 
 msgid "Settings for this entity can be overridden here."
 msgstr "Tämän entiteetin asetukset voidaan yliajaa oheisilla asetuksilla."
