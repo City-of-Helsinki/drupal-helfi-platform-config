@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
@@ -17,4 +18,42 @@ function helfi_platform_config_node_view_alter(array &$build, EntityInterface $e
   if ($entity->hasField('field_unit_visible_title')) {
     $entity->set('title', \Drupal::token()->replace((string) $entity->get('field_unit_visible_title')->value));
   }
+
+  // @todo Needs caching. Note: This be only PoC.
+  if (
+    $entity->bundle() == 'unit' &&
+    $entity->hasField('field_unit_tpr_reference')
+  ) {
+    $services = FALSE;
+    $unit_id = $entity->field_unit_tpr_reference->first()->target_id;
+    if (!$unit_id) return;
+
+    $unit_storage = \Drupal::entityTypeManager()->getStorage('tpr_unit');
+    /** @var \Drupal\helfi_tpr\Entity\Unit $unit_entity */
+    $unit_entity = $unit_storage->load($unit_id);
+
+    if ($unit_entity->hasField('services')) {
+      $services = $unit_entity->services->getValue();
+    }
+
+    if (!$services) return;
+
+    $service_ids = [];
+    foreach ($services as $service) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('status', 1)
+        ->condition('type', 'service')
+        ->condition('field_service_tpr_reference', $service['target_id']);
+      $result = $query->execute();
+      $service_ids = array_merge($service_ids, $result);
+    }
+
+    if (!empty($service_ids)) {
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+      $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+      $services_nodes = $node_storage->loadMultiple($service_ids);
+      $build['service_list'] = $view_builder->viewMultiple($services_nodes, 'teaser');
+    }
+  }
 }
+
