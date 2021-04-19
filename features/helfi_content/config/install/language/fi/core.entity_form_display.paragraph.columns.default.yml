@@ -1,0 +1,9 @@
+content:
+  field_columns_left_column:
+    settings:
+      title: Lohko
+      title_plural: Lohkot
+  field_columns_right_column:
+    settings:
+      title: Lohko
+      title_plural: Lohkot

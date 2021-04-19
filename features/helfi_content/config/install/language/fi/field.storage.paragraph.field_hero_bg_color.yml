@@ -1,0 +1,26 @@
+settings:
+  allowed_values:
+    -
+      label: Vaakuna
+    -
+      label: Kulta
+    -
+      label: Hopea
+    -
+      label: Tiili
+    -
+      label: Bussi
+    -
+      label: Kupari
+    -
+      label: Engel
+    -
+      label: Sumu
+    -
+      label: Metro
+    -
+      label: Kesä
+    -
+      label: Suomenlinna
+    -
+      label: Spåra
