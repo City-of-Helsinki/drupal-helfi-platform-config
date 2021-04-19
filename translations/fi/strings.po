@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-16 12:09+0300\n"
-"PO-Revision-Date: 2021-04-16 12:09+0300\n"
+"POT-Creation-Date: 2021-04-19 10:52+0300\n"
+"PO-Revision-Date: 2021-04-19 10:52+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1547,9 +1547,6 @@ msgstr "XML-sivustokartta"
 msgid "Regenerate all sitemaps after hitting <em>Save</em>"
 msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
 
-msgid "Add URL redirect"
-msgstr "Lisää uudelleenohjaus"
-
 msgid "Integrations"
 msgstr "Integraatiot"
 
@@ -1570,21 +1567,6 @@ msgstr "HDBT - Komponenttikirjasto"
 
 msgid "User interface translations"
 msgstr "Käyttöliittymän kääntäminen"
-
-msgid "HDBT Component Library"
-msgstr "HDBT komponenttikirjasto"
-
-msgid "View HDBT Component Library"
-msgstr "Näytä HDBT komponenttikirjasto"
-
-msgid "Edit footer top navigation links"
-msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
-
-msgid "Edit footer bottom navigation links"
-msgstr "Muokkaa alatunnisteen alaosan valikkolinkkejä"
-
-msgid "Settings for this entity can be overridden here."
-msgstr "Tämän entiteetin asetukset voidaan yliajaa oheisilla asetuksilla."
 
 msgid "Sitemap variants"
 msgstr "Sivustokarttaversiot"
@@ -1612,6 +1594,24 @@ msgstr ""
 "Tämän <em>@bundle</em> -sisällön prioriteetti hakukoneiden "
 "indekseissä."
 
+msgid "always"
+msgstr "aina"
+
+msgid "hourly"
+msgstr "tunnin välein"
+
+msgid "daily"
+msgstr "päivittäin"
+
+msgid "weekly"
+msgstr "viikottain"
+
+msgid "monthly"
+msgstr "kuukausittain"
+
+msgid "yearly"
+msgstr "vuosittain"
+
 msgid ""
 "The frequency with which this <em>@bundle</em> entity changes. Search "
 "engine bots may take this as an indication of how often to index it."
@@ -1630,25 +1630,25 @@ msgstr ""
 "Määrittää, pitäisikö tämän <em>@bundle</em> sisällön "
 "sisältämät kuvat sisällyttää sivustokarttaan."
 
+msgid "Settings for this entity can be overridden here."
+msgstr "Tämän entiteetin asetukset voidaan yliajaa oheisilla asetuksilla."
+
 msgid "Meta information"
 msgstr "Metatiedot"
 
-msgid "always"
-msgstr "aina"
+msgid "Add URL redirect"
+msgstr "Lisää uudelleenohjaus"
 
-msgid "hourly"
-msgstr "tunnin välein"
+msgid "HDBT Component Library"
+msgstr "HDBT komponenttikirjasto"
 
-msgid "daily"
-msgstr "päivittäin"
+msgid "View HDBT Component Library"
+msgstr "Näytä HDBT komponenttikirjasto"
 
-msgid "weekly"
-msgstr "viikottain"
+msgid "Edit footer top navigation links"
+msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
 
-msgid "monthly"
-msgstr "kuukausittain"
-
-msgid "yearly"
-msgstr "vuosittain"
+msgid "Edit footer bottom navigation links"
+msgstr "Muokkaa alatunnisteen alaosan valikkolinkkejä"
 
 
