@@ -4,6 +4,7 @@ package: Custom
 core: 8.x
 core_version_requirement: ^8 || ^9
 dependencies:
-  - features
-  - menu_block_current_language
-  - helfi_api_base
+  - 'drupal:language'
+  - 'features:features'
+  - 'menu_block_current_language:menu_block_current_language'
+  - 'helfi_api_base:helfi_api_base'

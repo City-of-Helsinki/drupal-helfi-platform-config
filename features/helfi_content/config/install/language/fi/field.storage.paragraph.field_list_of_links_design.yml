@@ -1,0 +1,8 @@
+settings:
+  allowed_values:
+    -
+      label: Kuvallinen
+    -
+      label: 'Ilman kuvaa'
+    -
+      label: 'Ilman kuvaa ja kuvausta'
