@@ -1,0 +1,12 @@
+popup_agreed:
+  value: "<h2>Thank you for accepting cookies</h2>\r\n\r\n<p>You can now hide this message or find out more about cookies.</p>\r\n"
+popup_agree_button_message: Accept
+popup_more_info_button_message: 'Show cookies'
+popup_find_more_button_message: 'Show cookies'
+popup_hide_button_message: Скрыть
+popup_info:
+  value: "<h2>Hel.fi uses cookies&nbsp;</h2>\r\n\r\n<p>We use essential cookies on our website to make the site work. Also third party cookies are used if you give us your permission.</p>\r\n"
+popup_link: /node/1
+withdraw_message:
+  value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
+save_preferences_button_label: 'Allow only essential cookies'
