@@ -1,2 +1,2 @@
 label: 'Pitkä kuvaus'
-description: 'Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä.'
+description: 'Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]'

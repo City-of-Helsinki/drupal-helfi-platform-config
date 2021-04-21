@@ -11,7 +11,7 @@ field_name: field_unit_email
 entity_type: node
 bundle: unit
 label: E-mail
-description: 'Default value for this field is the e-mail address from TPR, but if there is no value available from TPR or you would for some reason want to override the value then remove the token and write the e-mail address instead.'
+description: 'Default value for this field is the e-mail address from TPR, but if there is no value available from TPR or you would for some reason want to override the value then remove the token and write the e-mail address instead. Example token [aet:tpr_unit:1234:email]'
 required: false
 translatable: true
 default_value: {  }

@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.unit.field_unit_parent_unit
     - field.field.node.unit.field_unit_phone_number
     - field.field.node.unit.field_unit_postal_address_tpr
+    - field.field.node.unit.field_unit_services
     - field.field.node.unit.field_unit_short_description
     - field.field.node.unit.field_unit_tpr_reference
     - field.field.node.unit.field_unit_visible_title
@@ -116,6 +117,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textfield
+    region: content
+  field_unit_services:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_unit_short_description:
     weight: 6
