@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-21 10:51+0300\n"
-"PO-Revision-Date: 2021-04-21 10:51+0300\n"
+"POT-Creation-Date: 2021-04-23 14:23+0300\n"
+"PO-Revision-Date: 2021-04-23 14:23+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -812,6 +812,38 @@ msgstr "Tällä hetkellä 0 käyttäjää on online."
 msgid "A list of users that are currently logged in."
 msgstr "Lista käyttäjistä jotka ovat online."
 
+msgid "Long description"
+msgstr "Pitkä kuvaus"
+
+msgid "Long description for the unit. The default value comes from TPR."
+msgstr ""
+"Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
+
+msgid "Main image (URL)"
+msgstr "Pääkuva (URL)"
+
+msgid "URL of the main image for the unit provided by the integration."
+msgstr ""
+"URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:picture_url]"
+
+msgid "Short description"
+msgstr "Lyhyt kuvaus"
+
+msgid "Short description of the unit. The default value comes from TPR."
+msgstr ""
+"Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
+
+msgid "Visible title"
+msgstr "Näkyvä otsikko"
+
+msgid "The title that is shown on the unit page."
+msgstr ""
+"Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
+"korvauskuviosta [aet:tpr_unit:1234:name]"
+
 msgid "Paragraph"
 msgstr "Lohko"
 
@@ -1449,44 +1481,12 @@ msgstr ""
 "Valitse tämä jos tämä toimipiste on ylätason toimipiste toisille "
 "toimipisteille."
 
-msgid "Long description"
-msgstr "Pitkä kuvaus"
-
-msgid "Long description for the unit. The default value comes from TPR."
-msgstr ""
-"Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
-
-msgid "Main image (URL)"
-msgstr "Pääkuva (URL)"
-
-msgid "URL of the main image for the unit provided by the integration."
-msgstr ""
-"URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:picture_url]"
-
 msgid ""
 "If this unit is child unit for another unit provide the parent unit to "
 "this field."
 msgstr ""
 "Jos tämä toimipiste on alatoimipiste jollekin ylätason "
 "toimipisteelle niin täytä ylätason toimipiste tähän."
-
-msgid "Short description"
-msgstr "Lyhyt kuvaus"
-
-msgid "Short description of the unit. The default value comes from TPR."
-msgstr ""
-"Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
-
-msgid "Visible title"
-msgstr "Näkyvä otsikko"
-
-msgid "The title that is shown on the unit page."
-msgstr ""
-"Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
-"korvauskuviosta [aet:tpr_unit:1234:name]"
 
 msgid "Unit"
 msgstr "Toimipiste"
@@ -1498,10 +1498,6 @@ msgstr ""
 "Yksittäinen toimipiste jonka sisältämä tieto tulee pääosin "
 "integraation kautta järjestelmään. Halutessasi voit rikastaa tätä "
 "tietoa."
-
-msgctxt "Address label"
-msgid "Postal code"
-msgstr "Postinumero"
 
 msgid "Insert selected"
 msgstr "Poimi valitut mediatiedostot"
@@ -1517,9 +1513,6 @@ msgstr "Metatunnisteet"
 
 msgid "Metatag"
 msgstr "Metatunniste"
-
-msgid "Postal/ZIP code"
-msgstr "Postinumero"
 
 msgid "Metatag plugins"
 msgstr "Metatunnisteen lisäosat"
@@ -1561,9 +1554,6 @@ msgstr "XML-sivustokartta"
 
 msgid "Regenerate all sitemaps after hitting <em>Save</em>"
 msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
-
-msgid "Phone"
-msgstr "Puhelin"
 
 msgid "Integrations"
 msgstr "Integraatiot"
@@ -1673,10 +1663,14 @@ msgctxt "Contact card title"
 msgid "Contact"
 msgstr "Yhteystiedot"
 
-msgid "Visiting address"
-msgstr "Käyntiosoite"
+msgid "Unit services"
+msgstr "Toimipisteen palvelut"
 
-msgid "Postal address"
-msgstr "Postiosoite"
+msgctxt "Unit services count context word"
+msgid "services"
+msgstr "palvelua"
+
+msgid "Show all services"
+msgstr "Näytä kaikki palvelut"
 
 
