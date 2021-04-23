@@ -1,0 +1,69 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_content
+    - node.type.unit
+    - paragraphs.paragraphs_type.view
+  module:
+    - entity_reference_revisions
+id: node.unit.field_content
+field_name: field_content
+entity_type: node
+bundle: unit
+label: Content
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      view: view
+    target_bundles_drag_drop:
+      accordion:
+        weight: 16
+        enabled: false
+      accordion_item:
+        weight: 17
+        enabled: false
+      banner:
+        weight: 18
+        enabled: false
+      columns:
+        weight: 19
+        enabled: false
+      content_cards:
+        weight: 20
+        enabled: false
+      gallery:
+        weight: 21
+        enabled: false
+      gallery_slide:
+        weight: 22
+        enabled: false
+      hero:
+        weight: 23
+        enabled: false
+      image:
+        weight: 24
+        enabled: false
+      liftup_with_image:
+        weight: 25
+        enabled: false
+      list_of_links:
+        weight: 26
+        enabled: false
+      list_of_links_item:
+        weight: 27
+        enabled: false
+      text:
+        weight: 28
+        enabled: false
+      view:
+        enabled: true
+        weight: 15
+field_type: entity_reference_revisions

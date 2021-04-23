@@ -10,9 +10,12 @@ dependencies:
   - 'drupal:path'
   - 'drupal:text'
   - 'drupal:user'
+  - 'drupal:views'
   - 'helfi_tpr:helfi_tpr'
+  - 'helfi_units:helfi_units'
   - 'pathauto:pathauto'
   - 'scheduler:scheduler'
   - 'token:token'
   - 'token_filter:token_filter'
+  - 'views_show_more:views_show_more'
 package: HELfi

@@ -32,14 +32,18 @@
     "drupal/social_media": "^1.8",
     "drupal/simple_sitemap": "^3.0",
     "drupal/token": "^1.9",
-    "drupal/token_filter": "^1.2"
+    "drupal/token_filter": "^1.2",
+    "drupal/views_infinite_scroll": "^1.8",
+    "drupal/viewsreference": "^1.7"
   },
   "extra": {
     "patches": {
       "drupal/core": {
         "[#UHF-181] Hide untranslated menu links": "https://www.drupal.org/files/issues/2021-03-05/3091246-allow-menu-tree-manipulators-alter-12-1.patch",
         "[#UHF-1072] Nested Paragraphs create multiple drag handles (https://www.drupal.org/project/drupal/issues/3092181#comment-13931509)": "https://www.drupal.org/files/issues/2020-12-08/3092181-142-9X_0.patch",
-        "[#UHF-920] Token for base URL (https://www.drupal.org/project/drupal/issues/1088112).": "https://www.drupal.org/files/issues/2020-10-06/1088112-63.patch"
+        "[#UHF-920] Token for base URL (https://www.drupal.org/project/drupal/issues/1088112).": "https://www.drupal.org/files/issues/2020-10-06/1088112-63.patch",
+        "[#UHF-1036] Drupal.views.ajaxView is not initializing pagers in nested views (https://www.drupal.org/project/drupal/issues/2858890).": "https://www.drupal.org/files/issues/2020-11-29/2858890-58.patch",
+        "[#UHF-1036] Allow views attachment display use own pager options (https://www.drupal.org/project/drupal/issues/2833734).": "https://www.drupal.org/files/issues/2020-11-29/2833734-allow-attachment-pager-42.patch"
       },
       "drupal/default_content": {
         "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"

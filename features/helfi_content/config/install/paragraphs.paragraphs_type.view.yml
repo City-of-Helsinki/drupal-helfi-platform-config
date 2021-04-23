@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: view
+label: View
+icon_uuid: null
+icon_default: null
+description: 'Views paragraph can be used when you want to list content with various arguments and rules. These lists are premade.'
+behavior_plugins: {  }
