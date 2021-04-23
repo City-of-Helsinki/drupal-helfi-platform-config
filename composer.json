@@ -33,7 +33,7 @@
     "drupal/simple_sitemap": "^3.0",
     "drupal/token": "^1.9",
     "drupal/token_filter": "^1.2",
-    "drupal/views_show_more": "^1.0",
+    "drupal/views_infinite_scroll": "^1.8",
     "drupal/viewsreference": "^2.0@beta"
   },
   "extra": {

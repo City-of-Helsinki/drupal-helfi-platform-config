@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.unit.field_content
     - field.field.node.unit.field_unit_address_tpr
     - field.field.node.unit.field_unit_alt_address
     - field.field.node.unit.field_unit_alt_postal_address
@@ -20,6 +21,7 @@ dependencies:
     - node.type.unit
   module:
     - address
+    - entity_reference_revisions
     - text
     - user
 id: node.unit.default
@@ -27,6 +29,15 @@ targetEntityType: node
 bundle: unit
 mode: default
 content:
+  field_content:
+    weight: 14
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
   field_unit_address_tpr:
     weight: 8
     label: hidden
@@ -111,14 +122,6 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_unit_services:
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_unit_short_description:
     weight: 4
     label: hidden
@@ -139,5 +142,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_unit_services: true
   field_unit_tpr_reference: true
   langcode: true

@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.unit.field_content
     - field.field.node.unit.field_unit_address_tpr
     - field.field.node.unit.field_unit_alt_address
     - field.field.node.unit.field_unit_alt_postal_address
@@ -32,6 +33,7 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_content: true
   field_unit_address_tpr: true
   field_unit_alt_address: true
   field_unit_alt_postal_address: true

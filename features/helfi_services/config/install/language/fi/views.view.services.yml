@@ -1,6 +1,0 @@
-label: Palvelut
-display:
-  unit_service_list:
-    display_title: 'Toimipisteen palvelulistaus'
-    display_options:
-      display_description: 'Listaa palveluita toimipisteen sivun perusteella'
