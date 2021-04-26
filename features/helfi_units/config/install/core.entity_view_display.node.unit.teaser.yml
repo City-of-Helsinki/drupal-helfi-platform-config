@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.unit.field_content
     - field.field.node.unit.field_unit_address_tpr
     - field.field.node.unit.field_unit_alt_address
     - field.field.node.unit.field_unit_alt_postal_address
@@ -15,7 +14,9 @@ dependencies:
     - field.field.node.unit.field_unit_parent_unit
     - field.field.node.unit.field_unit_phone_number
     - field.field.node.unit.field_unit_postal_address_tpr
+    - field.field.node.unit.field_unit_service_list_title
     - field.field.node.unit.field_unit_services
+    - field.field.node.unit.field_unit_services_list
     - field.field.node.unit.field_unit_short_description
     - field.field.node.unit.field_unit_tpr_reference
     - field.field.node.unit.field_unit_visible_title
@@ -33,7 +34,6 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  field_content: true
   field_unit_address_tpr: true
   field_unit_alt_address: true
   field_unit_alt_postal_address: true
@@ -45,7 +45,9 @@ hidden:
   field_unit_parent_unit: true
   field_unit_phone_number: true
   field_unit_postal_address_tpr: true
+  field_unit_service_list_title: true
   field_unit_services: true
+  field_unit_services_list: true
   field_unit_short_description: true
   field_unit_tpr_reference: true
   field_unit_visible_title: true

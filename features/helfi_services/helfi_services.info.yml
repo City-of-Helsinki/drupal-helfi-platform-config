@@ -10,6 +10,7 @@ dependencies:
   - 'drupal:path'
   - 'drupal:text'
   - 'drupal:user'
+  - 'drupal:views'
   - 'helfi_tpr:helfi_tpr'
   - 'pathauto:pathauto'
   - 'scheduler:scheduler'
