@@ -50,7 +50,7 @@ display:
       pager:
         type: infinite_scroll
         options:
-          items_per_page: 4
+          items_per_page: 8
           offset: 0
           id: 0
           total_pages: null
