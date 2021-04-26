@@ -33,8 +33,8 @@
     "drupal/simple_sitemap": "^3.0",
     "drupal/token": "^1.9",
     "drupal/token_filter": "^1.2",
-    "drupal/viewfield": "^3.0@beta",
-    "drupal/views_infinite_scroll": "^1.8"
+    "drupal/views_infinite_scroll": "^1.8",
+    "drupal/viewsreference": "^2.0@beta"
   },
   "extra": {
     "patches": {
