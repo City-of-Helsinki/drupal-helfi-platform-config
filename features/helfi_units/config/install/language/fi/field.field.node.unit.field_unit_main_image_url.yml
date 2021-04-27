@@ -1,2 +1,2 @@
 label: 'Pääkuva (URL)'
-description: 'URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta.'
+description: 'URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta. Esimerkki korvauskuviosta [aet:tpr_unit:1234:picture_url]'

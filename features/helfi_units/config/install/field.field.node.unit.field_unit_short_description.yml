@@ -11,7 +11,7 @@ field_name: field_unit_short_description
 entity_type: node
 bundle: unit
 label: 'Short description'
-description: 'Short description of the unit. The default value comes from TPR.'
+description: 'Short description of the unit. The default value comes from TPR. Example token [aet:tpr_unit:1234:description:summary]'
 required: false
 translatable: true
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_unit_long_description
 entity_type: node
 bundle: unit
 label: 'Long description'
-description: 'Long description for the unit. The default value comes from TPR.'
+description: "Long description for the unit. The default value comes from TPR. Example token [aet:tpr_unit:1234:description:value]\r\n"
 required: false
 translatable: true
 default_value: {  }

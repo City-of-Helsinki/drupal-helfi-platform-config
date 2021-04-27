@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-19 10:52+0300\n"
-"PO-Revision-Date: 2021-04-19 10:52+0300\n"
+"POT-Creation-Date: 2021-04-26 14:32+0300\n"
+"PO-Revision-Date: 2021-04-26 14:32+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -993,14 +993,14 @@ msgstr "Параграф"
 msgid "Paragraphs"
 msgstr "Параграфы"
 
-msgid "Accept"
-msgstr "Accept"
-
 msgid "More info"
 msgstr "Show cookies"
 
 msgid "Save preferences"
 msgstr "Allow only essential cookies"
+
+msgid "White"
+msgstr "Белый"
 
 msgid "Redirect"
 msgstr "Переадресация"
@@ -1059,6 +1059,18 @@ msgstr "Язык оригинала"
 msgid "There is no redirect yet."
 msgstr "Перенаправлений пока нет."
 
+msgid "Content Type"
+msgstr "Тип материала"
+
+msgid "Publish on"
+msgstr "Опубликовать"
+
+msgid "Unpublish on"
+msgstr "Снять с публикации"
+
+msgid "Scheduled"
+msgstr "Запланировано"
+
 msgid "Content"
 msgstr "Содержимое"
 
@@ -1072,6 +1084,18 @@ msgstr "Главная страница"
 
 msgid "Global"
 msgstr "Глобальный"
+
+msgid "Token"
+msgstr "Токен"
+
+msgid "403 access denied"
+msgstr "403 доступ запрещен"
+
+msgid "404 page not found"
+msgstr "404 страница не найдена"
+
+msgid "Delete redirect"
+msgstr "Удалить перенаправление"
 
 msgid ""
 "<h2>Thank you for accepting cookies</h2><p>You can now hide this "

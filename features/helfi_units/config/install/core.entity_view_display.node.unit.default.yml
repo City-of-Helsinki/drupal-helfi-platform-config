@@ -13,13 +13,18 @@ dependencies:
     - field.field.node.unit.field_unit_parent_unit
     - field.field.node.unit.field_unit_phone_number
     - field.field.node.unit.field_unit_postal_address_tpr
+    - field.field.node.unit.field_unit_service_list_title
+    - field.field.node.unit.field_unit_services
+    - field.field.node.unit.field_unit_services_list
     - field.field.node.unit.field_unit_short_description
+    - field.field.node.unit.field_unit_tpr_reference
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
   module:
     - address
     - text
     - user
+    - viewsreference
 id: node.unit.default
 targetEntityType: node
 bundle: unit
@@ -109,6 +114,15 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_unit_services_list:
+    weight: 14
+    label: hidden
+    settings:
+      plugin_types:
+        - block
+    third_party_settings: {  }
+    type: viewsreference_formatter
+    region: content
   field_unit_short_description:
     weight: 4
     label: hidden
@@ -129,4 +143,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_unit_service_list_title: true
+  field_unit_services: true
+  field_unit_tpr_reference: true
   langcode: true

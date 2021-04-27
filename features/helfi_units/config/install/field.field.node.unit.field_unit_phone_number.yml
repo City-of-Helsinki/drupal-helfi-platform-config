@@ -11,7 +11,7 @@ field_name: field_unit_phone_number
 entity_type: node
 bundle: unit
 label: 'Phone number'
-description: ''
+description: 'Example token [aet:tpr_unit:1234:phone]'
 required: false
 translatable: true
 default_value: {  }

@@ -14,7 +14,11 @@ dependencies:
     - field.field.node.unit.field_unit_parent_unit
     - field.field.node.unit.field_unit_phone_number
     - field.field.node.unit.field_unit_postal_address_tpr
+    - field.field.node.unit.field_unit_service_list_title
+    - field.field.node.unit.field_unit_services
+    - field.field.node.unit.field_unit_services_list
     - field.field.node.unit.field_unit_short_description
+    - field.field.node.unit.field_unit_tpr_reference
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
   module:
@@ -41,6 +45,10 @@ hidden:
   field_unit_parent_unit: true
   field_unit_phone_number: true
   field_unit_postal_address_tpr: true
+  field_unit_service_list_title: true
+  field_unit_services: true
+  field_unit_services_list: true
   field_unit_short_description: true
+  field_unit_tpr_reference: true
   field_unit_visible_title: true
   langcode: true

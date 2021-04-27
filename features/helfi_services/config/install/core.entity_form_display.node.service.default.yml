@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.service.field_service_long_description
     - field.field.node.service.field_service_parent_service
     - field.field.node.service.field_service_short_description
+    - field.field.node.service.field_service_tpr_reference
     - field.field.node.service.field_service_visible_title
     - node.type.service
   module:
@@ -19,19 +20,19 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   field_service_is_parent:
-    weight: 3
+    weight: 4
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_service_long_description:
-    weight: 6
+    weight: 7
     settings:
       rows: 5
       placeholder: ''
@@ -39,7 +40,7 @@ content:
     type: text_textarea
     region: content
   field_service_parent_service:
-    weight: 4
+    weight: 5
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -49,15 +50,25 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_service_short_description:
-    weight: 5
+    weight: 6
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
     region: content
-  field_service_visible_title:
+  field_service_tpr_reference:
     weight: 1
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_service_visible_title:
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -66,20 +77,20 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 2
+    weight: 3
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -87,7 +98,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 12
     region: content
     third_party_settings: {  }
   title:
@@ -100,7 +111,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 13
+    weight: 14
     settings:
       match_operator: CONTAINS
       size: 60
@@ -110,12 +121,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }

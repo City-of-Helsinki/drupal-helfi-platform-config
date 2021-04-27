@@ -11,7 +11,7 @@ field_name: field_unit_main_image_url
 entity_type: node
 bundle: unit
 label: 'Main image (URL)'
-description: 'URL of the main image for the unit provided by the integration.'
+description: 'URL of the main image for the unit provided by the integration. Example token [aet:tpr_unit:1234:picture_url]'
 required: false
 translatable: true
 default_value: {  }
