@@ -12,8 +12,11 @@ dependencies:
   - 'drupal:user'
   - 'drupal:views'
   - 'helfi_tpr:helfi_tpr'
+  - 'helfi_units:helfi_units'
   - 'pathauto:pathauto'
   - 'scheduler:scheduler'
   - 'token:token'
   - 'token_filter:token_filter'
+  - 'views_infinite_scroll:views_infinite_scroll'
+  - 'viewsreference:viewsreference'
 package: HELfi

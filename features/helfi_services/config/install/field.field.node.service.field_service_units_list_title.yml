@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_service_units_list_title
+    - node.type.service
+id: node.service.field_service_units_list_title
+field_name: field_service_units_list_title
+entity_type: node
+bundle: service
+label: 'Units list title'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: Units
+default_value_callback: ''
+settings: {  }
+field_type: string

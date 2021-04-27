@@ -1,0 +1,4 @@
+label: 'Toimipistelistauksen otsikko'
+default_value:
+  -
+    value: 'Palvelua tarjoavat toimipisteet'

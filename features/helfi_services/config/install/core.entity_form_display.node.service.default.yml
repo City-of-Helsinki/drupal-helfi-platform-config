@@ -7,12 +7,15 @@ dependencies:
     - field.field.node.service.field_service_parent_service
     - field.field.node.service.field_service_short_description
     - field.field.node.service.field_service_tpr_reference
+    - field.field.node.service.field_service_units_list
+    - field.field.node.service.field_service_units_list_title
     - field.field.node.service.field_service_visible_title
     - node.type.service
   module:
     - path
     - scheduler
     - text
+    - viewsreference
 id: node.service.default
 targetEntityType: node
 bundle: service
@@ -66,6 +69,20 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_service_units_list:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: viewsreference_select
+    region: content
+  field_service_units_list_title:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_service_visible_title:
     weight: 2
