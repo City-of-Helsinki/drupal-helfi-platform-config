@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.service.field_service_parent_service
     - field.field.node.service.field_service_short_description
     - field.field.node.service.field_service_tpr_reference
+    - field.field.node.service.field_service_units_list
+    - field.field.node.service.field_service_units_list_title
     - field.field.node.service.field_service_visible_title
     - node.type.service
   module:
@@ -48,4 +50,6 @@ hidden:
   field_service_is_parent: true
   field_service_parent_service: true
   field_service_tpr_reference: true
+  field_service_units_list: true
+  field_service_units_list_title: true
   langcode: true

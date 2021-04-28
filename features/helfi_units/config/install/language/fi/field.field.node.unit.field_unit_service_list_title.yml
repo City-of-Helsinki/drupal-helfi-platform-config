@@ -1,5 +1,4 @@
 label: 'Palvelulistauksen otsikko'
-description: 'Voit '
 default_value:
   -
     value: 'Toimipisteen palvelut'

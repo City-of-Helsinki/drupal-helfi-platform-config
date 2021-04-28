@@ -7,11 +7,14 @@ dependencies:
     - field.field.node.service.field_service_parent_service
     - field.field.node.service.field_service_short_description
     - field.field.node.service.field_service_tpr_reference
+    - field.field.node.service.field_service_units_list
+    - field.field.node.service.field_service_units_list_title
     - field.field.node.service.field_service_visible_title
     - node.type.service
   module:
     - text
     - user
+    - viewsreference
 id: node.service.default
 targetEntityType: node
 bundle: service
@@ -50,6 +53,15 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_service_units_list:
+    weight: 6
+    label: hidden
+    settings:
+      plugin_types:
+        - block
+    third_party_settings: {  }
+    type: viewsreference_formatter
+    region: content
   field_service_visible_title:
     weight: 3
     label: hidden
@@ -64,4 +76,5 @@ content:
     third_party_settings: {  }
 hidden:
   field_service_tpr_reference: true
+  field_service_units_list_title: true
   langcode: true

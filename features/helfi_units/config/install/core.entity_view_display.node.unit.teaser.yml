@@ -22,20 +22,48 @@ dependencies:
     - field.field.node.unit.field_unit_visible_title
     - node.type.unit
   module:
+    - address
+    - text
     - user
 id: node.unit.teaser
 targetEntityType: node
 bundle: unit
 mode: teaser
 content:
-  links:
-    weight: 100
+  field_unit_address_tpr:
+    type: text_default
+    weight: 1
+    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+  field_unit_alt_address:
+    type: address_default
+    weight: 3
     region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_unit_phone_number:
+    type: text_default
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_unit_visible_title:
+    type: text_default
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  field_unit_address_tpr: true
-  field_unit_alt_address: true
   field_unit_alt_postal_address: true
   field_unit_alternative_image: true
   field_unit_email: true
@@ -43,12 +71,10 @@ hidden:
   field_unit_long_description: true
   field_unit_main_image_url: true
   field_unit_parent_unit: true
-  field_unit_phone_number: true
   field_unit_postal_address_tpr: true
   field_unit_service_list_title: true
   field_unit_services: true
   field_unit_services_list: true
   field_unit_short_description: true
   field_unit_tpr_reference: true
-  field_unit_visible_title: true
   langcode: true
