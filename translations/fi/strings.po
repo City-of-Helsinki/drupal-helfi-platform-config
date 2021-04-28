@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-27 11:12+0300\n"
-"PO-Revision-Date: 2021-04-27 11:12+0300\n"
+"POT-Creation-Date: 2021-04-28 18:06+0300\n"
+"PO-Revision-Date: 2021-04-28 18:06+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -812,38 +812,6 @@ msgstr "Tällä hetkellä 0 käyttäjää on online."
 msgid "A list of users that are currently logged in."
 msgstr "Lista käyttäjistä jotka ovat online."
 
-msgid "Long description"
-msgstr "Pitkä kuvaus"
-
-msgid "Long description for the unit. The default value comes from TPR."
-msgstr ""
-"Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
-
-msgid "Main image (URL)"
-msgstr "Pääkuva (URL)"
-
-msgid "URL of the main image for the unit provided by the integration."
-msgstr ""
-"URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:picture_url]"
-
-msgid "Short description"
-msgstr "Lyhyt kuvaus"
-
-msgid "Short description of the unit. The default value comes from TPR."
-msgstr ""
-"Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
-
-msgid "Visible title"
-msgstr "Näkyvä otsikko"
-
-msgid "The title that is shown on the unit page."
-msgstr ""
-"Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
-"korvauskuviosta [aet:tpr_unit:1234:name]"
-
 msgid "Paragraph"
 msgstr "Lohko"
 
@@ -1124,6 +1092,46 @@ msgstr "@title [%language]"
 
 msgid "Find and manage content"
 msgstr "Etsi ja hallitse sisältöä"
+
+msgid "There are no menu links yet. <a href=\":url\">Add link</a>."
+msgstr ""
+"Valikkoon ei ole vielä lisätty linkkejä. <a href=\":url\">Lisää "
+"linkki</a>."
+
+msgid "Determines the content language from a request parameter."
+msgstr "Määrittää sisällön kielen pyynnön parametrin mukaan."
+
+msgid "The maximum number of media items have been selected."
+msgstr " "
+
+msgid "One media item remaining."
+msgid_plural "@count media items remaining."
+msgstr[0] "Voit lisätä vielä yhden mediatiedoston."
+msgstr[1] "Voit lisätä vielä @count mediatiedostoa."
+
+msgid "@selected of @count item selected"
+msgid_plural "@selected of @count items selected"
+msgstr[0] "@selected / @count kohdetta valittu"
+msgstr[1] "@selected / @count kohdetta valittu"
+
+msgid "1 item selected"
+msgid_plural "@count items selected"
+msgstr[0] "Yksi kohde valittu"
+msgstr[1] "@count kohdetta valittu"
+
+msgid "Add or select media"
+msgstr "Lisää tai valitse mediatiedosto"
+
+msgid "Add file"
+msgid_plural "Add files"
+msgstr[0] "Lisää tiedosto"
+msgstr[1] "Lisää tiedostot"
+
+msgid "No media items are selected."
+msgstr "Mediatiedostoja ei ole valittu."
+
+msgid "Opening media library."
+msgstr "Avataan mediakirjastoa..."
 
 msgid "Token"
 msgstr "Muuttuja"
@@ -1447,12 +1455,44 @@ msgstr ""
 "Valitse tämä jos tämä toimipiste on ylätason toimipiste toisille "
 "toimipisteille."
 
+msgid "Long description"
+msgstr "Pitkä kuvaus"
+
+msgid "Long description for the unit. The default value comes from TPR."
+msgstr ""
+"Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
+
+msgid "Main image (URL)"
+msgstr "Pääkuva (URL)"
+
+msgid "URL of the main image for the unit provided by the integration."
+msgstr ""
+"URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:picture_url]"
+
 msgid ""
 "If this unit is child unit for another unit provide the parent unit to "
 "this field."
 msgstr ""
 "Jos tämä toimipiste on alatoimipiste jollekin ylätason "
 "toimipisteelle niin täytä ylätason toimipiste tähän."
+
+msgid "Short description"
+msgstr "Lyhyt kuvaus"
+
+msgid "Short description of the unit. The default value comes from TPR."
+msgstr ""
+"Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
+
+msgid "Visible title"
+msgstr "Näkyvä otsikko"
+
+msgid "The title that is shown on the unit page."
+msgstr ""
+"Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
+"korvauskuviosta [aet:tpr_unit:1234:name]"
 
 msgid "Unit"
 msgstr "Toimipiste"
@@ -1464,6 +1504,10 @@ msgstr ""
 "Yksittäinen toimipiste jonka sisältämä tieto tulee pääosin "
 "integraation kautta järjestelmään. Halutessasi voit rikastaa tätä "
 "tietoa."
+
+msgctxt "Address label"
+msgid "Postal code"
+msgstr "Postinumero"
 
 msgid "Insert selected"
 msgstr "Poimi valitut mediatiedostot"
@@ -1479,6 +1523,9 @@ msgstr "Metatunnisteet"
 
 msgid "Metatag"
 msgstr "Metatunniste"
+
+msgid "Postal/ZIP code"
+msgstr "Postinumero"
 
 msgid "Metatag plugins"
 msgstr "Metatunnisteen lisäosat"
@@ -1497,6 +1544,165 @@ msgstr "Älä valitse tätä jos haluat luoda kustomoidun aliaksen."
 
 msgid "Joined path"
 msgstr "Yhdistetty polku"
+
+msgid ""
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
+
+msgid "The date the node will be published."
+msgstr "Päivämäärä jolloin sivu julkaistaan."
+
+msgid "The date the node will be unpublished."
+msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
+
+msgid "Drag to re-order @entity_types."
+msgstr "Raahaa järjestelläksesi @entity_types."
+
+msgid "Change frequency"
+msgstr "Vaihtuvuustiheys"
+
+msgid "Simple XML Sitemap"
+msgstr "XML-sivustokartta"
+
+msgid "Regenerate all sitemaps after hitting <em>Save</em>"
+msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
+
+msgid "Phone"
+msgstr "Puhelin"
+
+msgid "Services"
+msgstr "Palvelut"
+
+msgid "Integrations"
+msgstr "Integraatiot"
+
+msgid "Site settings"
+msgstr "Sivuston asetukset"
+
+msgid "Main menu"
+msgstr "Päävalikko"
+
+msgid "Footer top navigation menu links"
+msgstr "Alatunnisteen yläosan valikkolinkit"
+
+msgid "Footer bottom navigation menu links"
+msgstr "Alatunnisteen alaosan valikkolinkit"
+
+msgid "HDBT - Component library"
+msgstr "HDBT - Komponenttikirjasto"
+
+msgid "User interface translations"
+msgstr "Käyttöliittymän kääntäminen"
+
+msgid "Sitemap variants"
+msgstr "Sivustokarttaversiot"
+
+msgid ""
+"Do not index this <em>@bundle</em> entity in variant "
+"<em>@variant_label</em>"
+msgstr "Älä indeksoi tätä sisältöä."
+
+msgid "Otherwise the sitemaps will be regenerated during a future cron run."
+msgstr "Muutoin sivustokartat uudistetaan tulevan cron-ajon aikana."
+
+msgid "This setting will regenerate all sitemaps including the above changes."
+msgstr ""
+"Tämä asetus uudistaa kaikki sivustokartat, mukaan lukien yllä "
+"olevat muutokset."
+
+msgid "Index this <em>@bundle entity</em> in variant <em>@variant_label</em>"
+msgstr "Indeksoi tämä sisältö."
+
+msgid ""
+"The priority this <em>@bundle</em> entity will have in the eyes of "
+"search engine bots."
+msgstr ""
+"Tämän <em>@bundle</em> -sisällön prioriteetti hakukoneiden "
+"indekseissä."
+
+msgid "always"
+msgstr "aina"
+
+msgid "hourly"
+msgstr "tunnin välein"
+
+msgid "daily"
+msgstr "päivittäin"
+
+msgid "weekly"
+msgstr "viikottain"
+
+msgid "monthly"
+msgstr "kuukausittain"
+
+msgid "yearly"
+msgstr "vuosittain"
+
+msgid ""
+"The frequency with which this <em>@bundle</em> entity changes. Search "
+"engine bots may take this as an indication of how often to index it."
+msgstr ""
+"Kuinka usein tämä <em>@bundle</em> muuttuu tai päivittyy. "
+"Hakukonerobotit voivat pitää tätä osoituksena siitä, kuinka usein "
+"tämä sisältö indeksoidaan."
+
+msgid "Include images"
+msgstr "Sisällytä kuvat"
+
+msgid ""
+"Determines if images referenced by this <em>@bundle</em> entity should "
+"be included in the sitemap."
+msgstr ""
+"Määrittää, pitäisikö tämän <em>@bundle</em> sisällön "
+"sisältämät kuvat sisällyttää sivustokarttaan."
+
+msgid "Settings for this entity can be overridden here."
+msgstr "Tämän entiteetin asetukset voidaan yliajaa oheisilla asetuksilla."
+
+msgid "Meta information"
+msgstr "Metatiedot"
+
+msgid "Add URL redirect"
+msgstr "Lisää uudelleenohjaus"
+
+msgid "HDBT Component Library"
+msgstr "HDBT komponenttikirjasto"
+
+msgid "View HDBT Component Library"
+msgstr "Näytä HDBT komponenttikirjasto"
+
+msgid "Edit footer top navigation links"
+msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
+
+msgid "Edit footer bottom navigation links"
+msgstr "Muokkaa alatunnisteen alaosan valikkolinkkejä"
+
+msgctxt "Contact card title"
+msgid "Contact"
+msgstr "Yhteystiedot"
+
+msgid "Visiting address"
+msgstr "Käyntiosoite"
+
+msgid "Postal address"
+msgstr "Postiosoite"
+
+msgid "Accept only essential cookies"
+msgstr "Hyväksy vain välttämättömät evästeet"
+
+msgid "Show all services"
+msgstr "Näytä kaikki palvelut"
+
+msgid "Unit service list"
+msgstr "Toimipisteen palvelulistaus"
+
+msgid "Lists services in unit page"
+msgstr "Listaa palveluita toimipisteen sivun perusteella"
+
+msgctxt "Unit services count context word"
+msgid "services"
+msgstr "palvelua"
 
 msgid ""
 "Long description for the unit. The default value comes from TPR. "
@@ -1527,11 +1733,8 @@ msgstr ""
 "Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
 "korvauskuviosta [aet:tpr_unit:1234:name]"
 
-msgid "Services"
-msgstr "Palvelut"
-
-msgid "Show all services"
-msgstr "Näytä kaikki palvelut"
+msgid "Log in with @client_title"
+msgstr "Kirjaudu sisään @client_title-tunnuksilla"
 
 msgid "Unit service list"
 msgstr "Toimipisteen palvelulistaus"
@@ -1558,5 +1761,3 @@ msgstr "Näytä kaikki toimipisteet"
 msgctxt "Service list pager button"
 msgid "Show all services"
 msgstr "Näytä kaikki palvelut"
-
-

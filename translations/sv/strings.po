@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-27 11:12+0300\n"
-"PO-Revision-Date: 2021-04-27 11:12+0300\n"
+"POT-Creation-Date: 2021-04-28 18:06+0300\n"
+"PO-Revision-Date: 2021-04-28 18:06+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -95,6 +95,9 @@ msgstr "Primära flikar"
 
 msgid "Secondary tabs"
 msgstr "Sekundära flikar"
+
+msgid "Site branding"
+msgstr "Site branding"
 
 msgid "Tabs"
 msgstr "Flikar"
@@ -464,7 +467,7 @@ msgid "Master"
 msgstr "Huvud"
 
 msgid "Apply"
-msgstr "Verkställ"
+msgstr "Apply"
 
 msgid "Reset"
 msgstr "Återställ"
@@ -539,10 +542,10 @@ msgid "Filter"
 msgstr "Filtrera"
 
 msgid "‹ Previous"
-msgstr "‹ Föregående"
+msgstr "‹ Previous"
 
 msgid "Next ›"
-msgstr "Nästa ›"
+msgstr "Next ›"
 
 msgid "Name"
 msgstr "Namn"
@@ -645,6 +648,9 @@ msgstr "Tillämpa filter"
 
 msgid "Publishing status"
 msgstr "Status för publicering"
+
+msgid "Media type"
+msgstr "Media type"
 
 msgid "Newest first"
 msgstr "Nyaste först"
@@ -892,11 +898,26 @@ msgstr "{{ meddelande }}"
 msgid "Paragraph"
 msgstr "Paragraf"
 
+msgid "Accept"
+msgstr "Accept"
+
 msgid "More info"
 msgstr "Show cookies"
 
+msgid "No, thanks"
+msgstr "No, thanks"
+
+msgid "Privacy settings"
+msgstr "Privacy settings"
+
 msgid "Save preferences"
 msgstr "Allow only essential cookies"
+
+msgid "Accept all cookies"
+msgstr "Accept all cookies"
+
+msgid "White"
+msgstr "White"
 
 msgid "Redirect"
 msgstr "Omdirigera"
@@ -950,12 +971,6 @@ msgstr ""
 "are used if you give us your permission.</p>\r\n"
 ""
 
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By tapping the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
-
 msgid "<front>"
 msgstr "/node/1"
 
@@ -969,5 +984,8 @@ msgstr ""
 "<p>You have given your consent "
 "for us to set cookies.</p>\r\n"
 ""
+
+msgid "Withdraw consent"
+msgstr "Withdraw consent"
 
 

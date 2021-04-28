@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-27 11:12+0300\n"
-"PO-Revision-Date: 2021-04-27 11:12+0300\n"
+"POT-Creation-Date: 2021-04-28 18:07+0300\n"
+"PO-Revision-Date: 2021-04-28 18:07+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -514,22 +514,22 @@ msgid "Anonymous"
 msgstr "Гость"
 
 msgid "Master"
-msgstr "Основной"
+msgstr "Master"
 
 msgid "Apply"
-msgstr "Применить"
+msgstr "Apply"
 
 msgid "Reset"
-msgstr "Сбросить"
+msgstr "Reset"
 
 msgid "Sort by"
-msgstr "Сортировать по"
+msgstr "Sort by"
 
 msgid "Asc"
-msgstr "По возрастанию"
+msgstr "Asc"
 
 msgid "Desc"
-msgstr "По убыванию"
+msgstr "Desc"
 
 msgid "« First"
 msgstr "« Первая"
@@ -538,13 +538,13 @@ msgid "Last »"
 msgstr "Последняя »"
 
 msgid "Items per page"
-msgstr "Элементов на страницу"
+msgstr "Items per page"
 
 msgid "- All -"
-msgstr "- Все -"
+msgstr "- All -"
 
 msgid "Offset"
-msgstr "Пропустить"
+msgstr "Offset"
 
 msgid "Title"
 msgstr "Заголовок"
@@ -595,10 +595,10 @@ msgid "Filter"
 msgstr "Фильтр"
 
 msgid "‹ Previous"
-msgstr "‹ Предыдущий"
+msgstr "‹ Previous"
 
 msgid "Next ›"
-msgstr "Следующий ›"
+msgstr "Next ›"
 
 msgid "Name"
 msgstr "Название"
@@ -652,7 +652,7 @@ msgid "Use count"
 msgstr "Используемое количество"
 
 msgid "All"
-msgstr "Все"
+msgstr "All"
 
 msgid "Glossary"
 msgstr "Глоссарий"
@@ -993,6 +993,9 @@ msgstr "Параграф"
 msgid "Paragraphs"
 msgstr "Параграфы"
 
+msgid "Accept"
+msgstr "Accept"
+
 msgid "More info"
 msgstr "Show cookies"
 
@@ -1118,12 +1121,6 @@ msgstr ""
 "cookies on our website to make the site work. Also third party cookies "
 "are used if you give us your permission.</p>\r\n"
 ""
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By tapping the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
 
 msgid "<front>"
 msgstr "/node/1"
