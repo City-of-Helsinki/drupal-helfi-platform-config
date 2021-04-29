@@ -21,7 +21,12 @@ function helfi_platform_config_install() {
  * Modules helfi_units and helfi_services will be removed in release 1.2.0.
  */
 function helfi_platform_config_update_9001() {
-  \Drupal::service('module_installer')->uninstall(['helfi_units', 'helfi_services']);
+  \Drupal::service('module_installer')->uninstall([
+    'views_infinite_scroll',
+    'viewsreference',
+    'helfi_units',
+    'helfi_services'
+  ]);
 }
 
 /**
