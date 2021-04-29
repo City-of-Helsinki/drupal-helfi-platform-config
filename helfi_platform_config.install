@@ -23,10 +23,18 @@ function helfi_platform_config_install() {
  */
 function helfi_platform_config_update_9001() {
   \Drupal::service('module_installer')->uninstall([
-    'views_infinite_scroll',
-    'viewsreference',
     'helfi_units',
     'helfi_services',
+  ]);
+}
+
+/**
+ * Uninstall views infinite scroll and viewsrefernce.
+ */
+function helfi_platform_config_update_9002() {
+  \Drupal::service('module_installer')->uninstall([
+    'views_infinite_scroll',
+    'viewsreference',
   ]);
 }
 
