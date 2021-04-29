@@ -17,6 +17,14 @@ function helfi_platform_config_install() {
 }
 
 /**
+ * Uninstall service and unit node types.
+ * Modules helfi_units and helfi_services will be removed in release 1.2.0.
+ */
+function helfi_platform_config_update_9001() {
+  \Drupal::service('module_installer')->uninstall(['helfi_units', 'helfi_services']);
+}
+
+/**
  * Manually update all dependant features.
  */
 function helfi_platform_config_import_language_config() {
