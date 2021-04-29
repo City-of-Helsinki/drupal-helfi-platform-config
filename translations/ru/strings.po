@@ -517,19 +517,19 @@ msgid "Master"
 msgstr "Master"
 
 msgid "Apply"
-msgstr "Apply"
+msgstr "Применить"
 
 msgid "Reset"
-msgstr "Reset"
+msgstr "Сбросить"
 
 msgid "Sort by"
-msgstr "Sort by"
+msgstr "Сортировать по"
 
 msgid "Asc"
-msgstr "Asc"
+msgstr "По возрастанию"
 
 msgid "Desc"
-msgstr "Desc"
+msgstr "По убыванию"
 
 msgid "« First"
 msgstr "« Первая"
@@ -538,13 +538,13 @@ msgid "Last »"
 msgstr "Последняя »"
 
 msgid "Items per page"
-msgstr "Items per page"
+msgstr "Элементов на страницу"
 
 msgid "- All -"
-msgstr "- All -"
+msgstr "- Все -"
 
 msgid "Offset"
-msgstr "Offset"
+msgstr "Пропустить"
 
 msgid "Title"
 msgstr "Заголовок"
@@ -595,10 +595,10 @@ msgid "Filter"
 msgstr "Фильтр"
 
 msgid "‹ Previous"
-msgstr "‹ Previous"
+msgstr "‹ Предыдущий"
 
 msgid "Next ›"
-msgstr "Next ›"
+msgstr "Следующий ›"
 
 msgid "Name"
 msgstr "Название"
@@ -652,7 +652,7 @@ msgid "Use count"
 msgstr "Используемое количество"
 
 msgid "All"
-msgstr "All"
+msgstr "Все"
 
 msgid "Glossary"
 msgstr "Глоссарий"
@@ -993,15 +993,6 @@ msgstr "Параграф"
 msgid "Paragraphs"
 msgstr "Параграфы"
 
-msgid "Accept"
-msgstr "Accept"
-
-msgid "More info"
-msgstr "Show cookies"
-
-msgid "Save preferences"
-msgstr "Allow only essential cookies"
-
 msgid "White"
 msgstr "Белый"
 
@@ -1100,40 +1091,5 @@ msgstr "404 страница не найдена"
 msgid "Delete redirect"
 msgstr "Удалить перенаправление"
 
-msgid ""
-"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
-"message or find out more about cookies.</p>"
-msgstr ""
-"<h2>Thank you for accepting cookies</h2>\r\n"
-"\r\n"
-"<p>You can now hide "
-"this message or find out more about cookies.</p>\r\n"
-""
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By clicking the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
-"<h2>Hel.fi uses cookies&nbsp;</h2>\r\n"
-"\r\n"
-"<p>We use essential "
-"cookies on our website to make the site work. Also third party cookies "
-"are used if you give us your permission.</p>\r\n"
-""
-
 msgid "<front>"
 msgstr "/node/1"
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>You have given your consent for us to set "
-"cookies.</p>"
-msgstr ""
-"<h2>Hel.fi uses cookies</h2>\r\n"
-"\r\n"
-"<p>You have given your consent "
-"for us to set cookies.</p>\r\n"
-""
-
-
