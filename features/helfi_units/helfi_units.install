@@ -10,7 +10,7 @@ use Drupal\helfi_platform_config\Sanitation;
 /**
  * Implements hook_uninstall().
  */
-function helfi_services_uninstall() {
+function helfi_units_uninstall() {
 
   // Remove all services nodes.
   Sanitation::removeContent('unit');
