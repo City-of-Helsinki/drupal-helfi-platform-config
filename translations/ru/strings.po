@@ -514,7 +514,7 @@ msgid "Anonymous"
 msgstr "Гость"
 
 msgid "Master"
-msgstr "Master"
+msgstr "Основной"
 
 msgid "Apply"
 msgstr "Применить"
