@@ -1,5 +1,0 @@
-bundle: helfi
-excluded:
-  - field.storage.node.field_service_units_list
-  - field.storage.node.field_service_units_list_title
-required: true
