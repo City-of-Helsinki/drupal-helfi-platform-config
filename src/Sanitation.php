@@ -3,14 +3,14 @@
 namespace Drupal\helfi_platform_config;
 
 /**
- * Class Sanitation
+ * Sanitation handles removal of content.
  *
  * @package Drupal\helfi_platform_config
  */
 class Sanitation {
 
   /**
-   * Remove content.
+   * Removes nodes of given content type.
    *
    * @param string $node_type
    *   Content type.
