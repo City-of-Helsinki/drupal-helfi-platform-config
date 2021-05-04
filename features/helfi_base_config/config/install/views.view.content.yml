@@ -541,7 +541,11 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value: {  }
+          value:
+            fi: fi
+            sv: sv
+            en: en
+            ru: ru
           group: 1
           exposed: true
           expose:
@@ -550,6 +554,8 @@ display:
             description: ''
             use_operator: false
             operator: langcode_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: langcode
             required: false
             remember: false
@@ -557,10 +563,9 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
-              administrator: '0'
-            reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
+              admin: '0'
+              content_producer: '0'
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -644,7 +649,8 @@ display:
         description: 'Find and manage content'
         menu_name: admin
         weight: -10
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
     display_plugin: page
     display_title: Page
     id: page_1

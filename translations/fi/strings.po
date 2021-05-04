@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-28 18:06+0300\n"
-"PO-Revision-Date: 2021-04-28 18:06+0300\n"
+"POT-Creation-Date: 2021-05-03 18:25+0300\n"
+"PO-Revision-Date: 2021-05-03 18:25+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -474,6 +474,12 @@ msgstr "Nousevasti"
 msgid "Desc"
 msgstr "Laskevasti"
 
+msgid "‹‹"
+msgstr "‹ Edellinen"
+
+msgid "››"
+msgstr "Seuraava ›"
+
 msgid "« First"
 msgstr "« Ensimmäinen"
 
@@ -699,6 +705,12 @@ msgstr "Sisältö, joka kuuluu tiettyyn taksonomiatermiin."
 msgid "Feed"
 msgstr "Syöte"
 
+msgid "TPR unit list"
+msgstr "TPR Toimipisteet"
+
+msgid "TPR Units"
+msgstr "TPR Toimipisteet"
+
 msgid "Bulk update"
 msgstr "Massapäivitys"
 
@@ -826,6 +838,22 @@ msgstr "Lisätietoja"
 
 msgid "Hide"
 msgstr "Piilossa"
+
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By clicking the Accept button, you agree to us doing "
+"so.</p>"
+msgstr ""
+"<h2>Hel.fi käyttää evästeitä&nbsp;</h2>\r\n"
+"\r\n"
+"<p>Tämä "
+"sivusto käyttää välttämättömiä evästeitä suorituskyvyn "
+"varmistamiseksi sekä yleisen käytön seurantaan. Lisäksi käytämme "
+"kohdennusevästeitä käyttäjäkokemuksen parantamiseksi, "
+"analytiikkaan ja kohdistetun sisällön näyttämiseen. Jatkamalla "
+"sivuston käyttöä ilman asetusten muuttamista hyväksyt "
+"välttämättömien evästeiden käytön.</p>\r\n"
+""
 
 msgid "No, thanks"
 msgstr "Ei kiitos"
