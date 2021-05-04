@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-05-03 18:25+0300\n"
-"PO-Revision-Date: 2021-05-03 18:25+0300\n"
+"POT-Creation-Date: 2021-05-04 16:08+0300\n"
+"PO-Revision-Date: 2021-05-04 16:08+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -705,12 +705,6 @@ msgstr "Sisältö, joka kuuluu tiettyyn taksonomiatermiin."
 msgid "Feed"
 msgstr "Syöte"
 
-msgid "TPR unit list"
-msgstr "TPR Toimipisteet"
-
-msgid "TPR Units"
-msgstr "TPR Toimipisteet"
-
 msgid "Bulk update"
 msgstr "Massapäivitys"
 
@@ -824,6 +818,24 @@ msgstr "Tällä hetkellä 0 käyttäjää on online."
 msgid "A list of users that are currently logged in."
 msgstr "Lista käyttäjistä jotka ovat online."
 
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Links"
+msgstr "Linkit"
+
+msgid "Content type"
+msgstr "Sisältötyyppi"
+
+msgid "From"
+msgstr "Lähettäjä"
+
+msgid "To"
+msgstr "Osoitteeseen"
+
+msgid "Log in with @client_title"
+msgstr "Kirjaudu sisään @client_title-tunnuksilla"
+
 msgid "Paragraph"
 msgstr "Lohko"
 
@@ -838,22 +850,6 @@ msgstr "Lisätietoja"
 
 msgid "Hide"
 msgstr "Piilossa"
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By clicking the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
-"<h2>Hel.fi käyttää evästeitä&nbsp;</h2>\r\n"
-"\r\n"
-"<p>Tämä "
-"sivusto käyttää välttämättömiä evästeitä suorituskyvyn "
-"varmistamiseksi sekä yleisen käytön seurantaan. Lisäksi käytämme "
-"kohdennusevästeitä käyttäjäkokemuksen parantamiseksi, "
-"analytiikkaan ja kohdistetun sisällön näyttämiseen. Jatkamalla "
-"sivuston käyttöä ilman asetusten muuttamista hyväksyt "
-"välttämättömien evästeiden käytön.</p>\r\n"
-""
 
 msgid "No, thanks"
 msgstr "Ei kiitos"
@@ -880,9 +876,6 @@ msgstr "Taustaväri"
 
 msgid "Choose the background color for the hero element."
 msgstr "Valitse lohkolle taustaväri."
-
-msgid "Description"
-msgstr "Kuvaus"
 
 msgid "Optional short description for hero block."
 msgstr "Valinnainen lyhyt kuvaus lohkolle."
@@ -923,9 +916,6 @@ msgstr ""
 
 msgid "Title for the liftup with image block."
 msgstr "Näkyvä otsikko lohkolle."
-
-msgid "Links"
-msgstr "Linkit"
 
 msgid "The links that you want the paragraph to display."
 msgstr "Linkkilistan linkit."
@@ -1005,6 +995,9 @@ msgstr ""
 msgid "Image with a caption"
 msgstr "Kuva kuvatekstillä"
 
+msgid "Accept only essential cookies"
+msgstr "Hyväksy vain välttämättömät evästeet"
+
 msgid "List of redirects"
 msgstr "Uudelleenohjaukset"
 
@@ -1023,14 +1016,8 @@ msgstr "viimeinen »"
 msgid "With selection"
 msgstr "Valinnalla"
 
-msgid "From"
-msgstr "Lähettäjä"
-
 msgid "Created"
 msgstr "Luotu"
-
-msgid "To"
-msgstr "Osoitteeseen"
 
 msgid "Status code"
 msgstr "Tilakoodi"
@@ -1076,9 +1063,6 @@ msgstr "Julkaisupäivämäärä"
 
 msgid "Unpublish on"
 msgstr "Julkaisun peruutuspäivämäärä"
-
-msgid "Content type"
-msgstr "Sisältötyyppi"
 
 msgid "Scheduled Content"
 msgstr "Ajastettu sisältö"
@@ -1443,6 +1427,25 @@ msgstr "Yksittäinen linkki lisätietoineen linkkilistalohkoon."
 msgid "Delete redirect"
 msgstr "Poista uudelleenohjaus"
 
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By clicking the Accept button, you agree to us doing "
+"so.</p>"
+msgstr ""
+"<h2>Hel.fi käyttää evästeitä&nbsp;</h2>\r\n"
+"\r\n"
+"<p>Tämä "
+"sivusto käyttää välttämättömiä evästeitä suorituskyvyn "
+"varmistamiseksi sekä yleisen käytön seurantaan. Lisäksi käytämme "
+"kohdennusevästeitä käyttäjäkokemuksen parantamiseksi, "
+"analytiikkaan ja kohdistetun sisällön näyttämiseen. Jatkamalla "
+"sivuston käyttöä ilman asetusten muuttamista hyväksyt "
+"välttämättömien evästeiden käytön.</p>\r\n"
+""
+
+msgid "<front>"
+msgstr "/node/1"
+
 msgid "List of Links"
 msgstr "Linkkilista"
 
@@ -1486,7 +1489,10 @@ msgstr ""
 msgid "Long description"
 msgstr "Pitkä kuvaus"
 
-msgid "Long description for the unit. The default value comes from TPR."
+msgid ""
+"Long description for the unit. The default value comes from TPR. "
+"Example token [aet:tpr_unit:1234:description:value]\r\n"
+""
 msgstr ""
 "Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
 "Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
@@ -1494,7 +1500,9 @@ msgstr ""
 msgid "Main image (URL)"
 msgstr "Pääkuva (URL)"
 
-msgid "URL of the main image for the unit provided by the integration."
+msgid ""
+"URL of the main image for the unit provided by the integration. "
+"Example token [aet:tpr_unit:1234:picture_url]"
 msgstr ""
 "URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta. "
 "Esimerkki korvauskuviosta [aet:tpr_unit:1234:picture_url]"
@@ -1509,7 +1517,9 @@ msgstr ""
 msgid "Short description"
 msgstr "Lyhyt kuvaus"
 
-msgid "Short description of the unit. The default value comes from TPR."
+msgid ""
+"Short description of the unit. The default value comes from TPR. "
+"Example token [aet:tpr_unit:1234:description:summary]"
 msgstr ""
 "Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
 "Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
@@ -1517,7 +1527,9 @@ msgstr ""
 msgid "Visible title"
 msgstr "Näkyvä otsikko"
 
-msgid "The title that is shown on the unit page."
+msgid ""
+"The title that is shown on the unit page. Example token: "
+"[aet:tpr_unit:1234:name]"
 msgstr ""
 "Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
 "korvauskuviosta [aet:tpr_unit:1234:name]"
@@ -1532,6 +1544,24 @@ msgstr ""
 "Yksittäinen toimipiste jonka sisältämä tieto tulee pääosin "
 "integraation kautta järjestelmään. Halutessasi voit rikastaa tätä "
 "tietoa."
+
+msgid "Services"
+msgstr "Palvelut"
+
+msgid "Show all services"
+msgstr "Näytä kaikki palvelut"
+
+msgid "Unit service list"
+msgstr "Toimipisteen palvelulistaus"
+
+msgid "Lists services in unit page"
+msgstr "Listaa palveluita toimipisteen sivun perusteella"
+
+msgid "No results found."
+msgstr "Sisältöä ei löytynyt."
+
+msgid "TPR unit list"
+msgstr "TPR Toimipisteet"
 
 msgctxt "Address label"
 msgid "Postal code"
@@ -1596,14 +1626,67 @@ msgstr "XML-sivustokartta"
 msgid "Regenerate all sitemaps after hitting <em>Save</em>"
 msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
 
+msgid "Long description for the unit. The default value comes from TPR."
+msgstr ""
+"Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
+
+msgid "URL of the main image for the unit provided by the integration."
+msgstr ""
+"URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:picture_url]"
+
+msgid "Short description of the unit. The default value comes from TPR."
+msgstr ""
+"Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
+
+msgid "The title that is shown on the unit page."
+msgstr ""
+"Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
+"korvauskuviosta [aet:tpr_unit:1234:name]"
+
+msgctxt "Unit list pager button"
+msgid "Show all units"
+msgstr "Näytä kaikki toimipisteet"
+
+msgctxt "Service list pager button"
+msgid "Show all services"
+msgstr "Näytä kaikki palvelut"
+
+msgctxt "Service units count"
+msgid "unit"
+msgid_plural "units"
+msgstr[0] "toimipiste"
+msgstr[1] "toimipistettä"
+
+msgctxt "Unit services count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "palvelu"
+msgstr[1] "palvelua"
+
 msgid "Phone"
 msgstr "Puhelin"
 
-msgid "Services"
-msgstr "Palvelut"
-
 msgid "Integrations"
 msgstr "Integraatiot"
+
+msgctxt "Contact card title"
+msgid "Contact"
+msgstr "Yhteystiedot"
+
+msgid "Visiting address"
+msgstr "Käyntiosoite"
+
+msgid "Postal address"
+msgstr "Postiosoite"
+
+msgid "Units that offer the service"
+msgstr "Palvelua tarjoavat toimipisteet"
+
+msgid "TPR Units"
+msgstr "TPR Toimipisteet"
 
 msgid "Site settings"
 msgstr "Sivuston asetukset"
@@ -1706,86 +1789,8 @@ msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
 msgid "Edit footer bottom navigation links"
 msgstr "Muokkaa alatunnisteen alaosan valikkolinkkejä"
 
-msgctxt "Contact card title"
-msgid "Contact"
-msgstr "Yhteystiedot"
-
-msgid "Visiting address"
-msgstr "Käyntiosoite"
-
-msgid "Postal address"
-msgstr "Postiosoite"
-
-msgid "Accept only essential cookies"
-msgstr "Hyväksy vain välttämättömät evästeet"
-
-msgid "Show all services"
-msgstr "Näytä kaikki palvelut"
-
-msgid "Unit service list"
-msgstr "Toimipisteen palvelulistaus"
-
-msgid "Lists services in unit page"
-msgstr "Listaa palveluita toimipisteen sivun perusteella"
-
 msgctxt "Unit services count context word"
 msgid "services"
 msgstr "palvelua"
 
-msgid ""
-"Long description for the unit. The default value comes from TPR. "
-"Example token [aet:tpr_unit:1234:description:value]\r\n"
-""
-msgstr ""
-"Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
 
-msgid ""
-"URL of the main image for the unit provided by the integration. "
-"Example token [aet:tpr_unit:1234:picture_url]"
-msgstr ""
-"URL-osoite toimipisteen pääkuvalle, joka tulee integraation kautta. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:picture_url]"
-
-msgid ""
-"Short description of the unit. The default value comes from TPR. "
-"Example token [aet:tpr_unit:1234:description:summary]"
-msgstr ""
-"Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
-"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
-
-msgid ""
-"The title that is shown on the unit page. Example token: "
-"[aet:tpr_unit:1234:name]"
-msgstr ""
-"Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
-"korvauskuviosta [aet:tpr_unit:1234:name]"
-
-msgid "Log in with @client_title"
-msgstr "Kirjaudu sisään @client_title-tunnuksilla"
-
-msgid "Unit service list"
-msgstr "Toimipisteen palvelulistaus"
-
-msgid "Lists services in unit page"
-msgstr "Listaa palveluita toimipisteen sivun perusteella"
-
-msgctxt "Service units count"
-msgid "unit"
-msgid_plural "units"
-msgstr[0] "toimipiste"
-msgstr[1] "toimipistettä"
-
-msgctxt "Unit services count"
-msgid "service"
-msgid_plural "services"
-msgstr[0] "palvelu"
-msgstr[1] "palvelua"
-
-msgctxt "Unit list pager button"
-msgid "Show all units"
-msgstr "Näytä kaikki toimipisteet"
-
-msgctxt "Service list pager button"
-msgid "Show all services"
-msgstr "Näytä kaikki palvelut"
