@@ -1,0 +1,15 @@
+dependencies:
+  config:
+    - field.field.tpr_unit.tpr_service.field_metatags
+  module:
+    - metatag
+content:
+  address:
+    type: address_plain
+  field_metatags:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
