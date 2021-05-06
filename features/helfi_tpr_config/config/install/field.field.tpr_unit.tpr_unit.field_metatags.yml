@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tpr_unit.field_metatags
+  module:
+    - helfi_tpr
+    - metatag
+id: tpr_unit.tpr_unit.field_metatags
+field_name: field_metatags
+entity_type: tpr_unit
+bundle: tpr_unit
+label: Metatags
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: metatag

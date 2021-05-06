@@ -1,0 +1,15 @@
+name: 'HELfi TPR configuration'
+type: module
+core_version_requirement: '^8.9 || ^9'
+package: HELfi
+dependencies:
+  - 'address:address'
+  - 'drupal:field'
+  - 'drupal:link'
+  - 'drupal:media_library'
+  - 'drupal:path'
+  - 'drupal:text'
+  - 'helfi_tpr:helfi_tpr'
+  - 'imagecache_external:imagecache_external'
+  - 'metatag:metatag'
+  - 'readonly_field_widget:readonly_field_widget'

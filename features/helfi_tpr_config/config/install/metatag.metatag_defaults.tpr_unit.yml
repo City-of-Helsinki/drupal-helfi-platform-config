@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: tpr_unit
+label: 'TPR - Unit'
+tags:
+  canonical_url: '[tpr_unit:url]'
+  content_language: '[tpr_unit:langcode]'
+  title: '[tpr_unit:name] | [site:name]'
+  article_modified_time: '[tpr_unit:created:html_datetime]'
+  article_published_time: '[tpr_unit:created:html_datetime]'
+  og_image_url: '[tpr_unit:picture_url]'
+  og_site_name: '[site:name]'
+  og_title: '[tpr_unit:name]'
+  og_updated_time: '[tpr_unit:changed:html_datetime]'
+  og_url: '[current-page:url:absolute]'
+  twitter_cards_image: '[tpr_unit:picture_url]'

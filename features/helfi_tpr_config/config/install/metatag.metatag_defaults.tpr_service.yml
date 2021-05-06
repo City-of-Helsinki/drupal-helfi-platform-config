@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: tpr_service
+label: 'TPR - Service'
+tags:
+  canonical_url: '[tpr_service:url]'
+  content_language: '[tpr_service:langcode]'
+  title: '[tpr_service:name] | [site:name]'
+  article_modified_time: '[tpr_service:created:html_datetime]'
+  article_published_time: '[tpr_service:created:html_datetime]'
+  og_image_url: '[tpr_service:picture_url]'
+  og_site_name: '[site:name]'
+  og_title: '[tpr_service:name]'
+  og_updated_time: '[tpr_service:changed:html_datetime]'
+  og_url: '[current-page:url:absolute]'
+  twitter_cards_image: '[tpr_service:picture_url]'
