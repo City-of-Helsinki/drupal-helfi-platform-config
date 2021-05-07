@@ -1,8 +1,0 @@
-dependencies:
-  config:
-    - field.field.tpr_service.tpr_service.field_metatags
-content:
-  address:
-    type: address_plain
-hidden:
-  field_metatags: true
