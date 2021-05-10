@@ -21,7 +21,6 @@ dependencies:
   - 'drupal:views_ui'
   - 'easy_breadcrumb:easy_breadcrumb'
   - 'features:features'
-  - 'gin_toolbar:gin_toolbar'
   - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'hdbt_admin_tools:hdbt_admin_tools'
   - 'hdbt_component_library:hdbt_component_library'

@@ -25,4 +25,8 @@ function helfi_base_config_install() {
 
   $node_settings = \Drupal::configFactory()->getEditable('node.settings');
   $node_settings->set('use_admin_theme', 'true')->save();
+
+  // Manually install gin_toolbar module.
+  $installer = \Drupal::service('module_installer');
+  $installer->install(['gin_toolbar']);
 }
