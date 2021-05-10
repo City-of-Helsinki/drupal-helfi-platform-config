@@ -33,14 +33,14 @@ jobs:
           echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json
           composer require drupal/$MODULE_NAME
           composer install
-          php -d sendmail_path=$(which true); drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-          drush en $MODULE_NAME -y
+          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
+          vendor/bin/drush en $MODULE_NAME -y
 
       - name: Enable all features
         run: |
           cd $DRUPAL_ROOT
           # Enable all features.
-          for d in features/*; do drush en $d | cut -d/ -f2; done
+          for d in features/*; do vendor/bin/drush en $d | cut -d/ -f2; done
 
       - name: Run PHPCS
         run: |
@@ -50,6 +50,6 @@ jobs:
       - name: Run PHPUnit tests
         run: |
           cd $DRUPAL_ROOT
-          drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
+          vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
           vendor/bin/phpunit -c $DRUPAL_ROOT/phpunit.xml.dist --verbose --group $MODULE_NAME
