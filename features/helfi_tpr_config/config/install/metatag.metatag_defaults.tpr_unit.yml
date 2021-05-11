@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies: {  }
+id: tpr_unit
+label: 'TPR - Unit'
+tags:
+  canonical_url: '[tpr_unit:url]'
+  content_language: '[tpr_unit:langcode]'
+  description: '[tpr_unit:description:summary]'
+  title: '[tpr_unit:label] | [site:name]'
+  article_modified_time: '[tpr_unit:created:html_datetime]'
+  article_published_time: '[tpr_unit:created:html_datetime]'
+  og_description: '[tpr_unit:description:summary]'
+  og_email: '[tpr_unit:email]'
+  og_image_url: '[tpr_unit:picture]'
+  og_latitude: '[tpr_unit:latitude]'
+  og_longitude: '[tpr_unit:longitude]'
+  og_phone_number: '[tpr_unit:phone]'
+  og_site_name: '[site:name]'
+  og_title: '[tpr_unit:label]'
+  og_updated_time: '[tpr_unit:changed:html_datetime]'
+  og_url: '[current-page:url:absolute]'
+  twitter_cards_description: '[tpr_unit:description:summary]'
+  twitter_cards_image: '[tpr_unit:picture]'
+  twitter_cards_title: '[tpr_unit:label]'

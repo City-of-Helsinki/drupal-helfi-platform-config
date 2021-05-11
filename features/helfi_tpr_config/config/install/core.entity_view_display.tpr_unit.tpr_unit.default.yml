@@ -1,0 +1,167 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.tpr_unit.tpr_unit.field_metatags
+  module:
+    - address
+    - helfi_tpr
+    - imagecache_external
+    - link
+    - metatag
+    - text
+id: tpr_unit.tpr_unit.default
+targetEntityType: tpr_unit
+bundle: tpr_unit
+mode: default
+content:
+  accessibility_email:
+    type: string
+    weight: 13
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  accessibility_phone:
+    type: string
+    weight: 12
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  accessibility_www:
+    type: link
+    weight: 14
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  address:
+    type: address_default
+    weight: 5
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  address_postal:
+    type: string
+    weight: 8
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  call_charge_info:
+    type: text_default
+    weight: 10
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  description:
+    type: text_default
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  email:
+    type: string
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_metatags:
+    weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
+  name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  name_override:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  phone:
+    type: string
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  picture_url:
+    type: imagecache_external_responsive_image
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      imagecache_external_responsive_style: image__3_2
+      imagecache_external_link: ''
+    third_party_settings: {  }
+  picture_url_override:
+    type: entity_reference_entity_view
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      view_mode: image
+      link: false
+    third_party_settings: {  }
+  service_map_embed:
+    label: above
+    type: service_map_embed
+    weight: 9
+    region: content
+    settings:
+      iframe_title: 'Service map'
+      link_title: 'View larger map'
+      target: true
+    third_party_settings: {  }
+  services:
+    type: entity_reference_label
+    weight: 15
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  www:
+    type: link
+    weight: 11
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  latitude: true
+  longitude: true
+  streetview_entrance_url: true
