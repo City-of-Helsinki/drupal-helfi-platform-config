@@ -1,0 +1,74 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.unit_search.field_unit_search_description
+    - field.field.paragraph.unit_search.field_unit_search_meta_button
+    - field.field.paragraph.unit_search.field_unit_search_meta_label
+    - field.field.paragraph.unit_search.field_unit_search_meta_load_more
+    - field.field.paragraph.unit_search.field_unit_search_meta_placehold
+    - field.field.paragraph.unit_search.field_unit_search_title
+    - field.field.paragraph.unit_search.field_unit_search_units
+    - paragraphs.paragraphs_type.unit_search
+  module:
+    - text
+id: paragraph.unit_search.default
+targetEntityType: paragraph
+bundle: unit_search
+mode: default
+content:
+  field_unit_search_description:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_unit_search_meta_button:
+    weight: 5
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_unit_search_meta_label:
+    weight: 3
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_unit_search_meta_load_more:
+    weight: 6
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_unit_search_meta_placehold:
+    weight: 4
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_unit_search_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_unit_search_units:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: entity_reference_entity_id
+    region: content
+hidden: {  }

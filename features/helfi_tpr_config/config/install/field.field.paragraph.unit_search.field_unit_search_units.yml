@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_unit_search_units
+    - paragraphs.paragraphs_type.unit_search
+id: paragraph.unit_search.field_unit_search_units
+field_name: field_unit_search_units
+entity_type: paragraph
+bundle: unit_search
+label: Units
+description: 'Select the units from which the end user can search for the unit they want.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: unit_search
+      display_name: entity_reference
+      arguments: {  }
+field_type: entity_reference
