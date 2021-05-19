@@ -7,13 +7,14 @@ dependencies:
   module:
     - address
     - helfi_tpr
+    - telephone
 id: tpr_unit.tpr_unit.teaser
 targetEntityType: tpr_unit
 bundle: tpr_unit
 mode: teaser
 content:
   address:
-    type: address_default
+    type: address_plain
     weight: 1
     region: content
     label: hidden
@@ -28,12 +29,12 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   phone:
-    type: string
+    type: telephone_link
     weight: 2
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      title: ''
     third_party_settings: {  }
 hidden:
   accessibility_email: true

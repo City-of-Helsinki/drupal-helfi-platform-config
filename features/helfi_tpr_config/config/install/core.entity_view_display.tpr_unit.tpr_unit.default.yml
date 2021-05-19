@@ -9,6 +9,7 @@ dependencies:
     - imagecache_external
     - link
     - metatag
+    - telephone
     - text
 id: tpr_unit.tpr_unit.default
 targetEntityType: tpr_unit
@@ -44,7 +45,7 @@ content:
       target: ''
     third_party_settings: {  }
   address:
-    type: address_default
+    type: address_plain
     weight: 5
     region: content
     label: hidden
@@ -104,12 +105,12 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   phone:
-    type: string
+    type: telephone_link
     weight: 6
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      title: ''
     third_party_settings: {  }
   picture_url:
     type: imagecache_external_responsive_image
