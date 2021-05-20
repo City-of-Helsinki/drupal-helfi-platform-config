@@ -1,0 +1,10 @@
+permissions:
+  - 'access tpr_service overview'
+  - 'access tpr_unit overview'
+  - 'administer tpr_unit'
+  - 'revert all tpr_unit revisions'
+  - 'update tpr_service'
+  - 'update tpr_unit'
+  - 'view all tpr_unit revisions'
+  - 'view tpr_service'
+  - 'view tpr_unit'
