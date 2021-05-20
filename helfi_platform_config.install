@@ -41,7 +41,7 @@ function helfi_platform_config_update_9002() {
 /**
  * Revoke Article content type permissions.
  */
-function helfi_platform_config_update_9003() {
+function helfi_platform_config_post_update_9003_permissions() {
   user_role_revoke_permissions('admin', [
     'create article content',
     'delete any article content',
