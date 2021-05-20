@@ -39,30 +39,6 @@ function helfi_platform_config_update_9002() {
 }
 
 /**
- * Revoke Article content type permissions.
- */
-function helfi_platform_config_post_update_9003_permissions() {
-  user_role_revoke_permissions('admin', [
-    'create article content',
-    'delete any article content',
-    'delete article revisions',
-    'delete own article content',
-    'edit any article content',
-    'edit own article content',
-    'revert article revisions',
-    'translate article node',
-    'view article revisions'
-  ]);
-  user_role_revoke_permissions('authenticated', [
-    'create article content',
-    'delete own article content',
-    'edit own article content',
-    'revert article revisions',
-    'view article revisions'
-  ]);
-}
-
-/**
  * Manually update all dependant features.
  */
 function helfi_platform_config_import_language_config() {
