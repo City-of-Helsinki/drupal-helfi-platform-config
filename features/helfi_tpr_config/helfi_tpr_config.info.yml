@@ -8,6 +8,7 @@ dependencies:
   - 'drupal:link'
   - 'drupal:media_library'
   - 'drupal:path'
+  - 'drupal:telephone'
   - 'drupal:text'
   - 'drupal:user'
   - 'drupal:views'
