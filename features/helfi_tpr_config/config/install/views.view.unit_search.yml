@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.tpr_unit.teaser
+    - core.entity_view_mode.tpr_unit.teaser_with_image
   module:
     - address
     - helfi_tpr
@@ -79,7 +79,7 @@ display:
         type: 'entity:tpr_unit'
         options:
           relationship: none
-          view_mode: teaser
+          view_mode: teaser_with_image
       fields:
         name:
           table: tpr_unit_field_data
