@@ -8,6 +8,7 @@ dependencies:
     - address
     - helfi_tpr
     - imagecache_external
+    - telephone
 id: tpr_unit.tpr_unit.teaser_with_image
 targetEntityType: tpr_unit
 bundle: tpr_unit
@@ -29,12 +30,12 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   phone:
-    type: string
+    type: telephone_link
     weight: 3
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      title: ''
     third_party_settings: {  }
   picture_url:
     type: imagecache_external_responsive_image
@@ -48,6 +49,7 @@ content:
 hidden:
   accessibility_email: true
   accessibility_phone: true
+  accessibility_sentences: true
   accessibility_www: true
   address_postal: true
   call_charge_info: true
