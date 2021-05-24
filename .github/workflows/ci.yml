@@ -3,14 +3,16 @@ name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
-  DRUPAL_CORE: 9.0.x
   MODULE_NAME: helfi_platform_config
   SYMFONY_DEPRECATIONS_HELPER: disabled
 jobs:
   tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['7.4', '8.0']
     container:
-      image: ghcr.io/city-of-helsinki/drupal-php-docker:7.4
+      image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}
 
     services:
       db:
@@ -45,11 +47,12 @@ jobs:
       - name: Run PHPCS
         run: |
           cd $DRUPAL_ROOT
-          vendor/bin/phpcs public/modules/custom/$MODULE_NAME --standard=Drupal
+          vendor/bin/phpcs public/modules/contrib/$MODULE_NAME --standard=Drupal
 
       - name: Run PHPUnit tests
         run: |
           cd $DRUPAL_ROOT
           vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
-          vendor/bin/phpunit -c $DRUPAL_ROOT/phpunit.xml.dist --verbose --group $MODULE_NAME
+          vendor/bin/phpunit -c $DRUPAL_ROOT/phpunit.platform.xml --verbose --group $MODULE_NAME
+

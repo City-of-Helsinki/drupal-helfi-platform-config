@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: tpr_unit.teaser_with_image
+label: 'Teaser with image'
+targetEntityType: tpr_unit
+cache: true

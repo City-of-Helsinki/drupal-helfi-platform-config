@@ -1,0 +1,16 @@
+display:
+  default:
+    display_options:
+      pager:
+        options:
+          views_infinite_scroll:
+            button_text: 'Lataa lisää'
+      filters:
+        combine:
+          group_info:
+            description: ''
+      empty:
+        area:
+          content:
+            value: "<p>Ei tuloksia</p>\r\n"
+            format: full_html
