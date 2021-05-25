@@ -2,9 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.tpr_unit.tpr_unit.field_content
     - field.field.tpr_unit.tpr_unit.field_metatags
+    - field.field.tpr_unit.tpr_unit.field_secondary_content
   module:
     - address
+    - entity_reference_revisions
     - helfi_tpr
     - imagecache_external
     - link
@@ -81,12 +84,30 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_content:
+    type: entity_reference_revisions_entity_view
+    weight: 17
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_metatags:
     weight: 16
     label: above
     settings: {  }
     third_party_settings: {  }
     type: metatag_empty_formatter
+    region: content
+  field_secondary_content:
+    type: entity_reference_revisions_entity_view
+    weight: 18
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
     region: content
   name:
     type: string
@@ -166,4 +187,5 @@ hidden:
   langcode: true
   latitude: true
   longitude: true
+  opening_hours: true
   streetview_entrance_url: true

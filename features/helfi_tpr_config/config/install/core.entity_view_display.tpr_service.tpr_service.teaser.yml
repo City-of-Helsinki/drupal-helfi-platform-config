@@ -3,7 +3,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.tpr_service.teaser
+    - field.field.tpr_service.tpr_service.field_content
     - field.field.tpr_service.tpr_service.field_metatags
+    - field.field.tpr_service.tpr_service.field_secondary_content
   module:
     - helfi_tpr
     - text
@@ -38,6 +40,8 @@ content:
 hidden:
   created: true
   errand_services: true
+  field_content: true
   field_metatags: true
+  field_secondary_content: true
   langcode: true
   links: true

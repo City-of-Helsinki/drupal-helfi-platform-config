@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - helfi_tpr
+    - paragraphs
+id: tpr_service.field_secondary_content
+field_name: field_secondary_content
+entity_type: tpr_service
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
