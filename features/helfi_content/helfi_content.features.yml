@@ -1,2 +1,4 @@
 bundle: helfi
+excluded:
+  - field.storage.paragraph.field_title
 required: true
