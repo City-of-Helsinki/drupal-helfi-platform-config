@@ -1,2 +1,4 @@
 bundle: helfi
+excluded:
+  - block.block.main_navigation_level_2
 required: true
