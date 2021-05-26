@@ -1128,37 +1128,6 @@ translations:
                     field_icon:
                       -
                         icon: info-circle
-      -
-        entity:
-          _meta:
-            version: '1.0'
-            entity_type: paragraph
-            uuid: 23f1adbe-919d-4225-89e1-6ef4603d4ecb
-            bundle: content_cards
-            default_langcode: fi
-          default:
-            status:
-              -
-                value: true
-            created:
-              -
-                value: 1621870391
-            behavior_settings:
-              -
-                value: {  }
-            revision_translation_affected:
-              -
-                value: true
-            field_content_cards_content:
-              -
-                entity: efc11410-25ca-48ef-bfe0-f03860a3b7e7
-              -
-                entity: d5bf4eac-26d6-420e-bd19-7d66ff969181
-              -
-                entity: 559b7501-275e-40e3-b212-232271a46e74
-            field_content_cards_design:
-              -
-                value: small-cards
 default:
   revision_uid:
     -
