@@ -1,0 +1,56 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 7bf67939-747b-4f99-9f47-a052597b1543
+  bundle: menu_link_content
+  default_langcode: fi
+  depends:
+    333d644e-8636-43d8-82c6-197558ff214c: menu_link_content
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Ulkoinen linkki (hel.fi)'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      uri: 'https://www.hel.fi'
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -49
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:333d644e-8636-43d8-82c6-197558ff214c'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1621851716

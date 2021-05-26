@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 90c2d67c-ca47-43bf-81e2-c079c4f30d32
+  bundle: menu_link_content
+  default_langcode: fi
+  depends:
+    98be4d95-22a2-4b3a-9799-426b00798e29: menu_link_content
+    77e5183c-4d25-447e-a4e1-58776b2b545b: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Hero: Kuva alhaalla'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -50
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:98be4d95-22a2-4b3a-9799-426b00798e29'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1622033692

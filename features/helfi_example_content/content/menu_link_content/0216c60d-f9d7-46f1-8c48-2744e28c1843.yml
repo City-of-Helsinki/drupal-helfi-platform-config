@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 0216c60d-f9d7-46f1-8c48-2744e28c1843
+  bundle: menu_link_content
+  default_langcode: fi
+  depends:
+    98be4d95-22a2-4b3a-9799-426b00798e29: menu_link_content
+    3a313b2f-8b70-41a6-a655-3f9805cb1f48: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Hero: Kuva oikealla'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -49
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:98be4d95-22a2-4b3a-9799-426b00798e29'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1622033703
