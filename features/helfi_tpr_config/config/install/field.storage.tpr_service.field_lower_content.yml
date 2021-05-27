@@ -5,9 +5,9 @@ dependencies:
     - entity_reference_revisions
     - helfi_tpr
     - paragraphs
-id: tpr_unit.field_secondary_content
-field_name: field_secondary_content
-entity_type: tpr_unit
+id: tpr_service.field_lower_content
+field_name: field_lower_content
+entity_type: tpr_service
 type: entity_reference_revisions
 settings:
   target_type: paragraph

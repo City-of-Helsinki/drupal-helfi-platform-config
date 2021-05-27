@@ -7,7 +7,7 @@ dependencies:
     - field.field.node.page.field_hero
     - field.field.node.page.field_liftup_image
     - field.field.node.page.field_metatags
-    - field.field.node.page.field_secondary_content
+    - field.field.node.page.field_lower_content
     - node.type.page
   module:
     - media_library
@@ -85,7 +85,7 @@ content:
     third_party_settings: {  }
     type: metatag_firehose
     region: content
-  field_secondary_content:
+  field_lower_content:
     type: paragraphs
     weight: 52
     settings:

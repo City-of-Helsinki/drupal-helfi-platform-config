@@ -15,7 +15,7 @@ id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
 bundle: landing_page
-label: 'Main content'
+label: 'Content region'
 description: ''
 required: false
 translatable: true

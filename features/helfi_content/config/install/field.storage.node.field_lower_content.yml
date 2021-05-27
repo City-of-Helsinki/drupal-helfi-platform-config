@@ -5,8 +5,8 @@ dependencies:
     - entity_reference_revisions
     - node
     - paragraphs
-id: node.field_secondary_content
-field_name: field_secondary_content
+id: node.field_lower_content
+field_name: field_lower_content
 entity_type: node
 type: entity_reference_revisions
 settings:

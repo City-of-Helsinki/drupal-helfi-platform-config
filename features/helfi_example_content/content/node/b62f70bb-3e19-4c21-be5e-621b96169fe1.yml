@@ -320,7 +320,7 @@ translations:
     field_liftup_image:
       -
         entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-    field_secondary_content:
+    field_lower_content:
       -
         entity:
           _meta:
