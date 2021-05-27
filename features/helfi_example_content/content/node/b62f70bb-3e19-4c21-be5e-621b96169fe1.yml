@@ -6,6 +6,9 @@ _meta:
   default_langcode: en
   depends:
     923ecd78-00ff-47f9-a017-012b781d6bab: media
+    efc11410-25ca-48ef-bfe0-f03860a3b7e7: node
+    d5bf4eac-26d6-420e-bd19-7d66ff969181: node
+    559b7501-275e-40e3-b212-232271a46e74: node
     7f3b3413-fbf6-4f0b-873c-1fafd3c7912f: node
 translations:
   fi:
@@ -310,7 +313,14 @@ translations:
                         format: full_html
             field_columns_title:
               -
-                value: 'Palstat josta löytyy tekstiä ja kuva'
+                value: 'Palsta josta löytyy tekstiä ja kuva'
+    field_has_hero:
+      -
+        value: false
+    field_liftup_image:
+      -
+        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+    field_lower_content:
       -
         entity:
           _meta:
@@ -1118,12 +1128,6 @@ translations:
                     field_icon:
                       -
                         icon: info-circle
-    field_has_hero:
-      -
-        value: false
-    field_liftup_image:
-      -
-        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
 default:
   revision_uid:
     -
@@ -1146,9 +1150,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   path:
     -
       alias: /example-page
@@ -1179,6 +1180,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n"
@@ -1201,6 +1205,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_gallery_slides:
             -
               entity:
@@ -1220,6 +1227,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_gallery_slide_caption:
                     -
                       value: 'This gallery has only two images.'
@@ -1244,6 +1254,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_gallery_slide_caption:
                     -
                       value: 'No need for any more.'
@@ -1268,6 +1281,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_accordion_design:
             -
               value: white
@@ -1293,6 +1309,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -1312,6 +1331,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_text:
                             -
                               value: "<h3>Heading level 3</h3>\r\n\r\n<p>Aenean gravida viverra diam, feugiat dignissim lacus. Nunc at arcu posuere, bibendum libero sed, tempor arcu. Ut efficitur dolor eu sodales iaculis. Donec sed commodo sem. In sagittis vestibulum elit ac lacinia. Integer quis quam mollis, mattis sapien in, facilisis enim. Suspendisse potenti.&nbsp;</p>\r\n"
@@ -1334,6 +1356,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_columns_design:
                             -
                               value: 50-50
@@ -1356,6 +1381,9 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
                                   field_text:
                                     -
                                       value: "<p>Vivamus sollicitudin neque massa, vel pharetra tellus dapibus a. Nunc eget nulla auctor sapien ultrices ultricies vitae in magna. Aenean eleifend justo ut leo viverra tincidunt. Vestibulum sed est sodales tortor lacinia lobortis. Etiam tempus dui ut ligula tincidunt, ac iaculis diam ultricies. In eu iaculis massa.</p>\r\n"
@@ -1379,6 +1407,9 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
                                   field_text:
                                     -
                                       value: "<p>Etiam tincidunt lectus vehicula ultricies elementum. Proin tempus, ante in dignissim iaculis, eros ipsum tincidunt purus, sed pretium arcu tellus sed nisi. Quisque eu sapien non arcu fermentum ullamcorper.</p>\r\n"
@@ -1407,6 +1438,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -1426,6 +1460,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_text:
                             -
                               value: "<p>Nam quis dignissim sem. Proin hendrerit nisl mauris, ut gravida leo facilisis non. Aliquam ac felis sapien. Maecenas cursus dolor nec ligula malesuada pulvinar. Integer vel sollicitudin magna. Quisque semper varius ligula non sodales.</p>\r\n\r\n<p>Suspendisse libero quam, tincidunt quis lacinia at, imperdiet nec est. Nunc sagittis luctus porta. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>\r\n"
@@ -1451,6 +1488,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -1470,6 +1510,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_columns_design:
                             -
                               value: 30-70
@@ -1492,6 +1535,9 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
                                   field_image:
                                     -
                                       entity: 923ecd78-00ff-47f9-a017-012b781d6bab
@@ -1517,6 +1563,9 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
                                   field_text:
                                     -
                                       value: "<p>In hac habitasse platea dictumst. Quisque egestas interdum nulla, ac vulputate odio. Suspendisse sagittis eros ligula, euismod luctus enim interdum eget. Curabitur finibus laoreet augue, non tincidunt quam suscipit a. Proin tempus id velit vitae bibendum. Proin eget venenatis nunc. Quisque non leo id purus aliquam finibus.</p>\r\n"

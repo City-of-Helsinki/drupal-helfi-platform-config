@@ -28,11 +28,9 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   path:
     -
+      alias: /esimerkki-landing-sivu/hero-kuva-alhaalla
       langcode: fi
       pathauto: 1
   content_translation_source:

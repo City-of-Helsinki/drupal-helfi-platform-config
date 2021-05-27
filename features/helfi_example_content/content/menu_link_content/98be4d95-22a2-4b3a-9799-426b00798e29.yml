@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 98be4d95-22a2-4b3a-9799-426b00798e29
+  bundle: menu_link_content
+  default_langcode: fi
+  depends:
+    333d644e-8636-43d8-82c6-197558ff214c: menu_link_content
+    b62f70bb-3e19-4c21-be5e-621b96169fe1: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: Esimerkkisivu
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -50
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:333d644e-8636-43d8-82c6-197558ff214c'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1622033807
