@@ -1092,9 +1092,6 @@ msgstr "Ei vielä ajastettua sisältöä."
 msgid "Scheduled"
 msgstr "Ajastettu"
 
-msgid "Content"
-msgstr "Ylempi sisältöalue"
-
 msgid ""
 "Overview of all scheduled content, as a tab on main 'content admin' "
 "page"
