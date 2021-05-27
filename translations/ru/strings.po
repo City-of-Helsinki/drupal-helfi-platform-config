@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-28 18:07+0300\n"
-"PO-Revision-Date: 2021-04-28 18:07+0300\n"
+"POT-Creation-Date: 2021-05-27 12:22+0300\n"
+"PO-Revision-Date: 2021-05-27 12:22+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -761,11 +761,14 @@ msgstr ""
 msgid "Feed"
 msgstr "Поток данных"
 
+msgid "TPR unit list"
+msgstr "TPR units"
+
 msgid "Bulk update"
 msgstr "Массовое обновление"
 
-msgid "Changed"
-msgstr "Изменение"
+msgid "TPR Units"
+msgstr "TPR units"
 
 msgid "People"
 msgstr "Пользователи"
@@ -987,14 +990,38 @@ msgstr "Все материалы, по алфавиту."
 msgid "{{ message }}"
 msgstr "сообщение"
 
+msgid "White"
+msgstr "Белый"
+
 msgid "Paragraph"
 msgstr "Параграф"
 
 msgid "Paragraphs"
 msgstr "Параграфы"
 
-msgid "White"
-msgstr "Белый"
+msgid "Accept"
+msgstr "Принять"
+
+msgid "More info"
+msgstr "Show cookies"
+
+msgid "Hide"
+msgstr "Скрыть"
+
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By clicking the Accept button, you agree to us doing "
+"so.</p>"
+msgstr ""
+"<h2>Hel.fi uses cookies&nbsp;</h2>\r\n"
+"\r\n"
+"<p>We use essential "
+"cookies on our website to make the site work. Also third party cookies "
+"are used if you give us your permission.</p>\r\n"
+""
+
+msgid "Save preferences"
+msgstr "Allow only essential cookies"
 
 msgid "Redirect"
 msgstr "Переадресация"
@@ -1068,10 +1095,37 @@ msgstr "Запланировано"
 msgid "Content"
 msgstr "Содержимое"
 
+msgid "Changed"
+msgstr "Изменение"
+
 msgid "The time that the menu link was last edited."
 msgstr ""
 "Время последнего редактирования "
 "ссылки меню."
+
+msgid ""
+"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
+"message or find out more about cookies.</p>"
+msgstr ""
+"<h2>Thank you for accepting cookies</h2>\r\n"
+"\r\n"
+"<p>You can now hide "
+"this message or find out more about cookies.</p>\r\n"
+""
+
+msgid "<front>"
+msgstr "/node/1"
+
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>You have given your consent for us to set "
+"cookies.</p>"
+msgstr ""
+"<h2>Hel.fi uses cookies</h2>\r\n"
+"\r\n"
+"<p>You have given your consent "
+"for us to set cookies.</p>\r\n"
+""
 
 msgid "Front page"
 msgstr "Главная страница"
@@ -1088,8 +1142,10 @@ msgstr "403 доступ запрещен"
 msgid "404 page not found"
 msgstr "404 страница не найдена"
 
+msgid "Accordion"
+msgstr "Accordion"
+
 msgid "Delete redirect"
 msgstr "Удалить перенаправление"
 
-msgid "<front>"
-msgstr "/node/1"
+

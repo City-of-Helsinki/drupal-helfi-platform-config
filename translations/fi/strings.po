@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-05-18 11:06+0300\n"
-"PO-Revision-Date: 2021-05-18 11:06+0300\n"
+"POT-Creation-Date: 2021-05-27 12:21+0300\n"
+"PO-Revision-Date: 2021-05-27 12:21+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -711,14 +711,11 @@ msgstr "Syöte"
 msgid "TPR unit list"
 msgstr "TPR Toimipisteet"
 
-msgid "TPR Units"
-msgstr "TPR Toimipisteet"
-
 msgid "Bulk update"
 msgstr "Massapäivitys"
 
-msgid "Changed"
-msgstr "Muuttunut"
+msgid "TPR Units"
+msgstr "TPR Toimipisteet"
 
 msgid "People"
 msgstr "Käyttäjät"
@@ -826,6 +823,9 @@ msgstr "Tällä hetkellä 0 käyttäjää on online."
 
 msgid "A list of users that are currently logged in."
 msgstr "Lista käyttäjistä jotka ovat online."
+
+msgid "White"
+msgstr "Valkoinen"
 
 msgid "Paragraph"
 msgstr "Lohko"
@@ -949,9 +949,6 @@ msgstr ""
 "Sisäinen tai ulkoinen linkki haluttuun kohteeseen. Linkin teksti "
 "-kentän arvo näytetään sivuston käyttäjälle."
 
-msgid "White"
-msgstr "Valkoinen"
-
 msgid "Grey"
 msgstr "Harmaa"
 
@@ -982,11 +979,14 @@ msgstr ""
 "Sisältötyyppi artikkelityyppiselle sisällölle monipuolisilla "
 "muokkausmahdollisuuksilla."
 
+msgid "Basic page"
+msgstr "Perussivu"
+
 msgid ""
 "Content type for pages that include information that doesn't age as "
 "quickly as for example article or news content."
 msgstr ""
-"Sivu sisältötyyppiä suositellaan käytettäväksi silloin kun "
+"Perussivu sisältötyyppiä suositellaan käytettäväksi silloin kun "
 "sivulla halutaan näyttää aikariippumattomia tietoja. Esimerkiksi "
 "\"Yhteystiedot\"-sivu."
 
@@ -1093,7 +1093,7 @@ msgid "Scheduled"
 msgstr "Ajastettu"
 
 msgid "Content"
-msgstr "Sisältö"
+msgstr "Ylempi sisältöalue"
 
 msgid ""
 "Overview of all scheduled content, as a tab on main 'content admin' "
@@ -1108,6 +1108,9 @@ msgstr "{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä."
 
 msgid "User profile tab"
 msgstr "Käyttäjäprofiili"
+
+msgid "Changed"
+msgstr "Muuttunut"
 
 msgid "Keywords"
 msgstr "Asiasanat"
@@ -1464,6 +1467,69 @@ msgstr "Mediatyyppi SoundCloud kappaleiden lisäämiseen."
 msgid "Gallery thumbnail"
 msgstr "Gallerian pikkukuva"
 
+msgctxt "Address label"
+msgid "Postal code"
+msgstr "Postinumero"
+
+msgid "Insert selected"
+msgstr "Poimi valitut mediatiedostot"
+
+msgid "Package"
+msgstr "Pakkaus"
+
+msgid "Meta tags"
+msgstr "Meta-kentät"
+
+msgid "Metatags"
+msgstr "Metatunnisteet"
+
+msgid "Metatag"
+msgstr "Metatunniste"
+
+msgid "Postal/ZIP code"
+msgstr "Postinumero"
+
+msgid "Metatag plugins"
+msgstr "Metatunnisteen lisäosat"
+
+msgid "Conditions"
+msgstr "Ehdot"
+
+msgid "Patterns"
+msgstr "Sisältöpolut"
+
+msgid "Generate automatic URL alias"
+msgstr "Luo automaattinen osoitealias"
+
+msgid "Uncheck this to create a custom alias below."
+msgstr "Älä valitse tätä jos haluat luoda kustomoidun aliaksen."
+
+msgid "Joined path"
+msgstr "Yhdistetty polku"
+
+msgid ""
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
+
+msgid "The date the node will be published."
+msgstr "Päivämäärä jolloin sivu julkaistaan."
+
+msgid "The date the node will be unpublished."
+msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
+
+msgid "Drag to re-order @entity_types."
+msgstr "Raahaa järjestelläksesi @entity_types."
+
+msgid "Change frequency"
+msgstr "Vaihtuvuustiheys"
+
+msgid "Simple XML Sitemap"
+msgstr "XML-sivustokartta"
+
+msgid "Regenerate all sitemaps after hitting <em>Save</em>"
+msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
+
 msgid "Parent unit"
 msgstr "Ylätason toimipiste"
 
@@ -1535,69 +1601,6 @@ msgstr ""
 "Yksittäinen toimipiste jonka sisältämä tieto tulee pääosin "
 "integraation kautta järjestelmään. Halutessasi voit rikastaa tätä "
 "tietoa."
-
-msgctxt "Address label"
-msgid "Postal code"
-msgstr "Postinumero"
-
-msgid "Insert selected"
-msgstr "Poimi valitut mediatiedostot"
-
-msgid "Package"
-msgstr "Pakkaus"
-
-msgid "Meta tags"
-msgstr "Meta-kentät"
-
-msgid "Metatags"
-msgstr "Metatunnisteet"
-
-msgid "Metatag"
-msgstr "Metatunniste"
-
-msgid "Postal/ZIP code"
-msgstr "Postinumero"
-
-msgid "Metatag plugins"
-msgstr "Metatunnisteen lisäosat"
-
-msgid "Conditions"
-msgstr "Ehdot"
-
-msgid "Patterns"
-msgstr "Sisältöpolut"
-
-msgid "Generate automatic URL alias"
-msgstr "Luo automaattinen osoitealias"
-
-msgid "Uncheck this to create a custom alias below."
-msgstr "Älä valitse tätä jos haluat luoda kustomoidun aliaksen."
-
-msgid "Joined path"
-msgstr "Yhdistetty polku"
-
-msgid ""
-"Uncheck this to create a custom alias below. <a "
-"href=\"@admin_link\">Configure URL alias patterns.</a>"
-msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
-
-msgid "The date the node will be published."
-msgstr "Päivämäärä jolloin sivu julkaistaan."
-
-msgid "The date the node will be unpublished."
-msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
-
-msgid "Drag to re-order @entity_types."
-msgstr "Raahaa järjestelläksesi @entity_types."
-
-msgid "Change frequency"
-msgstr "Vaihtuvuustiheys"
-
-msgid "Simple XML Sitemap"
-msgstr "XML-sivustokartta"
-
-msgid "Regenerate all sitemaps after hitting <em>Save</em>"
-msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
 
 msgid "Phone"
 msgstr "Puhelin"
@@ -1795,3 +1798,71 @@ msgid "result"
 msgid_plural "results"
 msgstr[0] "tulos"
 msgstr[1] "tulosta"
+
+msgid "TPR - Service Channel"
+msgstr "TPR - Palvelukanava"
+
+msgid "TPR - Errand Service"
+msgstr "TPR - Asiointipalvelu"
+
+msgid "TPR - Service"
+msgstr "TPR - Palvelu"
+
+msgid "TPR - Unit"
+msgstr "TPR - Toimipiste"
+
+msgid "TPR - Unit entities"
+msgstr "Toimipisteet"
+
+msgid "TPR - Service entities"
+msgstr "Palvelut"
+
+msgid "TPR - Errand Service entities"
+msgstr "Asiointipalvelut"
+
+msgid "TPR - Service channel entities"
+msgstr "Palvelukanavat"
+
+msgid "TPR - Unit settings"
+msgstr "TPR - Toimipisteen asetukset"
+
+msgid "TPR - Service settings"
+msgstr "TPR - Palvelun asetukset"
+
+msgid "TPR - Errand Service settings"
+msgstr "TPR - Asiointipalvelun asetukset"
+
+msgid "TPR - Service channel settings"
+msgstr "TPR - Palvelukanavan asetukset"
+
+msgid "TPR - Service map embed"
+msgstr "TPR - Palvelukartan upotus"
+
+msgid "TPR - Service map embed"
+msgstr "TPR - Palvelukartan upotus"
+
+msgid "List of TPR unit entities"
+msgstr "Toimipisteet"
+
+msgid "List of TPR errand service entities"
+msgstr "Asiointipalvelut"
+
+msgid "List of TPR service channel entities"
+msgstr "Palvelukanavat"
+
+msgid "List of TPR service entities"
+msgstr "Palvelut"
+
+msgid "Configure TPR errand service entity type"
+msgstr "Asiointipalvelu entiteetin asetukset"
+
+msgid "Configure TPR service channel entity type"
+msgstr "Palvelukanava entiteetin asetukset"
+
+msgid "Configure TPR service entity type"
+msgstr "Palvelu entiteetin asetukset"
+
+msgid "Configure TPR unit entity type"
+msgstr "Toimipiste entiteetin asetukset"
+
+
