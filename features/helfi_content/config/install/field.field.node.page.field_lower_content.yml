@@ -2,7 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.tpr_unit.field_content
+    - field.storage.node.field_lower_content
+    - node.type.page
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
@@ -12,12 +13,11 @@ dependencies:
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
-    - helfi_tpr
-id: tpr_unit.tpr_unit.field_content
-field_name: field_content
-entity_type: tpr_unit
-bundle: tpr_unit
-label: 'Upper content region'
+id: node.page.field_lower_content
+field_name: field_lower_content
+entity_type: node
+bundle: page
+label: 'Lower content region'
 description: ''
 required: false
 translatable: true

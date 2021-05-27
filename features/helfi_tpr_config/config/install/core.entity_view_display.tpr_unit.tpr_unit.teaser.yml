@@ -5,7 +5,7 @@ dependencies:
     - core.entity_view_mode.tpr_unit.teaser
     - field.field.tpr_unit.tpr_unit.field_content
     - field.field.tpr_unit.tpr_unit.field_metatags
-    - field.field.tpr_unit.tpr_unit.field_secondary_content
+    - field.field.tpr_unit.tpr_unit.field_lower_content
   module:
     - address
     - helfi_tpr
@@ -50,7 +50,7 @@ hidden:
   email: true
   field_content: true
   field_metatags: true
-  field_secondary_content: true
+  field_lower_content: true
   langcode: true
   latitude: true
   longitude: true

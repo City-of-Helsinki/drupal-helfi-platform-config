@@ -17,7 +17,7 @@ id: tpr_service.tpr_service.field_content
 field_name: field_content
 entity_type: tpr_service
 bundle: tpr_service
-label: 'Main content'
+label: 'Upper content region'
 description: ''
 required: false
 translatable: true
