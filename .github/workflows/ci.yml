@@ -40,7 +40,7 @@ jobs:
 
       - name: Enable all features
         run: |
-          cd $DRUPAL_ROOT/modules/contrib/$MODULE_NAME
+          cd $DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME
           # Enable all features.
           for d in features/*; do vendor/bin/drush en $d | cut -d/ -f2; done || exit 1
 
