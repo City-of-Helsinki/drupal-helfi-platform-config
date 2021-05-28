@@ -5,6 +5,7 @@
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "require": {
+    "drupal/admin_toolbar": "^2.4.0",
     "drupal/aet": "^2.0@alpha",
     "drupal/config_replace": "^2.0",
     "drupal/crop": "^2.1",
