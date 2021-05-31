@@ -40,9 +40,9 @@ jobs:
 
       - name: Enable all features
         run: |
-          cd $DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME
+          cd $DRUPAL_ROOT
           # Enable all features.
-          for d in features/*; do vendor/bin/drush en $d | cut -d/ -f2; done || exit 1
+          for d in public/modules/contrib/$MODULE_NAME/features/*; do vendor/bin/drush en $d | awk -F/ '{print $NF}'; done || exit 1
 
       - name: Run PHPCS
         run: |
