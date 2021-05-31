@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-05-28 15:07+0300\n"
-"PO-Revision-Date: 2021-05-28 15:07+0300\n"
+"POT-Creation-Date: 2021-05-31 11:00+0300\n"
+"PO-Revision-Date: 2021-05-31 11:00+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1188,6 +1188,9 @@ msgstr ""
 "tämän hero-lohkon otsikko määrittää heading 1 tason otsikon "
 "sivulle."
 
+msgid "Upper content region"
+msgstr "Ylempi sisältöalue"
+
 msgid "Design"
 msgstr "Tyyli"
 
@@ -1467,11 +1470,14 @@ msgstr "Mediatyyppi SoundCloud kappaleiden lisäämiseen."
 msgid "Gallery thumbnail"
 msgstr "Gallerian pikkukuva"
 
+msgid "Reusable paragraph"
+msgstr "Uudelleenkäytettävä lohko"
+
 msgid "From library"
 msgstr "Uudelleenkäytettävä lohko"
 
 msgid "Paragraphs library"
-msgstr "Lohkokirjasto"
+msgstr "Uudelleenkäytettävät lohkot"
 
 msgctxt "Address label"
 msgid "Postal code"
@@ -1790,24 +1796,6 @@ msgstr "Näytä kaikki palvelut"
 msgid "Service locations"
 msgstr "Palvelupaikat"
 
-msgctxt "Service units count"
-msgid "unit"
-msgid_plural "units"
-msgstr[0] "palvelupaikka"
-msgstr[1] "palvelupaikkaa"
-
-msgctxt "Unit services count"
-msgid "service"
-msgid_plural "services"
-msgstr[0] "palvelu"
-msgstr[1] "palvelua"
-
-msgctxt "Unit search count"
-msgid "result"
-msgid_plural "results"
-msgstr[0] "tulos"
-msgstr[1] "tulosta"
-
 msgid "TPR - Service Channel"
 msgstr "TPR - Palvelukanava"
 
@@ -1843,9 +1831,6 @@ msgstr "TPR - Asiointipalvelun asetukset"
 
 msgid "TPR - Service channel settings"
 msgstr "TPR - Palvelukanavan asetukset"
-
-msgid "TPR - Service map embed"
-msgstr "TPR - Palvelukartan upotus"
 
 msgid "TPR - Service map embed"
 msgstr "TPR - Palvelukartan upotus"
@@ -1893,10 +1878,10 @@ msgstr[0] "tulos"
 msgstr[1] "tulosta"
 
 msgid "Paragraphs library item"
-msgstr "Lohko"
+msgstr "Uudelleenkäytettävä lohko"
 
 msgid "Paragraphs library item settings"
-msgstr "Lohkon asetukset"
+msgstr "Uudelleenkäytettävän lohkon asetukset"
 
 msgid ""
 "Please select an appropriate language for your paragraph from the "
