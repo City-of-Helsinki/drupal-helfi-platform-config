@@ -42,7 +42,7 @@ jobs:
         run: |
           cd $DRUPAL_ROOT
           # Enable all features.
-          for d in public/modules/contrib/$MODULE_NAME/features/*; do vendor/bin/drush en $d | awk -F/ '{print $NF}'; done || exit 1
+          for d in public/modules/contrib/$MODULE_NAME/features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done || exit 1
 
       - name: Run PHPCS
         run: |
