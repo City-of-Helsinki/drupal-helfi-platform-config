@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-05-27 12:21+0300\n"
-"PO-Revision-Date: 2021-05-27 12:21+0300\n"
+"POT-Creation-Date: 2021-05-31 11:00+0300\n"
+"PO-Revision-Date: 2021-05-31 11:00+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1092,6 +1092,9 @@ msgstr "Ei vielä ajastettua sisältöä."
 msgid "Scheduled"
 msgstr "Ajastettu"
 
+msgid "Content"
+msgstr "Sisältö"
+
 msgid ""
 "Overview of all scheduled content, as a tab on main 'content admin' "
 "page"
@@ -1184,6 +1187,9 @@ msgstr ""
 "Valitse tämä jos haluat käyttää hero-lohkoa sivulla. Jos valitset "
 "tämän hero-lohkon otsikko määrittää heading 1 tason otsikon "
 "sivulle."
+
+msgid "Upper content region"
+msgstr "Ylempi sisältöalue"
 
 msgid "Design"
 msgstr "Tyyli"
@@ -1464,6 +1470,15 @@ msgstr "Mediatyyppi SoundCloud kappaleiden lisäämiseen."
 msgid "Gallery thumbnail"
 msgstr "Gallerian pikkukuva"
 
+msgid "Reusable paragraph"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "From library"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
 msgctxt "Address label"
 msgid "Postal code"
 msgstr "Postinumero"
@@ -1488,6 +1503,9 @@ msgstr "Postinumero"
 
 msgid "Metatag plugins"
 msgstr "Metatunnisteen lisäosat"
+
+msgid "Paragraphs types"
+msgstr "Lohkotyypit"
 
 msgid "Conditions"
 msgstr "Ehdot"
@@ -1778,24 +1796,6 @@ msgstr "Näytä kaikki palvelut"
 msgid "Service locations"
 msgstr "Palvelupaikat"
 
-msgctxt "Service units count"
-msgid "unit"
-msgid_plural "units"
-msgstr[0] "palvelupaikka"
-msgstr[1] "palvelupaikkaa"
-
-msgctxt "Unit services count"
-msgid "service"
-msgid_plural "services"
-msgstr[0] "palvelu"
-msgstr[1] "palvelua"
-
-msgctxt "Unit search count"
-msgid "result"
-msgid_plural "results"
-msgstr[0] "tulos"
-msgstr[1] "tulosta"
-
 msgid "TPR - Service Channel"
 msgstr "TPR - Palvelukanava"
 
@@ -1835,9 +1835,6 @@ msgstr "TPR - Palvelukanavan asetukset"
 msgid "TPR - Service map embed"
 msgstr "TPR - Palvelukartan upotus"
 
-msgid "TPR - Service map embed"
-msgstr "TPR - Palvelukartan upotus"
-
 msgid "List of TPR unit entities"
 msgstr "Toimipisteet"
 
@@ -1861,5 +1858,37 @@ msgstr "Palvelu entiteetin asetukset"
 
 msgid "Configure TPR unit entity type"
 msgstr "Toimipiste entiteetin asetukset"
+
+msgctxt "Service units count"
+msgid "unit"
+msgid_plural "units"
+msgstr[0] "palvelupaikka"
+msgstr[1] "palvelupaikkaa"
+
+msgctxt "Unit services count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "palvelu"
+msgstr[1] "palvelua"
+
+msgctxt "Unit search count"
+msgid "result"
+msgid_plural "results"
+msgstr[0] "tulos"
+msgstr[1] "tulosta"
+
+msgid "Paragraphs library item"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library item settings"
+msgstr "Uudelleenkäytettävän lohkon asetukset"
+
+msgid ""
+"Please select an appropriate language for your paragraph from the "
+"language switcher on the top right corner of the page."
+msgstr ""
+"Varmista, että olet lisäämässä oikean kielistä lohkoa. Voit "
+"valita lohkon kielen sivun oikeassa ylälaidassa olevasta "
+"kielivalinnasta."
 
 

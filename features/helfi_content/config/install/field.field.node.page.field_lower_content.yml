@@ -7,6 +7,7 @@ dependencies:
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.list_of_links
@@ -35,6 +36,7 @@ settings:
       gallery: gallery
       list_of_links: list_of_links
       content_cards: content_cards
+      from_library: from_library
     target_bundles_drag_drop:
       accordion:
         enabled: true
@@ -51,6 +53,9 @@ settings:
       content_cards:
         enabled: true
         weight: -23
+      from_library:
+        enabled: true
+        weight: 21
       gallery:
         enabled: true
         weight: -25
