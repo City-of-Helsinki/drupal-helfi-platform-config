@@ -10,13 +10,14 @@ dependencies:
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.remote_video
   module:
     - entity_reference_revisions
 id: node.article.field_content
 field_name: field_content
 entity_type: node
 bundle: article
-label: Content
+label: 'Content region'
 description: ''
 required: false
 translatable: true
@@ -33,6 +34,7 @@ settings:
       gallery: gallery
       list_of_links: list_of_links
       content_cards: content_cards
+      remote_video: remote_video
     target_bundles_drag_drop:
       accordion:
         weight: -21
@@ -70,6 +72,9 @@ settings:
       list_of_links_item:
         weight: -17
         enabled: false
+      remote_video:
+        enabled: true
+        weight: 27
       text:
         enabled: true
         weight: -27
