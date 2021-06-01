@@ -116,13 +116,6 @@ content:
         duplicate: duplicate
     third_party_settings: {  }
     region: content
-  field_metatags:
-    weight: 26
-    settings:
-      sidebar: true
-    third_party_settings: {  }
-    type: metatag_firehose
-    region: content
   field_lower_content:
     type: paragraphs
     weight: 28
@@ -141,6 +134,13 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
+    region: content
+  field_metatags:
+    weight: 26
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   langcode:
     type: language_select

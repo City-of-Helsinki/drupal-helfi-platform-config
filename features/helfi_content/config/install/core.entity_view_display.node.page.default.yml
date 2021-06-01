@@ -27,13 +27,6 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-  field_metatags:
-    weight: 2
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: metatag_empty_formatter
-    region: content
   field_lower_content:
     type: entity_reference_revisions_entity_view
     weight: 4
@@ -42,6 +35,13 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    region: content
+  field_metatags:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 0
