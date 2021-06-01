@@ -2,8 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_paragraphs
-    - field.storage.paragraph.field_text
     - search_api.server.helfi_server
   module:
     - paragraphs
@@ -15,45 +13,6 @@ name: Pages
 description: ''
 read_only: false
 field_settings:
-  field_paragraphs:
-    label: Paragraphs
-    datasource_id: 'entity:node'
-    property_path: field_paragraphs
-    type: integer
-    dependencies:
-      config:
-        - field.storage.node.field_paragraphs
-  field_text:
-    label: 'Paragraphs » Paragraph » Teksti'
-    datasource_id: 'entity:node'
-    property_path: 'field_paragraphs:entity:field_text'
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_paragraphs
-        - field.storage.paragraph.field_text
-      module:
-        - paragraphs
-  id:
-    label: 'Paragraphs » Paragraph » ID'
-    datasource_id: 'entity:node'
-    property_path: 'field_paragraphs:entity:id'
-    type: integer
-    dependencies:
-      config:
-        - field.storage.node.field_paragraphs
-      module:
-        - paragraphs
-  langcode:
-    label: 'Paragraphs » Paragraph » Langcode'
-    datasource_id: 'entity:node'
-    property_path: 'field_paragraphs:entity:langcode'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_paragraphs
-      module:
-        - paragraphs
   nid:
     label: ID
     datasource_id: 'entity:node'
