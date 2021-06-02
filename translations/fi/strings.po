@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-05-31 11:00+0300\n"
-"PO-Revision-Date: 2021-05-31 11:00+0300\n"
+"POT-Creation-Date: 2021-06-02 17:51+0300\n"
+"PO-Revision-Date: 2021-06-02 17:51+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1226,6 +1226,9 @@ msgstr "Vasen palsta"
 msgid "Right column"
 msgstr "Oikea palsta"
 
+msgid "Reusable paragraph"
+msgstr "Uudelleen käytettävä lohko"
+
 msgid "Gallery slides"
 msgstr "Gallerian diat"
 
@@ -1403,6 +1406,9 @@ msgstr ""
 "Banneri on leveä elementti, jonka avulla voit korostaa esimerkiksi "
 "tärkeitä linkkejä tai puhelinnumeroita. "
 
+msgid "From library"
+msgstr "Uudelleenkäytettävä lohko"
+
 msgid "Gallery"
 msgstr "Galleria"
 
@@ -1483,6 +1489,9 @@ msgctxt "Address label"
 msgid "Postal code"
 msgstr "Postinumero"
 
+msgid "Admin"
+msgstr "Ylläpitäjä"
+
 msgid "Insert selected"
 msgstr "Poimi valitut mediatiedostot"
 
@@ -1544,6 +1553,9 @@ msgstr "XML-sivustokartta"
 
 msgid "Regenerate all sitemaps after hitting <em>Save</em>"
 msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
+
+msgid "Upper content region"
+msgstr "Ylempi sisältöalue"
 
 msgid "Parent unit"
 msgstr "Ylätason toimipiste"
@@ -1859,6 +1871,20 @@ msgstr "Palvelu entiteetin asetukset"
 msgid "Configure TPR unit entity type"
 msgstr "Toimipiste entiteetin asetukset"
 
+msgid "Paragraphs library item"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library item settings"
+msgstr "Uudelleenkäytettävän lohkon asetukset"
+
+msgid ""
+"Please select an appropriate language for your paragraph from the "
+"language switcher on the top right corner of the page."
+msgstr ""
+"Varmista, että olet lisäämässä oikean kielistä lohkoa. Voit "
+"valita lohkon kielen sivun oikeassa ylälaidassa olevasta "
+"kielivalinnasta."
+
 msgctxt "Service units count"
 msgid "unit"
 msgid_plural "units"
@@ -1877,18 +1903,84 @@ msgid_plural "results"
 msgstr[0] "tulos"
 msgstr[1] "tulosta"
 
-msgid "Paragraphs library item"
-msgstr "Uudelleenkäytettävä lohko"
+msgid "Content region"
+msgstr "Pääsisältö"
 
-msgid "Paragraphs library item settings"
-msgstr "Uudelleenkäytettävän lohkon asetukset"
+msgid "Lower content region"
+msgstr "Alempi sisältöalue"
+
+msgid "Add here the content that you want to appear as cards to the block."
+msgstr "Lisää tähän ne sisällöt, jotka haluat nostaa korteiksi lohkoon."
+
+msgid "The title of the content cards paragraph."
+msgstr "Sisältökortit-lohkon otsikko."
+
+msgid "Small cards"
+msgstr "Pienet kortit"
+
+msgid "Large cards"
+msgstr "Suuret kortit"
+
+msgid "Small cards, grey background"
+msgstr "Pienet kortit, harmaa tausta"
+
+msgid "Large cards, grey background"
+msgstr "Suuret kortit, harmaa tausta"
+
+msgid "Content cards"
+msgstr "Sisältökortit"
 
 msgid ""
-"Please select an appropriate language for your paragraph from the "
-"language switcher on the top right corner of the page."
+"With content cards you can reference to content inside this site. The "
+"information about the content is automatically fetched through the "
+"reference."
 msgstr ""
-"Varmista, että olet lisäämässä oikean kielistä lohkoa. Voit "
-"valita lohkon kielen sivun oikeassa ylälaidassa olevasta "
-"kielivalinnasta."
+"Sisältökorteilla voit nostaa sivuston sisäistä sisältöä "
+"korteiksi lohkoon. Kortin sisältö haetaan automaattisesti siitä "
+"sisällöstä jonka valitsit."
+
+msgid ""
+"Remote video paragraph that lets you add any video from video "
+"providers. Currently only YouTube."
+msgstr ""
+"Video upotus -elementtiä voi käyttää upottaakeen ulkoisia videoita "
+"sisällön sekaan. Alustavasti toimii vain YouTube-videoiden kanssa."
+
+msgid "Content producer"
+msgstr "Sisällöntuottaja"
+
+msgid "Start typing to find content."
+msgstr ""
+"Aloita kirjoittaminen löytääksesi sisältöä. Huomaa, että voit "
+"myös lisätä suoraan ulkoisen osoitteen."
+
+msgid "Button primary"
+msgstr "Täysvärinen"
+
+msgid "Button secondary"
+msgstr "Reunustettu"
+
+msgid "Button supplementary"
+msgstr "Ei reunuksia tai taustaväriä"
+
+msgid "Open in new window/tab"
+msgstr "Avaa uudessa ikkunassa / välilehdellä"
+
+msgid ""
+"Populates the title attribute of the link, usually shown as a small "
+"tooltip on hover."
+msgstr ""
+"Täyttää linkin otsikko attribuutin, joka näkyy yleensä pienenä "
+"työkaluvihjeenä hiiren osoittimessa."
+
+msgid ""
+"Allows linking to this content using a URL fragment (#). Must be "
+"unique."
+msgstr ""
+"Sallii linkityksen tähän sisältöön URL-fragmentin (#) avulla. "
+"Täytyy olla uniikki."
+
+msgid "Protocol"
+msgstr "Protokolla"
 
 
