@@ -1,0 +1,53 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 63263e59-41d3-463e-9db4-9e667030e965
+  bundle: menu_link_content
+  default_langcode: fi
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: Palaute
+  menu_name:
+    -
+      value: header-top-navigation
+  link:
+    -
+      uri: 'https://hel.fi/palaute'
+      title: ''
+      options:
+        attributes:
+          class: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1622717626
