@@ -12,6 +12,7 @@ dependencies:
   - 'drupal:block'
   - 'drupal:config_translation'
   - 'drupal:field_ui'
+  - 'drupal:menu_link_attributes'
   - 'drupal:menu_link_content'
   - 'drupal:node'
   - 'drupal:system'
