@@ -38,7 +38,7 @@ default:
       value: true
   content_translation_source:
     -
-      value: und
+      value: en
   content_translation_outdated:
     -
       value: false
