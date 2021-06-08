@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-06-02 17:51+0300\n"
-"PO-Revision-Date: 2021-06-02 17:51+0300\n"
+"POT-Creation-Date: 2021-06-08 10:47+0300\n"
+"PO-Revision-Date: 2021-06-08 10:47+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1112,11 +1112,23 @@ msgstr "Käyttäjäprofiili"
 msgid "Changed"
 msgstr "Muuttunut"
 
+msgid "Label"
+msgstr "Otsikko"
+
+msgid "Summary"
+msgstr "Yhteenveto"
+
 msgid "Keywords"
 msgstr "Asiasanat"
 
 msgid "Items"
 msgstr "Sisältö"
+
+msgid "Entity Reference"
+msgstr "Entiteettiviittaus"
+
+msgid "Combine fields filter"
+msgstr "Kentät yhdistävä suodatin"
 
 msgid "Heading"
 msgstr "Otsikko"
@@ -1176,6 +1188,9 @@ msgstr "Ingressi"
 msgid "Liftup image"
 msgstr "Nostokuva"
 
+msgid "Content region"
+msgstr "Pääsisältö"
+
 msgid "Hero"
 msgstr "Hero-lohko"
 
@@ -1225,9 +1240,6 @@ msgstr "Vasen palsta"
 
 msgid "Right column"
 msgstr "Oikea palsta"
-
-msgid "Reusable paragraph"
-msgstr "Uudelleen käytettävä lohko"
 
 msgid "Gallery slides"
 msgstr "Gallerian diat"
@@ -1406,9 +1418,6 @@ msgstr ""
 "Banneri on leveä elementti, jonka avulla voit korostaa esimerkiksi "
 "tärkeitä linkkejä tai puhelinnumeroita. "
 
-msgid "From library"
-msgstr "Uudelleenkäytettävä lohko"
-
 msgid "Gallery"
 msgstr "Galleria"
 
@@ -1476,15 +1485,6 @@ msgstr "Mediatyyppi SoundCloud kappaleiden lisäämiseen."
 msgid "Gallery thumbnail"
 msgstr "Gallerian pikkukuva"
 
-msgid "Reusable paragraph"
-msgstr "Uudelleenkäytettävä lohko"
-
-msgid "From library"
-msgstr "Uudelleenkäytettävä lohko"
-
-msgid "Paragraphs library"
-msgstr "Uudelleenkäytettävät lohkot"
-
 msgctxt "Address label"
 msgid "Postal code"
 msgstr "Postinumero"
@@ -1497,6 +1497,11 @@ msgstr "Poimi valitut mediatiedostot"
 
 msgid "Package"
 msgstr "Pakkaus"
+
+msgid "No results"
+msgstr ""
+"<p>Ei tuloksia</p>\r\n"
+""
 
 msgid "Meta tags"
 msgstr "Meta-kentät"
@@ -1553,9 +1558,6 @@ msgstr "XML-sivustokartta"
 
 msgid "Regenerate all sitemaps after hitting <em>Save</em>"
 msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
-
-msgid "Upper content region"
-msgstr "Ylempi sisältöalue"
 
 msgid "Parent unit"
 msgstr "Ylätason toimipiste"
@@ -1871,12 +1873,6 @@ msgstr "Palvelu entiteetin asetukset"
 msgid "Configure TPR unit entity type"
 msgstr "Toimipiste entiteetin asetukset"
 
-msgid "Paragraphs library item"
-msgstr "Uudelleenkäytettävä lohko"
-
-msgid "Paragraphs library item settings"
-msgstr "Uudelleenkäytettävän lohkon asetukset"
-
 msgid ""
 "Please select an appropriate language for your paragraph from the "
 "language switcher on the top right corner of the page."
@@ -1903,11 +1899,82 @@ msgid_plural "results"
 msgstr[0] "tulos"
 msgstr[1] "tulosta"
 
-msgid "Content region"
-msgstr "Pääsisältö"
+msgid "Opening hours"
+msgstr "Aukioloajat"
+
+msgid "Reusable paragraph"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "From library"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
+msgid "Paragraphs library item"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library item settings"
+msgstr "Uudelleenkäytettävän lohkon asetukset"
+
+msgid "Unit search"
+msgstr "Toimipistehaku"
+
+msgid "Load more results"
+msgstr "Lataa lisää"
+
+msgid "Search button"
+msgstr "Hakukentän painike"
+
+msgid "Search for units"
+msgstr "Hae toimipisteitä"
+
+msgid "Search label"
+msgstr "Hakukentän otsikko"
+
+msgid "Search for a unit"
+msgstr "Hae toimipisteitä"
+
+msgid "Load more label"
+msgstr "Lataa lisää - otsikko"
+
+msgid "Load more units"
+msgstr "Lataa lisää toimipisteitä"
+
+msgid "Search placeholder"
+msgstr "Hakukentän oletusteksti"
+
+msgid "Enter name, address or postal code"
+msgstr "Syötä nimi, osoite tai postinumero"
+
+msgid "Units"
+msgstr "Toimipisteet"
+
+msgid ""
+"Select the units from which the end user can search for the unit they "
+"want."
+msgstr ""
+"Valitse toimipisteen joiden seasta haluat käyttäjän etsivän "
+"toimipisteitä."
 
 msgid "Lower content region"
 msgstr "Alempi sisältöalue"
+
+msgid ""
+"With unit search paragraph content producer can create unit search "
+"forms for the end user."
+msgstr ""
+"Toimipistehaku paragraafilla sisällöntuottaja voi sijoittaa "
+"toimipistehaun valitsemalleen sivulle. Paragraphista valitaan "
+"toimipisteet joita halutaan näyttää loppukäyttäjälle."
+
+msgid ""
+"Please select an appropriate language for your paragraph from the "
+"language switcher on the top right corner of the page."
+msgstr ""
+"Varmista, että olet lisäämässä oikean kielistä lohkoa. Voit "
+"valita lohkon kielen sivun oikeassa ylälaidassa olevasta "
+"kielivalinnasta."
 
 msgid "Add here the content that you want to appear as cards to the block."
 msgstr "Lisää tähän ne sisällöt, jotka haluat nostaa korteiksi lohkoon."

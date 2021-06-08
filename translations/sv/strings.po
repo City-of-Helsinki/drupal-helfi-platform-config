@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-05-27 12:21+0300\n"
-"PO-Revision-Date: 2021-05-27 12:21+0300\n"
+"POT-Creation-Date: 2021-06-08 10:47+0300\n"
+"PO-Revision-Date: 2021-06-08 10:47+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -697,8 +697,8 @@ msgstr "TPR units"
 msgid "Bulk update"
 msgstr "Massuppdatera"
 
-msgid "Changed"
-msgstr "Ändrad"
+msgid "TPR Units"
+msgstr "TPR units"
 
 msgid "People"
 msgstr "Personer"
@@ -967,6 +967,9 @@ msgstr "Avpublicera den"
 msgid "Scheduled"
 msgstr "Schemalagd"
 
+msgid "Content"
+msgstr "Content"
+
 msgid "Changed"
 msgstr "Ändrad"
 
@@ -997,13 +1000,22 @@ msgstr ""
 msgid "Withdraw consent"
 msgstr "Återkalla samtycke"
 
+msgid "Label"
+msgstr "Label"
+
+msgid "Summary"
+msgstr "Summary"
+
 msgid "Token"
 msgstr "Ersättningstecken"
 
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By tapping the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
+msgid "Content region"
+msgstr "Innehåll"
+
+msgid "Upper content region"
+msgstr "Innehåll"
+
+msgid "Admin"
+msgstr "Admin"
 
 
