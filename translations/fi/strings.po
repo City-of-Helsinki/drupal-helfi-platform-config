@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-06-08 10:29+0300\n"
-"PO-Revision-Date: 2021-06-08 10:29+0300\n"
+"POT-Creation-Date: 2021-06-08 10:47+0300\n"
+"PO-Revision-Date: 2021-06-08 10:47+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1418,9 +1418,6 @@ msgstr ""
 "Banneri on leveä elementti, jonka avulla voit korostaa esimerkiksi "
 "tärkeitä linkkejä tai puhelinnumeroita. "
 
-msgid "From library"
-msgstr "Uudelleenkäytettävä lohko"
-
 msgid "Gallery"
 msgstr "Galleria"
 
@@ -1487,15 +1484,6 @@ msgstr "Mediatyyppi SoundCloud kappaleiden lisäämiseen."
 
 msgid "Gallery thumbnail"
 msgstr "Gallerian pikkukuva"
-
-msgid "Reusable paragraph"
-msgstr "Uudelleenkäytettävä lohko"
-
-msgid "From library"
-msgstr "Uudelleenkäytettävä lohko"
-
-msgid "Paragraphs library"
-msgstr "Uudelleenkäytettävät lohkot"
 
 msgctxt "Address label"
 msgid "Postal code"
@@ -1570,9 +1558,6 @@ msgstr "XML-sivustokartta"
 
 msgid "Regenerate all sitemaps after hitting <em>Save</em>"
 msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
-
-msgid "Upper content region"
-msgstr "Ylempi sisältöalue"
 
 msgid "Parent unit"
 msgstr "Ylätason toimipiste"
@@ -1888,12 +1873,6 @@ msgstr "Palvelu entiteetin asetukset"
 msgid "Configure TPR unit entity type"
 msgstr "Toimipiste entiteetin asetukset"
 
-msgid "Paragraphs library item"
-msgstr "Uudelleenkäytettävä lohko"
-
-msgid "Paragraphs library item settings"
-msgstr "Uudelleenkäytettävän lohkon asetukset"
-
 msgid ""
 "Please select an appropriate language for your paragraph from the "
 "language switcher on the top right corner of the page."
@@ -1922,6 +1901,21 @@ msgstr[1] "tulosta"
 
 msgid "Opening hours"
 msgstr "Aukioloajat"
+
+msgid "Reusable paragraph"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "From library"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
+msgid "Paragraphs library item"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library item settings"
+msgstr "Uudelleenkäytettävän lohkon asetukset"
 
 msgid "Unit search"
 msgstr "Toimipistehaku"
