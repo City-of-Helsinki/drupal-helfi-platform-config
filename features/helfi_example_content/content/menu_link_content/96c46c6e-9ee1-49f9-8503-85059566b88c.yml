@@ -1,26 +1,27 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: b5a5c7e4-ff43-4bf9-94d8-2c2562f73e0e
+  uuid: 96c46c6e-9ee1-49f9-8503-85059566b88c
   bundle: menu_link_content
-  default_langcode: sv
+  default_langcode: en
+  depends:
+    333d644e-8636-43d8-82c6-197558ff214c: menu_link_content
+    c2b41989-c715-4ec4-8df1-42655293fdfc: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: Respons
+      value: 'Residential and corporate parking'
   menu_name:
     -
-      value: header-top-navigation
+      value: main
   link:
     -
-      uri: 'https://hel.fi/respons'
+      target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
       title: ''
-      options:
-        attributes:
-          class: {  }
+      options: {  }
   external:
     -
       value: false
@@ -29,10 +30,13 @@ default:
       value: false
   weight:
     -
-      value: 0
+      value: -50
   expanded:
     -
       value: false
+  parent:
+    -
+      value: 'menu_link_content:333d644e-8636-43d8-82c6-197558ff214c'
   revision_translation_affected:
     -
       value: true
@@ -50,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1622805588
+      value: 1623333910

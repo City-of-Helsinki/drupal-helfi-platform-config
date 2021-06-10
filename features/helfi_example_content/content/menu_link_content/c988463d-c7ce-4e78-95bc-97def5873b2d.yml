@@ -1,26 +1,27 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: e96597f7-6f55-4c47-bdca-b81128de8c10
+  uuid: c988463d-c7ce-4e78-95bc-97def5873b2d
   bundle: menu_link_content
   default_langcode: en
+  depends:
+    333d644e-8636-43d8-82c6-197558ff214c: menu_link_content
+    d5bf4eac-26d6-420e-bd19-7d66ff969181: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: Feedback
+      value: 'Payment methods and parking fine'
   menu_name:
     -
-      value: header-top-navigation
+      value: main
   link:
     -
-      uri: 'https://hel.fi/feedback'
+      target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
       title: ''
-      options:
-        attributes:
-          class: {  }
+      options: {  }
   external:
     -
       value: false
@@ -29,10 +30,13 @@ default:
       value: false
   weight:
     -
-      value: 0
+      value: -48
   expanded:
     -
       value: false
+  parent:
+    -
+      value: 'menu_link_content:333d644e-8636-43d8-82c6-197558ff214c'
   revision_translation_affected:
     -
       value: true
@@ -50,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1622805527
+      value: 1623332623

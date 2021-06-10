@@ -3,9 +3,9 @@ _meta:
   entity_type: menu_link_content
   uuid: 98be4d95-22a2-4b3a-9799-426b00798e29
   bundle: menu_link_content
-  default_langcode: fi
+  default_langcode: en
   depends:
-    333d644e-8636-43d8-82c6-197558ff214c: menu_link_content
+    c988463d-c7ce-4e78-95bc-97def5873b2d: menu_link_content
     b62f70bb-3e19-4c21-be5e-621b96169fe1: node
 default:
   enabled:
@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: Esimerkkisivu
+      value: 'Parking fees for low-emission cars'
   menu_name:
     -
       value: main
@@ -21,7 +21,9 @@ default:
     -
       target_uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
       title: ''
-      options: {  }
+      options:
+        attributes:
+          class: {  }
   external:
     -
       value: false
@@ -36,7 +38,7 @@ default:
       value: false
   parent:
     -
-      value: 'menu_link_content:333d644e-8636-43d8-82c6-197558ff214c'
+      value: 'menu_link_content:c988463d-c7ce-4e78-95bc-97def5873b2d'
   revision_translation_affected:
     -
       value: true

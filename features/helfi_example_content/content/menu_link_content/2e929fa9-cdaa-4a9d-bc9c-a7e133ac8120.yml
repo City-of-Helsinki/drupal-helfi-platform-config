@@ -1,26 +1,26 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: 333d644e-8636-43d8-82c6-197558ff214c
+  uuid: 2e929fa9-cdaa-4a9d-bc9c-a7e133ac8120
   bundle: menu_link_content
-  default_langcode: fi
-  depends:
-    7f3b3413-fbf6-4f0b-873c-1fafd3c7912f: node
+  default_langcode: en
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: 'Esimerkki landing-sivu'
+      value: 'No link'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: 7f3b3413-fbf6-4f0b-873c-1fafd3c7912f
+      uri: 'route:<nolink>'
       title: ''
-      options: {  }
+      options:
+        attributes:
+          class: {  }
   external:
     -
       value: false
@@ -29,7 +29,7 @@ default:
       value: false
   weight:
     -
-      value: 0
+      value: -49
   expanded:
     -
       value: false
@@ -50,4 +50,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1622033481
+      value: 1623337157

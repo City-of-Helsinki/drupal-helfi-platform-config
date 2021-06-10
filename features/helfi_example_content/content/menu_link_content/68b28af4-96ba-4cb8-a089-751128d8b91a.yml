@@ -1,25 +1,25 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: 90c2d67c-ca47-43bf-81e2-c079c4f30d32
+  uuid: 68b28af4-96ba-4cb8-a089-751128d8b91a
   bundle: menu_link_content
-  default_langcode: fi
+  default_langcode: en
   depends:
-    98be4d95-22a2-4b3a-9799-426b00798e29: menu_link_content
-    77e5183c-4d25-447e-a4e1-58776b2b545b: node
+    96c46c6e-9ee1-49f9-8503-85059566b88c: menu_link_content
+    8455251b-91bd-4c71-9756-94112e8912c1: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: 'Hero: Kuva alhaalla'
+      value: 'Resident parking permit renewal'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
+      target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
       title: ''
       options: {  }
   external:
@@ -36,7 +36,7 @@ default:
       value: false
   parent:
     -
-      value: 'menu_link_content:98be4d95-22a2-4b3a-9799-426b00798e29'
+      value: 'menu_link_content:96c46c6e-9ee1-49f9-8503-85059566b88c'
   revision_translation_affected:
     -
       value: true
@@ -54,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1622033692
+      value: 1623059857
