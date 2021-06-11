@@ -1,7 +1,7 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: 68b28af4-96ba-4cb8-a089-751128d8b91a
+  uuid: e216b863-7c70-434d-b1e6-fca59a9663ab
   bundle: menu_link_content
   default_langcode: en
   depends:
@@ -30,7 +30,7 @@ default:
       value: false
   weight:
     -
-      value: -50
+      value: 0
   expanded:
     -
       value: false
@@ -54,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1623059857
+      value: 1623402973
