@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-06-08 10:47+0300\n"
-"PO-Revision-Date: 2021-06-08 10:47+0300\n"
+"POT-Creation-Date: 2021-06-11 12:42+0300\n"
+"PO-Revision-Date: 2021-06-11 12:42+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -2050,4 +2050,5 @@ msgstr ""
 msgid "Protocol"
 msgstr "Protokolla"
 
-
+msgid "Accessibility information"
+msgstr "Esteettömyystiedot"
