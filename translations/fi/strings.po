@@ -2050,6 +2050,9 @@ msgstr ""
 msgid "Protocol"
 msgstr "Protokolla"
 
+msgid "Accessibility information"
+msgstr "Esteettömyystiedot"
+
 msgid "View larger map"
 msgstr "Katso suurempi kartta"
 
