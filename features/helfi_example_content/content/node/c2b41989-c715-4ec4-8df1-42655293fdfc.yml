@@ -3,7 +3,9 @@ _meta:
   entity_type: node
   uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
   bundle: page
-  default_langcode: fi
+  default_langcode: en
+  depends:
+    f034ae1b-4371-496a-b117-e31be6f79697: media
 default:
   revision_uid:
     -
@@ -16,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'Hero: Ilman kuvaa, tasattu vasemmalle'
+      value: 'Residential and corporate parking'
   created:
     -
       value: 1610705615
@@ -31,7 +33,8 @@ default:
       value: true
   path:
     -
-      langcode: fi
+      alias: /parking/residential-and-corporate-parking
+      langcode: en
       pathauto: 1
   content_translation_source:
     -
@@ -47,7 +50,7 @@ default:
           entity_type: paragraph
           uuid: 87237f93-d1f2-4773-a8a6-0a9b4d5e74b8
           bundle: text
-          default_langcode: fi
+          default_langcode: en
         default:
           status:
             -
@@ -63,7 +66,7 @@ default:
               value: true
           field_text:
             -
-              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+              value: "<h2>Resident parking permit</h2>\r\n\r\n<h3>Who is entitled to resident parking?</h3>\r\n\r\n<p>Everybody registered as a resident of the area is entitled to resident parking in the area if they hold a driving licence and own or possess a car, van, microcar or motorcycle according to the vehicle register.&nbsp;We grant a residential parking permit for rented/leased vehicles, too, for the rental/leasing period specified in the rental/lease contract. The vehicle must be rented/leased from a company whose official field of business is renting and leasing of motor vehicles.&nbsp;</p>\r\n\r\n<h3>What vehicles can be permitted?</h3>\r\n\r\n<p>The permit can be granted for a car, van, motorcycle, microcar or other vehicle that weighs no more than four tonnes. If the vehicle is not used, the permit expires.</p>\r\n\r\n<h3>How many permits can I have?</h3>\r\n\r\n<p>One person is allowed only one permit. The permit is good for two vehicle registration numbers, but only one of the vehicles can be parked in the resident parking zone at a time. Only one person can have a resident parking permit for a vehicle, unless the vehicle is in shared use, in which case the permit is for a shared vehicle.</p>\r\n\r\n<h3>How and where to apply for the permit</h3>\r\n\r\n<p>Due to the coronavirus situation, parking permits are primarily applied for with a web form, not by visiting the customer service.</p>\r\n\r\n<p>When you apply for a first resident parking permit, start&nbsp;<a class=\"link\" href=\"https://lomake.hel.fi/asukaspysakointitunnus\" target=\"_blank\">by clicking here to fill out the web form</a>&nbsp;(in Finnish). One form can only be used for the information of one car. If you want a permit with the registration numbers of two vehicles, then acquiring said permit requires a visit to the customer service desk. Please note that this form cannot be used for applying for a business parking permit.</p>\r\n\r\n<p>We aim to process the form within two working days. You will receive an e-mail with information about the processing of your application and how a permit can be claimed in the City’s e-services.</p>\r\n\r\n<p>Another form is used for resident parking permit renewal.</p>\r\n\r\n<ul>\r\n\t<li><a class=\"link\" href=\"https://www.hel.fi/helsinki/en/administration/administration/services/eservices?id=4221\" target=\"_blank\">Click here to read the instructions on how to renew a parking permit</a></li>\r\n</ul>\r\n\r\n<p>You can call the customer service at <a class=\"link\" href=\"tel://+358931022111\">+358 9 310 22111</a> for advice.&nbsp;</p>\r\n\r\n<h3>Please note the following for residental parking:&nbsp;</h3>\r\n\r\n<ul>\r\n\t<li>The applicant must be the owner or holder of the vehicle according to the information in the vehicle registration system (Transport and Communications Agengy Traficom) (if not, the sales contract must be presented).</li>\r\n\t<li>The address of the applicant must be in the residential parking area according to the Population Register.</li>\r\n\t<li>The applicant must have a valid driving licence.</li>\r\n</ul>\r\n\r\n<h3>How much does the permit cost?</h3>\r\n\r\n<p>The residential parking permit costs&nbsp;(incl. VAT 24%) and it is issued for a minimum of 1 month and for a maximum of 1 year at a time.&nbsp;</p>\r\n\r\n<h3>How is the permit sign used?</h3>\r\n\r\n<p>The permit sign should be placed inside the vehicle so that the front side of the sign can be easily and entirely read through the windshield. A motorcycle’s permit sticker should be placed in a visible spot.</p>\r\n\r\n<h3>How is a permit renewed?</h3>\r\n\r\n<p>A resident parking permit can be renewed at the&nbsp;<a href=\"https://www.hel.fi/helsinki/en/administration/participate/contact/search-address/toimipistekuvaus?id=7411\" target=\"_self\" title=\"go to the contact information\">Urban Environment Division's customer service office</a>&nbsp;or electronically on the City's. Renewing the permit requires a visit to the customer services, if two vehicle registration numbers have been attached to the permit or if changes are made to the information of a traditional, laminated permit, for example due to a change of address or vehicle. Look below for detailed instruction on how to change the information of the permit.</p>\r\n\r\n<h3>How to make changes to a permit</h3>\r\n\r\n<p>If the address or vehicle changes, the permit must be renewed by visiting the Urban Environment Division’s customer service. You have to bring along a valid permit when you apply for a new permit. If you have an electronic parking permit (not laminated), you can also renew the permit by phone, by calling the customer service.</p>\r\n\r\n<p>Renewing the permit requires that the changed information is up-to-date in the population register and the vehicle register. You may want to ensure this before the visit by calling the urban environment’s customer service.&nbsp;</p>\r\n\r\n<h3>How to cancel a permit</h3>\r\n\r\n<p>If the permit is no longer needed, it may be cancelled. The permit to be cancelled and a bank connection for the refund has to be provided to the Urban Environment customer service, either by mail or in person. An e-permit can also be cancelled by e-mail. A refund is made for the remaining full months. The permit is valid until the day it is returned.</p>\r\n\r\n<h2>Business parking permit</h2>\r\n\r\n<p>Businesses can buy business parking permits for their company vehicles. The permits entitle them to park in their resident parking zones.</p>\r\n\r\n<h3>Who are entitled to business parking permits?</h3>\r\n\r\n<p>Permits can be granted to a business, public corporation or individual entrepreneur operating in the resident parking zone.</p>\r\n\r\n<h3>How many permits can we have?</h3>\r\n\r\n<p>A business can be granted no more than five permits for one location. One permit can carry one vehicle licence number.</p>\r\n\r\n<h3>What vehicles can be permitted?</h3>\r\n\r\n<p>Permits can be granted for cars, vans, motorcycles, microcars or other vehicles that weigh no more than four tonnes. If a vehicle is not used, the permit expires.</p>\r\n\r\n<h3>How and where to apply for permits?</h3>\r\n\r\n<p><strong>Parking permit application will change until further notice (2020 spring)</strong></p>\r\n\r\n<p>Customers are asked to call the customer service on +358 9 310 22111 if they need a new business parking permit or continuation to their current business parking permit.</p>\r\n\r\n<p>During the call, the clerk checks the customer’s eligibility for the parking permit. If the customer is eligible for the permit, the clerk will give them instructions on how to redeem the permit.</p>\r\n\r\n<p><strong>Please note the following for company parking permit</strong></p>\r\n\r\n<p>The applicant must present a certificate issued by the housing company building management or property company stating that the company operates at the given address (a lease agreement is not sufficient). The certificate must be no older than one month. For the time being, a certificate like this is the only way we can verify that the company operates at the premises in question.</p>\r\n\r\n<p>The registration of the vehicle must also be presented, which will allow us to check the ownership and possession of the vehicle and the company business ID. A physical registration document for vehicles registered in Finland does not need to be presented.</p>\r\n\r\n<p>If the car is owned or held by an employee of the company, the applicant must also present an employment contract and the latest payslip with the kilometre allowance itemised.</p>\r\n\r\n<h3>How much does a permit cost?</h3>\r\n\r\n<p>The permit costs EUR 30.83 per month (incl. VAT 24%) and it is issued for a minimum of one month and a maximum of one year at a time. It can be paid in cash or with a Visa or MasterCard or other another debit card.</p>\r\n\r\n<h3>How are permits signs used?</h3>\r\n\r\n<p>A permit sign should be placed inside the vehicle so that the front side of the sign can be easily and entirely read through the windshield. A motorcycle’s permit sticker should be placed in a visible spot.</p>\r\n\r\n<h3>How to make changes to permits?</h3>\r\n\r\n<p>Any changes to permits are made at the&nbsp;Urban Environment&nbsp;Division customer service. You should bring the valid permit(s) and all documents related to the changes.&nbsp;</p>\r\n\r\n<h2>Business parking permit for all areas</h2>\r\n\r\n<p>Companies located in the inner city can apply for a parking permit, which covers the residential and business parking spaces in all of the zones. The price of this permit is EUR 61.66 per month and it can be issued for a minimum of one month and a maximum of one year at a time. The same conditions apply to this permit as to the local business parking permits (see above).</p>\r\n"
               format: full_html
   field_has_hero:
     -
@@ -76,7 +79,7 @@ default:
           entity_type: paragraph
           uuid: cf10e184-1781-4bef-a32b-ab20f770528a
           bundle: hero
-          default_langcode: fi
+          default_langcode: en
         default:
           status:
             -
@@ -92,10 +95,10 @@ default:
               value: true
           field_hero_bg_color:
             -
-              value: metro
+              value: bus
           field_hero_desc:
             -
-              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" href=\"https://hel.fi\"><span class=\"hds-button__label\">Klikkaa itsesi Helsingin kaupungin sivustolle</span></a></p>\r\n"
+              value: "<p>Vehicle owners living in the inner city centre can obtain resident parking permits that entitle them to park in resident parking spaces. Resident parking is always marked with traffic signs.</p>\r\n\r\n<p>Businesses can buy business parking permits. See instructions at the bottom of this page.</p>\r\n"
               format: full_html
           field_hero_design:
             -
@@ -105,4 +108,7 @@ default:
               value: primary
           field_hero_title:
             -
-              value: 'Hero: Ilman kuvaa, tasattu vasemmalle'
+              value: 'Residential and corporate parking'
+  field_liftup_image:
+    -
+      entity: f034ae1b-4371-496a-b117-e31be6f79697

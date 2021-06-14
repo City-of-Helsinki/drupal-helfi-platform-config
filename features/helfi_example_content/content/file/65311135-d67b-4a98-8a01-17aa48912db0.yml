@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 65311135-d67b-4a98-8a01-17aa48912db0
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: tapio-haaja-8eO6zSoCKS8-unsplash.jpg
+  uri:
+    -
+      value: 'public://tapio-haaja-8eO6zSoCKS8-unsplash.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 2501219
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1623337596

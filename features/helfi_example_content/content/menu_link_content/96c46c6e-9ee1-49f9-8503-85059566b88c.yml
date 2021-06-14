@@ -1,25 +1,25 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: 90c2d67c-ca47-43bf-81e2-c079c4f30d32
+  uuid: 96c46c6e-9ee1-49f9-8503-85059566b88c
   bundle: menu_link_content
-  default_langcode: fi
+  default_langcode: en
   depends:
-    98be4d95-22a2-4b3a-9799-426b00798e29: menu_link_content
-    77e5183c-4d25-447e-a4e1-58776b2b545b: node
+    333d644e-8636-43d8-82c6-197558ff214c: menu_link_content
+    c2b41989-c715-4ec4-8df1-42655293fdfc: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: 'Hero: Kuva alhaalla'
+      value: 'Residential and corporate parking'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
+      target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
       title: ''
       options: {  }
   external:
@@ -36,7 +36,7 @@ default:
       value: false
   parent:
     -
-      value: 'menu_link_content:98be4d95-22a2-4b3a-9799-426b00798e29'
+      value: 'menu_link_content:333d644e-8636-43d8-82c6-197558ff214c'
   revision_translation_affected:
     -
       value: true
@@ -54,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1622033692
+      value: 1623333910

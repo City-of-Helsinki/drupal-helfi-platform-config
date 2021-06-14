@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: f034ae1b-4371-496a-b117-e31be6f79697
+  bundle: image
+  default_langcode: fi
+  depends:
+    766d816b-16be-44ea-ada0-5c7fa87e63cc: file
+default:
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'People in Helsinki'
+  created:
+    -
+      value: 1623334008
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: ''
+      langcode: fi
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_media_image:
+    -
+      entity: 766d816b-16be-44ea-ada0-5c7fa87e63cc
+      alt: '""'
+      title: ''
+      width: 3638
+      height: 4851
+  field_photographer:
+    -
+      value: 'Tapio Haaja'

@@ -1,7 +1,7 @@
 _meta:
   version: '1.0'
   entity_type: file
-  uuid: 739ba76d-24cf-4799-8643-71cf865f1844
+  uuid: 4550bc70-8ace-4605-b217-c3ef5db4f536
   default_langcode: en
 default:
   uid:
@@ -9,19 +9,19 @@ default:
       target_id: 1
   filename:
     -
-      value: viljat.jpg
+      value: tapio-haaja-x02clw6vZLI-unsplash.jpg
   uri:
     -
-      value: 'public://viljat.jpg'
+      value: 'public://tapio-haaja-x02clw6vZLI-unsplash.jpg'
   filemime:
     -
       value: image/jpeg
   filesize:
     -
-      value: 1297486
+      value: 3864327
   status:
     -
       value: true
   created:
     -
-      value: 1610706149
+      value: 1623332560

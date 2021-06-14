@@ -1,7 +1,7 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: e96597f7-6f55-4c47-bdca-b81128de8c10
+  uuid: 2e929fa9-cdaa-4a9d-bc9c-a7e133ac8120
   bundle: menu_link_content
   default_langcode: en
 default:
@@ -10,13 +10,13 @@ default:
       value: true
   title:
     -
-      value: Feedback
+      value: 'No link'
   menu_name:
     -
-      value: header-top-navigation
+      value: main
   link:
     -
-      uri: 'https://hel.fi/feedback'
+      uri: 'route:<nolink>'
       title: ''
       options:
         attributes:
@@ -29,7 +29,7 @@ default:
       value: false
   weight:
     -
-      value: 0
+      value: -49
   expanded:
     -
       value: false
@@ -50,4 +50,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1622805527
+      value: 1623337157

@@ -6,13 +6,13 @@ _meta:
   default_langcode: en
   depends:
     c2b41989-c715-4ec4-8df1-42655293fdfc: node
-    efc11410-25ca-48ef-bfe0-f03860a3b7e7: node
-    3a313b2f-8b70-41a6-a655-3f9805cb1f48: node
-    0f14edf8-bb60-4c3b-8d02-4433aac0d3e6: node
-    77e5183c-4d25-447e-a4e1-58776b2b545b: node
     8455251b-91bd-4c71-9756-94112e8912c1: node
     d5bf4eac-26d6-420e-bd19-7d66ff969181: node
-    923ecd78-00ff-47f9-a017-012b781d6bab: media
+    a22c3a4c-85d9-48b0-831b-882458741a6e: media
+    b62f70bb-3e19-4c21-be5e-621b96169fe1: node
+    7f3b3413-fbf6-4f0b-873c-1fafd3c7912f: node
+    c55d0d9c-e153-4d35-912e-3dc5a1be16ea: media
+    fbe3c8b4-142e-4347-a76d-c04db45e396a: media
 translations:
   fi:
     status:
@@ -23,7 +23,7 @@ translations:
         target_id: 1
     title:
       -
-        value: 'Esimerkki landing-sivu'
+        value: 'Esimerkki laskeutumissivusta'
     created:
       -
         value: 1622032481
@@ -33,6 +33,9 @@ translations:
     sticky:
       -
         value: false
+    revision_translation_affected:
+      -
+        value: true
     path:
       -
         alias: /esimerkki-landing-sivu
@@ -63,9 +66,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_list_of_links_design:
               -
                 value: without-image-desc
@@ -88,14 +88,12 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
-                        title: 'Hero: Ilman kuvaa, tasattu vasemmalle'
-                        options: {  }
+                        title: 'Residential and corporate parking'
+                        options:
+                          target_new: 0
               -
                 entity:
                   _meta:
@@ -114,14 +112,12 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
-                        target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
-                        title: 'Hero: Ilman kuvaa, tasattu keskelle'
-                        options: {  }
+                        target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
+                        title: 'Resident parking permit renewal'
+                        options:
+                          target_new: 0
               -
                 entity:
                   _meta:
@@ -140,121 +136,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
-                    field_list_of_links_link:
-                      -
-                        target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
-                        title: 'Hero: Kuva oikealla'
-                        options: {  }
-              -
-                entity:
-                  _meta:
-                    version: '1.0'
-                    entity_type: paragraph
-                    uuid: 651a36a8-bb9c-47fc-8aff-41c9b4d42822
-                    bundle: list_of_links_item
-                    default_langcode: fi
-                  default:
-                    status:
-                      -
-                        value: true
-                    created:
-                      -
-                        value: 1613558069
-                    behavior_settings:
-                      -
-                        value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
-                    field_list_of_links_link:
-                      -
-                        target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
-                        title: 'Hero: Kuva vasemmalla'
-                        options: {  }
-              -
-                entity:
-                  _meta:
-                    version: '1.0'
-                    entity_type: paragraph
-                    uuid: 7ffb303e-6182-40cc-bd0c-d08b6e0a6a7f
-                    bundle: list_of_links_item
-                    default_langcode: fi
-                  default:
-                    status:
-                      -
-                        value: true
-                    created:
-                      -
-                        value: 1613572939
-                    behavior_settings:
-                      -
-                        value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
-                    field_list_of_links_link:
-                      -
-                        target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
-                        title: 'Hero: Kuva alhaalla'
-                        options: {  }
-              -
-                entity:
-                  _meta:
-                    version: '1.0'
-                    entity_type: paragraph
-                    uuid: 9fa86c1d-a9ab-4abb-8d02-7c73644450de
-                    bundle: list_of_links_item
-                    default_langcode: fi
-                  default:
-                    status:
-                      -
-                        value: true
-                    created:
-                      -
-                        value: 1613572955
-                    behavior_settings:
-                      -
-                        value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
-                    field_list_of_links_link:
-                      -
-                        target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
-                        title: 'Hero: Taustakuva'
-                        options: {  }
-              -
-                entity:
-                  _meta:
-                    version: '1.0'
-                    entity_type: paragraph
-                    uuid: 9dbec443-5091-495d-8017-2fc11d142c6c
-                    bundle: list_of_links_item
-                    default_langcode: fi
-                  default:
-                    status:
-                      -
-                        value: true
-                    created:
-                      -
-                        value: 1613572972
-                    behavior_settings:
-                      -
-                        value: {  }
-                    revision_translation_affected:
-                      -
-                        value: true
                     field_list_of_links_link:
                       -
                         target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
-                        title: 'Hero: Diagonaalinen'
-                        options: {  }
+                        title: 'Payment methods and parking fine'
+                        options:
+                          target_new: 0
             field_list_of_links_title:
               -
-                value: 'Esimerkkejä hero-komponenteista'
+                value: 'Esimerkki linkkilistasta'
       -
         entity:
           _meta:
@@ -273,9 +163,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_banner_desc:
               -
                 value: "<p>Quisque at pellentesque risus. Suspendisse vel mattis felis. Suspendisse potenti. Vestibulum scelerisque viverra lacus eu ultricies. Ut euismod condimentum magna, a condimentum ligula tempus in. Mauris egestas ultrices faucibus. Nullam et tincidunt felis</p>\r\n"
@@ -313,9 +200,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_liftup_with_image_desc:
               -
                 value: "<p>Sed auctor pellentesque ante ut porta. Nulla tristique nisi ut sem ultrices, eu fermentum orci dictum. Curabitur sodales viverra sem quis sollicitudin.</p>\r\n\r\n<p><a class=\"link\" href=\"https://hel.fi\" target=\"_blank\">Hel.fi sivusto</a></p>\r\n"
@@ -325,7 +209,7 @@ translations:
                 value: image-on-right
             field_liftup_with_image_image:
               -
-                entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                entity: a22c3a4c-85d9-48b0-831b-882458741a6e
             field_liftup_with_image_title:
               -
                 value: 'Kuvallinen nosto'
@@ -347,9 +231,6 @@ translations:
             behavior_settings:
               -
                 value: {  }
-            revision_translation_affected:
-              -
-                value: true
             field_liftup_with_image_desc:
               -
                 value: "<p>Nullam tempor dui vel sodales mattis. Pellentesque faucibus nunc vitae vehicula mattis. In nisl odio, accumsan eu urna efficitur, viverra euismod erat. Aliquam venenatis vulputate vestibulum.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" href=\"/node/10\"><span class=\"hds-button__label\">Esimerkkisivu</span></a></p>\r\n"
@@ -359,10 +240,231 @@ translations:
                 value: background-text-on-left
             field_liftup_with_image_image:
               -
-                entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                entity: a22c3a4c-85d9-48b0-831b-882458741a6e
             field_liftup_with_image_title:
               -
                 value: 'Kuvallinen nosto taustakuvalla'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 1fb184f4-445d-4419-9531-6e79fa9f4e88
+            bundle: list_of_links
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1613550887
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_list_of_links_design:
+              -
+                value: with-image
+            field_list_of_links_links:
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 18e4fb2e-fd8d-4651-b751-0a210e4263ec
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1613550887
+                    behavior_settings:
+                      -
+                        value: {  }
+                    field_list_of_links_image:
+                      -
+                        entity: a22c3a4c-85d9-48b0-831b-882458741a6e
+                    field_list_of_links_link:
+                      -
+                        target_uuid: b62f70bb-3e19-4c21-be5e-621b96169fe1
+                        title: Esimerkkisivu
+                        options:
+                          target_new: 0
+              -
+                entity:
+                  _meta:
+                    version: '1.0'
+                    entity_type: paragraph
+                    uuid: 1311148e-16fc-4f78-b90f-d42fd8b64080
+                    bundle: list_of_links_item
+                    default_langcode: fi
+                  default:
+                    status:
+                      -
+                        value: true
+                    created:
+                      -
+                        value: 1623337978
+                    behavior_settings:
+                      -
+                        value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
+                    field_list_of_links_image:
+                      -
+                        entity: a22c3a4c-85d9-48b0-831b-882458741a6e
+                    field_list_of_links_link:
+                      -
+                        target_uuid: 7f3b3413-fbf6-4f0b-873c-1fafd3c7912f
+                        title: 'Esimerkki laskeutumissivusta'
+                        options:
+                          target_new: 0
+            field_list_of_links_title:
+              -
+                value: 'Esimerkki kuvallisesta linkkilistasta'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: c259e4e8-91dc-48ba-afe1-a2e211c51ec9
+            bundle: liftup_with_image
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1614429101
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_liftup_with_image_desc:
+              -
+                value: "<p>Sed auctor pellentesque ante ut porta. Nulla tristique nisi ut sem ultrices, eu fermentum orci dictum. Curabitur sodales viverra sem quis sollicitudin.</p>\r\n\r\n<p><a class=\"link\" href=\"https://hel.fi\" target=\"_blank\">Hel.fi website</a></p>\r\n"
+                format: full_html
+            field_liftup_with_image_design:
+              -
+                value: image-on-right
+            field_liftup_with_image_image:
+              -
+                entity: a22c3a4c-85d9-48b0-831b-882458741a6e
+            field_liftup_with_image_title:
+              -
+                value: 'Liftup with image on the right'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 81f8500c-2df4-4d4b-8927-c7c1aaffa6f5
+            bundle: liftup_with_image
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1614429144
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_liftup_with_image_desc:
+              -
+                value: "<p>Nullam tempor dui vel sodales mattis. Pellentesque faucibus nunc vitae vehicula mattis. In nisl odio, accumsan eu urna efficitur, viverra euismod erat. Aliquam venenatis vulputate vestibulum.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" href=\"/node/10\"><span class=\"hds-button__label\">Example page</span></a></p>\r\n"
+                format: full_html
+            field_liftup_with_image_design:
+              -
+                value: background-text-on-left
+            field_liftup_with_image_image:
+              -
+                entity: a22c3a4c-85d9-48b0-831b-882458741a6e
+            field_liftup_with_image_title:
+              -
+                value: 'Liftup with image as background'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 4f28cec8-8ba2-4dd8-a6ff-6d5568f971a6
+            bundle: liftup_with_image
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1614428973
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_liftup_with_image_desc:
+              -
+                value: "<p>Donec a ipsum enim. Nulla vel lorem non ante tempor mollis at nec ex. Sed ornare est rhoncus nisl suscipit sollicitudin. Etiam ut massa sed nulla bibendum laoreet.</p>\r\n\r\n<p><a class=\"hds-button hds-button--supplementary\" href=\"https://oodi.fi\" target=\"_blank\"><span class=\"hds-button__label\">Oodin sivustolle tästä</span></a></p>\r\n"
+                format: full_html
+            field_liftup_with_image_design:
+              -
+                value: background-text-on-right
+            field_liftup_with_image_image:
+              -
+                entity: a22c3a4c-85d9-48b0-831b-882458741a6e
+            field_liftup_with_image_title:
+              -
+                value: 'Taustakuvallinen teksti oikealla'
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 5cb49bb6-f254-4347-a152-6135c92c6e7d
+            bundle: liftup_with_image
+            default_langcode: fi
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1614429029
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_liftup_with_image_desc:
+              -
+                value: "<p>Sed auctor pellentesque ante ut porta. Nulla tristique nisi ut sem ultrices, eu fermentum orci dictum. Curabitur sodales viverra sem quis sollicitudin.</p>\r\n"
+                format: full_html
+            field_liftup_with_image_design:
+              -
+                value: background-text-on-left
+            field_liftup_with_image_image:
+              -
+                entity: a22c3a4c-85d9-48b0-831b-882458741a6e
+            field_liftup_with_image_title:
+              -
+                value: 'Taustakuvallinen teksti vasemmalla'
     field_has_hero:
       -
         value: true
@@ -393,23 +495,20 @@ translations:
                 value: gold
             field_hero_desc:
               -
-                value: "<p>Käytä landing-sivua kun haluat luoda kokoelma sivun tietystä aiheesta.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" data-link-text=\"Katso myös esimerkkisivu\" href=\"/node/9\"><span class=\"hds-button__label\">Katso myös esimerkkisivu</span></a></p>\r\n"
+                value: "<p>Käytä landing-sivua kun haluat luoda kokoelma sivun tietystä aiheesta.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" href=\"/node/9\"><span class=\"hds-button__label\">Katso myös esimerkkisivu</span></a></p>\r\n"
                 format: full_html
             field_hero_design:
               -
                 value: diagonal
             field_hero_image:
               -
-                entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                entity: a22c3a4c-85d9-48b0-831b-882458741a6e
             field_hero_link_design:
               -
                 value: primary
             field_hero_title:
               -
                 value: 'Esimerkki landing-sivu'
-    field_liftup_image:
-      -
-        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
 default:
   revision_uid:
     -
@@ -422,7 +521,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'An example of landing page'
+      value: 'Parking in Helsinki'
   created:
     -
       value: 1613573701
@@ -449,217 +548,7 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 61d28e2c-de12-4e54-a4d2-90297fe32753
-          bundle: list_of_links
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1613550887
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_list_of_links_design:
-            -
-              value: without-image-desc
-          field_list_of_links_links:
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 9d9e4dae-0988-48a9-b2cf-576d831dd3a3
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613550998
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_link:
-                    -
-                      target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
-                      title: 'Hero: Ilman kuvaa, tasattu vasemmalle'
-                      options: {  }
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 1d3c699d-0a65-4f29-bca8-222f720887c5
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613550887
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_link:
-                    -
-                      target_uuid: efc11410-25ca-48ef-bfe0-f03860a3b7e7
-                      title: 'Hero: Ilman kuvaa, tasattu keskelle'
-                      options: {  }
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 14f08122-1673-4989-829c-0e5779973852
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613558090
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_link:
-                    -
-                      target_uuid: 3a313b2f-8b70-41a6-a655-3f9805cb1f48
-                      title: 'Hero: Kuva oikealla'
-                      options: {  }
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 77db627e-3f7b-4b65-b99a-49d7b5d397b5
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613558069
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_link:
-                    -
-                      target_uuid: 0f14edf8-bb60-4c3b-8d02-4433aac0d3e6
-                      title: 'Hero: Kuva vasemmalla'
-                      options: {  }
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: e0ff79c5-cf67-4fd5-8e7c-1ed09594b362
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613572939
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_link:
-                    -
-                      target_uuid: 77e5183c-4d25-447e-a4e1-58776b2b545b
-                      title: 'Hero: Kuva alhaalla'
-                      options: {  }
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: e9763e5c-f768-4122-b0ab-16f93d29aff2
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613572955
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_link:
-                    -
-                      target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
-                      title: 'Hero: Taustakuva'
-                      options: {  }
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 2354bbd3-a24d-4c40-a976-ac67f6f110ce
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613572972
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_link:
-                    -
-                      target_uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
-                      title: 'Hero: Diagonaalinen'
-                      options: {  }
-          field_list_of_links_title:
-            -
-              value: 'Examples of Hero components'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 517099b4-ae49-4a8d-8c31-c758151ca89c
+          uuid: 69669192-e0fa-45de-87ed-085352a50765
           bundle: columns
           default_langcode: en
         default:
@@ -668,24 +557,21 @@ default:
               value: true
           created:
             -
-              value: 1613640615
+              value: 1623329917
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_columns_design:
             -
-              value: 50-50
+              value: 30-70
           field_columns_left_column:
             -
               entity:
                 _meta:
                   version: '1.0'
                   entity_type: paragraph
-                  uuid: c4e049a5-5e42-483c-a47e-00a543e68def
-                  bundle: text
+                  uuid: c0457573-8c31-49c0-9cf8-ce9417330b45
+                  bundle: image
                   default_langcode: en
                 default:
                   status:
@@ -693,24 +579,26 @@ default:
                       value: true
                   created:
                     -
-                      value: 1613640836
+                      value: 1623329973
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
+                  field_image:
                     -
-                      value: true
-                  field_text:
+                      entity: c55d0d9c-e153-4d35-912e-3dc5a1be16ea
+                  field_image_caption:
                     -
-                      value: "<p>Leoetiam enean lus bibendu tempor onec. Molestie iquam ante lacinia justov faucibus semnunc magnis. Mollis abitur ris lacusp arcualiq loremn isque. Eratphas morbi iumsed blandit posuered sodalesm.</p>\r\n"
-                      format: full_html
+                      value: Unsplash
+                  field_original_aspect_ratio:
+                    -
+                      value: false
           field_columns_right_column:
             -
               entity:
                 _meta:
                   version: '1.0'
                   entity_type: paragraph
-                  uuid: c220fd80-0014-46e3-8c2b-e845feb97121
+                  uuid: c137505c-7783-4e78-81b8-6c4b6843d059
                   bundle: text
                   default_langcode: en
                 default:
@@ -719,27 +607,21 @@ default:
                       value: true
                   created:
                     -
-                      value: 1613640714
+                      value: 1623329925
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_text:
                     -
-                      value: "<p>Leoetiam enean lus bibendu tempor onec. Molestie iquam ante lacinia justov faucibus semnunc magnis. Mollis abitur ris lacusp arcualiq loremn isque. Eratphas morbi iumsed blandit posuered sodalesm.</p>\r\n"
+                      value: "<p>Parking fees are charged on nearly all streets in the Helsinki inner city centre on weekdays and in the business centre also on Saturday. Parking is allowed only in marked parking spaces.</p>\r\n\r\n<p>The inner city is divided into two parking zones. Parking fees range from EUR 2-4 per hour.</p>\r\n\r\n<p>Parking fees are usually charged from 9.00-21.00 Monday to Friday in the inner city centre. On Saturdays, parking fees are charged in Zone 1 (I-vyöhyke) and from 9.00-18.00 in some areas of Zone 2 (II-vyöhyke). Make sure to always check the chargeable times on the traffic signs as some of the parking spaces in the city centre are chargeable on Sundays and holidays as well.</p>\r\n\r\n<ul>\r\n\t<li><a class=\"link\" href=\"https://kartta.hel.fi/?setlanguage=en/?link=84fku6\" target=\"_blank\">Click here to see the payment zones</a></li>\r\n\t<li><a class=\"link\" href=\"http://www.hel.fi/static/hkr/pysakointi/kantakaupunkipysakointikartta.pdf\" target=\"_blank\">Click here to see where to park in inner city centre</a>&nbsp;(pdf) and&nbsp;<a class=\"link\" href=\"https://kartta.hel.fi/?link=9sPftq&amp;setlanguage=en\" target=\"_blank\" title=\"Link to map service\">map service</a></li>\r\n</ul>\r\n"
                       format: full_html
-          field_columns_title:
-            -
-              value: 'This is an example of how columns work on landing page'
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: f3dca7ab-98d4-4975-a355-e35b8560d563
-          bundle: banner
+          uuid: a85bd575-a147-4fd2-8b35-5a203ae99897
+          bundle: content_cards
           default_langcode: en
         default:
           status:
@@ -747,39 +629,28 @@ default:
               value: true
           created:
             -
-              value: 1614096625
+              value: 1623332894
           behavior_settings:
             -
               value: {  }
           revision_translation_affected:
             -
               value: true
-          field_banner_desc:
+          field_content_cards_content:
             -
-              value: "<p>Quisque at pellentesque risus. Suspendisse vel mattis felis. Suspendisse potenti. Vestibulum scelerisque viverra lacus eu ultricies. Ut euismod condimentum magna, a condimentum ligula tempus in. Mauris egestas ultrices faucibus. Nullam et tincidunt felis</p>\r\n"
-              format: full_html
-          field_banner_design:
+              entity: d5bf4eac-26d6-420e-bd19-7d66ff969181
             -
-              value: align-center
-          field_banner_link:
+              entity: c2b41989-c715-4ec4-8df1-42655293fdfc
+          field_content_cards_design:
             -
-              uri: 'https://helfi/en'
-              title: 'External link example'
-              options:
-                target_new: 0
-          field_banner_link_design:
-            -
-              value: supplementary
-          field_banner_title:
-            -
-              value: 'Example banner for the English version'
+              value: large-cards-grey
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: c62ca8d2-8b4e-4cea-b0f7-dca2e8bf16ae
-          bundle: list_of_links
+          uuid: a3b06bc2-2fcf-4f4e-a262-ae39bf04c18a
+          bundle: content_cards
           default_langcode: en
         default:
           status:
@@ -787,232 +658,21 @@ default:
               value: true
           created:
             -
-              value: 1613550887
+              value: 1623330907
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
+          field_content_cards_content:
             -
-              value: true
-          field_list_of_links_design:
+              entity: b62f70bb-3e19-4c21-be5e-621b96169fe1
             -
-              value: with-image
-          field_list_of_links_links:
+              entity: 8455251b-91bd-4c71-9756-94112e8912c1
+          field_content_cards_design:
             -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: cdcaecb3-0a28-4ba2-bfe1-fb432ad44864
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613550887
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_image:
-                    -
-                      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-          field_list_of_links_title:
+              value: large-cards
+          field_content_cards_title:
             -
-              value: 'An example of Columns component'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 3e3c3368-60c0-4f7f-8112-b4ca6d465503
-          bundle: list_of_links
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1613550887
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_list_of_links_design:
-            -
-              value: with-image
-          field_list_of_links_links:
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 70b3f4b4-77b9-44c7-b587-2b420f7d6cdc
-                  bundle: list_of_links_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613550887
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_list_of_links_image:
-                    -
-                      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-          field_list_of_links_title:
-            -
-              value: 'Esimerkki palstat-komponentista'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 224cb643-4cb7-4136-a0fc-4ec7aaf2fce4
-          bundle: liftup_with_image
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1614429101
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_liftup_with_image_desc:
-            -
-              value: "<p>Sed auctor pellentesque ante ut porta. Nulla tristique nisi ut sem ultrices, eu fermentum orci dictum. Curabitur sodales viverra sem quis sollicitudin.</p>\r\n\r\n<p><a class=\"link\" href=\"https://hel.fi\" target=\"_blank\">Hel.fi website</a></p>\r\n"
-              format: full_html
-          field_liftup_with_image_design:
-            -
-              value: image-on-right
-          field_liftup_with_image_image:
-            -
-              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-          field_liftup_with_image_title:
-            -
-              value: 'Liftup with image on the right'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 70eb12d7-58a9-498a-9982-d4ddcae339de
-          bundle: liftup_with_image
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1614429144
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_liftup_with_image_desc:
-            -
-              value: "<p>Nullam tempor dui vel sodales mattis. Pellentesque faucibus nunc vitae vehicula mattis. In nisl odio, accumsan eu urna efficitur, viverra euismod erat. Aliquam venenatis vulputate vestibulum.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" href=\"/node/10\"><span class=\"hds-button__label\">Example page</span></a></p>\r\n"
-              format: full_html
-          field_liftup_with_image_design:
-            -
-              value: background-text-on-left
-          field_liftup_with_image_image:
-            -
-              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-          field_liftup_with_image_title:
-            -
-              value: 'Liftup with image as background'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 5e2f372c-b017-4ee2-99fd-13fd7394c3cc
-          bundle: liftup_with_image
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1614428973
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_liftup_with_image_desc:
-            -
-              value: "<p>Donec a ipsum enim. Nulla vel lorem non ante tempor mollis at nec ex. Sed ornare est rhoncus nisl suscipit sollicitudin. Etiam ut massa sed nulla bibendum laoreet.</p>\r\n\r\n<p><a class=\"hds-button hds-button--supplementary\" href=\"https://oodi.fi\" target=\"_blank\"><span class=\"hds-button__label\">Oodin sivustolle tästä</span></a></p>\r\n"
-              format: full_html
-          field_liftup_with_image_design:
-            -
-              value: background-text-on-right
-          field_liftup_with_image_image:
-            -
-              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-          field_liftup_with_image_title:
-            -
-              value: 'Taustakuvallinen teksti oikealla'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 5dee3b11-f222-4e1c-a675-992c9bf5fba9
-          bundle: liftup_with_image
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1614429029
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_liftup_with_image_desc:
-            -
-              value: "<p>Sed auctor pellentesque ante ut porta. Nulla tristique nisi ut sem ultrices, eu fermentum orci dictum. Curabitur sodales viverra sem quis sollicitudin.</p>\r\n"
-              format: full_html
-          field_liftup_with_image_design:
-            -
-              value: background-text-on-left
-          field_liftup_with_image_image:
-            -
-              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-          field_liftup_with_image_title:
-            -
-              value: 'Taustakuvallinen teksti vasemmalla'
+              value: 'Current issues'
   field_has_hero:
     -
       value: true
@@ -1022,7 +682,7 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 54c637e5-88f6-4c12-9bce-043541b0dd45
+          uuid: 965d023a-9314-4f6a-a5ad-c1df41c366b8
           bundle: hero
           default_langcode: en
         default:
@@ -1031,32 +691,22 @@ default:
               value: true
           created:
             -
-              value: 1613553220
+              value: 1623330354
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_hero_bg_color:
             -
-              value: gold
-          field_hero_desc:
-            -
-              value: "<p>Use landing page when you want to f.e. create a collection of links and information about a certain subject.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" href=\"/node/9\"><span class=\"hds-button__label\">Check also the example page</span></a></p>\r\n"
-              format: full_html
+              value: coat-of-arms
           field_hero_design:
             -
-              value: diagonal
+              value: with-image-bottom
           field_hero_image:
             -
-              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              entity: fbe3c8b4-142e-4347-a76d-c04db45e396a
           field_hero_link_design:
             -
               value: primary
           field_hero_title:
             -
-              value: 'An example of landing page'
-  field_liftup_image:
-    -
-      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              value: 'Parking in Helsinki'
