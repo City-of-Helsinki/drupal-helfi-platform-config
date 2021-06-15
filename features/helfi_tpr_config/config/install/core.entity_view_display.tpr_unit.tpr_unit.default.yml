@@ -166,13 +166,13 @@ content:
       link: false
     third_party_settings: {  }
   service_map_embed:
-    label: above
+    label: hidden
     type: service_map_embed
     weight: 10
     region: content
     settings:
       iframe_title: 'Service map'
-      link_title: 'View larger map'
+      link_title: 'View the map in new window'
       target: true
     third_party_settings: {  }
   services:
