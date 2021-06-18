@@ -30,4 +30,5 @@ class KuuraHealthChat extends BlockBase {
 
     return $build;
   }
+
 }
