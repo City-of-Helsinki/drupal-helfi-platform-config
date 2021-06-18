@@ -2,9 +2,9 @@ langcode: en
 status: true
 dependencies: {  }
 id: essential
-label: Essential
+label: 'Necessary cookies'
 description:
-  value: "<p>Basic cookies required for the site to function.</p>\r\n\r\n<p><em>Details of cookies to be added.</em></p>\r\n"
+  value: "<p>Necessary cookies help to make the website usable by allowing basic functions, navigating the page and using the protected areas of the site. The website will not work properly without these cookies and their consent is not required.<br />\r\n&nbsp;</p>\r\n\r\n<table style=\"color: var(--colorGinText);\">\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<th>Type</th>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
   format: full_html
 checkbox_default_state: required
 weight: -9
