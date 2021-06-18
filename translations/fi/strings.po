@@ -2052,4 +2052,5 @@ msgstr ""
 "<p><strong>Et ole tallentanut evästeasetuksia.</strong> "
 "Oletusarvoisesti vain välttämättömät evästeet tallennetaan.</p>"
 
-
+msgid "Consent management"
+msgstr "Suostumusten hallinnointi"
