@@ -9,4 +9,5 @@ popup_info:
 popup_link: /node/1
 withdraw_message:
   value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
-save_preferences_button_label: 'Allow only essential cookies'
+save_preferences_button_label: 'Accept selected cookies'
+

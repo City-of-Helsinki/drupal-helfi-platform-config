@@ -1,4 +1,3 @@
-uuid: 794fc11b-a1b4-41a7-a351-aaa84516c2c5
 cookie_lifetime: 100
 containing_element: body
 domain: ''
@@ -33,7 +32,7 @@ mobile_popup_info:
   format: full_html
 popup_info_template: new
 mobile_breakpoint: 768
-popup_link: /node/1
+popup_link: /cookie-information-and-settings
 popup_link_new_window: false
 popup_position: false
 fixed_top_position: true
@@ -59,7 +58,7 @@ withdraw_action_button_label: 'Withdraw consent'
 withdraw_tab_button_label: 'Privacy settings'
 withdraw_enabled: false
 enable_save_preferences_button: true
-save_preferences_button_label: 'Allow only essential cookies'
+save_preferences_button_label: 'Accept selected cookies'
 accept_all_categories_button_label: 'Accept all cookies'
 withdraw_button_on_info_popup: false
 domain_all_sites: true
