@@ -1169,5 +1169,4 @@ msgstr "Metatags"
 msgid "Used"
 msgstr "Used"
 
-msgid "Consent management"
-msgstr "Согласие управления"
+
