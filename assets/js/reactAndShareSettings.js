@@ -1,6 +1,6 @@
 (function() {
   window.rnsData = {
-    apiKey: 'abcdefgh12345678'
+    apiKey: drupalSettings.reactAndShareApiKey
   };
   var s = document.createElement('script');
   s.src = 'https://cdn.reactandshare.com/plugin/rns.js';

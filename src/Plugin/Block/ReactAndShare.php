@@ -18,6 +18,10 @@ class ReactAndShare extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
+    if (!$apikey = getenv('REACT_AND_SHARE_APIKEY')) {
+      return [];
+    }
+
     $library = ['helfi_platform_config/react_and_share'];
     $build = [];
 
@@ -27,6 +31,7 @@ class ReactAndShare extends BlockBase {
       '#title' => t('React and Share'),
       '#attached' => [
         'library' => $library,
+        'drupalSettings' => ['reactAndShareApiKey' => $apikey],
       ],
     ];
 
