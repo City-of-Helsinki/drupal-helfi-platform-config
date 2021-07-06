@@ -34,7 +34,6 @@ class ReactAndShare extends BlockBase {
       '#title' => t('React and Share'),
       '#attached' => [
         'library' => $library,
-
         'drupalSettings' => ['reactAndShareApiKey' => $apikey],
 
       ],
