@@ -18,7 +18,10 @@ class ReactAndShare extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    if (!$apikey = getenv('REACT_AND_SHARE_APIKEY')) {
+    $language = \Drupal::languageManager()->getCurrentLanguage();
+    $langcode = $language->getId();
+
+    if (!$apikey = getenv('REACT_AND_SHARE_APIKEY_' . strtoupper($langcode))) {
       return [];
     }
 
@@ -31,7 +34,9 @@ class ReactAndShare extends BlockBase {
       '#title' => t('React and Share'),
       '#attached' => [
         'library' => $library,
+
         'drupalSettings' => ['reactAndShareApiKey' => $apikey],
+
       ],
     ];
 
