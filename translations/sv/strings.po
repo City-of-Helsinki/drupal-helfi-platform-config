@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-06-14 12:55+0300\n"
-"PO-Revision-Date: 2021-06-14 12:55+0300\n"
+"POT-Creation-Date: 2021-07-06 16:50+0300\n"
+"PO-Revision-Date: 2021-07-06 16:50+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1015,8 +1015,16 @@ msgstr "Innehåll"
 msgid "Upper content region"
 msgstr "Innehåll"
 
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By tapping the Accept button, you agree to us doing "
+"so.</p>"
+msgstr ""
+
 msgid "Admin"
 msgstr "Admin"
 
 msgid "Consent management"
 msgstr "Samtyckehantering"
+
+
