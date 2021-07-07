@@ -171,7 +171,7 @@ content:
     weight: 10
     region: content
     settings:
-      iframe_title: 'Service map'
+      iframe_title: 'Location on map'
       link_title: 'View the map in new window'
       target: true
     third_party_settings: {  }
