@@ -10,8 +10,8 @@ dependencies:
     - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.list_of_links
-    - paragraphs.paragraphs_type.text
     - paragraphs.paragraphs_type.remote_video
+    - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
 id: node.article.field_content
@@ -83,4 +83,7 @@ settings:
       text:
         enabled: true
         weight: -27
+      unit_search:
+        weight: 30
+        enabled: false
 field_type: entity_reference_revisions
