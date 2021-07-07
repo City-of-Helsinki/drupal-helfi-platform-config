@@ -25,7 +25,6 @@ permissions:
   - 'create remote_video media'
   - 'create soundcloud media'
   - 'create terms in keywords'
-  - 'create url aliases'
   - 'delete media'
   - 'delete own file media'
   - 'delete own image media'
