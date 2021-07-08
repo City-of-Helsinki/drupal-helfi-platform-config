@@ -1,0 +1,54 @@
+display:
+  default:
+    display_title: Основной
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Фильтр
+          reset_button_label: Сбросить
+          exposed_sorts_label: 'Сортировать по'
+          sort_asc_label: 'По возрастанию'
+          sort_desc_label: 'По убыванию'
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+            next: ››
+          expose:
+            items_per_page_label: 'Элементов на страницу'
+            items_per_page_options_all_label: '- Все -'
+            offset_label: Пропустить
+      fields:
+        label:
+          label: Label
+          separator: ', '
+        type:
+          label: Тип
+          separator: ', '
+        paragraphs__target_id:
+          label: Параграфы
+          separator: ', '
+        langcode:
+          label: Язык
+          separator: ', '
+        id:
+          label: ID
+          separator: ', '
+        count:
+          label: Used
+        changed:
+          label: Изменение
+          separator: ', '
+        operations:
+          label: Операции
+      filters:
+        label:
+          expose:
+            label: Label
+          group_info:
+            label: Label
+        type:
+          expose:
+            label: Тип
+  page_1:
+    display_title: Страница

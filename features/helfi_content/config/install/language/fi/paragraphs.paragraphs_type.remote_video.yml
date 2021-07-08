@@ -1,2 +1,2 @@
-label: 'Upotettu video'
-description: 'Video upotus -elementtiä voi käyttää upottaakeen ulkoisia videoita sisällön sekaan. Alustavasti toimii vain YouTube-videoiden kanssa.'
+label: 'Video ulkoisesta palvelusta'
+description: 'Tällä lohkolla voit lisätä videon ulkoisesta palvelusta. Tukee tällä hetkellä vain YouTubea.'

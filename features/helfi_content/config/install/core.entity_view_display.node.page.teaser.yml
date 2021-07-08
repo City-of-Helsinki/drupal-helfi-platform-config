@@ -7,8 +7,8 @@ dependencies:
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
     - field.field.node.page.field_liftup_image
-    - field.field.node.page.field_metatags
     - field.field.node.page.field_lower_content
+    - field.field.node.page.field_metatags
     - node.type.page
   module:
     - user

@@ -1,0 +1,51 @@
+display:
+  default:
+    display_title: Huvud
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+            next: ››
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      fields:
+        label:
+          label: Label
+          separator: ', '
+        type:
+          label: Typ
+          separator: ', '
+        paragraphs__target_id:
+          separator: ', '
+        langcode:
+          label: Språk
+          separator: ', '
+        id:
+          label: ID
+          separator: ', '
+        changed:
+          label: Ändrad
+          separator: ', '
+        operations:
+          label: Funktioner
+      filters:
+        label:
+          expose:
+            label: Label
+          group_info:
+            label: Label
+        type:
+          expose:
+            label: Typ
+  page_1:
+    display_title: Sida

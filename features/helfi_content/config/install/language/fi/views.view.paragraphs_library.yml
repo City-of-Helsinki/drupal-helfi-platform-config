@@ -1,54 +1,54 @@
 label: 'Uudelleenkäytettävät lohkot'
 display:
   default:
-    display_title: Master
+    display_title: Isäntä
     display_options:
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          submit_button: Suodatin
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           tags:
-            previous: ‹‹
-            next: ››
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
           expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
             offset_label: Offset
       fields:
         label:
-          label: Label
+          label: Otsikko
           separator: ', '
         type:
-          label: Type
+          label: Tyyppi
           separator: ', '
         paragraphs__target_id:
           label: Lohkot
           separator: ', '
         langcode:
-          label: Language
+          label: Kieli
           separator: ', '
         id:
           label: ID
           separator: ', '
         changed:
-          label: Changed
+          label: Muuttunut
           separator: ', '
         operations:
-          label: Operations
+          label: Toimenpiteet
       filters:
         label:
           expose:
-            label: Label
+            label: Otsikko
           group_info:
-            label: Label
+            label: Otsikko
         type:
           expose:
-            label: Type
+            label: Tyyppi
       title: 'Uudelleenkäytettävät lohkot'
   page_1:
-    display_title: Page
+    display_title: Sivu

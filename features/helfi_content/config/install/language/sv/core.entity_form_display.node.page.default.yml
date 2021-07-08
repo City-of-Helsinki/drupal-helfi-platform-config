@@ -5,3 +5,6 @@ content:
   field_hero:
     settings:
       title: Paragraf
+  field_lower_content:
+    settings:
+      title: Paragraf
