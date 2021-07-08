@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.article.field_color_palette
     - field.field.node.article.field_author
     - field.field.node.article.field_content
     - field.field.node.article.field_keywords
@@ -12,6 +13,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - metatag
+    - options
     - user
 id: node.article.default
 targetEntityType: node
@@ -25,6 +27,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_color_palette:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_content:
     weight: 3

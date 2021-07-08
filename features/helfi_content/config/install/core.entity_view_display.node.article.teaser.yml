@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.article.field_color_palette
     - field.field.node.article.field_author
     - field.field.node.article.field_content
     - field.field.node.article.field_keywords
@@ -28,6 +29,7 @@ content:
     third_party_settings: {  }
 hidden:
   field_author: true
+  field_color_palette: true
   field_content: true
   field_keywords: true
   field_lead: true

@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_color_palette
+    - node.type.landing_page
+  module:
+    - options
+id: node.landing_page.field_color_palette
+field_name: field_color_palette
+entity_type: node
+bundle: landing_page
+label: 'Color palette'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: hdbt_admin_tools_color_palette_default_value
+settings: {  }
+field_type: list_string
