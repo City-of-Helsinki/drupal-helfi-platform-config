@@ -2,9 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.tpr_unit.tpr_unit.field_color_palette
     - field.field.tpr_unit.tpr_unit.field_content
-    - field.field.tpr_unit.tpr_unit.field_metatags
     - field.field.tpr_unit.tpr_unit.field_lower_content
+    - field.field.tpr_unit.tpr_unit.field_metatags
   module:
     - helfi_tpr
     - media_library
@@ -97,6 +98,12 @@ content:
       formatter_settings: null
       show_description: false
     third_party_settings: {  }
+  field_color_palette:
+    weight: 29
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_content:
     type: paragraphs
     weight: 27

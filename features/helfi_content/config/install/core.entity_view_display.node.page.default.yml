@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.page.field_color_palette
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
@@ -12,12 +13,20 @@ dependencies:
   module:
     - entity_reference_revisions
     - metatag
+    - options
     - user
 id: node.page.default
 targetEntityType: node
 bundle: page
 mode: default
 content:
+  field_color_palette:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_content:
     type: entity_reference_revisions_entity_view
     weight: 1

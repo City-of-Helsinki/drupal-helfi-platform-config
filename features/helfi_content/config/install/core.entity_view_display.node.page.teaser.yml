@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.page.field_color_palette
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
@@ -27,6 +28,7 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  field_color_palette: true
   field_content: true
   field_has_hero: true
   field_hero: true

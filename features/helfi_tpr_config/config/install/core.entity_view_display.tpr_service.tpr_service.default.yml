@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.tpr_service.tpr_service.field_color_palette
     - field.field.tpr_service.tpr_service.field_content
     - field.field.tpr_service.tpr_service.field_metatags
     - field.field.tpr_service.tpr_service.field_lower_content
@@ -9,6 +10,7 @@ dependencies:
     - entity_reference_revisions
     - helfi_tpr
     - metatag
+    - options
     - text
 id: tpr_service.tpr_service.default
 targetEntityType: tpr_service
@@ -22,6 +24,13 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  field_color_palette:
+    weight: 21
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_content:
     type: entity_reference_revisions_entity_view
     weight: 4

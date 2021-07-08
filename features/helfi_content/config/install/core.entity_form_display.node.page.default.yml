@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.page.field_color_palette
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
@@ -10,6 +11,7 @@ dependencies:
     - field.field.node.page.field_metatags
     - node.type.page
   module:
+    - hdbt_admin_editorial
     - media_library
     - metatag
     - paragraphs
@@ -26,6 +28,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_color_palette:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: color_palette_field_widget
+    region: content
   field_content:
     type: paragraphs
     weight: 12
