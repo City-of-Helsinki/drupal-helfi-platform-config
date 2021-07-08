@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.tpr_service.teaser
-    - field.field.tpr_sercice.tpr_sercice.field_color_palette
+    - field.field.tpr_service.tpr_service.field_color_palette
     - field.field.tpr_service.tpr_service.field_content
     - field.field.tpr_service.tpr_service.field_lower_content
     - field.field.tpr_service.tpr_service.field_metatags
