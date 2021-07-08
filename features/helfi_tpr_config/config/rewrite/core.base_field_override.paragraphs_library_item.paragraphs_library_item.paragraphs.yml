@@ -3,7 +3,6 @@ dependencies:
     - paragraphs.paragraphs_type.unit_search
 settings:
   handler_settings:
-    negate: '0'
     target_bundles:
       unit_search: unit_search
     target_bundles_drag_drop:

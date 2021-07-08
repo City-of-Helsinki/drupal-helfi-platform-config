@@ -1,11 +1,11 @@
 dependencies:
   config:
-    - paragraphs.paragraphs_type.map
+    - paragraphs.paragraphs_type.unit_search
 settings:
   handler_settings:
     target_bundles:
-      map: map
+      unit_search: unit_search
     target_bundles_drag_drop:
-      map:
+      unit_search:
         enabled: true
-        weight: 31
+        weight: 28
