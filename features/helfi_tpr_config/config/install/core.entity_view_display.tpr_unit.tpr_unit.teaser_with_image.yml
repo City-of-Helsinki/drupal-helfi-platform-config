@@ -3,6 +3,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.tpr_unit.teaser_with_image
+    - field.field.tpr_unit.tpr_unit.field_color_palette
+    - field.field.tpr_unit.tpr_unit.field_content
+    - field.field.tpr_unit.tpr_unit.field_lower_content
     - field.field.tpr_unit.tpr_unit.field_metatags
   module:
     - address
@@ -56,6 +59,7 @@ hidden:
   created: true
   description: true
   email: true
+  field_color_palette: true
   field_content: true
   field_lower_content: true
   field_metatags: true
