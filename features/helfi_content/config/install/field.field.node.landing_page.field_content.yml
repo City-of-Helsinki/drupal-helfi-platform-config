@@ -10,9 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
-    - paragraphs.paragraphs_type.map
     - paragraphs.paragraphs_type.remote_video
-    - paragraphs.paragraphs_type.unit_search
   module:
     - entity_reference_revisions
 id: node.landing_page.field_content
@@ -37,8 +35,6 @@ settings:
       content_cards: content_cards
       from_library: from_library
       remote_video: remote_video
-      unit_search: unit_search
-      map: map
     target_bundles_drag_drop:
       accordion:
         weight: -22
@@ -79,16 +75,10 @@ settings:
       list_of_links_item:
         weight: -16
         enabled: false
-      map:
-        enabled: true
-        weight: 31
       remote_video:
         enabled: true
         weight: 27
       text:
         weight: -15
         enabled: false
-      unit_search:
-        enabled: true
-        weight: 28
 field_type: entity_reference_revisions

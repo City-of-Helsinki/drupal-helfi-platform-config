@@ -83,7 +83,4 @@ settings:
       text:
         enabled: true
         weight: -27
-      unit_search:
-        weight: 30
-        enabled: false
 field_type: entity_reference_revisions

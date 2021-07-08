@@ -11,8 +11,6 @@ dependencies:
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.text
-    - paragraphs.paragraphs_type.unit_search
-    - paragraphs.paragraphs_type.map
   module:
     - entity_reference_revisions
     - paragraphs_library
@@ -40,8 +38,6 @@ settings:
       liftup_with_image: liftup_with_image
       list_of_links: list_of_links
       text: text
-      unit_search: unit_search
-      map: map
     target_bundles_drag_drop:
       accordion:
         enabled: '1'
@@ -85,10 +81,4 @@ settings:
       text:
         enabled: '1'
         weight: '29'
-      unit_search:
-        enabled: '1'
-        weight: '30'
-      map:
-        enabled: true
-        weight: 31
 field_type: entity_reference_revisions
