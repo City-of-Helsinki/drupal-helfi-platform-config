@@ -21,7 +21,6 @@ final class FilterByLanguage implements EventSubscriberInterface {
    */
   protected $menuNames = [
     'account',
-    'admin',
     'branding-navigation',
     'footer-bottom-navigation',
     'footer-top-navigation',
