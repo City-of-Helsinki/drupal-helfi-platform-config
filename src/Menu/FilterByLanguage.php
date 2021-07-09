@@ -20,14 +20,11 @@ final class FilterByLanguage implements EventSubscriberInterface {
    * @var string[]
    */
   protected $menuNames = [
-    'account',
-    'admin',
     'branding-navigation',
     'footer-bottom-navigation',
     'footer-top-navigation',
     'header-top-navigation',
     'main',
-    'tools',
   ];
 
   /**
