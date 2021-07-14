@@ -16,6 +16,12 @@ settings:
     -
       value: align-left
       label: 'Aligned to the left'
+    -
+      value: align-center-secondary
+      label: 'Aligned to the center, secondary color'
+    -
+      value: align-left-secondary
+      label: 'Aligned to the left, secondary color'
   allowed_values_function: ''
 module: options
 locked: false
