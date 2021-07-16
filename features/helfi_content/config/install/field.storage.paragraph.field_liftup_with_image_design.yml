@@ -17,6 +17,12 @@ settings:
       value: image-on-left
       label: 'Image on left'
     -
+      value: image-on-right-secondary
+      label: 'Image on right, secondary color'
+    -
+      value: image-on-left-secondary
+      label: 'Image on left, secondary color'
+    -
       value: background-text-on-right
       label: 'Background image, text on right'
     -
