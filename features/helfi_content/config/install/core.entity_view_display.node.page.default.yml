@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
+    - field.field.node.page.field_lead_in
     - field.field.node.page.field_liftup_image
     - field.field.node.page.field_lower_content
     - field.field.node.page.field_metatags
@@ -20,13 +21,20 @@ mode: default
 content:
   field_content:
     type: entity_reference_revisions_entity_view
-    weight: 1
+    weight: 2
     region: content
     label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+  field_lead_in:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   field_lower_content:
     type: entity_reference_revisions_entity_view
     weight: 4
@@ -37,7 +45,7 @@ content:
     third_party_settings: {  }
     region: content
   field_metatags:
-    weight: 2
+    weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }

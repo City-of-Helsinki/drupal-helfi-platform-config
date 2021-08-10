@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
+    - field.field.node.page.field_lead_in
     - field.field.node.page.field_liftup_image
     - field.field.node.page.field_lower_content
     - field.field.node.page.field_metatags
@@ -30,6 +31,7 @@ hidden:
   field_content: true
   field_has_hero: true
   field_hero: true
+  field_lead_in: true
   field_lower_content: true
   field_metatags: true
   langcode: true
