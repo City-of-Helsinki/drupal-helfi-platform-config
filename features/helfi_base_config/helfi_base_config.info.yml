@@ -30,7 +30,6 @@ dependencies:
   - 'hdbt_content:hdbt_content'
   - 'hdbt_hyphenopoly:hdbt_hyphenopoly'
   - 'helfi_content:helfi_content'
-  - 'helfi_example_content:helfi_example_content'
   - 'helfi_gdpr_compliance:helfi_gdpr_compliance'
   - 'helfi_languages:helfi_languages'
   - 'helfi_media:helfi_media'
