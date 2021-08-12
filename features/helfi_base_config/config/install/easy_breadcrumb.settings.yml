@@ -28,5 +28,5 @@ follow_redirects: false
 limit_segment_display: false
 segment_display_limit: ''
 truncator_mode: false
-truncator_length: 100
+truncator_length: '100'
 truncator_dots: true
