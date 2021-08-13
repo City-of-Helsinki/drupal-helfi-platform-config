@@ -6,10 +6,8 @@ url:
     en: en
     fi: fi
     sv: sv
-    ru: ru
   domains:
     en: ''
     fi: ''
     sv: ''
-    ru: ''
 selected_langcode: fi
