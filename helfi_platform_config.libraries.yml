@@ -10,3 +10,11 @@ react_and_share:
   version: 1.0.x
   js:
     assets/js/reactAndShareSettings.js: {}
+
+smartti_chatbot:
+  version: 1.0.x
+  js:
+    'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.js': { type: external, minified: true }
+  css:
+    theme:
+      'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.css': { type: external, minified: true }
