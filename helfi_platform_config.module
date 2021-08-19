@@ -40,3 +40,17 @@ function helfi_platform_config_modules_installed() {
     locale_system_set_config_langcodes();
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_platform_config_theme() {
+  return [
+    'react_and_share' => [
+      'variables' => [
+        'title' => NULL,
+        'content' => NULL,
+      ],
+    ],
+  ];
+}

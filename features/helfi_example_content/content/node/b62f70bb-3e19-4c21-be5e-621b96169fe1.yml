@@ -5,11 +5,8 @@ _meta:
   bundle: page
   default_langcode: en
   depends:
-    923ecd78-00ff-47f9-a017-012b781d6bab: media
-    efc11410-25ca-48ef-bfe0-f03860a3b7e7: node
-    d5bf4eac-26d6-420e-bd19-7d66ff969181: node
-    559b7501-275e-40e3-b212-232271a46e74: node
-    7f3b3413-fbf6-4f0b-873c-1fafd3c7912f: node
+    4dfaa824-8b06-45d8-853c-f98743ca5041: media
+    baf3f8dc-02d9-4d8c-a014-db3d50758165: media
 translations:
   fi:
     status:
@@ -49,7 +46,7 @@ translations:
             entity_type: paragraph
             uuid: d06cad74-4a03-4e49-9cbe-0019fe178dcd
             bundle: text
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -60,6 +57,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_text:
               -
                 value: "<h2>Tason kaksi otsikko</h2>\r\n\r\n<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<h3>Tason kolme otsikko</h3>\r\n\r\n<p><strong>Veli kulta, veikkoseni,</strong> kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n\r\n<ol>\r\n\t<li>Ensimmäinen numerolistassa</li>\r\n\t<li>Toinen numerolistassa</li>\r\n\t<li>Kolmas numerolistassa</li>\r\n</ol>\r\n"
@@ -71,7 +71,7 @@ translations:
             entity_type: paragraph
             uuid: 980186cc-a55d-468c-982d-729e6040a04b
             bundle: image
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -82,9 +82,12 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_image:
               -
-                entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                target_id: 1
             field_image_caption:
               -
                 value: 'Testikuvan testikuvateksti'
@@ -98,7 +101,7 @@ translations:
             entity_type: paragraph
             uuid: 3f490cdd-8368-430a-8ea5-c338f2f047df
             bundle: text
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -109,6 +112,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_text:
               -
                 value: "<p>Toinen teksti-paragraph, joka näkyy vain suomeksi. <a href=\"/\">Tässä sisällössä on myös kaikkea muuta.</a></p>\r\n\r\n<h4>Otsikko joka on tasoa neljä</h4>\r\n\r\n<ul>\r\n\t<li>Lista jossa on kohtia</li>\r\n\t<li>Toinen kohta listassa</li>\r\n\t<li>Kolmas kohta listassa</li>\r\n</ul>\r\n\r\n<p>Niit' ennen isoni lauloi kirvesvartta vuollessansa; niitä äitini opetti väätessänsä värttinätä, minun lasna lattialla eessä polven pyöriessä, maitopartana pahaisna, piimäsuuna pikkaraisna. Sampo ei puuttunut sanoja eikä Louhi luottehia: vanheni sanoihin sampo, katoi Louhi luottehisin, virsihin Vipunen kuoli, Lemminkäinen leikkilöihin.</p>\r\n"
@@ -120,7 +126,7 @@ translations:
             entity_type: paragraph
             uuid: 3a9fb195-2bad-47d8-a1b6-98b4a1b345f5
             bundle: list_of_links
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -131,6 +137,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_list_of_links_design:
               -
                 value: with-image
@@ -142,7 +151,7 @@ translations:
                     entity_type: paragraph
                     uuid: b3dd2b32-381d-46e4-b0e6-63a0c8d038ee
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -153,9 +162,12 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_image:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -168,7 +180,7 @@ translations:
                     entity_type: paragraph
                     uuid: 3278b0a3-f1e3-4528-a567-0ef9b88689bd
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -179,6 +191,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -191,7 +206,7 @@ translations:
                     entity_type: paragraph
                     uuid: e91a2ad0-ee64-4dda-9366-a6a400de2d7a
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -202,9 +217,12 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_image:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -217,7 +235,7 @@ translations:
                     entity_type: paragraph
                     uuid: 83463e6f-ebb8-4a93-9b80-a18696b90e0e
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -228,9 +246,12 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_image:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -246,7 +267,7 @@ translations:
             entity_type: paragraph
             uuid: 27675c48-4329-4d4b-bff0-038e05cb61c8
             bundle: columns
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -257,6 +278,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_columns_design:
               -
                 value: 50-50
@@ -268,7 +292,7 @@ translations:
                     entity_type: paragraph
                     uuid: d174882a-011b-4158-8b3d-60c197a64f67
                     bundle: image
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -279,9 +303,12 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_image:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
                     field_image_caption:
                       -
                         value: 'Kuvateksti tälle kuvalle.'
@@ -296,7 +323,7 @@ translations:
                     entity_type: paragraph
                     uuid: e2be2702-6797-49ff-9a62-c4f4669775e9
                     bundle: text
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -307,6 +334,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_text:
                       -
                         value: "<p>Aenean vel nisl enim. Ut dui quam, rhoncus a nunc quis, rhoncus egestas dolor. Aliquam finibus, ex at suscipit tempor, dui nibh maximus dui, nec sagittis libero justo a ex. Suspendisse quam neque, pellentesque a felis vitae, viverra interdum nunc. Aenean rhoncus nulla tortor, laoreet aliquet sapien dignissim ut. Sed id dolor id ligula posuere rutrum eget vel nisi. Fusce vel ultrices lacus. Aenean molestie neque ac tellus ornare, in egestas purus egestas. Aenean varius ante bibendum tempor tempor.</p>\r\n"
@@ -319,7 +349,7 @@ translations:
         value: false
     field_liftup_image:
       -
-        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+        target_id: 1
     field_lower_content:
       -
         entity:
@@ -328,7 +358,7 @@ translations:
             entity_type: paragraph
             uuid: 68b22c92-8fc1-43f0-ab8c-eb6a1fd5469e
             bundle: list_of_links
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -339,6 +369,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_list_of_links_design:
               -
                 value: without-image
@@ -350,7 +383,7 @@ translations:
                     entity_type: paragraph
                     uuid: aa8eb04b-43ee-490b-bfd4-b2bc91ff679c
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -361,6 +394,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_desc:
                       -
                         value: 'Täältä löytyy etusivun sisältö'
@@ -376,7 +412,7 @@ translations:
                     entity_type: paragraph
                     uuid: c7504ed8-4621-420b-a992-adcb12c412cd
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -387,6 +423,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_desc:
                       -
                         value: 'Kuvauskenttä on tässä'
@@ -402,7 +441,7 @@ translations:
                     entity_type: paragraph
                     uuid: dfa7066e-1188-4bed-aceb-756865f4f7a8
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -413,6 +452,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -428,7 +470,7 @@ translations:
             entity_type: paragraph
             uuid: e49a39b2-7c05-4ecc-8f1f-3d430e4d0608
             bundle: gallery
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -439,6 +481,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_gallery_slides:
               -
                 entity:
@@ -447,7 +492,7 @@ translations:
                     entity_type: paragraph
                     uuid: d4c5e031-61be-4491-b1ac-7c3d96d7fbcc
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -458,12 +503,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Ensimmäinen kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -471,7 +519,7 @@ translations:
                     entity_type: paragraph
                     uuid: 9fe2a252-9bd8-424f-bb25-144245145d85
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -482,12 +530,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Toinen kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -495,7 +546,7 @@ translations:
                     entity_type: paragraph
                     uuid: d5bece64-189b-4f47-bf2e-4242d26b943a
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -506,12 +557,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Kolmas kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -519,7 +573,7 @@ translations:
                     entity_type: paragraph
                     uuid: 9b8a99af-9b50-473c-82b1-caf526694007
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -530,12 +584,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Neljäs kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -543,7 +600,7 @@ translations:
                     entity_type: paragraph
                     uuid: 036dee0a-03e2-4800-a960-e01abc01082c
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -554,12 +611,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Viides kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -567,7 +627,7 @@ translations:
                     entity_type: paragraph
                     uuid: d60d4a31-5942-44b6-aab2-5438cbd81e80
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -578,12 +638,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Kuudes kuva galleriassa'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -591,7 +654,7 @@ translations:
                     entity_type: paragraph
                     uuid: 9a81b418-94cc-401f-bbbd-170ffb22f3cc
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -602,12 +665,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Seitsemäs kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -615,7 +681,7 @@ translations:
                     entity_type: paragraph
                     uuid: 886b76e4-609f-4822-ba6e-d96dca45a2a5
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -626,12 +692,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Kahdeksas kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -639,7 +708,7 @@ translations:
                     entity_type: paragraph
                     uuid: 0662b615-0260-4b10-95ac-ce79359e5a43
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -650,12 +719,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Yhdeksäs kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
               -
                 entity:
                   _meta:
@@ -663,7 +735,7 @@ translations:
                     entity_type: paragraph
                     uuid: 32216051-5e79-4c87-bc1c-7ab7a9362d98
                     bundle: gallery_slide
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -674,12 +746,15 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_gallery_slide_caption:
                       -
                         value: 'Kymmenes kuva galleriassa.'
                     field_gallery_slide_media:
                       -
-                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                        target_id: 1
       -
         entity:
           _meta:
@@ -687,7 +762,7 @@ translations:
             entity_type: paragraph
             uuid: fec33e80-42d3-4c74-bedd-d02ec27201e9
             bundle: list_of_links
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -698,6 +773,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_list_of_links_design:
               -
                 value: without-image-desc
@@ -709,7 +787,7 @@ translations:
                     entity_type: paragraph
                     uuid: 5936ddc5-ec45-4904-9e43-4406867278ce
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -720,6 +798,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -732,7 +813,7 @@ translations:
                     entity_type: paragraph
                     uuid: 9f5dac4d-9204-4375-b9fa-ac8e347c2235
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -743,6 +824,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -755,7 +839,7 @@ translations:
                     entity_type: paragraph
                     uuid: 3d3c2150-a746-46ae-9009-72eabab81517
                     bundle: list_of_links_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -766,6 +850,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_list_of_links_link:
                       -
                         uri: 'internal:/'
@@ -781,7 +868,7 @@ translations:
             entity_type: paragraph
             uuid: 77d8e0c0-9fc8-48c8-9746-24d46d086737
             bundle: accordion
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -792,6 +879,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_accordion_design:
               -
                 value: white
@@ -806,7 +896,7 @@ translations:
                     entity_type: paragraph
                     uuid: ba29bff8-f299-45fa-99d7-9cce008485d2
                     bundle: accordion_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -817,6 +907,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_accordion_item_content:
                       -
                         entity:
@@ -825,7 +918,7 @@ translations:
                             entity_type: paragraph
                             uuid: 72287321-a980-402f-89cb-d8eaecb7c3e2
                             bundle: columns
-                            default_langcode: fi
+                            default_langcode: en
                           default:
                             status:
                               -
@@ -836,6 +929,9 @@ translations:
                             behavior_settings:
                               -
                                 value: {  }
+                            revision_translation_affected:
+                              -
+                                value: true
                             field_columns_design:
                               -
                                 value: 70-30
@@ -847,7 +943,7 @@ translations:
                                     entity_type: paragraph
                                     uuid: 99f5b4c3-e16d-4067-a57a-4d21c9b3c19c
                                     bundle: text
-                                    default_langcode: fi
+                                    default_langcode: en
                                   default:
                                     status:
                                       -
@@ -858,6 +954,9 @@ translations:
                                     behavior_settings:
                                       -
                                         value: {  }
+                                    revision_translation_affected:
+                                      -
+                                        value: true
                                     field_text:
                                       -
                                         value: "<h3>Otsikko vasemman palstan sisällä</h3>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet gravida nunc, quis elementum elit. Nunc dapibus dolor dignissim erat condimentum fermentum. In sit amet quam ut arcu pellentesque pharetra. Sed consequat venenatis erat quis tincidunt. Sed faucibus, mauris eget auctor ornare, justo nulla efficitur lectus, eu sagittis turpis nisl a sapien. Donec sollicitudin at nulla quis euismod. In dignissim dui a arcu dictum, vel pellentesque lorem feugiat.&nbsp;</p>\r\n"
@@ -870,7 +969,7 @@ translations:
                                     entity_type: paragraph
                                     uuid: ed0a5176-04eb-4289-b894-d137f4dddd9d
                                     bundle: image
-                                    default_langcode: fi
+                                    default_langcode: en
                                   default:
                                     status:
                                       -
@@ -881,9 +980,12 @@ translations:
                                     behavior_settings:
                                       -
                                         value: {  }
+                                    revision_translation_affected:
+                                      -
+                                        value: true
                                     field_image:
                                       -
-                                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                                        target_id: 1
                                     field_original_aspect_ratio:
                                       -
                                         value: false
@@ -894,7 +996,7 @@ translations:
                             entity_type: paragraph
                             uuid: 6b47d141-4d44-4e16-aa8b-820cfaf80d8f
                             bundle: text
-                            default_langcode: fi
+                            default_langcode: en
                           default:
                             status:
                               -
@@ -905,6 +1007,9 @@ translations:
                             behavior_settings:
                               -
                                 value: {  }
+                            revision_translation_affected:
+                              -
+                                value: true
                             field_text:
                               -
                                 value: "<h4>Lisää sisältöä samassa haitarielementissä</h4>\r\n\r\n<p>Morbi quam turpis, pretium vestibulum posuere ac, semper eu lorem. Sed id nunc leo. Nam pulvinar turpis ullamcorper risus rhoncus dapibus. Donec accumsan tempor dolor, et dictum justo facilisis at.</p>\r\n\r\n<p><span class=\"highlighted\">Tämä on korostettua tekstiä haitarielementin sisässä ja se näyttää toivotulta.</span></p>\r\n\r\n<p>Pellentesque augue dolor, porttitor quis urna tempus, rutrum lobortis eros. Aliquam lacinia ipsum quis risus scelerisque aliquam. Fusce eleifend pulvinar nunc at volutpat. Donec dictum egestas rutrum.</p>\r\n"
@@ -919,7 +1024,7 @@ translations:
                     entity_type: paragraph
                     uuid: cacb9cf6-2b89-4001-8685-aa9bc8ace429
                     bundle: accordion_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -930,6 +1035,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_accordion_item_content:
                       -
                         entity:
@@ -938,7 +1046,7 @@ translations:
                             entity_type: paragraph
                             uuid: cbb87838-e56d-431f-99a0-7fe63ea91278
                             bundle: text
-                            default_langcode: fi
+                            default_langcode: en
                           default:
                             status:
                               -
@@ -949,6 +1057,9 @@ translations:
                             behavior_settings:
                               -
                                 value: {  }
+                            revision_translation_affected:
+                              -
+                                value: true
                             field_text:
                               -
                                 value: "<p>Ut et erat sed dui dapibus elementum venenatis vel libero. Maecenas laoreet magna et lorem vehicula, vitae accumsan nulla tempor. Praesent pharetra fermentum pulvinar. Aenean et gravida mi, ut vestibulum nisl.</p>\r\n\r\n<p>Nulla facilisis pretium est, tincidunt scelerisque felis pulvinar at. Mauris quis est commodo, varius mauris in, vulputate nibh. In sodales metus porttitor nisi vestibulum tempor. Integer tincidunt sollicitudin pretium.</p>\r\n"
@@ -963,7 +1074,7 @@ translations:
             entity_type: paragraph
             uuid: 818412c4-4960-4f0a-afe1-d0621c63f06e
             bundle: accordion
-            default_langcode: fi
+            default_langcode: en
           default:
             status:
               -
@@ -974,6 +1085,9 @@ translations:
             behavior_settings:
               -
                 value: {  }
+            revision_translation_affected:
+              -
+                value: true
             field_accordion_design:
               -
                 value: grey
@@ -988,7 +1102,7 @@ translations:
                     entity_type: paragraph
                     uuid: 72067864-c8e0-4bc9-9a3d-088feeaaff12
                     bundle: accordion_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -999,6 +1113,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_accordion_item_content:
                       -
                         entity:
@@ -1007,7 +1124,7 @@ translations:
                             entity_type: paragraph
                             uuid: 75339412-068b-4c4a-b193-3bfa359fbeea
                             bundle: columns
-                            default_langcode: fi
+                            default_langcode: en
                           default:
                             status:
                               -
@@ -1018,6 +1135,9 @@ translations:
                             behavior_settings:
                               -
                                 value: {  }
+                            revision_translation_affected:
+                              -
+                                value: true
                             field_columns_design:
                               -
                                 value: 50-50
@@ -1029,7 +1149,7 @@ translations:
                                     entity_type: paragraph
                                     uuid: 6645d1cb-1ff6-470a-8b1d-079bb21ade00
                                     bundle: image
-                                    default_langcode: fi
+                                    default_langcode: en
                                   default:
                                     status:
                                       -
@@ -1040,9 +1160,12 @@ translations:
                                     behavior_settings:
                                       -
                                         value: {  }
+                                    revision_translation_affected:
+                                      -
+                                        value: true
                                     field_image:
                                       -
-                                        entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+                                        target_id: 1
                                     field_image_caption:
                                       -
                                         value: 'Kuvateksti tälle kuvalle.'
@@ -1057,7 +1180,7 @@ translations:
                                     entity_type: paragraph
                                     uuid: 1fd4c696-89d0-4b0f-b2f5-8dabb625238c
                                     bundle: text
-                                    default_langcode: fi
+                                    default_langcode: en
                                   default:
                                     status:
                                       -
@@ -1068,6 +1191,9 @@ translations:
                                     behavior_settings:
                                       -
                                         value: {  }
+                                    revision_translation_affected:
+                                      -
+                                        value: true
                                     field_text:
                                       -
                                         value: "<p>Duis sed fringilla nisi, pharetra ornare risus. Curabitur sem nisi, dictum ac dictum eu, porttitor convallis quam. Nulla facilisi. Cras quis risus facilisis, commodo neque a, viverra ante. Fusce mollis ex et dui fermentum semper. Praesent non aliquet tortor, non accumsan ex.</p>\r\n\r\n<p>Pellentesque ultrices rhoncus nulla quis consectetur. Praesent lectus velit, vulputate sed enim a, rhoncus cursus massa. Etiam semper, ipsum sed luctus imperdiet, lectus nibh suscipit lorem, id malesuada massa tellus nec ligula. In posuere pretium elit, non placerat justo scelerisque sed.</p>\r\n"
@@ -1088,7 +1214,7 @@ translations:
                     entity_type: paragraph
                     uuid: 1cb047f7-183b-470b-9914-470b3827091a
                     bundle: accordion_item
-                    default_langcode: fi
+                    default_langcode: en
                   default:
                     status:
                       -
@@ -1099,6 +1225,9 @@ translations:
                     behavior_settings:
                       -
                         value: {  }
+                    revision_translation_affected:
+                      -
+                        value: true
                     field_accordion_item_content:
                       -
                         entity:
@@ -1107,7 +1236,7 @@ translations:
                             entity_type: paragraph
                             uuid: d637741b-8a74-4573-b37d-509d732e1783
                             bundle: text
-                            default_langcode: fi
+                            default_langcode: en
                           default:
                             status:
                               -
@@ -1118,6 +1247,9 @@ translations:
                             behavior_settings:
                               -
                                 value: {  }
+                            revision_translation_affected:
+                              -
+                                value: true
                             field_text:
                               -
                                 value: "<p>Integer tempus ornare arcu consequat iaculis. Donec in augue sapien. Quisque dolor sem, dapibus quis augue eu, pharetra ornare risus. Sed aliquet lacus id tempor tristique. Aenean metus nunc, accumsan sit amet luctus nec, lobortis id urna. Nulla imperdiet quam mi. Nulla tincidunt venenatis dictum. Integer sodales leo felis, vel mattis metus mollis in. Praesent ultrices diam mollis urna laoreet, non fringilla urna mollis. Aliquam sapien nulla, condimentum ut orci eu, aliquet aliquet diam. Mauris efficitur, dolor eget pellentesque auctor, nunc magna volutpat lorem, sollicitudin tempus erat quam id enim. Sed et nisi nulla.</p>\r\n"
@@ -1140,7 +1272,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'Example page'
+      value: 'Parking fees for low-emission cars'
   created:
     -
       value: 1606157739
@@ -1180,20 +1312,17 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
-              value: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n"
+              value: "<p>The City of Helsinki will grant a 50 percent discount on parking fees to low-emission passenger cars and light quadricycles run entirely by electricity. The discount applies to street parking in zones 1 and 2.</p>\r\n\r\n<p>The discount will be granted if the car meets the emission criteria set by the City of Helsinki. &nbsp;In order to receive the discount, the parking must be paid for by using a smartphone application or byr Magee-payment device. The discount is also available to people not living in Helsinki and for resident or corporate parking.</p>\r\n\r\n<h2>Apply for the discount at the&nbsp;Urban Environment Division’s customer service</h2>\r\n\r\n<p>Seek the discount by visiting the&nbsp;Urban Environment Division’s customer service or send us your registration number and contact information by emailing&nbsp;<a href=\"mailto:kaupunkiymparisto@hel.fi\" target=\"_blank\">kaupunkiymparisto@hel.fi</a>&nbsp;or via telephone.</p>\r\n\r\n<h2>The emission criteria are reviewed regularly</h2>\r\n\r\n<p><a href=\"https://dev.hel.fi/paatokset/asia/hel-2019-000175/\">The criteria</a>&nbsp;which are valid from 18.11.2019 are presented in the following table.</p>\r\n"
               format: full_html
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: ebddc433-d532-4e90-83d3-9d9ef1bfc1ad
-          bundle: gallery
+          uuid: ad142031-cbee-4adf-8a3b-0c70972ee245
+          bundle: image
           default_langcode: en
         default:
           status:
@@ -1201,411 +1330,19 @@ default:
               value: true
           created:
             -
-              value: 1613141753
+              value: 1623330714
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
+          field_image:
+            -
+              entity: 4dfaa824-8b06-45d8-853c-f98743ca5041
+          field_original_aspect_ratio:
             -
               value: true
-          field_gallery_slides:
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 6dc7b7d1-51aa-480e-b686-8bdafb200f2f
-                  bundle: gallery_slide
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613141753
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_gallery_slide_caption:
-                    -
-                      value: 'This gallery has only two images.'
-                  field_gallery_slide_media:
-                    -
-                      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 340b1e9f-0276-43a1-ac81-94287de9630f
-                  bundle: gallery_slide
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613141767
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_gallery_slide_caption:
-                    -
-                      value: 'No need for any more.'
-                  field_gallery_slide_media:
-                    -
-                      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 36b4970a-7724-484e-9438-d8fe59049425
-          bundle: accordion
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1613748010
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_accordion_design:
-            -
-              value: white
-          field_accordion_heading_level:
-            -
-              value: '2'
-          field_accordion_items:
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: c5a3b3bd-f471-4c89-9f20-43afad7a8961
-                  bundle: accordion_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613748010
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_accordion_item_content:
-                    -
-                      entity:
-                        _meta:
-                          version: '1.0'
-                          entity_type: paragraph
-                          uuid: 0523b8f2-17c6-4110-9047-d6bc587d851c
-                          bundle: text
-                          default_langcode: en
-                        default:
-                          status:
-                            -
-                              value: true
-                          created:
-                            -
-                              value: 1613748028
-                          behavior_settings:
-                            -
-                              value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
-                          field_text:
-                            -
-                              value: "<h3>Heading level 3</h3>\r\n\r\n<p>Aenean gravida viverra diam, feugiat dignissim lacus. Nunc at arcu posuere, bibendum libero sed, tempor arcu. Ut efficitur dolor eu sodales iaculis. Donec sed commodo sem. In sagittis vestibulum elit ac lacinia. Integer quis quam mollis, mattis sapien in, facilisis enim. Suspendisse potenti.&nbsp;</p>\r\n"
-                              format: full_html
-                    -
-                      entity:
-                        _meta:
-                          version: '1.0'
-                          entity_type: paragraph
-                          uuid: d3937fa6-7bc4-49d9-998e-7ba47cd2e49f
-                          bundle: columns
-                          default_langcode: en
-                        default:
-                          status:
-                            -
-                              value: true
-                          created:
-                            -
-                              value: 1613748053
-                          behavior_settings:
-                            -
-                              value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
-                          field_columns_design:
-                            -
-                              value: 50-50
-                          field_columns_left_column:
-                            -
-                              entity:
-                                _meta:
-                                  version: '1.0'
-                                  entity_type: paragraph
-                                  uuid: fcc59dc1-9a01-43a7-801c-3c61d7822089
-                                  bundle: text
-                                  default_langcode: en
-                                default:
-                                  status:
-                                    -
-                                      value: true
-                                  created:
-                                    -
-                                      value: 1613748074
-                                  behavior_settings:
-                                    -
-                                      value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
-                                  field_text:
-                                    -
-                                      value: "<p>Vivamus sollicitudin neque massa, vel pharetra tellus dapibus a. Nunc eget nulla auctor sapien ultrices ultricies vitae in magna. Aenean eleifend justo ut leo viverra tincidunt. Vestibulum sed est sodales tortor lacinia lobortis. Etiam tempus dui ut ligula tincidunt, ac iaculis diam ultricies. In eu iaculis massa.</p>\r\n"
-                                      format: full_html
-                          field_columns_right_column:
-                            -
-                              entity:
-                                _meta:
-                                  version: '1.0'
-                                  entity_type: paragraph
-                                  uuid: 01c2c163-8397-4841-b369-630067e4acfc
-                                  bundle: text
-                                  default_langcode: en
-                                default:
-                                  status:
-                                    -
-                                      value: true
-                                  created:
-                                    -
-                                      value: 1613748090
-                                  behavior_settings:
-                                    -
-                                      value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
-                                  field_text:
-                                    -
-                                      value: "<p>Etiam tincidunt lectus vehicula ultricies elementum. Proin tempus, ante in dignissim iaculis, eros ipsum tincidunt purus, sed pretium arcu tellus sed nisi. Quisque eu sapien non arcu fermentum ullamcorper.</p>\r\n"
-                                      format: full_html
-                          field_columns_title:
-                            -
-                              value: 'Title for the columns'
-                  field_accordion_item_heading:
-                    -
-                      value: 'Example of the accordion with level 2 heading'
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 6e7f6221-98ef-4704-8e3c-6a4338dd9e22
-                  bundle: accordion_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613748093
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_accordion_item_content:
-                    -
-                      entity:
-                        _meta:
-                          version: '1.0'
-                          entity_type: paragraph
-                          uuid: 963fe94b-5a3f-4097-8d85-2e48ddc798c6
-                          bundle: text
-                          default_langcode: en
-                        default:
-                          status:
-                            -
-                              value: true
-                          created:
-                            -
-                              value: 1613748103
-                          behavior_settings:
-                            -
-                              value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
-                          field_text:
-                            -
-                              value: "<p>Nam quis dignissim sem. Proin hendrerit nisl mauris, ut gravida leo facilisis non. Aliquam ac felis sapien. Maecenas cursus dolor nec ligula malesuada pulvinar. Integer vel sollicitudin magna. Quisque semper varius ligula non sodales.</p>\r\n\r\n<p>Suspendisse libero quam, tincidunt quis lacinia at, imperdiet nec est. Nunc sagittis luctus porta. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>\r\n"
-                              format: full_html
-                  field_accordion_item_heading:
-                    -
-                      value: 'Second item of the accordion'
-            -
-              entity:
-                _meta:
-                  version: '1.0'
-                  entity_type: paragraph
-                  uuid: 86740e87-b17b-4839-9498-d44acfffd353
-                  bundle: accordion_item
-                  default_langcode: en
-                default:
-                  status:
-                    -
-                      value: true
-                  created:
-                    -
-                      value: 1613748116
-                  behavior_settings:
-                    -
-                      value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
-                  field_accordion_item_content:
-                    -
-                      entity:
-                        _meta:
-                          version: '1.0'
-                          entity_type: paragraph
-                          uuid: 3f734d7a-ec6e-43a3-ac93-a205bc57cb09
-                          bundle: columns
-                          default_langcode: en
-                        default:
-                          status:
-                            -
-                              value: true
-                          created:
-                            -
-                              value: 1613748125
-                          behavior_settings:
-                            -
-                              value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
-                          field_columns_design:
-                            -
-                              value: 30-70
-                          field_columns_left_column:
-                            -
-                              entity:
-                                _meta:
-                                  version: '1.0'
-                                  entity_type: paragraph
-                                  uuid: 99fc2e56-498f-4ee7-8fc8-28807262f35d
-                                  bundle: image
-                                  default_langcode: en
-                                default:
-                                  status:
-                                    -
-                                      value: true
-                                  created:
-                                    -
-                                      value: 1613748130
-                                  behavior_settings:
-                                    -
-                                      value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
-                                  field_image:
-                                    -
-                                      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
-                                  field_original_aspect_ratio:
-                                    -
-                                      value: false
-                          field_columns_right_column:
-                            -
-                              entity:
-                                _meta:
-                                  version: '1.0'
-                                  entity_type: paragraph
-                                  uuid: fbc3ad49-0506-4077-bdd8-d25b3fa73dec
-                                  bundle: text
-                                  default_langcode: en
-                                default:
-                                  status:
-                                    -
-                                      value: true
-                                  created:
-                                    -
-                                      value: 1613748152
-                                  behavior_settings:
-                                    -
-                                      value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
-                                  field_text:
-                                    -
-                                      value: "<p>In hac habitasse platea dictumst. Quisque egestas interdum nulla, ac vulputate odio. Suspendisse sagittis eros ligula, euismod luctus enim interdum eget. Curabitur finibus laoreet augue, non tincidunt quam suscipit a. Proin tempus id velit vitae bibendum. Proin eget venenatis nunc. Quisque non leo id purus aliquam finibus.</p>\r\n"
-                                      format: full_html
-                  field_accordion_item_heading:
-                    -
-                      value: 'Third item'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 212af682-934a-4b0e-b99b-e854ce76e584
-          bundle: content_cards
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1615883565
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_content_cards_content:
-            -
-              entity: 7f3b3413-fbf6-4f0b-873c-1fafd3c7912f
-          field_content_cards_design:
-            -
-              value: large-cards
-          field_content_cards_title:
-            -
-              value: 'Content cards'
   field_has_hero:
     -
       value: false
   field_liftup_image:
     -
-      entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+      entity: baf3f8dc-02d9-4d8c-a014-db3d50758165

@@ -7,24 +7,27 @@
   "require": {
     "drupal/admin_toolbar": "^2.4.0",
     "drupal/aet": "^2.0@alpha",
+    "drupal/config_ignore": "^2.3",
     "drupal/config_replace": "^2.0",
     "drupal/crop": "^2.1",
     "drupal/default_content": "^2.0.0-alpha1",
     "drupal/diff": "^1.0",
     "drupal/gin_toolbar": "^1.0@beta",
     "drupal/entity_usage": "^2.0@beta",
-    "drupal/easy_breadcrumb": "^1.13",
+    "drupal/easy_breadcrumb": "^2.0",
     "drupal/elasticsearch_connector": "^7.0@alpha",
     "drupal/entity_browser": "^2.5",
     "drupal/eu_cookie_compliance": "^1.14",
     "drupal/features": "^3.12",
     "drupal/field_group": "^3.1",
     "drupal/focal_point": "^1.5",
+    "drupal/helfi_media_map": "*",
     "drupal/image_style_quality": "^1.4",
     "drupal/imagecache_external": "^3.0",
     "drupal/linkit": "^6.0@beta",
     "drupal/media_entity_soundcloud": "^3.0.0",
     "drupal/menu_block_current_language": "^1.5",
+    "drupal/menu_link_attributes": "^1.2",
     "drupal/metatag": "^1.16",
     "drupal/paragraphs": "^1.12",
     "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
@@ -43,15 +46,11 @@
     "patches": {
       "drupal/core": {
         "[#UHF-181] Hide untranslated menu links": "https://www.drupal.org/files/issues/2021-03-05/3091246-allow-menu-tree-manipulators-alter-12-1.patch",
-        "[#UHF-1072] Nested Paragraphs create multiple drag handles (https://www.drupal.org/project/drupal/issues/3092181#comment-13931509)": "https://www.drupal.org/files/issues/2020-12-08/3092181-142-9X_0.patch",
         "[#UHF-920] Token for base URL (https://www.drupal.org/project/drupal/issues/1088112).": "https://www.drupal.org/files/issues/2020-10-06/1088112-63.patch",
         "[#UHF-949] Drupal.views.ajaxView is not initializing pagers in nested views (https://www.drupal.org/project/drupal/issues/2858890).": "https://www.drupal.org/files/issues/2020-11-29/2858890-58.patch"
       },
       "drupal/default_content": {
         "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"
-      },
-      "drupal/easy_breadcrumb": {
-        "https://www.drupal.org/project/easy_breadcrumb/issues/3204336": "https://www.drupal.org/files/issues/2021-03-18/easy_breadcrumb-n3204336-3.patch"
       },
       "drupal/eu_cookie_compliance": {
         "Helfi-specific customizations to EU Cookie Compliance": "https://gist.githubusercontent.com/tuutti/68890713f0d0d9e00499823150c41f7e/raw/c5be8d708d4c17cd0edefc1a2588514da6d33eda/eu_cookie_compliance_block.patch"

@@ -6,5 +6,5 @@ popup_info:
   value: "<h2>Hel.fi käyttää evästeitä&nbsp;</h2>\r\n\r\n<p>Tämä sivusto käyttää välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun sisällön näyttämiseen. Jatkamalla sivuston käyttöä ilman asetusten muuttamista hyväksyt välttämättömien evästeiden käytön.</p>\r\n"
 disagree_button_label: 'Ei kiitos'
 withdraw_tab_button_label: Tietosuoja-asetukset
-save_preferences_button_label: 'Tallenna asetukset'
+save_preferences_button_label: 'Hyväksy valitut evästeet'
 accept_all_categories_button_label: 'Hyväksy kaikki evästeet'

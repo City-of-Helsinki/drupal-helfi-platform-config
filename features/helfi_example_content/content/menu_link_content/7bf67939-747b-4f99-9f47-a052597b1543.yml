@@ -3,7 +3,7 @@ _meta:
   entity_type: menu_link_content
   uuid: 7bf67939-747b-4f99-9f47-a052597b1543
   bundle: menu_link_content
-  default_langcode: fi
+  default_langcode: en
   depends:
     333d644e-8636-43d8-82c6-197558ff214c: menu_link_content
 default:
@@ -12,15 +12,17 @@ default:
       value: true
   title:
     -
-      value: 'Ulkoinen linkki (hel.fi)'
+      value: 'Journey Planner'
   menu_name:
     -
       value: main
   link:
     -
-      uri: 'https://www.hel.fi'
+      uri: 'https://www.hsl.fi/en'
       title: ''
-      options: {  }
+      options:
+        attributes:
+          class: {  }
   external:
     -
       value: false
@@ -29,7 +31,7 @@ default:
       value: false
   weight:
     -
-      value: -49
+      value: -47
   expanded:
     -
       value: false

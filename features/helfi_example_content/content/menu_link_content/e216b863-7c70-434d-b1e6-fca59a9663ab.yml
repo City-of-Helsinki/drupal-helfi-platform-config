@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: e216b863-7c70-434d-b1e6-fca59a9663ab
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    96c46c6e-9ee1-49f9-8503-85059566b88c: menu_link_content
+    8455251b-91bd-4c71-9756-94112e8912c1: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Resident parking permit renewal'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 8455251b-91bd-4c71-9756-94112e8912c1
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:96c46c6e-9ee1-49f9-8503-85059566b88c'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1623402973

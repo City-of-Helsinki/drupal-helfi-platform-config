@@ -52,8 +52,9 @@ content:
       placeholder_url: ''
       placeholder_title: ''
       link_target: ''
+      icon: ''
     third_party_settings: {  }
-    type: link_target_field_widget
+    type: link_target_icon_field_widget
     region: content
   field_hero_link_design:
     weight: 5

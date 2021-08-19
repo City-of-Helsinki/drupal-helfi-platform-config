@@ -22,6 +22,7 @@ dependencies:
   - 'drupal:user'
   - 'drupal:views'
   - 'entity_reference_revisions:entity_reference_revisions'
+  - 'entity_usage:entity_usage'
   - 'features:features'
   - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'helfi_media:helfi_media'

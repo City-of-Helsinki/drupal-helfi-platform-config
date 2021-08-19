@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-05-27 12:22+0300\n"
-"PO-Revision-Date: 2021-05-27 12:22+0300\n"
+"POT-Creation-Date: 2021-07-06 16:50+0300\n"
+"PO-Revision-Date: 2021-07-06 16:50+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1133,8 +1133,20 @@ msgstr "Главная страница"
 msgid "Global"
 msgstr "Глобальный"
 
+msgid "Label"
+msgstr "Label"
+
+msgid "Summary"
+msgstr "Summary"
+
 msgid "Token"
 msgstr "Токен"
+
+msgid "Content region"
+msgstr "Содержимое"
+
+msgid "Upper content region"
+msgstr "Содержимое"
 
 msgid "403 access denied"
 msgstr "403 доступ запрещен"
@@ -1147,5 +1159,20 @@ msgstr "Accordion"
 
 msgid "Delete redirect"
 msgstr "Удалить перенаправление"
+
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By tapping the Accept button, you agree to us doing "
+"so.</p>"
+msgstr ""
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Metatags"
+msgstr "Metatags"
+
+msgid "Used"
+msgstr "Used"
 
 

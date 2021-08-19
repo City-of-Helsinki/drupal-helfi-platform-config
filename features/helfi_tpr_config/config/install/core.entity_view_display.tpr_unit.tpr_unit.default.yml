@@ -3,8 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.tpr_unit.tpr_unit.field_content
-    - field.field.tpr_unit.tpr_unit.field_metatags
     - field.field.tpr_unit.tpr_unit.field_lower_content
+    - field.field.tpr_unit.tpr_unit.field_metatags
   module:
     - address
     - entity_reference_revisions
@@ -21,7 +21,7 @@ mode: default
 content:
   accessibility_email:
     type: string
-    weight: 13
+    weight: 14
     region: content
     label: above
     settings:
@@ -29,15 +29,22 @@ content:
     third_party_settings: {  }
   accessibility_phone:
     type: string
-    weight: 12
+    weight: 13
     region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  accessibility_sentences:
+    type: tpr_accessibility_sentence
+    weight: 19
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   accessibility_www:
     type: link
-    weight: 14
+    weight: 15
     region: content
     label: above
     settings:
@@ -56,7 +63,7 @@ content:
     third_party_settings: {  }
   address_postal:
     type: string
-    weight: 8
+    weight: 9
     region: content
     label: hidden
     settings:
@@ -64,7 +71,7 @@ content:
     third_party_settings: {  }
   call_charge_info:
     type: text_default
-    weight: 10
+    weight: 11
     region: content
     label: above
     settings: {  }
@@ -78,22 +85,13 @@ content:
     third_party_settings: {  }
   email:
     type: string
-    weight: 7
+    weight: 8
     region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
   field_content:
-    type: entity_reference_revisions_entity_view
-    weight: 17
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    region: content
-  field_lower_content:
     type: entity_reference_revisions_entity_view
     weight: 18
     label: hidden
@@ -102,8 +100,17 @@ content:
       link: ''
     third_party_settings: {  }
     region: content
+  field_lower_content:
+    type: entity_reference_revisions_entity_view
+    weight: 20
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_metatags:
-    weight: 16
+    weight: 17
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -124,6 +131,13 @@ content:
     label: hidden
     settings:
       link_to_entity: false
+    third_party_settings: {  }
+  opening_hours:
+    type: tpr_connection
+    weight: 7
+    region: content
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
   phone:
     type: telephone_link
@@ -152,18 +166,18 @@ content:
       link: false
     third_party_settings: {  }
   service_map_embed:
-    label: above
+    label: hidden
     type: service_map_embed
-    weight: 9
+    weight: 10
     region: content
     settings:
-      iframe_title: 'Service map'
-      link_title: 'View larger map'
+      iframe_title: 'Location on map'
+      link_title: 'View the map in new window'
       target: true
     third_party_settings: {  }
   services:
     type: entity_reference_label
-    weight: 15
+    weight: 16
     region: content
     label: above
     settings:
@@ -171,7 +185,7 @@ content:
     third_party_settings: {  }
   www:
     type: link
-    weight: 11
+    weight: 12
     region: content
     label: above
     settings:
@@ -182,10 +196,8 @@ content:
       target: ''
     third_party_settings: {  }
 hidden:
-  accessibility_sentences: true
   created: true
   langcode: true
   latitude: true
   longitude: true
-  opening_hours: true
   streetview_entrance_url: true

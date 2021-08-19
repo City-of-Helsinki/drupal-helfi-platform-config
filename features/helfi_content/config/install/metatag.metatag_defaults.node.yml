@@ -6,6 +6,7 @@ label: Content
 tags:
   canonical_url: '[node:url]'
   content_language: '[node:langcode]'
+  description: '[node:field_lead_in]'
   title: '[node:title] | [site:name]'
   article_modified_time: '[node:created:html_datetime]'
   article_published_time: '[node:created:html_datetime]'

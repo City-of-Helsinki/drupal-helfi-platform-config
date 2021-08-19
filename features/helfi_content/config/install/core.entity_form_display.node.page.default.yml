@@ -5,9 +5,10 @@ dependencies:
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
+    - field.field.node.page.field_lead_in
     - field.field.node.page.field_liftup_image
-    - field.field.node.page.field_metatags
     - field.field.node.page.field_lower_content
+    - field.field.node.page.field_metatags
     - node.type.page
   module:
     - media_library
@@ -28,7 +29,7 @@ content:
     third_party_settings: {  }
   field_content:
     type: paragraphs
-    weight: 12
+    weight: 13
     region: content
     settings:
       title: Paragraph
@@ -71,16 +72,24 @@ content:
     third_party_settings: {  }
     type: paragraphs
     region: content
+  field_lead_in:
+    weight: 12
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
   field_liftup_image:
     type: media_library_widget
-    weight: 3
+    weight: 4
     settings:
       media_types: {  }
     third_party_settings: {  }
     region: content
   field_lower_content:
     type: paragraphs
-    weight: 52
+    weight: 19
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -98,7 +107,7 @@ content:
     third_party_settings: {  }
     region: content
   field_metatags:
-    weight: 51
+    weight: 18
     settings:
       sidebar: false
     third_party_settings: {  }
@@ -126,12 +135,12 @@ content:
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 30
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
   scheduler_settings:
-    weight: 20
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -174,12 +183,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 30
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }

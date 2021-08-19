@@ -3,9 +3,9 @@ _meta:
   entity_type: node
   uuid: d5bf4eac-26d6-420e-bd19-7d66ff969181
   bundle: page
-  default_langcode: fi
+  default_langcode: en
   depends:
-    923ecd78-00ff-47f9-a017-012b781d6bab: media
+    4cd75c00-f459-4dce-aec3-b65bcc30bef2: media
 default:
   revision_uid:
     -
@@ -18,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'Hero: Diagonaalinen'
+      value: 'Payment methods and parking fine'
   created:
     -
       value: 1610706042
@@ -33,8 +33,8 @@ default:
       value: true
   path:
     -
-      alias: /hero-diagonaalinen
-      langcode: fi
+      alias: /parking/payment-methods-and-parking-fine
+      langcode: en
       pathauto: 1
   content_translation_source:
     -
@@ -50,7 +50,7 @@ default:
           entity_type: paragraph
           uuid: 28bc6ebe-18ca-408d-8a3f-a9c3b8b2a967
           bundle: text
-          default_langcode: fi
+          default_langcode: en
         default:
           status:
             -
@@ -66,7 +66,7 @@ default:
               value: true
           field_text:
             -
-              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan. Sanat suussani sulavat, puhe'et putoelevat, kielelleni kerkiävät, hampahilleni hajoovat.</p>\r\n\r\n<p>Veli kulta, veikkoseni, kaunis kasvinkumppalini! Lähe nyt kanssa laulamahan, saa kera sanelemahan yhtehen yhyttyämme, kahta'alta käytyämme! Harvoin yhtehen yhymme, saamme toinen toisihimme näillä raukoilla rajoilla, poloisilla Pohjan mailla.</p>\r\n"
+              value: "<h2>Payment methods</h2>\r\n\r\n<h3>Mobile phone</h3>\r\n\r\n<p>Payment by mobile phone is available from service providers — <a class=\"link\" href=\"https://www.aimopark.fi/en-gb/\" target=\"_blank\">Aimo Park</a>,<a class=\"link\" href=\"https://easypark.fi/en\" target=\"_blank\">EasyPark</a>,<a class=\"link\" href=\"https://eparking.fi/en\" target=\"_blank\">eParking.fi</a>,<a class=\"link\" href=\"https://moovy.fi/en/\" target=\"_blank\">Moovy</a> and <a class=\"link\" href=\"https://parkman.io/fi/en-us\" target=\"_blank\">ParkMan</a>. They require registration.</p>\r\n\r\n<p><strong>NOTE!</strong>&nbsp;<a class=\"link\" href=\"https://www.kaskea.fi/kaikki-artikkelit/magee-ja-spottery-pysakointipalvelut-paattyvat-31-12-2020\" target=\"_blank\">Magee and Spottery parking services will end on December 31, 2020</a></p>\r\n\r\n<h3>Automated ticket machines</h3>\r\n\r\n<p>At ticket machines you can pay for parking by&nbsp;<strong>credit card&nbsp;</strong>or<strong>&nbsp;debit card,&nbsp;</strong>and&nbsp;<strong>Contactless payment</strong>. There are still few ticket machines that accept coins. Combination card payments will be charged by credit card. The new ticket machines can also find information on where the nearest coin-operated ticket machines can be found. If you do not have credit or debit card, you can purchase a&nbsp;<strong>PrePaid credit card</strong>&nbsp;from your own bank or R-kioski. You can pay also via&nbsp;<strong>Apple Pay</strong>&nbsp;or&nbsp;<strong>Google Pay</strong>.</p>\r\n\r\n<h2>Parking fines</h2>\r\n\r\n<p>When you park illegally, you may be fined EUR 60-80. A parking fine must be paid within 30 days from its date of issue. If the payment is not made within the set payment period, the payment due increases by&nbsp;EUR&nbsp;14 (Section 17 of the Parking Control Act). The payment is distrainable without a separate decision.</p>\r\n\r\n<ul>\r\n\t<li><a class=\"link\" href=\"https://www.hel.fi/helsinki/en/maps-and-transport/parking/methods/paying-a-parking-fine\" target=\"_blank\" title=\"Paying a parking fine\">Click here to find out how to pay parking fines</a></li>\r\n</ul>\r\n\r\n<p><strong>Contesting a parking fine</strong></p>\r\n\r\n<ul>\r\n\t<li>If you think that you have been fined unjustifiably, you can contest the fine under the following conditions:&nbsp;</li>\r\n\t<li>The fine must be contested within 30 days.</li>\r\n\t<li>The fine does not have to be paid while the request is being processed.</li>\r\n\t<li>The process may take 1&nbsp;—&nbsp;4 months.</li>\r\n\t<li><a class=\"link\" href=\"https://www.hel.fi/helsinki/en/administration/administration/services/eservices?id=520\" target=\"_blank\">Click here to find out how to contest a parking fine online</a></li>\r\n</ul>\r\n\r\n<p><strong>NOTE!</strong>&nbsp;Any appendices relating to the state of health or financial situation that may be annexed to the rectification claim will be deleted after processing the claim for parking fine.</p>\r\n\r\n<h3>Contesting a parking fine by other means than online</h3>\r\n\r\n<p>A request to rectify an unjustified fine should be made in writing. The request should include:</p>\r\n\r\n<ul>\r\n\t<li>your name and address&nbsp;</li>\r\n\t<li>the vehicle licence number</li>\r\n\t<li>fine number.</li>\r\n</ul>\r\n\r\n<p>The request should include all documents referred to in the request. By including your bank account information, you speed up the possible repayment of the fine. A request for rectification can be submitted to the Urban Environment Division's customer service by mail, by e-mail to pysakointi@hel.fi by fax or in person.</p>\r\n"
               format: full_html
   field_has_hero:
     -
@@ -79,7 +79,7 @@ default:
           entity_type: paragraph
           uuid: 302567b2-84d2-4060-8b1c-befba3400005
           bundle: hero
-          default_langcode: fi
+          default_langcode: en
         default:
           status:
             -
@@ -96,19 +96,15 @@ default:
           field_hero_bg_color:
             -
               value: summer
-          field_hero_desc:
-            -
-              value: "<p>Mieleni minun tekevi, aivoni ajattelevi lähteäni laulamahan, saa'ani sanelemahan, sukuvirttä suoltamahan, lajivirttä laulamahan.&nbsp;</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" href=\"https://hel.fi\"><span class=\"hds-button__label\">Klikkaa itsesi Helsingin kaupungin sivustolle</span></a></p>\r\n"
-              format: full_html
           field_hero_design:
             -
               value: diagonal
           field_hero_image:
             -
-              entity: 923ecd78-00ff-47f9-a017-012b781d6bab
+              entity: 4cd75c00-f459-4dce-aec3-b65bcc30bef2
           field_hero_link_design:
             -
               value: primary
           field_hero_title:
             -
-              value: 'Hero: Diagonaalinen'
+              value: 'Payment methods and parking fine'

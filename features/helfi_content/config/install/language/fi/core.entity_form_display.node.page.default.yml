@@ -7,3 +7,7 @@ content:
     settings:
       title: Lohko
       title_plural: Lohkot
+  field_lower_content:
+    settings:
+      title: Lohko
+      title_plural: Lohkot

@@ -13,6 +13,7 @@ dependencies:
     - metatag
     - paragraphs
     - path
+    - scheduler
 id: node.landing_page.default
 targetEntityType: node
 bundle: landing_page

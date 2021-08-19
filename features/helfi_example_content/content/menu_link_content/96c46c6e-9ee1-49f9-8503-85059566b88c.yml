@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 96c46c6e-9ee1-49f9-8503-85059566b88c
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    333d644e-8636-43d8-82c6-197558ff214c: menu_link_content
+    c2b41989-c715-4ec4-8df1-42655293fdfc: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Residential and corporate parking'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: c2b41989-c715-4ec4-8df1-42655293fdfc
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -50
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:333d644e-8636-43d8-82c6-197558ff214c'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1623333910

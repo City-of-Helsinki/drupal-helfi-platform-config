@@ -15,11 +15,10 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:paragraphs_library_item'
+  handler: views
   handler_settings:
-    target_bundles: null
-    sort:
-      field: _none
-      direction: ASC
-    auto_create: false
+    view:
+      view_name: paragraphs_selection
+      display_name: entity_reference
+      arguments: {  }
 field_type: entity_reference

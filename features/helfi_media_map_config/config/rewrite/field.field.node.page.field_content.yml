@@ -1,0 +1,11 @@
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.map
+settings:
+  handler_settings:
+    target_bundles:
+      map: map
+    target_bundles_drag_drop:
+      map:
+        enabled: true
+        weight: 31
