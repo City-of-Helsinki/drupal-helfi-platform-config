@@ -8,4 +8,5 @@ dependencies:
   - 'drupal:media_library'
   - 'drupal:text'
   - 'paragraphs:paragraphs'
+  - 'helfi_content:helfi_content'
   - 'helfi_media_map:helfi_media_map'
