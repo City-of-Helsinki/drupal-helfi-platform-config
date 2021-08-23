@@ -5,6 +5,7 @@ dependencies:
     - field.storage.node.field_lower_content
     - node.type.page
     - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
     - paragraphs.paragraphs_type.from_library
@@ -37,6 +38,7 @@ settings:
       gallery: gallery
       list_of_links: list_of_links
       content_cards: content_cards
+      banner: banner
       from_library: from_library
       remote_video: remote_video
     target_bundles_drag_drop:
@@ -47,8 +49,8 @@ settings:
         weight: -22
         enabled: false
       banner:
+        enabled: true
         weight: -21
-        enabled: false
       columns:
         enabled: true
         weight: -28
