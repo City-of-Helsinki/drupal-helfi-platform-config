@@ -138,7 +138,7 @@ content:
   field_metatags:
     weight: 26
     settings:
-      sidebar: true
+      sidebar: false
     third_party_settings: {  }
     type: metatag_firehose
     region: content

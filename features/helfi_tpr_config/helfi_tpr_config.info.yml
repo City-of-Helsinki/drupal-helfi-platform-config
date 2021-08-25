@@ -15,6 +15,7 @@ dependencies:
   - 'field_group:field_group'
   - 'helfi_content:helfi_content'
   - 'helfi_tpr:helfi_tpr'
+  - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'imagecache_external:imagecache_external'
   - 'metatag:metatag'
   - 'paragraphs:paragraphs'
