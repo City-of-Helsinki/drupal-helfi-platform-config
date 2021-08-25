@@ -1,0 +1,4 @@
+name: 'HELfi Siteimprove configuration'
+type: module
+core_version_requirement: '^8.9 || ^9'
+package: HELfi

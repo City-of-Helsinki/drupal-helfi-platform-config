@@ -38,6 +38,7 @@
     "drupal/select2": "^1.12",
     "drupal/social_media": "^1.8",
     "drupal/simple_sitemap": "^3.0",
+    "drupal/siteimprove": "^1.11",
     "drupal/token": "^1.9",
     "drupal/token_filter": "^1.2"
   },
