@@ -2540,4 +2540,11 @@ msgstr "Korosteväri"
 msgid "Footer color"
 msgstr "Alatunnisteen väri"
 
+msgctxt "HELfi Metatags"
+msgid "Description"
+msgstr "Metakuvaus"
+
+msgctxt "HELfi Metatags"
+msgid "Page title"
+msgstr "Title"
 
