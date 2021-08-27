@@ -6,11 +6,11 @@
   width: 100px;
   z-index: 1;
 }
-html * {
-  /*font-size: 1em !important;*/
-  /*color: #000 !important;*/
-  /*font-family: KarbidComp, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;*/
-}
+/* html * {
+  font-size: 1em !important;
+  color: #000 !important;
+  font-family: KarbidComp, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+} */
 .gwc-chat,
 .gwc-chat div,
 .gwc-chat input,
@@ -45,7 +45,7 @@ div.gwc-chat-message-container {
   padding-top: 10px !important;
   border: none;
   bottom: 50px;
-  padding: 2px 5px; !important;
+  padding: 2px 5px !important;
 }
 
 .gwc-chat-embedded-window {
