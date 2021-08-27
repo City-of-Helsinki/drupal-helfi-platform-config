@@ -77,7 +77,6 @@
             helFiChat_open_button_mobile = 'background-image: url( "https://www.hel.fi/static/helsinki/chat/mobile_open1.svg" ) !important';
             helFiChat_busy_button_mobile = 'background-image: url( "https://www.hel.fi/static/helsinki/chat/mobile_busy1.svg" ) !important';
 
-
             /* Detect if chat's are already running:*/
             if (helFiChat_localization == '') {
 
@@ -92,7 +91,6 @@
                 helFiChat_title_temp = 'TEST CHAT';
                 helFiChat_variant = 'new';
                 helfiChatCookiePath = '';
-
 
                 /* ------------------ PRODUCTION CHAT: VIRKAINFO FI --------------------- */
                 /* helFiChat_src = 'https://asiointi.hel.fi/chat/kanslia/cobrowse/js/gcb.min.js';
@@ -399,7 +397,6 @@
                 };
                 _genesys.cobrowse = false;
             } //helFiChat_localization
-
 
             function initHelFiChatLocalization_new()
             {
