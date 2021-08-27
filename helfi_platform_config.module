@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\BubbleableMetadata;
 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
@@ -53,4 +54,51 @@ function helfi_platform_config_theme() {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_token_info()
+ */
+function hdbt_content_token_info() {
+  $info['tokens']['site']['page-title-suffix'] = [
+    'name' => t('Page title suffix'),
+    'description' => t('Official suffix for page title.'),
+  ];
+  return $info;
+}
+
+/**
+ * Implements hook_tokens()
+ */
+function hdbt_content_tokens(
+  $type,
+  $tokens,
+  array $data,
+  array $options,
+  BubbleableMetadata $bubbleable_metadata
+) {
+  $replacements = [];
+
+  foreach ($tokens as $name => $original) {
+    if ($name === 'page-title-suffix') {
+      $language = Drupal::languageManager()->getCurrentLanguage();
+
+      switch ($language->getId()) {
+        case 'fi':
+          $replacements[$original] = 'Helsingin kaupunki';
+          break;
+        case 'sv':
+          $replacements[$original] = 'Helsingfors stad';
+          break;
+        case 'ru':
+          $replacements[$original] = 'Гopoд Xeльcинки';
+          break;
+        default:
+          $replacements[$original] = 'City of Helsinki';
+          break;
+      }
+    }
+  }
+
+  return $replacements;
 }
