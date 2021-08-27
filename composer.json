@@ -12,6 +12,7 @@
     "drupal/crop": "^2.1",
     "drupal/default_content": "^2.0.0-alpha1",
     "drupal/diff": "^1.0",
+    "drupal/dynamic_entity_reference": "^2.0@alpha",
     "drupal/gin_toolbar": "^1.0@beta",
     "drupal/entity_usage": "^2.0@beta",
     "drupal/easy_breadcrumb": "^2.0",
