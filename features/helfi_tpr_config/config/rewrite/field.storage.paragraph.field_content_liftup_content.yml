@@ -1,0 +1,4 @@
+settings:
+  entity_type_ids:
+    tpr_service: tpr_service
+    tpr_unit: tpr_unit
