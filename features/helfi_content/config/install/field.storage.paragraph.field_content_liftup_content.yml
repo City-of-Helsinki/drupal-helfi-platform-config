@@ -13,8 +13,6 @@ settings:
   exclude_entity_types: false
   entity_type_ids:
     node: node
-    tpr_service: tpr_service
-    tpr_unit: tpr_unit
 module: dynamic_entity_reference
 locked: false
 cardinality: 1
