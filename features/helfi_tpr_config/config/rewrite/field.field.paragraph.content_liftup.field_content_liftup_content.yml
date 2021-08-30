@@ -1,0 +1,17 @@
+settings:
+  tpr_service:
+    handler: 'default:tpr_service'
+    handler_settings:
+      target_bundles: null
+      sort:
+        field: _none
+        direction: ASC
+      auto_create: false
+  tpr_unit:
+    handler: 'default:tpr_unit'
+    handler_settings:
+      target_bundles: null
+      sort:
+        field: _none
+        direction: ASC
+      auto_create: false

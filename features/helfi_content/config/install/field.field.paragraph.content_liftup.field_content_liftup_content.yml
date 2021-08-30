@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_content_liftup_content
+    - node.type.article
+    - node.type.landing_page
+    - node.type.page
+    - paragraphs.paragraphs_type.content_liftup
+  module:
+    - dynamic_entity_reference
+id: paragraph.content_liftup.field_content_liftup_content
+field_name: field_content_liftup_content
+entity_type: paragraph
+bundle: content_liftup
+label: Content
+description: 'Add here the content that you want to appear as cards to the block. <span class="notice">Works only with TPR Unit in alpha version</span>'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  node:
+    handler: 'default:node'
+    handler_settings:
+      target_bundles:
+        article: article
+        page: page
+        landing_page: landing_page
+      sort:
+        field: _none
+        direction: ASC
+      auto_create: false
+      auto_create_bundle: page
+field_type: dynamic_entity_reference

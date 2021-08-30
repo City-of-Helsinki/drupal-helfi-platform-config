@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_liftup.field_content_liftup_content
+    - paragraphs.paragraphs_type.content_liftup
+  module:
+    - dynamic_entity_reference
+id: paragraph.content_liftup.default
+targetEntityType: paragraph
+bundle: content_liftup
+mode: default
+content:
+  field_content_liftup_content:
+    weight: 1
+    label: hidden
+    settings:
+      node:
+        view_mode: teaser
+    third_party_settings: {  }
+    type: dynamic_entity_reference_entity_view
+    region: content
+hidden: {  }

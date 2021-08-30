@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_liftup.field_content_liftup_content
+    - paragraphs.paragraphs_type.content_liftup
+  module:
+    - dynamic_entity_reference
+id: paragraph.content_liftup.default
+targetEntityType: paragraph
+bundle: content_liftup
+mode: default
+content:
+  field_content_liftup_content:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      match_limit: 20
+      size: 30
+      placeholder: ''
+    third_party_settings: {  }
+    type: dynamic_entity_reference_default
+    region: content
+hidden:
+  created: true
+  status: true
