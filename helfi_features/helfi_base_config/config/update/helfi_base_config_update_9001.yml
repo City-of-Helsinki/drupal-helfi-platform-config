@@ -1,0 +1,98 @@
+menu_link_attributes.config:
+  expected_config: {  }
+  update_actions:
+    add:
+      attributes:
+        icon:
+          label: ''
+pathauto.settings:
+  expected_config:
+    ignore_words: 'a, an, as, at, before, but, by, for, from, is, in, into, like, of, off, on, onto, per, since, than, the, this, that, to, up, via, with'
+  update_actions:
+    add:
+      punctuation:
+        ampersand: 0
+        asterisk: 0
+        at: 0
+        back_slash: 0
+        backtick: 0
+        caret: 0
+        colon: 0
+        comma: 0
+        dollar: 0
+        double_quotes: 0
+        equal: 0
+        exclamation: 0
+        greater_than: 0
+        hash: 0
+        left_curly: 0
+        left_parenthesis: 0
+        left_square: 0
+        less_than: 0
+        percent: 0
+        period: 0
+        pipe: 0
+        plus: 0
+        question_mark: 0
+        quotes: 0
+        right_curly: 0
+        right_parenthesis: 0
+        right_square: 0
+        semicolon: 0
+        slash: 0
+        tilde: 0
+        underscore: 0
+    change:
+      ignore_words: ''
+system.menu.main:
+  expected_config:
+    langcode: en
+  update_actions:
+    change:
+      langcode: und
+locale.settings:
+  expected_config:
+    translation:
+      path: ''
+  update_actions:
+    change:
+      translation:
+        path: sites/default/files/translations
+node.settings:
+  expected_config:
+    use_admin_theme: false
+  update_actions:
+    change:
+      use_admin_theme: true
+system.date:
+  expected_config:
+    country:
+      default: ''
+    first_day: 0
+    timezone:
+      default: ''
+      user:
+        configurable: true
+  update_actions:
+    change:
+      country:
+        default: FI
+      first_day: 1
+      timezone:
+        default: Europe/Helsinki
+        user:
+          configurable: false
+system.theme:
+  expected_config:
+    admin: ''
+    default: stark
+  update_actions:
+    change:
+      admin: hdbt_admin
+      default: hdbt
+user.settings:
+  expected_config:
+    register: visitors_admin_approval
+  update_actions:
+    change:
+      register: admin_only
