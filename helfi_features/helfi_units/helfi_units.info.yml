@@ -1,5 +1,0 @@
-name: 'HELfi Units (Deprecated)'
-description: 'Provides unit pages and unit content types and functionality related to those content types.'
-type: module
-core_version_requirement: '^8.9 || ^9'
-package: HELfi
