@@ -18,3 +18,14 @@ smartti_chatbot:
   css:
     theme:
       'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.css': { type: external, minified: true }
+
+genesys_chat:
+  version: 1.0.x
+  header: true
+  js:
+    assets/js/genesys_chat.js: {}
+  dependencies:
+    - core/jquery
+  css:
+    theme:
+      assets/css/genesys_chat.css: {}
