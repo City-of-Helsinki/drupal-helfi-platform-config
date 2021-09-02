@@ -15,16 +15,8 @@ function helfi_base_config_install() {
   \Drupal::configFactory()->getEditable('views.view.frontpage')->delete();
   \Drupal::configFactory()->getEditable('system.menu.footer')->delete();
 
-//  \Drupal::service('theme_installer')->install(['hdbt', 'hdbt_admin']);
-
   // Remove an obsolete block that is named hdbt_admin.
   \Drupal::configFactory()->getEditable('block.block.hdbt_admin')->delete();
-
-//  $system_theme = \Drupal::configFactory()->getEditable('system.theme');
-//  $system_theme->set('default', 'hdbt')->set('admin', 'hdbt_admin')->save();
-
-//  $node_settings = \Drupal::configFactory()->getEditable('node.settings');
-//  $node_settings->set('use_admin_theme', 'true')->save();
 
   // Manually install gin_toolbar module.
   $installer = \Drupal::service('module_installer');
