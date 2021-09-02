@@ -10,15 +10,13 @@ user.role.anonymous:
   expected_config:
     permissions: {  }
   update_actions:
-    change:
+    add:
       permissions:
-        - 'access content'
         - 'view media'
 user.role.authenticated:
   expected_config:
     permissions: {  }
   update_actions:
-    change:
+    add:
       permissions:
-        - 'access content'
         - 'view media'

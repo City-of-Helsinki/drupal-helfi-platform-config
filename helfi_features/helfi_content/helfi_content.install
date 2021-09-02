@@ -1,7 +1,8 @@
 <?php
 
+
 /**
- * Base configurations for HELfi Content feature.
+ * Base configuration for HELfi Content feature.
  */
 function helfi_content_update_9001() {
   /** @var \Drupal\update_helper\Updater $updateHelper */

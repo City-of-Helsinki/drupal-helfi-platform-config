@@ -4,8 +4,9 @@ dependencies:
   config:
     - field.field.paragraph.from_library.field_reusable_paragraph
     - paragraphs.paragraphs_type.from_library
-  module:
-    - select2
+  enforced:
+    module:
+      - select2
 id: paragraph.from_library.default
 targetEntityType: paragraph
 bundle: from_library

@@ -39,3 +39,17 @@ function helfi_base_config_update_9001() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Update contrib module base configurations.
+ */
+function helfi_base_config_update_9002() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9002');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
