@@ -39,7 +39,7 @@ function helfi_platform_config_update_9002() {
 }
 
 /**
- * Uninstall features.
+ * Uninstall features module if it exists.
  */
 function helfi_platform_config_update_9003() {
   if (\Drupal::moduleHandler()->moduleExists('features')) {
