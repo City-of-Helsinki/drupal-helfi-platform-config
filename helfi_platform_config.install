@@ -13,7 +13,7 @@ use Symfony\Component\Yaml\Parser;
  * See: https://www.drupal.org/project/drupal/issues/2845437
  */
 function helfi_platform_config_install() {
-  helfi_platform_config_import_language_config();
+//  helfi_platform_config_import_language_config();
 }
 
 /**
@@ -63,7 +63,7 @@ function helfi_platform_config_import_language_config() {
   $site_default_langcode = $language_manager->getDefaultLanguage()->getId();
 
   // Scan features directory.
-  $features_directory = scandir(__DIR__ . '/features');
+  $features_directory = scandir(__DIR__ . '/helfi_features');
 
   // Remove skipped features.
   $features = array_diff($features_directory, $skip_features);
@@ -72,7 +72,7 @@ function helfi_platform_config_import_language_config() {
   foreach ($features as $feature) {
 
     // The directory where the language config files reside.
-    $language_config_directory = __DIR__ . "/features/{$feature}/config/install/language";
+    $language_config_directory = __DIR__ . "/helfi_features/{$feature}/config/install/language";
 
     // Check if feature has translated config files.
     if (!is_dir($language_config_directory)) {
