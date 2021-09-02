@@ -8,4 +8,3 @@ dependencies:
   - 'drupal:language'
   - 'drupal:locale'
   - 'drupal:menu_link_content'
-  - 'drupal:user'
