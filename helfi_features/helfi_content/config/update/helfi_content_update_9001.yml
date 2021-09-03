@@ -50,7 +50,7 @@ paragraphs.paragraphs_type.from_library:
   expected_config: {  }
   update_actions:
     add:
-      description: null
+      description: 'The reusable paragraph allows you to insert a specific paragraph to multiple pages.'
       icon_default: null
       icon_uuid: null
 user.role.anonymous:
@@ -112,3 +112,495 @@ system.action.pathauto_update_alias_user:
   update_actions:
     add:
       configuration: {  }
+metatag.metatag_defaults.global:
+  expected_config:
+    tags:
+      title: '[current-page:title] | [site:name]'
+  update_actions:
+    change:
+      tags:
+        image_src: '[site:base-url]/themes/custom/hdbt/src/images/og-global.png'
+        title: '[current-page:title] | [site:page-title-suffix]'
+        twitter_cards_page_url: '[current-page:url]'
+        twitter_cards_title: '[current-page:title] | [site:page-title-suffix]'
+        twitter_cards_type: summary_large_image
+metatag.metatag_defaults.node:
+  expected_config:
+    tags:
+      description: '[node:summary]'
+      title: '[node:title] | [site:name]'
+  update_actions:
+    add:
+      tags:
+        article_modified_time: '[node:created:html_datetime]'
+        article_published_time: '[node:created:html_datetime]'
+    change:
+      tags:
+        content_language: '[node:langcode]'
+        description: '[node:field_lead_in]'
+        og_image_url: '[node:field_liftup_image:entity:field_media_image:og_image:url],[site:base-url]/themes/custom/hdbt/src/images/og-global.png'
+        og_site_name: '[site:name]'
+        og_title: '[node:title]'
+        og_updated_time: '[node:changed:html_datetime]'
+        og_url: '[current-page:url:absolute]'
+        title: '[node:title] | [site:page-title-suffix]'
+        twitter_cards_image: '[node:field_liftup_image:entity:field_media_image:1_1_thumbnail:url]'
+metatag.metatag_defaults.taxonomy_term:
+  expected_config:
+    tags:
+      title: '[term:name] | [site:name]'
+  update_actions:
+    change:
+      tags:
+        title: '[term:name] | [site:page-title-suffix]'
+metatag.metatag_defaults.user:
+  expected_config:
+    tags:
+      title: '[user:display-name] | [site:name]'
+  update_actions:
+    change:
+      tags:
+        title: '[user:display-name] | [site:page-title-suffix]'
+field.field.paragraph.from_library.field_reusable_paragraph:
+  expected_config:
+    settings:
+      handler: 'default:paragraphs_library_item'
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          view:
+            arguments: {  }
+            display_name: entity_reference
+            view_name: paragraphs_selection
+    change:
+      settings:
+        handler: views
+views.view.redirect:
+  expected_config:
+    display:
+      default:
+        display_options:
+          filter_groups:
+            groups:
+              1: AND
+          filters:
+            status_code:
+              group_info:
+                group_items:
+                  1:
+                    operator: '='
+                    title: '300 Multiple Choices'
+                    value:
+                      max: ''
+                      min: ''
+                      value: '300'
+                  2:
+                    operator: '='
+                    title: '301 Moved Permanently'
+                    value:
+                      max: ''
+                      min: ''
+                      value: '301'
+                  3:
+                    operator: '='
+                    title: '302 Found'
+                    value:
+                      max: ''
+                      min: ''
+                      value: '302'
+                  4:
+                    operator: '='
+                    title: '303 See Other'
+                    value:
+                      max: ''
+                      min: ''
+                      value: '303'
+                  5:
+                    operator: '='
+                    title: '304 Not Modified'
+                    value:
+                      max: ''
+                      min: ''
+                      value: '304'
+                  6:
+                    operator: '='
+                    title: '305 Use Proxy'
+                    value:
+                      max: ''
+                      min: ''
+                      value: '305'
+                  7:
+                    operator: '='
+                    title: '307 Temporary Redirect'
+                    value:
+                      max: ''
+                      min: ''
+                      value: '307'
+  update_actions:
+    delete:
+      display:
+        default:
+          display_options:
+            filter_groups:
+              groups:
+                1: AND
+            filters:
+              status_code:
+                group_info:
+                  group_items:
+                    1:
+                      operator: '='
+                      title: '300 Multiple Choices'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '300'
+                    2:
+                      operator: '='
+                      title: '301 Moved Permanently'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '301'
+                    3:
+                      operator: '='
+                      title: '302 Found'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '302'
+                    4:
+                      operator: '='
+                      title: '303 See Other'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '303'
+                    5:
+                      operator: '='
+                      title: '304 Not Modified'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '304'
+                    6:
+                      operator: '='
+                      title: '305 Use Proxy'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '305'
+                    7:
+                      operator: '='
+                      title: '307 Temporary Redirect'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '307'
+    add:
+      display:
+        default:
+          cache_metadata:
+            contexts:
+              - 'languages:language_content'
+              - 'languages:language_interface'
+              - url
+              - url.query_args
+              - user.permissions
+        page_1:
+          cache_metadata:
+            contexts:
+              - 'languages:language_content'
+              - 'languages:language_interface'
+              - url
+              - url.query_args
+              - user.permissions
+    change:
+      display:
+        default:
+          display_options:
+            filter_groups:
+              groups:
+                - AND
+                - AND
+            filters:
+              status_code:
+                group_info:
+                  group_items:
+                    -
+                      operator: '='
+                      title: '300 Multiple Choices'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '300'
+                    -
+                      operator: '='
+                      title: '301 Moved Permanently'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '301'
+                    -
+                      operator: '='
+                      title: '302 Found'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '302'
+                    -
+                      operator: '='
+                      title: '303 See Other'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '303'
+                    -
+                      operator: '='
+                      title: '304 Not Modified'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '304'
+                    -
+                      operator: '='
+                      title: '305 Use Proxy'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '305'
+                    -
+                      operator: '='
+                      title: '307 Temporary Redirect'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '307'
+                    -
+                      operator: '='
+                      title: '300 Multiple Choices'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '300'
+                    -
+                      operator: '='
+                      title: '301 Moved Permanently'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '301'
+                    -
+                      operator: '='
+                      title: '302 Found'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '302'
+                    -
+                      operator: '='
+                      title: '303 See Other'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '303'
+                    -
+                      operator: '='
+                      title: '304 Not Modified'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '304'
+                    -
+                      operator: '='
+                      title: '305 Use Proxy'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '305'
+                    -
+                      operator: '='
+                      title: '307 Temporary Redirect'
+                      value:
+                        max: ''
+                        min: ''
+                        value: '307'
+scheduler.settings:
+  expected_config:
+    lightweight_cron_access_key: ''
+  update_actions:
+    change:
+      lightweight_cron_access_key: 4b55ad815783dea619af
+views.view.scheduler_scheduled_content:
+  expected_config:
+    display:
+      default:
+        display_options:
+          filter_groups:
+            groups:
+              1: AND
+              2: OR
+          filters:
+            status:
+              group_info:
+                group_items:
+                  1:
+                    operator: '='
+                    title: Published
+                    value: '1'
+                  2:
+                    operator: '='
+                    title: Unpublished
+                    value: '0'
+      overview:
+        display_options:
+          menu:
+            description: 'Content scheduled for publishing and unpublishing'
+            type: normal
+  update_actions:
+    delete:
+      display:
+        default:
+          display_options:
+            filter_groups:
+              groups:
+                1: AND
+                2: OR
+            filters:
+              status:
+                group_info:
+                  group_items:
+                    1:
+                      operator: '='
+                      title: Published
+                      value: '1'
+                    2:
+                      operator: '='
+                      title: Unpublished
+                      value: '0'
+    add:
+      display:
+        default:
+          cache_metadata:
+            contexts:
+              - 'languages:language_content'
+              - 'languages:language_interface'
+              - url
+              - url.query_args
+              - user
+              - 'user.node_grants:view'
+        overview:
+          cache_metadata:
+            contexts:
+              - 'languages:language_content'
+              - 'languages:language_interface'
+              - url
+              - url.query_args
+              - user
+              - 'user.node_grants:view'
+        user_page:
+          cache_metadata:
+            contexts:
+              - 'languages:language_content'
+              - 'languages:language_interface'
+              - url
+              - url.query_args
+              - user
+              - 'user.node_grants:view'
+    change:
+      display:
+        default:
+          display_options:
+            filter_groups:
+              groups:
+                - AND
+                - OR
+                - AND
+                - OR
+            filters:
+              status:
+                group_info:
+                  group_items:
+                    -
+                      operator: '='
+                      title: Published
+                      value: '1'
+                    -
+                      operator: '='
+                      title: Unpublished
+                      value: '0'
+                    -
+                      operator: '='
+                      title: Published
+                      value: '1'
+                    -
+                      operator: '='
+                      title: Unpublished
+                      value: '0'
+        overview:
+          display_options:
+            menu:
+              description: ''
+              type: tab
+social_media.settings:
+  expected_config:
+    social_media:
+      email:
+        default_img: 1
+        text: Email
+      facebook_share:
+        attributes: |-
+          target|_blank
+          class|facebook-share
+          rel|noopener noreferrer
+        default_img: 1
+        text: Facebook
+      linkedin:
+        attributes: |-
+          target|_blank
+          class|linkedin
+          rel|noopener noreferrer
+        default_img: 1
+        text: Linkedin
+      twitter:
+        api_url: 'https://twitter.com/intent/tweet?url=[current-page:url]&url=[current-page:url]&hashtags=Hashtag'
+        attributes: |-
+          target|_blank
+          class|twitter
+          rel|noopener noreferrer
+        default_img: 1
+        text: Twitter
+  update_actions:
+    change:
+      social_media:
+        email:
+          default_img: 0
+          drupalSettings: ''
+          enable_forward: 0
+          img: email
+          library: ''
+          show_forward: 1
+          text: 'Send as an email'
+        facebook_share:
+          attributes: "target|_blank\r\nclass|facebook-share"
+          default_img: 0
+          drupalSettings: ''
+          img: facebook
+          library: ''
+          text: 'Share in Facebook'
+        linkedin:
+          attributes: "target|_blank\r\nclass|linkedin"
+          default_img: 0
+          drupalSettings: ''
+          img: linkedin
+          library: ''
+          text: 'Share in Linkedin'
+        twitter:
+          api_url: 'https://twitter.com/intent/tweet?url=[current-page:url]&status=[current-page:title]+[current-page:url]'
+          attributes: "target|_blank\r\nclass|twitter"
+          default_img: 0
+          drupalSettings: ''
+          img: twitter
+          library: ''
+          text: 'Share in Twitter'

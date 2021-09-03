@@ -1,0 +1,4 @@
+permissions:
+  - 'access content'
+  - 'use text format full_html'
+  - 'view remote entities'
