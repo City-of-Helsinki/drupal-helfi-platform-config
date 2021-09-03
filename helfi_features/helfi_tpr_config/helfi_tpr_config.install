@@ -27,3 +27,17 @@ function helfi_tpr_config_update_9001() {
     }
   }
 }
+
+/**
+ * Base configurations for HELfi TPR config module.
+ */
+function helfi_tpr_config_update_9002() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9002');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

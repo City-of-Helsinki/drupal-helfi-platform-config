@@ -74,14 +74,6 @@ system.menu.main:
   update_actions:
     change:
       langcode: und
-locale.settings:
-  expected_config:
-    translation:
-      path: ''
-  update_actions:
-    change:
-      translation:
-        path: sites/default/files/translations
 node.settings:
   expected_config:
     use_admin_theme: false
