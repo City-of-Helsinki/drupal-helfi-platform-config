@@ -8,15 +8,6 @@
 use Symfony\Component\Yaml\Parser;
 
 /**
- * Manually import all Helfi features configuration translations on install.
- *
- * See: https://www.drupal.org/project/drupal/issues/2845437
- */
-function helfi_platform_config_install() {
-//  helfi_platform_config_import_language_config();
-}
-
-/**
  * Uninstall service and unit node types.
  *
  * Modules helfi_units and helfi_services will be removed in release 1.2.0.
@@ -59,61 +50,58 @@ function helfi_platform_config_update_9004() {
     ]);
   }
 }
+
 /**
- * Manually update all dependant features.
+ * Helper function to manually import translations.
+ *
+ * @param bool|string $module
+ *   Module from where translations should be installed from.
  */
-function helfi_platform_config_import_language_config() {
+function _helfi_import_translations(bool|string $module = FALSE) {
+
+  if (!$module) {
+    return;
+  }
+
   $language_manager = Drupal::languageManager();
   $yaml_parser = new Parser();
-
-  // Features that should be skipped.
-  $skip_features = ['..', '.', 'helfi_example_content'];
 
   // The language code of the default locale.
   $site_default_langcode = $language_manager->getDefaultLanguage()->getId();
 
-  // Scan features directory.
-  $features_directory = scandir(__DIR__ . '/helfi_features');
+  // The directory where the language config files reside.
+  $language_config_directory = __DIR__ . "/helfi_features/{$module}/config/install/language";
 
-  // Remove skipped features.
-  $features = array_diff($features_directory, $skip_features);
+  // Check if feature has translated config files.
+  if (!is_dir($language_config_directory)) {
+    return;
+  }
 
-  // Go through each feature and apply the configurations.
-  foreach ($features as $feature) {
+  // Scan the translations directory.
+  $language_directory = scandir($language_config_directory);
+  $skip_dirs = ['..', '.', $site_default_langcode];
 
-    // The directory where the language config files reside.
-    $language_config_directory = __DIR__ . "/helfi_features/{$feature}/config/install/language";
+  // Sub-directory names (language codes).
+  // The language code of the default language is excluded.
+  $langcodes = array_diff($language_directory, $skip_dirs);
 
-    // Check if feature has translated config files.
-    if (!is_dir($language_config_directory)) {
-      continue;
-    }
+  foreach ($langcodes as $langcode) {
+    // All .yml files in the language's config subdirectory.
+    $config_files = glob("$language_config_directory/$langcode/*.yml");
 
-    $language_directory = scandir($language_config_directory);
-    $skip_dirs = ['..', '.', $site_default_langcode];
+    foreach ($config_files as $file_name) {
+      // Information from the .yml file as an array.
+      $yaml = $yaml_parser->parse(file_get_contents($file_name));
+      // Uses the base name of the .yml file to get the config name.
+      $config_name = basename($file_name, '.yml');
+      // The language configuration object.
+      $config = $language_manager->getLanguageConfigOverride($langcode, $config_name);
 
-    // Sub-directory names (language codes).
-    // The language code of the default language is excluded.
-    $langcodes = array_diff($language_directory, $skip_dirs);
-
-    foreach ($langcodes as $langcode) {
-      // All .yml files in the language's config subdirectory.
-      $config_files = glob("$language_config_directory/$langcode/*.yml");
-
-      foreach ($config_files as $file_name) {
-        // Information from the .yml file as an array.
-        $yaml = $yaml_parser->parse(file_get_contents($file_name));
-        // Uses the base name of the .yml file to get the config name.
-        $config_name = basename($file_name, '.yml');
-        // The language configuration object.
-        $config = $language_manager->getLanguageConfigOverride($langcode, $config_name);
-
-        foreach ($yaml as $config_key => $config_value) {
-          // Update the configuration object.
-          $config->set($config_key, $config_value);
-        }
-        $config->save();
+      foreach ($yaml as $config_key => $config_value) {
+        // Update the configuration object.
+        $config->set($config_key, $config_value);
       }
+      $config->save();
     }
   }
 }

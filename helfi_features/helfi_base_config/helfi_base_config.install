@@ -70,8 +70,8 @@ function helfi_base_config_update_9001() {
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9001');
 
-  // Install translations.
-//  helfi_platform_config_import_language_config('helfi_base_config');
+  // Import translations.
+  _helfi_import_translations(basename(__FILE__, '.install'));
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

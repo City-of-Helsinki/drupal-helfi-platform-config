@@ -14,7 +14,6 @@ function helfi_content_update_dependencies() {
 }
 
 /**
-/**
  * Base configuration for HELfi Content feature.
  */
 function helfi_content_update_9001() {
@@ -23,6 +22,9 @@ function helfi_content_update_9001() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9001');
+
+  // Import translations.
+  _helfi_import_translations(basename(__FILE__, '.install'));
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
