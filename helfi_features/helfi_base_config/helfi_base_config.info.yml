@@ -6,7 +6,7 @@ package: HELfi
 dependencies:
   - 'admin_toolbar:admin_toolbar'
   - 'admin_toolbar_tools:admin_toolbar_tools'
-  - 'config_replace:config_replace'
+  - 'config_rewrite:config_rewrite'
   - 'config_ignore:config_ignore'
   - 'ctools:ctools'
   - 'diff:diff'

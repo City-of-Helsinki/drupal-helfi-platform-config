@@ -32,9 +32,20 @@ function helfi_base_config_install() {
 }
 
 /**
- * Apply HELfi base configurations.
+ * Uninstall config_replace and apply HELfi base configurations.
+ *
+ * Config replace will be replaced with Config rewrite.
+ * See: https://www.drupal.org/project/config_replace/issues/3022176
  */
 function helfi_base_config_update_9001() {
+
+  // Uninstall config_replace module if it exists.
+  if (\Drupal::moduleHandler()->moduleExists('config_replace')) {
+    \Drupal::service('module_installer')->uninstall([
+      'config_replace',
+    ]);
+  }
+
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
@@ -61,3 +72,4 @@ function helfi_base_config_update_9002() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
