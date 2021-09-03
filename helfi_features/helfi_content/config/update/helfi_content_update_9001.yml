@@ -1,14 +1,18 @@
 entity_usage.settings:
   expected_config:
-    local_task_enabled_entity_types: {  }
+    track_enabled_base_fields: false
+    local_task_enabled_entity_types: { }
+    usage_controller_items_per_page: 25
   update_actions:
     change:
-      delete_warning_message_entity_types:
-        - paragraphs_library_item
-      edit_warning_message_entity_types:
-        - paragraphs_library_item
-      local_task_enabled_entity_types:
-        - paragraphs_library_item
+    track_enabled_base_fields: false
+    local_task_enabled_entity_types:
+      - paragraphs_library_item
+    usage_controller_items_per_page: 25
+    edit_warning_message_entity_types:
+      - paragraphs_library_item
+    delete_warning_message_entity_types:
+      - paragraphs_library_item
 core.entity_form_display.paragraph.from_library.default:
   expected_config:
     content:
