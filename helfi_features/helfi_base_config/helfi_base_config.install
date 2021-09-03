@@ -57,6 +57,12 @@ function helfi_base_config_update_9001() {
       'config_replace',
     ]);
   }
+  // Install config_rewrite module if it doesn't exist.
+  if (!\Drupal::moduleHandler()->moduleExists('config_rewrite')) {
+    \Drupal::service('module_installer')->install([
+      'config_rewrite',
+    ]);
+  }
 
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
