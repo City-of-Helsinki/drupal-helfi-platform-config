@@ -50,6 +50,16 @@ function helfi_platform_config_update_9003() {
 }
 
 /**
+ * Install Update Helper module if it doesn't exist.
+ */
+function helfi_platform_config_update_9004() {
+  if (!\Drupal::moduleHandler()->moduleExists('update_helper')) {
+    \Drupal::service('module_installer')->install([
+      'update_helper',
+    ]);
+  }
+}
+/**
  * Manually update all dependant features.
  */
 function helfi_platform_config_import_language_config() {

@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * {@inheritdoc}
+ */
+function helfi_media_update_dependencies() {
+  // Run helfi_media_update_9001()
+  // after helfi_platform_config_update_9004().
+  $dependencies['helfi_media'][9001] = [
+    'helfi_platform_config' => 9004,
+  ];
+  return $dependencies;
+}
+
+/**
+
+/**
  * Install Base configuration for Helfi Media.
  */
 function helfi_media_update_9001() {

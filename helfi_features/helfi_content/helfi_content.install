@@ -1,6 +1,18 @@
 <?php
 
+/**
+ * {@inheritdoc}
+ */
+function helfi_content_update_dependencies() {
+  // Run helfi_content_update_9001()
+  // after helfi_platform_config_update_9004().
+  $dependencies['helfi_content'][9001] = [
+    'helfi_platform_config' => 9004,
+  ];
+  return $dependencies;
+}
 
+/**
 /**
  * Base configuration for HELfi Content feature.
  */

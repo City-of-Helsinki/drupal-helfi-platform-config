@@ -32,6 +32,18 @@ function helfi_base_config_install() {
 }
 
 /**
+ * {@inheritdoc}
+ */
+function helfi_base_config_update_dependencies() {
+  // Run helfi_base_config_update_9001()
+  // after helfi_platform_config_update_9004().
+  $dependencies['helfi_base_config'][9001] = [
+    'helfi_platform_config' => 9004,
+  ];
+  return $dependencies;
+}
+
+/**
  * Uninstall config_replace and apply HELfi base configurations.
  *
  * Config replace will be replaced with Config rewrite.

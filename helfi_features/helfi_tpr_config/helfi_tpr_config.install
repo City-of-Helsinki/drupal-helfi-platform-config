@@ -8,6 +8,18 @@
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
+ * {@inheritdoc}
+ */
+function helfi_tpr_config_update_dependencies() {
+  // Run helfi_tpr_config_update_9002()
+  // after helfi_platform_config_update_9004().
+  $dependencies['helfi_tpr_config'][9002] = [
+    'helfi_platform_config' => 9004,
+  ];
+  return $dependencies;
+}
+
+/**
  * Install 'color palette' field to TPR Unit and TPR Service entities.
  */
 function helfi_tpr_config_update_9001() {

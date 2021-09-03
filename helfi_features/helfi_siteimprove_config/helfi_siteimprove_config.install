@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * {@inheritdoc}
+ */
+function helfi_siteimprove_config_update_dependencies() {
+  // Run helfi_siteimprove_config_update_9001()
+  // after helfi_platform_config_update_9004().
+  $dependencies['helfi_siteimprove_config'][9001] = [
+    'helfi_platform_config' => 9004,
+  ];
+  return $dependencies;
+}
+
+/**
  * Base configurations for HELfi Siteimprove module.
  */
 function helfi_siteimprove_config_update_9001() {

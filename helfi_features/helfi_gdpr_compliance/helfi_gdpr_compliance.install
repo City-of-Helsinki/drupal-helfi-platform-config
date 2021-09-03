@@ -1,6 +1,19 @@
 <?php
 
 /**
+ * {@inheritdoc}
+ */
+function helfi_gdpr_compliance_update_dependencies() {
+  // Run helfi_gdpr_compliance_update_9001()
+  // after helfi_platform_config_update_9004().
+  $dependencies['helfi_gdpr_compliance'][9001] = [
+    'helfi_platform_config' => 9004,
+  ];
+  return $dependencies;
+}
+
+/**
+/**
  * Base configuration for HELfi GDPR compliance feature.
  */
 function helfi_gdpr_compliance_update_9001() {
