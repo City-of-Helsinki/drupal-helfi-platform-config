@@ -1,3 +1,27 @@
+easy_breadcrumb.settings:
+  expected_config:
+    capitalizator_ignored_words:
+      - of
+      - and
+      - or
+      - de
+      - del
+      - 'y'
+      - o
+      - a
+  update_actions:
+    delete:
+      capitalizator_ignored_words:
+        - of
+        - and
+        - or
+        - de
+        - del
+        - 'y'
+        - o
+        - a
+    change:
+      capitalizator_ignored_words: {  }
 menu_link_attributes.config:
   expected_config: {  }
   update_actions:
@@ -66,22 +90,12 @@ node.settings:
       use_admin_theme: true
 system.date:
   expected_config:
-    country:
-      default: ''
-    first_day: 0
     timezone:
       default: ''
-      user:
-        configurable: true
   update_actions:
     change:
-      country:
-        default: FI
-      first_day: 1
       timezone:
         default: Europe/Helsinki
-        user:
-          configurable: false
 system.theme:
   expected_config:
     admin: ''
@@ -96,3 +110,223 @@ user.settings:
   update_actions:
     change:
       register: admin_only
+views.view.content:
+  expected_config:
+    display:
+      default:
+        display_options:
+          filters:
+            langcode:
+              expose:
+                reduce: false
+                remember_roles:
+                  administrator: '0'
+              value: {  }
+          style:
+            options:
+              columns:
+                delete_node: delete_node
+                dropbutton: dropbutton
+                edit_node: edit_node
+                timestamp: title
+              info:
+                delete_node:
+                  align: ''
+                  default_sort_order: asc
+                  empty_column: false
+                  responsive: ''
+                  separator: ''
+                  sortable: false
+                dropbutton:
+                  align: ''
+                  default_sort_order: asc
+                  empty_column: false
+                  responsive: ''
+                  separator: ''
+                  sortable: false
+                edit_node:
+                  align: ''
+                  default_sort_order: asc
+                  empty_column: false
+                  responsive: ''
+                  separator: ''
+                  sortable: false
+                name:
+                  sortable: false
+                timestamp:
+                  align: ''
+                  default_sort_order: asc
+                  empty_column: false
+                  responsive: ''
+                  separator: ''
+                  sortable: false
+        display_title: Default
+      page_1:
+        display_options:
+          display_extenders: {  }
+  update_actions:
+    delete:
+      display:
+        default:
+          display_options:
+            filters:
+              langcode:
+                expose:
+                  remember_roles:
+                    administrator: '0'
+            style:
+              options:
+                columns:
+                  delete_node: delete_node
+                  dropbutton: dropbutton
+                  edit_node: edit_node
+                  timestamp: title
+                info:
+                  delete_node:
+                    align: ''
+                    default_sort_order: asc
+                    empty_column: false
+                    responsive: ''
+                    separator: ''
+                    sortable: false
+                  dropbutton:
+                    align: ''
+                    default_sort_order: asc
+                    empty_column: false
+                    responsive: ''
+                    separator: ''
+                    sortable: false
+                  edit_node:
+                    align: ''
+                    default_sort_order: asc
+                    empty_column: false
+                    responsive: ''
+                    separator: ''
+                    sortable: false
+                  timestamp:
+                    align: ''
+                    default_sort_order: asc
+                    empty_column: false
+                    responsive: ''
+                    separator: ''
+                    sortable: false
+    add:
+      display:
+        default:
+          display_options:
+            fields:
+              langcode:
+                admin_label: ''
+                alter:
+                  absolute: false
+                  alt: ''
+                  alter_text: false
+                  ellipsis: true
+                  external: false
+                  html: false
+                  link_class: ''
+                  make_link: false
+                  max_length: 0
+                  more_link: false
+                  more_link_path: ''
+                  more_link_text: ''
+                  nl2br: false
+                  path: ''
+                  path_case: none
+                  prefix: ''
+                  preserve_tags: ''
+                  rel: ''
+                  replace_spaces: false
+                  strip_tags: false
+                  suffix: ''
+                  target: ''
+                  text: ''
+                  trim: false
+                  trim_whitespace: false
+                  word_boundary: true
+                click_sort_column: value
+                delta_first_last: false
+                delta_limit: 0
+                delta_offset: 0
+                delta_reversed: false
+                element_class: ''
+                element_default_classes: true
+                element_label_class: ''
+                element_label_colon: true
+                element_label_type: ''
+                element_type: ''
+                element_wrapper_class: ''
+                element_wrapper_type: ''
+                empty: ''
+                empty_zero: false
+                entity_field: langcode
+                entity_type: node
+                exclude: false
+                field: langcode
+                field_api_classes: false
+                group_column: value
+                group_columns: {  }
+                group_rows: true
+                group_type: group
+                hide_alter_empty: true
+                hide_empty: false
+                id: langcode
+                label: Language
+                multi_type: separator
+                plugin_id: field
+                relationship: none
+                separator: ', '
+                settings:
+                  link_to_entity: false
+                  native_language: false
+                table: node_field_data
+                type: language
+            filters:
+              langcode:
+                expose:
+                  remember_roles:
+                    content_producer: '0'
+            style:
+              options:
+                columns:
+                  operations: operations
+                info:
+                  operations:
+                    align: ''
+                    empty_column: false
+                    responsive: ''
+                    separator: ''
+    change:
+      display:
+        default:
+          display_options:
+            filters:
+              langcode:
+                expose:
+                  reduce: true
+                  remember_roles:
+                    admin: '0'
+                value:
+                  en: en
+                  fi: fi
+                  ru: ru
+                  sv: sv
+            style:
+              options:
+                columns:
+                  langcode: langcode
+                info:
+                  langcode:
+                    align: ''
+                    default_sort_order: asc
+                    empty_column: false
+                    responsive: ''
+                    separator: ''
+                    sortable: true
+                  name:
+                    sortable: true
+          display_title: Master
+        page_1:
+          display_options:
+            display_extenders:
+              metatag_display_extender: {  }

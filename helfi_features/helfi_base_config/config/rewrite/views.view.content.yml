@@ -1,3 +1,4 @@
+config_rewrite: replace
 langcode: en
 status: true
 dependencies:
@@ -649,6 +650,8 @@ display:
         description: 'Find and manage content'
         menu_name: admin
         weight: -10
+      display_extenders:
+        metatag_display_extender: {  }
     display_plugin: page
     display_title: Page
     id: page_1
