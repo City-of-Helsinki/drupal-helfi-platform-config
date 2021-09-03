@@ -27,7 +27,6 @@ dependencies:
   - 'hdbt_admin_tools:hdbt_admin_tools'
   - 'hdbt_component_library:hdbt_component_library'
   - 'hdbt_content:hdbt_content'
-  - 'hdbt_hyphenopoly:hdbt_hyphenopoly'
   - 'helfi_content:helfi_content'
   - 'helfi_gdpr_compliance:helfi_gdpr_compliance'
   - 'helfi_languages:helfi_languages'
