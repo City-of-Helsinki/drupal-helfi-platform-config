@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Base configurations for HELfi Siteimprove module.
+ */
+function helfi_siteimprove_config_update_9001() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_siteimprove_config', 'helfi_siteimprove_config_update_9001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
