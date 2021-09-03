@@ -57,7 +57,7 @@ function helfi_platform_config_update_9004() {
  * @param bool|string $module
  *   Module from where translations should be installed from.
  */
-function _helfi_import_translations(bool|string $module = FALSE) {
+function _helfi_import_translations($module = FALSE) {
 
   if (!$module) {
     return;
