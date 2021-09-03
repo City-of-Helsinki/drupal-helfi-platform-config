@@ -1,22 +1,29 @@
+language.entity.en:
+  expected_config:
+    weight: 0
+  update_actions:
+    change:
+      weight: -8
 language.negotiation:
   expected_config:
-    selected_langcode: site_default
     url:
       prefixes:
         en: ''
+      domains:
+        en: ''
+    selected_langcode: site_default
   update_actions:
-    add:
-      url:
-        domains:
-          fi: ''
-          sv: ''
     change:
-      selected_langcode: fi
       url:
         prefixes:
           en: en
           fi: fi
           sv: sv
+        domains:
+          en: ''
+          fi: ''
+          sv: ''
+      selected_langcode: fi
 language.types:
   expected_config:
     negotiation:

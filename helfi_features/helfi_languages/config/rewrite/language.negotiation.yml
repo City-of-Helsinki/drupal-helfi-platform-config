@@ -1,5 +1,3 @@
-session:
-  parameter: language
 url:
   source: path_prefix
   prefixes:
