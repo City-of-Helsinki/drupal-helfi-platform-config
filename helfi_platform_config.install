@@ -22,7 +22,7 @@ function helfi_platform_config_install() {
  * Modules helfi_units and helfi_services will be removed in release 1.2.0.
  */
 function helfi_platform_config_update_9001() {
-  \Drupal::service('module_installer')->uninstall([
+  Drupal::service('module_installer')->uninstall([
     'helfi_units',
     'helfi_services',
   ]);
@@ -32,7 +32,7 @@ function helfi_platform_config_update_9001() {
  * Uninstall views infinite scroll and viewsrefernce.
  */
 function helfi_platform_config_update_9002() {
-  \Drupal::service('module_installer')->uninstall([
+  Drupal::service('module_installer')->uninstall([
     'views_infinite_scroll',
     'viewsreference',
   ]);
@@ -42,8 +42,8 @@ function helfi_platform_config_update_9002() {
  * Uninstall features module if it exists.
  */
 function helfi_platform_config_update_9003() {
-  if (\Drupal::moduleHandler()->moduleExists('features')) {
-    \Drupal::service('module_installer')->uninstall([
+  if (Drupal::moduleHandler()->moduleExists('features')) {
+    Drupal::service('module_installer')->uninstall([
       'features',
     ]);
   }
@@ -53,8 +53,8 @@ function helfi_platform_config_update_9003() {
  * Install Update Helper module if it doesn't exist.
  */
 function helfi_platform_config_update_9004() {
-  if (!\Drupal::moduleHandler()->moduleExists('update_helper')) {
-    \Drupal::service('module_installer')->install([
+  if (!Drupal::moduleHandler()->moduleExists('update_helper')) {
+    Drupal::service('module_installer')->install([
       'update_helper',
     ]);
   }
@@ -63,7 +63,7 @@ function helfi_platform_config_update_9004() {
  * Manually update all dependant features.
  */
 function helfi_platform_config_import_language_config() {
-  $language_manager = \Drupal::languageManager();
+  $language_manager = Drupal::languageManager();
   $yaml_parser = new Parser();
 
   // Features that should be skipped.

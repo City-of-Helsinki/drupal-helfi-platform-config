@@ -5,9 +5,10 @@
  */
 function helfi_media_update_dependencies() {
   // Run helfi_media_update_9001()
-  // after helfi_platform_config_update_9004().
+  // after helfi_platform_config_update_9004() and helfi_base_config_9001().
   $dependencies['helfi_media'][9001] = [
     'helfi_platform_config' => 9004,
+    'helfi_base_config' => 9001,
   ];
   return $dependencies;
 }
