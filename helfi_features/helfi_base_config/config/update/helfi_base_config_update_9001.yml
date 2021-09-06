@@ -301,7 +301,6 @@ views.view.content:
                 value:
                   en: en
                   fi: fi
-                  ru: ru
                   sv: sv
             style:
               options:
