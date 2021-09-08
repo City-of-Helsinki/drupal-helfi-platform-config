@@ -8,10 +8,9 @@ settings:
         direction: ASC
       auto_create: false
   tpr_unit:
-    handler: 'default:tpr_unit'
+    handler: views
     handler_settings:
-      target_bundles: null
-      sort:
-        field: _none
-        direction: ASC
-      auto_create: false
+      view:
+        view_name: der_tpr_unit
+        display_name: entity_reference
+        arguments: {  }
