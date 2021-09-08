@@ -3,13 +3,16 @@ status: true
 dependencies:
   config:
     - field.field.tpr_service.tpr_service.field_content
-    - field.field.tpr_service.tpr_service.field_metatags
     - field.field.tpr_service.tpr_service.field_lower_content
+    - field.field.tpr_service.tpr_service.field_metatags
   module:
     - entity_reference_revisions
     - helfi_tpr
+    - link
     - metatag
     - text
+_core:
+  default_config_hash: O6B2q3iV9DgC6EcarOKKgKBeVPvlpOkqdQQUOcsVmsA
 id: tpr_service.tpr_service.default
 targetEntityType: tpr_service
 bundle: tpr_service
@@ -21,6 +24,15 @@ content:
     region: content
     label: hidden
     settings: {  }
+    third_party_settings: {  }
+  errand_services:
+    type: entity_reference_entity_view
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
     third_party_settings: {  }
   field_content:
     type: entity_reference_revisions_entity_view
@@ -47,6 +59,18 @@ content:
     third_party_settings: {  }
     type: metatag_empty_formatter
     region: content
+  links:
+    type: link
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
   name:
     type: string
     weight: 0
@@ -65,6 +89,4 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  errand_services: true
   langcode: true
-  links: true
