@@ -11,6 +11,6 @@ settings:
     handler: views
     handler_settings:
       view:
-        view_name: der_tpr_unit
+        view_name: er_tpr_unit
         display_name: entity_reference
         arguments: {  }

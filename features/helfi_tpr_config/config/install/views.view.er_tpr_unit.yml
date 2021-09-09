@@ -4,8 +4,8 @@ dependencies:
   module:
     - helfi_tpr
     - user
-id: der_tpr_unit
-label: 'Dynamic entity reference - TPR Unit'
+id: er_tpr_unit
+label: 'Entity reference - TPR Unit'
 module: views
 description: ''
 tag: ''
