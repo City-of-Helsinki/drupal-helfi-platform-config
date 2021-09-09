@@ -3,11 +3,12 @@ dependencies:
     - field.field.paragraph.content_liftup.field_content_liftup_unit
 content:
   field_content_liftup_unit:
-    weight: 2
-    label: hidden
+    weight: 1
     settings:
-      view_mode: wide_teaser
-      link: false
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: entity_reference_autocomplete
     region: content
