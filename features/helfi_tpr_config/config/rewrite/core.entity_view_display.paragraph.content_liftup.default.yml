@@ -1,7 +1,6 @@
 dependencies:
   config:
     - field.field.paragraph.content_liftup.field_content_liftup_unit
-id: paragraph.content_liftup.default
 content:
   field_content_liftup_unit:
     weight: 2
