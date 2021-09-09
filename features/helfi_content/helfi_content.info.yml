@@ -21,7 +21,6 @@ dependencies:
   - 'drupal:text'
   - 'drupal:user'
   - 'drupal:views'
-  - 'dynamic_entity_reference:dynamic_entity_reference'
   - 'entity_reference_revisions:entity_reference_revisions'
   - 'entity_usage:entity_usage'
   - 'features:features'
