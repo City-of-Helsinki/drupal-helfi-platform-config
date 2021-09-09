@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Contains helfi_tpr_unit_districts installation procedures.
+ */
+
+/**
+ * Add 'districts' field to TPR Unit entity and to Unit search view.
+ */
+function helfi_tpr_unit_districts_install() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_unit_districts', 'helfi_tpr_unit_districts_update_8001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

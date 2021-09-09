@@ -1,0 +1,121 @@
+core.entity_form_display.tpr_unit.tpr_unit.default:
+  expected_config:
+    hidden:
+      field_districts: true
+  update_actions:
+    delete:
+      hidden:
+        field_districts: true
+    add:
+      content:
+        field_districts:
+          region: content
+          settings:
+            autocomplete: false
+            match_limit: 10
+            match_operator: STARTS_WITH
+            width: 100%
+          third_party_settings: {  }
+          type: select2_entity_reference
+          weight: 29
+views.view.unit_search:
+  expected_config:
+    display:
+      default:
+        display_options:
+          relationships: {  }
+  update_actions:
+    add:
+      display:
+        default:
+          display_options:
+            fields:
+              name_1:
+                admin_label: ''
+                alter:
+                  absolute: false
+                  alt: ''
+                  alter_text: false
+                  ellipsis: true
+                  external: false
+                  html: false
+                  link_class: ''
+                  make_link: false
+                  max_length: 0
+                  more_link: false
+                  more_link_path: ''
+                  more_link_text: ''
+                  nl2br: false
+                  path: ''
+                  path_case: none
+                  prefix: ''
+                  preserve_tags: ''
+                  rel: ''
+                  replace_spaces: false
+                  strip_tags: false
+                  suffix: ''
+                  target: ''
+                  text: ''
+                  trim: false
+                  trim_whitespace: false
+                  word_boundary: true
+                click_sort_column: value
+                convert_spaces: false
+                delta_first_last: false
+                delta_limit: 0
+                delta_offset: 0
+                delta_reversed: false
+                element_class: ''
+                element_default_classes: true
+                element_label_class: ''
+                element_label_colon: false
+                element_label_type: ''
+                element_type: ''
+                element_wrapper_class: ''
+                element_wrapper_type: ''
+                empty: ''
+                empty_zero: false
+                entity_field: name
+                entity_type: taxonomy_term
+                exclude: true
+                field: name
+                field_api_classes: false
+                group_column: value
+                group_columns: {  }
+                group_rows: true
+                group_type: group
+                hide_alter_empty: true
+                hide_empty: false
+                id: name_1
+                label: ''
+                multi_type: separator
+                plugin_id: term_name
+                relationship: field_districts
+                separator: ', '
+                settings:
+                  link_to_entity: false
+                table: taxonomy_term_field_data
+                type: string
+            filters:
+              combine:
+                fields:
+                  name_1: name_1
+        entity_reference:
+          display_options:
+            defaults:
+              relationships: false
+            relationships: {  }
+    change:
+      display:
+        default:
+          display_options:
+            relationships:
+              field_districts:
+                admin_label: 'field_districts: Taxonomy term'
+                field: field_districts
+                group_type: group
+                id: field_districts
+                plugin_id: standard
+                relationship: none
+                required: false
+                table: tpr_unit__field_districts
