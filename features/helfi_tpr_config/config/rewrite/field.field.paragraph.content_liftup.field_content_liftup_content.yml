@@ -1,0 +1,16 @@
+settings:
+  tpr_service:
+    handler: 'default:tpr_service'
+    handler_settings:
+      target_bundles: null
+      sort:
+        field: _none
+        direction: ASC
+      auto_create: false
+  tpr_unit:
+    handler: views
+    handler_settings:
+      view:
+        view_name: der_tpr_unit
+        display_name: entity_reference
+        arguments: {  }
