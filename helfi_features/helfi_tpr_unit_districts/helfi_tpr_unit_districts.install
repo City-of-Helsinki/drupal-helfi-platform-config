@@ -6,7 +6,7 @@
  */
 
 /**
- * Add 'districts' field to TPR Unit entity and to Unit search view.
+ * Add 'districts' field to TPR Unit entity and support it at Unit search view.
  */
 function helfi_tpr_unit_districts_install() {
   /** @var \Drupal\update_helper\Updater $updateHelper */

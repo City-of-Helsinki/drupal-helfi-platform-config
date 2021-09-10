@@ -190,18 +190,36 @@ function helfi_helsinki_neighbourhoods_install() {
     "Östersundom",
   ];
 
+  $languages = \Drupal::languageManager()->getLanguages();
+  $langcodes = array_keys($languages);
+
   foreach ($neighbourhoods as $neighbourhood) {
+    $term = Term::create([
+      'parent' => [],
+      'name' => $neighbourhood,
+      'vid' => 'neighbourhoods',
+    ]);
     try {
-      Term::create([
-        'parent' => [],
-        'name' => $neighbourhood,
-        'vid' => 'neighbourhoods',
-      ])->save();
+      $term->save();
     } catch (\Drupal\Core\Entity\EntityStorageException $e) {
       \Drupal::logger('helfi_helsinki_neighbourhoods')->error('Failed to add term @name.',
         [
           '@name' => $neighbourhood,
         ]);
+    }
+
+    // Add default translations for all available languages.
+    foreach ($langcodes as $langcode) {
+      try {
+        $term->addTranslation($langcode, [
+          'name' => $neighbourhood,
+        ])->save();
+      } catch (\InvalidArgumentException $e) {
+      \Drupal::logger('helfi_helsinki_neighbourhoods')->error('Failed to translate term @name.',
+        [
+          '@name' => $neighbourhood,
+        ]);
+      }
     }
   }
 }
