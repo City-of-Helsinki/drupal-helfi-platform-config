@@ -190,9 +190,12 @@ function helfi_helsinki_neighbourhoods_install() {
     "Östersundom",
   ];
 
-  $languages = \Drupal::languageManager()->getLanguages();
+  $defaultLangcode = Drupal::configFactory()->get('language.content_settings.taxonomy_term.neighbourhoods')->getOriginal('default_langcode');
+  $languages = Drupal::languageManager()->getLanguages();
+  unset($languages[$defaultLangcode]);
   $langcodes = array_keys($languages);
 
+  // Add terms for the default language.
   foreach ($neighbourhoods as $neighbourhood) {
     $term = Term::create([
       'parent' => [],
@@ -202,9 +205,10 @@ function helfi_helsinki_neighbourhoods_install() {
     try {
       $term->save();
     } catch (\Drupal\Core\Entity\EntityStorageException $e) {
-      \Drupal::logger('helfi_helsinki_neighbourhoods')->error('Failed to add term @name.',
+      Drupal::logger('helfi_helsinki_neighbourhoods')->error('Failed to add term @name. Message: @message',
         [
           '@name' => $neighbourhood,
+          '@message' => $e->getMessage(),
         ]);
     }
 
@@ -215,10 +219,11 @@ function helfi_helsinki_neighbourhoods_install() {
           'name' => $neighbourhood,
         ])->save();
       } catch (\InvalidArgumentException $e) {
-      \Drupal::logger('helfi_helsinki_neighbourhoods')->error('Failed to translate term @name.',
-        [
-          '@name' => $neighbourhood,
-        ]);
+        Drupal::logger('helfi_helsinki_neighbourhoods')->error('Failed to translate term @name. Message: @message',
+          [
+            '@name' => $neighbourhood,
+            '@message' => $e->getMessage(),
+          ]);
       }
     }
   }
