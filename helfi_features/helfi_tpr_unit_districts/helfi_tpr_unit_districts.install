@@ -6,15 +6,36 @@
  */
 
 /**
+ * Uninstall actions.
+ */
+function helfi_tpr_unit_districts_uninstall() {
+  // @todo Remove installed configurations and changes made with Update helper.
+  // Currently, the installed configurations are marked as optional, so that
+  // the module can be re-installed without errors. However, removing the
+  // installed configurations are left to site maintainers until this is handled
+  // automatically during uninstallation.
+}
+
+/**
  * Add 'districts' field to TPR Unit entity and support it at Unit search view.
  */
 function helfi_tpr_unit_districts_install() {
+  $requiredConfigs = \Drupal::configFactory()->loadMultiple([
+    'field.field.tpr_unit.tpr_unit.field_districts',
+    'field.storage.tpr_unit.field_districts',
+    'language.content_settings.taxonomy_term.neighbourhoods',
+    'taxonomy.vocabulary.neighbourhoods',
+    'views.view.neighbourhoods_list',
+  ]);
+  // Only apply changes to the Unit search view if the appropriate
+  // configurations are present.
+  if (count(array_filter($requiredConfigs)) !== count($requiredConfigs)) {
+    return;
+  }
+
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_tpr_unit_districts', 'helfi_tpr_unit_districts_update_8001');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
+  // Execute configuration update definitions.
+  $updateHelper->executeUpdate('helfi_tpr_unit_districts', 'helfi_tpr_unit_districts_install');
 }
