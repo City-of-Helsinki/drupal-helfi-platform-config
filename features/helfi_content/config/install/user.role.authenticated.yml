@@ -9,5 +9,6 @@ permissions:
   - 'access content'
   - 'display eu cookie compliance popup'
   - 'use text format full_html'
+  - 'use text format minimal'
   - 'view media'
   - 'view remote entities'
