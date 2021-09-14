@@ -3,8 +3,9 @@ status: true
 dependencies:
   config:
     - field.field.tpr_service.tpr_service.field_content
-    - field.field.tpr_service.tpr_service.field_metatags
     - field.field.tpr_service.tpr_service.field_lower_content
+    - field.field.tpr_service.tpr_service.field_metatags
+    - field.field.tpr_service.tpr_service.field_sidebar_content
   module:
     - helfi_tpr
     - metatag
@@ -38,7 +39,7 @@ content:
     third_party_settings: {  }
   field_content:
     type: paragraphs
-    weight: 27
+    weight: 9
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -57,7 +58,7 @@ content:
     region: content
   field_lower_content:
     type: paragraphs
-    weight: 28
+    weight: 11
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -75,11 +76,30 @@ content:
     third_party_settings: {  }
     region: content
   field_metatags:
-    weight: 26
+    weight: 8
     settings:
       sidebar: false
     third_party_settings: {  }
     type: metatag_firehose
+    region: content
+  field_sidebar_content:
+    type: paragraphs
+    weight: 10
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: sidebar_text
+      features:
+        add_above: '0'
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
     region: content
   langcode:
     type: language_select
