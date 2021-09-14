@@ -2551,3 +2551,20 @@ msgctxt "HELfi Metatags"
 msgid "Page title"
 msgstr "Title"
 
+msgid "Process description"
+msgstr "Prosessin kuvaus"
+
+msgid "Processing time"
+msgstr "Käsittelyaika"
+
+msgid "Expiration time"
+msgstr "Voimassaoloaika"
+
+msgid "Costs"
+msgstr "Maksut"
+
+msgid "Additional information"
+msgstr "Lisätietoja"
+
+msgid "Requires authentication"
+msgstr "Vaatii tunnistautumisen"
