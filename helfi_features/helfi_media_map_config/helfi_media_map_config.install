@@ -9,7 +9,7 @@
 function helfi_media_map_config_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import
-  if (!$is_syncing) {
+  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_media_map_config_update_9001();
   }
 }

@@ -34,7 +34,9 @@ function helfi_base_config_install($is_syncing) {
     $installer->install(['gin_toolbar']);
 
     // Apply the HELfi base configurations.
-    helfi_base_config_update_9001();
+    if (Drupal::moduleHandler()->moduleExists('update_helper')) {
+      helfi_base_config_update_9001();
+    }
   }
 }
 

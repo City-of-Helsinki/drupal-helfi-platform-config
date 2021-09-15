@@ -12,24 +12,6 @@ use Symfony\Component\Yaml\Parser;
  * Implements hook_install().
  */
 function helfi_platform_config_install($is_syncing) {
-  $translations = [
-    'helfi_base_config',
-    'helfi_content',
-    'helfi_gdpr_compliance',
-    'helfi_languages',
-    'helfi_media',
-    'helfi_media_map_config',
-    'helfi_search',
-    'helfi_siteimprove_config',
-    'helfi_tpr_config',
-  ];
-
-  foreach ($translations as $module) {
-    if (Drupal::moduleHandler()->moduleExists($module)) {
-      _helfi_import_translations($module);
-    }
-  }
-
   // Do not perform following steps if the module is being installed as part
   // of a configuration import
   if (!$is_syncing) {
@@ -51,6 +33,24 @@ function helfi_platform_config_install($is_syncing) {
       Drupal::service('module_installer')->install([
         'config_rewrite',
       ]);
+    }
+  }
+
+  $translations = [
+    'helfi_base_config',
+    'helfi_content',
+    'helfi_gdpr_compliance',
+    'helfi_languages',
+    'helfi_media',
+    'helfi_media_map_config',
+    'helfi_search',
+    'helfi_siteimprove_config',
+    'helfi_tpr_config',
+  ];
+
+  foreach ($translations as $module) {
+    if (Drupal::moduleHandler()->moduleExists($module)) {
+      _helfi_import_translations($module);
     }
   }
 }

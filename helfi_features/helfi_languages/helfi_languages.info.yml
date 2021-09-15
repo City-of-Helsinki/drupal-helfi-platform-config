@@ -8,3 +8,4 @@ dependencies:
   - 'drupal:language'
   - 'drupal:locale'
   - 'drupal:menu_link_content'
+  - 'update_helper:update_helper'

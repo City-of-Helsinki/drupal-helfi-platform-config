@@ -16,4 +16,5 @@ dependencies:
   - 'focal_point:focal_point'
   - 'image_style_quality:image_style_quality'
   - 'media_entity_soundcloud:media_entity_soundcloud'
+  - 'update_helper:update_helper'
 package: HELfi

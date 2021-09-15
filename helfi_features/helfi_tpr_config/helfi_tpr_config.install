@@ -13,7 +13,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 function helfi_tpr_config_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import
-  if (!$is_syncing) {
+  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_tpr_config_update_9001();
     helfi_tpr_config_update_9002();
   }

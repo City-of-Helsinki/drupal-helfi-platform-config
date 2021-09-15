@@ -37,4 +37,5 @@ dependencies:
   - 'select2_icon:select2_icon'
   - 'social_media:social_media'
   - 'token_filter:token_filter'
+  - 'update_helper:update_helper'
 package: HELfi
