@@ -32,6 +32,9 @@ function helfi_base_config_install($is_syncing) {
     // Manually install gin_toolbar module.
     $installer = Drupal::service('module_installer');
     $installer->install(['gin_toolbar']);
+
+    // Apply the HELfi base configurations.
+    helfi_base_config_update_9001();
   }
 }
 

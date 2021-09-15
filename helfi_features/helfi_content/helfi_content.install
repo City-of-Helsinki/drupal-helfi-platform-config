@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * Implements hook_install().
+ *
+ * Update HELfi Content configurations when
+ * installing module for the first time.
+ */
+function helfi_content_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import
+  if (!$is_syncing) {
+    helfi_content_update_9001();
+    helfi_content_update_9002();
+  }
+}
+
+/**
  * {@inheritdoc}
  */
 function helfi_content_update_dependencies() {
@@ -25,6 +40,20 @@ function helfi_content_update_9001() {
 
   // Import translations.
   _helfi_import_translations(basename(__FILE__, '.install'));
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Configuration update after feature merge.
+ */
+function helfi_content_update_9002() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9002');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

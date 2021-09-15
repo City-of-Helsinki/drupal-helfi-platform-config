@@ -1,3 +1,33 @@
+config_ignore.settings:
+  expected_config:
+    ignored_config_entities: {  }
+  update_actions:
+    change:
+      ignored_config_entities:
+        - 'eu_cookie_compliance.cookie_category*'
+        - '*.site_settings'
+diff.settings:
+  expected_config:
+    general_settings:
+      layout_plugins:
+        split_fields:
+          enabled: true
+        unified_fields:
+          enabled: true
+        visual_inline:
+          enabled: false
+      visual_inline_theme: default
+  update_actions:
+    change:
+      general_settings:
+        layout_plugins:
+          split_fields:
+            enabled: false
+          unified_fields:
+            enabled: false
+          visual_inline:
+            enabled: true
+        visual_inline_theme: admin
 easy_breadcrumb.settings:
   expected_config:
     capitalizator_ignored_words:
@@ -102,6 +132,13 @@ user.settings:
   update_actions:
     change:
       register: admin_only
+views.settings:
+  expected_config:
+    display_extenders: {  }
+  update_actions:
+    change:
+      display_extenders:
+        - metatag_display_extender
 views.view.content:
   expected_config:
     display:

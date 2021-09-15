@@ -64,6 +64,7 @@ user.role.anonymous:
     add:
       permissions:
         - 'access content'
+        - 'view remote entities'
 user.role.authenticated:
   expected_config:
     permissions: {  }
@@ -71,6 +72,9 @@ user.role.authenticated:
     add:
       permissions:
         - 'access content'
+        - 'use text format full_html'
+        - 'use text format minimal'
+        - 'view remote entities'
 views.view.paragraphs_library:
   expected_config:
     core: 8.x
@@ -608,3 +612,31 @@ social_media.settings:
           img: twitter
           library: ''
           text: 'Share in Twitter'
+field.field.paragraph.text.field_text:
+  expected_config: {  }
+  update_actions:
+    add:
+      third_party_settings:
+        allowed_formats:
+          full_html: full_html
+          minimal: '0'
+          plain_text: '0'
+core.date_format.long:
+  expected_config:
+    pattern: 'l, F j, Y - H:i'
+  update_actions:
+    change:
+      pattern: 'j.n.Y - H:i'
+core.date_format.medium:
+  expected_config:
+    pattern: 'D, m/d/Y - H:i'
+  update_actions:
+    change:
+      pattern: 'jS F Y'
+core.date_format.short:
+  expected_config:
+    pattern: 'm/d/Y - H:i'
+  update_actions:
+    change:
+      pattern: j.n.Y
+

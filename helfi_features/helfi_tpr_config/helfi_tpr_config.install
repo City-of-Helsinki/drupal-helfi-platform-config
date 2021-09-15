@@ -8,6 +8,18 @@
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
+ * Implements hook_install().
+ */
+function helfi_tpr_config_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import
+  if (!$is_syncing) {
+    helfi_tpr_config_update_9001();
+    helfi_tpr_config_update_9002();
+  }
+}
+
+/**
  * {@inheritdoc}
  */
 function helfi_tpr_config_update_dependencies() {
