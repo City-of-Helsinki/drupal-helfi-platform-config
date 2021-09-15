@@ -317,8 +317,7 @@ display:
     display_title: 'Entity Reference'
     position: 2
     display_options:
-      display_extenders:
-        metatag_display_extender: {  }
+      display_extenders: {  }
       fields:
         name_override:
           id: name_override

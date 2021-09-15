@@ -132,13 +132,6 @@ user.settings:
   update_actions:
     change:
       register: admin_only
-views.settings:
-  expected_config:
-    display_extenders: {  }
-  update_actions:
-    change:
-      display_extenders:
-        - metatag_display_extender
 views.view.content:
   expected_config:
     display:
@@ -354,7 +347,11 @@ views.view.content:
                   name:
                     sortable: true
           display_title: Master
-        page_1:
-          display_options:
-            display_extenders:
-              metatag_display_extender: {  }
+select2_icon.settings:
+  expected_config:
+    path_to_json: ''
+    path_to_sprite: ''
+  update_actions:
+    change:
+      path_to_json: /themes/contrib/hdbt/src/icons/ui-icons.json
+      path_to_sprite: /themes/contrib/hdbt/dist/icons/sprite.svg
