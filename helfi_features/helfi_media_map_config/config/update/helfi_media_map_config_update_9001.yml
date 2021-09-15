@@ -9,7 +9,7 @@ field.field.node.landing_page.field_content:
           target_bundles_drag_drop:
             map:
               enabled: true
-              weight: 31
+              weight: -20
 field.field.node.page.field_content:
   expected_config: {  }
   update_actions:
@@ -21,7 +21,7 @@ field.field.node.page.field_content:
           target_bundles_drag_drop:
             map:
               enabled: true
-              weight: 31
+              weight: -20
 field.field.node.page.field_lower_content:
   expected_config: {  }
   update_actions:
@@ -33,7 +33,7 @@ field.field.node.page.field_lower_content:
           target_bundles_drag_drop:
             map:
               enabled: true
-              weight: 31
+              weight: -21
 user.role.admin:
   expected_config: {  }
   update_actions:
