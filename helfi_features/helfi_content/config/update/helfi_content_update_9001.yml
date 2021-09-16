@@ -1,18 +1,14 @@
 entity_usage.settings:
   expected_config:
-    track_enabled_base_fields: false
-    local_task_enabled_entity_types: { }
-    usage_controller_items_per_page: 25
+    local_task_enabled_entity_types: {  }
   update_actions:
     change:
-    track_enabled_base_fields: false
-    local_task_enabled_entity_types:
-      - paragraphs_library_item
-    usage_controller_items_per_page: 25
-    edit_warning_message_entity_types:
-      - paragraphs_library_item
-    delete_warning_message_entity_types:
-      - paragraphs_library_item
+      delete_warning_message_entity_types:
+        - paragraphs_library_item
+      edit_warning_message_entity_types:
+        - paragraphs_library_item
+      local_task_enabled_entity_types:
+        - paragraphs_library_item
 core.entity_form_display.paragraph.from_library.default:
   expected_config:
     content:
@@ -64,6 +60,7 @@ user.role.anonymous:
     add:
       permissions:
         - 'access content'
+        - 'view remote entities'
 user.role.authenticated:
   expected_config:
     permissions: {  }
@@ -71,6 +68,9 @@ user.role.authenticated:
     add:
       permissions:
         - 'access content'
+        - 'use text format full_html'
+        - 'use text format minimal'
+        - 'view remote entities'
 views.view.paragraphs_library:
   expected_config:
     core: 8.x
@@ -180,373 +180,12 @@ field.field.paragraph.from_library.field_reusable_paragraph:
     change:
       settings:
         handler: views
-views.view.redirect:
-  expected_config:
-    display:
-      default:
-        display_options:
-          filter_groups:
-            groups:
-              1: AND
-          filters:
-            status_code:
-              group_info:
-                group_items:
-                  1:
-                    operator: '='
-                    title: '300 Multiple Choices'
-                    value:
-                      max: ''
-                      min: ''
-                      value: '300'
-                  2:
-                    operator: '='
-                    title: '301 Moved Permanently'
-                    value:
-                      max: ''
-                      min: ''
-                      value: '301'
-                  3:
-                    operator: '='
-                    title: '302 Found'
-                    value:
-                      max: ''
-                      min: ''
-                      value: '302'
-                  4:
-                    operator: '='
-                    title: '303 See Other'
-                    value:
-                      max: ''
-                      min: ''
-                      value: '303'
-                  5:
-                    operator: '='
-                    title: '304 Not Modified'
-                    value:
-                      max: ''
-                      min: ''
-                      value: '304'
-                  6:
-                    operator: '='
-                    title: '305 Use Proxy'
-                    value:
-                      max: ''
-                      min: ''
-                      value: '305'
-                  7:
-                    operator: '='
-                    title: '307 Temporary Redirect'
-                    value:
-                      max: ''
-                      min: ''
-                      value: '307'
-  update_actions:
-    delete:
-      display:
-        default:
-          display_options:
-            filter_groups:
-              groups:
-                1: AND
-            filters:
-              status_code:
-                group_info:
-                  group_items:
-                    1:
-                      operator: '='
-                      title: '300 Multiple Choices'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '300'
-                    2:
-                      operator: '='
-                      title: '301 Moved Permanently'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '301'
-                    3:
-                      operator: '='
-                      title: '302 Found'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '302'
-                    4:
-                      operator: '='
-                      title: '303 See Other'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '303'
-                    5:
-                      operator: '='
-                      title: '304 Not Modified'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '304'
-                    6:
-                      operator: '='
-                      title: '305 Use Proxy'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '305'
-                    7:
-                      operator: '='
-                      title: '307 Temporary Redirect'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '307'
-    add:
-      display:
-        default:
-          cache_metadata:
-            contexts:
-              - 'languages:language_content'
-              - 'languages:language_interface'
-              - url
-              - url.query_args
-              - user.permissions
-        page_1:
-          cache_metadata:
-            contexts:
-              - 'languages:language_content'
-              - 'languages:language_interface'
-              - url
-              - url.query_args
-              - user.permissions
-    change:
-      display:
-        default:
-          display_options:
-            filter_groups:
-              groups:
-                - AND
-                - AND
-            filters:
-              status_code:
-                group_info:
-                  group_items:
-                    -
-                      operator: '='
-                      title: '300 Multiple Choices'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '300'
-                    -
-                      operator: '='
-                      title: '301 Moved Permanently'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '301'
-                    -
-                      operator: '='
-                      title: '302 Found'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '302'
-                    -
-                      operator: '='
-                      title: '303 See Other'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '303'
-                    -
-                      operator: '='
-                      title: '304 Not Modified'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '304'
-                    -
-                      operator: '='
-                      title: '305 Use Proxy'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '305'
-                    -
-                      operator: '='
-                      title: '307 Temporary Redirect'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '307'
-                    -
-                      operator: '='
-                      title: '300 Multiple Choices'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '300'
-                    -
-                      operator: '='
-                      title: '301 Moved Permanently'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '301'
-                    -
-                      operator: '='
-                      title: '302 Found'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '302'
-                    -
-                      operator: '='
-                      title: '303 See Other'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '303'
-                    -
-                      operator: '='
-                      title: '304 Not Modified'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '304'
-                    -
-                      operator: '='
-                      title: '305 Use Proxy'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '305'
-                    -
-                      operator: '='
-                      title: '307 Temporary Redirect'
-                      value:
-                        max: ''
-                        min: ''
-                        value: '307'
 scheduler.settings:
   expected_config:
     lightweight_cron_access_key: ''
   update_actions:
     change:
       lightweight_cron_access_key: 4b55ad815783dea619af
-views.view.scheduler_scheduled_content:
-  expected_config:
-    display:
-      default:
-        display_options:
-          filter_groups:
-            groups:
-              1: AND
-              2: OR
-          filters:
-            status:
-              group_info:
-                group_items:
-                  1:
-                    operator: '='
-                    title: Published
-                    value: '1'
-                  2:
-                    operator: '='
-                    title: Unpublished
-                    value: '0'
-      overview:
-        display_options:
-          menu:
-            description: 'Content scheduled for publishing and unpublishing'
-            type: normal
-  update_actions:
-    delete:
-      display:
-        default:
-          display_options:
-            filter_groups:
-              groups:
-                1: AND
-                2: OR
-            filters:
-              status:
-                group_info:
-                  group_items:
-                    1:
-                      operator: '='
-                      title: Published
-                      value: '1'
-                    2:
-                      operator: '='
-                      title: Unpublished
-                      value: '0'
-    add:
-      display:
-        default:
-          cache_metadata:
-            contexts:
-              - 'languages:language_content'
-              - 'languages:language_interface'
-              - url
-              - url.query_args
-              - user
-              - 'user.node_grants:view'
-        overview:
-          cache_metadata:
-            contexts:
-              - 'languages:language_content'
-              - 'languages:language_interface'
-              - url
-              - url.query_args
-              - user
-              - 'user.node_grants:view'
-        user_page:
-          cache_metadata:
-            contexts:
-              - 'languages:language_content'
-              - 'languages:language_interface'
-              - url
-              - url.query_args
-              - user
-              - 'user.node_grants:view'
-    change:
-      display:
-        default:
-          display_options:
-            filter_groups:
-              groups:
-                - AND
-                - OR
-                - AND
-                - OR
-            filters:
-              status:
-                group_info:
-                  group_items:
-                    -
-                      operator: '='
-                      title: Published
-                      value: '1'
-                    -
-                      operator: '='
-                      title: Unpublished
-                      value: '0'
-                    -
-                      operator: '='
-                      title: Published
-                      value: '1'
-                    -
-                      operator: '='
-                      title: Unpublished
-                      value: '0'
-        overview:
-          display_options:
-            menu:
-              description: ''
-              type: tab
 social_media.settings:
   expected_config:
     social_media:
@@ -608,3 +247,31 @@ social_media.settings:
           img: twitter
           library: ''
           text: 'Share in Twitter'
+field.field.paragraph.text.field_text:
+  expected_config: {  }
+  update_actions:
+    add:
+      third_party_settings:
+        allowed_formats:
+          full_html: full_html
+          minimal: '0'
+          plain_text: '0'
+core.date_format.long:
+  expected_config:
+    pattern: 'l, F j, Y - H:i'
+  update_actions:
+    change:
+      pattern: 'j.n.Y - H:i'
+core.date_format.medium:
+  expected_config:
+    pattern: 'D, m/d/Y - H:i'
+  update_actions:
+    change:
+      pattern: 'jS F Y'
+core.date_format.short:
+  expected_config:
+    pattern: 'm/d/Y - H:i'
+  update_actions:
+    change:
+      pattern: j.n.Y
+

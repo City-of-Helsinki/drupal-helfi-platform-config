@@ -5,7 +5,13 @@ dependencies:
     - field.storage.paragraph.field_text
     - paragraphs.paragraphs_type.text
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    full_html: full_html
+    minimal: '0'
+    plain_text: '0'
 id: paragraph.text.field_text
 field_name: field_text
 entity_type: paragraph

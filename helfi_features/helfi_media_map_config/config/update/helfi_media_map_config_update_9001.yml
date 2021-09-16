@@ -9,7 +9,7 @@ field.field.node.landing_page.field_content:
           target_bundles_drag_drop:
             map:
               enabled: true
-              weight: 31
+              weight: -20
 field.field.node.page.field_content:
   expected_config: {  }
   update_actions:
@@ -21,7 +21,7 @@ field.field.node.page.field_content:
           target_bundles_drag_drop:
             map:
               enabled: true
-              weight: 31
+              weight: -20
 field.field.node.page.field_lower_content:
   expected_config: {  }
   update_actions:
@@ -33,7 +33,7 @@ field.field.node.page.field_lower_content:
           target_bundles_drag_drop:
             map:
               enabled: true
-              weight: 31
+              weight: -21
 user.role.admin:
   expected_config: {  }
   update_actions:
@@ -52,3 +52,15 @@ user.role.content_producer:
         - 'create hel_map media'
         - 'delete own hel_map media'
         - 'edit own hel_map media'
+core.base_field_override.paragraphs_library_item.paragraphs_library_item.paragraphs:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            map: map
+          target_bundles_drag_drop:
+            map:
+              enabled: '1'
+              weight: '31'

@@ -1,3 +1,33 @@
+config_ignore.settings:
+  expected_config:
+    ignored_config_entities: {  }
+  update_actions:
+    change:
+      ignored_config_entities:
+        - 'eu_cookie_compliance.cookie_category*'
+        - '*.site_settings'
+diff.settings:
+  expected_config:
+    general_settings:
+      layout_plugins:
+        split_fields:
+          enabled: true
+        unified_fields:
+          enabled: true
+        visual_inline:
+          enabled: false
+      visual_inline_theme: default
+  update_actions:
+    change:
+      general_settings:
+        layout_plugins:
+          split_fields:
+            enabled: false
+          unified_fields:
+            enabled: false
+          visual_inline:
+            enabled: true
+        visual_inline_theme: admin
 easy_breadcrumb.settings:
   expected_config:
     capitalizator_ignored_words:
@@ -317,7 +347,11 @@ views.view.content:
                   name:
                     sortable: true
           display_title: Master
-        page_1:
-          display_options:
-            display_extenders:
-              metatag_display_extender: {  }
+select2_icon.settings:
+  expected_config:
+    path_to_json: ''
+    path_to_sprite: ''
+  update_actions:
+    change:
+      path_to_json: /themes/contrib/hdbt/src/icons/ui-icons.json
+      path_to_sprite: /themes/contrib/hdbt/dist/icons/sprite.svg

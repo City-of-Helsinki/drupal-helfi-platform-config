@@ -2,6 +2,7 @@ name: 'HELfi Content'
 type: module
 core_version_requirement: '^8.9 || ^9'
 dependencies:
+  - 'allowed_formats:allowed_formats'
   - 'drupal:ckeditor'
   - 'drupal:content_translation'
   - 'drupal:editor'
@@ -36,4 +37,5 @@ dependencies:
   - 'select2_icon:select2_icon'
   - 'social_media:social_media'
   - 'token_filter:token_filter'
+  - 'update_helper:update_helper'
 package: HELfi

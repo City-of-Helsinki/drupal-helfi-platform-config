@@ -38,3 +38,4 @@ dependencies:
   - 'simple_sitemap:simple_sitemap'
   - 'token:token'
   - 'twig_tweak:twig_tweak'
+  - 'update_helper:update_helper'

@@ -1,4 +1,0 @@
-config_rewrite: replace
-ignored_config_entities:
-  - 'eu_cookie_compliance.cookie_category*'
-  - '*.site_settings'

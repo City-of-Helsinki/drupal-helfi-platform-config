@@ -1,0 +1,117 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+    - link
+    - text
+id: tpr_errand_service.tpr_errand_service.default
+targetEntityType: tpr_errand_service
+bundle: tpr_errand_service
+mode: default
+content:
+  channels:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+  costs:
+    type: text_default
+    weight: 12
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  description:
+    type: text_default
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  expiration_time:
+    type: text_default
+    weight: 10
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  information:
+    type: text_default
+    weight: 11
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  langcode:
+    type: language
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+      native_language: false
+    third_party_settings: {  }
+  links:
+    type: link
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  name_override:
+    type: string
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  name_synonyms:
+    type: string
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  process_description:
+    type: text_default
+    weight: 8
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  processing_time:
+    type: text_default
+    weight: 9
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  type:
+    type: string
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden: {  }
