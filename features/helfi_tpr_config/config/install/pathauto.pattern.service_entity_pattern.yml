@@ -1,0 +1,14 @@
+uuid: 676c86ed-b8c2-450a-b77b-672a2b037f03
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: service_entity_pattern
+label: 'Service entity pattern'
+type: 'canonical_entities:tpr_service'
+pattern: '[tpr_service:menu-link-parents]/[tpr_service:label]'
+selection_criteria: {  }
+selection_logic: and
+weight: 0
+relationships: {  }
