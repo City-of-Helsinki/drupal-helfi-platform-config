@@ -1122,9 +1122,6 @@ msgstr ""
 "this message or find out more about cookies.</p>\r\n"
 ""
 
-msgid "<front>"
-msgstr "/cookie-information-and-settings"
-
 msgid ""
 "<h2>We use cookies on this site to enhance your user "
 "experience</h2><p>You have given your consent for us to set "
