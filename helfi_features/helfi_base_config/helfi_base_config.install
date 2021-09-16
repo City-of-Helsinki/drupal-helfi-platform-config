@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Contains install functions for Helfi Base Config.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Install HDBT and HDBT admin themes and make them as default themes.
+ */
+function helfi_base_config_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import
+  if (!$is_syncing) {
+    // Remove the default frontpage view.
+    Drupal::configFactory()->getEditable('views.view.frontpage')->delete();
+    Drupal::configFactory()->getEditable('system.menu.footer')->delete();
+
+    Drupal::service('theme_installer')->install(['hdbt', 'hdbt_admin']);
+
+    // Remove an obsolete block that is named hdbt_admin.
+    Drupal::configFactory()->getEditable('block.block.hdbt_admin')->delete();
+
+    $system_theme = Drupal::configFactory()->getEditable('system.theme');
+    $system_theme->set('default', 'hdbt')->set('admin', 'hdbt_admin')->save();
+
+    $node_settings = Drupal::configFactory()->getEditable('node.settings');
+    $node_settings->set('use_admin_theme', 'true')->save();
+
+    // Manually install gin_toolbar module.
+    $installer = Drupal::service('module_installer');
+    $installer->install(['gin_toolbar']);
+
+    // Apply the HELfi base configurations.
+    if (Drupal::moduleHandler()->moduleExists('update_helper')) {
+      helfi_base_config_update_9001();
+    }
+  }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function helfi_base_config_update_dependencies() {
+  // Run helfi_base_config_update_9001()
+  // after helfi_platform_config_update_9004().
+  $dependencies['helfi_base_config'][9001] = [
+    'helfi_platform_config' => 9004,
+  ];
+  return $dependencies;
+}
+
+/**
+ * Uninstall config_replace and apply HELfi base configurations.
+ *
+ * Config replace will be replaced with Config rewrite.
+ * See: https://www.drupal.org/project/config_replace/issues/3022176
+ */
+function helfi_base_config_update_9001() {
+
+  // Uninstall config_replace module if it exists.
+  if (Drupal::moduleHandler()->moduleExists('config_replace')) {
+    Drupal::service('module_installer')->uninstall([
+      'config_replace',
+    ]);
+  }
+  // Install config_rewrite module if it doesn't exist.
+  if (!Drupal::moduleHandler()->moduleExists('config_rewrite')) {
+    Drupal::service('module_installer')->install([
+      'config_rewrite',
+    ]);
+  }
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9001');
+
+  // Import translations.
+  _helfi_import_translations(basename(__FILE__, '.install'));
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

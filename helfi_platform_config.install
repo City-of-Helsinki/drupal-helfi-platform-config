@@ -5,15 +5,51 @@
  * Contains install functions for Helfi Platform Config.
  */
 
-use Symfony\Component\Yaml\Parser;
-
 /**
- * Manually import all Helfi features configuration translations on install.
- *
- * See: https://www.drupal.org/project/drupal/issues/2845437
+ * Implements hook_install().
  */
-function helfi_platform_config_install() {
-  helfi_platform_config_import_language_config();
+function helfi_platform_config_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import
+  if (!$is_syncing) {
+    if (!Drupal::moduleHandler()->moduleExists('update_helper')) {
+      Drupal::service('module_installer')->install([
+        'update_helper',
+      ]);
+    }
+
+    // Uninstall config_replace module if it exists.
+    if (Drupal::moduleHandler()->moduleExists('config_replace')) {
+      Drupal::service('module_installer')->uninstall([
+        'config_replace',
+      ]);
+    }
+
+    // Install config_rewrite module if it doesn't exist.
+    if (!Drupal::moduleHandler()->moduleExists('config_rewrite')) {
+      Drupal::service('module_installer')->install([
+        'config_rewrite',
+      ]);
+    }
+  }
+
+  $translations = [
+    'helfi_base_config',
+    'helfi_content',
+    'helfi_gdpr_compliance',
+    'helfi_languages',
+    'helfi_media',
+    'helfi_media_map_config',
+    'helfi_search',
+    'helfi_siteimprove_config',
+    'helfi_tpr_config',
+  ];
+
+  foreach ($translations as $module) {
+    if (Drupal::moduleHandler()->moduleExists($module)) {
+      _helfi_import_translations($module);
+    }
+  }
 }
 
 /**
@@ -22,7 +58,7 @@ function helfi_platform_config_install() {
  * Modules helfi_units and helfi_services will be removed in release 1.2.0.
  */
 function helfi_platform_config_update_9001() {
-  \Drupal::service('module_installer')->uninstall([
+  Drupal::service('module_installer')->uninstall([
     'helfi_units',
     'helfi_services',
   ]);
@@ -32,67 +68,30 @@ function helfi_platform_config_update_9001() {
  * Uninstall views infinite scroll and viewsrefernce.
  */
 function helfi_platform_config_update_9002() {
-  \Drupal::service('module_installer')->uninstall([
+  Drupal::service('module_installer')->uninstall([
     'views_infinite_scroll',
     'viewsreference',
   ]);
 }
 
 /**
- * Manually update all dependant features.
+ * Uninstall features module if it exists.
  */
-function helfi_platform_config_import_language_config() {
-  $language_manager = \Drupal::languageManager();
-  $yaml_parser = new Parser();
+function helfi_platform_config_update_9003() {
+  if (Drupal::moduleHandler()->moduleExists('features')) {
+    Drupal::service('module_installer')->uninstall([
+      'features',
+    ]);
+  }
+}
 
-  // Features that should be skipped.
-  $skip_features = ['..', '.', 'helfi_example_content'];
-
-  // The language code of the default locale.
-  $site_default_langcode = $language_manager->getDefaultLanguage()->getId();
-
-  // Scan features directory.
-  $features_directory = scandir(__DIR__ . '/features');
-
-  // Remove skipped features.
-  $features = array_diff($features_directory, $skip_features);
-
-  // Go through each feature and apply the configurations.
-  foreach ($features as $feature) {
-
-    // The directory where the language config files reside.
-    $language_config_directory = __DIR__ . "/features/{$feature}/config/install/language";
-
-    // Check if feature has translated config files.
-    if (!is_dir($language_config_directory)) {
-      continue;
-    }
-
-    $language_directory = scandir($language_config_directory);
-    $skip_dirs = ['..', '.', $site_default_langcode];
-
-    // Sub-directory names (language codes).
-    // The language code of the default language is excluded.
-    $langcodes = array_diff($language_directory, $skip_dirs);
-
-    foreach ($langcodes as $langcode) {
-      // All .yml files in the language's config subdirectory.
-      $config_files = glob("$language_config_directory/$langcode/*.yml");
-
-      foreach ($config_files as $file_name) {
-        // Information from the .yml file as an array.
-        $yaml = $yaml_parser->parse(file_get_contents($file_name));
-        // Uses the base name of the .yml file to get the config name.
-        $config_name = basename($file_name, '.yml');
-        // The language configuration object.
-        $config = $language_manager->getLanguageConfigOverride($langcode, $config_name);
-
-        foreach ($yaml as $config_key => $config_value) {
-          // Update the configuration object.
-          $config->set($config_key, $config_value);
-        }
-        $config->save();
-      }
-    }
+/**
+ * Install Update Helper module if it doesn't exist.
+ */
+function helfi_platform_config_update_9004() {
+  if (!Drupal::moduleHandler()->moduleExists('update_helper')) {
+    Drupal::service('module_installer')->install([
+      'update_helper',
+    ]);
   }
 }

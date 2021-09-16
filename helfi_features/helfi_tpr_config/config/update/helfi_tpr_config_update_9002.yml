@@ -1,0 +1,149 @@
+core.base_field_override.paragraphs_library_item.paragraphs_library_item.paragraphs:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            unit_search: unit_search
+          target_bundles_drag_drop:
+            unit_search:
+              enabled: '1'
+              weight: '30'
+field.field.node.article.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            unit_search: unit_search
+          target_bundles_drag_drop:
+            unit_search:
+              enabled: true
+              weight: 28
+field.field.node.landing_page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            content_liftup: content_liftup
+            service_list: service_list
+            unit_search: unit_search
+          target_bundles_drag_drop:
+            content_liftup:
+              enabled: true
+              weight: -32
+            service_list:
+              enabled: true
+              weight: 36
+            unit_search:
+              enabled: true
+              weight: 28
+field.field.node.page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            content_liftup: content_liftup
+            unit_search: unit_search
+          target_bundles_drag_drop:
+            content_liftup:
+              enabled: true
+              weight: -22
+            unit_search:
+              enabled: true
+              weight: 28
+field.field.node.page.field_lower_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            content_liftup: content_liftup
+            unit_search: unit_search
+          target_bundles_drag_drop:
+            content_liftup:
+              enabled: true
+              weight: -22
+            unit_search:
+              enabled: true
+              weight: -16
+user.role.admin:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'access tpr_service overview'
+        - 'access tpr_unit overview'
+        - 'administer tpr_service'
+        - 'administer tpr_unit'
+        - 'revert all tpr_service revisions'
+        - 'revert all tpr_unit revisions'
+        - 'translate tpr_errand_service'
+        - 'translate tpr_service'
+        - 'translate tpr_service_channel'
+        - 'translate tpr_unit'
+        - 'update any tpr_service'
+        - 'update any tpr_unit'
+        - 'update own tpr_service'
+        - 'update own tpr_unit'
+        - 'update tpr_service'
+        - 'update tpr_unit'
+        - 'view all tpr_service revisions'
+        - 'view all tpr_unit revisions'
+        - 'view tpr_service'
+        - 'view tpr_unit'
+user.role.anonymous:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'view tpr_service'
+        - 'view tpr_unit'
+user.role.authenticated:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'view tpr_service'
+        - 'view tpr_unit'
+pathauto.settings:
+  expected_config: { }
+  update_actions:
+    add:
+      enabled_entity_types:
+        - tpr_service
+        - tpr_unit
+core.entity_view_display.paragraph.content_liftup.default:
+  expected_config: { }
+  update_actions:
+    content:
+      field_content_liftup_unit:
+        weight: 2
+        label: hidden
+        settings:
+          view_mode: wide_teaser
+          link: false
+        third_party_settings: {  }
+        type: entity_reference_entity_view
+        region: content
+core.entity_form_display.paragraph.content_liftup.default:
+  expected_config: { }
+  update_actions:
+    content:
+      field_content_liftup_unit:
+        weight: 1
+        settings:
+          match_operator: CONTAINS
+          match_limit: 10
+          size: 60
+          placeholder: ''
+        third_party_settings: {  }
+        type: entity_reference_autocomplete
+        region: content

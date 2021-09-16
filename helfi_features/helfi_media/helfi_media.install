@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * Update HELfi Media configurations when
+ * installing module for the first time.
+ */
+function helfi_media_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import
+  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
+    helfi_media_update_9001();
+  }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function helfi_media_update_dependencies() {
+  // Run helfi_media_update_9001()
+  // after helfi_platform_config_update_9004() and helfi_base_config_9001().
+  $dependencies['helfi_media'][9001] = [
+    'helfi_platform_config' => 9004,
+    'helfi_base_config' => 9001,
+  ];
+  return $dependencies;
+}
+
+/**
+
+/**
+ * Install Base configuration for Helfi Media.
+ */
+function helfi_media_update_9001() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_media', 'helfi_media_update_9001');
+
+  // Import translations.
+  _helfi_import_translations(basename(__FILE__, '.install'));
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

@@ -1,0 +1,10 @@
+name: 'HELfi GDPR compliance'
+type: module
+core_version_requirement: '^8.9 || ^9'
+dependencies:
+  - 'ctools:ctools'
+  - 'drupal:block'
+  - 'eu_cookie_compliance:eu_cookie_compliance'
+  - 'helfi_content:helfi_content'
+  - 'update_helper:update_helper'
+package: HELfi
