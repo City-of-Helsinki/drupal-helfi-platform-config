@@ -1,0 +1,31 @@
+label: Taxonomiterm
+description: 'Innehåll som hör till en viss taxonomiterm.'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Verkställ
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+          tags:
+            previous: ‹‹
+            next: ››
+      arguments:
+        tid:
+          exception:
+            title: Alla
+          title: '{{ arguments.tid }}'
+  feed_1:
+    display_title: Innehållsflöde
+  page_1:
+    display_title: Sida

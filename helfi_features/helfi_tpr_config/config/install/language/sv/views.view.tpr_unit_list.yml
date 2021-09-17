@@ -1,10 +1,11 @@
+label: 'TPR units'
 display:
   default:
     display_title: Förvald
     display_options:
       exposed_form:
         options:
-          submit_button: Filtrera
+          submit_button: Verkställ
           reset_button_label: Återställ
           exposed_sorts_label: 'Sortera efter'
           sort_asc_label: Stigande
@@ -14,38 +15,46 @@ display:
           tags:
             previous: ‹‹
             next: ››
+            first: '« Första'
+            last: 'Sista »'
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
       fields:
-        label:
-          label: Label
+        tpr_unit_bulk_form:
+          label: Massuppdatera
+          action_title: Åtgärd
+        id:
+          label: ID
           separator: ', '
-        type:
-          label: Typ
-          separator: ', '
-        paragraphs__target_id:
+        name:
+          label: Namn
           separator: ', '
         langcode:
           label: Språk
           separator: ', '
-        id:
-          label: ID
+        content_translation_status:
+          label: Status
+          settings:
+            format_custom_true: Publicerad
+            format_custom_false: 'Ej publicerad'
           separator: ', '
-        changed:
-          label: Ändrad
+        content_translation_changed:
+          label: Uppdaterad
           separator: ', '
         operations:
           label: Funktioner
       filters:
-        label:
+        combine:
           expose:
-            label: Label
-          group_info:
-            label: Label
-        type:
+            label: Sök
+        langcode:
           expose:
-            label: Typ
+            label: Språk
+      title: 'TPR units'
+      header:
+        result:
+          content: 'Visar @start - @end av @total'
   page_1:
     display_title: Sida

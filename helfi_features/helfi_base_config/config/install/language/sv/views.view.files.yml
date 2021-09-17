@@ -1,0 +1,89 @@
+label: Filer
+description: 'Hitta och hantera filer.'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          tags:
+            previous: '‹ Föregående'
+            next: 'Nästa ›'
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      fields:
+        fid:
+          label: Fid
+        filename:
+          label: Namn
+          separator: ', '
+        filemime:
+          label: 'Typ av MIME'
+        filesize:
+          label: Storlek
+        status:
+          label: Status
+          settings:
+            format_custom_false: Temporär
+            format_custom_true: Permanent
+        created:
+          label: 'Datum för uppladdning'
+        changed:
+          label: 'Datum för ändring'
+        count:
+          label: 'Används i'
+      filters:
+        filename:
+          expose:
+            label: Filnamn
+        filemime:
+          expose:
+            label: 'Typ av MIME'
+        status:
+          expose:
+            label: Status
+      title: Filer
+      empty:
+        area_text_custom:
+          content: 'Inga filer tillgängliga.'
+  page_1:
+    display_title: 'Översikt av filer'
+    display_options:
+      menu:
+        title: Filer
+  page_2:
+    display_title: Filanvändning
+    display_options:
+      pager:
+        options:
+          tags:
+            previous: '‹ Föregående'
+            next: 'Nästa ›'
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      fields:
+        entity_label:
+          label: Objekt
+        type:
+          label: Objektstyp
+        module:
+          label: 'Registrerar modul'
+        count:
+          label: 'Antal använd'
+      title: Filanvändning
+      arguments:
+        fid:
+          exception:
+            title: Alla
+          title: 'Information om filanvändande för {{ arguments.fid }}'
