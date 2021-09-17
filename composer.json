@@ -66,6 +66,9 @@
       },
       "drupal/paragraphs_asymmetric_translation_widgets": {
         "https://www.drupal.org/project/paragraphs_asymmetric_translation_widgets/issues/3171810#comment-13836806": "https://www.drupal.org/files/issues/2020-09-25/3171810-2.patch"
+      },
+      "drupal/linkit": {
+        "[#UHF-1872] Linkit support for link field": "https://www.drupal.org/files/issues/2021-08-20/avoid-linkit-CI-issue.patch"
       }
     }
   }
