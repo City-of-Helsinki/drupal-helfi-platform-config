@@ -1,0 +1,88 @@
+label: Tiedostot
+description: 'Etsi ja hallitse tiedostoja.'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Suodatin
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      pager:
+        options:
+          tags:
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
+      fields:
+        fid:
+          label: FId
+        filename:
+          label: Nimi
+          separator: ', '
+        filemime:
+          label: 'MIME tyyppi'
+        filesize:
+          label: Koko
+        status:
+          label: Tila
+          settings:
+            format_custom_false: Tilapäinen
+            format_custom_true: Pysyvä
+        created:
+          label: Latauspäivämäärä
+        changed:
+          label: Muutospäivämäärä
+        count:
+          label: Käytetään
+      filters:
+        filename:
+          expose:
+            label: 'Tiedoston nimi'
+        filemime:
+          expose:
+            label: 'MIME tyyppi'
+        status:
+          expose:
+            label: Tila
+      title: Tiedostot
+      empty:
+        area_text_custom:
+          content: 'Tiedostoja ei ole saatavilla.'
+  page_1:
+    display_title: Tiedostot
+    display_options:
+      menu:
+        title: Tiedostot
+  page_2:
+    display_title: 'Tiedoston käyttö'
+    display_options:
+      pager:
+        options:
+          tags:
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
+      fields:
+        entity_label:
+          label: Entiteetti
+        type:
+          label: 'Entiteetin tyyppi'
+        module:
+          label: 'Käytön kirjannut moduuli'
+        count:
+          label: Käyttömäärä
+      title: 'Tiedoston käyttö'
+      arguments:
+        fid:
+          exception:
+            title: Kaikki

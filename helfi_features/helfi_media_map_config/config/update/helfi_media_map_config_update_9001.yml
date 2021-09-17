@@ -63,4 +63,4 @@ core.base_field_override.paragraphs_library_item.paragraphs_library_item.paragra
           target_bundles_drag_drop:
             map:
               enabled: '1'
-              weight: '31'
+              weight: '32'

@@ -1,0 +1,76 @@
+label: Käyttäjät
+description: 'Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä.'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Suodatin
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      pager:
+        options:
+          tags:
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
+      fields:
+        user_bulk_form:
+          label: Massapäivitys
+        name:
+          label: Käyttäjätunnus
+        status:
+          label: Tila
+          settings:
+            format_custom_true: Aktiivinen
+            format_custom_false: Suljettu
+        roles_target_id:
+          label: Käyttäjäroolit
+        created:
+          label: 'Käyttäjä jo'
+        access:
+          label: 'Viimeksi paikalla'
+        operations:
+          label: Toimenpiteet
+        mail:
+          separator: ', '
+      filters:
+        combine:
+          expose:
+            label: 'Nimi tai sähköposti sisältää'
+        status:
+          group_info:
+            label: Tila
+            group_items:
+              1:
+                title: Aktiivinen
+              2:
+                title: Suljettu
+        roles_target_id:
+          expose:
+            label: Rooli
+        permission:
+          expose:
+            label: Käyttöoikeus
+      title: Käyttäjät
+      empty:
+        area_text_custom:
+          content: 'Ei saatavilla olevia ihmisiä.'
+      use_more_text: lisää
+  page_1:
+    display_title: Sivu
+    display_options:
+      menu:
+        title: Lista
+        description: 'Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä.'
+      tab_options:
+        title: Käyttäjät
+        description: 'Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia.'

@@ -9,7 +9,7 @@ core.base_field_override.paragraphs_library_item.paragraphs_library_item.paragra
           target_bundles_drag_drop:
             unit_search:
               enabled: '1'
-              weight: '30'
+              weight: '31'
 field.field.node.article.field_content:
   expected_config: {  }
   update_actions:
