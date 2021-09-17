@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: link_field_content
+label: 'Link field content'
+description: ''
+matchers:
+  2dab3b8b-c12f-495d-9c44-21afe50e5adf:
+    uuid: 2dab3b8b-c12f-495d-9c44-21afe50e5adf
+    id: 'entity:node'
+    weight: -10
+    settings:
+      include_unpublished: false
+      metadata: ''
+      bundles: {  }
+      group_by_bundle: false
+      substitution_type: canonical
+      limit: 100
