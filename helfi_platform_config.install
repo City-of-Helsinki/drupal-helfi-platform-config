@@ -32,24 +32,6 @@ function helfi_platform_config_install($is_syncing) {
       ]);
     }
   }
-
-  $translations = [
-    'helfi_base_config',
-    'helfi_content',
-    'helfi_gdpr_compliance',
-    'helfi_languages',
-    'helfi_media',
-    'helfi_media_map_config',
-    'helfi_search',
-    'helfi_siteimprove_config',
-    'helfi_tpr_config',
-  ];
-
-  foreach ($translations as $module) {
-    if (Drupal::moduleHandler()->moduleExists($module)) {
-      _helfi_import_translations($module);
-    }
-  }
 }
 
 /**

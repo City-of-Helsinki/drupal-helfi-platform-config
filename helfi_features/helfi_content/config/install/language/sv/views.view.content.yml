@@ -55,7 +55,7 @@ display:
         langcode:
           expose:
             label: Språk
-      title: Content
+      title: Innehåll
       empty:
         area_text_custom:
           content: 'Inget innehåll tillgängligt.'
@@ -63,10 +63,10 @@ display:
   page_1:
     display_options:
       menu:
-        title: Content
+        title: Innehåll
       tab_options:
-        title: Content
+        title: Innehåll
         description: 'Hitta och hantera innehåll'
     display_title: Sida
-label: Content
+label: Innehåll
 description: 'Hitta och hantera innehåll.'

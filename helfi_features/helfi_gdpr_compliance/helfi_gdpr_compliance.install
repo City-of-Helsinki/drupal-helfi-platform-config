@@ -38,9 +38,6 @@ function helfi_gdpr_compliance_update_9001() {
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9001');
 
-  // Import translations.
-  _helfi_import_translations(basename(__FILE__, '.install'));
-
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
