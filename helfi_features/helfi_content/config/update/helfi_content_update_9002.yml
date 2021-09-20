@@ -1,0 +1,89 @@
+core.entity_form_display.node.page.default:
+  expected_config:
+    content:
+      field_content:
+        settings:
+          default_paragraph_type: text
+      field_lower_content:
+        settings:
+          default_paragraph_type: text
+        weight: 19
+      publish_on:
+        weight: 16
+      scheduler_settings:
+        weight: 15
+      unpublish_on:
+        weight: 17
+      url_redirects:
+        weight: 18
+  update_actions:
+    add:
+      content:
+        field_sidebar_content:
+          region: content
+          settings:
+            add_mode: dropdown
+            autocollapse: none
+            closed_mode: summary
+            closed_mode_threshold: 0
+            default_paragraph_type: _none
+            edit_mode: open
+            features:
+              add_above: '0'
+              collapse_edit_all: collapse_edit_all
+              duplicate: duplicate
+            form_display_mode: default
+            title: Paragraph
+            title_plural: Paragraphs
+          third_party_settings: {  }
+          type: paragraphs
+          weight: 15
+    change:
+      content:
+        field_content:
+          settings:
+            default_paragraph_type: _none
+        field_lower_content:
+          settings:
+            default_paragraph_type: _none
+          weight: 20
+        publish_on:
+          weight: 17
+        scheduler_settings:
+          weight: 16
+        unpublish_on:
+          weight: 18
+        url_redirects:
+          weight: 19
+core.entity_view_display.node.page.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      content:
+        field_sidebar_content:
+          label: hidden
+          region: content
+          settings:
+            link: ''
+            view_mode: default
+          third_party_settings: {  }
+          type: entity_reference_revisions_entity_view
+          weight: 5
+system.date:
+  expected_config:
+    country:
+      default: ''
+    first_day: 0
+    timezone:
+      default: ''
+      user:
+        configurable: true
+  update_actions:
+    change:
+      country:
+        default: FI
+      first_day: 1
+      timezone:
+        default: Europe/Helsinki
+        user:
+          configurable: false

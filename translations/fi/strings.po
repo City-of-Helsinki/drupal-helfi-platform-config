@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-07-06 16:50+0300\n"
-"PO-Revision-Date: 2021-07-06 16:50+0300\n"
+"POT-Creation-Date: 2021-09-07 14:14+0300\n"
+"PO-Revision-Date: 2021-09-07 14:14+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -1122,9 +1122,6 @@ msgstr ""
 "this message or find out more about cookies.</p>\r\n"
 ""
 
-msgid "<front>"
-msgstr "/cookie-information-and-settings"
-
 msgid ""
 "<h2>We use cookies on this site to enhance your user "
 "experience</h2><p>You have given your consent for us to set "
@@ -1856,6 +1853,9 @@ msgstr "Käyntiosoite"
 msgid "Postal address"
 msgstr "Postiosoite"
 
+msgid "Elsewhere on the web"
+msgstr "Muualla verkossa"
+
 msgid "Accept only essential cookies"
 msgstr "Hyväksy vain välttämättömät evästeet"
 
@@ -2548,3 +2548,20 @@ msgctxt "HELfi Metatags"
 msgid "Page title"
 msgstr "Title"
 
+msgid "Process description"
+msgstr "Prosessin kuvaus"
+
+msgid "Processing time"
+msgstr "Käsittelyaika"
+
+msgid "Expiration time"
+msgstr "Voimassaoloaika"
+
+msgid "Costs"
+msgstr "Maksut"
+
+msgid "Additional information"
+msgstr "Lisätietoja"
+
+msgid "Requires authentication"
+msgstr "Vaatii tunnistautumisen"

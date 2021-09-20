@@ -10,3 +10,4 @@ dependencies:
   - 'paragraphs:paragraphs'
   - 'helfi_content:helfi_content'
   - 'helfi_media_map:helfi_media_map'
+  - 'update_helper:update_helper'

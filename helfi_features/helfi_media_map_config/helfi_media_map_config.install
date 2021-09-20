@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Implements hook_install().
+ *
+ * Update HELfi Media map configurations when
+ * installing module for the first time.
+ */
+function helfi_media_map_config_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import
+  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
+    helfi_media_map_config_update_9001();
+  }
+}
+
+/**
  * {@inheritdoc}
  */
 function helfi_media_map_config_update_dependencies() {

@@ -1,0 +1,86 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tpr_service.field_sidebar_content
+    - paragraphs.paragraphs_type.from_library
+    - paragraphs.paragraphs_type.sidebar_text
+  module:
+    - entity_reference_revisions
+    - helfi_tpr
+id: tpr_service.tpr_service.field_sidebar_content
+field_name: field_sidebar_content
+entity_type: tpr_service
+bundle: tpr_service
+label: 'Sidebar content'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      sidebar_text: sidebar_text
+      from_library: from_library
+    target_bundles_drag_drop:
+      accordion:
+        weight: -38
+        enabled: false
+      accordion_item:
+        weight: -37
+        enabled: false
+      banner:
+        weight: -36
+        enabled: false
+      columns:
+        weight: -35
+        enabled: false
+      content_cards:
+        weight: -34
+        enabled: false
+      content_liftup:
+        weight: -33
+        enabled: false
+      from_library:
+        enabled: true
+        weight: -31
+      gallery:
+        weight: -30
+        enabled: false
+      gallery_slide:
+        weight: -29
+        enabled: false
+      hero:
+        weight: -28
+        enabled: false
+      image:
+        weight: -27
+        enabled: false
+      liftup_with_image:
+        weight: -26
+        enabled: false
+      list_of_links:
+        weight: -25
+        enabled: false
+      list_of_links_item:
+        weight: -24
+        enabled: false
+      map:
+        weight: -23
+        enabled: false
+      remote_video:
+        weight: -22
+        enabled: false
+      sidebar_text:
+        enabled: true
+        weight: -32
+      text:
+        weight: -39
+        enabled: false
+      unit_search:
+        weight: -21
+        enabled: false
+field_type: entity_reference_revisions

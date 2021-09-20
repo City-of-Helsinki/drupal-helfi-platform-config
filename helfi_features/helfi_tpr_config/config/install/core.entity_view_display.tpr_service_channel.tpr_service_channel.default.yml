@@ -1,0 +1,219 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - address
+    - helfi_tpr
+    - link
+    - telephone
+    - text
+id: tpr_service_channel.tpr_service_channel.default
+targetEntityType: tpr_service_channel
+bundle: tpr_service_channel
+mode: default
+content:
+  address:
+    type: address_default
+    weight: 12
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  authorization_code:
+    type: text_default
+    weight: 16
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  availabilities:
+    type: string
+    weight: 11
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  availability_summary:
+    type: text_default
+    weight: 13
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  call_charge_info:
+    type: text_default
+    weight: 17
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  e_decision:
+    type: boolean
+    weight: 20
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  e_processing:
+    type: boolean
+    weight: 19
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  email:
+    type: string
+    weight: 9
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  expiration_time:
+    type: text_default
+    weight: 15
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  for_corporate_customer:
+    type: boolean
+    weight: 23
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  for_personal_customer:
+    type: boolean
+    weight: 22
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  langcode:
+    type: language
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+      native_language: false
+    third_party_settings: {  }
+  links:
+    type: link
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  name:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  name_override:
+    type: string
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  name_synonyms:
+    type: string
+    weight: 8
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  payment_enabled:
+    type: boolean
+    weight: 21
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  phone:
+    type: telephone_link
+    weight: 10
+    region: content
+    label: hidden
+    settings:
+      title: ''
+    third_party_settings: {  }
+  prerequisites:
+    type: text_default
+    weight: 4
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  process_description:
+    type: text_default
+    weight: 14
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  requires_authentication:
+    type: boolean
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings: {  }
+  saved_to_customer_folder:
+    type: boolean
+    weight: 18
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  type:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  type_string:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden: {  }

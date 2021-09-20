@@ -29,8 +29,16 @@ field.field.node.landing_page.field_content:
       settings:
         handler_settings:
           target_bundles:
+            content_liftup: content_liftup
+            service_list: service_list
             unit_search: unit_search
           target_bundles_drag_drop:
+            content_liftup:
+              enabled: true
+              weight: -32
+            service_list:
+              enabled: true
+              weight: 36
             unit_search:
               enabled: true
               weight: 28
@@ -41,8 +49,12 @@ field.field.node.page.field_content:
       settings:
         handler_settings:
           target_bundles:
+            content_liftup: content_liftup
             unit_search: unit_search
           target_bundles_drag_drop:
+            content_liftup:
+              enabled: true
+              weight: -22
             unit_search:
               enabled: true
               weight: 28
@@ -53,8 +65,12 @@ field.field.node.page.field_lower_content:
       settings:
         handler_settings:
           target_bundles:
+            content_liftup: content_liftup
             unit_search: unit_search
           target_bundles_drag_drop:
+            content_liftup:
+              enabled: true
+              weight: -22
             unit_search:
               enabled: true
               weight: -16
@@ -104,3 +120,30 @@ pathauto.settings:
       enabled_entity_types:
         - tpr_service
         - tpr_unit
+core.entity_view_display.paragraph.content_liftup.default:
+  expected_config: { }
+  update_actions:
+    content:
+      field_content_liftup_unit:
+        weight: 2
+        label: hidden
+        settings:
+          view_mode: wide_teaser
+          link: false
+        third_party_settings: {  }
+        type: entity_reference_entity_view
+        region: content
+core.entity_form_display.paragraph.content_liftup.default:
+  expected_config: { }
+  update_actions:
+    content:
+      field_content_liftup_unit:
+        weight: 1
+        settings:
+          match_operator: CONTAINS
+          match_limit: 10
+          size: 60
+          placeholder: ''
+        third_party_settings: {  }
+        type: entity_reference_autocomplete
+        region: content
