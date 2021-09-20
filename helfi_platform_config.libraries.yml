@@ -5,7 +5,7 @@ kuura_health_chat:
       type: external,
       minified: true,
       attributes: {
-        data-inline-position-id: block-kuurahealthchat
+        data-container-id: block-kuurahealthchat
       }
     }
   css:
