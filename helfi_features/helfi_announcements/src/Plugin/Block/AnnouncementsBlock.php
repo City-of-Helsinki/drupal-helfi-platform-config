@@ -24,21 +24,21 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * The current route match.
    *
-   * @var RouteMatchInterface
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected RouteMatchInterface $routeMatch;
 
   /**
    * The node storage.
    *
-   * @var EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The language manager.
    *
-   * @var LanguageManagerInterface
+   * @var \Drupal\Core\Language\LanguageManagerInterface
    */
   protected LanguageManagerInterface $languageManager;
 
@@ -51,11 +51,11 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param RouteMatchInterface $route_match
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The current route match.
-   * @param EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param LanguageManagerInterface $language_manager
+   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager) {
@@ -92,7 +92,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
     // Get all published announcement nodes.
     $nids = \Drupal::entityQuery('node')
       ->accessCheck(TRUE)
-      ->condition('type','announcement')
+      ->condition('type', 'announcement')
       ->condition('status', NodeInterface::PUBLISHED)
       ->condition('langcode', $this->languageManager->getCurrentLanguage()->getId())
       ->execute();
@@ -136,7 +136,8 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    *
    * @param array $entityTypes
    *   Entity names to be used to check the current page.
-   * @return EntityInterface|null
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
    *   Current page's entity, if any.
    */
   protected function getCurrentPageEntity(array $entityTypes): ?EntityInterface {
