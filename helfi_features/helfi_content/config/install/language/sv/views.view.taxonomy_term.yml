@@ -29,9 +29,3 @@ display:
     display_title: Innehållsflöde
   page_1:
     display_title: Sida
-  views.view.archive.yml
-  views.view.content.yml
-  views.view.content_recent.yml
-  views.view.glossary.yml
-  views.view.paragraphs_library.yml
-  views.view.taxonomy_term.yml
