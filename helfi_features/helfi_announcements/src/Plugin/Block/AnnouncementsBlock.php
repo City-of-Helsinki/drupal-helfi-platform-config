@@ -149,4 +149,13 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
     return NULL;
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * @todo Make cacheable.
+   */
+  public function getCacheMaxAge(): int {
+    return 0;
+  }
+
 }
