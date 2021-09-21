@@ -3,17 +3,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-07-06 16:50+0300\n"
-"PO-Revision-Date: 2021-07-06 16:50+0300\n"
+"POT-Creation-Date: 2021-09-21 08:43+0300\n"
+"PO-Revision-Date: 2021-09-21 08:43+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-msgid "simple"
-msgstr "просто"
 
 msgid "Home"
 msgstr "Главная"
@@ -75,8 +72,14 @@ msgstr "финский"
 msgid "Focal point"
 msgstr "Точка фокуса"
 
-msgid "Russian"
-msgstr "русский"
+msgid "Teaser"
+msgstr "Анонс"
+
+msgid "Main navigation"
+msgstr "Основная навигация"
+
+msgid "Site section links"
+msgstr "Ссылки разделов сайта"
 
 msgid "Breadcrumbs"
 msgstr "Строка навигации"
@@ -99,17 +102,8 @@ msgstr "Главные вкладки"
 msgid "Secondary tabs"
 msgstr "Дополнительные вкладки"
 
-msgid "Administration"
-msgstr "Администрирование"
-
-msgid "Site branding"
-msgstr "Брендинг сайта"
-
-msgid "Tabs"
-msgstr "Вкладки"
-
-msgid "Tools"
-msgstr "Инструменты"
+msgid "Paragraphs"
+msgstr "Параграфы"
 
 msgid "Register"
 msgstr "Регистрация"
@@ -125,9 +119,6 @@ msgstr ""
 "Подсвеченный ввод в результатах "
 "поиска"
 
-msgid "Teaser"
-msgstr "Анонс"
-
 msgid "Preview"
 msgstr "Предпросмотр"
 
@@ -139,6 +130,9 @@ msgstr "Компактный"
 
 msgid "User account"
 msgstr "Учётная запись пользователя"
+
+msgid "simple"
+msgstr "просто"
 
 msgid "Large (480×480)"
 msgstr "Большой (480×480)"
@@ -175,6 +169,9 @@ msgstr "Удалить содержимое"
 
 msgid "Make content sticky"
 msgstr "Закрепить материал вверху списков"
+
+msgid "Make content unsticky"
+msgstr "Отменить прикрепление материала вверху списков"
 
 msgid "Promote content to front page"
 msgstr "Вывести материал на главную страницу"
@@ -234,61 +231,19 @@ msgstr ""
 "Ссылки, относящиеся к учётной записи "
 "активного пользователя"
 
+msgid "Administration"
+msgstr "Администрирование"
+
 msgid "Administrative task links"
 msgstr "Ссылки административных заданий"
+
+msgid "Tools"
+msgstr "Инструменты"
 
 msgid "User tool links, often added by modules"
 msgstr ""
 "Ссылки инструментов пользователя, "
 "часто добавленные модулями"
-
-msgid ""
-"[user:display-name],\n"
-"\n"
-"A request to cancel your account has been "
-"made at [site:name].\n"
-"\n"
-"You may now cancel your account on "
-"[site:url-brief] by clicking this link or copying and pasting it into "
-"your browser:\n"
-"\n"
-"[user:cancel-url]\n"
-"\n"
-"NOTE: The cancellation of "
-"your account is not reversible.\n"
-"\n"
-"This link expires in one day and "
-"nothing will happen if it is not used.\n"
-"\n"
-"--  [site:name] team"
-msgstr ""
-"[user:display-name],\r\n"
-"\r\n"
-"Был сделан запрос на "
-"удаление Вашей учётной записи на "
-"сайте [site:name].\r\n"
-"\r\n"
-"Теперь Вы можете "
-"удалить свою учётную запись на сайте "
-"[site:url-brief] перейдя по этой ссылке или "
-"скопировав ее в адресную строку "
-"Вашего "
-"браузера:\r\n"
-"\r\n"
-"[user:cancel-url]\r\n"
-"\r\n"
-"ВНИМАНИЕ: "
-"Удаление учётной записи это "
-"необратимый процесс!\r\n"
-"\r\n"
-"Срок "
-"действия ссылки завершится через "
-"сутки, и если она не будет "
-"использована, то удаления не "
-"произойдет.\r\n"
-"\r\n"
-"--  Администрация "
-"сайта [site:name]"
 
 msgid "Account cancellation request for [user:display-name] at [site:name]"
 msgstr ""
@@ -513,11 +468,11 @@ msgstr ""
 msgid "Anonymous"
 msgstr "Гость"
 
-msgid "Master"
+msgid "Default"
 msgstr "Основной"
 
 msgid "Apply"
-msgstr "Применить"
+msgstr "фильтр"
 
 msgid "Reset"
 msgstr "Сбросить"
@@ -543,9 +498,6 @@ msgstr "Элементов на страницу"
 msgid "- All -"
 msgstr "- Все -"
 
-msgid "Offset"
-msgstr "Пропустить"
-
 msgid "Title"
 msgstr "Заголовок"
 
@@ -561,6 +513,66 @@ msgstr "Отображается с @start по @end из @total"
 msgid "Page"
 msgstr "Страница"
 
+msgid "Who's new"
+msgstr "Новые пользователи"
+
+msgid "Shows a list of the newest user accounts on the site."
+msgstr ""
+"Показывает список новых учётных "
+"записей пользователей на сайте."
+
+msgid "Default"
+msgstr "Основной"
+
+msgid "A list of new users"
+msgstr "Список новых пользователей"
+
+msgid "User"
+msgstr "Пользователь"
+
+msgid "Who's online block"
+msgstr "Блок «Кто на сайте?»"
+
+msgid ""
+"Shows the user names of the most recently active users, and the total "
+"number of active users."
+msgstr ""
+"Показывает имена пользователей, "
+"которые были активными в последнее "
+"время, и общее число активных "
+"пользователей."
+
+msgid "Last access"
+msgstr "Последнее посещение"
+
+msgid ""
+"A user is considered online for this long after they have last viewed "
+"a page."
+msgstr ""
+"Пользователь считается находящимся "
+"на сайте в течение этого периода, "
+"начиная со времени последнего "
+"просмотра им страницы."
+
+msgid "Who's online"
+msgstr "Сейчас на сайте"
+
+msgid "There are currently @total users online."
+msgstr ""
+"В данный момент пользователей онлайн: "
+"@total."
+
+msgid "There are currently 0 users online."
+msgstr "Сейчас 0 пользователей онлайн."
+
+msgid "A list of users that are currently logged in."
+msgstr ""
+"Список пользователей, "
+"авторизированных в данный момент."
+
+msgid "Paragraph"
+msgstr "Параграф"
+
 msgid "Archive"
 msgstr "Архив"
 
@@ -573,23 +585,11 @@ msgstr "Ежемесячный архив"
 msgid "Block"
 msgstr "Блок"
 
-msgid "Recent content"
-msgstr "Последние материалы"
+msgid "Content"
+msgstr "Содержимое"
 
-msgid "Recent content."
-msgstr "Последние материалы."
-
-msgid "No content available."
-msgstr "Нет доступных материалов."
-
-msgid "More"
-msgstr "Ещё"
-
-msgid "Files"
-msgstr "Файлы"
-
-msgid "Find and manage files."
-msgstr "Поиск файлов и управление ими."
+msgid "Find and manage content."
+msgstr "Поиск материалов и управление ими"
 
 msgid "Filter"
 msgstr "Фильтр"
@@ -600,6 +600,51 @@ msgstr "‹ Предыдущий"
 msgid "Next ›"
 msgstr "Следующий ›"
 
+msgid "Content type"
+msgstr "Тип материала"
+
+msgid "Author"
+msgstr "Автор"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Published"
+msgstr "Опубликовано"
+
+msgid "Unpublished"
+msgstr "Снято с публикации"
+
+msgid "Updated"
+msgstr "Обновлено"
+
+msgid "Published status"
+msgstr "Статус публикации"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "No content available."
+msgstr "Нет доступных материалов."
+
+msgid "Find and manage content"
+msgstr "Поиск материалов и управление ими"
+
+msgid "Recent content"
+msgstr "Последние материалы"
+
+msgid "Recent content."
+msgstr "Последние материалы."
+
+msgid "More"
+msgstr "Ещё"
+
+msgid "Files"
+msgstr "Файлы"
+
+msgid "Find and manage files."
+msgstr "Поиск файлов и управление ими."
+
 msgid "Name"
 msgstr "Название"
 
@@ -608,9 +653,6 @@ msgstr "MIME-тип"
 
 msgid "Size"
 msgstr "Размер"
-
-msgid "Status"
-msgstr "Статус"
 
 msgid "Temporary"
 msgstr "Временный"
@@ -657,17 +699,11 @@ msgstr "Все"
 msgid "Glossary"
 msgstr "Глоссарий"
 
-msgid "Author"
-msgstr "Автор"
-
 msgid "Last update"
 msgstr "Последнее обновление"
 
 msgid "Attachment"
 msgstr "Вложение"
-
-msgid "Media"
-msgstr "Мультимедиа"
 
 msgid "Find and manage media."
 msgstr "Найти и управлять медиа."
@@ -684,23 +720,8 @@ msgstr "Название медиа"
 msgid "Type"
 msgstr "Тип"
 
-msgid "Published"
-msgstr "Опубликовано"
-
-msgid "Unpublished"
-msgstr "Снято с публикации"
-
-msgid "Updated"
-msgstr "Обновлено"
-
 msgid "True"
 msgstr "Истина"
-
-msgid "Published status"
-msgstr "Статус публикации"
-
-msgid "Language"
-msgstr "Язык"
 
 msgid "No media available."
 msgstr "Мультимедийных файлов не найдено."
@@ -750,6 +771,81 @@ msgstr "Таблица"
 msgid "Widget (table)"
 msgstr "Виджет (таблица)"
 
+msgid "Offset"
+msgstr "Пропустить"
+
+msgid "Label"
+msgstr "Label"
+
+msgid "Changed"
+msgstr "Изменение"
+
+msgid "‹ previous"
+msgstr "‹ предыдущая"
+
+msgid "next ›"
+msgstr "следующая ›"
+
+msgid "« first"
+msgstr "« первая"
+
+msgid "last »"
+msgstr "последняя »"
+
+msgid "With selection"
+msgstr "С выделенным"
+
+msgid "From"
+msgstr "От"
+
+msgid "Created"
+msgstr "Создано"
+
+msgid "To"
+msgstr "Кому"
+
+msgid "Status code"
+msgstr "Код состояния"
+
+msgid "300 Multiple Choices"
+msgstr "300 Множество Выборов"
+
+msgid "301 Moved Permanently"
+msgstr "301 Перемещёно Окончательно"
+
+msgid "302 Found"
+msgstr "302 Найдено"
+
+msgid "303 See Other"
+msgstr "303 Смотреть Другое"
+
+msgid "304 Not Modified"
+msgstr "304 Не Изменялось"
+
+msgid "305 Use Proxy"
+msgstr "305 Использовать Прокси"
+
+msgid "307 Temporary Redirect"
+msgstr "307 - Временно перемещено"
+
+msgid "Original language"
+msgstr "Язык оригинала"
+
+msgid "There is no redirect yet."
+msgstr "Перенаправлений пока нет."
+
+msgid "Content Type"
+msgstr "Тип материала"
+
+msgid "Publish on"
+msgstr "Опубликовать"
+
+msgid "Unpublish on"
+msgstr "Снять с публикации"
+
+msgid "Scheduled"
+msgstr "Запланировано"
+
 msgid "Taxonomy term"
 msgstr "Термин таксономии"
 
@@ -761,11 +857,11 @@ msgstr ""
 msgid "Feed"
 msgstr "Поток данных"
 
-msgid "TPR unit list"
-msgstr "TPR units"
-
 msgid "Bulk update"
 msgstr "Массовое обновление"
+
+msgid "TPR unit list"
+msgstr "TPR units"
 
 msgid "TPR Units"
 msgstr "TPR units"
@@ -792,9 +888,6 @@ msgstr "Роли"
 
 msgid "Member for"
 msgstr "Зарегистрирован на сайте"
-
-msgid "Last access"
-msgstr "Последнее посещение"
 
 msgid "Name or email contains"
 msgstr "Имя или email содержит"
@@ -837,59 +930,110 @@ msgstr "Дата"
 msgid "Message"
 msgstr "Сообщение"
 
-msgid "User"
-msgstr "Пользователь"
-
 msgid "No log messages available."
 msgstr "В системном журнале нет сообщений."
 
-msgid "Who's new"
-msgstr "Новые пользователи"
-
-msgid "Shows a list of the newest user accounts on the site."
+msgid "The time that the menu link was last edited."
 msgstr ""
-"Показывает список новых учётных "
-"записей пользователей на сайте."
+"Время последнего редактирования "
+"ссылки меню."
 
-msgid "A list of new users"
-msgstr "Список новых пользователей"
+msgid "Description"
+msgstr "Описание"
 
-msgid "Who's online block"
-msgstr "Блок «Кто на сайте?»"
-
-msgid ""
-"Shows the user names of the most recently active users, and the total "
-"number of active users."
+msgid "Shown when hovering over the menu link."
 msgstr ""
-"Показывает имена пользователей, "
-"которые были активными в последнее "
-"время, и общее число активных "
-"пользователей."
+"Описание, показываемое при наведении "
+"мыши на ссылку меню."
 
-msgid ""
-"A user is considered online for this long after they have last viewed "
-"a page."
+msgid "Menu link title"
+msgstr "Название ссылки меню"
+
+msgid "The text to be used for this link in the menu."
 msgstr ""
-"Пользователь считается находящимся "
-"на сайте в течение этого периода, "
-"начиная со времени последнего "
-"просмотра им страницы."
+"Текст, который будет использоваться "
+"для данной ссылки меню."
 
-msgid "Who's online"
-msgstr "Сейчас на сайте"
+msgid "Promoted to front page"
+msgstr "Помещено на главную страницу"
 
-msgid "There are currently @total users online."
-msgstr ""
-"В данный момент пользователей онлайн: "
-"@total."
+msgid "On"
+msgstr "Вкл"
 
-msgid "There are currently 0 users online."
-msgstr "Сейчас 0 пользователей онлайн."
+msgid "Off"
+msgstr "Выкл"
 
-msgid "A list of users that are currently logged in."
-msgstr ""
-"Список пользователей, "
-"авторизированных в данный момент."
+msgid "Image"
+msgstr "Изображение"
+
+msgid "Token"
+msgstr "Токен"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "Content region"
+msgstr "Содержимое"
+
+msgid "Keywords"
+msgstr "Ключевые слова"
+
+msgid "Upper content region"
+msgstr "Upper content region"
+
+msgid "Items"
+msgstr "Элементы"
+
+msgid "Heading"
+msgstr "Заголовок"
+
+msgid "Link"
+msgstr "Ссылка"
+
+msgid "Background color"
+msgstr "Цвет фона"
+
+msgid "Caption"
+msgstr "Подпись"
+
+msgid "Links"
+msgstr "Ссылки"
+
+msgid "Remote video"
+msgstr "Внешнее видео"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "White"
+msgstr "Белый"
+
+msgid "Russian"
+msgstr "русский"
+
+msgid "403 access denied"
+msgstr "403 доступ запрещен"
+
+msgid "404 page not found"
+msgstr "404 страница не найдена"
+
+msgid "Front page"
+msgstr "Главная страница"
+
+msgid "Global"
+msgstr "Глобальный"
+
+msgid "Article"
+msgstr "Статья"
+
+msgid "Basic page"
+msgstr "Страница"
+
+msgid "Columns"
+msgstr "Колонки"
+
+msgid "Delete redirect"
+msgstr "Удалить перенаправление"
 
 msgid ""
 "[user:display-name],\n"
@@ -979,6 +1123,12 @@ msgstr ""
 "-- "
 "Команда сайта «[site:name]»"
 
+msgid "Anonymous user"
+msgstr "Анонимный пользователь"
+
+msgid "Authenticated user"
+msgstr "Аутентифицированный пользователь"
+
 msgid "File usage information for {{ arguments.fid }}"
 msgstr ""
 "Информация про использование файла "
@@ -987,17 +1137,20 @@ msgstr ""
 msgid "All content, by letter."
 msgstr "Все материалы, по алфавиту."
 
+msgid "Media"
+msgstr "Мультимедиа"
+
+msgid "Redirect"
+msgstr "Переадресация"
+
 msgid "{{ message }}"
 msgstr "сообщение"
 
-msgid "White"
-msgstr "Белый"
+msgid "Summary"
+msgstr "Summary"
 
-msgid "Paragraph"
-msgstr "Параграф"
-
-msgid "Paragraphs"
-msgstr "Параграфы"
+msgid "Map"
+msgstr "Map"
 
 msgid "Accept"
 msgstr "Принять"
@@ -1021,87 +1174,7 @@ msgstr ""
 ""
 
 msgid "Save preferences"
-msgstr "Allow only essential cookies"
-
-msgid "Redirect"
-msgstr "Переадресация"
-
-msgid "‹ previous"
-msgstr "‹ предыдущая"
-
-msgid "next ›"
-msgstr "следующая ›"
-
-msgid "« first"
-msgstr "« первая"
-
-msgid "last »"
-msgstr "последняя »"
-
-msgid "With selection"
-msgstr "С выделенным"
-
-msgid "From"
-msgstr "От"
-
-msgid "Created"
-msgstr "Создано"
-
-msgid "To"
-msgstr "Кому"
-
-msgid "Status code"
-msgstr "Код состояния"
-
-msgid "300 Multiple Choices"
-msgstr "300 Множество Выборов"
-
-msgid "301 Moved Permanently"
-msgstr "301 Перемещёно Окончательно"
-
-msgid "302 Found"
-msgstr "302 Найдено"
-
-msgid "303 See Other"
-msgstr "303 Смотреть Другое"
-
-msgid "304 Not Modified"
-msgstr "304 Не Изменялось"
-
-msgid "305 Use Proxy"
-msgstr "305 Использовать Прокси"
-
-msgid "307 Temporary Redirect"
-msgstr "307 - Временно перемещено"
-
-msgid "Original language"
-msgstr "Язык оригинала"
-
-msgid "There is no redirect yet."
-msgstr "Перенаправлений пока нет."
-
-msgid "Content Type"
-msgstr "Тип материала"
-
-msgid "Publish on"
-msgstr "Опубликовать"
-
-msgid "Unpublish on"
-msgstr "Снять с публикации"
-
-msgid "Scheduled"
-msgstr "Запланировано"
-
-msgid "Content"
-msgstr "Содержимое"
-
-msgid "Changed"
-msgstr "Изменение"
-
-msgid "The time that the menu link was last edited."
-msgstr ""
-"Время последнего редактирования "
-"ссылки меню."
+msgstr "Accept selected cookies"
 
 msgid ""
 "<h2>Thank you for accepting cookies</h2><p>You can now hide this "
@@ -1124,52 +1197,10 @@ msgstr ""
 "for us to set cookies.</p>\r\n"
 ""
 
-msgid "Front page"
-msgstr "Главная страница"
+msgid "Entity Reference"
+msgstr "Entity Reference"
 
-msgid "Global"
-msgstr "Глобальный"
-
-msgid "Label"
-msgstr "Label"
-
-msgid "Summary"
-msgstr "Summary"
-
-msgid "Token"
-msgstr "Токен"
-
-msgid "Content region"
-msgstr "Содержимое"
-
-msgid "Upper content region"
-msgstr "Содержимое"
-
-msgid "403 access denied"
-msgstr "403 доступ запрещен"
-
-msgid "404 page not found"
-msgstr "404 страница не найдена"
-
-msgid "Accordion"
-msgstr "Accordion"
-
-msgid "Delete redirect"
-msgstr "Удалить перенаправление"
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By tapping the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
-
-msgid "Admin"
-msgstr "Admin"
-
-msgid "Metatags"
-msgstr "Metatags"
-
-msgid "Used"
-msgstr "Used"
+msgid "Combine fields filter"
+msgstr "Combine fields filter"
 
 

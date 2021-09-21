@@ -3,17 +3,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-07-06 16:50+0300\n"
-"PO-Revision-Date: 2021-07-06 16:50+0300\n"
+"POT-Creation-Date: 2021-09-21 08:43+0300\n"
+"PO-Revision-Date: 2021-09-21 08:43+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-msgid "simple"
-msgstr "enkel"
 
 msgid "Home"
 msgstr "Hem"
@@ -72,8 +69,8 @@ msgstr "Engelska"
 msgid "Finnish"
 msgstr "Finska"
 
-msgid "Russian"
-msgstr "Ryska"
+msgid "Teaser"
+msgstr "Teaser"
 
 msgid "Swedish"
 msgstr "Svenska"
@@ -96,15 +93,6 @@ msgstr "Primära flikar"
 msgid "Secondary tabs"
 msgstr "Sekundära flikar"
 
-msgid "Site branding"
-msgstr "Webbplatsens varumärke"
-
-msgid "Tabs"
-msgstr "Flikar"
-
-msgid "Tools"
-msgstr "Verktyg"
-
 msgid "Register"
 msgstr "Registrera"
 
@@ -117,9 +105,6 @@ msgstr "Sökindex"
 msgid "Search result highlighting input"
 msgstr "Sökresultat framhäver inmatning"
 
-msgid "Teaser"
-msgstr "Ingress"
-
 msgid "Preview"
 msgstr "Förhandsgranska"
 
@@ -131,6 +116,9 @@ msgstr "Kompakt"
 
 msgid "User account"
 msgstr "Användarkonto"
+
+msgid "simple"
+msgstr "enkel"
 
 msgid "Large (480×480)"
 msgstr "Stor (480×480)"
@@ -223,49 +211,11 @@ msgstr "Länkar relaterade till det aktiva användarkontot"
 msgid "Administrative task links"
 msgstr "Länkar för administrativa uppgifter"
 
+msgid "Tools"
+msgstr "Verktyg"
+
 msgid "User tool links, often added by modules"
 msgstr "Länkar för användare som ofta läggs till av moduler"
-
-msgid ""
-"[user:display-name],\n"
-"\n"
-"A request to cancel your account has been "
-"made at [site:name].\n"
-"\n"
-"You may now cancel your account on "
-"[site:url-brief] by clicking this link or copying and pasting it into "
-"your browser:\n"
-"\n"
-"[user:cancel-url]\n"
-"\n"
-"NOTE: The cancellation of "
-"your account is not reversible.\n"
-"\n"
-"This link expires in one day and "
-"nothing will happen if it is not used.\n"
-"\n"
-"--  [site:name] team"
-msgstr ""
-"[user:display-name],\r\n"
-"\r\n"
-"Det har gjorts en begäran om att ta "
-"bort ditt konto på [site:name].\r\n"
-"\r\n"
-"Du kan nu ta bort ditt konto "
-"på [site:url-brief] genom att klicka på denna länk eller genom att "
-"klippa ut och klistra in den i din "
-"webbläsare:\r\n"
-"\r\n"
-"[user:cancel-url]\r\n"
-"\r\n"
-"OBSERVERA: "
-"Borttagandet av ditt konto kan inte ångras.\r\n"
-"\r\n"
-"Den här länken "
-" är giltig en dag och inget händer om den inte används.\r\n"
-"\r\n"
-"-- "
-" Administratörerna på [site:name]"
 
 msgid "Account cancellation request for [user:display-name] at [site:name]"
 msgstr ""
@@ -463,8 +413,8 @@ msgstr "Kontouppgifter för [user:display-name] på [site:name] (borttagen)"
 msgid "Anonymous"
 msgstr "Gäst"
 
-msgid "Master"
-msgstr "Huvud"
+msgid "Default"
+msgstr "Förvald"
 
 msgid "Apply"
 msgstr "Verkställ"
@@ -493,9 +443,6 @@ msgstr "Inlägg per sida"
 msgid "- All -"
 msgstr "- Alla -"
 
-msgid "Offset"
-msgstr "Kompensera"
-
 msgid "Title"
 msgstr "Titel"
 
@@ -511,6 +458,56 @@ msgstr "Visar @start - @end av @total"
 msgid "Page"
 msgstr "Sida"
 
+msgid "Who's new"
+msgstr "Vilka är nya?"
+
+msgid "Shows a list of the newest user accounts on the site."
+msgstr "Visar en lista över de senast användarkontona på webbplatsen."
+
+msgid "Default"
+msgstr "Förvald"
+
+msgid "A list of new users"
+msgstr "En lista på nya användare"
+
+msgid "User"
+msgstr "Användare"
+
+msgid "Who's online block"
+msgstr "Block för vilka som är inloggade"
+
+msgid ""
+"Shows the user names of the most recently active users, and the total "
+"number of active users."
+msgstr ""
+"Visar de användarnamnen för de senast aktiva användarna samt de "
+"totalt antal aktiva användare."
+
+msgid "Last access"
+msgstr "Senast åtkomst"
+
+msgid ""
+"A user is considered online for this long after they have last viewed "
+"a page."
+msgstr ""
+"En användare anses vara inloggad så här länge efter att de senast "
+"tittat på en sida."
+
+msgid "Who's online"
+msgstr "Vilka är inloggade"
+
+msgid "There are currently @total users online."
+msgstr "För närvarande är @total användare inloggade."
+
+msgid "There are currently 0 users online."
+msgstr "För närvarande är 0 användare inloggade."
+
+msgid "A list of users that are currently logged in."
+msgstr "En lista på användare som för närvarande är inloggade."
+
+msgid "Paragraph"
+msgstr "Paragraf"
+
 msgid "Archive"
 msgstr "Arkiv"
 
@@ -520,23 +517,11 @@ msgstr "Allt innehåll, månadsvis."
 msgid "Monthly archive"
 msgstr "Månatligt arkiv"
 
-msgid "Recent content"
-msgstr "Nyligen uppdaterat innehåll"
+msgid "Content"
+msgstr "Innehåll"
 
-msgid "Recent content."
-msgstr "Nytt innehåll."
-
-msgid "No content available."
-msgstr "Inget innehåll tillgängligt."
-
-msgid "More"
-msgstr "Mer"
-
-msgid "Files"
-msgstr "Filer"
-
-msgid "Find and manage files."
-msgstr "Hitta och hantera filer."
+msgid "Find and manage content."
+msgstr "Hitta och hantera innehåll."
 
 msgid "Filter"
 msgstr "Filtrera"
@@ -546,6 +531,48 @@ msgstr "‹ Föregående"
 
 msgid "Next ›"
 msgstr "Nästa ›"
+
+msgid "Content type"
+msgstr "Innehållstyp"
+
+msgid "Author"
+msgstr "Författare"
+
+msgid "Published"
+msgstr "Publicerad"
+
+msgid "Unpublished"
+msgstr "Ej publicerad"
+
+msgid "Updated"
+msgstr "Uppdaterad"
+
+msgid "Published status"
+msgstr "Status för publicering"
+
+msgid "Language"
+msgstr "Språk"
+
+msgid "No content available."
+msgstr "Inget innehåll tillgängligt."
+
+msgid "Find and manage content"
+msgstr "Hitta och hantera innehåll"
+
+msgid "Recent content"
+msgstr "Nyligen uppdaterat innehåll"
+
+msgid "Recent content."
+msgstr "Nytt innehåll."
+
+msgid "More"
+msgstr "Mer"
+
+msgid "Files"
+msgstr "Filer"
+
+msgid "Find and manage files."
+msgstr "Hitta och hantera filer."
 
 msgid "Name"
 msgstr "Namn"
@@ -598,9 +625,6 @@ msgstr "Alla"
 msgid "Glossary"
 msgstr "Ordlista"
 
-msgid "Author"
-msgstr "Författare"
-
 msgid "Last update"
 msgstr "Senaste uppdatering"
 
@@ -622,23 +646,8 @@ msgstr "Medianamn"
 msgid "Type"
 msgstr "Typ"
 
-msgid "Published"
-msgstr "Publicerad"
-
-msgid "Unpublished"
-msgstr "Ej publicerad"
-
-msgid "Updated"
-msgstr "Uppdaterad"
-
 msgid "True"
 msgstr "Sant"
-
-msgid "Published status"
-msgstr "Status för publicering"
-
-msgid "Language"
-msgstr "Språk"
 
 msgid "No media available."
 msgstr "Ingen media tillgänglig."
@@ -682,6 +691,66 @@ msgstr "Tabell"
 msgid "Widget (table)"
 msgstr "Gränssnittskomponent (tabell)"
 
+msgid "Offset"
+msgstr "Kompensera"
+
+msgid "Label"
+msgstr "Label"
+
+msgid "Changed"
+msgstr "Ändrad"
+
+msgid "List of redirects"
+msgstr "Lista över omdirigeringar"
+
+msgid "‹ previous"
+msgstr "‹ föregående"
+
+msgid "next ›"
+msgstr "nästa ›"
+
+msgid "« first"
+msgstr "« första"
+
+msgid "last »"
+msgstr "sista »"
+
+msgid "With selection"
+msgstr "Med urval"
+
+msgid "From"
+msgstr "Från"
+
+msgid "Created"
+msgstr "Skapad"
+
+msgid "To"
+msgstr "Till"
+
+msgid "Status code"
+msgstr "Statuskod"
+
+msgid "307 Temporary Redirect"
+msgstr "300 Multiple Choices"
+
+msgid "Original language"
+msgstr "Ursprungsspråk"
+
+msgid "There is no redirect yet."
+msgstr "Det finns ingen omdirigering ännu."
+
+msgid "Content Type"
+msgstr "Innehållstyp"
+
+msgid "Publish on"
+msgstr "Publicera den"
+
+msgid "Unpublish on"
+msgstr "Avpublicera den"
+
+msgid "Scheduled"
+msgstr "Schemalagd"
+
 msgid "Taxonomy term"
 msgstr "Taxonomiterm"
 
@@ -691,11 +760,11 @@ msgstr "Innehåll som hör till en viss taxonomiterm."
 msgid "Feed"
 msgstr "Innehållsflöde"
 
-msgid "TPR unit list"
-msgstr "TPR units"
-
 msgid "Bulk update"
 msgstr "Massuppdatera"
+
+msgid "TPR unit list"
+msgstr "TPR units"
 
 msgid "TPR Units"
 msgstr "TPR units"
@@ -720,9 +789,6 @@ msgstr "Roller"
 
 msgid "Member for"
 msgstr "Medlem i"
-
-msgid "Last access"
-msgstr "Senast åtkomst"
 
 msgid "Name or email contains"
 msgstr "Namn eller e-post innehåller"
@@ -763,49 +829,26 @@ msgstr "Datum"
 msgid "Message"
 msgstr "Meddelande"
 
-msgid "User"
-msgstr "Användare"
-
 msgid "No log messages available."
 msgstr "Inga loggmeddelanden tillgängliga."
 
-msgid "Who's new"
-msgstr "Vilka är nya?"
+msgid "Description"
+msgstr "Beskrivning"
 
-msgid "Shows a list of the newest user accounts on the site."
-msgstr "Visar en lista över de senast användarkontona på webbplatsen."
+msgid "Token"
+msgstr "Ersättningstecken"
 
-msgid "A list of new users"
-msgstr "En lista på nya användare"
+msgid "Content region"
+msgstr "Innehåll"
 
-msgid "Who's online block"
-msgstr "Block för vilka som är inloggade"
+msgid "Upper content region"
+msgstr "Innehåll"
 
-msgid ""
-"Shows the user names of the most recently active users, and the total "
-"number of active users."
-msgstr ""
-"Visar de användarnamnen för de senast aktiva användarna samt de "
-"totalt antal aktiva användare."
+msgid "Russian"
+msgstr "Ryska"
 
-msgid ""
-"A user is considered online for this long after they have last viewed "
-"a page."
-msgstr ""
-"En användare anses vara inloggad så här länge efter att de senast "
-"tittat på en sida."
-
-msgid "Who's online"
-msgstr "Vilka är inloggade"
-
-msgid "There are currently @total users online."
-msgstr "För närvarande är @total användare inloggade."
-
-msgid "There are currently 0 users online."
-msgstr "För närvarande är 0 användare inloggade."
-
-msgid "A list of users that are currently logged in."
-msgstr "En lista på användare som för närvarande är inloggade."
+msgid "Basic page"
+msgstr "Sida"
 
 msgid ""
 "[user:display-name],\n"
@@ -895,14 +938,17 @@ msgstr "Information om filanvändande för {{ arguments.fid }}"
 msgid "All content, by letter."
 msgstr "All innehåll, i bokstavsordning."
 
+msgid "Redirect"
+msgstr "Omdirigera"
+
 msgid "{{ message }}"
 msgstr "{{ meddelande }}"
 
-msgid "White"
-msgstr "Vit"
+msgid "Summary"
+msgstr "Summary"
 
-msgid "Paragraph"
-msgstr "Paragraf"
+msgid "Map"
+msgstr "Map"
 
 msgid "Accept"
 msgstr "Accepterar"
@@ -931,47 +977,11 @@ msgstr "Nej, tack"
 msgid "Privacy settings"
 msgstr "Sekretessinställningar"
 
-msgid "Save preferences"
-msgstr "Allow only essential cookies"
+msgid "Accept selected cookies"
+msgstr "Acceptera valda cookies"
 
 msgid "Accept all cookies"
 msgstr "Acceptera alla cookies"
-
-msgid "Basic page"
-msgstr "Sida"
-
-msgid "Redirect"
-msgstr "Omdirigera"
-
-msgid "List of redirects"
-msgstr "Lista över omdirigeringar"
-
-msgid "With selection"
-msgstr "Med urval"
-
-msgid "Status code"
-msgstr "Statuskod"
-
-msgid "There is no redirect yet."
-msgstr "Det finns ingen omdirigering ännu."
-
-msgid "Content Type"
-msgstr "Innehållstyp"
-
-msgid "Publish on"
-msgstr "Publicera den"
-
-msgid "Unpublish on"
-msgstr "Avpublicera den"
-
-msgid "Scheduled"
-msgstr "Schemalagd"
-
-msgid "Content"
-msgstr "Content"
-
-msgid "Changed"
-msgstr "Ändrad"
 
 msgid ""
 "<h2>Thank you for accepting cookies</h2><p>You can now hide this "
@@ -997,31 +1007,18 @@ msgstr ""
 msgid "Withdraw consent"
 msgstr "Återkalla samtycke"
 
-msgid "Label"
-msgstr "Label"
+msgid "Entity Reference"
+msgstr "Entity Reference"
 
-msgid "Summary"
-msgstr "Summary"
+msgid "Combine fields filter"
+msgstr "Combine fields filter"
 
-msgid "Token"
-msgstr "Ersättningstecken"
+msgctxt "Unit search count"
+msgid "result"
+msgid_plural "results"
+msgstr[0] "träff"
+msgstr[1] "träffar"
 
-msgid "Content region"
-msgstr "Innehåll"
-
-msgid "Upper content region"
-msgstr "Innehåll"
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By tapping the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
-
-msgid "Admin"
-msgstr "Admin"
-
-msgid "Consent management"
-msgstr "Samtyckehantering"
-
+msgid "Load more services"
+msgstr "Ladda fler tjänster"
 

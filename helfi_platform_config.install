@@ -5,6 +5,8 @@
  * Contains install functions for Helfi Platform Config.
  */
 
+use Symfony\Component\Yaml\Parser;
+
 /**
  * Implements hook_install().
  */
@@ -48,6 +50,61 @@ function helfi_platform_config_install($is_syncing) {
   foreach ($translations as $module) {
     if (Drupal::moduleHandler()->moduleExists($module)) {
       _helfi_import_translations($module);
+    }
+  }
+}
+
+/**
+ * Helper function to manually import translations.
+ *
+ * @param bool|string $module
+ *   Module from where translations should be installed from.
+ */
+function _helfi_import_translations($module = FALSE) {
+
+  if (!$module) {
+    return;
+  }
+
+  $language_manager = Drupal::languageManager();
+  $yaml_parser = new Parser();
+
+  // The language code of the default locale.
+  $site_default_langcode = $language_manager->getDefaultLanguage()->getId();
+
+  // The directory where the language config files reside.
+  $language_config_directory = __DIR__ . "/helfi_features/{$module}/config/install/language";
+
+  // Check if feature has translated config files.
+  if (!is_dir($language_config_directory)) {
+    return;
+  }
+
+  // Scan the translations directory.
+  $language_directory = scandir($language_config_directory);
+  $skip_dirs = ['..', '.', $site_default_langcode];
+
+  // Sub-directory names (language codes).
+  // The language code of the default language is excluded.
+  $langcodes = array_diff($language_directory, $skip_dirs);
+
+  foreach ($langcodes as $langcode) {
+    // All .yml files in the language's config subdirectory.
+    $config_files = glob("$language_config_directory/$langcode/*.yml");
+
+    foreach ($config_files as $file_name) {
+      // Information from the .yml file as an array.
+      $yaml = $yaml_parser->parse(file_get_contents($file_name));
+      // Uses the base name of the .yml file to get the config name.
+      $config_name = basename($file_name, '.yml');
+      // The language configuration object.
+      $config = $language_manager->getLanguageConfigOverride($langcode, $config_name);
+
+      foreach ($yaml as $config_key => $config_value) {
+        // Update the configuration object.
+        $config->set($config_key, $config_value);
+      }
+      $config->save(TRUE);
     }
   }
 }

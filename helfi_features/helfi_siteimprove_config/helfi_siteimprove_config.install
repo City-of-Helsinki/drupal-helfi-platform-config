@@ -37,9 +37,6 @@ function helfi_siteimprove_config_update_9001() {
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_siteimprove_config', 'helfi_siteimprove_config_update_9001');
 
-  // Import translations.
-  _helfi_import_translations(basename(__FILE__, '.install'));
-
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }

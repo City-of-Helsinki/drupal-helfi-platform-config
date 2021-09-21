@@ -63,9 +63,6 @@ function helfi_tpr_config_update_9002() {
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9002');
 
-  // Import translations.
-  _helfi_import_translations(basename(__FILE__, '.install'));
-
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }

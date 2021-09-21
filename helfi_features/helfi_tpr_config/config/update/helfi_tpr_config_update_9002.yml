@@ -5,11 +5,15 @@ core.base_field_override.paragraphs_library_item.paragraphs_library_item.paragra
       settings:
         handler_settings:
           target_bundles:
+            service_list: service_list
             unit_search: unit_search
           target_bundles_drag_drop:
+            service_list:
+              enabled: '1'
+              weight: '37'
             unit_search:
               enabled: '1'
-              weight: '30'
+              weight: '31'
 field.field.node.article.field_content:
   expected_config: {  }
   update_actions:

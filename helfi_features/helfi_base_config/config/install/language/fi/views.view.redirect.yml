@@ -1,0 +1,68 @@
+label: Redirect
+description: Uudelleenohjaukset
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Suodatin
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      pager:
+        options:
+          tags:
+            previous: '‹ edellinen'
+            next: 'seuraava ›'
+            first: '« ensimmäinen'
+            last: 'viimeinen »'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
+      fields:
+        redirect_bulk_form:
+          action_title: Valinnalla
+        redirect_source__path:
+          label: Lähettäjä
+          separator: ', '
+        created:
+          label: Luotu
+      filters:
+        redirect_source__path:
+          expose:
+            label: Lähettäjä
+        redirect_redirect__uri:
+          expose:
+            label: Osoitteeseen
+        status_code:
+          expose:
+            label: Tilakoodi
+          group_info:
+            label: Tilakoodi
+            group_items:
+              1:
+                title: '300 Useita valintoja'
+              2:
+                title: '301 Pysyvästi siirretty'
+              3:
+                title: '302 Löydetty'
+              4:
+                title: '303 Kts. toinen'
+              5:
+                title: '304 Muuttamaton'
+              6:
+                title: '305 Käytä proxyä'
+              7:
+                title: '307 Tilapäinen uudelleenohjaus'
+        language:
+          expose:
+            label: 'Alkuperäinen kieli'
+      title: Redirect
+      empty:
+        area_text_custom:
+          content: 'Ei ole vielä uudelleenohjaksia.'
+  page_1:
+    display_title: Sivu

@@ -1,8 +1,26 @@
-label: Innehåll
-description: 'Hitta och hantera innehåll.'
 display:
   default:
     display_options:
+      fields:
+        langcode:
+          label: Språk
+          separator: ', '
+        title:
+          label: Titel
+        type:
+          label: Innehållstyp
+          separator: ', '
+        name:
+          label: Författare
+        status:
+          label: Status
+          settings:
+            format_custom_true: Publicerad
+            format_custom_false: 'Ej publicerad'
+        changed:
+          label: Uppdaterad
+        operations:
+          label: Funktioner
       exposed_form:
         options:
           submit_button: Filtrera
@@ -17,26 +35,6 @@ display:
             next: 'Nästa ›'
             first: '« Första'
             last: 'Sista »'
-      fields:
-        title:
-          label: Titel
-        type:
-          label: Innehållstyp
-          separator: ', '
-        name:
-          label: Författare
-        langcode:
-          label: Språk
-          separator: ', '
-        status:
-          label: Status
-          settings:
-            format_custom_true: Publicerad
-            format_custom_false: 'Ej publicerad'
-        changed:
-          label: Uppdaterad
-        operations:
-          label: Funktioner
       filters:
         title:
           expose:
@@ -61,7 +59,7 @@ display:
       empty:
         area_text_custom:
           content: 'Inget innehåll tillgängligt.'
-    display_title: Huvud
+    display_title: Förvald
   page_1:
     display_options:
       menu:
@@ -70,3 +68,5 @@ display:
         title: Innehåll
         description: 'Hitta och hantera innehåll'
     display_title: Sida
+label: Innehåll
+description: 'Hitta och hantera innehåll.'

@@ -1,0 +1,34 @@
+label: Arkiv
+description: 'Allt innehåll, månadsvis.'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      title: 'Månatligt arkiv'
+      exposed_form:
+        options:
+          submit_button: Verkställ
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+          tags:
+            previous: ‹‹
+            next: ››
+      arguments:
+        created_year_month:
+          title: '{{ arguments.created_year_month }}'
+  block_1:
+    display_title: Block
+    display_options:
+      arguments:
+        created_year_month:
+          title: '{{ arguments.created_year_month }}'
+  page_1:
+    display_title: Sida
