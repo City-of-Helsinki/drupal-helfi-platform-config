@@ -3,6 +3,7 @@
 namespace Drupal\helfi_announcements\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -151,11 +152,21 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
 
   /**
    * {@inheritdoc}
-   *
-   * @todo Make cacheable.
    */
-  public function getCacheMaxAge(): int {
-    return 0;
+  public function getCacheContexts(): array {
+    return Cache::mergeContexts(parent::getCacheContexts(), [
+      'user.permissions',
+      'url.path',
+      'url.query_args',
+      'languages:language_content',
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags(): array {
+    return Cache::mergeTags(parent::getCacheTags(), ['node_list:announcement']);
   }
 
 }
