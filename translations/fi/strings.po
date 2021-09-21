@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-09-20 22:41+0300\n"
-"PO-Revision-Date: 2021-09-20 22:41+0300\n"
+"POT-Creation-Date: 2021-09-21 08:21+0300\n"
+"PO-Revision-Date: 2021-09-21 08:21+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -520,7 +520,7 @@ msgid "Anonymous"
 msgstr "Anonyymi"
 
 msgid "Master"
-msgstr "Isäntä"
+msgstr "Oletus"
 
 msgid "Apply"
 msgstr "Käytä"
@@ -1804,6 +1804,83 @@ msgstr "Uudelleenkäytettävä lohko"
 msgid "From library"
 msgstr "Uudelleenkäytettävä lohko"
 
+msgctxt "Address label"
+msgid "Postal code"
+msgstr "Postinumero"
+
+msgid "Compare selected revisions"
+msgstr "Vertaile valittuja versioita"
+
+msgid "Users are tracked by default, but you are able to opt out."
+msgstr ""
+"Käyttäjäseuranta on päällä oletusarvoisesti, mutta voit kytkeä "
+"sen pois tästä."
+
+msgid "Enable user tracking"
+msgstr "Käyttäjän seuranta"
+
+msgid "Meta tags"
+msgstr "Meta-kentät"
+
+msgid "Metatag"
+msgstr "Metatunniste"
+
+msgid "Postal/ZIP code"
+msgstr "Postinumero"
+
+msgid "Metatag plugins"
+msgstr "Metatunnisteen lisäosat"
+
+msgid "Not connected"
+msgstr "Ei yhdistetty"
+
+msgid "Connected Accounts"
+msgstr "Liitetyt tilit"
+
+msgid "Default icon"
+msgstr "Oletusikoni"
+
+msgid "Paragraphs types"
+msgstr "Lohkotyypit"
+
+msgid "Conditions"
+msgstr "Ehdot"
+
+msgid "Patterns"
+msgstr "Sisältöpolut"
+
+msgid "Generate automatic URL alias"
+msgstr "Luo automaattinen osoitealias"
+
+msgid "Uncheck this to create a custom alias below."
+msgstr "Älä valitse tätä jos haluat luoda kustomoidun aliaksen."
+
+msgid "Joined path"
+msgstr "Yhdistetty polku"
+
+msgid ""
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
+
+msgid "The date the node will be published."
+msgstr "Päivämäärä jolloin sivu julkaistaan."
+
+msgid "The date the node will be unpublished."
+msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
+
+msgid "Drag to re-order @entity_types."
+msgstr "Raahaa järjestelläksesi @entity_types."
+
+msgid "Change frequency"
+msgstr "Vaihtuvuustiheys"
+
+msgid "Simple XML Sitemap"
+msgstr "XML-sivustokartta"
+
+msgid "Regenerate all sitemaps after hitting <em>Save</em>"
+msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
+
 msgid "Footer - Bottom navigation"
 msgstr "Alatunniste - Alavalikko"
 
@@ -1818,15 +1895,6 @@ msgstr "TPR - Asiointipalvelu"
 
 msgid "Paragraphs library item"
 msgstr "Uudelleenkäytettävä lohko"
-
-msgid "Postal/ZIP code"
-msgstr "Postinumero"
-
-msgid "Joined path"
-msgstr "Yhdistetty polku"
-
-msgid "Metatag"
-msgstr "Metatunniste"
 
 msgid "Process description"
 msgstr "Prosessin kuvaus"
@@ -1901,9 +1969,6 @@ msgstr "kuukausittain"
 msgid "yearly"
 msgstr "vuosittain"
 
-msgid "Change frequency"
-msgstr "Vaihtuvuustiheys"
-
 msgid ""
 "The frequency with which this <em>@bundle</em> entity changes. Search "
 "engine bots may take this as an indication of how often to index it."
@@ -1922,73 +1987,8 @@ msgstr ""
 "Määrittää, pitäisikö tämän <em>@bundle</em> sisällön "
 "sisältämät kuvat sisällyttää sivustokarttaan."
 
-msgid "Regenerate all sitemaps after hitting <em>Save</em>"
-msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
-
-msgid "Simple XML Sitemap"
-msgstr "XML-sivustokartta"
-
 msgid "Settings for this entity can be overridden here."
 msgstr "Tämän entiteetin asetukset voidaan yliajaa oheisilla asetuksilla."
-
-msgid "Generate automatic URL alias"
-msgstr "Luo automaattinen osoitealias"
-
-msgid ""
-"Uncheck this to create a custom alias below. <a "
-"href=\"@admin_link\">Configure URL alias patterns.</a>"
-msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
-
-msgctxt "Address label"
-msgid "Postal code"
-msgstr "Postinumero"
-
-msgid "Compare selected revisions"
-msgstr "Vertaile valittuja versioita"
-
-msgid "Users are tracked by default, but you are able to opt out."
-msgstr ""
-"Käyttäjäseuranta on päällä oletusarvoisesti, mutta voit kytkeä "
-"sen pois tästä."
-
-msgid "Enable user tracking"
-msgstr "Käyttäjän seuranta"
-
-msgid "Meta tags"
-msgstr "Meta-kentät"
-
-msgid "Metatag plugins"
-msgstr "Metatunnisteen lisäosat"
-
-msgid "Not connected"
-msgstr "Ei yhdistetty"
-
-msgid "Connected Accounts"
-msgstr "Liitetyt tilit"
-
-msgid "Default icon"
-msgstr "Oletusikoni"
-
-msgid "Paragraphs types"
-msgstr "Lohkotyypit"
-
-msgid "Conditions"
-msgstr "Ehdot"
-
-msgid "Patterns"
-msgstr "Sisältöpolut"
-
-msgid "Uncheck this to create a custom alias below."
-msgstr "Älä valitse tätä jos haluat luoda kustomoidun aliaksen."
-
-msgid "The date the node will be published."
-msgstr "Päivämäärä jolloin sivu julkaistaan."
-
-msgid "The date the node will be unpublished."
-msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
-
-msgid "Drag to re-order @entity_types."
-msgstr "Raahaa järjestelläksesi @entity_types."
 
 msgid "Consent management"
 msgstr "Suostumusten hallinnointi"
