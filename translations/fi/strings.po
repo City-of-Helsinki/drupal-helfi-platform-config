@@ -2599,6 +2599,9 @@ msgid_plural "results"
 msgstr[0] "tulos"
 msgstr[1] "tulosta"
 
+msgid "Sidebar text"
+msgstr "Sivupalkin teksti"
+
 msgid "Accessibility information"
 msgstr "Esteettömyystiedot"
 
