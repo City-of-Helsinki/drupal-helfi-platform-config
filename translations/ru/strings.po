@@ -73,7 +73,7 @@ msgid "Focal point"
 msgstr "Точка фокуса"
 
 msgid "Teaser"
-msgstr "Teaser"
+msgstr "Анонс"
 
 msgid "Main navigation"
 msgstr "Основная навигация"
@@ -171,7 +171,7 @@ msgid "Make content sticky"
 msgstr "Закрепить материал вверху списков"
 
 msgid "Make content unsticky"
-msgstr "Make content unsticky"
+msgstr "Отменить прикрепление материала вверху списков"
 
 msgid "Promote content to front page"
 msgstr "Вывести материал на главную страницу"
@@ -571,7 +571,7 @@ msgstr ""
 "авторизированных в данный момент."
 
 msgid "Paragraph"
-msgstr "Paragraph"
+msgstr "Параграф"
 
 msgid "Archive"
 msgstr "Архив"
@@ -939,7 +939,7 @@ msgstr ""
 "ссылки меню."
 
 msgid "Description"
-msgstr "Description"
+msgstr "Описание"
 
 msgid "Shown when hovering over the menu link."
 msgstr ""

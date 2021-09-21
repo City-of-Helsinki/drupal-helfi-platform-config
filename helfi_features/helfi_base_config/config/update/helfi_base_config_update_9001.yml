@@ -346,7 +346,7 @@ views.view.content:
                     sortable: true
                   name:
                     sortable: true
-          display_title: Master
+          display_title: Default
 select2_icon.settings:
   expected_config:
     path_to_json: ''

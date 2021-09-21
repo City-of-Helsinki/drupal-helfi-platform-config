@@ -506,7 +506,7 @@ msgid "A list of users that are currently logged in."
 msgstr "En lista på användare som för närvarande är inloggade."
 
 msgid "Paragraph"
-msgstr "Paragraph"
+msgstr "Paragraf"
 
 msgid "Archive"
 msgstr "Arkiv"
@@ -833,7 +833,7 @@ msgid "No log messages available."
 msgstr "Inga loggmeddelanden tillgängliga."
 
 msgid "Description"
-msgstr "Description"
+msgstr "Beskrivning"
 
 msgid "Token"
 msgstr "Ersättningstecken"
@@ -977,8 +977,8 @@ msgstr "Nej, tack"
 msgid "Privacy settings"
 msgstr "Sekretessinställningar"
 
-msgid "Save preferences"
-msgstr "Accept selected cookies"
+msgid "Accept selected cookies"
+msgstr "Acceptera valda cookies"
 
 msgid "Accept all cookies"
 msgstr "Acceptera alla cookies"
@@ -1012,5 +1012,11 @@ msgstr "Entity Reference"
 
 msgid "Combine fields filter"
 msgstr "Combine fields filter"
+
+msgctxt "Unit search count"
+msgid "result"
+msgid_plural "results"
+msgstr[0] "träff"
+msgstr[1] "träffar"
 
 
