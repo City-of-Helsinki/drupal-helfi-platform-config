@@ -468,7 +468,7 @@ msgstr ""
 msgid "Anonymous"
 msgstr "Гость"
 
-msgid "Master"
+msgid "Default"
 msgstr "Основной"
 
 msgid "Apply"

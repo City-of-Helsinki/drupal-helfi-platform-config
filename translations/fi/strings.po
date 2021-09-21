@@ -521,7 +521,7 @@ msgstr ""
 msgid "Anonymous"
 msgstr "Anonyymi"
 
-msgid "Master"
+msgid "Default"
 msgstr "Oletus"
 
 msgid "Apply"
@@ -1766,6 +1766,9 @@ msgstr "Hae toimipisteitä"
 
 msgid "Load more label"
 msgstr "Lataa lisää - otsikko"
+
+msgid "Load more services"
+msgstr "Lataa lisää palveluita"
 
 msgid "Load more units"
 msgstr "Lataa lisää toimipisteitä"

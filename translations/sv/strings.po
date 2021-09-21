@@ -413,8 +413,8 @@ msgstr "Kontouppgifter för [user:display-name] på [site:name] (borttagen)"
 msgid "Anonymous"
 msgstr "Gäst"
 
-msgid "Master"
-msgstr "Huvud"
+msgid "Default"
+msgstr "Förvald"
 
 msgid "Apply"
 msgstr "Verkställ"
@@ -1019,4 +1019,6 @@ msgid_plural "results"
 msgstr[0] "träff"
 msgstr[1] "träffar"
 
+msgid "Load more services"
+msgstr "Ladda fler tjänster"
 
