@@ -81,7 +81,6 @@ function helfi_tpr_config_update_9003() {
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9003');
 
-
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
