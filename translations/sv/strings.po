@@ -1022,3 +1022,8 @@ msgstr[1] "träffar"
 msgid "Load more services"
 msgstr "Ladda fler tjänster"
 
+msgctxt "Service list count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "tjänst"
+msgstr[1] "tjänster"
