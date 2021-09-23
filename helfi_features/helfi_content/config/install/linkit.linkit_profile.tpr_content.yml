@@ -7,16 +7,6 @@ id: tpr_content
 label: TPR/content
 description: ''
 matchers:
-  744298c6-f701-49e7-ba32-bed4e527cffc:
-    uuid: 744298c6-f701-49e7-ba32-bed4e527cffc
-    id: 'entity:tpr_unit'
-    weight: -1
-    settings:
-      metadata: ''
-      bundles: null
-      group_by_bundle: null
-      substitution_type: canonical
-      limit: 20
   8ffea69f-853b-42d7-8171-80fbcb5a813c:
     uuid: 8ffea69f-853b-42d7-8171-80fbcb5a813c
     id: 'entity:node'
@@ -26,15 +16,5 @@ matchers:
       metadata: ''
       bundles: {  }
       group_by_bundle: false
-      substitution_type: canonical
-      limit: 20
-  8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649:
-    uuid: 8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649
-    id: 'entity:tpr_service'
-    weight: -2
-    settings:
-      metadata: ''
-      bundles: null
-      group_by_bundle: null
       substitution_type: canonical
       limit: 20
