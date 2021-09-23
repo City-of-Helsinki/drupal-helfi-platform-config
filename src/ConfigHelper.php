@@ -27,5 +27,5 @@ class ConfigHelper {
       $config_factory->getEditable($config_name)->setData($data)->save(TRUE);
     }
   }
-  
+
 }
