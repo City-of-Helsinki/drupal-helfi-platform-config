@@ -3,6 +3,25 @@ description: 'Etsi ja ylläpidä sisältöä.'
 display:
   default:
     display_options:
+      fields:
+        langcode:
+          label: Kieli
+        title:
+          label: Otsikko
+        type:
+          label: Sisältötyyppi
+          separator: ', '
+        name:
+          label: Kirjoittaja
+        status:
+          label: Tila
+          settings:
+            format_custom_true: Julkaistu
+            format_custom_false: Julkaisematon
+        changed:
+          label: Päivitetty
+        operations:
+          label: Toimenpiteet
       exposed_form:
         options:
           submit_button: Suodatin
@@ -17,26 +36,6 @@ display:
             next: 'Seuraava ›'
             first: '« Ensimmäinen'
             last: 'Viimeinen »'
-      fields:
-        title:
-          label: Otsikko
-        type:
-          label: Sisältötyyppi
-          separator: ', '
-        name:
-          label: Kirjoittaja
-        langcode:
-          label: Kieli
-          separator: ', '
-        status:
-          label: Tila
-          settings:
-            format_custom_true: Julkaistu
-            format_custom_false: Julkaisematon
-        changed:
-          label: Päivitetty
-        operations:
-          label: Toimenpiteet
       filters:
         title:
           expose:
@@ -61,7 +60,7 @@ display:
       empty:
         area_text_custom:
           content: 'Ei sisältöä.'
-    display_title: Isäntä
+    display_title: Oletus
   page_1:
     display_options:
       menu:

@@ -67,7 +67,7 @@ display:
       empty:
         area_text_custom:
           content: 'Ei vielä ajastettua sisältöä.'
-    display_title: Isäntä
+    display_title: Oletus
   overview:
     display_options:
       menu:

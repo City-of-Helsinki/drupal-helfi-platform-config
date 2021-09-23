@@ -1,0 +1,76 @@
+label: Personer
+description: 'Hitta och hantera personer som använder din webbplats.'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          tags:
+            previous: '‹ Föregående'
+            next: 'Nästa ›'
+            first: '« Första'
+            last: 'Sista »'
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      fields:
+        user_bulk_form:
+          label: Massuppdatera
+        name:
+          label: Användarnamn
+        status:
+          label: Status
+          settings:
+            format_custom_true: Aktiv
+            format_custom_false: Spärrad
+        roles_target_id:
+          label: Roller
+        created:
+          label: 'Medlem i'
+        access:
+          label: 'Senast åtkomst'
+        operations:
+          label: Funktioner
+        mail:
+          separator: ', '
+      filters:
+        combine:
+          expose:
+            label: 'Namn eller e-post innehåller'
+        status:
+          group_info:
+            label: Status
+            group_items:
+              1:
+                title: Aktiv
+              2:
+                title: Spärrad
+        roles_target_id:
+          expose:
+            label: Roll
+        permission:
+          expose:
+            label: Behörighet
+      title: Personer
+      empty:
+        area_text_custom:
+          content: 'Inga personer tillgängliga.'
+      use_more_text: mer
+  page_1:
+    display_title: Sida
+    display_options:
+      menu:
+        title: Lista
+        description: 'Hitta och hantera personer som använder din webbplats.'
+      tab_options:
+        title: Personer
+        description: 'Hantera användarkonton, roller och behörigheter.'

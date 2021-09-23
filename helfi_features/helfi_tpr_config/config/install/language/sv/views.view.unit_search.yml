@@ -1,0 +1,48 @@
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      pager:
+        options:
+          tags:
+            previous: '‹ Föregående'
+            next: 'Nästa ›'
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      fields:
+        name:
+          separator: ', '
+        address__postal_code:
+          separator: ', '
+        address__address_line1:
+          separator: ', '
+        address__address_line2:
+          separator: ', '
+      filters:
+        combine:
+          expose:
+            label: Sök
+          group_info:
+            label: 'Kombinera filterfält'
+      empty:
+        area:
+          content:
+            value: 'Inget resultat'
+      arguments:
+        id:
+          exception:
+            title: Alla
+  block:
+    display_title: Block
+  entity_reference:
+    display_title: Objektsreferens
+    display_options:
+      fields:
+        name_override:
+          separator: ', '
+        id:
+          separator: ', '
+        name:
+          separator: ', '
