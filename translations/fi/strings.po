@@ -2618,3 +2618,26 @@ msgid "service"
 msgid_plural "services"
 msgstr[0] "palvelu"
 msgstr[1] "palvelua"
+
+msgid "Details"
+msgstr "Tarkemmat tiedot"
+
+msgctxt "Errand service detail heading"
+msgid "Processing time"
+msgstr "Käsittelyaika"
+
+msgctxt "Errand service detail heading"
+msgid "Costs"
+msgstr "Maksut"
+
+msgctxt "Errand service detail heading"
+msgid "Expiration time"
+msgstr "Voimassaoloaika"
+
+msgctxt "Errand service detail heading"
+msgid "Additional information"
+msgstr "Lisätiedot"
+
+msgctxt "Errand service detail heading"
+msgid "Additional links"
+msgstr "Lisätietolinkit"
