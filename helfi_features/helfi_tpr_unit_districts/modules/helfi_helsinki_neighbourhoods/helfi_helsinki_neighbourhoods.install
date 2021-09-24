@@ -188,10 +188,10 @@ function helfi_helsinki_neighbourhoods_install() {
     "Östersundom",
   ];
 
-  $defaultLangcode = Drupal::configFactory()->get('language.content_settings.taxonomy_term.neighbourhoods')->getOriginal('default_langcode');
+  $defaultLangcode = \Drupal::languageManager()->getDefaultLanguage()->getId();
   $languages = Drupal::languageManager()->getLanguages();
   unset($languages[$defaultLangcode]);
-  $langcodes = array_keys($languages);
+  $otherLangcodes = array_keys($languages);
 
   // Add terms for the default language.
   foreach ($neighbourhoods as $neighbourhood) {
@@ -199,6 +199,7 @@ function helfi_helsinki_neighbourhoods_install() {
       'parent' => [],
       'name' => $neighbourhood,
       'vid' => 'neighbourhoods',
+      'langcode' => $defaultLangcode,
     ]);
     try {
       $term->save();
@@ -211,7 +212,7 @@ function helfi_helsinki_neighbourhoods_install() {
     }
 
     // Add default translations for all available languages.
-    foreach ($langcodes as $langcode) {
+    foreach ($otherLangcodes as $langcode) {
       try {
         $term->addTranslation($langcode, [
           'name' => $neighbourhood,

@@ -1,21 +1,61 @@
-pathauto.pattern.service_entity_pattern:
+linkit.linkit_profile.tpr_content:
   expected_config:
-    pattern: '[tpr_service:label]'
-  update_actions:
-    change:
-      pattern: '[tpr_service:menu-link-parents]/[tpr_service:label]'
-pathauto.pattern.unit_entity_pattern:
-  expected_config:
-    pattern: '[tpr_unit:label]'
-  update_actions:
-    change:
-      pattern: '[tpr_unit:menu-link-parents]/[tpr_unit:label]'
-pathauto.settings:
-  expected_config: {  }
+    matchers:
+      8ffea69f-853b-42d7-8171-80fbcb5a813c:
+        uuid: 8ffea69f-853b-42d7-8171-80fbcb5a813c
+        id: 'entity:node'
+        weight: 0
+        settings:
+          include_unpublished: false
+          metadata: ''
+          bundles: { }
+          group_by_bundle: false
+          substitution_type: canonical
+          limit: 20
   update_actions:
     add:
-      enabled_entity_types:
-        - tpr_service
-        - tpr_unit
-      safe_tokens:
-        - menu-link-parents
+      matchers:
+        744298c6-f701-49e7-ba32-bed4e527cffc:
+          uuid: 744298c6-f701-49e7-ba32-bed4e527cffc
+          id: 'entity:tpr_unit'
+          weight: -1
+          settings:
+            metadata: ''
+            bundles: null
+            group_by_bundle: null
+            substitution_type: canonical
+            limit: 20
+        8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649:
+          uuid: 8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649
+          id: 'entity:tpr_service'
+          weight: -2
+          settings:
+            metadata: ''
+            bundles: null
+            group_by_bundle: null
+            substitution_type: canonical
+            limit: 20
+editor.editor.full_html:
+  expected_config:
+    settings:
+      plugins:
+        drupallink:
+          linkit_profile: helfi
+  update_actions:
+    change:
+      settings:
+        plugins:
+          drupallink:
+            linkit_profile: tpr_content
+editor.editor.minimal:
+  expected_config:
+    settings:
+      plugins:
+        drupallink:
+          linkit_profile: helfi
+  update_actions:
+    change:
+      settings:
+        plugins:
+          drupallink:
+            linkit_profile: tpr_content
