@@ -1,0 +1,92 @@
+label: 'Ajastettu sisältö'
+description: 'Etsi ja ylläpidä ajastettua sisältöä.'
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Suodatin
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      pager:
+        options:
+          tags:
+            previous: '‹ edellinen'
+            next: 'seuraava ›'
+            first: '« ensimmäinen'
+            last: 'viimeinen »'
+      fields:
+        node_bulk_form:
+          action_title: Toiminto
+        title:
+          label: Otsikko
+          separator: ', '
+        type:
+          label: Sisältötyyppi
+          separator: ', '
+        name:
+          label: Kirjoittaja
+          separator: ', '
+        status:
+          label: Tila
+          settings:
+            format_custom_true: Julkaistu
+            format_custom_false: Julkaisematon
+          separator: ', '
+        publish_on:
+          label: Julkaisupäivämäärä
+          separator: ', '
+        unpublish_on:
+          label: 'Julkaisun peruutuspäivämäärä'
+          separator: ', '
+        operations:
+          label: Toimenpiteet
+      filters:
+        title:
+          expose:
+            label: Otsikko
+        type:
+          expose:
+            label: Sisältötyyppi
+        status:
+          expose:
+            label: Tila
+          group_info:
+            label: Julkaisutila
+            group_items:
+              1:
+                title: Julkaistu
+              2:
+                title: Julkaisematon
+        langcode:
+          expose:
+            label: Kieli
+      title: 'Ajastettu sisältö'
+      empty:
+        area_text_custom:
+          content: 'Ei vielä ajastettua sisältöä.'
+    display_title: Oletus
+  overview:
+    display_options:
+      menu:
+        title: Ajastettu
+      tab_options:
+        title: Sisältö
+      display_description: 'Yleiskatsaus koko ajoitetusta sisällöstä.'
+    display_title: Sisältö
+  user_page:
+    display_options:
+      menu:
+        title: Ajastettu
+      tab_options:
+        title: Sisältö
+      arguments:
+        uid:
+          exception:
+            title: Kaikki
+      empty:
+        area_text_custom:
+          content: '{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä.'
+    display_title: Käyttäjäprofiili

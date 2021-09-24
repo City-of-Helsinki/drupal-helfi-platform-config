@@ -1,0 +1,11 @@
+name: 'HELfi TPR unit districts'
+description: 'Adds districts field for TPR Units and alters Unit search to use it as a search parameter.'
+type: module
+core_version_requirement: '^8.9 || ^9'
+dependencies:
+  - 'drupal:content_translation'
+  - 'drupal:taxonomy'
+  - 'helfi_tpr:helfi_tpr'
+  - 'select2:select2'
+  - 'update_helper:update_helper'
+package: HELfi

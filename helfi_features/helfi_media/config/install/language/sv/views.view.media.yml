@@ -1,0 +1,79 @@
+label: Media
+description: 'Hitta och hantera media.'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+          tags:
+            previous: '‹ Föregående'
+            next: 'Nästa ›'
+            first: '« Första'
+            last: 'Sista »'
+      fields:
+        media_bulk_form:
+          action_title: Åtgärd
+        thumbnail__target_id:
+          label: Miniatyr
+          separator: ', '
+        name:
+          label: Medianamn
+          separator: ', '
+        bundle:
+          label: Typ
+          separator: ', '
+        uid:
+          label: Författare
+          separator: ', '
+        status:
+          label: Status
+          settings:
+            format_custom_true: Publicerad
+            format_custom_false: 'Ej publicerad'
+          separator: ', '
+        changed:
+          label: Uppdaterad
+          separator: ', '
+        operations:
+          label: Funktioner
+      filters:
+        name:
+          expose:
+            label: Medianamn
+        bundle:
+          expose:
+            label: Typ
+        status:
+          expose:
+            label: Sant
+          group_info:
+            label: 'Status för publicering'
+            group_items:
+              1:
+                title: Publicerad
+              2:
+                title: 'Ej publicerad'
+        langcode:
+          expose:
+            label: Språk
+      title: Media
+      empty:
+        area_text_custom:
+          content: 'Ingen media tillgänglig.'
+  media_page_list:
+    display_title: Media
+    display_options:
+      menu:
+        title: Media

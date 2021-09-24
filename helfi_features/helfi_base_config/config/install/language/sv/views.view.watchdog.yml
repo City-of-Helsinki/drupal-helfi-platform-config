@@ -1,0 +1,54 @@
+label: Övervakning
+description: 'Senaste loggmeddelanden'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+          tags:
+            previous: ‹‹
+            next: ››
+      fields:
+        nothing:
+          admin_label: Ikon
+        severity:
+          label: Grad
+        type:
+          label: Typ
+        timestamp:
+          label: Datum
+        message:
+          label: Meddelande
+          alter:
+            alt: '{{ meddelande }}'
+        name:
+          label: Användare
+          separator: ', '
+        link:
+          label: Funktioner
+      filters:
+        type:
+          expose:
+            label: Typ
+        severity:
+          expose:
+            label: Grad
+      title: 'Senaste loggmeddelanden'
+      empty:
+        area:
+          admin_label: 'Inga loggmeddelanden tillgängliga.'
+          content: 'Inga loggmeddelanden tillgängliga.'
+  page:
+    display_title: Sida

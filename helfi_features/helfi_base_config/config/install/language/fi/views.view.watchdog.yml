@@ -1,0 +1,54 @@
+label: Vahtikoira
+description: 'Viimeisimmät lokimerkinnät'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Suodatin
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
+          tags:
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
+      fields:
+        nothing:
+          admin_label: Ikoni
+        wid:
+          label: WID
+        severity:
+          label: Vakavuus
+        type:
+          label: Tyyppi
+        timestamp:
+          label: Päivämäärä
+        message:
+          label: Viesti
+        name:
+          label: Käyttäjä
+          separator: ', '
+        link:
+          label: Toimenpiteet
+      filters:
+        type:
+          expose:
+            label: Tyyppi
+        severity:
+          expose:
+            label: Vakavuus
+      title: 'Viimeisimmät lokimerkinnät'
+      empty:
+        area:
+          admin_label: 'Yhtään lokimerkintää ei ole saatavilla.'
+          content: 'Yhtään lokimerkintää ei ole saatavilla.'
+  page:
+    display_title: Sivu

@@ -1,0 +1,72 @@
+display:
+  default:
+    display_options:
+      fields:
+        langcode:
+          label: Språk
+          separator: ', '
+        title:
+          label: Titel
+        type:
+          label: Innehållstyp
+          separator: ', '
+        name:
+          label: Författare
+        status:
+          label: Status
+          settings:
+            format_custom_true: Publicerad
+            format_custom_false: 'Ej publicerad'
+        changed:
+          label: Uppdaterad
+        operations:
+          label: Funktioner
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          tags:
+            previous: '‹ Föregående'
+            next: 'Nästa ›'
+            first: '« Första'
+            last: 'Sista »'
+      filters:
+        title:
+          expose:
+            label: Titel
+        type:
+          expose:
+            label: Innehållstyp
+        status:
+          expose:
+            label: Status
+          group_info:
+            label: 'Status för publicering'
+            group_items:
+              1:
+                title: Publicerad
+              2:
+                title: 'Ej publicerad'
+        langcode:
+          expose:
+            label: Språk
+      title: Innehåll
+      empty:
+        area_text_custom:
+          content: 'Inget innehåll tillgängligt.'
+    display_title: Förvald
+  page_1:
+    display_options:
+      menu:
+        title: Innehåll
+      tab_options:
+        title: Innehåll
+        description: 'Hitta och hantera innehåll'
+    display_title: Sida
+label: Innehåll
+description: 'Hitta och hantera innehåll.'

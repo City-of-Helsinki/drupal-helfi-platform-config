@@ -1,0 +1,120 @@
+label: Mediakirjasto
+description: 'Etsi ja ylläpidä mediatiedostoja.'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      exposed_form:
+        options:
+          submit_button: 'Suodata tuloksia'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
+          tags:
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
+      fields:
+        media_bulk_form:
+          action_title: Toiminto
+      filters:
+        status:
+          expose:
+            label: 'Julkaisun tila'
+          group_info:
+            label: Julkaistu
+            group_items:
+              1:
+                title: Julkaistu
+              2:
+                title: Julkaisematon
+        name:
+          expose:
+            label: Nimi
+        bundle:
+          expose:
+            label: 'Median tyyppi'
+          group_info:
+            label: 'Median tyyppi'
+        langcode:
+          expose:
+            label: Kieli
+      sorts:
+        created:
+          expose:
+            label: 'Uusin ensin'
+        name:
+          expose:
+            label: 'Nimi (A-Z)'
+        name_1:
+          expose:
+            label: 'Nimi (Z-A)'
+      title: Media
+      empty:
+        area_text_custom:
+          content: 'Ei mediatiedostoja saatavilla.'
+  page:
+    display_title: Sivu
+    display_options:
+      fields:
+        media_bulk_form:
+          action_title: Toiminto
+        name:
+          separator: ', '
+        edit_media:
+          alter:
+            text: 'Muokkaa {{ name }}'
+            alt: 'Muokkaa {{ name }}'
+          text: Muokkaa
+        delete_media:
+          alter:
+            text: 'Poista {{ name }}'
+            alt: 'Poista {{ name }}'
+          text: Poista
+  widget:
+    display_title: Widgetti
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Nimi
+      arguments:
+        bundle:
+          exception:
+            title: Kaikki
+      header:
+        display_link_grid:
+          label: Ruudukko
+        display_link_table:
+          label: Taulukko
+  widget_table:
+    display_title: 'Widget (taulukko)'
+    display_options:
+      fields:
+        thumbnail__target_id:
+          label: Pienoiskuva
+        name:
+          label: Nimi
+        uid:
+          label: Kirjoittaja
+        changed:
+          label: Päivitetty
+      filters:
+        name:
+          expose:
+            label: Nimi
+      arguments:
+        bundle:
+          exception:
+            title: Kaikki
+      header:
+        display_link_grid:
+          label: Ruudukko
+        display_link_table:
+          label: Taulukko
