@@ -1010,9 +1010,6 @@ msgstr "Lista"
 msgid "Manage user accounts, roles, and permissions."
 msgstr "Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia."
 
-msgid "Watchdog"
-msgstr "Vahtikoira"
-
 msgid "Recent log messages"
 msgstr "Viimeisimmät lokimerkinnät"
 

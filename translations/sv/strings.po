@@ -811,9 +811,6 @@ msgstr "Lista"
 msgid "Manage user accounts, roles, and permissions."
 msgstr "Hantera användarkonton, roller och behörigheter."
 
-msgid "Watchdog"
-msgstr "Övervakning"
-
 msgid "Recent log messages"
 msgstr "Senaste loggmeddelanden"
 
