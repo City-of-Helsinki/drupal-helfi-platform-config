@@ -70,7 +70,7 @@ msgid "Finnish"
 msgstr "Finska"
 
 msgid "Teaser"
-msgstr "Teaser"
+msgstr "Ingress"
 
 msgid "Swedish"
 msgstr "Svenska"
@@ -945,10 +945,10 @@ msgid "{{ message }}"
 msgstr "{{ meddelande }}"
 
 msgid "Summary"
-msgstr "Summary"
+msgstr "Sammandrag"
 
 msgid "Map"
-msgstr "Map"
+msgstr "Karta"
 
 msgid "Accept"
 msgstr "Accepterar"
