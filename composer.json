@@ -56,7 +56,7 @@
         "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"
       },
       "drupal/eu_cookie_compliance": {
-        "Helfi-specific customizations to EU Cookie Compliance": "https://gist.githubusercontent.com/tuutti/68890713f0d0d9e00499823150c41f7e/raw/c5be8d708d4c17cd0edefc1a2588514da6d33eda/eu_cookie_compliance_block.patch"
+        "Helfi-specific customizations to EU Cookie Compliance": "https://gist.githubusercontent.com/khalima/215c1ac7cce8fbb87ee5c47ad84ce750/raw/8df283089d498e13f7ea13ff196151cdca11465b/eu_cookie_compliance_block_8x-116.patch"
       },
       "drupal/features": {
         "https://www.drupal.org/project/features/issues/2869336": "https://www.drupal.org/files/issues/features_export-config-translation-2869336-2.patch"
