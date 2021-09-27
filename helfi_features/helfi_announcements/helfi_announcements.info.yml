@@ -16,3 +16,4 @@ dependencies:
   - select2
   - hdbt_admin_editorial
   - helfi_tpr
+  - helfi_content
