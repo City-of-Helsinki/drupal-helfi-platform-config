@@ -4,5 +4,16 @@ description: 'Adds announcements that can be shown on other pages.'
 core_version_requirement: '^8.9 || ^9'
 package: HELfi
 dependencies:
-  - 'helfi_tpr:helfi_tpr'
-  - 'select2:select2'
+  - link
+  - path
+  - text
+  - options
+  - user
+  - node
+  - menu_ui
+  - allowed_formats
+  - scheduler
+  - select2
+  - hdbt_admin_editorial
+  - helfi_tpr
+  - helfi_content
