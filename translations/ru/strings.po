@@ -912,9 +912,6 @@ msgstr ""
 "Управление учётными записями, ролями "
 "и правами пользователей."
 
-msgid "Watchdog"
-msgstr "Журнал"
-
 msgid "Recent log messages"
 msgstr "Последние записи журнала"
 

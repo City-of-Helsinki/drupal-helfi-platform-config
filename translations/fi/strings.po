@@ -1010,9 +1010,6 @@ msgstr "Lista"
 msgid "Manage user accounts, roles, and permissions."
 msgstr "Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia."
 
-msgid "Watchdog"
-msgstr "Vahtikoira"
-
 msgid "Recent log messages"
 msgstr "Viimeisimmät lokimerkinnät"
 
@@ -1072,6 +1069,9 @@ msgstr "Linkit"
 
 msgid "Remote video"
 msgstr "Video ulkoisesta palvelusta"
+
+msgid "Remote video paragraph that lets you add any video from video providers. Currently only YouTube."
+msgstr "Tällä lohkolla voit lisätä videon ulkoisesta palvelusta. Tukee tällä hetkellä vain YouTubea."
 
 msgid "White"
 msgstr "Valkoinen"

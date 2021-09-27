@@ -1,0 +1,27 @@
+core.entity_form_display.paragraph.banner.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      content:
+        field_banner_link:
+          settings:
+            linkit_auto_link_text: 0
+            linkit_profile: tpr_content
+core.entity_form_display.paragraph.hero.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      content:
+        field_hero_link:
+          settings:
+            linkit_auto_link_text: 0
+            linkit_profile: tpr_content
+core.entity_form_display.paragraph.list_of_links_item.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      content:
+        field_list_of_links_link:
+          settings:
+            linkit_auto_link_text: 0
+            linkit_profile: tpr_content

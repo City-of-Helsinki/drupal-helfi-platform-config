@@ -70,7 +70,7 @@ msgid "Finnish"
 msgstr "Finska"
 
 msgid "Teaser"
-msgstr "Teaser"
+msgstr "Ingress"
 
 msgid "Swedish"
 msgstr "Svenska"
@@ -811,9 +811,6 @@ msgstr "Lista"
 msgid "Manage user accounts, roles, and permissions."
 msgstr "Hantera användarkonton, roller och behörigheter."
 
-msgid "Watchdog"
-msgstr "Övervakning"
-
 msgid "Recent log messages"
 msgstr "Senaste loggmeddelanden"
 
@@ -945,10 +942,10 @@ msgid "{{ message }}"
 msgstr "{{ meddelande }}"
 
 msgid "Summary"
-msgstr "Summary"
+msgstr "Sammandrag"
 
 msgid "Map"
-msgstr "Map"
+msgstr "Karta"
 
 msgid "Accept"
 msgstr "Accepterar"

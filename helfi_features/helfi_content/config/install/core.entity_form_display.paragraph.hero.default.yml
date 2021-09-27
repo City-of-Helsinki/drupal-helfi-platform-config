@@ -51,6 +51,8 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      linkit_profile: tpr_content
+      linkit_auto_link_text: 0
       link_target: ''
       icon: ''
     third_party_settings: {  }
