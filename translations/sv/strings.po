@@ -15,6 +15,9 @@ msgstr ""
 msgid "Cookie settings"
 msgstr "Cookie -inställningar"
 
+msgid "Accept only essential cookies"
+msgstr "Acceptera endast nödvändiga cookies"
+
 msgid ""
 "<p>A cookie is a small-scale data storage program that a computer "
 "browser installs on a user's computer hard drive. Whenever the user's "
@@ -1161,5 +1164,3 @@ msgstr ""
 "\t</tbody>\r\n"
 "</table>\r\n"
 ""
-
-
