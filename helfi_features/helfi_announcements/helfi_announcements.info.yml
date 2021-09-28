@@ -1,0 +1,19 @@
+name: 'HELfi Announcements'
+type: module
+description: 'Adds announcements that can be shown on other pages.'
+core_version_requirement: '^8.9 || ^9'
+package: HELfi
+dependencies:
+  - link
+  - path
+  - text
+  - options
+  - user
+  - node
+  - menu_ui
+  - allowed_formats
+  - scheduler
+  - select2
+  - hdbt_admin_editorial
+  - helfi_tpr
+  - helfi_content
