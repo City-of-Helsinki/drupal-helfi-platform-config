@@ -1067,8 +1067,11 @@ msgstr ""
 msgid "Withdraw consent"
 msgstr "Återkalla samtycke"
 
-msgid "More info"
-msgstr "Show cookies"
+msgid "Privacy settings"
+msgstr "Sekretessinställningar"
+
+msgid "Show cookies"
+msgstr "Visa cookies"
 
 msgid "Accept selected cookies"
 msgstr "Acceptera valda cookies"
