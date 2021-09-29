@@ -1,0 +1,5 @@
+/* The original code targets the ID and there isn't any other way to target it here either so that is why the ID. */
+#smartti-wrapper {
+  /* The default z-index by the bot is way too large and causes the bot to appear over the cookie-banner. */
+  z-index: 999;
+}
