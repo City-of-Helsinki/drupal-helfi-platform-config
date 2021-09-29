@@ -65,7 +65,7 @@ eu_cookie_compliance.settings:
       popup_text_hex: ''
       popup_width: ''
       reload_page: true
-      save_preferences_button_label: 'Accept selected cookies'
+      save_preferences_button_label: 'Accept only essential cookies'
       set_cookie_session_zero_on_disagree: 0
       use_bare_css: true
       withdraw_message:
