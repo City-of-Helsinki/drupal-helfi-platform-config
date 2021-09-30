@@ -3,14 +3,44 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-09-21 08:43+0300\n"
-"PO-Revision-Date: 2021-09-21 08:43+0300\n"
+"POT-Creation-Date: 2021-09-28 16:52+0300\n"
+"PO-Revision-Date: 2021-09-28 16:52+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Cookie settings"
+msgstr "Cookie -inställningar"
+
+msgid "Accept only essential cookies"
+msgstr "Acceptera endast nödvändiga cookies"
+
+msgid ""
+"<p>A cookie is a small-scale data storage program that a computer "
+"browser installs on a user's computer hard drive. Whenever the user's "
+"browser retrieves the site from the City of Helsinki's servers, the "
+"message is sent back to the user's computer. Javascript and server "
+"logs are used to record, for example, the number of users, country of "
+"use, usage time and browser used, as well as the content that the "
+"visitor has visited. The cookie does not damage the "
+"drive.</p>\r\n"
+"\r\n"
+"<p>Cookies are used to speed up, analyze and "
+"develop the website and to target content to each user.</p>"
+msgstr ""
+"<p>En cookie är ett datalagringsprogram i liten skala som en datorns "
+"webbläsare installerar på en användares hårddisk. Närhelst "
+"användarens webbläsare hämtar webbplatsen från Helsingfors stads "
+"servrar skickas meddelandet tillbaka till användarens dator. "
+"Javascript- och serverloggar används för att t.ex. registrera antal "
+"användare, användarland, användningstid och webbläsare samt "
+"innehållet som besökaren har besökt. Cookien skadar inte "
+"enheten.</p><p>Cookies används för att påskynda, analysera och "
+"utveckla webbplatsen och för att rikta innehåll till varje "
+"användare.</p>"
 
 msgid "Home"
 msgstr "Hem"
@@ -63,17 +93,17 @@ msgstr "j.n.Y"
 msgid "Plain text"
 msgstr "Ren text"
 
-msgid "English"
-msgstr "Engelska"
-
-msgid "Finnish"
-msgstr "Finska"
+msgid "Necessary cookies"
+msgstr "Nödvändiga funktionella cookies"
 
 msgid "Teaser"
 msgstr "Ingress"
 
-msgid "Swedish"
-msgstr "Svenska"
+msgid "Main navigation"
+msgstr "Huvudmeny"
+
+msgid "Site section links"
+msgstr "Länkar för sektion i webbplats"
 
 msgid "Breadcrumbs"
 msgstr "Länkstigar"
@@ -131,6 +161,18 @@ msgstr "Mellan (220×220)"
 
 msgid "Thumbnail (100×100)"
 msgstr "Miniatyr (100×100)"
+
+msgid "English"
+msgstr "Engelska"
+
+msgid "Finnish"
+msgstr "Finska"
+
+msgid "Russian"
+msgstr "Ryska"
+
+msgid "Swedish"
+msgstr "Svenska"
 
 msgid "Not specified"
 msgstr "Ej angivet"
@@ -443,6 +485,9 @@ msgstr "Inlägg per sida"
 msgid "- All -"
 msgstr "- Alla -"
 
+msgid "Offset"
+msgstr "Kompensera"
+
 msgid "Title"
 msgstr "Titel"
 
@@ -505,18 +550,6 @@ msgstr "För närvarande är 0 användare inloggade."
 msgid "A list of users that are currently logged in."
 msgstr "En lista på användare som för närvarande är inloggade."
 
-msgid "Paragraph"
-msgstr "Paragraf"
-
-msgid "Archive"
-msgstr "Arkiv"
-
-msgid "All content, by month."
-msgstr "Allt innehåll, månadsvis."
-
-msgid "Monthly archive"
-msgstr "Månatligt arkiv"
-
 msgid "Content"
 msgstr "Innehåll"
 
@@ -559,78 +592,6 @@ msgstr "Inget innehåll tillgängligt."
 msgid "Find and manage content"
 msgstr "Hitta och hantera innehåll"
 
-msgid "Recent content"
-msgstr "Nyligen uppdaterat innehåll"
-
-msgid "Recent content."
-msgstr "Nytt innehåll."
-
-msgid "More"
-msgstr "Mer"
-
-msgid "Files"
-msgstr "Filer"
-
-msgid "Find and manage files."
-msgstr "Hitta och hantera filer."
-
-msgid "Name"
-msgstr "Namn"
-
-msgid "MIME type"
-msgstr "Typ av MIME"
-
-msgid "Size"
-msgstr "Storlek"
-
-msgid "Temporary"
-msgstr "Temporär"
-
-msgid "Upload date"
-msgstr "Datum för uppladdning"
-
-msgid "Changed date"
-msgstr "Datum för ändring"
-
-msgid "Used in"
-msgstr "Används i"
-
-msgid "Filename"
-msgstr "Filnamn"
-
-msgid "No files available."
-msgstr "Inga filer tillgängliga."
-
-msgid "Files overview"
-msgstr "Översikt av filer"
-
-msgid "File usage"
-msgstr "Filanvändning"
-
-msgid "Entity"
-msgstr "Objekt"
-
-msgid "Entity type"
-msgstr "Objektstyp"
-
-msgid "Registering module"
-msgstr "Registrerar modul"
-
-msgid "Use count"
-msgstr "Antal använd"
-
-msgid "All"
-msgstr "Alla"
-
-msgid "Glossary"
-msgstr "Ordlista"
-
-msgid "Last update"
-msgstr "Senaste uppdatering"
-
-msgid "Attachment"
-msgstr "Bilaga"
-
 msgid "Find and manage media."
 msgstr "Hitta och hantera media."
 
@@ -652,188 +613,20 @@ msgstr "Sant"
 msgid "No media available."
 msgstr "Ingen media tillgänglig."
 
-msgid "Apply filters"
-msgstr "Tillämpa filter"
-
-msgid "Publishing status"
-msgstr "Status för publicering"
-
-msgid "Media type"
-msgstr "Mediatyp"
-
-msgid "Newest first"
-msgstr "Nyaste först"
-
-msgid "Name (A-Z)"
-msgstr "Namn (A-Z)"
-
-msgid "Name (Z-A)"
-msgstr "Namn (Z-A)"
-
-msgid "Edit {{ name }}"
-msgstr "Redigera {{ name }}"
-
-msgid "Edit"
-msgstr "Redigera"
-
-msgid "Delete {{ name }}"
-msgstr "Radera {{ name }}"
-
-msgid "Delete"
-msgstr "Radera"
-
-msgid "Grid"
-msgstr "Rutnät"
-
-msgid "Table"
-msgstr "Tabell"
-
-msgid "Widget (table)"
-msgstr "Gränssnittskomponent (tabell)"
-
-msgid "Offset"
-msgstr "Kompensera"
-
-msgid "Label"
-msgstr "Label"
-
 msgid "Changed"
 msgstr "Ändrad"
-
-msgid "List of redirects"
-msgstr "Lista över omdirigeringar"
-
-msgid "‹ previous"
-msgstr "‹ föregående"
-
-msgid "next ›"
-msgstr "nästa ›"
-
-msgid "« first"
-msgstr "« första"
-
-msgid "last »"
-msgstr "sista »"
-
-msgid "With selection"
-msgstr "Med urval"
-
-msgid "From"
-msgstr "Från"
-
-msgid "Created"
-msgstr "Skapad"
-
-msgid "To"
-msgstr "Till"
-
-msgid "Status code"
-msgstr "Statuskod"
-
-msgid "307 Temporary Redirect"
-msgstr "300 Multiple Choices"
-
-msgid "Original language"
-msgstr "Ursprungsspråk"
-
-msgid "There is no redirect yet."
-msgstr "Det finns ingen omdirigering ännu."
-
-msgid "Content Type"
-msgstr "Innehållstyp"
-
-msgid "Publish on"
-msgstr "Publicera den"
-
-msgid "Unpublish on"
-msgstr "Avpublicera den"
-
-msgid "Scheduled"
-msgstr "Schemalagd"
-
-msgid "Taxonomy term"
-msgstr "Taxonomiterm"
-
-msgid "Content belonging to a certain taxonomy term."
-msgstr "Innehåll som hör till en viss taxonomiterm."
-
-msgid "Feed"
-msgstr "Innehållsflöde"
-
-msgid "Bulk update"
-msgstr "Massuppdatera"
-
-msgid "TPR unit list"
-msgstr "TPR units"
-
-msgid "TPR Units"
-msgstr "TPR units"
-
-msgid "People"
-msgstr "Personer"
-
-msgid "Find and manage people interacting with your site."
-msgstr "Hitta och hantera personer som använder din webbplats."
-
-msgid "Username"
-msgstr "Användarnamn"
-
-msgid "Active"
-msgstr "Aktiv"
-
-msgid "Blocked"
-msgstr "Spärrad"
-
-msgid "Roles"
-msgstr "Roller"
-
-msgid "Member for"
-msgstr "Medlem i"
-
-msgid "Name or email contains"
-msgstr "Namn eller e-post innehåller"
-
-msgid "Role"
-msgstr "Roll"
-
-msgid "Permission"
-msgstr "Behörighet"
-
-msgid "No people available."
-msgstr "Inga personer tillgängliga."
-
-msgid "more"
-msgstr "mer"
-
-msgid "List"
-msgstr "Lista"
-
-msgid "Manage user accounts, roles, and permissions."
-msgstr "Hantera användarkonton, roller och behörigheter."
-
-msgid "Recent log messages"
-msgstr "Senaste loggmeddelanden"
-
-msgid "Icon"
-msgstr "Ikon"
-
-msgid "Severity"
-msgstr "Grad"
-
-msgid "Date"
-msgstr "Datum"
-
-msgid "Message"
-msgstr "Meddelande"
-
-msgid "No log messages available."
-msgstr "Inga loggmeddelanden tillgängliga."
 
 msgid "Description"
 msgstr "Beskrivning"
 
+msgid "Paragraph"
+msgstr "Paragraf"
+
 msgid "Token"
 msgstr "Ersättningstecken"
+
+msgid "Summary"
+msgstr "Sammandrag"
 
 msgid "Content region"
 msgstr "Innehåll"
@@ -841,8 +634,11 @@ msgstr "Innehåll"
 msgid "Upper content region"
 msgstr "Innehåll"
 
-msgid "Russian"
-msgstr "Ryska"
+msgid "Icon"
+msgstr "Ikon"
+
+msgid "Taxonomy term"
+msgstr "Taxonomiterm"
 
 msgid "Basic page"
 msgstr "Sida"
@@ -929,29 +725,102 @@ msgstr ""
 "\r\n"
 "--  Administratörerna på [site:name]"
 
-msgid "File usage information for {{ arguments.fid }}"
-msgstr "Information om filanvändande för {{ arguments.fid }}"
+msgid "Admin"
+msgstr "Administrera"
 
-msgid "All content, by letter."
-msgstr "All innehåll, i bokstavsordning."
+msgid "Archive"
+msgstr "Arkiv"
 
-msgid "Redirect"
-msgstr "Omdirigera"
+msgid "All content, by month."
+msgstr "Allt innehåll, månadsvis."
 
-msgid "{{ message }}"
-msgstr "{{ meddelande }}"
+msgid "Monthly archive"
+msgstr "Månatligt arkiv"
 
-msgid "Summary"
-msgstr "Sammandrag"
+msgid "Recent content"
+msgstr "Nyligen uppdaterat innehåll"
 
-msgid "Map"
-msgstr "Karta"
+msgid "Recent content."
+msgstr "Nytt innehåll."
+
+msgid "More"
+msgstr "Mer"
+
+msgid "Apply filters"
+msgstr "Tillämpa filter"
+
+msgid "Publishing status"
+msgstr "Status för publicering"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "Media type"
+msgstr "Mediatyp"
+
+msgid "Newest first"
+msgstr "Nyaste först"
+
+msgid "Name (A-Z)"
+msgstr "Namn (A-Z)"
+
+msgid "Name (Z-A)"
+msgstr "Namn (Z-A)"
+
+msgid "Edit {{ name }}"
+msgstr "Redigera {{ name }}"
+
+msgid "Edit"
+msgstr "Redigera"
+
+msgid "Delete {{ name }}"
+msgstr "Radera {{ name }}"
+
+msgid "Delete"
+msgstr "Radera"
+
+msgid "All"
+msgstr "Alla"
+
+msgid "Grid"
+msgstr "Rutnät"
+
+msgid "Table"
+msgstr "Tabell"
+
+msgid "Widget (table)"
+msgstr "Gränssnittskomponent (tabell)"
+
+msgid "Label"
+msgstr "Label"
+
+msgid "Content belonging to a certain taxonomy term."
+msgstr "Innehåll som hör till en viss taxonomiterm."
+
+msgid "Feed"
+msgstr "Innehållsflöde"
+
+msgid "Glossary"
+msgstr "Ordlista"
+
+msgid "Last update"
+msgstr "Senaste uppdatering"
+
+msgid "Attachment"
+msgstr "Bilaga"
+
+msgid ""
+"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
+"message or find out more about cookies.</p>"
+msgstr ""
+"<h2>Thank you for accepting cookies</h2>\r\n"
+"\r\n"
+"<p>You can now hide "
+"this message or find out more about cookies.</p>\r\n"
+""
 
 msgid "Accept"
 msgstr "Accepterar"
-
-msgid "More info"
-msgstr "Show cookies"
 
 msgid "Hide"
 msgstr "Dölj"
@@ -971,25 +840,6 @@ msgstr ""
 msgid "No, thanks"
 msgstr "Nej, tack"
 
-msgid "Privacy settings"
-msgstr "Sekretessinställningar"
-
-msgid "Accept selected cookies"
-msgstr "Acceptera valda cookies"
-
-msgid "Accept all cookies"
-msgstr "Acceptera alla cookies"
-
-msgid ""
-"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
-"message or find out more about cookies.</p>"
-msgstr ""
-"<h2>Thank you for accepting cookies</h2>\r\n"
-"\r\n"
-"<p>You can now hide "
-"this message or find out more about cookies.</p>\r\n"
-""
-
 msgid ""
 "<h2>We use cookies on this site to enhance your user "
 "experience</h2><p>You have given your consent for us to set "
@@ -1001,14 +851,243 @@ msgstr ""
 "for us to set cookies.</p>\r\n"
 ""
 
-msgid "Withdraw consent"
-msgstr "Återkalla samtycke"
+msgid "Privacy settings"
+msgstr "Sekretessinställningar"
+
+msgid "Save preferences"
+msgstr "Acceptera valda cookies"
+
+msgid "Accept all cookies"
+msgstr "Acceptera alla cookies"
+
+msgid "Map"
+msgstr "Karta"
+
+msgid "Redirect"
+msgstr "Omdirigera"
+
+msgid "List of redirects"
+msgstr "Lista över omdirigeringar"
+
+msgid "‹ previous"
+msgstr "‹ föregående"
+
+msgid "next ›"
+msgstr "nästa ›"
+
+msgid "« first"
+msgstr "« första"
+
+msgid "last »"
+msgstr "sista »"
+
+msgid "With selection"
+msgstr "Med urval"
+
+msgid "From"
+msgstr "Från"
+
+msgid "Created"
+msgstr "Skapad"
+
+msgid "To"
+msgstr "Till"
+
+msgid "Status code"
+msgstr "Statuskod"
+
+msgid "307 Temporary Redirect"
+msgstr "300 Multiple Choices"
+
+msgid "Original language"
+msgstr "Ursprungsspråk"
+
+msgid "There is no redirect yet."
+msgstr "Det finns ingen omdirigering ännu."
+
+msgid "Content Type"
+msgstr "Innehållstyp"
+
+msgid "Publish on"
+msgstr "Publicera den"
+
+msgid "Unpublish on"
+msgstr "Avpublicera den"
+
+msgid "Scheduled"
+msgstr "Schemalagd"
+
+msgid "Bulk update"
+msgstr "Massuppdatera"
+
+msgid "TPR unit list"
+msgstr "TPR units"
+
+msgid "TPR Units"
+msgstr "TPR units"
+
+msgid "Combine fields filter"
+msgstr "Combine fields filter"
+
+msgid "No results"
+msgstr "Inget resultat"
 
 msgid "Entity Reference"
 msgstr "Entity Reference"
 
-msgid "Combine fields filter"
-msgstr "Combine fields filter"
+msgid "Watchdog"
+msgstr "Övervakning"
+
+msgid "Recent log messages"
+msgstr "Senaste loggmeddelanden"
+
+msgid "Severity"
+msgstr "Grad"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Message"
+msgstr "Meddelande"
+
+msgid "No log messages available."
+msgstr "Inga loggmeddelanden tillgängliga."
+
+msgid "<front>"
+msgstr "/node/1"
+
+msgid "Files"
+msgstr "Filer"
+
+msgid "Find and manage files."
+msgstr "Hitta och hantera filer."
+
+msgid "MIME type"
+msgstr "Typ av MIME"
+
+msgid "Size"
+msgstr "Storlek"
+
+msgid "Temporary"
+msgstr "Temporär"
+
+msgid "Upload date"
+msgstr "Datum för uppladdning"
+
+msgid "Changed date"
+msgstr "Datum för ändring"
+
+msgid "Used in"
+msgstr "Används i"
+
+msgid "Filename"
+msgstr "Filnamn"
+
+msgid "No files available."
+msgstr "Inga filer tillgängliga."
+
+msgid "Files overview"
+msgstr "Översikt av filer"
+
+msgid "File usage"
+msgstr "Filanvändning"
+
+msgid "Entity"
+msgstr "Objekt"
+
+msgid "Entity type"
+msgstr "Objektstyp"
+
+msgid "Registering module"
+msgstr "Registrerar modul"
+
+msgid "Use count"
+msgstr "Antal använd"
+
+msgid "File usage information for {{ arguments.fid }}"
+msgstr "Information om filanvändande för {{ arguments.fid }}"
+
+msgid "All content, by letter."
+msgstr "All innehåll, i bokstavsordning."
+
+msgid "People"
+msgstr "Personer"
+
+msgid "Find and manage people interacting with your site."
+msgstr "Hitta och hantera personer som använder din webbplats."
+
+msgid "Username"
+msgstr "Användarnamn"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Blocked"
+msgstr "Spärrad"
+
+msgid "Roles"
+msgstr "Roller"
+
+msgid "Member for"
+msgstr "Medlem i"
+
+msgid "Name or email contains"
+msgstr "Namn eller e-post innehåller"
+
+msgid "Role"
+msgstr "Roll"
+
+msgid "Permission"
+msgstr "Behörighet"
+
+msgid "No people available."
+msgstr "Inga personer tillgängliga."
+
+msgid "more"
+msgstr "mer"
+
+msgid "List"
+msgstr "Lista"
+
+msgid "Manage user accounts, roles, and permissions."
+msgstr "Hantera användarkonton, roller och behörigheter."
+
+msgid "{{ message }}"
+msgstr "{{ meddelande }}"
+
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By tapping the Accept button, you agree to us doing "
+"so.</p>"
+msgstr ""
+"<h2>Vi använder cookies på denna webbplats för att förbättra din "
+"användarupplevelse.</h2><p>Genom att trycka på knappen \"acceptera\" "
+"godkänner du att vi gör det.</p>"
+
+msgid "Withdraw consent"
+msgstr "Återkalla samtycke"
+
+msgid "Privacy settings"
+msgstr "Sekretessinställningar"
+
+msgid "Show cookies"
+msgstr "Visa cookies"
+
+msgid "Accept selected cookies"
+msgstr "Acceptera valda cookies"
+
+msgid "Load more services"
+msgstr "Ladda fler tjänster"
+
+msgid "Consent management"
+msgstr "Samtyckehantering"
+
+msgid ""
+"<p><strong>You have not saved any cookie preferences.</strong> By "
+"default only essential cookies are saved. See details below.</p>"
+msgstr ""
+"<p> <strong> Du har inte sparat några cookieinställningar. </strong> "
+"Som standard sparas endast viktiga cookies. Se detaljer nedan. </p>"
 
 msgctxt "Unit search count"
 msgid "result"
@@ -1016,11 +1095,75 @@ msgid_plural "results"
 msgstr[0] "träff"
 msgstr[1] "träffar"
 
-msgid "Load more services"
-msgstr "Ladda fler tjänster"
-
 msgctxt "Service list count"
 msgid "service"
 msgid_plural "services"
 msgstr[0] "tjänst"
 msgstr[1] "tjänster"
+
+msgid ""
+"<p>Your current cookie settings are below. Submit the form to make "
+"changes.</p>"
+msgstr ""
+"<p>Dina nuvarande cookie -inställningar finns nedan. Skicka in "
+"formuläret för att göra ändringar.</p>"
+
+msgid ""
+"<p>Necessary cookies help to make the website usable by allowing basic "
+"functions, navigating the page and using the protected areas of the "
+"site. The website will not work properly without these cookies and "
+"their consent is not "
+"required.</p>\r\n"
+"\r\n"
+"<table>\r\n"
+"\t<thead>\r\n"
+"\t\t<tr>\r\n"
+"\t\t\t<th>Name</th>\r\n"
+"\t\t\t<th>Provider</th>\r\n"
+"\t\t\t<th>Purpose "
+"of the "
+"cookie</th>\r\n"
+"\t\t\t<th>Validity</th>\r\n"
+"\t\t\t<th>Type</th>\r\n"
+"\t\t</tr>\r\n"
+"\t</thead>\r\n"
+"\t<tbody>\r\n"
+"\t\t<tr>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t</tr>\r\n"
+"\t</tbody>\r\n"
+"</table>\r\n"
+""
+msgstr ""
+"<p>Nödvändiga cookies hjälper till att göra webbplatsen användbar "
+"genom att tillåta grundläggande funktioner som att navigera på "
+"sidan och använda de skyddade områdena på webbplatsen. Webbplatsen "
+"fungerar inte korrekt utan dessa cookies och kräver inte "
+"samtycke.</p>\r\n"
+"\r\n"
+"<table>\r\n"
+"\t<thead>\r\n"
+"\t\t<tr>\r\n"
+"\t\t\t<th>Namn</th>\r\n"
+"\t\t\t<th>Tjänsteleverantör</th>\r\n"
+"\t\t\t<th>Cookie "
+"syfte</th>\r\n"
+"\t\t\t<th>Giltighet</th>\r\n"
+"\t\t\t<th>Typ</th>\r\n"
+"\t\t</tr>\r\n"
+"\t</thead>\r\n"
+"\t<tbody>\r\n"
+"\t\t<tr>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t</tr>\r\n"
+"\t</tbody>\r\n"
+"</table>\r\n"
+""

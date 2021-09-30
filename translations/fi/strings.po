@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-09-21 08:43+0300\n"
-"PO-Revision-Date: 2021-09-21 08:43+0300\n"
+"POT-Creation-Date: 2021-09-28 16:52+0300\n"
+"PO-Revision-Date: 2021-09-28 16:52+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -182,20 +182,11 @@ msgstr ""
 "</table>\r\n"
 ""
 
-msgid "English"
-msgstr "Englanti"
-
-msgid "Finnish"
-msgstr "Suomi"
-
 msgid "Focal point"
 msgstr "Keskipiste"
 
 msgid "Teaser"
 msgstr "Lyhennelmä"
-
-msgid "Swedish"
-msgstr "Ruotsi"
 
 msgid "Breadcrumbs"
 msgstr "Murupolku"
@@ -223,6 +214,9 @@ msgstr "Lohkot"
 
 msgid "Register"
 msgstr "Rekisteröidy"
+
+msgid "Open map in new window"
+msgstr "Avaa kartta uudessa ikkunassa"
 
 msgid "Location on map"
 msgstr "Sijainti kartalla"
@@ -265,6 +259,18 @@ msgstr "Keskikokoinen (220×220)"
 
 msgid "Thumbnail (100×100)"
 msgstr "Pikkukuva (100×100)"
+
+msgid "English"
+msgstr "Englanti"
+
+msgid "Finnish"
+msgstr "Suomi"
+
+msgid "Russian"
+msgstr "Venäjä"
+
+msgid "Swedish"
+msgstr "Ruotsi"
 
 msgid "Not specified"
 msgstr "Ei määritelty"
@@ -521,7 +527,7 @@ msgstr ""
 msgid "Anonymous"
 msgstr "Anonyymi"
 
-msgid "Default"
+msgid "Master"
 msgstr "Oletus"
 
 msgid "Apply"
@@ -622,21 +628,6 @@ msgstr "Tällä hetkellä 0 käyttäjää on online."
 msgid "A list of users that are currently logged in."
 msgstr "Lista käyttäjistä jotka ovat online."
 
-msgid "Paragraph"
-msgstr "Lohko"
-
-msgid "Archive"
-msgstr "Arkisto"
-
-msgid "All content, by month."
-msgstr "Kaikki sisältö, kuukausittain lajiteltuna."
-
-msgid "Monthly archive"
-msgstr "Arkisto"
-
-msgid "Block"
-msgstr "Lohko"
-
 msgid "Content"
 msgstr "Sisältö"
 
@@ -682,84 +673,6 @@ msgstr "Ei sisältöä."
 msgid "Find and manage content"
 msgstr "Etsi ja hallitse sisältöä"
 
-msgid "Recent content"
-msgstr "Uusin sisältö"
-
-msgid "Recent content."
-msgstr "Uusin sisältö."
-
-msgid "More"
-msgstr "Lisää"
-
-msgid "Files"
-msgstr "Tiedostot"
-
-msgid "Find and manage files."
-msgstr "Etsi ja hallitse tiedostoja."
-
-msgid "Fid"
-msgstr "FId"
-
-msgid "Name"
-msgstr "Nimi"
-
-msgid "MIME type"
-msgstr "MIME tyyppi"
-
-msgid "Size"
-msgstr "Koko"
-
-msgid "Temporary"
-msgstr "Tilapäinen"
-
-msgid "Permanent"
-msgstr "Pysyvä"
-
-msgid "Upload date"
-msgstr "Latauspäivämäärä"
-
-msgid "Changed date"
-msgstr "Muutospäivämäärä"
-
-msgid "Used in"
-msgstr "Käytetään"
-
-msgid "Filename"
-msgstr "Tiedoston nimi"
-
-msgid "No files available."
-msgstr "Tiedostoja ei ole saatavilla."
-
-msgid "Files overview"
-msgstr "Tiedostot"
-
-msgid "File usage"
-msgstr "Tiedoston käyttö"
-
-msgid "Entity"
-msgstr "Entiteetti"
-
-msgid "Entity type"
-msgstr "Entiteetin tyyppi"
-
-msgid "Registering module"
-msgstr "Käytön kirjannut moduuli"
-
-msgid "Use count"
-msgstr "Käyttömäärä"
-
-msgid "All"
-msgstr "Kaikki"
-
-msgid "Glossary"
-msgstr "Sanasto"
-
-msgid "Last update"
-msgstr "Viimeksi päivitetty"
-
-msgid "Attachment"
-msgstr "Liite"
-
 msgid "Find and manage media."
 msgstr "Etsi ja ylläpidä mediatiedostoja."
 
@@ -781,14 +694,119 @@ msgstr "Tosi"
 msgid "No media available."
 msgstr "Ei mediatiedostoja saatavilla."
 
+msgid "Changed"
+msgstr "Muuttunut"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Paragraph"
+msgstr "Lohko"
+
 msgid "Media library"
 msgstr "Mediakirjasto"
+
+msgid "Image"
+msgstr "Kuva"
+
+msgid "Token"
+msgstr "Muuttuja"
+
+msgid "Summary"
+msgstr "Yhteenveto"
+
+msgid "File"
+msgstr "Tiedosto"
+
+msgid "Content region"
+msgstr "Pääsisältö"
+
+msgid "Keywords"
+msgstr "Asiasanat"
+
+msgid "Metatags"
+msgstr "Metatunnisteet"
+
+msgid "Upper content region"
+msgstr "Ylempi sisältöalue"
+
+msgid "Items"
+msgstr "Sisältö"
+
+msgid "Heading"
+msgstr "Otsikko"
+
+msgid "Icon"
+msgstr "Ikoni"
+
+msgid "Link"
+msgstr "Linkki"
+
+msgid "Background color"
+msgstr "Taustaväri"
+
+msgid "Caption"
+msgstr "Kuvateksti"
+
+msgid "Links"
+msgstr "Linkit"
+
+msgid "Remote video"
+msgstr "Video ulkoisesta palvelusta"
+
+msgid "White"
+msgstr "Valkoinen"
+
+msgid "Taxonomy term"
+msgstr "Luokittelutermi"
+
+msgid "Article"
+msgstr "Artikkeli"
+
+msgid "Basic page"
+msgstr "Perussivu"
+
+msgid "Accordion"
+msgstr "Haitari"
+
+msgid "Columns"
+msgstr "Palstat"
+
+msgid "Delete redirect"
+msgstr "Poista uudelleenohjaus"
+
+msgid "Admin"
+msgstr "Ylläpitäjä"
+
+msgid "Archive"
+msgstr "Arkisto"
+
+msgid "All content, by month."
+msgstr "Kaikki sisältö, kuukausittain lajiteltuna."
+
+msgid "Monthly archive"
+msgstr "Arkisto"
+
+msgid "Block"
+msgstr "Lohko"
+
+msgid "Recent content"
+msgstr "Uusin sisältö"
+
+msgid "Recent content."
+msgstr "Uusin sisältö."
+
+msgid "More"
+msgstr "Lisää"
 
 msgid "Apply filters"
 msgstr "Suodata tuloksia"
 
 msgid "Publishing status"
 msgstr "Julkaisun tila"
+
+msgid "Name"
+msgstr "Nimi"
 
 msgid "Media type"
 msgstr "Median tyyppi"
@@ -817,6 +835,9 @@ msgstr "Poista"
 msgid "Widget"
 msgstr "Widgetti"
 
+msgid "All"
+msgstr "Kaikki"
+
 msgid "Grid"
 msgstr "Ruudukko"
 
@@ -826,112 +847,8 @@ msgstr "Taulukko"
 msgid "Widget (table)"
 msgstr "Widget (taulukko)"
 
-msgid "Paragraphs library"
-msgstr "Uudelleenkäytettävät lohkot"
-
 msgid "Label"
 msgstr "Otsikko"
-
-msgid "Changed"
-msgstr "Muuttunut"
-
-msgid "List of redirects"
-msgstr "Uudelleenohjaukset"
-
-msgid "‹ previous"
-msgstr "‹ edellinen"
-
-msgid "next ›"
-msgstr "seuraava ›"
-
-msgid "« first"
-msgstr "« ensimmäinen"
-
-msgid "last »"
-msgstr "viimeinen »"
-
-msgid "With selection"
-msgstr "Valinnalla"
-
-msgid "From"
-msgstr "Lähettäjä"
-
-msgid "Created"
-msgstr "Luotu"
-
-msgid "To"
-msgstr "Osoitteeseen"
-
-msgid "Status code"
-msgstr "Tilakoodi"
-
-msgid "300 Multiple Choices"
-msgstr "300 Useita valintoja"
-
-msgid "301 Moved Permanently"
-msgstr "301 Pysyvästi siirretty"
-
-msgid "302 Found"
-msgstr "302 Löydetty"
-
-msgid "303 See Other"
-msgstr "303 Kts. toinen"
-
-msgid "304 Not Modified"
-msgstr "304 Muuttamaton"
-
-msgid "305 Use Proxy"
-msgstr "305 Käytä proxyä"
-
-msgid "307 Temporary Redirect"
-msgstr "307 Tilapäinen uudelleenohjaus"
-
-msgid "Original language"
-msgstr "Alkuperäinen kieli"
-
-msgid "There is no redirect yet."
-msgstr "Ei ole vielä uudelleenohjaksia."
-
-msgid "Scheduled content"
-msgstr "Ajastettu sisältö"
-
-msgid "Find and manage scheduled content."
-msgstr "Etsi ja ylläpidä ajastettua sisältöä."
-
-msgid "Content Type"
-msgstr "Sisältötyyppi"
-
-msgid "Publish on"
-msgstr "Julkaisupäivämäärä"
-
-msgid "Unpublish on"
-msgstr "Julkaisun peruutuspäivämäärä"
-
-msgid "Scheduled Content"
-msgstr "Ajastettu sisältö"
-
-msgid "No scheduled content."
-msgstr "Ei vielä ajastettua sisältöä."
-
-msgid "Scheduled"
-msgstr "Ajastettu"
-
-msgid ""
-"Overview of all scheduled content, as a tab on main 'content admin' "
-"page"
-msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
-
-msgid "Content Overview"
-msgstr "Sisältö"
-
-msgid "No scheduled content for user {{ arguments.uid }}"
-msgstr "{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä."
-
-msgid "User profile tab"
-msgstr "Käyttäjäprofiili"
-
-msgid "Taxonomy term"
-msgstr "Luokittelutermi"
 
 msgid "Content belonging to a certain taxonomy term."
 msgstr "Sisältö, joka kuuluu tiettyyn taksonomiatermiin."
@@ -939,185 +856,30 @@ msgstr "Sisältö, joka kuuluu tiettyyn taksonomiatermiin."
 msgid "Feed"
 msgstr "Syöte"
 
-msgid "TPR errand service list"
-msgstr "TPR Asiointipalvelut"
+msgid "Glossary"
+msgstr "Sanasto"
 
-msgid "Bulk update"
-msgstr "Massapäivitys"
+msgid "Last update"
+msgstr "Viimeksi päivitetty"
 
-msgid "TPR Errand Services"
-msgstr "TPR Asiointipalvelut"
-
-msgid "TPR service channel list"
-msgstr "TPR Palvelukanavat"
-
-msgid "TPR Service Channels"
-msgstr "TPR Palvelukanavat"
-
-msgid "TPR unit list"
-msgstr "TPR Toimipisteet"
-
-msgid "TPR Units"
-msgstr "TPR Toimipisteet"
-
-msgid "Load more results"
-msgstr "Lataa lisää"
-
-msgid "No results"
-msgstr ""
-"<p>Ei tuloksia</p>\r\n"
-""
-
-msgid "People"
-msgstr "Käyttäjät"
-
-msgid "Find and manage people interacting with your site."
-msgstr "Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä."
-
-msgid "Username"
-msgstr "Käyttäjätunnus"
-
-msgid "Active"
-msgstr "Aktiivinen"
-
-msgid "Blocked"
-msgstr "Suljettu"
-
-msgid "Roles"
-msgstr "Käyttäjäroolit"
-
-msgid "Member for"
-msgstr "Käyttäjä jo"
-
-msgid "Name or email contains"
-msgstr "Nimi tai sähköposti sisältää"
-
-msgid "Role"
-msgstr "Rooli"
-
-msgid "Permission"
-msgstr "Käyttöoikeus"
-
-msgid "No people available."
-msgstr "Ei saatavilla olevia ihmisiä."
-
-msgid "more"
-msgstr "lisää"
-
-msgid "List"
-msgstr "Lista"
-
-msgid "Manage user accounts, roles, and permissions."
-msgstr "Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia."
-
-msgid "Recent log messages"
-msgstr "Viimeisimmät lokimerkinnät"
-
-msgid "Icon"
-msgstr "Ikoni"
-
-msgid "Severity"
-msgstr "Vakavuus"
-
-msgid "Date"
-msgstr "Päivämäärä"
-
-msgid "Message"
-msgstr "Viesti"
-
-msgid "No log messages available."
-msgstr "Yhtään lokimerkintää ei ole saatavilla."
-
-msgid "Description"
-msgstr "Kuvaus"
-
-msgid "Image"
-msgstr "Kuva"
-
-msgid "Token"
-msgstr "Muuttuja"
-
-msgid "File"
-msgstr "Tiedosto"
-
-msgid "Content region"
-msgstr "Pääsisältö"
-
-msgid "Keywords"
-msgstr "Asiasanat"
-
-msgid "Upper content region"
-msgstr "Ylempi sisältöalue"
-
-msgid "Items"
-msgstr "Sisältö"
-
-msgid "Heading"
-msgstr "Otsikko"
-
-msgid "Link"
-msgstr "Linkki"
-
-msgid "Background color"
-msgstr "Taustaväri"
-
-msgid "Caption"
-msgstr "Kuvateksti"
-
-msgid "Links"
-msgstr "Linkit"
-
-msgid "Remote video"
-msgstr "Video ulkoisesta palvelusta"
-
-msgid "Remote video paragraph that lets you add any video from video providers. Currently only YouTube."
-msgstr "Tällä lohkolla voit lisätä videon ulkoisesta palvelusta. Tukee tällä hetkellä vain YouTubea."
-
-msgid "White"
-msgstr "Valkoinen"
-
-msgid "Russian"
-msgstr "Venäjä"
-
-msgid "Article"
-msgstr "Artikkeli"
-
-msgid "Basic page"
-msgstr "Perussivu"
-
-msgid "Columns"
-msgstr "Palstat"
-
-msgid "Delete redirect"
-msgstr "Poista uudelleenohjaus"
-
-msgid "Summary"
-msgstr "Yhteenveto"
-
-msgid "Add here the content that you want to appear as cards to the block."
-msgstr "Lisää tähän ne sisällöt, jotka haluat nostaa korteiksi lohkoon."
-
-msgid "Add here the content that you want to appear as cards to the block. <span class=\"notice\">Works only with TPR Unit in alpha version</span>"
-msgstr "Lisää tähän sen sisällön otsikko jonka haluat nostaa sivulle.\r\n<span class=\"notice\">Voit toistaiseksi valita vain toimipisteitä.</span>"
-
-msgid "Map"
-msgstr "Kartta"
+msgid "Attachment"
+msgstr "Liite"
 
 msgid ""
-"With map paragraph content producer can add an embedded map from "
-"https://kartta.hel.fi and https://palvelukartta.hel.fi."
+"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
+"message or find out more about cookies.</p>"
 msgstr ""
-"Kartta lohkolla voit lisätä upotettavan kartan https://kartta.hel.fi "
-"tai https://palvelukartta.hel.fi -palveluista."
-
-msgid "Admin"
-msgstr "Ylläpitäjä"
+"<h2>Thank you for accepting cookies</h2>\r\n"
+"\r\n"
+"<p>You can now hide "
+"this message or find out more about cookies.</p>\r\n"
+""
 
 msgid "Accept"
 msgstr "Hyväksy"
 
-msgid "More info"
-msgstr "Lisätietoja"
+msgid "Show cookies"
+msgstr "Näytä evästeet"
 
 msgid "Hide"
 msgstr "Piilossa"
@@ -1141,10 +903,21 @@ msgstr ""
 msgid "No, thanks"
 msgstr "Ei kiitos"
 
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>You have given your consent for us to set "
+"cookies.</p>"
+msgstr ""
+"<h2>Hel.fi uses cookies</h2>\r\n"
+"\r\n"
+"<p>You have given your consent "
+"for us to set cookies.</p>\r\n"
+""
+
 msgid "Privacy settings"
 msgstr "Tietosuoja-asetukset"
 
-msgid "Accept selected cookies"
+msgid "Save preferences"
 msgstr "Hyväksy valitut evästeet"
 
 msgid "Accept all cookies"
@@ -1154,6 +927,9 @@ msgid "You can add link button to the banner using this field."
 msgstr ""
 "Voit lisätä linkkipainikkeen banneriin täyttämällä nämä "
 "kentät."
+
+msgid "Add here the content that you want to appear as cards to the block."
+msgstr "Lisää tähän ne sisällöt, jotka haluat nostaa korteiksi lohkoon."
 
 msgid "The title of the content cards paragraph."
 msgstr "Sisältökortit-lohkon otsikko."
@@ -1244,6 +1020,16 @@ msgstr ""
 "\"Yhteystiedot\"-sivu."
 
 msgid ""
+"Accordion paragraph is used to store information that is perhaps not "
+"so relevant to all website users in a compact element that collapses "
+"the additional information behind a title."
+msgstr ""
+"Haitari-elementtiä käytetään toissijaisen tiedon tallentamiseen "
+"kompaktissa muodossa. Sivuston käyttäjät näkevät tiedosta otsikon "
+"verran ensimmäisellä silmäyksellä ja voivat tarkastella "
+"sisältöä tarkemmin klikkaamalla otsikon auki."
+
+msgid ""
 "With columns paragraph content producer can divide content in to two "
 "columns. The columns can be equal width or divided in to 30/70 "
 "proportion. \r\n"
@@ -1258,42 +1044,260 @@ msgstr ""
 msgid "Image with a caption"
 msgstr "Kuva kuvatekstillä"
 
+msgid "Map"
+msgstr "Kartta"
+
+msgid ""
+"With map paragraph content producer can add an embedded map from "
+"https://kartta.hel.fi and https://palvelukartta.hel.fi."
+msgstr ""
+"Kartta lohkolla voit lisätä upotettavan kartan https://kartta.hel.fi "
+"tai https://palvelukartta.hel.fi -palveluista."
+
 msgid ""
 "Remote video paragraph that lets you add any video from video "
 "providers. Currently only YouTube."
 msgstr ""
-"Remote video paragraph that lets you add any video from video "
-"providers. Currently only YouTube."
+"Tällä lohkolla voit lisätä videon ulkoisesta palvelusta. "
+"Tukee tällä hetkellä vain YouTubea."
+
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
+msgid "List of redirects"
+msgstr "Uudelleenohjaukset"
+
+msgid "‹ previous"
+msgstr "‹ edellinen"
+
+msgid "next ›"
+msgstr "seuraava ›"
+
+msgid "« first"
+msgstr "« ensimmäinen"
+
+msgid "last »"
+msgstr "viimeinen »"
+
+msgid "With selection"
+msgstr "Valinnalla"
+
+msgid "From"
+msgstr "Lähettäjä"
+
+msgid "Created"
+msgstr "Luotu"
+
+msgid "To"
+msgstr "Osoitteeseen"
+
+msgid "Status code"
+msgstr "Tilakoodi"
+
+msgid "307 Temporary Redirect"
+msgstr "307 Tilapäinen uudelleenohjaus"
+
+msgid "Original language"
+msgstr "Alkuperäinen kieli"
+
+msgid "There is no redirect yet."
+msgstr "Ei ole vielä uudelleenohjaksia."
+
+msgid "Scheduled content"
+msgstr "Ajastettu sisältö"
+
+msgid "Find and manage scheduled content."
+msgstr "Etsi ja ylläpidä ajastettua sisältöä."
+
+msgid "Content Type"
+msgstr "Sisältötyyppi"
+
+msgid "Publish on"
+msgstr "Julkaisupäivämäärä"
+
+msgid "Unpublish on"
+msgstr "Julkaisun peruutuspäivämäärä"
+
+msgid "Scheduled Content"
+msgstr "Ajastettu sisältö"
+
+msgid "No scheduled content."
+msgstr "Ei vielä ajastettua sisältöä."
+
+msgid "Scheduled"
+msgstr "Ajastettu"
 
 msgid ""
-"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
-"message or find out more about cookies.</p>"
-msgstr ""
-"<h2>Thank you for accepting cookies</h2>\r\n"
-"\r\n"
-"<p>You can now hide "
-"this message or find out more about cookies.</p>\r\n"
-""
+"Overview of all scheduled content, as a tab on main 'content admin' "
+"page"
+msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
 
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>You have given your consent for us to set "
-"cookies.</p>"
-msgstr ""
-"<h2>Hel.fi uses cookies</h2>\r\n"
-"\r\n"
-"<p>You have given your consent "
-"for us to set cookies.</p>\r\n"
-""
+msgid "Content Overview"
+msgstr "Sisältö"
 
-msgid "Tabs"
-msgstr "Välilehdet"
+msgid "No scheduled content for user {{ arguments.uid }}"
+msgstr "{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä."
+
+msgid "User profile tab"
+msgstr "Käyttäjäprofiili"
+
+msgid "TPR errand service list"
+msgstr "TPR Asiointipalvelut"
+
+msgid "Bulk update"
+msgstr "Massapäivitys"
+
+msgid "TPR Errand Services"
+msgstr "TPR Asiointipalvelut"
+
+msgid "TPR service channel list"
+msgstr "TPR Palvelukanavat"
+
+msgid "TPR Service Channels"
+msgstr "TPR Palvelukanavat"
+
+msgid "TPR unit list"
+msgstr "TPR Toimipisteet"
+
+msgid "TPR Units"
+msgstr "TPR Toimipisteet"
+
+msgid "Unit search"
+msgstr "Toimipistehaku"
+
+msgid "Load more results"
+msgstr "Lataa lisää"
+
+msgid "Combine fields filter"
+msgstr "Kentät yhdistävä suodatin"
+
+msgid "No results"
+msgstr ""
+"<p>Ei tuloksia</p>\r\n"
+""
 
 msgid "Entity Reference"
 msgstr "Entiteettiviittaus"
 
-msgid "Combine fields filter"
-msgstr "Kentät yhdistävä suodatin"
+msgid "Watchdog"
+msgstr "Vahtikoira"
+
+msgid "Recent log messages"
+msgstr "Viimeisimmät lokimerkinnät"
+
+msgid "Severity"
+msgstr "Vakavuus"
+
+msgid "Date"
+msgstr "Päivämäärä"
+
+msgid "Message"
+msgstr "Viesti"
+
+msgid "No log messages available."
+msgstr "Yhtään lokimerkintää ei ole saatavilla."
+
+msgid "Files"
+msgstr "Tiedostot"
+
+msgid "Find and manage files."
+msgstr "Etsi ja hallitse tiedostoja."
+
+msgid "Fid"
+msgstr "FId"
+
+msgid "MIME type"
+msgstr "MIME tyyppi"
+
+msgid "Size"
+msgstr "Koko"
+
+msgid "Temporary"
+msgstr "Tilapäinen"
+
+msgid "Permanent"
+msgstr "Pysyvä"
+
+msgid "Upload date"
+msgstr "Latauspäivämäärä"
+
+msgid "Changed date"
+msgstr "Muutospäivämäärä"
+
+msgid "Used in"
+msgstr "Käytetään"
+
+msgid "Filename"
+msgstr "Tiedoston nimi"
+
+msgid "No files available."
+msgstr "Tiedostoja ei ole saatavilla."
+
+msgid "Files overview"
+msgstr "Tiedostot"
+
+msgid "File usage"
+msgstr "Tiedoston käyttö"
+
+msgid "Entity"
+msgstr "Entiteetti"
+
+msgid "Entity type"
+msgstr "Entiteetin tyyppi"
+
+msgid "Registering module"
+msgstr "Käytön kirjannut moduuli"
+
+msgid "Use count"
+msgstr "Käyttömäärä"
+
+msgid "People"
+msgstr "Käyttäjät"
+
+msgid "Find and manage people interacting with your site."
+msgstr "Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä."
+
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+msgid "Active"
+msgstr "Aktiivinen"
+
+msgid "Blocked"
+msgstr "Suljettu"
+
+msgid "Roles"
+msgstr "Käyttäjäroolit"
+
+msgid "Member for"
+msgstr "Käyttäjä jo"
+
+msgid "Name or email contains"
+msgstr "Nimi tai sähköposti sisältää"
+
+msgid "Role"
+msgstr "Rooli"
+
+msgid "Permission"
+msgstr "Käyttöoikeus"
+
+msgid "No people available."
+msgstr "Ei saatavilla olevia ihmisiä."
+
+msgid "more"
+msgstr "lisää"
+
+msgid "List"
+msgstr "Lista"
+
+msgid "Manage user accounts, roles, and permissions."
+msgstr "Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia."
+
+msgid "Details"
+msgstr "Tarkemmat tiedot"
+
+msgid "Tabs"
+msgstr "Välilehdet"
 
 msgid "Are you sure you want to delete the @entity-type %label?"
 msgstr ""
@@ -1412,9 +1416,6 @@ msgstr "Ingressi"
 
 msgid "Liftup image"
 msgstr "Nostokuva"
-
-msgid "Metatags"
-msgstr "Metatunnisteet"
 
 msgid "Hero"
 msgstr "Hero-lohko"
@@ -1638,19 +1639,6 @@ msgstr ""
 "etusivuna. Laskeutumissivu koostuu pääosin nostoista, listauksista "
 "ja linkeistä."
 
-msgid "Accordion"
-msgstr "Haitari"
-
-msgid ""
-"Accordion paragraph is used to store information that is perhaps not "
-"so relevant to all website users in a compact element that collapses "
-"the additional information behind a title."
-msgstr ""
-"Haitari-elementtiä käytetään toissijaisen tiedon tallentamiseen "
-"kompaktissa muodossa. Sivuston käyttäjät näkevät tiedosta otsikon "
-"verran ensimmäisellä silmäyksellä ja voivat tarkastella "
-"sisältöä tarkemmin klikkaamalla otsikon auki."
-
 msgid "Accordion item"
 msgstr "Haitarin sisältökohta"
 
@@ -1746,9 +1734,6 @@ msgstr "Mediatyyppi SoundCloud kappaleiden lisäämiseen."
 msgid "Gallery thumbnail"
 msgstr "Gallerian pikkukuva"
 
-msgid "Open map in new window"
-msgstr "Avaa kartta uudessa ikkunassa"
-
 msgid "Meta information"
 msgstr "Metatiedot"
 
@@ -1766,9 +1751,6 @@ msgstr "Hae toimipisteitä"
 
 msgid "Load more label"
 msgstr "Lataa lisää - otsikko"
-
-msgid "Load more services"
-msgstr "Lataa lisää palveluita"
 
 msgid "Load more units"
 msgstr "Lataa lisää toimipisteitä"
@@ -1795,9 +1777,6 @@ msgstr "TPR - Palvelu"
 msgid "TPR - Unit"
 msgstr "TPR - Toimipiste"
 
-msgid "Unit search"
-msgstr "Toimipistehaku"
-
 msgid ""
 "With unit search paragraph content producer can create unit search "
 "forms for the end user."
@@ -1818,6 +1797,9 @@ msgstr "Postinumero"
 
 msgid "Compare selected revisions"
 msgstr "Vertaile valittuja versioita"
+
+msgid "More info"
+msgstr "Lisätietoja"
 
 msgid "Users are tracked by default, but you are able to opt out."
 msgstr ""
@@ -1871,6 +1853,24 @@ msgid ""
 "href=\"@admin_link\">Configure URL alias patterns.</a>"
 msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
 
+msgid "301 Moved Permanently"
+msgstr "301 Pysyvästi siirretty"
+
+msgid "300 Multiple Choices"
+msgstr "300 Useita valintoja"
+
+msgid "302 Found"
+msgstr "302 Löydetty"
+
+msgid "303 See Other"
+msgstr "303 Kts. toinen"
+
+msgid "304 Not Modified"
+msgstr "304 Muuttamaton"
+
+msgid "305 Use Proxy"
+msgstr "305 Käytä proxyä"
+
 msgid "The date the node will be published."
 msgstr "Päivämäärä jolloin sivu julkaistaan."
 
@@ -1888,6 +1888,22 @@ msgstr "XML-sivustokartta"
 
 msgid "Regenerate all sitemaps after hitting <em>Save</em>"
 msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
+
+msgid ""
+"Add here the content that you want to appear as cards to the block. "
+"<span class=\"notice\">Works only with TPR Unit in alpha "
+"version</span>"
+msgstr ""
+"Lisää tähän sen sisällön otsikko jonka haluat nostaa "
+"sivulle.\r\n"
+"<span class=\"notice\">Voit toistaiseksi valita vain "
+"toimipisteitä.</span>"
+
+msgid "Accept selected cookies"
+msgstr "Hyväksy valitut evästeet"
+
+msgid "Load more services"
+msgstr "Lataa lisää palveluita"
 
 msgid "Footer - Bottom navigation"
 msgstr "Alatunniste - Alavalikko"
@@ -2589,38 +2605,11 @@ msgstr ""
 "<p><strong>Et ole tallentanut evästeasetuksia.</strong> "
 "Oletusarvoisesti vain välttämättömät evästeet tallennetaan.</p>"
 
-msgctxt "Service units count"
-msgid "unit"
-msgid_plural "units"
-msgstr[0] "palvelupaikka"
-msgstr[1] "palvelupaikkaa"
-
-msgctxt "Unit services count"
-msgid "service"
-msgid_plural "services"
-msgstr[0] "palvelu"
-msgstr[1] "palvelua"
-
-msgctxt "Unit search count"
-msgid "result"
-msgid_plural "results"
-msgstr[0] "tulos"
-msgstr[1] "tulosta"
-
 msgid "Sidebar text"
 msgstr "Sivupalkin teksti"
 
 msgid "Accessibility information"
 msgstr "Esteettömyystiedot"
-
-msgctxt "Service list count"
-msgid "service"
-msgid_plural "services"
-msgstr[0] "palvelu"
-msgstr[1] "palvelua"
-
-msgid "Details"
-msgstr "Tarkemmat tiedot"
 
 msgctxt "Errand service detail heading"
 msgid "Processing time"
@@ -2641,3 +2630,95 @@ msgstr "Lisätiedot"
 msgctxt "Errand service detail heading"
 msgid "Additional links"
 msgstr "Lisätietolinkit"
+
+msgctxt "Service units count"
+msgid "unit"
+msgid_plural "units"
+msgstr[0] "palvelupaikka"
+msgstr[1] "palvelupaikkaa"
+
+msgctxt "Unit services count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "palvelu"
+msgstr[1] "palvelua"
+
+msgctxt "Unit search count"
+msgid "result"
+msgid_plural "results"
+msgstr[0] "tulos"
+msgstr[1] "tulosta"
+
+msgctxt "Service list count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "palvelu"
+msgstr[1] "palvelua"
+
+msgid ""
+"<p>Your current cookie settings are below. Submit the form to make "
+"changes.</p>"
+msgstr ""
+"<p>Nykyiset evästeasetuksesi näkyvät alla. Lähetä lomake "
+"tehdäksesi muutoksia.</p>"
+
+msgid ""
+"<p>Necessary cookies help to make the website usable by allowing basic "
+"functions, navigating the page and using the protected areas of the "
+"site. The website will not work properly without these cookies and "
+"their consent is not "
+"required.</p>\r\n"
+"\r\n"
+"<table>\r\n"
+"\t<thead>\r\n"
+"\t\t<tr>\r\n"
+"\t\t\t<th>Name</th>\r\n"
+"\t\t\t<th>Provider</th>\r\n"
+"\t\t\t<th>Purpose "
+"of the "
+"cookie</th>\r\n"
+"\t\t\t<th>Validity</th>\r\n"
+"\t\t\t<th>Type</th>\r\n"
+"\t\t</tr>\r\n"
+"\t</thead>\r\n"
+"\t<tbody>\r\n"
+"\t\t<tr>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t</tr>\r\n"
+"\t</tbody>\r\n"
+"</table>\r\n"
+""
+msgstr ""
+"<p>Välttämättömät evästeet auttavat tekemään verkkosivustosta "
+"käyttökelpoisen sallimalla perustoimintoja, kuten sivulla "
+"siirtymisen ja sivuston suojattujen alueiden käytön. Verkkosivusto "
+"ei toimi kunnolla ilman näitä evästeitä eikä niihin tarvita "
+"suostumusta.</p>\r\n"
+"\r\n"
+"<table>\r\n"
+"\t<thead>\r\n"
+"\t\t<tr>\r\n"
+"\t\t\t<th>Nimi</th>\r\n"
+"\t\t\t<th>Tarjoaja</th>\r\n"
+"\t\t\t<th>Tarkoitus</th>\r\n"
+"\t\t\t<th>Voimassa</th>\r\n"
+"\t\t\t<th>Tyyppi</th>\r\n"
+"\t\t</tr>\r\n"
+"\t</thead>\r\n"
+"\t<tbody>\r\n"
+"\t\t<tr>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t\t<td>...</td>\r\n"
+"\t\t</tr>\r\n"
+"\t</tbody>\r\n"
+"</table>\r\n"
+""
+
+
