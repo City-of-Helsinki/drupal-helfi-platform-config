@@ -1,0 +1,66 @@
+field.field.node.landing_page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            map: map
+          target_bundles_drag_drop:
+            map:
+              enabled: true
+              weight: -20
+field.field.node.page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            map: map
+          target_bundles_drag_drop:
+            map:
+              enabled: true
+              weight: -20
+field.field.node.page.field_lower_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            map: map
+          target_bundles_drag_drop:
+            map:
+              enabled: true
+              weight: -21
+user.role.admin:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create hel_remote_webform media'
+        - 'delete any hel_remote_webform media'
+        - 'delete own hel_remote_webform media'
+        - 'edit any hel_remote_webform media'
+        - 'edit own hel_remote_webform media'
+user.role.content_producer:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create hel_remote_webform media'
+        - 'delete own hel_remote_webform media'
+        - 'edit own hel_remote_webform media'
+core.base_field_override.paragraphs_library_item.paragraphs_library_item.paragraphs:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            map: map
+          target_bundles_drag_drop:
+            map:
+              enabled: '1'
+              weight: '32'
