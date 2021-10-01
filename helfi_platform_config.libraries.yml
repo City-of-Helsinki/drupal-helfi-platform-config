@@ -5,7 +5,7 @@ kuura_health_chat:
       type: external,
       minified: true,
       attributes: {
-        data-inline-position-id: block-kuurahealthchat
+        data-container-id: block-kuurahealthchat
       }
     }
   css:
@@ -24,6 +24,7 @@ smartti_chatbot:
   css:
     theme:
       'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.css': { type: external, minified: true }
+      assets/css/smartti_chat.css: {}
 
 genesys_chat:
   version: 1.0.x

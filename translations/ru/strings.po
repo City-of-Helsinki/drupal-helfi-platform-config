@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-09-21 08:43+0300\n"
-"PO-Revision-Date: 2021-09-21 08:43+0300\n"
+"POT-Creation-Date: 2021-09-28 16:52+0300\n"
+"PO-Revision-Date: 2021-09-28 16:52+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -62,12 +62,6 @@ msgstr "j.n.Y"
 
 msgid "Plain text"
 msgstr "Простой текст"
-
-msgid "English"
-msgstr "английский"
-
-msgid "Finnish"
-msgstr "финский"
 
 msgid "Focal point"
 msgstr "Точка фокуса"
@@ -146,6 +140,15 @@ msgstr "Средний (220×220)"
 msgid "Thumbnail (100×100)"
 msgstr "Миниатюра (100×100)"
 
+msgid "English"
+msgstr "английский"
+
+msgid "Finnish"
+msgstr "финский"
+
+msgid "Russian"
+msgstr "русский"
+
 msgid "Not specified"
 msgstr "не указан"
 
@@ -171,7 +174,9 @@ msgid "Make content sticky"
 msgstr "Закрепить материал вверху списков"
 
 msgid "Make content unsticky"
-msgstr "Отменить прикрепление материала вверху списков"
+msgstr ""
+"Отменить прикрепление материала "
+"вверху списков"
 
 msgid "Promote content to front page"
 msgstr "Вывести материал на главную страницу"
@@ -498,6 +503,9 @@ msgstr "Элементов на страницу"
 msgid "- All -"
 msgstr "- Все -"
 
+msgid "Offset"
+msgstr "Пропустить"
+
 msgid "Title"
 msgstr "Заголовок"
 
@@ -570,21 +578,6 @@ msgstr ""
 "Список пользователей, "
 "авторизированных в данный момент."
 
-msgid "Paragraph"
-msgstr "Параграф"
-
-msgid "Archive"
-msgstr "Архив"
-
-msgid "All content, by month."
-msgstr "Все материалы, по месяцам."
-
-msgid "Monthly archive"
-msgstr "Ежемесячный архив"
-
-msgid "Block"
-msgstr "Блок"
-
 msgid "Content"
 msgstr "Содержимое"
 
@@ -630,80 +623,8 @@ msgstr "Нет доступных материалов."
 msgid "Find and manage content"
 msgstr "Поиск материалов и управление ими"
 
-msgid "Recent content"
-msgstr "Последние материалы"
-
-msgid "Recent content."
-msgstr "Последние материалы."
-
-msgid "More"
-msgstr "Ещё"
-
-msgid "Files"
-msgstr "Файлы"
-
-msgid "Find and manage files."
-msgstr "Поиск файлов и управление ими."
-
-msgid "Name"
-msgstr "Название"
-
-msgid "MIME type"
-msgstr "MIME-тип"
-
-msgid "Size"
-msgstr "Размер"
-
-msgid "Temporary"
-msgstr "Временный"
-
-msgid "Permanent"
-msgstr "Постоянный"
-
-msgid "Upload date"
-msgstr "Дата отгрузки"
-
-msgid "Changed date"
-msgstr "Дата изменения"
-
-msgid "Used in"
-msgstr "Используется в"
-
-msgid "Filename"
-msgstr "Имя файла"
-
-msgid "No files available."
-msgstr "Нет доступных файлов."
-
-msgid "Files overview"
-msgstr "Обзор файлов"
-
-msgid "File usage"
-msgstr "Использование файла"
-
-msgid "Entity"
-msgstr "Сущность"
-
-msgid "Entity type"
-msgstr "Тип сущности"
-
-msgid "Registering module"
-msgstr "Регистрация модуля"
-
-msgid "Use count"
-msgstr "Используемое количество"
-
-msgid "All"
-msgstr "Все"
-
-msgid "Glossary"
-msgstr "Глоссарий"
-
-msgid "Last update"
-msgstr "Последнее обновление"
-
-msgid "Attachment"
-msgstr "Вложение"
+msgid "Media"
+msgstr "Мультимедиа"
 
 msgid "Find and manage media."
 msgstr "Найти и управлять медиа."
@@ -726,212 +647,8 @@ msgstr "Истина"
 msgid "No media available."
 msgstr "Мультимедийных файлов не найдено."
 
-msgid "Media library"
-msgstr "Медиа-библиотека"
-
-msgid "Apply filters"
-msgstr "Применить фильтры"
-
-msgid "Publishing status"
-msgstr "Статус публикации"
-
-msgid "Media type"
-msgstr "Тип медиа"
-
-msgid "Newest first"
-msgstr "Новые сначала"
-
-msgid "Name (A-Z)"
-msgstr "Имя (А-Я)"
-
-msgid "Name (Z-A)"
-msgstr "Имя (Я-А)"
-
-msgid "Edit {{ name }}"
-msgstr "Редактировать {{ name }}"
-
-msgid "Edit"
-msgstr "Редактировать"
-
-msgid "Delete {{ name }}"
-msgstr "Удалить {{ name }}"
-
-msgid "Delete"
-msgstr "Удалить"
-
-msgid "Widget"
-msgstr "Виджет"
-
-msgid "Grid"
-msgstr "Сетка"
-
-msgid "Table"
-msgstr "Таблица"
-
-msgid "Widget (table)"
-msgstr "Виджет (таблица)"
-
-msgid "Offset"
-msgstr "Пропустить"
-
-msgid "Label"
-msgstr "Label"
-
 msgid "Changed"
 msgstr "Изменение"
-
-msgid "‹ previous"
-msgstr "‹ предыдущая"
-
-msgid "next ›"
-msgstr "следующая ›"
-
-msgid "« first"
-msgstr "« первая"
-
-msgid "last »"
-msgstr "последняя »"
-
-msgid "With selection"
-msgstr "С выделенным"
-
-msgid "From"
-msgstr "От"
-
-msgid "Created"
-msgstr "Создано"
-
-msgid "To"
-msgstr "Кому"
-
-msgid "Status code"
-msgstr "Код состояния"
-
-msgid "300 Multiple Choices"
-msgstr "300 Множество Выборов"
-
-msgid "301 Moved Permanently"
-msgstr "301 Перемещёно Окончательно"
-
-msgid "302 Found"
-msgstr "302 Найдено"
-
-msgid "303 See Other"
-msgstr "303 Смотреть Другое"
-
-msgid "304 Not Modified"
-msgstr "304 Не Изменялось"
-
-msgid "305 Use Proxy"
-msgstr "305 Использовать Прокси"
-
-msgid "307 Temporary Redirect"
-msgstr "307 - Временно перемещено"
-
-msgid "Original language"
-msgstr "Язык оригинала"
-
-msgid "There is no redirect yet."
-msgstr "Перенаправлений пока нет."
-
-msgid "Content Type"
-msgstr "Тип материала"
-
-msgid "Publish on"
-msgstr "Опубликовать"
-
-msgid "Unpublish on"
-msgstr "Снять с публикации"
-
-msgid "Scheduled"
-msgstr "Запланировано"
-
-msgid "Taxonomy term"
-msgstr "Термин таксономии"
-
-msgid "Content belonging to a certain taxonomy term."
-msgstr ""
-"Материалы, относящиеся к "
-"определённому термину таксономии."
-
-msgid "Feed"
-msgstr "Поток данных"
-
-msgid "Bulk update"
-msgstr "Массовое обновление"
-
-msgid "TPR unit list"
-msgstr "TPR units"
-
-msgid "TPR Units"
-msgstr "TPR units"
-
-msgid "People"
-msgstr "Пользователи"
-
-msgid "Find and manage people interacting with your site."
-msgstr ""
-"Поиск и управление людьми, "
-"взаимодействующих с вашим сайтом."
-
-msgid "Username"
-msgstr "Имя пользователя"
-
-msgid "Active"
-msgstr "Активно"
-
-msgid "Blocked"
-msgstr "Заблокировано"
-
-msgid "Roles"
-msgstr "Роли"
-
-msgid "Member for"
-msgstr "Зарегистрирован на сайте"
-
-msgid "Name or email contains"
-msgstr "Имя или email содержит"
-
-msgid "Role"
-msgstr "Роль"
-
-msgid "Permission"
-msgstr "Право доступа"
-
-msgid "No people available."
-msgstr "Нет доступных людей."
-
-msgid "more"
-msgstr "ещё"
-
-msgid "List"
-msgstr "Список"
-
-msgid "Manage user accounts, roles, and permissions."
-msgstr ""
-"Управление учётными записями, ролями "
-"и правами пользователей."
-
-msgid "Watchdog"
-msgstr "Журнал"
-
-msgid "Recent log messages"
-msgstr "Последние записи журнала"
-
-msgid "Icon"
-msgstr "Иконка"
-
-msgid "Severity"
-msgstr "Важность"
-
-msgid "Date"
-msgstr "Дата"
-
-msgid "Message"
-msgstr "Сообщение"
-
-msgid "No log messages available."
-msgstr "В системном журнале нет сообщений."
 
 msgid "The time that the menu link was last edited."
 msgstr ""
@@ -963,11 +680,20 @@ msgstr "Вкл"
 msgid "Off"
 msgstr "Выкл"
 
+msgid "Paragraph"
+msgstr "Параграф"
+
+msgid "Media library"
+msgstr "Медиа-библиотека"
+
 msgid "Image"
 msgstr "Изображение"
 
 msgid "Token"
 msgstr "Токен"
+
+msgid "Summary"
+msgstr "Summary"
 
 msgid "File"
 msgstr "Файл"
@@ -978,6 +704,9 @@ msgstr "Содержимое"
 msgid "Keywords"
 msgstr "Ключевые слова"
 
+msgid "Metatags"
+msgstr "Мета-теги"
+
 msgid "Upper content region"
 msgstr "Upper content region"
 
@@ -986,6 +715,9 @@ msgstr "Элементы"
 
 msgid "Heading"
 msgstr "Заголовок"
+
+msgid "Icon"
+msgstr "Иконка"
 
 msgid "Link"
 msgstr "Ссылка"
@@ -1008,9 +740,6 @@ msgstr "Текст"
 msgid "White"
 msgstr "Белый"
 
-msgid "Russian"
-msgstr "русский"
-
 msgid "403 access denied"
 msgstr "403 доступ запрещен"
 
@@ -1023,11 +752,17 @@ msgstr "Главная страница"
 msgid "Global"
 msgstr "Глобальный"
 
+msgid "Taxonomy term"
+msgstr "Термин таксономии"
+
 msgid "Article"
 msgstr "Статья"
 
 msgid "Basic page"
 msgstr "Страница"
+
+msgid "Accordion"
+msgstr "Аккордеон"
 
 msgid "Columns"
 msgstr "Колонки"
@@ -1123,40 +858,119 @@ msgstr ""
 "-- "
 "Команда сайта «[site:name]»"
 
+msgid "Admin"
+msgstr "Администратор"
+
 msgid "Anonymous user"
 msgstr "Анонимный пользователь"
 
 msgid "Authenticated user"
 msgstr "Аутентифицированный пользователь"
 
-msgid "File usage information for {{ arguments.fid }}"
+msgid "Archive"
+msgstr "Архив"
+
+msgid "All content, by month."
+msgstr "Все материалы, по месяцам."
+
+msgid "Monthly archive"
+msgstr "Ежемесячный архив"
+
+msgid "Block"
+msgstr "Блок"
+
+msgid "Recent content"
+msgstr "Последние материалы"
+
+msgid "Recent content."
+msgstr "Последние материалы."
+
+msgid "More"
+msgstr "Ещё"
+
+msgid "Apply filters"
+msgstr "Применить фильтры"
+
+msgid "Publishing status"
+msgstr "Статус публикации"
+
+msgid "Name"
+msgstr "Название"
+
+msgid "Media type"
+msgstr "Тип медиа"
+
+msgid "Newest first"
+msgstr "Новые сначала"
+
+msgid "Name (A-Z)"
+msgstr "Имя (А-Я)"
+
+msgid "Name (Z-A)"
+msgstr "Имя (Я-А)"
+
+msgid "Edit {{ name }}"
+msgstr "Редактировать {{ name }}"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Delete {{ name }}"
+msgstr "Удалить {{ name }}"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Widget"
+msgstr "Виджет"
+
+msgid "All"
+msgstr "Все"
+
+msgid "Grid"
+msgstr "Сетка"
+
+msgid "Table"
+msgstr "Таблица"
+
+msgid "Widget (table)"
+msgstr "Виджет (таблица)"
+
+msgid "Label"
+msgstr "Label"
+
+msgid "Used"
+msgstr "Использовано"
+
+msgid "Content belonging to a certain taxonomy term."
 msgstr ""
-"Информация про использование файла "
-"для {{ arguments.fid }}"
+"Материалы, относящиеся к "
+"определённому термину таксономии."
 
-msgid "All content, by letter."
-msgstr "Все материалы, по алфавиту."
+msgid "Feed"
+msgstr "Поток данных"
 
-msgid "Media"
-msgstr "Мультимедиа"
+msgid "Glossary"
+msgstr "Глоссарий"
 
-msgid "Redirect"
-msgstr "Переадресация"
+msgid "Last update"
+msgstr "Последнее обновление"
 
-msgid "{{ message }}"
-msgstr "сообщение"
+msgid "Attachment"
+msgstr "Вложение"
 
-msgid "Summary"
-msgstr "Summary"
-
-msgid "Map"
-msgstr "Map"
+msgid ""
+"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
+"message or find out more about cookies.</p>"
+msgstr ""
+"<h2>Thank you for accepting cookies</h2>\r\n"
+"\r\n"
+"<p>You can now hide "
+"this message or find out more about cookies.</p>\r\n"
+""
 
 msgid "Accept"
 msgstr "Принять"
-
-msgid "More info"
-msgstr "Show cookies"
 
 msgid "Hide"
 msgstr "Скрыть"
@@ -1173,19 +987,6 @@ msgstr ""
 "are used if you give us your permission.</p>\r\n"
 ""
 
-msgid "Save preferences"
-msgstr "Accept selected cookies"
-
-msgid ""
-"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
-"message or find out more about cookies.</p>"
-msgstr ""
-"<h2>Thank you for accepting cookies</h2>\r\n"
-"\r\n"
-"<p>You can now hide "
-"this message or find out more about cookies.</p>\r\n"
-""
-
 msgid ""
 "<h2>We use cookies on this site to enhance your user "
 "experience</h2><p>You have given your consent for us to set "
@@ -1197,10 +998,229 @@ msgstr ""
 "for us to set cookies.</p>\r\n"
 ""
 
-msgid "Entity Reference"
-msgstr "Entity Reference"
+msgid "Save preferences"
+msgstr "Accept selected cookies"
+
+msgid "Map"
+msgstr "Map"
+
+msgid "Redirect"
+msgstr "Переадресация"
+
+msgid "‹ previous"
+msgstr "‹ предыдущая"
+
+msgid "next ›"
+msgstr "следующая ›"
+
+msgid "« first"
+msgstr "« первая"
+
+msgid "last »"
+msgstr "последняя »"
+
+msgid "With selection"
+msgstr "С выделенным"
+
+msgid "From"
+msgstr "От"
+
+msgid "Created"
+msgstr "Создано"
+
+msgid "To"
+msgstr "Кому"
+
+msgid "Status code"
+msgstr "Код состояния"
+
+msgid "307 Temporary Redirect"
+msgstr "307 - Временно перемещено"
+
+msgid "Original language"
+msgstr "Язык оригинала"
+
+msgid "There is no redirect yet."
+msgstr "Перенаправлений пока нет."
+
+msgid "Content Type"
+msgstr "Тип материала"
+
+msgid "Publish on"
+msgstr "Опубликовать"
+
+msgid "Unpublish on"
+msgstr "Снять с публикации"
+
+msgid "Scheduled"
+msgstr "Запланировано"
+
+msgid "Bulk update"
+msgstr "Массовое обновление"
+
+msgid "TPR unit list"
+msgstr "TPR units"
+
+msgid "TPR Units"
+msgstr "TPR units"
 
 msgid "Combine fields filter"
 msgstr "Combine fields filter"
+
+msgid "No results"
+msgstr "Нет результатов"
+
+msgid "Entity Reference"
+msgstr "Entity Reference"
+
+msgid "Watchdog"
+msgstr "Журнал"
+
+msgid "Recent log messages"
+msgstr "Последние записи журнала"
+
+msgid "Severity"
+msgstr "Важность"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "No log messages available."
+msgstr "В системном журнале нет сообщений."
+
+msgid "<front>"
+msgstr "/node/1"
+
+msgid "Files"
+msgstr "Файлы"
+
+msgid "Find and manage files."
+msgstr "Поиск файлов и управление ими."
+
+msgid "MIME type"
+msgstr "MIME-тип"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Temporary"
+msgstr "Временный"
+
+msgid "Permanent"
+msgstr "Постоянный"
+
+msgid "Upload date"
+msgstr "Дата отгрузки"
+
+msgid "Changed date"
+msgstr "Дата изменения"
+
+msgid "Used in"
+msgstr "Используется в"
+
+msgid "Filename"
+msgstr "Имя файла"
+
+msgid "No files available."
+msgstr "Нет доступных файлов."
+
+msgid "Files overview"
+msgstr "Обзор файлов"
+
+msgid "File usage"
+msgstr "Использование файла"
+
+msgid "Entity"
+msgstr "Сущность"
+
+msgid "Entity type"
+msgstr "Тип сущности"
+
+msgid "Registering module"
+msgstr "Регистрация модуля"
+
+msgid "Use count"
+msgstr "Используемое количество"
+
+msgid "File usage information for {{ arguments.fid }}"
+msgstr ""
+"Информация про использование файла "
+"для {{ arguments.fid }}"
+
+msgid "All content, by letter."
+msgstr "Все материалы, по алфавиту."
+
+msgid "People"
+msgstr "Пользователи"
+
+msgid "Find and manage people interacting with your site."
+msgstr ""
+"Поиск и управление людьми, "
+"взаимодействующих с вашим сайтом."
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Active"
+msgstr "Активно"
+
+msgid "Blocked"
+msgstr "Заблокировано"
+
+msgid "Roles"
+msgstr "Роли"
+
+msgid "Member for"
+msgstr "Зарегистрирован на сайте"
+
+msgid "Name or email contains"
+msgstr "Имя или email содержит"
+
+msgid "Role"
+msgstr "Роль"
+
+msgid "Permission"
+msgstr "Право доступа"
+
+msgid "No people available."
+msgstr "Нет доступных людей."
+
+msgid "more"
+msgstr "ещё"
+
+msgid "List"
+msgstr "Список"
+
+msgid "Manage user accounts, roles, and permissions."
+msgstr ""
+"Управление учётными записями, ролями "
+"и правами пользователей."
+
+msgid "{{ message }}"
+msgstr "сообщение"
+
+msgid "More info"
+msgstr "Show cookies"
+
+msgid "301 Moved Permanently"
+msgstr "301 Перемещёно Окончательно"
+
+msgid "300 Multiple Choices"
+msgstr "300 Множество Выборов"
+
+msgid "302 Found"
+msgstr "302 Найдено"
+
+msgid "303 See Other"
+msgstr "303 Смотреть Другое"
+
+msgid "304 Not Modified"
+msgstr "304 Не Изменялось"
+
+msgid "305 Use Proxy"
+msgstr "305 Использовать Прокси"
 
 

@@ -6,5 +6,6 @@ dependencies:
   - 'drupal:block'
   - 'eu_cookie_compliance:eu_cookie_compliance'
   - 'helfi_content:helfi_content'
+  - 'helfi_platform_config:helfi_platform_config'
   - 'update_helper:update_helper'
 package: HELfi

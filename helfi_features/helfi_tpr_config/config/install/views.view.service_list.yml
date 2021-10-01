@@ -65,7 +65,7 @@ display:
             offset: false
             offset_label: Offset
           views_infinite_scroll:
-            button_text: 'Load more results'
+            button_text: 'Load more services'
             automatically_load_content: false
             initially_load_all_pages: false
       style:

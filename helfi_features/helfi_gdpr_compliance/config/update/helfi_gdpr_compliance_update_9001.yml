@@ -20,14 +20,14 @@ eu_cookie_compliance.settings:
       value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
     popup_bg_hex: 0779bf
     popup_clicking_confirmation: true
-    popup_find_more_button_message: 'More info'
+    popup_find_more_button_message: 'Show cookies'
     popup_height: 0
     popup_info:
       format: full_html
       value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By clicking the Accept button, you agree to us doing so.</p>'
     popup_link: '<front>'
     popup_link_new_window: true
-    popup_more_info_button_message: 'More info'
+    popup_more_info_button_message: 'Show cookies'
     popup_text_hex: ffffff
     popup_width: 100%
     reload_page: false

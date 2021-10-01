@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_announcement_type
+    - node.type.announcement
+  module:
+    - options
+id: node.announcement.field_announcement_type
+field_name: field_announcement_type
+entity_type: node
+bundle: announcement
+label: Type
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

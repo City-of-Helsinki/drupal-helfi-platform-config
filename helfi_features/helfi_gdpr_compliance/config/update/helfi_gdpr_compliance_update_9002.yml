@@ -1,0 +1,89 @@
+eu_cookie_compliance.settings:
+  expected_config:
+    allowed_cookies: ''
+    domain_all_sites: false
+    eu_only: false
+    eu_only_js: false
+    exclude_paths: |-
+      /admin
+      /admin/*
+      /batch
+      /node/add*
+      /node/*/*
+      /user/*/*
+    method: opt_in
+    mobile_popup_info:
+      format: restricted_html
+      value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By tapping the Accept button, you agree to us doing so.</p>'
+    popup_agreed:
+      format: restricted_html
+      value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
+    popup_bg_hex: 0779bf
+    popup_clicking_confirmation: true
+    popup_find_more_button_message: 'More info'
+    popup_height: 0
+    popup_info:
+      format: restricted_html
+      value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By clicking the Accept button, you agree to us doing so.</p>'
+    popup_link: '<front>'
+    popup_link_new_window: true
+    popup_more_info_button_message: 'More info'
+    popup_text_hex: ffffff
+    popup_width: 100%
+    reload_page: false
+    save_preferences_button_label: 'Save preferences'
+    use_bare_css: false
+    withdraw_message:
+      format: restricted_html
+      value: '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>'
+  update_actions:
+    add:
+      cookie_session: 0
+    change:
+      allowed_cookies: 'marketing:form-test-cookie'
+      domain_all_sites: true
+      eu_only: null
+      eu_only_js: null
+      exclude_paths: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/user/*/*"
+      method: categories
+      mobile_popup_info:
+        format: full_html
+        value: ''
+      popup_agreed:
+        format: full_html
+        value: "<h2>Thank you for accepting cookies</h2>\r\n\r\n<p>You can now hide this message or find out more about cookies.</p>\r\n"
+      popup_bg_hex: ''
+      popup_clicking_confirmation: false
+      popup_find_more_button_message: 'Show cookies'
+      popup_height: null
+      popup_info:
+        format: full_html
+        value: "<h2>Hel.fi uses cookies&nbsp;</h2>\r\n\r\n<p>We use essential cookies on our website to make the site work. Also third party cookies are used if you give us your permission.</p>\r\n"
+      popup_link: /cookie-information-and-settings
+      popup_link_new_window: false
+      popup_more_info_button_message: 'Show cookies'
+      popup_text_hex: ''
+      popup_width: ''
+      reload_page: true
+      save_preferences_button_label: 'Accept only essential cookies'
+      set_cookie_session_zero_on_disagree: 0
+      use_bare_css: true
+      withdraw_message:
+        format: full_html
+        value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
+eu_cookie_compliance.cookie_category.performance_ux:
+  expected_config:
+    description:
+      value: "<p>Cookies are used to collect information about your use of the website so that we can improve your user experience.<br />\r\n&nbsp;</p>\r\n\r\n<table>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Type</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
+  update_actions:
+    change:
+      description:
+        value: "<p>Cookies are used to collect information about your use of the website so that we can improve your user experience.</p>\r\n\r\n<table>\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<th>Type</th>\r\n\t\t</tr>\r\n\t</thead>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
+eu_cookie_compliance.cookie_category.essential:
+  expected_config:
+    description:
+      value: "<p>Necessary cookies help to make the website usable by allowing basic functions, navigating the page and using the protected areas of the site. The website will not work properly without these cookies and their consent is not required.<br />\r\n&nbsp;</p>\r\n\r\n<table>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Type</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
+  update_actions:
+    change:
+      description:
+        value: "<p>Necessary cookies help to make the website usable by allowing basic functions, navigating the page and using the protected areas of the site. The website will not work properly without these cookies and their consent is not required.</p>\r\n\r\n<table>\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<th>Type</th>\r\n\t\t</tr>\r\n\t</thead>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"

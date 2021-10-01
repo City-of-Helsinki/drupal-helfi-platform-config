@@ -13,6 +13,10 @@ function helfi_gdpr_compliance_install($is_syncing) {
     // Update base configurations for HELfi GDPR compliance.
     helfi_gdpr_compliance_update_9001();
   }
+
+  // Override eu_cookie_compliance settings on module install.
+  $configLocation = dirname(__FILE__) . '/config/override/';
+  \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'eu_cookie_compliance.settings');
 }
 
 /**
@@ -37,6 +41,20 @@ function helfi_gdpr_compliance_update_9001() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * More accurate information about cookies to Consent management page.
+ */
+function helfi_gdpr_compliance_update_9002() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9002');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

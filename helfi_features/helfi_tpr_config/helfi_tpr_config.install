@@ -16,6 +16,7 @@ function helfi_tpr_config_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_tpr_config_update_9001();
     helfi_tpr_config_update_9002();
+    helfi_tpr_config_update_9003();
   }
 }
 
@@ -28,6 +29,9 @@ function helfi_tpr_config_update_dependencies() {
   $dependencies['helfi_tpr_config'][9002] = [
     'helfi_platform_config' => 9004,
     'helfi_base_config' => 9001,
+  ];
+  $dependencies['helfi_tpr_config'][9003] = [
+    'helfi_content' => 9003,
   ];
   return $dependencies;
 }
@@ -62,6 +66,34 @@ function helfi_tpr_config_update_9002() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9002');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add tpr_service and tpr_unit to linkit profile.
+ */
+function helfi_tpr_config_update_9003() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9003');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Pathauto configuration for TPR units and services.
+ */
+function helfi_tpr_config_update_9004() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9004');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
