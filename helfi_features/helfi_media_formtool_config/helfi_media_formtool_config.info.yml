@@ -1,4 +1,4 @@
-name: 'HELfi Media map configuration'
+name: 'HELfi Media Form Tool configuration'
 type: module
 core_version_requirement: '^8.9 || ^9'
 package: HELfi
@@ -9,5 +9,5 @@ dependencies:
   - 'drupal:text'
   - 'paragraphs:paragraphs'
   - 'helfi_content:helfi_content'
-  - 'helfi_media_map:helfi_media_map'
+  - 'helfi_media_formtool:helfi_media_formtool'
   - 'update_helper:update_helper'
