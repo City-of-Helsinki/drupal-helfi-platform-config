@@ -143,8 +143,9 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    */
   protected function getCurrentPageEntity(array $entityTypes): ?EntityInterface {
     foreach ($entityTypes as $entityType) {
-      if (!empty($this->routeMatch->getParameter($entityType))) {
-        return $this->routeMatch->getParameter($entityType);
+      $pageEntity = $this->routeMatch->getParameter($entityType);
+      if (!empty($pageEntity) && $pageEntity instanceof EntityInterface) {
+        return $pageEntity;
       }
     }
     return NULL;
