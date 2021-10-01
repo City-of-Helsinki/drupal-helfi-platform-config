@@ -8,7 +8,7 @@ id: media.hel_remote_webform.field_media_hel_remote_webform
 field_name: field_media_hel_remote_webform
 entity_type: media
 bundle: hel_remote_webform
-label: '&lt;Script/&gt;-tag from Lomaketyökalu'
+label: '&lt;Script/&gt;-tag from Form Tool'
 description: ''
 required: true
 translatable: true

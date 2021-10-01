@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - form_tool_media_form
+    - helfi_media_formtool
 id: hel_remote_webform
 label: 'Form (lomaketyökalu)'
 description: null
@@ -11,3 +11,4 @@ queue_thumbnail_downloads: false
 new_revision: false
 source_configuration:
   source_field: field_media_hel_remote_webform
+field_map: {  }
