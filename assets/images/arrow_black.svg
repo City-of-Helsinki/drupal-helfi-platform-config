@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="svg8" version="1.1" viewBox="0 0 10.379358 9.4695656" height="9.4695654mm" width="10.379358mm">
+  <defs id="defs2"/>
+  <metadata id="metadata5">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g transform="translate(-3.5484721,-3.6300753)" style="fill:#000000;fill-opacity:1;stroke:none" id="arrow">
+    <g transform="translate(-33.292352,-94.847276)" id="combined">
+      <rect id="rect21" width="7.6540179" height="1.0394346" x="37.840824" y="102.69241"/>
+      <g transform="translate(-35.770038,-14.025839)" id="arrowhead">
+        <rect transform="rotate(44.252742)" y="26.724178" x="135.22235" height="1.0394346" width="5.2822251" id="rect21-9" style=""/>
+        <rect transform="rotate(-45.747258)" y="139.46515" x="-32.006405" height="1.0394346" width="5.2822251" id="rect21-9-8"/>
+      </g>
+    </g>
+  </g>
+</svg>
