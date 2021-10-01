@@ -1,0 +1,4 @@
+description:
+  format: full_html
+  value: "<p>Nödvändiga cookies hjälper till att göra webbplatsen användbar genom att tillåta grundläggande funktioner som att navigera på sidan och använda de skyddade områdena på webbplatsen. Webbplatsen fungerar inte korrekt utan dessa cookies och kräver inte samtycke.</p>\r\n\r\n<table>\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th>Namn</th>\r\n\t\t\t<th>Tjänsteleverantör</th>\r\n\t\t\t<th>Cookie syfte</th>\r\n\t\t\t<th>Giltighet</th>\r\n\t\t\t<th>Typ</th>\r\n\t\t</tr>\r\n\t</thead>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
+label: 'Nödvändiga funktionella cookies'

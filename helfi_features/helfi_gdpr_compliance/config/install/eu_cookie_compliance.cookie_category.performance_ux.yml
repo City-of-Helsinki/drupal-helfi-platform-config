@@ -4,7 +4,7 @@ dependencies: {  }
 id: performance_ux
 label: 'Performance and user experience related cookies'
 description:
-  value: "<p>Cookies are used to collect information about your use of the website so that we can improve your user experience.<br />\r\n&nbsp;</p>\r\n\r\n<table>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th>Type</th>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
+  value: "<p>Cookies are used to collect information about your use of the website so that we can improve your user experience.</p>\r\n\r\n<table>\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<th>Type</th>\r\n\t\t</tr>\r\n\t</thead>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t\t<td>...</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
   format: full_html
 checkbox_default_state: unchecked
 weight: -8
