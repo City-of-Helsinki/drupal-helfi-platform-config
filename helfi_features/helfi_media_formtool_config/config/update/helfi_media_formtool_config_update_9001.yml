@@ -1,15 +1,3 @@
-field.field.node.landing_page.field_content:
-  expected_config: {  }
-  update_actions:
-    add:
-      settings:
-        handler_settings:
-          target_bundles:
-            map: map
-          target_bundles_drag_drop:
-            map:
-              enabled: true
-              weight: -20
 field.field.node.page.field_content:
   expected_config: {  }
   update_actions:
@@ -17,23 +5,23 @@ field.field.node.page.field_content:
       settings:
         handler_settings:
           target_bundles:
-            map: map
+            remote_webform: remote_webform
           target_bundles_drag_drop:
-            map:
+            remote_webform:
               enabled: true
-              weight: -20
+              weight: 38
 field.field.node.page.field_lower_content:
-  expected_config: {  }
+  expected_config: { }
   update_actions:
     add:
       settings:
         handler_settings:
           target_bundles:
-            map: map
+            remote_webform: remote_webform
           target_bundles_drag_drop:
-            map:
+            remote_webform:
               enabled: true
-              weight: -21
+              weight: 38
 user.role.admin:
   expected_config: {  }
   update_actions:
@@ -52,15 +40,3 @@ user.role.content_producer:
         - 'create hel_remote_webform media'
         - 'delete own hel_remote_webform media'
         - 'edit own hel_remote_webform media'
-core.base_field_override.paragraphs_library_item.paragraphs_library_item.paragraphs:
-  expected_config: {  }
-  update_actions:
-    add:
-      settings:
-        handler_settings:
-          target_bundles:
-            map: map
-          target_bundles_drag_drop:
-            map:
-              enabled: '1'
-              weight: '32'

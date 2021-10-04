@@ -1,1 +1,31 @@
 <?php
+
+
+/**
+ * Implements hook_install().
+ *
+ * Update HELfi Form tool configurations when
+ * installing module for the first time.
+ */
+function helfi_media_formtool_config_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import
+  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
+    helfi_media_formtool_config_update_9001();
+  }
+}
+
+
+/**
+ * Add HELfi Form Tool paragraphs to basic page upper and lower content.
+ */
+function helfi_media_formtool_config_update_9001() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_media_formtool_config', 'helfi_media_formtool_config_update_9001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
