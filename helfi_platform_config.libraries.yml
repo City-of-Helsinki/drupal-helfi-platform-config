@@ -30,9 +30,14 @@ genesys_chat:
   version: 1.0.x
   header: true
   js:
+    'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
+      type: external,
+      minified: true,
+      attributes: {
+        onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
+      }
+    }
     assets/js/genesys_chat.js: {}
-  dependencies:
-    - core/jquery
   css:
     theme:
       assets/css/genesys_chat.css: {}

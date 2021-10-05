@@ -1,354 +1,422 @@
-#startContainer {
-  bottom: 0;
-  color: #000;
-  position: fixed;
-  right: 120px;
-  width: 100px;
-  z-index: 1;
-}
-/* html * {
-  font-size: 1em !important;
-  color: #000 !important;
-  font-family: KarbidComp, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-} */
-.gwc-chat,
-.gwc-chat div,
-.gwc-chat input,
-.gwc-chat textarea,
-.gwc-chat button {
-  font: 400 normal normal 16px/1.3 Arial,sans-serif;
-}
-
-.gwc-chat-body {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
-}
-
-.gwc-chat-body {
-  border: none;
-  height: 350px;
-}
-
-.gwc-chat {
-  box-shadow: 0 10px 36px rgba(0,0,0,.08),0 2px 3px rgba(0,0,0,.03);
-}
-
-div.gwc-chat-SystemMessage {
-  /*background-color: lightblue;*/
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
-  border-radius: 25px !important;
-  border: 2px solid #73ad21 !important;
-  padding: 20px !important;
-}
-
-div.gwc-chat-message-container {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
-  padding-top: 10px !important;
-  border: none;
-  bottom: 50px;
-  padding: 2px 5px !important;
-}
-
-.gwc-chat-embedded-window {
-  border: none !important;
+.cx-webchat.cx-theme-helsinki-blue {
+  right: 20px !important;
   width: 500px;
-  background: white;
+  font: 400 normal normal 20px/1.3 Arial, sans-serif;
+  color: white;
+  font-size: 20px;
+  background-color: white;
+  right: 20px !important;
 }
 
-.gwc-chat-head {
-  background-color: #0000bf !important;
+.cx-theme-helsinki-blue .cx-common-container .cx-titlebar {
+  background-color: #0000bf;
   min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.gwc-chat-head .gwc-chat-title {
-  font-size: 1em;
-  display: flex;
+.cx-theme-helsinki-blue .cx-common-container .cx-titlebar .cx-title {
+  margin-right: 70px;
+  text-align: center;
+  word-break: break-word;
+  font-size: 1.3em;
+}
+
+.cx-theme-helsinki-blue .cx-message-group {
+  position: relative;
+  margin: 10px 0px 0px 5px;
+}
+
+.cx-theme-helsinki-blue .cx-message-group:last-child {
+  padding-bottom: 50px;
+}
+
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message.cx-system {
   margin: 0;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
 }
-.gwc-chat-window-controls {
+
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message {
+  min-height: 35px;
+  width: fit-content;
+}
+
+.cx-theme-helsinki-blue .cx-message.cx-participant {
+  max-width: 90%;
+}
+
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message .cx-time {
+  color: #d6d6d6;
+  display: block;
+  text-align: right;
+  margin-bottom: 0;
+  margin-top: 5px;
+}
+
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message.cx-system .cx-bubble,
+.cx-theme-helsinki-blue .cx-bubble {
   display: flex;
-  order: 3;
-  margin-right: 5px;
+  flex-direction: column;
+  background-color: #0000bf;
+  border-radius: 0.4em;
+  padding: 0.5em;
+  border-bottom-left-radius: 0.4em !important;
+  border-bottom-right-radius: 0.4em !important;
+  border-top-left-radius: 0.4em !important;
+  border-top-right-radius: 0.4em !important;
 }
 
-.gwc-chat-icon-iks {
-  width: 35px;
-  cursor: pointer;
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message-group > .cx-message.cx-participant:last-child .cx-bubble,
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message-group > .cx-message.cx-participant:first-child .cx-bubble {
+  border-bottom-left-radius: 0.4em !important;
+  border-bottom-right-radius: 0.4em !important;
+  border-top-left-radius: 0.4em !important;
+  border-top-right-radius: 0.4em !important;
 }
 
-.gwc-chat-icon-iks-mobile {
-  width: 50px;
-  cursor: pointer;
-  filter: invert(100%);
-  right: 4px;
-  z-index: 1;
-  position: fixed;
-  bottom: 61px;
-}
-
-.gwc-chat-icon-down,
-.gwc-chat-icon-iks,
-.gwc-chat-icon-iks-mobile {
-  background: inherit;
-  margin: 0;
-  padding: 0;
-}
-
-.gwc-chat-control-minimize {
-  display: flex;
-  margin-right: 15px;
-}
-
-.gwc-chat-control-maximize {
-  display: flex;
-  margin-right: 5px;
-  transform: rotate(180deg);
-}
-
-.flip {
-  transform: rotate(180deg);
-}
-
-.gwc-chat-control-close {
-  border: none !important;
-}
-
-.gwc-chat-control {
-  width: unset;
-  height: unset;
-  border: none;
-}
-
-.gwc-chat-message-form {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+.cx-theme-helsinki-blue .cx-webchat div.cx-input-container {
   border: none !important;
   position: absolute;
-  margin: 0;
   left: 0px;
   right: 0px;
   bottom: 2px;
   display: flex !important;
   background-color: #f4f4f4 !important;
   max-height: 44px;
+  box-shadow: none;
+  padding: 0px !important;
 }
 
-.gwc-chat-input .gwc-chat-message {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
-  border: none !important;
-}
-
-.gwc-chat-message-input {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+.cx-theme-helsinki-blue .cx-webchat div.cx-input-container .cx-textarea-cell {
+  position: relative;
   border: none !important;
   background-color: transparent !important;
-  padding: 12px;
   height: 100%;
+  color: black;
+  width: 100%;
 }
 
-.gwc-chat-message-text {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
-  position: relative;
-  background: #0000bf;
-  border-radius: .4em;
-  padding: 0.5em;
-  width: fit-content;
-  margin-left: 5px;
-  color: white;
-}
-
-.gwc-chat-message-text:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 20px;
-  width: 0;
-  height: 0;
-  border: 0.719em solid transparent;
-  border-right-color: #0000bf;
-  border-left: 0;
-  margin-top: -0.719em;
-  margin-left: -0.719em;
-}
-
-.gwc-chat-systemMessage .gwc-chat-message-text:after {
+.cx-theme-helsinki-blue .cx-menu-cell {
   display: none;
 }
 
-.gcb-startChat,
-.gcb-startChat:hover {
-  width: 150px !important;
-  height: 114px !important;
-  position: fixed !important;
-  right: 0px !important;
-  bottom: 0px !important;
-  background: none;
-  padding: 0;
-  border: none;
-  margin: 0;
-  border-radius: 0;
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message.cx-you,
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message .cx-name {
+  color: white;
 }
 
-.gcb-startChat:focus,
-.gwc-chat-btn:focus,
-.gwc-chat-message-input:focus {
-  outline: 2px solid #0000bf;
+.cx-theme-helsinki-blue svg {
+  fill: white;
 }
 
-.gwc-chat-logo-helsinki:focus,
-.gwc-chat-icon-down:focus,
-.gwc-chat-icon-iks:focus,
-.gwc-chat-icon-iks-mobile:focus {
-  outline: 2px solid #ffffff;
+.cx-theme-helsinki-blue .cx-bubble-arrow svg {
+  fill: #0000bf;
 }
 
-.gwc-chat-logo {
-  float: left !important;
-  margin: 0 !important;
-  display: block;
-  width: 130px !important;
-  height: 50px !important;
-  background: url(https://www.hel.fi/static/helsinki/chat/project-logo-hki-white-fi.png) 0 0 no-repeat !important;
-  background-size: 150px 50px !important;
-  background-attachment: initial !important;
-  background-origin: initial !important;
-  background-clip: initial !important;
-  background-color: initial !important;
+.cx-webchat .cx-transcript .cx-message .cx-bubble {
+  padding: 0.5em;
 }
 
-.gwc-chat-btn {
-  margin-bottom: auto;
-  height: 40px;
-  display: block !important;
-  margin-top: 2px;
-  margin-right: 10px;
-  max-width: 39px;
+.cx-textarea-cell .cx-send.cx-icon,
+#gwc-chat-icon-iks-mobile {
+  background-color: unset;
+  border: unset;
+  border-radius: unset;
+  margin: unset;
+  padding: unset;
+  color: unset;
 }
 
-#user-message {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
-  position: relative;
-  background: #ffe977;
-  border-radius: .4em;
-  padding: 0.6em;
-  text-align: left;
+.cx-theme-helsinki-blue .cx-webchat.cx-mobile .cx-message-input {
+  margin-top: 0px !important;
+  font-size: 0.9em !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat.cx-mobile div.cx-input-container {
+  max-height: 50px;
+  padding: unset;
+}
+
+.cx-theme-helsinki-blue .cx-webchat.cx-mobile .cx-body {
+  display: contents;
+}
+
+.cx-theme-helsinki-blue .cx-webchat.cx-mobile .cx-body {
+  display: contents;
+}
+
+.cx-theme-helsinki-blue .cx-webchat.cx-mobile .cx-alert {
+  margin-top: 102px;
+}
+
+.cx-theme-helsinki-blue .cx-webchat.cx-mobile div.cx-input-container .cx-message-input {
+  max-height: unset;
+  overflow: scroll !important;
+  min-height: 30px;
+  padding: 0px 65px 0px 0px !important;
+}
+
+.cx-theme-helsinki-blue #cx_chat_error_desc {
   color: black;
-  width: fit-content;
-  margin-left: auto;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: calc(100% - 45px);
 }
 
-#user-message:after {
-  content: '';
-  position: absolute;
-  right: 0 !important;
-  top: 20px;
-  width: 0;
-  height: 0;
-  border: 0.719em solid transparent;
-  border-left-color: #ffe977;
-  border-right: 0;
-  margin-top: -0.719em;
-  margin-right: -0.7em;
+.cx-theme-helsinki-blue .cx-webchat.cx-mobile div.cx-input-container .cx-input-focus {
+  bottom: 0px;
 }
 
-.gwc-chat-agentMessage .gwc-chat-message-time {
-  color: grey;
-  display: block;
-  font-size: 12px !important;
+.cx-theme-helsinki-blue .cx-button-group.cx-buttons-window-control .cx-icon {
+  border-radius: unset;
 }
 
-.gwc-chat-message-time {
-  text-align: right;
-  float: right;
-  margin-top: 15px;
-  margin-left: 5px;
-  color: grey;
-  font-size: 12px !important;
+.cx-textarea-cell .cx-send.cx-icon svg {
+  fill: black;
 }
 
-.gwc-chat-message {
-  margin: 0 0 10px;
+.cx-theme-helsinki-blue .cx-webchat div.cx-input-container .cx-message-input {
+  padding: 14px 16px 27px 24px;
+  margin-bottom: 0px;
+  min-height: 55px !important;
+  /* height: 40px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        border-width: 0px;
+        max-height: 20px; */
+}
+
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message .cx-message-text {
+  word-break: break-word;
+}
+
+.cx-theme-helsinki-blue .cx-common-container .cx-buttons-window-control button {
+  width: 25px;
+  height: 25px;
+}
+
+#chatAuthenticationElement,
+#helfiChatAuthElementDone {
+  height: 50px;
+  background-color: royalblue;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 400 normal normal 16px/1.3 Arial, sans-serif;
+  margin-top: -1px;
 }
 
-.gwc-chat-head-icon {
-  width: 35px !important;
-  height: 40px;
-  margin-top: 5px;
-  margin-left: 5px;
-}
-
-.gwc-chat-message-author {
-  display: none !important;
+#chatAuthenticationElement a,
+#helfiChatAuthElementDone a {
+  color: white;
 }
 
 .gwc-chat-logo-helsinki {
   width: 70px;
-  margin-left: 5px;
 }
 
-.gwc-chat-icon-down {
-  width: 25px;
+.cx-theme-helsinki-blue .cx-side-button-group {
+  bottom: 0;
+  -webkit-transform: unset;
+  z-index: 100 !important;
 }
 
-.gwc-chat-message-text a {
-  color: white;
+.cx-widget.cx-webchat-chat-button.cx-side-button.cx-theme-helsinki-blue {
+  background-position: bottom right !important;
+  display: flex;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  width: 150px;
+  height: 114px;
+  background: none;
+  border: none;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  transition: none;
 }
 
-.gwc-chat-message-text a:hover {
-  color: lightgray;
-}
-
-@media screen and (max-width: 575px), (max-height: 425px) {
-  .gwc-chat-embedded-window {
-    width: 100%;
-    right: 0;
-    position: fixed !important;
-    left: 0;
-    bottom: 0;
-  }
-
-  .gcb-startChat,
-  .gcb-startChat:hover {
+@media only screen and (max-width: 575px) {
+  cx-widget.cx-webchat-chat-button.cx-side-button.cx-theme-helsinki-blue,
+  .cx-widget.cx-webchat-chat-button.cx-side-button.cx-theme-helsinki-blue:hover {
     width: 114px !important;
   }
-
-  .gwc-chat-head .gwc-chat-title {
-    float: none;
-    display: flex;
-  }
 }
 
-#chatAuthenticationElement {
-  height: 50px;
-  background-color: royalblue;
+.cx-theme-helsinki-blue .cx-webchat-chat-button-open {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-open.png) !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat-chat-button-busy {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-busy.png) !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat-chat-button-closed {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-closed.png) !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat-chat-button-open-sv {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-open-sv.png) !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat-chat-button-busy-sv {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-busy-sv.png) !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat-chat-button-closed-sv {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-closed-sv.png) !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat-chat-button-open-en {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-open-en.png) !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat-chat-button-busy-en {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-busy-en.png) !important;
+}
+
+.cx-theme-helsinki-blue .cx-webchat-chat-button-closed-en {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/chat-closed-en.png) !important;
+}
+
+.cx-webchat-chat-button-mobile-open {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/mobile_open1.svg) !important;
+}
+
+.cx-webchat-chat-button-mobile-busy {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/mobile_busy1.svg) !important;
+}
+
+.cx-webchat-chat-button-mobile-closed {
+  background-image: url(https://www.hel.fi/static/helsinki/chat/mobile_closed_strike1.svg) !important;
+}
+
+.cx-widget.cx-webchat-chat-button.cx-side-button.cx-theme-helsinki-blue .cx-icon,
+.cx-widget.cx-webchat-chat-button.cx-side-button.cx-theme-helsinki-blue .cx-chat-button-label {
+  display: none;
+}
+
+.cx-theme-helsinki-blue .cx-avatar.user svg {
+  fill: black;
+}
+
+.cx-webchat.cx-theme-helsinki-blue .cx-transcript .cx-message-group > .cx-message.cx-participant .cx-avatar-wrapper {
+  display: block !important;
+  left: 100%;
+}
+
+.cx-webchat.cx-theme-helsinki-blue .cx-transcript .cx-message-group > .cx-message.cx-participant .cx-bubble-arrow,
+.cx-webchat.cx-theme-helsinki-blue .cx-transcript .cx-message-group > .cx-message.cx-participant .cx-time {
+  display: block !important;
+}
+
+.cx-webchat.cx-theme-helsinki-blue .cx-transcript .cx-message-group > .cx-message.cx-participant:first-child .cx-name {
+  display: none !important;
+}
+
+.cx-webchat.cx-theme-helsinki-blue .cx-transcript .cx-avatar {
+  width: 40px;
+}
+
+.cx-widget.cx-theme-helsinki-blue .cx-side-button-group {
+  top: unset;
+}
+
+.cx-theme-helsinki-blue .cx-widget-status {
+  display: none;
+}
+
+#cx_chat_end_question {
+  margin-top: 4%;
+  text-align: center;
+  color: black;
+}
+
+.cx-theme-helsinki-blue .cx-button-group.cx-buttons-binary {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
-#chatAuthenticationElement a {
+.cx-theme-helsinki-blue .cx-buttons-binary .cx-btn {
+  background-color: #0000bf;
+}
+
+#gwc-chat-icon-iks-mobile {
+  width: 50px;
+  cursor: pointer;
+  position: fixed;
+  bottom: 58px;
+  right: 5px;
+  filter: invert(100%);
+  z-index: 99999999 !important;
+  box-shadow: unset;
+}
+
+.cx-theme-helsinki-blue .cx-form-wrapper {
+  display: none !important;
+}
+
+.cx-theme-helsinki-blue .cx-textarea-cell {
+  display: flex;
+  align-items: flex-end;
+}
+
+#cx_input {
+  padding: 12px !important;
+  margin: 0 !important;
+  flex: 6;
+  position: relative;
+  max-height: 49px;
+}
+
+.cx-send.cx-icon.i18n svg {
+  width: 35px;
+}
+
+.cx-send.cx-icon.i18n {
+  position: relative;
+  flex: 1;
+  right: auto;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cx-Agent .cx-avatar-wrapper {
+  display: block !important;
+  left: -3% !important;
+  position: absolute;
+  width: 50px !important;
+}
+
+.cx-avatar.agent svg {
+  fill: black;
+}
+
+.cx-message-text {
   color: white;
 }
 
-#authUserTitleContainer {
-  height: 50px;
-  background-color: royalblue;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.cx-powered-by {
+  display: none;
+}
+
+.cx-widget.cx-common-container.cx-toast.cx-theme-helsinki-blue {
+  background-color: white;
+}
+
+.cx-widget.cx-common-container.cx-toast.cx-theme-helsinki-blue .cx-titlebar,
+.cx-widget.cx-common-container.cx-toast.cx-theme-helsinki-blue .cx-button-group.cx-buttons-binary {
   color: white;
 }
 
-/* for offline chat */
-.gwc-chat-embedded-window {
-  border: 2px solid red;
-  width: 500px;
-  background: white;
-  height: 400px;
+.cx-title {
+  font-size: 0.9em !important;
+  font-family: "HelsinkiGroteskBlack", "Arimo-Bold", sans-serif;
+}
+
+.cx-input-focus {
+  outline: -webkit-focus-ring-color auto 1px !important;
+}
+
+.cx-send {
+  min-height: 55px;
 }
