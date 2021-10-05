@@ -1,419 +1,459 @@
+var helFiChatPageUrl = document.location.href;
+var helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
+var helfiChat_lang = document.documentElement.lang;
 
-    var helFiChatPageUrl = document.location.href;
-    var helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
-    var helfiChat_lang = document.documentElement.lang;
+var authEnabled = true;
+var helfiChatLogoElement =
+  '<img class="gwc-chat-logo-helsinki" tabindex="0" title="helsinki-logo" alt="helsinki-logo" src="https://www.hel.fi/static/helsinki/chat/project-logo-hki-white-fi.png"/>';
+var helfiChatAuthElement =
+  '<div id="chatAuthenticationElement"><a href="javascript:void(0);" title="" target="" onclick="var testReturnSessionId=setGcReturnSessionId();if(testReturnSessionId){window.location.href=\'/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir=out\';}" href="javascript:void(0);">Tunnistaudu tästä</a></div>';
+var helfiChatAuthElementDone =
+  '<div id="authUserTitleContainer" style="display: none;">Tunnistautunut käyttäjä</div>';
+var mobileIksButton =
+  '<div id="gwc-chat-icon-iks-mobile"' +
+  'tabindex="0" onkeypress="onEnter(event, this)" role="button" onclick="removeChatIcon()"><img src="https://www.hel.fi/static/helsinki/chat/close-next.svg" /><div></div></div';
+/* CHAT START BUTTON ICONS */
+var helFiChat_button = "";
 
-    var authEnabled = true;
-    var helfiChatLogoElement = '<img class="gwc-chat-logo-helsinki" tabindex="0" title="helsinki-logo" alt="helsinki-logo" src="https://www.hel.fi/static/helsinki/chat/project-logo-hki-white-fi.png"/>';
-    var helfiChatAuthElement = '<div id="chatAuthenticationElement"><a href="javascript:void(0);" title="" target="" onclick="var testReturnSessionId=setGcReturnSessionId();if(testReturnSessionId){window.location.href=\'/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir=out\';}" href="javascript:void(0);">Tunnistaudu tästä</a></div>';
-    var helfiChatAuthElementDone = '<div id="authUserTitleContainer" style="display: none;">Tunnistautunut käyttäjä</div>';
-    var mobileIksButton = '<div id="gwc-chat-icon-iks-mobile"' +
-            'tabindex="0" onkeypress="onEnter(event, this)" role="button" onclick="removeChatIcon()"><img src="https://www.hel.fi/static/helsinki/chat/close-next.svg" /><div></div></div'
-    /* CHAT START BUTTON ICONS */
-    var helFiChat_button = "";
+var startChatButtonClasses = {
+  desktop: {
+    fi: {
+      open: "cx-webchat-chat-button-open",
+      busy: "cx-webchat-chat-button-busy",
+      close: "cx-webchat-chat-button-closed",
+    },
+    sv: {
+      open: "cx-webchat-chat-button-open-sv",
+      busy: "cx-webchat-chat-button-busy-sv",
+      close: "cx-webchat-chat-button-closed-sv",
+    },
+    en: {
+      open: "cx-webchat-chat-button-open-en",
+      busy: "cx-webchat-chat-button-busy-en",
+      close: "cx-webchat-chat-button-closed-en",
+    },
+  },
+  mobile: {
+    fi: {
+      open: "cx-webchat-chat-button-mobile-open",
+      busy: "cx-webchat-chat-button-mobile-busy",
+      close: "cx-webchat-chat-button-mobile-closed",
+    },
+    sv: {
+      open: "cx-webchat-chat-button-mobile-open-sv",
+      busy: "cx-webchat-chat-button-mobile-busy-sv",
+      close: "cx-webchat-chat-button-mobile-closed-sv",
+    },
+    en: {
+      open: "cx-webchat-chat-button-mobile-open",
+      busy: "cx-webchat-chat-button-mobile-busy",
+      close: "cx-webchat-chat-button-mobile-closed",
+    },
+  },
+};
 
-    var startChatButtonClasses = {
-        desktop: {
-            fi: {
-                open: 'cx-webchat-chat-button-open',
-                busy: 'cx-webchat-chat-button-busy',
-                close: 'cx-webchat-chat-button-closed'
-            },
-            sv: {
-                open: 'cx-webchat-chat-button-open-sv',
-                busy: 'cx-webchat-chat-button-busy-sv',
-                close: 'cx-webchat-chat-button-closed-sv'
-            },
-            en: {
-                open: 'cx-webchat-chat-button-open-en',
-                busy: 'cx-webchat-chat-button-busy-en',
-                close: 'cx-webchat-chat-button-closed-en'
-            }
-        },
-        mobile: {
-            fi: {
-                open: 'cx-webchat-chat-button-mobile-open',
-                busy: 'cx-webchat-chat-button-mobile-busy',
-                close: 'cx-webchat-chat-button-mobile-closed'
-            },
-            sv: {
-                open: 'cx-webchat-chat-button-mobile-open-sv',
-                busy: 'cx-webchat-chat-button-mobile-busy-sv',
-                close: 'cx-webchat-chat-button-mobile-closed-sv'
-            },
-            en: {
-                open: 'cx-webchat-chat-button-mobile-open',
-                busy: 'cx-webchat-chat-button-mobile-busy',
-                close: 'cx-webchat-chat-button-mobile-closed'
-            }
-        }
-    }
+/* ------- KYMP PARKING PROD CHAT WITH REAL OPERATORS ---------- */
 
-		/* ------- KYMP PARKING PROD CHAT WITH REAL OPERATORS ---------- */
+var helFiChat_src = "https://asiointi.hel.fi/chat/sote/cobrowse/js/gcb.min.js";
+var helFiChat_cbUrl = "https://asiointi.hel.fi/chat/sote/cobrowse";
+var helFiChat_localization =
+  "https://asiointi.hel.fi/chat/sote/custom/chat-kymp-fi.json";
+var helFiChat_serverUrl = "https://asiointi.hel.fi/chat/sote/cobrowse";
+var helFiChat_service = "KYMP";
+var helFiChat_language = "FI";
+var helfiChat_GUI_lang = helFiChat_language;
+var helFiChat_title = "Pysäköinti Helsingissä chat";
 
-    var helFiChat_src = 'https://asiointi.hel.fi/chat/sote/cobrowse/js/gcb.min.js';
-    var helFiChat_cbUrl = 'https://asiointi.hel.fi/chat/sote/cobrowse';
-    var helFiChat_localization = 'https://asiointi.hel.fi/chat/sote/custom/chat-kymp-fi.json';
-    var helFiChat_serverUrl = 'https://asiointi.hel.fi/chat/sote/cobrowse';
-    var helFiChat_service = 'KYMP';
-    var helFiChat_language = "FI";
-    var helfiChat_GUI_lang = helFiChat_language;
-    var helFiChat_title = 'Pysäköinti Helsingissä chat';
+var helfiChatCookiePath = "/";
+var helfiChatTransferPath = "/user/login";
 
-    var helfiChatCookiePath = '/';
-    var helfiChatTransferPath = '/user/login';
-
-    function callShibboleth() {
-        var interactionId = readInteractionIDFromCookie("_genesys.widgets.webchat.state.session");
-        var currentPage = window.location;
-        var shibbolethString = "https://asiointi.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
-        shibbolethString += "target=";
-        shibbolethString += "https://asiointi.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
-        /*
+function callShibboleth() {
+  var interactionId = readInteractionIDFromCookie(
+    "_genesys.widgets.webchat.state.session"
+  );
+  var currentPage = window.location;
+  var shibbolethString =
+    "https://asiointi.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
+  shibbolethString += "target=";
+  shibbolethString +=
+    "https://asiointi.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
+  /*
         shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
         */
-        shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi" + helfiChatTransferPath + "?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
-        shibbolethString += "%26" + "interactionId" + "%3D" + interactionId;
-        window.location = shibbolethString;
+  shibbolethString +=
+    "%3ForigPage%3D" +
+    "https://www.hel.fi" +
+    helfiChatTransferPath +
+    "?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
+  shibbolethString += "%26" + "interactionId" + "%3D" + interactionId;
+  window.location = shibbolethString;
+}
+
+function initHelFiChatAuthButtonState() {
+  // State of Vetuma authentication result:
+  var gcReturnSessionId = getCookieChat("gcSession");
+  // is user authenticated, 1=yes
+  var chatGcLoginButtonState = getCookieChat("gcLoginButtonState");
+  //is genesys original session active now?
+  var gcOriginalSessionID = "";
+  gcOriginalSessionID = getCookieChat("_genesys.widgets.webchat.state.session");
+  if (gcOriginalSessionID) {
+    setTimeout(function () {
+      // if(chatGcLoginButtonState==1) {
+      if (
+        chatGcLoginButtonState == 1 &&
+        document.getElementById("chatAuthenticationElement")
+      ) {
+        //user is authenticated, show correct link in chat window:
+        document.getElementById("chatAuthenticationElement").style.display =
+          "none";
+        document.getElementById("authUserTitleContainer").style.display = "";
+        document.getElementById("authUserTitleContainer").style.display =
+          "flex";
+      }
+      // else {
+      else if (document.getElementById("chatAuthenticationElement")) {
+        //user is not authenticated, show correct link in chat window:
+        document.getElementById("chatAuthenticationElement").style.display = "";
+        document.getElementById("chatAuthenticationElement").style.display =
+          "flex";
+        document.getElementById("authUserTitleContainer").style.display =
+          "none";
+      }
+    }, 2000); /* setTimeout */
+  }
+} /* ...end function initHelFiChatAuthButtonState() */
+
+window.addEventListener("load", initHelFiChatAuthButtonState);
+
+// ------- Auth functions starts ------------
+
+function isEmpty(str) {
+  return !str || 0 === str.length;
+}
+
+function isBlank(str) {
+  return !str || /^\s*$/.test(str);
+}
+
+function setGcReturnSessionId() {
+  // helper cookie to maintain chat session id:
+  var gcReturnSessionId = getCookieChat(
+    "_genesys.widgets.webchat.state.session"
+  );
+  if (!isEmpty(gcReturnSessionId) && !isBlank(gcReturnSessionId)) {
+    // Found GS-chat session, setting it to helper cookie:
+    /* document.cookie = "gcReturnSessionId="+gcReturnSessionId+";path=/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/"; */
+    document.cookie =
+      "gcReturnSessionId=" + gcReturnSessionId + ";path=" + helfiChatCookiePath;
+  } else {
+    console.log("gcReturnSessionId", gcReturnSessionId);
+    alert(
+      "Virhe, ei voida tunnistaa käyttäjää, koska chat-keskustelu ei ole auki."
+    );
+    return false;
+  }
+  // save alternative return url for cookie:
+  document.cookie =
+    "gcAlternativeReturnUrl=" +
+    window.location.href +
+    ";path=" +
+    helfiChatCookiePath;
+  return true;
+}
+
+function getCookieChat(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
     }
-
-    function initHelFiChatAuthButtonState() {
-        // State of Vetuma authentication result:
-        var gcReturnSessionId = getCookieChat("gcSession");
-        // is user authenticated, 1=yes
-        var chatGcLoginButtonState = getCookieChat("gcLoginButtonState");
-        //is genesys original session active now?
-        var gcOriginalSessionID = "";
-        gcOriginalSessionID = getCookieChat("_genesys.widgets.webchat.state.session");
-        if (gcOriginalSessionID) {
-            setTimeout(function () {
-                // if(chatGcLoginButtonState==1) {
-                if (chatGcLoginButtonState == 1 && document.getElementById('chatAuthenticationElement')) {
-                    //user is authenticated, show correct link in chat window:
-                    document.getElementById('chatAuthenticationElement').style.display = 'none';
-                    document.getElementById('authUserTitleContainer').style.display = '';
-                    document.getElementById('authUserTitleContainer').style.display = 'flex';
-                }
-                // else {
-                else if (document.getElementById('chatAuthenticationElement')) {
-                    //user is not authenticated, show correct link in chat window:
-                    document.getElementById('chatAuthenticationElement').style.display = '';
-                    document.getElementById('chatAuthenticationElement').style.display = 'flex';
-                    document.getElementById('authUserTitleContainer').style.display = 'none';
-                }
-            }, 2000); /* setTimeout */
-        }
-    } /* ...end function initHelFiChatAuthButtonState() */
-
-    window.addEventListener('load', initHelFiChatAuthButtonState);
-
-    // ------- Auth functions starts ------------
-
-    function isEmpty(str) {
-        return (!str || 0 === str.length);
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
     }
+  }
+  return "";
+}
 
-    function isBlank(str) {
-        return (!str || /^\s*$/.test(str));
-    }
+// ------- Auth functions ends ------------
 
-    function setGcReturnSessionId() {
-        // helper cookie to maintain chat session id:
-        var gcReturnSessionId = getCookieChat("_genesys.widgets.webchat.state.session");
-        if (!isEmpty(gcReturnSessionId) && !isBlank(gcReturnSessionId)) {
-            // Found GS-chat session, setting it to helper cookie:
-            /* document.cookie = "gcReturnSessionId="+gcReturnSessionId+";path=/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/"; */
-            document.cookie = "gcReturnSessionId=" + gcReturnSessionId + ";path=" + helfiChatCookiePath;
-        }
-        else {
-            console.log("gcReturnSessionId", gcReturnSessionId);
-            alert('Virhe, ei voida tunnistaa käyttäjää, koska chat-keskustelu ei ole auki.');
-            return false;
-        }
-        // save alternative return url for cookie:
-        document.cookie = "gcAlternativeReturnUrl=" + window.location.href + ";path=" + helfiChatCookiePath;
-        return true;
-    }
+function isMobile() {
+  if (screen.width < 600) {
+    return true;
+  }
+  return false;
+}
 
-    function getCookieChat(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
+(function setChatStartButton() {
+  //Check if it's mobile
+  var screenType = isMobile() ? "mobile" : "desktop";
+  helFiChat_button = "";
+  helfiChat_lang = "fi";
+  if (helFiChat_button.indexOf("chat-closed") > -1) {
+    helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].close;
+  } else if (helFiChat_button.indexOf("chat-busy") > -1) {
+    helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].busy;
+  } else {
+    helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].open;
+  }
+})();
 
-    // ------- Auth functions ends ------------
+function generateStartChatButton() {
+  // var screenType = isMobile();
+  // // var mobileIksButton = '<div id="gwc-chat-icon-iks-mobile"' +
+  // //             'tabindex="0" onkeypress="onEnter(event, this)" role="button" onclick="removeChatIcon()"><img src="https://www.hel.fi/static/helsinki/chat/close-next.svg" /></div>'
 
-    function isMobile() {
-        if (screen.width < 600) {
-            return true
-        }
-        return false;
-    }
+  var buttonHtml =
+    '<div class="cx-widget cx-webchat-chat-button ' +
+    helFiChat_button +
+    ' cx-side-button" id="chatButtonStart" role="button" tabindex="0" data-message="ChatButton"' +
+    'data-gcb-service-node="true"><span class="cx-icon" data-icon="chat"></span><span class="i18n cx-chat-button-label" data-message="ChatButton"></span></div>';
+  return buttonHtml;
+}
 
-    (function setChatStartButton() {
-        //Check if it's mobile
-        var screenType = isMobile() ? 'mobile' : 'desktop';
-        helFiChat_button = '';
-		helfiChat_lang = 'fi';
-        if (helFiChat_button.indexOf('chat-closed') > -1) {
-            helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].close;
-        } else if (helFiChat_button.indexOf('chat-busy') > -1) {
-            helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].busy;
-        } else {
-            helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].open;
-        }
-    })()
+function removeChatIcon() {
+  $(".cx-window-manager").css("display", "none");
+}
 
-   function generateStartChatButton() {
-        // var screenType = isMobile();
-        // // var mobileIksButton = '<div id="gwc-chat-icon-iks-mobile"' +
-        // //             'tabindex="0" onkeypress="onEnter(event, this)" role="button" onclick="removeChatIcon()"><img src="https://www.hel.fi/static/helsinki/chat/close-next.svg" /></div>'
+if (!window._genesys) window._genesys = {};
+if (!window._gt) window._gt = [];
 
-        var buttonHtml = '<div class="cx-widget cx-webchat-chat-button ' + helFiChat_button + ' cx-side-button" id="chatButtonStart" role="button" tabindex="0" data-message="ChatButton"' +
-                    'data-gcb-service-node="true"><span class="cx-icon" data-icon="chat"></span><span class="i18n cx-chat-button-label" data-message="ChatButton"></span></div>'
-         return buttonHtml;
-    }
+window._genesys.widgets = {
+  main: {
+    // debug: true,
+    theme: "helsinki-blue",
+    themes: {
+      "helsinki-blue": "cx-theme-helsinki-blue",
+    },
+    mobileMode: "auto",
+    lang: helfiChat_lang,
+    //i18n: "https://asiointi.hel.fi/gms/sote/testpages/chat-fi.json",
+    //i18n: helFiChat_localization,
+    mobileModeBreakpoint: 600,
+    preload: ["webchat"],
+  },
+  webchat: {
+    dataURL: "https://asiointi.hel.fi/gms/sote/genesys/2/chat/prod",
+    confirmFormCloseEnabled: false,
+    userData: {
+      service: helFiChat_service,
+    },
+    timeFormat: 24,
+    cometD: {
+      enabled: false,
+    },
+    autoInvite: {
+      enabled: false,
+      timeToInviteSeconds: 10,
+      inviteTimeoutSeconds: 30,
+    },
+    chatButton: {
+      enabled: true,
+      template: generateStartChatButton(),
+      effect: "fade",
+      openDelay: 1000,
+      effectDuration: 300,
+      hideDuringInvite: true,
+    },
+    uploadEnabled: false,
+  },
+};
 
-    function removeChatIcon() {
-        $('.cx-window-manager').css('display', 'none')
-    }
+if (!window._genesys.widgets.extensions) {
+  window._genesys.widgets.extensions = {};
+}
+var chatExtension = null;
+chatExtension = CXBus.registerPlugin("ChatExt");
 
-    if (!window._genesys) window._genesys = {};
-    if (!window._gt) window._gt = [];
+window._genesys.widgets.extensions["ChatExt"] = function ($, CXBus, Common) {
+  chatExtension.before("WebChat.open", function (oData) {
+    //Delete X button in mobile view
+    //console.log("restarted from open")
+    $("#gwc-chat-icon-iks-mobile").css("display", "none");
 
-    window._genesys.widgets = {
-        main: {
-            // debug: true,
-            theme: "helsinki-blue",
-            themes: {
-                "helsinki-blue": "cx-theme-helsinki-blue",
-            },
-            mobileMode: "auto",
-            lang: helfiChat_lang,
-            //i18n: "https://asiointi.hel.fi/gms/sote/testpages/chat-fi.json",
-            //i18n: helFiChat_localization,
-            mobileModeBreakpoint: 600,
-            preload: ["webchat"]
+    if (!oData.restoring) {
+      oData = {
+        form: {
+          autoSubmit: true,
+          nickname: "Asiakas",
         },
-        webchat: {
-            dataURL: "https://asiointi.hel.fi/gms/sote/genesys/2/chat/prod",
-            confirmFormCloseEnabled: false,
-            userData: {
-                'service': helFiChat_service,
+        formJSON: {
+          //wrapper: '<table style="display:none;"></table>',
+          inputs: [
+            {
+              id: "cx_webchat_form_nickname",
+              name: "nickname",
+              maxlength: "100",
+              value: "Asiakas",
+              type: "hidden",
             },
-            timeFormat: 24,
-            cometD: {
-                enabled: false
-            },
-            autoInvite: {
-                enabled: false,
-                timeToInviteSeconds: 10,
-                inviteTimeoutSeconds: 30
-            },
-            chatButton: {
-                enabled: true,
-                template: generateStartChatButton(),
-                effect: 'fade',
-                openDelay: 1000,
-                effectDuration: 300,
-                hideDuringInvite: true
-            },
-            uploadEnabled: false
+          ],
         },
-    };
-
-    if (!window._genesys.widgets.extensions) {
-        window._genesys.widgets.extensions = {};
+        userData: {
+          service: helFiChat_service,
+        },
+      };
     }
-    var chatExtension = null;
-    chatExtension = CXBus.registerPlugin("ChatExt");
 
+    //console.log(oData)
+    return oData;
+  });
 
-    window._genesys.widgets.extensions["ChatExt"] = function ($, CXBus, Common) {
+  //Triggers when chat is opened
+  chatExtension.subscribe("WebChat.opened", function (e) {
+    //Add auth layout
+    if (authEnabled) {
+      $(".cx-body").prepend(helfiChatAuthElement);
+      $(".cx-body").prepend(helfiChatAuthElementDone);
+    }
 
-        chatExtension.before("WebChat.open", function (oData) {
+    //Add logo
+    $(".cx-titlebar .cx-icon").replaceWith(helfiChatLogoElement);
 
-            //Delete X button in mobile view
-            //console.log("restarted from open")
-            $('#gwc-chat-icon-iks-mobile').css('display', 'none');
+    $(".cx-input-container").removeAttr("tabindex").removeAttr("aria-hidden");
+    $(".cx-textarea-cell").removeAttr("tabindex").removeAttr("aria-hidden");
+    $(".cx-send").attr("tabindex", 0);
+    $(".cx-send").removeAttr("aria-hidden");
 
-            if (!oData.restoring) {
-                oData = {
-                    form: {
-                        autoSubmit: true,
-                        nickname: "Asiakas",
-                    },
-                     formJSON: {
-                        //wrapper: '<table style="display:none;"></table>',
-                        inputs: [{
-                            id: "cx_webchat_form_nickname",
-                            name: "nickname",
-                            maxlength: "100",
-                            value: "Asiakas",
-                            type: "hidden"
-                        }
-                        ]
-                     },
-                    userData: {
-                        'service': helFiChat_service,
-                    },
-                }
-            }
+    //Delete X button in mobile view
+    $("#gwc-chat-icon-iks-mobile").css("display", "none");
+    setTimeout(function () {
+      $("#gwc-chat-icon-iks-mobile").css("display", "none");
+    }, 500);
 
-            //console.log(oData)
-            return oData
+    //Add accesability enchanced features on minimize
+    if ($("[data-icon=minimize]").length) {
+      $("[data-icon=minimize]").attr("aria-expanded", true);
+    }
+
+    //Change send icon
+    if ($(".cx-send").length) {
+      $(".cx-send")
+        .empty()
+        .append(
+          '<img style="height:55px;width:40px;" src="https://www.hel.fi/static/helsinki/chat/arrow_black.svg"/>'
+        );
+    }
+
+    //Change user icon
+    handleChangeAvatarIcons();
+  });
+
+  function minimizeAccesibilityChange(name) {
+    //Minimizdd button accesibility change
+    var minimizeElement = $(".cx-button-" + name);
+    if (minimizeElement) {
+      var ariaExpanded = JSON.parse(minimizeElement.attr("aria-expanded"));
+      minimizeElement.attr("aria-expanded", !ariaExpanded);
+    }
+  }
+
+  //Triggers when chat is ready to accept commands
+  chatExtension.subscribe("WebChat.ready", function (e) {
+    if (isMobile()) {
+      setTimeout(function () {
+        //showButton(true);
+        if ($(".cx-webchat-chat-button").length) {
+          $(".cx-window-manager").prepend(mobileIksButton);
+        }
+      }, 3000);
+    }
+  });
+
+  // Remove custom visibility logic and show button upon closing chat
+  chatExtension.subscribe("WebChat.closed", function (e) {
+    if (isMobile()) {
+      setTimeout(function () {
+        if ($(".cx-webchat-chat-button").length) {
+          $(".cx-window-manager").prepend(mobileIksButton);
+        }
+      }, 3000);
+    }
+  });
+
+  chatExtension.subscribe("WebChat.cancelled", function (e) {
+    // cancelled event. The Chat session ended before agent is connected to WebChat.
+    setTimeout(function () {
+      chatExtension
+        .command("WebChat.close")
+        .done(function (e) {
+          // closing success
         })
-
-        //Triggers when chat is opened
-        chatExtension.subscribe("WebChat.opened", function (e) {
-            //Add auth layout
-            if (authEnabled) {
-                $('.cx-body').prepend(helfiChatAuthElement);
-                $('.cx-body').prepend(helfiChatAuthElementDone);
-            }
-
-            //Add logo
-            $('.cx-titlebar .cx-icon').replaceWith(helfiChatLogoElement);
-
-            $('.cx-input-container').removeAttr('tabindex').removeAttr('aria-hidden');;
-            $('.cx-textarea-cell').removeAttr('tabindex').removeAttr('aria-hidden');;
-            $('.cx-send').attr('tabindex', 0);
-            $('.cx-send').removeAttr('aria-hidden');
-
-            //Delete X button in mobile view
-            $('#gwc-chat-icon-iks-mobile').css('display', 'none');
-             setTimeout(function () {
-                    $('#gwc-chat-icon-iks-mobile').css('display', 'none');
-                }, 500);
-
-            //Add accesability enchanced features on minimize
-            if($("[data-icon=minimize]").length) {
-                $("[data-icon=minimize]").attr('aria-expanded', true);
-            }
-
-            //Change send icon
-            if($(".cx-send").length) {
-                $(".cx-send").empty().append('<img style="height:55px;width:40px;" src="https://www.hel.fi/static/helsinki/chat/arrow_black.svg"/>')
-            }
-
-            //Change user icon
-            handleChangeAvatarIcons();
+        .fail(function (e) {
+          // closing failure
         });
+    }, 1000);
+  });
 
+  chatExtension.subscribe("WebChat.minimized", function (e) {
+    minimizeAccesibilityChange("maximize");
+  });
 
-        function minimizeAccesibilityChange(name) {
-            //Minimizdd button accesibility change
-            var minimizeElement = $('.cx-button-' + name);
-            if(minimizeElement) {
-                var ariaExpanded = JSON.parse(minimizeElement.attr('aria-expanded'));
-                minimizeElement.attr("aria-expanded", !ariaExpanded);
-            }
-        }
+  chatExtension.subscribe("WebChat.unminimized", function (e) {
+    minimizeAccesibilityChange("minimize");
+  });
 
-        //Triggers when chat is ready to accept commands
-        chatExtension.subscribe("WebChat.ready", function (e) {
-            if(isMobile()) {
-                setTimeout(function () {
-                    //showButton(true);
-                    if($( ".cx-webchat-chat-button").length) {
-                        $('.cx-window-manager').prepend(mobileIksButton);
-                    }
-                }, 3000);
-            }
+  chatExtension.subscribe("WebChat.completed", function (e) {
+    // cancelled event. The Chat session ended after agent is successfully connected to WebChat.
+    setTimeout(function () {
+      chatExtension
+        .command("WebChat.close")
+        .done(function (e) {
+          // closing success
+        })
+        .fail(function (e) {
+          // closing failure
         });
+    }, 1000);
+  });
 
+  // chatExtension.subscribe("WebChat.onSession", function (event) {
+  //     session.onMessageReceived(function(event) {
+  //         console.log("Message")
+  //     });
+  // });
 
-        // Remove custom visibility logic and show button upon closing chat
-        chatExtension.subscribe("WebChat.closed", function (e) {
-            if(isMobile()) {
-                setTimeout(function () {
-                    if($( ".cx-webchat-chat-button").length) {
-                        $('.cx-window-manager').prepend(mobileIksButton);
-                    }
-                }, 3000);
-            }
-        });
+  chatExtension.subscribe("WebChat.messageAdded", function (event) {
+    handleChangeAvatarIcons();
+  });
 
-        chatExtension.subscribe("WebChat.cancelled", function (e) {
-            // cancelled event. The Chat session ended before agent is connected to WebChat.
-            setTimeout(function () {
-                chatExtension.command('WebChat.close').done(function (e) {
-                    // closing success
-                }).fail(function (e) {
-                    // closing failure
-                });
-            }, 1000);
-        });
+  function handleChangeAvatarIcons() {
+    //Change user icon
+    if ($(".cx-avatar.user").length) {
+      $(".cx-avatar.user")
+        .empty()
+        .append(
+          '<img style="height:50px;width:40px;margin-left:6px;" src="https://www.hel.fi/static/helsinki/chat/user_black.svg"/>'
+        );
+    }
 
+    //Change agent icons
+    if ($(".cx-avatar.agent").length) {
+      $(".cx-avatar.agent")
+        .empty()
+        .append(
+          '<img style="height:50px;width:40px;margin-left:6px;" src="https://www.hel.fi/static/helsinki/chat/agent_blue.svg"/>'
+        );
+    }
+  }
 
-        chatExtension.subscribe('WebChat.minimized', function(e){
-            minimizeAccesibilityChange('maximize');
-        });
+  // oTestExtension.before("WebChat.open", function(oData){
 
-        chatExtension.subscribe('WebChat.unminimized', function(e){
-            minimizeAccesibilityChange('minimize');
-        });
+  // // oData == the options passed into the command call
+  // // e.g. if this command is called:   oMyPlugin.command("WebChat.open", {form: {firstname: "Mike"}});
+  // // then oData will == {form: {firstname: "Mike"}}
 
+  // // You must return oData back, or an empty object {} for execution to continue.
+  // // If you return false|undefined|null, execution of the command will be stopped
+  // return oData;
+  // });
 
-        chatExtension.subscribe("WebChat.completed", function (e) {
-            // cancelled event. The Chat session ended after agent is successfully connected to WebChat.
-            setTimeout(function () {
-                chatExtension.command('WebChat.close').done(function (e) {
-                    // closing success
-                }).fail(function (e) {
-                    // closing failure
-                });
-            }, 1000);
-        });
+  chatExtension.subscribe("WebChat.onMessageReceived", function (event) {
+    console.log(event.party.type);
+  });
 
-        // chatExtension.subscribe("WebChat.onSession", function (event) {
-        //     session.onMessageReceived(function(event) {
-        //         console.log("Message")
-        //     });
-        // });
-
-        chatExtension.subscribe("WebChat.messageAdded", function (event) {
-            handleChangeAvatarIcons();
-        });
-
-
-        function handleChangeAvatarIcons() {
-            //Change user icon
-            if($('.cx-avatar.user').length) {
-                 $('.cx-avatar.user').empty().append('<img style="height:50px;width:40px;margin-left:6px;" src="https://www.hel.fi/static/helsinki/chat/user_black.svg"/>');
-            }
-
-            //Change agent icons
-            if($('.cx-avatar.agent').length) {
-                 $('.cx-avatar.agent').empty().append('<img style="height:50px;width:40px;margin-left:6px;" src="https://www.hel.fi/static/helsinki/chat/agent_blue.svg"/>');
-            }
-        }
-
-        // oTestExtension.before("WebChat.open", function(oData){
-
-        // // oData == the options passed into the command call
-        // // e.g. if this command is called:   oMyPlugin.command("WebChat.open", {form: {firstname: "Mike"}});
-        // // then oData will == {form: {firstname: "Mike"}}
-
-        // // You must return oData back, or an empty object {} for execution to continue.
-        // // If you return false|undefined|null, execution of the command will be stopped
-        // return oData;
-        // });
-
-
-        chatExtension.subscribe("WebChat.onMessageReceived", function (event) {
-            console.log(event.party.type);
-        });
-
-        chatExtension.republish("ready");
-        chatExtension.ready();
-    };
+  chatExtension.republish("ready");
+  chatExtension.ready();
+};
