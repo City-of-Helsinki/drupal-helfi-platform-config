@@ -217,8 +217,10 @@ function removeChatIcon() {
   $(".cx-window-manager").css("display", "none");
 }
 
-if (!window._genesys) window._genesys = {};
-if (!window._gt) window._gt = [];
+if (!window._genesys) { window._genesys = {};
+}
+if (!window._gt) { window._gt = [];
+}
 
 window._genesys.widgets = {
   main: {
