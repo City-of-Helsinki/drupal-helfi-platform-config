@@ -1,4 +1,4 @@
-        
+
     var helFiChatPageUrl = document.location.href;
     var helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
     var helfiChat_lang = document.documentElement.lang;
@@ -7,7 +7,7 @@
     var helfiChatLogoElement = '<img class="gwc-chat-logo-helsinki" tabindex="0" title="helsinki-logo" alt="helsinki-logo" src="https://www.hel.fi/static/helsinki/chat/project-logo-hki-white-fi.png"/>';
     var helfiChatAuthElement = '<div id="chatAuthenticationElement"><a href="javascript:void(0);" title="" target="" onclick="var testReturnSessionId=setGcReturnSessionId();if(testReturnSessionId){window.location.href=\'/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir=out\';}" href="javascript:void(0);">Tunnistaudu tästä</a></div>';
     var helfiChatAuthElementDone = '<div id="authUserTitleContainer" style="display: none;">Tunnistautunut käyttäjä</div>';
-    var mobileIksButton = '<div id="gwc-chat-icon-iks-mobile"' + 
+    var mobileIksButton = '<div id="gwc-chat-icon-iks-mobile"' +
             'tabindex="0" onkeypress="onEnter(event, this)" role="button" onclick="removeChatIcon()"><img src="https://www.hel.fi/static/helsinki/chat/close-next.svg" /><div></div></div'
     /* CHAT START BUTTON ICONS */
     var helFiChat_button = "";
@@ -48,46 +48,28 @@
             }
         }
     }
-/* for optional url detection start:   
-    if (helFiChatPageUrl.indexOf('chatpageurl-fragment') > 0) {
-*/
-/* Note: asiointi.hel.fi -proxy is sunsetting on some schedule */        
-		
-		/*unfinished section, not all variables are placed forwards:  */
-		
-		/* ------- TEST INSTANCE, ---------- */
-        var helFiChat_src = 'https://asiointi.hel.fi/chat/sote/cobrowse/js/gcb.min.js';
-        var helFiChat_cbUrl = 'https://asiointi.hel.fi/chat/sote/cobrowse';
-        var helFiChat_serverUrl = 'https://asiointi.hel.fi/chat/sote/cobrowse';
-        var helFiChat_localization = 'https://asiointi.hel.fi/chat/sote/custom/chat-testisivu-fi.json';
-        var helFiChat_service = 'TESTISIVU_TESTI';
-        var helFiChat_language = 'fi';
-        var helFiChat_title = 'DRU TEST CHAT';
-        
+
 		/* ------- KYMP PARKING PROD CHAT WITH REAL OPERATORS ---------- */
-		/*
-		var helFiChat_src = 'https://asiointi.hel.fi/chat/sote/cobrowse/js/gcb.min.js';
-        var helFiChat_cbUrl = 'https://asiointi.hel.fi/chat/sote/cobrowse';
-        var helFiChat_localization = 'https://asiointi.hel.fi/chat/sote/custom/chat-kymp-fi.json';
-        var helFiChat_serverUrl = 'https://asiointi.hel.fi/chat/sote/cobrowse';
-        var helFiChat_service = 'KYMP';
-        var helFiChat_language = "FI";
-        var helfiChat_GUI_lang = helFiChat_language;
-		var helFiChat_title = 'Pysäköinti Helsingissä chat';
-        */
-		var helfiChatCookiePath = '/your_sites_absolute_path_to_webroot/fi/';
-        var helfiChatTransferPath = '/your_sites_absolute_path_to_webroot/fi/transfer_to_authentication';     
-		
-/* for optional url detection end:   
-   }
-*/ 
+
+    var helFiChat_src = 'https://asiointi.hel.fi/chat/sote/cobrowse/js/gcb.min.js';
+    var helFiChat_cbUrl = 'https://asiointi.hel.fi/chat/sote/cobrowse';
+    var helFiChat_localization = 'https://asiointi.hel.fi/chat/sote/custom/chat-kymp-fi.json';
+    var helFiChat_serverUrl = 'https://asiointi.hel.fi/chat/sote/cobrowse';
+    var helFiChat_service = 'KYMP';
+    var helFiChat_language = "FI";
+    var helfiChat_GUI_lang = helFiChat_language;
+    var helFiChat_title = 'Pysäköinti Helsingissä chat';
+
+    var helfiChatCookiePath = '/';
+    var helfiChatTransferPath = '/user/login';
+
     function callShibboleth() {
         var interactionId = readInteractionIDFromCookie("_genesys.widgets.webchat.state.session");
         var currentPage = window.location;
         var shibbolethString = "https://asiointi.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
         shibbolethString += "target=";
         shibbolethString += "https://asiointi.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
-        /* 
+        /*
         shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
         */
         shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi" + helfiChatTransferPath + "?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
@@ -193,7 +175,7 @@
 
    function generateStartChatButton() {
         // var screenType = isMobile();
-        // // var mobileIksButton = '<div id="gwc-chat-icon-iks-mobile"' + 
+        // // var mobileIksButton = '<div id="gwc-chat-icon-iks-mobile"' +
         // //             'tabindex="0" onkeypress="onEnter(event, this)" role="button" onclick="removeChatIcon()"><img src="https://www.hel.fi/static/helsinki/chat/close-next.svg" /></div>'
 
         var buttonHtml = '<div class="cx-widget cx-webchat-chat-button ' + helFiChat_button + ' cx-side-button" id="chatButtonStart" role="button" tabindex="0" data-message="ChatButton"' +
@@ -261,7 +243,7 @@
         chatExtension.before("WebChat.open", function (oData) {
 
             //Delete X button in mobile view
-            console.log("restarted from open")
+            //console.log("restarted from open")
             $('#gwc-chat-icon-iks-mobile').css('display', 'none');
 
             if (!oData.restoring) {
@@ -287,7 +269,7 @@
                 }
             }
 
-            console.log(oData)
+            //console.log(oData)
             return oData
         })
 
@@ -301,12 +283,12 @@
 
             //Add logo
             $('.cx-titlebar .cx-icon').replaceWith(helfiChatLogoElement);
-            
+
             $('.cx-input-container').removeAttr('tabindex').removeAttr('aria-hidden');;
             $('.cx-textarea-cell').removeAttr('tabindex').removeAttr('aria-hidden');;
             $('.cx-send').attr('tabindex', 0);
             $('.cx-send').removeAttr('aria-hidden');
-           
+
             //Delete X button in mobile view
             $('#gwc-chat-icon-iks-mobile').css('display', 'none');
              setTimeout(function () {
@@ -316,7 +298,7 @@
             //Add accesability enchanced features on minimize
             if($("[data-icon=minimize]").length) {
                 $("[data-icon=minimize]").attr('aria-expanded', true);
-            } 
+            }
 
             //Change send icon
             if($(".cx-send").length) {
@@ -349,7 +331,7 @@
             }
         });
 
-        
+
         // Remove custom visibility logic and show button upon closing chat
         chatExtension.subscribe("WebChat.closed", function (e) {
             if(isMobile()) {
@@ -373,11 +355,11 @@
         });
 
 
-        chatExtension.subscribe('WebChat.minimized', function(e){ 
+        chatExtension.subscribe('WebChat.minimized', function(e){
             minimizeAccesibilityChange('maximize');
         });
 
-        chatExtension.subscribe('WebChat.unminimized', function(e){ 
+        chatExtension.subscribe('WebChat.unminimized', function(e){
             minimizeAccesibilityChange('minimize');
         });
 
