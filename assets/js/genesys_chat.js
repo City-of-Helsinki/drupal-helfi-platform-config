@@ -81,11 +81,10 @@ function callShibboleth() {
         shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
         */
   shibbolethString +=
-    "%3ForigPage%3D" +
-    "https://www.hel.fi" +
+    "%3ForigPage%3Dhttps://www.hel.fi" +
     helfiChatTransferPath +
     "?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
-  shibbolethString += "%26" + "interactionId" + "%3D" + interactionId;
+  shibbolethString += "%26interactionId%3D" + interactionId;
   window.location = shibbolethString;
 }
 
