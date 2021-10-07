@@ -78,7 +78,7 @@ final class ParagraphCommands extends DrushCommands {
         $items[] = $value;
 
         if ($options['fix'] && $paragraph = Paragraph::load($value->id)) {
-          $entity->get($value->parent_field_value)->appendItem($paragraph);
+          $entity->get($value->parent_field_name)->appendItem($paragraph);
           $entity->save();
         }
       }
