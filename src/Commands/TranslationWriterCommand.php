@@ -12,6 +12,9 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Writes translation files.
+ * The default configurations should be one of the two locations:
+ * In /config/install or /config/optional.
+ * The translations should be in /config/language/{langcode}.
  *
  * @package Drupal\drush9_custom_commands\Commands
  */
@@ -61,22 +64,17 @@ class TranslationWriterCommand extends DrushCommands {
    *
    * @command helfi:create-translations
    */
-  public function createTranslations($module, $options = ['feature' => FALSE]) {
-    $modulePath = $this->getModulePath($module, $options['feature']);
+  public function createTranslations($module) {
+    $modulePath = $this->getModulePath($module);
 
     $translationFileUrls = $this->getTranslationFiles($modulePath);
     $translationArrays = $this->parseTranslations($translationFileUrls);
     $translations = $this->combineTranslations($translationArrays);
-    $this->sortTranslations($translations);
     $this->writeTranslationFiles($translations, $modulePath);
   }
 
-
-  private function getModulePath($module, $feature): string {
-    if ($feature) {
-      return drupal_get_path('module', 'helfi_platform_config') . '/helfi_features/'.$module ;
-    }
-    return drupal_get_path('module', $module);
+  private function getModulePath($module): string {
+    return drupal_get_path('module', 'helfi_platform_config') . '/helfi_features/'.$module ;
   }
 
   /**
