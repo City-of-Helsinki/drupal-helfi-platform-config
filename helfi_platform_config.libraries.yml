@@ -41,3 +41,5 @@ genesys_chat:
   css:
     theme:
       assets/css/genesys_chat.css: {}
+  dependencies:
+    - core/jquery
