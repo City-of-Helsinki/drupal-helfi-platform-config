@@ -8,5 +8,3 @@ dependencies:
   - 'helfi_api_base:helfi_api_base'
   - 'menu_block_current_language:menu_block_current_language'
   - 'update_helper:update_helper'
-'interface translation project': helfi_platform_config
-'interface translation server pattern': modules/contrib/helfi_platform_config/translations/%language.po
