@@ -67,6 +67,7 @@ class TranslationWriterCommand extends DrushCommands {
     $translationFileUrls = $this->getTranslationFiles($modulePath);
     $translationArrays = $this->parseTranslations($translationFileUrls);
     $translations = $this->combineTranslations($translationArrays);
+    $this->sortTranslations($translations);
     $this->writeTranslationFiles($translations, $modulePath);
   }
 
@@ -183,19 +184,20 @@ class TranslationWriterCommand extends DrushCommands {
    * @return array
    */
   private function combineTranslations(array $allTranslations): array {
-    $final = [];
+    $finalTranslations = [];
     $original = $allTranslations[$this->languageManager->getDefaultLanguage()->getId()];
     unset($allTranslations[$this->languageManager->getDefaultLanguage()->getId()]);
     foreach ($allTranslations as $langcode => $translationsByLanguage) {
       foreach ($translationsByLanguage as $file => $translationsByFile){
         foreach($translationsByFile as $translationKey => $translation) {
           if (isset($original[$translationKey])) {
-            $final[$langcode][$original[$translationKey]] = $translation;
+            $finalTranslations[$langcode][$original[$translationKey]] = $translation;
           }
         }
+        ksort($finalTranslations[$langcode]);
       }
     }
-    return $final;
+    return $finalTranslations;
   }
 
   /**
@@ -205,7 +207,6 @@ class TranslationWriterCommand extends DrushCommands {
    *   Translation array.
    */
   private function writeTranslationFiles(array $translationsByLanguage, string $basePath): void {
-
     if (!is_dir($basePath.'/translations')) {
       mkdir(($basePath.'/translations'), 755);
     }
@@ -229,6 +230,7 @@ class TranslationWriterCommand extends DrushCommands {
       }
       fclose($fh);
     }
+    $this->writeln(sprintf('Operation finished. Check "%s" for the end result.', $basePath.'/translations'));
   }
 
   private function array_flatten($array): array {
