@@ -67,7 +67,7 @@ final class ParagraphCommands extends DrushCommands {
       ->execute();
 
     $items = [];
-    $ids = explode(',', $options['ids']);
+    $ids = array_filter(explode(',', $options['ids']));
 
     foreach ($values as $value) {
       $entity = $this->entityTypeManager
@@ -81,16 +81,13 @@ final class ParagraphCommands extends DrushCommands {
       $entity = $entity->getTranslation($value->langcode);
 
       if ($entity->get($value->parent_field_name)->isEmpty()) {
+        if (!empty($ids) && !in_array($value->id, $ids)) {
+          continue;
+        }
         $items[] = $value;
 
         if ($options['fix']) {
           $paragraph = Paragraph::load($value->id);
-
-          if (!empty($ids) && !in_array($paragraph->id(), $ids)) {
-            $this->output()->writeln(sprintf('Skipped %d', $paragraph->id()));
-
-            continue;
-          }
 
           if (!$paragraph || !$paragraph->hasTranslation($value->langcode)) {
             $this->output()->writeln('Translation not found for given paragraph.');
