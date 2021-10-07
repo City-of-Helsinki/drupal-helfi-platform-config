@@ -47,21 +47,27 @@ final class ParagraphCommands extends DrushCommands {
    * Lists paragraphs without any parent.
    *
    * @field-labels
+   *   id: Paragraph Id
    *   parent_field_name: Field
    *   parent_type: Type
-   *   parent_id: Id
+   *   parent_id: Parent id
    *   langcode: Langcode
-   * @default-fields parent_field_name,parent_type,parent_id,langcode
+   * @default-fields id,parent_field_name,parent_type,parent_id,langcode
    * @option fix Fix back reference automatically.
    *
    * @command helfi:scan-paragraph-fields
    */
-  public function scan($options = ['format' => 'table', 'fix' => FALSE]) : RowsOfFields {
+  public function scan($options = [
+    'format' => 'table',
+    'fix' => FALSE,
+    'ids' => '',
+  ]) : RowsOfFields {
     $values = $this->connection->select('paragraphs_item_field_data', 'p')
       ->fields('p')
       ->execute();
 
     $items = [];
+    $ids = explode(',', $options['ids']);
 
     foreach ($values as $value) {
       $entity = $this->entityTypeManager
@@ -79,6 +85,12 @@ final class ParagraphCommands extends DrushCommands {
 
         if ($options['fix']) {
           $paragraph = Paragraph::load($value->id);
+
+          if (!empty($ids) && !in_array($paragraph->id(), $ids)) {
+            $this->output()->writeln(sprintf('Skipped %d', $paragraph->id()));
+
+            continue;
+          }
 
           if (!$paragraph || !$paragraph->hasTranslation($value->langcode)) {
             $this->output()->writeln('Translation not found for given paragraph.');
