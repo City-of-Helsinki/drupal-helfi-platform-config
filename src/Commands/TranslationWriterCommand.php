@@ -192,7 +192,7 @@ class TranslationWriterCommand extends DrushCommands {
             $finalTranslations[$langcode][$original[$translationKey]] = $translation;
           }
         }
-        ksort($finalTranslations[$langcode]);
+        uksort($finalTranslations[$langcode], 'strcasecmp');
       }
     }
     return $finalTranslations;
