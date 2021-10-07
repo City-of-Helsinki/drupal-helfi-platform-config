@@ -84,7 +84,7 @@ final class ParagraphCommands extends DrushCommands {
       }
     }
 
-    $rows = array_map(function (array $data) use ($options) {
+    $rows = array_map(function ($data) use ($options) {
       $row = [];
       foreach (explode(',', $options['fields']) as $field) {
         if (!isset($data->{$field})) {
