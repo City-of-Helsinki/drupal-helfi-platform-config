@@ -77,7 +77,13 @@ final class ParagraphCommands extends DrushCommands {
       if ($entity->get($value->parent_field_name)->isEmpty()) {
         $items[] = $value;
 
-        if ($options['fix'] && $paragraph = Paragraph::load($value->id)) {
+        if ($options['fix']) {
+          $paragraph = Paragraph::load($value->id);
+
+          if (!$paragraph || !$paragraph->hasTranslation($value->langcode)) {
+            $this->output()->writeln('Translation not found for given paragraph.');
+          }
+          $paragraph = $paragraph->getTranslation($value->langcode);
           $entity->get($value->parent_field_name)->appendItem($paragraph);
           $entity->save();
         }
