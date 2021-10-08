@@ -99,7 +99,7 @@ class TranslationWriterCommand extends DrushCommands {
 
       $uris = [];
       foreach ($this->fileSystem->scanDirectory($dir, '/\.yml/') as $file) {
-        $uris[$file->name] = $file->uri;
+        $uris[$file->filename] = $file->uri;
       }
       $languageFileUris[$language->getId()] = $uris;
       $allPossibleTranslations += $uris;
@@ -110,8 +110,8 @@ class TranslationWriterCommand extends DrushCommands {
     $defaultLanguageFiles = [];
     if (is_dir($dir)) {
       foreach ($this->fileSystem->scanDirectory($dir, '/\.yml/') as $file) {
-        if (array_key_exists($file->name, $allPossibleTranslations)) {
-          $defaultLanguageFiles[$file->name] = $file->uri;
+        if (array_key_exists($file->filename, $allPossibleTranslations)) {
+          $defaultLanguageFiles[$file->filename] = $file->uri;
         }
       }
     }
@@ -119,8 +119,8 @@ class TranslationWriterCommand extends DrushCommands {
     $dir = sprintf('%s/config/optional', $basePath);
     if (is_dir($dir)) {
       foreach ($this->fileSystem->scanDirectory($dir, '/\.yml/') as $file) {
-        if (array_key_exists($file->name, $allPossibleTranslations)) {
-          $defaultLanguageFiles[$file->name] = $file->uri;
+        if (array_key_exists($file->filename, $allPossibleTranslations)) {
+          $defaultLanguageFiles[$file->filename] = $file->uri;
         }
       }
     }
@@ -145,10 +145,6 @@ class TranslationWriterCommand extends DrushCommands {
     $defaultLanguage = $this->languageManager->getDefaultLanguage();
     $translations = [];
 
-    if (!isset($languageFiles[$defaultLanguage->getId()])) {
-      throw new \Exception('Default language configurations not found.');
-    }
-
     $defaultLanguageFiles = $languageFiles[$defaultLanguage->getId()];
     unset($languageFiles[$defaultLanguage->getId()]);
 
@@ -160,16 +156,16 @@ class TranslationWriterCommand extends DrushCommands {
       }
 
       $yml = Yaml::parseFile($file);
-      $flatten = $this->array_flatten($yml);
-      $translations[$defaultLanguage->getId()] += $flatten;
+      $flatten = $this->array_flatten($yml, $filename);
+      $translations[$defaultLanguage->getId()][$filename] = $flatten;
     }
 
     foreach ($languageFiles as $langcode => $files) {
       $translations[$langcode] = isset($translations[$langcode]) ?: [];
-      foreach($files as $file) {
+      foreach($files as $filename => $file) {
         $yml = Yaml::parseFile($file);
-        $flatten = $this->array_flatten($yml);
-        $translations[$langcode][$file] = $flatten;
+        $flatten = $this->array_flatten($yml, $filename);
+        $translations[$langcode][$filename] = $flatten;
       }
     }
     return $translations;
@@ -188,11 +184,17 @@ class TranslationWriterCommand extends DrushCommands {
     foreach ($allTranslations as $langcode => $translationsByLanguage) {
       foreach ($translationsByLanguage as $file => $translationsByFile){
         foreach($translationsByFile as $translationKey => $translation) {
-          if (isset($original[$translationKey])) {
-            $finalTranslations[$langcode][$original[$translationKey]] = $translation;
+          if(!isset($original[$file])) {
+            continue;
+          }
+          $translations = $original[$file];
+          if (isset($translations[$translationKey])) {
+            $finalTranslations[$langcode][$translations[$translationKey]] = $translation;
           }
         }
-        uksort($finalTranslations[$langcode], 'strcasecmp');
+        if (isset($finalTranslations[$langcode])) {
+          uksort($finalTranslations[$langcode], 'strcasecmp');
+        }
       }
     }
     return $finalTranslations;
@@ -206,7 +208,7 @@ class TranslationWriterCommand extends DrushCommands {
    */
   private function writeTranslationFiles(array $translationsByLanguage, string $basePath): void {
     if (!is_dir($basePath.'/translations')) {
-      mkdir(($basePath.'/translations'), 755);
+      mkdir(($basePath.'/translations'), 0755);
     }
 
     foreach ($translationsByLanguage as $langcode => $translations) {
@@ -231,11 +233,11 @@ class TranslationWriterCommand extends DrushCommands {
     $this->writeln(sprintf('Operation finished. Check "%s" for the end result.', $basePath.'/translations'));
   }
 
-  private function array_flatten($array): array {
+  private function array_flatten($array, $fullname = ''): array {
     $return = array();
     foreach ($array as $key => $value) {
       if (is_array($value)){
-        $return = array_merge($return, $this->array_flatten($value));
+        $return = array_merge($return, $this->array_flatten($value, $fullname.'.'.$key));
       } else {
         $return[$key] = $value;
       }
