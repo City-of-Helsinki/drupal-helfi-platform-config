@@ -314,8 +314,7 @@ msgstr "Voit käyttää tätä elementtiä luodaksesi gallerian useista kuvista.
 msgid "Very diverse paragraph that covers a large area of the content and is traditionally placed on top of the page."
 msgstr "Monipuolinen paragraph, joka peittää suuren alueen sisältöalueesta ja perinteisesti sijoitetaan sivun yläosaan."
 
-msgid "With columns paragraph content producer can divide content in to two columns. The columns can be equal width or divided in to 30/70 proportion. 
-The content producer can choose what paragraphs to add into the columns."
+msgid "With columns paragraph content producer can divide content in to two columns. The columns can be equal width or divided in to 30/70 proportion. The content producer can choose what paragraphs to add into the columns."
 msgstr "Palstat paragraafilla sisällöntuottaja voi sijoittaa sisältöä kahteen palstaan. Palstajaot voivat olla 50/50 tai 30/70 | 70/30 levyisiä. Paragraafin palstoihin voi vapaasti liittää erilaisia komponentteja."
 
 msgid "With content cards you can reference to content inside this site. The information about the content is automatically fetched through the reference."

@@ -40,4 +40,4 @@ dependencies:
   - 'update_helper:update_helper'
 package: HELfi
 'interface translation project': helfi_content
-'interface translation server pattern': modules/contrib/helfi_announcements/translations/%language.po
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_content/translations/%language.po

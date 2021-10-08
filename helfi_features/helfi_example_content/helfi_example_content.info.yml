@@ -24,4 +24,4 @@ default_content:
     - c988463d-c7ce-4e78-95bc-97def5873b2d
     - e216b863-7c70-434d-b1e6-fca59a9663ab
 'interface translation project': helfi_example_content
-'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_announcements/translations/%language.po
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_example_content/translations/%language.po
