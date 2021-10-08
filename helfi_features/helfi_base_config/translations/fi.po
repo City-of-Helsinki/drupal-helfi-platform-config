@@ -1,0 +1,135 @@
+#
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr "Käyttöoikeus"
+
+msgid ", "
+msgstr ", "
+
+msgid "- All -"
+msgstr "- Kaikki -"
+
+msgid "Action"
+msgstr "Toiminto"
+
+msgid "Active"
+msgstr "Aktiivinen"
+
+msgid "Asc"
+msgstr "Nousevasti"
+
+msgid "Blocked"
+msgstr "Suljettu"
+
+msgid "Desc"
+msgstr "Laskevasti"
+
+msgid "File usage"
+msgstr "Tiedoston käyttö"
+
+msgid "File usage information for {{ arguments.fid }}"
+msgstr "Kaikki"
+
+msgid "Filter"
+msgstr "Suodatin"
+
+msgid "Find and manage scheduled content"
+msgstr "Etsi ja ylläpidä ajastettua sisältöä."
+
+msgid "Home"
+msgstr "Etusivu"
+
+msgid "Items per page"
+msgstr "Merkintöjä sivua kohti"
+
+msgid "last »"
+msgstr "viimeinen »"
+
+msgid "Last »"
+msgstr "Viimeinen »"
+
+msgid "Main navigation"
+msgstr "Päävalikko"
+
+msgid "Manage user accounts, roles, and permissions."
+msgstr "Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia."
+
+msgid "more"
+msgstr "lisää"
+
+msgid "Next ›"
+msgstr "Seuraava ›"
+
+msgid "next ›"
+msgstr "seuraava ›"
+
+msgid "No files available."
+msgstr "Tiedostoja ei ole saatavilla."
+
+msgid "No people available."
+msgstr "Ei saatavilla olevia ihmisiä."
+
+msgid "No scheduled content for user {{ arguments.uid }}"
+msgstr "{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä."
+
+msgid "Offset"
+msgstr "Offset"
+
+msgid "Page"
+msgstr "Sivu"
+
+msgid "People"
+msgstr "Käyttäjät"
+
+msgid "Permanent"
+msgstr "Pysyvä"
+
+msgid "Published"
+msgstr "Julkaistu"
+
+msgid "Redirect"
+msgstr "Redirect"
+
+msgid "Reset"
+msgstr "Palauta"
+
+msgid "Scheduled content tab on user profile, showing just that user\'s scheduled content"
+msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
+
+msgid "Site section links"
+msgstr "Sivuston osioiden linkit"
+
+msgid "Sort by"
+msgstr "Lajittele"
+
+msgid "Temporary"
+msgstr "Tilapäinen"
+
+msgid "There is no redirect yet."
+msgstr "Ei ole vielä uudelleenohjaksia."
+
+msgid "Unpublished"
+msgstr "Julkaisematon"
+
+msgid "Use count"
+msgstr "Käyttömäärä"
+
+msgid "User profile tab"
+msgstr "Käyttäjäprofiili"
+
+msgid "With selection"
+msgstr "Valinnalla"
+
+msgid "« first"
+msgstr "« ensimmäinen"
+
+msgid "« First"
+msgstr "« Ensimmäinen"
+
+msgid "‹ Previous"
+msgstr "‹ Edellinen"
+
+msgid "‹ previous"
+msgstr "‹ edellinen"

@@ -1,0 +1,126 @@
+#
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr "Behörighet"
+
+msgid ", "
+msgstr ", "
+
+msgid "- All -"
+msgstr "- Alla -"
+
+msgid "Action"
+msgstr "Åtgärd"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Asc"
+msgstr "Stigande"
+
+msgid "Blocked"
+msgstr "Spärrad"
+
+msgid "Desc"
+msgstr "Fallande"
+
+msgid "File usage"
+msgstr "Filanvändning"
+
+msgid "File usage information for {{ arguments.fid }}"
+msgstr "Information om filanvändande för {{ arguments.fid }}"
+
+msgid "Filter"
+msgstr "Filtrera"
+
+msgid "Home"
+msgstr "Hem"
+
+msgid "Items per page"
+msgstr "Inlägg per sida"
+
+msgid "last »"
+msgstr "sista »"
+
+msgid "Last »"
+msgstr "Sista »"
+
+msgid "Main navigation"
+msgstr "Huvudmeny"
+
+msgid "Manage user accounts, roles, and permissions."
+msgstr "Hantera användarkonton, roller och behörigheter."
+
+msgid "more"
+msgstr "mer"
+
+msgid "Next ›"
+msgstr "Nästa ›"
+
+msgid "next ›"
+msgstr "nästa ›"
+
+msgid "No files available."
+msgstr "Inga filer tillgängliga."
+
+msgid "No people available."
+msgstr "Inga personer tillgängliga."
+
+msgid "Offset"
+msgstr "Kompensera"
+
+msgid "Page"
+msgstr "Sida"
+
+msgid "People"
+msgstr "Personer"
+
+msgid "Permanent"
+msgstr "Permanent"
+
+msgid "Published"
+msgstr "Publicerad"
+
+msgid "Redirect"
+msgstr "Omdirigera"
+
+msgid "Reset"
+msgstr "Återställ"
+
+msgid "Site section links"
+msgstr "Länkar för sektion i webbplats"
+
+msgid "Sort by"
+msgstr "Sortera efter"
+
+msgid "Temporary"
+msgstr "Temporär"
+
+msgid "There is no redirect yet."
+msgstr "Det finns ingen omdirigering ännu."
+
+msgid "Unpublished"
+msgstr "Ej publicerad"
+
+msgid "Use count"
+msgstr "Antal använd"
+
+msgid "User profile tab"
+msgstr "Förvald"
+
+msgid "With selection"
+msgstr "Med urval"
+
+msgid "« first"
+msgstr "« första"
+
+msgid "« First"
+msgstr "« Första"
+
+msgid "‹ Previous"
+msgstr "‹ Föregående"
+
+msgid "‹ previous"
+msgstr "‹ föregående"

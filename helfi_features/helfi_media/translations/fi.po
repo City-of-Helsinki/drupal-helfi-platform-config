@@ -1,0 +1,42 @@
+#
+msgid ""
+msgstr ""
+
+msgid "File"
+msgstr "Tiedosto"
+
+msgid "Gallery thumbnail"
+msgstr "Gallerian pikkukuva"
+
+msgid "Image"
+msgstr "Kuva"
+
+msgid "List of Links"
+msgstr "Linkkilista"
+
+msgid "Media type file for general files such as documents and charts."
+msgstr "Media tyyppi yleisille tiedostoille kuten tekstidokumenteille ja kaavioille."
+
+msgid "Media type for adding SoundCloud items."
+msgstr "Mediatyyppi SoundCloud kappaleiden lisäämiseen."
+
+msgid "Media type for remote media from external sources."
+msgstr "Mediatyyppi ulkoisten palveluiden, kuten YouTube tarjoamille videoille."
+
+msgid "Photographer"
+msgstr "Kuvaaja"
+
+msgid "Remote video"
+msgstr "Video ulkoisesta palvelusta"
+
+msgid "Remote video URL"
+msgstr "Ulkoisen videon osoite"
+
+msgid "Token"
+msgstr "Muuttuja"
+
+msgid "Use local image for reusable media."
+msgstr "Mediatyyppi kuville."
+
+msgid "Write here the name of the photographer of the image."
+msgstr "Kirjoita tähän kuvaajan nimi."

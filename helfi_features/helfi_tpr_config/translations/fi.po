@@ -1,0 +1,136 @@
+#
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr "Kaikki"
+
+msgid ", "
+msgstr ", "
+
+msgid "- All -"
+msgstr "- Kaikki -"
+
+msgid "1"
+msgstr "<p>Ei tuloksia</p>
+"
+
+msgid "Apply"
+msgstr "Käytä"
+
+msgid "Asc"
+msgstr "Nousevasti"
+
+msgid "default_summary"
+msgstr "full_html"
+
+msgid "Desc"
+msgstr "Laskevasti"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Enter name, address or postal code"
+msgstr "Syötä nimi, osoite tai postinumero"
+
+msgid "Entity Reference"
+msgstr "Entiteettiviittaus"
+
+msgid "Items per page"
+msgstr "Merkintöjä sivua kohti"
+
+msgid "Load more label"
+msgstr "Lataa lisää - otsikko"
+
+msgid "Load more results"
+msgstr "Lataa lisää"
+
+msgid "Load more services"
+msgstr "Lataa lisää palveluita"
+
+msgid "Load more units"
+msgstr "Lataa lisää toimipisteitä"
+
+msgid "Lower content region"
+msgstr "Alempi sisältöalue"
+
+msgid "Meta information"
+msgstr "Metatiedot"
+
+msgid "Metatags"
+msgstr "Metatunnisteet"
+
+msgid "Next ›"
+msgstr "Seuraava ›"
+
+msgid "Offset"
+msgstr "Offset"
+
+msgid "Paragraph"
+msgstr "Lohko"
+
+msgid "Paragraphs"
+msgstr "Lohkot"
+
+msgid "Reset"
+msgstr "Palauta"
+
+msgid "Search button"
+msgstr "Hakukentän painike"
+
+msgid "Search for a unit"
+msgstr "Hae toimipisteitä"
+
+msgid "Search for units"
+msgstr "Hae toimipisteitä"
+
+msgid "Search label"
+msgstr "Hakukentän otsikko"
+
+msgid "Search placeholder"
+msgstr "Hakukentän oletusteksti"
+
+msgid "Select the units from which the end user can search for the unit they want."
+msgstr "Valitse toimipisteen joiden seasta haluat käyttäjän etsivän toimipisteitä."
+
+msgid "Service list"
+msgstr "Palvelulistaus"
+
+msgid "Services"
+msgstr "Palvelut"
+
+msgid "Sidebar content"
+msgstr "Sivupalkin sisältö"
+
+msgid "Sort by"
+msgstr "Lajittele"
+
+msgid "Teaser"
+msgstr "Lyhennelmä"
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "TPR - Service"
+msgstr "TPR - Palvelu"
+
+msgid "TPR - Unit"
+msgstr "TPR - Toimipiste"
+
+msgid "Unit search"
+msgstr "Toimipistehaku"
+
+msgid "Units"
+msgstr "Toimipisteet"
+
+msgid "Upper content region"
+msgstr "Ylempi sisältöalue"
+
+msgid "With service list paragraph content producer can create a list of selected and published services for the end user."
+msgstr "Palvelulistaus lohkolla sisällöntuottaja voi sijoittaa listan palveluista valitsemalleen sivulle. Lohkosta valitaan julkaistut palvelut joita halutaan näyttää loppukäyttäjälle."
+
+msgid "With unit search paragraph content producer can create unit search forms for the end user."
+msgstr "Toimipistehaku paragraafilla sisällöntuottaja voi sijoittaa toimipistehaun valitsemalleen sivulle. Paragraphista valitaan toimipisteet joita halutaan näyttää loppukäyttäjälle."
+
+msgid "‹ Previous"
+msgstr "‹ Edellinen"

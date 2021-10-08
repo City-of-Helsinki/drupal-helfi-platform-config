@@ -1,0 +1,12 @@
+#
+msgid ""
+msgstr ""
+
+msgid "Description"
+msgstr "Beskrivning"
+
+msgid "Map"
+msgstr "Karta"
+
+msgid "Title"
+msgstr "Titel"

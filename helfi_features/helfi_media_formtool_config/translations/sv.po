@@ -1,0 +1,12 @@
+#
+msgid ""
+msgstr ""
+
+msgid "&lt;Script/&gt;-tag from Form Tool"
+msgstr "&lt;Script/&gt;-tag från Form Tool"
+
+msgid "Form Tool embed"
+msgstr "Formverktyg"
+
+msgid "Remote Webform"
+msgstr "Form"
