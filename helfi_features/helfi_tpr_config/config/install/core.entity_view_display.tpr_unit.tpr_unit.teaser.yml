@@ -9,7 +9,7 @@ dependencies:
   module:
     - address
     - helfi_tpr
-    - telephone
+    - imagecache_external
 id: tpr_unit.tpr_unit.teaser
 targetEntityType: tpr_unit
 bundle: tpr_unit
@@ -17,26 +17,44 @@ mode: teaser
 content:
   address:
     type: address_plain
-    weight: 1
+    weight: 4
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   name:
     type: string
-    weight: 0
+    weight: 2
     region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  phone:
-    type: telephone_link
-    weight: 2
+  name_override:
+    type: string
+    weight: 3
     region: content
     label: hidden
     settings:
-      title: ''
+      link_to_entity: false
+    third_party_settings: {  }
+  picture_url:
+    type: imagecache_external_responsive_image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      imagecache_external_responsive_style: image__3_2
+      imagecache_external_link: ''
+    third_party_settings: {  }
+  picture_url_override:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: image
+      link: false
     third_party_settings: {  }
 hidden:
   accessibility_email: true
@@ -54,10 +72,9 @@ hidden:
   langcode: true
   latitude: true
   longitude: true
-  name_override: true
   opening_hours: true
-  picture_url: true
-  picture_url_override: true
+  phone: true
+  provided_languages: true
   service_map_embed: true
   services: true
   streetview_entrance_url: true
