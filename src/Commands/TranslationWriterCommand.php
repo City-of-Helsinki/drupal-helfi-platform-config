@@ -13,15 +13,11 @@ use Drush\Commands\DrushCommands;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Writes translation files.
- * The default configurations should be one of the two locations:
- * In /config/install or /config/optional.
- * The translations should be in /config/language/{langcode}.
+ * Writes translation files for helfi_features.
  *
  * @package Drupal\drush9_custom_commands\Commands
  */
 class TranslationWriterCommand extends DrushCommands {
-
   /**
    * The language manager.
    *
@@ -46,11 +42,11 @@ class TranslationWriterCommand extends DrushCommands {
   /**
    * Constructor.
    *
-   * @param LanguageManager $languageManager
+   * @param \Drupal\Core\Language\LanguageManager $languageManager
    *   The language manager.
-   * @param TranslationManager $translationManager
+   * @param \Drupal\Core\StringTranslation\TranslationManager $translationManager
    *   The translation manager.
-   * @param FileSystemInterface $fileSystem
+   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The filesystem.
    */
   public function __construct(LanguageManager $languageManager, TranslationManager $translationManager, FileSystemInterface $fileSystem) {
@@ -62,15 +58,12 @@ class TranslationWriterCommand extends DrushCommands {
   /**
    * Create .po files from configuration files.
    *
-   * @param string $module
-   *   The module or feature name.
-   *
-   * @option feature
-   *   Flag if you want to create the translations for helfi_platform_config features.
+   * @param string $feature
+   *   The name of the feature.
    *
    * @command helfi:create-translations
    */
-  public function createTranslations($feature) {
+  public function createTranslations(string $feature) {
     $featurePath = $this->getModulePath($feature);
 
     $translationFileUrls = $this->getTranslationFiles($featurePath);
@@ -79,8 +72,11 @@ class TranslationWriterCommand extends DrushCommands {
     $this->writeTranslationFiles($translations, $featurePath);
   }
 
+  /**
+   * Get path for the feature.
+   */
   private function getModulePath($module): string {
-    return drupal_get_path('module', 'helfi_platform_config') . '/helfi_features/'.$module ;
+    return drupal_get_path('module', 'helfi_platform_config') . '/helfi_features/' . $module;
   }
 
   /**
@@ -132,7 +128,7 @@ class TranslationWriterCommand extends DrushCommands {
     }
 
     if (empty($defaultLanguageFiles)) {
-      throw new \Exception("Could not find any files for default languages in optional or install forlders in  ". $basePath);
+      throw new \Exception("Could not find any files for default languages in optional or install forlders in  " . $basePath);
     }
 
     $languageFileUris[$this->languageManager->getDefaultLanguage()->getId()] = $defaultLanguageFiles;
@@ -159,22 +155,22 @@ class TranslationWriterCommand extends DrushCommands {
     unset($languageFiles[$defaultLanguage->getId()]);
 
     $translations[$defaultLanguage->getId()] = [];
-    foreach($defaultLanguageFiles as $filename => $file) {
+    foreach ($defaultLanguageFiles as $filename => $file) {
       if (!$this->translationExists($filename, $languageFiles)) {
         unset($defaultLanguageFiles[$filename]);
         continue;
       }
 
       $yml = Yaml::parseFile($file);
-      $flatten = $this->array_flatten($yml, $filename);
+      $flatten = $this->arrayFlatten($yml, $filename);
       $translations[$defaultLanguage->getId()][$filename] = $flatten;
     }
 
     foreach ($languageFiles as $langcode => $files) {
       $translations[$langcode] = isset($translations[$langcode]) ?: [];
-      foreach($files as $filename => $file) {
+      foreach ($files as $filename => $file) {
         $yml = Yaml::parseFile($file);
-        $flatten = $this->array_flatten($yml, $filename);
+        $flatten = $this->arrayFatten($yml, $filename);
         $translations[$langcode][$filename] = $flatten;
       }
     }
@@ -182,10 +178,13 @@ class TranslationWriterCommand extends DrushCommands {
   }
 
   /**
-   * Compare the original language with translation files and combine the results into key:values.
+   * Turn translation arrays into single array.
    *
-   * @param array $translations
+   * @param array $allTranslations
+   *   Translation ymls parsed into arrays.
+   *
    * @return array
+   *   Translation as value and default translation as key.
    */
   private function combineTranslations(array $allTranslations): array {
     $finalTranslations = [];
@@ -213,16 +212,18 @@ class TranslationWriterCommand extends DrushCommands {
   /**
    * Write the po files.
    *
-   * @param array $translations
+   * @param array $translationsByLanguage
    *   Translation array.
+   * @param string $basePath
+   *   Feature base path.
    */
   private function writeTranslationFiles(array $translationsByLanguage, string $basePath): void {
-    if (!is_dir($basePath.'/translations')) {
-      mkdir(($basePath.'/translations'), 0755);
+    if (!is_dir($basePath . '/translations')) {
+      mkdir(($basePath . '/translations'), 0755);
     }
 
     foreach ($translationsByLanguage as $langcode => $translations) {
-      $filename = $langcode.'.po';
+      $filename = $langcode . '.po';
       $uri = sprintf('%s/translations/%s', $basePath, $filename);
 
       $writer = new PoStreamWriter();
@@ -235,7 +236,7 @@ class TranslationWriterCommand extends DrushCommands {
       $item->setFromArray(['source' => '', 'translation' => '']);
       $writer->writeItem($item);
 
-      foreach($translations as $msgid => $msgstr) {
+      foreach ($translations as $msgid => $msgstr) {
         $item = new PoItem();
         $item->setLangcode($langcode);
         $item->setFromArray(['source' => $msgid, 'translation' => $msgstr]);
@@ -244,7 +245,7 @@ class TranslationWriterCommand extends DrushCommands {
 
       $writer->close();
     }
-    $this->writeln(sprintf('Operation finished. Check "%s" for the end result.', $basePath.'/translations'));
+    $this->writeln(sprintf('Operation finished. Check "%s" for the end result.', $basePath . '/translations'));
   }
 
   /**
@@ -258,12 +259,13 @@ class TranslationWriterCommand extends DrushCommands {
    * @return array
    *   Flattened array.
    */
-  private function array_flatten(array $array, string $fullname = ''): array {
-    $return = array();
+  private function arrayFlatten(array $array, string $fullname = ''): array {
+    $return = [];
     foreach ($array as $key => $value) {
       if (is_array($value)) {
-        $return = array_merge($return, $this->array_flatten($value, $fullname.'.'.$key));
-      } else {
+        $return = array_merge($return, $this->arrayFlatten($value, $fullname . '.' . $key));
+      }
+      else {
         $return[$key] = $value;
       }
     }
@@ -276,13 +278,13 @@ class TranslationWriterCommand extends DrushCommands {
    * @param string $filename
    *   Name of the file.
    * @param array $filesByLanguage
-   *   Files by language
+   *   Files by language.
    *
    * @return bool
    *   Translation file exists.
    */
   private function translationExists(string $filename, array $filesByLanguage): bool {
-    foreach($filesByLanguage as $files) {
+    foreach ($filesByLanguage as $files) {
       if (array_key_exists($filename, $files)) {
         return TRUE;
       }
