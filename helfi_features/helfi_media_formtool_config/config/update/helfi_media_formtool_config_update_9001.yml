@@ -1,0 +1,42 @@
+field.field.node.page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            remote_webform: remote_webform
+          target_bundles_drag_drop:
+            remote_webform:
+              enabled: true
+              weight: 38
+field.field.node.page.field_lower_content:
+  expected_config: { }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            remote_webform: remote_webform
+          target_bundles_drag_drop:
+            remote_webform:
+              enabled: true
+              weight: 38
+user.role.admin:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create hel_remote_webform media'
+        - 'delete any hel_remote_webform media'
+        - 'delete own hel_remote_webform media'
+        - 'edit any hel_remote_webform media'
+        - 'edit own hel_remote_webform media'
+user.role.content_producer:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create hel_remote_webform media'
+        - 'delete own hel_remote_webform media'
+        - 'edit own hel_remote_webform media'
