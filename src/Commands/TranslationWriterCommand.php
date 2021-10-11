@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_platform_config\Commands;
 
+use Drupal\Component\Gettext\PoItem;
+use Drupal\Component\Gettext\PoStreamWriter;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\StringTranslation\TranslationManager;
@@ -64,13 +66,13 @@ class TranslationWriterCommand extends DrushCommands {
    *
    * @command helfi:create-translations
    */
-  public function createTranslations($module) {
-    $modulePath = $this->getModulePath($module);
+  public function createTranslations($feature) {
+    $featurePath = $this->getModulePath($feature);
 
-    $translationFileUrls = $this->getTranslationFiles($modulePath);
+    $translationFileUrls = $this->getTranslationFiles($featurePath);
     $translationArrays = $this->parseTranslations($translationFileUrls);
     $translations = $this->combineTranslations($translationArrays);
-    $this->writeTranslationFiles($translations, $modulePath);
+    $this->writeTranslationFiles($translations, $featurePath);
   }
 
   private function getModulePath($module): string {
@@ -213,22 +215,21 @@ class TranslationWriterCommand extends DrushCommands {
 
     foreach ($translationsByLanguage as $langcode => $translations) {
       $filename = $langcode.'.po';
-      $dir = sprintf('%s/translations/%s', $basePath, $filename);
+      $uri = sprintf('%s/translations/%s', $basePath, $filename);
 
-      $fh = fopen($dir, 'w+');
+      $writer = new PoStreamWriter();
 
-      fwrite($fh, "#\n");
-      fwrite($fh, "msgid \"\"\n");
-      fwrite($fh, "msgstr \"\"\n");
+      $writer->setURI($uri);
+      $writer->open();
 
-      foreach ($translations as $msgid => $msgstr) {
-        $key = addslashes((string)$msgid);
-        $value = addslashes((string)$msgstr);
-        fwrite($fh, "\n");
-        fwrite($fh, "msgid \"$key\"\n");
-        fwrite($fh, "msgstr \"$value\"\n");
+      foreach($translations as $msgid => $msgstr) {
+        $item = new PoItem();
+        $item->setLangcode($langcode);
+        $item->setFromArray(['source' => $msgid, 'translation' => $msgstr]);
+        $writer->writeItem($item);
       }
-      fclose($fh);
+
+      $writer->close();
     }
     $this->writeln(sprintf('Operation finished. Check "%s" for the end result.', $basePath.'/translations'));
   }

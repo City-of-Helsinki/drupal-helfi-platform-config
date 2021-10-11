@@ -1,7 +1,3 @@
-#
-msgid ""
-msgstr ""
-
 msgid "Alert"
 msgstr "Hälytys"
 
@@ -11,8 +7,12 @@ msgstr "Poikkeusilmoitus"
 msgid "Body"
 msgstr "Sisältö"
 
-msgid "Content type for announcements that can be used to show notifications, attentions and alerts on different pages."
-msgstr "Poikkeusilmoituksien avulla eri sivuilla voidaan näyttää ilmoituksia, huomioilmoituksia ja hälytysilmoituksia."
+msgid ""
+"Content type for announcements that can be used to show notifications, "
+"attentions and alerts on different pages."
+msgstr ""
+"Poikkeusilmoituksien avulla eri sivuilla voidaan näyttää "
+"ilmoituksia, huomioilmoituksia ja hälytysilmoituksia."
 
 msgid "Link"
 msgstr "Linkki"
@@ -34,3 +34,4 @@ msgstr "Näytä toimipistesivuilla"
 
 msgid "Type"
 msgstr "Tyyppi"
+

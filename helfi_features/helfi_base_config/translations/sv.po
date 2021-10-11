@@ -1,7 +1,3 @@
-#
-msgid ""
-msgstr ""
-
 msgid ""
 msgstr "Behörighet"
 
@@ -124,3 +120,4 @@ msgstr "‹ Föregående"
 
 msgid "‹ previous"
 msgstr "‹ föregående"
+

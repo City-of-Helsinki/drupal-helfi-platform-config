@@ -1,7 +1,3 @@
-#
-msgid ""
-msgstr ""
-
 msgid ""
 msgstr "Käyttöoikeus"
 
@@ -95,7 +91,9 @@ msgstr "Redirect"
 msgid "Reset"
 msgstr "Palauta"
 
-msgid "Scheduled content tab on user profile, showing just that user\'s scheduled content"
+msgid ""
+"Scheduled content tab on user profile, showing just that user's "
+"scheduled content"
 msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
 
 msgid "Site section links"
@@ -133,3 +131,4 @@ msgstr "‹ Edellinen"
 
 msgid "‹ previous"
 msgstr "‹ edellinen"
+

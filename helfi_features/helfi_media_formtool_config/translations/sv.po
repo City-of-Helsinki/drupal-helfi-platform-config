@@ -1,7 +1,3 @@
-#
-msgid ""
-msgstr ""
-
 msgid "&lt;Script/&gt;-tag from Form Tool"
 msgstr "&lt;Script/&gt;-tag från Form Tool"
 
@@ -10,3 +6,4 @@ msgstr "Formverktyg"
 
 msgid "Remote Webform"
 msgstr "Form"
+

@@ -1,7 +1,3 @@
-#
-msgid ""
-msgstr ""
-
 msgid "&lt;Script/&gt;-tag from Form Tool"
 msgstr "Lomaketyökalun &lt;Script/&gt;-tagi"
 
@@ -10,3 +6,4 @@ msgstr "Lomaketyökalu-upotus"
 
 msgid "Remote Webform"
 msgstr "Lomake"
+

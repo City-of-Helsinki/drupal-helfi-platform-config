@@ -1,7 +1,3 @@
-#
-msgid ""
-msgstr ""
-
 msgid "Description"
 msgstr "Beskrivning"
 
@@ -10,3 +6,4 @@ msgstr "Karta"
 
 msgid "Title"
 msgstr "Titel"
+

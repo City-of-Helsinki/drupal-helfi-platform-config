@@ -1,9 +1,5 @@
-#
 msgid ""
 msgstr ""
-
-msgid ""
-msgstr "Kaikki"
 
 msgid ", "
 msgstr ", "
@@ -12,7 +8,9 @@ msgid "- All -"
 msgstr "- Kaikki -"
 
 msgid "1"
-msgstr "<p>Ei tuloksia</p>"
+msgstr ""
+"<p>Ei tuloksia</p>\r\n"
+""
 
 msgid "Apply"
 msgstr "Käytä"
@@ -89,8 +87,12 @@ msgstr "Hakukentän otsikko"
 msgid "Search placeholder"
 msgstr "Hakukentän oletusteksti"
 
-msgid "Select the units from which the end user can search for the unit they want."
-msgstr "Valitse toimipisteen joiden seasta haluat käyttäjän etsivän toimipisteitä."
+msgid ""
+"Select the units from which the end user can search for the unit they "
+"want."
+msgstr ""
+"Valitse toimipisteen joiden seasta haluat käyttäjän etsivän "
+"toimipisteitä."
 
 msgid "Service list"
 msgstr "Palvelulistaus"
@@ -125,11 +127,22 @@ msgstr "Toimipisteet"
 msgid "Upper content region"
 msgstr "Ylempi sisältöalue"
 
-msgid "With service list paragraph content producer can create a list of selected and published services for the end user."
-msgstr "Palvelulistaus lohkolla sisällöntuottaja voi sijoittaa listan palveluista valitsemalleen sivulle. Lohkosta valitaan julkaistut palvelut joita halutaan näyttää loppukäyttäjälle."
+msgid ""
+"With service list paragraph content producer can create a list of "
+"selected and published services for the end user."
+msgstr ""
+"Palvelulistaus lohkolla sisällöntuottaja voi sijoittaa listan "
+"palveluista valitsemalleen sivulle. Lohkosta valitaan julkaistut "
+"palvelut joita halutaan näyttää loppukäyttäjälle."
 
-msgid "With unit search paragraph content producer can create unit search forms for the end user."
-msgstr "Toimipistehaku paragraafilla sisällöntuottaja voi sijoittaa toimipistehaun valitsemalleen sivulle. Paragraphista valitaan toimipisteet joita halutaan näyttää loppukäyttäjälle."
+msgid ""
+"With unit search paragraph content producer can create unit search "
+"forms for the end user."
+msgstr ""
+"Toimipistehaku paragraafilla sisällöntuottaja voi sijoittaa "
+"toimipistehaun valitsemalleen sivulle. Paragraphista valitaan "
+"toimipisteet joita halutaan näyttää loppukäyttäjälle."
 
 msgid "‹ Previous"
 msgstr "‹ Edellinen"
+
