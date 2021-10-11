@@ -107,25 +107,23 @@ class TranslationWriterCommand extends DrushCommands {
       $allPossibleTranslations += $uris;
     }
 
-    // Configuration files for default languages resides elsewhere.
-    $dir = sprintf('%s/config/install', $basePath);
-    $defaultLanguageFiles = [];
-    if (is_dir($dir)) {
-      foreach ($this->fileSystem->scanDirectory($dir, '/\.yml/') as $file) {
-        if (array_key_exists($file->filename, $allPossibleTranslations)) {
-          $defaultLanguageFiles[$file->filename] = $file->uri;
+    // Configuration files for default language resides in multiple locations.
+    $defaultConfigurationLocations = [
+      sprintf('%s/config/install', $basePath),
+      sprintf('%s/config/optional', $basePath),
+      sprintf('%s/config/override', $basePath),
+    ];
+
+    foreach($defaultConfigurationLocations as $location) {
+      if (is_dir($location)) {
+        foreach ($this->fileSystem->scanDirectory($location, '/\.yml/') as $file) {
+          if (array_key_exists($file->filename, $allPossibleTranslations)) {
+            $defaultLanguageFiles[$file->filename] = $file->uri;
+          }
         }
       }
     }
 
-    $dir = sprintf('%s/config/optional', $basePath);
-    if (is_dir($dir)) {
-      foreach ($this->fileSystem->scanDirectory($dir, '/\.yml/') as $file) {
-        if (array_key_exists($file->filename, $allPossibleTranslations)) {
-          $defaultLanguageFiles[$file->filename] = $file->uri;
-        }
-      }
-    }
 
     if (empty($defaultLanguageFiles)) {
       throw new \Exception("Could not find any files for default languages in optional or install forlders in  " . $basePath);
@@ -170,7 +168,7 @@ class TranslationWriterCommand extends DrushCommands {
       $translations[$langcode] = isset($translations[$langcode]) ?: [];
       foreach ($files as $filename => $file) {
         $yml = Yaml::parseFile($file);
-        $flatten = $this->arrayFatten($yml, $filename);
+        $flatten = $this->arrayFlatten($yml, $filename);
         $translations[$langcode][$filename] = $flatten;
       }
     }
