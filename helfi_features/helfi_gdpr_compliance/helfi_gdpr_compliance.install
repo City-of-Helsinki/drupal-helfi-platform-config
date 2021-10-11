@@ -17,6 +17,8 @@ function helfi_gdpr_compliance_install($is_syncing) {
   // Override eu_cookie_compliance settings on module install.
   $configLocation = dirname(__FILE__) . '/config/override/';
   \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'eu_cookie_compliance.settings');
+  \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'eu_cookie_compliance.cookie_category.performance_ux');
+  \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'eu_cookie_compliance.cookie_category.essential');
 }
 
 /**
