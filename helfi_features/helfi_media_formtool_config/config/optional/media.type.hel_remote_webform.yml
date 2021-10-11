@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_media_formtool
+id: hel_remote_webform
+label: 'Form (lomaketyökalu)'
+description: null
+source: hel_remote_webform
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_hel_remote_webform
+field_map: {  }

@@ -24,6 +24,7 @@
     "drupal/field_group": "^3.1",
     "drupal/focal_point": "^1.5",
     "drupal/helfi_media_map": "*",
+    "drupal/helfi_media_formtool": "*",
     "drupal/image_style_quality": "^1.4",
     "drupal/imagecache_external": "^3.0",
     "drupal/linkit": "^6.0@beta",
@@ -56,7 +57,7 @@
         "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"
       },
       "drupal/eu_cookie_compliance": {
-        "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://gist.githubusercontent.com/khalima/29009c0d8e857a56dcc6ba5d927330f6/raw/deb17191df0328d1c8e6b324c7d9c9734d08bcbd/eu_cookie_compliance_block_8.x-1.18.patch"
+        "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://gist.githubusercontent.com/khalima/25c1972340725bc57ac088b268c5736a/raw/dcd8aaa01b1d38f01a47930edb060f363cb29c3a/eu_cookie_compliance_block_8.x-1.19.patch"
       },
       "drupal/features": {
         "https://www.drupal.org/project/features/issues/2869336": "https://www.drupal.org/files/issues/features_export-config-translation-2869336-2.patch"
