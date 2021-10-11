@@ -83,6 +83,21 @@ function helfi_content_update_9004() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configFiles = [
+    'field.field.paragraph.accordion.field_accordion_description',
+    'field.field.paragraph.accordion.field_accordion_title',
+    'field.field.paragraph.accordion.field_accordion_title_level',
+    'field.storage.paragraph.field_accordion_description',
+    'field.storage.paragraph.field_accordion_title',
+    'field.storage.paragraph.field_accordion_title_level'
+  ];
+  
+  foreach ($configFiles as $file) {
+    \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, $file);
+  }
+
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9004');
 
