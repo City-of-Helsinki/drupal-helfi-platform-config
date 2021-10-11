@@ -158,7 +158,7 @@ function setGcReturnSessionId() {
     document.cookie =
       "gcReturnSessionId=" + gcReturnSessionId + ";path=" + helfiChatCookiePath;
   } else {
-    console.log("gcReturnSessionId", gcReturnSessionId);
+    //console.log("gcReturnSessionId", gcReturnSessionId);
     alert(
       "Virhe, ei voida tunnistaa käyttäjää, koska chat-keskustelu ei ole auki."
     );
@@ -282,7 +282,7 @@ chatExtension = CXBus.registerPlugin("ChatExt");
 window._genesys.widgets.extensions["ChatExt"] = function ($, CXBus, Common) {
   chatExtension.before("WebChat.open", function (oData) {
     //Delete X button in mobile view
-    console.log("restarted from open");
+    //console.log("restarted from open");
     $("#gwc-chat-icon-iks-mobile").css("display", "none");
 
     if (!oData.restoring) {
@@ -309,7 +309,7 @@ window._genesys.widgets.extensions["ChatExt"] = function ($, CXBus, Common) {
       };
     }
 
-    console.log(oData);
+    //console.log(oData);
     return oData;
   });
 
