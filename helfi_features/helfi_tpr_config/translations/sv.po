@@ -1,14 +1,8 @@
 msgid ""
 msgstr ""
 
-msgid ""
-msgstr "Alla"
-
 msgid "- All -"
 msgstr "- Alla -"
-
-msgid "1"
-msgstr "Inget resultat"
 
 msgid "Description"
 msgstr "Beskrivning"
