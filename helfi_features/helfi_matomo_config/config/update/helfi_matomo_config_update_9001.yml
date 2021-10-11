@@ -1,0 +1,10 @@
+user.role.admin:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'access matomo reports'
+        - 'add js snippets for matomo'
+        - 'administer matomo'
+        - 'administer matomo reports'
+        - 'use php for matomo tracking visibility'
