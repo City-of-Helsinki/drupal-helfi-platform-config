@@ -113,7 +113,7 @@ class TranslationWriterCommand extends DrushCommands {
       sprintf('%s/config/optional', $basePath),
       sprintf('%s/config/override', $basePath),
     ];
-    foreach($defaultConfigurationLocations as $location) {
+    foreach ($defaultConfigurationLocations as $location) {
       if (is_dir($location)) {
         foreach ($this->fileSystem->scanDirectory($location, '/\.yml/') as $file) {
           if (array_key_exists($file->filename, $allPossibleTranslations)) {
