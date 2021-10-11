@@ -1,8 +1,8 @@
 msgid ""
-msgstr "Alla"
+msgstr ""
 
-msgid ", "
-msgstr ", "
+msgid ""
+msgstr "Alla"
 
 msgid "- All -"
 msgstr "- Alla -"

@@ -1,3 +1,6 @@
+msgid ""
+msgstr ""
+
 msgid "Alert"
 msgstr "Hälytys"
 

@@ -1,8 +1,5 @@
 msgid ""
-msgstr "Behörighet"
-
-msgid ", "
-msgstr ", "
+msgstr ""
 
 msgid "- All -"
 msgstr "- Alla -"

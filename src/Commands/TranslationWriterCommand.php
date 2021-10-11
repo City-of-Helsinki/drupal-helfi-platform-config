@@ -222,6 +222,11 @@ class TranslationWriterCommand extends DrushCommands {
       $writer->setURI($uri);
       $writer->open();
 
+      $item = new PoItem();
+      $item->setLangcode($langcode);
+      $item->setFromArray(['source' => '', 'translation' => '']);
+      $writer->writeItem($item);
+
       foreach($translations as $msgid => $msgstr) {
         $item = new PoItem();
         $item->setLangcode($langcode);

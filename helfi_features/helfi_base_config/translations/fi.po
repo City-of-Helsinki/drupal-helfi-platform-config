@@ -1,8 +1,5 @@
 msgid ""
-msgstr "Käyttöoikeus"
-
-msgid ", "
-msgstr ", "
+msgstr ""
 
 msgid "- All -"
 msgstr "- Kaikki -"

@@ -1,16 +1,12 @@
 msgid ""
 msgstr ""
 
-msgid ", "
-msgstr ", "
-
 msgid "- All -"
 msgstr "- Kaikki -"
 
 msgid "1"
 msgstr ""
 "<p>Ei tuloksia</p>\r\n"
-""
 
 msgid "Apply"
 msgstr "Käytä"
