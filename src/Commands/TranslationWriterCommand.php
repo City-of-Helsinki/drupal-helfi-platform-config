@@ -113,7 +113,6 @@ class TranslationWriterCommand extends DrushCommands {
       sprintf('%s/config/optional', $basePath),
       sprintf('%s/config/override', $basePath),
     ];
-
     foreach($defaultConfigurationLocations as $location) {
       if (is_dir($location)) {
         foreach ($this->fileSystem->scanDirectory($location, '/\.yml/') as $file) {
@@ -123,7 +122,6 @@ class TranslationWriterCommand extends DrushCommands {
         }
       }
     }
-
 
     if (empty($defaultLanguageFiles)) {
       throw new \Exception("Could not find any files for default languages in optional or install forlders in  " . $basePath);
@@ -271,7 +269,7 @@ class TranslationWriterCommand extends DrushCommands {
   }
 
   /**
-   * Check if file exist in any langugage.
+   * Check if file exist in any language.
    *
    * @param string $filename
    *   Name of the file.
