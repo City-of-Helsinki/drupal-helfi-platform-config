@@ -1,0 +1,98 @@
+core.entity_form_display.paragraph.accordion.default:
+  expected_config:
+    content:
+      field_accordion_heading_level:
+        weight: 1
+      field_accordion_items:
+        weight: 2
+  update_actions:
+    add:
+      content:
+        field_accordion_description:
+          region: content
+          settings:
+            placeholder: ''
+            rows: 5
+          third_party_settings: {  }
+          type: text_textarea
+          weight: 3
+    change:
+      content:
+        field_accordion_heading_level:
+          weight: 4
+        field_accordion_items:
+          weight: 5
+        field_accordion_title:
+          region: content
+          settings:
+            placeholder: ''
+            size: 60
+          third_party_settings: {  }
+          type: string_textfield
+          weight: 2
+        field_accordion_title_level:
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+          type: options_select
+          weight: 1
+core.entity_form_display.paragraph.content_liftup.default:
+  expected_config:
+    content: {  }
+  update_actions:
+    change:
+      content:
+        field_content_liftup_unit:
+          region: content
+          settings:
+            match_limit: 10
+            match_operator: CONTAINS
+            placeholder: ''
+            size: 60
+          third_party_settings: {  }
+          type: entity_reference_autocomplete
+          weight: 2
+core.entity_view_display.paragraph.accordion.default:
+  expected_config:
+    content:
+      field_accordion_design:
+        label: inline
+      field_accordion_heading_level:
+        label: inline
+        weight: 1
+      field_accordion_items:
+        weight: 2
+  update_actions:
+    add:
+      content:
+        field_accordion_description:
+          label: hidden
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+          type: text_default
+          weight: 3
+    change:
+      content:
+        field_accordion_design:
+          label: hidden
+        field_accordion_heading_level:
+          label: hidden
+          weight: 4
+        field_accordion_items:
+          weight: 5
+        field_accordion_title:
+          label: hidden
+          region: content
+          settings:
+            link_to_entity: false
+          third_party_settings: {  }
+          type: string
+          weight: 2
+        field_accordion_title_level:
+          label: hidden
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+          type: list_default
+          weight: 1
