@@ -45,9 +45,29 @@ class ConfigHelper {
     if (isset($field_storage)) {
       $storage_data = Yaml::parse(file_get_contents("{$config_location}{$field_storage}.yml"));
       if (!FieldStorageConfig::loadByName($storage_data['entity_type'], $storage_data['field_name'])) {
+        $allowed_values = FALSE;
+
+        // Allowed values installation might end up in an error.
+        // Install allowed values separately.
+        if (
+          isset($storage_data['settings']['allowed_values']) &&
+          !empty($storage_data['settings']['allowed_values'])
+        ) {
+          $allowed_values = $storage_data['settings']['allowed_values'];
+          unset($storage_data['settings']['allowed_values']);
+        }
+
+        // Create field storage configuration.
         FieldStorageConfig::create($storage_data)->save();
+
+        // If allowed values is set, install them separately.
+        if ($allowed_values) {
+          $new_field_storage = \Drupal::configFactory()->getEditable($field_storage);
+          $new_field_storage->set('settings.allowed_values', $allowed_values)->save();
+        }
       }
     }
+
     // Install field configurations.
     if (isset($field_config)) {
       $field_data = Yaml::parse(file_get_contents("{$config_location}{$field_config}.yml"));
