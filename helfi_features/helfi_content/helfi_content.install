@@ -84,19 +84,21 @@ function helfi_content_update_9004() {
   $updateHelper = \Drupal::service('update_helper.updater');
 
   // Added manually the creation of configuration. Cannot be handled automatically.
+  // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
-  $configFiles = [
-    'field.field.paragraph.accordion.field_accordion_description',
-    'field.field.paragraph.accordion.field_accordion_title',
-    'field.field.paragraph.accordion.field_accordion_title_level',
-    'field.storage.paragraph.field_accordion_description',
-    'field.storage.paragraph.field_accordion_title',
-    'field.storage.paragraph.field_accordion_title_level'
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_accordion_description' => 'field.field.paragraph.accordion.field_accordion_description',
+    'field.storage.paragraph.field_accordion_title' => 'field.field.paragraph.accordion.field_accordion_title',
+    'field.storage.paragraph.field_accordion_title_level' => 'field.field.paragraph.accordion.field_accordion_title_level',
   ];
-  
-  foreach ($configFiles as $file) {
-    \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, $file);
+
+  // Install accordion description, title and title level fields.
+  foreach ($configFields as $field_storage => $field_config) {
+    \Drupal\helfi_platform_config\ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
   }
+
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9004');
