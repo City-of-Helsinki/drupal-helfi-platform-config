@@ -1,0 +1,6 @@
+msgid "Districts"
+msgstr "Kaupunginosat"
+
+msgid "Neighbourhoods"
+msgstr "Kaupunginosat"
+

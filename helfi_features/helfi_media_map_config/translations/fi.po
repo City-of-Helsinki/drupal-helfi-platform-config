@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Map"
+msgstr "Kartta"
+
+msgid "Open map in new window"
+msgstr "Avaa kartta uudessa ikkunassa"
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid ""
+"With map paragraph content producer can add an embedded map from "
+"https://kartta.hel.fi and https://palvelukartta.hel.fi."
+msgstr ""
+"Kartta lohkolla voit lisätä upotettavan kartan https://kartta.hel.fi "
+"tai https://palvelukartta.hel.fi -palveluista."
+

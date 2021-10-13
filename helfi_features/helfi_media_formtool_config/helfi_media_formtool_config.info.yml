@@ -11,3 +11,5 @@ dependencies:
   - 'helfi_content:helfi_content'
   - 'helfi_media_formtool:helfi_media_formtool'
   - 'update_helper:update_helper'
+'interface translation project': helfi_media_formtool_config
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_media_formtool_config/translations/%language.po

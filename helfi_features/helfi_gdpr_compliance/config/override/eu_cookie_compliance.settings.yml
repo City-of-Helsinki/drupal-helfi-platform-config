@@ -53,13 +53,13 @@ automatic_cookies_removal: true
 allowed_cookies: 'marketing:form-test-cookie'
 consent_storage_method: do_not_store
 withdraw_message:
-  value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
+  value: "<h2>Hel.fi uses cookies&nbsp;</h2>\r\n\r\n<p>We use essential cookies on our website to make the site work. Also third party cookies are used if you give us your permission.</p>\r\n"
   format: full_html
 withdraw_action_button_label: 'Withdraw consent'
 withdraw_tab_button_label: 'Privacy settings'
 withdraw_enabled: false
 enable_save_preferences_button: true
-save_preferences_button_label: 'Accept only essential cookies'
+save_preferences_button_label: 'Accept selected cookies'
 accept_all_categories_button_label: 'Accept all cookies'
 withdraw_button_on_info_popup: false
 domain_all_sites: true

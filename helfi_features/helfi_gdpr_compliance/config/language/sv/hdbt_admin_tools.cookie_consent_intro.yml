@@ -1,0 +1,4 @@
+cc:
+  title: 'Cookie -inställningar'
+  content:
+    value: '<p>En cookie är ett datalagringsprogram i liten skala som en datorns webbläsare installerar på en användares hårddisk. Närhelst användarens webbläsare hämtar webbplatsen från Helsingfors stads servrar skickas meddelandet tillbaka till användarens dator. Javascript- och serverloggar används för att t.ex. registrera antal användare, användarland, användningstid och webbläsare samt innehållet som besökaren har besökt. Cookien skadar inte enheten.</p><p>Cookies används för att påskynda, analysera och utveckla webbplatsen och för att rikta innehåll till varje användare.</p>'
