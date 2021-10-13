@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Implements hook_install().
  *
@@ -12,6 +14,7 @@ function helfi_content_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_content_update_9001();
     helfi_content_update_9002();
+    helfi_content_update_9004();
   }
 }
 
@@ -69,6 +72,38 @@ function helfi_content_update_9003() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9003');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+
+/**
+ * Add title and description field for the accordion paragraph
+ */
+function helfi_content_update_9004() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_accordion_description' => 'field.field.paragraph.accordion.field_accordion_description',
+    'field.storage.paragraph.field_accordion_title' => 'field.field.paragraph.accordion.field_accordion_title',
+    'field.storage.paragraph.field_accordion_title_level' => 'field.field.paragraph.accordion.field_accordion_title_level',
+  ];
+
+  // Install accordion description, title and title level fields.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9004');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
