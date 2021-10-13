@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Implements hook_install().
  *
@@ -96,7 +98,7 @@ function helfi_content_update_9004() {
 
   // Install accordion description, title and title level fields.
   foreach ($configFields as $field_storage => $field_config) {
-    \Drupal\helfi_platform_config\ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
   }
 
 
