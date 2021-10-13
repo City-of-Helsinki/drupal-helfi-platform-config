@@ -135,7 +135,7 @@ msgid ""
 "<p><strong>You have not saved any cookie preferences.</strong> By "
 "default only essential cookies are saved. See details below.</p>"
 msgstr ""
-"<p><strong>Du har inte sparat några cookieinställningar.</strong>Som "
+"<p><strong>Du har inte sparat några cookieinställningar.</strong> Som "
 "standard sparas endast viktiga cookies. Se detaljer nedan.</p>"
 
 msgid ""
