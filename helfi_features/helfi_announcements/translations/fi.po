@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+
+msgid "Alert"
+msgstr "Hälytys"
+
+msgid "Announcement"
+msgstr "Poikkeusilmoitus"
+
+msgid "Body"
+msgstr "Sisältö"
+
+msgid ""
+"Content type for announcements that can be used to show notifications, "
+"attentions and alerts on different pages."
+msgstr ""
+"Poikkeusilmoituksien avulla eri sivuilla voidaan näyttää "
+"ilmoituksia, huomioilmoituksia ja hälytysilmoituksia."
+
+msgid "Link"
+msgstr "Linkki"
+
+msgid "Please note that title is not shown alongside with the body text."
+msgstr "Huomioithan, että otsikkoa ei näytetä sisältötekstin yhteydessä."
+
+msgid "Show on all pages"
+msgstr "Näytä kaikilla sivuilla"
+
+msgid "Show on content pages"
+msgstr "Näytä sisältösivuilla"
+
+msgid "Show on service pages"
+msgstr "Näytä palvelusivuilla"
+
+msgid "Show on unit pages"
+msgstr "Näytä toimipistesivuilla"
+
+msgid "Type"
+msgstr "Tyyppi"
+

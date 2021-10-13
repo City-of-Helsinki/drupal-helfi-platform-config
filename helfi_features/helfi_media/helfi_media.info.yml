@@ -18,3 +18,5 @@ dependencies:
   - 'media_entity_soundcloud:media_entity_soundcloud'
   - 'update_helper:update_helper'
 package: HELfi
+'interface translation project': helfi_media
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_media/translations/%language.po

@@ -1,0 +1,39 @@
+msgid ""
+msgstr ""
+
+msgid "- All -"
+msgstr "- Alla -"
+
+msgid "Description"
+msgstr "Beskrivning"
+
+msgid "Entity Reference"
+msgstr "Objektsreferens"
+
+msgid "Items per page"
+msgstr "Inlägg per sida"
+
+msgid "Load more services"
+msgstr "Ladda fler tjänster"
+
+msgid "Next ›"
+msgstr "Nästa ›"
+
+msgid "Offset"
+msgstr "Kompensera"
+
+msgid "Paragraph"
+msgstr "Paragraf"
+
+msgid "Teaser"
+msgstr "Ingress"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Upper content region"
+msgstr "Innehåll"
+
+msgid "‹ Previous"
+msgstr "‹ Föregående"
+

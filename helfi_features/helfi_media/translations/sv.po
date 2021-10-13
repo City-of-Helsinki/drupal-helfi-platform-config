@@ -1,0 +1,12 @@
+msgid ""
+msgstr ""
+
+msgid "File"
+msgstr "Fil"
+
+msgid "Image"
+msgstr "Bild"
+
+msgid "Token"
+msgstr "Ersättningstecken"
+

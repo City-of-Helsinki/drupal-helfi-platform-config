@@ -17,3 +17,5 @@ dependencies:
   - hdbt_admin_editorial
   - helfi_tpr
   - helfi_content
+'interface translation project': helfi_announcements
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_announcements/translations/%language.po

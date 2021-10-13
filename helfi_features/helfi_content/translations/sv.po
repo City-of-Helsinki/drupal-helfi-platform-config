@@ -1,0 +1,90 @@
+msgid ""
+msgstr ""
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Article"
+msgstr "Artikel"
+
+msgid "Author"
+msgstr "Författare"
+
+msgid "Background color"
+msgstr "Bakgrundsfärg"
+
+msgid "Basic page"
+msgstr "Sida"
+
+msgid "Caption"
+msgstr "Bildtext"
+
+msgid "Changed"
+msgstr "Ändrad"
+
+msgid "Columns"
+msgstr "Kolumner"
+
+msgid "Content"
+msgstr "Innehåll"
+
+msgid "Content region"
+msgstr "Innehåll"
+
+msgid "Description"
+msgstr "Beskrivning"
+
+msgid "Grey"
+msgstr "Vit"
+
+msgid "Heading"
+msgstr "Rubrik"
+
+msgid "Icon"
+msgstr "Ikon"
+
+msgid "Image"
+msgstr "Bild"
+
+msgid "Items"
+msgstr "Poster"
+
+msgid "Keywords"
+msgstr "Nyckelord"
+
+msgid "Link"
+msgstr "Länk"
+
+msgid "Links"
+msgstr "Länkar"
+
+msgid "Menu link title"
+msgstr "Titel på menylänken"
+
+msgid "Off"
+msgstr "Av"
+
+msgid "On"
+msgstr "På"
+
+msgid "Paragraph"
+msgstr "Paragraf"
+
+msgid "Promoted to front page"
+msgstr "Visas på startsidan"
+
+msgid "Shown when hovering over the menu link."
+msgstr "Visas när man för musmarkören över menylänken."
+
+msgid "Text"
+msgstr "Text"
+
+msgid "The text to be used for this link in the menu."
+msgstr "Texten som skall användas för denna länken i menyn."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Upper content region"
+msgstr "Innehåll"
+

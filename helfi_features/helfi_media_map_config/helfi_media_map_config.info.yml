@@ -11,3 +11,5 @@ dependencies:
   - 'helfi_content:helfi_content'
   - 'helfi_media_map:helfi_media_map'
   - 'update_helper:update_helper'
+'interface translation project': helfi_media_map_config
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_media_map_config/translations/%language.po

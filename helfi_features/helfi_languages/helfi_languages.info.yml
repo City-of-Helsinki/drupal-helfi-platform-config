@@ -9,3 +9,5 @@ dependencies:
   - 'drupal:locale'
   - 'drupal:menu_link_content'
   - 'update_helper:update_helper'
+'interface translation project': helfi_languages
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_languages/translations/%language.po

@@ -12,3 +12,5 @@ dependencies:
   - search_api
   - views
 package: HELfi
+'interface translation project': helfi_search
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_search/translations/%language.po
