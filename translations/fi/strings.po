@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-10-12 12:03+0300\n"
-"PO-Revision-Date: 2021-10-12 12:03+0300\n"
+"POT-Creation-Date: 2021-10-12 22:43+0300\n"
+"PO-Revision-Date: 2021-10-12 22:43+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -12,799 +12,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-msgid "Cookie settings"
-msgstr "Evästeasetukset"
+msgctxt "Address label"
+msgid "Postal code"
+msgstr "Postinumero"
+
+msgid "Compare selected revisions"
+msgstr "Vertaile valittuja versioita"
+
+msgid "More info"
+msgstr "Näytä evästeet"
+
+msgid "Save preferences"
+msgstr "Hyväksy valitut evästeet"
 
 msgid ""
-"<p>A cookie is a small-scale data storage program that a computer "
-"browser installs on a user's computer hard drive. Whenever the user's "
-"browser retrieves the site from the City of Helsinki's servers, the "
-"message is sent back to the user's computer. Javascript and server "
-"logs are used to record, for example, the number of users, country of "
-"use, usage time and browser used, as well as the content that the "
-"visitor has visited. The cookie does not damage the "
-"drive.</p>\r\n"
-"\r\n"
-"<p>Cookies are used to speed up, analyze and "
-"develop the website and to target content to each user.</p>"
+"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
+"message or find out more about cookies.</p>"
 msgstr ""
-"<p>Eväste on pienimuotoinen tiedontallennusohjelma, jonka tietokoneen "
-"selain asentaa käyttäjän tietokoneen kovalevylle. Aina kun "
-"käyttäjän selain hakee sivuston Helsingin kaupungin palvelimilta, "
-"viesti lähetetään takaisin käyttäjän tietokoneelle. Javascriptin "
-"ja palvelinlokien avulla tilastoidaan esimerkiksi käyttäjämäärä, "
-"käyttömaa, käyttöaika ja käytetty selain sekä sisällöt, joissa "
-"kävijä on vieraillut. Eväste ei vahingoita "
-"käyttölaitetta.</p>\r\n"
+"<h2>Thank you for accepting cookies</h2>\r\n"
 "\r\n"
-"<p>Evästeitä käytetään "
-"nopeuttamaan, analysoimaan ja kehittämään sivustoa sekä "
-"kohdentamaan sisältöä kullekin käyttäjälle.</p>\r\n"
+"<p>You can now hide "
+"this message or find out more about cookies.</p>\r\n"
 ""
 
 msgid ""
-"<p><a href=\"#\">Search for contacts and phone numbers</a></p><p><a "
-"href=\"#\" class=\"hds-button hds-button--secondary\"><span "
-"aria-hidden=\"true\" class=\"hds-icon hds-icon--phone\"></span><span "
-"class=\"hds-button__label\">Helsinki-info 09 310 1691</span></a></p>"
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>You have given your consent for us to set "
+"cookies.</p>"
 msgstr ""
-"<p><a href=\"#\">Hae yhteystietoja ja numeroita</a></p>\r\n"
+"<h2>Hel.fi uses cookies</h2>\r\n"
 "\r\n"
-"<p><a "
-"class=\"hds-button hds-button--secondary hdbt-icon hdbt-icon--phone\" "
-"data-design=\"hds-button hds-button--secondary\" data-icon=\"phone\" "
-"data-link-text=\"Helsinki-info 09 310 1691\" data-protocol=\"false\" "
-"href=\"#\"><span class=\"hds-button__label\">Helsinki-info 09 310 "
-"1691</span> </a></p>\r\n"
+"<p>You have given your consent "
+"for us to set cookies.</p>\r\n"
 ""
 
-msgid "Contact information"
-msgstr "Yhteystiedot"
-
-msgid "Main navigation"
-msgstr "Päävalikko"
-
-msgid "Site section links"
-msgstr "Sivuston osioiden linkit"
-
-msgid "Breadcrumbs"
-msgstr "Murupolku"
-
-msgid "Main page content"
-msgstr "Pääsivun sisältö"
-
-msgid "Primary admin actions"
-msgstr "Ensisijaiset ylläpidon toimenpiteet"
-
-msgid "Status messages"
-msgstr "Tilaviestit"
-
-msgid "Page title"
-msgstr "Sivun otsikko"
-
-msgid "Primary tabs"
-msgstr "Ensisijaiset välilehdet"
-
-msgid "Secondary tabs"
-msgstr "Toissijaiset välilehdet"
-
-msgid "Changed"
-msgstr "Muuttunut"
-
-msgid "Description"
-msgstr "Kuvaus"
-
-msgid "Shown when hovering over the menu link."
-msgstr "Näytetään vietäessä hiirtä linkin yli."
-
-msgid "Menu link title"
-msgstr "Valikon linkin otsikko"
-
-msgid "The text to be used for this link in the menu."
-msgstr "Linkin teksti valikossa käytettäväksi."
-
-msgid "Promoted to front page"
-msgstr "Näytetään etusivulla"
-
-msgid "On"
-msgstr "Käytössä"
-
-msgid "Off"
-msgstr "Pois päältä"
-
-msgid "Paragraphs"
-msgstr "Lohkot"
-
-msgid "Fallback date format"
-msgstr "Vara-arvo päivämäärämuodolle"
-
-msgid "HTML Date"
-msgstr "HTML Päivämäärä"
-
-msgid "HTML Datetime"
-msgstr "HTML Päivämäärä ja aika"
-
-msgid "HTML Month"
-msgstr "HTML Kuukausi"
-
-msgid "HTML Time"
-msgstr "HTML Aika"
-
-msgid "HTML Week"
-msgstr "HTML Viikko"
-
-msgid "HTML Year"
-msgstr "HTML Vuosi"
-
-msgid "HTML Yearless date"
-msgstr "HTML Päivämäärä (ei vuotta)"
-
-msgid "Default long date"
-msgstr "Päivämäärä pitkässä muodossa"
-
-msgctxt "PHP date format"
-msgid "l, F j, Y - H:i"
-msgstr "j.n.Y - H:i"
-
-msgid "Default medium date"
-msgstr "Päivämäärä keskipitkässä muodossa"
-
-msgctxt "PHP date format"
-msgid "D, m/d/Y - H:i"
-msgstr "j. F\\t\\a Y"
-
-msgid "Default short date"
-msgstr "Päivämäärä lyhyessä muodossa"
-
-msgctxt "PHP date format"
-msgid "m/d/Y - H:i"
-msgstr "j.n.Y - H:i"
-
-msgid "Paragraph"
-msgstr "Lohko"
-
-msgid "Meta information"
-msgstr "Metatiedot"
-
-msgid "Media library"
-msgstr "Mediakirjasto"
-
-msgid "Register"
-msgstr "Rekisteröidy"
-
-msgid "Open map in new window"
-msgstr "Avaa kartta uudessa ikkunassa"
-
-msgid "Location on map"
-msgstr "Sijainti kartalla"
-
-msgid "View the map in new window"
-msgstr "Avaa kartta uuteen ikkunaan"
-
-msgid "Full content"
-msgstr "Koko sisältö"
-
-msgid "Image"
-msgstr "Kuva"
-
-msgid "List of Links"
-msgstr "Linkkilista"
-
-msgid "Token"
-msgstr "Muuttuja"
-
-msgid "Search index"
-msgstr "Haun indeksi"
-
-msgid "Search result highlighting input"
-msgstr "Valittu hakutulos"
-
-msgid "Teaser"
-msgstr "Lyhennelmä"
-
-msgid "Preview"
-msgstr "Esikatselu"
-
-msgid "Summary"
-msgstr "Yhteenveto"
-
-msgid "Taxonomy term page"
-msgstr "Luokittelusanojen sivu"
-
-msgid "Compact"
-msgstr "Kompakti"
-
-msgid "User account"
-msgstr "Käyttäjätili"
-
-msgid "Focal point"
-msgstr "Keskipiste"
-
-msgid "simple"
-msgstr "yksinkertainen"
-
-msgid "Home"
-msgstr "Etusivu"
-
-msgid "Necessary cookies"
-msgstr "Välttämättömät toiminnalliset evästeet"
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By clicking the Accept button, you agree to us doing "
+"so.</p>"
+msgstr ""
+"<h2>Hel.fi käyttää evästeitä</h2><p>Tämä sivusto käyttää "
+"välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä "
+"yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä "
+"käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun "
+"sisällön näyttämiseen.</p>"
 
 msgid ""
-"<p>Necessary cookies help to make the website usable by allowing basic "
-"functions, navigating the page and using the protected areas of the "
-"site. The website will not work properly without these cookies and "
-"their consent is not "
-"required.</p>\r\n"
-"\r\n"
-"<table>\r\n"
-"\t<thead>\r\n"
-"\t\t<tr>\r\n"
-"\t\t\t<th>Name</th>\r\n"
-"\t\t\t<th>Provider</th>\r\n"
-"\t\t\t<th>Purpose "
-"of the "
-"cookie</th>\r\n"
-"\t\t\t<th>Validity</th>\r\n"
-"\t\t\t<th>Type</th>\r\n"
-"\t\t</tr>\r\n"
-"\t</thead>\r\n"
-"\t<tbody>\r\n"
-"\t\t<tr>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t</tr>\r\n"
-"\t</tbody>\r\n"
-"</table>\r\n"
-""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By tapping the Accept button, you agree to us doing "
+"so.</p>"
 msgstr ""
-"<p>Välttämättömät evästeet auttavat tekemään verkkosivustosta "
-"käyttökelpoisen sallimalla perustoimintoja, kuten sivulla "
-"siirtymisen ja sivuston suojattujen alueiden käytön. Verkkosivusto "
-"ei toimi kunnolla ilman näitä evästeitä eikä niihin tarvita "
-"suostumusta.</p>\r\n"
-"\r\n"
-"<table>\r\n"
-"\t<thead>\r\n"
-"\t\t<tr>\r\n"
-"\t\t\t<th>Nimi</th>\r\n"
-"\t\t\t<th>Tarjoaja</th>\r\n"
-"\t\t\t<th>Tarkoitus</th>\r\n"
-"\t\t\t<th>Voimassa</th>\r\n"
-"\t\t\t<th>Tyyppi</th>\r\n"
-"\t\t</tr>\r\n"
-"\t</thead>\r\n"
-"\t<tbody>\r\n"
-"\t\t<tr>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t\t<td>...</td>\r\n"
-"\t\t</tr>\r\n"
-"\t</tbody>\r\n"
-"</table>"
-
-msgid "File"
-msgstr "Tiedosto"
-
-msgid "Photographer"
-msgstr "Kuvaaja"
-
-msgid "Write here the name of the photographer of the image."
-msgstr "Kirjoita tähän kuvaajan nimi."
-
-msgid "Remote video URL"
-msgstr "Ulkoisen videon osoite"
-
-msgid "Author"
-msgstr "Kirjoittaja"
-
-msgid "Content region"
-msgstr "Pääsisältö"
-
-msgid "Keywords"
-msgstr "Asiasanat"
-
-msgid "Lead"
-msgstr "Ingressi"
-
-msgid "Liftup image"
-msgstr "Nostokuva"
-
-msgid "Metatags"
-msgstr "Metatunnisteet"
-
-msgid "Hero"
-msgstr "Hero-lohko"
-
-msgid ""
-"Check this box if you want to use hero-block on the page. If you "
-"choose this the heros title field will define the heading level 1 "
-"title for the page."
-msgstr ""
-"Valitse tämä jos haluat käyttää hero-lohkoa sivulla. Jos valitset "
-"tämän hero-lohkon otsikko määrittää heading 1 tason otsikon "
-"sivulle."
-
-msgid "Upper content region"
-msgstr "Ylempi sisältöalue"
-
-msgid "Lower content region"
-msgstr "Alempi sisältöalue"
-
-msgid "Design"
-msgstr "Tyyli"
-
-msgid "Choose the paragraph design from the dropdown."
-msgstr "Valitse lohkon tyyli alasvetovalikosta."
-
-msgid "Items heading level"
-msgstr "Sisällön pääotsikoiden taso"
-
-msgid ""
-"Select the heading level of the accordion so that they are "
-"semantically correct with the rest of the content."
-msgstr ""
-"Valitse sisällön pääotsikoiden taso siten että ne ovat "
-"semanttisesti oikealla tasolla muun sisällön suhteen."
-
-msgid "Items"
-msgstr "Sisältö"
-
-msgid "Content"
-msgstr "Sisältö"
-
-msgid "Heading"
-msgstr "Otsikko"
-
-msgid "Icon"
-msgstr "Ikoni"
-
-msgid "Choose the paragraph design from the dropdown. "
-msgstr "Valitse lohkon tyyli alasvetovalikosta."
-
-msgid "Link"
-msgstr "Linkki"
-
-msgid "You can add link button to the banner using this field."
-msgstr ""
-"Voit lisätä linkkipainikkeen banneriin täyttämällä nämä "
-"kentät."
-
-msgid "Link design"
-msgstr "Linkin tyyli"
-
-msgid ""
-"Choose what kind of design you want to use for the link button. If you "
-"don't add a link to the banner you can ignore this field."
-msgstr ""
-"Valitse minkälaisen tyylin haluat linkkipainikkeelle. Jos et lisää "
-"banneriin linkkiä voit jättää tämän valinnan huomiotta."
-
-msgid "Title"
-msgstr "Otsikko"
-
-msgid "Left column"
-msgstr "Vasen palsta"
-
-msgid "Right column"
-msgstr "Oikea palsta"
-
-msgid "Add here the content that you want to appear as cards to the block."
-msgstr "Lisää tähän ne sisällöt, jotka haluat nostaa korteiksi lohkoon."
-
-msgid "The title of the content cards paragraph."
-msgstr "Sisältökortit-lohkon otsikko."
-
-msgid "Reusable paragraph"
-msgstr "Uudelleenkäytettävä lohko"
-
-msgid "Gallery slides"
-msgstr "Gallerian diat"
-
-msgid ""
-"Create gallery slides here by choosing image from media library and "
-"optionally writing a caption to go with it."
-msgstr ""
-"Luo dia galleriaan valitsemalla kuva media-kirjastosta ja  kirjoita "
-"sille halutessasi kuvateksti."
-
-msgid "Caption for the image"
-msgstr "Kuvateksti kuvalle"
-
-msgid "Background color"
-msgstr "Taustaväri"
-
-msgid "Choose the background color for the hero element."
-msgstr "Valitse lohkolle taustaväri."
-
-msgid "Optional short description for hero block."
-msgstr "Valinnainen lyhyt kuvaus lohkolle."
-
-msgid ""
-"Choose the paragraph design from the dropdown. Depending on what "
-"design you choose there may be different fields that you need to fill."
-msgstr ""
-"Valitse lohkon tyyli alasvetovalikosta. Tarvittavat tiedot riippuvat "
-"siitä minkä tyylin valitset."
-
-msgid ""
-"Image to be used as an illustration or as a background of the hero "
-"depending on what design you chose."
-msgstr ""
-"Kuva jota käytetään kuvituskuvana tai taustakuvana lohkossa "
-"riippuen siitä minkä tyylin olet lohkolle valinnut."
-
-msgid "Choose what kind of design you want to use for the link button. "
-msgstr "Valitse minkälaisen tyylin haluat linkkipainikkeelle."
-
-msgid ""
-"Title for the hero block. This will be used as the level 1 heading for "
-"the page instead of the regular page title if hero is added on the "
-"page."
-msgstr ""
-"Näkyvä otsikko lohkolle. Tätä arvoa käytetään ensimmäisen "
-"tason otsikkona sivulle jos hero-lohko on lisätty sivulle."
-
-msgid "Image file"
-msgstr "Kuvatiedosto"
-
-msgid "Add the image file that you want to use from media-library."
-msgstr "Lisää haluamasi kuvatiedosto tähän media-kirjastosta."
-
-msgid "Caption"
-msgstr "Kuvateksti"
-
-msgid "You can provide a caption for the image here."
-msgstr "Voit halutessasi kirjoittaa kuvatekstin kuvalle tähän."
-
-msgid "Use original aspect ratio"
-msgstr "Käytä alkuperäistä kuvasuhdetta"
-
-msgid ""
-"If you have to use the original aspect ratio of the image you can do "
-"so by choosing this option. However it is recommended to let the "
-"system crop your image so that it will look balanced on the page."
-msgstr ""
-"Jos sinun on käytettävä kuvan alkuperäistä kuvasuhdetta voit "
-"tehdä sen valitsemalla tämän. On kuitenkin suositeltavaa antaa "
-"järjestelmän skaalata ja leikata kuvasi jotta sisältö näyttää "
-"tasapainoiselta."
-
-msgid "Optional short description for liftup block."
-msgstr "Vapaaehtoinen lyhyt kuvaus nostolohkolle."
-
-msgid ""
-"Image to be used as an illustration or as a background of the liftup "
-"depending on what design you chose."
-msgstr ""
-"Kuva jota käytetään kuvituskuvana tai taustakuvana lohkossa "
-"riippuen siitä minkä tyylin olet lohkolle valinnut."
-
-msgid "Title for the liftup with image block."
-msgstr "Näkyvä otsikko lohkolle."
-
-msgid "Links"
-msgstr "Linkit"
-
-msgid "The links that you want the paragraph to display."
-msgstr "Linkkilistan linkit."
-
-msgid "The title of the list of links paragraph."
-msgstr "Linkkilistalohkon otsikko."
-
-msgid "You can add very short description for the link."
-msgstr "Voit lisätä lyhyen kuvauksen linkkiin."
-
-msgid "Image to be used as thumbnail of the link."
-msgstr "Kuva jota käytetään linkin yhteydessä."
-
-msgid ""
-"Internal or external link to the desired location. Link text is "
-"displayed for the site user."
-msgstr ""
-"Sisäinen tai ulkoinen linkki haluttuun kohteeseen. Linkin teksti "
-"-kentän arvo näytetään sivuston käyttäjälle."
-
-msgid "Map"
-msgstr "Kartta"
-
-msgid "Remote video"
-msgstr "Video ulkoisesta palvelusta"
-
-msgid "Text"
-msgstr "Teksti"
-
-msgid "Search button"
-msgstr "Hakukentän painike"
-
-msgid "Search for units"
-msgstr "Hae toimipisteitä"
-
-msgid "Search label"
-msgstr "Hakukentän otsikko"
-
-msgid "Search for a unit"
-msgstr "Hae toimipisteitä"
-
-msgid "Load more label"
-msgstr "Lataa lisää - otsikko"
-
-msgid "Load more units"
-msgstr "Lataa lisää toimipisteitä"
-
-msgid "Search placeholder"
-msgstr "Hakukentän oletusteksti"
-
-msgid "Enter name, address or postal code"
-msgstr "Syötä nimi, osoite tai postinumero"
-
-msgid "Units"
-msgstr "Toimipisteet"
-
-msgid ""
-"Select the units from which the end user can search for the unit they "
-"want."
-msgstr ""
-"Valitse toimipisteen joiden seasta haluat käyttäjän etsivän "
-"toimipisteitä."
-
-msgid "White"
-msgstr "Valkoinen"
-
-msgid "Grey"
-msgstr "Harmaa"
-
-msgid "Aligned to the center"
-msgstr "Keskitetty"
-
-msgid "Aligned to the left"
-msgstr "Tasattu vasemmalle"
-
-msgid "Aligned to the center, secondary color"
-msgstr "Keskitetty, toissijainen väri"
-
-msgid "Aligned to the left, secondary color"
-msgstr "Tasattu vasemmalle, toissijainen väri"
-
-msgid "Full colour background"
-msgstr "Täysvärinen"
-
-msgid "Only borders"
-msgstr "Reunustettu"
-
-msgid "No borders or background colour"
-msgstr "Ei reunuksia tai taustaväriä"
-
-msgid "Divided 50/50"
-msgstr "Palstat 50/50"
-
-msgid "Divided 30/70"
-msgstr "Palstat 30/70"
-
-msgid "Divided 70/30"
-msgstr "Palstat 70/30"
-
-msgid "Small cards"
-msgstr "Pienet kortit"
-
-msgid "Large cards"
-msgstr "Suuret kortit"
-
-msgid "Small cards, grey background"
-msgstr "Pienet kortit, harmaa tausta"
-
-msgid "Large cards, grey background"
-msgstr "Suuret kortit, harmaa tausta"
-
-msgid "Coat of Arms"
-msgstr "Vaakuna"
-
-msgid "Gold"
-msgstr "Kulta"
-
-msgid "Silver"
-msgstr "Hopea"
-
-msgid "Brick"
-msgstr "Tiili"
-
-msgid "Bus"
-msgstr "Bussi"
-
-msgid "Copper"
-msgstr "Kupari"
-
-msgid "Fog"
-msgstr "Sumu"
-
-msgid "Summer"
-msgstr "Kesä"
-
-msgid "Tram"
-msgstr "Spåra"
-
-msgid "Without image, align left"
-msgstr "Ilman kuvaa, tasattu vasemmalle"
-
-msgid "Without image, align center"
-msgstr "Ilman kuvaa, tasattu keskelle"
-
-msgid "Image on the right"
-msgstr "Kuva oikealla"
-
-msgid "Image on the left"
-msgstr "Kuva vasemmalla"
-
-msgid "Image on the bottom"
-msgstr "Kuva alhaalla"
-
-msgid "Background image"
-msgstr "Taustakuva"
-
-msgid "Diagonal"
-msgstr "Diagonaalinen"
-
-msgid "Image on right"
-msgstr "Kuva oikealla"
-
-msgid "Image on left"
-msgstr "Kuva vasemmalla"
-
-msgid "Image on right, secondary color"
-msgstr "Kuva oikealla, toissijainen väri"
-
-msgid "Image on left, secondary color"
-msgstr "Kuva vasemmalla, toissijainen väri"
-
-msgid "Background image, text on right"
-msgstr "Taustakuva, teksti oikealla"
-
-msgid "Background image, text on left"
-msgstr "Taustakuva, teksti vasemmalla"
-
-msgid "With image"
-msgstr "Kuvallinen"
-
-msgid "Without image"
-msgstr "Ilman kuvaa"
-
-msgid "Without image and description"
-msgstr "Ilman kuvaa ja kuvausta"
-
-msgid "Plain text"
-msgstr "Puhdas teksti"
-
-msgid "Large (480×480)"
-msgstr "Suuri (480×480)"
-
-msgid "Media Library thumbnail (220×220)"
-msgstr "Mediakirjaston pikkukuva (220×220)"
-
-msgid "Medium (220×220)"
-msgstr "Keskikokoinen (220×220)"
-
-msgid "Thumbnail (100×100)"
-msgstr "Pikkukuva (100×100)"
-
-msgid "English"
-msgstr "Englanti"
-
-msgid "Finnish"
-msgstr "Suomi"
-
-msgid "Russian"
-msgstr "Venäjä"
-
-msgid "Swedish"
-msgstr "Ruotsi"
-
-msgid "Not specified"
-msgstr "Ei määritelty"
-
-msgid "Not applicable"
-msgstr "Ei käytössä"
-
-msgid "Media type file for general files such as documents and charts."
-msgstr ""
-"Media tyyppi yleisille tiedostoille kuten tekstidokumenteille ja "
-"kaavioille."
-
-msgid "Use local image for reusable media."
-msgstr "Mediatyyppi kuville."
-
-msgid "Media type for remote media from external sources."
-msgstr ""
-"Mediatyyppi ulkoisten palveluiden, kuten YouTube tarjoamille "
-"videoille."
-
-msgid "Media type for adding SoundCloud items."
-msgstr "Mediatyyppi SoundCloud kappaleiden lisäämiseen."
-
-msgid "Front page"
-msgstr "Etusivu"
-
-msgid "Global"
-msgstr "Yleinen"
-
-msgid "Taxonomy term"
-msgstr "Luokittelutermi"
-
-msgid "TPR - Service"
-msgstr "TPR - Palvelu"
-
-msgid "TPR - Unit"
-msgstr "TPR - Toimipiste"
-
-msgid "User"
-msgstr "Käyttäjä"
-
-msgid "Article"
-msgstr "Artikkeli"
-
-msgid "Content type for article-like content with rich editing capabilities."
-msgstr ""
-"Sisältötyyppi artikkelityyppiselle sisällölle monipuolisilla "
-"muokkausmahdollisuuksilla."
-
-msgid "Landing page"
-msgstr "Laskeutumissivu"
-
-msgid ""
-"Content type for pages which serves as an entry point for a particular "
-"section of the site. Use landing page when you want to create a "
-"collection of links and information about a certain subject. "
-msgstr ""
-"Laskeutumissivu sisältötyyppiä suositellaan käytettäväksi "
-"silloin kun sivua halutaan käyttää jonkin tietyn osion tai aiheen "
-"etusivuna. Laskeutumissivu koostuu pääosin nostoista, listauksista "
-"ja linkeistä."
-
-msgid "Basic page"
-msgstr "Perussivu"
-
-msgid ""
-"Content type for pages that include information that doesn't age as "
-"quickly as for example article or news content."
-msgstr ""
-"Perussivu sisältötyyppiä suositellaan käytettäväksi silloin kun "
-"sivulla halutaan näyttää aikariippumattomia tietoja. Esimerkiksi "
-"\"Yhteystiedot\"-sivu."
-
-msgid "Accordion"
-msgstr "Haitari"
-
-msgid ""
-"Accordion paragraph is used to store information that is perhaps not "
-"so relevant to all website users in a compact element that collapses "
-"the additional information behind a title."
-msgstr ""
-"Haitari-elementtiä käytetään toissijaisen tiedon tallentamiseen "
-"kompaktissa muodossa. Sivuston käyttäjät näkevät tiedosta otsikon "
-"verran ensimmäisellä silmäyksellä ja voivat tarkastella "
-"sisältöä tarkemmin klikkaamalla otsikon auki."
-
-msgid "Accordion item"
-msgstr "Haitarin sisältökohta"
-
-msgid "One item in an accordion that includes title and content."
-msgstr "Yksittäinen haitarin sisältökohta, jossa on otsikko ja sisältö."
-
-msgid "Banner"
-msgstr "Banneri"
-
-msgid ""
-"Banner is a simple full-width element that you can use to promote for "
-"example important links or phone numbers. "
-msgstr ""
-"Banneri on leveä elementti, jonka avulla voit korostaa esimerkiksi "
-"tärkeitä linkkejä tai puhelinnumeroita. "
-
-msgid "Columns"
-msgstr "Palstat"
 
 msgid ""
 "With columns paragraph content producer can divide content in to two "
@@ -818,187 +75,245 @@ msgstr ""
 "levyisiä. Paragraafin palstoihin voi vapaasti liittää erilaisia "
 "komponentteja."
 
-msgid "Content cards"
-msgstr "Sisältökortit"
+msgid ""
+"<h2>Hel.fi uses cookies&nbsp;</h2>\r\n"
+"\r\n"
+"<p>We use essential "
+"cookies on our website to make the site work. Also third party cookies "
+"are used if you give us your permission.</p>\r\n"
+""
+msgstr ""
+"<h2>Hel.fi käyttää evästeitä</h2><p>Tämä sivusto käyttää "
+"välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä "
+"yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä "
+"käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun "
+"sisällön näyttämiseen. Jatkamalla sivuston käyttöä ilman "
+"asetusten muuttamista hyväksyt välttämättömien evästeiden "
+"käytön.</p>\r\n"
+""
+
+msgid "Accept only essential cookies"
+msgstr "Hyväksy vain välttämättömät evästeet"
+
+msgid "Cookie settings"
+msgstr "Evästeasetukset"
+
+msgid "Show cookies"
+msgstr "Näytä evästeet"
+
+msgid "No results"
+msgstr ""
+"<p>Ei tuloksia</p>\r\n"
+""
+
+msgid "Meta tags"
+msgstr "Meta-kentät"
+
+msgid "Metatag"
+msgstr "Metatunniste"
+
+msgid "Postal/ZIP code"
+msgstr "Postinumero"
+
+msgid "Metatag plugins"
+msgstr "Metatunnisteen lisäosat"
+
+msgid "Not connected"
+msgstr "Ei yhdistetty"
+
+msgid "Connected Accounts"
+msgstr "Liitetyt tilit"
+
+msgid "Default icon"
+msgstr "Oletusikoni"
+
+msgid "Paragraphs types"
+msgstr "Lohkotyypit"
 
 msgid ""
-"With content cards you can reference to content inside this site. The "
-"information about the content is automatically fetched through the "
-"reference."
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
+
+msgid "Status code"
+msgstr "Tilakoodi"
+
+msgid "List of redirects"
+msgstr "Uudelleenohjaukset"
+
+msgid "Scheduled"
+msgstr "Ajastettu"
+
+msgid "Publish on"
+msgstr "Julkaisupäivämäärä"
+
+msgid "Unpublish on"
+msgstr "Julkaisun peruutuspäivämäärä"
+
+msgid "The date the node will be published."
+msgstr "Päivämäärä jolloin sivu julkaistaan."
+
+msgid "The date the node will be unpublished."
+msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
+
+msgid "Drag to re-order @entity_types."
+msgstr "Raahaa järjestelläksesi @entity_types."
+
+msgid "Simple XML Sitemap"
+msgstr "XML-sivustokartta"
+
+msgid "Regenerate all sitemaps after hitting <em>Save</em>"
+msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
+
+msgid "Plain text"
+msgstr "Puhdas teksti"
+
+msgid "English"
+msgstr "Englanti"
+
+msgid "An administrator created an account for you at [site:name]"
+msgstr "Ylläpitäjä loi sinulle tilin sivustolla [site:name]"
+
+msgid "No media available."
+msgstr "Ei mediatiedostoja saatavilla."
+
+msgid "Bulk update"
+msgstr "Massapäivitys"
+
+msgctxt "PHP date format"
+msgid "D, m/d/Y - H:i"
+msgstr "j. F\\t\\a Y"
+
+msgctxt "PHP date format"
+msgid "m/d/Y - H:i"
+msgstr "j.n.Y - H:i"
+
+msgid "Are you sure you want to remove the @entity-type %label?"
 msgstr ""
-"Sisältökorteilla voit nostaa sivuston sisäistä sisältöä "
-"korteiksi lohkoon. Kortin sisältö haetaan automaattisesti siitä "
-"sisällöstä jonka valitsit."
+"Haluatko varmasti poistaa \"%label\", joka on tyyppiä "
+"<em>@entity-type</em>?"
 
-msgid "From library"
-msgstr "Uudelleenkäytettävä lohko"
+msgid "White"
+msgstr "Valkoinen"
 
-msgid "Gallery"
-msgstr "Galleria"
+msgid "Apply filters"
+msgstr "Suodata tuloksia"
 
-msgid "Using this paragraph you can create galleries from multiple images."
-msgstr ""
-"Voit käyttää tätä elementtiä luodaksesi gallerian useista "
-"kuvista."
+msgid "Displaying @start - @end of @total"
+msgstr "Näytetään @start - @end / @total"
 
-msgid "Gallery slide"
-msgstr "Gallerian dia"
+msgid "Edit @language translation for %label"
+msgstr "Muokkaa käännöstä %label (kieli: @language)"
 
-msgid "One slide in the gallery that can include image and caption."
-msgstr "Yksittäinen gallerian dia jossa voi olla kuva ja kuvateksti."
+msgid "@title [%language translation]"
+msgstr "@title [%language]"
 
 msgid ""
-"Very diverse paragraph that covers a large area of the content and is "
-"traditionally placed on top of the page."
+"Are you sure you want to delete the @language translation of the "
+"@entity-type %label?"
 msgstr ""
-"Monipuolinen paragraph, joka peittää suuren alueen sisältöalueesta "
-"ja perinteisesti sijoitetaan sivun yläosaan."
+"Haluatko varmasti poistaa käännöksen \"%label\", joka on tyyppiä "
+"<em>@entity-type</em> ja kielellä <em>@language</em>?"
 
-msgid "Image with a caption"
-msgstr "Kuva kuvatekstillä"
+msgid "Large (480×480)"
+msgstr "Suuri (480×480)"
 
-msgid "Liftup with image"
-msgstr "Kuvallinen nosto"
+msgid "Medium (220×220)"
+msgstr "Keskikokoinen (220×220)"
+
+msgid "Thumbnail (100×100)"
+msgstr "Pikkukuva (100×100)"
+
+msgctxt "PHP date format"
+msgid "l, F j, Y - H:i"
+msgstr "j.n.Y - H:i"
 
 msgid ""
-"Liftup with image is a fairly large element that you can use to "
-"promote content with large image next to the text."
+"Required if you want to change the %mail or %pass below. <a "
+"href=\":request_new_url\" title=\"Send password reset instructions via "
+"email.\">Reset your password</a>."
 msgstr ""
-"Kuvallinen nosto on melko suuri nostoelementti, jolla voit korostaa "
-"sisältöä. Elementti koostuu kuvasta ja sen vieressä olevasta "
-"tekstialueesta."
-
-msgid "List of links"
-msgstr "Linkkilista"
-
-msgid "List of internal or external links. Different designs available."
-msgstr ""
-"Lista sisäisiä tai ulkoisia linkkejä. Valittavissa erilaisia "
-"listatyylejä."
-
-msgid "List of links item"
-msgstr "Linkki"
-
-msgid "One item - a link with metadata - of list of links."
-msgstr "Yksittäinen linkki lisätietoineen linkkilistalohkoon."
+"Tämä kenttä on pakollinen jos haluat vaihtaa %mail tai %pass "
+"kenttien arvoja. <a href=\":request_new_url\" title=\"Lähetä ohjeet "
+"salasanan vaihtamiseen sähköpostilla.\">Vaihda salasanasi</a>."
 
 msgid ""
-"With map paragraph content producer can add an embedded map from "
-"https://kartta.hel.fi and https://palvelukartta.hel.fi."
+"[user:display-name],\n"
+"\n"
+"A request to cancel your account has been "
+"made at [site:name].\n"
+"\n"
+"You may now cancel your account on "
+"[site:url-brief] by clicking this link or copying and pasting it into "
+"your browser:\n"
+"\n"
+"[user:cancel-url]\n"
+"\n"
+"NOTE: The cancellation of "
+"your account is not reversible.\n"
+"\n"
+"This link expires in one day and "
+"nothing will happen if it is not used.\n"
+"\n"
+"--  [site:name] team"
 msgstr ""
-"Kartta lohkolla voit lisätä upotettavan kartan https://kartta.hel.fi "
-"tai https://palvelukartta.hel.fi -palveluista."
-
-msgid ""
-"Remote video paragraph that lets you add any video from video "
-"providers. Currently only YouTube."
-msgstr ""
-"Tällä lohkolla voit lisätä videon ulkoisesta palvelusta. Tukee "
-"tällä hetkellä vain YouTubea."
-
-msgid "Unit search"
-msgstr "Toimipistehaku"
-
-msgid ""
-"With unit search paragraph content producer can create unit search "
-"forms for the end user."
-msgstr ""
-"Toimipistehaku paragraafilla sisällöntuottaja voi sijoittaa "
-"toimipistehaun valitsemalleen sivulle. Paragraphista valitaan "
-"toimipisteet joita halutaan näyttää loppukäyttäjälle."
-
-msgid "Gallery thumbnail"
-msgstr "Gallerian pikkukuva"
-
-msgid "Delete media"
-msgstr "Poista mediatiedosto"
-
-msgid "Publish media"
-msgstr "Julkaise mediatiedosto"
-
-msgid "Save media"
-msgstr "Tallenna mediatiedosto"
-
-msgid "Unpublish media"
-msgstr "Poista mediatiedosto julkaisusta"
-
-msgid "Delete content"
-msgstr "Poista sisältö"
-
-msgid "Make content sticky"
-msgstr "Liimaa sisältö listojen alkuun"
-
-msgid "Make content unsticky"
-msgstr "Poista sisällön liimaus"
-
-msgid "Promote content to front page"
-msgstr "Nosta sisältö etusivulla"
-
-msgid "Publish content"
-msgstr "Julkaise sisältö"
-
-msgid "Save content"
-msgstr "Tallenna sisältö"
-
-msgid "Remove content from front page"
-msgstr "Poista sisältö etusivulta"
-
-msgid "Unpublish content"
-msgstr "Muuta sisältö ei-julkaistuksi"
-
-msgid "Update URL alias"
-msgstr "Päivitä osoitealias"
-
-msgid "Delete redirect"
-msgstr "Poista uudelleenohjaus"
-
-msgid "Publish taxonomy term"
-msgstr "Julkaise luokittelutermi"
-
-msgid "Unpublish taxonomy term"
-msgstr "Poista julkaisusta luokittelutermi"
-
-msgid "Update"
-msgstr "Päivitys"
-
-msgid "Block the selected user(s)"
-msgstr "Estä valitut käyttäjät"
-
-msgid "Cancel the selected user account(s)"
-msgstr "Poista valitut käyttäjätilit"
-
-msgid "Unblock the selected user(s)"
-msgstr "Poista esto valituilta käyttäjiltä"
-
-msgid ""
-"@site is currently under maintenance. We should be back shortly. Thank "
-"you for your patience."
-msgstr ""
-"@site on parhaillaan huollettavana. Se pyritään saamaan takaisin "
-"käyttöön pian. Kiitämme kärsivällisyydestä!"
-
-msgid "User account menu"
-msgstr "Käyttäjävalikko"
-
-msgid "Links related to the active user account"
-msgstr "Aktiiviseen käyttäjätiliin liittyvät linkit"
-
-msgid "Administration"
-msgstr "Ylläpito"
-
-msgid "Administrative task links"
-msgstr "Ylläpidon linkit"
-
-msgid "Tools"
-msgstr "Työkalut"
-
-msgid "User tool links, often added by modules"
-msgstr "Linkit käyttäjän työkaluihin, usein moduulien lisäämiä"
+"[user:display-name],\n"
+"\n"
+"Tilisi peruuttamista koskeva pyyntö on "
+"tehty [site:name] sivustolla.\n"
+"Voit nyt perua tilisi sivustossa "
+"[site:url-brief] napsauttamalla tätä linkkiä tai kopioimalla ja "
+"liittämällä sen selaimeesi: [user:cancel-url]\n"
+"\n"
+"HUOM: Tilisi "
+"perumista ei voi perua. Tämä linkki vanhenee yhdessä päivässä, "
+"eikä mitään tapahdu, jos sitä ei käytetä.\n"
+"[site:name] "
+"ylläpito"
 
 msgid "Account cancellation request for [user:display-name] at [site:name]"
 msgstr ""
 "Tilin peruutuspyyntö käyttäjälle [user:display-name], [site:name] "
 "sivustolla"
+
+msgid "Replacement login information for [user:display-name] at [site:name]"
+msgstr ""
+"Korvaavat kirjautumistiedot [user:display-name] käyttäjälle "
+"[site:name] sivustolla"
+
+msgid "Account details for [user:display-name] at [site:name]"
+msgstr "[user:display-name] käyttäjätilin tiedot [site:name] sivustolla"
+
+msgid ""
+"Account details for [user:display-name] at [site:name] (pending admin "
+"approval)"
+msgstr ""
+"\r\n"
+"[user:display-name] käyttäjätilin tiedot [site:name] "
+"sivustolla (odottaa hyväksyntää)"
+
+msgid ""
+"[user:display-name] has applied for an account.\n"
+"\n"
+"[user:edit-url]"
+msgstr ""
+"[user:display-name] on rekisteröinyt käyttäjätunnuksen. "
+"[user:edit-url]"
+
+msgid "Account details for [user:display-name] at [site:name] (approved)"
+msgstr ""
+"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
+"(hyväksytty)"
+
+msgid "Account details for [user:display-name] at [site:name] (blocked)"
+msgstr ""
+"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
+"(estetty)"
+
+msgid "Account details for [user:display-name] at [site:name] (canceled)"
+msgstr ""
+"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
+"(peruttu)"
 
 msgid ""
 "[user:display-name],\n"
@@ -1029,11 +344,6 @@ msgstr ""
 "kuluttua, eikä mitään tapahdu, jos sitä ei "
 "käytetä.\r\n"
 "[site:name] ylläpito"
-
-msgid "Replacement login information for [user:display-name] at [site:name]"
-msgstr ""
-"Korvaavat kirjautumistiedot [user:display-name] käyttäjälle "
-"[site:name] sivustolla"
 
 msgid ""
 "[user:display-name],\n"
@@ -1070,9 +380,6 @@ msgstr ""
 "[user:name]\r\n"
 "[site:name] ylläpito"
 
-msgid "An administrator created an account for you at [site:name]"
-msgstr "Ylläpitäjä loi sinulle tilin sivustolla [site:name]"
-
 msgid ""
 "[user:display-name],\n"
 "\n"
@@ -1107,8 +414,38 @@ msgstr ""
 "[user:name]\r\n"
 "[site:name] ylläpito"
 
-msgid "Account details for [user:display-name] at [site:name]"
-msgstr "[user:display-name] käyttäjätilin tiedot [site:name] sivustolla"
+msgid "Find and manage files."
+msgstr "Etsi ja hallitse tiedostoja."
+
+msgid "Content belonging to a certain taxonomy term."
+msgstr "Sisältö, joka kuuluu tiettyyn taksonomiatermiin."
+
+msgid "Find and manage content"
+msgstr "Etsi ja hallitse sisältöä"
+
+msgid "Delete media"
+msgstr "Poista mediatiedosto"
+
+msgid "Media name"
+msgstr "Mediatiedoston nimi"
+
+msgid "Save media"
+msgstr "Tallenna mediatiedosto"
+
+msgid "Publish media"
+msgstr "Julkaise mediatiedosto"
+
+msgid "Find and manage media."
+msgstr "Etsi ja ylläpidä mediatiedostoja."
+
+msgid "Remove the @label role from the selected user(s)"
+msgstr "Poista rooli @label valituilta käyttäjiltä"
+
+msgid "Name (A-Z)"
+msgstr "Nimi (A-Z)"
+
+msgid "Name (Z-A)"
+msgstr "Nimi (Z-A)"
 
 msgid ""
 "[user:display-name],\n"
@@ -1128,625 +465,23 @@ msgstr ""
 "[site:name] "
 "ylläpito"
 
-msgid ""
-"Account details for [user:display-name] at [site:name] (pending admin "
-"approval)"
-msgstr ""
-"\r\n"
-"[user:display-name] käyttäjätilin tiedot [site:name] "
-"sivustolla (odottaa hyväksyntää)"
-
-msgid ""
-"[user:display-name] has applied for an account.\n"
-"\n"
-"[user:edit-url]"
-msgstr ""
-"[user:display-name] on rekisteröinyt käyttäjätunnuksen. "
-"[user:edit-url]"
-
-msgid "Account details for [user:display-name] at [site:name] (approved)"
-msgstr ""
-"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
-"(hyväksytty)"
-
-msgid "Account details for [user:display-name] at [site:name] (blocked)"
-msgstr ""
-"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
-"(estetty)"
-
-msgid "Account details for [user:display-name] at [site:name] (canceled)"
-msgstr ""
-"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
-"(peruttu)"
-
-msgid "Admin"
-msgstr "Ylläpitäjä"
-
-msgid "Anonymous user"
-msgstr "Anonyymi käyttäjä"
-
-msgid "Authenticated user"
-msgstr "Sisäänkirjautunut käyttäjä"
-
-msgid "Content producer"
-msgstr "Sisällöntuottaja"
-
-msgid "Anonymous"
-msgstr "Anonyymi"
-
-msgid "Master"
-msgstr "Oletus"
-
-msgid "Apply"
-msgstr "Käytä"
-
-msgid "Reset"
-msgstr "Palauta"
-
-msgid "Sort by"
-msgstr "Lajittele"
-
-msgid "Asc"
-msgstr "Nousevasti"
-
-msgid "Desc"
-msgstr "Laskevasti"
-
-msgid "››"
-msgstr "Seuraava ›"
-
-msgid "« First"
-msgstr "« Ensimmäinen"
-
-msgid "Last »"
-msgstr "Viimeinen »"
-
-msgid "Items per page"
-msgstr "Merkintöjä sivua kohti"
-
-msgid "- All -"
-msgstr "- Kaikki -"
-
-msgid "Operations"
-msgstr "Toimenpiteet"
-
-msgid "Search"
-msgstr "Etsi"
-
-msgid "Displaying @start - @end of @total"
-msgstr "Näytetään @start - @end / @total"
-
-msgid "No results found."
-msgstr "Ei tuloksia."
-
-msgid "Page"
-msgstr "Sivu"
-
-msgid "Archive"
-msgstr "Arkisto"
-
-msgid "All content, by month."
-msgstr "Kaikki sisältö, kuukausittain lajiteltuna."
-
-msgid "Default"
-msgstr "Oletus"
-
-msgid "Monthly archive"
-msgstr "Arkisto"
-
-msgid "Block"
-msgstr "Lohko"
-
-msgid "Find and manage content."
-msgstr "Etsi ja ylläpidä sisältöä."
-
-msgid "Filter"
-msgstr "Suodatin"
-
-msgid "‹ Previous"
-msgstr "‹ Edellinen"
-
-msgid "Next ›"
-msgstr "Seuraava ›"
-
-msgid "Content type"
-msgstr "Sisältötyyppi"
-
-msgid "Status"
-msgstr "Tila"
-
-msgid "Published"
-msgstr "Julkaistu"
-
-msgid "Unpublished"
-msgstr "Julkaisematon"
-
-msgid "Updated"
-msgstr "Päivitetty"
-
-msgid "Published status"
-msgstr "Julkaisutila"
-
-msgid "Language"
-msgstr "Kieli"
-
-msgid "No content available."
-msgstr "Ei sisältöä."
-
-msgid "Find and manage content"
-msgstr "Etsi ja hallitse sisältöä"
-
-msgid "Recent content"
-msgstr "Uusin sisältö"
-
-msgid "Recent content."
-msgstr "Uusin sisältö."
-
-msgid "More"
-msgstr "Lisää"
-
-msgid "Files"
-msgstr "Tiedostot"
-
-msgid "Find and manage files."
-msgstr "Etsi ja hallitse tiedostoja."
-
-msgid "Fid"
-msgstr "FId"
-
-msgid "Name"
-msgstr "Nimi"
-
-msgid "MIME type"
-msgstr "MIME tyyppi"
-
-msgid "Size"
-msgstr "Koko"
-
-msgid "Temporary"
-msgstr "Tilapäinen"
-
-msgid "Permanent"
-msgstr "Pysyvä"
-
-msgid "Upload date"
-msgstr "Latauspäivämäärä"
-
-msgid "Changed date"
-msgstr "Muutospäivämäärä"
-
-msgid "Used in"
-msgstr "Käytetään"
-
-msgid "Filename"
-msgstr "Tiedoston nimi"
-
-msgid "No files available."
-msgstr "Tiedostoja ei ole saatavilla."
-
-msgid "Files overview"
-msgstr "Tiedostot"
-
-msgid "File usage"
-msgstr "Tiedoston käyttö"
-
-msgid "Entity"
-msgstr "Entiteetti"
-
-msgid "Entity type"
-msgstr "Entiteetin tyyppi"
-
-msgid "Registering module"
-msgstr "Käytön kirjannut moduuli"
-
-msgid "Use count"
-msgstr "Käyttömäärä"
-
-msgid "All"
-msgstr "Kaikki"
-
-msgid "Glossary"
-msgstr "Sanasto"
-
-msgid "Last update"
-msgstr "Viimeksi päivitetty"
-
-msgid "Attachment"
-msgstr "Liite"
-
-msgid "Find and manage media."
-msgstr "Etsi ja ylläpidä mediatiedostoja."
-
-msgid "Action"
-msgstr "Toiminto"
-
-msgid "Thumbnail"
-msgstr "Pienoiskuva"
-
-msgid "Media name"
-msgstr "Mediatiedoston nimi"
-
-msgid "Type"
-msgstr "Tyyppi"
-
-msgid "True"
-msgstr "Tosi"
-
-msgid "No media available."
-msgstr "Ei mediatiedostoja saatavilla."
-
-msgid "Apply filters"
-msgstr "Suodata tuloksia"
-
-msgid "Publishing status"
-msgstr "Julkaisun tila"
-
-msgid "Media type"
-msgstr "Median tyyppi"
-
-msgid "Newest first"
-msgstr "Uusin ensin"
-
-msgid "Name (A-Z)"
-msgstr "Nimi (A-Z)"
-
-msgid "Name (Z-A)"
-msgstr "Nimi (Z-A)"
-
 msgid "Edit {{ name }}"
 msgstr "Muokkaa {{ name }}"
-
-msgid "Edit"
-msgstr "Muokkaa"
-
-msgid "Delete {{ name }}"
-msgstr "Poista {{ name }}"
-
-msgid "Delete"
-msgstr "Poista"
-
-msgid "Widget"
-msgstr "Widgetti"
-
-msgid "Grid"
-msgstr "Ruudukko"
-
-msgid "Table"
-msgstr "Taulukko"
-
-msgid "Widget (table)"
-msgstr "Widget (taulukko)"
-
-msgid "Paragraphs library"
-msgstr "Uudelleenkäytettävät lohkot"
-
-msgid "Label"
-msgstr "Otsikko"
-
-msgid "List of redirects"
-msgstr "Uudelleenohjaukset"
-
-msgid "‹ previous"
-msgstr "‹ edellinen"
-
-msgid "next ›"
-msgstr "seuraava ›"
-
-msgid "« first"
-msgstr "« ensimmäinen"
-
-msgid "last »"
-msgstr "viimeinen »"
-
-msgid "With selection"
-msgstr "Valinnalla"
-
-msgid "From"
-msgstr "Lähettäjä"
-
-msgid "Created"
-msgstr "Luotu"
-
-msgid "To"
-msgstr "Osoitteeseen"
-
-msgid "Status code"
-msgstr "Tilakoodi"
-
-msgid "307 Temporary Redirect"
-msgstr "307 Tilapäinen uudelleenohjaus"
-
-msgid "Original language"
-msgstr "Alkuperäinen kieli"
-
-msgid "There is no redirect yet."
-msgstr "Ei ole vielä uudelleenohjaksia."
-
-msgid "Scheduled content"
-msgstr "Ajastettu sisältö"
-
-msgid "Find and manage scheduled content."
-msgstr "Etsi ja ylläpidä ajastettua sisältöä."
-
-msgid "Content Type"
-msgstr "Sisältötyyppi"
-
-msgid "Publish on"
-msgstr "Julkaisupäivämäärä"
-
-msgid "Unpublish on"
-msgstr "Julkaisun peruutuspäivämäärä"
-
-msgid "Scheduled Content"
-msgstr "Ajastettu sisältö"
-
-msgid "No scheduled content."
-msgstr "Ei vielä ajastettua sisältöä."
-
-msgid "Scheduled"
-msgstr "Ajastettu"
-
-msgid ""
-"Overview of all scheduled content, as a tab on main 'content admin' "
-"page"
-msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
-
-msgid "Content Overview"
-msgstr "Sisältö"
-
-msgid "No scheduled content for user {{ arguments.uid }}"
-msgstr "{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä."
-
-msgid "User profile tab"
-msgstr "Käyttäjäprofiili"
-
-msgid "Content belonging to a certain taxonomy term."
-msgstr "Sisältö, joka kuuluu tiettyyn taksonomiatermiin."
-
-msgid "Feed"
-msgstr "Syöte"
-
-msgid "TPR errand service list"
-msgstr "TPR Asiointipalvelut"
-
-msgid "Bulk update"
-msgstr "Massapäivitys"
-
-msgid "TPR Errand Services"
-msgstr "TPR Asiointipalvelut"
-
-msgid "TPR service channel list"
-msgstr "TPR Palvelukanavat"
-
-msgid "TPR Service Channels"
-msgstr "TPR Palvelukanavat"
-
-msgid "TPR unit list"
-msgstr "TPR Toimipisteet"
-
-msgid "TPR Units"
-msgstr "TPR Toimipisteet"
-
-msgid "Load more results"
-msgstr "Lataa lisää"
-
-msgid "Combine fields filter"
-msgstr "Kentät yhdistävä suodatin"
-
-msgid "No results"
-msgstr ""
-"<p>Ei tuloksia</p>\r\n"
-""
-
-msgid "Entity Reference"
-msgstr "Entiteettiviittaus"
-
-msgid "People"
-msgstr "Käyttäjät"
-
-msgid "Find and manage people interacting with your site."
-msgstr "Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä."
-
-msgid "Username"
-msgstr "Käyttäjätunnus"
-
-msgid "Active"
-msgstr "Aktiivinen"
-
-msgid "Blocked"
-msgstr "Suljettu"
-
-msgid "Roles"
-msgstr "Käyttäjäroolit"
-
-msgid "Member for"
-msgstr "Käyttäjä jo"
-
-msgid "Last access"
-msgstr "Viimeksi paikalla"
-
-msgid "Name or email contains"
-msgstr "Nimi tai sähköposti sisältää"
-
-msgid "Role"
-msgstr "Rooli"
-
-msgid "Permission"
-msgstr "Käyttöoikeus"
-
-msgid "No people available."
-msgstr "Ei saatavilla olevia ihmisiä."
-
-msgid "more"
-msgstr "lisää"
-
-msgid "List"
-msgstr "Lista"
-
-msgid "Manage user accounts, roles, and permissions."
-msgstr "Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia."
-
-msgid "Watchdog"
-msgstr "Vahtikoira"
-
-msgid "Recent log messages"
-msgstr "Viimeisimmät lokimerkinnät"
-
-msgid "Severity"
-msgstr "Vakavuus"
-
-msgid "Date"
-msgstr "Päivämäärä"
-
-msgid "Message"
-msgstr "Viesti"
-
-msgid "No log messages available."
-msgstr "Yhtään lokimerkintää ei ole saatavilla."
-
-msgid "Who's new"
-msgstr "Uudet käyttäjät"
-
-msgid "Shows a list of the newest user accounts on the site."
-msgstr "Näyttää listan sivuston uusimmista käyttäjätileistä."
-
-msgid "A list of new users"
-msgstr "Lista uusista käyttäjistä"
-
-msgid "Who's online block"
-msgstr "Kuka on paikalla -lohko"
-
-msgid ""
-"Shows the user names of the most recently active users, and the total "
-"number of active users."
-msgstr ""
-"Näyttää viimeksi aktiivisina olleiden käyttäjien "
-"käyttäjätunnukset ja aktiivisten käyttäjien kokonaismäärän."
-
-msgid ""
-"A user is considered online for this long after they have last viewed "
-"a page."
-msgstr ""
-"Sen jäkeen kun käyttäjä viimeksi latasi sivun, hänen katsotaan "
-"olevan paikalla vielä näin kauan"
-
-msgid "Who's online"
-msgstr "Paikalla olevat käyttäjät"
-
-msgid "There are currently @total users online."
-msgstr "Tällä hetkellä @total käyttäjää on online."
-
-msgid "There are currently 0 users online."
-msgstr "Tällä hetkellä 0 käyttäjää on online."
-
-msgid "A list of users that are currently logged in."
-msgstr "Lista käyttäjistä jotka ovat online."
-
-msgid "Accept"
-msgstr "Hyväksy"
-
-msgid "More info"
-msgstr "Näytä evästeet"
-
-msgid "Hide"
-msgstr "Piilossa"
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By clicking the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
-"<h2>Hel.fi käyttää evästeitä</h2><p>Tämä sivusto käyttää "
-"välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä "
-"yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä "
-"käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun "
-"sisällön näyttämiseen. Jatkamalla sivuston käyttöä ilman "
-"asetusten muuttamista hyväksyt välttämättömien evästeiden "
-"käytön.</p>\r\n"
-""
-
-msgid "No, thanks"
-msgstr "Ei kiitos"
-
-msgid "Privacy settings"
-msgstr "Tietosuoja-asetukset"
-
-msgid "Save preferences"
-msgstr "Hyväksy valitut evästeet"
-
-msgid "Accept all cookies"
-msgstr "Hyväksy kaikki evästeet"
-
-msgid ""
-"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
-"message or find out more about cookies.</p>"
-msgstr ""
-"<h2>Thank you for accepting cookies</h2>\n"
-"\n"
-"<p>You can now hide this "
-"message or find out more about cookies.</p>\n"
-""
-
-msgid "Details"
-msgstr "Tarkemmat tiedot"
-
-msgid "Site branding"
-msgstr "Sivuston brändäys"
-
-msgid "Are you sure you want to remove the @entity-type %label?"
-msgstr ""
-"Haluatko varmasti poistaa \"%label\", joka on tyyppiä "
-"<em>@entity-type</em>?"
-
-msgid "Edit @language translation for %label"
-msgstr "Muokkaa käännöstä %label (kieli: @language)"
-
-msgid "@title [%language translation]"
-msgstr "@title [%language]"
-
-msgid ""
-"Are you sure you want to delete the @language translation of the "
-"@entity-type %label?"
-msgstr ""
-"Haluatko varmasti poistaa käännöksen \"%label\", joka on tyyppiä "
-"<em>@entity-type</em> ja kielellä <em>@language</em>?"
-
-msgid ""
-"Required if you want to change the %mail or %pass below. <a "
-"href=\":request_new_url\" title=\"Send password reset instructions via "
-"email.\">Reset your password</a>."
-msgstr ""
-"Tämä kenttä on pakollinen jos haluat vaihtaa %mail tai %pass "
-"kenttien arvoja. <a href=\":request_new_url\" title=\"Lähetä ohjeet "
-"salasanan vaihtamiseen sähköpostilla.\">Vaihda salasanasi</a>."
-
-msgid "Remove the @label role from the selected user(s)"
-msgstr "Poista rooli @label valituilta käyttäjiltä"
-
-msgid "Are you sure you want to delete this @item?"
-msgid_plural "Are you sure you want to delete these @items?"
-msgstr[0] "Haluatko varmasti poistaa tämän @item?"
-msgstr[1] "Haluatko varmasti poistaa nämä @items?"
-
-msgid "Add file"
-msgid_plural "Add files"
-msgstr[0] "Lisää tiedosto"
-msgstr[1] "Lisää tiedostot"
 
 msgid "No media items are selected."
 msgstr "Mediatiedostoja ei ole valittu."
 
-msgid "The ID of the role to add"
-msgstr "Lisättävän roolin ID"
+msgid "Widget (table)"
+msgstr "Widget (taulukko)"
 
-msgid "The ID of the role to remove"
-msgstr "Poistettavan roolin ID"
+msgid "Media Library thumbnail (220×220)"
+msgstr "Mediakirjaston pikkukuva (220×220)"
 
-msgid "Are you sure you want to delete the recent logs?"
-msgstr "Haluatko varmasti poistaa viimeisimmät lokimerkinnät?"
+msgid "Delete {{ name }}"
+msgstr "Poista {{ name }}"
 
-msgid "Are you sure you want to delete the format %name : %format?"
-msgstr "Haluatko varmasti poistaa %name : %format?"
+msgid "Media library"
+msgstr "Mediakirjasto"
 
 msgid "There are no menu links yet. <a href=\":url\">Add link</a>."
 msgstr ""
@@ -1762,34 +497,11 @@ msgstr "sisältö"
 msgid "content items"
 msgstr "sisällöt"
 
-msgid "Are you sure you want to delete this comment and all its children?"
-msgid_plural "Are you sure you want to delete these comments and all their children?"
-msgstr[0] "Haluatko varmasti poistaa tämän kommentin ja sen alakohdat?"
-msgstr[1] "Haluatko varmasti poistaa nämä kommentit ja kaikki niiden alakohdat?"
-
-msgid "Add the @label role to the selected user(s)"
-msgstr "Lisää rooli @label valituille käyttäjille"
-
 msgid "Insert selected"
 msgstr "Poimi valitut mediatiedostot"
 
 msgid "The maximum number of media items have been selected."
 msgstr " "
-
-msgid "One media item remaining."
-msgid_plural "@count media items remaining."
-msgstr[0] "Voit lisätä vielä yhden mediatiedoston."
-msgstr[1] "Voit lisätä vielä @count mediatiedostoa."
-
-msgid "@selected of @count item selected"
-msgid_plural "@selected of @count items selected"
-msgstr[0] "@selected / @count kohdetta valittu"
-msgstr[1] "@selected / @count kohdetta valittu"
-
-msgid "1 item selected"
-msgid_plural "@count items selected"
-msgstr[0] "Yksi kohde valittu"
-msgstr[1] "@count kohdetta valittu"
 
 msgid "Add or select media"
 msgstr "Lisää tai valitse mediatiedosto"
@@ -1797,116 +509,182 @@ msgstr "Lisää tai valitse mediatiedosto"
 msgid "Opening media library."
 msgstr "Avataan mediakirjastoa..."
 
-msgctxt "Address label"
-msgid "Postal code"
-msgstr "Postinumero"
+msgid ""
+"<p><a href=\"#\">Search for contacts and phone numbers</a></p><p><a "
+"href=\"#\" class=\"hds-button hds-button--secondary\"><span "
+"aria-hidden=\"true\" class=\"hds-icon hds-icon--phone\"></span><span "
+"class=\"hds-button__label\">Helsinki-info 09 310 1691</span></a></p>"
+msgstr ""
+"<p><a href=\"#\">Hae yhteystietoja ja numeroita</a></p>\r\n"
+"\r\n"
+"<p><a "
+"class=\"hds-button hds-button--secondary hdbt-icon hdbt-icon--phone\" "
+"data-design=\"hds-button hds-button--secondary\" data-icon=\"phone\" "
+"data-link-text=\"Helsinki-info 09 310 1691\" data-protocol=\"false\" "
+"href=\"#\"><span class=\"hds-button__label\">Helsinki-info 09 310 "
+"1691</span> </a></p>\r\n"
+""
 
-msgid "Compare selected revisions"
-msgstr "Vertaile valittuja versioita"
+msgid "Contact information"
+msgstr "Yhteystiedot"
+
+msgid "Location on map"
+msgstr "Sijainti kartalla"
+
+msgid "View the map in new window"
+msgstr "Avaa kartta uuteen ikkunaan"
+
+msgid "Reusable paragraph"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Aligned to the center"
+msgstr "Keskitetty"
+
+msgid "Aligned to the left"
+msgstr "Tasattu vasemmalle"
+
+msgid "Aligned to the center, secondary color"
+msgstr "Keskitetty, toissijainen väri"
+
+msgid "Full colour background"
+msgstr "Täysvärinen"
+
+msgid "Only borders"
+msgstr "Reunustettu"
+
+msgid "Divided 50/50"
+msgstr "Palstat 50/50"
+
+msgid "Divided 30/70"
+msgstr "Palstat 30/70"
+
+msgid "Small cards"
+msgstr "Pienet kortit"
+
+msgid "Large cards"
+msgstr "Suuret kortit"
+
+msgid "Small cards, grey background"
+msgstr "Pienet kortit, harmaa tausta"
+
+msgid "Coat of Arms"
+msgstr "Vaakuna"
+
+msgid "Gold"
+msgstr "Kulta"
+
+msgid "Silver"
+msgstr "Hopea"
+
+msgid "Brick"
+msgstr "Tiili"
+
+msgid "Bus"
+msgstr "Bussi"
+
+msgid "Copper"
+msgstr "Kupari"
+
+msgid "Fog"
+msgstr "Sumu"
+
+msgid "Summer"
+msgstr "Kesä"
+
+msgid "Without image, align left"
+msgstr "Ilman kuvaa, tasattu vasemmalle"
+
+msgid "Without image, align center"
+msgstr "Ilman kuvaa, tasattu keskelle"
+
+msgid "Image on the right"
+msgstr "Kuva oikealla"
+
+msgid "Image on the left"
+msgstr "Kuva vasemmalla"
+
+msgid "Image on the bottom"
+msgstr "Kuva alhaalla"
+
+msgid "Background image"
+msgstr "Taustakuva"
+
+msgid "Image on right"
+msgstr "Kuva oikealla"
+
+msgid "Image on left"
+msgstr "Kuva vasemmalla"
+
+msgid "Image on right, secondary color"
+msgstr "Kuva oikealla, toissijainen väri"
+
+msgid "Image on left, secondary color"
+msgstr "Kuva vasemmalla, toissijainen väri"
+
+msgid "Background image, text on right"
+msgstr "Taustakuva, teksti oikealla"
+
+msgid "With image"
+msgstr "Kuvallinen"
+
+msgid "Without image"
+msgstr "Ilman kuvaa"
+
+msgid "Finnish"
+msgstr "Suomi"
+
+msgid "Russian"
+msgstr "Venäjä"
+
+msgid "Swedish"
+msgstr "Ruotsi"
+
+msgid "From library"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "No results found."
+msgstr "Ei tuloksia."
+
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
+msgid "Scheduled content"
+msgstr "Ajastettu sisältö"
+
+msgid "Find and manage scheduled content."
+msgstr "Etsi ja ylläpidä ajastettua sisältöä."
+
+msgid "Scheduled Content"
+msgstr "Ajastettu sisältö"
+
+msgid "No scheduled content."
+msgstr "Ei vielä ajastettua sisältöä."
 
 msgid ""
-"[user:display-name],\n"
-"\n"
-"A request to cancel your account has been "
-"made at [site:name].\n"
-"\n"
-"You may now cancel your account on "
-"[site:url-brief] by clicking this link or copying and pasting it into "
-"your browser:\n"
-"\n"
-"[user:cancel-url]\n"
-"\n"
-"NOTE: The cancellation of "
-"your account is not reversible.\n"
-"\n"
-"This link expires in one day and "
-"nothing will happen if it is not used.\n"
-"\n"
-"--  [site:name] team"
-msgstr ""
-"[user:display-name],\n"
-"\n"
-"Tilisi peruuttamista koskeva pyyntö on "
-"tehty [site:name] sivustolla.\n"
-"Voit nyt perua tilisi sivustossa "
-"[site:url-brief] napsauttamalla tätä linkkiä tai kopioimalla ja "
-"liittämällä sen selaimeesi: [user:cancel-url]\n"
-"\n"
-"HUOM: Tilisi "
-"perumista ei voi perua. Tämä linkki vanhenee yhdessä päivässä, "
-"eikä mitään tapahdu, jos sitä ei käytetä.\n"
-"[site:name] "
-"ylläpito"
+"Overview of all scheduled content, as a tab on main 'content admin' "
+"page"
+msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
 
-msgid "Sidebar text"
-msgstr "Sivupalkin teksti"
+msgid "Content Overview"
+msgstr "Sisältö"
 
-msgid "Accept only essential cookies"
-msgstr "Hyväksy vain välttämättömät evästeet"
+msgid "TPR errand service list"
+msgstr "TPR Asiointipalvelut"
 
-msgid "Performance and user experience related cookies"
-msgstr "Suorituskykyyn ja käyttökokemukseen liittyvät evästeet"
+msgid "TPR Errand Services"
+msgstr "TPR Asiointipalvelut"
 
-msgid "Show cookies"
-msgstr "Näytä evästeet"
+msgid "TPR service channel list"
+msgstr "TPR Palvelukanavat"
 
-msgid "Load more services"
-msgstr "Lataa lisää palveluita"
+msgid "TPR Service Channels"
+msgstr "TPR Palvelukanavat"
 
-msgid "Services"
-msgstr "Palvelut"
+msgid "TPR unit list"
+msgstr "TPR Toimipisteet"
 
-msgid "Users are tracked by default, but you are able to opt out."
-msgstr ""
-"Käyttäjäseuranta on päällä oletusarvoisesti, mutta voit kytkeä "
-"sen pois tästä."
-
-msgid "Enable user tracking"
-msgstr "Käyttäjän seuranta"
-
-msgid "Meta tags"
-msgstr "Meta-kentät"
-
-msgid "Metatag"
-msgstr "Metatunniste"
-
-msgid "Postal/ZIP code"
-msgstr "Postinumero"
-
-msgid "Metatag plugins"
-msgstr "Metatunnisteen lisäosat"
-
-msgid "Not connected"
-msgstr "Ei yhdistetty"
-
-msgid "Connected Accounts"
-msgstr "Liitetyt tilit"
-
-msgid "Default icon"
-msgstr "Oletusikoni"
-
-msgid "Paragraphs types"
-msgstr "Lohkotyypit"
-
-msgid ""
-"Uncheck this to create a custom alias below. <a "
-"href=\"@admin_link\">Configure URL alias patterns.</a>"
-msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
-
-msgid "The date the node will be published."
-msgstr "Päivämäärä jolloin sivu julkaistaan."
-
-msgid "The date the node will be unpublished."
-msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
-
-msgid "Drag to re-order @entity_types."
-msgstr "Raahaa järjestelläksesi @entity_types."
-
-msgid "Simple XML Sitemap"
-msgstr "XML-sivustokartta"
-
-msgid "Regenerate all sitemaps after hitting <em>Save</em>"
-msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
+msgid "TPR Units"
+msgstr "TPR Toimipisteet"
 
 msgid ""
 "<p><strong>You have not saved any cookie preferences.</strong> By "
@@ -1927,7 +705,7 @@ msgid "Accent"
 msgstr "Korosteväri"
 
 msgid "Accept selected cookies"
-msgstr "Hyväksy valitut evästeet"
+msgstr "Hyväksy valitut fevästeet"
 
 msgid "Accessibility information"
 msgstr "Esteettömyystiedot"
@@ -2062,9 +840,6 @@ msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
 
 msgid "Elsewhere on the web"
 msgstr "Muualla verkossa"
-
-msgid "Essential"
-msgstr "Välttämättömät toiminnalliset evästeet"
 
 msgid "Expiration time"
 msgstr "Voimassaoloaika"
@@ -2456,18 +1231,6 @@ msgstr "Tyrsky"
 msgid "weekly"
 msgstr "viikottain"
 
-msgid ""
-"With columns paragraph content producer can divide content in to two "
-"columns. The columns can be equal width or divided in to 30/70 "
-"proportion. \n"
-"The content producer can choose what paragraphs to add "
-"into the columns."
-msgstr ""
-"Palstat paragraafilla sisällöntuottaja voi sijoittaa sisältöä "
-"kahteen palstaan. Palstajaot voivat olla 50/50 tai 30/70 | 70/30 "
-"levyisiä. Paragraafin palstoihin voi vapaasti liittää erilaisia "
-"komponentteja."
-
 msgid "yearly"
 msgstr "vuosittain"
 
@@ -2475,6 +1238,39 @@ msgid "You can connect your account with these external providers."
 msgstr ""
 "Voit yhdistää käyttäjätilisi näihin ulkoisiin "
 "palveluntarjoajiin."
+
+msgctxt "TPR unit also offers service in Swedish"
+msgid "Service in Swedish"
+msgstr "Ruotsinkielistä palvelua"
+
+msgctxt "Unit teaser link"
+msgid "See opening hours and contact details"
+msgstr "Katso aukioloajat ja yhteystiedot"
+
+msgid "Are you sure you want to delete this @item?"
+msgid_plural "Are you sure you want to delete these @items?"
+msgstr[0] "Haluatko varmasti poistaa tämän @item?"
+msgstr[1] "Haluatko varmasti poistaa nämä @items?"
+
+msgid "Add file"
+msgid_plural "Add files"
+msgstr[0] "Lisää tiedosto"
+msgstr[1] "Lisää tiedostot"
+
+msgid "One media item remaining."
+msgid_plural "@count media items remaining."
+msgstr[0] "Voit lisätä vielä yhden mediatiedoston."
+msgstr[1] "Voit lisätä vielä @count mediatiedostoa."
+
+msgid "@selected of @count item selected"
+msgid_plural "@selected of @count items selected"
+msgstr[0] "@selected / @count kohdetta valittu"
+msgstr[1] "@selected / @count kohdetta valittu"
+
+msgid "1 item selected"
+msgid_plural "@count items selected"
+msgstr[0] "Yksi kohde valittu"
+msgstr[1] "@count kohdetta valittu"
 
 msgctxt "Unit search count"
 msgid "result"
@@ -2500,10 +1296,7 @@ msgid_plural "units"
 msgstr[0] "palvelupaikka"
 msgstr[1] "palvelupaikkaa"
 
-msgctxt "TPR unit also offers service in Swedish"
-msgid "Service in Swedish"
-msgstr "Ruotsinkielistä palvelua"
+msgid "<front>"
+msgstr "/cookie-information-and-settings"
 
-msgctxt "Unit teaser link"
-msgid "See opening hours and contact details"
-msgstr "Katso aukioloajat ja yhteystiedot"
+
