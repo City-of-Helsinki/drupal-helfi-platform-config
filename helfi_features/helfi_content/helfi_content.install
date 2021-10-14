@@ -15,6 +15,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9001();
     helfi_content_update_9002();
     helfi_content_update_9004();
+    helfi_content_update_9005();
   }
 }
 
@@ -104,6 +105,21 @@ function helfi_content_update_9004() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9004');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+
+/**
+ * Add class as allowed attribute for ul and li elements on full html text format
+ */
+function helfi_content_update_9005() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9005');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
