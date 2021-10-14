@@ -4,3 +4,5 @@ core_version_requirement: '^8.9 || ^9'
 package: HELfi
 dependencies:
   - 'update_helper:update_helper'
+  - 'matomo:matomo'
+  - 'matomo_reports:matomo_reports'

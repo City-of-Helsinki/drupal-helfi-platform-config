@@ -12,6 +12,11 @@ function helfi_matomo_config_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_matomo_config_update_9001();
   }
+
+  // Override Matomo settings on module install.
+  $configLocation = dirname(__FILE__) . '/config/override/';
+  \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'matomo.settings');
+  \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'matomo_reports.matomoreportssettings');
 }
 
 /**
