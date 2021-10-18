@@ -1299,4 +1299,6 @@ msgstr[1] "palvelupaikkaa"
 msgid "<front>"
 msgstr "/cookie-information-and-settings"
 
-
+msgctxt "Footer back to top link"
+msgid "Back to top"
+msgstr "Takaisin ylös"
