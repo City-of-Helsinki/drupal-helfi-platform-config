@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-10-12 22:43+0300\n"
-"PO-Revision-Date: 2021-10-12 22:43+0300\n"
+"POT-Creation-Date: 2021-10-18 16:19+0300\n"
+"PO-Revision-Date: 2021-10-18 16:19+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -14,6 +14,36 @@ msgstr ""
 
 msgid "simple"
 msgstr "enkel"
+
+msgid "English"
+msgstr "Engelska"
+
+msgctxt "PHP date format"
+msgid "D, m/d/Y - H:i"
+msgstr "j. F Y"
+
+msgctxt "PHP date format"
+msgid "m/d/Y - H:i"
+msgstr "j.n.Y"
+
+msgid "White"
+msgstr "Vit"
+
+msgid "Large (480×480)"
+msgstr "Stor (480×480)"
+
+msgid "Medium (220×220)"
+msgstr "Mellan (220×220)"
+
+msgid "Thumbnail (100×100)"
+msgstr "Miniatyr (100×100)"
+
+msgctxt "PHP date format"
+msgid "l, F j, Y - H:i"
+msgstr "j.n.Y - H:i"
+
+msgid "Media Library thumbnail (220×220)"
+msgstr "Miniatyrbild för mediebibliotek (220 × 220)"
 
 msgid "More info"
 msgstr "Visa cookies"
@@ -30,12 +60,6 @@ msgstr ""
 "<p>Vi använder viktiga cookies "
 "på vår webbplats för att få webbplatsen att fungera. Även "
 "tredjepartscookies används om du ger oss ditt tillstånd.</p>"
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By tapping the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
 
 msgid ""
 "<h2>Hel.fi uses cookies&nbsp;</h2>\r\n"
@@ -74,8 +98,8 @@ msgstr ""
 "utveckla webbplatsen och för att rikta innehåll till varje "
 "användare.</p>"
 
-msgid "Accept only essential cookies"
-msgstr "Acceptera endast nödvändiga cookies"
+msgid "Accept selected cookies"
+msgstr "Acceptera valda cookies"
 
 msgid "Cookie settings"
 msgstr "Cookie -inställningar"
@@ -86,44 +110,14 @@ msgstr "Visa cookies"
 msgid "No results"
 msgstr "Inget resultat"
 
-msgid "English"
-msgstr "Engelska"
-
-msgctxt "PHP date format"
-msgid "D, m/d/Y - H:i"
-msgstr "j. F Y"
-
-msgctxt "PHP date format"
-msgid "m/d/Y - H:i"
-msgstr "j.n.Y"
-
-msgid "White"
-msgstr "Vit"
-
-msgid "Large (480×480)"
-msgstr "Stor (480×480)"
-
-msgid "Medium (220×220)"
-msgstr "Mellan (220×220)"
-
-msgid "Thumbnail (100×100)"
-msgstr "Miniatyr (100×100)"
-
-msgctxt "PHP date format"
-msgid "l, F j, Y - H:i"
-msgstr "j.n.Y - H:i"
-
-msgid "Media Library thumbnail (220×220)"
-msgstr "Miniatyrbild för mediebibliotek (220 × 220)"
-
 msgid "Finnish"
 msgstr "Finska"
 
-msgid "Russian"
-msgstr "Ryska"
-
 msgid "Swedish"
 msgstr "Svenska"
+
+msgid "Load more service points"
+msgstr "Ladda fler serviceställen"
 
 msgid "TPR unit list"
 msgstr "TPR units"
@@ -131,12 +125,18 @@ msgstr "TPR units"
 msgid "TPR Units"
 msgstr "TPR units"
 
+msgid "Russian"
+msgstr "Ryska"
+
+msgid "Accept only essential cookies"
+msgstr "Acceptera endast nödvändiga cookies"
+
 msgid ""
 "<p><strong>You have not saved any cookie preferences.</strong> By "
 "default only essential cookies are saved. See details below.</p>"
 msgstr ""
-"<p><strong>Du har inte sparat några cookieinställningar.</strong> Som "
-"standard sparas endast viktiga cookies. Se detaljer nedan.</p>"
+"<p><strong>Du har inte sparat några cookieinställningar.</strong> "
+"Som standard sparas endast viktiga cookies. Se detaljer nedan.</p>"
 
 msgid ""
 "<p>Your current cookie settings are below. Submit the form to make "
@@ -145,11 +145,26 @@ msgstr ""
 "<p>Dina nuvarande cookie -inställningar finns nedan. Skicka in "
 "formuläret för att göra ändringar.</p>"
 
-msgid "Accept selected cookies"
-msgstr "Acceptera valda cookies"
+msgid "Accessibility information"
+msgstr "Tillgänglighetsuppgifter "
 
 msgid "Consent management"
 msgstr "Samtyckehantering"
+
+msgid "Opening hours"
+msgstr "Öppettider"
+
+msgid "Postal address"
+msgstr "Postadress"
+
+msgid "Requires authentication"
+msgstr "Kräver identifiering"
+
+msgid "Service points"
+msgstr "Serviceställen"
+
+msgid "Visiting address"
+msgstr "Besöksadress"
 
 msgctxt "TPR unit also offers service in Swedish"
 msgid "Service in Swedish"
@@ -171,7 +186,17 @@ msgid_plural "services"
 msgstr[0] "tjänst"
 msgstr[1] "tjänster"
 
-msgid "<front>"
-msgstr "/cookie-information-and-settings"
+msgctxt "Service units count"
+msgid "service point"
+msgid_plural "service points"
+msgstr[0] "serviceställe"
+msgstr[1] "serviceställen"
+
+msgctxt "Contact card title"
+msgid "Contact information"
+msgstr "Kontaktuppgifter"
+
+msgid "Important links"
+msgstr "Viktiga länkar"
 
 

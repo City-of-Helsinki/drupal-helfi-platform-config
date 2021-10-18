@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-10-12 22:43+0300\n"
-"PO-Revision-Date: 2021-10-12 22:43+0300\n"
+"POT-Creation-Date: 2021-10-18 16:19+0300\n"
+"PO-Revision-Date: 2021-10-18 16:19+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -18,152 +18,6 @@ msgstr "Postinumero"
 
 msgid "Compare selected revisions"
 msgstr "Vertaile valittuja versioita"
-
-msgid "More info"
-msgstr "Näytä evästeet"
-
-msgid "Save preferences"
-msgstr "Hyväksy valitut evästeet"
-
-msgid ""
-"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
-"message or find out more about cookies.</p>"
-msgstr ""
-"<h2>Thank you for accepting cookies</h2>\r\n"
-"\r\n"
-"<p>You can now hide "
-"this message or find out more about cookies.</p>\r\n"
-""
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>You have given your consent for us to set "
-"cookies.</p>"
-msgstr ""
-"<h2>Hel.fi uses cookies</h2>\r\n"
-"\r\n"
-"<p>You have given your consent "
-"for us to set cookies.</p>\r\n"
-""
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By clicking the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
-"<h2>Hel.fi käyttää evästeitä</h2><p>Tämä sivusto käyttää "
-"välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä "
-"yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä "
-"käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun "
-"sisällön näyttämiseen.</p>"
-
-msgid ""
-"<h2>We use cookies on this site to enhance your user "
-"experience</h2><p>By tapping the Accept button, you agree to us doing "
-"so.</p>"
-msgstr ""
-
-msgid ""
-"With columns paragraph content producer can divide content in to two "
-"columns. The columns can be equal width or divided in to 30/70 "
-"proportion. \r\n"
-"The content producer can choose what paragraphs to "
-"add into the columns."
-msgstr ""
-"Palstat paragraafilla sisällöntuottaja voi sijoittaa sisältöä "
-"kahteen palstaan. Palstajaot voivat olla 50/50 tai 30/70 | 70/30 "
-"levyisiä. Paragraafin palstoihin voi vapaasti liittää erilaisia "
-"komponentteja."
-
-msgid ""
-"<h2>Hel.fi uses cookies&nbsp;</h2>\r\n"
-"\r\n"
-"<p>We use essential "
-"cookies on our website to make the site work. Also third party cookies "
-"are used if you give us your permission.</p>\r\n"
-""
-msgstr ""
-"<h2>Hel.fi käyttää evästeitä</h2><p>Tämä sivusto käyttää "
-"välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä "
-"yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä "
-"käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun "
-"sisällön näyttämiseen. Jatkamalla sivuston käyttöä ilman "
-"asetusten muuttamista hyväksyt välttämättömien evästeiden "
-"käytön.</p>\r\n"
-""
-
-msgid "Accept only essential cookies"
-msgstr "Hyväksy vain välttämättömät evästeet"
-
-msgid "Cookie settings"
-msgstr "Evästeasetukset"
-
-msgid "Show cookies"
-msgstr "Näytä evästeet"
-
-msgid "No results"
-msgstr ""
-"<p>Ei tuloksia</p>\r\n"
-""
-
-msgid "Meta tags"
-msgstr "Meta-kentät"
-
-msgid "Metatag"
-msgstr "Metatunniste"
-
-msgid "Postal/ZIP code"
-msgstr "Postinumero"
-
-msgid "Metatag plugins"
-msgstr "Metatunnisteen lisäosat"
-
-msgid "Not connected"
-msgstr "Ei yhdistetty"
-
-msgid "Connected Accounts"
-msgstr "Liitetyt tilit"
-
-msgid "Default icon"
-msgstr "Oletusikoni"
-
-msgid "Paragraphs types"
-msgstr "Lohkotyypit"
-
-msgid ""
-"Uncheck this to create a custom alias below. <a "
-"href=\"@admin_link\">Configure URL alias patterns.</a>"
-msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
-
-msgid "Status code"
-msgstr "Tilakoodi"
-
-msgid "List of redirects"
-msgstr "Uudelleenohjaukset"
-
-msgid "Scheduled"
-msgstr "Ajastettu"
-
-msgid "Publish on"
-msgstr "Julkaisupäivämäärä"
-
-msgid "Unpublish on"
-msgstr "Julkaisun peruutuspäivämäärä"
-
-msgid "The date the node will be published."
-msgstr "Päivämäärä jolloin sivu julkaistaan."
-
-msgid "The date the node will be unpublished."
-msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
-
-msgid "Drag to re-order @entity_types."
-msgstr "Raahaa järjestelläksesi @entity_types."
-
-msgid "Simple XML Sitemap"
-msgstr "XML-sivustokartta"
-
-msgid "Regenerate all sitemaps after hitting <em>Save</em>"
-msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
 
 msgid "Plain text"
 msgstr "Puhdas teksti"
@@ -447,6 +301,11 @@ msgstr "Nimi (A-Z)"
 msgid "Name (Z-A)"
 msgstr "Nimi (Z-A)"
 
+msgid "Are you sure you want to delete this @item?"
+msgid_plural "Are you sure you want to delete these @items?"
+msgstr[0] "Haluatko varmasti poistaa tämän @item?"
+msgstr[1] "Haluatko varmasti poistaa nämä @items?"
+
 msgid ""
 "[user:display-name],\n"
 "\n"
@@ -467,6 +326,11 @@ msgstr ""
 
 msgid "Edit {{ name }}"
 msgstr "Muokkaa {{ name }}"
+
+msgid "Add file"
+msgid_plural "Add files"
+msgstr[0] "Lisää tiedosto"
+msgstr[1] "Lisää tiedostot"
 
 msgid "No media items are selected."
 msgstr "Mediatiedostoja ei ole valittu."
@@ -503,39 +367,166 @@ msgstr "Poimi valitut mediatiedostot"
 msgid "The maximum number of media items have been selected."
 msgstr " "
 
+msgid "One media item remaining."
+msgid_plural "@count media items remaining."
+msgstr[0] "Voit lisätä vielä yhden mediatiedoston."
+msgstr[1] "Voit lisätä vielä @count mediatiedostoa."
+
+msgid "@selected of @count item selected"
+msgid_plural "@selected of @count items selected"
+msgstr[0] "@selected / @count kohdetta valittu"
+msgstr[1] "@selected / @count kohdetta valittu"
+
+msgid "1 item selected"
+msgid_plural "@count items selected"
+msgstr[0] "Yksi kohde valittu"
+msgstr[1] "@count kohdetta valittu"
+
 msgid "Add or select media"
 msgstr "Lisää tai valitse mediatiedosto"
 
 msgid "Opening media library."
 msgstr "Avataan mediakirjastoa..."
 
+msgid "More info"
+msgstr "Näytä evästeet"
+
+msgid "Save preferences"
+msgstr "Hyväksy valitut evästeet"
+
 msgid ""
-"<p><a href=\"#\">Search for contacts and phone numbers</a></p><p><a "
-"href=\"#\" class=\"hds-button hds-button--secondary\"><span "
-"aria-hidden=\"true\" class=\"hds-icon hds-icon--phone\"></span><span "
-"class=\"hds-button__label\">Helsinki-info 09 310 1691</span></a></p>"
+"<h2>Thank you for accepting cookies</h2><p>You can now hide this "
+"message or find out more about cookies.</p>"
 msgstr ""
-"<p><a href=\"#\">Hae yhteystietoja ja numeroita</a></p>\r\n"
+"<h2>Thank you for accepting cookies</h2>\r\n"
 "\r\n"
-"<p><a "
-"class=\"hds-button hds-button--secondary hdbt-icon hdbt-icon--phone\" "
-"data-design=\"hds-button hds-button--secondary\" data-icon=\"phone\" "
-"data-link-text=\"Helsinki-info 09 310 1691\" data-protocol=\"false\" "
-"href=\"#\"><span class=\"hds-button__label\">Helsinki-info 09 310 "
-"1691</span> </a></p>\r\n"
+"<p>You can now hide "
+"this message or find out more about cookies.</p>\r\n"
 ""
 
-msgid "Contact information"
-msgstr "Yhteystiedot"
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>You have given your consent for us to set "
+"cookies.</p>"
+msgstr ""
+"<h2>Hel.fi uses cookies</h2>\r\n"
+"\r\n"
+"<p>You have given your consent "
+"for us to set cookies.</p>\r\n"
+""
 
-msgid "Location on map"
-msgstr "Sijainti kartalla"
+msgid ""
+"<h2>We use cookies on this site to enhance your user "
+"experience</h2><p>By clicking the Accept button, you agree to us doing "
+"so.</p>"
+msgstr ""
+"<h2>Hel.fi käyttää evästeitä</h2><p>Tämä sivusto käyttää "
+"välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä "
+"yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä "
+"käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun "
+"sisällön näyttämiseen.</p>"
 
-msgid "View the map in new window"
-msgstr "Avaa kartta uuteen ikkunaan"
+msgid ""
+"With columns paragraph content producer can divide content in to two "
+"columns. The columns can be equal width or divided in to 30/70 "
+"proportion. \r\n"
+"The content producer can choose what paragraphs to "
+"add into the columns."
+msgstr ""
+"Palstat paragraafilla sisällöntuottaja voi sijoittaa sisältöä "
+"kahteen palstaan. Palstajaot voivat olla 50/50 tai 30/70 | 70/30 "
+"levyisiä. Paragraafin palstoihin voi vapaasti liittää erilaisia "
+"komponentteja."
 
-msgid "Reusable paragraph"
-msgstr "Uudelleenkäytettävä lohko"
+msgid ""
+"<h2>Hel.fi uses cookies&nbsp;</h2>\r\n"
+"\r\n"
+"<p>We use essential "
+"cookies on our website to make the site work. Also third party cookies "
+"are used if you give us your permission.</p>\r\n"
+""
+msgstr ""
+"<h2>Hel.fi käyttää evästeitä</h2><p>Tämä sivusto käyttää "
+"välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä "
+"yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä "
+"käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun "
+"sisällön näyttämiseen. Jatkamalla sivuston käyttöä ilman "
+"asetusten muuttamista hyväksyt välttämättömien evästeiden "
+"käytön.</p>\r\n"
+""
+
+msgid "Accept selected cookies"
+msgstr "Hyväksy valitut fevästeet"
+
+msgid "Cookie settings"
+msgstr "Evästeasetukset"
+
+msgid "Show cookies"
+msgstr "Näytä evästeet"
+
+msgid "No results"
+msgstr ""
+"<p>Ei tuloksia</p>\r\n"
+""
+
+msgid "Meta tags"
+msgstr "Meta-kentät"
+
+msgid "Metatag"
+msgstr "Metatunniste"
+
+msgid "Postal/ZIP code"
+msgstr "Postinumero"
+
+msgid "Metatag plugins"
+msgstr "Metatunnisteen lisäosat"
+
+msgid "Not connected"
+msgstr "Ei yhdistetty"
+
+msgid "Connected Accounts"
+msgstr "Liitetyt tilit"
+
+msgid "Default icon"
+msgstr "Oletusikoni"
+
+msgid "Paragraphs types"
+msgstr "Lohkotyypit"
+
+msgid ""
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
+
+msgid "Status code"
+msgstr "Tilakoodi"
+
+msgid "List of redirects"
+msgstr "Uudelleenohjaukset"
+
+msgid "Scheduled"
+msgstr "Ajastettu"
+
+msgid "Publish on"
+msgstr "Julkaisupäivämäärä"
+
+msgid "Unpublish on"
+msgstr "Julkaisun peruutuspäivämäärä"
+
+msgid "The date the node will be published."
+msgstr "Päivämäärä jolloin sivu julkaistaan."
+
+msgid "The date the node will be unpublished."
+msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
+
+msgid "Drag to re-order @entity_types."
+msgstr "Raahaa järjestelläksesi @entity_types."
+
+msgid "Simple XML Sitemap"
+msgstr "XML-sivustokartta"
+
+msgid "Regenerate all sitemaps after hitting <em>Save</em>"
+msgstr "Luo uudelleen kaikki sivustokartat kun sisältö tallennetaan"
 
 msgid "Aligned to the center"
 msgstr "Keskitetty"
@@ -557,15 +548,6 @@ msgstr "Palstat 50/50"
 
 msgid "Divided 30/70"
 msgstr "Palstat 30/70"
-
-msgid "Small cards"
-msgstr "Pienet kortit"
-
-msgid "Large cards"
-msgstr "Suuret kortit"
-
-msgid "Small cards, grey background"
-msgstr "Pienet kortit, harmaa tausta"
 
 msgid "Coat of Arms"
 msgstr "Vaakuna"
@@ -633,20 +615,100 @@ msgstr "Ilman kuvaa"
 msgid "Finnish"
 msgstr "Suomi"
 
-msgid "Russian"
-msgstr "Venäjä"
-
 msgid "Swedish"
 msgstr "Ruotsi"
+
+msgid "Unit"
+msgstr "Toimipiste"
+
+msgid ""
+"Add here the content that you want to appear as cards to the block. "
+"<span class=\"notice\">Works only with TPR Unit in alpha "
+"version</span>"
+msgstr ""
+"Lisää tähän sen sisällön otsikko jonka haluat nostaa "
+"sivulle.\n"
+"<span class=\"notice\">Voit toistaiseksi valita vain "
+"toimipisteitä.</span>"
+
+msgid "Reusable paragraph"
+msgstr "Uudelleenkäytettävä lohko"
 
 msgid "From library"
 msgstr "Uudelleenkäytettävä lohko"
 
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
+msgid "<front>"
+msgstr "/cookie-information-and-settings"
+
+msgid "Footer - Bottom navigation"
+msgstr "Alatunniste - Alavalikko"
+
+msgid "Load more service points"
+msgstr "Lataa lisää palvelupaikkoja"
+
+msgid "TPR errand service list"
+msgstr "TPR Asiointipalvelut"
+
+msgid "TPR Errand Services"
+msgstr "TPR Asiointipalvelut"
+
 msgid "No results found."
 msgstr "Ei tuloksia."
 
-msgid "Paragraphs library"
-msgstr "Uudelleenkäytettävät lohkot"
+msgid "TPR service channel list"
+msgstr "TPR Palvelukanavat"
+
+msgid "TPR Service Channels"
+msgstr "TPR Palvelukanavat"
+
+msgid "TPR unit list"
+msgstr "TPR Toimipisteet"
+
+msgid "TPR Units"
+msgstr "TPR Toimipisteet"
+
+msgid "Russian"
+msgstr "Venäjä"
+
+msgid "Accept only essential cookies"
+msgstr "Hyväksy vain välttämättömät evästeet"
+
+msgid ""
+"<p><a href=\"#\">Search for contacts and phone numbers</a></p><p><a "
+"href=\"#\" class=\"hds-button hds-button--secondary\"><span "
+"aria-hidden=\"true\" class=\"hds-icon hds-icon--phone\"></span><span "
+"class=\"hds-button__label\">Helsinki-info 09 310 1691</span></a></p>"
+msgstr ""
+"<p><a href=\"#\">Hae yhteystietoja ja numeroita</a></p>\r\n"
+"\r\n"
+"<p><a "
+"class=\"hds-button hds-button--secondary hdbt-icon hdbt-icon--phone\" "
+"data-design=\"hds-button hds-button--secondary\" data-icon=\"phone\" "
+"data-link-text=\"Helsinki-info 09 310 1691\" data-protocol=\"false\" "
+"href=\"#\"><span class=\"hds-button__label\">Helsinki-info 09 310 "
+"1691</span> </a></p>\r\n"
+""
+
+msgid "Contact information"
+msgstr "Yhteystiedot"
+
+msgid "Location on map"
+msgstr "Sijainti kartalla"
+
+msgid "View the map in new window"
+msgstr "Avaa kartta uuteen ikkunaan"
+
+msgid "Small cards"
+msgstr "Pienet kortit"
+
+msgid "Large cards"
+msgstr "Suuret kortit"
+
+msgid "Small cards, grey background"
+msgstr "Pienet kortit, harmaa tausta"
 
 msgid "Scheduled content"
 msgstr "Ajastettu sisältö"
@@ -668,24 +730,6 @@ msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
 msgid "Content Overview"
 msgstr "Sisältö"
 
-msgid "TPR errand service list"
-msgstr "TPR Asiointipalvelut"
-
-msgid "TPR Errand Services"
-msgstr "TPR Asiointipalvelut"
-
-msgid "TPR service channel list"
-msgstr "TPR Palvelukanavat"
-
-msgid "TPR Service Channels"
-msgstr "TPR Palvelukanavat"
-
-msgid "TPR unit list"
-msgstr "TPR Toimipisteet"
-
-msgid "TPR Units"
-msgstr "TPR Toimipisteet"
-
 msgid ""
 "<p><strong>You have not saved any cookie preferences.</strong> By "
 "default only essential cookies are saved. See details below.</p>"
@@ -704,21 +748,8 @@ msgctxt "Accent color"
 msgid "Accent"
 msgstr "Korosteväri"
 
-msgid "Accept selected cookies"
-msgstr "Hyväksy valitut fevästeet"
-
 msgid "Accessibility information"
 msgstr "Esteettömyystiedot"
-
-msgid ""
-"Add here the content that you want to appear as cards to the block. "
-"<span class=\"notice\">Works only with TPR Unit in alpha "
-"version</span>"
-msgstr ""
-"Lisää tähän sen sisällön otsikko jonka haluat nostaa "
-"sivulle.\n"
-"<span class=\"notice\">Voit toistaiseksi valita vain "
-"toimipisteitä.</span>"
 
 msgid "Add URL redirect"
 msgstr "Lisää uudelleenohjaus"
@@ -847,9 +878,6 @@ msgstr "Voimassaoloaika"
 msgctxt "Errand service detail heading"
 msgid "Expiration time"
 msgstr "Voimassaoloaika"
-
-msgid "Footer - Bottom navigation"
-msgstr "Alatunniste - Alavalikko"
 
 msgid "Footer bottom navigation menu links"
 msgstr "Alatunniste - Alavalikko"
@@ -1050,7 +1078,7 @@ msgstr "Valitse alatunnisteen taustaväri"
 msgid "Select wave motif"
 msgstr "Valitse koromuoto"
 
-msgid "Service locations"
+msgid "Service points"
 msgstr "Palvelupaikat"
 
 msgctxt "Unit services count context word"
@@ -1181,9 +1209,6 @@ msgstr "Toimipisteet"
 msgid "TPR - Unit settings"
 msgstr "TPR - Toimipisteen asetukset"
 
-msgid "Unit"
-msgstr "Toimipiste"
-
 msgid ""
 "Unit page that has information imported from an integration. You can "
 "enrich some of that information if you wish do to do so."
@@ -1247,31 +1272,6 @@ msgctxt "Unit teaser link"
 msgid "See opening hours and contact details"
 msgstr "Katso aukioloajat ja yhteystiedot"
 
-msgid "Are you sure you want to delete this @item?"
-msgid_plural "Are you sure you want to delete these @items?"
-msgstr[0] "Haluatko varmasti poistaa tämän @item?"
-msgstr[1] "Haluatko varmasti poistaa nämä @items?"
-
-msgid "Add file"
-msgid_plural "Add files"
-msgstr[0] "Lisää tiedosto"
-msgstr[1] "Lisää tiedostot"
-
-msgid "One media item remaining."
-msgid_plural "@count media items remaining."
-msgstr[0] "Voit lisätä vielä yhden mediatiedoston."
-msgstr[1] "Voit lisätä vielä @count mediatiedostoa."
-
-msgid "@selected of @count item selected"
-msgid_plural "@selected of @count items selected"
-msgstr[0] "@selected / @count kohdetta valittu"
-msgstr[1] "@selected / @count kohdetta valittu"
-
-msgid "1 item selected"
-msgid_plural "@count items selected"
-msgstr[0] "Yksi kohde valittu"
-msgstr[1] "@count kohdetta valittu"
-
 msgctxt "Unit search count"
 msgid "result"
 msgid_plural "results"
@@ -1296,7 +1296,17 @@ msgid_plural "units"
 msgstr[0] "palvelupaikka"
 msgstr[1] "palvelupaikkaa"
 
-msgid "<front>"
-msgstr "/cookie-information-and-settings"
+msgctxt "Service units count"
+msgid "service point"
+msgid_plural "service points"
+msgstr[0] "palvelupaikka"
+msgstr[1] "palvelupaikkaa"
+
+msgctxt "Contact card title"
+msgid "Contact information"
+msgstr "Yhteystiedot"
+
+msgid "Important links"
+msgstr "Tärkeitä linkkejä"
 
 
