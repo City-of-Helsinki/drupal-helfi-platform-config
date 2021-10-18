@@ -62,7 +62,7 @@ msgstr ""
 "tredjepartscookies används om du ger oss ditt tillstånd.</p>"
 
 msgid ""
-"<h2>Hel.fi uses cookies&nbsp;</h2>\r\n"
+"<h2>Hel.fi uses cookies</h2>\r\n"
 "\r\n"
 "<p>We use essential "
 "cookies on our website to make the site work. Also third party cookies "
