@@ -107,6 +107,9 @@ msgstr "Cookie -inställningar"
 msgid "Show cookies"
 msgstr "Visa cookies"
 
+msgid "Services"
+msgstr "Tjänster"
+
 msgid "No results"
 msgstr "Inget resultat"
 
@@ -163,6 +166,10 @@ msgstr "Kräver identifiering"
 msgid "Service points"
 msgstr "Serviceställen"
 
+msgctxt "Unit services count context word"
+msgid "services"
+msgstr "tjänster"
+
 msgid "Visiting address"
 msgstr "Besöksadress"
 
@@ -179,6 +186,12 @@ msgid "result"
 msgid_plural "results"
 msgstr[0] "träff"
 msgstr[1] "träffar"
+
+msgctxt "Unit services count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "tjänst"
+msgstr[1] "tjänster"
 
 msgctxt "Service list count"
 msgid "service"
