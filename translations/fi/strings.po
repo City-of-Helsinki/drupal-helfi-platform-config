@@ -53,6 +53,9 @@ msgstr "Valkoinen"
 msgid "Apply filters"
 msgstr "Suodata tuloksia"
 
+msgid "Filter"
+msgstr "Suodata"
+
 msgid "Displaying @start - @end of @total"
 msgstr "Näytetään @start - @end / @total"
 
@@ -642,6 +645,12 @@ msgstr "TPR Palvelukanavat"
 
 msgid "TPR Service Channels"
 msgstr "TPR Palvelukanavat"
+
+msgid "TPR service list"
+msgstr "TPR Palvelut"
+
+msgid "TPR Services"
+msgstr "TPR Palvelut"
 
 msgid "TPR unit list"
 msgstr "TPR Toimipisteet"

@@ -1,4 +1,5 @@
-popup_agreed: {  }
+popup_agreed:
+  value: "<h2>Kiitos evästeiden hyväksymisestä.</h2>\r\n\r\n<p>Voit nyt piilottaa tämän viestin tai vaihehtoisesti lukea lisätietoja evästeistä.</p>\r\n"
 popup_agree_button_message: Hyväksy
 popup_more_info_button_message: 'Näytä evästeet'
 popup_find_more_button_message: 'Näytä evästeet'
