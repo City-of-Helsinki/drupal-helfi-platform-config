@@ -78,7 +78,8 @@ function helfi_gdpr_compliance_update_9003() {
   $configurations = [
     'eu_cookie_compliance.cookie_category.preference',
     'eu_cookie_compliance.cookie_category.statistics',
-    'eu_cookie_compliance.cookie_category.marketing'
+    'eu_cookie_compliance.cookie_category.marketing'.
+    'eu_cookie_compliance.settings'
   ];
 
   // Install configurations and translations.
