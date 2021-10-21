@@ -73,14 +73,22 @@ function helfi_gdpr_compliance_update_9003() {
 
   // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
-  ConfigHelper::installNewConfig($configLocation, 'eu_cookie_compliance.cookie_category.preference');
-  ConfigHelper::installNewConfig($configLocation, 'eu_cookie_compliance.cookie_category.statistics');
-  ConfigHelper::installNewConfig($configLocation, 'eu_cookie_compliance.cookie_category.marketing');
+  $configurations = [
+    'eu_cookie_compliance.cookie_category.preference',
+    'eu_cookie_compliance.cookie_category.statistics',
+    'eu_cookie_compliance.cookie_category.marketing'
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
 
   // Remove obsolete cookie category.
   \Drupal::configFactory()->getEditable('eu_cookie_compliance.cookie_category.performance_ux')->delete();
-
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9003');
