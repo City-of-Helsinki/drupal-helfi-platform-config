@@ -476,6 +476,9 @@ msgstr ""
 msgid "Without image and description"
 msgstr "Ilman kuvaa ja kuvausta"
 
+msgid "White"
+msgstr "Valkoinen"
+
 msgid "You can add link button to the banner using this field."
 msgstr ""
 "Voit lisätä linkkipainikkeen banneriin täyttämällä nämä "

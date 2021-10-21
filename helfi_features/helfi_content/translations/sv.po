@@ -130,3 +130,5 @@ msgstr "Titel"
 msgid "Upper content region"
 msgstr "Innehåll"
 
+msgid "White"
+msgstr "Vit"
