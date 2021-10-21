@@ -146,6 +146,15 @@ msgstr ""
 "Luo dia galleriaan valitsemalla kuva media-kirjastosta ja  kirjoita "
 "sille halutessasi kuvateksti."
 
+msgid "Default long date"
+msgstr "Päivämäärä pitkässä muodossa"
+
+msgid "Default medium date"
+msgstr "Päivämäärä keskipitkässä muodossa"
+
+msgid "Default short date"
+msgstr "Päivämäärä lyhyessä muodossa"
+
 msgid "Description"
 msgstr "Kuvaus"
 
@@ -157,6 +166,9 @@ msgstr "Diagonaalinen"
 
 msgid "Divided 70/30"
 msgstr "Palstat 70/30"
+
+msgid "Fallback date format"
+msgstr "Vara-arvo päivämäärämuodolle"
 
 msgid "Gallery"
 msgstr "Galleria"
@@ -175,6 +187,27 @@ msgstr "Otsikko"
 
 msgid "Hero"
 msgstr "Hero-lohko"
+
+msgid "HTML Date"
+msgstr "HTML Päivämäärä"
+
+msgid "HTML Datetime"
+msgstr "HTML Päivämäärä ja aika"
+
+msgid "HTML Month"
+msgstr "HTML Kuukausi"
+
+msgid "HTML Time"
+msgstr "HTML Aika"
+
+msgid "HTML Week"
+msgstr "HTML Viikko"
+
+msgid "HTML Year"
+msgstr "HTML Vuosi"
+
+msgid "HTML Yearless date"
+msgstr "HTML Päivämäärä (ei vuotta)"
 
 msgid "Icon"
 msgstr "Ikoni"
@@ -227,6 +260,15 @@ msgstr "Sisältö"
 
 msgid "Items heading level"
 msgstr "Sisällön pääotsikoiden taso"
+
+msgid "j.n.Y"
+msgstr "j.n.Y - H:i"
+
+msgid "j.n.Y - H:i"
+msgstr "j.n.Y - H:i"
+
+msgid "jS F Y"
+msgstr "j. F\\t\\a Y"
 
 msgid "Keywords"
 msgstr "Asiasanat"
@@ -433,6 +475,9 @@ msgstr ""
 
 msgid "Without image and description"
 msgstr "Ilman kuvaa ja kuvausta"
+
+msgid "White"
+msgstr "Valkoinen"
 
 msgid "You can add link button to the banner using this field."
 msgstr ""

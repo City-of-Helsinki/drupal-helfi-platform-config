@@ -13,6 +13,9 @@ msgstr "Avaa kartta uudessa ikkunassa"
 msgid "Title"
 msgstr "Otsikko"
 
+msgid "Url"
+msgstr "URL-osoite"
+
 msgid ""
 "With map paragraph content producer can add an embedded map from "
 "https://kartta.hel.fi and https://palvelukartta.hel.fi."
