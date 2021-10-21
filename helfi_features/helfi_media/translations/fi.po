@@ -4,6 +4,9 @@ msgstr ""
 msgid "File"
 msgstr "Tiedosto"
 
+msgid "Focal point"
+msgstr "Keskipiste"
+
 msgid "Gallery thumbnail"
 msgstr "Gallerian pikkukuva"
 
