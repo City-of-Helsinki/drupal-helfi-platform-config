@@ -212,4 +212,5 @@ msgstr "Kontaktuppgifter"
 msgid "Important links"
 msgstr "Viktiga länkar"
 
-
+msgid "Apply"
+msgstr "Verkställ"
