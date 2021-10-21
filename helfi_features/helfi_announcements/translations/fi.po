@@ -8,7 +8,7 @@ msgid "Attention"
 msgstr "Huomio"
 
 msgid "Alert"
-msgstr "Hälytys"
+msgstr "Varoitus"
 
 msgid "Announcement"
 msgstr "Poikkeusilmoitus"
