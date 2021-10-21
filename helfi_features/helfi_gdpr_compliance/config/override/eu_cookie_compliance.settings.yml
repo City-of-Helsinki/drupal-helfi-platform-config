@@ -50,7 +50,7 @@ method: categories
 disagree_button_label: 'No, thanks'
 disabled_javascripts: ''
 automatic_cookies_removal: true
-allowed_cookies: 'marketing:form-test-cookie'
+allowed_cookies: "essential:AWSELB\r\nessential:AWSELBCORS\r\nessential:cookiehub\r\nessential:mtm_cookie_consent\r\nessential:frosmo_quickContext\r\nessential:id\r\nessential:JSESSIONID\r\nessential:COOKIE_SUPPORT\r\npreference:httpskartta.hel.fi.SWCulture\r\npreference:icareus-device\r\npreference:VISITOR_INFO1_LIVE\r\npreference:CONSENT\r\nstatistics:Snoobisession_hel_fi\r\nstatistics:Snoobi30minute_hel_fi\r\nstatistics:SnoobiID\r\nstatistics:nmstat\r\nstatistics:Snoobisession_hel_projektit\r\nstatistics:Snoobi30minute_hel_projektit\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.141.89f6\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:__utma\r\nstatistics:__utmc\r\nstatistics:__utmz\r\nstatistics:__utmt\r\nstatistics:__utmb\r\nstatistics:YSC\r\nmarketing:IDE"
 consent_storage_method: do_not_store
 withdraw_message:
   value: "<h2>Hel.fi uses cookies&nbsp;</h2>\r\n\r\n<p>We use essential cookies on our website to make the site work. Also third party cookies are used if you give us your permission.</p>\r\n"
