@@ -1,6 +1,0 @@
-matomo_report_server: null
-matomo_server_url: 'https://digiaiiris.com/'
-token_auth: null
-matomo_reports_token_auth: ''
-matomo_reports_sites: null
-matomo_reports_allowed_sites: '141'
