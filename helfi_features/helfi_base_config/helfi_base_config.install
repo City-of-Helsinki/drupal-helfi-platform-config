@@ -36,6 +36,7 @@ function helfi_base_config_install($is_syncing) {
     // Apply the HELfi base configurations.
     if (Drupal::moduleHandler()->moduleExists('update_helper')) {
       helfi_base_config_update_9001();
+      helfi_base_config_update_9002();
     }
   }
 }
