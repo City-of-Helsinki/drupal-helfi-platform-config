@@ -85,9 +85,6 @@ function helfi_base_config_update_9001() {
 
 /**
  * Update easybreadcrumb settings and install breadcrumb base links configuration.
- *
- * Config replace will be replaced with Config rewrite.
- * See: https://www.drupal.org/project/config_replace/issues/3022176
  */
 function helfi_base_config_update_9002() {
 
