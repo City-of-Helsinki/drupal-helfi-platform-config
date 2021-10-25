@@ -28,8 +28,6 @@
     "drupal/image_style_quality": "^1.4",
     "drupal/imagecache_external": "^3.0",
     "drupal/linkit": "^6.0@beta",
-    "drupal/matomo": "^1.11",
-    "drupal/matomo_reports": "^1.1",
     "drupal/media_entity_soundcloud": "^3.0.0",
     "drupal/menu_block_current_language": "^1.5",
     "drupal/menu_link_attributes": "^1.2",
@@ -72,6 +70,9 @@
       },
       "drupal/linkit": {
         "[#UHF-1872] Linkit support for link field": "https://www.drupal.org/files/issues/2021-08-20/avoid-linkit-CI-issue.patch"
+      },
+      "drupal/matomo": {
+        "https://www.drupal.org/project/matomo/issues/3244555#comment-14261524": "https://www.drupal.org/files/issues/2021-10-19/3244555_matomo_strict.patch"
       }
     }
   }

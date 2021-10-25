@@ -31,14 +31,47 @@ msgstr "Innehåll"
 msgid "Content region"
 msgstr "Innehåll"
 
+msgid "Default long date"
+msgstr "Förvalt långt datum"
+
+msgid "Default medium date"
+msgstr "Förvalt mellanlångt datum"
+
+msgid "Default short date"
+msgstr "Förvalt kort datum"
+
 msgid "Description"
 msgstr "Beskrivning"
+
+msgid "Fallback date format"
+msgstr "Datumformat i reserv"
 
 msgid "Grey"
 msgstr "Vit"
 
 msgid "Heading"
 msgstr "Rubrik"
+
+msgid "HTML Date"
+msgstr "HTML datum"
+
+msgid "HTML Datetime"
+msgstr "HTML tidsdatum"
+
+msgid "HTML Month"
+msgstr "HTML månad"
+
+msgid "HTML Time"
+msgstr "HTML tid"
+
+msgid "HTML Week"
+msgstr "HTML vecka"
+
+msgid "HTML Year"
+msgstr "HTML år"
+
+msgid "HTML Yearless date"
+msgstr "HTML datum utan år"
 
 msgid "Icon"
 msgstr "Ikon"
@@ -48,6 +81,15 @@ msgstr "Bild"
 
 msgid "Items"
 msgstr "Poster"
+
+msgid "j.n.Y"
+msgstr "j.n.Y"
+
+msgid "j.n.Y - H:i"
+msgstr "j.n.Y - H:i"
+
+msgid "jS F Y"
+msgstr "j. F Y"
 
 msgid "Keywords"
 msgstr "Nyckelord"
@@ -88,3 +130,5 @@ msgstr "Titel"
 msgid "Upper content region"
 msgstr "Innehåll"
 
+msgid "White"
+msgstr "Vit"

@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Implements hook_install().
  *
@@ -12,6 +14,7 @@ function helfi_gdpr_compliance_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     // Update base configurations for HELfi GDPR compliance.
     helfi_gdpr_compliance_update_9001();
+    helfi_gdpr_compliance_update_9003();
   }
 
   // Override eu_cookie_compliance settings on module install.
@@ -55,6 +58,41 @@ function helfi_gdpr_compliance_update_9002() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9002');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+
+/**
+ * Update cookie compliance information and whitelisted cookies.
+ */
+function helfi_gdpr_compliance_update_9003() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'eu_cookie_compliance.cookie_category.preference',
+    'eu_cookie_compliance.cookie_category.statistics',
+    'eu_cookie_compliance.cookie_category.marketing'.
+    'eu_cookie_compliance.settings'
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Remove obsolete cookie category.
+  \Drupal::configFactory()->getEditable('eu_cookie_compliance.cookie_category.performance_ux')->delete();
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9003');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

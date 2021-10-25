@@ -102,3 +102,26 @@ function hdbt_content_tokens(
 
   return $replacements;
 }
+
+/**
+ * Implements hook__preprocess_HOOK().
+ */
+function helfi_platform_config_preprocess_breadcrumb(&$variables) {
+  $config = \Drupal::config('helfi_base_config.breadcrumb');
+  if ($config && !$config->get('breadcrumb_base_links')) {
+    return;
+  }
+
+  foreach(array_reverse($config->get('breadcrumb_base_links')) as $crumb) {
+    if (empty($crumb['text']) || !filter_var($crumb['url'], FILTER_VALIDATE_URL) ) {
+      continue;
+    }
+    array_unshift(
+      $variables['breadcrumb'],
+      [
+        'text' => $crumb['text'],
+        'url' => $crumb['url']
+      ]
+    );
+  }
+}

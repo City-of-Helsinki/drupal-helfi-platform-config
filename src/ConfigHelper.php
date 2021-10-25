@@ -31,6 +31,30 @@ class ConfigHelper {
   }
 
   /**
+   * Install new configuration translation.
+   *
+   * @param string $config_location
+   *   Absolute path to the configuration to be created.
+   * @param string $config_name
+   *   Name of the configuration translation to install.
+   */
+  public static function installNewConfigTranslation(string $config_location, string $config_name): void {
+    $language_manager = \Drupal::languageManager();
+
+    foreach ($language_manager->getLanguages() as $language) {
+      if ($language->getId() !== $language_manager->getDefaultLanguage()->getId()) {
+        $filepath = "{$config_location}{$language->getId()}/{$config_name}.yml";
+        if ($yaml = file_get_contents($filepath)) {
+          $data = Yaml::parse($yaml);
+          $language_manager->getLanguageConfigOverride($language->getId(), $config_name)
+            ->setData($data)
+            ->save();
+        }
+      }
+    }
+  }
+
+  /**
    * Install new field.
    *
    * @param string $config_location
