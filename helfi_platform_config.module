@@ -107,7 +107,7 @@ function hdbt_content_tokens(
  * Implements hook__preprocess_HOOK().
  */
 function helfi_platform_config_preprocess_breadcrumb(&$variables) {
-  $config = \Drupal::config('helfi_platform_config.breadcrumb');
+  $config = \Drupal::config('helfi_base_config.breadcrumb');
   if ($config && !$config->get('breadcrumb_base_links')) {
     return;
   }
