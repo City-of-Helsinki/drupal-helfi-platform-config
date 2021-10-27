@@ -258,11 +258,12 @@ class TranslationWriterCommand extends DrushCommands {
   private function arrayFlatten(array $array, string $fullname = ''): array {
     $return = [];
     foreach ($array as $key => $value) {
+      $fullpath = $fullname . '.' . $key;
       if (is_array($value)) {
-        $return = array_merge($return, $this->arrayFlatten($value, $fullname . '.' . $key));
+        $return = array_merge($return, $this->arrayFlatten($value, $fullpath));
       }
       else {
-        $return[$key] = $value;
+        $return[$fullpath] = $value;
       }
     }
     return $return;
