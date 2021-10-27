@@ -6,7 +6,6 @@ views.view.service_units:
           pager:
             options:
               items_per_page: 8
-        display_title: Master
   update_actions:
     change:
       display:
