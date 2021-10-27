@@ -214,3 +214,7 @@ msgstr "Viktiga länkar"
 
 msgid "Apply"
 msgstr "Verkställ"
+
+msgctxt "Footer back to top link"
+msgid "Back to top"
+msgstr "Tillbaka till toppen"

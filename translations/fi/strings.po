@@ -1281,4 +1281,6 @@ msgstr "Yhteystiedot"
 msgid "Important links"
 msgstr "Tärkeitä linkkejä"
 
-
+msgctxt "Footer back to top link"
+msgid "Back to top"
+msgstr "Takaisin ylös"
