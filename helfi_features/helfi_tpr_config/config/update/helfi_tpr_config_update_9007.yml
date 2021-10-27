@@ -1,0 +1,78 @@
+views.view.service_units:
+  expected_config:
+    display:
+      default:
+        display_options:
+          pager:
+            options:
+              items_per_page: 8
+        display_title: Master
+  update_actions:
+    change:
+      display:
+        default:
+          display_options:
+            pager:
+              options:
+                items_per_page: 5
+          display_title: Default
+views.view.tpr_service_list:
+  expected_config:
+    display:
+      default:
+        display_options:
+          exposed_form:
+            options:
+              submit_button: Apply
+        display_title: Master
+      page_1:
+        display_options:
+          display_extenders: {  }
+  update_actions:
+    change:
+      display:
+        default:
+          display_options:
+            exposed_form:
+              options:
+                submit_button: Filter
+          display_title: Default
+        page_1:
+          display_options:
+            display_extenders:
+              metatag_display_extender: {  }
+views.view.tpr_unit_list:
+  expected_config:
+    display:
+      default:
+        display_options:
+          exposed_form:
+            options:
+              submit_button: Apply
+        display_title: Master
+      page_1:
+        display_options:
+          display_extenders: {  }
+  update_actions:
+    change:
+      display:
+        default:
+          display_options:
+            exposed_form:
+              options:
+                submit_button: Filter
+          display_title: Default
+        page_1:
+          display_options:
+            display_extenders:
+              metatag_display_extender: {  }
+views.view.unit_services:
+  expected_config:
+    display:
+      default:
+        display_title: Master
+  update_actions:
+    change:
+      display:
+        default:
+          display_title: Default
