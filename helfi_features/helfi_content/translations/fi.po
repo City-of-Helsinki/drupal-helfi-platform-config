@@ -26,6 +26,15 @@ msgstr "Lisää haluamasi kuvatiedosto tähän media-kirjastosta."
 msgid "Admin"
 msgstr "Ylläpitäjä"
 
+msgid "Aligned to the center"
+msgstr "Keskitetty"
+
+msgid "Aligned to the center, secondary color"
+msgstr "Keskitetty, toissijainen väri"
+
+msgid "Aligned to the left"
+msgstr "Tasattu vasemmalle"
+
 msgid "Aligned to the left, secondary color"
 msgstr "Tasattu vasemmalle, toissijainen väri"
 
@@ -38,8 +47,14 @@ msgstr "Kirjoittaja"
 msgid "Background color"
 msgstr "Taustaväri"
 
+msgid "Background image"
+msgstr "Taustakuva"
+
 msgid "Background image, text on left"
 msgstr "Taustakuva, teksti vasemmalla"
+
+msgid "Background image, text on right"
+msgstr "Taustakuva, teksti oikealla"
 
 msgid "Banner"
 msgstr "Banneri"
@@ -53,6 +68,12 @@ msgstr ""
 
 msgid "Basic page"
 msgstr "Perussivu"
+
+msgid "Brick"
+msgstr "Tiili"
+
+msgid "Bus"
+msgstr "Bussi"
 
 msgid "Caption"
 msgstr "Kuvateksti"
@@ -98,6 +119,9 @@ msgstr ""
 "Valitse minkälaisen tyylin haluat linkkipainikkeelle. Jos et lisää "
 "banneriin linkkiä voit jättää tämän valinnan huomiotta."
 
+msgid "Coat of Arms"
+msgstr "Vaakuna"
+
 msgid "Columns"
 msgstr "Palstat"
 
@@ -139,6 +163,9 @@ msgstr ""
 "etusivuna. Laskeutumissivu koostuu pääosin nostoista, listauksista "
 "ja linkeistä."
 
+msgid "Copper"
+msgstr "Kupari"
+
 msgid ""
 "Create gallery slides here by choosing image from media library and "
 "optionally writing a caption to go with it."
@@ -164,11 +191,23 @@ msgstr "Tyyli"
 msgid "Diagonal"
 msgstr "Diagonaalinen"
 
+msgid "Divided 30/70"
+msgstr "Palstat 30/70"
+
+msgid "Divided 50/50"
+msgstr "Palstat 50/50"
+
 msgid "Divided 70/30"
 msgstr "Palstat 70/30"
 
 msgid "Fallback date format"
 msgstr "Vara-arvo päivämäärämuodolle"
+
+msgid "Fog"
+msgstr "Sumu"
+
+msgid "Full colour background"
+msgstr "Täysvärinen"
 
 msgid "Gallery"
 msgstr "Galleria"
@@ -178,6 +217,9 @@ msgstr "Gallerian dia"
 
 msgid "Gallery slides"
 msgstr "Gallerian diat"
+
+msgid "Gold"
+msgstr "Kulta"
 
 msgid "Grey"
 msgstr "Harmaa"
@@ -228,6 +270,27 @@ msgstr "Kuva"
 msgid "Image file"
 msgstr "Kuvatiedosto"
 
+msgid "Image on left"
+msgstr "Kuva vasemmalla"
+
+msgid "Image on left, secondary color"
+msgstr "Kuva vasemmalla, toissijainen väri"
+
+msgid "Image on right"
+msgstr "Kuva oikealla"
+
+msgid "Image on right, secondary color"
+msgstr "Kuva oikealla, toissijainen väri"
+
+msgid "Image on the bottom"
+msgstr "Kuva alhaalla"
+
+msgid "Image on the left"
+msgstr "Kuva vasemmalla"
+
+msgid "Image on the right"
+msgstr "Kuva oikealla"
+
 msgid ""
 "Image to be used as an illustration or as a background of the hero "
 "depending on what design you chose."
@@ -275,6 +338,9 @@ msgstr "Asiasanat"
 
 msgid "Landing page"
 msgstr "Laskeutumissivu"
+
+msgid "Large cards"
+msgstr "Suuret kortit"
 
 msgid "Large cards, grey background"
 msgstr "Suuret kortit, harmaa tausta"
@@ -349,6 +415,9 @@ msgstr "Yksittäinen haitarin sisältökohta, jossa on otsikko ja sisältö."
 msgid "One slide in the gallery that can include image and caption."
 msgstr "Yksittäinen gallerian dia jossa voi olla kuva ja kuvateksti."
 
+msgid "Only borders"
+msgstr "Reunustettu"
+
 msgid "Optional short description for hero block."
 msgstr "Valinnainen lyhyt kuvaus lohkolle."
 
@@ -392,6 +461,18 @@ msgstr "Sivupalkin sisältö"
 
 msgid "Sidebar text"
 msgstr "Sivupalkin teksti"
+
+msgid "Silver"
+msgstr "Hopea"
+
+msgid "Small cards"
+msgstr "Pienet kortit"
+
+msgid "Small cards, grey background"
+msgstr "Pienet kortit, harmaa tausta"
+
+msgid "Summer"
+msgstr "Kesä"
 
 msgid "Text"
 msgstr "Teksti"
@@ -443,6 +524,9 @@ msgstr ""
 "Monipuolinen paragraph, joka peittää suuren alueen sisältöalueesta "
 "ja perinteisesti sijoitetaan sivun yläosaan."
 
+msgid "White"
+msgstr "Valkoinen"
+
 msgid ""
 "With columns paragraph content producer can divide content in to two "
 "columns. The columns can be equal width or divided in to 30/70 "
@@ -473,11 +557,20 @@ msgstr ""
 "sisältä. Sisällön tiedot haetaan automaattisesti viitteen kautta "
 "ja sisältö esitetään korttinäkymässä."
 
+msgid "With image"
+msgstr "Kuvallinen"
+
+msgid "Without image"
+msgstr "Ilman kuvaa"
+
 msgid "Without image and description"
 msgstr "Ilman kuvaa ja kuvausta"
 
-msgid "White"
-msgstr "Valkoinen"
+msgid "Without image, align center"
+msgstr "Ilman kuvaa, tasattu keskelle"
+
+msgid "Without image, align left"
+msgstr "Ilman kuvaa, tasattu vasemmalle"
 
 msgid "You can add link button to the banner using this field."
 msgstr ""

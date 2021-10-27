@@ -10,8 +10,14 @@ msgstr "Käytä"
 msgid "Asc"
 msgstr "Nousevasti"
 
-msgid "default_summary"
-msgstr "full_html"
+msgid "Block"
+msgstr "Lohko"
+
+msgid "Combine fields filter"
+msgstr "Kentät yhdistävä suodatin"
+
+msgid "Default"
+msgstr "Oletus"
 
 msgid "Desc"
 msgstr "Laskevasti"
@@ -63,6 +69,9 @@ msgstr "Lohkot"
 
 msgid "Reset"
 msgstr "Palauta"
+
+msgid "Search"
+msgstr "Etsi"
 
 msgid "Search button"
 msgstr "Hakukentän painike"
