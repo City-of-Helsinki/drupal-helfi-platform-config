@@ -1,10 +1,25 @@
 msgid ""
 msgstr ""
 
-msgid "- All -"
-msgstr "- Kaikki -"
-
 msgid "300 Multiple Choices"
+msgstr "300 Useita valintoja"
+
+msgid "301 Moved Permanently"
+msgstr "301 Pysyvästi siirretty"
+
+msgid "302 Found"
+msgstr "302 Löydetty"
+
+msgid "303 See Other"
+msgstr "303 Kts. toinen"
+
+msgid "304 Not Modified"
+msgstr "304 Muuttamaton"
+
+msgid "305 Use Proxy"
+msgstr "305 Käytä proxyä"
+
+msgid "307 Temporary Redirect"
 msgstr "307 Tilapäinen uudelleenohjaus"
 
 msgid "Action"
@@ -15,9 +30,6 @@ msgstr "Aktiivinen"
 
 msgid "All"
 msgstr "Kaikki"
-
-msgid "Asc"
-msgstr "Nousevasti"
 
 msgid "Author"
 msgstr "Kirjoittaja"
@@ -49,17 +61,11 @@ msgstr "Luotu"
 msgid "Default"
 msgstr "Oletus"
 
-msgid "Desc"
-msgstr "Laskevasti"
-
 msgid "Entity"
 msgstr "Entiteetti"
 
 msgid "Entity type"
 msgstr "Entiteetin tyyppi"
-
-msgid "Fid"
-msgstr "FId"
 
 msgid "File usage"
 msgstr "Tiedoston käyttö"
@@ -72,9 +78,6 @@ msgstr "Tiedostot"
 
 msgid "Files overview"
 msgstr "Tiedostot"
-
-msgid "Filter"
-msgstr "Suodatin"
 
 msgid "Find and manage files."
 msgstr "Etsi ja hallitse tiedostoja."
@@ -91,20 +94,11 @@ msgstr "Lähettäjä"
 msgid "Home"
 msgstr "Etusivu"
 
-msgid "Items per page"
-msgstr "Merkintöjä sivua kohti"
-
 msgid "Language"
 msgstr "Kieli"
 
 msgid "Last access"
 msgstr "Viimeksi paikalla"
-
-msgid "last »"
-msgstr "viimeinen »"
-
-msgid "Last »"
-msgstr "Viimeinen »"
 
 msgid "List"
 msgstr "Lista"
@@ -133,12 +127,6 @@ msgstr "Nimi"
 msgid "Name or email contains"
 msgstr "Nimi tai sähköposti sisältää"
 
-msgid "Next ›"
-msgstr "Seuraava ›"
-
-msgid "next ›"
-msgstr "seuraava ›"
-
 msgid "No files available."
 msgstr "Tiedostoja ei ole saatavilla."
 
@@ -150,9 +138,6 @@ msgstr "{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä."
 
 msgid "No scheduled content."
 msgstr "Ei vielä ajastettua sisältöä."
-
-msgid "Offset"
-msgstr "Offset"
 
 msgid "Operations"
 msgstr "Toimenpiteet"
@@ -192,9 +177,6 @@ msgstr "Redirect"
 msgid "Registering module"
 msgstr "Käytön kirjannut moduuli"
 
-msgid "Reset"
-msgstr "Palauta"
-
 msgid "Role"
 msgstr "Rooli"
 
@@ -215,9 +197,6 @@ msgstr "Sivuston osioiden linkit"
 
 msgid "Size"
 msgstr "Koko"
-
-msgid "Sort by"
-msgstr "Lajittele"
 
 msgid "Status"
 msgstr "Tila"
@@ -260,16 +239,4 @@ msgstr "Käyttäjätunnus"
 
 msgid "With selection"
 msgstr "Valinnalla"
-
-msgid "« first"
-msgstr "« ensimmäinen"
-
-msgid "« First"
-msgstr "« Ensimmäinen"
-
-msgid "‹ Previous"
-msgstr "‹ Edellinen"
-
-msgid "‹ previous"
-msgstr "‹ edellinen"
 

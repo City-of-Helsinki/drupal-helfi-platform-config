@@ -457,20 +457,6 @@ display:
             default_group_multiple: {  }
             group_items:
               -
-                value: {  }
-              -
-                value: {  }
-              -
-                value: {  }
-              -
-                value: {  }
-              -
-                value: {  }
-              -
-                value: {  }
-              -
-                value: {  }
-              -
                 operator: '='
                 title: '300 Multiple Choices'
                 value:
