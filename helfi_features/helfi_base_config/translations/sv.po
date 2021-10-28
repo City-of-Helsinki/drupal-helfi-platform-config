@@ -1,9 +1,6 @@
 msgid ""
 msgstr ""
 
-msgid ", "
-msgstr ", "
-
 msgid "Action"
 msgstr "Åtgärd"
 
