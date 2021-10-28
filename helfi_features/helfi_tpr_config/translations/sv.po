@@ -4,6 +4,18 @@ msgstr ""
 msgid "- All -"
 msgstr "- Alla -"
 
+msgid "All"
+msgstr "Alla"
+
+msgid "Block"
+msgstr "Block"
+
+msgid "Combine fields filter"
+msgstr "Kombinera filterfält"
+
+msgid "Default"
+msgstr "Förvald"
+
 msgid "Description"
 msgstr "Beskrivning"
 
@@ -19,11 +31,17 @@ msgstr "Ladda fler tjänster"
 msgid "Next ›"
 msgstr "Nästa ›"
 
+msgid "No results"
+msgstr "Inget resultat"
+
 msgid "Offset"
 msgstr "Kompensera"
 
 msgid "Paragraph"
 msgstr "Paragraf"
+
+msgid "Search"
+msgstr "Sök"
 
 msgid "Teaser"
 msgstr "Ingress"

@@ -1,17 +1,14 @@
 msgid ""
 msgstr ""
 
-msgid "Notification"
-msgstr "Ilmoitus"
-
-msgid "Attention"
-msgstr "Huomio"
-
 msgid "Alert"
 msgstr "Varoitus"
 
 msgid "Announcement"
 msgstr "Poikkeusilmoitus"
+
+msgid "Attention"
+msgstr "Huomio"
 
 msgid "Body"
 msgstr "Sisältö"
@@ -25,6 +22,9 @@ msgstr ""
 
 msgid "Link"
 msgstr "Linkki"
+
+msgid "Notification"
+msgstr "Ilmoitus"
 
 msgid "Please note that title is not shown alongside with the body text."
 msgstr "Huomioithan, että otsikkoa ei näytetä sisältötekstin yhteydessä."

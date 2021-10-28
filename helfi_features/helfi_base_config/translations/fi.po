@@ -1,8 +1,26 @@
 msgid ""
 msgstr ""
 
-msgid "- All -"
-msgstr "- Kaikki -"
+msgid "300 Multiple Choices"
+msgstr "300 Useita valintoja"
+
+msgid "301 Moved Permanently"
+msgstr "301 Pysyvästi siirretty"
+
+msgid "302 Found"
+msgstr "302 Löydetty"
+
+msgid "303 See Other"
+msgstr "303 Kts. toinen"
+
+msgid "304 Not Modified"
+msgstr "304 Muuttamaton"
+
+msgid "305 Use Proxy"
+msgstr "305 Käytä proxyä"
+
+msgid "307 Temporary Redirect"
+msgstr "307 Tilapäinen uudelleenohjaus"
 
 msgid "Action"
 msgstr "Toiminto"
@@ -10,38 +28,83 @@ msgstr "Toiminto"
 msgid "Active"
 msgstr "Aktiivinen"
 
-msgid "Asc"
-msgstr "Nousevasti"
+msgid "All"
+msgstr "Kaikki"
+
+msgid "Author"
+msgstr "Kirjoittaja"
 
 msgid "Blocked"
 msgstr "Suljettu"
 
-msgid "Desc"
-msgstr "Laskevasti"
+msgid "Bulk update"
+msgstr "Massapäivitys"
+
+msgid "Changed date"
+msgstr "Muutospäivämäärä"
+
+msgid "Content"
+msgstr "Sisältö"
+
+msgid "Content Overview"
+msgstr "Sisältö"
+
+msgid "Content Type"
+msgstr "Sisältötyyppi"
+
+msgid "Content type"
+msgstr "Sisältötyyppi"
+
+msgid "Created"
+msgstr "Luotu"
+
+msgid "Default"
+msgstr "Oletus"
+
+msgid "Entity"
+msgstr "Entiteetti"
+
+msgid "Entity type"
+msgstr "Entiteetin tyyppi"
 
 msgid "File usage"
 msgstr "Tiedoston käyttö"
 
-msgid "File usage information for {{ arguments.fid }}"
-msgstr "Kaikki"
+msgid "Filename"
+msgstr "Tiedoston nimi"
 
-msgid "Filter"
-msgstr "Suodatin"
+msgid "Files"
+msgstr "Tiedostot"
 
-msgid "Find and manage scheduled content"
+msgid "Files overview"
+msgstr "Tiedostot"
+
+msgid "Find and manage files."
+msgstr "Etsi ja hallitse tiedostoja."
+
+msgid "Find and manage people interacting with your site."
+msgstr "Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä."
+
+msgid "Find and manage scheduled content."
 msgstr "Etsi ja ylläpidä ajastettua sisältöä."
+
+msgid "From"
+msgstr "Lähettäjä"
 
 msgid "Home"
 msgstr "Etusivu"
 
-msgid "Items per page"
-msgstr "Merkintöjä sivua kohti"
+msgid "Language"
+msgstr "Kieli"
 
-msgid "last »"
-msgstr "viimeinen »"
+msgid "Last access"
+msgstr "Viimeksi paikalla"
 
-msgid "Last »"
-msgstr "Viimeinen »"
+msgid "List"
+msgstr "Lista"
+
+msgid "List of redirects"
+msgstr "Uudelleenohjaukset"
 
 msgid "Main navigation"
 msgstr "Päävalikko"
@@ -49,14 +112,20 @@ msgstr "Päävalikko"
 msgid "Manage user accounts, roles, and permissions."
 msgstr "Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia."
 
+msgid "Member for"
+msgstr "Käyttäjä jo"
+
+msgid "MIME type"
+msgstr "MIME tyyppi"
+
 msgid "more"
 msgstr "lisää"
 
-msgid "Next ›"
-msgstr "Seuraava ›"
+msgid "Name"
+msgstr "Nimi"
 
-msgid "next ›"
-msgstr "seuraava ›"
+msgid "Name or email contains"
+msgstr "Nimi tai sähköposti sisältää"
 
 msgid "No files available."
 msgstr "Tiedostoja ei ole saatavilla."
@@ -67,8 +136,19 @@ msgstr "Ei saatavilla olevia ihmisiä."
 msgid "No scheduled content for user {{ arguments.uid }}"
 msgstr "{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä."
 
-msgid "Offset"
-msgstr "Offset"
+msgid "No scheduled content."
+msgstr "Ei vielä ajastettua sisältöä."
+
+msgid "Operations"
+msgstr "Toimenpiteet"
+
+msgid "Original language"
+msgstr "Alkuperäinen kieli"
+
+msgid ""
+"Overview of all scheduled content, as a tab on main 'content admin' "
+"page"
+msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
 
 msgid "Page"
 msgstr "Sivu"
@@ -79,25 +159,50 @@ msgstr "Käyttäjät"
 msgid "Permanent"
 msgstr "Pysyvä"
 
+msgid "Permission"
+msgstr "Käyttöoikeus"
+
+msgid "Publish on"
+msgstr "Julkaisupäivämäärä"
+
 msgid "Published"
 msgstr "Julkaistu"
+
+msgid "Published status"
+msgstr "Julkaisutila"
 
 msgid "Redirect"
 msgstr "Redirect"
 
-msgid "Reset"
-msgstr "Palauta"
+msgid "Registering module"
+msgstr "Käytön kirjannut moduuli"
 
-msgid ""
-"Scheduled content tab on user profile, showing just that user's "
-"scheduled content"
-msgstr "Yleiskatsaus koko ajoitetusta sisällöstä."
+msgid "Role"
+msgstr "Rooli"
+
+msgid "Roles"
+msgstr "Käyttäjäroolit"
+
+msgid "Scheduled"
+msgstr "Ajastettu"
+
+msgid "Scheduled content"
+msgstr "Ajastettu sisältö"
+
+msgid "Scheduled Content"
+msgstr "Ajastettu sisältö"
 
 msgid "Site section links"
 msgstr "Sivuston osioiden linkit"
 
-msgid "Sort by"
-msgstr "Lajittele"
+msgid "Size"
+msgstr "Koko"
+
+msgid "Status"
+msgstr "Tila"
+
+msgid "Status code"
+msgstr "Tilakoodi"
 
 msgid "Temporary"
 msgstr "Tilapäinen"
@@ -105,27 +210,33 @@ msgstr "Tilapäinen"
 msgid "There is no redirect yet."
 msgstr "Ei ole vielä uudelleenohjaksia."
 
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "To"
+msgstr "Osoitteeseen"
+
+msgid "Unpublish on"
+msgstr "Julkaisun peruutuspäivämäärä"
+
 msgid "Unpublished"
 msgstr "Julkaisematon"
+
+msgid "Upload date"
+msgstr "Latauspäivämäärä"
 
 msgid "Use count"
 msgstr "Käyttömäärä"
 
+msgid "Used in"
+msgstr "Käytetään"
+
 msgid "User profile tab"
 msgstr "Käyttäjäprofiili"
 
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
 msgid "With selection"
 msgstr "Valinnalla"
-
-msgid "« first"
-msgstr "« ensimmäinen"
-
-msgid "« First"
-msgstr "« Ensimmäinen"
-
-msgid "‹ Previous"
-msgstr "‹ Edellinen"
-
-msgid "‹ previous"
-msgstr "‹ edellinen"
 

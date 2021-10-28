@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
 
-msgid "Notification"
-msgstr "Notifikation"
-
-msgid "Attention"
-msgstr "Osb"
-
 msgid "Alert"
 msgstr "Varning"
+
+msgid "Attention"
+msgstr "Obs"
+
+msgid "Notification"
+msgstr "Notifikation"

@@ -1,23 +1,50 @@
 msgid ""
 msgstr ""
 
-msgid "- All -"
-msgstr "- Alla -"
-
 msgid "Action"
 msgstr "Åtgärd"
 
 msgid "Active"
 msgstr "Aktiv"
 
-msgid "Asc"
-msgstr "Stigande"
+msgid "All"
+msgstr "Alla"
+
+msgid "Author"
+msgstr "Författare"
 
 msgid "Blocked"
 msgstr "Spärrad"
 
-msgid "Desc"
-msgstr "Fallande"
+msgid "Bulk update"
+msgstr "Massuppdatera"
+
+msgid "Changed date"
+msgstr "Datum för ändring"
+
+msgid "Content"
+msgstr "Innehåll"
+
+msgid "Content Type"
+msgstr "Innehållstyp"
+
+msgid "Content type"
+msgstr "Innehållstyp"
+
+msgid "Created"
+msgstr "Skapad"
+
+msgid "Default"
+msgstr "Förvald"
+
+msgid "Entity"
+msgstr "Objekt"
+
+msgid "Entity type"
+msgstr "Objektstyp"
+
+msgid "Fid"
+msgstr "Fid"
 
 msgid "File usage"
 msgstr "Filanvändning"
@@ -25,20 +52,38 @@ msgstr "Filanvändning"
 msgid "File usage information for {{ arguments.fid }}"
 msgstr "Information om filanvändande för {{ arguments.fid }}"
 
-msgid "Filter"
-msgstr "Filtrera"
+msgid "Filename"
+msgstr "Filnamn"
+
+msgid "Files"
+msgstr "Filer"
+
+msgid "Files overview"
+msgstr "Översikt av filer"
+
+msgid "Find and manage files."
+msgstr "Hitta och hantera filer."
+
+msgid "Find and manage people interacting with your site."
+msgstr "Hitta och hantera personer som använder din webbplats."
+
+msgid "From"
+msgstr "Från"
 
 msgid "Home"
 msgstr "Hem"
 
-msgid "Items per page"
-msgstr "Inlägg per sida"
+msgid "Language"
+msgstr "Språk"
 
-msgid "last »"
-msgstr "sista »"
+msgid "Last access"
+msgstr "Senast åtkomst"
 
-msgid "Last »"
-msgstr "Sista »"
+msgid "List"
+msgstr "Lista"
+
+msgid "List of redirects"
+msgstr "Lista över omdirigeringar"
 
 msgid "Main navigation"
 msgstr "Huvudmeny"
@@ -46,14 +91,20 @@ msgstr "Huvudmeny"
 msgid "Manage user accounts, roles, and permissions."
 msgstr "Hantera användarkonton, roller och behörigheter."
 
+msgid "Member for"
+msgstr "Medlem i"
+
+msgid "MIME type"
+msgstr "Typ av MIME"
+
 msgid "more"
 msgstr "mer"
 
-msgid "Next ›"
-msgstr "Nästa ›"
+msgid "Name"
+msgstr "Namn"
 
-msgid "next ›"
-msgstr "nästa ›"
+msgid "Name or email contains"
+msgstr "Namn eller e-post innehåller"
 
 msgid "No files available."
 msgstr "Inga filer tillgängliga."
@@ -61,8 +112,11 @@ msgstr "Inga filer tillgängliga."
 msgid "No people available."
 msgstr "Inga personer tillgängliga."
 
-msgid "Offset"
-msgstr "Kompensera"
+msgid "Operations"
+msgstr "Funktioner"
+
+msgid "Original language"
+msgstr "Ursprungsspråk"
 
 msgid "Page"
 msgstr "Sida"
@@ -73,20 +127,44 @@ msgstr "Personer"
 msgid "Permanent"
 msgstr "Permanent"
 
+msgid "Permission"
+msgstr "Behörighet"
+
+msgid "Publish on"
+msgstr "Publicera den"
+
 msgid "Published"
 msgstr "Publicerad"
+
+msgid "Published status"
+msgstr "Status för publicering"
 
 msgid "Redirect"
 msgstr "Omdirigera"
 
-msgid "Reset"
-msgstr "Återställ"
+msgid "Registering module"
+msgstr "Registrerar modul"
+
+msgid "Role"
+msgstr "Roll"
+
+msgid "Roles"
+msgstr "Roller"
+
+msgid "Scheduled"
+msgstr "Schemalagd"
 
 msgid "Site section links"
 msgstr "Länkar för sektion i webbplats"
 
-msgid "Sort by"
-msgstr "Sortera efter"
+msgid "Size"
+msgstr "Storlek"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Status code"
+msgstr "Statuskod"
 
 msgid "Temporary"
 msgstr "Temporär"
@@ -94,27 +172,30 @@ msgstr "Temporär"
 msgid "There is no redirect yet."
 msgstr "Det finns ingen omdirigering ännu."
 
+msgid "Title"
+msgstr "Titel"
+
+msgid "To"
+msgstr "Till"
+
+msgid "Unpublish on"
+msgstr "Avpublicera den"
+
 msgid "Unpublished"
 msgstr "Ej publicerad"
+
+msgid "Upload date"
+msgstr "Datum för uppladdning"
 
 msgid "Use count"
 msgstr "Antal använd"
 
-msgid "User profile tab"
-msgstr "Förvald"
+msgid "Used in"
+msgstr "Används i"
+
+msgid "Username"
+msgstr "Användarnamn"
 
 msgid "With selection"
 msgstr "Med urval"
-
-msgid "« first"
-msgstr "« första"
-
-msgid "« First"
-msgstr "« Första"
-
-msgid "‹ Previous"
-msgstr "‹ Föregående"
-
-msgid "‹ previous"
-msgstr "‹ föregående"
 

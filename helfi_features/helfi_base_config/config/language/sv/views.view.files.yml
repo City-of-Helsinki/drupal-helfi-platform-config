@@ -4,28 +4,11 @@ display:
   default:
     display_title: Förvald
     display_options:
-      exposed_form:
-        options:
-          submit_button: Filtrera
-          reset_button_label: Återställ
-          exposed_sorts_label: 'Sortera efter'
-          sort_asc_label: Stigande
-          sort_desc_label: Fallande
-      pager:
-        options:
-          tags:
-            previous: '‹ Föregående'
-            next: 'Nästa ›'
-          expose:
-            items_per_page_label: 'Inlägg per sida'
-            items_per_page_options_all_label: '- Alla -'
-            offset_label: Kompensera
       fields:
         fid:
           label: Fid
         filename:
           label: Namn
-          separator: ', '
         filemime:
           label: 'Typ av MIME'
         filesize:
@@ -63,15 +46,6 @@ display:
   page_2:
     display_title: Filanvändning
     display_options:
-      pager:
-        options:
-          tags:
-            previous: '‹ Föregående'
-            next: 'Nästa ›'
-          expose:
-            items_per_page_label: 'Inlägg per sida'
-            items_per_page_options_all_label: '- Alla -'
-            offset_label: Kompensera
       fields:
         entity_label:
           label: Objekt

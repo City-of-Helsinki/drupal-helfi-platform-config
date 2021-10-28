@@ -47,7 +47,7 @@ msgid "Fallback date format"
 msgstr "Datumformat i reserv"
 
 msgid "Grey"
-msgstr "Vit"
+msgstr "Grå"
 
 msgid "Heading"
 msgstr "Rubrik"
