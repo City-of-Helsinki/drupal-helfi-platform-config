@@ -46,6 +46,7 @@
     "drupal/siteimprove": "^1.11",
     "drupal/token": "^1.9",
     "drupal/token_filter": "^1.2",
+    "drupal/translatable_menu_link_uri": "^2.0",
     "drupal/update_helper": "^2.0"
   },
   "extra": {
