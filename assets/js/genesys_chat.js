@@ -54,7 +54,7 @@ var startChatButtonClasses = {
   },
 };
 
-var authEnabled = true;
+var authEnabled = false;
 var helfiChatLogoElement =
   '<img class="gwc-chat-logo-helsinki" tabindex="0" title="helsinki-logo" alt="helsinki-logo" src="https://www.hel.fi/static/helsinki/chat/project-logo-hki-white-fi.png"/>';
 var helfiChatAuthElement =
@@ -72,7 +72,7 @@ var helFiChat_UserIcon = ` < img class = 'hki-cx-avatar-icon' src = 'https://www
 var helFiChat_button = "";
 
 var helFiChat_localization =
-  "https://asiointi.hel.fi/chat/sote/custom/chat-kymp-fi.json";
+  "https://www.hel.fi/chat/sote/custom/chat-kymp-fi.json";
 var helFiChat_service = "KYMP";
 var helFiChat_language = "fi";
 var helfiChat_GUI_lang = helFiChat_language;
@@ -87,10 +87,10 @@ function callShibboleth() {
   );
   var currentPage = window.location;
   var shibbolethString =
-    "https://asiointi.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
+    "https://www.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
   shibbolethString += "target=";
   shibbolethString +=
-    "https://asiointi.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
+    "https://www.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
   /*
         shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
         */
@@ -247,7 +247,7 @@ window._genesys.widgets = {
     preload: ["webchat"],
   },
   webchat: {
-    dataURL: "https://asiointi.hel.fi/gms/sote/genesys/2/chat/prod",
+    dataURL: "https://www.hel.fi/gms/sote/genesys/2/chat/prod",
     confirmFormCloseEnabled: false,
     userData: {
       service: helFiChat_service,
