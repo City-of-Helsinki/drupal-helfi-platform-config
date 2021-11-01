@@ -7,16 +7,15 @@ editor.editor.full_html:
             - name: Media
               items:
                 - highlight
-                - quote
   update_actions:
-    change:
+    delete:
       settings:
         toolbar:
           rows:
             -
               - name: Media
                 items:
-                  - quote
+                  - highlight
 filter.format.full_html:
   expected_config:
     filters:
