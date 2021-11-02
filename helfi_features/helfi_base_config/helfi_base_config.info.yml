@@ -40,5 +40,6 @@ dependencies:
   - 'token:token'
   - 'twig_tweak:twig_tweak'
   - 'update_helper:update_helper'
+  - 'view_unpublished:view_unpublished'
 'interface translation project': helfi_base_config
 'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_base_config/translations/%language.po
