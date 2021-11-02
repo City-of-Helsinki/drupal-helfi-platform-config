@@ -1,6 +1,5 @@
 user.role.admin:
-  expected_config:
-    label: Admin
+  expected_config: {  }
   update_actions:
     add:
       permissions:
