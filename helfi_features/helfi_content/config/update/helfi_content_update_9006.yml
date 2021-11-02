@@ -1,21 +1,3 @@
-editor.editor.full_html:
-  expected_config:
-    settings:
-      toolbar:
-        rows:
-          -
-            - name: Media
-              items:
-                - highlight
-  update_actions:
-    delete:
-      settings:
-        toolbar:
-          rows:
-            -
-              - name: Media
-                items:
-                  - highlight
 filter.format.full_html:
   expected_config:
     filters:
