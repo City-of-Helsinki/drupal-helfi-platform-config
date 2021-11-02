@@ -151,3 +151,14 @@ function helfi_platform_config_update_9004() {
     ]);
   }
 }
+
+/**
+ * Install menu external link translation module if it doesn't exist.
+ */
+function helfi_platform_config_update_9005() {
+  if (!Drupal::moduleHandler()->moduleExists('translatable_menu_link_uri')) {
+    Drupal::service('module_installer')->install([
+      'translatable_menu_link_uri',
+    ]);
+  }
+}
