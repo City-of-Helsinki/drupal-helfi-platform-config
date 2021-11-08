@@ -1,0 +1,38 @@
+field.field.tpr_service.tpr_service.field_lower_content:
+  expected_config:
+    settings:
+      handler_settings:
+        target_bundles_drag_drop:
+          liftup_with_image:
+            enabled: false
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            liftup_with_image: liftup_with_image
+    change:
+      settings:
+        handler_settings:
+          target_bundles_drag_drop:
+            liftup_with_image:
+              enabled: true
+field.field.tpr_unit.tpr_unit.field_lower_content:
+  expected_config:
+    settings:
+      handler_settings:
+        target_bundles_drag_drop:
+          liftup_with_image:
+            enabled: false
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            liftup_with_image: liftup_with_image
+    change:
+      settings:
+        handler_settings:
+          target_bundles_drag_drop:
+            liftup_with_image:
+              enabled: true
