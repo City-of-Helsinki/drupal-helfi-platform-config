@@ -31,8 +31,7 @@ settings:
         -
           name: Media
           items:
-            - highlight
-            - quote
+            1: quote
         -
           name: Links
           items:
