@@ -17,6 +17,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9004();
     helfi_content_update_9005();
     helfi_content_update_9006();
+    helfi_content_update_9007();
   }
 }
 
@@ -126,11 +127,45 @@ function helfi_content_update_9005() {
   return $updateHelper->logger()->output();
 }
 
+/**
+ * Remove highlight component from WYSIWYG.
+ */
+function helfi_content_update_9006() {
+  // Load the existing configuration.
+  $config_name = 'editor.editor.full_html';
+  $config = \Drupal::configFactory()->getEditable($config_name);
+  $config_data = $config->getRawData();
+
+  // Check that the WYSIWYG toolbar is set.
+  if (isset($config_data['settings']['toolbar']['rows'])) {
+    foreach ($config_data['settings']['toolbar']['rows'] as &$rows) {
+      // Go through each row of settings and search for the 'highlight' value and remove it if found.
+      foreach ($rows as &$row) {
+        if (array_key_exists('items', $row)) {
+          if (($key = array_search('highlight', $row['items'])) !== FALSE) {
+            unset($row['items'][$key]);
+          }
+        }
+      }
+    }
+  }
+  // Save the configuration without the highlight value.
+  $config->setData($config_data)->save();
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9006');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
 
 /**
  * Add image paragraph as allowed pargraph inside accordion content.
  */
-function helfi_content_update_9006() {
+function helfi_content_update_9007() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 

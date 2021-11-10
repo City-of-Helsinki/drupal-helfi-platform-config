@@ -73,7 +73,7 @@ var helFiChat_button = "";
 
 var helFiChat_localization =
   "https://www.hel.fi/chat/sote/custom/chat-kymp-fi.json";
-var helFiChat_service = "KYMP";
+var helFiChat_service = "TESTISIVU_TESTI";
 var helFiChat_language = "fi";
 var helfiChat_GUI_lang = helFiChat_language;
 var helFiChat_title = "Pysäköinti Helsingissä chat";

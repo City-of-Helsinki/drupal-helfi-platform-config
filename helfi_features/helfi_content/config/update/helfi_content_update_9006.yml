@@ -1,60 +1,12 @@
-field.field.paragraph.accordion_item.field_accordion_item_content:
+filter.format.full_html:
   expected_config:
-    settings:
-      handler_settings:
-        target_bundles_drag_drop:
-          image:
-            enabled: false
-          link:
-            enabled: false
-            weight: 19
+    filters:
+      filter_html:
+        settings:
+          allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type class> <ol start type> <li class> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div role arial-* class=""> <img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <a href hreflang !href accesskey id rel target title data-design data-link-text data-icon data-protocol class=""> <pre> <iframe allowfullscreen frameborder height mozallowfullscreen src webkitallowfullscreen width id> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <span role arial-* class=" highlighted">'
   update_actions:
-    delete:
-      settings:
-        handler_settings:
-          target_bundles_drag_drop:
-            link:
-              enabled: false
-              weight: 19
-    add:
-      settings:
-        handler_settings:
-          target_bundles:
-            image: image
-          target_bundles_drag_drop:
-            banner:
-              enabled: false
-              weight: 23
-            content_cards:
-              enabled: false
-              weight: 25
-            content_liftup:
-              enabled: false
-              weight: 26
-            from_library:
-              enabled: false
-              weight: 27
-            map:
-              enabled: false
-              weight: 35
-            remote_video:
-              enabled: false
-              weight: 36
-            service_list:
-              enabled: false
-              weight: 37
-            sidebar_text:
-              enabled: false
-              weight: 38
-            unit_search:
-              enabled: false
-              weight: 40
     change:
-      settings:
-        handler_settings:
-          target_bundles_drag_drop:
-            image:
-              enabled: true
-            liftup_with_image:
-              enabled: false
-              weight: 32
+      filters:
+        filter_html:
+          settings:
+            allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type class> <ol start type> <li class> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div role arial-* class=""> <img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <a href hreflang !href accesskey id rel target title data-design data-link-text data-icon data-protocol class=""> <pre> <iframe allowfullscreen frameborder height mozallowfullscreen src webkitallowfullscreen width id> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <span role arial-* class="">'
