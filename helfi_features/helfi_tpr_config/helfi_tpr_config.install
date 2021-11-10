@@ -19,6 +19,7 @@ function helfi_tpr_config_install($is_syncing) {
     helfi_tpr_config_update_9003();
     helfi_tpr_config_update_9004();
     helfi_tpr_config_update_9005();
+
   }
 }
 
@@ -173,4 +174,13 @@ function helfi_tpr_config_update_9009() {
       $entity_definition_update_manager->installFieldStorageDefinition($field, $entity_type, 'helfi_toc', $field_definitions[$field]);
     }
   }
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9009');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }
