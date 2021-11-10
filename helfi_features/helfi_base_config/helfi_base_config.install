@@ -126,12 +126,20 @@ function helfi_base_config_update_9003() {
 }
 
 /**
- * Install HELfi Table of contents module.
+ * Install HELfi Table of contents and Translatable menu link uri modules.
  */
 function helfi_base_config_update_9004() {
+  // Install helfi_toc module if not installed.
   if (!Drupal::moduleHandler()->moduleExists('helfi_toc')) {
     Drupal::service('module_installer')->install([
       'helfi_toc',
+    ]);
+  }
+
+  // Install translatable_menu_link_uri module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('translatable_menu_link_uri')) {
+    Drupal::service('module_installer')->install([
+      'translatable_menu_link_uri',
     ]);
   }
 }
