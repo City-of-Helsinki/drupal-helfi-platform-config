@@ -19,7 +19,7 @@ mode: default
 content:
   description:
     type: text_default
-    weight: 2
+    weight: 3
     region: content
     label: hidden
     settings: {  }
@@ -95,6 +95,16 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  toc_enabled:
+    label: hidden
+    region: content
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    weight: 2
 hidden:
   created: true
   langcode: true
