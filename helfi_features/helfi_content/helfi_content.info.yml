@@ -24,6 +24,7 @@ dependencies:
   - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'helfi_platform_config:helfi_platform_config'
   - 'helfi_media:helfi_media'
+  - 'helfi_toc:helfi_toc'
   - 'linkit:linkit'
   - 'metatag:metatag'
   - 'metatag_open_graph:metatag_open_graph'

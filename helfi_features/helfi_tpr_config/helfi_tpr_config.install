@@ -12,13 +12,14 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
  */
 function helfi_tpr_config_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
-  // of a configuration import
+  // of a configuration import.
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_tpr_config_update_9001();
     helfi_tpr_config_update_9002();
     helfi_tpr_config_update_9003();
     helfi_tpr_config_update_9004();
     helfi_tpr_config_update_9005();
+
   }
 }
 
@@ -47,14 +48,14 @@ function helfi_tpr_config_update_9001() {
   $field = 'color_palette';
   $entity_types = [
     'tpr_unit',
-    'tpr_service'
+    'tpr_service',
   ];
 
   foreach ($entity_types as $entity_type) {
     $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
     $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
     if (!empty($field_definitions[$field]) && $field_definitions[$field] instanceof FieldStorageDefinitionInterface) {
-      $entity_definition_update_manager->installFieldStorageDefinition($field, $entity_type,'hdbt_admin_editorial', $field_definitions[$field]);
+      $entity_definition_update_manager->installFieldStorageDefinition($field, $entity_type, 'hdbt_admin_editorial', $field_definitions[$field]);
     }
   }
 }
@@ -152,6 +153,33 @@ function helfi_tpr_config_update_9008() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9008');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Install 'table of contents' fields to TPR Service entities.
+ */
+function helfi_tpr_config_update_9009() {
+  // Fields to be installed and entity type.
+  $fields = ['toc_enabled', 'toc_title'];
+  $entity_type = 'tpr_service';
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
+
+  foreach ($fields as $field) {
+    if (!empty($field_definitions[$field]) && $field_definitions[$field] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager->installFieldStorageDefinition($field, $entity_type, 'helfi_toc', $field_definitions[$field]);
+    }
+  }
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9009');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
