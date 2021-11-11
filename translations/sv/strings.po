@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-10-18 16:19+0300\n"
-"PO-Revision-Date: 2021-10-18 16:19+0300\n"
+"POT-Creation-Date: 2021-11-08 15:32+0200\n"
+"PO-Revision-Date: 2021-11-08 15:32+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -172,6 +172,26 @@ msgstr "tjänster"
 
 msgid "Visiting address"
 msgstr "Besöksadress"
+
+msgid "Content cannot be displayed"
+msgstr "Innehållet kan inte visas"
+
+msgid "See content on external site"
+msgstr "Gå till extern webbplats"
+
+msgid "Change cookie settings"
+msgstr "Ändra inställningarna för cookies"
+
+msgid ""
+"This content is hosted by @video_service_url. To see the content, "
+"switch over to the external site or modify your cookie settings to "
+"allow for preference and statistics cookies."
+msgstr ""
+"Det här innehållet hämtas från @video_service_url. För att visa "
+"innehållet krävs att du godkänner webbplatsens cookies. Du kan se "
+"innehållet antingen genom att gå till en extern webbplats eller "
+"genom att ge ditt samtycke till användningen av cookies för "
+"preferens och statistik."
 
 msgctxt "TPR unit also offers service in Swedish"
 msgid "Service in Swedish"

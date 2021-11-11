@@ -1,34 +1,60 @@
-core.entity_view_display.node.page.default:
+field.field.paragraph.accordion_item.field_accordion_item_content:
   expected_config:
-    content:
-      field_content:
-        weight: 2
-      field_lower_content:
-        weight: 4
-      field_metatags:
-        weight: 3
-      field_sidebar_content:
-        weight: 5
+    settings:
+      handler_settings:
+        target_bundles_drag_drop:
+          image:
+            enabled: false
+          link:
+            enabled: false
+            weight: 19
   update_actions:
+    delete:
+      settings:
+        handler_settings:
+          target_bundles_drag_drop:
+            link:
+              enabled: false
+              weight: 19
     add:
-      content:
-        toc_enabled:
-          label: hidden
-          region: content
-          settings:
-            format: default
-            format_custom_false: ''
-            format_custom_true: ''
-          third_party_settings: {  }
-          type: boolean
-          weight: 2
+      settings:
+        handler_settings:
+          target_bundles:
+            image: image
+          target_bundles_drag_drop:
+            banner:
+              enabled: false
+              weight: 23
+            content_cards:
+              enabled: false
+              weight: 25
+            content_liftup:
+              enabled: false
+              weight: 26
+            from_library:
+              enabled: false
+              weight: 27
+            map:
+              enabled: false
+              weight: 35
+            remote_video:
+              enabled: false
+              weight: 36
+            service_list:
+              enabled: false
+              weight: 37
+            sidebar_text:
+              enabled: false
+              weight: 38
+            unit_search:
+              enabled: false
+              weight: 40
     change:
-      content:
-        field_content:
-          weight: 3
-        field_lower_content:
-          weight: 5
-        field_metatags:
-          weight: 4
-        field_sidebar_content:
-          weight: 6
+      settings:
+        handler_settings:
+          target_bundles_drag_drop:
+            image:
+              enabled: true
+            liftup_with_image:
+              enabled: false
+              weight: 32

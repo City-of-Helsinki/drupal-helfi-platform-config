@@ -72,7 +72,7 @@ var helFiChat_UserIcon = ` < img class = 'hki-cx-avatar-icon' src = 'https://www
 var helFiChat_button = "";
 
 var helFiChat_localization =
-  "https://www.hel.fi/chat/sote/custom/chat-kymp-fi.json";
+  "https://www.hel.fi/gms/sote/testpages/chat-fi.json";
 var helFiChat_service = "TESTISIVU_TESTI";
 var helFiChat_language = "fi";
 var helfiChat_GUI_lang = helFiChat_language;
@@ -235,7 +235,7 @@ if (!window._gt) { window._gt = [];
 
 window._genesys.widgets = {
   main: {
-    // debug: true,
+    debug: true,
     theme: "helsinki-blue",
     themes: {
       "helsinki-blue": "cx-theme-helsinki-blue",

@@ -22,6 +22,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9004();
     helfi_content_update_9005();
     helfi_content_update_9006();
+    helfi_content_update_9007();
   }
 }
 
@@ -164,7 +165,7 @@ function helfi_content_update_9006() {
 }
 
 /**
- * Set up Table of contents field for basic page content type.
+ * Add image paragraph as allowed paragraph inside accordion content.
  */
 function helfi_content_update_9007() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -172,6 +173,20 @@ function helfi_content_update_9007() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9007');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Set up Table of contents field for basic page content type.
+ */
+function helfi_content_update_9008() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9008');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
