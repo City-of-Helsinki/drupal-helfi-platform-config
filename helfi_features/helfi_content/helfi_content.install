@@ -17,6 +17,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9004();
     helfi_content_update_9005();
     helfi_content_update_9006();
+    helfi_content_update_9007();
   }
 }
 
@@ -151,6 +152,20 @@ function helfi_content_update_9006() {
   // Save the configuration without the highlight value.
   $config->setData($config_data)->save();
 
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9006');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add image paragraph as allowed pargraph inside accordion content.
+ */
+function helfi_content_update_9007() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
