@@ -35,8 +35,8 @@ final class ChangeCollationCommands extends DrushCommands {
    * @command helfi:change-collation
    */
   public function change() : void {
-    $this->connection->query('ALTER TABLE {tpr_unit_field_data} MODIFY COLUMN name varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL;');
-    $this->connection->query('ALTER TABLE {tpr_unit_field_data} MODIFY COLUMN name_override varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL;');
+    $this->connection->query('ALTER TABLE {tpr_unit_field_data} MODIFY COLUMN name varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci DEFAULT NULL;');
+    $this->connection->query('ALTER TABLE {tpr_unit_field_data} MODIFY COLUMN name_override varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci DEFAULT NULL;');
   }
 
 }
