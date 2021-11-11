@@ -4,3 +4,8 @@ services:
     arguments: ['@entity_type.manager', '@database']
     tags:
       - { name: drush.command }
+  helfi_platform_config.change_collation_commands:
+    class: \Drupal\helfi_platform_config\Commands\ChangeCollationCommands
+    arguments: ['@database']
+    tags:
+      - { name: drush.command }
