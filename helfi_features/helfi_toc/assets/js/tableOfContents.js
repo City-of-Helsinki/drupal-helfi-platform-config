@@ -1,8 +1,9 @@
 'use strict';
 
-(function($, Drupal) {
+(function ($, Drupal) {
   Drupal.behaviors.table_of_contents = {
     attach: function attach() {
+      var anchorMap = {};
       var anchorLinks = [];
       var tableOfContents = $('#helfi-toc-table-of-contents');
       var tableOfContentsList = $('#helfi-toc-table-of-contents-list > ul');
@@ -19,17 +20,25 @@
       // Craft table of contents.
       $(titleComponents.join(','), mainContent)
         .once()
-        .each(function(index) {
-          var anchorName =
-            index +
-            '-' +
-            this.textContent
-              .toLowerCase()
-              .trim()
-              .replace(/ä/gi, 'a')
-              .replace(/ö/gi, 'o')
-              .replace(/å/gi, 'a')
-              .replace(/\W/g, '-');
+        .each(function (index) {
+          const name = this.textContent
+            .toLowerCase()
+            .trim()
+            .replace(/ä/gi, 'a')
+            .replace(/ö/gi, 'o')
+            .replace(/å/gi, 'a')
+            .replace(/\W/g, '-')
+            .replace(/-(\d+)$/g, '_$1');
+
+          let anchorName;
+          if (!anchorMap[name]) {
+            anchorName = name;
+            anchorMap[name] = 2;
+          } else {
+            anchorName = name + '-' + anchorMap[name];
+            anchorMap[name]++;
+          }
+
           // Create table of contents if component is enabled.
           anchorLinks.push(this.textContent.trim());
           if (tableOfContentsList.length > 0) {
@@ -44,7 +53,6 @@
           }
           // Create anchor links.
           $(this).attr('id', anchorName);
-          $('<a name="' + anchorName + '"></a>').insertBefore(this);
         });
 
       // Remove loading text.
