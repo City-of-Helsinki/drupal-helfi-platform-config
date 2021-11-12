@@ -1,0 +1,55 @@
+core.entity_form_display.tpr_service.tpr_service.default:
+  expected_config:
+    content:
+      translation:
+        weight: 3
+      description:
+        weight: 4
+      errand_services:
+        weight: 5
+  update_actions:
+    change:
+      content:
+        description:
+          weight: 6
+        errand_services:
+          weight: 7
+        toc_enabled:
+          region: content
+          settings:
+            display_label: true
+          third_party_settings: {  }
+          type: boolean_checkbox
+          weight: 3
+        toc_title:
+          region: content
+          settings:
+            placeholder: ''
+            size: 60
+          third_party_settings: {  }
+          type: string_textfield
+          weight: 4
+        translation:
+          weight: 5
+core.entity_view_display.tpr_service.tpr_service.default:
+  expected_config:
+    content:
+      description:
+        weight: 2
+  update_actions:
+    add:
+      content:
+        toc_enabled:
+          label: hidden
+          region: content
+          settings:
+            format: default
+            format_custom_false: ''
+            format_custom_true: ''
+          third_party_settings: {  }
+          type: boolean
+          weight: 2
+    change:
+      content:
+        description:
+          weight: 3

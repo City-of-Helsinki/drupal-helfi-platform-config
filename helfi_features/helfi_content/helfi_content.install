@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains install functions for Helfi Content.
+ */
+
 use Drupal\helfi_platform_config\ConfigHelper;
 
 /**
@@ -10,7 +15,7 @@ use Drupal\helfi_platform_config\ConfigHelper;
  */
 function helfi_content_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
-  // of a configuration import
+  // of a configuration import.
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_content_update_9001();
     helfi_content_update_9002();
@@ -71,7 +76,7 @@ function helfi_content_update_9003() {
 
   // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
-  \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'linkit.linkit_profile.tpr_content');
+  ConfigHelper::installNewConfig($configLocation, 'linkit.linkit_profile.tpr_content');
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9003');
@@ -80,9 +85,8 @@ function helfi_content_update_9003() {
   return $updateHelper->logger()->output();
 }
 
-
 /**
- * Add title and description field for the accordion paragraph
+ * Add title and description field for the accordion paragraph.
  */
 function helfi_content_update_9004() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -104,7 +108,6 @@ function helfi_content_update_9004() {
     ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
   }
 
-
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9004');
 
@@ -112,9 +115,8 @@ function helfi_content_update_9004() {
   return $updateHelper->logger()->output();
 }
 
-
 /**
- * Add class as allowed attribute for ul and li elements on full html text format
+ * Add class as allowed attribute for ul and li elements on full html text format.
  */
 function helfi_content_update_9005() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -163,14 +165,28 @@ function helfi_content_update_9006() {
 }
 
 /**
- * Add image paragraph as allowed pargraph inside accordion content.
+ * Add image paragraph as allowed paragraph inside accordion content.
  */
 function helfi_content_update_9007() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
   // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9006');
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9007');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Set up Table of contents field for basic page content type.
+ */
+function helfi_content_update_9008() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9008');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

@@ -5,6 +5,8 @@
  * Contains install functions for Helfi Base Config.
  */
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Implements hook_install().
  *
@@ -12,7 +14,7 @@
  */
 function helfi_base_config_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
-  // of a configuration import
+  // of a configuration import.
   if (!$is_syncing) {
     // Remove the default frontpage view.
     Drupal::configFactory()->getEditable('views.view.frontpage')->delete();
@@ -97,7 +99,7 @@ function helfi_base_config_update_9002() {
   $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9002');
 
   $configLocation = dirname(__FILE__) . '/config/install/';
-  \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'helfi_base_config.breadcrumb');
+  ConfigHelper::installNewConfig($configLocation, 'helfi_base_config.breadcrumb');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
@@ -112,7 +114,7 @@ function helfi_base_config_update_9003() {
 
   if (!Drupal::moduleHandler()->moduleExists('view_unpublished')) {
     Drupal::service('module_installer')->install([
-      'view_unpublished'
+      'view_unpublished',
     ]);
   }
 
@@ -121,4 +123,23 @@ function helfi_base_config_update_9003() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Install HELfi Table of contents and Translatable menu link uri modules.
+ */
+function helfi_base_config_update_9004() {
+  // Install helfi_toc module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('helfi_toc')) {
+    Drupal::service('module_installer')->install([
+      'helfi_toc',
+    ]);
+  }
+
+  // Install translatable_menu_link_uri module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('translatable_menu_link_uri')) {
+    Drupal::service('module_installer')->install([
+      'translatable_menu_link_uri',
+    ]);
+  }
 }
