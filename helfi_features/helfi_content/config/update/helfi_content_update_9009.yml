@@ -1,0 +1,59 @@
+field.field.node.article.field_liftup_image:
+  expected_config:
+    translatable: true
+  update_actions:
+    change:
+      translatable: false
+field.field.node.landing_page.field_liftup_image:
+  expected_config:
+    translatable: true
+  update_actions:
+    change:
+      translatable: false
+field.field.node.page.field_liftup_image:
+  expected_config:
+    translatable: true
+  update_actions:
+    change:
+      translatable: false
+metatag.metatag_defaults.front:
+  expected_config: {  }
+  update_actions:
+    add:
+      tags:
+        og_image: '[node:shareable-image]'
+        twitter_cards_image: '[node:shareable-image]'
+metatag.metatag_defaults.global:
+  expected_config:
+    tags:
+      title: '[current-page:title] | [site:name]'
+  update_actions:
+    change:
+      tags:
+        og_image: '[site:default-og-image]'
+        title: '[current-page:title] | [site:page-title-suffix]'
+        twitter_cards_image: '[site:default-og-image]'
+        twitter_cards_page_url: '[current-page:url]'
+        twitter_cards_title: '[current-page:title] | [site:page-title-suffix]'
+        twitter_cards_type: summary_large_image
+metatag.metatag_defaults.node:
+  expected_config:
+    tags:
+      description: '[node:summary]'
+      title: '[node:title] | [site:name]'
+  update_actions:
+    add:
+      tags:
+        article_modified_time: '[node:created:html_datetime]'
+        article_published_time: '[node:created:html_datetime]'
+    change:
+      tags:
+        content_language: '[node:langcode]'
+        description: '[node:field_lead_in]'
+        og_image: '[node:shareable-image]'
+        og_site_name: '[site:name]'
+        og_title: '[node:title]'
+        og_updated_time: '[node:changed:html_datetime]'
+        og_url: '[current-page:url:absolute]'
+        title: '[node:title] | [site:page-title-suffix]'
+        twitter_cards_image: '[node:shareable-image]'
