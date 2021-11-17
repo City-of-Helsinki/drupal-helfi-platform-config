@@ -59,7 +59,7 @@ function helfi_platform_config_theme() {
 /**
  * Implements hook_token_info()
  */
-function hdbt_content_token_info() {
+function helfi_platform_config_token_info() {
   $info['tokens']['site']['page-title-suffix'] = [
     'name' => t('Page title suffix'),
     'description' => t('Official suffix for page title.'),
@@ -70,7 +70,7 @@ function hdbt_content_token_info() {
 /**
  * Implements hook_tokens()
  */
-function hdbt_content_tokens(
+function helfi_platform_config_tokens(
   $type,
   $tokens,
   array $data,
