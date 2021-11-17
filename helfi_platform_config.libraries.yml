@@ -51,4 +51,3 @@ clear_localstorage:
   dependencies:
     - core/jquery
     - core/drupal
-    - eu_cookie_compliance/eu_cookie_compliance
