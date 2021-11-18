@@ -28,6 +28,9 @@ msgstr "Inlägg per sida"
 msgid "Load more services"
 msgstr "Ladda fler tjänster"
 
+msgid "Location on map"
+msgstr "Plats på kartan"
+
 msgid "Next ›"
 msgstr "Nästa ›"
 
@@ -36,6 +39,9 @@ msgstr "Inget resultat"
 
 msgid "Offset"
 msgstr "Kompensera"
+
+msgid "Open the map in a new window"
+msgstr "Öppna kartan i nytt fönster"
 
 msgid "Paragraph"
 msgstr "Paragraf"
