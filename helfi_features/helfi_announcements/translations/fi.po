@@ -35,12 +35,6 @@ msgstr "Näytä kaikilla sivuilla"
 msgid "Show on content pages"
 msgstr "Näytä sisältösivuilla"
 
-msgid "Show on service pages"
-msgstr "Näytä palvelusivuilla"
-
-msgid "Show on unit pages"
-msgstr "Näytä toimipistesivuilla"
-
 msgid "Type"
 msgstr "Tyyppi"
 

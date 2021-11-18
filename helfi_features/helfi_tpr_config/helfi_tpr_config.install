@@ -13,13 +13,22 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 function helfi_tpr_config_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
-  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
-    helfi_tpr_config_update_9001();
-    helfi_tpr_config_update_9002();
-    helfi_tpr_config_update_9003();
-    helfi_tpr_config_update_9004();
-    helfi_tpr_config_update_9005();
+  if (!$is_syncing) {
+    if (Drupal::moduleHandler()->moduleExists('update_helper')) {
+      helfi_tpr_config_update_9001();
+      helfi_tpr_config_update_9002();
+      helfi_tpr_config_update_9003();
+      helfi_tpr_config_update_9004();
+      helfi_tpr_config_update_9005();
+    }
 
+    // If HELfi Announcements module is installed, install also
+    // HELfi Announcements TPR integration module.
+    if (Drupal::moduleHandler()->moduleExists('helfi_announcements')) {
+      Drupal::service('module_installer')->install([
+        'helfi_announcements_tpr',
+      ]);
+    }
   }
 }
 
