@@ -3,31 +3,23 @@
 /**
  * Implements hook_install().
  */
-function helfi_announcements_install($is_syncing) {
+function helfi_announcements_tpr_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_announcements_tpr_update_9001();
   }
-
-  // If HELfi TPR config module is installed, install also
-  // HELfi Announcements TPR integration module.
-  if (Drupal::moduleHandler()->moduleExists('helfi_tpr_config')) {
-    Drupal::service('module_installer')->install([
-      'helfi_announcements_tpr',
-    ]);
-  }
 }
 
 /**
- * Update Announcement form widgets to use autocomplete with lazy-loading.
+ * Install TPR Integration to Announcements.
  */
-function helfi_announcements_update_9001() {
+function helfi_announcements_tpr_update_9001() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
   // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_announcements', 'helfi_announcements_update_9001');
+  $updateHelper->executeUpdate('helfi_announcements_tpr', 'helfi_announcements_tpr_update_9001');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
