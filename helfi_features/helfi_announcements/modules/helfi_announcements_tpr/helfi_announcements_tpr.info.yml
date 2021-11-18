@@ -18,3 +18,5 @@ dependencies:
   - helfi_content
   - helfi_announcements
   - helfi_tpr_config
+'interface translation project': helfi_announcements_tpr
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_announcements/modules/helfi_announcements_tpr/translations/%language.po
