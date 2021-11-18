@@ -32,3 +32,16 @@ function helfi_announcements_update_9001() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Install HELfi Announcements TPR integration module if HELfi TPR is enabled.
+ */
+function helfi_announcements_update_9002() {
+  // If HELfi TPR config module is installed, install also
+  // HELfi Announcements TPR integration module.
+  if (Drupal::moduleHandler()->moduleExists('helfi_tpr_config')) {
+    Drupal::service('module_installer')->install([
+      'helfi_announcements_tpr',
+    ]);
+  }
+}
