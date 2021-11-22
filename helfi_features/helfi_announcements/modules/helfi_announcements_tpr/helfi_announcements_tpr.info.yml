@@ -1,0 +1,22 @@
+name: 'HELfi Announcements - TPR Integration'
+type: module
+description: 'Adds announcements that can be shown on TPR Unit and Service pages.'
+core_version_requirement: '^8.9 || ^9'
+package: HELfi
+dependencies:
+  - link
+  - path
+  - text
+  - options
+  - user
+  - node
+  - menu_ui
+  - allowed_formats
+  - scheduler
+  - select2
+  - hdbt_admin_editorial
+  - helfi_content
+  - helfi_announcements
+  - helfi_tpr_config
+'interface translation project': helfi_announcements_tpr
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_announcements/modules/helfi_announcements_tpr/translations/%language.po

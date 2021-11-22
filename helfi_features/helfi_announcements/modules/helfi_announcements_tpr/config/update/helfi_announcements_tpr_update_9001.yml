@@ -1,0 +1,51 @@
+core.entity_form_display.node.announcement.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - field.field.node.announcement.field_announcement_service_pages
+          - field.field.node.announcement.field_announcement_unit_pages
+      content:
+        field_announcement_service_pages:
+          weight: 14
+          settings:
+            width: 100%
+            autocomplete: true
+            match_operator: CONTAINS
+            match_limit: 20
+          third_party_settings: { }
+          type: select2_entity_reference
+          region: content
+        field_announcement_unit_pages:
+          weight: 13
+          settings:
+            width: 100%
+            autocomplete: true
+            match_operator: CONTAINS
+            match_limit: 20
+          third_party_settings: { }
+          type: select2_entity_reference
+          region: content
+core.entity_view_display.node.announcement.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - field.field.node.announcement.field_announcement_service_pages
+          - field.field.node.announcement.field_announcement_unit_pages
+      hidden:
+        field_announcement_service_pages: true
+        field_announcement_unit_pages: true
+core.entity_view_display.node.announcement.teaser:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - field.field.node.announcement.field_announcement_service_pages
+          - field.field.node.announcement.field_announcement_unit_pages
+      hidden:
+        field_announcement_service_pages: true
+        field_announcement_unit_pages: true
