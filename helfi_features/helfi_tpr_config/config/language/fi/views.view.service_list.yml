@@ -20,9 +20,6 @@ display:
             offset_label: Offset
           views_infinite_scroll:
             button_text: 'Lataa lisää palveluita'
-      fields:
-        name:
-          separator: ', '
       arguments:
         id:
           exception:

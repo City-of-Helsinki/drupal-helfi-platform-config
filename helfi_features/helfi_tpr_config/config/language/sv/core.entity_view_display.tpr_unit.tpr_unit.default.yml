@@ -1,0 +1,5 @@
+content:
+  service_map_embed:
+    settings:
+      iframe_title: 'Plats på kartan'
+      link_title: 'Öppna kartan i nytt fönster'
