@@ -7,6 +7,9 @@ msgstr "Beskrivning"
 msgid "Map"
 msgstr "Karta"
 
+msgid "Open map in new window"
+msgstr "Öppna kartan i nytt fönster"
+
 msgid "Title"
 msgstr "Titel"
 

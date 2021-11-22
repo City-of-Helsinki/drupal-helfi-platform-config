@@ -4,6 +4,9 @@ msgstr ""
 msgid "- All -"
 msgstr "- Kaikki -"
 
+msgid "All"
+msgstr "Kaikki"
+
 msgid "Apply"
 msgstr "Käytä"
 
@@ -46,6 +49,9 @@ msgstr "Lataa lisää palveluita"
 msgid "Load more units"
 msgstr "Lataa lisää toimipisteitä"
 
+msgid "Location on map"
+msgstr "Sijainti kartalla"
+
 msgid "Lower content region"
 msgstr "Alempi sisältöalue"
 
@@ -58,8 +64,16 @@ msgstr "Metatunnisteet"
 msgid "Next ›"
 msgstr "Seuraava ›"
 
+msgid "No results"
+msgstr ""
+"<p>Ei tuloksia</p>\r\n"
+""
+
 msgid "Offset"
 msgstr "Offset"
+
+msgid "Open the map in a new window"
+msgstr "Avaa kartta uuteen ikkunaan"
 
 msgid "Paragraph"
 msgstr "Lohko"
