@@ -1,0 +1,11 @@
+metatag.metatag_defaults.tpr_unit:
+  expected_config:
+    tags:
+      og_image_url: '[tpr_unit:picture]'
+  update_actions:
+    delete:
+      tags:
+        og_image_url: '[tpr_unit:picture]'
+    change:
+      tags:
+        og_image: '[tpr_unit:picture]'

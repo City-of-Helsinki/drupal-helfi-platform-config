@@ -193,3 +193,59 @@ function helfi_tpr_config_update_9009() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Install 'color palette' field to TPR Unit and TPR Service entities.
+ */
+function helfi_tpr_config_update_9010() {
+
+  // Field to be installed and entity types.
+  $field = 'color_palette';
+  $entity_types = [
+    'tpr_unit',
+    'tpr_service',
+  ];
+
+  foreach ($entity_types as $entity_type) {
+    $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+    $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
+
+    // Install color palette field, if color palette field has not
+    // been installed to current entity.
+    if (
+      !empty($field_definitions[$field]) &&
+      $field_definitions[$field] instanceof FieldStorageDefinitionInterface &&
+      empty($entity_definition_update_manager->getFieldStorageDefinition($field, $entity_type))
+    ) {
+      $entity_definition_update_manager->installFieldStorageDefinition($field, $entity_type, 'hdbt_admin_editorial', $field_definitions[$field]);
+    }
+  }
+}
+
+/**
+ * Update translations for the Unit map title and link.
+ */
+function helfi_tpr_config_update_9011() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9011');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update TPR Unit metatag images to use default-og-image as fallback (token).
+ */
+function helfi_tpr_config_update_9012() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9012');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
