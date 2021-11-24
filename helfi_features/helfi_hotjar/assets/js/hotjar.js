@@ -2,7 +2,7 @@
  * @file
  * Loads Hotjar script.
  *
- * Supports EU Cookie Compliance module.
+ * Requires EU Cookie Compliance module.
  */
 (function ($, Drupal, drupalSettings) {
   'use strict';
@@ -12,13 +12,15 @@
       return;
     }
 
-    if (
-      !Drupal.eu_cookie_compliance.hasAgreed('statistics') &&
-      typeof Drupal.eu_cookie_compliance !== 'undefined'
-    ) {
+    if (typeof Drupal.eu_cookie_compliance === 'undefined') {
       return;
     }
 
+    if (!Drupal.eu_cookie_compliance.hasAgreed('statistics')) {
+      return;
+    }
+
+    // Hotjar tracking code.
     (function (h, o, t, j, a, r) {
       h.hj = h.hj || function () {
         (h.hj.q = h.hj.q || []).push(arguments)
