@@ -247,7 +247,7 @@ window._genesys.widgets = {
     preload: ["webchat"],
   },
   webchat: {
-    dataURL: "https://www.hel.fi/gms/sote/genesys/2/chat/prod",
+    dataURL: "https://asiointi.hel.fi/gms/sote/genesys/2/chat/prod",
     confirmFormCloseEnabled: false,
     userData: {
       service: helFiChat_service,
