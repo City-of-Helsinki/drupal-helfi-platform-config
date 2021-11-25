@@ -76,6 +76,9 @@
       },
       "drupal/linkit": {
         "[#UHF-1872] Linkit support for link field": "https://www.drupal.org/files/issues/2021-08-20/avoid-linkit-CI-issue.patch"
+      },
+      "drupal/field_group": {
+        "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
       }
     }
   }
