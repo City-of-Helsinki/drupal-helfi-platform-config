@@ -14,7 +14,9 @@ function helfi_gdpr_compliance_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     // Update base configurations for HELfi GDPR compliance.
     helfi_gdpr_compliance_update_9001();
+    helfi_gdpr_compliance_update_9002();
     helfi_gdpr_compliance_update_9003();
+    helfi_gdpr_compliance_update_9004();
   }
 
   // Override eu_cookie_compliance settings on module install.
