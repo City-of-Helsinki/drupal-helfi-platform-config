@@ -97,3 +97,21 @@ function helfi_gdpr_compliance_update_9003() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Update cookie statistics category and allowed cookies.
+ */
+function helfi_gdpr_compliance_update_9004() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9004');
+
+  // Install updated translations.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'eu_cookie_compliance.cookie_category.statistics');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
