@@ -9,12 +9,13 @@
       var tableOfContentsList = $('#helfi-toc-table-of-contents-list > ul');
       var mainContent = $('main.layout-main-wrapper');
 
-      // Do not include sidebar H2 or Table of contents H2.
+      // Do not include sidebar H2, Table of contents H2 or cookie compliance warnings.
       var titleComponents = [
         'h2:not(aside *)' +
         ':not(.unit__sidebar *)' +
         ':not(.service__sidebar *)' +
-        ':not(#helfi-toc-table-of-contents *)'
+        ':not(#helfi-toc-table-of-contents *)' +
+        ':not(.embedded-content-cookie-compliance *)'
       ];
 
       // Craft table of contents.
