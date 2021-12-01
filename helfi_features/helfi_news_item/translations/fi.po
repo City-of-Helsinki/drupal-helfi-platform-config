@@ -18,10 +18,10 @@ msgid "Latest news"
 msgstr "Uusimmat uutiset"
 
 msgid "Lead-in"
-msgstr "Ingressi"
+msgstr "Johdanto"
 
 msgid "Lead-in should be less than 320 characters."
-msgstr "Ingressin tulisi olla alle 320 merkkiä."
+msgstr "Johdannon tulisi olla alle 320 merkkiä."
 
 msgid "Link"
 msgstr "Linkki"

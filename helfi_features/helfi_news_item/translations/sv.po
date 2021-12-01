@@ -4,3 +4,6 @@ msgstr ""
 msgid "Latest news"
 msgstr "Senaste nyheter"
 
+msgid "News tags"
+msgstr "Nyhetstaggar"
+
