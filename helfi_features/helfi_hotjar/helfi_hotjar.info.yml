@@ -1,0 +1,10 @@
+name: 'HELfi Hotjar'
+type: module
+description: 'Include Hotjar functionality on certain pages by adding a block.'
+package: HELfi
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - eu_cookie_compliance
+'interface translation project': helfi_hotjar
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_hotjar/translations/%language.po
