@@ -16,6 +16,7 @@ dependencies:
   - 'imagecache_external:imagecache_external'
   - 'metatag:metatag'
   - 'paragraphs:paragraphs'
+  - 'publication_date:publication_date'
   - 'update_helper:update_helper'
 'interface translation project': helfi_news_item
 'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_news_item/translations/%language.po
