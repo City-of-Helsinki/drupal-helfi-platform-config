@@ -37,6 +37,7 @@
     "drupal/paragraphs": "^1.12",
     "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
     "drupal/pathauto": "^1.8",
+    "drupal/publication_date": "^2.0@beta",
     "drupal/redirect": "^1.6",
     "drupal/search_api": "^1.0",
     "drupal/scheduler": "^1.3",

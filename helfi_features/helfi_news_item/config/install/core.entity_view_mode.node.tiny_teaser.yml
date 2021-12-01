@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.tiny_teaser
+label: 'Tiny Teaser'
+targetEntityType: node
+cache: true

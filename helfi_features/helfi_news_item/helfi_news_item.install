@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * Update HELfi News item configurations when
+ * installing module for the first time.
+ */
+function helfi_news_item_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import
+  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
+    helfi_news_item_update_9001();
+  }
+}
+
+///**
+// * Base configurations for HELfi News item module.
+// */
+//function helfi_news_item_update_9001() {
+//  /** @var \Drupal\update_helper\Updater $updateHelper */
+//  $updateHelper = \Drupal::service('update_helper.updater');
+//
+//  // Execute configuration update definitions with logging of success.
+//  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9001');
+//
+//  // Output logged messages to related channel of update execution.
+//  return $updateHelper->logger()->output();
+//}

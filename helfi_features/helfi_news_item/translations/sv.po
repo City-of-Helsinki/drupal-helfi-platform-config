@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+
+msgid "Latest news"
+msgstr "Senaste nyheter"
+

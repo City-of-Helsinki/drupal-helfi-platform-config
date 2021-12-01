@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.image_content_area
+label: 'Image (content area)'
+targetEntityType: media
+cache: true
