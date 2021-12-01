@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.news_item.field_content
     - field.field.node.news_item.field_lead_in
     - field.field.node.news_item.field_main_image
+    - field.field.node.news_item.field_main_image_caption
     - field.field.node.news_item.field_news_item_links_link
     - field.field.node.news_item.field_news_item_links_title
     - field.field.node.news_item.field_news_item_tags
@@ -52,6 +53,29 @@ third_party_settings:
         description: ''
         required_fields: false
       label: Links
+    group_main_image:
+      children:
+        - field_main_image
+        - field_main_image_caption
+      parent_name: ''
+      weight: 16
+      format_type: details
+      region: content
+      format_settings:
+        show_empty_fields: true
+        element: div
+        show_label: '0'
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+        required_fields: false
+        description: ''
+        open: false
+      label: 'Main image'
 id: node.news_item.default
 targetEntityType: node
 bundle: news_item
@@ -92,10 +116,18 @@ content:
     region: content
   field_main_image:
     type: media_library_widget
-    weight: 16
+    weight: 17
     settings:
       media_types: {  }
     third_party_settings: {  }
+    region: content
+  field_main_image_caption:
+    weight: 18
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
     region: content
   field_news_item_links_link:
     weight: 20

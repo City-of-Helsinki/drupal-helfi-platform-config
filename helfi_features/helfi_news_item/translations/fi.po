@@ -1,6 +1,9 @@
 msgid ""
 msgstr ""
 
+msgid "Caption"
+msgstr "Kuvateksti"
+
 msgid "Content region"
 msgstr "Sisältöalue"
 
@@ -28,6 +31,9 @@ msgstr "Linkki"
 
 msgid "Link list title"
 msgstr "Linkkilistan otsikko"
+
+msgid "Links"
+msgstr "Linkit"
 
 msgid "Main image"
 msgstr "Pääkuva"
@@ -59,4 +65,7 @@ msgstr ""
 
 msgid "Title"
 msgstr "Otsikko"
+
+msgid "You can provide a caption for the image here."
+msgstr "Voit halutessasi kirjoittaa kuvatekstin kuvalle tähän."
 

@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.news_item.field_content
     - field.field.node.news_item.field_lead_in
     - field.field.node.news_item.field_main_image
+    - field.field.node.news_item.field_main_image_caption
     - field.field.node.news_item.field_news_item_links_link
     - field.field.node.news_item.field_news_item_links_title
     - field.field.node.news_item.field_news_item_tags
@@ -43,6 +44,13 @@ content:
       view_mode: image_content_area
       link: false
     third_party_settings: {  }
+    region: content
+  field_main_image_caption:
+    weight: 9
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_news_item_links_link:
     weight: 7
