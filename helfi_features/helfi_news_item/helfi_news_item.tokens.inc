@@ -8,7 +8,7 @@
 use Drupal\Core\Render\BubbleableMetadata;
 
 /**
- * Implements hook_token_info()
+ * Implements hook_token_info().
  */
 function helfi_news_item_token_info() {
 
@@ -21,7 +21,7 @@ function helfi_news_item_token_info() {
 }
 
 /**
- * Implements hook_tokens()
+ * Implements hook_tokens().
  */
 function helfi_news_item_tokens(
   $type,
