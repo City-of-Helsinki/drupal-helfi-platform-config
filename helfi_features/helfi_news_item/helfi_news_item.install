@@ -14,16 +14,17 @@ function helfi_news_item_install($is_syncing) {
   }
 }
 
-///**
-// * Base configurations for HELfi News item module.
-// */
-//function helfi_news_item_update_9001() {
-//  /** @var \Drupal\update_helper\Updater $updateHelper */
-//  $updateHelper = \Drupal::service('update_helper.updater');
-//
-//  // Execute configuration update definitions with logging of success.
-//  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9001');
-//
-//  // Output logged messages to related channel of update execution.
-//  return $updateHelper->logger()->output();
-//}
+
+/**
+ * Base configurations for HELfi News item module.
+ */
+function helfi_news_item_update_9001() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
