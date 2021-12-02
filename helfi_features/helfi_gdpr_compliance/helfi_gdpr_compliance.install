@@ -17,6 +17,7 @@ function helfi_gdpr_compliance_install($is_syncing) {
     helfi_gdpr_compliance_update_9002();
     helfi_gdpr_compliance_update_9003();
     helfi_gdpr_compliance_update_9004();
+    helfi_gdpr_compliance_update_9005();
   }
 
   // Override eu_cookie_compliance settings on module install.
@@ -118,9 +119,8 @@ function helfi_gdpr_compliance_update_9004() {
   return $updateHelper->logger()->output();
 }
 
-
 /**
- * Genesys chat cookie settings.
+ * Update cookie categories and cookie intro text.
  */
 function helfi_gdpr_compliance_update_9005() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -128,6 +128,19 @@ function helfi_gdpr_compliance_update_9005() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9005');
+
+  // Install updated translations.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  $configurations = [
+    'eu_cookie_compliance.cookie_category.essential',
+    'eu_cookie_compliance.cookie_category.marketing',
+    'eu_cookie_compliance.cookie_category.preference',
+    'eu_cookie_compliance.cookie_category.statistics',
+    'hdbt_admin_tools.cookie_consent_intro',
+  ];
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
