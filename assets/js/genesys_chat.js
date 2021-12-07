@@ -64,16 +64,16 @@ var helfiChatAuthElementDone =
 var mobileIksButton =
   '<div id="gwc-chat-icon-iks-mobile"' +
   'tabindex="0" onkeypress="onEnter(event, this)" role="button" onclick="removeChatIcon()"><img src="https://www.hel.fi/static/helsinki/chat/close-next.svg" /><div></div></div';
-var helFiChat_SendButton = ` < img class = 'hki-cx-send-icon' src = 'https://www.hel.fi/static/helsinki/chat/arrow_black.svg' / > `;
-var helFiChat_AgentIcon = ` < img class = 'hki-cx-avatar-icon' src = 'https://www.hel.fi/static/helsinki/chat/agent_blue.svg' alt = '${accesabilityTexts[helfiChat_lang].agentIconAlt}' / > `;
-var helFiChat_UserIcon = ` < img class = 'hki-cx-avatar-icon' src = 'https://www.hel.fi/static/helsinki/chat/user_black.svg' alt = '${accesabilityTexts[helfiChat_lang].userIconAlt}' / > `;
+var helFiChat_SendButton = '<img class = "hki-cx-send-icon" src="https://www.hel.fi/static/helsinki/chat/arrow_black.svg" />';
+var helFiChat_AgentIcon = '<img class = "hki-cx-avatar-icon" src="https://www.hel.fi/static/helsinki/chat/agent_blue.svg" alt="${accesabilityTexts[helfiChat_lang].agentIconAlt}" />';
+var helFiChat_UserIcon = '<img class="hki-cx-avatar-icon" src="https://www.hel.fi/static/helsinki/chat/user_black.svg" alt="${accesabilityTexts[helfiChat_lang].userIconAlt}" />';
 
 /* CHAT START BUTTON ICONS */
 var helFiChat_button = "";
 
 var helFiChat_localization =
-  "https://www.hel.fi/gms/sote/testpages/chat-fi.json";
-var helFiChat_service = "TESTISIVU_TESTI";
+  "https://www.hel.fi/gms/sote/testpages/chat-kymp-fi.json";
+var helFiChat_service = "KYMP";
 var helFiChat_language = "fi";
 var helfiChat_GUI_lang = helFiChat_language;
 var helFiChat_title = "Pysäköinti Helsingissä chat";
@@ -235,7 +235,6 @@ if (!window._gt) { window._gt = [];
 
 window._genesys.widgets = {
   main: {
-    debug: true,
     theme: "helsinki-blue",
     themes: {
       "helsinki-blue": "cx-theme-helsinki-blue",
