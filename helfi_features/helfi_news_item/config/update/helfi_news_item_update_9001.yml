@@ -22,3 +22,17 @@ user.role.content_producer:
         - 'delete own news_item content'
         - 'edit any news_item content'
         - 'edit own news_item content'
+block.block.reactandshare:
+  expected_config:
+    visibility: {  }
+  update_actions:
+    change:
+      visibility:
+        'entity_bundle:node':
+          id: 'entity_bundle:node'
+          bundles:
+            announcement: announcement
+            news_item: news_item
+          negate: true
+          context_mapping:
+            node: '@node.node_route_context:node'
