@@ -4,4 +4,4 @@ dependencies: {  }
 id: publication_date_format
 label: 'Publication date format'
 locked: false
-pattern: 'j.n.Y H.i'
+pattern: 'j.n.Y G:i'
