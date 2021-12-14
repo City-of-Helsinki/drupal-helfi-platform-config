@@ -46,7 +46,7 @@ content:
     third_party_settings: {  }
     region: content
   field_main_image_caption:
-    weight: 9
+    weight: 8
     label: inline
     settings: {  }
     third_party_settings: {  }
@@ -72,14 +72,6 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_news_item_tags:
-    weight: 8
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_short_title:
     weight: 1
     label: hidden
@@ -104,5 +96,6 @@ content:
       timezone: ''
     third_party_settings: {  }
 hidden:
+  field_news_item_tags: true
   langcode: true
   toc_enabled: true
