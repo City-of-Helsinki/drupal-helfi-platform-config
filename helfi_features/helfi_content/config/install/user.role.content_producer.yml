@@ -46,6 +46,8 @@ permissions:
   - 'update media'
   - 'view all media revisions'
   - 'view all revisions'
+  - 'view any unpublished landing_page content'
+  - 'view any unpublished page content'
   - 'view landing_page revisions'
   - 'view own unpublished content'
   - 'view own unpublished media'

@@ -98,6 +98,7 @@ permissions:
   - 'update media'
   - 'view all media revisions'
   - 'view all revisions'
+  - 'view any unpublished content'
   - 'view landing_page revisions'
   - 'view media'
   - 'view own unpublished content'

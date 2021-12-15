@@ -24,6 +24,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9006();
     helfi_content_update_9007();
     helfi_content_update_9009();
+    helfi_content_update_9010();
   }
 }
 
@@ -93,7 +94,6 @@ function helfi_content_update_9004() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
-  // Added manually the creation of configuration. Cannot be handled automatically.
   // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
 
@@ -202,6 +202,28 @@ function helfi_content_update_9009() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9009');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update permissions for Admin and Content producer roles.
+ */
+function helfi_content_update_9010() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Install configurations and translations.
+  ConfigHelper::installNewConfig($configLocation, 'user.role.read_only');
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'user.role.read_only');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9010');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

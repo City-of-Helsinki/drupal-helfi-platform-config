@@ -115,6 +115,9 @@ msgstr "Paragraf"
 msgid "Promoted to front page"
 msgstr "Visas på startsidan"
 
+msgid "Read only"
+msgstr "Endast läs"
+
 msgid "Shown when hovering over the menu link."
 msgstr "Visas när man för musmarkören över menylänken."
 
@@ -132,3 +135,4 @@ msgstr "Innehåll"
 
 msgid "White"
 msgstr "Vit"
+
