@@ -1,16 +1,27 @@
-metatag.metatag_defaults.tpr_service:
-  expected_config:
-    tags:
-      og_site_name: '[site:name]'
+user.role.admin:
+  expected_config: {  }
   update_actions:
-    delete:
-      tags:
-        og_site_name: '[site:name]'
-metatag.metatag_defaults.tpr_unit:
-  expected_config:
-    tags:
-      og_site_name: '[site:name]'
+    add:
+      permissions:
+        - 'view unpublished tpr_errand_service'
+        - 'view unpublished tpr_service'
+        - 'view unpublished tpr_service_channel'
+        - 'view unpublished tpr_unit'
+user.role.content_producer:
+  expected_config: {  }
   update_actions:
-    delete:
-      tags:
-        og_site_name: '[site:name]'
+    add:
+      permissions:
+        - 'view unpublished tpr_errand_service'
+        - 'view unpublished tpr_service'
+        - 'view unpublished tpr_service_channel'
+        - 'view unpublished tpr_unit'
+user.role.read_only:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'view unpublished tpr_errand_service'
+        - 'view unpublished tpr_service'
+        - 'view unpublished tpr_service_channel'
+        - 'view unpublished tpr_unit'

@@ -11,6 +11,7 @@
     "drupal/config_ignore": "^2.3",
     "drupal/config_rewrite": "^1.4",
     "drupal/config_replace": "^2.0",
+    "drupal/core-recommended": ">=9.3",
     "drupal/crop": "^2.1",
     "drupal/default_content": "^2.0.0-alpha1",
     "drupal/diff": "^1.0",
@@ -56,7 +57,7 @@
       "drupal/core": {
         "[#UHF-181] Hide untranslated menu links": "https://www.drupal.org/files/issues/2021-03-05/3091246-allow-menu-tree-manipulators-alter-12-1.patch",
         "[#UHF-920] Token for base URL (https://www.drupal.org/project/drupal/issues/1088112).": "https://www.drupal.org/files/issues/2020-10-06/1088112-63.patch",
-        "[#UHF-949] Drupal.views.ajaxView is not initializing pagers in nested views (https://www.drupal.org/project/drupal/issues/2858890).": "https://www.drupal.org/files/issues/2020-11-29/2858890-58.patch",
+        "[#UHF-3812] Drupal.views.ajaxView is not initializing pagers in nested views (https://www.drupal.org/project/drupal/issues/2858890).": "https://www.drupal.org/files/issues/2021-12-15/2858890-71.patch",
         "[#UHF-3087] Non-published menu links as parent (https://www.drupal.org/project/drupal/issues/2807629)": "https://www.drupal.org/files/issues/2021-07-09/2807629-45.patch"
       },
       "drupal/default_content": {

@@ -433,6 +433,9 @@ msgstr "Lohkot"
 msgid "Promoted to front page"
 msgstr "Näytetään etusivulla"
 
+msgid "Read only"
+msgstr "Vain luku"
+
 msgid "Remote video"
 msgstr "Video ulkoisesta palvelusta"
 
