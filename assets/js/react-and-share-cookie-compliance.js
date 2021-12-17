@@ -9,10 +9,10 @@
 
   var loadReactAndShare = function () {
     if (Drupal.eu_cookie_compliance.hasAgreed('statistics')) {
-      $('#block-hdbt-subtheme-reactandshare .rns').show();
+      $('.js-react-and-share__container .rns').show();
     }
     else {
-      $('#block-hdbt-subtheme-reactandshare .react-and-share-cookie-compliance').show();
+      $('.js-react-and-share__container .js-react-and-share-cookie-compliance').show();
     }
 
     // Only load once.
