@@ -25,16 +25,13 @@ class ReactAndShare extends BlockBase {
       return [];
     }
 
-    $libraries = [
-      'helfi_platform_config/react_and_share',
-      'helfi_platform_config/react_and_share_cookie_compliance',
-    ];
+    $library = ['helfi_platform_config/react_and_share'];
 
     $build['react_and_share'] = [
       '#theme' => 'react_and_share',
       '#title' => t('React and Share'),
       '#attached' => [
-        'library' => $libraries,
+        'library' => $library,
         'drupalSettings' => ['reactAndShareApiKey' => $apikey],
       ],
     ];
