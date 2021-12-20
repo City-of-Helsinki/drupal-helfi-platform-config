@@ -1,0 +1,16 @@
+metatag.metatag_defaults.tpr_service:
+  expected_config:
+    tags:
+      og_site_name: '[site:name]'
+  update_actions:
+    delete:
+      tags:
+        og_site_name: '[site:name]'
+metatag.metatag_defaults.tpr_unit:
+  expected_config:
+    tags:
+      og_site_name: '[site:name]'
+  update_actions:
+    delete:
+      tags:
+        og_site_name: '[site:name]'

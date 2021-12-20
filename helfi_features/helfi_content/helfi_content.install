@@ -25,6 +25,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9007();
     helfi_content_update_9009();
     helfi_content_update_9010();
+    helfi_content_update_9011();
   }
 }
 
@@ -224,6 +225,20 @@ function helfi_content_update_9010() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9010');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update og_site_name to match City of Helsinki root site.
+ */
+function helfi_content_update_9011() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9011');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

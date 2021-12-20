@@ -1,0 +1,71 @@
+msgid ""
+msgstr ""
+
+msgid "Caption"
+msgstr "Kuvateksti"
+
+msgid "Content region"
+msgstr "Sisältöalue"
+
+msgid "Content type for pages that include information that ages quickly."
+msgstr "Sisältötyyppi uutistyyppiselle sisällölle."
+
+msgid ""
+"Internal or external link to the desired location. Link text is "
+"displayed for the site user."
+msgstr ""
+"Sisäinen tai ulkoinen linkki haluttuun kohteeseen. Linkin teksti "
+"-kentän arvo näytetään sivuston käyttäjälle."
+
+msgid "Latest news"
+msgstr "Uusimmat uutiset"
+
+msgid "Lead-in"
+msgstr "Johdanto"
+
+msgid "Lead-in should be less than 320 characters."
+msgstr "Johdannon tulisi olla alle 320 merkkiä."
+
+msgid "Link"
+msgstr "Linkki"
+
+msgid "Link list title"
+msgstr "Linkkilistan otsikko"
+
+msgid "Links"
+msgstr "Linkit"
+
+msgid "Main image"
+msgstr "Pääkuva"
+
+msgid ""
+"Main image is also used as liftup image in listings and social media "
+"shares."
+msgstr ""
+"Pääkuvaa käytetään uutisen lisäksi myös uutislistauksissa, "
+"nostoissa ja sosiaalisessa mediassa. "
+
+msgid "News item"
+msgstr "Uutinen"
+
+msgid "News tags"
+msgstr "Uutistagit"
+
+msgid "Short title"
+msgstr "Lyhyt otsikko"
+
+msgid ""
+"Short title is used in news listings, liftups and social media shares. "
+"When a short title is entered, it overrides normal title field "
+"everywhere except in the news item itself."
+msgstr ""
+"Lyhyt otsikko näytetään uutislistauksissa, nostoissa ja "
+"sosiaalisessa mediassa. Kun lyhyt otsikko on syötetty, se yliajaa "
+"normaalin otsikkokentän kaikkialla paitsi itse uutisessa."
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "You can provide a caption for the image here."
+msgstr "Voit halutessasi kirjoittaa kuvatekstin kuvalle tähän."
+
