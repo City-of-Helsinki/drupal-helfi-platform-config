@@ -420,3 +420,7 @@
 .cx-send {
   min-height: 55px;
 }
+
+.cx-widget img[src$="close-next.svg"] {
+  max-width: 100%;
+}

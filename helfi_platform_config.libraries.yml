@@ -49,3 +49,5 @@ genesys_chat:
       assets/css/genesys_chat.css: {}
   dependencies:
     - core/jquery
+    - core/drupal
+    - core/drupalSettings
