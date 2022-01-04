@@ -23,6 +23,9 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9005();
     helfi_content_update_9006();
     helfi_content_update_9007();
+    helfi_content_update_9009();
+    helfi_content_update_9010();
+    helfi_content_update_9011();
   }
 }
 
@@ -92,7 +95,6 @@ function helfi_content_update_9004() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
-  // Added manually the creation of configuration. Cannot be handled automatically.
   // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
 
@@ -187,6 +189,70 @@ function helfi_content_update_9008() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9008');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update content metatag image values to use shareable image (token).
+ */
+function helfi_content_update_9009() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9009');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update permissions for Admin and Content producer roles.
+ */
+function helfi_content_update_9010() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Install configurations and translations.
+  ConfigHelper::installNewConfig($configLocation, 'user.role.read_only');
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'user.role.read_only');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9010');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update og_site_name to match City of Helsinki root site.
+ */
+function helfi_content_update_9011() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9011');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add Blockquote attributes to Full HTML filter formatter.
+ */
+function helfi_content_update_9012() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9012');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

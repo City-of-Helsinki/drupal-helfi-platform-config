@@ -20,7 +20,13 @@ react_and_share:
 smartti_chatbot:
   version: 1.0.x
   js:
-    'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.js': { type: external, minified: true }
+    'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.js': {
+      type: external,
+      minified: true,
+      attributes: {
+        async: true
+      }
+    }
   css:
     theme:
       'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.css': { type: external, minified: true }

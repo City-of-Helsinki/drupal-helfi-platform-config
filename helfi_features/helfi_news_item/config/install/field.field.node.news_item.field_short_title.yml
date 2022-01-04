@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_short_title
+    - node.type.news_item
+id: node.news_item.field_short_title
+field_name: field_short_title
+entity_type: node
+bundle: news_item
+label: 'Short title'
+description: 'Short title is used in news listings, liftups and social media shares. When a short title is entered, it overrides normal title field everywhere except in the news item itself.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

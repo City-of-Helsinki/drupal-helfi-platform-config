@@ -11,7 +11,6 @@ display:
       empty:
         area:
           content:
-            format: full_html
             value: "<p>Ei tuloksia</p>\r\n"
       pager:
         options:
@@ -24,15 +23,6 @@ display:
             offset_label: Offset
           views_infinite_scroll:
             button_text: 'Lataa lisää'
-      fields:
-        name:
-          separator: ', '
-        address__postal_code:
-          separator: ', '
-        address__address_line1:
-          separator: ', '
-        address__address_line2:
-          separator: ', '
       arguments:
         id:
           exception:
@@ -42,12 +32,4 @@ display:
     display_title: Lohko
   entity_reference:
     display_title: Entiteettiviittaus
-    display_options:
-      fields:
-        name_override:
-          separator: ', '
-        id:
-          separator: ', '
-        name:
-          separator: ', '
 label: Toimipistehaku

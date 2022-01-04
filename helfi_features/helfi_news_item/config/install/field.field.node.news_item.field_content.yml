@@ -1,0 +1,93 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_content
+    - node.type.news_item
+    - paragraphs.paragraphs_type.gallery
+    - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.remote_video
+    - paragraphs.paragraphs_type.text
+  module:
+    - entity_reference_revisions
+id: node.news_item.field_content
+field_name: field_content
+entity_type: node
+bundle: news_item
+label: 'Content region'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      text: text
+      image: image
+      gallery: gallery
+      remote_video: remote_video
+    target_bundles_drag_drop:
+      accordion:
+        weight: -24
+        enabled: false
+      accordion_item:
+        weight: -37
+        enabled: false
+      banner:
+        weight: -36
+        enabled: false
+      columns:
+        weight: -26
+        enabled: false
+      content_cards:
+        weight: -35
+        enabled: false
+      content_liftup:
+        weight: -33
+        enabled: false
+      from_library:
+        weight: -32
+        enabled: false
+      gallery:
+        enabled: true
+        weight: -39
+      gallery_slide:
+        weight: -31
+        enabled: false
+      hero:
+        weight: -30
+        enabled: false
+      image:
+        enabled: true
+        weight: -40
+      liftup_with_image:
+        weight: -29
+        enabled: false
+      list_of_links:
+        weight: -28
+        enabled: false
+      list_of_links_item:
+        weight: -27
+        enabled: false
+      map:
+        weight: -25
+        enabled: false
+      remote_video:
+        enabled: true
+        weight: -38
+      service_list:
+        weight: -23
+        enabled: false
+      sidebar_text:
+        weight: -34
+        enabled: false
+      text:
+        enabled: true
+        weight: -41
+      unit_search:
+        weight: -22
+        enabled: false
+field_type: entity_reference_revisions

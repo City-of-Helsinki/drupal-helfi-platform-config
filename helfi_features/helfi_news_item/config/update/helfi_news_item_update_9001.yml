@@ -1,0 +1,38 @@
+user.role.admin:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create news_item content'
+        - 'create terms in news_tags'
+        - 'delete any news_item content'
+        - 'delete own news_item content'
+        - 'delete terms in news_tags'
+        - 'edit any news_item content'
+        - 'edit own news_item content'
+        - 'edit terms in news_tags'
+        - 'translate news_item node'
+        - 'translate news_tags taxonomy_term'
+user.role.content_producer:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create news_item content'
+        - 'delete own news_item content'
+        - 'edit any news_item content'
+        - 'edit own news_item content'
+block.block.reactandshare:
+  expected_config:
+    visibility: {  }
+  update_actions:
+    change:
+      visibility:
+        'entity_bundle:node':
+          id: 'entity_bundle:node'
+          bundles:
+            announcement: announcement
+            news_item: news_item
+          negate: true
+          context_mapping:
+            node: '@node.node_route_context:node'

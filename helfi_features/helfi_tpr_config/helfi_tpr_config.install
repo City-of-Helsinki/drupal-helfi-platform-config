@@ -13,13 +13,23 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 function helfi_tpr_config_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
-  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
-    helfi_tpr_config_update_9001();
-    helfi_tpr_config_update_9002();
-    helfi_tpr_config_update_9003();
-    helfi_tpr_config_update_9004();
-    helfi_tpr_config_update_9005();
+  if (!$is_syncing) {
+    if (Drupal::moduleHandler()->moduleExists('update_helper')) {
+      helfi_tpr_config_update_9001();
+      helfi_tpr_config_update_9002();
+      helfi_tpr_config_update_9003();
+      helfi_tpr_config_update_9004();
+      helfi_tpr_config_update_9005();
+      helfi_tpr_config_update_9015();
+    }
 
+    // If HELfi Announcements module is installed, install also
+    // HELfi Announcements TPR integration module.
+    if (Drupal::moduleHandler()->moduleExists('helfi_announcements')) {
+      Drupal::service('module_installer')->install([
+        'helfi_announcements_tpr',
+      ]);
+    }
   }
 }
 
@@ -35,6 +45,9 @@ function helfi_tpr_config_update_dependencies() {
   ];
   $dependencies['helfi_tpr_config'][9003] = [
     'helfi_content' => 9003,
+  ];
+  $dependencies['helfi_tpr_config'][9013] = [
+    'helfi_content' => 9010,
   ];
   return $dependencies;
 }
@@ -180,6 +193,104 @@ function helfi_tpr_config_update_9009() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9009');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Install 'color palette' field to TPR Unit and TPR Service entities.
+ */
+function helfi_tpr_config_update_9010() {
+
+  // Field to be installed and entity types.
+  $field = 'color_palette';
+  $entity_types = [
+    'tpr_unit',
+    'tpr_service',
+  ];
+
+  foreach ($entity_types as $entity_type) {
+    $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+    $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
+
+    // Install color palette field, if color palette field has not
+    // been installed to current entity.
+    if (
+      !empty($field_definitions[$field]) &&
+      $field_definitions[$field] instanceof FieldStorageDefinitionInterface &&
+      empty($entity_definition_update_manager->getFieldStorageDefinition($field, $entity_type))
+    ) {
+      $entity_definition_update_manager->installFieldStorageDefinition($field, $entity_type, 'hdbt_admin_editorial', $field_definitions[$field]);
+    }
+  }
+}
+
+/**
+ * Update translations for the Unit map title and link.
+ */
+function helfi_tpr_config_update_9011() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9011');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update TPR Unit metatag images to use default-og-image as fallback (token).
+ */
+function helfi_tpr_config_update_9012() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9012');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add view unpublished TPR entities permissions to Admin and Content producer.
+ */
+function helfi_tpr_config_update_9013() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9013');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update TPR Unit and Service metatag og_site_name to use global site name.
+ */
+function helfi_tpr_config_update_9014() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9014');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update Unit view mode in Service units view.
+ */
+function helfi_tpr_config_update_9015() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9015');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

@@ -9,3 +9,4 @@ msgstr "Obs"
 
 msgid "Notification"
 msgstr "Notifikation"
+
