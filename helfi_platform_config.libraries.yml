@@ -51,3 +51,11 @@ genesys_chat:
     - core/jquery
     - core/drupal
     - core/drupalSettings
+
+clear_localstorage:
+  version: 1.0.x
+  js:
+    assets/js/clear-localstorage.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
