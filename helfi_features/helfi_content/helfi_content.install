@@ -243,3 +243,32 @@ function helfi_content_update_9011() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Add Blockquote attributes to Full HTML filter formatter.
+ */
+function helfi_content_update_9012() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9012');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+
+/**
+ * Remove Iframe tag from accepted HTML tags in Full HTML filter.
+ */
+function helfi_content_update_9013() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9013');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
