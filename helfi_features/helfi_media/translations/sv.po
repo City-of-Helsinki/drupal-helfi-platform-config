@@ -1,6 +1,9 @@
 msgid ""
 msgstr ""
 
+msgid "Allowed providers: @providers."
+msgstr "Tillåtna leverantörer: @providers."
+
 msgid "File"
 msgstr "Fil"
 

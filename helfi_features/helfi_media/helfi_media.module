@@ -31,6 +31,18 @@ function helfi_media_form_alter(&$form, &$form_state, $form_id) {
   // Handle input URLs in form after build.
   if (in_array($form_id, $forms)) {
     $form['#after_build'][] = '_helfi_media_remote_video_validate';
+
+    // Switch provider names to more understandable format as the true provider
+    // for Helsinki-kanava is Icareus Suite.
+    $providers = ['@providers' => 'YouTube, Helsinki-kanava'];
+
+    if (isset($form['field_media_oembed_video']['widget'][0]['value']['#description'])) {
+      $form['field_media_oembed_video']['widget'][0]['value']['#description'] = t('Allowed providers: @providers.', $providers);
+    }
+
+    if (isset($form['container']['url']['#description'])) {
+      $form['container']['url']['#description'] = t('Allowed providers: @providers.', $providers);
+    }
   }
 }
 
