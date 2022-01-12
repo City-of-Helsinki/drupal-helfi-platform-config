@@ -49,6 +49,8 @@ genesys_chat:
       assets/css/genesys_chat.css: {}
   dependencies:
     - core/jquery
+    - core/drupal
+    - core/drupalSettings
 
 clear_localstorage:
   version: 1.0.x
