@@ -14,11 +14,11 @@ content:
   field_media_oembed_video:
     type: oembed
     label: visually_hidden
-    weight: 0
     settings:
-      max_width: 0
-      max_height: 0
+      max_width: 1264
+      max_height: 714
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   created: true
