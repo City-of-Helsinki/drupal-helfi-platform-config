@@ -1,6 +1,9 @@
 msgid ""
 msgstr ""
 
+msgid "Allowed providers: @providers."
+msgstr "Voit upottaa sisältöä seuraavista lähteistä: @providers."
+
 msgid "File"
 msgstr "Tiedosto"
 

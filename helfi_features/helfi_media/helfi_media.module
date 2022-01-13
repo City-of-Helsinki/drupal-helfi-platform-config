@@ -1,0 +1,176 @@
+<?php
+
+/**
+ * @file
+ * Contains HELfi media alterations.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\media\OEmbed\Resource;
+
+const HELSINKI_KANAVA_URL_PATTERN = 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*';
+
+/**
+ * Implements hook_media_source_info_alter().
+ */
+function helfi_media_media_source_info_alter(array &$sources) {
+  // Add Helsinki-kanava (Icareus Suite) as an available provider.
+  $sources['oembed:video']['providers'][] = 'Icareus Suite';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function helfi_media_form_alter(&$form, &$form_state, $form_id) {
+  $forms = [
+    'media_remote_video_add_form',
+    'media_remote_video_edit_form',
+    'media_library_add_form_oembed',
+  ];
+
+  // Handle input URLs in form after build.
+  if (in_array($form_id, $forms)) {
+    $form['#after_build'][] = '_helfi_media_remote_video_validate';
+
+    // Switch provider names to more understandable format as the true provider
+    // for Helsinki-kanava is Icareus Suite.
+    $providers = ['@providers' => 'YouTube, Helsinki-kanava'];
+
+    if (isset($form['field_media_oembed_video']['widget'][0]['value']['#description'])) {
+      $form['field_media_oembed_video']['widget'][0]['value']['#description'] = t('Allowed providers: @providers.', $providers);
+    }
+
+    if (isset($form['container']['url']['#description'])) {
+      $form['container']['url']['#description'] = t('Allowed providers: @providers.', $providers);
+    }
+  }
+}
+
+/**
+ * Handle remote video URLs.
+ *
+ * @param array $form
+ *   An associative array containing the structure of the form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ *
+ * @return array
+ *   Returns the form.
+ */
+function _helfi_media_remote_video_validate($form, &$form_state) {
+  $oembed_video_field = 'field_media_oembed_video';
+
+  // Alter URL only if user has input data.
+  if (empty($form_state->getUserInput())) {
+    return $form;
+  }
+
+  $user_input = $form_state->getUserInput();
+  $video_url = FALSE;
+
+  // Helsinki-kanava video can be added via media library or as a new media
+  // entity. Handle the URL in both cases.
+  if (
+    array_key_exists($oembed_video_field, $user_input) &&
+    !empty($user_input[$oembed_video_field][0]['value'])
+  ) {
+    $video_url = &$user_input[$oembed_video_field][0]['value'];
+  }
+  elseif (
+    $user_input['form_id'] === 'media_library_add_form_oembed' &&
+    !empty($user_input['url'])
+  ) {
+    $oembed_video_field = 'url';
+    $video_url = &$user_input[$oembed_video_field];
+
+    // Do not validate URL as it is cached in media library form and would in
+    // some cases try to validate wrong URL.
+    $form_state->setValidationComplete(TRUE);
+  }
+
+  // Convert the video url if needed.
+  if ($video_url) {
+    $converted_url = _helfi_media_remote_video_url_handler($video_url);
+
+    if ($converted_url) {
+      $video_url = $converted_url;
+      $form_state->setUserInput($user_input);
+      $form_state->setValue($oembed_video_field, $user_input[$oembed_video_field]);
+    }
+  }
+
+  return $form;
+}
+
+/**
+ * Convert video URL to suitable format for the Icareus Suite oembed.
+ *
+ * An example of the URL:
+ * https://suite.icareus.com/api/oembed?url=https://www.helsinkikanava.fi/fi
+ * /web/helsinkikanava/player/vod?assetId=141721719&maxwidth=1264&maxheight=714
+ *
+ * @param string $video_url
+ *   Video URL to be converted.
+ *
+ * @return false|string
+ *   Returns FALSE or converted video URL.
+ */
+function _helfi_media_remote_video_url_handler(string $video_url) {
+  $converted_url = FALSE;
+  $url_resolver = \Drupal::service('media.oembed.url_resolver');
+  $provider = $url_resolver->getProviderByUrl($video_url);
+
+  // Handle only Helsinki-kanava videos (Icareus Suite).
+  if ($provider->getName() !== 'Icareus Suite') {
+    return $converted_url;
+  }
+
+  // Try to convert the URL if it's of form 'player/event/view'.
+  if (str_contains($video_url, 'player/event/view')) {
+    preg_match( '/helsinkikanava.fi\/((?i)[a-z]{2})/', $video_url, $language_matches);
+    $lang_code = $language_matches[1];
+    preg_match( '/assetId=(\d+)/', $video_url, $asset_id_matches);
+    $asset_id = $asset_id_matches[1];
+
+    if (empty($asset_id)) {
+      return $converted_url;
+    }
+
+    $lang_code = empty($lang_code) ? 'fi' : $lang_code;
+    $url_parts = explode('*', HELSINKI_KANAVA_URL_PATTERN);
+    $converted_url = $url_parts[0] . $lang_code . $url_parts[1] . $asset_id;
+  }
+
+  // Try to convert the URL if it's of form 'web/helsinkikanava/player/webcast'.
+  if (str_contains($video_url, '/web/helsinkikanava/player/webcast')) {
+    $lang_code = '';
+    preg_match( '/assetId=(\d+)/', $video_url, $asset_id_matches);
+    $asset_id = $asset_id_matches[1];
+
+    if (empty($asset_id)) {
+      return $converted_url;
+    }
+
+    $lang_code = empty($lang_code) ? 'fi' : $lang_code;
+    $url_parts = explode('*', HELSINKI_KANAVA_URL_PATTERN);
+    $converted_url = $url_parts[0] . $lang_code . $url_parts[1] . $asset_id;
+  }
+
+  // Return the converted URL.
+  return $converted_url;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hdbt_theme_suggestions_media_oembed_iframe_alter(array &$suggestions, array $variables) {
+  // Add theme hook suggestions for the oembed providers.
+  if (
+    isset($variables['resource']) &&
+    $variables['resource'] instanceof Resource &&
+    !empty($variables['resource']->getProvider()->getName())
+  ) {
+    $provider = Html::getClass($variables['resource']->getProvider()->getName());
+    $suggestions[] = 'media_oembed_iframe__' . str_replace('-', '_', $provider);
+  }
+}
