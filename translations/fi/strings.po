@@ -1316,3 +1316,22 @@ msgstr ""
 "Toiminnon käyttämiseksi vaaditaan, että hyväksyt sivuston "
 "evästeet. Pääset antamaan palautetta tästä sivusta sallimalla "
 "evästeasetuksista tilastointiin liittyvät evästeet."
+
+msgid "School settings"
+msgstr "Kouluasetukset"
+
+msgid "Admin school settings."
+msgstr "Hallinnoi kouluasetuksia."
+
+msgid "Current school year:"
+msgstr "Käytössä oleva lukuvuosi:"
+
+msgid "Starting year for school year"
+msgstr "Lukuvuoden aloitusvuosi"
+
+msgid ""
+"Select the starting year for a school year period. For example, "
+"selecting \"2022\" would set the school year to \"2022-2023\"."
+msgstr ""
+"Aseta lukuvuoden aloitusvuosi. Asettamalla aloitusvuodeksi esimerkiksi "
+"\"2022\", lukuvuodeksi tulee \"2022-2023\"."
