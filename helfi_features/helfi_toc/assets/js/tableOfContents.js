@@ -37,6 +37,7 @@
         ':not(.service__sidebar *)' +
         ':not(#helfi-toc-table-of-contents *)' +
         ':not(.embedded-content-cookie-compliance *)' +
+        ':not(.react-and-share-cookie-compliance *)' +
         ':not(.handorgel__header)'; // Accordion headings get their id's overridden by handorgel script
 
       var titleComponents = [
