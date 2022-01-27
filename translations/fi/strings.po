@@ -728,7 +728,7 @@ msgstr "Lisää uudelleenohjaus"
 
 msgctxt "Errand service detail heading"
 msgid "Additional information"
-msgstr "Lisätiedot"
+msgstr "Lisätietoja"
 
 msgctxt "Errand service detail heading"
 msgid "Additional links"
@@ -803,7 +803,6 @@ msgstr "Yhteystiedot"
 msgid "Cookie consent intro"
 msgstr "Evästeiden hallinta intro"
 
-msgctxt "Errand service detail heading"
 msgid "Costs"
 msgstr "Maksut"
 
@@ -838,7 +837,6 @@ msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
 msgid "Elsewhere on the web"
 msgstr "Muualla verkossa"
 
-msgctxt "Errand service detail heading"
 msgid "Expiration time"
 msgstr "Voimassaoloaika"
 
