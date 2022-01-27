@@ -1299,9 +1299,3 @@ msgid ""
 msgstr ""
 "Aseta lukuvuoden aloitusvuosi. Asettamalla aloitusvuodeksi esimerkiksi "
 "\"2022\", lukuvuodeksi tulee \"2022-2023\"."
-
-msgid "The general programme or study programme"
-msgstr "Yleislukio tai -linja"
-
-msgid "The upper secondary school for adults or a study programme"
-msgstr "Aikuislukio tai -linja"

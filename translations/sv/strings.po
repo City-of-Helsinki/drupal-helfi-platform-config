@@ -232,9 +232,3 @@ msgstr ""
 "För att använda denna funktion måste du acceptera cookies från "
 "webbplatsen. Du kan ge feedback på den här sidan genom att aktivera "
 "statistikrelaterade cookies."
-
-msgid "The general programme or study programme"
-msgstr "Allmänt gymnasium eller -linje"
-
-msgid "The upper secondary school for adults or a study programme"
-msgstr "Vuxengymnasium eller -linje"
