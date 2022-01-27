@@ -729,14 +729,6 @@ msgstr "Lisää uudelleenohjaus"
 msgid "Additional information"
 msgstr "Lisätietoja"
 
-msgctxt "Errand service detail heading"
-msgid "Additional information"
-msgstr "Lisätiedot"
-
-msgctxt "Errand service detail heading"
-msgid "Additional links"
-msgstr "Lisätietolinkit"
-
 msgid ""
 "Allows linking to this content using a URL fragment (#). Must be "
 "unique."
@@ -809,10 +801,6 @@ msgstr "Evästeiden hallinta intro"
 msgid "Costs"
 msgstr "Maksut"
 
-msgctxt "Errand service detail heading"
-msgid "Costs"
-msgstr "Maksut"
-
 msgid "daily"
 msgstr "päivittäin"
 
@@ -844,10 +832,6 @@ msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
 msgid "Elsewhere on the web"
 msgstr "Muualla verkossa"
 
-msgid "Expiration time"
-msgstr "Voimassaoloaika"
-
-msgctxt "Errand service detail heading"
 msgid "Expiration time"
 msgstr "Voimassaoloaika"
 
@@ -1014,10 +998,6 @@ msgstr "Pääväri"
 msgid "Process description"
 msgstr "Prosessin kuvaus"
 
-msgid "Processing time"
-msgstr "Käsittelyaika"
-
-msgctxt "Errand service detail heading"
 msgid "Processing time"
 msgstr "Käsittelyaika"
 
