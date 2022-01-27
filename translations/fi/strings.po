@@ -726,9 +726,6 @@ msgstr "Esteettömyystiedot"
 msgid "Add URL redirect"
 msgstr "Lisää uudelleenohjaus"
 
-msgid "Additional information"
-msgstr "Lisätietoja"
-
 msgctxt "Errand service detail heading"
 msgid "Additional information"
 msgstr "Lisätiedot"
@@ -806,9 +803,6 @@ msgstr "Yhteystiedot"
 msgid "Cookie consent intro"
 msgstr "Evästeiden hallinta intro"
 
-msgid "Costs"
-msgstr "Maksut"
-
 msgctxt "Errand service detail heading"
 msgid "Costs"
 msgstr "Maksut"
@@ -843,9 +837,6 @@ msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
 
 msgid "Elsewhere on the web"
 msgstr "Muualla verkossa"
-
-msgid "Expiration time"
-msgstr "Voimassaoloaika"
 
 msgctxt "Errand service detail heading"
 msgid "Expiration time"
@@ -961,9 +952,6 @@ msgstr "Huom: Linkit aukeavat samaan ikkunaan."
 msgid "Open in new window/tab"
 msgstr "Avaa uudessa ikkunassa / välilehdellä"
 
-msgid "Opening hours"
-msgstr "Aukioloajat"
-
 msgid "Otherwise the sitemaps will be regenerated during a future cron run."
 msgstr "Muutoin sivustokartat uudistetaan tulevan cron-ajon aikana."
 
@@ -1004,18 +992,9 @@ msgstr ""
 "Täyttää linkin otsikko attribuutin, joka näkyy yleensä pienenä "
 "työkaluvihjeenä hiiren osoittimessa."
 
-msgid "Postal address"
-msgstr "Postiosoite"
-
 msgctxt "Primary color"
 msgid "Primary"
 msgstr "Pääväri"
-
-msgid "Process description"
-msgstr "Prosessin kuvaus"
-
-msgid "Processing time"
-msgstr "Käsittelyaika"
 
 msgctxt "Errand service detail heading"
 msgid "Processing time"
@@ -1029,9 +1008,6 @@ msgstr "Palveluntarjoaja: @title"
 
 msgid "Pulse"
 msgstr "Pulssi"
-
-msgid "Requires authentication"
-msgstr "Vaatii tunnistautumisen"
 
 msgctxt "Secondary color"
 msgid "Secondary"
@@ -1219,9 +1195,6 @@ msgstr "Katso suurempi kartta"
 msgid "Visible title"
 msgstr "Näkyvä otsikko"
 
-msgid "Visiting address"
-msgstr "Käyntiosoite"
-
 msgid "Wave"
 msgstr "Tyrsky"
 
@@ -1254,10 +1227,6 @@ msgstr ""
 "näyttämiseen vaaditaan, että hyväksyt sivuston evästeet. Pääset "
 "näkemään sisällön joko siirtymällä ulkoiselle sivustolle tai "
 "sallimalla evästeasetuksista personointi- ja tilastointievästeet."
-
-msgctxt "TPR unit also offers service in Swedish"
-msgid "Service in Swedish"
-msgstr "Ruotsinkielistä palvelua"
 
 msgctxt "Unit teaser link"
 msgid "See opening hours and contact details"
@@ -1296,9 +1265,6 @@ msgstr[1] "palvelupaikkaa"
 msgctxt "Contact card title"
 msgid "Contact information"
 msgstr "Yhteystiedot"
-
-msgid "Important links"
-msgstr "Tärkeitä linkkejä"
 
 msgctxt "Footer back to top link"
 msgid "Back to top"

@@ -154,24 +154,12 @@ msgstr "Tillgänglighetsuppgifter "
 msgid "Consent management"
 msgstr "Samtyckehantering"
 
-msgid "Opening hours"
-msgstr "Öppettider"
-
-msgid "Postal address"
-msgstr "Postadress"
-
-msgid "Requires authentication"
-msgstr "Kräver identifiering"
-
 msgid "Service points"
 msgstr "Serviceställen"
 
 msgctxt "Unit services count context word"
 msgid "services"
 msgstr "tjänster"
-
-msgid "Visiting address"
-msgstr "Besöksadress"
 
 msgid "Content cannot be displayed"
 msgstr "Innehållet kan inte visas"
@@ -192,10 +180,6 @@ msgstr ""
 "innehållet antingen genom att gå till en extern webbplats eller "
 "genom att ge ditt samtycke till användningen av cookies för "
 "preferens och statistik."
-
-msgctxt "TPR unit also offers service in Swedish"
-msgid "Service in Swedish"
-msgstr "Service på svenska"
 
 msgctxt "Unit teaser link"
 msgid "See opening hours and contact details"
@@ -228,9 +212,6 @@ msgstr[1] "serviceställen"
 msgctxt "Contact card title"
 msgid "Contact information"
 msgstr "Kontaktuppgifter"
-
-msgid "Important links"
-msgstr "Viktiga länkar"
 
 msgid "Apply"
 msgstr "Verkställ"
