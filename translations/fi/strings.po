@@ -726,14 +726,6 @@ msgstr "Esteettömyystiedot"
 msgid "Add URL redirect"
 msgstr "Lisää uudelleenohjaus"
 
-msgctxt "Errand service detail heading"
-msgid "Additional information"
-msgstr "Lisätietoja"
-
-msgctxt "Errand service detail heading"
-msgid "Additional links"
-msgstr "Lisätietolinkit"
-
 msgid ""
 "Allows linking to this content using a URL fragment (#). Must be "
 "unique."
@@ -803,9 +795,6 @@ msgstr "Yhteystiedot"
 msgid "Cookie consent intro"
 msgstr "Evästeiden hallinta intro"
 
-msgid "Costs"
-msgstr "Maksut"
-
 msgid "daily"
 msgstr "päivittäin"
 
@@ -836,9 +825,6 @@ msgstr "Muokkaa alatunnisteen yläosan valikkolinkkejä"
 
 msgid "Elsewhere on the web"
 msgstr "Muualla verkossa"
-
-msgid "Expiration time"
-msgstr "Voimassaoloaika"
 
 msgid "Footer bottom navigation menu links"
 msgstr "Alatunniste - Alavalikko"
@@ -993,10 +979,6 @@ msgstr ""
 msgctxt "Primary color"
 msgid "Primary"
 msgstr "Pääväri"
-
-msgctxt "Errand service detail heading"
-msgid "Processing time"
-msgstr "Käsittelyaika"
 
 msgid "Protocol"
 msgstr "Protokolla"
