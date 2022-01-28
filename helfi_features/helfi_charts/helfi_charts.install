@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall and update hooks for Helfi charts module.
+ */
+
+use Drupal\media\Entity\MediaType;
+
+/**
+ * Implements hook_install().
+ */
+function helfi_charts_install() {
+  if (MediaType::load('helfi_chart')) {
+    return;
+  }
+  /** @var \Drupal\media\MediaTypeInterface $media_type */
+  $media_type = MediaType::create([
+    'id' => 'helfi_chart',
+    'label' => 'Chart (Power BI)',
+    'source' => 'helfi_chart',
+  ]);
+  $media_type->save();
+
+  $source = $media_type->getSource();
+  $source_field = $source->createSourceField($media_type);
+  $source_configuration = $source->getConfiguration();
+  $source_configuration['source_field'] = $source_field->getName();
+  $source->setConfiguration($source_configuration);
+
+  $source_field->getFieldStorageDefinition()->save();
+  $source_field->save();
+
+  // Add the source field to the form display for the media type.
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display */
+  $form_display = \Drupal::service('entity_display.repository')->getFormDisplay('media', $media_type->id(), 'default');
+  $source->prepareFormDisplay($media_type, $form_display);
+  $form_display->save();
+
+  $media_type->save();
+}

@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+
+msgid "Given host (%value) is not valid, must be one of: %domains"
+msgstr "Syötetty URL-osoite (%value) on virheellinen. URL-osoite tulee olla: %domains"
+

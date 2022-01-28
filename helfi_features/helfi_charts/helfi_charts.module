@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for helfi_charts module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_charts_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() === 'media' && $bundle === 'helfi_chart') {
+    if (isset($fields['field_media_helfi_chart'])) {
+      $fields['field_media_helfi_chart']->addConstraint('Valid', []);
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_charts_theme($existing, $type, $theme, $path) {
+  return [
+    'helfi_chart' => [
+      'variables' => [
+        'link' => NULL,
+        'iframe' => NULL,
+        'transcript' => NULL,
+      ],
+      'template' => 'helfi-chart'
+    ],
+  ];
+}
