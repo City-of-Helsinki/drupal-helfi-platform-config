@@ -5,8 +5,6 @@ dependencies:
     - core.entity_view_mode.media.full
     - field.field.media.hel_remote_webform.field_media_hel_remote_webform
     - media.type.hel_remote_webform
-  module:
-    - form_tool_media_form
 id: media.hel_remote_webform.full
 targetEntityType: media
 bundle: hel_remote_webform
