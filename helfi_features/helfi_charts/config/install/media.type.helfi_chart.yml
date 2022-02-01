@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_charts
+id: helfi_chart
+label: 'Chart (Power BI)'
+description: null
+source: helfi_chart
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_helfi_chart_url
+field_map: {  }
