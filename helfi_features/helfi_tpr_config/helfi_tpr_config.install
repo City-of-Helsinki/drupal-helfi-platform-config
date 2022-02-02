@@ -299,7 +299,7 @@ function helfi_tpr_config_update_9015() {
 /**
  * Remove canonical url metatag override.
  */
-function helfi_tpr_config_update_9016() : void {
+function helfi_tpr_config_update_9016(): void {
   if (!\Drupal::moduleHandler()->moduleExists('metatag')) {
     return;
   }
@@ -319,4 +319,18 @@ function helfi_tpr_config_update_9016() : void {
         ->save();
     }
   }
+}
+
+/**
+ * show_www field configuration.
+ */
+function helfi_tpr_config_update_9017() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9017');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }
