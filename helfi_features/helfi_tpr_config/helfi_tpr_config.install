@@ -296,6 +296,30 @@ function helfi_tpr_config_update_9015() {
   return $updateHelper->logger()->output();
 }
 
+/**
+ * Remove canonical url metatag override.
+ */
+function helfi_tpr_config_update_9016(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('metatag')) {
+    return;
+  }
+
+  foreach (['tpr_unit', 'tpr_service'] as $type) {
+    $config = \Drupal::configFactory()->getEditable('metatag.metatag_defaults.' . $type);
+
+    if (!$config || !$tags = $config->get('tags')) {
+      continue;
+    }
+
+    // Remove canonical url from metatag overrides.
+    if (isset($tags['canonical_url'])) {
+      unset($tags['canonical_url']);
+
+      $config->set('tags', $tags)
+        ->save();
+    }
+  }
+}
 
 /**
  * show_www field configuration.
