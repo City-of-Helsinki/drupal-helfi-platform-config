@@ -1,0 +1,91 @@
+core.entity_form_display.tpr_unit.tpr_unit.default:
+  expected_config:
+    content:
+      accessibility_www:
+        weight: 12
+      address:
+        weight: 15
+      address_postal:
+        weight: 17
+      call_charge_info:
+        weight: 16
+      description:
+        weight: 13
+      field_content:
+        weight: 24
+      field_hs_front_page:
+        weight: 27
+      field_lower_content:
+        weight: 25
+      field_metatags:
+        weight: 23
+      hide_description:
+        weight: 14
+      latitude:
+        weight: 18
+      longitude:
+        weight: 19
+      path:
+        weight: 11
+      provided_languages:
+        weight: 26
+      service_map_embed:
+        weight: 21
+      services:
+        weight: 22
+      streetview_entrance_url:
+        weight: 20
+    hidden:
+      show_www: true
+  update_actions:
+    delete:
+      hidden:
+        show_www: true
+    add:
+      content:
+        field_metatags:
+          settings:
+            use_details: true
+    change:
+      content:
+        accessibility_www:
+          weight: 13
+        address:
+          weight: 16
+        address_postal:
+          weight: 18
+        call_charge_info:
+          weight: 17
+        description:
+          weight: 14
+        field_content:
+          weight: 25
+        field_hs_front_page:
+          weight: 28
+        field_lower_content:
+          weight: 26
+        field_metatags:
+          weight: 24
+        hide_description:
+          weight: 15
+        latitude:
+          weight: 19
+        longitude:
+          weight: 20
+        path:
+          weight: 12
+        provided_languages:
+          weight: 27
+        service_map_embed:
+          weight: 22
+        services:
+          weight: 23
+        show_www:
+          region: content
+          settings:
+            display_label: true
+          third_party_settings: {  }
+          type: boolean_checkbox
+          weight: 11
+        streetview_entrance_url:
+          weight: 21
