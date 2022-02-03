@@ -103,8 +103,8 @@ class HelfiChartTest extends BrowserTestBase {
 
       $this->submitForm([
         'name[0][value]' => 'Admin Test value ' . $delta,
-        'field_helfi_chart_title[0][value]' => 'Test value'. $delta,
-        'field_helfi_chart_transcript[0][value]' => 'Transcription value'. $delta,
+        'field_helfi_chart_title[0][value]' => 'Test value' . $delta,
+        'field_helfi_chart_transcript[0][value]' => 'Transcription value' . $delta,
         'field_helfi_chart_url[0][uri]' => $url,
       ], 'Save');
       $this->assertSession()->pageTextContainsOnce("Chart Admin Test value $delta has been created.");

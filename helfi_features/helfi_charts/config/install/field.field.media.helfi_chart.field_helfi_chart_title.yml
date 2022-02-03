@@ -9,7 +9,7 @@ field_name: field_helfi_chart_title
 entity_type: media
 bundle: helfi_chart
 label: Title
-description: 'A title for the embedded chart'
+description: 'The chart is rendered via inline frame. Iframe needs a label so users can determine what content is being presented in the iframe.'
 required: true
 translatable: false
 default_value: {  }

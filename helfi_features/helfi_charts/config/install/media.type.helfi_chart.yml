@@ -4,8 +4,8 @@ dependencies:
   module:
     - helfi_charts
 id: helfi_chart
-label: 'Chart (Power BI)'
-description: null
+label: Chart
+description: 'Media type Chart can be used to present interactive charts. Supports Microsoft Power BI.'
 source: helfi_chart
 queue_thumbnail_downloads: false
 new_revision: false

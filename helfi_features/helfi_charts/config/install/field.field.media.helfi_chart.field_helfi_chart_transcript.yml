@@ -17,7 +17,7 @@ field_name: field_helfi_chart_transcript
 entity_type: media
 bundle: helfi_chart
 label: Transcript
-description: 'A transcript for the embedded chart'
+description: 'Provide a descriptive transcript of the visual information what is presented in the chart.'
 required: true
 translatable: false
 default_value: {  }

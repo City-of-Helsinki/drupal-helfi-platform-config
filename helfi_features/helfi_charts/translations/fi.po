@@ -1,6 +1,55 @@
 msgid ""
 msgstr ""
 
-msgid "Given host (%value) is not valid, must be one of: %domains"
-msgstr "Syötetty URL-osoite (%value) on virheellinen. URL-osoite tulee olla: %domains"
+msgid "Chart"
+msgstr "Kaavio"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid ""
+"Enter the Chart URL. Should be in format "
+"<i>https://app.powerbi.com/view?r=eyJrIjo..</i>.\r\n"
+""
+msgstr ""
+"Syötä kaavion URL-osoite muodossa "
+"<i>https://app.powerbi.com/view?r=eyJrIjo..</i>."
+
+msgid ""
+"Media type Chart can be used to present interactive charts. Supports "
+"Microsoft Power BI."
+msgstr ""
+"Kaaviolla voidaan esittää interaktiivisia kaavioita. Tukee Microsoft "
+"Power BI:tä."
+
+msgid ""
+"Provide a descriptive transcript of the visual information what is "
+"presented in the chart."
+msgstr ""
+"Syötä kuvaava transkriptio kaaviossa esitetyistä visuaalisista "
+"tiedoista."
+
+msgid ""
+"The chart is rendered via inline frame. Iframe needs a label so users "
+"can determine what content is being presented in the iframe."
+msgstr ""
+"Kaavio esitetään iframe elementin kautta. Iframe tarvitsee "
+"sisältöä kuvaavan otsikon, jotta käyttäjät voivat tietää mitä "
+"sisältöä iframe-kehyksessä esitetään."
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "Transcript"
+msgstr "Transkriptio"
+
+msgid "URL"
+msgstr "URL-osoite"
+
+msgid ""
+"With Chart paragraph content producer can add an embedded chart from "
+"https://app.powerbi.com."
+msgstr ""
+"Kaavio lohkolla voit lisätä upotettavan kaavion Power BI "
+"-palveluista."
 
