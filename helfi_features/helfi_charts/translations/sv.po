@@ -45,6 +45,12 @@ msgstr "Transkript"
 msgid "URL"
 msgstr "URL"
 
+msgid "Edit @name. Opens in a new tab."
+msgstr "Redigera @name. Öppnas i en ny flik."
+
+msgid "Edit @name."
+msgstr "Redigera @name."
+
 msgid ""
 "With Chart paragraph content producer can add an embedded chart from "
 "https://app.powerbi.com."
@@ -52,3 +58,8 @@ msgstr ""
 "Med Chart paragraph content producer kan lägga till ett inbäddat "
 "diagram från https://app.powerbi.com."
 
+msgid "Chart embed URL"
+msgstr "Diagram embed URL"
+
+msgid "Enter the chart embed URL from @powerbi."
+msgstr "Ange diagrammets inbäddnings-URL från @powerbi."

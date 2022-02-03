@@ -46,6 +46,12 @@ msgstr "Transkriptio"
 msgid "URL"
 msgstr "URL-osoite"
 
+msgid "Edit @name. Opens in a new tab."
+msgstr "Muokkaa @name. Linkki avautuu uuteen välilehteen."
+
+msgid "Edit @name."
+msgstr "Muokkaa @name."
+
 msgid ""
 "With Chart paragraph content producer can add an embedded chart from "
 "https://app.powerbi.com."
@@ -53,3 +59,9 @@ msgstr ""
 "Kaavio lohkolla voit lisätä upotettavan kaavion Power BI "
 "-palveluista."
 
+msgid "Chart embed URL"
+msgstr "Upotettavan kaavion URL-osoite"
+
+msgid "Enter the chart embed URL from @powerbi."
+msgstr "Syötä kenttään upotettavan Power Bi kaavion URL-osoite. "
+"Saat sen osoitteesta @powerbi."

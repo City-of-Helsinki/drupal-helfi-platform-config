@@ -13,6 +13,7 @@ function helfi_media_install($is_syncing) {
   // of a configuration import
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_media_update_9001();
+    helfi_media_update_9003();
   }
 }
 
@@ -69,15 +70,15 @@ function helfi_media_update_9002() {
 }
 
 /**
- * Add Media edit links to media library widget.
+ * Install Helfi Charts module and add media edit links to media library widget.
  */
 function helfi_media_update_9003() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
+  // Override Media library views with enhanced view.
+  $configLocation = dirname(__FILE__) . '/config/override/';
+  ConfigHelper::installNewConfig($configLocation, 'views.view.media_library');
 
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_media', 'helfi_media_update_9003');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
+  // Install Helfi Charts module.
+  if (!Drupal::moduleHandler()->moduleExists('helfi_charts')) {
+    Drupal::service('module_installer')->install(['helfi_charts']);
+  }
 }
