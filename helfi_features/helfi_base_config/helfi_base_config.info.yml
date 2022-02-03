@@ -34,6 +34,7 @@ dependencies:
   - 'linkit:linkit'
   - 'menu_block_current_language:menu_block_current_language'
   - 'pathauto:pathauto'
+  - 'role_delegation:role_delegation'
   - 'select2_icon:select2_icon'
   - 'simple_sitemap:simple_sitemap'
   - 'translatable_menu_link_uri:translatable_menu_link_uri'
