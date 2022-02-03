@@ -5,10 +5,29 @@
  * Install, uninstall and update hooks for Helfi charts module.
  */
 
-
 /**
  * Implements hook_install().
  */
-function helfi_charts_install() {
+function helfi_charts_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if (!$is_syncing) {
+    if (Drupal::moduleHandler()->moduleExists('update_helper')) {
+      helfi_charts_update_9001();
+    }
+  }
+}
 
+/**
+ * Install Helfi Charts paragraph and media type.
+ */
+function helfi_charts_update_9001() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_charts', 'helfi_charts_update_9001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }
