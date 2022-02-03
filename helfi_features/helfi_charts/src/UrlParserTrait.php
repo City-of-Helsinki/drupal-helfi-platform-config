@@ -20,18 +20,16 @@ trait UrlParserTrait {
    *   The uri.
    */
   private function assertMediaLink(UriInterface $uri) : void {
-    // This should never happen since URLs are validated on save already, but
-    // lets make sure.
     if (!in_array($uri->getHost(), Chart::VALID_URLS)) {
       throw new \InvalidArgumentException('Invalid domain, Check URL.');
     }
   }
 
   /**
-   * Parses 'Open map in new window' link from embed URL.
+   * Check that given URL has correct properties.
    *
    * @param string $uri
-   *   The uri from embed URL.
+   *   The uri from chart URL.
    *
    * @return string|null
    *   The url.

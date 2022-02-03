@@ -10,7 +10,7 @@ use Drupal\media\Entity\MediaType;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * Tests media map functionality.
+ * Tests Chart functionality.
  *
  * @group helfi_charts
  */
@@ -54,12 +54,12 @@ class HelfiChartTest extends BrowserTestBase {
   }
 
   /**
-   * Asserts media map formatter.
+   * Asserts chart URL formatter.
    *
    * @var int $media_id$
    *   The media id.
    */
-  private function assertMapFormatter(int $media_id) : void {
+  private function assertChartFormatter(int $media_id) : void {
     $media = Media::load($media_id);
 
     $this->drupalGet(Url::fromRoute('entity.media.revision', [
@@ -74,7 +74,7 @@ class HelfiChartTest extends BrowserTestBase {
    */
   public function testMediaType() : void {
     \Drupal::service('entity_display.repository')->getViewDisplay('media', MediaType::load('helfi_chart')->id(), 'full')
-      ->setComponent('field_media_helfi_chart', [
+      ->setComponent('field_helfi_chart_url', [
         'type' => 'helfi_charts',
       ])
       ->save();
@@ -83,17 +83,18 @@ class HelfiChartTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
 
     $this->submitForm([
-      'name[0][value]' => 'Test value',
-      'field_media_helfi_chart[0][uri]' => 'https://google.com',
+      'name[0][value]' => 'Admin Test value',
+      'field_helfi_chart_title[0][value]' => 'Test value',
+      'field_helfi_chart_transcript[0][value]' => 'Transcription value',
+      'field_helfi_chart_url[0][uri]' => 'https://google.com',
     ], 'Save');
 
     // Make sure we only allow valid domains.
-    $this->assertSession()->pageTextContainsOnce('Given host (google.com) is not valid, must be one of: palvelukartta.hel.fi, kartta.hel.fi');
+    $this->assertSession()->pageTextContainsOnce('Given host (www.google.com) is not valid, must be one of: app.powerbi.com');
 
     // Make sure we can add valid maps.
     $urls = [
-      'https://kartta.hel.fi/link/9UC458',
-      'https://palvelukartta.hel.fi/fi/embed/address/helsinki/Keskuskatu/8?city=helsinki,espoo,vantaa,kauniainen',
+      'https://app.powerbi.com/view/9UC458',
     ];
 
     foreach ($urls as $delta => $url) {
@@ -101,13 +102,15 @@ class HelfiChartTest extends BrowserTestBase {
       $this->assertSession()->statusCodeEquals(200);
 
       $this->submitForm([
-        'name[0][value]' => 'Chart value ' . $delta,
-        'field_media_helfi_chart[0][uri]' => $url,
+        'name[0][value]' => 'Admin Test value ' . $delta,
+        'field_helfi_chart_title[0][value]' => 'Test value'. $delta,
+        'field_helfi_chart_transcript[0][value]' => 'Transcription value'. $delta,
+        'field_helfi_chart_url[0][uri]' => $url,
       ], 'Save');
-      $this->assertSession()->pageTextContainsOnce("Chart (kartta.hel.fi, palvelukartta.hel.fi) Chart value $delta has been created.");
+      $this->assertSession()->pageTextContainsOnce("Chart Admin Test value $delta has been created.");
 
       $medias = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
-        'name' => 'Chart value ' . $delta,
+        'name' => 'Admin Test value ' . $delta,
       ]);
       /** @var \Drupal\media\MediaInterface */
       $media = reset($medias);
