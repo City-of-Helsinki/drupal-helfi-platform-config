@@ -7,11 +7,11 @@ namespace Drupal\helfi_charts\Plugin\Validation\Constraint;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Provides a ValidHelfiChartLink constraint.
+ * Provides a ValidChartLink constraint.
  *
  * @Constraint(
  *   id = "ValidHelfiChartLink",
- *   label = @Translation("ValidHelfiChartLink", context = "Validation"),
+ *   label = @Translation("ValidChartLink", context = "Validation"),
  * )
  */
 final class ValidHelfiChartLinkConstraint extends Constraint {

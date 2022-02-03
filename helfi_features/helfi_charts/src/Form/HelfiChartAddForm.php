@@ -30,22 +30,6 @@ class HelfiChartAddForm extends AddFormBase {
       ]),
       '#maxlength' => 2048,
     ];
-//    $container['helfi_chart_url'] = [
-//      '#type' => 'textfield',
-//      '#title' => $this->t('Chart embed URL'),
-//      '#description' => $this->t('Enter the chart embed URL from @powerbi.', [
-//        '@powerbi' => Link::fromTextAndUrl('https://app.powerbi.com/', Url::fromUri('https://app.powerbi.com/', ['attributes' => ['target' => '_blank']]))->toString(),
-//      ]),
-//      '#maxlength' => 2048,
-//    ];
-//    $container['helfi_chart_url'] = [
-//      '#type' => 'textfield',
-//      '#title' => $this->t('Chart embed URL'),
-//      '#description' => $this->t('Enter the chart embed URL from @powerbi.', [
-//        '@powerbi' => Link::fromTextAndUrl('https://app.powerbi.com/', Url::fromUri('https://app.powerbi.com/', ['attributes' => ['target' => '_blank']]))->toString(),
-//      ]),
-//      '#maxlength' => 2048,
-//    ];
 
     $container['submit'] = [
       '#type' => 'submit',

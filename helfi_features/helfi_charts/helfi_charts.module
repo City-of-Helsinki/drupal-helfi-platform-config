@@ -6,16 +6,37 @@
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\Entity\BaseFieldOverride;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function helfi_charts_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
   if ($entity_type->id() === 'media' && $bundle === 'helfi_chart') {
-    if (isset($fields['field_media_helfi_chart'])) {
-      $fields['field_media_helfi_chart']->addConstraint('Valid', []);
+    if (isset($fields['field_helfi_chart_url'])) {
+      $fields['field_helfi_chart_url']->addConstraint('ValidHelfiChartLink', []);
     }
   }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function helfi_charts_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
+  $fields = [];
+
+  // Switch Helfi Chart media type 'name' label to "Administrative title".
+  if (
+    $entity_type->id() == 'media' &&
+    $bundle == 'helfi_chart' &&
+    !empty($base_field_definitions['name'])
+  ) {
+    $field = BaseFieldOverride::createFromBaseFieldDefinition($base_field_definitions['name'], $bundle);
+    $field->setLabel(t('Administrative title'));
+    $fields['name'] = $field;
+  }
+
+  return $fields;
 }
 
 /**
@@ -23,13 +44,19 @@ function helfi_charts_entity_bundle_field_info_alter(&$fields, EntityTypeInterfa
  */
 function helfi_charts_theme($existing, $type, $theme, $path) {
   return [
-    'helfi_chart' => [
+    'chart_iframe' => [
       'variables' => [
-        'link' => NULL,
-        'iframe' => NULL,
-        'transcript' => NULL,
+        'title' => NULL,
+        'url' => NULL,
       ],
-      'template' => 'helfi-chart'
+      'template' => 'chart-iframe',
+    ],
+    'chart_iframe__media_library' => [
+      'variables' => [
+        'title' => NULL,
+        'url' => NULL,
+      ],
+      'template' => 'chart-iframe--media-library',
     ],
   ];
 }

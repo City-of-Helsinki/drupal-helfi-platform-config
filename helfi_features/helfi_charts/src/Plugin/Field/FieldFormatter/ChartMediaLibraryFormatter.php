@@ -12,14 +12,14 @@ use Drupal\helfi_charts\UrlParserTrait;
  * Plugin implementation of the 'Chart' formatter.
  *
  * @FieldFormatter(
- *   id = "helfi_chart",
- *   label = @Translation("Chart"),
+ *   id = "helfi_chart_media_library",
+ *   label = @Translation("Chart - Media library"),
  *   field_types = {
  *     "link",
  *   }
  * )
  */
-final class ChartFormatter extends FormatterBase {
+final class ChartMediaLibraryFormatter extends FormatterBase {
 
   use UrlParserTrait;
 
@@ -28,14 +28,12 @@ final class ChartFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) :array {
     $element = [];
-    $entity = $items->getEntity();
 
     foreach ($items as $delta => $item) {
       ['uri' => $uri] = $item->getValue();
 
       $element[$delta] = [
-        '#theme' => 'chart_iframe',
-        '#title' => $entity->field_helfi_chart_title->value,
+        '#theme' => 'chart_iframe__media_library',
         '#url' => $this->getChartUrl($uri),
       ];
     }

@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_charts\Plugin\media\Source;
 
 use Drupal\media\MediaSourceBase;
-use Drupal\media\MediaTypeInterface;
 
 /**
  * Chart entity media source.
@@ -21,7 +20,10 @@ use Drupal\media\MediaTypeInterface;
  * )
  */
 final class Chart extends MediaSourceBase {
-  // https://app.powerbi.com/view?r=eyJrIjoiYjE5OTFhMmEtMWYzNC00YjY2LTllODMtMzhhZDRiNTJiMDQ5IiwidCI6IjNmZWI2YmMxLWQ3MjItNDcyNi05NjZjLTViNThiNjRkZjc1MiIsImMiOjh9
+
+  /**
+   * Valid Power BI URL.
+   */
   public const CHART_POWERBI_URL = 'app.powerbi.com';
 
   /**
@@ -36,21 +38,6 @@ final class Chart extends MediaSourceBase {
    */
   public function getMetadataAttributes() : array {
     return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function createSourceField(MediaTypeInterface $type) {
-    $storage = $this->getSourceFieldStorage() ?: $this->createSourceFieldStorage();
-    return $this->entityTypeManager
-      ->getStorage('field_config')
-      ->create([
-        'field_storage' => $storage,
-        'bundle' => $type->id(),
-        'label' => 'Url',
-        'required' => TRUE,
-      ]);
   }
 
 }
