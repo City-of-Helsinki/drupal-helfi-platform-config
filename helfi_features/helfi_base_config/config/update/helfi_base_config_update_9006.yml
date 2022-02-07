@@ -1,7 +1,6 @@
 system.maintenance:
-  expected_config: {
+  expected_config:
     message: '@site is currently under maintenance. We should be back shortly. Thank you for your patience.'
-  }
   update_actions:
     change:
       message: 'We should be back shortly. Thank you for your patience.'
