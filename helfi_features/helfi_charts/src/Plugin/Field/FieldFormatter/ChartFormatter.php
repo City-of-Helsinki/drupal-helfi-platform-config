@@ -37,6 +37,12 @@ final class ChartFormatter extends FormatterBase {
         '#theme' => 'chart_iframe',
         '#title' => $entity->field_helfi_chart_title->value,
         '#url' => $this->getChartUrl($uri),
+        '#domain' => $this->getDomain($uri),
+        '#attached' => [
+          'library' => [
+            'helfi_charts/helfi_charts',
+          ],
+        ],
       ];
     }
 

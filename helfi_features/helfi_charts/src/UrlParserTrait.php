@@ -47,4 +47,18 @@ trait UrlParserTrait {
     throw new \LogicException('Invalid URL parameters. Check URL.');
   }
 
+  /**
+   * Get given URL domain.
+   *
+   * @param string $uri
+   *   The uri from chart URL.
+   *
+   * @return string|null
+   *   The domain in format https://sub.domain.com.
+   */
+  protected function getDomain(string $uri) : ? string {
+    $uri = Http::createFromString($uri);
+    return ($uri->getHost()) ? $uri->getHost() : NULL;
+  }
+
 }

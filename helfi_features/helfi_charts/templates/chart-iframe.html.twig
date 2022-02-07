@@ -1,3 +1,37 @@
 {% if url and title %}
-  <iframe allow="fullscreen" src="{{ url }}" title="{{ title }}"></iframe>
+  <iframe class="helfi-charts-content" style="display: none;" allow="fullscreen" src="{{ url }}" title="{{ title }}"></iframe>
+
+  <div class="helfi-charts-cookie-compliance js-helfi-charts-cookie-compliance" style="display: none;">
+    <div class="message">
+      {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'alert-circle-fill'} %}
+      <h2>{{ 'Chart cannot be displayed'|t({}, {'context': 'Helfi Charts cookie compliance'}) }}</h2>
+      <p>
+        {% trans with {'context': 'Helfi Charts cookie compliance'} %}
+          This content is hosted by {{ chart_service_url }}. To see the content, switch over to the external site or modify your cookie settings to allow statistics cookies.
+        {% endtrans %}
+      </p>
+      <div class="buttons">
+        {%
+          set external_link_classes = [
+          'hds-button',
+          'hds-button--primary',
+          'hdbt-icon',
+          'hdbt-icon--link-external'
+        ]
+        %}
+        <a href="{{ url }}" target="_blank"{{ create_attribute({'class': external_link_classes} ) }}>
+          <span class="hds-button__label">{{ 'See the chart on external site'|t({}, {'context': 'Helfi Charts cookie compliance'}) }}</span>
+        </a>
+        {%
+          set settings_link_classes = [
+          'hds-button',
+          'hds-button--secondary',
+        ]
+        %}
+        <a href="{{ privacy_policy_url }}" {{ create_attribute({'class': settings_link_classes} ) }}>
+          <span class="hds-button__label">{{ 'Change cookie settings'|t }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
 {% endif %}
