@@ -170,6 +170,10 @@ function helfi_base_config_update_9006() {
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9006');
 
+  // Install updated translations.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'system.maintenance');
+
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
