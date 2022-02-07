@@ -162,3 +162,14 @@ function helfi_platform_config_update_9005() {
     ]);
   }
 }
+
+/**
+ * Install role_delegation module.
+ */
+function helfi_platform_config_update_9006() {
+  if (!Drupal::moduleHandler()->moduleExists('role_delegation')) {
+    Drupal::service('module_installer')->install([
+      'role_delegation',
+    ]);
+  }
+}
