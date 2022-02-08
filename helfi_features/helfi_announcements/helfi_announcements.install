@@ -8,6 +8,7 @@ function helfi_announcements_install($is_syncing) {
   // of a configuration import.
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_announcements_update_9001();
+    helfi_announcements_update_9003();
   }
 
   // If HELfi TPR config module is installed, install also
@@ -17,6 +18,19 @@ function helfi_announcements_install($is_syncing) {
       'helfi_announcements_tpr',
     ]);
   }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function helfi_announcements_update_dependencies() {
+  // Run helfi_announcements_update_9003() after helfi_content_update_9014()
+  // has been run. helfi_content_update_9014() update will reinstall
+  // user roles and permissions.
+  $dependencies['helfi_announcements'][9003] = [
+    'helfi_content' => 9014,
+  ];
+  return $dependencies;
 }
 
 /**
@@ -44,4 +58,18 @@ function helfi_announcements_update_9002() {
       'helfi_announcements_tpr',
     ]);
   }
+}
+
+/**
+ * Reinstall Helfi Announcements specific permissions.
+ */
+function helfi_announcements_update_9003() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_announcements', 'helfi_announcements_update_9003');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }

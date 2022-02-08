@@ -24,7 +24,6 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9006();
     helfi_content_update_9007();
     helfi_content_update_9009();
-    helfi_content_update_9010();
     helfi_content_update_9011();
   }
 }
@@ -209,28 +208,6 @@ function helfi_content_update_9009() {
 }
 
 /**
- * Update permissions for Admin and Content producer roles.
- */
-function helfi_content_update_9010() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
-  // Added manually the creation of configuration. Cannot be handled automatically.
-  $configLocation = dirname(__FILE__) . '/config/install/';
-  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
-
-  // Install configurations and translations.
-  ConfigHelper::installNewConfig($configLocation, 'user.role.read_only');
-  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'user.role.read_only');
-
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9010');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
-}
-
-/**
  * Update og_site_name to match City of Helsinki root site.
  */
 function helfi_content_update_9011() {
@@ -258,7 +235,6 @@ function helfi_content_update_9012() {
   return $updateHelper->logger()->output();
 }
 
-
 /**
  * Remove Iframe tag from accepted HTML tags in Full HTML filter.
  */
@@ -271,4 +247,29 @@ function helfi_content_update_9013() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Install Editor role and overhaul user roles and permissions.
+ */
+function helfi_content_update_9014() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Handle the configuration override manually.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'user.role.admin',
+    'user.role.content_producer',
+    'user.role.editor',
+    'user.role.read_only',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
 }

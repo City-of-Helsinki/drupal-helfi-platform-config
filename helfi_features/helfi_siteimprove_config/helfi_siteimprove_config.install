@@ -24,6 +24,14 @@ function helfi_siteimprove_config_update_dependencies() {
     'helfi_platform_config' => 9004,
     'helfi_base_config' => 9001,
   ];
+
+  // Run helfi_siteimprove_config_update_9002() after helfi_content_update_9014()
+  // has been run. helfi_content_update_9014() update will reinstall
+  // user roles and permissions.
+  $dependencies['helfi_siteimprove_config'][9002] = [
+    'helfi_content' => 9014,
+  ];
+
   return $dependencies;
 }
 
@@ -39,4 +47,11 @@ function helfi_siteimprove_config_update_9001() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Rerun permission setup for Siteimprove.
+ */
+function helfi_siteimprove_config_update_9002() {
+  helfi_siteimprove_config_update_9001();
 }

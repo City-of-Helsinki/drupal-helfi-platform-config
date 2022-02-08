@@ -1,6 +1,0 @@
-user.role.admin:
-  expected_config: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'view any unpublished content'

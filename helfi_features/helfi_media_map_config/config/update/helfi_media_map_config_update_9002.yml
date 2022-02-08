@@ -1,0 +1,29 @@
+user.role.admin:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create hel_map media'
+        - 'delete any hel_map media'
+        - 'delete own hel_map media'
+        - 'edit any hel_map media'
+        - 'edit own hel_map media'
+user.role.content_producer:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create hel_map media'
+        - 'delete own hel_map media'
+        - 'edit any hel_map media'
+        - 'edit own hel_map media'
+user.role.editor:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create hel_map media'
+        - 'delete any hel_map media'
+        - 'delete own hel_map media'
+        - 'edit any hel_map media'
+        - 'edit own hel_map media'

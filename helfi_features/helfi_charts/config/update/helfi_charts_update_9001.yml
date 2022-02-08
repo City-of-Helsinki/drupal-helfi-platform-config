@@ -1,21 +1,3 @@
-user.role.admin:
-  expected_config: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'create helfi_chart media'
-        - 'delete any helfi_chart media'
-        - 'delete own helfi_chart media'
-        - 'edit any helfi_chart media'
-        - 'edit own helfi_chart media'
-user.role.content_producer:
-  expected_config: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'create helfi_chart media'
-        - 'delete own helfi_chart media'
-        - 'edit own helfi_chart media'
 field.field.node.landing_page.field_content:
   expected_config: {  }
   update_actions:

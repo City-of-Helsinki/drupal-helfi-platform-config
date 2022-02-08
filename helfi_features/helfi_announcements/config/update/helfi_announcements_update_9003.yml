@@ -1,0 +1,48 @@
+user.role.admin:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create announcement content'
+        - 'delete announcement revisions'
+        - 'delete any announcement content'
+        - 'delete own announcement content'
+        - 'edit any announcement content'
+        - 'edit own announcement content'
+        - 'revert announcement revisions'
+        - 'set announcement published on date'
+        - 'translate announcement node'
+        - 'view announcement revisions'
+user.role.content_producer:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create announcement content'
+        - 'delete own announcement content'
+        - 'edit any announcement content'
+        - 'edit own announcement content'
+        - 'revert announcement revisions'
+        - 'set announcement published on date'
+        - 'view announcement revisions'
+user.role.editor:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'create announcement content'
+        - 'delete announcement revisions'
+        - 'delete any announcement content'
+        - 'delete own announcement content'
+        - 'edit any announcement content'
+        - 'edit own announcement content'
+        - 'revert announcement revisions'
+        - 'set announcement published on date'
+        - 'translate announcement node'
+        - 'view announcement revisions'
+user.role.read_only:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'view any unpublished announcement content'

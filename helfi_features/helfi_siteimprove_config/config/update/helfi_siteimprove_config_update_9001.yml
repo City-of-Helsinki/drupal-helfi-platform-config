@@ -13,3 +13,10 @@ user.role.content_producer:
       permissions:
         - 'use siteimprove'
         - 'use siteimprove prepublish'
+user.role.editor:
+  expected_config: {  }
+  update_actions:
+    add:
+      permissions:
+        - 'use siteimprove'
+        - 'use siteimprove prepublish'

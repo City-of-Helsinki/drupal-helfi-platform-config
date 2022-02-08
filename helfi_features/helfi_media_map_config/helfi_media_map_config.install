@@ -11,6 +11,7 @@ function helfi_media_map_config_install($is_syncing) {
   // of a configuration import
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_media_map_config_update_9001();
+    helfi_media_map_config_update_9002();
   }
 }
 
@@ -24,6 +25,13 @@ function helfi_media_map_config_update_dependencies() {
     'helfi_platform_config' => 9004,
     'helfi_base_config' => 9001,
   ];
+
+  // Run helfi_media_map_config_update_9002() after helfi_content_update_9014()
+  // has been run. helfi_content_update_9014() update will reinstall
+  // user roles and permissions.
+  $dependencies['helfi_media_map_config'][9002] = [
+    'helfi_content' => 9014,
+  ];
   return $dependencies;
 }
 
@@ -36,6 +44,20 @@ function helfi_media_map_config_update_9001() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_media_map_config', 'helfi_media_map_config_update_9001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Reinstall Helfi Media map specific permissions.
+ */
+function helfi_media_map_config_update_9002() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_media_map_config', 'helfi_media_map_config_update_9002');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
