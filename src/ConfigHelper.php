@@ -33,6 +33,32 @@ class ConfigHelper {
   }
 
   /**
+   * Update existing configuration.
+   *
+   * Update existing single configuration with config factory merge method to
+   * prevent deletion of customised properties in existing configuration.
+   * Notice! Use config-update or similar update function to remove
+   * a single property from the existing configuration.
+   *
+   * @param string $config_location
+   *   Absolute path to the configuration to be updated.
+   * @param string $config_name
+   *   Name of the configuration to update.
+   *
+   * @see \Drupal\Core\Config\ConfigBase::merge()
+   */
+  public static function updateExistingConfig(string $config_location, string $config_name): void {
+    $config_factory = \Drupal::configFactory();
+    $filepath = "{$config_location}{$config_name}.yml";
+    if (file_exists($filepath)) {
+      $config = Yaml::parse(file_get_contents($filepath));
+      if (is_array($config)) {
+        $config_factory->getEditable($config_name)->merge($config)->save(TRUE);
+      }
+    }
+  }
+
+  /**
    * Install new configuration translation.
    *
    * @param string $config_location

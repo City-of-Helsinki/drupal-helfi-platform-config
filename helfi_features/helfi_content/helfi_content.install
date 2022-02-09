@@ -269,7 +269,7 @@ function helfi_content_update_9014() {
 
   // Install configurations and translations.
   foreach ($configurations as $configuration) {
-    ConfigHelper::installNewConfig($configLocation, $configuration);
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
