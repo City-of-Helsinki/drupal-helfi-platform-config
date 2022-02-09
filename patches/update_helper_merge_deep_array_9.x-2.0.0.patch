@@ -1,0 +1,19 @@
+diff --git a/src/Updater.php b/src/Updater.php
+index f45b3df..e954515 100644
+--- a/src/Updater.php
++++ b/src/Updater.php
+@@ -221,12 +221,12 @@ class Updater implements UpdaterInterface {
+ 
+     // 2. Add configuration that is added.
+     if (isset($update_actions['add'])) {
+-      $base_config = NestedArray::mergeDeep($base_config, $update_actions['add']);
++      $base_config = NestedArray::mergeDeepArray([$base_config, $update_actions['add']], TRUE);
+     }
+ 
+     // 3. Add configuration that is changed.
+     if (isset($update_actions['change'])) {
+-      $base_config = NestedArray::mergeDeep($base_config, $update_actions['change']);
++      $base_config = NestedArray::mergeDeepArray([$base_config, $update_actions['change']], TRUE);
+     }
+ 
+     return $base_config;
