@@ -83,9 +83,6 @@
       },
       "drupal/field_group": {
         "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
-      },
-      "drupal/update_helper": {
-        "[#UHF-3602] Use mergeDeepArray when adding/changing configurations": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/3e51f7c6ea04e7e40f1ac34d3e6b238e7c889289/patches/update_helper_merge_deep_array_9.x-2.0.0.patch"
       }
     }
   }
