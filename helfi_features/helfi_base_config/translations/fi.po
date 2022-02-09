@@ -237,6 +237,11 @@ msgstr "Käyttäjäprofiili"
 msgid "Username"
 msgstr "Käyttäjätunnus"
 
+msgid "We should be back shortly. Thank you for your patience."
+msgstr ""
+"Palaamme huoltokatkolta niin pian kuin mahdollista. Kiitos "
+"kärsivällisyydestäsi."
+
 msgid "With selection"
 msgstr "Valinnalla"
 
