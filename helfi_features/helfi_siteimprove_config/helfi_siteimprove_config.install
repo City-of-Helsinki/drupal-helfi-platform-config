@@ -56,7 +56,7 @@ function helfi_siteimprove_config_update_9001() {
  */
 function helfi_siteimprove_config_update_9002() {
   // Handle the configuration update manually.
-  $configLocation = dirname(__FILE__) . '/config/override/';
+  $configLocation = dirname(__FILE__) . '/config/optional/';
 
   $configurations = [
     'user.role.admin',
