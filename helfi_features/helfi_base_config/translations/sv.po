@@ -196,6 +196,9 @@ msgstr "Används i"
 msgid "Username"
 msgstr "Användarnamn"
 
+msgid "We should be back shortly. Thank you for your patience."
+msgstr "Vi återkommer så fort som möjligt. Tack för ditt tålamod."
+
 msgid "With selection"
 msgstr "Med urval"
 
