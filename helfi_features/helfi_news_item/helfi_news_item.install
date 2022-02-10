@@ -49,7 +49,7 @@ function helfi_news_item_update_9001() {
  */
 function helfi_news_item_update_9002() {
   // Handle the configuration update manually.
-  $configLocation = dirname(__FILE__) . '/config/optional/';
+  $configLocation = dirname(__FILE__) . '/config/override/';
 
   $configurations = [
     'user.role.admin',
