@@ -7,7 +7,6 @@
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_platform_config\ConfigHelper;
-use Psr\Log\LogLevel;
 
 /**
  * Implements hook_install().

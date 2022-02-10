@@ -62,7 +62,10 @@ class ConfigHelper {
       $new_config = Yaml::parse(file_get_contents($filepath));
       if (is_array($new_config)) {
         $original_config = $config_factory->getEditable($config_name);
-        $updated_config = self::mergeDeepArray([$original_config->getRawData(), $new_config]);
+        $updated_config = self::mergeDeepArray([
+          $original_config->getRawData(),
+          $new_config,
+        ]);
         $original_config->setData($updated_config)->save(TRUE);
       }
     }
@@ -144,6 +147,8 @@ class ConfigHelper {
   }
 
   /**
+   * Merge arrays recursively.
+   *
    * Merges multiple arrays, recursively, and returns the merged array with
    * unique sequential arrays.
    *
