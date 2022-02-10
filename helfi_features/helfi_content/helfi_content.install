@@ -253,10 +253,7 @@ function helfi_content_update_9013() {
  * Install Editor role and overhaul user roles and permissions.
  */
 function helfi_content_update_9014() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
-  // Handle the configuration override manually.
+  // Handle the configuration update manually.
   $configLocation = dirname(__FILE__) . '/config/install/';
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 

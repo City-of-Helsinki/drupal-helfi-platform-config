@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 
 /**
  * Implements hook_install().
@@ -47,12 +49,17 @@ function helfi_media_formtool_config_update_9001() {
  * Reinstall Helfi Media Formtool specific permissions.
  */
 function helfi_media_formtool_config_update_9002() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/optional/';
 
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_media_formtool_config', 'helfi_media_formtool_config_update_9002');
+  $configurations = [
+    'user.role.admin',
+    'user.role.content_producer',
+    'user.role.editor',
+  ];
 
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
 }

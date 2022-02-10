@@ -1,12 +1,5 @@
-langcode: en
-status: true
-dependencies: {  }
-id: read_only
-label: 'Read only'
-weight: 2
-is_admin: null
 permissions:
-  - 'access toolbar'
-  - 'view any unpublished landing_page content'
-  - 'view any unpublished page content'
-  - 'view unpublished paragraphs'
+  - 'view unpublished tpr_errand_service'
+  - 'view unpublished tpr_service'
+  - 'view unpublished tpr_service_channel'
+  - 'view unpublished tpr_unit'

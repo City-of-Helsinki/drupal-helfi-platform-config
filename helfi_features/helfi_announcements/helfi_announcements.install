@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Implements hook_install().
  */
@@ -64,12 +66,18 @@ function helfi_announcements_update_9002() {
  * Reinstall Helfi Announcements specific permissions.
  */
 function helfi_announcements_update_9003() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/optional/';
 
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_announcements', 'helfi_announcements_update_9003');
+  $configurations = [
+    'user.role.admin',
+    'user.role.content_producer',
+    'user.role.editor',
+    'user.role.read_only',
+  ];
 
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
 }

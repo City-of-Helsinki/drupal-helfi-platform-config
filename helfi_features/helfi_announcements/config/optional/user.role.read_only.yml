@@ -1,5 +1,2 @@
 permissions:
-  - 'view unpublished tpr_errand_service'
-  - 'view unpublished tpr_service'
-  - 'view unpublished tpr_service_channel'
-  - 'view unpublished tpr_unit'
+  - 'view any unpublished announcement content'
