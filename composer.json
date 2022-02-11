@@ -83,6 +83,9 @@
       },
       "drupal/field_group": {
         "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
+      },
+      "drupal/publication_date": {
+        "Patch to fix Bubbleable metadata deprecation notice. (https://www.drupal.org/node/3220692)": "https://www.drupal.org/files/issues/2021-11-04/publication_date-3220692.patch"
       }
     }
   }
