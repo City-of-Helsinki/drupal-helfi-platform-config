@@ -71,17 +71,3 @@ eu_cookie_compliance.settings:
       withdraw_message:
         format: full_html
         value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
-user.role.anonymous:
-  expected_config:
-    permissions: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'display eu cookie compliance popup'
-user.role.authenticated:
-  expected_config:
-    permissions: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'display eu cookie compliance popup'

@@ -27,6 +27,13 @@ function helfi_media_update_dependencies() {
     'helfi_platform_config' => 9004,
     'helfi_base_config' => 9001,
   ];
+
+  // Run helfi_media_update_9004() after helfi_content_update_9016()
+  // has been run. helfi_content_update_9016() update will reinstall
+  // user roles and permissions for authenticated and anonymous users.
+  $dependencies['helfi_media'][9004] = [
+    'helfi_content' => 9016,
+  ];
   return $dependencies;
 }
 
@@ -79,6 +86,24 @@ function helfi_media_update_9003() {
 
     // Override Media library views with enhanced view.
     $configLocation = dirname(__FILE__) . '/config/override/';
-    ConfigHelper::installNewConfig($configLocation, 'views.view.media_library');
+    ConfigHelper::updateExistingConfig($configLocation, 'views.view.media_library');
+  }
+}
+
+/**
+ * Update anonymous and authenticated user role permissions.
+ */
+function helfi_media_update_9004() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/override/';
+
+  $configurations = [
+    'user.role.authenticated',
+    'user.role.anonymous',
+  ];
+
+  // Install configurations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
   }
 }
