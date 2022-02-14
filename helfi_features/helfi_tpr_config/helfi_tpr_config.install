@@ -59,6 +59,9 @@ function helfi_tpr_config_update_dependencies() {
   $dependencies['helfi_tpr_config'][9018] = [
     'helfi_content' => 9014,
   ];
+  $dependencies['helfi_tpr_config'][9019] = [
+    'helfi_content' => 9015,
+  ];
   return $dependencies;
 }
 
@@ -348,5 +351,42 @@ function helfi_tpr_config_update_9018() {
   // Install configurations and translations.
   foreach ($configurations as $configuration) {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
+}
+
+/**
+ * Install and configure content_lock module.
+ */
+function helfi_tpr_config_update_9019() {
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'views.view.locked_services',
+    'views.view.locked_units',
+    'block.block.views_block__locked_services_locked_services_block',
+    'block.block.views_block__locked_units_locked_units_block',
+  ];
+
+  // Install system actions for content lock
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  $configOverrideLocation = dirname(__FILE__) . '/config/override/';
+  ConfigHelper::updateExistingConfig($configOverrideLocation, 'content_lock.settings');
+
+  $configOptionalLocation = dirname(__FILE__) . '/config/install/';
+  $optionalConfigurations = [
+    'system.action.tpr_service_break_lock_action',
+    'system.action.tpr_unit_break_lock_action',
+  ];
+
+  // Install system actions for content lock
+  foreach ($optionalConfigurations as $configuration) {
+    ConfigHelper::installNewConfig($configOptionalLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }

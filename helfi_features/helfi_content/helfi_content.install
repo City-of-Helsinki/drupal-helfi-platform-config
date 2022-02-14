@@ -290,12 +290,24 @@ function helfi_content_update_9015() {
   }
 
   // Added manually the creation of configuration. Cannot be handled automatically.
-  $configLocation = dirname(__FILE__) . '/config/override/';
+  $configOverrideLocation = dirname(__FILE__) . '/config/override/';
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
   // Install configurations and translations.
-  ConfigHelper::updateExistingConfig($configLocation, 'views.view.locked_content');
+  ConfigHelper::updateExistingConfig($configOverrideLocation, 'views.view.locked_content');
   ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'views.view.locked_content');
+
+  $configurations = [
+    'system.action.node_break_lock_action',
+    'system.action.paragraphs_library_item_break_lock_action',
+    'system.action.taxonomy_term_break_lock_action',
+  ];
+
+  // Install system actions for content lock
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configOverrideLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9015');

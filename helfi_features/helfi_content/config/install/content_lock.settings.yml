@@ -2,7 +2,6 @@ verbose: 1
 types:
   crop: {  }
   file: {  }
-  media: {  }
   menu_link_content: {  }
   node:
     '*': '*'
@@ -22,9 +21,6 @@ form_op_lock:
     values: {  }
   file:
     mode: null
-    values: {  }
-  media:
-    mode: 0
     values: {  }
   menu_link_content:
     mode: 0
