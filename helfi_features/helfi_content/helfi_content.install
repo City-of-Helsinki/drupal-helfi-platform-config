@@ -280,6 +280,22 @@ function helfi_content_update_9014() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
+  // Install Content lock module if it's not enabled'.
+  if (
+    !Drupal::moduleHandler()->moduleExists('content_lock') ||
+    !Drupal::moduleHandler()->moduleExists('content_lock_timeout')
+  ) {
+    Drupal::service('module_installer')->install(['content_lock', 'content_lock_timeout']);
+  }
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Install configurations and translations.
+  ConfigHelper::installNewConfig($configLocation, '');
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, '');
+
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9014');
 
