@@ -316,13 +316,15 @@ function helfi_content_update_9016() {
     'use text format minimal',
   ];
 
-  // Remove unwanted permissions from the configuration and
-  // save the configuration changes.
+  // Remove unwanted permissions from the configuration.
   if (isset($authenticated_role_data['permissions'])) {
-    $updated_config = array_diff(
+    $updated_permissions = array_diff(
       $authenticated_role_data['permissions'],
       $permissions
     );
-    $authenticated_role->setData($updated_config)->save(TRUE);
+    if (!empty($updated_permissions)) {
+      $authenticated_role_data['permissions'] = $updated_permissions;
+      $authenticated_role->setData($authenticated_role_data)->save(TRUE);
+    }
   }
 }
