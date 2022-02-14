@@ -25,6 +25,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9007();
     helfi_content_update_9009();
     helfi_content_update_9011();
+    helfi_content_update_9016();
   }
 }
 
@@ -268,5 +269,59 @@ function helfi_content_update_9014() {
   foreach ($configurations as $configuration) {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
+
+/**
+ * Add text format usage permissions for editor roles.
+ */
+function helfi_content_update_9015() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9015');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update anonymous and authenticated user role permissions.
+ */
+function helfi_content_update_9016() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/override/';
+
+  $configurations = [
+    'user.role.authenticated',
+    'user.role.anonymous',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
+
+  // Handle permission removal manually, as the update helper is incapable of
+  // deleting single values from keyless arrays, like permissions.
+  // See Updater::applyConfigActions().
+  $config_factory = \Drupal::configFactory();
+  $authenticated_role = $config_factory->getEditable('user.role.authenticated');
+  $authenticated_role_data = $authenticated_role->getRawData();
+
+  // Permissions to be removed from authenticated user configuration.
+  $permissions = [
+    'use text format full_html',
+    'use text format minimal',
+  ];
+
+  if (isset($authenticated_role_data['permissions'])) {
+    foreach ($permissions as $permission) {
+      if (in_array($permission, $authenticated_role_data['permissions'])) {
+        unset($authenticated_role_data['permissions'][$permission]);
+      }
+    }
+    $authenticated_role->setData($authenticated_role_data)->save(TRUE);
   }
 }

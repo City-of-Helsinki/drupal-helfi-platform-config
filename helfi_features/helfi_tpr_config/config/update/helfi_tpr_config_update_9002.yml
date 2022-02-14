@@ -78,20 +78,6 @@ field.field.node.page.field_lower_content:
             unit_search:
               enabled: true
               weight: -16
-user.role.anonymous:
-  expected_config: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'view tpr_service'
-        - 'view tpr_unit'
-user.role.authenticated:
-  expected_config: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'view tpr_service'
-        - 'view tpr_unit'
 pathauto.settings:
   expected_config: { }
   update_actions:

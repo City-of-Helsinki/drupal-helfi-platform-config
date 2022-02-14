@@ -103,6 +103,8 @@ permissions:
   - 'update content translations'
   - 'update media'
   - 'use menu link attributes'
+  - 'use text format full_html'
+  - 'use text format minimal'
   - 'view all media revisions'
   - 'view all revisions'
   - 'view any unpublished content'
