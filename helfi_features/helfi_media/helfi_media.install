@@ -90,10 +90,10 @@ function helfi_media_update_9003() {
  * Install and configure content_lock module.
  */
 function helfi_media_update_9004() {
-  // Added manually the creation of configuration. Cannot be handled automatically.
+  // Path for the configuration that overrides default configuration.
   $configOverrideLocation = dirname(__FILE__) . '/config/override/';
 
-  // Install system actions for content lock
+  // Add configuration changes that apply to media-entities.
   ConfigHelper::updateExistingConfig($configOverrideLocation, 'content_lock.settings');
 }
 

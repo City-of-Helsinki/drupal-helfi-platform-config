@@ -289,7 +289,7 @@ function helfi_content_update_9015() {
     ]);
   }
 
-  // Added manually the creation of configuration. Cannot be handled automatically.
+  // Override the default configuration by the content lock module.
   $configOverrideLocation = dirname(__FILE__) . '/config/override/';
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
@@ -299,12 +299,13 @@ function helfi_content_update_9015() {
     'views.view.locked_content',
   ];
 
-  // Install configurations and translations.
+  // Update the configurations and translations.
   foreach ($configurationsOverride as $configOverride) {
     ConfigHelper::updateExistingConfig($configOverrideLocation, $configOverride);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configOverride);
   }
 
+  // Add the system actions for the node, paragraphs library item and taxonomy term.
   $configOptionalLocation = dirname(__FILE__) . '/config/optional/';
   $configurations = [
     'system.action.node_break_lock_action',
@@ -312,7 +313,7 @@ function helfi_content_update_9015() {
     'system.action.taxonomy_term_break_lock_action',
   ];
 
-  // Install system actions for content lock
+  // Install the system actions for content lock.
   foreach ($configurations as $configuration) {
     ConfigHelper::installNewConfig($configOptionalLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
