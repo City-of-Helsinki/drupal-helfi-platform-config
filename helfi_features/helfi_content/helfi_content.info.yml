@@ -3,8 +3,9 @@ type: module
 core_version_requirement: '^8.9 || ^9'
 dependencies:
   - 'allowed_formats:allowed_formats'
+  - 'content_lock:content_lock'
+  - 'content_lock_timeout:content_lock_timeout'
   - 'drupal:ckeditor'
-  - 'drupal:content_lock'
   - 'drupal:content_translation'
   - 'drupal:editor'
   - 'drupal:filter'
