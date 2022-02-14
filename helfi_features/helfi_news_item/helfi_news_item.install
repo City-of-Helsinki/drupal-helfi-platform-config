@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Implements hook_install().
  *
@@ -11,9 +13,22 @@ function helfi_news_item_install($is_syncing) {
   // of a configuration import
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_news_item_update_9001();
+    helfi_news_item_update_9002();
   }
 }
 
+/**
+ * {@inheritdoc}
+ */
+function helfi_news_item_update_dependencies() {
+  // Run helfi_news_item_update_9002() after helfi_content_update_9014()
+  // has been run. helfi_content_update_9014() update will reinstall
+  // user roles and permissions.
+  $dependencies['helfi_news_item'][9002] = [
+    'helfi_content' => 9014,
+  ];
+  return $dependencies;
+}
 
 /**
  * Base configurations for HELfi News item module.
@@ -27,4 +42,24 @@ function helfi_news_item_update_9001() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Reinstall Helfi News item specific permissions.
+ */
+function helfi_news_item_update_9002() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/optional/';
+
+  $configurations = [
+    'user.role.admin',
+    'user.role.content_producer',
+    'user.role.editor',
+    'user.role.read_only',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
 }

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\helfi_platform_config\ConfigHelper;
 
 /**
  * Implements hook_install().
@@ -21,6 +22,8 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9004();
       helfi_tpr_config_update_9005();
       helfi_tpr_config_update_9015();
+      helfi_tpr_config_update_9017();
+      helfi_tpr_config_update_9018();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -48,6 +51,13 @@ function helfi_tpr_config_update_dependencies() {
   ];
   $dependencies['helfi_tpr_config'][9013] = [
     'helfi_content' => 9010,
+  ];
+
+  // Run helfi_tpr_config_update_9018() after helfi_content_update_9014()
+  // has been run. helfi_content_update_9014() update will reinstall
+  // user roles and permissions.
+  $dependencies['helfi_tpr_config'][9018] = [
+    'helfi_content' => 9014,
   ];
   return $dependencies;
 }
@@ -255,20 +265,6 @@ function helfi_tpr_config_update_9012() {
 }
 
 /**
- * Add view unpublished TPR entities permissions to Admin and Content producer.
- */
-function helfi_tpr_config_update_9013() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9013');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
-}
-
-/**
  * Update TPR Unit and Service metatag og_site_name to use global site name.
  */
 function helfi_tpr_config_update_9014() {
@@ -333,4 +329,24 @@ function helfi_tpr_config_update_9017() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Reinstall Helfi TPR specific permissions.
+ */
+function helfi_tpr_config_update_9018() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/optional/';
+
+  $configurations = [
+    'user.role.admin',
+    'user.role.content_producer',
+    'user.role.editor',
+    'user.role.read_only',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
 }

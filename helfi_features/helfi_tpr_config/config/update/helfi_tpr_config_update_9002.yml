@@ -78,31 +78,6 @@ field.field.node.page.field_lower_content:
             unit_search:
               enabled: true
               weight: -16
-user.role.admin:
-  expected_config: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'access tpr_service overview'
-        - 'access tpr_unit overview'
-        - 'administer tpr_service'
-        - 'administer tpr_unit'
-        - 'revert all tpr_service revisions'
-        - 'revert all tpr_unit revisions'
-        - 'translate tpr_errand_service'
-        - 'translate tpr_service'
-        - 'translate tpr_service_channel'
-        - 'translate tpr_unit'
-        - 'update any tpr_service'
-        - 'update any tpr_unit'
-        - 'update own tpr_service'
-        - 'update own tpr_unit'
-        - 'update tpr_service'
-        - 'update tpr_unit'
-        - 'view all tpr_service revisions'
-        - 'view all tpr_unit revisions'
-        - 'view tpr_service'
-        - 'view tpr_unit'
 user.role.anonymous:
   expected_config: {  }
   update_actions:

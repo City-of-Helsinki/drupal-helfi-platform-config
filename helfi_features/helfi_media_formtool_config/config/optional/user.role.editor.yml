@@ -1,0 +1,6 @@
+permissions:
+  - 'create hel_remote_webform media'
+  - 'delete any hel_remote_webform media'
+  - 'delete own hel_remote_webform media'
+  - 'edit any hel_remote_webform media'
+  - 'edit own hel_remote_webform media'

@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 
 /**
  * Implements hook_install().
@@ -12,9 +14,22 @@ function helfi_media_formtool_config_install($is_syncing) {
   // of a configuration import
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_media_formtool_config_update_9001();
+    helfi_media_formtool_config_update_9002();
   }
 }
 
+/**
+ * {@inheritdoc}
+ */
+function helfi_media_formtool_config_update_dependencies() {
+  // Run helfi_media_formtool_config_update_9002() after helfi_content_update_9014()
+  // has been run. helfi_content_update_9014() update will reinstall
+  // user roles and permissions.
+  $dependencies['helfi_media_formtool_config'][9002] = [
+    'helfi_content' => 9014,
+  ];
+  return $dependencies;
+}
 
 /**
  * Add HELfi Form Tool paragraphs to basic page upper and lower content.
@@ -28,4 +43,23 @@ function helfi_media_formtool_config_update_9001() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Reinstall Helfi Media Formtool specific permissions.
+ */
+function helfi_media_formtool_config_update_9002() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/optional/';
+
+  $configurations = [
+    'user.role.admin',
+    'user.role.content_producer',
+    'user.role.editor',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
 }

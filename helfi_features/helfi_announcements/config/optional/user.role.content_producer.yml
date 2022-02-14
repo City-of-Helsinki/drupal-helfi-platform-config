@@ -1,0 +1,8 @@
+permissions:
+  - 'create announcement content'
+  - 'delete own announcement content'
+  - 'edit any announcement content'
+  - 'edit own announcement content'
+  - 'revert announcement revisions'
+  - 'set announcement published on date'
+  - 'view announcement revisions'
