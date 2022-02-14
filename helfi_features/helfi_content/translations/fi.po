@@ -1,6 +1,9 @@
 msgid ""
 msgstr ""
 
+msgid "- All -"
+msgstr "- Kaikki -"
+
 msgid "Accordion"
 msgstr "Haitari"
 
@@ -26,8 +29,8 @@ msgstr "Lisää tähän ne sisällöt, jotka haluat nostaa korteiksi lohkoon."
 msgid "Add the image file that you want to use from media-library."
 msgstr "Lisää haluamasi kuvatiedosto tähän media-kirjastosta."
 
-msgid "Admin"
-msgstr "Ylläpitäjä"
+msgid "Administrator"
+msgstr "Pääkäyttäjä"
 
 msgid "Aligned to the center"
 msgstr "Keskitetty"
@@ -41,6 +44,9 @@ msgstr "Tasattu vasemmalle"
 msgid "Aligned to the left, secondary color"
 msgstr "Tasattu vasemmalle, toissijainen väri"
 
+msgid "Anonymous user"
+msgstr "Anonyymi käyttäjä"
+
 msgid "Apply"
 msgstr "Käytä"
 
@@ -48,10 +54,10 @@ msgid "Article"
 msgstr "Artikkeli"
 
 msgid "Asc"
-msgstr "Nouseva"
+msgstr "Nousevasti"
 
-msgid "Ascending"
-msgstr "Nouseva"
+msgid "Authenticated user"
+msgstr "Sisäänkirjautunut käyttäjä"
 
 msgid "Author"
 msgstr "Kirjoittaja"
@@ -81,9 +87,6 @@ msgstr ""
 msgid "Basic page"
 msgstr "Perussivu"
 
-msgid "Block"
-msgstr "Lohko"
-
 msgid "Break lock node"
 msgstr "Riko lukko sisällöltä"
 
@@ -93,17 +96,8 @@ msgstr "Riko lukko lohkokirjaston lohkolta"
 msgid "Break lock taxonomy_term"
 msgstr "Riko lukko termiltä"
 
-msgid "Break lock tpr_service"
-msgstr "Riko lukko palvelulta"
-
-msgid "Break lock tpr_unit"
-msgstr "Riko lukko toimipisteeltä"
-
 msgid "Brick"
 msgstr "Tiili"
-
-msgid "Bulk update"
-msgstr "Bulkkipäivitys"
 
 msgid "Bus"
 msgstr "Bussi"
@@ -171,10 +165,13 @@ msgid "Content liftup"
 msgstr "Sisältönosto"
 
 msgid "Content producer"
-msgstr "Sisällöntuottaja"
+msgstr "Sisällöntuottaja suppea"
 
 msgid "Content region"
 msgstr "Pääsisältö"
+
+msgid "Content type"
+msgstr "Sisältötyyppi"
 
 msgid "Content type for article-like content with rich editing capabilities."
 msgstr ""
@@ -209,9 +206,6 @@ msgstr ""
 "Luo dia galleriaan valitsemalla kuva media-kirjastosta ja  kirjoita "
 "sille halutessasi kuvateksti."
 
-msgid "Default"
-msgstr "Oletus"
-
 msgid "Default long date"
 msgstr "Päivämäärä pitkässä muodossa"
 
@@ -222,10 +216,7 @@ msgid "Default short date"
 msgstr "Päivämäärä lyhyessä muodossa"
 
 msgid "Desc"
-msgstr "Laskeva"
-
-msgid "Descending"
-msgstr "Laskeva"
+msgstr "Laskevasti"
 
 msgid "Description"
 msgstr "Kuvaus"
@@ -245,11 +236,11 @@ msgstr "Palstat 50/50"
 msgid "Divided 70/30"
 msgstr "Palstat 70/30"
 
+msgid "Editor"
+msgstr "Sisällöntuottaja laaja"
+
 msgid "Fallback date format"
 msgstr "Vara-arvo päivämäärämuodolle"
-
-msgid "Filter"
-msgstr "Käytä"
 
 msgid "Fog"
 msgstr "Sumu"
@@ -372,6 +363,9 @@ msgstr "Sisältö"
 msgid "Items heading level"
 msgstr "Sisällön pääotsikoiden taso"
 
+msgid "Items per page"
+msgstr "Merkintöjä sivua kohti"
+
 msgid "j.n.Y"
 msgstr "j.n.Y - H:i"
 
@@ -392,6 +386,9 @@ msgstr "Suuret kortit"
 
 msgid "Large cards, grey background"
 msgstr "Suuret kortit, harmaa tausta"
+
+msgid "Last »"
+msgstr "Viimeinen »"
 
 msgid "Lead"
 msgstr "Ingressi"
@@ -442,14 +439,14 @@ msgstr "Lukituksen ajankohta"
 msgid "Lock owner"
 msgstr "Lukituksen tekijä"
 
-msgid "Locked services"
-msgstr "Lukitut palvelut"
-
-msgid "Locked units"
-msgstr "Lukitut toimipisteet"
+msgid "Locked content"
+msgstr "Lukitut sisällöt"
 
 msgid "Lower content region"
 msgstr "Alempi sisältöalue"
+
+msgid "Master"
+msgstr "Oletus"
 
 msgid "Menu link title"
 msgstr "Valikon linkin otsikko"
@@ -459,6 +456,9 @@ msgstr "Metatunnisteet"
 
 msgid "No borders or background colour"
 msgstr "Ei reunuksia tai taustaväriä"
+
+msgid "Node operations bulk form"
+msgstr "Solmujen bulkkitoimintojen lomake"
 
 msgid "Off"
 msgstr "Pois päältä"
@@ -479,13 +479,16 @@ msgid "Only borders"
 msgstr "Reunustettu"
 
 msgid "Operations"
-msgstr "Toiminnot"
+msgstr "Toimenpiteet"
 
 msgid "Optional short description for hero block."
 msgstr "Valinnainen lyhyt kuvaus lohkolle."
 
 msgid "Optional short description for liftup block."
 msgstr "Vapaaehtoinen lyhyt kuvaus nostolohkolle."
+
+msgid "Page"
+msgstr "Sivu"
 
 msgid "Paragraph"
 msgstr "Lohko"
@@ -496,8 +499,14 @@ msgstr "Lohkot"
 msgid "Promoted to front page"
 msgstr "Näytetään etusivulla"
 
+msgid "Published"
+msgstr "Julkaistu"
+
+msgid "Published status"
+msgstr "Julkaisutila"
+
 msgid "Read only"
-msgstr "Vain luku"
+msgstr "Lukija"
 
 msgid "Remote video"
 msgstr "Video ulkoisesta palvelusta"
@@ -540,11 +549,8 @@ msgstr "Pienet kortit"
 msgid "Small cards, grey background"
 msgstr "Pienet kortit, harmaa tausta"
 
-msgid "Sort"
-msgstr "Järjestä"
-
 msgid "Sort by"
-msgstr "Järjestä"
+msgstr "Lajittele"
 
 msgid "Summer"
 msgstr "Kesä"
@@ -565,7 +571,7 @@ msgid "The title of the list of links paragraph."
 msgstr "Linkkilistalohkon otsikko."
 
 msgid "There is no content currently locked."
-msgstr "Lukittuja toimipisteitä ei ole."
+msgstr "Lukittua sisältöä ei ole."
 
 msgid "Title"
 msgstr "Otsikko"
@@ -583,6 +589,9 @@ msgstr "Näkyvä otsikko lohkolle."
 
 msgid "Tram"
 msgstr "Spåra"
+
+msgid "Unpublished"
+msgstr "Julkaisematon"
 
 msgid "Upper content region"
 msgstr "Ylempi sisältöalue"
@@ -660,4 +669,13 @@ msgstr "Voit lisätä lyhyen kuvauksen linkkiin."
 
 msgid "You can provide a caption for the image here."
 msgstr "Voit halutessasi kirjoittaa kuvatekstin kuvalle tähän."
+
+msgid "« First"
+msgstr "« Ensimmäinen"
+
+msgid "‹‹"
+msgstr "‹ Edellinen"
+
+msgid "››"
+msgstr "Seuraava ›"
 

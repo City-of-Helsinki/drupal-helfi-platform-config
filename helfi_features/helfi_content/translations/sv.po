@@ -1,11 +1,17 @@
 msgid ""
 msgstr ""
 
-msgid "Admin"
-msgstr "Admin"
+msgid "Administrator"
+msgstr "Administratör"
+
+msgid "Anonymous user"
+msgstr "Anonym användare"
 
 msgid "Article"
 msgstr "Artikel"
+
+msgid "Authenticated user"
+msgstr "Inloggad användare"
 
 msgid "Author"
 msgstr "Författare"
@@ -114,9 +120,6 @@ msgstr "Paragraf"
 
 msgid "Promoted to front page"
 msgstr "Visas på startsidan"
-
-msgid "Read only"
-msgstr "Endast läs"
 
 msgid "Shown when hovering over the menu link."
 msgstr "Visas när man för musmarkören över menylänken."
