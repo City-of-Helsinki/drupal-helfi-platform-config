@@ -86,7 +86,7 @@ function helfi_media_update_9003() {
 
     // Override Media library views with enhanced view.
     $configLocation = dirname(__FILE__) . '/config/override/';
-    ConfigHelper::installNewConfig($configLocation, 'views.view.media_library');
+    ConfigHelper::updateExistingConfig($configLocation, 'views.view.media_library');
   }
 }
 
