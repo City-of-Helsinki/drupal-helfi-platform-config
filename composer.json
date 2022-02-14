@@ -11,6 +11,7 @@
     "drupal/config_ignore": "^2.3",
     "drupal/config_rewrite": "^1.4",
     "drupal/config_replace": "^2.0",
+    "drupal/content_lock": "^2.2",
     "drupal/core-recommended": ">=9.3",
     "drupal/crop": "^2.1",
     "drupal/default_content": "^2.0.0-alpha1",

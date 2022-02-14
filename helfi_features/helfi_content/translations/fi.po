@@ -17,6 +17,9 @@ msgstr ""
 "verran ensimmäisellä silmäyksellä ja voivat tarkastella "
 "sisältöä tarkemmin klikkaamalla otsikon auki."
 
+msgid "Action"
+msgstr "Toiminto"
+
 msgid "Add here the content that you want to appear as cards to the block."
 msgstr "Lisää tähän ne sisällöt, jotka haluat nostaa korteiksi lohkoon."
 
@@ -38,8 +41,17 @@ msgstr "Tasattu vasemmalle"
 msgid "Aligned to the left, secondary color"
 msgstr "Tasattu vasemmalle, toissijainen väri"
 
+msgid "Apply"
+msgstr "Käytä"
+
 msgid "Article"
 msgstr "Artikkeli"
+
+msgid "Asc"
+msgstr "Nouseva"
+
+msgid "Ascending"
+msgstr "Nouseva"
 
 msgid "Author"
 msgstr "Kirjoittaja"
@@ -69,8 +81,29 @@ msgstr ""
 msgid "Basic page"
 msgstr "Perussivu"
 
+msgid "Block"
+msgstr "Lohko"
+
+msgid "Break lock node"
+msgstr "Riko lukko sisällöltä"
+
+msgid "Break lock paragraphs_library_item"
+msgstr "Riko lukko lohkokirjaston lohkolta"
+
+msgid "Break lock taxonomy_term"
+msgstr "Riko lukko termiltä"
+
+msgid "Break lock tpr_service"
+msgstr "Riko lukko palvelulta"
+
+msgid "Break lock tpr_unit"
+msgstr "Riko lukko toimipisteeltä"
+
 msgid "Brick"
 msgstr "Tiili"
+
+msgid "Bulk update"
+msgstr "Bulkkipäivitys"
 
 msgid "Bus"
 msgstr "Bussi"
@@ -131,6 +164,9 @@ msgstr "Sisältö"
 msgid "Content cards"
 msgstr "Sisältökortit"
 
+msgid "Content language"
+msgstr "Sisällön kieli"
+
 msgid "Content liftup"
 msgstr "Sisältönosto"
 
@@ -173,6 +209,9 @@ msgstr ""
 "Luo dia galleriaan valitsemalla kuva media-kirjastosta ja  kirjoita "
 "sille halutessasi kuvateksti."
 
+msgid "Default"
+msgstr "Oletus"
+
 msgid "Default long date"
 msgstr "Päivämäärä pitkässä muodossa"
 
@@ -181,6 +220,12 @@ msgstr "Päivämäärä keskipitkässä muodossa"
 
 msgid "Default short date"
 msgstr "Päivämäärä lyhyessä muodossa"
+
+msgid "Desc"
+msgstr "Laskeva"
+
+msgid "Descending"
+msgstr "Laskeva"
 
 msgid "Description"
 msgstr "Kuvaus"
@@ -202,6 +247,9 @@ msgstr "Palstat 70/30"
 
 msgid "Fallback date format"
 msgstr "Vara-arvo päivämäärämuodolle"
+
+msgid "Filter"
+msgstr "Käytä"
 
 msgid "Fog"
 msgstr "Sumu"
@@ -388,6 +436,18 @@ msgstr "Linkkilista"
 msgid "List of links item"
 msgstr "Linkki"
 
+msgid "Lock Date/Time"
+msgstr "Lukituksen ajankohta"
+
+msgid "Lock owner"
+msgstr "Lukituksen tekijä"
+
+msgid "Locked services"
+msgstr "Lukitut palvelut"
+
+msgid "Locked units"
+msgstr "Lukitut toimipisteet"
+
 msgid "Lower content region"
 msgstr "Alempi sisältöalue"
 
@@ -418,6 +478,9 @@ msgstr "Yksittäinen gallerian dia jossa voi olla kuva ja kuvateksti."
 msgid "Only borders"
 msgstr "Reunustettu"
 
+msgid "Operations"
+msgstr "Toiminnot"
+
 msgid "Optional short description for hero block."
 msgstr "Valinnainen lyhyt kuvaus lohkolle."
 
@@ -445,6 +508,9 @@ msgid ""
 msgstr ""
 "Tällä lohkolla voit lisätä videon ulkoisesta palvelusta. Tukee "
 "tällä hetkellä vain YouTubea."
+
+msgid "Reset"
+msgstr "Palauta"
 
 msgid "Right column"
 msgstr "Oikea palsta"
@@ -474,6 +540,12 @@ msgstr "Pienet kortit"
 msgid "Small cards, grey background"
 msgstr "Pienet kortit, harmaa tausta"
 
+msgid "Sort"
+msgstr "Järjestä"
+
+msgid "Sort by"
+msgstr "Järjestä"
+
 msgid "Summer"
 msgstr "Kesä"
 
@@ -491,6 +563,9 @@ msgstr "Sisältökortit-lohkon otsikko."
 
 msgid "The title of the list of links paragraph."
 msgstr "Linkkilistalohkon otsikko."
+
+msgid "There is no content currently locked."
+msgstr "Lukittuja toimipisteitä ei ole."
 
 msgid "Title"
 msgstr "Otsikko"
