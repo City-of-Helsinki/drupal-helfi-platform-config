@@ -39,7 +39,6 @@ function helfi_base_config_install($is_syncing) {
     if (Drupal::moduleHandler()->moduleExists('update_helper')) {
       helfi_base_config_update_9001();
       helfi_base_config_update_9002();
-      helfi_base_config_update_9003();
       helfi_base_config_update_9006();
     }
   }
@@ -107,23 +106,15 @@ function helfi_base_config_update_9002() {
 }
 
 /**
- * Add permission for admins to see other admins' unpublished content.
+ * Add module for admins to see other admins' unpublished content.
  */
 function helfi_base_config_update_9003() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
+  // Install view_unpublished module if not installed.
   if (!Drupal::moduleHandler()->moduleExists('view_unpublished')) {
     Drupal::service('module_installer')->install([
       'view_unpublished',
     ]);
   }
-
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9003');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
 }
 
 /**
@@ -145,9 +136,8 @@ function helfi_base_config_update_9004() {
   }
 }
 
-
 /**
- * Permission update.
+ * Enable role delegation module.
  */
 function helfi_base_config_update_9005() {
   /** @var \Drupal\update_helper\Updater $updateHelper */

@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies: {  }
 id: admin
-label: Admin
-weight: 2
+label: Administrator
+weight: 5
 is_admin: null
 permissions:
   - 'access administration pages'
@@ -19,6 +19,7 @@ permissions:
   - 'administer blocks'
   - 'administer eu cookie compliance categories'
   - 'administer eu cookie compliance popup'
+  - 'administer hotjar settings'
   - 'administer menu'
   - 'administer nodes'
   - 'administer paragraphs library'
@@ -27,6 +28,10 @@ permissions:
   - 'administer sitemap settings'
   - 'administer url aliases'
   - 'administer users'
+  - 'assign admin role'
+  - 'assign content_producer role'
+  - 'assign editor role'
+  - 'assign read_only role'
   - 'cancel account'
   - 'change own username'
   - 'create content translations'
@@ -80,11 +85,12 @@ permissions:
   - 'revert landing_page revisions'
   - 'revert page revisions'
   - 'schedule publishing of nodes'
+  - 'set landing_page published on date'
+  - 'set page published on date'
   - 'translate any entity'
   - 'translate configuration'
   - 'translate editable entities'
   - 'translate file media'
-  - 'translate hauki_resource'
   - 'translate image media'
   - 'translate interface'
   - 'translate keywords taxonomy_term'
@@ -96,6 +102,7 @@ permissions:
   - 'update any media'
   - 'update content translations'
   - 'update media'
+  - 'use menu link attributes'
   - 'view all media revisions'
   - 'view all revisions'
   - 'view any unpublished content'
