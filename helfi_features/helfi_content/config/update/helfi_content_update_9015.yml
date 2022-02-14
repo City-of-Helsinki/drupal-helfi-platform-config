@@ -1,9 +1,21 @@
 user.role.admin:
-  expected_config: {  }
+  expected_config: { }
   update_actions:
     add:
-      dependencies:
-        module:
-          - content_lock
       permissions:
-        - 'break content lock'
+        - 'use text format full_html'
+        - 'use text format minimal'
+user.role.editor:
+  expected_config: { }
+  update_actions:
+    add:
+      permissions:
+        - 'use text format full_html'
+        - 'use text format minimal'
+user.role.content_producer:
+  expected_config: { }
+  update_actions:
+    add:
+      permissions:
+        - 'use text format full_html'
+        - 'use text format minimal'

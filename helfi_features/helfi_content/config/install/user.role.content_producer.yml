@@ -56,6 +56,8 @@ permissions:
   - 'set page published on date'
   - 'translate editable entities'
   - 'update media'
+  - 'use text format full_html'
+  - 'use text format minimal'
   - 'view all media revisions'
   - 'view all revisions'
   - 'view any unpublished content'

@@ -53,24 +53,6 @@ paragraphs.paragraphs_type.from_library:
       description: 'The reusable paragraph allows you to insert a specific paragraph to multiple pages.'
       icon_default: null
       icon_uuid: null
-user.role.anonymous:
-  expected_config:
-    permissions: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'access content'
-        - 'view remote entities'
-user.role.authenticated:
-  expected_config:
-    permissions: {  }
-  update_actions:
-    add:
-      permissions:
-        - 'access content'
-        - 'use text format full_html'
-        - 'use text format minimal'
-        - 'view remote entities'
 views.view.paragraphs_library:
   expected_config:
     core: 8.x
