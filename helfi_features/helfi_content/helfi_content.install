@@ -290,12 +290,12 @@ function helfi_content_update_9015() {
   }
 
   // Added manually the creation of configuration. Cannot be handled automatically.
-  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configLocation = dirname(__FILE__) . '/config/override/';
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
   // Install configurations and translations.
-  ConfigHelper::installNewConfig($configLocation, '');
-  ConfigHelper::installNewConfigTranslation($configTranslationLocation, '');
+  ConfigHelper::updateExistingConfig($configLocation, 'views.view.locked_content');
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'views.view.locked_content');
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9015');
