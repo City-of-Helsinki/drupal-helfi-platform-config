@@ -4,6 +4,9 @@ msgstr ""
 msgid "- All -"
 msgstr "- Kaikki -"
 
+msgid "Action"
+msgstr "Toiminto"
+
 msgid "All"
 msgstr "Kaikki"
 
@@ -13,17 +16,35 @@ msgstr "Käytä"
 msgid "Asc"
 msgstr "Nousevasti"
 
+msgid "Ascending"
+msgstr "Nouseva"
+
 msgid "Block"
 msgstr "Lohko"
 
+msgid "Break lock tpr_service"
+msgstr "Riko lukko palvelulta"
+
+msgid "Break lock tpr_unit"
+msgstr "Riko lukko toimipisteeltä"
+
+msgid "Bulk update"
+msgstr "Bulkkipäivitys"
+
 msgid "Combine fields filter"
 msgstr "Kentät yhdistävä suodatin"
+
+msgid "Content language"
+msgstr "Sisällön kieli"
 
 msgid "Default"
 msgstr "Oletus"
 
 msgid "Desc"
 msgstr "Laskevasti"
+
+msgid "Descending"
+msgstr "Laskeva"
 
 msgid "Description"
 msgstr "Kuvaus"
@@ -33,6 +54,9 @@ msgstr "Syötä nimi, osoite tai postinumero"
 
 msgid "Entity Reference"
 msgstr "Entiteettiviittaus"
+
+msgid "Filter"
+msgstr "Käytä"
 
 msgid "Items per page"
 msgstr "Merkintöjä sivua kohti"
@@ -51,6 +75,18 @@ msgstr "Lataa lisää toimipisteitä"
 
 msgid "Location on map"
 msgstr "Sijainti kartalla"
+
+msgid "Lock Date/Time"
+msgstr "Lukituksen ajankohta"
+
+msgid "Lock owner"
+msgstr "Lukituksen tekijä"
+
+msgid "Locked services"
+msgstr "Lukitut palvelut"
+
+msgid "Locked units"
+msgstr "Lukitut toimipisteet"
 
 msgid "Lower content region"
 msgstr "Alempi sisältöalue"
@@ -74,6 +110,9 @@ msgstr "Offset"
 
 msgid "Open the map in a new window"
 msgstr "Avaa kartta uuteen ikkunaan"
+
+msgid "Operations"
+msgstr "Toiminnot"
 
 msgid "Paragraph"
 msgstr "Lohko"
@@ -118,11 +157,17 @@ msgstr "Palvelut"
 msgid "Sidebar content"
 msgstr "Sivupalkin sisältö"
 
+msgid "Sort"
+msgstr "Järjestä"
+
 msgid "Sort by"
 msgstr "Lajittele"
 
 msgid "Teaser"
 msgstr "Lyhennelmä"
+
+msgid "There is no content currently locked."
+msgstr "Lukittuja toimipisteitä ei ole."
 
 msgid "Title"
 msgstr "Otsikko"

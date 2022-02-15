@@ -34,6 +34,14 @@ function helfi_media_update_dependencies() {
   $dependencies['helfi_media'][9004] = [
     'helfi_content' => 9016,
   ];
+
+  // Run helfi_media_update_9005() after helfi_content_update_9017()
+  // has been run. helfi_content_update_9017() update will install content_lock
+  // module with default configuration.
+  $dependencies['helfi_media'][9005] = [
+    'helfi_content' => 9017,
+  ];
+
   return $dependencies;
 }
 
@@ -107,3 +115,15 @@ function helfi_media_update_9004() {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
   }
 }
+
+/**
+ * Install and configure content_lock module.
+ */
+function helfi_media_update_9005() {
+  // Path for the configuration that overrides default configuration.
+  $configOverrideLocation = dirname(__FILE__) . '/config/override/';
+
+  // Add configuration changes that apply to media-entities.
+  ConfigHelper::updateExistingConfig($configOverrideLocation, 'content_lock.settings');
+}
+

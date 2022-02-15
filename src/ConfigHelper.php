@@ -181,8 +181,8 @@ class ConfigHelper {
       }
 
       // Use array_unique if resulting array is sequential array.
-      if (!self::hasStringKeys($result)) {
-        $result = array_values(array_unique($result));
+      if (is_array($result) && !self::hasStringKeys($result)) {
+        $result = array_values(self::arrayUniqueMultidimensional($result));
       }
     }
     return $result;
@@ -199,6 +199,21 @@ class ConfigHelper {
    */
   protected static function hasStringKeys(array $array): bool {
     return count(array_filter(array_keys($array), 'is_string')) > 0;
+  }
+
+  /**
+   * Remove duplicates from multidimensional array.
+   *
+   * @param array $input
+   *   Array to handle.
+   *
+   * @return array
+   *   Returns the handled array.
+   */
+  protected static function arrayUniqueMultidimensional(array $input): array {
+    $serialized = array_map('serialize', $input);
+    $unique = array_unique($serialized);
+    return array_intersect_key($input, $unique);
   }
 
 }

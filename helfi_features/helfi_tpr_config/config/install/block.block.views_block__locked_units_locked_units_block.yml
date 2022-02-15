@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.locked_units
+  module:
+    - system
+    - views
+  theme:
+    - hdbt_admin
+id: views_block__locked_units_locked_units_block
+theme: hdbt_admin
+region: content
+weight: 2
+provider: null
+plugin: 'views_block:locked_units-locked_units_block'
+settings:
+  id: 'views_block:locked_units-locked_units_block'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /admin/content/locked-content
