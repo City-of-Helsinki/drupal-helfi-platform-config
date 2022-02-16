@@ -1,4 +1,4 @@
-# TASK NAME [UHF-0000](https://helsinkisolutionoffice.atlassian.net/browse/UHF-0000)
+# TASKNAME [UHF-0000](https://helsinkisolutionoffice.atlassian.net/browse/UHF-0000)
 A longer description of the task
 
 ## What was done
