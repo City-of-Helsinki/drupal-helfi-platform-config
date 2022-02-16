@@ -7,7 +7,7 @@ A longer description of the task
 ## How to install
 * Make sure your instance is up and running on latest dev branch.
     * `git pull origin dev`
-    * `make fresh` or `make up drush-sync-db drush-cim drush-updb drush-cr drush-uli`
+    * `make fresh`
 * Update the Helfi Platform config
     * `composer require drupal/helfi_platform_config:dev-UHF-0000_insert_correct_branch`
 * Run `make drush-updb drush-cr`
