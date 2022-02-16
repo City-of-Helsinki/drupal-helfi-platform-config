@@ -24,6 +24,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9015();
       helfi_tpr_config_update_9017();
       helfi_tpr_config_update_9018();
+      helfi_tpr_config_update_9021();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -385,11 +386,10 @@ function helfi_tpr_config_update_9019() {
   }
 }
 
-
 /**
  * Install and configure content_lock module.
  */
-function helfi_tpr_config_update_90209() {
+function helfi_tpr_config_update_9020() {
   // Add TPR-entity specific views for locked content listing page.
   $configLocation = dirname(__FILE__) . '/config/install/';
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
@@ -421,4 +421,18 @@ function helfi_tpr_config_update_90209() {
     ConfigHelper::installNewConfig($configOptionalLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
+}
+
+/**
+ * Updated TPR Service lists to show eight (8) items when loading for more.
+ */
+function helfi_tpr_config_update_9021() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9021');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }
