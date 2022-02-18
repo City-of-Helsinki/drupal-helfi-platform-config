@@ -11,6 +11,7 @@
     "drupal/config_ignore": "^2.3",
     "drupal/config_rewrite": "^1.4",
     "drupal/config_replace": "^2.0",
+    "drupal/content_lock": "^2.2",
     "drupal/core-recommended": ">=9.3",
     "drupal/crop": "^2.1",
     "drupal/default_content": "^2.0.0-alpha1",
@@ -83,9 +84,6 @@
       },
       "drupal/field_group": {
         "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
-      },
-      "drupal/publication_date": {
-        "Patch to fix Bubbleable metadata deprecation notice. (https://www.drupal.org/node/3220692)": "https://www.drupal.org/files/issues/2021-11-04/publication_date-3220692.patch"
       }
     }
   }

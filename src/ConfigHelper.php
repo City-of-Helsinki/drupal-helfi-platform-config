@@ -33,6 +33,45 @@ class ConfigHelper {
   }
 
   /**
+   * Update existing configuration.
+   *
+   * Update existing single configuration with similar fashion as
+   * ConfigBase::merge() would merge the configuration. However merge() uses
+   * NestedArray::mergeDeepArray which is called with $preserve_integer_keys
+   * flag and that will eventually override sequential array values what
+   * shouldn't get overridden.
+   * This might manifest as custom configuration values presented as
+   * dissociative array being removed from configuration.
+   *
+   * Instead the customized self::mergeDeepArray is used, which based on the
+   * NestedArray method. In self::mergeDeepArray the sequential array values
+   * get appended to the resulting array and before returning the results
+   * the array_unique is run, resulting to unique sequential arrays.
+   *
+   * @param string $config_location
+   *   Absolute path to the configuration to be updated.
+   * @param string $config_name
+   *   Name of the configuration to update.
+   *
+   * @see \Drupal\Core\Config\ConfigBase::merge()
+   */
+  public static function updateExistingConfig(string $config_location, string $config_name): void {
+    $config_factory = \Drupal::configFactory();
+    $filepath = "{$config_location}{$config_name}.yml";
+    if (file_exists($filepath)) {
+      $new_config = Yaml::parse(file_get_contents($filepath));
+      if (is_array($new_config)) {
+        $original_config = $config_factory->getEditable($config_name);
+        $updated_config = self::mergeDeepArray([
+          $original_config->getRawData(),
+          $new_config,
+        ]);
+        $original_config->setData($updated_config)->save(TRUE);
+      }
+    }
+  }
+
+  /**
    * Install new configuration translation.
    *
    * @param string $config_location
@@ -105,6 +144,76 @@ class ConfigHelper {
         FieldConfig::create($field_data)->save();
       }
     }
+  }
+
+  /**
+   * Merge arrays recursively.
+   *
+   * Merges multiple arrays, recursively, and returns the merged array with
+   * unique sequential arrays.
+   *
+   * @param array $arrays
+   *   An arrays of arrays to merge.
+   *
+   * @return array
+   *   The merged array.
+   *
+   * @see NestedArray::mergeDeepArray()
+   */
+  public static function mergeDeepArray(array $arrays): array {
+    $result = [];
+    foreach ($arrays as $array) {
+      foreach ($array as $key => $value) {
+        // Renumber integer keys as array_merge_recursive() does unless
+        // $preserve_integer_keys is set to TRUE. Note that PHP automatically
+        // converts array keys that are integer strings (e.g., '1') to integers.
+        if (is_int($key)) {
+          $result[] = $value;
+        }
+        // Recurse when both values are arrays.
+        elseif (isset($result[$key]) && is_array($result[$key]) && is_array($value)) {
+          $result[$key] = self::mergeDeepArray([$result[$key], $value]);
+        }
+        // Otherwise, use the latter value, overriding any previous value.
+        else {
+          $result[$key] = $value;
+        }
+      }
+
+      // Use array_unique if resulting array is sequential array.
+      if (is_array($result) && !self::hasStringKeys($result)) {
+        $result = array_values(self::arrayUniqueMultidimensional($result));
+      }
+    }
+    return $result;
+  }
+
+  /**
+   * Helper function to check if array has non-integer keys.
+   *
+   * @param array $array
+   *   Array to check.
+   *
+   * @return bool
+   *   Returns true if array has non-integer keys, otherwise false.
+   */
+  protected static function hasStringKeys(array $array): bool {
+    return count(array_filter(array_keys($array), 'is_string')) > 0;
+  }
+
+  /**
+   * Remove duplicates from multidimensional array.
+   *
+   * @param array $input
+   *   Array to handle.
+   *
+   * @return array
+   *   Returns the handled array.
+   */
+  protected static function arrayUniqueMultidimensional(array $input): array {
+    $serialized = array_map('serialize', $input);
+    $unique = array_unique($serialized);
+    return array_intersect_key($input, $unique);
   }
 
 }

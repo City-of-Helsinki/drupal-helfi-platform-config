@@ -1,0 +1,61 @@
+label: 'Lukitut sisällöt'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      title: 'Lukitut sisällöt'
+      exposed_form:
+        options:
+          submit_button: Käytä
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      pager:
+        options:
+          tags:
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+      fields:
+        node_bulk_form:
+          label: 'Solmujen bulkkitoimintojen lomake'
+          action_title: Toiminto
+        title:
+          label: Otsikko
+        type:
+          label: Sisältötyyppi
+        name:
+          label: 'Lukituksen tekijä'
+        operations:
+          label: Toimenpiteet
+        timestamp:
+          label: 'Lukituksen ajankohta'
+        langcode_1:
+          label: 'Sisällön kieli'
+      filters:
+        status:
+          expose:
+            label: Julkaisutila
+          group_info:
+            label: Julkaisutila
+            group_items:
+              1:
+                title: Julkaistu
+              2:
+                title: Julkaisematon
+        type:
+          expose:
+            label: Sisältötyyppi
+        title:
+          expose:
+            label: Otsikko
+      empty:
+        area_text_custom:
+          content: 'Lukittua sisältöä ei ole.'
+  page_1:
+    display_title: Sivu

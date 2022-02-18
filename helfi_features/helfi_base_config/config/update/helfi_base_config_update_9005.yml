@@ -4,11 +4,3 @@ core.extension:
     change:
       module:
         role_delegation: 0
-user.role.admin:
-  expected_config: { }
-  update_actions:
-    add:
-      permissions:
-        - 'assign admin role'
-        - 'assign content_producer role'
-        - 'assign read_only role'

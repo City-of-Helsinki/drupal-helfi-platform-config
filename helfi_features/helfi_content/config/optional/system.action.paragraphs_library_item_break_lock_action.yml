@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_lock
+id: paragraphs_library_item_break_lock_action
+label: 'Break lock paragraphs_library_item'
+type: paragraphs_library_item
+plugin: 'entity:break_lock:paragraphs_library_item'
+configuration: {  }

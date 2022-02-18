@@ -3,7 +3,7 @@ status: true
 dependencies: {  }
 id: read_only
 label: 'Read only'
-weight: 4
+weight: 2
 is_admin: null
 permissions:
   - 'access toolbar'
