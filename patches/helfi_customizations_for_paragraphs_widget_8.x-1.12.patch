@@ -1,0 +1,12 @@
+diff --git a/src/Plugin/Field/FieldWidget/ParagraphsWidget.php b/src/Plugin/Field/FieldWidget/ParagraphsWidget.php
+index 6625db3..fa3fc60 100644
+--- a/src/Plugin/Field/FieldWidget/ParagraphsWidget.php
++++ b/src/Plugin/Field/FieldWidget/ParagraphsWidget.php
+@@ -1630,7 +1630,6 @@ class ParagraphsWidget extends WidgetBase {
+       else {
+         $add_more_elements['#attributes']['class'][] = 'paragraphs-dropbutton-wrapper';
+       }
+-      $add_more_elements['#suffix'] = $this->t('to %type', ['%type' => $this->fieldDefinition->getLabel()]);
+     }
+     elseif ($add_mode == 'modal') {
+       $this->buildModalAddForm($add_more_elements);
