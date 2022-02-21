@@ -59,3 +59,23 @@ clear_localstorage:
   dependencies:
     - core/jquery
     - core/drupal
+
+genesys_suunte:
+  version: 1.0.x
+  header: true
+  js:
+    'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
+      type: external,
+      minified: true,
+      attributes: {
+        onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
+      }
+    }
+    assets/js/genesys_suunte.js: {}
+  css:
+    theme:
+      assets/css/genesys_chat.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
