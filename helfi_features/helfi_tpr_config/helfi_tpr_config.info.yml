@@ -3,7 +3,6 @@ type: module
 core_version_requirement: '^8.9 || ^9'
 package: HELfi
 dependencies:
-  - 'address:address'
   - 'drupal:field'
   - 'drupal:link'
   - 'drupal:media_library'

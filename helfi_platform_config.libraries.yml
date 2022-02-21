@@ -79,3 +79,20 @@ genesys_suunte:
     - core/jquery
     - core/drupal
     - core/drupalSettings
+
+watson_chatbot:
+  version: 1.0.x
+  header: false
+  js:
+    'https://coh-chat-app-prod.eu-de.mybluemix.net/widget.min.js': {
+      type: external,
+      minified: true
+    }
+    'https://coh-chat-app-prod.eu-de.mybluemix.net/static/default/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=housing': {
+      type: external,
+      minified: true
+    }
+    'https://coh-chat-app-prod.eu-de.mybluemix.net/default.min.js': {
+      type: external,
+      minified: true
+    }

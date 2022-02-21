@@ -41,7 +41,6 @@ function helfi_platform_config_install($is_syncing) {
     'helfi_gdpr_compliance',
     'helfi_media',
     'helfi_media_map_config',
-    'helfi_search',
     'helfi_siteimprove_config',
     'helfi_tpr_config',
   ];
