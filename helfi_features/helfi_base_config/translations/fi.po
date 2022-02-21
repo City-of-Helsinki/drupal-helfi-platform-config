@@ -163,7 +163,7 @@ msgid "Permission"
 msgstr "Käyttöoikeus"
 
 msgid "Publish on"
-msgstr "Julkaisupäivämäärä"
+msgstr "Julkaisuaika"
 
 msgid "Published"
 msgstr "Julkaistu"
@@ -217,7 +217,7 @@ msgid "To"
 msgstr "Osoitteeseen"
 
 msgid "Unpublish on"
-msgstr "Julkaisun peruutuspäivämäärä"
+msgstr "Ajastettu piilottaminen"
 
 msgid "Unpublished"
 msgstr "Julkaisematon"
