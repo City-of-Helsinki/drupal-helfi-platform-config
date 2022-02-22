@@ -1300,3 +1300,6 @@ msgstr ""
 "Käytä kenttää vain kun sivulle tarvitaan markkinointiosoite. "
 "Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
 "esimerkiksi \"/kaupunkisymposium\"."
+
+msgid "Parent link"
+msgstr "Yläsivu"
