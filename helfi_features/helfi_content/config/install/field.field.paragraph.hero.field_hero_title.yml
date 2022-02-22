@@ -8,8 +8,8 @@ id: paragraph.hero.field_hero_title
 field_name: field_hero_title
 entity_type: paragraph
 bundle: hero
-label: Title
-description: 'Title for the hero block. This will be used as the level 1 heading for the page instead of the regular page title if hero is added on the page.'
+label: 'Hero heading'
+description: 'If a hero is used on the page, this heading will be used as the page''s main heading.'
 required: true
 translatable: false
 default_value: {  }
