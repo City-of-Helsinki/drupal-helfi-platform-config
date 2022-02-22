@@ -1,2 +1,2 @@
-label: Otsikko
-description: 'Näkyvä otsikko lohkolle. Tätä arvoa käytetään ensimmäisen tason otsikkona sivulle jos hero-lohko on lisätty sivulle.'
+label: 'Heron otsikko'
+description: 'Jos sivulla on hero-elementti, tämä otsikko toimii sivun pääotsikkona.'

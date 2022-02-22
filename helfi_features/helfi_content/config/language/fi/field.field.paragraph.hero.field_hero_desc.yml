@@ -1,2 +1,2 @@
-label: Kuvaus
-description: 'Valinnainen lyhyt kuvaus lohkolle.'
+label: 'Heron teksti'
+description: 'Hero-nostoelementissä näytettävä teksti. Voidaan jättää tyhjäksi.'
