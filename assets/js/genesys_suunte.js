@@ -1,8 +1,59 @@
+var helfiChatCookiePath = '/fi/sosiaali-ja-terveyspalvelut/';
+var helfiChatTransferPath = '/genesys-auth-redirect?dir=out';
+var gcReturnSessionId = '';
+
 (function ($, Drupal, drupalSettings) {
   'use strict';
 
   Drupal.removeChatIcon = function() {
     $(".cx-window-manager").css("display", "none");
+  }
+
+  Drupal.setGcReturnSessionId = function() {
+    // helper cookie to maintain chat session id:
+    var gcReturnSessionId = Drupal.getCookieChat("_genesys.widgets.webchat.state.session");
+    if (!Drupal.isEmpty(gcReturnSessionId) && !Drupal.isBlank(gcReturnSessionId)) {
+      // Found GS-chat session, setting it to helper cookie:
+      /* document.cookie = "gcReturnSessionId="+gcReturnSessionId+";path=/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/"; */
+      document.cookie =
+        "gcReturnSessionId=" + gcReturnSessionId + ";path=" + helfiChatCookiePath;
+    } else {
+      //console.log("gcReturnSessionId", gcReturnSessionId);
+      alert(
+        "Virhe, ei voida tunnistaa käyttäjää, koska chat-keskustelu ei ole auki."
+      );
+      return false;
+    }
+    // save alternative return url for cookie:
+    document.cookie =
+      "gcAlternativeReturnUrl=" +
+      window.location.href +
+      ";path=" +
+      helfiChatCookiePath;
+    return true;
+  }
+
+  Drupal.getCookieChat = function(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  Drupal.isEmpty = function(str) {
+        return !str || 0 === str.length;
+  }
+
+  Drupal.isBlank = function(str) {
+    return !str || /^\s*$/.test(str);
   }
 
   Drupal.behaviors.genesys_chat = {
@@ -78,16 +129,13 @@
       var helFiChat_button = "";
       var helFiChat_localization =
         "https://asiointi.hel.fi/gms/sote/testpages/chat-suunte-fi.json";
-      var helFiChat_service = "SUUNTE";
+      var helFiChat_service = "SUUNTE"; //SUUNTE
       var helFiChat_language = "fi";
       var helfiChat_GUI_lang = helFiChat_language;
-      var helFiChat_title = "Pysäköinti Helsingissä chat";
-
-      var helfiChatCookiePath = '/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/';
-      var helfiChatTransferPath = '/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/ajanvaraus/test-chat-draft3/transfer-genesys-9?dir=out';
+      var helFiChat_title = "Hammashoidon chat";
 
 	    /* FILL BELOW LINE CORRECT PATH WHERE CALLSHIBBOLETH FUNCTION IS RUN OR FUNCTION ITSELF?: */
-      var helfiChatAuthElement = '<div id="chatAuthenticationElement"><a href="javascript:void(0);" title="" target="" onclick="var testReturnSessionId=setGcReturnSessionId();if(testReturnSessionId){window.location=helfiChatTransferPath;}" href="javascript:void(0);">Tunnistaudu tästä</a></div>';
+      var helfiChatAuthElement = '<div id="chatAuthenticationElement"><a href="javascript:void(0);" title="" target="" onclick="var testReturnSessionId=Drupal.setGcReturnSessionId();if(testReturnSessionId){window.location=helfiChatTransferPath;}" href="javascript:void(0);">Tunnistaudu tästä</a></div>';
       var helfiChatAuthElementDone = '<div id="authUserTitleContainer" style="display: none;">Tunnistautunut käyttäjä</div>';
 
 
@@ -114,12 +162,12 @@
 
       function initHelFiChatAuthButtonState() {
         // State of Vetuma authentication result:
-        var gcReturnSessionId = getCookieChat("gcSession");
+        gcReturnSessionId = Drupal.getCookieChat("gcSession");
         // is user authenticated, 1=yes
-        var chatGcLoginButtonState = getCookieChat("gcLoginButtonState");
+        var chatGcLoginButtonState = Drupal.getCookieChat("gcLoginButtonState");
         //is genesys original session active now?
         var gcOriginalSessionID = "";
-        gcOriginalSessionID = getCookieChat("_genesys.widgets.webchat.state.session");
+        gcOriginalSessionID = Drupal.getCookieChat("_genesys.widgets.webchat.state.session");
         if (gcOriginalSessionID) {
           setTimeout(function () {
             // if(chatGcLoginButtonState==1) {
@@ -150,53 +198,6 @@
       window.addEventListener("load", initHelFiChatAuthButtonState);
 
       // ------- Auth functions starts ------------
-
-      function isEmpty(str) {
-        return !str || 0 === str.length;
-      }
-
-      function isBlank(str) {
-        return !str || /^\s*$/.test(str);
-      }
-
-      function setGcReturnSessionId() {
-        // helper cookie to maintain chat session id:
-        gcReturnSessionId = getCookieChat("_genesys.widgets.webchat.state.session");
-        if (!isEmpty(gcReturnSessionId) && !isBlank(gcReturnSessionId)) {
-          // Found GS-chat session, setting it to helper cookie:
-          /* document.cookie = "gcReturnSessionId="+gcReturnSessionId+";path=/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/"; */
-          document.cookie =
-            "gcReturnSessionId=" + gcReturnSessionId + ";path=" + helfiChatCookiePath;
-        } else {
-          //console.log("gcReturnSessionId", gcReturnSessionId);
-          alert(
-            "Virhe, ei voida tunnistaa käyttäjää, koska chat-keskustelu ei ole auki."
-          );
-          return false;
-        }
-        // save alternative return url for cookie:
-        document.cookie =
-          "gcAlternativeReturnUrl=" +
-          window.location.href +
-          ";path=" +
-          helfiChatCookiePath;
-        return true;
-      }
-
-      function getCookieChat(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(";");
-        for (var i = 0; i < ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == " ") {
-            c = c.substring(1);
-          }
-          if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-          }
-        }
-        return "";
-      }
 
       // ------- Auth functions ends ------------
 
@@ -424,7 +425,7 @@
 
           //Change agent icons
           if ($(".cx-avatar.agent").length) {
-            $(".cx-avatar.agent").empty().append(helFiChat_AegentIcon);
+            $(".cx-avatar.agent").empty().append(helFiChat_AgentIcon);
           }
         }
 
