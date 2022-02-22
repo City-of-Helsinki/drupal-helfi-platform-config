@@ -63,3 +63,17 @@ function helfi_news_item_update_9002() {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
   }
 }
+
+/**
+ * Update translations based on customer needs.
+ */
+function helfi_news_item_update_9003() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9003');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

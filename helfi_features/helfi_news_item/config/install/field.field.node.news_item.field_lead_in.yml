@@ -8,8 +8,8 @@ id: node.news_item.field_lead_in
 field_name: field_lead_in
 entity_type: node
 bundle: news_item
-label: Lead-in
-description: 'Lead-in should be less than 320 characters.'
+label: Lead
+description: 'Lead is visible on the content page, content listings, search results and on social media. Lead should be less than 320 characters.'
 required: false
 translatable: true
 default_value: {  }
