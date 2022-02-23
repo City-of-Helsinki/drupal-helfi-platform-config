@@ -128,7 +128,7 @@ var gcReturnSessionId = '';
       /* CHAT START BUTTON ICONS */
       var helFiChat_button = "";
       var helFiChat_localization =
-        "https://asiointi.hel.fi/gms/sote/testpages/chat-suunte-fi.json";
+        "https://www.hel.fi/gms/sote/testpages/chat-suunte-fi.json";
       var helFiChat_service = "SUUNTE"; //SUUNTE
       var helFiChat_language = "fi";
       var helfiChat_GUI_lang = helFiChat_language;
