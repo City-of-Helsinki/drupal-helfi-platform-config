@@ -9,9 +9,8 @@ dependencies:
     - text
 third_party_settings:
   allowed_formats:
-    full_html: full_html
-    minimal: '0'
-    plain_text: '0'
+    allowed_formats:
+      - full_html
 id: paragraph.text.field_text
 field_name: field_text
 entity_type: paragraph

@@ -18,9 +18,9 @@ display:
             format_custom_true: Julkaistu
             format_custom_false: Julkaisematon
         publish_on:
-          label: Julkaisupäivämäärä
+          label: Julkaisuaika
         unpublish_on:
-          label: 'Julkaisun peruutuspäivämäärä'
+          label: 'Ajastettu piilottaminen'
         operations:
           label: Toimenpiteet
       filters:

@@ -9,7 +9,7 @@ field_name: field_lead
 entity_type: node
 bundle: article
 label: Lead
-description: ''
+description: 'Lead is visible on the content page, content listings, search results and on social media.'
 required: false
 translatable: true
 default_value: {  }

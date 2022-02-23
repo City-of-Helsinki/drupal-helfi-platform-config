@@ -10,8 +10,8 @@ id: paragraph.hero.field_hero_design
 field_name: field_hero_design
 entity_type: paragraph
 bundle: hero
-label: Design
-description: 'Choose the paragraph design from the dropdown. Depending on what design you choose there may be different fields that you need to fill.'
+label: Layout
+description: 'Set the hero layout from the menu. The layout affects what information is required below.'
 required: true
 translatable: false
 default_value:

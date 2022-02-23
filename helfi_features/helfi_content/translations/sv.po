@@ -19,9 +19,6 @@ msgstr "Författare"
 msgid "Background color"
 msgstr "Bakgrundsfärg"
 
-msgid "Basic page"
-msgstr "Sida"
-
 msgid "Caption"
 msgstr "Bildtext"
 
@@ -57,6 +54,9 @@ msgstr "Grå"
 
 msgid "Heading"
 msgstr "Rubrik"
+
+msgid "Hero heading"
+msgstr "Titel"
 
 msgid "HTML Date"
 msgstr "HTML datum"
@@ -123,6 +123,9 @@ msgstr "Visas på startsidan"
 
 msgid "Shown when hovering over the menu link."
 msgstr "Visas när man för musmarkören över menylänken."
+
+msgid "Standard page"
+msgstr "Sida"
 
 msgid "Text"
 msgstr "Text"

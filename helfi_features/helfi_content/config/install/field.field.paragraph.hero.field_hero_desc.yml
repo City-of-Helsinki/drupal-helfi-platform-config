@@ -5,13 +5,17 @@ dependencies:
     - field.storage.paragraph.field_hero_desc
     - paragraphs.paragraphs_type.hero
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats: {  }
 id: paragraph.hero.field_hero_desc
 field_name: field_hero_desc
 entity_type: paragraph
 bundle: hero
 label: Description
-description: 'Optional short description for hero block.'
+description: 'Paragraph visible on the hero. Can be left empty.'
 required: false
 translatable: false
 default_value: {  }

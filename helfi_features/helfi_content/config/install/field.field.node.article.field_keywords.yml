@@ -10,7 +10,7 @@ field_name: field_keywords
 entity_type: node
 bundle: article
 label: Keywords
-description: ''
+description: 'Begin typing to search for keywords. '
 required: false
 translatable: true
 default_value: {  }

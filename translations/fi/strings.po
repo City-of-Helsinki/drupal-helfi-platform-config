@@ -475,11 +475,6 @@ msgstr "Oletusikoni"
 msgid "Paragraphs types"
 msgstr "Lohkotyypit"
 
-msgid ""
-"Uncheck this to create a custom alias below. <a "
-"href=\"@admin_link\">Configure URL alias patterns.</a>"
-msgstr "Älä valitse tätä jos haluat itse asettaa osoitealiaksen."
-
 msgid "Status code"
 msgstr "Tilakoodi"
 
@@ -1281,3 +1276,30 @@ msgid ""
 msgstr ""
 "Aseta lukuvuoden aloitusvuosi. Asettamalla aloitusvuodeksi esimerkiksi "
 "\"2022\", lukuvuodeksi tulee \"2022-2023\"."
+
+msgid "Enter a date and time."
+msgstr "Syötä päivämäärä ja aika."
+
+msgid "Leave the date blank for no scheduled publishing."
+msgstr "Jos haluat julkaista sivun heti, jätä kentät tyhjiksi."
+
+msgid "Leave the date blank for no scheduled unpublishing."
+msgstr "Jos et halua piilottaa sivua julkaisun jälkeen, jätä kentät tyhjiksi"
+
+msgid ""
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Tätä asetusta ei tarvitse muuttaa. "
+"Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
+
+msgid ""
+"Specify an alternative path by which this data can be accessed. For "
+"example, type \"/about\" when writing an about page."
+msgstr ""
+"Määrittele vaihtoehtoinen url-osoite sisällölle. "
+"Käytä kenttää vain kun sivulle tarvitaan markkinointiosoite. "
+"Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
+"esimerkiksi \"/kaupunkisymposium\"."
+
+msgid "Parent link"
+msgstr "Yläsivu"

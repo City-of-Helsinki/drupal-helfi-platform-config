@@ -9,7 +9,7 @@ field_name: field_author
 entity_type: node
 bundle: article
 label: Author
-description: ''
+description: 'Can be left empty.'
 required: false
 translatable: true
 default_value: {  }

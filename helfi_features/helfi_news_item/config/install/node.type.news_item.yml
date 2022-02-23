@@ -23,7 +23,7 @@ third_party_settings:
     unpublish_revision: false
 name: 'News item'
 type: news_item
-description: 'Content type for pages that include information that ages quickly.'
+description: 'Content type for news items.'
 help: ''
 new_revision: true
 preview_mode: 1

@@ -9,9 +9,8 @@ dependencies:
     - text
 third_party_settings:
   allowed_formats:
-    minimal: minimal
-    full_html: '0'
-    plain_text: '0'
+    allowed_formats:
+      - minimal
 id: paragraph.sidebar_text.field_sidebar_text_text
 field_name: field_sidebar_text_text
 entity_type: paragraph
