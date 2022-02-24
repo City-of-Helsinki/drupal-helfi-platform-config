@@ -392,6 +392,7 @@ function helfi_tpr_config_update_9019() {
 function helfi_tpr_config_update_9020() {
   // Add TPR-entity specific views for locked content listing page.
   $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
   $configurations = [
     'views.view.locked_services',
