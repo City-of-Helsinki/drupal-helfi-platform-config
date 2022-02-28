@@ -17,6 +17,7 @@ function helfi_charts_install($is_syncing) {
     if (Drupal::moduleHandler()->moduleExists('update_helper')) {
       helfi_charts_update_9001();
       helfi_charts_update_9002();
+      helfi_charts_update_9003();
     }
   }
 }
@@ -64,5 +65,29 @@ function helfi_charts_update_9002() {
   // Install configurations and translations.
   foreach ($configurations as $configuration) {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
+}
+
+/**
+ * Update configuration translations for Helfi Charts.
+ */
+function helfi_charts_update_9003() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.media.helfi_chart.field_helfi_chart_title',
+    'field.field.media.helfi_chart.field_helfi_chart_transcript',
+    'field.field.media.helfi_chart.field_helfi_chart_url',
+    'field.field.paragraph.chart.field_chart_chart',
+    'field.field.paragraph.chart.field_chart_description',
+    'field.field.paragraph.chart.field_chart_title',
+    'media.type.helfi_chart',
+    'paragraphs.paragraphs_type.chart',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
