@@ -404,7 +404,6 @@ function helfi_tpr_config_update_9020() {
 
   foreach ($configurations as $configuration) {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
-    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 
   // Add TPR-specific configuration to existing content_lock configuration.
