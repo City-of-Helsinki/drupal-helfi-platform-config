@@ -25,6 +25,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9017();
       helfi_tpr_config_update_9018();
       helfi_tpr_config_update_9021();
+      helfi_tpr_config_update_9022();
     }
 
     // If HELfi Announcements module is installed, install also
