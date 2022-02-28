@@ -408,21 +408,18 @@ function helfi_content_update_9019() {
 
   // Add the new fields for remote-video paragraph.
   $configLocation = dirname(__FILE__) . '/config/install/';
-  $configurations = [
-    'field.field.paragraph.remote_video.field_remote_video_description',
-    'field.field.paragraph.remote_video.field_remote_video_title',
-    'field.field.paragraph.remote_video.field_remote_video_video_desc',
-    'field.field.paragraph.remote_video.field_remote_video_video_title',
-    'field.storage.paragraph.field_remote_video_description',
-    'field.storage.paragraph.field_remote_video_title',
-    'field.storage.paragraph.field_remote_video_video_desc',
-    'field.storage.paragraph.field_remote_video_video_title',
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_remote_video_description' => 'field.field.paragraph.remote_video.field_remote_video_description',
+    'field.storage.paragraph.field_remote_video_title' => 'field.field.paragraph.remote_video.field_remote_video_title',
+    'field.storage.paragraph.field_remote_video_video_desc' => 'field.field.paragraph.remote_video.field_remote_video_video_desc',
+    'field.storage.paragraph.field_remote_video_video_title' => 'field.field.paragraph.remote_video.field_remote_video_video_title',
   ];
 
-  // Install the system actions for content lock.
-  foreach ($configurations as $configuration) {
-    ConfigHelper::installNewConfig($configLocation, $configuration);
-    ConfigHelper::installNewConfigTranslation($configLocation, $configuration);
+  // Install accordion description, title and title level fields.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
   }
 
   // Execute configuration update definitions with logging of success.
