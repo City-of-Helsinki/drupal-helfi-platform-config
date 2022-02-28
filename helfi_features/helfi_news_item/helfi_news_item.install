@@ -14,6 +14,7 @@ function helfi_news_item_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_news_item_update_9001();
     helfi_news_item_update_9002();
+    helfi_news_item_update_9004();
   }
 }
 
@@ -81,7 +82,7 @@ function helfi_news_item_update_9003() {
 /**
  * Update configuration translations for Helfi News item.
  */
-function helfi_content_update_9019() {
+function helfi_news_item_update_9004() {
   // Handle the configuration translation update manually.
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
