@@ -167,3 +167,12 @@ function helfi_base_config_update_9006() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Update configuration translations for Helfi Base config.
+ */
+function helfi_base_config_update_9007() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'views.view.scheduler_scheduled_content');
+}

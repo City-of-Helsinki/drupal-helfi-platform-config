@@ -77,3 +77,21 @@ function helfi_news_item_update_9003() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Update configuration translations for Helfi News item.
+ */
+function helfi_content_update_9019() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.node.news_item.field_lead_in',
+    'node.type.news_item',
+  ];
+
+  // Update translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}

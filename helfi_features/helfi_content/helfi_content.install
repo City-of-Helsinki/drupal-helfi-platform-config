@@ -397,3 +397,37 @@ function helfi_content_update_9018() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Update configuration translations for Helfi Content.
+ */
+function helfi_content_update_9019() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.node.article.field_author',
+    'field.field.node.article.field_content',
+    'field.field.node.article.field_keywords',
+    'field.field.node.article.field_lead',
+    'field.field.node.article.field_liftup_image',
+    'field.field.node.landing_page.field_content',
+    'field.field.node.landing_page.field_has_hero',
+    'field.field.node.landing_page.field_liftup_image',
+    'field.field.node.page.field_has_hero',
+    'field.field.node.page.field_lead_in',
+    'field.field.node.page.field_liftup_image',
+    'field.field.paragraph.hero.field_hero_desc',
+    'field.field.paragraph.hero.field_hero_design',
+    'field.field.paragraph.hero.field_hero_title',
+    'node.type.article',
+    'node.type.landing_page',
+    'node.type.page',
+    'paragraphs.paragraphs_type.remote_video',
+  ];
+
+  // Update translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
