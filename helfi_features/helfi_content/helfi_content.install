@@ -397,3 +397,37 @@ function helfi_content_update_9018() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+
+/**
+ * Update the remote-video paragraph with new fields.
+ */
+function helfi_content_update_9019() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Add the new fields for remote-video paragraph.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configurations = [
+    'field.field.paragraph.remote_video.field_remote_video_description',
+    'field.field.paragraph.remote_video.field_remote_video_title',
+    'field.field.paragraph.remote_video.field_remote_video_video_desc',
+    'field.field.paragraph.remote_video.field_remote_video_video_title',
+    'field.storage.paragraph.field_remote_video_description',
+    'field.storage.paragraph.field_remote_video_title',
+    'field.storage.paragraph.field_remote_video_video_desc',
+    'field.storage.paragraph.field_remote_video_video_title',
+  ];
+
+  // Install the system actions for content lock.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configLocation, $configuration);
+  }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9019');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
