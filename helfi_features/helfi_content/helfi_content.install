@@ -458,7 +458,7 @@ function helfi_content_update_9020() {
   }
 
   // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9019');
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9020');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
