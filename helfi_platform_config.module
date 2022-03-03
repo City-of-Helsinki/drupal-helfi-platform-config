@@ -9,6 +9,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\GeneratedUrl;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
 
@@ -67,7 +68,7 @@ function helfi_platform_config_theme() {
 }
 
 /**
- * Implements hook_token_info()
+ * Implements hook_token_info().
  */
 function helfi_platform_config_token_info() {
   $info['tokens']['site']['page-title-suffix'] = [
@@ -78,7 +79,7 @@ function helfi_platform_config_token_info() {
 }
 
 /**
- * Implements hook_tokens()
+ * Implements hook_tokens().
  */
 function helfi_platform_config_tokens(
   $type,
@@ -97,12 +98,15 @@ function helfi_platform_config_tokens(
         case 'fi':
           $replacements[$original] = 'Helsingin kaupunki';
           break;
+
         case 'sv':
           $replacements[$original] = 'Helsingfors stad';
           break;
+
         case 'ru':
           $replacements[$original] = 'Гopoд Xeльcинки';
           break;
+
         default:
           $replacements[$original] = 'City of Helsinki';
           break;
@@ -122,15 +126,24 @@ function helfi_platform_config_preprocess_breadcrumb(&$variables) {
     return;
   }
 
-  foreach(array_reverse($config->get('breadcrumb_base_links')) as $crumb) {
-    if (empty($crumb['text']) || !filter_var($crumb['url'], FILTER_VALIDATE_URL) ) {
+  foreach (array_reverse($config->get('breadcrumb_base_links')) as $crumb) {
+    if (empty($crumb['text']) || !filter_var($crumb['url'], FILTER_VALIDATE_URL)) {
       continue;
     }
+    array_unshift(
+      $variables['links'],
+      Link::fromTextAndUrl(
+        $crumb['text'],
+        UrlHelper::isExternal($crumb['url'])
+          ? Url::fromUri($crumb['url'])
+          : Url::fromUserInput($crumb['url'])
+      )
+    );
     array_unshift(
       $variables['breadcrumb'],
       [
         'text' => $crumb['text'],
-        'url' => $crumb['url']
+        'url' => $crumb['url'],
       ]
     );
   }
