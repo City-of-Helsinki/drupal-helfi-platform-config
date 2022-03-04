@@ -28,6 +28,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9016();
     helfi_content_update_9019();
     helfi_content_update_9020();
+    helfi_content_update_9021();
   }
 }
 
@@ -464,4 +465,21 @@ function helfi_content_update_9020() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Update configuration translations for Helfi Base config.
+ */
+function helfi_content_update_9021() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'views.view.locked_services',
+    'views.view.locked_units',
+  ];
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
 }
