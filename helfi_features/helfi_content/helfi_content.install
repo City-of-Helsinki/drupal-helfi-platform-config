@@ -443,6 +443,7 @@ function helfi_content_update_9020() {
 
   // Add the new fields for remote-video paragraph.
   $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
   // Key field storage and value is field configuration.
   $configFields = [
@@ -455,6 +456,7 @@ function helfi_content_update_9020() {
   // Install accordion description, title and title level fields.
   foreach ($configFields as $field_storage => $field_config) {
     ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $field_config);
   }
 
   // Execute configuration update definitions with logging of success.
