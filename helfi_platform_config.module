@@ -159,12 +159,11 @@ function helfi_platform_config_preprocess_react_and_share(&$variables) {
 /**
  * Helper function to get the privacy policy link URL.
  */
-function _helfi_platform_config_eu_cookie_compliance_get_privacy_policy_url(): GeneratedUrl|string {
-  $config = \Drupal::config('eu_cookie_compliance.settings');
+function _helfi_platform_config_eu_cookie_compliance_get_privacy_policy_url(): Url|string {
+  $config = Drupal::config('eu_cookie_compliance.settings');
+  $link = $config->get('popup_link');
 
-  $popup_link_config = $config->get('popup_link');
-  if (UrlHelper::isExternal($popup_link_config)) {
-    return Url::fromUri($popup_link_config)->toString();
-  }
-  return Url::fromUserInput($popup_link_config === '<front>' ? '/' : $popup_link_config)->toString();
+  return (UrlHelper::isExternal($link))
+    ? Url::fromUri($link)
+    : Url::fromUserInput($link === '<front>' ? '/' : $link);
 }
