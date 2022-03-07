@@ -432,3 +432,17 @@ function helfi_content_update_9019() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
+
+/**
+ * Add 'selected-icon' and 'is-external' data attributes for CKEditor anchor tags.
+ */
+function helfi_content_update_9020() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9020');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
