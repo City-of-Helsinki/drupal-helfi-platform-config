@@ -58,6 +58,9 @@
   },
   "extra": {
     "patches": {
+      "drupal/content_lock": {
+        "[#UHF-4553] Fix unlock content button redirect": "patches/content-lock-uhf-4553.patch"
+      },
       "drupal/core": {
         "[#UHF-181] Hide untranslated menu links": "https://www.drupal.org/files/issues/2021-03-05/3091246-allow-menu-tree-manipulators-alter-12-1.patch",
         "[#UHF-920] Token for base URL (https://www.drupal.org/project/drupal/issues/1088112).": "https://www.drupal.org/files/issues/2020-10-06/1088112-63.patch",
