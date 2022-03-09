@@ -21,4 +21,4 @@ filter.format.minimal:
       filters:
         filter_html:
           settings:
-            allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class="">'
+            allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""><span role aria-* class="">'
