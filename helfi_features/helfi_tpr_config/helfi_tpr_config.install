@@ -25,6 +25,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9017();
       helfi_tpr_config_update_9018();
       helfi_tpr_config_update_9021();
+      helfi_tpr_config_update_9022();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -431,6 +432,21 @@ function helfi_tpr_config_update_9021() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9021');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+
+/**
+ * Add remote-video paragraph to all content areas on tpr-unit and tpr-service.
+ */
+function helfi_tpr_config_update_9022() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9022');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

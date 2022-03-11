@@ -105,7 +105,7 @@ watson_chatbot:
       type: external,
       minified: true
     }
-    'https://coh-chat-app-prod.eu-de.mybluemix.net/static/default/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=housing': {
+    'https://coh-chat-app-prod.eu-de.mybluemix.net/static/housing/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=housing': {
       type: external,
       minified: true
     }

@@ -1,24 +1,98 @@
-filter.format.full_html:
+core.entity_form_display.paragraph.remote_video.default:
   expected_config:
-    filters:
-      filter_html:
-        settings:
-          allowed_html: '<em> <strong> <cite> <blockquote role aria-* cite class=""> <code> <ul type class=""> <ol start type> <li class=""> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div role aria-* class=""> <img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <a href hreflang !href accesskey id rel target title data-design data-link-text data-icon data-protocol class=""> <pre> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <span role aria-* class="">'
+    content:
+      field_remote_video:
+        weight: 0
   update_actions:
     change:
-      filters:
-        filter_html:
+      dependencies:
+        config:
+          - field.field.paragraph.remote_video.field_remote_video_description
+          - field.field.paragraph.remote_video.field_remote_video_title
+          - field.field.paragraph.remote_video.field_remote_video_video_desc
+          - field.field.paragraph.remote_video.field_remote_video_video_title
+        module:
+          - text
+      content:
+        field_remote_video:
+          weight: 2
+        field_remote_video_description:
+          region: content
           settings:
-            allowed_html: '<em> <strong> <cite> <blockquote role aria-* cite class=""> <code> <ul type class=""> <ol start type> <li class=""> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div role aria-* class=""> <img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <pre> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <span role aria-* class="">'
-filter.format.minimal:
+            placeholder: ''
+            rows: 5
+          third_party_settings: {  }
+          type: text_textarea
+          weight: 1
+        field_remote_video_title:
+          region: content
+          settings:
+            placeholder: ''
+            size: 60
+          third_party_settings: {  }
+          type: string_textfield
+          weight: 0
+        field_remote_video_video_desc:
+          region: content
+          settings:
+            placeholder: ''
+            rows: 5
+          third_party_settings: {  }
+          type: text_textarea
+          weight: 4
+        field_remote_video_video_title:
+          region: content
+          settings:
+            placeholder: ''
+            size: 60
+          third_party_settings: {  }
+          type: string_textfield
+          weight: 3
+core.entity_view_display.paragraph.remote_video.default:
   expected_config:
-    filters:
-      filter_html:
-        settings:
-          allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-icon data-protocol class="">'
+    content:
+      field_remote_video:
+        weight: 0
   update_actions:
     change:
-      filters:
-        filter_html:
+      dependencies:
+        config:
+          - field.field.paragraph.remote_video.field_remote_video_description
+          - field.field.paragraph.remote_video.field_remote_video_title
+          - field.field.paragraph.remote_video.field_remote_video_video_desc
+          - field.field.paragraph.remote_video.field_remote_video_video_title
+        module:
+          - text
+      content:
+        field_remote_video:
+          weight: 2
+        field_remote_video_description:
+          label: hidden
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+          type: text_default
+          weight: 1
+        field_remote_video_title:
+          label: hidden
+          region: content
           settings:
-            allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""><span role aria-* class="">'
+            link_to_entity: false
+          third_party_settings: {  }
+          type: string
+          weight: 0
+        field_remote_video_video_desc:
+          label: hidden
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+          type: text_default
+          weight: 4
+        field_remote_video_video_title:
+          label: hidden
+          region: content
+          settings:
+            link_to_entity: false
+          third_party_settings: {  }
+          type: string
+          weight: 3

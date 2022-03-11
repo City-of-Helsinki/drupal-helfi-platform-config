@@ -27,6 +27,8 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9011();
     helfi_content_update_9016();
     helfi_content_update_9019();
+    helfi_content_update_9020();
+    helfi_content_update_9021();
   }
 }
 
@@ -434,14 +436,63 @@ function helfi_content_update_9019() {
 }
 
 /**
- * Add 'selected-icon' and 'is-external' data attributes for CKEditor anchor tags.
+ * Update the remote-video paragraph with new fields.
  */
 function helfi_content_update_9020() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
+  // Add the new fields for remote-video paragraph.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_remote_video_description' => 'field.field.paragraph.remote_video.field_remote_video_description',
+    'field.storage.paragraph.field_remote_video_title' => 'field.field.paragraph.remote_video.field_remote_video_title',
+    'field.storage.paragraph.field_remote_video_video_desc' => 'field.field.paragraph.remote_video.field_remote_video_video_desc',
+    'field.storage.paragraph.field_remote_video_video_title' => 'field.field.paragraph.remote_video.field_remote_video_video_title',
+  ];
+
+  // Install accordion description, title and title level fields.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $field_config);
+  }
+
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9020');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update configuration translations for Helfi Base config.
+ */
+function helfi_content_update_9021() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'views.view.locked_services',
+    'views.view.locked_units',
+  ];
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
+
+/**
+ * Add 'selected-icon' and 'is-external' data attributes for CKEditor anchor tags.
+ */
+function helfi_content_update_9022() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9022');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

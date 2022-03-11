@@ -1,5 +1,5 @@
 var helfiChatCookiePath = '/fi/sosiaali-ja-terveyspalvelut/';
-var helfiChatTransferPath = '/genesys-auth-redirect?dir=out';
+var helfiChatTransferPath = helfiChatCookiePath + 'genesys-auth-redirect?dir=out';
 var gcReturnSessionId = '';
 
 (function ($, Drupal, drupalSettings) {
