@@ -25,6 +25,7 @@
     "drupal/features": "^3.12",
     "drupal/field_group": "^3.1",
     "drupal/focal_point": "^1.5",
+    "drupal/helfi_api_base": "^2.0",
     "drupal/helfi_media_map": "*",
     "drupal/helfi_tpr": "^2.0",
     "drupal/helfi_media_formtool": "*",
