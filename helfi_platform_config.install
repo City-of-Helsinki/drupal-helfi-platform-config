@@ -182,14 +182,14 @@ function helfi_platform_config_update_9007() {
 
   // Search and replace following data.
   $data_to_be_converted = [
-    'hdbt-icon--link-external' => '', // Remove manually added external link icon.
-    'hdbt-icon--' => '" data-selected-icon="', // Convert icon to data-selected-icon.
-    'hdbt-icon' => '', // Remove hdbt-icon class.
-    'target="_blank"' => '', // Remove target=_blank.
-    'data-protocol="false"' => '', // Remove false data-attributes.
-    'data-is-external="false"' => '', // Remove false data-attributes.
-    'data-is-external="true"' => '', // Remove manually added data-attribute.
-    'data-icon=' => 'data-selected-icon=', // Convert icon to selected icon.
+    'hdbt-icon--link-external' => '',
+    'hdbt-icon--' => '" data-selected-icon="',
+    'hdbt-icon' => '',
+    'target="_blank"' => '',
+    'data-protocol="false"' => '',
+    'data-is-external="false"' => '',
+    'data-is-external="true"' => '',
+    'data-icon=' => 'data-selected-icon=',
   ];
 
   // Load all field configurations.
