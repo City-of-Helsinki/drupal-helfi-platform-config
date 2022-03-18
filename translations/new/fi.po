@@ -1,0 +1,156 @@
+# Finnish translations of City of Helsinki
+#
+# Use this translation file for missing translations that are not found in
+# localize.drupal.org.
+#
+msgid ""
+msgstr ""
+
+# address
+msgctxt "Address label"
+msgid "Postal code"
+msgstr "Postinumero"
+
+# diff
+msgid "Compare selected revisions"
+msgstr "Vertaile valittuja versioita"
+
+# linkit
+msgid "Start typing to find content."
+msgstr ""
+"Aloita kirjoittaminen löytääksesi sisältöä. Huomaa, että voit "
+"myös lisätä suoraan ulkoisen osoitteen."
+
+# matomo
+msgid "Matomo settings"
+msgstr "Matomo asetukset"
+
+# metatag
+msgid "Metatag plugins"
+msgstr "Metatunnisteen lisäosat"
+
+# openid_connect
+msgid "Connected Accounts"
+msgstr "Liitetyt tilit"
+
+msgid "Connect with @client_title"
+msgstr "Yhdistä @client_title"
+
+msgid "Log in with @client_title"
+msgstr "Kirjaudu sisään @client_title-tunnuksilla"
+
+msgid "Not connected"
+msgstr "Ei yhdistetty"
+
+msgid "Provider: @title"
+msgstr "Palveluntarjoaja: @title"
+
+msgid "You can connect your account with these external providers."
+msgstr ""
+"Voit yhdistää käyttäjätilisi näihin ulkoisiin "
+"palveluntarjoajiin."
+
+# paragraphs
+msgid "Default icon"
+msgstr "Oletusikoni"
+
+msgid "From library"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
+msgid "Paragraphs library item"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library item settings"
+msgstr "Uudelleenkäytettävän lohkon asetukset"
+
+msgid "Paragraphs types"
+msgstr "Lohkotyypit"
+
+msgid "Reusable paragraph"
+msgstr "Uudelleenkäytettävä lohko"
+
+# pathauto
+msgid ""
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Tätä asetusta ei tarvitse muuttaa. "
+"Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
+
+# redirect
+msgid "Add URL redirect"
+msgstr "Lisää uudelleenohjaus"
+
+msgid "Note: links open in the current window."
+msgstr "Huom: Linkit aukeavat samaan ikkunaan."
+
+# simple_sitemap
+msgid "always"
+msgstr "aina"
+
+msgid "daily"
+msgstr "päivittäin"
+
+msgid ""
+"Do not index this <em>@bundle</em> entity in variant "
+"<em>@variant_label</em>"
+msgstr "Älä indeksoi tätä sisältöä."
+
+msgid ""
+"Determines if images referenced by this <em>@bundle</em> entity should "
+"be included in the sitemap."
+msgstr ""
+"Määrittää, pitäisikö tämän <em>@bundle</em> sisällön "
+"sisältämät kuvat sisällyttää sivustokarttaan."
+
+msgid "hourly"
+msgstr "tunnin välein"
+
+msgid "Index this <em>@bundle entity</em> in variant <em>@variant_label</em>"
+msgstr "Indeksoi tämä sisältö."
+
+msgid "Include images"
+msgstr "Sisällytä kuvat"
+
+msgid "monthly"
+msgstr "kuukausittain"
+
+msgid "never"
+msgstr "ei koskaan"
+
+msgid "Otherwise the sitemaps will be regenerated during a future cron run."
+msgstr "Muutoin sivustokartat uudistetaan tulevan cron-ajon aikana."
+
+msgid "Settings for this entity can be overridden here."
+msgstr "Tämän entiteetin asetukset voidaan yliajaa oheisilla asetuksilla."
+
+msgid "Sitemap variants"
+msgstr "Sivustokarttaversiot"
+
+msgid ""
+"The frequency with which this <em>@bundle</em> entity changes. Search "
+"engine bots may take this as an indication of how often to index it."
+msgstr ""
+"Kuinka usein tämä <em>@bundle</em> muuttuu tai päivittyy. "
+"Hakukonerobotit voivat pitää tätä osoituksena siitä, kuinka usein "
+"tämä sisältö indeksoidaan."
+
+msgid ""
+"The priority this <em>@bundle</em> entity will have in the eyes of "
+"search engine bots."
+msgstr ""
+"Tämän <em>@bundle</em> -sisällön prioriteetti hakukoneiden "
+"indekseissä."
+
+msgid "This setting will regenerate all sitemaps including the above changes."
+msgstr ""
+"Tämä asetus uudistaa kaikki sivustokartat, mukaan lukien yllä "
+"olevat muutokset."
+
+msgid "weekly"
+msgstr "viikottain"
+
+msgid "yearly"
+msgstr "vuosittain"
