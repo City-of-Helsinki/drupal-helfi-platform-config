@@ -30,6 +30,9 @@ msgctxt "PHP date format"
 msgid "l, F j, Y - H:i"
 msgstr "j.n.Y - H:i"
 
+msgid "Find and manage content"
+msgstr "Etsi ja hallitse sisältöä"
+
 msgid "Filter"
 msgstr "Suodata"
 
@@ -43,8 +46,21 @@ msgstr ""
 "esimerkiksi \"/kaupunkisymposium\"."
 
 # Pathauto
+msgid "Automatic alias"
+msgstr "Osoitealias käytössä"
+
 msgid "Generate automatic URL alias"
 msgstr "Luo osoitealias"
+
+msgid "Uncheck this to create a custom alias below."
+msgstr "Tätä asetusta ei tarvitse muuttaa. "
+"Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
+
+msgid ""
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Tätä asetusta ei tarvitse muuttaa. "
+"Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
 
 # Scheduler
 msgid "Enter a date and time."

@@ -121,6 +121,19 @@ msgstr "Paragraf"
 msgid "Promoted to front page"
 msgstr "Visas på startsidan"
 
+msgctxt "React & Share cookie compliance"
+msgid "Feedback buttons cannot be displayed"
+msgstr "Feedbackknappar kan inte visas"
+
+msgctxt "React & Share cookie compliance"
+msgid ""
+"To use this feature, you must accept cookies from the site. You can "
+"provide feedback on this page by enabling statistics-related cookies."
+msgstr ""
+"För att använda denna funktion måste du acceptera cookies från "
+"webbplatsen. Du kan ge feedback på den här sidan genom att aktivera "
+"statistikrelaterade cookies."
+
 msgid "Shown when hovering over the menu link."
 msgstr "Visas när man för musmarkören över menylänken."
 
@@ -141,4 +154,3 @@ msgstr "Innehåll"
 
 msgid "White"
 msgstr "Vit"
-
