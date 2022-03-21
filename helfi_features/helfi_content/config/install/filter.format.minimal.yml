@@ -40,7 +40,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-icon data-protocol class="">'
+      allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class="">'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -82,8 +82,8 @@ filters:
     weight: -39
     settings:
       default_view_mode: default
-      allowed_media_types: {  }
       allowed_view_modes: {  }
+      allowed_media_types: {  }
   token_filter:
     id: token_filter
     provider: token_filter

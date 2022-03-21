@@ -10,15 +10,16 @@
       {% endtrans %}
     </p>
     <div class="buttons">
-      {%
-        set settings_link_classes = [
-        'hds-button',
-        'hds-button--secondary',
-      ]
-      %}
-      <a href="{{ privacy_policy_url }}" {{ create_attribute({'class': settings_link_classes} ) }}>
+      {% set link_attributes = {
+        'class': [
+          'hds-button',
+          'hds-button--secondary',
+        ],
+      } %}
+      {% set link_title %}
         <span class="hds-button__label">{{ 'Change cookie settings'|t }}</span>
-      </a>
+      {% endset %}
+      {{ link(link_title, privacy_policy_url, link_attributes) }}
     </div>
   </div>
 </div>
