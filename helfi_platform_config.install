@@ -172,3 +172,56 @@ function helfi_platform_config_update_9006() {
     ]);
   }
 }
+
+/**
+ * Reconstruct CKEditor generated links with icons.
+ */
+function helfi_platform_config_update_9007() {
+  $entity_type_manager = Drupal::entityTypeManager();
+  $field_storage = $entity_type_manager->getStorage('field_config');
+
+  // Search and replace following data.
+  $data_to_be_converted = [
+    'hdbt-icon--link-external' => '',
+    'hdbt-icon--' => '" data-selected-icon="',
+    'hdbt-icon' => '',
+    'target="_blank"' => '',
+    'data-protocol="false"' => '',
+    'data-is-external="false"' => '',
+    'data-is-external="true"' => '',
+    'data-icon=' => 'data-selected-icon=',
+  ];
+
+  // Load all field configurations.
+  /** @var \Drupal\field\Entity\FieldConfig $field_config */
+  foreach ($field_storage->loadMultiple() as $field_config) {
+
+    // Go through each field and check for long text fields (html formatted).
+    if ($field_config->getType() === 'text_long') {
+      $field_storage_definition = $field_config->getFieldStorageDefinition();
+      $entity_type = $field_config->getTargetEntityTypeId();
+
+      /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+      $table_mapping = $entity_type_manager->getStorage($entity_type)->getTableMapping();
+
+      // Get current field's table name and column.
+      $table_name = $table_mapping->getDedicatedDataTableName($field_storage_definition);
+      $column = $table_mapping->getFieldColumnName($field_storage_definition,'value');
+
+      // Go through our data array, treat array key as data to search for
+      // and array value as replacement. Use sql replace to replace the data.
+      foreach ($data_to_be_converted as $old => $new) {
+        $query = Drupal::database()->update($table_name);
+        $query->expression(
+          $column,
+          "REPLACE($column, :old_value, :new_value)",
+          [
+            ':old_value' => $old,
+            ':new_value' => $new,
+          ]
+        );
+        $result = $query->execute();
+      }
+    }
+  }
+}
