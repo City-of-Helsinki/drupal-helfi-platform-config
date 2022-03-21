@@ -42,6 +42,10 @@ msgstr ""
 "Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
 "esimerkiksi \"/kaupunkisymposium\"."
 
+# Pathauto
+msgid "Generate automatic URL alias"
+msgstr "Luo osoitealias"
+
 # Scheduler
 msgid "Enter a date and time."
 msgstr "Syötä päivämäärä ja aika."
