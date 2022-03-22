@@ -26,6 +26,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9018();
       helfi_tpr_config_update_9021();
       helfi_tpr_config_update_9022();
+      helfi_tpr_config_update_9023();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -74,6 +75,11 @@ function helfi_tpr_config_update_dependencies() {
   // module with default configuration.
   $dependencies['helfi_tpr_config'][9020] = [
     'helfi_content' => 9017,
+  ];
+
+  // TODO
+  $dependencies['helfi_tpr_config'][9023] = [
+    'helfi_base_config' => 9008,
   ];
 
   return $dependencies;
@@ -450,4 +456,32 @@ function helfi_tpr_config_update_9022() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Add unit type field for TPR-units & enable views bulk operations for tpr-units list.
+ */
+function helfi_tpr_config_update_9023() {
+  // Override the tpr-units listing with vbo functionality.
+  $configOverrideLocation = dirname(__FILE__) . '/config/override/';
+  ConfigHelper::updateExistingConfig($configOverrideLocation, 'views.view.tpr_unit_list');
+
+  // Configuration locations
+  $configInstallLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Changed configurations for TPR-unit to have a field where you can define unit type.
+  $configurations = [
+    'core.entity_view_display.tpr_unit.tpr_unit.minimal',
+    'core.entity_view_mode.tpr_unit.minimal',
+    'field.field.tpr_unit.tpr_unit.field_unit_type',
+    'field.storage.tpr_unit.field_unit_type',
+    'language.content_settings.taxonomy_term.unit_type',
+    'taxonomy.vocabulary.unit_type',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configInstallLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
 }
