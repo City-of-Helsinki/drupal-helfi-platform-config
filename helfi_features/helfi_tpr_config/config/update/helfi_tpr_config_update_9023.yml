@@ -1,0 +1,1088 @@
+views.view.service_units:
+  expected_config:
+    display:
+      default:
+        display_options:
+          filters:
+            content_translation_status:
+              admin_label: ''
+              entity_field: content_translation_status
+              entity_type: tpr_unit
+              expose:
+                description: ''
+                identifier: ''
+                label: ''
+                multiple: false
+                operator: ''
+                operator_id: ''
+                operator_limit_selection: false
+                operator_list: {  }
+                remember: false
+                remember_roles:
+                  authenticated: authenticated
+                required: false
+                use_operator: false
+              exposed: false
+              field: content_translation_status
+              group: 1
+              group_info:
+                default_group: All
+                default_group_multiple: {  }
+                description: ''
+                group_items: {  }
+                identifier: ''
+                label: ''
+                multiple: false
+                optional: true
+                remember: false
+                widget: select
+              group_type: group
+              id: content_translation_status
+              is_grouped: false
+              operator: '='
+              plugin_id: boolean
+              relationship: none
+              table: tpr_unit_field_data
+              value: '1'
+          pager:
+            options:
+              items_per_page: 8
+          row:
+            options:
+              view_mode: teaser
+        display_title: Master
+  update_actions:
+    delete:
+      display:
+        default:
+          display_options:
+            filters:
+              content_translation_status:
+                admin_label: ''
+                entity_field: content_translation_status
+                entity_type: tpr_unit
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: content_translation_status
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: content_translation_status
+                is_grouped: false
+                operator: '='
+                plugin_id: boolean
+                relationship: none
+                table: tpr_unit_field_data
+                value: '1'
+    add:
+      display:
+        default:
+          cache_metadata:
+            contexts:
+              - user
+          display_options:
+            filter_groups:
+              groups:
+                1: AND
+              operator: AND
+            filters:
+              status_extra:
+                admin_label: ''
+                entity_type: tpr_unit
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: status_extra
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: status_extra
+                is_grouped: false
+                operator: '='
+                plugin_id: tpr_status
+                relationship: none
+                table: tpr_unit_field_data
+                value: ''
+            sorts:
+              name:
+                expose:
+                  field_identifier: name
+              name_override:
+                expose:
+                  field_identifier: name_override
+        service_units:
+          cache_metadata:
+            contexts:
+              - user
+    change:
+      display:
+        default:
+          display_options:
+            pager:
+              options:
+                items_per_page: 5
+            row:
+              options:
+                view_mode: teaser_with_image
+          display_title: Default
+views.view.unit_services:
+  expected_config:
+    display:
+      default:
+        display_options:
+          filters:
+            content_translation_status:
+              admin_label: ''
+              entity_field: content_translation_status
+              entity_type: tpr_service
+              expose:
+                description: ''
+                identifier: ''
+                label: ''
+                multiple: false
+                operator: ''
+                operator_id: ''
+                operator_limit_selection: false
+                operator_list: {  }
+                remember: false
+                remember_roles:
+                  authenticated: authenticated
+                required: false
+                use_operator: false
+              exposed: false
+              field: content_translation_status
+              group: 1
+              group_info:
+                default_group: All
+                default_group_multiple: {  }
+                description: ''
+                group_items: {  }
+                identifier: ''
+                label: ''
+                multiple: false
+                optional: true
+                remember: false
+                widget: select
+              group_type: group
+              id: content_translation_status
+              is_grouped: false
+              operator: '='
+              plugin_id: boolean
+              relationship: services_target_id
+              table: tpr_service_field_data
+              value: '1'
+          pager:
+            options:
+              items_per_page: 4
+        display_title: Master
+  update_actions:
+    delete:
+      display:
+        default:
+          display_options:
+            filters:
+              content_translation_status:
+                admin_label: ''
+                entity_field: content_translation_status
+                entity_type: tpr_service
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: content_translation_status
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: content_translation_status
+                is_grouped: false
+                operator: '='
+                plugin_id: boolean
+                relationship: services_target_id
+                table: tpr_service_field_data
+                value: '1'
+    add:
+      display:
+        default:
+          cache_metadata:
+            contexts:
+              - user
+          display_options:
+            filter_groups:
+              groups:
+                1: AND
+              operator: AND
+            filters:
+              status_extra:
+                admin_label: ''
+                entity_type: tpr_service
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: status_extra
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: status_extra
+                is_grouped: false
+                operator: '='
+                plugin_id: tpr_status
+                relationship: services_target_id
+                table: tpr_service_field_data
+                value: ''
+            sorts:
+              name:
+                expose:
+                  field_identifier: name
+              name_override:
+                expose:
+                  field_identifier: name_override
+        unit_services:
+          cache_metadata:
+            contexts:
+              - user
+    change:
+      display:
+        default:
+          display_options:
+            pager:
+              options:
+                items_per_page: 8
+          display_title: Default
+views.view.service_list:
+  expected_config:
+    display:
+      block:
+        display_options:
+          display_extenders: {  }
+      default:
+        display_options:
+          pager:
+            options:
+              items_per_page: 4
+      entity_reference_1:
+        display_options:
+          display_extenders: {  }
+  update_actions:
+    add:
+      display:
+        block:
+          cache_metadata:
+            contexts:
+              - user
+        default:
+          cache_metadata:
+            contexts:
+              - user
+          display_options:
+            filters:
+              status_extra:
+                admin_label: ''
+                entity_type: tpr_service
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: status_extra
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: status_extra
+                is_grouped: false
+                operator: '='
+                plugin_id: tpr_status
+                relationship: none
+                table: tpr_service_field_data
+                value: ''
+            sorts:
+              name:
+                expose:
+                  field_identifier: name
+              name_override:
+                expose:
+                  field_identifier: name_override
+        entity_reference_1:
+          display_options:
+            filter_groups:
+              groups:
+                1: AND
+              operator: AND
+            filters:
+              content_translation_status:
+                admin_label: ''
+                entity_field: content_translation_status
+                entity_type: tpr_service
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: content_translation_status
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: content_translation_status
+                is_grouped: false
+                operator: '='
+                plugin_id: boolean
+                relationship: none
+                table: tpr_service_field_data
+                value: '1'
+              langcode:
+                admin_label: ''
+                entity_field: langcode
+                entity_type: tpr_service
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  reduce: false
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: langcode
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: langcode
+                is_grouped: false
+                operator: in
+                plugin_id: language
+                relationship: none
+                table: tpr_service_field_data
+                value:
+                  '***LANGUAGE_language_content***': '***LANGUAGE_language_content***'
+    change:
+      display:
+        block:
+          display_options:
+            defaults:
+              filter_groups: false
+              filters: false
+            display_extenders:
+              metatag_display_extender:
+                metatags: {  }
+                tokenize: false
+            filter_groups:
+              groups:
+                1: AND
+              operator: AND
+            filters:
+              langcode:
+                admin_label: ''
+                entity_field: langcode
+                entity_type: tpr_service
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  reduce: false
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: langcode
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: langcode
+                is_grouped: false
+                operator: in
+                plugin_id: language
+                relationship: none
+                table: tpr_service_field_data
+                value:
+                  '***LANGUAGE_language_content***': '***LANGUAGE_language_content***'
+              status_extra:
+                admin_label: ''
+                entity_type: tpr_service
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: status_extra
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: status_extra
+                is_grouped: false
+                operator: '='
+                plugin_id: tpr_status
+                relationship: none
+                table: tpr_service_field_data
+                value: ''
+        default:
+          display_options:
+            pager:
+              options:
+                items_per_page: 8
+        entity_reference_1:
+          display_options:
+            defaults:
+              filter_groups: false
+              filters: false
+            display_extenders:
+              metatag_display_extender:
+                metatags: {  }
+                tokenize: false
+views.view.unit_search:
+  expected_config:
+    display:
+      block:
+        display_options:
+          display_extenders: {  }
+      default:
+        display_options:
+          fields:
+            address__address_line1:
+              group_column: ''
+            address__address_line2:
+              group_column: ''
+            address__postal_code:
+              group_column: ''
+            name:
+              group_column: value
+          filters:
+            content_translation_status:
+              admin_label: ''
+              entity_field: content_translation_status
+              entity_type: tpr_unit
+              expose:
+                description: ''
+                identifier: ''
+                label: ''
+                multiple: false
+                operator: ''
+                operator_id: ''
+                operator_limit_selection: false
+                operator_list: {  }
+                remember: false
+                remember_roles:
+                  authenticated: authenticated
+                required: false
+                use_operator: false
+              exposed: false
+              field: content_translation_status
+              group: 1
+              group_info:
+                default_group: All
+                default_group_multiple: {  }
+                description: ''
+                group_items: {  }
+                identifier: ''
+                label: ''
+                multiple: false
+                optional: true
+                remember: false
+                widget: select
+              group_type: group
+              id: content_translation_status
+              is_grouped: false
+              operator: '='
+              plugin_id: boolean
+              relationship: none
+              table: tpr_unit_field_data
+              value: '1'
+          relationships: {  }
+      entity_reference:
+        display_options:
+          display_extenders: {  }
+  update_actions:
+    delete:
+      display:
+        default:
+          display_options:
+            filters:
+              content_translation_status:
+                admin_label: ''
+                entity_field: content_translation_status
+                entity_type: tpr_unit
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: content_translation_status
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: content_translation_status
+                is_grouped: false
+                operator: '='
+                plugin_id: boolean
+                relationship: none
+                table: tpr_unit_field_data
+                value: '1'
+    add:
+      display:
+        block:
+          cache_metadata:
+            contexts:
+              - user
+        default:
+          cache_metadata:
+            contexts:
+              - user
+          display_options:
+            fields:
+              id:
+                admin_label: ''
+                alter:
+                  absolute: false
+                  alt: ''
+                  alter_text: false
+                  ellipsis: true
+                  external: false
+                  html: false
+                  link_class: ''
+                  make_link: false
+                  max_length: 0
+                  more_link: false
+                  more_link_path: ''
+                  more_link_text: ''
+                  nl2br: false
+                  path: ''
+                  path_case: none
+                  prefix: ''
+                  preserve_tags: ''
+                  rel: ''
+                  replace_spaces: false
+                  strip_tags: false
+                  suffix: ''
+                  target: ''
+                  text: ''
+                  trim: false
+                  trim_whitespace: false
+                  word_boundary: true
+                click_sort_column: value
+                delta_first_last: false
+                delta_limit: 0
+                delta_offset: 0
+                delta_reversed: false
+                element_class: ''
+                element_default_classes: true
+                element_label_class: ''
+                element_label_colon: false
+                element_label_type: ''
+                element_type: ''
+                element_wrapper_class: ''
+                element_wrapper_type: ''
+                empty: ''
+                empty_zero: false
+                entity_field: id
+                entity_type: tpr_unit
+                exclude: true
+                field: id
+                field_api_classes: false
+                group_column: entity_id
+                group_columns:
+                  entity_id: entity_id
+                group_rows: true
+                group_type: group
+                hide_alter_empty: true
+                hide_empty: false
+                id: id
+                label: ''
+                multi_type: separator
+                plugin_id: field
+                relationship: none
+                separator: ', '
+                settings:
+                  link_to_entity: false
+                table: tpr_unit_field_data
+                type: string
+              name_1:
+                admin_label: ''
+                alter:
+                  absolute: false
+                  alt: ''
+                  alter_text: false
+                  ellipsis: true
+                  external: false
+                  html: false
+                  link_class: ''
+                  make_link: false
+                  max_length: 0
+                  more_link: false
+                  more_link_path: ''
+                  more_link_text: ''
+                  nl2br: false
+                  path: ''
+                  path_case: none
+                  prefix: ''
+                  preserve_tags: ''
+                  rel: ''
+                  replace_spaces: false
+                  strip_tags: false
+                  suffix: ''
+                  target: ''
+                  text: ''
+                  trim: false
+                  trim_whitespace: false
+                  word_boundary: true
+                click_sort_column: value
+                convert_spaces: false
+                delta_first_last: false
+                delta_limit: 0
+                delta_offset: 0
+                delta_reversed: false
+                element_class: ''
+                element_default_classes: true
+                element_label_class: ''
+                element_label_colon: false
+                element_label_type: ''
+                element_type: ''
+                element_wrapper_class: ''
+                element_wrapper_type: ''
+                empty: ''
+                empty_zero: false
+                entity_field: name
+                entity_type: taxonomy_term
+                exclude: true
+                field: name
+                field_api_classes: false
+                group_column: entity_id
+                group_columns: {  }
+                group_rows: true
+                group_type: group
+                hide_alter_empty: true
+                hide_empty: false
+                id: name_1
+                label: ''
+                multi_type: separator
+                plugin_id: term_name
+                relationship: field_districts
+                separator: ', '
+                settings:
+                  link_to_entity: false
+                table: taxonomy_term_field_data
+                type: string
+            filter_groups:
+              groups:
+                1: AND
+                2: OR
+              operator: AND
+            filters:
+              combine:
+                fields:
+                  name_1: name_1
+              langcode_1:
+                admin_label: ''
+                entity_field: langcode
+                entity_type: taxonomy_term
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  reduce: false
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: langcode
+                group: 2
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: langcode_1
+                is_grouped: false
+                operator: in
+                plugin_id: language
+                relationship: field_districts
+                table: taxonomy_term_field_data
+                value:
+                  '***LANGUAGE_language_content***': '***LANGUAGE_language_content***'
+              provided_languages_value:
+                admin_label: ''
+                entity_field: provided_languages
+                entity_type: tpr_unit
+                expose:
+                  description: null
+                  identifier: provided_languages_value
+                  label: 'Provided languages'
+                  multiple: false
+                  operator: provided_languages_value_op
+                  operator_id: provided_languages_value_op
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  placeholder: null
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: true
+                field: provided_languages_value
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items:
+                    1:
+                      operator: '='
+                      title: 'Show heath stations that provide service in Swedish'
+                      value: sv
+                  identifier: provided_languages_value
+                  label: ''
+                  multiple: true
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: provided_languages_value
+                is_grouped: true
+                operator: '='
+                plugin_id: string
+                relationship: none
+                table: tpr_unit__provided_languages
+                value: ''
+              status_extra:
+                admin_label: ''
+                entity_type: tpr_unit
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: status_extra
+                group: 1
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                id: status_extra
+                is_grouped: false
+                operator: '='
+                plugin_id: tpr_status
+                relationship: none
+                table: tpr_unit_field_data
+                value: ''
+            group_by: true
+            sorts:
+              name:
+                expose:
+                  field_identifier: name
+              name_override:
+                expose:
+                  field_identifier: name_override
+        entity_reference:
+          display_options:
+            relationships: {  }
+    change:
+      display:
+        block:
+          display_options:
+            display_extenders:
+              metatag_display_extender: {  }
+        default:
+          display_options:
+            fields:
+              address__address_line1:
+                group_column: entity_id
+              address__address_line2:
+                group_column: entity_id
+              address__postal_code:
+                group_column: entity_id
+              name:
+                group_column: entity_id
+            filters:
+              field_districts_target_id:
+                admin_label: ''
+                error_message: true
+                expose:
+                  description: ''
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  operator: ''
+                  operator_id: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  reduce: false
+                  remember: false
+                  remember_roles:
+                    authenticated: authenticated
+                  required: false
+                  use_operator: false
+                exposed: false
+                field: field_districts_target_id
+                group: 2
+                group_info:
+                  default_group: All
+                  default_group_multiple: {  }
+                  description: ''
+                  group_items: {  }
+                  identifier: ''
+                  label: ''
+                  multiple: false
+                  optional: true
+                  remember: false
+                  widget: select
+                group_type: group
+                hierarchy: false
+                id: field_districts_target_id
+                is_grouped: false
+                limit: true
+                operator: empty
+                plugin_id: taxonomy_index_tid
+                reduce_duplicates: false
+                relationship: none
+                table: tpr_unit__field_districts
+                type: select
+                value: {  }
+                vid: neighbourhoods
+            relationships:
+              field_districts:
+                admin_label: 'field_districts: Taxonomy term'
+                field: field_districts
+                group_type: group
+                id: field_districts
+                plugin_id: standard
+                relationship: none
+                required: false
+                table: tpr_unit__field_districts
+        entity_reference:
+          display_options:
+            defaults:
+              relationships: false
+            display_extenders:
+              metatag_display_extender: {  }
