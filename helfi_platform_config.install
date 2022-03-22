@@ -225,3 +225,15 @@ function helfi_platform_config_update_9007() {
     }
   }
 }
+
+/**
+ * Convert customized translation values to non customized values.
+ */
+function helfi_platform_config_update_9008() {
+  $query = \Drupal::database()->update('locales_target');
+  $count = $query
+    ->fields(['customized' => 0])
+    ->condition('customized', 1, '=')
+    ->execute();
+  return t('Converted @rows translations to non customized translations.', ['@rows' => $count]);
+}
