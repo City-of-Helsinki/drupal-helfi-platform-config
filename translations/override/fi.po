@@ -1,0 +1,79 @@
+# Finnish translations of City of Helsinki
+#
+# Use this translation file for translation overrides only!
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2022-01-19 19:06+0200\n"
+"PO-Revision-Date: 2022-01-19 19:06+0200\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# Drupal
+msgid "No media available."
+msgstr "Ei mediatiedostoja saatavilla."
+
+msgctxt "PHP date format"
+msgid "D, m/d/Y - H:i"
+msgstr "j. F Y"
+
+msgctxt "PHP date format"
+msgid "m/d/Y - H:i"
+msgstr "j.n.Y - H:i"
+
+msgctxt "PHP date format"
+msgid "l, F j, Y - H:i"
+msgstr "j.n.Y - H:i"
+
+msgid "Find and manage content"
+msgstr "Etsi ja hallitse sisältöä"
+
+msgid "Filter"
+msgstr "Suodata"
+
+msgid ""
+"Specify an alternative path by which this data can be accessed. For "
+"example, type \"/about\" when writing an about page."
+msgstr ""
+"Määrittele vaihtoehtoinen url-osoite sisällölle. "
+"Käytä kenttää vain kun sivulle tarvitaan markkinointiosoite. "
+"Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
+"esimerkiksi \"/kaupunkisymposium\"."
+
+# Pathauto
+msgid "Automatic alias"
+msgstr "Osoitealias käytössä"
+
+msgid "Generate automatic URL alias"
+msgstr "Luo osoitealias"
+
+msgid "Uncheck this to create a custom alias below."
+msgstr "Tätä asetusta ei tarvitse muuttaa. "
+"Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
+
+msgid ""
+"Uncheck this to create a custom alias below. <a "
+"href=\"@admin_link\">Configure URL alias patterns.</a>"
+msgstr "Tätä asetusta ei tarvitse muuttaa. "
+"Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
+
+# Scheduler
+msgid "Enter a date and time."
+msgstr "Syötä päivämäärä ja aika."
+
+msgid "Leave the date blank for no scheduled publishing."
+msgstr "Jos haluat julkaista sivun heti, jätä kentät tyhjiksi."
+
+msgid "Leave the date blank for no scheduled unpublishing."
+msgstr "Jos et halua piilottaa sivua julkaisun jälkeen, jätä kentät tyhjiksi"
+
+msgid "The date the node will be published."
+msgstr "Päivämäärä jolloin sivu julkaistaan."
+
+msgid "The date the node will be unpublished."
+msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."

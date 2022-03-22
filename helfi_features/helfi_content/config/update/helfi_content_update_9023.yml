@@ -1,0 +1,6 @@
+field.field.paragraph.hero.field_hero_desc:
+  expected_config:
+    label: Description
+  update_actions:
+    change:
+      label: 'Hero text'

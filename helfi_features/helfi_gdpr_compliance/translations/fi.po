@@ -1142,6 +1142,9 @@ msgstr "Hyväksy"
 msgid "Accept all cookies"
 msgstr "Hyväksy kaikki evästeet"
 
+msgid "Accept only essential cookies"
+msgstr "Hyväksy vain välttämättömät evästeet"
+
 msgid "Accept selected cookies"
 msgstr "Hyväksy valitut evästeet"
 
@@ -1175,3 +1178,16 @@ msgstr "Näytä evästeet"
 msgid "Statistics"
 msgstr "Tilastointi"
 
+msgid ""
+"<p><strong>You have not saved any cookie preferences.</strong> By "
+"default only essential cookies are saved. See details below.</p>"
+msgstr ""
+"<p><strong>Et ole tallentanut evästeasetuksia.</strong> "
+"Oletusarvoisesti vain välttämättömät evästeet tallennetaan.</p>"
+
+msgid ""
+"<p>Your current cookie settings are below. Submit the form to make "
+"changes.</p>"
+msgstr ""
+"<p>Nykyiset evästeasetuksesi näkyvät alla. Tallenna lomake, jos "
+"teet muutoksia asetuksiin.</p>"

@@ -521,6 +521,19 @@ msgstr "Julkaistu"
 msgid "Published status"
 msgstr "Julkaisutila"
 
+msgctxt "React & Share cookie compliance"
+msgid "Feedback buttons cannot be displayed"
+msgstr "Sivun palautenappeja ei voida näyttää"
+
+msgctxt "React & Share cookie compliance"
+msgid ""
+"To use this feature, you must accept cookies from the site. You can "
+"provide feedback on this page by enabling statistics-related cookies."
+msgstr ""
+"Toiminnon käyttämiseksi vaaditaan, että hyväksyt sivuston "
+"evästeet. Pääset antamaan palautetta tästä sivusta sallimalla "
+"evästeasetuksista tilastointiin liittyvät evästeet."
+
 msgid "Read only"
 msgstr "Lukija"
 
