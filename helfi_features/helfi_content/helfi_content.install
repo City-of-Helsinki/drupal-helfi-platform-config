@@ -497,3 +497,23 @@ function helfi_content_update_9022() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Update configuration translations for Hero description.
+ */
+function helfi_content_update_9023() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9023');
+
+  // Override the default configuration by the content lock module.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Update the configurations and translations.
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.paragraph.hero.field_hero_desc');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
