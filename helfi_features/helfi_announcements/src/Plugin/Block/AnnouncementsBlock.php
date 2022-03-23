@@ -22,6 +22,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
+  const VISIBILITY_ALL_WEIGHT = 0;
+  const VISIBILITY_PAGE_WEIGHT = 1;
+  const VISIBILITY_REGION_WEIGHT = 2;
+
   /**
    * The current route match.
    *
@@ -128,6 +132,8 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
       return [];
     }
 
+    $this->sortAnnouncements($showAnnouncements);
+
     $viewMode = 'default';
     return $this->entityTypeManager->getViewBuilder('node')->viewMultiple($showAnnouncements, $viewMode);
   }
@@ -168,6 +174,98 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    */
   public function getCacheTags(): array {
     return Cache::mergeTags(parent::getCacheTags(), ['node_list:announcement']);
+  }
+
+  /**
+   * Sort announcements by type/severity and then by visibility
+   *
+   * @param array $announcements
+   *   Array of nodes.
+   *
+   * @return void
+   */
+  private function sortAnnouncements(array &$announcements): void {
+    // Get all possible values for the announcement types.
+    $announcementTypeDefinition = $announcements[0]->getFieldDefinitions()['field_announcement_type'];
+    $types = options_allowed_values(
+      $announcementTypeDefinition->getFieldStorageDefinition(),
+    );
+
+    // Map select-list values with numeric weight value.
+    $announcementTypeWeights = $this->createAnnouncementMap($types);
+
+    $this->doSort($announcements, $announcementTypeWeights);
+  }
+
+  /**
+   * Execute sorting.
+   *
+   * @param array $announcements
+   *   Announcement entities.
+   * @param array $announcementTypeWeights
+   *   Announcement types ordered by severity.
+   *
+   * @return void
+   */
+  private function doSort(array &$announcements, array $announcementTypeWeights) {
+    // Sort by severity.
+    usort($announcements, function($a, $b) use ($announcementTypeWeights) {
+      $weightA = $announcementTypeWeights[$a->get('field_announcement_type')->value];
+      $weightB = $announcementTypeWeights[$b->get('field_announcement_type')->value];
+      if ($weightA === $weightB) {
+        return 0;
+      }
+      // Higher severity renders first.
+      return $weightA < $weightB ? 1 : -1;
+    });
+
+    // Sort by visibility on
+    usort($announcements, function($a, $b) {
+      $visibilityA = $this->resolveVisibility($a);
+      $visibilityB = $this->resolveVisibility($b);
+      // Sort visibility only within same type.
+      if (
+        $a->get('field_announcement_type')->value !== $b->get('field_announcement_type')->value ||
+        $visibilityA === $visibilityB
+      ){
+        return 0;
+      }
+      // More generic shows first, global announcement renders before page-specific.
+      return $visibilityA < $visibilityB ? 1 : -1;
+    });
+  }
+
+  /**
+   * Create the map which is used to order the announcements by severity.
+   *
+   * @param $announcementTypes
+   *   Should return ['notification' => 0, 'attention' => 1, 'alert' => 2].
+   *
+   * @return int[]|string[]
+   */
+  private function createAnnouncementMap($announcementTypes): array {
+    return array_flip(array_keys($announcementTypes));
+  }
+
+  /**
+   * Return weight by announcement visibility.
+   *
+   * @param EntityInterface $announcement
+   * @return int
+   */
+  private function resolveVisibility(EntityInterface $announcement): int {
+    if (
+      !$announcement->get('field_announcement_unit_pages')->isEmpty() ||
+      !$announcement->get('field_announcement_service_pages')->isEmpty()
+    ) {
+      return self::VISIBILITY_REGION_WEIGHT;
+    }
+
+    if ($announcement->get('field_announcement_content_pages')->isEmpty()) {
+      return self::VISIBILITY_PAGE_WEIGHT;
+    }
+
+    return self::VISIBILITY_ALL_WEIGHT;
   }
 
 }
