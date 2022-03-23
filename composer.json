@@ -59,6 +59,9 @@
   },
   "extra": {
     "patches": {
+      "drupal/allowed_formats": {
+        "Post update hook fails when config is already updated (https://www.drupal.org/project/allowed_formats/issues/3261891)": "https://www.drupal.org/files/issues/2022-02-01/3261891-2.patch"
+      },
       "drupal/content_lock": {
         "[#UHF-4553] Fix unlock content button redirect": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/82081691e4a6d05b3716052d5fff46a04027bdc3/patches/content-lock-uhf-4553.patch"
       },
