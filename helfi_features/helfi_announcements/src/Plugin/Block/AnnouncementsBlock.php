@@ -23,8 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   const VISIBILITY_ALL_WEIGHT = 0;
-  const VISIBILITY_PAGE_WEIGHT = 1;
-  const VISIBILITY_REGION_WEIGHT = 2;
+  const VISIBILITY_REGION_WEIGHT = 1;
+  const VISIBILITY_PAGE_WEIGHT = 2;
 
   /**
    * The current route match.
@@ -234,13 +234,13 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * Create the map which is used to order the announcements by severity.
    *
-   * @param $announcementTypes
+   * @param array $announcementTypes
    *   Should return ['notification' => 0, 'attention' => 1, 'alert' => 2].
    *
    * @return int[]|string[]
    *   Array of announcement type keys and weights.
    */
-  private function createAnnouncementMap($announcementTypes): array {
+  private function createAnnouncementMap(array $announcementTypes): array {
     return array_flip(array_keys($announcementTypes));
   }
 
