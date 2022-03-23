@@ -26,6 +26,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9018();
       helfi_tpr_config_update_9021();
       helfi_tpr_config_update_9022();
+      helfi_tpr_config_update_9023();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -74,6 +75,13 @@ function helfi_tpr_config_update_dependencies() {
   // module with default configuration.
   $dependencies['helfi_tpr_config'][9020] = [
     'helfi_content' => 9017,
+  ];
+
+  // Run helfi_tpr_config_update_9023() after helfi_content_update_9024()
+  // has been run. helfi_content_update_9024() update will install contact cards
+  // module with default configuration.
+  $dependencies['helfi_tpr_config'][9023] = [
+    'helfi_content' => 9024,
   ];
 
   return $dependencies;
@@ -450,4 +458,20 @@ function helfi_tpr_config_update_9022() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Add contact card listing paragraph to all content areas on tpr-unit.
+ */
+function helfi_tpr_config_update_9023() {
+  if (Drupal::moduleHandler()->moduleExists('helfi_contact_cards')) {
+    /** @var \Drupal\update_helper\Updater $updateHelper */
+    $updateHelper = \Drupal::service('update_helper.updater');
+
+    // Execute configuration update definitions with logging of success.
+    $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9023');
+
+    // Output logged messages to related channel of update execution.
+    return $updateHelper->logger()->output();
+  }
 }
