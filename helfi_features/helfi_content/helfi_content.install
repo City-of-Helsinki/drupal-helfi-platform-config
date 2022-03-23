@@ -29,6 +29,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9019();
     helfi_content_update_9020();
     helfi_content_update_9021();
+    helfi_content_update_9024();
   }
 }
 
@@ -516,4 +517,23 @@ function helfi_content_update_9023() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Add contact card listing paragraph to all content areas on standard page.
+ */
+function helfi_content_update_9024() {
+  if (!Drupal::moduleHandler()->moduleExists('helfi_contact_cards')) {
+    //Install Helfi contact cards module
+    Drupal::service('module_installer')->install(['helfi_contact_cards']);
+
+    /** @var \Drupal\update_helper\Updater $updateHelper */
+    $updateHelper = \Drupal::service('update_helper.updater');
+
+    // Execute configuration update definitions with logging of success.
+    $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9024');
+
+    // Output logged messages to related channel of update execution.
+    return $updateHelper->logger()->output();
+  }
 }
