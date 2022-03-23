@@ -1,0 +1,11 @@
+name: 'HELfi Contact cards'
+description: 'Provides paragraph type for contact card listing'
+type: module
+core_version_requirement: '^8.9 || ^9'
+dependencies:
+  - 'allowed_formats:allowed_formats'
+  - 'helfi_content:helfi_content'
+  - 'paragraphs:paragraphs'
+  - 'paragraphs_library:paragraphs_library'
+  - 'update_helper:update_helper'
+package: HELfi

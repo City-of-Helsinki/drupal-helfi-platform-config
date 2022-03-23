@@ -1,0 +1,96 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_contact_card
+    - paragraphs.paragraphs_type.contact_card
+    - paragraphs.paragraphs_type.contact_card_listing
+  module:
+    - entity_reference_revisions
+id: paragraph.contact_card_listing.field_contact_card
+field_name: field_contact_card
+entity_type: paragraph
+bundle: contact_card_listing
+label: Contact card
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      contact_card: contact_card
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 24
+        enabled: false
+      accordion_item:
+        weight: 25
+        enabled: false
+      banner:
+        weight: 26
+        enabled: false
+      chart:
+        weight: 27
+        enabled: false
+      columns:
+        weight: 28
+        enabled: false
+      contact_card:
+        weight: 29
+        enabled: true
+      contact_card_listing:
+        weight: 30
+        enabled: false
+      content_cards:
+        weight: 31
+        enabled: false
+      content_liftup:
+        weight: 32
+        enabled: false
+      from_library:
+        weight: 33
+        enabled: false
+      gallery:
+        weight: 34
+        enabled: false
+      gallery_slide:
+        weight: 35
+        enabled: false
+      hero:
+        weight: 36
+        enabled: false
+      image:
+        weight: 37
+        enabled: false
+      liftup_with_image:
+        weight: 38
+        enabled: false
+      list_of_links:
+        weight: 39
+        enabled: false
+      list_of_links_item:
+        weight: 40
+        enabled: false
+      map:
+        weight: 41
+        enabled: false
+      remote_video:
+        weight: 42
+        enabled: false
+      service_list:
+        weight: 43
+        enabled: false
+      sidebar_text:
+        weight: 44
+        enabled: false
+      text:
+        weight: 45
+        enabled: false
+      unit_search:
+        weight: 46
+        enabled: false
+field_type: entity_reference_revisions

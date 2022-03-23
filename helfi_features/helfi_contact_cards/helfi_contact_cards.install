@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * Update configuration translations for Helfi Contact cards.
+ */
+function helfi_contact_cards_install() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.paragraph.contact_card_listing.field_contact_card',
+    'field.field.paragraph.contact_card_listing.field_description',
+    'field.field.paragraph.contact_card_listing.field_title',
+    'field.field.paragraph.contact_card.field_contact_description',
+    'field.field.paragraph.contact_card.field_contact_image',
+    'field.field.paragraph.contact_card.field_contact_name',
+    'field.field.paragraph.contact_card.field_contact_social_media',
+    'field.field.paragraph.contact_card.field_contact_title',
+    'field.field.paragraph.contact_card.field_email',
+    'field.field.paragraph.contact_card.field_phone_number',
+    'field.field.paragraph.social_media_link.field_social_media_link',
+    'paragraphs.paragraphs_type.contact_card_listing',
+    'paragraphs.paragraphs_type.contact_card',
+    'paragraphs.paragraphs_type.social_media_link',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
+
+
