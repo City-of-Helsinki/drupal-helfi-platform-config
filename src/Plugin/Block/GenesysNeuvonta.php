@@ -30,4 +30,5 @@ class GenesysNeuvonta extends BlockBase {
 
     return $build;
   }
+
 }
