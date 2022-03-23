@@ -177,12 +177,10 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   }
 
   /**
-   * Sort announcements by type/severity and then by visibility
+   * Sort announcements by type/severity and by visibility.
    *
    * @param array $announcements
    *   Array of nodes.
-   *
-   * @return void
    */
   private function sortAnnouncements(array &$announcements): void {
     // Get all possible values for the announcement types.
@@ -204,12 +202,10 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    *   Announcement entities.
    * @param array $announcementTypeWeights
    *   Announcement types ordered by severity.
-   *
-   * @return void
    */
-  private function doSort(array &$announcements, array $announcementTypeWeights) {
+  private function doSort(array &$announcements, array $announcementTypeWeights): void {
     // Sort by severity.
-    usort($announcements, function($a, $b) use ($announcementTypeWeights) {
+    usort($announcements, function ($a, $b) use ($announcementTypeWeights) {
       $weightA = $announcementTypeWeights[$a->get('field_announcement_type')->value];
       $weightB = $announcementTypeWeights[$b->get('field_announcement_type')->value];
       if ($weightA === $weightB) {
@@ -219,18 +215,18 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
       return $weightA < $weightB ? 1 : -1;
     });
 
-    // Sort by visibility on
-    usort($announcements, function($a, $b) {
+    // Sort by visibility.
+    usort($announcements, function ($a, $b) {
       $visibilityA = $this->resolveVisibility($a);
       $visibilityB = $this->resolveVisibility($b);
       // Sort visibility only within same type.
       if (
         $a->get('field_announcement_type')->value !== $b->get('field_announcement_type')->value ||
         $visibilityA === $visibilityB
-      ){
+      ) {
         return 0;
       }
-      // More generic shows first, global announcement renders before page-specific.
+      // More generic shows first, global renders before page-specific.
       return $visibilityA < $visibilityB ? 1 : -1;
     });
   }
@@ -242,6 +238,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    *   Should return ['notification' => 0, 'attention' => 1, 'alert' => 2].
    *
    * @return int[]|string[]
+   *   Array of announcement type keys and weights.
    */
   private function createAnnouncementMap($announcementTypes): array {
     return array_flip(array_keys($announcementTypes));
@@ -250,8 +247,11 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * Return weight by announcement visibility.
    *
-   * @param EntityInterface $announcement
+   * @param Drupal\Core\Entity\EntityInterface $announcement
+   *   Announcement entity.
+   *
    * @return int
+   *   Visibility weight.
    */
   private function resolveVisibility(EntityInterface $announcement): int {
     if (
