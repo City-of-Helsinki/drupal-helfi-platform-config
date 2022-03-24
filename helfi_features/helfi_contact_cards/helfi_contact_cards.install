@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Update configuration translations for Helfi Contact cards.
  */
