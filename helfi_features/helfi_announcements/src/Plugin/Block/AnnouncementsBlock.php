@@ -217,8 +217,8 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
 
     // Sort by visibility.
     usort($announcements, function ($a, $b) {
-      $visibilityA = $this->resolveVisibility($a);
-      $visibilityB = $this->resolveVisibility($b);
+      $visibilityA = $this->resolveVisibilityWeight($a);
+      $visibilityB = $this->resolveVisibilityWeight($b);
       // Sort visibility only within same type.
       if (
         $a->get('field_announcement_type')->value !== $b->get('field_announcement_type')->value ||
@@ -245,7 +245,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   }
 
   /**
-   * Return weight by announcement visibility.
+   * Return weight for announcement visibility.
    *
    * @param Drupal\Core\Entity\EntityInterface $announcement
    *   Announcement entity.
@@ -253,7 +253,11 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    * @return int
    *   Visibility weight.
    */
-  private function resolveVisibility(EntityInterface $announcement): int {
+  private function resolveVisibilityWeight(EntityInterface $announcement): int {
+    if ($announcement->get('field_announcement_all_pages')->value == TRUE) {
+      return self::VISIBILITY_ALL_WEIGHT;
+    }
+
     if (
       !$announcement->get('field_announcement_unit_pages')->isEmpty() ||
       !$announcement->get('field_announcement_service_pages')->isEmpty()
@@ -261,7 +265,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
       return self::VISIBILITY_REGION_WEIGHT;
     }
 
-    if ($announcement->get('field_announcement_content_pages')->isEmpty()) {
+    if (!$announcement->get('field_announcement_content_pages')->isEmpty()) {
       return self::VISIBILITY_PAGE_WEIGHT;
     }
 
