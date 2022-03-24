@@ -6,8 +6,6 @@ dependencies:
   module:
     - system
     - views
-  theme:
-    - hdbt_admin
 id: views_block__locked_units_locked_units_block
 theme: hdbt_admin
 region: content
