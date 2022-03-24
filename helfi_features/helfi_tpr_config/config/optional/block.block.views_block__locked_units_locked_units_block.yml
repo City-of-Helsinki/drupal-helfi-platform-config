@@ -2,18 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - views.view.locked_services
+    - views.view.locked_units
   module:
     - system
     - views
-id: views_block__locked_services_locked_services_block
+  theme:
+    - hdbt_admin
+id: views_block__locked_units_locked_units_block
 theme: hdbt_admin
 region: content
-weight: 1
+weight: 2
 provider: null
-plugin: 'views_block:locked_services-locked_services_block'
+plugin: 'views_block:locked_units-locked_units_block'
 settings:
-  id: 'views_block:locked_services-locked_services_block'
+  id: 'views_block:locked_units-locked_units_block'
   label: ''
   label_display: visible
   provider: views
