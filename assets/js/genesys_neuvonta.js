@@ -256,7 +256,7 @@
 
       window._genesys.widgets = {
         main: {
-          debug: true,
+          //debug: true,
           theme: "helsinki-blue",
           themes: {
             "helsinki-blue": "cx-theme-helsinki-blue",
@@ -268,7 +268,7 @@
           preload: ["webchat"],
         },
         webchat: {
-          dataURL: "https://asiointi.hel.fi/gms/sote/genesys/2/chat/prod",
+          dataURL: "https://asiointi.hel.fi/gms/kanslia/genesys/2/chat/prod",
           confirmFormCloseEnabled: false,
           userData: {
             service: helFiChat_service,
