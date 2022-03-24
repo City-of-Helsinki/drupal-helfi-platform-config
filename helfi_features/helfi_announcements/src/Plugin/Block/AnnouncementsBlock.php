@@ -190,7 +190,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
     );
 
     // Map select-list values with numeric weight value.
-    $announcementTypeWeights = $this->createAnnouncementMap($types);
+    $announcementTypeWeights = $this->createAnnouncementWeightMap($types);
 
     $this->doSort($announcements, $announcementTypeWeights);
   }
@@ -204,14 +204,14 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    *   Announcement types ordered by severity.
    */
   private function doSort(array &$announcements, array $announcementTypeWeights): void {
-    // Sort by severity.
+    // Sort by type/severity.
     usort($announcements, function ($a, $b) use ($announcementTypeWeights) {
       $weightA = $announcementTypeWeights[$a->get('field_announcement_type')->value];
       $weightB = $announcementTypeWeights[$b->get('field_announcement_type')->value];
       if ($weightA === $weightB) {
         return 0;
       }
-      // Higher severity renders first.
+      // More urgent announcements render first.
       return $weightA < $weightB ? 1 : -1;
     });
 
@@ -226,7 +226,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
       ) {
         return 0;
       }
-      // More generic shows first, global renders before page-specific.
+      // Global renders before page-specific.
       return $visibilityA < $visibilityB ? 1 : -1;
     });
   }
@@ -240,7 +240,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    * @return int[]|string[]
    *   Array of announcement type keys and weights.
    */
-  private function createAnnouncementMap(array $announcementTypes): array {
+  private function createAnnouncementWeightMap(array $announcementTypes): array {
     return array_flip(array_keys($announcementTypes));
   }
 
