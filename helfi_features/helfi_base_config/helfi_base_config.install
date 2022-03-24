@@ -41,6 +41,7 @@ function helfi_base_config_install($is_syncing) {
       helfi_base_config_update_9002();
       helfi_base_config_update_9006();
       helfi_base_config_update_9007();
+      helfi_base_config_update_9008();
     }
   }
 }
