@@ -9,4 +9,5 @@ dependencies:
   - 'paragraphs_library:paragraphs_library'
   - 'update_helper:update_helper'
   - 'helfi_tpr_config:helfi_tpr_config'
+  - 'hdbt_admin_editorial:hdbt_admin_editorial'
 package: HELfi
