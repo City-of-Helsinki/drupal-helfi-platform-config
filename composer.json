@@ -94,6 +94,9 @@
       },
       "drupal/field_group": {
         "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
+      },
+      "drupal/easy_breadcrumb": {
+        "[UHF-3631] Breadcrumb allow dashes and underscores": "https://www.drupal.org/files/issues/2021-05-11/easy_breadcrumb-allow-hyphen_and_underscore-3161100-19.patch"
       }
     }
   }
