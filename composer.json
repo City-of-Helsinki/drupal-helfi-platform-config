@@ -59,9 +59,6 @@
   },
   "extra": {
     "patches": {
-      "drupal/allowed_formats": {
-        "Post update hook fails when config is already updated (https://www.drupal.org/project/allowed_formats/issues/3261891)": "https://www.drupal.org/files/issues/2022-02-01/3261891-2.patch"
-      },
       "drupal/content_lock": {
         "[#UHF-4553] Fix unlock content button redirect": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/82081691e4a6d05b3716052d5fff46a04027bdc3/patches/content-lock-uhf-4553.patch"
       },
@@ -96,7 +93,7 @@
         "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
       },
       "drupal/easy_breadcrumb": {
-        "[UHF-3631] Breadcrumb allow dashes and underscores": "https://www.drupal.org/files/issues/2021-05-11/easy_breadcrumb-allow-hyphen_and_underscore-3161100-19.patch"
+        "[#UHF-3631] Breadcrumb allow dashes and underscores": "https://www.drupal.org/files/issues/2020-07-23/easy_breadcrumb-allow_hyphens_underscores-3161100-2.patch"
       }
     }
   }
