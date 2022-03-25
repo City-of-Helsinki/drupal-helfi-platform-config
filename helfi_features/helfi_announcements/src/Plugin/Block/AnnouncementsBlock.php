@@ -226,8 +226,8 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
       ) {
         return 0;
       }
-      // Global renders before page-specific.
-      return $visibilityA > $visibilityB ? 1 : -1;
+      // Page-specific renders before global announcement.
+      return $visibilityA < $visibilityB ? 1 : -1;
     });
   }
 
