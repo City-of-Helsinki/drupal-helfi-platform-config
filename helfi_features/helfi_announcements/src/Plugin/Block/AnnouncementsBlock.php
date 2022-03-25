@@ -205,8 +205,10 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    */
   private function doSort(array &$announcements, array $announcementTypeWeights): void {
     // Sort by type/severity.
-    usort($announcements, function (EntityInterface $a, EntityInterface $b)
-    use ($announcementTypeWeights) {
+    usort($announcements, function (
+      EntityInterface $a,
+      EntityInterface $b
+    ) use ($announcementTypeWeights) {
       $weightA = $announcementTypeWeights[$a->get('field_announcement_type')->value];
       $weightB = $announcementTypeWeights[$b->get('field_announcement_type')->value];
       if ($weightA === $weightB) {
