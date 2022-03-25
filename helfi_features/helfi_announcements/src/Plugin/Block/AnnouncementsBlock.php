@@ -22,9 +22,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
-  const VISIBILITY_ALL_WEIGHT = 0;
-  const VISIBILITY_REGION_WEIGHT = 1;
-  const VISIBILITY_PAGE_WEIGHT = 2;
+  public const VISIBILITY_ALL_WEIGHT = 0;
+  public const VISIBILITY_REGION_WEIGHT = 1;
+  public const VISIBILITY_PAGE_WEIGHT = 2;
 
   /**
    * The current route match.
@@ -179,7 +179,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * Sort announcements by type/severity and by visibility.
    *
-   * @param array $announcements
+   * @param \Drupal\node\NodeInterface[] $announcements
    *   Array of nodes.
    */
   private function sortAnnouncements(array &$announcements): void {
@@ -198,7 +198,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * Execute sorting.
    *
-   * @param array $announcements
+   * @param \Drupal\node\NodeInterface[] $announcements
    *   Announcement entities.
    * @param array $announcementTypeWeights
    *   Announcement types ordered by severity.
