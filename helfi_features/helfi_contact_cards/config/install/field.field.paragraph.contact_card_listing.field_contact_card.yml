@@ -11,7 +11,7 @@ id: paragraph.contact_card_listing.field_contact_card
 field_name: field_contact_card
 entity_type: paragraph
 bundle: contact_card_listing
-label: Contact card
+label: 'Contact card'
 description: ''
 required: false
 translatable: false

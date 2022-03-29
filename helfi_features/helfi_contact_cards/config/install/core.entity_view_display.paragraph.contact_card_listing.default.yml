@@ -8,6 +8,7 @@ dependencies:
     - paragraphs.paragraphs_type.contact_card_listing
   module:
     - entity_reference_revisions
+    - text
 id: paragraph.contact_card_listing.default
 targetEntityType: paragraph
 bundle: contact_card_listing
@@ -23,7 +24,7 @@ content:
     weight: 2
     region: content
   field_description:
-    type: basic_string
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }

@@ -4,6 +4,13 @@ dependencies:
   config:
     - field.storage.paragraph.field_description
     - paragraphs.paragraphs_type.contact_card_listing
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - minimal
 id: paragraph.contact_card_listing.field_description
 field_name: field_description
 entity_type: paragraph
@@ -15,4 +22,4 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: string_long
+field_type: text_long

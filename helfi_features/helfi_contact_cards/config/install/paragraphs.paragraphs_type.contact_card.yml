@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: contact_card
-label: Contact card
+label: 'Contact card'
 icon_uuid: null
 icon_default: null
 description: ''

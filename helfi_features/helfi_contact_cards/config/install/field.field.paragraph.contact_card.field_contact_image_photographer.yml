@@ -2,19 +2,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_phone_number
+    - field.storage.paragraph.field_contact_image_photographer
     - paragraphs.paragraphs_type.contact_card
-  module:
-    - telephone
-id: paragraph.contact_card.field_phone_number
-field_name: field_phone_number
+id: paragraph.contact_card.field_contact_image_photographer
+field_name: field_contact_image_photographer
 entity_type: paragraph
 bundle: contact_card
-label: 'Phone number'
+label: 'Contact image photographer'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: telephone
+field_type: string

@@ -11,7 +11,7 @@ field_name: field_contact_image
 entity_type: paragraph
 bundle: contact_card
 label: Image
-description: ''
+description: 'Use a square image for the best result. Portrait and landscape images will be cropped to a square, horizontally centred and vertically aligned to the top.'
 required: false
 translatable: false
 default_value: {  }
