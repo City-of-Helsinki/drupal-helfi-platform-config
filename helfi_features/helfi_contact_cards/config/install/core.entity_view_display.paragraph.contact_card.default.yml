@@ -4,18 +4,15 @@ dependencies:
   config:
     - field.field.paragraph.contact_card.field_contact_description
     - field.field.paragraph.contact_card.field_contact_image
-    - field.field.paragraph.contact_card.field_contact_image_photographer
     - field.field.paragraph.contact_card.field_contact_name
     - field.field.paragraph.contact_card.field_contact_social_media
     - field.field.paragraph.contact_card.field_contact_title
     - field.field.paragraph.contact_card.field_email
     - field.field.paragraph.contact_card.field_phone_number
-    - image.style.media_library
     - paragraphs.paragraphs_type.contact_card
   module:
     - entity_reference_revisions
     - image
-    - telephone
 id: paragraph.contact_card.default
 targetEntityType: paragraph
 bundle: contact_card
@@ -36,14 +33,6 @@ content:
       image_style: ''
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_contact_image_photographer:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 8
     region: content
   field_contact_name:
     type: string
@@ -78,11 +67,11 @@ content:
     weight: 4
     region: content
   field_phone_number:
-    type: telephone_link
+    type: string
     label: visually_hidden
     settings:
-      title: ''
+      link_to_entity: false
     third_party_settings: {  }
-    weight: 7
+    weight: 3
     region: content
 hidden: {  }

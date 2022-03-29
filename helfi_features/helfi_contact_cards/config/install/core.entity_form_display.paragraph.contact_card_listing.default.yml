@@ -8,7 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.contact_card_listing
   module:
     - paragraphs
-    - text
 id: paragraph.contact_card_listing.default
 targetEntityType: paragraph
 bundle: contact_card_listing
@@ -16,7 +15,7 @@ mode: default
 content:
   field_contact_card:
     type: paragraphs
-    weight: 2
+    weight: 3
     region: content
     settings:
       title: Paragraph
@@ -34,7 +33,7 @@ content:
         duplicate: duplicate
     third_party_settings: {  }
   field_description:
-    type: text_textarea
+    type: string_textarea
     weight: 1
     region: content
     settings:
