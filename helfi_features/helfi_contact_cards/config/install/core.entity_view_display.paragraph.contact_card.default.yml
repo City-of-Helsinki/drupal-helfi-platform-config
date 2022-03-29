@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.contact_card.field_contact_description
     - field.field.paragraph.contact_card.field_contact_image
+    - field.field.paragraph.contact_card.field_contact_image_photographer
     - field.field.paragraph.contact_card.field_contact_name
     - field.field.paragraph.contact_card.field_contact_social_media
     - field.field.paragraph.contact_card.field_contact_title
@@ -13,6 +14,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - image
+    - telephone
 id: paragraph.contact_card.default
 targetEntityType: paragraph
 bundle: contact_card
@@ -33,6 +35,14 @@ content:
       image_style: ''
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_contact_image_photographer:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 7
     region: content
   field_contact_name:
     type: string
@@ -67,10 +77,10 @@ content:
     weight: 4
     region: content
   field_phone_number:
-    type: string
+    type: telephone_link
     label: visually_hidden
     settings:
-      link_to_entity: false
+      title: ''
     third_party_settings: {  }
     weight: 3
     region: content

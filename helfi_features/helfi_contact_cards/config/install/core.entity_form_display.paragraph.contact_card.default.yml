@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.contact_card.field_contact_description
     - field.field.paragraph.contact_card.field_contact_image
+    - field.field.paragraph.contact_card.field_contact_image_photographer
     - field.field.paragraph.contact_card.field_contact_name
     - field.field.paragraph.contact_card.field_contact_social_media
     - field.field.paragraph.contact_card.field_contact_title
@@ -22,7 +23,7 @@ mode: default
 content:
   field_contact_description:
     type: string_textarea
-    weight: 5
+    weight: 6
     region: content
     settings:
       rows: 5
@@ -36,7 +37,7 @@ content:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
-  field_contact_name:
+  field_contact_image_photographer:
     type: string_textfield
     weight: 1
     region: content
@@ -44,9 +45,17 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_contact_name:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_contact_social_media:
     type: paragraphs
-    weight: 6
+    weight: 7
     region: content
     settings:
       title: Paragraph
@@ -64,7 +73,7 @@ content:
     third_party_settings: {  }
   field_contact_title:
     type: string_textfield
-    weight: 4
+    weight: 3
     region: content
     settings:
       size: 60
@@ -72,7 +81,7 @@ content:
     third_party_settings: {  }
   field_email:
     type: email_default
-    weight: 2
+    weight: 4
     region: content
     settings:
       placeholder: ''
@@ -80,7 +89,7 @@ content:
     third_party_settings: {  }
   field_phone_number:
     type: telephone_default
-    weight: 3
+    weight: 5
     region: content
     settings:
       placeholder: ''
