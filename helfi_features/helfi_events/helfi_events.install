@@ -1,0 +1,28 @@
+<?php
+
+use Drupal\helfi_platform_config\ConfigHelper;
+
+/**
+ * @file
+ * Contains install functions for HELfi Event module
+ */
+
+/**
+ * Implements hook_install().
+ */
+function helfi_events_install() {
+  // Install config translations
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.paragraph.event_list.field_api_url',
+    'field.field.paragraph.event_list.field_event_list_description',
+    'field.field.paragraph.event_list.field_event_list_title',
+    'field.field.paragraph.event_list.field_load_more',
+    'paragraphs.paragraphs_type.event_list'
+  ];
+
+  foreach($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
