@@ -1,0 +1,12 @@
+uuid: 96f283be-e8b0-447f-9783-e421bcaeee48
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: MTPXXhBhz3dWw6PvhyG4t8Oc-2c1b3UuVmvZOryT3z0
+id: event_list
+label: Events
+icon_uuid: null
+icon_default: null
+description: 'Create a feed of events from LinkedEvents data'
+behavior_plugins: {  }

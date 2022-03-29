@@ -1,0 +1,57 @@
+uuid: f4d6607c-e8dd-4c31-b4c7-1309356cdbf2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.event_list.field_api_url
+    - field.field.paragraph.event_list.field_event_list_description
+    - field.field.paragraph.event_list.field_event_list_title
+    - field.field.paragraph.event_list.field_load_more
+    - paragraphs.paragraphs_type.event_list
+  module:
+    - link
+_core:
+  default_config_hash: ofd-qwjhu1LNJl1niHusQPQDHr0qQrG2anzHb_m7hx0
+id: paragraph.event_list.default
+targetEntityType: paragraph
+bundle: event_list
+mode: default
+content:
+  field_api_url:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_event_list_description:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_event_list_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_load_more:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden: {  }
