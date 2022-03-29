@@ -23,7 +23,6 @@ function helfi_contact_cards_install($is_syncing) {
     'field.field.paragraph.contact_card_listing.field_title',
     'field.field.paragraph.contact_card.field_contact_description',
     'field.field.paragraph.contact_card.field_contact_image',
-    'field.field.paragraph.contact_card.field_contact_image_photographer',
     'field.field.paragraph.contact_card.field_contact_name',
     'field.field.paragraph.contact_card.field_contact_social_media',
     'field.field.paragraph.contact_card.field_contact_title',
@@ -47,6 +46,21 @@ function helfi_contact_cards_install($is_syncing) {
 function helfi_contact_cards_update_9001() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Add the new fields for contact card
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_contact_image_photographer' => 'field.field.paragraph.contact_card.field_contact_image_photographer',
+  ];
+
+  // Install accordion description, title and title level fields.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $field_config);
+  }
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_contact_cards', 'helfi_contact_cards_update_9001');
