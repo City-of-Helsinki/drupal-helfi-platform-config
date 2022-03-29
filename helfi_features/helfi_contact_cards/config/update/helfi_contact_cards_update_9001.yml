@@ -24,6 +24,9 @@ core.entity_form_display.paragraph.contact_card.default:
           third_party_settings: {  }
           type: string_textfield
           weight: 1
+      dependencies:
+        config:
+          - field.field.paragraph.contact_card.field_contact_image_photographer
     change:
       content:
         field_contact_description:
