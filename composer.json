@@ -43,6 +43,7 @@
     "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
     "drupal/pathauto": "^1.8",
     "drupal/publication_date": "^2.0@beta",
+    "drupal/rabbit_hole": "^1.0@beta",
     "drupal/redirect": "^1.6",
     "drupal/role_delegation" : "^1.1",
     "drupal/search_api": "^1.0",
