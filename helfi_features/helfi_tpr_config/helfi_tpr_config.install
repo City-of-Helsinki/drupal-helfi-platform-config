@@ -77,7 +77,9 @@ function helfi_tpr_config_update_dependencies() {
     'helfi_content' => 9017,
   ];
 
-  // TODO
+  // Run helfi_tpr_config_update_9023() after helfi_base_config_update 9008()
+  // has been run. helfi_base_config_update 9008() update will install views
+  // bulk operations modules.
   $dependencies['helfi_tpr_config'][9023] = [
     'helfi_base_config' => 9008,
   ];
