@@ -13,7 +13,7 @@ dependencies:
     - image.style.thumbnail
     - paragraphs.paragraphs_type.contact_card
   module:
-    - image
+    - focal_point
     - paragraphs
     - telephone
 id: paragraph.contact_card.default
@@ -30,12 +30,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_contact_image:
-    type: image_image
+    type: image_focal_point
     weight: 0
     region: content
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
+      preview_link: true
+      offsets: '50,50'
     third_party_settings: {  }
   field_contact_image_photographer:
     type: string_textfield
