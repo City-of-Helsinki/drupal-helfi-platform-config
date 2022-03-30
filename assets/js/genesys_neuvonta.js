@@ -7,6 +7,12 @@
 
   Drupal.behaviors.genesys_chat = {
     attach: function (context, settings) {
+      // Open chat from an external button.
+      $('#openChat').click(function(e) {
+        e.preventDefault();
+        $("#chatButtonStart").click();
+      });
+
       var helFiChatPageUrl = document.location.href;
       helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
       var helfiChat_lang = document.documentElement.lang;
