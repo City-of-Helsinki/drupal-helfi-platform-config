@@ -7,6 +7,12 @@
 
   Drupal.behaviors.genesys_chat = {
     attach: function (context, settings) {
+      // Open chat from an external button.
+      $("#openChat").click(function (e) {
+        e.preventDefault();
+        $("#chatButtonStart").click();
+      });
+
       var helFiChatPageUrl = document.location.href;
       helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
       var helfiChat_lang = document.documentElement.lang;
@@ -73,9 +79,12 @@
       var mobileIksButton =
         '<div id="gwc-chat-icon-iks-mobile"' +
         'tabindex="0" onkeypress="onEnter(event, this)" role="button" onclick="Drupal.removeChatIcon()"><img src="https://www.hel.fi/static/helsinki/chat/close-next.svg" /><div></div></div';
-      var helFiChat_SendButton = '<img class = "hki-cx-send-icon" src="https://www.hel.fi/static/helsinki/chat/arrow_black.svg" />';
-      var helFiChat_AgentIcon = '<img class = "hki-cx-avatar-icon" src="https://www.hel.fi/static/helsinki/chat/agent_blue.svg" alt="${accesabilityTexts[helfiChat_lang].agentIconAlt}" />';
-      var helFiChat_UserIcon = '<img class="hki-cx-avatar-icon" src="https://www.hel.fi/static/helsinki/chat/user_black.svg" alt="${accesabilityTexts[helfiChat_lang].userIconAlt}" />';
+      var helFiChat_SendButton =
+        '<img class = "hki-cx-send-icon" src="https://www.hel.fi/static/helsinki/chat/arrow_black.svg" />';
+      var helFiChat_AgentIcon =
+        '<img class = "hki-cx-avatar-icon" src="https://www.hel.fi/static/helsinki/chat/agent_blue.svg" alt="${accesabilityTexts[helfiChat_lang].agentIconAlt}" />';
+      var helFiChat_UserIcon =
+        '<img class="hki-cx-avatar-icon" src="https://www.hel.fi/static/helsinki/chat/user_black.svg" alt="${accesabilityTexts[helfiChat_lang].userIconAlt}" />';
 
       /* CHAT START BUTTON ICONS */
       var helFiChat_button = "";
@@ -83,16 +92,16 @@
       // https://asiointi.hel.fi/chat/kanslia/custom/chat-virkainfo-fi.json
 
       switch (helfiChat_lang) {
-        case 'fi':
+        case "fi":
         default:
           var helFiChat_localization =
             "https://www.hel.fi/gms/sote/testpages/chat-virkainfo-fi.json";
           break;
-        case 'sv':
+        case "sv":
           var helFiChat_localization =
             "https://www.hel.fi/gms/sote/testpages/chat-virkainfo-se.json";
           break;
-        case 'en':
+        case "en":
           var helFiChat_localization =
             "https://www.hel.fi/gms/sote/testpages/chat-virkainfo-en.json";
           break;
@@ -134,7 +143,9 @@
         var chatGcLoginButtonState = getCookieChat("gcLoginButtonState");
         //is genesys original session active now?
         var gcOriginalSessionID = "";
-        gcOriginalSessionID = getCookieChat("_genesys.widgets.webchat.state.session");
+        gcOriginalSessionID = getCookieChat(
+          "_genesys.widgets.webchat.state.session"
+        );
         if (gcOriginalSessionID) {
           setTimeout(function () {
             // if(chatGcLoginButtonState==1) {
@@ -143,18 +154,23 @@
               document.getElementById("chatAuthenticationElement")
             ) {
               //user is authenticated, show correct link in chat window:
-              document.getElementById("chatAuthenticationElement").style.display =
-                "none";
-              document.getElementById("authUserTitleContainer").style.display = "";
+              document.getElementById(
+                "chatAuthenticationElement"
+              ).style.display = "none";
+              document.getElementById("authUserTitleContainer").style.display =
+                "";
               document.getElementById("authUserTitleContainer").style.display =
                 "flex";
             }
             // else {
             else if (document.getElementById("chatAuthenticationElement")) {
               //user is not authenticated, show correct link in chat window:
-              document.getElementById("chatAuthenticationElement").style.display = "";
-              document.getElementById("chatAuthenticationElement").style.display =
-                "flex";
+              document.getElementById(
+                "chatAuthenticationElement"
+              ).style.display = "";
+              document.getElementById(
+                "chatAuthenticationElement"
+              ).style.display = "flex";
               document.getElementById("authUserTitleContainer").style.display =
                 "none";
             }
@@ -176,12 +192,17 @@
 
       function setGcReturnSessionId() {
         // helper cookie to maintain chat session id:
-        gcReturnSessionId = getCookieChat("_genesys.widgets.webchat.state.session");
+        gcReturnSessionId = getCookieChat(
+          "_genesys.widgets.webchat.state.session"
+        );
         if (!isEmpty(gcReturnSessionId) && !isBlank(gcReturnSessionId)) {
           // Found GS-chat session, setting it to helper cookie:
           /* document.cookie = "gcReturnSessionId="+gcReturnSessionId+";path=/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/"; */
           document.cookie =
-            "gcReturnSessionId=" + gcReturnSessionId + ";path=" + helfiChatCookiePath;
+            "gcReturnSessionId=" +
+            gcReturnSessionId +
+            ";path=" +
+            helfiChatCookiePath;
         } else {
           //console.log("gcReturnSessionId", gcReturnSessionId);
           alert(
@@ -228,11 +249,14 @@
 
         helFiChat_button = "";
         if (helFiChat_button.indexOf("chat-closed") > -1) {
-          helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].close;
+          helFiChat_button =
+            startChatButtonClasses[screenType][helfiChat_lang].close;
         } else if (helFiChat_button.indexOf("chat-busy") > -1) {
-          helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].busy;
+          helFiChat_button =
+            startChatButtonClasses[screenType][helfiChat_lang].busy;
         } else {
-          helFiChat_button = startChatButtonClasses[screenType][helfiChat_lang].open;
+          helFiChat_button =
+            startChatButtonClasses[screenType][helfiChat_lang].open;
         }
       })();
 
@@ -249,9 +273,11 @@
         return buttonHtml;
       }
 
-      if (!window._genesys) { window._genesys = {};
+      if (!window._genesys) {
+        window._genesys = {};
       }
-      if (!window._gt) { window._gt = [];
+      if (!window._gt) {
+        window._gt = [];
       }
 
       window._genesys.widgets = {
@@ -300,7 +326,11 @@
       var chatExtension = null;
       chatExtension = CXBus.registerPlugin("ChatExt");
 
-      window._genesys.widgets.extensions["ChatExt"] = function ($, CXBus, Common) {
+      window._genesys.widgets.extensions["ChatExt"] = function (
+        $,
+        CXBus,
+        Common
+      ) {
         chatExtension.before("WebChat.open", function (oData) {
           //Delete X button in mobile view
           //console.log("restarted from open");
@@ -345,8 +375,12 @@
           //Add logo
           $(".cx-titlebar .cx-icon").replaceWith(helfiChatLogoElement);
 
-          $(".cx-input-container").removeAttr("tabindex").removeAttr("aria-hidden");
-          $(".cx-textarea-cell").removeAttr("tabindex").removeAttr("aria-hidden");
+          $(".cx-input-container")
+            .removeAttr("tabindex")
+            .removeAttr("aria-hidden");
+          $(".cx-textarea-cell")
+            .removeAttr("tabindex")
+            .removeAttr("aria-hidden");
           $(".cx-send").attr("tabindex", 0);
           $(".cx-send").removeAttr("aria-hidden");
 
@@ -378,7 +412,9 @@
           //Minimizdd button accesibility change
           var minimizeElement = $(".cx-button-" + name);
           if (minimizeElement) {
-            var ariaExpanded = JSON.parse(minimizeElement.attr("aria-expanded"));
+            var ariaExpanded = JSON.parse(
+              minimizeElement.attr("aria-expanded")
+            );
             minimizeElement.attr("aria-expanded", !ariaExpanded);
           }
         }
@@ -447,7 +483,6 @@
         chatExtension.republish("ready");
         chatExtension.ready();
       };
-
     }
   };
 
