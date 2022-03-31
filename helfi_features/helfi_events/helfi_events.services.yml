@@ -1,0 +1,7 @@
+services:
+  helfi_events_proxy:
+    class: Drupal\helfi_events\EventsProxy
+    arguments: ['@http_client', '@cache.default']
+  helfi_events_linked_events:
+    class: Drupal\helfi_events\LinkedEvents
+    arguments: ['@http_client', '@cache.default']
