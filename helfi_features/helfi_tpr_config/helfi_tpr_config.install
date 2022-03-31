@@ -77,10 +77,17 @@ function helfi_tpr_config_update_dependencies() {
     'helfi_content' => 9017,
   ];
 
-  // Run helfi_tpr_config_update_9023() after helfi_base_config_update 9008()
+  // Run helfi_tpr_config_update_9023() after helfi_content_update_9024()
+  // has been run. helfi_content_update_9024() update will install contact cards
+  // module with default configuration.
+  $dependencies['helfi_tpr_config'][9023] = [
+    'helfi_content' => 9024,
+  ];
+
+  // Run helfi_tpr_config_update_9024() after helfi_base_config_update 9008()
   // has been run. helfi_base_config_update 9008() update will install views
   // bulk operations modules.
-  $dependencies['helfi_tpr_config'][9023] = [
+  $dependencies['helfi_tpr_config'][9024] = [
     'helfi_base_config' => 9008,
   ];
 
@@ -461,9 +468,25 @@ function helfi_tpr_config_update_9022() {
 }
 
 /**
- * Add unit type field for TPR-units & enable views bulk operations for tpr-units list.
+ * Add contact card listing paragraph to all content areas on tpr-unit.
  */
 function helfi_tpr_config_update_9023() {
+  if (Drupal::moduleHandler()->moduleExists('helfi_contact_cards')) {
+    /** @var \Drupal\update_helper\Updater $updateHelper */
+    $updateHelper = \Drupal::service('update_helper.updater');
+
+    // Execute configuration update definitions with logging of success.
+    $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9023');
+
+    // Output logged messages to related channel of update execution.
+    return $updateHelper->logger()->output();
+  }
+}
+
+/**
+* Add unit type field for TPR-units & enable views bulk operations for tpr-units list.
+ */
+function helfi_tpr_config_update_9024() {
   // Override the tpr-units listing with vbo functionality.
   $configOverrideLocation = dirname(__FILE__) . '/config/override/';
   ConfigHelper::updateExistingConfig($configOverrideLocation, 'views.view.tpr_unit_list');

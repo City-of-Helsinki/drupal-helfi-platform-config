@@ -423,12 +423,13 @@
 
           //Change agent icons
           if ($(".cx-avatar.agent").length) {
-            $(".cx-avatar.agent").empty().append(helFiChat_AegentIcon);
+            $(".cx-avatar.agent").empty().append(helFiChat_AgentIcon);
           }
         }
 
         chatExtension.republish("ready");
         chatExtension.ready();
+        window.chatExtension = chatExtension;
       };
 
     }

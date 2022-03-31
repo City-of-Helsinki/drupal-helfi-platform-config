@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+id: contact_card_listing
+label: 'Contact card listing'
+icon_uuid: null
+icon_default: null
+description: 'Contact card listing paragraph where contact cards can be added.'
+behavior_plugins: {  }

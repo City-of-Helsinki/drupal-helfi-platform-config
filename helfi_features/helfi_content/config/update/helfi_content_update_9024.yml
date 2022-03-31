@@ -1,5 +1,5 @@
-field.field.tpr_unit.tpr_unit.field_content:
-  expected_config: {  }
+field.field.node.page.field_content:
+  expected_config: {}
   update_actions:
     add:
       settings:
@@ -16,8 +16,8 @@ field.field.tpr_unit.tpr_unit.field_content:
             social_media_link:
               enabled: false
               weight: 46
-field.field.tpr_unit.tpr_unit.field_lower_content:
-  expected_config: {  }
+field.field.node.page.field_lower_content:
+  expected_config: {}
   update_actions:
     add:
       settings:
