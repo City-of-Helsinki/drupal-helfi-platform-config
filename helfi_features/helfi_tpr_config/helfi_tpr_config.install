@@ -495,12 +495,17 @@ function helfi_tpr_config_update_9024() {
   $configInstallLocation = dirname(__FILE__) . '/config/install/';
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
+  // Install accordion description, title and title level fields.
+  ConfigHelper::installNewField(
+    $configInstallLocation,
+    'field.storage.tpr_unit.field_unit_type',
+    'field.field.tpr_unit.tpr_unit.field_unit_type'
+  );
+
   // Changed configurations for TPR-unit to have a field where you can define unit type.
   $configurations = [
     'core.entity_view_display.tpr_unit.tpr_unit.minimal',
     'core.entity_view_mode.tpr_unit.minimal',
-    'field.field.tpr_unit.tpr_unit.field_unit_type',
-    'field.storage.tpr_unit.field_unit_type',
     'language.content_settings.taxonomy_term.unit_type',
     'taxonomy.vocabulary.unit_type',
   ];
@@ -509,4 +514,7 @@ function helfi_tpr_config_update_9024() {
     ConfigHelper::installNewConfig($configInstallLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
+
+  // Add field unit type translations
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.tpr_unit.tpr_unit.field_unit_type');
 }
