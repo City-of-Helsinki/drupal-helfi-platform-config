@@ -487,6 +487,12 @@ function helfi_tpr_config_update_9023() {
 * Add unit type field for TPR-units & enable views bulk operations for tpr-units list.
  */
 function helfi_tpr_config_update_9024() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9024');
+
   // Override the tpr-units listing with vbo functionality.
   $configOverrideLocation = dirname(__FILE__) . '/config/override/';
   ConfigHelper::installNewConfig($configOverrideLocation, 'views.view.tpr_unit_list');
@@ -517,4 +523,7 @@ function helfi_tpr_config_update_9024() {
 
   // Add field unit type translations
   ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.tpr_unit.tpr_unit.field_unit_type');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }
