@@ -504,8 +504,8 @@ function helfi_tpr_config_update_9024() {
 
   // Changed configurations for TPR-unit to have a field where you can define unit type.
   $configurations = [
+    'core.entity_view_mode.tpr_unit.minimal', 
     'core.entity_view_display.tpr_unit.tpr_unit.minimal',
-    'core.entity_view_mode.tpr_unit.minimal',
     'language.content_settings.taxonomy_term.unit_type',
     'taxonomy.vocabulary.unit_type',
   ];
