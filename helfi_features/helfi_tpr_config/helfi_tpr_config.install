@@ -489,7 +489,7 @@ function helfi_tpr_config_update_9023() {
 function helfi_tpr_config_update_9024() {
   // Override the tpr-units listing with vbo functionality.
   $configOverrideLocation = dirname(__FILE__) . '/config/override/';
-  ConfigHelper::updateExistingConfig($configOverrideLocation, 'views.view.tpr_unit_list');
+  ConfigHelper::installNewConfig($configOverrideLocation, 'views.view.tpr_unit_list');
 
   // Configuration locations
   $configInstallLocation = dirname(__FILE__) . '/config/install/';
