@@ -1,0 +1,24 @@
+filter.format.full_html:
+  expected_config:
+    filters:
+      filter_html:
+        settings:
+          allowed_html: '<em> <strong> <cite> <blockquote role aria-* cite class=""> <code> <ul type class=""> <ol start type> <li class=""> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div role aria-* class=""> <img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <pre> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <span role aria-* class="">'
+  update_actions:
+    change:
+      filters:
+        filter_html:
+          settings:
+            allowed_html: '<em> <strong> <cite> <blockquote role aria-* cite class=""> <code> <ul type class=""> <ol start type> <li class=""> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div role aria-* class=""> <img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <pre> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <span role aria-* lang dir class="">'
+filter.format.minimal:
+  expected_config:
+    filters:
+      filter_html:
+        settings:
+          allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""><span role aria-* class="">'
+  update_actions:
+    change:
+      filters:
+        filter_html:
+          settings:
+            allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <span role aria-* lang dir class="">'
