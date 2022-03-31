@@ -1,0 +1,47 @@
+core.entity_form_display.tpr_unit.tpr_unit.default:
+  expected_config: { }
+    update_actions:
+      add:
+        dependencies:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+        content:
+          field_unit_type:
+            type: entity_reference_label
+            label: above
+            settings:
+              link: true
+            third_party_settings: { }
+            weight: 21
+            region: content
+core.entity_view_display.tpr_unit.tpr_unit.default:
+  expected_config: { }
+    update_actions:
+      add:
+        dependencies:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+        hidden:
+          field_unit_type: true
+core.entity_view_display.tpr_unit.tpr_unit.teaser:
+  expected_config: { }
+    update_actions:
+      add:
+        dependencies:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+        hidden:
+          field_unit_type: true
+core.entity_view_display.tpr_unit.tpr_unit.teaser_with_image:
+  expected_config: { }
+    update_actions:
+      add:
+        dependencies:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+        hidden:
+          field_unit_type: true
+core.entity_view_display.tpr_unit.tpr_unit.wide_teaser:
+  expected_config: { }
+    update_actions:
+      add:
+        dependencies:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+        hidden:
+          field_unit_type: true
