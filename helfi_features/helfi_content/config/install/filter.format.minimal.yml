@@ -40,7 +40,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class="">'
+      allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <span role aria-* lang dir class="">'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -91,3 +91,9 @@ filters:
     weight: -43
     settings:
       replace_empty: '1'
+  helfi_link_converter:
+    id: helfi_link_converter
+    provider: helfi_api_base
+    status: true
+    weight: -10
+    settings: {  }

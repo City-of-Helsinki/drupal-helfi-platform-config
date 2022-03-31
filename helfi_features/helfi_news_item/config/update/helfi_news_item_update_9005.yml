@@ -1,0 +1,14 @@
+core.entity_view_display.node.news_item.default:
+  expected_config:
+    content:
+      field_main_image_caption:
+        type: basic_string
+      field_lead_in:
+        type: basic_string
+  update_actions:
+    change:
+      content:
+        field_main_image_caption:
+          type: text_span
+        field_lead_in:
+          type: text_span

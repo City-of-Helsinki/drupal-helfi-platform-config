@@ -22,7 +22,7 @@ bundle: contact_card
 mode: default
 content:
   field_contact_description:
-    type: basic_string
+    type: text_span
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }

@@ -25,7 +25,7 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: text_span
     region: content
   field_original_aspect_ratio:
     type: boolean
