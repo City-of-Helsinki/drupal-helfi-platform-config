@@ -41,6 +41,7 @@ function helfi_base_config_install($is_syncing) {
       helfi_base_config_update_9002();
       helfi_base_config_update_9006();
       helfi_base_config_update_9007();
+      helfi_base_config_update_9008();
     }
   }
 }
@@ -176,4 +177,31 @@ function helfi_base_config_update_9007() {
   // Handle the configuration translation update manually.
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
   ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'views.view.scheduler_scheduled_content');
+}
+
+/**
+ * Install views bulk operations modules.
+ */
+function helfi_base_config_update_9008() {
+  // Install views_bulk_operations module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('views_bulk_operations')) {
+    Drupal::service('module_installer')->install([
+      'views_bulk_operations',
+    ]);
+  }
+  // Install views_bulk_edit module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('views_bulk_edit')) {
+    Drupal::service('module_installer')->install([
+      'views_bulk_edit',
+    ]);
+  }
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9008');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }

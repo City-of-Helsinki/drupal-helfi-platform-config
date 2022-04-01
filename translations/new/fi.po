@@ -443,3 +443,12 @@ msgstr "viikottain"
 
 msgid "yearly"
 msgstr "vuosittain"
+
+msgid "This content is now locked by you against simultaneous editing. This content will remain locked if you navigate away from this page without saving or unlocking it."
+msgstr "Tämä sisältö on nyt lukittu. Sisältö pysyy lukittuna vaikka siirtyisit pois tältä sivulta tallentamatta sitä. Avataksesi lukituksen muille sisällöntuottajille, paina painiketta jossa lukee <em>Avaa lukitus</em>."
+
+msgid "This content is now locked against simultaneous editing. This content will remain locked if you navigate away from this page without saving or unlocking it."
+msgstr "Tämä sisältö on nyt lukittu. Sisältö pysyy lukittuna vaikka siirtyisit pois tältä sivulta tallentamatta sitä. Avataksesi lukituksen muille sisällöntuottajille, paina painiketta jossa lukee <em>Avaa lukitus</em>."
+
+msgid "This content is being edited by the user @name and is therefore locked to prevent other users changes. This lock is in place since @date."
+msgstr "Käyttäjä @name muokkaa tätä sisältöä, ja siksi se on lukittu. Sisältö on lukittu @date hetkestä lähtien."

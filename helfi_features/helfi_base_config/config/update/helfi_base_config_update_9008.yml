@@ -1,0 +1,9 @@
+user.role.admin:
+  expected_config: { }
+  update_actions:
+    add:
+      dependencies:
+        module:
+          - views_bulk_edit
+      permissions:
+        - 'use views bulk edit'

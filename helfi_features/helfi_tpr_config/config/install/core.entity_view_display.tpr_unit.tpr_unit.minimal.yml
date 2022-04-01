@@ -1,0 +1,68 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.tpr_unit.minimal
+    - field.field.tpr_unit.tpr_unit.field_content
+    - field.field.tpr_unit.tpr_unit.field_lower_content
+    - field.field.tpr_unit.tpr_unit.field_metatags
+    - field.field.tpr_unit.tpr_unit.field_unit_type
+  module:
+    - address
+    - helfi_tpr
+id: tpr_unit.tpr_unit.minimal
+targetEntityType: tpr_unit
+bundle: tpr_unit
+mode: minimal
+content:
+  address:
+    type: address_plain
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  name_override:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  accessibility_email: true
+  accessibility_phone: true
+  accessibility_sentences: true
+  accessibility_www: true
+  address_postal: true
+  call_charge_info: true
+  created: true
+  description: true
+  email: true
+  field_content: true
+  field_lower_content: true
+  field_metatags: true
+  field_unit_type: true
+  hide_description: true
+  langcode: true
+  latitude: true
+  longitude: true
+  opening_hours: true
+  phone: true
+  picture_url: true
+  picture_url_override: true
+  provided_languages: true
+  service_map_embed: true
+  services: true
+  show_www: true
+  streetview_entrance_url: true
+  www: true
