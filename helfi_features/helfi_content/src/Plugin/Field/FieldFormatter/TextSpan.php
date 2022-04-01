@@ -26,7 +26,7 @@ class TextSpan extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
+    $markup = [];
 
     foreach ($items as $delta => $item) {
 
@@ -34,12 +34,12 @@ class TextSpan extends FormatterBase {
       if (empty($value)) {
         $value = $item->getValue();
       }
-      $elements[$delta] = [
+      $markup[$delta] = [
         '#children' => strip_tags($value, ['span']),
       ];
     }
 
-    return $elements;
+    return $markup;
   }
 
 }
