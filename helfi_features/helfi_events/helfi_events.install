@@ -10,7 +10,21 @@ use Drupal\helfi_platform_config\ConfigHelper;
 /**
  * Implements hook_install().
  */
-function helfi_events_install() {
+function helfi_events_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
+    helfi_events_update_9001();
+  }
+}
+
+/**
+ * Update landing page and page content fields to include events list
+ */
+function helfi_events_update_9001() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
   // Install config translations
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
@@ -25,4 +39,10 @@ function helfi_events_install() {
   foreach($configurations as $configuration) {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_events', 'helfi_events_update_9001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }
