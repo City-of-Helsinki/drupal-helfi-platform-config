@@ -7,6 +7,9 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\helfi_events\Enum\CategoryKeywords;
 use GuzzleHttp\ClientInterface;
 
+/**
+ * Base class for retrieving events data.
+ */
 class EventsApiBase {
   /**
    * The cache.
@@ -15,15 +18,19 @@ class EventsApiBase {
    */
   protected CacheBackendInterface $dataCache;
   /**
+   * The HTTP client.
+   *
    * @var \GuzzleHttp\ClientInterface
    */
   protected $httpClient;
 
   /**
+   * The constructor.
+   *
    * @param \GuzzleHttp\ClientInterface $httpClient
-   *  HTTP Client
+   *   HTTP Client.
    * @param \Drupal\Core\Cache\CacheBackendInterface $dataCache
-   *  Data Cache.
+   *   Data Cache.
    */
   public function __construct(ClientInterface $httpClient, CacheBackendInterface $dataCache) {
     $this->httpClient = $httpClient;
@@ -32,23 +39,23 @@ class EventsApiBase {
 
   /**
    * Sets cache.
-   * 
+   *
    * @param string $id
-   *   Cache id
+   *   Cache id.
    * @param mixed $data
-   *   The data
+   *   The data.
    */
   protected function setCache(string $id, $data) : void {
     $key = $this->getCacheKey($id);
     $this->dataCache->set($key, $data, $this->getCacheMaxAge(), []);
   }
 
-   /**
-   * Get cached data for given id
-   * 
+  /**
+   * Get cached data for given id.
+   *
    * @param string $id
-   *   The id
-   * 
+   *   The id.
+   *
    * @return mixed|null
    *   Cached data or null
    */
@@ -63,28 +70,30 @@ class EventsApiBase {
       return $data->data;
     }
 
-    return null;
+    return NULL;
   }
 
   /**
-   * Parse query params from request url
-   * 
+   * Parse query params from request url.
+   *
    * @param string $url
-   * 
-   * @return array|null
+   *   Tapahtumat.hel.fi url.
+   *
+   * @return array
+   *   Array of params.
    */
-  public function parseParams($url) {
+  public function parseParams($url) : array {
     $parsed = UrlHelper::parse($url);
     $params = [];
 
-    if(!empty($parsed) && isset($parsed['query'])) {
-      foreach($parsed['query'] as $key => $param) {
+    if (!empty($parsed) && isset($parsed['query'])) {
+      foreach ($parsed['query'] as $key => $param) {
         if ($key === 'categories') {
           $params['keyword_OR_set1'] = $this->categoriesToKeywords($param);
         }
         if ($key === 'start') {
           $now = strtotime('now');
-          if(strtotime($param) < $now) {
+          if (strtotime($param) < $now) {
             $params[$key] = 'now';
           }
           else {
@@ -100,28 +109,32 @@ class EventsApiBase {
         if ($key === 'dateTypes') {
           $dateTypes = explode(',', $param);
           $dateParams = '';
-          foreach($dateTypes as $dataType) {
-            switch($param) {
+          foreach ($dateTypes as $dataType) {
+            switch ($param) {
               case 'today':
                 $params['end'] = 'today';
-              break;
+                break;
+
               case 'tomorrow';
                 $params['start'] = date('Y-m-d', strtotime('tomorrow'));
                 $params['end'] = date('Y-m-d', strtotime('tomorrow'));
-              break;
+                break;
+
               case 'this_week':
                 $params['end'] = date('Y-m-d', strtotime('next Sunday'));
-              break;
+                break;
+
               case 'weekend':
                 $params['start'] = date('Y-m-d', strtotime('next Saturday'));
                 $params['end'] = date('Y-m-d', strtotime('next Sunday'));
-              break;
+                break;
+
               default:
-              break;
+                break;
             }
           }
         }
-        if($key === 'text') {
+        if ($key === 'text') {
           $params['all_ongoing_AND'] = $param;
         }
         else {
@@ -131,55 +144,64 @@ class EventsApiBase {
     }
 
     return $params;
-  } 
+  }
 
   /**
-   * Transform categories to an array of keywords for the API
-   * 
+   * Transform categories to an array of keywords for the API.
+   *
    * @param string $categories
-   *   Event categories
-   * 
+   *   Event categories.
+   *
    * @return string
    *   Resulting json-encoded string of keywords
    */
   protected function categoriesToKeywords(string $categories) : string {
     $keywords = [];
 
-    foreach(explode(',', $categories) as $category) {
-      switch($category) {
+    foreach (explode(',', $categories) as $category) {
+      switch ($category) {
         case 'culture':
           $keywords = array_merge(CategoryKeywords::CULTURE, $keywords);
         default:
         case 'movie':
           $keywords = array_merge(CategoryKeywords::MOVIE, $keywords);
-        break;
+          break;
+
         case 'sport':
           $keywords = array_merge(CategoryKeywords::SPORT, $keywords);
-        break;
+          break;
+
         case 'nature':
           $keywords = array_merge(CategoryKeywords::CAMPS, $keywords);
-        break;
+          break;
+
         case 'museum':
           $keywords = array_merge(CategoryKeywords::MUSEUM, $keywords);
-        break;
+          break;
+
         case 'music';
           $keywords = array_merge(CategoryKeywords::MUSIC, $keywords);
-        break;
+          break;
+
         case 'influence';
           $keywords = array_merge(CategoryKeywords::INFLUENCE, $keywords);
-        break;
+          break;
+
         case 'food';
           $keywords = array_merge(CategoryKeywords::FOOD, $keywords);
-        break;
+          break;
+
         case 'dance';
           $keywords = array_merge(CategoryKeywords::DANCE, $keywords);
-        break;
+          break;
+
         case 'theatre';
           $keywords = array_merge(CategoryKeywords::THEATRE, $keywords);
-        break;
+          break;
       }
     };
-  
+
     return implode(',', $keywords);
   }
+
 }

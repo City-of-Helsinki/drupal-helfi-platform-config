@@ -4,18 +4,22 @@ namespace Drupal\helfi_events;
 
 use Drupal\Core\Url;
 
+/**
+ * Class for retrieving data from LinkedEvents Api.
+ */
 class LinkedEvents extends EventsApiBase {
   const API_URL = 'https://api.hel.fi/linkedevents/v1/';
 
   /**
-   * Form url for gettinng events from api
-   * 
-   * @param array $params
-   *   Filters as key = value array
+   * Form url for getting events from api.
+   *
+   * @param array $options
+   *   Filters as key = value array.
+   *
    * @return string
    *   Resulting api url with params a query string
    */
-  public function getEventsRequest($options = []) {
+  public function getEventsRequest(array $options = []) {
     $url = Url::fromUri(self::API_URL . 'event');
 
     $defaultOptions = [
@@ -27,7 +31,7 @@ class LinkedEvents extends EventsApiBase {
       'sort' => 'end_time',
       'start' => 'now',
       'super_event_type' => 'umbrella,none',
-      'language' => 'fi'
+      'language' => 'fi',
     ];
 
     $options = array_merge($defaultOptions, $options);
@@ -35,9 +39,10 @@ class LinkedEvents extends EventsApiBase {
     if (isset($options['all_ongoing_AND'])) {
       $options['all_ongoing'] = 'true';
     }
-    
+
     $url->setOption('query', $options);
 
     return $url->toString();
   }
+
 }
