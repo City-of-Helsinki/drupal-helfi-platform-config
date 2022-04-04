@@ -55,7 +55,9 @@
     "drupal/token_filter": "^1.2",
     "drupal/translatable_menu_link_uri": "^2.0",
     "drupal/update_helper": "^2.0",
-    "drupal/view_unpublished": "^1.0"
+    "drupal/view_unpublished": "^1.0",
+    "drupal/views_bulk_edit": "^2.6",
+    "drupal/views_bulk_operations": "^4.1"
   },
   "extra": {
     "patches": {
@@ -94,6 +96,9 @@
       },
       "drupal/easy_breadcrumb": {
         "[#UHF-3631] Breadcrumb allow dashes and underscores": "https://www.drupal.org/files/issues/2020-07-23/easy_breadcrumb-allow_hyphens_underscores-3161100-2.patch"
+      },
+      "drupal/views_bulk_edit": {
+        "[#UHF-4528] Declaration must be compatible": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/20af0607626b4c9adaa52c1c9773850a5c8fec3d/patches/views_bulk_edit_tests_compatible_declaration_8.x-2.6.patch"
       }
     }
   }

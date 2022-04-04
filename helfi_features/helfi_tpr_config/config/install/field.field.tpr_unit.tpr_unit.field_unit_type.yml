@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tpr_unit.field_unit_type
+    - taxonomy.vocabulary.unit_type
+  module:
+    - helfi_tpr
+id: tpr_unit.tpr_unit.field_unit_type
+field_name: field_unit_type
+entity_type: tpr_unit
+bundle: tpr_unit
+label: 'Unit type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      unit_type: unit_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

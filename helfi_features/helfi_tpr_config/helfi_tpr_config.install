@@ -26,6 +26,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9018();
       helfi_tpr_config_update_9021();
       helfi_tpr_config_update_9022();
+      helfi_tpr_config_update_9023();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -74,6 +75,20 @@ function helfi_tpr_config_update_dependencies() {
   // module with default configuration.
   $dependencies['helfi_tpr_config'][9020] = [
     'helfi_content' => 9017,
+  ];
+
+  // Run helfi_tpr_config_update_9023() after helfi_content_update_9024()
+  // has been run. helfi_content_update_9024() update will install contact cards
+  // module with default configuration.
+  $dependencies['helfi_tpr_config'][9023] = [
+    'helfi_content' => 9024,
+  ];
+
+  // Run helfi_tpr_config_update_9024() after helfi_base_config_update 9008()
+  // has been run. helfi_base_config_update 9008() update will install views
+  // bulk operations modules.
+  $dependencies['helfi_tpr_config'][9024] = [
+    'helfi_base_config' => 9008,
   ];
 
   return $dependencies;
@@ -447,6 +462,67 @@ function helfi_tpr_config_update_9022() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9022');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add contact card listing paragraph to all content areas on tpr-unit.
+ */
+function helfi_tpr_config_update_9023() {
+  if (Drupal::moduleHandler()->moduleExists('helfi_contact_cards')) {
+    /** @var \Drupal\update_helper\Updater $updateHelper */
+    $updateHelper = \Drupal::service('update_helper.updater');
+
+    // Execute configuration update definitions with logging of success.
+    $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9023');
+
+    // Output logged messages to related channel of update execution.
+    return $updateHelper->logger()->output();
+  }
+}
+
+/**
+* Add unit type field for TPR-units & enable views bulk operations for tpr-units list.
+ */
+function helfi_tpr_config_update_9024() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9024');
+
+  // Override the tpr-units listing with vbo functionality.
+  $configOverrideLocation = dirname(__FILE__) . '/config/override/';
+  ConfigHelper::installNewConfig($configOverrideLocation, 'views.view.tpr_unit_list');
+
+  // Configuration locations
+  $configInstallLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Install accordion description, title and title level fields.
+  ConfigHelper::installNewField(
+    $configInstallLocation,
+    'field.storage.tpr_unit.field_unit_type',
+    'field.field.tpr_unit.tpr_unit.field_unit_type'
+  );
+
+  // Changed configurations for TPR-unit to have a field where you can define unit type.
+  $configurations = [
+    'core.entity_view_mode.tpr_unit.minimal',
+    'core.entity_view_display.tpr_unit.tpr_unit.minimal',
+    'language.content_settings.taxonomy_term.unit_type',
+    'taxonomy.vocabulary.unit_type',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configInstallLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Add field unit type translations
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.tpr_unit.tpr_unit.field_unit_type');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

@@ -1,0 +1,13 @@
+diff --git a/tests/src/Kernel/ViewsBulkEditActionTest.php b/tests/src/Kernel/ViewsBulkEditActionTest.php
+index b2faafa..453de32 100644
+--- a/tests/src/Kernel/ViewsBulkEditActionTest.php
++++ b/tests/src/Kernel/ViewsBulkEditActionTest.php
+@@ -21,7 +21,7 @@ class ViewsBulkEditActionTest extends ViewsBulkOperationsKernelTestBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public function setUp() {
++  public function setUp(): void {
+     parent::setUp();
+ 
+     $this->createTestNodes([
