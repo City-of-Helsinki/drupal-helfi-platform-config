@@ -1,0 +1,21 @@
+<?php
+
+use Drupal\helfi_events\EventsProxy;
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function helfi_events_preprocess_paragraph__event_list(&$variables) {
+  // Expose event list variables to frontend
+  if(isset($variables['paragraph'])) {
+    $paragraph = $variables['paragraph'];
+    $linkedEvents = Drupal::service('helfi_events_linked_events');
+    
+    if (!$paragraph->get('field_api_url')->isEmpty()) {
+      $params = $linkedEvents->parseParams($paragraph->get('field_api_url')->first()->getUrl()->toString());
+      $variables['#attached']['drupalSettings']['helfi_events']['eventsUrl'] = $linkedEvents->getEventsRequest($params);
+    }
+  }
+  
+  $variables['#attached']['library'][] = 'helfi_events/events_list';
+}
