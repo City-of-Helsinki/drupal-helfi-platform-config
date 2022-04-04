@@ -8,6 +8,5 @@ dependencies:
   - 'paragraphs:paragraphs'
   - 'paragraphs_library:paragraphs_library'
   - 'update_helper:update_helper'
-  - 'helfi_tpr_config:helfi_tpr_config'
   - 'select2_icon:select2_icon'
 package: HELfi
