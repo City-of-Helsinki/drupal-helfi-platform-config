@@ -88,57 +88,85 @@ class EventsApiBase {
 
     if (!empty($parsed) && isset($parsed['query'])) {
       foreach ($parsed['query'] as $key => $param) {
-        if ($key === 'categories') {
-          $params['keyword_OR_set1'] = $this->categoriesToKeywords($param);
-        }
-        if ($key === 'start') {
-          $now = strtotime('now');
-          if (strtotime($param) < $now) {
-            $params[$key] = 'now';
-          }
-          else {
-            $params[$key] = $param;
-          }
-        }
-        if ($key === 'divisions') {
-          $params['division'] = $param;
-        }
-        if ($key === 'places') {
-          $params['location'] = $param;
-        }
-        if ($key === 'dateTypes') {
-          $dateTypes = explode(',', $param);
-          $dateParams = '';
-          foreach ($dateTypes as $dataType) {
-            switch ($param) {
-              case 'today':
-                $params['end'] = 'today';
-                break;
+        switch ($key) {
+          case 'categories':
+            $params['keyword_OR_set1'] = $this->categoriesToKeywords($param);
+            break;
 
-              case 'tomorrow';
-                $params['start'] = date('Y-m-d', strtotime('tomorrow'));
-                $params['end'] = date('Y-m-d', strtotime('tomorrow'));
-                break;
-
-              case 'this_week':
-                $params['end'] = date('Y-m-d', strtotime('next Sunday'));
-                break;
-
-              case 'weekend':
-                $params['start'] = date('Y-m-d', strtotime('next Saturday'));
-                $params['end'] = date('Y-m-d', strtotime('next Sunday'));
-                break;
-
-              default:
-                break;
+          case 'start':
+            $now = strtotime('now');
+            if (strtotime($param) < $now) {
+              $params[$key] = 'now';
             }
-          }
-        }
-        if ($key === 'text') {
-          $params['all_ongoing_AND'] = $param;
-        }
-        else {
-          $params[$key] = $param;
+            else {
+              $params[$key] = $param;
+            }
+            break;
+
+          case 'divisions':
+            $params['division'] = $param;
+            break;
+
+          case 'places':
+            $params['location'] = $param;
+            break;
+
+          case 'dateTypes':
+            $dateTypes = explode(',', $param);
+            $dateParams = '';
+            foreach ($dateTypes as $dataType) {
+              switch ($param) {
+                case 'today':
+                  $params['end'] = 'today';
+                  break;
+
+                case 'tomorrow';
+                  $params['start'] = date('Y-m-d', strtotime('tomorrow'));
+                  $params['end'] = date('Y-m-d', strtotime('tomorrow'));
+                  break;
+
+                case 'this_week':
+                  $params['end'] = date('Y-m-d', strtotime('next Sunday'));
+                  break;
+
+                case 'weekend':
+                  $params['start'] = date('Y-m-d', strtotime('next Saturday'));
+                  $params['end'] = date('Y-m-d', strtotime('next Sunday'));
+                  break;
+
+                default:
+                  break;
+              }
+            }
+            break;
+
+          case 'text':
+            $params['all_ongoing_AND'] = $param;
+            break;
+
+          case 'isFree':
+            $params['is_free'] = $param;
+            break;
+
+          case 'onlyEveningEvents':
+            if ($param === 'true') {
+              $params['starts_after'] = 16;
+            }
+            break;
+
+          case 'onlyChildrenEvents':
+            if ($param === 'true') {
+              $params['keyword_AND'] = CategoryKeywords::CHILDREN;
+            }
+            break;
+
+          case 'onlyRemoteEvents':
+            $params['internet_based'] = 'true';
+            break;
+
+          default:
+            $params[$key] = $param;
+            break;
         }
       }
     }

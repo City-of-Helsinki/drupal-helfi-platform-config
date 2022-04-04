@@ -15,6 +15,10 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
       $params = $linkedEvents->parseParams($paragraph->get('field_api_url')->first()->getUrl()->toString());
       $variables['#attached']['drupalSettings']['helfi_events']['eventsUrl'] = $linkedEvents->getEventsRequest($params);
     }
+
+    if ($loadMore = $paragraph->get('field_load_more')->getValue()) {
+      $variables['#attached']['drupalSettings']['helfi_events']['loadMore'] = $loadMore;
+    }
   }
   
   $variables['#attached']['library'][] = 'helfi_events/events_list';

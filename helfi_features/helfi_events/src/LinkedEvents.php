@@ -36,7 +36,7 @@ class LinkedEvents extends EventsApiBase {
 
     $options = array_merge($defaultOptions, $options);
 
-    if (isset($options['all_ongoing_AND'])) {
+    if (!isset($options['all_ongoing_AND'])) {
       $options['all_ongoing'] = 'true';
     }
 

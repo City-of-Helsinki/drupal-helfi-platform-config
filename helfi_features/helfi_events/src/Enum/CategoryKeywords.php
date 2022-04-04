@@ -126,6 +126,8 @@ class CategoryKeywords {
     'yso:p2625',
   ];
 
+  const CHILDREN = 'yso:p4354';
+
   /**
    * Enum class, prevent instantiating.
    */
