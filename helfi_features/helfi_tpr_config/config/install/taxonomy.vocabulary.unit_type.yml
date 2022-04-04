@@ -1,0 +1,7 @@
+langcode: und
+status: true
+dependencies: {  }
+name: 'Unit type'
+vid: unit_type
+description: 'You can use this vocabulary to categorise TPR-units so that they can be used in listings for example listing of daycare units.'
+weight: 0
