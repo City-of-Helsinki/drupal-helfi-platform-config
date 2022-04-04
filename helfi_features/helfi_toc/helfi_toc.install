@@ -40,13 +40,16 @@ function helfi_toc_update_9001() {
  * Implements hook_uninstall().
  */
 function helfi_toc_uninstall() {
-  // Fields to be uninstalled and entity type.
+  // Uninstall toc_enabled and toc_title fields.
   $fields = ['toc_enabled', 'toc_title'];
   $entity_type = 'node';
+  $manager = \Drupal::entityDefinitionUpdateManager();
 
-  $entity_manager = \Drupal::entityManager();
   foreach ($fields as $field) {
-    $definition = $entity_manager->getLastInstalledFieldStorageDefinitions($entity_type)[$field];
-    $entity_manager->onFieldStorageDefinitionDelete($definition);
+    if (!$definition = $manager->getFieldStorageDefinition($field, $entity_type)) {
+      continue;
+    }
+    $manager->uninstallFieldStorageDefinition($definition);
   }
+
 }

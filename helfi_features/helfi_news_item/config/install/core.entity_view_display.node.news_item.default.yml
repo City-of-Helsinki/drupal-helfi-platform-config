@@ -34,7 +34,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: text_span
     region: content
   field_main_image:
     type: entity_reference_entity_view
@@ -50,7 +50,7 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: text_span
     region: content
   field_news_item_links_link:
     weight: 7

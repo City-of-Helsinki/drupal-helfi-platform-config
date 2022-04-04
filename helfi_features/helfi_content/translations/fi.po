@@ -605,6 +605,9 @@ msgstr "Kesä"
 msgid "Text"
 msgstr "Teksti"
 
+msgid "Text with span"
+msgstr "Teksti (span sallittu)"
+
 msgid "The links that you want the paragraph to display."
 msgstr "Linkkilistan linkit."
 

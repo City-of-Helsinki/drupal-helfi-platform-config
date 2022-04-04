@@ -34,7 +34,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: text_span
     region: content
   field_lower_content:
     type: entity_reference_revisions_entity_view
