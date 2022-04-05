@@ -15,8 +15,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * Listens to the dynamic route events.
  */
-final class RouteSubscriber implements EventSubscriberInterface
-{
+final class RouteSubscriber implements EventSubscriberInterface {
 
   /**
    * The current route match.
