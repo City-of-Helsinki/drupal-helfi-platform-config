@@ -30,6 +30,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9020();
     helfi_content_update_9021();
     helfi_content_update_9024();
+    helfi_content_update_9025();
   }
 }
 
@@ -538,14 +539,68 @@ function helfi_content_update_9024() {
   }
 }
 
+
+/**
+ * Enable Language selector plugin for minimal and html filters.
+ */
+function helfi_content_update_9025() {
+  // Load the existing configuration for editor.editor.full_html.
+  $editor_full_config = \Drupal::configFactory()->getEditable('editor.editor.full_html');
+  $editor_full = $editor_full_config->getRawData();
+
+  // Add language selector to configuration manually..
+  if (isset($editor_full['settings']['toolbar']['rows'])) {
+    foreach ($editor_full['settings']['toolbar']['rows'] as &$rows) {
+      // Go through each row of settings and search for the 'highlight' value and remove it if found.
+      foreach ($rows as &$row) {
+        if (array_key_exists('items', $row)) {
+          if ($row['name'] === 'Tools') {
+            array_splice($row['items'], 8, 0, 'language_selector');
+          }
+        }
+      }
+    }
+  }
+  // Save the configuration without the highlight value.
+  $editor_full_config->setData($editor_full)->save();
+
+  // Load the existing configuration for editor.editor.minimal.
+  $editor_minimal_config = \Drupal::configFactory()->getEditable('editor.editor.minimal');
+  $editor_minimal = $editor_minimal_config->getRawData();
+
+  // Add language selector to configuration manually..
+  if (isset($editor_minimal['settings']['toolbar']['rows'])) {
+    foreach ($editor_minimal['settings']['toolbar']['rows'] as &$rows) {
+      // Go through each row of settings and search for the 'highlight' value and remove it if found.
+      foreach ($rows as &$row) {
+        if (array_key_exists('items', $row)) {
+          if ($row['name'] === 'Tools') {
+            array_unshift($row['items'], 'language_selector');
+          }
+        }
+      }
+    }
+  }
+  // Save the configuration without the highlight value.
+  $editor_minimal_config->setData($editor_minimal)->save();
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9025');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+
+}
+
 /**
  * Override paragraphs library view: removed title link and hide language column.
  */
-function helfi_content_update_9025() {
+function helfi_content_update_9026() {
   // Override paragraphs view.
   if (Drupal::moduleHandler()->moduleExists('paragraphs_library')) {
-
-    // Override Media library views with enhanced view.
     $configLocation = dirname(__FILE__) . '/config/optional/';
     ConfigHelper::updateExistingConfig($configLocation, 'views.view.paragraphs_library');
   }
