@@ -14,3 +14,9 @@ services:
     arguments: ['@language_manager','@string_translation', '@file_system']
     tags:
       - { name: drush.command }
+
+  helfi_platform_config.route_subscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\RouteSubscriber
+    arguments: ['@current_route_match']
+    tags:
+      - { name: event_subscriber }

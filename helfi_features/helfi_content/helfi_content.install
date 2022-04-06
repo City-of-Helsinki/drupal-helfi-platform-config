@@ -539,6 +539,7 @@ function helfi_content_update_9024() {
   }
 }
 
+
 /**
  * Enable Language selector plugin for minimal and html filters.
  */
@@ -591,4 +592,16 @@ function helfi_content_update_9025() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+
+}
+
+/**
+ * Override paragraphs library view: removed title link and hide language column.
+ */
+function helfi_content_update_9026() {
+  // Override paragraphs view.
+  if (Drupal::moduleHandler()->moduleExists('paragraphs_library')) {
+    $configLocation = dirname(__FILE__) . '/config/optional/';
+    ConfigHelper::updateExistingConfig($configLocation, 'views.view.paragraphs_library');
+  }
 }
