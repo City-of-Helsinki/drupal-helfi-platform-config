@@ -37,7 +37,7 @@ final class RouteSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events = [
       KernelEvents::REQUEST => 'rerouteParagraphCanonicalUrl',
     ];
@@ -47,7 +47,7 @@ final class RouteSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public function rerouteParagraphCanonicalUrl(RequestEvent $event) {
+  public function rerouteParagraphCanonicalUrl(RequestEvent $event): void {
     $routeName = $this->currentRouteMatch->getRouteName();
     if ($routeName === 'entity.paragraphs_library_item.canonical') {
       $entity = $this->currentRouteMatch->getParameter('paragraphs_library_item');
