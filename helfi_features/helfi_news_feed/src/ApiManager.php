@@ -4,54 +4,28 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_news_feed;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\api_tools\Rest\RequestFactory;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
-use Drupal\helfi_api_base\Environment\Project;
-use Drupal\paragraphs\ParagraphInterface;
-use GuzzleHttp\ClientInterface;
+use Drupal\helfi_news_feed\Entity\NewsFeedParagraph;
+use Drupal\helfi_news_feed\Plugin\RestApiRequest\NewsRequest;
 
 final class ApiManager {
 
-  private const BASE_PATH = 'jsonapi/node/news';
-  private string $environment;
+  private NewsRequest $request;
 
   public function __construct(
-    private ClientInterface $client,
-    private EnvironmentResolver $environmentResolver,
+    RequestFactory $requestFactory,
     private LanguageManagerInterface $languageManager,
-    ConfigFactoryInterface $configFactory
   ) {
-    $this->environment = $configFactory->get('helfi_news_feed.settings')
-      ->get('source_environment') ?: 'prod';
+    $this->request = $requestFactory->create('helfi_news');
   }
 
-  private function getBaseUrl() : string {
+  public function toRenderArray(NewsFeedParagraph $paragraph) : array {
     $language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
-
-    $url = $this->environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $this->environment)
-      ->getBaseUrl($language);
-
-    return sprintf('%s/%s', $url, self::BASE_PATH);
-  }
-
-  private function buildQuery(ParagraphInterface $paragraph) : array {
-    try {
-      $response = $this->client->request('GET', $this->getBaseUrl());
-
-      return json_decode($response->getBody()->getContents(), TRUE);
-    }
-    catch (\Exception $e) {
-    }
-    return [];
-  }
-
-  public function toRenderArray(ParagraphInterface $paragraph) : array {
-    $data = $this->buildQuery($paragraph);
+    $data = $this->request->list($paragraph, $language);
 
     return [
       '#type' => 'markup',

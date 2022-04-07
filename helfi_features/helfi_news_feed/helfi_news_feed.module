@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_news_feed\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
@@ -37,5 +38,14 @@ function helfi_news_feed_paragraph_view(array &$build, ParagraphInterface $entit
     $service = \Drupal::service('helfi_news_feed.api_manager');
 
     $build['news_list'] = $service->toRenderArray($entity);
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_news_feed_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['news_list'])) {
+    $bundles['paragraph']['news_list']['class'] = NewsFeedParagraph::class;
   }
 }
