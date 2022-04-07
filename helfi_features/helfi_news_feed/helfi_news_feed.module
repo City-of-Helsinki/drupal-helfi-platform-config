@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Contains 'helfi_news_feed' hooks.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paragraphs\ParagraphInterface;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function helfi_news_feed_entity_extra_field_info() : array {
+  $extra = [];
+  $extra['paragraph']['news_list']['display']['news_list'] = [
+    'label' => new TranslatableMarkup('News list'),
+    'description' => new TranslatableMarkup('The value for this field is defined in %hook hook.', [
+      '%hook' => 'helfi_news_feed_paragraph_view()',
+    ]),
+    'weight' => 100,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function helfi_news_feed_paragraph_view(array &$build, ParagraphInterface $entity, EntityViewDisplayInterface $display, string $view_mode) : void {
+  if ($display->getComponent('news_list')) {
+    /** @var \Drupal\helfi_news_feed\ApiManager $service */
+    $service = \Drupal::service('helfi_news_feed.api_manager');
+
+    $build['news_list'] = $service->toRenderArray($entity);
+  }
+}

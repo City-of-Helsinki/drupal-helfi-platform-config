@@ -1,105 +1,106 @@
 {
-  "name": "drupal/helfi_platform_config",
-  "description": "HELfi platform config",
-  "type": "drupal-module",
-  "license": "GPL-2.0-or-later",
-  "minimum-stability": "dev",
-  "require": {
-    "drupal/admin_toolbar": "^2.4.0",
-    "drupal/aet": "^2.0@alpha",
-    "drupal/allowed_formats": "^1.3",
-    "drupal/config_ignore": "^2.3",
-    "drupal/config_rewrite": "^1.4",
-    "drupal/config_replace": "^2.0",
-    "drupal/content_lock": "^2.2",
-    "drupal/core-recommended": ">=9.3",
-    "drupal/crop": "^2.1",
-    "drupal/default_content": "^2.0.0-alpha1",
-    "drupal/diff": "^1.0",
-    "drupal/gin_toolbar": "1.0-beta20",
-    "drupal/entity_usage": "^2.0@beta",
-    "drupal/easy_breadcrumb": "^2.0",
-    "drupal/elasticsearch_connector": "^7.0@alpha",
-    "drupal/entity_browser": "^2.5",
-    "drupal/eu_cookie_compliance": "^1.14",
-    "drupal/features": "^3.12",
-    "drupal/field_group": "^3.1",
-    "drupal/focal_point": "^1.5",
-    "drupal/helfi_api_base": "*",
-    "drupal/helfi_media_map": "*",
-    "drupal/helfi_tpr": "*",
-    "drupal/helfi_media_formtool": "*",
-    "drupal/image_style_quality": "^1.4",
-    "drupal/imagecache_external": "^3.0",
-    "drupal/linkit": "^6.0@beta",
-    "drupal/matomo": "^1.11",
-    "drupal/matomo_reports": "^1.1",
-    "drupal/media_entity_soundcloud": "^3.0.0",
-    "drupal/menu_block_current_language": "^1.5",
-    "drupal/menu_link_attributes": "^1.2",
-    "drupal/metatag": "^1.16",
-    "drupal/oembed_providers": "^2.0",
-    "drupal/paragraphs": "^1.12",
-    "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
-    "drupal/pathauto": "^1.8",
-    "drupal/publication_date": "^2.0@beta",
-    "drupal/redirect": "^1.6",
-    "drupal/role_delegation" : "^1.1",
-    "drupal/search_api": "^1.0",
-    "drupal/scheduler": "^1.3",
-    "drupal/select2": "^1.12",
-    "drupal/social_media": "^1.8",
-    "drupal/simple_sitemap": "^4.1",
-    "drupal/siteimprove": "^1.11",
-    "drupal/token": "^1.9",
-    "drupal/token_filter": "^1.2",
-    "drupal/translatable_menu_link_uri": "^2.0",
-    "drupal/update_helper": "^2.0",
-    "drupal/view_unpublished": "^1.0",
-    "drupal/views_bulk_edit": "^2.6",
-    "drupal/views_bulk_operations": "^4.1"
-  },
-  "extra": {
-    "patches": {
-      "drupal/content_lock": {
-        "[#UHF-4553] Fix unlock content button redirect": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/82081691e4a6d05b3716052d5fff46a04027bdc3/patches/content-lock-uhf-4553.patch"
-      },
-      "drupal/core": {
-        "[#UHF-181] Hide untranslated menu links": "https://www.drupal.org/files/issues/2021-03-05/3091246-allow-menu-tree-manipulators-alter-12-1.patch",
-        "[#UHF-920] Token for base URL (https://www.drupal.org/project/drupal/issues/1088112).": "https://www.drupal.org/files/issues/2020-10-06/1088112-63.patch",
-        "[#UHF-3812] Ajax exposed filters not working for multiple instances of the same Views block placed on one page (https://www.drupal.org/project/drupal/issues/3163299).": "https://www.drupal.org/files/issues/2022-01-03/3163299-49.patch",
-        "[#UHF-3087] Non-published menu links as parent (https://www.drupal.org/project/drupal/issues/2807629)": "https://www.drupal.org/files/issues/2021-07-09/2807629-45.patch",
-        "[#UHF-4325] Strip whitespaces from twig debug comments": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/f7c0e380e2deb9a1b46bdf779fb27a945b466575/patches/drupal_core_strip_debug_mode_whitespaces_9.3.x.patch"
-      },
-      "drupal/default_content": {
-        "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"
-      },
-      "drupal/eu_cookie_compliance": {
-        "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/d1a6866b2138f7d3597df79f395a5c1a9e19ee2e/patches/eu_cookie_compliance_block_8.x-1.19.patch",
-        "[#UHF-2956] Fix JavaScript error at cookie preference page": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/97683d32e57808a4c9a4f6a2d20757af7a0b8c37/patches/eu_cookie_compliance_js_error_8.x-1.19-patched.patch"
-      },
-      "drupal/features": {
-        "https://www.drupal.org/project/features/issues/2869336": "https://www.drupal.org/files/issues/features_export-config-translation-2869336-2.patch"
-      },
-      "drupal/paragraphs": {
-        "https://www.drupal.org/project/paragraphs/issues/2904705#comment-13836790": "https://www.drupal.org/files/issues/2020-09-25/2904705-115.patch",
-        "[#UHF-2059] Enhancements for the Admin UI": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/fdccb32397cc6fa19b4d0077b21a2b18aa6be297/patches/helfi_customizations_for_paragraphs_widget_8.x-1.12.patch"
-      },
-      "drupal/paragraphs_asymmetric_translation_widgets": {
-        "https://www.drupal.org/project/paragraphs_asymmetric_translation_widgets/issues/3171810#comment-13836806": "https://www.drupal.org/files/issues/2020-09-25/3171810-2.patch"
-      },
-      "drupal/linkit": {
-        "[#UHF-1872] Linkit support for link field": "https://www.drupal.org/files/issues/2021-08-20/avoid-linkit-CI-issue.patch"
-      },
-      "drupal/field_group": {
-        "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
-      },
-      "drupal/easy_breadcrumb": {
-        "[#UHF-3631] Breadcrumb allow dashes and underscores": "https://www.drupal.org/files/issues/2020-07-23/easy_breadcrumb-allow_hyphens_underscores-3161100-2.patch"
-      },
-      "drupal/views_bulk_edit": {
-        "[#UHF-4528] Declaration must be compatible": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/20af0607626b4c9adaa52c1c9773850a5c8fec3d/patches/views_bulk_edit_tests_compatible_declaration_8.x-2.6.patch"
-      }
+    "name": "drupal/helfi_platform_config",
+    "description": "HELfi platform config",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "require": {
+        "drupal/api_tools": "^1.0",
+        "drupal/admin_toolbar": "^2.4.0",
+        "drupal/aet": "^2.0@alpha",
+        "drupal/allowed_formats": "^1.3",
+        "drupal/config_ignore": "^2.3",
+        "drupal/config_rewrite": "^1.4",
+        "drupal/config_replace": "^2.0",
+        "drupal/content_lock": "^2.2",
+        "drupal/core-recommended": ">=9.3",
+        "drupal/crop": "^2.1",
+        "drupal/default_content": "^2.0.0-alpha1",
+        "drupal/diff": "^1.0",
+        "drupal/gin_toolbar": "1.0-beta20",
+        "drupal/entity_usage": "^2.0@beta",
+        "drupal/easy_breadcrumb": "^2.0",
+        "drupal/elasticsearch_connector": "^7.0@alpha",
+        "drupal/entity_browser": "^2.5",
+        "drupal/eu_cookie_compliance": "^1.14",
+        "drupal/features": "^3.12",
+        "drupal/field_group": "^3.1",
+        "drupal/focal_point": "^1.5",
+        "drupal/helfi_api_base": "*",
+        "drupal/helfi_media_map": "*",
+        "drupal/helfi_tpr": "*",
+        "drupal/helfi_media_formtool": "*",
+        "drupal/image_style_quality": "^1.4",
+        "drupal/imagecache_external": "^3.0",
+        "drupal/linkit": "^6.0@beta",
+        "drupal/matomo": "^1.11",
+        "drupal/matomo_reports": "^1.1",
+        "drupal/media_entity_soundcloud": "^3.0.0",
+        "drupal/menu_block_current_language": "^1.5",
+        "drupal/menu_link_attributes": "^1.2",
+        "drupal/metatag": "^1.16",
+        "drupal/oembed_providers": "^2.0",
+        "drupal/paragraphs": "^1.12",
+        "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
+        "drupal/pathauto": "^1.8",
+        "drupal/publication_date": "^2.0@beta",
+        "drupal/redirect": "^1.6",
+        "drupal/role_delegation" : "^1.1",
+        "drupal/search_api": "^1.0",
+        "drupal/scheduler": "^1.3",
+        "drupal/select2": "^1.12",
+        "drupal/social_media": "^1.8",
+        "drupal/simple_sitemap": "^4.1",
+        "drupal/siteimprove": "^1.11",
+        "drupal/token": "^1.9",
+        "drupal/token_filter": "^1.2",
+        "drupal/translatable_menu_link_uri": "^2.0",
+        "drupal/update_helper": "^2.0",
+        "drupal/view_unpublished": "^1.0",
+        "drupal/views_bulk_edit": "^2.6",
+        "drupal/views_bulk_operations": "^4.1"
+    },
+    "extra": {
+        "patches": {
+            "drupal/content_lock": {
+                "[#UHF-4553] Fix unlock content button redirect": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/82081691e4a6d05b3716052d5fff46a04027bdc3/patches/content-lock-uhf-4553.patch"
+            },
+            "drupal/core": {
+                "[#UHF-181] Hide untranslated menu links": "https://www.drupal.org/files/issues/2021-03-05/3091246-allow-menu-tree-manipulators-alter-12-1.patch",
+                "[#UHF-920] Token for base URL (https://www.drupal.org/project/drupal/issues/1088112).": "https://www.drupal.org/files/issues/2020-10-06/1088112-63.patch",
+                "[#UHF-3812] Ajax exposed filters not working for multiple instances of the same Views block placed on one page (https://www.drupal.org/project/drupal/issues/3163299).": "https://www.drupal.org/files/issues/2022-01-03/3163299-49.patch",
+                "[#UHF-3087] Non-published menu links as parent (https://www.drupal.org/project/drupal/issues/2807629)": "https://www.drupal.org/files/issues/2021-07-09/2807629-45.patch",
+                "[#UHF-4325] Strip whitespaces from twig debug comments": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/f7c0e380e2deb9a1b46bdf779fb27a945b466575/patches/drupal_core_strip_debug_mode_whitespaces_9.3.x.patch"
+            },
+            "drupal/default_content": {
+                "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"
+            },
+            "drupal/eu_cookie_compliance": {
+                "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/d1a6866b2138f7d3597df79f395a5c1a9e19ee2e/patches/eu_cookie_compliance_block_8.x-1.19.patch",
+                "[#UHF-2956] Fix JavaScript error at cookie preference page": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/97683d32e57808a4c9a4f6a2d20757af7a0b8c37/patches/eu_cookie_compliance_js_error_8.x-1.19-patched.patch"
+            },
+            "drupal/features": {
+                "https://www.drupal.org/project/features/issues/2869336": "https://www.drupal.org/files/issues/features_export-config-translation-2869336-2.patch"
+            },
+            "drupal/paragraphs": {
+                "https://www.drupal.org/project/paragraphs/issues/2904705#comment-13836790": "https://www.drupal.org/files/issues/2020-09-25/2904705-115.patch",
+                "[#UHF-2059] Enhancements for the Admin UI": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/fdccb32397cc6fa19b4d0077b21a2b18aa6be297/patches/helfi_customizations_for_paragraphs_widget_8.x-1.12.patch"
+            },
+            "drupal/paragraphs_asymmetric_translation_widgets": {
+                "https://www.drupal.org/project/paragraphs_asymmetric_translation_widgets/issues/3171810#comment-13836806": "https://www.drupal.org/files/issues/2020-09-25/3171810-2.patch"
+            },
+            "drupal/linkit": {
+                "[#UHF-1872] Linkit support for link field": "https://www.drupal.org/files/issues/2021-08-20/avoid-linkit-CI-issue.patch"
+            },
+            "drupal/field_group": {
+                "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
+            },
+            "drupal/easy_breadcrumb": {
+                "[#UHF-3631] Breadcrumb allow dashes and underscores": "https://www.drupal.org/files/issues/2020-07-23/easy_breadcrumb-allow_hyphens_underscores-3161100-2.patch"
+            },
+            "drupal/views_bulk_edit": {
+                "[#UHF-4528] Declaration must be compatible": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/20af0607626b4c9adaa52c1c9773850a5c8fec3d/patches/views_bulk_edit_tests_compatible_declaration_8.x-2.6.patch"
+            }
+        }
     }
-  }
 }

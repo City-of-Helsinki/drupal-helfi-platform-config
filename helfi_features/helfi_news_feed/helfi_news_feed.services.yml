@@ -1,0 +1,4 @@
+services:
+  helfi_news_feed.api_manager:
+    class: Drupal\helfi_news_feed\ApiManager
+    arguments: ['@http_client', '@helfi_api_base.environment_resolver', '@language_manager', '@config.factory']
