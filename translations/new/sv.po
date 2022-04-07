@@ -6,6 +6,9 @@
 msgid ""
 msgstr ""
 
+msgid "Northern Sami"
+msgstr "Nordsamiska"
+
 msgid "Round-the-clock care"
 msgstr "Dygnet runt-vård"
 
