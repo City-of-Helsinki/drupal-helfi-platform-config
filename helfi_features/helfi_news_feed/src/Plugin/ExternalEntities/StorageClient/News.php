@@ -203,7 +203,7 @@ final class News extends ExternalEntityStorageClientBase {
    * @return array|null
    *   The related element.
    */
-  private function getRelatedElement(array $element, string $id) : ? array {
+  private function resolveInclude(array $element, string $id) : ? array {
     $key = array_search($id, array_column($element, 'id'));
 
     if ($key === FALSE) {
@@ -229,7 +229,7 @@ final class News extends ExternalEntityStorageClientBase {
 
       // Handle elements without nested relationships.
       if (!isset($rdata[0])) {
-        if (!$element = $this->getRelatedElement($includes, $rdata['id'])) {
+        if (!$element = $this->resolveInclude($includes, $rdata['id'])) {
           continue;
         }
         $this->resolveRelationShip($element, $includes);
@@ -239,7 +239,7 @@ final class News extends ExternalEntityStorageClientBase {
         continue;
       }
       foreach ($rdata as &$item) {
-        if (!$element = $this->getRelatedElement($includes, $item['id'])) {
+        if (!$element = $this->resolveInclude($includes, $item['id'])) {
           continue;
         }
 

@@ -8,7 +8,9 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_news_feed\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -32,12 +34,17 @@ function helfi_news_feed_entity_extra_field_info() : array {
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function helfi_news_feed_paragraph_view(array &$build, ParagraphInterface $entity, EntityViewDisplayInterface $display, string $view_mode) : void {
+function helfi_news_feed_paragraph_view(
+  array &$build,
+  ParagraphInterface $entity,
+  EntityViewDisplayInterface $display,
+  string $view_mode
+) : void {
   if (!$entity instanceof NewsFeedParagraph) {
     return;
   }
   if ($display->getComponent('news_list')) {
-    $storage = \Drupal::entityTypeManager()
+    $storage = Drupal::entityTypeManager()
       ->getStorage('helfi_news');
     $query = $storage
       ->getQuery();
@@ -53,7 +60,7 @@ function helfi_news_feed_paragraph_view(array &$build, ParagraphInterface $entit
     $entities = $storage->loadMultiple(array_keys($ids));
 
     foreach ($entities as $entity) {
-      $build['news_list'][] = \Drupal::entityTypeManager()
+      $build['news_list'][] = Drupal::entityTypeManager()
         ->getViewBuilder('helfi_news')
         ->view($entity);
     }
@@ -61,9 +68,30 @@ function helfi_news_feed_paragraph_view(array &$build, ParagraphInterface $entit
 }
 
 /**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_news_feed_entity_bundle_field_info_alter(
+  &$fields,
+  EntityTypeInterface $entity_type,
+  $bundle
+) : void {
+  if ($entity_type->id() === 'helfi_news') {
+    $fields['main_image'] = BundleFieldDefinition::create('link')
+      ->setName('main_image')
+      ->setLabel(new TranslatableMarkup('Main image'))
+      ->setTargetEntityTypeId($entity_type->id())
+      ->setTargetBundle($bundle)
+      ->setSettings([
+        'max_length' => 1024,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+  }
+}
+
+/**
  * Implements hook_entity_bundle_info_alter().
  */
-function helfi_news_feed_entity_bundle_info_alter(array &$bundles): void {
+function helfi_news_feed_entity_bundle_info_alter(array &$bundles) : void {
   if (isset($bundles['paragraph']['news_list'])) {
     $bundles['paragraph']['news_list']['class'] = NewsFeedParagraph::class;
   }
