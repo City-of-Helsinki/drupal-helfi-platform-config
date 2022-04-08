@@ -19,11 +19,15 @@ class NewsFeedParagraphTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'system',
     'field',
+    'link',
+    'image',
     'file',
     'user',
     'paragraphs',
     'external_entities',
+    'responsive_image',
     'helfi_news_feed',
   ];
 
@@ -35,7 +39,9 @@ class NewsFeedParagraphTest extends KernelTestBase {
     $this->installEntitySchema('file');
     $this->installEntitySchema('user');
     $this->installEntitySchema('paragraph');
+    $this->installEntitySchema('responsive_image_style');
     $this->installEntitySchema('paragraphs_type');
+    $this->installConfig('image');
     $this->installConfig('paragraphs');
     $this->installConfig('helfi_news_feed');
     $this->installEntitySchema('helfi_news');
