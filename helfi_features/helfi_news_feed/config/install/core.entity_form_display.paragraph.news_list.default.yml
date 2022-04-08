@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.news_list.field_limit
+    - field.field.paragraph.news_list.field_tags
+    - paragraphs.paragraphs_type.news_list
+id: paragraph.news_list.default
+targetEntityType: paragraph
+bundle: news_list
+mode: default
+content:
+  field_limit:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_tags:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
