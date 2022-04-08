@@ -26,8 +26,25 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class News extends ExternalEntityStorageClientBase {
 
+  /**
+   * The active endpoint environment.
+   *
+   * @var \Drupal\helfi_api_base\Environment\Environment
+   */
   private Environment $environment;
+
+  /**
+   * The current language service.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
   private LanguageManagerInterface $languageManager;
+
+  /**
+   * The HTTP client service.
+   *
+   * @var \GuzzleHttp\ClientInterface
+   */
   private ClientInterface $client;
 
   /**
@@ -54,12 +71,6 @@ final class News extends ExternalEntityStorageClientBase {
     return $instance;
   }
 
-  private function getCurrentLanguageId() : string {
-    return $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-      ->getId();
-  }
-
   /**
    * {@inheritdoc}
    */
@@ -70,23 +81,28 @@ final class News extends ExternalEntityStorageClientBase {
       'include' => 'main_image.media_image',
       'fields[file--file]' => 'uri,url',
     ];
+    $language = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
 
     foreach ($ids as $index => $id) {
       $query[sprintf('filter[id][value][%d]', $index)] = $id;
     }
-    return $this->request($query, $this->getCurrentLanguageId());
+    return $this->request($query, $language);
   }
 
   /**
    * {@inheritdoc}
    */
   public function save(ExternalEntityInterface $entity) : void {
+    // Not supported.
   }
 
   /**
    * {@inheritdoc}
    */
   public function delete(ExternalEntityInterface $entity) : void {
+    // Not supported.
   }
 
   /**
@@ -108,18 +124,14 @@ final class News extends ExternalEntityStorageClientBase {
     // We only care about basic entity data here.
     $query['fields[node--news_item]'] = 'id';
 
-
     foreach ($parameters as $param) {
       ['field' => $field, 'value' => $value, 'operator' => $op] = $param;
 
-      if (!isset($map[$field])) {
-        continue;
-      }
       $match = match($field) {
-        'langcode' => function (string $value, string $op): array {
+        'langcode' => function (string $value, ?string $op): array {
           return ['filter[langcode]' => $value];
         },
-        'tags' => function (array $tags, string $op): array {
+        'tags' => function (array $tags, ?string $op): array {
           $query = [];
           foreach ($tags as $key => $tag) {
             // Only show entities that contain ALL defined tags, like
@@ -133,18 +145,18 @@ final class News extends ExternalEntityStorageClientBase {
           }
           return $query;
         },
-        default => NULL,
       };
-      if (!$fieldValue = $match($value, $op)) {
-        continue;
+      try {
+        $query += $match($value, $op);
       }
-      $query += $fieldValue;
+      catch (\UnhandledMatchError) {
+      }
     }
 
     if (!isset($query['filter[langcode]'])) {
       throw new \InvalidArgumentException('Missing required "langcode" filter.');
     }
-    return $this->request($query, $query['filter[langcode]]']);
+    return $this->request($query, $query['filter[langcode]']);
   }
 
   /**
@@ -175,7 +187,7 @@ final class News extends ExternalEntityStorageClientBase {
         return $item;
       }, $json['data']);
     }
-    catch (RequestException | GuzzleException $e) {
+    catch (RequestException | GuzzleException) {
     }
     return [];
   }
