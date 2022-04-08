@@ -4,5 +4,9 @@ description: News feed module
 package: Custom
 core_version_requirement: ^9.3
 dependencies:
+  - field
   - external_entities
   - entity
+  - paragraphs
+  - imagecache_external
+  - responsive_image

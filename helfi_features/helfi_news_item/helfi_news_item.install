@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\helfi_platform_config\ConfigHelper;
 
 /**
@@ -10,7 +14,7 @@ use Drupal\helfi_platform_config\ConfigHelper;
  */
 function helfi_news_item_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
-  // of a configuration import
+  // of a configuration import.
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_news_item_update_9001();
     helfi_news_item_update_9002();
