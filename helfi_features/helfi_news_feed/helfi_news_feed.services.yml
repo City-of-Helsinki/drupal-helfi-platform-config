@@ -1,4 +1,1 @@
 services:
-  helfi_news_feed.api_manager:
-    class: Drupal\helfi_news_feed\ApiManager
-    arguments: ['@api_tools.rest.request_factory', '@language_manager']

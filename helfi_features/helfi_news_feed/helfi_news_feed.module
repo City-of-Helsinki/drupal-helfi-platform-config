@@ -33,11 +33,30 @@ function helfi_news_feed_entity_extra_field_info() : array {
  * Implements hook_ENTITY_TYPE_view().
  */
 function helfi_news_feed_paragraph_view(array &$build, ParagraphInterface $entity, EntityViewDisplayInterface $display, string $view_mode) : void {
+  if (!$entity instanceof NewsFeedParagraph) {
+    return;
+  }
   if ($display->getComponent('news_list')) {
-    /** @var \Drupal\helfi_news_feed\ApiManager $service */
-    $service = \Drupal::service('helfi_news_feed.api_manager');
+    $storage = \Drupal::entityTypeManager()
+      ->getStorage('helfi_news');
+    $query = $storage
+      ->getQuery();
+    $query
+      ->condition('langcode', $entity->language()->getId())
+      ->range(0, $entity->getLimit());
 
-    $build['news_list'] = $service->toRenderArray($entity);
+    if ($tags = $entity->getTags()) {
+      $query->condition('tags', $tags, 'IN');
+    }
+
+    $ids = $query->execute();
+    $entities = $storage->loadMultiple(array_keys($ids));
+
+    foreach ($entities as $entity) {
+      $build['news_list'][] = \Drupal::entityTypeManager()
+        ->getViewBuilder('helfi_news')
+        ->view($entity);
+    }
   }
 }
 

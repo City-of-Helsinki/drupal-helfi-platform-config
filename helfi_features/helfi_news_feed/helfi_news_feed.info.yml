@@ -3,5 +3,3 @@ type: module
 description: News feed module
 package: Custom
 core_version_requirement: ^9.3
-dependencies:
-  - api_tools
