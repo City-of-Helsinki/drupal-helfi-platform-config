@@ -132,16 +132,11 @@ final class News extends ExternalEntityStorageClientBase {
           return ['filter[langcode]' => $value];
         },
         'tags' => function (array $tags, ?string $op): array {
-          $query = [];
+          $query = [
+            'filter[news_item_tags.name][operator]' => 'IN',
+          ];
           foreach ($tags as $key => $tag) {
-            // Only show entities that contain ALL defined tags, like
-            // (WHERE tag = 'first' AND tag = 'second').
-            $query += [
-              sprintf('filter[tags-%s-and][group][conjunction]', $key) => 'AND',
-              sprintf('filter[tag-%s][condition][path]', $key) => 'news_item_tags.name',
-              sprintf('filter[tag-%s][condition][value]', $key) => $tag,
-              sprintf('filter[tag-%s][condition][memberOf]', $key) => sprintf('tags-%s-and', $key),
-            ];
+            $query[sprintf('filter[news_item_tags.name][value][%d]', $key)] = $tag;
           }
           return $query;
         },
@@ -187,7 +182,7 @@ final class News extends ExternalEntityStorageClientBase {
         return $item;
       }, $json['data']);
     }
-    catch (RequestException | GuzzleException) {
+    catch (RequestException | GuzzleException $e) {
     }
     return [];
   }

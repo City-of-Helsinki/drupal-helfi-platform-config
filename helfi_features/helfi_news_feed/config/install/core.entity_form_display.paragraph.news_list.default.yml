@@ -5,6 +5,8 @@ dependencies:
     - field.field.paragraph.news_list.field_limit
     - field.field.paragraph.news_list.field_tags
     - paragraphs.paragraphs_type.news_list
+_core:
+  default_config_hash: TnVdIH7RStyiCOpair42VTDXGLVpLxfMDMr2dYsnUuY
 id: paragraph.news_list.default
 targetEntityType: paragraph
 bundle: news_list

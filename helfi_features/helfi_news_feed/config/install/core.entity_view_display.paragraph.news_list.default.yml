@@ -10,19 +10,11 @@ targetEntityType: paragraph
 bundle: news_list
 mode: default
 content:
-  field_limit:
-    type: number_integer
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    weight: 101
-    region: content
   news_list:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
+  field_limit: true
   field_tags: true
