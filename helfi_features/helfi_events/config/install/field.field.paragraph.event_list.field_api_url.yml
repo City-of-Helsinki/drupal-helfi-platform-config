@@ -14,7 +14,7 @@ field_name: field_api_url
 entity_type: paragraph
 bundle: event_list
 label: 'Api URL'
-description: ''
+description: 'Add URL from tapahtumat.hel.fi to form a list of events'
 required: false
 translatable: false
 default_value: {  }
