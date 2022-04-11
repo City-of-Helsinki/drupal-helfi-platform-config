@@ -1,0 +1,21 @@
+uuid: 3476e689-b826-497d-b96e-518a7913336b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_list_description
+    - paragraphs.paragraphs_type.event_list
+_core:
+  default_config_hash: '-PGE7rG3t7A6_3l0uVBoPLWdAzf5Gd4POWNf_DtreZE'
+id: paragraph.event_list.field_event_list_description
+field_name: field_event_list_description
+entity_type: paragraph
+bundle: event_list
+label: Description
+description: 'Brief description for the events in the list.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long
