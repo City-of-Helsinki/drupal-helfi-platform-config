@@ -1,0 +1,6 @@
+events_list:
+  version: 1.x
+  js:
+    assets/js/eventList.js: {}
+  dependencies:
+    - core/drupalSettings

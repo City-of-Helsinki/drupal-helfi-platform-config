@@ -10,6 +10,7 @@ use Drupal\Core\Url;
  * Class for retrieving data from LinkedEvents Api.
  */
 class LinkedEvents extends EventsApiBase {
+  public const BASE_URL = 'https://tapahtumat.hel.fi';
   protected const API_URL = 'https://api.hel.fi/linkedevents/v1/';
 
   /**
@@ -33,7 +34,7 @@ class LinkedEvents extends EventsApiBase {
       'sort' => 'end_time',
       'start' => 'now',
       'super_event_type' => 'umbrella,none',
-      'language' => 'fi',
+      'language' => \Drupal::languageManager()->getCurrentLanguage()->getId()
     ];
 
     $options = array_merge($defaultOptions, $options);
@@ -46,5 +47,4 @@ class LinkedEvents extends EventsApiBase {
 
     return $url->toString();
   }
-
 }
