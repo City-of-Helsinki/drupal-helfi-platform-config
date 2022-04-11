@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\helfi_events;
 
 use Drupal\Component\Utility\UrlHelper;
@@ -11,18 +13,6 @@ use GuzzleHttp\ClientInterface;
  * Base class for retrieving events data.
  */
 class EventsApiBase {
-  /**
-   * The cache.
-   *
-   * @var \Drupal\Core\Cache\CacheBackendInterface
-   */
-  protected CacheBackendInterface $dataCache;
-  /**
-   * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected $httpClient;
 
   /**
    * The constructor.
@@ -32,10 +22,10 @@ class EventsApiBase {
    * @param \Drupal\Core\Cache\CacheBackendInterface $dataCache
    *   Data Cache.
    */
-  public function __construct(ClientInterface $httpClient, CacheBackendInterface $dataCache) {
-    $this->httpClient = $httpClient;
-    $this->dataCache = $dataCache;
-  }
+  public function __construct(
+    protected ClientInterface $httpClient,
+    protected CacheBackendInterface $dataCache
+  ) {}
 
   /**
    * Sets cache.
@@ -59,7 +49,7 @@ class EventsApiBase {
    * @return mixed|null
    *   Cached data or null
    */
-  protected function getFromCache(string $id) {
+  protected function getFromCache(string $id) : mixed {
     $key = $this->getCacheKey($id);
 
     if (isset($this->data[$key])) {
@@ -82,7 +72,7 @@ class EventsApiBase {
    * @return array
    *   Array of params.
    */
-  public function parseParams($url) : array {
+  public function parseParams(string $url) : array {
     $parsed = UrlHelper::parse($url);
     $params = [];
 
@@ -187,46 +177,20 @@ class EventsApiBase {
     $keywords = [];
 
     foreach (explode(',', $categories) as $category) {
-      switch ($category) {
-        case 'culture':
-          $keywords = array_merge(CategoryKeywords::CULTURE, $keywords);
-        default:
-        case 'movie':
-          $keywords = array_merge(CategoryKeywords::MOVIE, $keywords);
-          break;
+      $map = match ($category) {
+        'culture' => CategoryKeywords::CULTURE,
+        'movie' => CategoryKeywords::MOVIE,
+        'sport' => CategoryKeywords::SPORT,
+        'nature' => CategoryKeywords::CAMPS,
+        'museum' => CategoryKeywords::MUSEUM,
+        'music' => CategoryKeywords::MUSIC,
+        'influence' => CategoryKeywords::INFLUENCE,
+        'food' => CategoryKeywords::FOOD,
+        'dance' => CategoryKeywords::DANCE,
+        'theatre' => CategoryKeywords::THEATRE,
+      };
 
-        case 'sport':
-          $keywords = array_merge(CategoryKeywords::SPORT, $keywords);
-          break;
-
-        case 'nature':
-          $keywords = array_merge(CategoryKeywords::CAMPS, $keywords);
-          break;
-
-        case 'museum':
-          $keywords = array_merge(CategoryKeywords::MUSEUM, $keywords);
-          break;
-
-        case 'music';
-          $keywords = array_merge(CategoryKeywords::MUSIC, $keywords);
-          break;
-
-        case 'influence';
-          $keywords = array_merge(CategoryKeywords::INFLUENCE, $keywords);
-          break;
-
-        case 'food';
-          $keywords = array_merge(CategoryKeywords::FOOD, $keywords);
-          break;
-
-        case 'dance';
-          $keywords = array_merge(CategoryKeywords::DANCE, $keywords);
-          break;
-
-        case 'theatre';
-          $keywords = array_merge(CategoryKeywords::THEATRE, $keywords);
-          break;
-      }
+      $keywords = array_merge($map, $keywords);
     };
 
     return implode(',', $keywords);

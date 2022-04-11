@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\helfi_events;
 
 use Drupal\Core\Url;
@@ -8,7 +10,7 @@ use Drupal\Core\Url;
  * Class for retrieving data from LinkedEvents Api.
  */
 class LinkedEvents extends EventsApiBase {
-  const API_URL = 'https://api.hel.fi/linkedevents/v1/';
+  protected const API_URL = 'https://api.hel.fi/linkedevents/v1/';
 
   /**
    * Form url for getting events from api.
@@ -19,7 +21,7 @@ class LinkedEvents extends EventsApiBase {
    * @return string
    *   Resulting api url with params a query string
    */
-  public function getEventsRequest(array $options = []) {
+  public function getEventsRequest(array $options = []) : string {
     $url = Url::fromUri(self::API_URL . 'event');
 
     $defaultOptions = [

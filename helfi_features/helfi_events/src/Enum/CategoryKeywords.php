@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\helfi_events\Enum;
 
 /**
  * Enum class CategoryKeywords.
  */
 class CategoryKeywords {
-  const CULTURE = [
+  public const CULTURE = [
   // Teatteri.
     'kulke:33',
   // Sirkus.
@@ -55,11 +57,11 @@ class CategoryKeywords {
     'yso:p16327',
   ];
 
-  const MOVIE = [
+  public const MOVIE = [
     'yso:p1235',
   ];
 
-  const INFLUENCE = [
+  public const INFLUENCE = [
   // Vaikuttaminen.
     'yso:p1657',
   // Demokratia.
@@ -74,21 +76,21 @@ class CategoryKeywords {
     'yso:p15292',
   ];
 
-  const MUSEUM = [
+  public const MUSEUM = [
   // Museo.
     'matko:museo',
   // Museot.
     'yso:p4934',
   ];
 
-  const SPORT = [
+  public const SPORT = [
   // Liikunta.
     'yso:p916',
   // Urheilu.
     'yso:p965',
   ];
 
-  const CAMPS = [
+  public const CAMPS = [
   // Leirit.
     'yso:p143',
   // kesäleirit.
@@ -97,36 +99,36 @@ class CategoryKeywords {
     'yso:p22818',
   ];
 
-  const TRIPS = [
+  public const TRIPS = [
   // Retket.
     'yso:p25261',
   // Retkeily.
     'yso:p1103',
   ];
 
-  const WORKSHOPS = [
+  public const WORKSHOPS = [
     // työpajat.
     'yso:p19245',
     'kulke:732',
   ];
 
-  const MUSIC = [
+  public const MUSIC = [
     'yso:p1808',
   ];
 
-  const FOOD = [
+  public const FOOD = [
     'yso:p3670',
   ];
 
-  const DANCE = [
+  public const DANCE = [
     'yso:p1278',
   ];
 
-  const THEATRE = [
+  public const THEATRE = [
     'yso:p2625',
   ];
 
-  const CHILDREN = 'yso:p4354';
+  public const CHILDREN = 'yso:p4354';
 
   /**
    * Enum class, prevent instantiating.
