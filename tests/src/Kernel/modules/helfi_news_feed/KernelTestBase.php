@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_news_feed\Kernel;
+namespace Drupal\Tests\helfi_platform_config\Kernel\modules\helfi_news_feed;
 
 use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
 

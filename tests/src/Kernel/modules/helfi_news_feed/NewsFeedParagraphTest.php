@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Drupal\Tests\helfi_platform_config\Kernel\modules\helfi_news_feed;
+
+use Drupal\helfi_news_feed\Entity\NewsFeedParagraph;
+use Drupal\paragraphs\Entity\Paragraph;
+
+/**
+ * Tests NewsFeedParagraph installation.
+ *
+ * @group helfi_news_feed
+ */
+class NewsFeedParagraphTest extends KernelTestBase {
+
+  /**
+   * Tests that paragraph uses proper bundle class.
+   */
+  public function testBundleClass() : void {
+    $paragraph = Paragraph::create([
+      'type' => 'news_list',
+      'field_tags' => ['first', 'second'],
+      'field_limit' => 22,
+    ]);
+    $paragraph->save();
+    $this->assertInstanceOf(NewsFeedParagraph::class, $paragraph);
+    $this->assertEquals(['first', 'second'], $paragraph->getTags());
+    $this->assertEquals(22, $paragraph->getLimit());
+  }
+
+}

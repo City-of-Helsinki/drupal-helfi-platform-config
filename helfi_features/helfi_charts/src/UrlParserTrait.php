@@ -14,51 +14,32 @@ use Psr\Http\Message\UriInterface;
 trait UrlParserTrait {
 
   /**
-   * Validates media link.
-   *
-   * @param \Psr\Http\Message\UriInterface $uri
-   *   The uri.
-   */
-  private function assertMediaLink(UriInterface $uri) : void {
-    if (!in_array($uri->getHost(), Chart::VALID_URLS)) {
-      throw new \InvalidArgumentException('Invalid domain, Check URL.');
-    }
-  }
-
-  /**
    * Check that given URL has correct properties.
    *
-   * @param string $uri
+   * @param \Psr\Http\Message\UriInterface $uri
    *   The uri from chart URL.
-   *
-   * @return string|null
-   *   The url.
    */
-  protected function getChartUrl(string $uri) : ? string {
-    $uri = Http::createFromString($uri);
-
-    $this->assertMediaLink($uri);
-
-    if ($uri->getHost() === Chart::CHART_POWERBI_URL) {
-      if (str_contains($uri->getPath(), '/view')) {
-        return (string) $uri;
-      }
+  protected function assertMediaLink(UriInterface $uri) : void {
+    if (
+      $uri->getHost() === Chart::CHART_POWERBI_URL &&
+      str_contains($uri->getPath(), '/view')
+    ) {
+      return;
     }
-    throw new \LogicException('Invalid URL parameters. Check URL.');
+    throw new \InvalidArgumentException('Invalid media URL. Check URL.');
   }
 
   /**
-   * Get given URL domain.
+   * Gets the URI object for given url.
    *
-   * @param string $uri
-   *   The uri from chart URL.
+   * @param string $url
+   *   The uri to parse.
    *
-   * @return string|null
-   *   The domain in format https://sub.domain.com.
+   * @return \Psr\Http\Message\UriInterface
+   *   The uri.
    */
-  protected function getDomain(string $uri) : ? string {
-    $uri = Http::createFromString($uri);
-    return ($uri->getHost()) ? $uri->getHost() : NULL;
+  protected function mediaUrlToUri(string $url) :  UriInterface {
+    return Http::createFromString($url);
   }
 
 }

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_news_feed\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\external_entities\ExternalEntityInterface;
@@ -95,14 +96,14 @@ final class News extends ExternalEntityStorageClientBase {
    * {@inheritdoc}
    */
   public function save(ExternalEntityInterface $entity) : void {
-    // Not supported.
+    throw new EntityStorageException('::save() is not supported.');
   }
 
   /**
    * {@inheritdoc}
    */
   public function delete(ExternalEntityInterface $entity) : void {
-    // Not supported.
+    throw new EntityStorageException('::delete() is not supported.');
   }
 
   /**
@@ -135,6 +136,7 @@ final class News extends ExternalEntityStorageClientBase {
           $query = [
             'filter[news_item_tags.name][operator]' => 'IN',
           ];
+          // Filter by multiple tags using 'OR' condition.
           foreach ($tags as $key => $tag) {
             $query[sprintf('filter[news_item_tags.name][value][%d]', $key)] = $tag;
           }
@@ -183,6 +185,7 @@ final class News extends ExternalEntityStorageClientBase {
       }, $json['data']);
     }
     catch (RequestException | GuzzleException $e) {
+      watchdog_exception('helfi_news_feed', $e);
     }
     return [];
   }

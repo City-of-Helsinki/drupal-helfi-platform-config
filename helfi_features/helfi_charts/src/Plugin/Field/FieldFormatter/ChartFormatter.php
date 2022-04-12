@@ -33,11 +33,20 @@ final class ChartFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       ['uri' => $uri] = $item->getValue();
 
+      try {
+        $url = $this->mediaUrlToUri($uri);
+        $this->assertMediaLink($url);
+      }
+      catch (\InvalidArgumentException $e) {
+        watchdog_exception('helfi_chart', $e);
+
+        continue;
+      }
       $element[$delta] = [
         '#theme' => 'chart_iframe',
         '#title' => $entity->field_helfi_chart_title->value,
-        '#url' => $this->getChartUrl($uri),
-        '#domain' => $this->getDomain($uri),
+        '#url' => (string) $url,
+        '#domain' => $url->getHost(),
         '#attached' => [
           'library' => [
             'helfi_charts/helfi_charts',

@@ -27,13 +27,6 @@ final class Chart extends MediaSourceBase {
   public const CHART_POWERBI_URL = 'app.powerbi.com';
 
   /**
-   * List of valid map base urls.
-   */
-  public const VALID_URLS = [
-    'powerbi' => self::CHART_POWERBI_URL,
-  ];
-
-  /**
    * {@inheritdoc}
    */
   public function getMetadataAttributes() : array {

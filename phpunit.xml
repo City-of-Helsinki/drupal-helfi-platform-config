@@ -23,19 +23,15 @@
 <testsuites>
   <testsuite name="unit">
     <directory>./tests/src/Unit</directory>
-    <directory>./helfi_features/*/src/Unit</directory>
   </testsuite>
   <testsuite name="kernel">
     <directory>./tests/src/Kernel</directory>
-    <directory>./helfi_features/*/tests/src/Kernel</directory>
   </testsuite>
   <testsuite name="functional">
     <directory>./tests/src/Functional</directory>
-    <directory>./tests/hefli_features/*/src/Functional</directory>
   </testsuite>
   <testsuite name="functional-javascript">
     <directory>./tests/src/FunctionalJavascript</directory>
-    <directory>./tests/helfi_features/*/src/FunctionalJavascript</directory>
   </testsuite>
 </testsuites>
 <listeners>
@@ -45,9 +41,7 @@
 <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
   <include>
     <directory suffix=".php">./src</directory>
-    <directory suffix=".php">./helfi_features/*/src</directory>
     <file>./*.module</file>
-    <file>./helfi_features/*/*.module</file>
   </include>
 </coverage>
 </phpunit>

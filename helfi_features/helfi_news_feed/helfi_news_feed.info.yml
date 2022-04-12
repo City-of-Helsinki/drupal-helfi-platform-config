@@ -4,6 +4,7 @@ description: News feed module
 package: Custom
 core_version_requirement: ^9.3
 dependencies:
+  - helfi_api_base
   - field
   - external_entities
   - entity
