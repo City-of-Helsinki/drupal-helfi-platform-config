@@ -33,3 +33,21 @@ function helfi_contact_cards_install() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
+
+/**
+ * Update contact persons title to job title.
+ */
+function helfi_contact_cards_update_9001() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_contact_cards', 'helfi_contact_cards_update_9001');
+
+  // Install updated translations.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.paragraph.contact_card.field_contact_title');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
