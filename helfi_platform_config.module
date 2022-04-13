@@ -8,9 +8,57 @@
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
+
+/**
+ * Helper function to enable paragraph type for given entity/bundle/field combination.
+ *
+ * @param string $entityType
+ *   The entity type.
+ * @param string $bundle
+ *   The entity bundle.
+ * @param string $fields
+ *   The field name.
+ * @param string $paragraphType
+ *   The paragraph type to enable.
+ *
+ * @throws \InvalidArgumentException
+ */
+function helfi_platform_config_enable_paragraph_fields(string $entityType, string $bundle, array $fields, string $paragraphType) : void {
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
+  $entityFieldManager = \Drupal::service('entity_field.manager');
+
+  if (!$definitions = $entityFieldManager->getFieldDefinitions($entityType, $bundle)) {
+    throw new \InvalidArgumentException(
+      sprintf('Failed to load field definition for %s, %s', $entityType, $bundle)
+    );
+  }
+  $definitions = array_filter($definitions, function (FieldDefinitionInterface $definition) use ($fields) : bool {
+    return in_array($definition->getName(), $fields);
+  });
+
+  foreach ($definitions as $field) {
+    if (!str_contains($field->getSetting('handler'), 'paragraph')) {
+      throw new \InvalidArgumentException(
+        sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
+      );
+    }
+    $handlerSettings = $field->getSetting('handler_settings');
+
+    if (isset($handlerSettings['target_bundles'])) {
+      $handlerSettings['target_bundles'][$paragraphType] = $paragraphType;
+      $handlerSettings['target_bundles_drag_drop'][$paragraphType] = [
+        'weight' => 30,
+        'enabled' => TRUE,
+      ];
+    }
+    $field->setSetting('handler_settings', $handlerSettings);
+    $field->save();
+  }
+}
 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().

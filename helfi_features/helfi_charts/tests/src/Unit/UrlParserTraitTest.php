@@ -10,7 +10,6 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Tests UrlParserTrait.
  *
- * @covers \Drupal\helfi_charts\UrlParseTrait
  * @group helfi_charts
  */
 class UrlParserTraitTest extends UnitTestCase {
@@ -21,11 +20,11 @@ class UrlParserTraitTest extends UnitTestCase {
    * Tests chart provider URLs.
    *
    * @dataProvider getTestChartUrlData
-   * @covers ::mediaUrlToUri
-   * @covers ::assertMediaLink
+   * @covers \Drupal\helfi_charts\UrlParserTrait::mediaUrlToUri
+   * @covers \Drupal\helfi_charts\UrlParserTrait::assertMediaLink
    */
-  public function testChartUrl(string $url, string $expected) : void {
-    $this->assertEquals($expected, (string) $this->mediaUrlToUri($url));
+  public function testChartUrl(string $expected) : void {
+    $this->assertEquals($expected, (string) $this->mediaUrlToUri($expected));
   }
 
   /**
