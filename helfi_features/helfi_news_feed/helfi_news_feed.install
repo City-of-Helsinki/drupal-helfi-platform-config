@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Contains installation hooks for 'helfi_news_feed' module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ */
+function helfi_news_feed_install() : void {
+
+}

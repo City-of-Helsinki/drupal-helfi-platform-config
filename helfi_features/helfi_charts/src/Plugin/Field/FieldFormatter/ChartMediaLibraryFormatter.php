@@ -34,7 +34,6 @@ final class ChartMediaLibraryFormatter extends FormatterBase {
 
       try {
         $url = $this->mediaUrlToUri($uri);
-        $this->assertMediaLink($url);
       }
       catch (\InvalidArgumentException $e) {
         watchdog_exception('helfi_chart', $e);

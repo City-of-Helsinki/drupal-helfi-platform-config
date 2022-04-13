@@ -21,9 +21,11 @@ class UrlParserTraitTest extends UnitTestCase {
    * Tests chart provider URLs.
    *
    * @dataProvider getTestChartUrlData
+   * @covers ::mediaUrlToUri
+   * @covers ::assertMediaLink
    */
   public function testChartUrl(string $url, string $expected) : void {
-    $this->assertEquals($expected, $this->getChartUrl($url));
+    $this->assertEquals($expected, (string) $this->mediaUrlToUri($url));
   }
 
   /**

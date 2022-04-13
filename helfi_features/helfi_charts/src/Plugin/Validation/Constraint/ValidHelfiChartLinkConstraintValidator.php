@@ -24,8 +24,7 @@ final class ValidHelfiChartLinkConstraintValidator extends ConstraintValidator {
       ['uri' => $uri] = $value;
 
       try {
-        $url = $this->mediaUrlToUri($uri);
-        $this->assertMediaLink($url);
+        $this->mediaUrlToUri($uri);
       }
       catch (\InvalidArgumentException) {
         $this->context->addViolation($constraint->errorMessage, [
