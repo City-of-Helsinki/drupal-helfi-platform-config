@@ -5,3 +5,21 @@
 #
 msgid ""
 msgstr ""
+
+msgid "Northern Sami"
+msgstr "Nordsamiska"
+
+msgid "Round-the-clock care"
+msgstr "Dygnet runt-vård"
+
+msgid "Language immersion Finnish-Swedish"
+msgstr "Språkbad finska-svenska"
+
+msgid "Open family activities"
+msgstr "Öppen verksamhet"
+
+msgid "Evening care"
+msgstr "Kvällsvård"
+
+msgid "Part-time day care"
+msgstr "Halvdagsgrupp"
