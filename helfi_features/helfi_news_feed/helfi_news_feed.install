@@ -7,9 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\node\Entity\NodeType;
-
 /**
  * Implements hook_install().
  */
