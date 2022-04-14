@@ -14,6 +14,7 @@ function helfi_media_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_media_update_9001();
     helfi_media_update_9003();
+    helfi_media_update_9007();
   }
 }
 
@@ -127,18 +128,28 @@ function helfi_media_update_9005() {
   ConfigHelper::updateExistingConfig($configOverrideLocation, 'content_lock.settings');
 }
 
-
-
 /**
- * media_entity_file_replace configuration.
+ * Revert Update 9006.
  */
 function helfi_media_update_9006() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
+  // Do nothing.
+}
 
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_media', 'helfi_media_update_9006');
+/**
+ * Install media_entity_file_replace module and configuration.
+ */
+function helfi_media_update_9007() {
 
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
+  if (!\Drupal::moduleHandler()->moduleExists('media_entity_file_replace')) {
+    Drupal::service('module_installer')->install(['media_entity_file_replace']);
+
+    /** @var \Drupal\update_helper\Updater $updateHelper */
+    $updateHelper = \Drupal::service('update_helper.updater');
+
+    // Execute configuration update definitions with logging of success.
+    $updateHelper->executeUpdate('helfi_media', 'helfi_media_update_9007');
+
+    // Output logged messages to related channel of update execution.
+    return $updateHelper->logger()->output();
+  }
 }
