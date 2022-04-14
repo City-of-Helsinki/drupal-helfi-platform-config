@@ -31,6 +31,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9021();
     helfi_content_update_9024();
     helfi_content_update_9025();
+    helfi_content_update_9027();
   }
 }
 
@@ -604,4 +605,18 @@ function helfi_content_update_9026() {
     $configLocation = dirname(__FILE__) . '/config/optional/';
     ConfigHelper::updateExistingConfig($configLocation, 'views.view.paragraphs_library');
   }
+}
+
+/**
+ * Enable the 'Hide sidebar navigation from this page' to standard page.
+ */
+function helfi_content_update_9027() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9027');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }
