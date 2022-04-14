@@ -34,6 +34,7 @@
     "drupal/linkit": "^6.0@beta",
     "drupal/matomo": "^1.11",
     "drupal/matomo_reports": "^1.1",
+    "drupal/media_entity_file_replace": "^1.0",
     "drupal/media_entity_soundcloud": "^3.0.0",
     "drupal/menu_block_current_language": "^1.5",
     "drupal/menu_link_attributes": "^1.2",
