@@ -230,3 +230,14 @@ function helfi_base_config_update_9010() {
     ConfigHelper::updateExistingConfig($configLocation, 'openid_connect.settings');
   }
 }
+
+/**
+ * Enable editoria11y module
+ */
+function helfi_base_config_update_9011() {
+  if (!Drupal::moduleHandler()->moduleExists('editoria11y')) {
+    Drupal::service('module_installer')->install([
+      'editoria11y',
+    ]);
+  }
+}
