@@ -1,0 +1,20 @@
+core.entity_form_display.media.file.default:
+  expected_config: { }
+  update_actions:
+    change:
+      content:
+        replace_file:
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+          weight: 0
+core.entity_form_display.media.image.default:
+  expected_config: { }
+  update_actions:
+    change:
+      content:
+        replace_file:
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+          weight: 1
