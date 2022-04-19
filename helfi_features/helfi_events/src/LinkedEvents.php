@@ -34,7 +34,7 @@ class LinkedEvents extends EventsApiBase {
       'sort' => 'end_time',
       'start' => 'now',
       'super_event_type' => 'umbrella,none',
-      'language' => \Drupal::languageManager()->getCurrentLanguage()->getId()
+      'language' => \Drupal::languageManager()->getCurrentLanguage()->getId(),
     ];
 
     $options = array_merge($defaultOptions, $options);
@@ -47,4 +47,5 @@ class LinkedEvents extends EventsApiBase {
 
     return $url->toString();
   }
+
 }
