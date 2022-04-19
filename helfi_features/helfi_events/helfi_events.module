@@ -18,7 +18,7 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
       $variables['#attached']['drupalSettings']['helfi_events']['initialUrl'] = $intialUrl;
     }
 
-    if ($loadMore = $paragraph->get('field_load_more')->getValue()) {
+    if ($loadMore = $paragraph->get('field_load_more')->value) {
       $variables['#attached']['drupalSettings']['helfi_events']['loadMore'] = $loadMore;
     }
   }

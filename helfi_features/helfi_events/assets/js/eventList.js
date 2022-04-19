@@ -156,7 +156,7 @@
             if($('.event-list__load-more .load-more-button').length) {
               $('.event-list__load-more .load-more-button').attr('onClick', Drupal.behaviors.events_list.getEvents(next))
             }
-            else {
+            else if(drupalSettings.helfi_events.loadMore) {
               $('.event-list__load-more').append(`
                 <button class="hds-button hds-button--primary load-more-button" onClick="Drupal.behaviors.events_list.getEvents('${next}')">
                   <span class="hds-button__label">${loadMore}</span>
