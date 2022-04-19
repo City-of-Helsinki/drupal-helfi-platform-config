@@ -4,3 +4,5 @@ events_list:
     assets/js/eventList.js: {}
   dependencies:
     - core/drupalSettings
+    - core/jquery
+    - core/drupal

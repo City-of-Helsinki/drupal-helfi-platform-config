@@ -1,3 +1,6 @@
+msgid ""
+msgstr ""
+
 msgid "events"
 msgstr "tapahtumaa"
 
@@ -9,6 +12,9 @@ msgstr "Ei hätää, nimittäin tästä kaupungista ei tekeminen lopu."
 
 msgid "See all events"
 msgstr "Katso kaikki tapahtumat"
+
+msgid "Load more events"
+msgstr "Lataa lisää tapahtumia"
 
 msgid "Refine search in tapahtumat.hel.fi"
 msgstr "Tarkenna hakua tapahtumat.hel.fi:ssä"

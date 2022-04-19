@@ -25,4 +25,25 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
   
   $variables['#attached']['library'][] = 'helfi_events/events_list';
   $variables['#attached']['drupalSettings']['helfi_events']['baseUrl'] = LinkedEvents::BASE_URL;
+  $variables['#attached']['drupalSettings']['helfi_events']['translations'] = _helfi_events_translations();
+}
+
+/**
+ * 
+ */
+function _helfi_events_translations() {
+  return [
+    'emptyList' => t('This event list is empty.'),
+    'emptyListSubText' => t('No worries though, this city does not run out of things to do.'),
+    'eventKeywords' => t('Event keywords'),
+    'eventsCount' => t('events'),
+    'externalLink' => t(
+      'Link leads to external service',
+      [],
+      ['context' => 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.']
+    ),
+    'loadMore' => t('Load more events'),
+    'refineSearch' => t('Refine search in tapahtumat.hel.fi'),
+    'seeAll' => t('See all events')
+  ];
 }

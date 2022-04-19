@@ -9,6 +9,12 @@
     },
     listToHtml: function listToHtml(list) {
       const currentLanguage = drupalSettings.path.currentLanguage;
+      const { 
+        events,
+        eventKeywords,
+        externalLink,
+        seeAll
+      } = drupalSettings.helfi_events.translations;
 
       // Bail if no current language
       if(!currentLanguage) {
@@ -28,7 +34,7 @@
           <div class="event">
             <a class="event__wrapper" href="${drupalSettings.helfi_events.baseUrl}/events/${event.id}">
               <div class="event__image-container">
-                <div class="event__tags event__tags--mobile" role="Region" aria-label="${Drupal.t('Event keywords')}">
+                <div class="event__tags event__tags--mobile" role="Region" aria-label="${eventKeywords}">
                 </div>
               </div>
               <div class="event__content-container">
@@ -48,11 +54,11 @@
                   <div class="event__location"></div>
                 </div>
                 <div class="event__lower-container">
-                  <div class="event__tags event__tags--desktop role="Region" aria-label="${Drupal.t('Event keywords')}">
+                  <div class="event__tags event__tags--desktop role="Region" aria-label="${eventKeywords}">
                   </div>
                   <span
                     class="link__type link__type--external"
-                    aria-label="(${Drupal.t('Link leads to external service', {}, {context: 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.'})})">
+                    aria-label="(${externalLink})">
                   </span>
                 </div>
               </div>
@@ -74,9 +80,10 @@
         $(eventElement).find('h3').append(eventName);
 
         // Use first image or fallback to placeholder if no images present
-        const imageUrl = (event.images.length && event.images[0].url) ? event.images[0].url : '';
-        const imageElement = (event.images.length && event.images[0].url) ?
-          `<img class="event__image" alt="${eventName.textContent.trim()}" src="${event.images[0].url}"></img>` :
+        const imageUrl = (event.images.length && event.images[0].url) ? event.images[0].url : null;
+        const imageAlt = imageUrl && event.images[0].alt_text ? event.images[0].alt_text : eventName.textContent.trim();
+        const imageElement = imageUrl ?
+          `<img class="event__image" alt="${imageAlt}" src="${event.images[0].url}"></img>` :
           `<div class="event__image image-placeholder">
             <span class="hel-icon hel-icon--heart fill"></span>
           </div>`;
@@ -89,16 +96,26 @@
       });
     },
     getEvents: function getEvents(url, initial = false) {
+      const {
+        emptyList,
+        emptyListSubText,
+        eventsCount,
+        externalLink,
+        loadMore,
+        refineSearch,
+        seeAll
+      } = drupalSettings.helfi_events.translations;
+
       function get404() {
         return `
           <div>
-            <h3>${Drupal.t('This event list is empty.')}</h3>
-            <p>${Drupal.t('No worries though, this city does not run out of things to do.')}</p>
+            <h3>${emptyList}</h3>
+            <p>${emptyListSubText}</p>
             <a class="hds-button hds-button--primary" href="${drupalSettings.helfi_events.baseUrl}">
-              <span class="hds-button__label">${Drupal.t('See all events')}</span>
+              <span class="hds-button__label">${seeAll}}</span>
               <span
                 class="link__type link__type--external"
-                aria-label="(${Drupal.t('Link leads to external service', {}, {context: 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.'})})">
+                aria-label="(${externalLink})">
               </span>
             </a>
           </div>
@@ -129,7 +146,7 @@
       .then(res => res.json())
       .then(json => {
         if(json && json.meta.count > 0) {
-          $('.component--event-list .event-list__count').html(`<strong>${json.meta.count}</strong> ${Drupal.t('events')}`);
+          $('.component--event-list .event-list__count').html(`<strong>${json.meta.count}</strong> ${eventsCount}`);
           const listHtml = Drupal.behaviors.events_list.listToHtml(json.data);
           $('.component--event-list .event-list__list-container').append(listHtml);
 
@@ -142,7 +159,7 @@
             else {
               $('.event-list__load-more').append(`
                 <button class="hds-button hds-button--primary load-more-button" onClick="Drupal.behaviors.events_list.getEvents('${next}')">
-                  <span class="hds-button__label">${Drupal.t('Load more events')}</span>
+                  <span class="hds-button__label">${loadMore}</span>
                 </button>
                 `
               )
@@ -150,10 +167,10 @@
             if(!$('.event-list__load-more .refine-button').length) {
               $('.event-list__load-more').append(`
                 <a class="hds-button hds-button--secondary" href="${drupalSettings.helfi_events.initialUrl}">
-                  <span class="hds-button__label">${Drupal.t('Refine search in tapahtumat.hel.fi')}</span>
+                  <span class="hds-button__label">${refineSearch}</span>
                   <span
                     class="link__type link__type--external"
-                    aria-label="(${Drupal.t('Link leads to external service', {}, {context: 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.'})})">
+                    aria-label="(${externalLink})">
                   </span>
                 </a>
                 `
