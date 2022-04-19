@@ -2,8 +2,14 @@ name: 'HELfi events'
 type: module
 core_version_requirement: '^8.9 || ^9'
 dependencies:
-  - ckeditor
-  - link
-  - text
-  - paragraphs
+  - 'drupal:ckeditor'
+  - 'drupal:content_translation'
+  - 'drupal:editor'
+  - 'drupal:language'
+  - 'drupal:link'
+  - 'drupal:text'
+  - 'helfi_platform_config:helfi_platform_config'
+  - 'paragraphs:paragraphs'
 package: HELfi
+'interface translation project': helfi_events
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_events/translations/%language.po

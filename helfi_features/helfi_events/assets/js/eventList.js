@@ -50,7 +50,10 @@
                 <div class="event__lower-container">
                   <div class="event__tags event__tags--desktop role="Region" aria-label="${Drupal.t('Event keywords')}">
                   </div>
-                  <span class="link__type link__type--external" aria-label="(${Drupal.t('Link leads to external service')})"></span>
+                  <span
+                    class="link__type link__type--external"
+                    aria-label="(${Drupal.t('Link leads to external service', {}, {context: 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.'})})">
+                  </span>
                 </div>
               </div>
             </a>
@@ -93,7 +96,10 @@
             <p>${Drupal.t('No worries though, this city does not run out of things to do.')}</p>
             <a class="hds-button hds-button--primary" href="${drupalSettings.helfi_events.baseUrl}">
               <span class="hds-button__label">${Drupal.t('See all events')}</span>
-              <span class="link__type link__type--external" aria-label="(${Drupal.t('Link leads to external service')})"></span>
+              <span
+                class="link__type link__type--external"
+                aria-label="(${Drupal.t('Link leads to external service', {}, {context: 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.'})})">
+              </span>
             </a>
           </div>
         `; 
@@ -123,7 +129,7 @@
       .then(res => res.json())
       .then(json => {
         if(json && json.meta.count > 0) {
-          $('.component--event-list .event-list__count').html(`<strong>${json.meta.count}</strong> tapahtumaa`);
+          $('.component--event-list .event-list__count').html(`<strong>${json.meta.count}</strong> ${Drupal.t('events')}`);
           const listHtml = Drupal.behaviors.events_list.listToHtml(json.data);
           $('.component--event-list .event-list__list-container').append(listHtml);
 
@@ -145,7 +151,10 @@
               $('.event-list__load-more').append(`
                 <a class="hds-button hds-button--secondary" href="${drupalSettings.helfi_events.initialUrl}">
                   <span class="hds-button__label">${Drupal.t('Refine search in tapahtumat.hel.fi')}</span>
-                  <span class="link__type link__type--external" aria-label="(${Drupal.t('Link leads to external service')})"></span>
+                  <span
+                    class="link__type link__type--external"
+                    aria-label="(${Drupal.t('Link leads to external service', {}, {context: 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.'})})">
+                  </span>
                 </a>
                 `
               )
