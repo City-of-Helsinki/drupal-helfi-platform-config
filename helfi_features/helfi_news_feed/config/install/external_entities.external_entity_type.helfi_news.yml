@@ -25,9 +25,5 @@ field_mapper_config:
     neighbourhoods:
       value: '$.relationships[''neighbourhoods''][''data''][*][''attributes''][''name'']'
 storage_client_id: helfi_news
-storage_client_config: null
 persistent_cache_max_age: -1
-annotation_entity_type_id: null
-annotation_bundle_id: null
-annotation_field_name: null
 inherits_annotation_fields: false
