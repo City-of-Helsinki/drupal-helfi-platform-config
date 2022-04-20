@@ -220,3 +220,24 @@ function helfi_base_config_update_9009() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Change openid button location on login page.
+ */
+function helfi_base_config_update_9010() {
+  if (Drupal::moduleHandler()->moduleExists('helfi_base_config')) {
+    $configLocation = dirname(__FILE__) . '/config/optional/';
+    ConfigHelper::updateExistingConfig($configLocation, 'openid_connect.settings');
+  }
+}
+
+/**
+ * Enable editoria11y module
+ */
+function helfi_base_config_update_9011() {
+  if (!Drupal::moduleHandler()->moduleExists('editoria11y')) {
+    Drupal::service('module_installer')->install([
+      'editoria11y',
+    ]);
+  }
+}

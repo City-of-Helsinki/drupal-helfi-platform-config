@@ -27,6 +27,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9021();
       helfi_tpr_config_update_9022();
       helfi_tpr_config_update_9023();
+      helfi_tpr_config_update_9025();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -523,6 +524,37 @@ function helfi_tpr_config_update_9024() {
 
   // Add field unit type translations
   ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.tpr_unit.tpr_unit.field_unit_type');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Install 'hide_sidebar_navigation' field to TPR Unit and TPR Service entities.
+ */
+function helfi_tpr_config_update_9025() {
+
+  // Field to be installed and entity types.
+  $field = 'hide_sidebar_navigation';
+  $entity_types = [
+    'tpr_unit',
+    'tpr_service',
+  ];
+
+  foreach ($entity_types as $entity_type) {
+    $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+    $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
+    if (!empty($field_definitions[$field]) && $field_definitions[$field] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager->installFieldStorageDefinition($field, $entity_type, 'hdbt_admin_editorial', $field_definitions[$field]);
+    }
+  }
+
+  // Enable the 'Hide sidebar navigation from this page' to unit and service.
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9025');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
