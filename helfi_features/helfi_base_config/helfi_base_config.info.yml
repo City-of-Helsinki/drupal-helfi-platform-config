@@ -22,6 +22,7 @@ dependencies:
   - 'drupal:views'
   - 'drupal:views_ui'
   - 'easy_breadcrumb:easy_breadcrumb'
+  - 'editoria11y:editoria11y'
   - 'field_group:field_group'
   - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'hdbt_admin_tools:hdbt_admin_tools'
