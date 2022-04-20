@@ -16,7 +16,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 class ReactAndShare extends BlockBase {
 
   /**
-   * Language manager
+   * Language manager.
    *
    * @var Drupal\Core\Language\LanguageManagerInterface
    */
