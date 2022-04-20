@@ -27,8 +27,9 @@ class ReactAndShare extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $language = \Drupal::languageManager()->getCurrentLanguage();
-    $langcode = $language->getId();
+    $langcode = $this->languageManager
+      ->getCurrentLanguage()
+      ->getId();
 
     if (!$apikey = getenv('REACT_AND_SHARE_APIKEY_' . strtoupper($langcode))) {
       return [];
