@@ -13,15 +13,48 @@ use Drupal\paragraphs\Entity\Paragraph;
 final class NewsFeedParagraph extends Paragraph {
 
   /**
-   * Gets the tags.
+   * A helper function to get multifield values.
+   *
+   * @param string $field
+   *   The field name.
    *
    * @return array
+   *   The term field values.
+   */
+  private function getUnlimitedStringFieldValue(string $field) : array {
+    return array_map(function (StringItem $value) {
+      return $value->value;
+    }, iterator_to_array($this->get($field)));
+  }
+
+  /**
+   * Gets the defined tags.
+   *
+   * @return string[]
    *   An array of tags.
    */
   public function getTags() : array {
-    return array_map(function (StringItem $value) {
-      return $value->value;
-    }, iterator_to_array($this->get('field_tags')));
+    return $this->getUnlimitedStringFieldValue('field_tags');
+  }
+
+  /**
+   * Gets the defined groups.
+   *
+   * @return string[]
+   *   Anb array of groups.
+   */
+  public function getGroups() : array {
+    return $this->getUnlimitedStringFieldValue('field_groups');
+  }
+
+  /**
+   * Gets the defined neighbourhoods.
+   *
+   * @return string[]
+   *   An array of neighbourhoods.
+   */
+  public function getNeighbourhoods() : array {
+    return $this->getUnlimitedStringFieldValue('field_neighbourhoods');
   }
 
   /**

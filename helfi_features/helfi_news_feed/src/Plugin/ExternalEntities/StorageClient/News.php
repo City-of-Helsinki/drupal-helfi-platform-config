@@ -78,18 +78,26 @@ final class News extends ExternalEntityStorageClientBase {
   public function loadMultiple(array $ids = NULL) : array {
     $query = [
       'filter[id][operator]' => 'IN',
-      // Include extra data.
-      'include' => 'main_image.media_image',
+      // Include main image, tags, neighbourhoods and groups fields.
+      'include' => 'main_image.media_image,tags,groups,neighbourhoods',
       'fields[file--file]' => 'uri,url',
     ];
     $language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
 
-    foreach ($ids as $index => $id) {
+    foreach ($ids ?? [] as $index => $id) {
       $query[sprintf('filter[id][value][%d]', $index)] = $id;
     }
-    return $this->request($query, $language);
+    $data = $this->request($query, $language);
+
+    // The $ids are passed in correct order, but the external data is not
+    // in same order. Sort data by given $ids.
+    usort($data, function (array $a, array $b) use ($ids) {
+      return array_search($a['id'], $ids) - array_search($b['id'], $ids);
+    });
+
+    return $data;
   }
 
   /**
@@ -107,6 +115,31 @@ final class News extends ExternalEntityStorageClientBase {
   }
 
   /**
+   * Creates a JSON:API filter for given term field.
+   *
+   * @param string $name
+   *   The field name.
+   * @param array $terms
+   *   The terms.
+   *
+   * @return string[]
+   *   The filter.
+   */
+  private function createTermFilter(string $name, array $terms) : array {
+    if (!$terms) {
+      return [];
+    }
+    $query = [
+      sprintf('filter[%s.name][operator]', $name) => 'IN',
+    ];
+    // Filter by multiple terms using 'OR' condition.
+    foreach ($terms as $key => $value) {
+      $query[sprintf('filter[%s.name][value][%d]', $name, $key)] = $value;
+    }
+    return $query;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function query(
@@ -115,6 +148,13 @@ final class News extends ExternalEntityStorageClientBase {
     $start = NULL,
     $length = NULL
   ) : array {
+    $query = [
+      // We only care about basic entity data here.
+      'fields[node--news_item]' => 'id',
+      // No need to fetch non-published entities.
+      'fields[status]' => 1,
+    ];
+
     if ($start) {
       $query['page[offset]'] = $start;
     }
@@ -122,9 +162,9 @@ final class News extends ExternalEntityStorageClientBase {
     if ($length) {
       $query['page[limit]'] = $length;
     }
-    // We only care about basic entity data here.
-    $query['fields[node--news_item]'] = 'id';
 
+    // Map query fields to JSON:API fields.
+    // @todo Document these fields.
     foreach ($parameters as $param) {
       ['field' => $field, 'value' => $value, 'operator' => $op] = $param;
 
@@ -132,19 +172,38 @@ final class News extends ExternalEntityStorageClientBase {
         'langcode' => function (string $value, ?string $op): array {
           return ['filter[langcode]' => $value];
         },
-        'tags' => function (array $tags, ?string $op): array {
-          $query = [
-            'filter[news_item_tags.name][operator]' => 'IN',
-          ];
-          // Filter by multiple tags using 'OR' condition.
-          foreach ($tags as $key => $tag) {
-            $query[sprintf('filter[news_item_tags.name][value][%d]', $key)] = $tag;
-          }
-          return $query;
+        'tags' => function (array $terms, ?string $op): array {
+          return $this->createTermFilter('tags', $terms);
         },
+        'groups' => function (array $terms, ?string $op) : array {
+          return $this->createTermFilter('groups', $terms);
+        },
+        'neighbourhoods' => function (array $terms, ?string $op) : array {
+          return $this->createTermFilter('neighbourhoods', $terms);
+        }
       };
       try {
         $query += $match($value, $op);
+      }
+      catch (\UnhandledMatchError) {
+      }
+    }
+
+    // Map sort fields to JSON:API fields.
+    // @todo Document these fields.
+    foreach ($sorts as $sort) {
+      ['field' => $field, 'direction' => $direction] = $sort;
+      $match = match ($field) {
+        'created' => function (string $direction) : array {
+          return [
+            'sort[created][path]' => 'created',
+            'sort[created][direction]' => $direction,
+          ];
+        },
+      };
+
+      try {
+        $query += $match($direction);
       }
       catch (\UnhandledMatchError) {
       }
@@ -178,6 +237,8 @@ final class News extends ExternalEntityStorageClientBase {
       $json = \GuzzleHttp\json_decode($content->getBody()->getContents(), TRUE);
 
       return array_map(function (array $item) use ($json) : array {
+        // Resolve and place all relationship data under corresponding parent
+        // entity.
         if (isset($json['included'])) {
           $this->resolveRelationShip($item, $json['included']);
         }

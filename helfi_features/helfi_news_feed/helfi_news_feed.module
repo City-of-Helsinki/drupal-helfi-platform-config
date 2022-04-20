@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_news_feed\Entity\NewsFeedParagraph;
@@ -52,17 +53,26 @@ function helfi_news_feed_paragraph_view(
       ->condition('langcode', $entity->language()->getId())
       ->range(0, $entity->getLimit());
 
-    if ($tags = $entity->getTags()) {
-      $query->condition('tags', $tags, 'IN');
+    $termFilters = [
+      'tags' => $entity->getTags(),
+      'groups' => $entity->getGroups(),
+      'neighbourhoods' => $entity->getNeighbourhoods(),
+    ];
+    foreach ($termFilters as $name => $value) {
+      $query->condition($name, $value, 'IN');
     }
+
+    $query->sort('created', 'DESC');
 
     $ids = $query->execute();
     $entities = $storage->loadMultiple(array_keys($ids));
 
-    foreach ($entities as $entity) {
+    foreach ($entities as $item) {
+      $item->addCacheableDependency($entity);
+
       $build['news_list'][] = Drupal::entityTypeManager()
         ->getViewBuilder('helfi_news')
-        ->view($entity);
+        ->view($item);
     }
   }
 }
@@ -85,6 +95,27 @@ function helfi_news_feed_entity_bundle_field_info_alter(
         'max_length' => 1024,
       ])
       ->setDisplayConfigurable('view', TRUE);
+
+    $termFields = [
+      'tags' => new TranslatableMarkup('Tags'),
+      'groups' => new TranslatableMarkup('Groups'),
+      'neighbourhoods' => new TranslatableMarkup('Neighbourhoods'),
+    ];
+
+    // These are taxonomy term fields in 'Etusivu' instance.
+    foreach ($termFields as $name => $label) {
+      $fields[$name] = BundleFieldDefinition::create('string')
+        ->setName($name)
+        ->setLabel($label)
+        ->setTargetEntityTypeId($entity_type->id())
+        ->setTargetBundle($bundle)
+        ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+        ->setSettings([
+          'max_length' => 192,
+        ])
+        ->setDisplayConfigurable('view', TRUE);
+    }
+
   }
 }
 

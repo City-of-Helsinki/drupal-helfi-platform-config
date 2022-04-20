@@ -1,3 +1,4 @@
+uuid: e7f5db10-ab2c-4c56-a237-351a2cd031af
 langcode: en
 status: true
 dependencies:
@@ -7,6 +8,8 @@ dependencies:
     - field.field.paragraph.news_list.field_neighbourhoods
     - field.field.paragraph.news_list.field_tags
     - paragraphs.paragraphs_type.news_list
+_core:
+  default_config_hash: TnVdIH7RStyiCOpair42VTDXGLVpLxfMDMr2dYsnUuY
 id: paragraph.news_list.default
 targetEntityType: paragraph
 bundle: news_list

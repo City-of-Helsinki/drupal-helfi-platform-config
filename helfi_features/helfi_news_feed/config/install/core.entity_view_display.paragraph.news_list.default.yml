@@ -2,7 +2,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.news_list.field_groups
     - field.field.paragraph.news_list.field_limit
+    - field.field.paragraph.news_list.field_neighbourhoods
     - field.field.paragraph.news_list.field_tags
     - paragraphs.paragraphs_type.news_list
 id: paragraph.news_list.default
@@ -16,5 +18,7 @@ content:
     weight: 0
     region: content
 hidden:
+  field_groups: true
   field_limit: true
+  field_neighbourhoods: true
   field_tags: true
