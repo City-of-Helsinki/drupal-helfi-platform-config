@@ -6,10 +6,15 @@
       window.rnsData = {
         apiKey: drupalSettings.reactAndShareApiKey
       };
-      var s = document.createElement('script');
-      s.src = 'https://cdn.reactandshare.com/plugin/rns.js';
 
-      document.body.appendChild(s);
+      if (drupalSettings.siteName !== undefined) {
+        window.rnsData.categories = [drupalSettings.siteName]
+      }
+
+      var scriptElement = document.createElement('script');
+      scriptElement.src = 'https://cdn.reactandshare.com/plugin/rns.js';
+
+      document.body.appendChild(scriptElement);
 
       $('.js-react-and-share__container .rns').show();
     }
