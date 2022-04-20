@@ -15,10 +15,17 @@ use Drupal\Core\Language\LanguageManagerInterface;
  */
 class ReactAndShare extends BlockBase {
 
+  /**
+   * Language manager
+   *
+   * @var Drupal\Core\Language\LanguageManagerInterface
+   */
   private LanguageManagerInterface $languageManager;
 
-  public function __construct(array $configuration, $plugin_id, $plugin_definition)
-  {
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->languageManager = \Drupal::languageManager();
   }
