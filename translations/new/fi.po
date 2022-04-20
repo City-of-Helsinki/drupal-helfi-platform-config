@@ -462,8 +462,8 @@ msgstr "Ympärivuorokautinen hoito"
 msgid "Language immersion Finnish-Swedish"
 msgstr "Kielikylpy suomi-ruotsi"
 
-msgid "Open family activities"
-msgstr "Avoin toiminta"
+msgid "Playgroup clubs"
+msgstr "Kerhot"
 
 msgid "Evening care"
 msgstr "Iltahoito"
