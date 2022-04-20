@@ -1,9 +1,6 @@
-uuid: 6ed28e81-44f9-4d27-a1af-0deaedef8c58
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: 4NG1c_DFfBfzUCPfnwS5Sneo_G7lU_0YRfarh-p749M
 id: news_list
 label: 'News list'
 icon_uuid: null
