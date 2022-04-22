@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+  colors="true"
+  cacheResultFile=".phpunit.cache/test-results"
+  executionOrder="depends,defects"
+  forceCoversAnnotation="true"
+  beStrictAboutTestsThatDoNotTestAnything="true"
+  beStrictAboutOutputDuringTests="true"
+  beStrictAboutChangesToGlobalState="true"
+  beStrictAboutCoversAnnotation="true"
+  printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+  failOnRisky="true"
+  failOnWarning="true"
+  verbose="true">
+<php>
+  <!-- Set error reporting to E_ALL. -->
+  <ini name="error_reporting" value="32767"/>
+    <!-- Do not limit the amount of memory tests take to run. -->
+  <ini name="memory_limit" value="-1"/>
+  <env name="MINK_DRIVER_ARGS_WEBDRIVER" value='["chrome", {"browserName":"chrome","chromeOptions":{"w3c": false, "args":["--disable-gpu","--headless", "--no-sandbox"]}}, "http://127.0.0.1:4444"]' />
+</php>
+<testsuites>
+  <testsuite name="unit">
+    <directory>./tests/src/Unit</directory>
+  </testsuite>
+  <testsuite name="kernel">
+    <directory>./tests/src/Kernel</directory>
+  </testsuite>
+  <testsuite name="functional">
+    <directory>./tests/src/Functional</directory>
+  </testsuite>
+  <testsuite name="functional-javascript">
+    <directory>./tests/src/FunctionalJavascript</directory>
+  </testsuite>
+</testsuites>
+<listeners>
+  <listener class="\Drupal\Tests\Listeners\DrupalListener">
+  </listener>
+</listeners>
+<coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
+  <include>
+    <directory suffix=".php">./src</directory>
+    <file>./*.module</file>
+  </include>
+</coverage>
+</phpunit>

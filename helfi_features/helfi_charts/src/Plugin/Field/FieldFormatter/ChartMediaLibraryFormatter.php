@@ -32,9 +32,18 @@ final class ChartMediaLibraryFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       ['uri' => $uri] = $item->getValue();
 
+      try {
+        $url = $this->mediaUrlToUri($uri);
+      }
+      catch (\InvalidArgumentException $e) {
+        watchdog_exception('helfi_chart', $e);
+
+        continue;
+      }
+
       $element[$delta] = [
         '#theme' => 'chart_iframe__media_library',
-        '#url' => $this->getChartUrl($uri),
+        '#url' => (string) $url,
       ];
     }
 

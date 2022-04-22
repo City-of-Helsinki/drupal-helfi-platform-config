@@ -1,0 +1,7 @@
+helfi_news_feed.settings:
+  type: mapping
+  mapping:
+    source_environment:
+      type: string
+      label: The source environment
+

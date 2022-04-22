@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_charts\Plugin\Validation\Constraint;
 
 use Drupal\helfi_charts\Plugin\media\Source\Chart;
-use League\Uri\Http;
+use Drupal\helfi_charts\UrlParserTrait;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -14,6 +14,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 final class ValidHelfiChartLinkConstraintValidator extends ConstraintValidator {
 
+  use UrlParserTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -21,12 +23,13 @@ final class ValidHelfiChartLinkConstraintValidator extends ConstraintValidator {
     foreach ($item->getValue() as $value) {
       ['uri' => $uri] = $value;
 
-      $uri = Http::createFromString($uri);
-
-      if (!in_array($uri->getHost(), Chart::VALID_URLS)) {
+      try {
+        $this->mediaUrlToUri($uri);
+      }
+      catch (\InvalidArgumentException) {
         $this->context->addViolation($constraint->errorMessage, [
-          '%value' => $uri->getHost(),
-          '%domains' => implode(', ', Chart::VALID_URLS),
+          '%value' => $uri,
+          '%domains' => Chart::CHART_POWERBI_URL,
         ]);
       }
     }

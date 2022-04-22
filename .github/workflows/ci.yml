@@ -3,7 +3,6 @@ name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
-  MODULE_NAME: helfi_platform_config
   SYMFONY_DEPRECATIONS_HELPER: disabled
 jobs:
   tests:
@@ -16,7 +15,12 @@ jobs:
 
     services:
       db:
-        image: druidfi/db:mysql5.7-drupal
+        image: mariadb:10.5
+        env:
+          MYSQL_USER: drupal
+          MYSQL_PASSWORD: drupal
+          MYSQL_DATABASE: drupal
+          MYSQL_ROOT_PASSWORD: drupal
         ports:
           - 3306:3306
 
@@ -28,31 +32,47 @@ jobs:
       - name: Set variables
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
+      - name: Set module folder
+        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/${{ secrets.MODULE_NAME }}" >> $GITHUB_ENV
+
       - name: Build project
+        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+
+      - name: Install Drupal
         run: |
-          composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
           cd $DRUPAL_ROOT
-          echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json
-          composer require drupal/$MODULE_NAME --with-all-dependencies
-          composer install
           php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-          vendor/bin/drush en $MODULE_NAME -y
+
+      - name: Update modules
+        run: |
+          cd $DRUPAL_ROOT
+          composer config repositories.5 path $GITHUB_WORKSPACE
+          composer require drupal/${{ secrets.MODULE_NAME }}
+          vendor/bin/drush en ${{ secrets.MODULE_NAME }} -y
+
+      - name: Run PHPCS
+        run: |
+          cd $DRUPAL_ROOT
+          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,inc,test,info
+
+      - name: Start services
+        run: |
+          cd $DRUPAL_ROOT
+          vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
+          chromedriver --port=4444 > /dev/null 2>&1 &
 
       - name: Enable all HELfi features
         run: |
           cd $DRUPAL_ROOT
           # Enable all HELfi features.
-          set -e && for d in public/modules/contrib/$MODULE_NAME/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
-
-      - name: Run PHPCS
-        run: |
-          cd $DRUPAL_ROOT
-          vendor/bin/phpcs public/modules/contrib/$MODULE_NAME --ignore="*.js" --standard=Drupal
+          set -e && for d in public/modules/contrib/${{ secrets.MODULE_NAME }}/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
 
       - name: Run PHPUnit tests
         run: |
           cd $DRUPAL_ROOT
-          vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
-          chromedriver --port=4444 > /dev/null 2>&1 &
-          vendor/bin/phpunit -c $DRUPAL_ROOT/phpunit.platform.xml --verbose --group $MODULE_NAME
-
+          php -d pcov.directory=$MODULE_FOLDER \
+            vendor/bin/phpunit \
+            --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
+            -c $MODULE_FOLDER/phpunit.xml \
+            --coverage-clover=coverage.xml \
+            $MODULE_FOLDER
