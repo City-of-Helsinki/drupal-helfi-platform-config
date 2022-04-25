@@ -44,15 +44,15 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
       ->condition('address__locality', 'Helsingfors', '!=')
       ->execute();
 
-    $units = $entityStorage->loadMultiple($unit_ids);
-
     // Set up content lock service.
     $lock_service = \Drupal::service('content_lock');
 
     $unit_count = 0;
 
     // Delete the units.
-    foreach ($units as $unit) {
+    foreach ($unit_ids as $unit_id) {
+      $unit = $this->entityTypeManager->getStorage('tpr_unit')->load($unit_id);
+
       \Drupal::messenger()->addMessage('Deleting "' . $unit->label() . '"');
 
       // Release content lock if needed.
