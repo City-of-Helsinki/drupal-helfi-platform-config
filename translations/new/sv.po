@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 
-msgid "Northern Sami"
+msgid "North Sami"
 msgstr "Nordsamiska"
 
 msgid "Round-the-clock care"
