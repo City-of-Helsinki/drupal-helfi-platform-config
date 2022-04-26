@@ -17,31 +17,17 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
   use StringTranslationTrait;
 
   /**
-   * The Entity Type Manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * The Content Lock service.
-   *
-   * @var \Drupal\content_lock\ContentLock\ContentLock
-   */
-  protected ContentLock $contentLock;
-
-  /**
    * Constructs a new instance.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The Entity Type Manager.
-   * @param \Drupal\content_lock\ContentLock\ContentLock $content_lock
+   * @param \Drupal\content_lock\ContentLock\ContentLock $contentLock
    *   The Content Lock service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ContentLock $content_lock) {
-    $this->entityTypeManager = $entity_type_manager;
-    $this->contentLock = $content_lock;
-  }
+  public function __construct(
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected ContentLock $contentLock
+  ) {}
 
   /**
    * Removes all the TPR Unit entities which are not located in Helsinki.
