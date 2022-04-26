@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_platform_config\Commands;
 
+use Drupal\content_lock\ContentLock\ContentLock;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -12,21 +14,33 @@ use Drush\Commands\DrushCommands;
  */
 final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
 
+  use StringTranslationTrait;
+
   /**
-   * The entity type manager.
+   * The Entity Type Manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
+   * The Content Lock service.
+   *
+   * @var \Drupal\content_lock\ContentLock\ContentLock
+   */
+  protected ContentLock $contentLock;
+
+  /**
    * Constructs a new instance.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
+   *   The Entity Type Manager.
+   * @param \Drupal\content_lock\ContentLock\ContentLock $content_lock
+   *   The Content Lock service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ContentLock $content_lock) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->contentLock = $content_lock;
   }
 
   /**
@@ -44,20 +58,17 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
       ->condition('address__locality', 'Helsingfors', '!=')
       ->execute();
 
-    // Set up content lock service.
-    $lock_service = \Drupal::service('content_lock');
-
     $unit_count = 0;
 
     // Delete the units.
     foreach ($unit_ids as $unit_id) {
       $unit = $this->entityTypeManager->getStorage('tpr_unit')->load($unit_id);
 
-      \Drupal::messenger()->addMessage('Deleting "' . $unit->label() . '"');
+      $this->output()->writeln($this->t('Deleting "@unit_label"', ['@unit_label' => $unit->label()]));
 
       // Release content lock if needed.
-      if ($lock_service->fetchLock($unit->id(), $unit->language()->getId(), NULL, 'tpr_unit')) {
-        $lock_service->release($unit->id(), $unit->language()->getId(), NULL, NULL, 'tpr_unit');
+      if ($this->contentLock->fetchLock($unit->id(), $unit->language()->getId(), entity_type: 'tpr_unit')) {
+        $this->contentLock->release($unit->id(), $unit->language()->getId(), entity_type: 'tpr_unit');
       }
 
       // Force delete unit.
@@ -66,7 +77,7 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
       $unit_count++;
     }
 
-    \Drupal::messenger()->addMessage($unit_count . ' units deleted.');
+    $this->output()->writeln($this->t('@unit_count units deleted.', ['@unit_count' => $unit_count]));
   }
 
 }
