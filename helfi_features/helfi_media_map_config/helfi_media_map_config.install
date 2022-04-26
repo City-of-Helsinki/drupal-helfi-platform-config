@@ -80,6 +80,7 @@ function helfi_media_map_config_update_9003() {
 
   // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
+  $storageLocation = dirname(__FILE__) . '../helfi_base_config/config/optional'
 
   // Key field storage and value is field configuration.
   $configFields = [
@@ -88,7 +89,7 @@ function helfi_media_map_config_update_9003() {
 
   // Install iframe title field.
   foreach ($configFields as $field_storage => $field_config) {
-    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config, $storageLocation);
   }
 
   // Handle the configuration translation update manually.

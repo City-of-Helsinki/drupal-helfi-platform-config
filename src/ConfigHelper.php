@@ -104,9 +104,14 @@ class ConfigHelper {
    *   Name of the field storage configuration to install.
    * @param string $field_config
    *   Name of the field configuration to install.
+   * @param string $storage_location
+   *   Absolute path to the storage. If is not set
+   *   config_location will be used.
    */
-  public static function installNewField(string $config_location, string $field_storage, string $field_config): void {
-    $field_storage_path = "{$config_location}{$field_storage}.yml";
+  public static function installNewField(string $config_location, string $field_storage, string $field_config, string $storage_location = NULL): void {
+    $field_storage_path = $storage_location ?
+    "{$storage_location}{$field_storage}.yml" : 
+    "{$config_location}{$field_storage}.yml";
 
     // Install field storage configurations.
     if (isset($field_storage) && file_exists($field_storage_path)) {
