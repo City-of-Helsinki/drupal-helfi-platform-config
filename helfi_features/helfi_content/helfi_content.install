@@ -32,6 +32,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9024();
     helfi_content_update_9025();
     helfi_content_update_9027();
+    helfi_content_update_9028();
   }
 }
 

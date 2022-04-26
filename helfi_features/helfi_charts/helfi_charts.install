@@ -18,6 +18,7 @@ function helfi_charts_install($is_syncing) {
       helfi_charts_update_9001();
       helfi_charts_update_9002();
       helfi_charts_update_9003();
+      helfi_charts_update_9004();
     }
   }
 }

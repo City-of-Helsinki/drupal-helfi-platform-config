@@ -14,6 +14,7 @@ function helfi_media_map_config_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_media_map_config_update_9001();
     helfi_media_map_config_update_9002();
+    helfi_media_map_config_update_9003();
   }
 }
 
