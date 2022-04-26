@@ -102,7 +102,7 @@ function helfi_charts_update_9004() {
 
   // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
-  $storageLocation = dirname(__FILE__) . '../helfi_base_config/config/optional'
+  $storageLocation = dirname(__FILE__) . '../helfi_base_config/config/optional';
 
   // Key field storage and value is field configuration.
   $configFields = [
