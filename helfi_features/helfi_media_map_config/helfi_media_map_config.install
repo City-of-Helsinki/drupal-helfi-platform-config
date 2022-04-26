@@ -36,6 +36,10 @@ function helfi_media_map_config_update_dependencies() {
     'helfi_content' => 9014,
   ];
 
+  // Run helfi_media_map_config_update_9003() after helfi_content_update_9028()
+  // has been run. helfi_content_update_9028 update installs
+  // field.storage.paragraph.field_iframe_title.yml which is needed
+  // for this update.
   $dependencies['helfi_media_map_config'][9003] = [
     'helfi_content' => 9028,
   ];
