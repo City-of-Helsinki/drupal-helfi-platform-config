@@ -15,8 +15,8 @@ msgstr "Dygnet runt-vård"
 msgid "Language immersion Finnish-Swedish"
 msgstr "Språkbad finska-svenska"
 
-msgid "Open family activities"
-msgstr "Öppen verksamhet"
+msgid "Playgroup clubs"
+msgstr "Klubbar"
 
 msgid "Evening care"
 msgstr "Kvällsvård"
