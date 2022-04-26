@@ -110,7 +110,7 @@ class ConfigHelper {
    */
   public static function installNewField(string $config_location, string $field_storage, string $field_config, string $storage_location = NULL): void {
     $field_storage_path = $storage_location ?
-    "{$storage_location}{$field_storage}.yml" : 
+    "{$storage_location}{$field_storage}.yml" :
     "{$config_location}{$field_storage}.yml";
 
     // Install field storage configurations.
