@@ -46,6 +46,11 @@ function helfi_content_update_dependencies() {
     'helfi_platform_config' => 9004,
     'helfi_base_config' => 9001,
   ];
+
+  $dependencies['helfi_content'][9028] = [
+    'helfi_charts' => 9004,
+    'helfi_media_map_config' => 9003,
+  ];
   return $dependencies;
 }
 
@@ -632,7 +637,6 @@ function helfi_content_update_9028() {
 
   // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
-  $storageLocation = dirname(__FILE__) . '../helfi_base_config/config/optional';
 
   // Key field storage and value is field configuration.
   $configFields = [
@@ -641,7 +645,7 @@ function helfi_content_update_9028() {
 
   // Install iframe title field.
   foreach ($configFields as $field_storage => $field_config) {
-    ConfigHelper::installNewField($configLocation, $field_storage, $field_config, $storageLocation);
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
   }
 
   // Handle the configuration translation update manually.

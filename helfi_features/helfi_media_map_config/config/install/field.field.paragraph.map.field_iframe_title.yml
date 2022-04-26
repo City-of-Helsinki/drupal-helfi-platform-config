@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_iframe_title
     - paragraphs.paragraphs_type.map
 id: paragraph.map.field_iframe_title
 field_name: field_iframe_title
