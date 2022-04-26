@@ -237,3 +237,14 @@ function helfi_platform_config_update_9008() {
     ->execute();
   return t('Converted @rows translations to non customized translations.', ['@rows' => $count]);
 }
+
+/**
+ * Install content_lock module.
+ */
+function helfi_platform_config_update_9009() {
+  if (!Drupal::moduleHandler()->moduleExists('content_lock')) {
+    Drupal::service('module_installer')->install([
+      'content_lock',
+    ]);
+  }
+}
