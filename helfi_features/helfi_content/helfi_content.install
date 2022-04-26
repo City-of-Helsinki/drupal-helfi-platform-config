@@ -47,10 +47,6 @@ function helfi_content_update_dependencies() {
     'helfi_base_config' => 9001,
   ];
 
-  $dependencies['helfi_content'][9028] = [
-    'helfi_charts' => 9004,
-    'helfi_media_map_config' => 9003,
-  ];
   return $dependencies;
 }
 
