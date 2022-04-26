@@ -625,7 +625,7 @@ function helfi_content_update_9027() {
 /**
  * Added assistive technology title field
  */
-function helfi_media_map_config_update_9028() {
+function helfi_content_update_9028() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
