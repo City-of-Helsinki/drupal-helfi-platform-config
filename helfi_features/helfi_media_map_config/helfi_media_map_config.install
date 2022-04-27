@@ -14,6 +14,7 @@ function helfi_media_map_config_install($is_syncing) {
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_media_map_config_update_9001();
     helfi_media_map_config_update_9002();
+    helfi_media_map_config_update_9003();
   }
 }
 
@@ -34,6 +35,15 @@ function helfi_media_map_config_update_dependencies() {
   $dependencies['helfi_media_map_config'][9002] = [
     'helfi_content' => 9014,
   ];
+
+  // Run helfi_media_map_config_update_9003() after helfi_content_update_9028()
+  // has been run. helfi_content_update_9028 update installs
+  // field.storage.paragraph.field_iframe_title.yml which is needed
+  // for this update.
+  $dependencies['helfi_media_map_config'][9003] = [
+    'helfi_content' => 9028,
+  ];
+
   return $dependencies;
 }
 
@@ -68,4 +78,45 @@ function helfi_media_map_config_update_9002() {
   foreach ($configurations as $configuration) {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
   }
+}
+
+
+/**
+ * Added assistive technology title field
+ */
+function helfi_media_map_config_update_9003() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $storageLocation = dirname(__FILE__) . '../helfi_base_config/config/optional';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_iframe_title' => 'field.field.paragraph.map.field_iframe_title',
+  ];
+
+  // Install iframe title field.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config, $storageLocation);
+  }
+
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.paragraph.map.field_iframe_title'
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_media_map_config', 'helfi_media_map_config_update_9003');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
 }

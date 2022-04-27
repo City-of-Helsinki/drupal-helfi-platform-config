@@ -32,6 +32,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9024();
     helfi_content_update_9025();
     helfi_content_update_9027();
+    helfi_content_update_9028();
   }
 }
 
@@ -45,6 +46,7 @@ function helfi_content_update_dependencies() {
     'helfi_platform_config' => 9004,
     'helfi_base_config' => 9001,
   ];
+
   return $dependencies;
 }
 
@@ -616,6 +618,46 @@ function helfi_content_update_9027() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9027');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+
+/**
+ * Added assistive technology title field
+ */
+function helfi_content_update_9028() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_iframe_title' => 'field.field.paragraph.remote_video.field_iframe_title',
+  ];
+
+  // Install iframe title field.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.paragraph.remote_video.field_iframe_title'
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9028');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

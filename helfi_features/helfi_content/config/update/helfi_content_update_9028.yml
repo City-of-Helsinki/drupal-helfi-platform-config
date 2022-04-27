@@ -1,0 +1,20 @@
+core.entity_form_display.paragraph.remote_video.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      content:
+        field_iframe_title:
+          region: content
+          settings:
+            placeholder: ''
+            size: 60
+          third_party_settings: {  }
+          type: string_textfield
+          weight: 3
+core.entity_view_display.paragraph.remote_video.default:
+  expected_config:
+    hidden: {  }
+  update_actions:
+    change:
+      hidden:
+        field_iframe_title: true
