@@ -114,3 +114,20 @@ function helfi_news_item_update_9005() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Add medium-teaser display for news items.
+ */
+function helfi_news_item_update_9006() {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'core.entity_view_mode.node.medium_teaser',
+    'core.entity_view_display.node.news_item.medium_teaser',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configLocation, $configuration);
+  }
+}

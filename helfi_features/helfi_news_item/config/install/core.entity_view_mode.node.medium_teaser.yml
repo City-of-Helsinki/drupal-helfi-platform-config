@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.medium_teaser
+label: 'Medium Teaser'
+targetEntityType: node
+cache: true
