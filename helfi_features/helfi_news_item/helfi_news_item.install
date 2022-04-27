@@ -128,6 +128,6 @@ function helfi_news_item_update_9006() {
 
   // Install configurations and translations.
   foreach ($configurations as $configuration) {
-    ConfigHelper::installNewConfigTranslation($configLocation, $configuration);
+    ConfigHelper::installNewConfig($configLocation, $configuration);
   }
 }
