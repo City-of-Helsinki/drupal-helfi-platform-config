@@ -1,0 +1,6 @@
+block.block.views_block__news_latest_news:
+  expected_config:
+    region: sidebar_first
+  update_actions:
+    change:
+      region: sidebar_second
