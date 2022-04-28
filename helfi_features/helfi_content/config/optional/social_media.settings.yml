@@ -5,7 +5,7 @@ social_media:
     api_url: 'http://www.facebook.com/share.php?u=[current-page:url]&title=[current-page:title]'
     api_event: href
     default_img: 0
-    weight: '1'
+    weight: 1
     attributes: "target|_blank\r\nclass|facebook-share"
     drupalSettings: ''
     img: facebook
@@ -18,7 +18,7 @@ social_media:
     library: social_media/facebook
     text: 'Facebook messenger'
     default_img: 1
-    weight: '2'
+    weight: 2
     attributes: "target|_blank\r\nclass|facebook-msg\r\nrel|noopener noreferrer"
     img: ''
   linkedin:
@@ -38,7 +38,7 @@ social_media:
     api_event: href
     text: 'Share in Twitter'
     default_img: 0
-    weight: '4'
+    weight: 3
     attributes: "target|_blank\r\nclass|twitter"
     drupalSettings: ''
     img: twitter
@@ -49,7 +49,7 @@ social_media:
     api_event: href
     text: Pinterest
     default_img: 1
-    weight: '5'
+    weight: 5
     attributes: "target|_blank\r\nclass|pinterest\r\nrel|noopener noreferrer"
     drupalSettings: ''
     library: ''
@@ -60,7 +60,7 @@ social_media:
     api_event: href
     default_img: 1
     attributes: "class|whatsapp show-for-small-only\r\ndata-action|share/whatsapp/share"
-    weight: '6'
+    weight: 6
     drupalSettings: ''
     library: ''
     text: ''
@@ -71,7 +71,7 @@ social_media:
     api_event: href
     text: 'Send as an email'
     default_img: 0
-    weight: '7'
+    weight: 7
     attributes: class|email
     drupalSettings: ''
     enable_forward: 0
@@ -85,7 +85,7 @@ social_media:
     text: Print
     default_img: 1
     attributes: class|print
-    weight: '8'
+    weight: 8
     drupalSettings: ''
     library: ''
     img: ''
