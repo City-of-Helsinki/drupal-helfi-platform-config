@@ -16,7 +16,7 @@
         "drupal/crop": "^2.1",
         "drupal/default_content": "^2.0.0-alpha1",
         "drupal/diff": "^1.0",
-        "drupal/gin_toolbar": "1.0-beta20",
+        "drupal/gin_toolbar": "^1.0",
         "drupal/editoria11y": "^1.0",
         "drupal/entity_usage": "^2.0@beta",
         "drupal/easy_breadcrumb": "^2.0",
