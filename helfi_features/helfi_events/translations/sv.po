@@ -1,6 +1,10 @@
 msgid ""
 msgstr ""
 
+msgid "at"
+msgctxt "Indication that events take place in a certain timeframe"
+msgstr "klockan"
+
 msgid "events"
 msgstr "evenemang"
 

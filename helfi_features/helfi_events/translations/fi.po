@@ -1,11 +1,15 @@
 msgid ""
 msgstr ""
 
+msgid "at"
+msgctxt "Indication that events take place in a certain timeframe"
+msgstr "klo"
+
 msgid "events"
 msgstr "tapahtumaa"
 
 msgid "This event list is empty."
-msgstr "Tämä taphtumakalenteri on tyhjä."
+msgstr "Tämä tapahtumakalenteri on tyhjä."
 
 msgid "No worries though, this city does not run out of things to do."
 msgstr "Ei hätää, nimittäin tästä kaupungista ei tekeminen lopu."
