@@ -32,9 +32,10 @@
 
       // Do not include sidebar H2, Table of contents H2 or cookie compliance warnings.
       var exclusions = '' +
-        ':not(aside *)' +
-        ':not(.unit__sidebar *)' +
-        ':not(.service__sidebar *)' +
+        ':not(.layout-sidebar-first *)' +
+        ':not(.layout-sidebar-second *)' +
+        ':not(.tools__container *)' +
+        ':not(.breadcrumb__container *)' +
         ':not(#helfi-toc-table-of-contents *)' +
         ':not(.embedded-content-cookie-compliance *)' +
         ':not(.react-and-share-cookie-compliance *)' +
