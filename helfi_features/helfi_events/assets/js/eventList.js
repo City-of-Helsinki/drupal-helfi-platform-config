@@ -112,7 +112,7 @@
       }
 
       function setLoading(state = false) {
-        const progressElement = $(Drupal.theme('ajaxProgressThrobber')).addClass('event-list-spinner');
+        const progressElement = $('<div>', {class: 'event-list-spinner'}).append($(Drupal.theme('ajaxProgressThrobber')));
 
         if(state === true) {
           $('.event-list__load-more-button').attr('disabled', true);
