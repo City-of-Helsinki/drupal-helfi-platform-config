@@ -623,7 +623,6 @@ function helfi_content_update_9027() {
   return $updateHelper->logger()->output();
 }
 
-
 /**
  * Added assistive technology title field
  */
@@ -661,4 +660,15 @@ function helfi_content_update_9028() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Update Social media configuration.
+ */
+function helfi_content_update_9029() {
+  // Update social media settings if the module is enabled.
+  if (Drupal::moduleHandler()->moduleExists('social_media')) {
+    $configLocation = dirname(__FILE__) . '/config/optional/';
+    ConfigHelper::updateExistingConfig($configLocation, 'social_media.settings');
+  }
 }

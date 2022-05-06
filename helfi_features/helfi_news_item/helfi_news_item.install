@@ -116,14 +116,31 @@ function helfi_news_item_update_9005() {
 }
 
 /**
- * Move the latest news block to second sidebar region.
+ * Add medium-teaser display for news items.
  */
 function helfi_news_item_update_9006() {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'core.entity_view_mode.node.medium_teaser',
+    'core.entity_view_display.node.news_item.medium_teaser',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+  }
+}
+
+/**
+ * Move the latest news block to second sidebar region.
+ */
+function helfi_news_item_update_9007() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
   // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9006');
+  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9007');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
