@@ -1,0 +1,32 @@
+label: Omdirigera
+description: 'Lista över omdirigeringar'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      fields:
+        redirect_bulk_form:
+          action_title: 'Med urval'
+        redirect_source__path:
+          label: Från
+        created:
+          label: Skapad
+      filters:
+        redirect_source__path:
+          expose:
+            label: Från
+        redirect_redirect__uri:
+          expose:
+            label: Till
+        status_code:
+          expose:
+            label: Statuskod
+          group_info:
+            label: Statuskod
+        language:
+          expose:
+            label: Ursprungsspråk
+      title: Omdirigera
+      empty:
+        area_text_custom:
+          content: 'Det finns ingen omdirigering ännu.'

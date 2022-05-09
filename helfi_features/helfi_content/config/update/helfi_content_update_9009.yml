@@ -1,0 +1,50 @@
+field.field.node.article.field_liftup_image:
+  expected_config:
+    translatable: true
+  update_actions:
+    change:
+      translatable: false
+field.field.node.landing_page.field_liftup_image:
+  expected_config:
+    translatable: true
+  update_actions:
+    change:
+      translatable: false
+field.field.node.page.field_liftup_image:
+  expected_config:
+    translatable: true
+  update_actions:
+    change:
+      translatable: false
+metatag.metatag_defaults.front:
+  expected_config: {  }
+  update_actions:
+    add:
+      tags:
+        og_image: '[node:shareable-image]'
+        twitter_cards_image: '[node:shareable-image]'
+metatag.metatag_defaults.global:
+  expected_config:
+    tags:
+      image_src: /themes/contrib/hdbt/src/images/og-global.png
+  update_actions:
+    add:
+      tags:
+        og_image: '[site:default-og-image]'
+        twitter_cards_image: '[site:default-og-image]'
+    delete:
+      tags:
+        image_src: /themes/contrib/hdbt/src/images/og-global.png
+metatag.metatag_defaults.node:
+  expected_config:
+    tags:
+      og_image_url: '[node:field_liftup_image:entity:field_media_image:og_image:url],/themes/contrib/hdbt/src/images/og-global.png'
+      twitter_cards_image: '[node:field_liftup_image:entity:field_media_image:1_1_thumbnail:url]'
+  update_actions:
+    delete:
+      tags:
+        og_image_url: '[node:field_liftup_image:entity:field_media_image:og_image:url],/themes/contrib/hdbt/src/images/og-global.png'
+    change:
+      tags:
+        og_image: '[node:shareable-image]'
+        twitter_cards_image: '[node:shareable-image]'

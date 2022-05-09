@@ -1,0 +1,54 @@
+core.entity_form_display.tpr_unit.tpr_unit.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+      content:
+        field_unit_type:
+          type: entity_reference_autocomplete
+          weight: 28
+          region: content
+          settings:
+            match_operator: CONTAINS
+            match_limit: 10
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+core.entity_view_display.tpr_unit.tpr_unit.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+      hidden:
+        field_unit_type: true
+core.entity_view_display.tpr_unit.tpr_unit.teaser:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+      hidden:
+        field_unit_type: true
+core.entity_view_display.tpr_unit.tpr_unit.teaser_with_image:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+      hidden:
+        field_unit_type: true
+core.entity_view_display.tpr_unit.tpr_unit.wide_teaser:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - field.field.tpr_unit.tpr_unit.field_unit_type
+      hidden:
+        field_unit_type: true

@@ -1,0 +1,56 @@
+label: Personer
+description: 'Hitta och hantera personer som använder din webbplats.'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      fields:
+        user_bulk_form:
+          label: Massuppdatera
+        name:
+          label: Användarnamn
+        status:
+          label: Status
+          settings:
+            format_custom_true: Aktiv
+            format_custom_false: Spärrad
+        roles_target_id:
+          label: Roller
+        created:
+          label: 'Medlem i'
+        access:
+          label: 'Senast åtkomst'
+        operations:
+          label: Funktioner
+      filters:
+        combine:
+          expose:
+            label: 'Namn eller e-post innehåller'
+        status:
+          group_info:
+            label: Status
+            group_items:
+              1:
+                title: Aktiv
+              2:
+                title: Spärrad
+        roles_target_id:
+          expose:
+            label: Roll
+        permission:
+          expose:
+            label: Behörighet
+      title: Personer
+      empty:
+        area_text_custom:
+          content: 'Inga personer tillgängliga.'
+      use_more_text: mer
+  page_1:
+    display_title: Sida
+    display_options:
+      menu:
+        title: Lista
+        description: 'Hitta och hantera personer som använder din webbplats.'
+      tab_options:
+        title: Personer
+        description: 'Hantera användarkonton, roller och behörigheter.'

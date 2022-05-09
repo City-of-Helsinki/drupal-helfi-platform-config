@@ -1,0 +1,118 @@
+msgid ""
+msgstr ""
+
+msgid "- All -"
+msgstr "- Alla -"
+
+msgid "Accessibility information"
+msgstr "Tillgänglighetsuppgifter"
+
+msgid "All"
+msgstr "Alla"
+
+msgid "Block"
+msgstr "Block"
+
+msgid "Combine fields filter"
+msgstr "Kombinera filterfält"
+
+msgctxt "Contact card title"
+msgid "Contact information"
+msgstr "Kontaktuppgifter"
+
+msgid "Default"
+msgstr "Förvald"
+
+msgid "Description"
+msgstr "Beskrivning"
+
+msgid "Entity Reference"
+msgstr "Objektsreferens"
+
+msgid "Items per page"
+msgstr "Inlägg per sida"
+
+msgid "Load more services"
+msgstr "Ladda fler tjänster"
+
+msgid "Load more service points"
+msgstr "Ladda fler serviceställen"
+
+msgid "Location on map"
+msgstr "Plats på kartan"
+
+msgid "Next ›"
+msgstr "Nästa ›"
+
+msgid "No results"
+msgstr "Inget resultat"
+
+msgid "Offset"
+msgstr "Kompensera"
+
+msgid "Open the map in a new window"
+msgstr "Öppna kartan i nytt fönster"
+
+msgid "Paragraph"
+msgstr "Paragraf"
+
+msgid "Search"
+msgstr "Sök"
+
+msgid "Service points"
+msgstr "Serviceställen"
+
+msgctxt "Service list count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "tjänst"
+msgstr[1] "tjänster"
+
+msgctxt "Service units count"
+msgid "service point"
+msgid_plural "service points"
+msgstr[0] "serviceställe"
+msgstr[1] "serviceställen"
+
+msgid "Services"
+msgstr "Tjänster"
+
+msgid "Teaser"
+msgstr "Ingress"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "TPR unit list"
+msgstr "TPR units"
+
+msgid "TPR Units"
+msgstr "TPR units"
+
+
+msgctxt "Unit services count context word"
+msgid "services"
+msgstr "tjänster"
+
+msgctxt "Unit teaser link"
+msgid "See opening hours and contact details"
+msgstr "Se öppettider och kontaktuppgifter"
+
+msgctxt "Unit search count"
+msgid "result"
+msgid_plural "results"
+msgstr[0] "träff"
+msgstr[1] "träffar"
+
+msgctxt "Unit services count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "tjänst"
+msgstr[1] "tjänster"
+
+msgid "Upper content region"
+msgstr "Innehåll"
+
+msgid "‹ Previous"
+msgstr "‹ Föregående"
+

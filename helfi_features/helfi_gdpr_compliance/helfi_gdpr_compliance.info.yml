@@ -9,3 +9,5 @@ dependencies:
   - 'helfi_platform_config:helfi_platform_config'
   - 'update_helper:update_helper'
 package: HELfi
+'interface translation project': helfi_gdpr_compliance
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_gdpr_compliance/translations/%language.po

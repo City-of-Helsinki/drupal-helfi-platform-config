@@ -2,18 +2,30 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.accordion.field_accordion_description
     - field.field.paragraph.accordion.field_accordion_design
     - field.field.paragraph.accordion.field_accordion_heading_level
     - field.field.paragraph.accordion.field_accordion_items
+    - field.field.paragraph.accordion.field_accordion_title
+    - field.field.paragraph.accordion.field_accordion_title_level
     - paragraphs.paragraphs_type.accordion
   module:
     - hdbt_admin_editorial
     - paragraphs
+    - text
 id: paragraph.accordion.default
 targetEntityType: paragraph
 bundle: accordion
 mode: default
 content:
+  field_accordion_description:
+    weight: 3
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
   field_accordion_design:
     weight: 0
     settings: {  }
@@ -21,14 +33,14 @@ content:
     type: design_field_widget
     region: content
   field_accordion_heading_level:
-    weight: 1
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_accordion_items:
     type: paragraphs
-    weight: 2
+    weight: 5
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -44,6 +56,20 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
+    region: content
+  field_accordion_title:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_accordion_title_level:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
 hidden:
   created: true

@@ -10,9 +10,9 @@ field_name: field_liftup_image
 entity_type: node
 bundle: landing_page
 label: 'Liftup image'
-description: ''
+description: 'Image is visible on the content page, content listings, search results and on social media.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

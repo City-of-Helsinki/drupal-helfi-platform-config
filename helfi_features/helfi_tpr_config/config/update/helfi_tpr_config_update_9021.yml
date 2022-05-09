@@ -1,0 +1,32 @@
+views.view.service_list:
+  expected_config:
+    display:
+      default:
+        display_options:
+          pager:
+            options:
+              items_per_page: 4
+  update_actions:
+    change:
+      display:
+        default:
+          display_options:
+            pager:
+              options:
+                items_per_page: 8
+views.view.unit_services:
+  expected_config:
+    display:
+      default:
+        display_options:
+          pager:
+            options:
+              items_per_page: 4
+  update_actions:
+    change:
+      display:
+        default:
+          display_options:
+            pager:
+              options:
+                items_per_page: 8

@@ -172,7 +172,7 @@ content:
     region: content
     settings:
       iframe_title: 'Location on map'
-      link_title: 'View the map in new window'
+      link_title: 'Open the map in a new window'
       target: true
     third_party_settings: {  }
   services:

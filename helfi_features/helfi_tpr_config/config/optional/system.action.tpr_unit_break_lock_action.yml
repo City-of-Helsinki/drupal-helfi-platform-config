@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_lock
+id: tpr_unit_break_lock_action
+label: 'Break lock tpr_unit'
+type: tpr_unit
+plugin: 'entity:break_lock:tpr_unit'
+configuration: {  }

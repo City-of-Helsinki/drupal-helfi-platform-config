@@ -22,6 +22,7 @@ dependencies:
   - 'drupal:views'
   - 'drupal:views_ui'
   - 'easy_breadcrumb:easy_breadcrumb'
+  - 'editoria11y:editoria11y'
   - 'field_group:field_group'
   - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'hdbt_admin_tools:hdbt_admin_tools'
@@ -34,8 +35,13 @@ dependencies:
   - 'linkit:linkit'
   - 'menu_block_current_language:menu_block_current_language'
   - 'pathauto:pathauto'
+  - 'role_delegation:role_delegation'
   - 'select2_icon:select2_icon'
   - 'simple_sitemap:simple_sitemap'
+  - 'translatable_menu_link_uri:translatable_menu_link_uri'
   - 'token:token'
   - 'twig_tweak:twig_tweak'
   - 'update_helper:update_helper'
+  - 'view_unpublished:view_unpublished'
+'interface translation project': helfi_base_config
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_base_config/translations/%language.po

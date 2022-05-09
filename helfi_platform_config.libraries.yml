@@ -20,7 +20,13 @@ react_and_share:
 smartti_chatbot:
   version: 1.0.x
   js:
-    'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.js': { type: external, minified: true }
+    'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.js': {
+      type: external,
+      minified: true,
+      attributes: {
+        async: true
+      }
+    }
   css:
     theme:
       'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.css': { type: external, minified: true }
@@ -41,3 +47,89 @@ genesys_chat:
   css:
     theme:
       assets/css/genesys_chat.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+
+clear_localstorage:
+  version: 1.0.x
+  js:
+    assets/js/clear-localstorage.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+
+genesys_suunte:
+  version: 1.0.x
+  header: true
+  js:
+    'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
+      type: external,
+      minified: true,
+      attributes: {
+        onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
+      }
+    }
+    assets/js/genesys_suunte.js: {}
+  css:
+    theme:
+      assets/css/genesys_chat.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+
+genesys_auth_redirect:
+  version: 1.0.x
+  header: true
+  js:
+    'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
+      type: external,
+      minified: true,
+      attributes: {
+        onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
+      }
+    }
+    assets/js/genesys_auth_redirect.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+
+watson_chatbot:
+  version: 1.0.x
+  header: false
+  js:
+    'https://coh-chat-app-prod.eu-de.mybluemix.net/widget.min.js': {
+      type: external,
+      minified: true
+    }
+    'https://coh-chat-app-prod.eu-de.mybluemix.net/static/housing/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=housing': {
+      type: external,
+      minified: true
+    }
+    'https://coh-chat-app-prod.eu-de.mybluemix.net/default.min.js': {
+      type: external,
+      minified: true
+    }
+
+genesys_neuvonta:
+  version: 1.0.x
+  header: true
+  js:
+    'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
+      type: external,
+      minified: true,
+      attributes: {
+        onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
+      }
+    }
+    assets/js/genesys_neuvonta.js: {}
+  css:
+    theme:
+      assets/css/genesys_chat.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings

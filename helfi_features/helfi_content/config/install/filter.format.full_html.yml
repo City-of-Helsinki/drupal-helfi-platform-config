@@ -22,7 +22,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class><footer class><br> <div class role arial-*><span class role arial-*> <img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <a href hreflang !href accesskey id rel target title class data-design data-link-text data-icon data-protocol> <pre> <iframe allowfullscreen frameborder height mozallowfullscreen src webkitallowfullscreen width id> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr>'
+      allowed_html: '<em> <strong> <cite> <blockquote role aria-* cite class=""> <code> <ul type class=""> <ol start type> <li class=""> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div role aria-* class=""> <img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <pre> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <span role aria-* lang dir class="">'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -45,22 +45,6 @@ filters:
     weight: -48
     settings:
       title: true
-  token_filter:
-    id: token_filter
-    provider: token_filter
-    status: true
-    weight: -47
-    settings:
-      replace_empty: '1'
-  media_embed:
-    id: media_embed
-    provider: media
-    status: false
-    weight: -39
-    settings:
-      default_view_mode: default
-      allowed_media_types: {  }
-      allowed_view_modes: {  }
   editor_file_reference:
     id: editor_file_reference
     provider: editor
@@ -90,4 +74,26 @@ filters:
     provider: filter
     status: false
     weight: -40
+    settings: {  }
+  media_embed:
+    id: media_embed
+    provider: media
+    status: false
+    weight: -39
+    settings:
+      default_view_mode: default
+      allowed_view_modes: {  }
+      allowed_media_types: {  }
+  token_filter:
+    id: token_filter
+    provider: token_filter
+    status: true
+    weight: -47
+    settings:
+      replace_empty: '1'
+  helfi_link_converter:
+    id: helfi_link_converter
+    provider: helfi_api_base
+    status: true
+    weight: -10
     settings: {  }

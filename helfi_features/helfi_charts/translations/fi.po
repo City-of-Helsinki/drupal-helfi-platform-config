@@ -1,0 +1,89 @@
+msgid ""
+msgstr ""
+
+msgid "Chart"
+msgstr "Kaavio"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid ""
+"Enter the Chart URL. Should be in format "
+"<i>https://app.powerbi.com/view?r=eyJrIjo..</i>.\r\n"
+""
+msgstr ""
+"Syötä kaavion URL-osoite muodossa "
+"<i>https://app.powerbi.com/view?r=eyJrIjo..</i>."
+
+msgid ""
+"Media type Chart can be used to present interactive charts. Supports "
+"Microsoft Power BI."
+msgstr ""
+"Kaaviolla voidaan esittää interaktiivisia kaavioita. Tukee Microsoft "
+"Power BI:tä."
+
+msgid ""
+"Provide a descriptive transcript of the visual information what is "
+"presented in the chart."
+msgstr ""
+"Syötä kuvaava transkriptio kaaviossa esitetyistä visuaalisista "
+"tiedoista."
+
+msgid ""
+"The chart is rendered via inline frame. Iframe needs a label so users "
+"can determine what content is being presented in the iframe."
+msgstr ""
+"Kaavio esitetään iframe elementin kautta. Iframe tarvitsee "
+"sisältöä kuvaavan otsikon, jotta käyttäjät voivat tietää mitä "
+"sisältöä iframe-kehyksessä esitetään."
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "Transcript"
+msgstr "Transkriptio"
+
+msgid "URL"
+msgstr "URL-osoite"
+
+msgid "Edit @name. Opens in a new tab."
+msgstr "Muokkaa @name. Linkki avautuu uuteen välilehteen."
+
+msgid "Edit @name."
+msgstr "Muokkaa @name."
+
+msgid ""
+"With Chart paragraph content producer can add an embedded chart from "
+"https://app.powerbi.com."
+msgstr ""
+"Kaavio lohkolla voit lisätä upotettavan kaavion Power BI "
+"-palveluista."
+
+msgid "Chart embed URL"
+msgstr "Upotettavan kaavion URL-osoite"
+
+msgid "Enter the chart embed URL from @powerbi."
+msgstr "Syötä kenttään upotettavan Power Bi kaavion URL-osoite. "
+"Saat sen osoitteesta @powerbi."
+
+msgctxt "Helfi Charts cookie compliance"
+msgid "Chart cannot be displayed"
+msgstr "Kaaviota ei voida näyttää"
+
+msgctxt "Helfi Charts cookie compliance"
+msgid ""
+"This content is hosted by @chart_service_url. To see the content, "
+"switch over to the external site or modify your cookie settings to "
+"allow statistics cookies."
+msgstr ""
+"Tämä sisältö haetaan osoitteesta @chart_service_url. Sen "
+"näyttämiseen vaaditaan, että hyväksyt sivuston evästeet. Pääset "
+"näkemään sisällön joko siirtymällä ulkoiselle sivustolle tai "
+"sallimalla evästeasetuksista tilastointievästeet."
+
+msgctxt "Helfi Charts cookie compliance"
+msgid "See the chart on external site"
+msgstr "Katso kaavio ulkoiselta sivustolta"
+
+msgid "Change cookie settings"
+msgstr "Muokkaa evästeasetuksia"

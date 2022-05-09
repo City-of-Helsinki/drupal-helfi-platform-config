@@ -5,6 +5,8 @@
  * Contains install functions for Helfi Base Config.
  */
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Implements hook_install().
  *
@@ -12,7 +14,7 @@
  */
 function helfi_base_config_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
-  // of a configuration import
+  // of a configuration import.
   if (!$is_syncing) {
     // Remove the default frontpage view.
     Drupal::configFactory()->getEditable('views.view.frontpage')->delete();
@@ -36,6 +38,11 @@ function helfi_base_config_install($is_syncing) {
     // Apply the HELfi base configurations.
     if (Drupal::moduleHandler()->moduleExists('update_helper')) {
       helfi_base_config_update_9001();
+      helfi_base_config_update_9002();
+      helfi_base_config_update_9006();
+      helfi_base_config_update_9007();
+      helfi_base_config_update_9008();
+      helfi_base_config_update_9009();
     }
   }
 }
@@ -81,4 +88,156 @@ function helfi_base_config_update_9001() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Update easybreadcrumb settings and install breadcrumb base links configuration.
+ */
+function helfi_base_config_update_9002() {
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9002');
+
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  ConfigHelper::installNewConfig($configLocation, 'helfi_base_config.breadcrumb');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add module for admins to see other admins' unpublished content.
+ */
+function helfi_base_config_update_9003() {
+  // Install view_unpublished module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('view_unpublished')) {
+    Drupal::service('module_installer')->install([
+      'view_unpublished',
+    ]);
+  }
+}
+
+/**
+ * Install HELfi Table of contents and Translatable menu link uri modules.
+ */
+function helfi_base_config_update_9004() {
+  // Install helfi_toc module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('helfi_toc')) {
+    Drupal::service('module_installer')->install([
+      'helfi_toc',
+    ]);
+  }
+
+  // Install translatable_menu_link_uri module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('translatable_menu_link_uri')) {
+    Drupal::service('module_installer')->install([
+      'translatable_menu_link_uri',
+    ]);
+  }
+}
+
+/**
+ * Enable role delegation module.
+ */
+function helfi_base_config_update_9005() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9005');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Maintenance text update.
+ */
+function helfi_base_config_update_9006() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9006');
+
+  // Install updated translations.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'system.maintenance');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update configuration translations for Helfi Base config.
+ */
+function helfi_base_config_update_9007() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'views.view.scheduler_scheduled_content');
+}
+
+/**
+ * Install views bulk operations modules.
+ */
+function helfi_base_config_update_9008() {
+  // Install views_bulk_operations module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('views_bulk_operations')) {
+    Drupal::service('module_installer')->install([
+      'views_bulk_operations',
+    ]);
+  }
+  // Install views_bulk_edit module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('views_bulk_edit')) {
+    Drupal::service('module_installer')->install([
+      'views_bulk_edit',
+    ]);
+  }
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9008');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Remove language switcher from group content creation pages.
+ */
+function helfi_base_config_update_9009() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9009');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Change openid button location on login page.
+ */
+function helfi_base_config_update_9010() {
+  if (Drupal::moduleHandler()->moduleExists('helfi_base_config')) {
+    $configLocation = dirname(__FILE__) . '/config/optional/';
+    ConfigHelper::updateExistingConfig($configLocation, 'openid_connect.settings');
+  }
+}
+
+/**
+ * Enable editoria11y module
+ */
+function helfi_base_config_update_9011() {
+  if (!Drupal::moduleHandler()->moduleExists('editoria11y')) {
+    Drupal::service('module_installer')->install([
+      'editoria11y',
+    ]);
+  }
 }

@@ -8,8 +8,8 @@ id: node.page.field_lead_in
 field_name: field_lead_in
 entity_type: node
 bundle: page
-label: Lead-in
-description: ''
+label: Lead
+description: 'Lead is visible on the content page, content listings, search results and on social media.'
 required: false
 translatable: true
 default_value: {  }

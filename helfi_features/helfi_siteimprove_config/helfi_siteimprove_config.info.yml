@@ -3,4 +3,6 @@ type: module
 core_version_requirement: '^8.9 || ^9'
 package: HELfi
 dependencies:
+  - 'helfi_content:helfi_content'
   - 'update_helper:update_helper'
+  - 'siteimprove:siteimprove'

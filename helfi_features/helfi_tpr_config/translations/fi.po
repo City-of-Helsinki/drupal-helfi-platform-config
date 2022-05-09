@@ -1,0 +1,462 @@
+msgid ""
+msgstr ""
+
+msgid "- All -"
+msgstr "- Kaikki -"
+
+msgid "Accessibility information"
+msgstr "Esteettömyystiedot"
+
+msgid "Action"
+msgstr "Toiminto"
+
+msgid ""
+"Add here the content that you want to appear as cards to the block. "
+"<span class=\"notice\">Works only with TPR Unit in alpha "
+"version</span>"
+msgstr ""
+"Lisää tähän sen sisällön otsikko jonka haluat nostaa "
+"sivulle.\n"
+"<span class=\"notice\">Voit toistaiseksi valita vain "
+"toimipisteitä.</span>"
+
+msgid "Admin school settings."
+msgstr "Hallinnoi kouluasetuksia."
+
+msgid "All"
+msgstr "Kaikki"
+
+msgid ""
+"Alternative image for the main image if you wish to replace the set "
+"main image or if there is no image set for the main image field."
+msgstr ""
+"Vaihtoehtoinen kuva pääkuvan tilalle jos haluat käyttää eri kuvaa "
+"pääkuvana kuin mikä on asetettu pääkuvakenttään tai jos "
+"integraation kautta toimipisteelle ei ole asetettu pääkuvaa."
+
+msgid "Apply"
+msgstr "Käytä"
+
+msgid "Asc"
+msgstr "Nousevasti"
+
+msgid "Ascending"
+msgstr "Nouseva"
+
+msgid "Block"
+msgstr "Lohko"
+
+msgid "Break lock tpr_service"
+msgstr "Riko lukko palvelulta"
+
+msgid "Break lock tpr_unit"
+msgstr "Riko lukko toimipisteeltä"
+
+msgid "Bulk update"
+msgstr "Bulkkipäivitys"
+
+msgid "Choose this field if the unit is parent unit of other units."
+msgstr ""
+"Valitse tämä jos tämä toimipiste on ylätason toimipiste toisille "
+"toimipisteille."
+
+msgid "Configure TPR errand service entity type"
+msgstr "Asiointipalvelu entiteetin asetukset"
+
+msgid "Configure TPR service channel entity type"
+msgstr "Palvelukanava entiteetin asetukset"
+
+msgid "Configure TPR service entity type"
+msgstr "Palvelu entiteetin asetukset"
+
+msgid "Configure TPR unit entity type"
+msgstr "Toimipiste entiteetin asetukset"
+
+msgctxt "Contact card title"
+msgid "Contact"
+msgstr "Yhteystiedot"
+
+msgid "Combine fields filter"
+msgstr "Kentät yhdistävä suodatin"
+
+msgctxt "Contact card title"
+msgid "Contact information"
+msgstr "Yhteystiedot"
+
+msgid "Content language"
+msgstr "Sisällön kieli"
+
+msgid "Current school year:"
+msgstr "Käytössä oleva lukuvuosi:"
+
+msgid "Default"
+msgstr "Oletus"
+
+msgid "Desc"
+msgstr "Laskevasti"
+
+msgid "Descending"
+msgstr "Laskeva"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Enter name, address or postal code"
+msgstr "Syötä nimi, osoite tai postinumero"
+
+msgid "Entity Reference"
+msgstr "Entiteettiviittaus"
+
+msgid "Filter"
+msgstr "Käytä"
+
+msgid "Integrations"
+msgstr "Integraatiot"
+
+msgid "Items per page"
+msgstr "Merkintöjä sivua kohti"
+
+msgid "List of TPR errand service entities"
+msgstr "Asiointipalvelut"
+
+msgid "List of TPR service channel entities"
+msgstr "Palvelukanavat"
+
+msgid "List of TPR service entities"
+msgstr "Palvelut"
+
+msgid "List of TPR unit entities"
+msgstr "Toimipisteet"
+
+msgid "Lists services in unit page"
+msgstr "Listaa palveluita toimipisteen sivun perusteella"
+
+msgid "Load more label"
+msgstr "Lataa lisää - otsikko"
+
+msgid "Load more results"
+msgstr "Lataa lisää"
+
+msgid "Load more service points"
+msgstr "Lataa lisää palvelupaikkoja"
+
+msgid "Load more services"
+msgstr "Lataa lisää palveluita"
+
+msgid "Load more units"
+msgstr "Lataa lisää toimipisteitä"
+
+msgid "Location on map"
+msgstr "Sijainti kartalla"
+
+msgid "Lock Date/Time"
+msgstr "Lukituksen ajankohta"
+
+msgid "Lock owner"
+msgstr "Lukituksen tekijä"
+
+msgid "Locked services"
+msgstr "Lukitut palvelut"
+
+msgid "Locked units"
+msgstr "Lukitut toimipisteet"
+
+msgid "Long description for the unit. The default value comes from TPR."
+msgstr ""
+"Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
+
+msgid ""
+"Long description for the unit. The default value comes from TPR. "
+"Example token [aet:tpr_unit:1234:description:value]\n"
+""
+msgstr ""
+"Pitkä kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:value]"
+
+msgid "Lower content region"
+msgstr "Alempi sisältöalue"
+
+msgid "Meta information"
+msgstr "Metatiedot"
+
+msgid "Metatags"
+msgstr "Metatunnisteet"
+
+msgid "Next ›"
+msgstr "Seuraava ›"
+
+msgid "No results"
+msgstr ""
+"<p>Ei tuloksia</p>\r\n"
+""
+
+msgid "No results found."
+msgstr "Ei tuloksia."
+
+msgid "Offset"
+msgstr "Offset"
+
+msgid "Open the map in a new window"
+msgstr "Avaa kartta uuteen ikkunaan"
+
+msgid "Operations"
+msgstr "Toiminnot"
+
+msgid "Paragraph"
+msgstr "Lohko"
+
+msgid "Paragraphs"
+msgstr "Lohkot"
+
+msgid "Phone"
+msgstr "Puhelin"
+
+msgid "Reset"
+msgstr "Palauta"
+
+msgid "School settings"
+msgstr "Kouluasetukset"
+
+msgid "Search"
+msgstr "Etsi"
+
+msgid "Search button"
+msgstr "Hakukentän painike"
+
+msgid "Search for a unit"
+msgstr "Hae toimipisteitä"
+
+msgid "Search for units"
+msgstr "Hae toimipisteitä"
+
+msgid "Search label"
+msgstr "Hakukentän otsikko"
+
+msgid "Search placeholder"
+msgstr "Hakukentän oletusteksti"
+
+msgid ""
+"Select the starting year for a school year period. For example, "
+"selecting \"2022\" would set the school year to \"2022-2023\"."
+msgstr ""
+"Aseta lukuvuoden aloitusvuosi. Asettamalla aloitusvuodeksi esimerkiksi "
+"\"2022\", lukuvuodeksi tulee \"2022-2023\"."
+
+msgid ""
+"Select the units from which the end user can search for the unit they "
+"want."
+msgstr ""
+"Valitse toimipisteen joiden seasta haluat käyttäjän etsivän "
+"toimipisteitä."
+
+msgid "Service list"
+msgstr "Palvelulistaus"
+
+msgctxt "Service list pager button"
+msgid "Show all services"
+msgstr "Näytä kaikki palvelut"
+
+msgctxt "Service list count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "palvelu"
+msgstr[1] "palvelua"
+
+msgctxt "Service units count"
+msgid "unit"
+msgid_plural "units"
+msgstr[0] "palvelupaikka"
+msgstr[1] "palvelupaikkaa"
+
+msgctxt "Service units count"
+msgid "service point"
+msgid_plural "service points"
+msgstr[0] "palvelupaikka"
+msgstr[1] "palvelupaikkaa"
+
+msgid "Services"
+msgstr "Palvelut"
+
+msgid "Service points"
+msgstr "Palvelupaikat"
+
+msgid "Short description of the unit. The default value comes from TPR."
+msgstr ""
+"Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
+
+msgid ""
+"Short description of the unit. The default value comes from TPR. "
+"Example token [aet:tpr_unit:1234:description:summary]"
+msgstr ""
+"Lyhyt kuvaus toimipisteelle. Oletusarvo kentälle tulee TPR:stä. "
+"Esimerkki korvauskuviosta [aet:tpr_unit:1234:description:summary]"
+
+msgid "Show all services"
+msgstr "Näytä kaikki palvelut"
+
+msgid "Sidebar content"
+msgstr "Sivupalkin sisältö"
+
+msgid "Sort"
+msgstr "Järjestä"
+
+msgid "Sort by"
+msgstr "Lajittele"
+
+msgid "Starting year for school year"
+msgstr "Lukuvuoden aloitusvuosi"
+
+msgid "Teaser"
+msgstr "Lyhennelmä"
+
+msgid "There is no content currently locked."
+msgstr "Lukittuja toimipisteitä ei ole."
+
+msgid "The title that is shown on the unit page."
+msgstr ""
+"Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
+"korvauskuviosta [aet:tpr_unit:1234:name]"
+
+msgid ""
+"The title that is shown on the unit page. Example token: "
+"[aet:tpr_unit:1234:name]"
+msgstr ""
+"Otsikko joka näytetään toimipiste-sivulla. Esimerkki "
+"korvauskuviosta [aet:tpr_unit:1234:name]"
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "TPR errand service list"
+msgstr "TPR Asiointipalvelut"
+
+msgid "TPR Errand Services"
+msgstr "TPR Asiointipalvelut"
+
+msgid "TPR - Errand Service"
+msgstr "TPR - Asiointipalvelu"
+
+msgid "TPR - Errand Service entities"
+msgstr "Asiointipalvelut"
+
+msgid "TPR - Errand Service settings"
+msgstr "TPR - Asiointipalvelun asetukset"
+
+msgid "TPR - Service"
+msgstr "TPR - Palvelu"
+
+msgid "TPR - Unit"
+msgstr "TPR - Toimipiste"
+
+msgid "TPR service channel list"
+msgstr "TPR Palvelukanavat"
+
+msgid "TPR Service Channels"
+msgstr "TPR Palvelukanavat"
+
+msgid "TPR - Service Channel"
+msgstr "TPR - Palvelukanava"
+
+msgid "TPR - Service channel entities"
+msgstr "Palvelukanavat"
+
+msgid "TPR - Service channel settings"
+msgstr "TPR - Palvelukanavan asetukset"
+
+msgid "TPR service list"
+msgstr "TPR Palvelut"
+
+msgid "TPR Services"
+msgstr "TPR Palvelut"
+
+msgid "TPR - Service entities"
+msgstr "Palvelut"
+
+msgid "TPR - Service map embed"
+msgstr "TPR - Palvelukartan upotus"
+
+msgid "TPR - Service settings"
+msgstr "TPR - Palvelun asetukset"
+
+msgid "TPR unit list"
+msgstr "TPR Toimipisteet"
+
+msgid "TPR Units"
+msgstr "TPR Toimipisteet"
+
+msgid "TPR - Unit entities"
+msgstr "Toimipisteet"
+
+msgid "TPR - Unit settings"
+msgstr "TPR - Toimipisteen asetukset"
+
+msgid "Unit"
+msgstr "Toimipiste"
+
+msgctxt "Unit list pager button"
+msgid "Show all units"
+msgstr "Näytä kaikki toimipisteet"
+
+msgid ""
+"Unit page that has information imported from an integration. You can "
+"enrich some of that information if you wish do to do so."
+msgstr ""
+"Yksittäinen toimipiste jonka sisältämä tieto tulee pääosin "
+"integraation kautta järjestelmään. Halutessasi voit rikastaa tätä "
+"tietoa."
+
+msgid "Unit search"
+msgstr "Toimipistehaku"
+
+msgctxt "Unit search count"
+msgid "result"
+msgid_plural "results"
+msgstr[0] "tulos"
+msgstr[1] "tulosta"
+
+msgctxt "Unit services count"
+msgid "service"
+msgid_plural "services"
+msgstr[0] "palvelu"
+msgstr[1] "palvelua"
+
+msgctxt "Unit services count context word"
+msgid "services"
+msgstr "palvelua"
+
+msgid "Unit service list"
+msgstr "Toimipisteen palvelulistaus"
+
+msgctxt "Unit teaser link"
+msgid "See opening hours and contact details"
+msgstr "Katso aukioloajat ja yhteystiedot"
+
+msgid "Units"
+msgstr "Toimipisteet"
+
+msgid "Upper content region"
+msgstr "Ylempi sisältöalue"
+
+msgid "View larger map"
+msgstr "Katso suurempi kartta"
+
+msgid ""
+"With service list paragraph content producer can create a list of "
+"selected and published services for the end user."
+msgstr ""
+"Palvelulistaus lohkolla sisällöntuottaja voi sijoittaa listan "
+"palveluista valitsemalleen sivulle. Lohkosta valitaan julkaistut "
+"palvelut joita halutaan näyttää loppukäyttäjälle."
+
+msgid ""
+"With unit search paragraph content producer can create unit search "
+"forms for the end user."
+msgstr ""
+"Toimipistehaku paragraafilla sisällöntuottaja voi sijoittaa "
+"toimipistehaun valitsemalleen sivulle. Paragraphista valitaan "
+"toimipisteet joita halutaan näyttää loppukäyttäjälle."
+
+msgid "‹ Previous"
+msgstr "‹ Edellinen"

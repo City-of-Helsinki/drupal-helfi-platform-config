@@ -1,0 +1,13 @@
+diff --git a/js/eu_cookie_compliance.js b/js/eu_cookie_compliance.js
+index 4d5496e..bb605c4 100644
+--- a/js/eu_cookie_compliance.js
++++ b/js/eu_cookie_compliance.js
+@@ -628,7 +628,7 @@
+     if (storedCategories !== null && typeof storedCategories !== 'undefined') {
+       // JS cookie introduced unescaped cookie values.
+       if (storedCategories.indexOf('%') !== -1) {
+-        storedCategories = decodeURI(storedCategories).replace('%2C', ',');
++        storedCategories = decodeURI(storedCategories).replaceAll('%2C', ',');
+       }
+       _euccSelectedCategories = JSON.parse(storedCategories);
+     }

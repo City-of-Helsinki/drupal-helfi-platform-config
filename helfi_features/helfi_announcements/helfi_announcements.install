@@ -1,5 +1,40 @@
 <?php
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
+/**
+ * Implements hook_install().
+ */
+function helfi_announcements_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
+    helfi_announcements_update_9001();
+    helfi_announcements_update_9003();
+  }
+
+  // If HELfi TPR config module is installed, install also
+  // HELfi Announcements TPR integration module.
+  if (Drupal::moduleHandler()->moduleExists('helfi_tpr_config')) {
+    Drupal::service('module_installer')->install([
+      'helfi_announcements_tpr',
+    ]);
+  }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function helfi_announcements_update_dependencies() {
+  // Run helfi_announcements_update_9003() after helfi_content_update_9014()
+  // has been run. helfi_content_update_9014() update will reinstall
+  // user roles and permissions.
+  $dependencies['helfi_announcements'][9003] = [
+    'helfi_content' => 9014,
+  ];
+  return $dependencies;
+}
+
 /**
  * Update Announcement form widgets to use autocomplete with lazy-loading.
  */
@@ -9,6 +44,53 @@ function helfi_announcements_update_9001() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_announcements', 'helfi_announcements_update_9001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Install HELfi Announcements TPR integration module if HELfi TPR is enabled.
+ */
+function helfi_announcements_update_9002() {
+  // If HELfi TPR config module is installed, install also
+  // HELfi Announcements TPR integration module.
+  if (Drupal::moduleHandler()->moduleExists('helfi_tpr_config')) {
+    Drupal::service('module_installer')->install([
+      'helfi_announcements_tpr',
+    ]);
+  }
+}
+
+/**
+ * Reinstall Helfi Announcements specific permissions.
+ */
+function helfi_announcements_update_9003() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/optional/';
+
+  $configurations = [
+    'user.role.admin',
+    'user.role.content_producer',
+    'user.role.editor',
+    'user.role.read_only',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
+}
+
+/**
+ * Update Announcement available translation languages.
+ */
+function helfi_announcements_update_9004() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_announcements', 'helfi_announcements_update_9004');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

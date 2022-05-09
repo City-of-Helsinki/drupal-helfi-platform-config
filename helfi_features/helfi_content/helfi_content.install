@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * @file
+ * Contains install functions for Helfi Content.
+ */
+
+use Drupal\helfi_platform_config\ConfigHelper;
+
+/**
  * Implements hook_install().
  *
  * Update HELfi Content configurations when
@@ -8,10 +15,24 @@
  */
 function helfi_content_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
-  // of a configuration import
+  // of a configuration import.
   if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
     helfi_content_update_9001();
     helfi_content_update_9002();
+    helfi_content_update_9004();
+    helfi_content_update_9005();
+    helfi_content_update_9006();
+    helfi_content_update_9007();
+    helfi_content_update_9009();
+    helfi_content_update_9011();
+    helfi_content_update_9016();
+    helfi_content_update_9019();
+    helfi_content_update_9020();
+    helfi_content_update_9021();
+    helfi_content_update_9024();
+    helfi_content_update_9025();
+    helfi_content_update_9027();
+    helfi_content_update_9028();
   }
 }
 
@@ -25,6 +46,7 @@ function helfi_content_update_dependencies() {
     'helfi_platform_config' => 9004,
     'helfi_base_config' => 9001,
   ];
+
   return $dependencies;
 }
 
@@ -65,11 +87,588 @@ function helfi_content_update_9003() {
 
   // Added manually the creation of configuration. Cannot be handled automatically.
   $configLocation = dirname(__FILE__) . '/config/install/';
-  \Drupal\helfi_platform_config\ConfigHelper::installNewConfig($configLocation, 'linkit.linkit_profile.tpr_content');
+  ConfigHelper::installNewConfig($configLocation, 'linkit.linkit_profile.tpr_content');
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9003');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Add title and description field for the accordion paragraph.
+ */
+function helfi_content_update_9004() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_accordion_description' => 'field.field.paragraph.accordion.field_accordion_description',
+    'field.storage.paragraph.field_accordion_title' => 'field.field.paragraph.accordion.field_accordion_title',
+    'field.storage.paragraph.field_accordion_title_level' => 'field.field.paragraph.accordion.field_accordion_title_level',
+  ];
+
+  // Install accordion description, title and title level fields.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9004');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add class as allowed attribute for ul and li elements on full html text format.
+ */
+function helfi_content_update_9005() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9005');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Remove highlight component from WYSIWYG.
+ */
+function helfi_content_update_9006() {
+  // Load the existing configuration.
+  $config_name = 'editor.editor.full_html';
+  $config = \Drupal::configFactory()->getEditable($config_name);
+  $config_data = $config->getRawData();
+
+  // Check that the WYSIWYG toolbar is set.
+  if (isset($config_data['settings']['toolbar']['rows'])) {
+    foreach ($config_data['settings']['toolbar']['rows'] as &$rows) {
+      // Go through each row of settings and search for the 'highlight' value and remove it if found.
+      foreach ($rows as &$row) {
+        if (array_key_exists('items', $row)) {
+          if (($key = array_search('highlight', $row['items'])) !== FALSE) {
+            unset($row['items'][$key]);
+          }
+        }
+      }
+    }
+  }
+  // Save the configuration without the highlight value.
+  $config->setData($config_data)->save();
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9006');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add image paragraph as allowed paragraph inside accordion content.
+ */
+function helfi_content_update_9007() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9007');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Set up Table of contents field for basic page content type.
+ */
+function helfi_content_update_9008() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9008');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update content metatag image values to use shareable image (token).
+ */
+function helfi_content_update_9009() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9009');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update og_site_name to match City of Helsinki root site.
+ */
+function helfi_content_update_9011() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9011');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add Blockquote attributes to Full HTML filter formatter.
+ */
+function helfi_content_update_9012() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9012');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Remove Iframe tag from accepted HTML tags in Full HTML filter.
+ */
+function helfi_content_update_9013() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9013');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Install Editor role and overhaul user roles and permissions.
+ */
+function helfi_content_update_9014() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'user.role.admin',
+    'user.role.content_producer',
+    'user.role.editor',
+    'user.role.read_only',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
+
+/**
+ * Add text format usage permissions for editor roles.
+ */
+function helfi_content_update_9015() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9015');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update anonymous and authenticated user role permissions.
+ */
+function helfi_content_update_9016() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/override/';
+
+  $configurations = [
+    'user.role.authenticated',
+    'user.role.anonymous',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
+
+  // Handle permission removal manually, as the update helper is incapable of
+  // deleting single values from keyless arrays, like permissions.
+  // See Updater::applyConfigActions().
+  $config_factory = \Drupal::configFactory();
+  $authenticated_role = $config_factory->getEditable('user.role.authenticated');
+  $authenticated_role_data = $authenticated_role->getRawData();
+
+  // Permissions to be removed from authenticated user configuration.
+  $permissions = [
+    'use text format full_html',
+    'use text format minimal',
+  ];
+
+  // Remove unwanted permissions from the configuration.
+  if (isset($authenticated_role_data['permissions'])) {
+    $updated_permissions = array_diff(
+      $authenticated_role_data['permissions'],
+      $permissions
+    );
+    if (!empty($updated_permissions)) {
+      $authenticated_role_data['permissions'] = $updated_permissions;
+      $authenticated_role->setData($authenticated_role_data)->save(TRUE);
+    }
+  }
+}
+
+/**
+ * Install and configure content_lock module.
+ */
+function helfi_content_update_9017() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Install Content lock module if it's not enabled'.
+  if (
+    !Drupal::moduleHandler()->moduleExists('content_lock') ||
+    !Drupal::moduleHandler()->moduleExists('content_lock_timeout')
+  ) {
+    Drupal::service('module_installer')->install([
+      'content_lock',
+      'content_lock_timeout'
+    ]);
+  }
+
+  // Override the default configuration by the content lock module.
+  $configOverrideLocation = dirname(__FILE__) . '/config/override/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurationsOverride = [
+    'content_lock.settings',
+    'content_lock_timeout.settings',
+    'views.view.locked_content',
+  ];
+
+  // Update the configurations and translations.
+  foreach ($configurationsOverride as $configOverride) {
+    ConfigHelper::updateExistingConfig($configOverrideLocation, $configOverride);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configOverride);
+  }
+
+  // Add the system actions for the node, paragraphs library item and taxonomy term.
+  $configOptionalLocation = dirname(__FILE__) . '/config/optional/';
+  $configurations = [
+    'system.action.node_break_lock_action',
+    'system.action.paragraphs_library_item_break_lock_action',
+    'system.action.taxonomy_term_break_lock_action',
+  ];
+
+  // Install the system actions for content lock.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configOptionalLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9017');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update translations based on customer needs.
+ */
+function helfi_content_update_9018() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9018');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update configuration translations for Helfi Content.
+ */
+function helfi_content_update_9019() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.node.article.field_author',
+    'field.field.node.article.field_content',
+    'field.field.node.article.field_keywords',
+    'field.field.node.article.field_lead',
+    'field.field.node.article.field_liftup_image',
+    'field.field.node.landing_page.field_content',
+    'field.field.node.landing_page.field_has_hero',
+    'field.field.node.landing_page.field_liftup_image',
+    'field.field.node.page.field_has_hero',
+    'field.field.node.page.field_lead_in',
+    'field.field.node.page.field_liftup_image',
+    'field.field.paragraph.hero.field_hero_desc',
+    'field.field.paragraph.hero.field_hero_design',
+    'field.field.paragraph.hero.field_hero_title',
+    'node.type.article',
+    'node.type.landing_page',
+    'node.type.page',
+    'paragraphs.paragraphs_type.remote_video',
+  ];
+
+  // Update translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
+
+/**
+ * Update the remote-video paragraph with new fields.
+ */
+function helfi_content_update_9020() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Add the new fields for remote-video paragraph.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_remote_video_description' => 'field.field.paragraph.remote_video.field_remote_video_description',
+    'field.storage.paragraph.field_remote_video_title' => 'field.field.paragraph.remote_video.field_remote_video_title',
+    'field.storage.paragraph.field_remote_video_video_desc' => 'field.field.paragraph.remote_video.field_remote_video_video_desc',
+    'field.storage.paragraph.field_remote_video_video_title' => 'field.field.paragraph.remote_video.field_remote_video_video_title',
+  ];
+
+  // Install accordion description, title and title level fields.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $field_config);
+  }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9020');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update configuration translations for Helfi Base config.
+ */
+function helfi_content_update_9021() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'views.view.locked_services',
+    'views.view.locked_units',
+  ];
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
+
+/**
+ * Add 'selected-icon' and 'is-external' data attributes for CKEditor anchor tags.
+ */
+function helfi_content_update_9022() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9022');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update configuration translations for Hero description.
+ */
+function helfi_content_update_9023() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9023');
+
+  // Override the default configuration by the content lock module.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Update the configurations and translations.
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.paragraph.hero.field_hero_desc');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add contact card listing paragraph to all content areas on standard page.
+ */
+function helfi_content_update_9024() {
+  if (!Drupal::moduleHandler()->moduleExists('helfi_contact_cards')) {
+    //Install Helfi contact cards module
+    Drupal::service('module_installer')->install(['helfi_contact_cards']);
+
+    /** @var \Drupal\update_helper\Updater $updateHelper */
+    $updateHelper = \Drupal::service('update_helper.updater');
+
+    // Execute configuration update definitions with logging of success.
+    $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9024');
+
+    // Output logged messages to related channel of update execution.
+    return $updateHelper->logger()->output();
+  }
+}
+
+
+/**
+ * Enable Language selector plugin for minimal and html filters.
+ */
+function helfi_content_update_9025() {
+  // Load the existing configuration for editor.editor.full_html.
+  $editor_full_config = \Drupal::configFactory()->getEditable('editor.editor.full_html');
+  $editor_full = $editor_full_config->getRawData();
+
+  // Add language selector to configuration manually..
+  if (isset($editor_full['settings']['toolbar']['rows'])) {
+    foreach ($editor_full['settings']['toolbar']['rows'] as &$rows) {
+      // Go through each row of settings and search for the 'highlight' value and remove it if found.
+      foreach ($rows as &$row) {
+        if (array_key_exists('items', $row)) {
+          if ($row['name'] === 'Tools') {
+            array_splice($row['items'], 8, 0, 'language_selector');
+          }
+        }
+      }
+    }
+  }
+  // Save the configuration without the highlight value.
+  $editor_full_config->setData($editor_full)->save();
+
+  // Load the existing configuration for editor.editor.minimal.
+  $editor_minimal_config = \Drupal::configFactory()->getEditable('editor.editor.minimal');
+  $editor_minimal = $editor_minimal_config->getRawData();
+
+  // Add language selector to configuration manually..
+  if (isset($editor_minimal['settings']['toolbar']['rows'])) {
+    foreach ($editor_minimal['settings']['toolbar']['rows'] as &$rows) {
+      // Go through each row of settings and search for the 'highlight' value and remove it if found.
+      foreach ($rows as &$row) {
+        if (array_key_exists('items', $row)) {
+          if ($row['name'] === 'Tools') {
+            array_unshift($row['items'], 'language_selector');
+          }
+        }
+      }
+    }
+  }
+  // Save the configuration without the highlight value.
+  $editor_minimal_config->setData($editor_minimal)->save();
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9025');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+
+}
+
+/**
+ * Override paragraphs library view: removed title link and hide language column.
+ */
+function helfi_content_update_9026() {
+  // Override paragraphs view.
+  if (Drupal::moduleHandler()->moduleExists('paragraphs_library')) {
+    $configLocation = dirname(__FILE__) . '/config/optional/';
+    ConfigHelper::updateExistingConfig($configLocation, 'views.view.paragraphs_library');
+  }
+}
+
+/**
+ * Enable the 'Hide sidebar navigation from this page' to standard page.
+ */
+function helfi_content_update_9027() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9027');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Added assistive technology title field
+ */
+function helfi_content_update_9028() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Added manually the creation of configuration. Cannot be handled automatically.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_iframe_title' => 'field.field.paragraph.remote_video.field_iframe_title',
+  ];
+
+  // Install iframe title field.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.paragraph.remote_video.field_iframe_title'
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9028');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update Social media configuration.
+ */
+function helfi_content_update_9029() {
+  // Update social media settings if the module is enabled.
+  if (Drupal::moduleHandler()->moduleExists('social_media')) {
+    $configLocation = dirname(__FILE__) . '/config/optional/';
+    ConfigHelper::updateExistingConfig($configLocation, 'social_media.settings');
+  }
 }

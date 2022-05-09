@@ -1,0 +1,723 @@
+msgid ""
+msgstr ""
+
+msgid "- All -"
+msgstr "- Kaikki -"
+
+msgid "Accordion"
+msgstr "Haitari"
+
+msgid "Accordion item"
+msgstr "Haitarin sisältökohta"
+
+msgid ""
+"Accordion paragraph is used to store information that is perhaps not "
+"so relevant to all website users in a compact element that collapses "
+"the additional information behind a title."
+msgstr ""
+"Haitari-elementtiä käytetään toissijaisen tiedon tallentamiseen "
+"kompaktissa muodossa. Sivuston käyttäjät näkevät tiedosta otsikon "
+"verran ensimmäisellä silmäyksellä ja voivat tarkastella "
+"sisältöä tarkemmin klikkaamalla otsikon auki."
+
+msgid "Action"
+msgstr "Toiminto"
+
+msgid "Add here the content that you want to appear as cards to the block."
+msgstr "Lisää tähän ne sisällöt, jotka haluat nostaa korteiksi lohkoon."
+
+msgid "Add the image file that you want to use from media-library."
+msgstr "Lisää haluamasi kuvatiedosto tähän media-kirjastosta."
+
+msgid "Administrator"
+msgstr "Pääkäyttäjä"
+
+msgid "Aligned to the center"
+msgstr "Keskitetty"
+
+msgid "Aligned to the center, secondary color"
+msgstr "Keskitetty, toissijainen väri"
+
+msgid "Aligned to the left"
+msgstr "Tasattu vasemmalle"
+
+msgid "Aligned to the left, secondary color"
+msgstr "Tasattu vasemmalle, toissijainen väri"
+
+msgid "Anonymous user"
+msgstr "Anonyymi käyttäjä"
+
+msgid "Apply"
+msgstr "Käytä"
+
+msgid "Article"
+msgstr "Artikkeli"
+
+msgid "Asc"
+msgstr "Nousevasti"
+
+msgid "Authenticated user"
+msgstr "Sisäänkirjautunut käyttäjä"
+
+msgid "Author"
+msgstr "Kirjoittaja"
+
+msgid "Background color"
+msgstr "Taustaväri"
+
+msgid "Background image"
+msgstr "Taustakuva"
+
+msgid "Background image, text on left"
+msgstr "Taustakuva, teksti vasemmalla"
+
+msgid "Background image, text on right"
+msgstr "Taustakuva, teksti oikealla"
+
+msgid "Banner"
+msgstr "Banneri"
+
+msgid ""
+"Banner is a simple full-width element that you can use to promote for "
+"example important links or phone numbers. "
+msgstr ""
+"Banneri on leveä elementti, jonka avulla voit korostaa esimerkiksi "
+"tärkeitä linkkejä tai puhelinnumeroita. "
+
+msgid "Begin typing to search for keywords. "
+msgstr "Etsi asiasanoja kirjoittamalla."
+
+msgid "Break lock node"
+msgstr "Riko lukko sisällöltä"
+
+msgid "Break lock paragraphs_library_item"
+msgstr "Riko lukko lohkokirjaston lohkolta"
+
+msgid "Break lock taxonomy_term"
+msgstr "Riko lukko termiltä"
+
+msgid "Brick"
+msgstr "Tiili"
+
+msgid "Bus"
+msgstr "Bussi"
+
+msgid "Can be left empty."
+msgstr "Voit jättää kentän tyhjäksi."
+
+msgid "Caption"
+msgstr "Kuvateksti"
+
+msgid "Caption for the image"
+msgstr "Kuvateksti kuvalle"
+
+msgid "Changed"
+msgstr "Muuttunut"
+
+msgid ""
+"Check this box if you want to use hero-block on the page. If you "
+"choose this the heros title field will define the heading level 1 "
+"title for the page."
+msgstr ""
+"Valitse haluatko näyttää hero-nostoelementin sivulla. Jos valitset "
+"heron, sen otsikkoa käytetään sivun pääotsikkona."
+
+msgid "Choose the background color for the hero element."
+msgstr "Valitse lohkolle taustaväri."
+
+msgid "Choose the paragraph design from the dropdown."
+msgstr "Valitse lohkon tyyli alasvetovalikosta."
+
+msgid "Choose the paragraph design from the dropdown. "
+msgstr "Valitse lohkon tyyli alasvetovalikosta."
+
+msgid ""
+"Choose the paragraph design from the dropdown. Depending on what "
+"design you choose there may be different fields that you need to fill."
+msgstr ""
+"Valitse lohkon tyyli alasvetovalikosta. Tarvittavat tiedot riippuvat "
+"siitä minkä tyylin valitset."
+
+msgid "Choose what kind of design you want to use for the link button. "
+msgstr "Valitse minkälaisen tyylin haluat linkkipainikkeelle."
+
+msgid ""
+"Choose what kind of design you want to use for the link button. If you "
+"don't add a link to the banner you can ignore this field."
+msgstr ""
+"Valitse minkälaisen tyylin haluat linkkipainikkeelle. Jos et lisää "
+"banneriin linkkiä voit jättää tämän valinnan huomiotta."
+
+msgid "Coat of Arms"
+msgstr "Vaakuna"
+
+msgid "Columns"
+msgstr "Palstat"
+
+msgid "Content"
+msgstr "Sisältö"
+
+msgid "Content cards"
+msgstr "Sisältökortit"
+
+msgid "Content language"
+msgstr "Sisällön kieli"
+
+msgid "Content liftup"
+msgstr "Sisältönosto"
+
+msgid "Content producer"
+msgstr "Sisällöntuottaja suppea"
+
+msgid "Content region"
+msgstr "Sisältöalue"
+
+msgid "Content type"
+msgstr "Sisältötyyppi"
+
+msgid "Content type for news and other topical content."
+msgstr "Sisältötyyppi uutis- ja ajankohtaissisällöille."
+
+msgid "Content type for standard web content."
+msgstr "Sisältötyyppi tavalliselle verkkosisällölle."
+
+msgid ""
+"Content type for the front page of a section or theme. A landing page "
+"consists of highlight areas, content listings and links."
+msgstr ""
+"Sisältötyyppi osion tai aiheen etusivuksi. Laskeutumissivu koostuu "
+"nostoista, sisältölistauksista ja linkeistä."
+
+msgid "Copper"
+msgstr "Kupari"
+
+msgid ""
+"Create gallery slides here by choosing image from media library and "
+"optionally writing a caption to go with it."
+msgstr ""
+"Luo dia galleriaan valitsemalla kuva media-kirjastosta ja  kirjoita "
+"sille halutessasi kuvateksti."
+
+msgid "Default long date"
+msgstr "Päivämäärä pitkässä muodossa"
+
+msgid "Default medium date"
+msgstr "Päivämäärä keskipitkässä muodossa"
+
+msgid "Default short date"
+msgstr "Päivämäärä lyhyessä muodossa"
+
+msgid "Desc"
+msgstr "Laskevasti"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Design"
+msgstr "Tyyli"
+
+msgid "Diagonal"
+msgstr "Diagonaalinen"
+
+msgid "Divided 30/70"
+msgstr "Palstat 30/70"
+
+msgid "Divided 50/50"
+msgstr "Palstat 50/50"
+
+msgid "Divided 70/30"
+msgstr "Palstat 70/30"
+
+msgid "Editor"
+msgstr "Sisällöntuottaja laaja"
+
+msgid "Fallback date format"
+msgstr "Vara-arvo päivämäärämuodolle"
+
+msgid "Fog"
+msgstr "Sumu"
+
+msgid "Full colour background"
+msgstr "Täysvärinen"
+
+msgid "Gallery"
+msgstr "Galleria"
+
+msgid "Gallery slide"
+msgstr "Gallerian dia"
+
+msgid "Gallery slides"
+msgstr "Gallerian diat"
+
+msgid "Gold"
+msgstr "Kulta"
+
+msgid "Grey"
+msgstr "Harmaa"
+
+msgid "Heading"
+msgstr "Otsikko"
+
+msgid "Hero"
+msgstr "Hero-lohko"
+
+msgid "Hero heading"
+msgstr "Heron otsikko"
+
+msgid "HTML Date"
+msgstr "HTML Päivämäärä"
+
+msgid "HTML Datetime"
+msgstr "HTML Päivämäärä ja aika"
+
+msgid "HTML Month"
+msgstr "HTML Kuukausi"
+
+msgid "HTML Time"
+msgstr "HTML Aika"
+
+msgid "HTML Week"
+msgstr "HTML Viikko"
+
+msgid "HTML Year"
+msgstr "HTML Vuosi"
+
+msgid "HTML Yearless date"
+msgstr "HTML Päivämäärä (ei vuotta)"
+
+msgid "Icon"
+msgstr "Ikoni"
+
+msgid ""
+"If a hero is used on the page, this heading will be used as the page's "
+"main heading."
+msgstr ""
+"Jos sivulla on hero-elementti, tämä otsikko toimii sivun "
+"pääotsikkona."
+
+msgid ""
+"If you have to use the original aspect ratio of the image you can do "
+"so by choosing this option. However it is recommended to let the "
+"system crop your image so that it will look balanced on the page."
+msgstr ""
+"Jos sinun on käytettävä kuvan alkuperäistä kuvasuhdetta voit "
+"tehdä sen valitsemalla tämän. On kuitenkin suositeltavaa antaa "
+"järjestelmän skaalata ja leikata kuvasi jotta sisältö näyttää "
+"tasapainoiselta."
+
+msgid "Image"
+msgstr "Kuva"
+
+msgid "Image file"
+msgstr "Kuvatiedosto"
+
+msgid ""
+"Image is visible on the content page, content listings, search results "
+"and on social media."
+msgstr "Kuva näkyy nostoissa, hakukoneissa ja sosiaalisen median jaoissa."
+
+msgid "Image on left"
+msgstr "Kuva vasemmalla"
+
+msgid "Image on left, secondary color"
+msgstr "Kuva vasemmalla, toissijainen väri"
+
+msgid "Image on right"
+msgstr "Kuva oikealla"
+
+msgid "Image on right, secondary color"
+msgstr "Kuva oikealla, toissijainen väri"
+
+msgid "Image on the bottom"
+msgstr "Kuva alhaalla"
+
+msgid "Image on the left"
+msgstr "Kuva vasemmalla"
+
+msgid "Image on the right"
+msgstr "Kuva oikealla"
+
+msgid ""
+"Image to be used as an illustration or as a background of the hero "
+"depending on what design you chose."
+msgstr ""
+"Kuva jota käytetään kuvituskuvana tai taustakuvana lohkossa "
+"riippuen siitä minkä tyylin olet lohkolle valinnut."
+
+msgid ""
+"Image to be used as an illustration or as a background of the liftup "
+"depending on what design you chose."
+msgstr ""
+"Kuva jota käytetään kuvituskuvana tai taustakuvana lohkossa "
+"riippuen siitä minkä tyylin olet lohkolle valinnut."
+
+msgid "Image to be used as thumbnail of the link."
+msgstr "Kuva jota käytetään linkin yhteydessä."
+
+msgid "Image with a caption"
+msgstr "Kuva kuvatekstillä"
+
+msgid ""
+"Internal or external link to the desired location. Link text is "
+"displayed for the site user."
+msgstr ""
+"Sisäinen tai ulkoinen linkki haluttuun kohteeseen. Linkin teksti "
+"-kentän arvo näytetään sivuston käyttäjälle."
+
+msgid "Items"
+msgstr "Sisältö"
+
+msgid "Items heading level"
+msgstr "Sisällön pääotsikoiden taso"
+
+msgid "Items per page"
+msgstr "Merkintöjä sivua kohti"
+
+msgid "j.n.Y"
+msgstr "j.n.Y - H:i"
+
+msgid "j.n.Y - H:i"
+msgstr "j.n.Y - H:i"
+
+msgid "jS F Y"
+msgstr "j. F\\t\\a Y"
+
+msgid "Keywords"
+msgstr "Asiasanat"
+
+msgid "Landing page"
+msgstr "Laskeutumissivu"
+
+msgid "Large cards"
+msgstr "Suuret kortit"
+
+msgid "Large cards, grey background"
+msgstr "Suuret kortit, harmaa tausta"
+
+msgid "Last »"
+msgstr "Viimeinen »"
+
+msgid "Layout"
+msgstr "Asettelu"
+
+msgid "Lead"
+msgstr "Ingressi"
+
+msgid ""
+"Lead is visible on the content page, content listings, search results "
+"and on social media."
+msgstr ""
+"Ingressi näkyy sisältösivulla sekä nostoissa, hakutuloksissa ja "
+"sosiaalisen median jaoissa."
+
+msgid "Left column"
+msgstr "Vasen palsta"
+
+msgid "Liftup image"
+msgstr "Nostokuva"
+
+msgid "Liftup with image"
+msgstr "Kuvallinen nosto"
+
+msgid ""
+"Liftup with image is a fairly large element that you can use to "
+"promote content with large image next to the text."
+msgstr ""
+"Kuvallinen nosto on melko suuri nostoelementti, jolla voit korostaa "
+"sisältöä. Elementti koostuu kuvasta ja sen vieressä olevasta "
+"tekstialueesta."
+
+msgid "Link"
+msgstr "Linkki"
+
+msgid "Link design"
+msgstr "Linkin tyyli"
+
+msgid "Links"
+msgstr "Linkit"
+
+msgid "List of internal or external links. Different designs available."
+msgstr ""
+"Lista sisäisiä tai ulkoisia linkkejä. Valittavissa erilaisia "
+"listatyylejä."
+
+msgid "List of links"
+msgstr "Linkkilista"
+
+msgid "List of links item"
+msgstr "Linkki"
+
+msgid "Lock Date/Time"
+msgstr "Lukituksen ajankohta"
+
+msgid "Lock owner"
+msgstr "Lukituksen tekijä"
+
+msgid "Locked content"
+msgstr "Lukitut sisällöt"
+
+msgid "Lower content region"
+msgstr "Alempi sisältöalue"
+
+msgid "Master"
+msgstr "Oletus"
+
+msgid "Menu link title"
+msgstr "Valikon linkin otsikko"
+
+msgid "Metatags"
+msgstr "Metatunnisteet"
+
+msgid "No borders or background colour"
+msgstr "Ei reunuksia tai taustaväriä"
+
+msgid "Node operations bulk form"
+msgstr "Solmujen bulkkitoimintojen lomake"
+
+msgid "Off"
+msgstr "Pois päältä"
+
+msgid "On"
+msgstr "Käytössä"
+
+msgid "One item - a link with metadata - of list of links."
+msgstr "Yksittäinen linkki lisätietoineen linkkilistalohkoon."
+
+msgid "One item in an accordion that includes title and content."
+msgstr "Yksittäinen haitarin sisältökohta, jossa on otsikko ja sisältö."
+
+msgid "One slide in the gallery that can include image and caption."
+msgstr "Yksittäinen gallerian dia jossa voi olla kuva ja kuvateksti."
+
+msgid "Only borders"
+msgstr "Reunustettu"
+
+msgid "Operations"
+msgstr "Toimenpiteet"
+
+msgid "Optional short description for liftup block."
+msgstr "Vapaaehtoinen lyhyt kuvaus nostolohkolle."
+
+msgid "Page"
+msgstr "Sivu"
+
+msgid "Paragraph"
+msgstr "Lohko"
+
+msgid "Paragraph visible on the hero. Can be left empty."
+msgstr ""
+"Hero-nostoelementissä näytettävä teksti. Voidaan jättää "
+"tyhjäksi."
+
+msgid "Paragraphs"
+msgstr "Lohkot"
+
+msgid "Promoted to front page"
+msgstr "Näytetään etusivulla"
+
+msgid "Published"
+msgstr "Julkaistu"
+
+msgid "Published status"
+msgstr "Julkaisutila"
+
+msgctxt "React & Share cookie compliance"
+msgid "Feedback buttons cannot be displayed"
+msgstr "Sivun palautenappeja ei voida näyttää"
+
+msgctxt "React & Share cookie compliance"
+msgid ""
+"To use this feature, you must accept cookies from the site. You can "
+"provide feedback on this page by enabling statistics-related cookies."
+msgstr ""
+"Toiminnon käyttämiseksi vaaditaan, että hyväksyt sivuston "
+"evästeet. Pääset antamaan palautetta tästä sivusta sallimalla "
+"evästeasetuksista tilastointiin liittyvät evästeet."
+
+msgid "Read only"
+msgstr "Lukija"
+
+msgid "Remote video"
+msgstr "Videoupotus"
+
+msgid ""
+"Remote video paragraph that lets you add any video from video "
+"providers. Currently only YouTube."
+msgstr ""
+"Tällä lohkolla voit upottaa videon ulkoisesta palvelusta. Tukee "
+"tällä hetkellä vain YouTubea."
+
+msgid "Reset"
+msgstr "Palauta"
+
+msgid "Right column"
+msgstr "Oikea palsta"
+
+msgid ""
+"Select the heading level of the accordion so that they are "
+"semantically correct with the rest of the content."
+msgstr ""
+"Valitse sisällön pääotsikoiden taso siten että ne ovat "
+"semanttisesti oikealla tasolla muun sisällön suhteen."
+
+msgid ""
+"Select whether you wish to display a hero highlight element on the "
+"page. If a hero is selected, it's heading will be used as the main "
+"heading for the page."
+msgstr ""
+"Valitse haluatko näyttää hero-nostoelementin sivulla. Jos valitset "
+"heron, sen otsikkoa käytetään sivun pääotsikkona."
+
+msgid ""
+"Set the hero layout from the menu. The layout affects what information "
+"is required below."
+msgstr ""
+"Valitse heron asettelu valikosta. Valittu asettelu vaikuttaa siihen, "
+"mitä lisätietoja sinun pitää täyttää."
+
+msgid "Shown when hovering over the menu link."
+msgstr "Näytetään vietäessä hiirtä linkin yli."
+
+msgid "Sidebar content"
+msgstr "Sivupalkin sisältö"
+
+msgid "Sidebar text"
+msgstr "Sivupalkin teksti"
+
+msgid "Silver"
+msgstr "Hopea"
+
+msgid "Small cards"
+msgstr "Pienet kortit"
+
+msgid "Small cards, grey background"
+msgstr "Pienet kortit, harmaa tausta"
+
+msgid "Sort by"
+msgstr "Lajittele"
+
+msgid "Standard page"
+msgstr "Perussivu"
+
+msgid "Summer"
+msgstr "Kesä"
+
+msgid "Text"
+msgstr "Teksti"
+
+msgid "Text with span"
+msgstr "Teksti (span sallittu)"
+
+msgid "The links that you want the paragraph to display."
+msgstr "Linkkilistan linkit."
+
+msgid "The text to be used for this link in the menu."
+msgstr "Linkin teksti valikossa käytettäväksi."
+
+msgid "The title of the content cards paragraph."
+msgstr "Sisältökortit-lohkon otsikko."
+
+msgid "The title of the list of links paragraph."
+msgstr "Linkkilistalohkon otsikko."
+
+msgid "There is no content currently locked."
+msgstr "Lukittua sisältöä ei ole."
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "Title for the liftup with image block."
+msgstr "Näkyvä otsikko lohkolle."
+
+msgid "Tram"
+msgstr "Spåra"
+
+msgid "Unpublished"
+msgstr "Julkaisematon"
+
+msgid "Upper content region"
+msgstr "Ylempi sisältöalue"
+
+msgid "Use original aspect ratio"
+msgstr "Käytä alkuperäistä kuvasuhdetta"
+
+msgid "Using this paragraph you can create galleries from multiple images."
+msgstr ""
+"Voit käyttää tätä elementtiä luodaksesi gallerian useista "
+"kuvista."
+
+msgid ""
+"Very diverse paragraph that covers a large area of the content and is "
+"traditionally placed on top of the page."
+msgstr ""
+"Monipuolinen paragraph, joka peittää suuren alueen sisältöalueesta "
+"ja perinteisesti sijoitetaan sivun yläosaan."
+
+msgid "White"
+msgstr "Valkoinen"
+
+msgid ""
+"With columns paragraph content producer can divide content in to two "
+"columns. The columns can be equal width or divided in to 30/70 "
+"proportion. \r\n"
+"The content producer can choose what paragraphs to "
+"add into the columns."
+msgstr ""
+"Palstat paragraafilla sisällöntuottaja voi sijoittaa sisältöä "
+"kahteen palstaan. Palstajaot voivat olla 50/50 tai 30/70 | 70/30 "
+"levyisiä. Paragraafin palstoihin voi vapaasti liittää erilaisia "
+"komponentteja."
+
+msgid ""
+"With content cards you can reference to content inside this site. The "
+"information about the content is automatically fetched through the "
+"reference."
+msgstr ""
+"Sisältökorteilla voit nostaa sivuston sisäistä sisältöä "
+"korteiksi lohkoon. Kortin sisältö haetaan automaattisesti siitä "
+"sisällöstä jonka valitsit."
+
+msgid ""
+"With content liftup you can reference to a single content inside this "
+"site. The information about the content is automatically fetched "
+"through the reference."
+msgstr ""
+"Sisältönostolla voit nostaa yksittäisen sisällön tämän sivuston "
+"sisältä. Sisällön tiedot haetaan automaattisesti viitteen kautta "
+"ja sisältö esitetään korttinäkymässä."
+
+msgid "With image"
+msgstr "Kuvallinen"
+
+msgid "Without image"
+msgstr "Ilman kuvaa"
+
+msgid "Without image and description"
+msgstr "Ilman kuvaa ja kuvausta"
+
+msgid "Without image, align center"
+msgstr "Ilman kuvaa, tasattu keskelle"
+
+msgid "Without image, align left"
+msgstr "Ilman kuvaa, tasattu vasemmalle"
+
+msgid "You can add link button to the banner using this field."
+msgstr ""
+"Voit lisätä linkkipainikkeen banneriin täyttämällä nämä "
+"kentät."
+
+msgid "You can add very short description for the link."
+msgstr "Voit lisätä lyhyen kuvauksen linkkiin."
+
+msgid "You can provide a caption for the image here."
+msgstr "Voit halutessasi kirjoittaa kuvatekstin kuvalle tähän."
+
+msgid "« First"
+msgstr "« Ensimmäinen"
+
+msgid "‹‹"
+msgstr "‹ Edellinen"
+
+msgid "››"
+msgstr "Seuraava ›"
+

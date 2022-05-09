@@ -4,6 +4,10 @@
 
 This repository primarily holds configuration for the Hel.fi platform.
 
+## Documentation
+
+- [Translations in Helfi Platform](documentation/translations.md)
+
 ## Upgrade instructions for 1.* to 2.*
 
 1. Install the site with existing configuration by running either `make new` or `make fresh`.

@@ -1,0 +1,25 @@
+# Swedish translations of City of Helsinki
+#
+# Use this translation file for missing translations that are not found in
+# localize.drupal.org.
+#
+msgid ""
+msgstr ""
+
+msgid "North Sami"
+msgstr "Nordsamiska"
+
+msgid "Round-the-clock care"
+msgstr "Dygnet runt-vård"
+
+msgid "Language immersion Finnish-Swedish"
+msgstr "Språkbad finska-svenska"
+
+msgid "Playgroup clubs"
+msgstr "Klubbar"
+
+msgid "Evening care"
+msgstr "Kvällsvård"
+
+msgid "Part-time day care"
+msgstr "Halvdagsgrupp"

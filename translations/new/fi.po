@@ -1,0 +1,472 @@
+# Finnish translations of City of Helsinki
+#
+# Use this translation file for missing translations that are not found in
+# localize.drupal.org.
+#
+msgid ""
+msgstr ""
+
+# address
+msgctxt "Address label"
+msgid "Postal code"
+msgstr "Postinumero"
+
+# diff
+msgid "Compare selected revisions"
+msgstr "Vertaile valittuja versioita"
+
+# drupal
+msgid "@title [%language translation]"
+msgstr "@title [%language]"
+
+msgid ""
+"[user:display-name],\n"
+"\n"
+"A request to cancel your account has been "
+"made at [site:name].\n"
+"\n"
+"You may now cancel your account on "
+"[site:url-brief] by clicking this link or copying and pasting it into "
+"your browser:\n"
+"\n"
+"[user:cancel-url]\n"
+"\n"
+"NOTE: The cancellation of "
+"your account is not reversible.\n"
+"\n"
+"This link expires in one day and "
+"nothing will happen if it is not used.\n"
+"\n"
+"--  [site:name] team"
+msgstr ""
+"[user:display-name],\n"
+"\n"
+"Tilisi peruuttamista koskeva pyyntö on "
+"tehty [site:name] sivustolla.\n"
+"Voit nyt perua tilisi sivustossa "
+"[site:url-brief] napsauttamalla tätä linkkiä tai kopioimalla ja "
+"liittämällä sen selaimeesi: [user:cancel-url]\n"
+"\n"
+"HUOM: Tilisi "
+"perumista ei voi perua. Tämä linkki vanhenee yhdessä päivässä, "
+"eikä mitään tapahdu, jos sitä ei käytetä.\n"
+"[site:name] "
+"ylläpito"
+
+msgid ""
+"[user:display-name] has applied for an account.\n"
+"\n"
+"[user:edit-url]"
+msgstr ""
+"[user:display-name] on rekisteröinyt käyttäjätunnuksen. "
+"[user:edit-url]"
+
+msgid ""
+"[user:display-name],\n"
+"\n"
+"A request to reset the password for your "
+"account has been made at [site:name].\n"
+"\n"
+"You may now log in by "
+"clicking this link or copying and pasting it into your "
+"browser:\n"
+"\n"
+"[user:one-time-login-url]\n"
+"\n"
+"This link can only be "
+"used once to log in and will lead you to a page where you can set your "
+"password. It expires after one day and nothing will happen if it's not "
+"used.\n"
+"\n"
+"--  [site:name] team"
+msgstr ""
+"[user:display-name], Tilisi salasanan vaihtamista koskeva pyyntö on "
+"tehty  [site:name] sivustolla. Voit nyt kirjautua sisään "
+"napsauttamalla tätä linkkiä tai kopioimalla ja liittämällä sen "
+"selaimeesi: [user:one-time-login-url] \r\n"
+"Tätä linkkiä voidaan "
+"käyttää vain kerran sisäänkirjautumiseen ja se johtaa  sivulle "
+"jossa voit asettaa uuden salasanan. Linkki vanhenee yhden päivän "
+"kuluttua, eikä mitään tapahdu, jos sitä ei "
+"käytetä.\r\n"
+"[site:name] ylläpito"
+
+msgid ""
+"[user:display-name],\n"
+"\n"
+"A site administrator at [site:name] has "
+"created an account for you. You may now log in by clicking this link "
+"or copying and pasting it into your "
+"browser:\n"
+"\n"
+"[user:one-time-login-url]\n"
+"\n"
+"This link can only be "
+"used once to log in and will lead you to a page where you can set your "
+"password.\n"
+"\n"
+"After setting your password, you will be able to log in "
+"at [site:login-url] in the future using:\n"
+"\n"
+"username: "
+"[user:name]\n"
+"password: Your password\n"
+"\n"
+"--  [site:name] team"
+msgstr ""
+"[user:display-name], sinulle on luotu tili [site:name] sivustolle. "
+"Voit nyt kirjautua sisään napsauttamalla tätä linkkiä tai "
+"kopioimalla ja liittämällä sen selaimeesi: "
+"[user:one-time-login-url] \r\n"
+"Tätä linkkiä voidaan käyttää vain "
+"kerran sisäänkirjautumiseen ja se johtaa  sivulle jossa voit asettaa "
+"uuden salasanan. Kun olet asettanut salasanan, voit kirjautua sen "
+"avulla osoitteessa [site:login-url]. \r\n"
+"Käyttäjätunnuksesi: "
+"[user:name]\r\n"
+"[site:name] ylläpito"
+
+msgid ""
+"[user:display-name],\n"
+"\n"
+"Thank you for registering at [site:name]. "
+"You may now log in by clicking this link or copying and pasting it "
+"into your browser:\n"
+"\n"
+"[user:one-time-login-url]\n"
+"\n"
+"This link can "
+"only be used once to log in and will lead you to a page where you can "
+"set your password.\n"
+"\n"
+"After setting your password, you will be able "
+"to log in at [site:login-url] in the future using:\n"
+"\n"
+"username: "
+"[user:name]\n"
+"password: Your password\n"
+"\n"
+"--  [site:name] team"
+msgstr ""
+"[user:display-name], olet rekisteröitynyt [site:name] sivustolle.  "
+"Voit nyt kirjautua sisään napsauttamalla tätä linkkiä tai "
+"kopioimalla ja liittämällä sen selaimeesi: "
+"[user:one-time-login-url] \r\n"
+"Tätä linkkiä voidaan käyttää vain "
+"kerran sisäänkirjautumiseen ja se johtaa  sivulle jossa voit asettaa "
+"uuden salasanan. Kun olet asettanut salasanan, voit kirjautua sen "
+"avulla osoitteessa [site:login-url]. \r\n"
+"Käyttäjätunnuksesi: "
+"[user:name]\r\n"
+"[site:name] ylläpito"
+
+msgid ""
+"[user:display-name],\n"
+"\n"
+"Thank you for registering at [site:name]. "
+"Your application for an account is currently pending approval. Once it "
+"has been approved, you will receive another email containing "
+"information about how to log in, set your password, and other "
+"details.\n"
+"\n"
+"--  [site:name] team"
+msgstr ""
+"[user:display-name], olet rekisteröitynyt [site:name] sivustolle. "
+"Tunnuksesi odottaa parhaillaan hyväksyntää. Kun se on hyväksytty, "
+"saat uuden sähköpostin, joka sisältää tietoja kirjautumisesta, "
+"salasanan asettamisesta ja muista yksityiskohdista.\r\n"
+"[site:name] "
+"ylläpito"
+
+msgid "Account cancellation request for [user:display-name] at [site:name]"
+msgstr ""
+"Tilin peruutuspyyntö käyttäjälle [user:display-name], [site:name] "
+"sivustolla"
+
+msgid "Account details for [user:display-name] at [site:name]"
+msgstr "[user:display-name] käyttäjätilin tiedot [site:name] sivustolla"
+
+msgid ""
+"Account details for [user:display-name] at [site:name] (pending admin "
+"approval)"
+msgstr ""
+"\r\n"
+"[user:display-name] käyttäjätilin tiedot [site:name] "
+"sivustolla (odottaa hyväksyntää)"
+
+msgid "Account details for [user:display-name] at [site:name] (approved)"
+msgstr ""
+"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
+"(hyväksytty)"
+
+msgid "Account details for [user:display-name] at [site:name] (blocked)"
+msgstr ""
+"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
+"(estetty)"
+
+msgid "Account details for [user:display-name] at [site:name] (canceled)"
+msgstr ""
+"Käyttäjän [user:display-name] tilitiedot [site:name] sivustolla "
+"(peruttu)"
+
+msgid "Add file"
+msgid_plural "Add files"
+msgstr[0] "Lisää tiedosto"
+msgstr[1] "Lisää tiedostot"
+
+msgid "Apply filters"
+msgstr "Suodata tuloksia"
+
+msgid "Are you sure you want to delete this @item?"
+msgid_plural "Are you sure you want to delete these @items?"
+msgstr[0] "Haluatko varmasti poistaa tämän @item?"
+msgstr[1] "Haluatko varmasti poistaa nämä @items?"
+
+msgid ""
+"Are you sure you want to delete the @language translation of the "
+"@entity-type %label?"
+msgstr ""
+"Haluatko varmasti poistaa käännöksen \"%label\", joka on tyyppiä "
+"<em>@entity-type</em> ja kielellä <em>@language</em>?"
+
+msgid "Content belonging to a certain taxonomy term."
+msgstr "Sisältö, joka kuuluu tiettyyn taksonomiatermiin."
+
+msgid "content item"
+msgstr "sisältö"
+
+msgid "content items"
+msgstr "sisällöt"
+
+msgid "Delete media"
+msgstr "Poista mediatiedosto"
+
+msgid "Delete {{ name }}"
+msgstr "Poista {{ name }}"
+
+msgid "Displaying @start - @end of @total"
+msgstr "Näytetään @start - @end / @total"
+
+msgid "Edit {{ name }}"
+msgstr "Muokkaa {{ name }}"
+
+msgid "Edit @language translation for %label"
+msgstr "Muokkaa käännöstä %label (kieli: @language)"
+
+msgid "Find and manage media."
+msgstr "Etsi ja ylläpidä mediatiedostoja."
+
+msgid "Large (480×480)"
+msgstr "Suuri (480×480)"
+
+msgid "Media Library thumbnail (220×220)"
+msgstr "Mediakirjaston pikkukuva (220×220)"
+
+msgid "Media name"
+msgstr "Mediatiedoston nimi"
+
+msgid "Medium (220×220)"
+msgstr "Keskikokoinen (220×220)"
+
+msgid "Name (A-Z)"
+msgstr "Nimi (A-Z)"
+
+msgid "Name (Z-A)"
+msgstr "Nimi (Z-A)"
+
+msgid "No media items are selected."
+msgstr "Mediatiedostoja ei ole valittu."
+
+msgid "Publish media"
+msgstr "Julkaise mediatiedosto"
+
+msgid "Remove the @label role from the selected user(s)"
+msgstr "Poista rooli @label valituilta käyttäjiltä"
+
+msgid "Replacement login information for [user:display-name] at [site:name]"
+msgstr ""
+"Korvaavat kirjautumistiedot [user:display-name] käyttäjälle "
+"[site:name] sivustolla"
+
+msgid ""
+"Required if you want to change the %mail or %pass below. <a "
+"href=\":request_new_url\" title=\"Send password reset instructions via "
+"email.\">Reset your password</a>."
+msgstr ""
+"Tämä kenttä on pakollinen jos haluat vaihtaa %mail tai %pass "
+"kenttien arvoja. <a href=\":request_new_url\" title=\"Lähetä ohjeet "
+"salasanan vaihtamiseen sähköpostilla.\">Vaihda salasanasi</a>."
+
+msgid "Save media"
+msgstr "Tallenna mediatiedosto"
+
+msgid "There are no menu links yet. <a href=\":url\">Add link</a>."
+msgstr ""
+"Valikkoon ei ole vielä lisätty linkkejä. <a href=\":url\">Lisää "
+"linkki</a>."
+
+msgid "Thumbnail (100×100)"
+msgstr "Pikkukuva (100×100)"
+
+msgid "Widget (table)"
+msgstr "Widget (taulukko)"
+
+# linkit
+msgid "Start typing to find content."
+msgstr ""
+"Aloita kirjoittaminen löytääksesi sisältöä. Huomaa, että voit "
+"myös lisätä suoraan ulkoisen osoitteen."
+
+# matomo
+msgid "Matomo settings"
+msgstr "Matomo asetukset"
+
+# metatag
+msgid "Metatag plugins"
+msgstr "Metatunnisteen lisäosat"
+
+# openid_connect
+msgid "Connected Accounts"
+msgstr "Liitetyt tilit"
+
+msgid "Connect with @client_title"
+msgstr "Yhdistä @client_title"
+
+msgid "Log in with @client_title"
+msgstr "Kirjaudu sisään @client_title-tunnuksilla"
+
+msgid "Not connected"
+msgstr "Ei yhdistetty"
+
+msgid "Provider: @title"
+msgstr "Palveluntarjoaja: @title"
+
+msgid "You can connect your account with these external providers."
+msgstr ""
+"Voit yhdistää käyttäjätilisi näihin ulkoisiin "
+"palveluntarjoajiin."
+
+# paragraphs
+msgid "Default icon"
+msgstr "Oletusikoni"
+
+msgid "From library"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
+msgid "Paragraphs library item"
+msgstr "Uudelleenkäytettävä lohko"
+
+msgid "Paragraphs library item settings"
+msgstr "Uudelleenkäytettävän lohkon asetukset"
+
+msgid "Paragraphs types"
+msgstr "Lohkotyypit"
+
+msgid "Reusable paragraph"
+msgstr "Uudelleenkäytettävä lohko"
+
+# redirect
+msgid "Add URL redirect"
+msgstr "Lisää uudelleenohjaus"
+
+msgid "Note: links open in the current window."
+msgstr "Huom: Linkit aukeavat samaan ikkunaan."
+
+# simple_sitemap
+msgid "always"
+msgstr "aina"
+
+msgid "daily"
+msgstr "päivittäin"
+
+msgid ""
+"Do not index this <em>@bundle</em> entity in variant "
+"<em>@variant_label</em>"
+msgstr "Älä indeksoi tätä sisältöä."
+
+msgid ""
+"Determines if images referenced by this <em>@bundle</em> entity should "
+"be included in the sitemap."
+msgstr ""
+"Määrittää, pitäisikö tämän <em>@bundle</em> sisällön "
+"sisältämät kuvat sisällyttää sivustokarttaan."
+
+msgid "hourly"
+msgstr "tunnin välein"
+
+msgid "Index this <em>@bundle entity</em> in variant <em>@variant_label</em>"
+msgstr "Indeksoi tämä sisältö."
+
+msgid "Include images"
+msgstr "Sisällytä kuvat"
+
+msgid "monthly"
+msgstr "kuukausittain"
+
+msgid "never"
+msgstr "ei koskaan"
+
+msgid "Otherwise the sitemaps will be regenerated during a future cron run."
+msgstr "Muutoin sivustokartat uudistetaan tulevan cron-ajon aikana."
+
+msgid "Settings for this entity can be overridden here."
+msgstr "Tämän entiteetin asetukset voidaan yliajaa oheisilla asetuksilla."
+
+msgid "Sitemap variants"
+msgstr "Sivustokarttaversiot"
+
+msgid ""
+"The frequency with which this <em>@bundle</em> entity changes. Search "
+"engine bots may take this as an indication of how often to index it."
+msgstr ""
+"Kuinka usein tämä <em>@bundle</em> muuttuu tai päivittyy. "
+"Hakukonerobotit voivat pitää tätä osoituksena siitä, kuinka usein "
+"tämä sisältö indeksoidaan."
+
+msgid ""
+"The priority this <em>@bundle</em> entity will have in the eyes of "
+"search engine bots."
+msgstr ""
+"Tämän <em>@bundle</em> -sisällön prioriteetti hakukoneiden "
+"indekseissä."
+
+msgid "This setting will regenerate all sitemaps including the above changes."
+msgstr ""
+"Tämä asetus uudistaa kaikki sivustokartat, mukaan lukien yllä "
+"olevat muutokset."
+
+msgid "weekly"
+msgstr "viikottain"
+
+msgid "yearly"
+msgstr "vuosittain"
+
+msgid "This content is now locked by you against simultaneous editing. This content will remain locked if you navigate away from this page without saving or unlocking it."
+msgstr "Tämä sisältö on nyt lukittu. Sisältö pysyy lukittuna vaikka siirtyisit pois tältä sivulta tallentamatta sitä. Avataksesi lukituksen muille sisällöntuottajille, paina painiketta jossa lukee <em>Avaa lukitus</em>."
+
+msgid "This content is now locked against simultaneous editing. This content will remain locked if you navigate away from this page without saving or unlocking it."
+msgstr "Tämä sisältö on nyt lukittu. Sisältö pysyy lukittuna vaikka siirtyisit pois tältä sivulta tallentamatta sitä. Avataksesi lukituksen muille sisällöntuottajille, paina painiketta jossa lukee <em>Avaa lukitus</em>."
+
+msgid "This content is being edited by the user @name and is therefore locked to prevent other users changes. This lock is in place since @date."
+msgstr "Käyttäjä @name muokkaa tätä sisältöä, ja siksi se on lukittu. Sisältö on lukittu @date hetkestä lähtien."
+
+msgid "North Sami"
+msgstr "Pohjoissaame"
+
+msgid "Round-the-clock care"
+msgstr "Ympärivuorokautinen hoito"
+
+msgid "Language immersion Finnish-Swedish"
+msgstr "Kielikylpy suomi-ruotsi"
+
+msgid "Playgroup clubs"
+msgstr "Kerhot"
+
+msgid "Evening care"
+msgstr "Iltahoito"
+
+msgid "Part-time day care"
+msgstr "Osapäiväryhmä"

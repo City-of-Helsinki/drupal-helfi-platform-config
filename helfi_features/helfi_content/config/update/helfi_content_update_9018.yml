@@ -1,0 +1,130 @@
+field.field.node.article.field_author:
+  expected_config:
+    description: ''
+  update_actions:
+    change:
+      description: 'Can be left empty.'
+field.field.node.article.field_keywords:
+  expected_config:
+    description: ''
+  update_actions:
+    change:
+      description: 'Begin typing to search for keywords. '
+field.field.node.article.field_lead:
+  expected_config:
+    description: ''
+  update_actions:
+    change:
+      description: 'Lead is visible on the content page, content listings, search results and on social media.'
+field.field.node.article.field_liftup_image:
+  expected_config:
+    description: ''
+  update_actions:
+    change:
+      description: 'Image is visible on the content page, content listings, search results and on social media.'
+field.field.node.landing_page.field_has_hero:
+  expected_config:
+    description: 'Check this box if you want to use hero-block on the page. If you choose this the heros title field will define the heading level 1 title for the page.'
+  update_actions:
+    change:
+      description: 'Select whether you wish to display a hero highlight element on the page. If a hero is selected, it''s heading will be used as the main heading for the page.'
+field.field.node.landing_page.field_liftup_image:
+  expected_config:
+    description: ''
+  update_actions:
+    change:
+      description: 'Image is visible on the content page, content listings, search results and on social media.'
+field.field.node.page.field_lead_in:
+  expected_config:
+    description: ''
+    label: Lead-in
+  update_actions:
+    change:
+      description: 'Lead is visible on the content page, content listings, search results and on social media.'
+      label: Lead
+field.field.node.page.field_liftup_image:
+  expected_config:
+    description: ''
+  update_actions:
+    change:
+      description: 'Image is visible on the content page, content listings, search results and on social media.'
+field.field.paragraph.hero.field_hero_desc:
+  expected_config:
+    label: Description
+    description: 'Optional short description for hero block.'
+  update_actions:
+    change:
+      description: 'Paragraph visible on the hero. Can be left empty.'
+      label: 'Hero text'
+field.field.paragraph.hero.field_hero_design:
+  expected_config:
+    description: 'Choose the paragraph design from the dropdown. Depending on what design you choose there may be different fields that you need to fill.'
+    label: Design
+  update_actions:
+    change:
+      description: 'Set the hero layout from the menu. The layout affects what information is required below.'
+      label: Layout
+field.field.paragraph.hero.field_hero_title:
+  expected_config:
+    description: 'Title for the hero block. This will be used as the level 1 heading for the page instead of the regular page title if hero is added on the page.'
+    label: Title
+  update_actions:
+    change:
+      description: 'If a hero is used on the page, this heading will be used as the page''s main heading.'
+      label: 'Hero heading'
+node.type.article:
+  expected_config:
+    description: 'Content type for article-like content with rich editing capabilities.'
+  update_actions:
+    change:
+      description: 'Content type for news and other topical content.'
+node.type.landing_page:
+  expected_config:
+    description: 'Content type for pages which serves as an entry point for a particular section of the site. Use landing page when you want to create a collection of links and information about a certain subject. '
+  update_actions:
+    change:
+      description: 'Content type for the front page of a section or theme. A landing page consists of highlight areas, content listings and links.'
+node.type.page:
+  expected_config:
+    description: 'Content type for pages that include information that doesn''t age as quickly as for example article or news content.'
+    name: 'Basic page'
+  update_actions:
+    change:
+      description: 'Content type for standard web content.'
+      name: 'Standard page'
+core.entity_form_display.node.article.default:
+  expected_config:
+    content:
+      langcode:
+        settings:
+          include_locked: true
+  update_actions:
+    change:
+      content:
+        langcode:
+          settings:
+            include_locked: false
+core.entity_form_display.node.landing_page.default:
+  expected_config:
+    content:
+      langcode:
+        settings:
+          include_locked: true
+  update_actions:
+    change:
+      content:
+        langcode:
+          settings:
+            include_locked: false
+core.entity_form_display.node.page.default:
+  expected_config:
+    content:
+      langcode:
+        settings:
+          include_locked: true
+  update_actions:
+    change:
+      content:
+        langcode:
+          settings:
+            include_locked: false

@@ -1,0 +1,129 @@
+<?php
+
+/**
+ * @file
+ * Contains 'helfi_news_feed' hooks.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_news_feed\Entity\NewsFeedParagraph;
+use Drupal\paragraphs\ParagraphInterface;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function helfi_news_feed_entity_extra_field_info() : array {
+  $extra = [];
+  $extra['paragraph']['news_list']['display']['news_list'] = [
+    'label' => new TranslatableMarkup('News list'),
+    'description' => new TranslatableMarkup('The value for this field is defined in %hook hook.', [
+      '%hook' => 'helfi_news_feed_paragraph_view()',
+    ]),
+    'weight' => 100,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function helfi_news_feed_paragraph_view(
+  array &$build,
+  ParagraphInterface $entity,
+  EntityViewDisplayInterface $display,
+  string $view_mode
+) : void {
+  if (!$entity instanceof NewsFeedParagraph) {
+    return;
+  }
+  if ($display->getComponent('news_list')) {
+    $storage = Drupal::entityTypeManager()
+      ->getStorage('helfi_news');
+    $query = $storage
+      ->getQuery();
+    $query
+      ->condition('langcode', $entity->language()->getId())
+      ->range(0, $entity->getLimit());
+
+    $termFilters = [
+      'tags' => $entity->getTags(),
+      'groups' => $entity->getGroups(),
+      'neighbourhoods' => $entity->getNeighbourhoods(),
+    ];
+    foreach ($termFilters as $name => $value) {
+      $query->condition($name, $value, 'IN');
+    }
+
+    $query->sort('created', 'DESC');
+
+    $ids = $query->execute();
+    $entities = $storage->loadMultiple(array_keys($ids));
+
+    foreach ($entities as $item) {
+      $item->addCacheableDependency($entity);
+
+      $build['news_list'][] = Drupal::entityTypeManager()
+        ->getViewBuilder('helfi_news')
+        ->view($item);
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_news_feed_entity_bundle_field_info_alter(
+  &$fields,
+  EntityTypeInterface $entity_type,
+  $bundle
+) : void {
+  if ($entity_type->id() === 'helfi_news') {
+    $fields['main_image'] = BundleFieldDefinition::create('link')
+      ->setName('main_image')
+      ->setLabel(new TranslatableMarkup('Main image'))
+      ->setTargetEntityTypeId($entity_type->id())
+      ->setTargetBundle($bundle)
+      ->setSettings([
+        'max_length' => 1024,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    $termFields = [
+      'tags' => new TranslatableMarkup('Tags'),
+      'groups' => new TranslatableMarkup('Groups'),
+      'neighbourhoods' => new TranslatableMarkup('Neighbourhoods'),
+    ];
+
+    // These are taxonomy term fields in 'Etusivu' instance.
+    foreach ($termFields as $name => $label) {
+      $fields[$name] = BundleFieldDefinition::create('string')
+        ->setName($name)
+        ->setLabel($label)
+        ->setTargetEntityTypeId($entity_type->id())
+        ->setTargetBundle($bundle)
+        ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+        ->setSettings([
+          'max_length' => 192,
+        ])
+        ->setDisplayConfigurable('view', TRUE);
+    }
+
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_news_feed_entity_bundle_info_alter(array &$bundles) : void {
+  if (isset($bundles['paragraph']['news_list'])) {
+    $bundles['paragraph']['news_list']['class'] = NewsFeedParagraph::class;
+  }
+}

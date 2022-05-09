@@ -7,9 +7,7 @@ function helfi_announcements_form_node_form_alter(&$form, &$form_state, $form_id
   switch ($form_id) {
     case 'node_announcement_edit_form':
     case 'node_announcement_form':
-      $form['field_announcement_content_pages']['#states'] =
-      $form['field_announcement_unit_pages']['#states'] =
-      $form['field_announcement_service_pages']['#states'] =  [
+      $form['field_announcement_content_pages']['#states'] = [
         'visible' => [
           ':input[name="field_announcement_all_pages[value]"]' => ['checked' => FALSE],
         ],

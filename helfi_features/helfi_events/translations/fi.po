@@ -1,0 +1,27 @@
+msgid ""
+msgstr ""
+
+msgid "at"
+msgctxt "Indication that events take place in a certain timeframe"
+msgstr "klo"
+
+msgid "events"
+msgstr "tapahtumaa"
+
+msgid "This event list is empty."
+msgstr "Tämä tapahtumakalenteri on tyhjä."
+
+msgid "No worries though, this city does not run out of things to do."
+msgstr "Ei hätää, nimittäin tästä kaupungista ei tekeminen lopu."
+
+msgid "See all events"
+msgstr "Katso kaikki tapahtumat"
+
+msgid "Load more events"
+msgstr "Lataa lisää tapahtumia"
+
+msgid "Refine search in tapahtumat.hel.fi"
+msgstr "Tarkenna hakua tapahtumat.hel.fi:ssä"
+
+msgid "Event keywords"
+msgstr "Tapahtuman avainsanat"

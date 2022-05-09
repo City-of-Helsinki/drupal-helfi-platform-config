@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains installation hooks for 'helfi_news_feed' module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ */
+function helfi_news_feed_install() : void {
+  try {
+    helfi_platform_config_enable_paragraph_fields(
+      'node',
+      'landing_page',
+      ['field_content'],
+      'news_list'
+    );
+  }
+  catch (\InvalidArgumentException $e) {
+    \Drupal::messenger()->addWarning($e->getMessage());
+  }
+}

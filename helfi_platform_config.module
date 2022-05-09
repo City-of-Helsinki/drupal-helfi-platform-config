@@ -5,9 +5,60 @@
  * Contains HELfi platform configuration alterations.
  */
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
+
+/**
+ * Helper function to enable paragraph type for given entity/bundle/field combination.
+ *
+ * @param string $entityType
+ *   The entity type.
+ * @param string $bundle
+ *   The entity bundle.
+ * @param string $fields
+ *   The field name.
+ * @param string $paragraphType
+ *   The paragraph type to enable.
+ *
+ * @throws \InvalidArgumentException
+ */
+function helfi_platform_config_enable_paragraph_fields(string $entityType, string $bundle, array $fields, string $paragraphType) : void {
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
+  $entityFieldManager = \Drupal::service('entity_field.manager');
+
+  if (!$definitions = $entityFieldManager->getFieldDefinitions($entityType, $bundle)) {
+    throw new \InvalidArgumentException(
+      sprintf('Failed to load field definition for %s, %s', $entityType, $bundle)
+    );
+  }
+  $definitions = array_filter($definitions, function (FieldDefinitionInterface $definition) use ($fields) : bool {
+    return in_array($definition->getName(), $fields);
+  });
+
+  foreach ($definitions as $field) {
+    if (!str_contains($field->getSetting('handler'), 'paragraph')) {
+      throw new \InvalidArgumentException(
+        sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
+      );
+    }
+    $handlerSettings = $field->getSetting('handler_settings');
+
+    if (isset($handlerSettings['target_bundles'])) {
+      $handlerSettings['target_bundles'][$paragraphType] = $paragraphType;
+      $handlerSettings['target_bundles_drag_drop'][$paragraphType] = [
+        'weight' => 30,
+        'enabled' => TRUE,
+      ];
+    }
+    $field->setSetting('handler_settings', $handlerSettings);
+    $field->save();
+  }
+}
 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
@@ -43,6 +94,13 @@ function helfi_platform_config_modules_installed() {
 }
 
 /**
+ * Implements hook_page_attachments().
+ */
+function helfi_platform_config_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'helfi_platform_config/clear_localstorage';
+}
+
+/**
  * Implements hook_theme().
  */
 function helfi_platform_config_theme() {
@@ -57,9 +115,9 @@ function helfi_platform_config_theme() {
 }
 
 /**
- * Implements hook_token_info()
+ * Implements hook_token_info().
  */
-function hdbt_content_token_info() {
+function helfi_platform_config_token_info() {
   $info['tokens']['site']['page-title-suffix'] = [
     'name' => t('Page title suffix'),
     'description' => t('Official suffix for page title.'),
@@ -68,9 +126,9 @@ function hdbt_content_token_info() {
 }
 
 /**
- * Implements hook_tokens()
+ * Implements hook_tokens().
  */
-function hdbt_content_tokens(
+function helfi_platform_config_tokens(
   $type,
   $tokens,
   array $data,
@@ -87,12 +145,15 @@ function hdbt_content_tokens(
         case 'fi':
           $replacements[$original] = 'Helsingin kaupunki';
           break;
+
         case 'sv':
           $replacements[$original] = 'Helsingfors stad';
           break;
+
         case 'ru':
           $replacements[$original] = 'Гopoд Xeльcинки';
           break;
+
         default:
           $replacements[$original] = 'City of Helsinki';
           break;
@@ -101,4 +162,55 @@ function hdbt_content_tokens(
   }
 
   return $replacements;
+}
+
+/**
+ * Implements hook__preprocess_HOOK().
+ */
+function helfi_platform_config_preprocess_breadcrumb(&$variables) {
+  $config = \Drupal::config('helfi_base_config.breadcrumb');
+  if ($config && !$config->get('breadcrumb_base_links')) {
+    return;
+  }
+
+  foreach (array_reverse($config->get('breadcrumb_base_links')) as $crumb) {
+    if (empty($crumb['text']) || !filter_var($crumb['url'], FILTER_VALIDATE_URL)) {
+      continue;
+    }
+    array_unshift(
+      $variables['links'],
+      Link::fromTextAndUrl(
+        $crumb['text'],
+        UrlHelper::isExternal($crumb['url'])
+          ? Url::fromUri($crumb['url'])
+          : Url::fromUserInput($crumb['url'])
+      )
+    );
+    array_unshift(
+      $variables['breadcrumb'],
+      [
+        'text' => $crumb['text'],
+        'url' => $crumb['url'],
+      ]
+    );
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_platform_config_preprocess_react_and_share(&$variables) {
+  $variables['privacy_policy_url'] = _helfi_platform_config_eu_cookie_compliance_get_privacy_policy_url();
+}
+
+/**
+ * Helper function to get the privacy policy link URL.
+ */
+function _helfi_platform_config_eu_cookie_compliance_get_privacy_policy_url(): Url|string {
+  $config = Drupal::config('eu_cookie_compliance.settings');
+  $link = $config->get('popup_link');
+
+  return (UrlHelper::isExternal($link))
+    ? Url::fromUri($link)
+    : Url::fromUserInput($link === '<front>' ? '/' : $link);
 }
