@@ -135,16 +135,18 @@ function helfi_news_item_update_9006() {
 /**
  * Update News item url pattern, promoted to front page default value and links title default value.
  */
-function helfi_news_item_update_9008() {
+function helfi_news_item_update_9007() {
   $configLocation = dirname(__FILE__) . '/config/install/';
 
   $configurations = [
     'pathauto.pattern.news_item_en',
     'pathauto.pattern.news_item_fi',
     'pathauto.pattern.news_item_sv',
+    'core.base_field_override.node.news_item.promote',
   ];
 
-  // Install new url pattern for News items.
+  // Install new url pattern for News items and update News item promoted
+  // to front page field default value.
   foreach ($configurations as $configuration) {
     ConfigHelper::installNewConfig($configLocation, $configuration);
   }
@@ -160,7 +162,6 @@ function helfi_news_item_update_9008() {
   // Add translations for the news item links title default value.
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
   ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.node.news_item.field_news_item_links_title');
-
 
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
