@@ -131,3 +131,44 @@ function helfi_news_item_update_9006() {
     ConfigHelper::installNewConfig($configLocation, $configuration);
   }
 }
+
+/**
+ * Update News item url pattern, promoted to front page default value and links title default value.
+ */
+function helfi_news_item_update_9007() {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'pathauto.pattern.news_item_en',
+    'pathauto.pattern.news_item_fi',
+    'pathauto.pattern.news_item_sv',
+    'core.base_field_override.node.news_item.promote',
+  ];
+
+  // Install new url pattern for News items and update News item promoted
+  // to front page field default value.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+  }
+
+  // Delete old url pattern for News items.
+  $config_factory = \Drupal::configFactory();
+  $url_pattern_news_item = $config_factory->getEditable('pathauto.pattern.news_item_content_pattern');
+  $url_pattern_news_item_data = $url_pattern_news_item->getRawData();
+  if (!empty($url_pattern_news_item_data)) {
+    $url_pattern_news_item->delete();
+  }
+
+  // Add translations for the news item links title default value.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'field.field.node.news_item.field_news_item_links_title');
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9007');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

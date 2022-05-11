@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: news_item_fi
+label: 'News item | FI'
+type: 'canonical_entities:node'
+pattern: 'uutiset/[node:short-title]'
+selection_criteria:
+  6bd3a713-4f32-4ea3-84f2-bd3c0faae75e:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 6bd3a713-4f32-4ea3-84f2-bd3c0faae75e
+    context_mapping:
+      node: node
+    bundles:
+      news_item: news_item
+  e73f58dd-8e92-481f-ae42-1fbf9e9aa3dd:
+    id: language
+    negate: false
+    uuid: e73f58dd-8e92-481f-ae42-1fbf9e9aa3dd
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      fi: fi
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Language

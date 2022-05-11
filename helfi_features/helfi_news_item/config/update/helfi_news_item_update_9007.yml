@@ -1,0 +1,8 @@
+field.field.node.news_item.field_news_item_links_title:
+  expected_config:
+    default_value: {  }
+  update_actions:
+    change:
+      default_value:
+        -1:
+          value: 'Learn more'
