@@ -25,7 +25,7 @@ content:
     region: content
     label: hidden
     settings:
-      view_mode: media_library
+      view_mode: image
       link: false
     third_party_settings: {  }
   field_news_item_links_title:

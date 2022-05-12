@@ -1,6 +1,8 @@
-block.block.views_block__news_latest_news:
+field.field.node.news_item.field_news_item_links_title:
   expected_config:
-    region: sidebar_first
+    default_value: {  }
   update_actions:
     change:
-      region: sidebar_second
+      default_value:
+        -1:
+          value: 'Learn more'

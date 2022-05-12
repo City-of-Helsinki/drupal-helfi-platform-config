@@ -12,7 +12,9 @@ label: Title
 description: 'Link list title'
 required: false
 translatable: true
-default_value: {  }
+default_value:
+  -
+    value: 'Learn more'
 default_value_callback: ''
 settings: {  }
 field_type: string
