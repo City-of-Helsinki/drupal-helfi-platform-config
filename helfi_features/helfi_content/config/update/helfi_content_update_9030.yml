@@ -1,0 +1,82 @@
+field.field.node.article.field_content:
+  expected_config:
+    settings:
+      handler_settings:
+        target_bundles:
+          gallery: gallery
+        target_bundles_drag_drop:
+          gallery:
+            enabled: true
+  update_actions:
+    delete:
+      settings:
+        handler_settings:
+          target_bundles:
+            gallery: gallery
+    change:
+      settings:
+        handler_settings:
+          target_bundles_drag_drop:
+            gallery:
+              enabled: false
+field.field.node.page.field_content:
+  expected_config:
+    settings:
+      handler_settings:
+        target_bundles:
+          gallery: gallery
+        target_bundles_drag_drop:
+          gallery:
+            enabled: true
+  update_actions:
+    delete:
+      settings:
+        handler_settings:
+          target_bundles:
+            gallery: gallery
+    change:
+      settings:
+        handler_settings:
+          target_bundles_drag_drop:
+            gallery:
+              enabled: false
+field.field.node.page.field_lower_content:
+  expected_config:
+    settings:
+      handler_settings:
+        target_bundles:
+          gallery: gallery
+        target_bundles_drag_drop:
+          gallery:
+            enabled: true
+  update_actions:
+    delete:
+      settings:
+        handler_settings:
+          target_bundles:
+            gallery: gallery
+    change:
+      settings:
+        handler_settings:
+          target_bundles_drag_drop:
+            gallery:
+              enabled: false
+paragraphs.paragraphs_type.gallery:
+  expected_config:
+    description: 'Using this paragraph you can create galleries from multiple images.'
+    third_party_settings:
+      paragraphs_library:
+        allow_library_conversion: true
+  update_actions:
+    delete:
+      third_party_settings:
+        paragraphs_library:
+          allow_library_conversion: true
+    change:
+      description: 'Not in use.'
+paragraphs.paragraphs_type.gallery_slide:
+  expected_config:
+    description: 'One slide in the gallery that can include image and caption.'
+  update_actions:
+    change:
+      description: 'Not in use.'

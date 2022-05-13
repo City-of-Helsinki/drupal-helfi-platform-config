@@ -544,3 +544,19 @@ function helfi_tpr_config_update_9025() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Remove gallery paragraph from TPR unit and TPR service.
+ */
+function helfi_tpr_config_update_9026() {
+
+  // Enable the 'Hide sidebar navigation from this page' to unit and service.
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9026');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

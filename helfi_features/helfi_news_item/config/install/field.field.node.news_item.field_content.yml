@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.storage.node.field_content
     - node.type.news_item
-    - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.remote_video
     - paragraphs.paragraphs_type.text
@@ -23,12 +22,11 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       text: text
       image: image
-      gallery: gallery
       remote_video: remote_video
+    negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: -24
@@ -52,8 +50,8 @@ settings:
         weight: -32
         enabled: false
       gallery:
-        enabled: true
         weight: -39
+        enabled: false
       gallery_slide:
         weight: -31
         enabled: false
