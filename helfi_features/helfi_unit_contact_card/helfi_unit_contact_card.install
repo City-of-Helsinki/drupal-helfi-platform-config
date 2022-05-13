@@ -1,0 +1,22 @@
+<?php
+
+use Drupal\helfi_platform_config\ConfigHelper;
+
+/**
+ * Update configuration translations and add card to content areas.
+ */
+function helfi_unit_contact_card_install() {
+  // Add configuration translations.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  $translationConfigurations = [
+    '',
+  ];
+  foreach ($translationConfigurations as $translationConfiguration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $translationConfiguration);
+  }
+
+  // Add unit contact card to content areas.
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+  $updateHelper->executeUpdate('helfi_unit_contact_card', 'helfi_unit_contact_card_9001');
+}
