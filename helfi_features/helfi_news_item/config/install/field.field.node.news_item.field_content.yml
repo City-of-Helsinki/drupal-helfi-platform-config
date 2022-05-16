@@ -6,7 +6,6 @@ dependencies:
     - node.type.news_item
     - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.image
-    - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.remote_video
     - paragraphs.paragraphs_type.text
   module:
@@ -29,7 +28,6 @@ settings:
       image: image
       remote_video: remote_video
       banner: banner
-      list_of_links: list_of_links
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -70,7 +68,7 @@ settings:
         enabled: false
       list_of_links:
         weight: -28
-        enabled: true
+        enabled: false
       list_of_links_item:
         weight: -27
         enabled: false

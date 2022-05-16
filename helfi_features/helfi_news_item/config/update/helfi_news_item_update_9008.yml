@@ -46,14 +46,7 @@ field.field.node.news_item.field_content:
             enabled: false
           gallery:
             enabled: true
-          list_of_links:
-            enabled: false
   update_actions:
-    add:
-      settings:
-        handler_settings:
-          target_bundles:
-            list_of_links: list_of_links
     change:
       settings:
         handler_settings:
@@ -64,8 +57,6 @@ field.field.node.news_item.field_content:
               enabled: true
             gallery:
               enabled: false
-            list_of_links:
-              enabled: true
 block.block.views_block__news_latest_news:
   expected_config:
     region: sidebar_first
