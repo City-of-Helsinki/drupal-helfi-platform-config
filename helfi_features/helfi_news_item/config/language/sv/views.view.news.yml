@@ -1,0 +1,13 @@
+display:
+  default:
+    display_options:
+      fields:
+        view_node:
+          text: visa
+      title: 'Senaste nyheterna'
+      arguments:
+        nid:
+          exception:
+            title: Alla
+  latest_news:
+    display_title: 'Senaste nyheterna'

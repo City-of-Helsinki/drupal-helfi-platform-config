@@ -9,7 +9,7 @@ dependencies:
     - node
     - user
 id: news
-label: News
+label: 'Platform news'
 module: views
 description: ''
 tag: ''
