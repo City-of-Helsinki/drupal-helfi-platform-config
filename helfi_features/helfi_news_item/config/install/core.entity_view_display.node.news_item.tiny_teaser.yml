@@ -11,51 +11,41 @@ dependencies:
     - field.field.node.news_item.field_news_item_links_title
     - field.field.node.news_item.field_news_item_tags
     - field.field.node.news_item.field_short_title
-    - image.style.tiny_square_image
     - node.type.news_item
   module:
-    - media
     - user
 id: node.news_item.tiny_teaser
 targetEntityType: node
 bundle: news_item
 mode: tiny_teaser
 content:
-  field_main_image:
-    type: media_thumbnail
-    weight: 1
-    label: hidden
-    settings:
-      image_style: tiny_square_image
-      image_link: ''
-    third_party_settings: {  }
-    region: content
   field_short_title:
-    weight: 2
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   links:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   published_at:
     type: timestamp
-    weight: 3
-    region: content
     label: hidden
     settings:
       date_format: publication_date_format
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   field_content: true
   field_lead_in: true
+  field_main_image: true
   field_main_image_caption: true
   field_news_item_links_link: true
   field_news_item_links_title: true
