@@ -1,0 +1,73 @@
+core.entity_view_display.node.news_item.tiny_teaser:
+  expected_config:
+    content:
+      field_main_image:
+        label: hidden
+        region: content
+        settings:
+          image_link: ''
+          image_style: tiny_square_image
+        third_party_settings: {  }
+        type: media_thumbnail
+        weight: 1
+      field_short_title:
+        weight: 2
+      published_at:
+        weight: 3
+  update_actions:
+    delete:
+      content:
+        field_main_image:
+          label: hidden
+          region: content
+          settings:
+            image_link: ''
+            image_style: tiny_square_image
+          third_party_settings: {  }
+          type: media_thumbnail
+          weight: 1
+    add:
+      hidden:
+        field_main_image: true
+    change:
+      content:
+        field_short_title:
+          weight: 1
+        published_at:
+          weight: 2
+field.field.node.news_item.field_content:
+  expected_config:
+    settings:
+      handler_settings:
+        target_bundles:
+          gallery: gallery
+        target_bundles_drag_drop:
+          banner:
+            enabled: false
+          gallery:
+            enabled: true
+  update_actions:
+    change:
+      settings:
+        handler_settings:
+          target_bundles:
+            banner: banner
+          target_bundles_drag_drop:
+            banner:
+              enabled: true
+            gallery:
+              enabled: false
+block.block.views_block__news_latest_news:
+  expected_config:
+    region: sidebar_first
+    weight: -10
+  update_actions:
+    change:
+      region: sidebar_second
+      weight: -11
+views.view.news:
+  expected_config:
+    label: News
+  update_actions:
+    change:
+      label: 'Platform News'

@@ -4,7 +4,7 @@ dependencies:
   config:
     - field.storage.node.field_content
     - node.type.news_item
-    - paragraphs.paragraphs_type.gallery
+    - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.remote_video
     - paragraphs.paragraphs_type.text
@@ -23,12 +23,12 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       text: text
       image: image
-      gallery: gallery
       remote_video: remote_video
+      banner: banner
+    negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: -24
@@ -38,7 +38,7 @@ settings:
         enabled: false
       banner:
         weight: -36
-        enabled: false
+        enabled: true
       columns:
         weight: -26
         enabled: false
@@ -52,8 +52,8 @@ settings:
         weight: -32
         enabled: false
       gallery:
-        enabled: true
         weight: -39
+        enabled: false
       gallery_slide:
         weight: -31
         enabled: false
@@ -61,8 +61,8 @@ settings:
         weight: -30
         enabled: false
       image:
-        enabled: true
         weight: -40
+        enabled: true
       liftup_with_image:
         weight: -29
         enabled: false
@@ -72,22 +72,13 @@ settings:
       list_of_links_item:
         weight: -27
         enabled: false
-      map:
-        weight: -25
-        enabled: false
       remote_video:
-        enabled: true
         weight: -38
-      service_list:
-        weight: -23
-        enabled: false
+        enabled: true
       sidebar_text:
         weight: -34
         enabled: false
       text:
-        enabled: true
         weight: -41
-      unit_search:
-        weight: -22
-        enabled: false
+        enabled: true
 field_type: entity_reference_revisions

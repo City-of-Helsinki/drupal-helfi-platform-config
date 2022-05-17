@@ -172,3 +172,22 @@ function helfi_news_item_update_9007() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Changes to allowed paragraphs, removed image from tiny teaser and updated translations.
+ */
+function helfi_news_item_update_9008() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'views.view.news');
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9008');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
