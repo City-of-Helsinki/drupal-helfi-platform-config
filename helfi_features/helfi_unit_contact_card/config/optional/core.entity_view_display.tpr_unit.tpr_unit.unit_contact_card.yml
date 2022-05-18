@@ -1,0 +1,117 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.tpr_unit.unit_contact_card
+    - field.field.tpr_unit.tpr_unit.field_content
+    - field.field.tpr_unit.tpr_unit.field_districts
+    - field.field.tpr_unit.tpr_unit.field_lower_content
+    - field.field.tpr_unit.tpr_unit.field_metatags
+    - field.field.tpr_unit.tpr_unit.field_unit_type
+  module:
+    - address
+    - helfi_tpr
+    - imagecache_external
+    - telephone
+_core:
+  default_config_hash: ECaVPCJRldoUwExuc1n2VcC4lhdfxOxJc-jx5AgDYn0
+id: tpr_unit.tpr_unit.unit_contact_card
+targetEntityType: tpr_unit
+bundle: tpr_unit
+mode: unit_contact_card
+content:
+  address:
+    type: address_plain
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  address_postal:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  email:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  name_override:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  opening_hours:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  phone:
+    type: telephone_link
+    label: hidden
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  picture_url:
+    type: imagecache_external_responsive_image
+    label: hidden
+    settings:
+      imagecache_external_responsive_style: image__3_2
+      imagecache_external_link: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  picture_url_override:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: image
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  accessibility_email: true
+  accessibility_phone: true
+  accessibility_sentences: true
+  accessibility_www: true
+  call_charge_info: true
+  created: true
+  description: true
+  field_content: true
+  field_districts: true
+  field_lower_content: true
+  field_metatags: true
+  field_unit_type: true
+  hide_description: true
+  langcode: true
+  latitude: true
+  longitude: true
+  provided_languages: true
+  service_map_embed: true
+  services: true
+  show_www: true
+  streetview_entrance_url: true
+  www: true

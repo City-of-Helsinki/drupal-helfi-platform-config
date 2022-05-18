@@ -1,10 +1,11 @@
+uuid: b3784dfc-3ac3-4929-8e30-a95268ac88f4
 langcode: en
 status: true
 dependencies:
   module:
     - paragraphs
-id: paragraph.field_unit_contact_opening_hours
-field_name: field_unit_contact_opening_hours
+id: paragraph.field_unit_contact_use_opening
+field_name: field_unit_contact_use_opening
 entity_type: paragraph
 type: boolean
 settings: {  }

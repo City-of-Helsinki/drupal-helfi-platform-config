@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: tpr_unit.unit_contact_card
+label: 'Unit contact card'
+targetEntityType: tpr_unit
+cache: true

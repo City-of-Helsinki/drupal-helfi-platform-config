@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.unit_contact_card.field_unit_contact_opening_hours
     - field.field.paragraph.unit_contact_card.field_unit_contact_title
     - field.field.paragraph.unit_contact_card.field_unit_contact_unit
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_address
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_details
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_link
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_opening
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_phone
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_picture
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_postal
@@ -17,13 +17,6 @@ targetEntityType: paragraph
 bundle: unit_contact_card
 mode: default
 content:
-  field_unit_contact_opening_hours:
-    type: boolean_checkbox
-    weight: 5
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   field_unit_contact_title:
     type: string_textfield
     weight: 0
@@ -59,6 +52,13 @@ content:
   field_unit_contact_use_link:
     type: boolean_checkbox
     weight: 8
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_unit_contact_use_opening:
+    type: boolean_checkbox
+    weight: 5
     region: content
     settings:
       display_label: true
