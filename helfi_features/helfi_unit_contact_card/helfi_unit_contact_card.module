@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_unit_contact_card_preprocess_paragraph(array &$variables): void {
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $paragraph_type = $paragraph->getType();
+
+  if ($paragraph_type == 'unit_contact_card') {
+    if (!empty($title = $paragraph->get('field_unit_contact_title')->value)) {
+      $paragraph->get('field_unit_contact_unit')->entity->get('name')->value = $title;
+    }
+    if ($paragraph->get('field_unit_contact_use_address')->value === '0') {
+      $paragraph->get('field_unit_contact_unit')->entity->set('address', NULL);
+    }
+    if ($paragraph->get('field_unit_contact_use_postal')->value === '0') {
+      $paragraph->get('field_unit_contact_unit')->entity->set('address_postal', NULL);
+    }
+    if ($paragraph->get('field_unit_contact_use_phone')->value === '0') {
+      $paragraph->get('field_unit_contact_unit')->entity->set('phone', NULL);
+    }
+    if ($paragraph->get('field_unit_contact_use_opening')->value === '0') {
+      $paragraph->get('field_unit_contact_unit')->entity->set('opening_hours', NULL);
+    }
+    if ($paragraph->get('field_unit_contact_use_picture')->value === '0') {
+      $paragraph->get('field_unit_contact_unit')->entity->set('picture_url', NULL);
+      $paragraph->get('field_unit_contact_unit')->entity->set('picture_url_override', NULL);
+    }
+  }
+}
