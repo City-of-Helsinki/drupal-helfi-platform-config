@@ -280,6 +280,11 @@ final class News extends ExternalEntityStorageClientBase {
    *   The includes array.
    */
   private function resolveRelationShip(array &$entity, array $includes) {
+
+    if (empty($entity['relationships'])) {
+      $entity['relationships'] = [];
+    }
+
     foreach ($entity['relationships'] as &$relationship) {
       if (empty($relationship['data'])) {
         continue;
