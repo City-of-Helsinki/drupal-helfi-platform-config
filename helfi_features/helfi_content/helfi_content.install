@@ -672,3 +672,17 @@ function helfi_content_update_9029() {
     ConfigHelper::updateExistingConfig($configLocation, 'social_media.settings');
   }
 }
+
+/**
+ * Remove Gallery paragraph from standard page.
+ */
+function helfi_content_update_9030() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9030');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

@@ -47,6 +47,27 @@ field.field.node.news_item.field_content:
           gallery:
             enabled: true
   update_actions:
+    delete:
+      settings:
+        handler_settings:
+          target_bundles:
+            gallery: gallery
+    add:
+      settings:
+        handler_settings:
+          target_bundles_drag_drop:
+            chart:
+              enabled: false
+              weight: 28
+            contact_card:
+              enabled: false
+              weight: 30
+            contact_card_listing:
+              enabled: false
+              weight: 31
+            social_media_link:
+              enabled: false
+              weight: 46
     change:
       settings:
         handler_settings:

@@ -8,7 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
     - paragraphs.paragraphs_type.from_library
-    - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
@@ -29,18 +28,17 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       columns: columns
       accordion: accordion
       image: image
-      gallery: gallery
       list_of_links: list_of_links
       content_cards: content_cards
       banner: banner
       liftup_with_image: liftup_with_image
       from_library: from_library
       remote_video: remote_video
+    negate: 0
     target_bundles_drag_drop:
       accordion:
         enabled: true
@@ -61,8 +59,8 @@ settings:
         enabled: true
         weight: 21
       gallery:
-        enabled: true
         weight: -25
+        enabled: false
       gallery_slide:
         weight: -20
         enabled: false
