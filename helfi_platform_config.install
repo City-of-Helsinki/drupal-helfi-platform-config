@@ -248,3 +248,14 @@ function helfi_platform_config_update_9009() {
     ]);
   }
 }
+
+/**
+ * Install helfi_events.
+ */
+function helfi_platform_config_update_9010() {
+  if (!Drupal::moduleHandler()->moduleExists('helfi_events')) {
+    Drupal::service('module_installer')->install([
+      'helfi_events',
+    ]);
+  }
+}
