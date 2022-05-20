@@ -4,15 +4,15 @@ status: true
 dependencies:
   module:
     - paragraphs
+    - text
 _core:
   default_config_hash: jEfT1S05qwT11BZeMt-9_Bb4ibiWj9JULgjB1uOr0FU
 id: paragraph.field_event_list_description
 field_name: field_event_list_description
 entity_type: paragraph
-type: string_long
-settings:
-  case_sensitive: false
-module: core
+type: text_long
+settings: {  }
+module: text
 locked: false
 cardinality: 1
 translatable: true
