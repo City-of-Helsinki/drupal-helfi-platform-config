@@ -16,9 +16,9 @@ bundle: event_list
 mode: default
 content:
   field_event_list_description:
-    type: basic_string
+    type: text_default
     label: hidden
-    settings: {  }
+    settings: { }
     third_party_settings: {  }
     weight: 1
     region: content
