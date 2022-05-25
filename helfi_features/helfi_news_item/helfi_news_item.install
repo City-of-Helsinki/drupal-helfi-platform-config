@@ -207,12 +207,4 @@ function helfi_news_item_update_9009() {
   foreach ($configurations as $configuration) {
     ConfigHelper::installNewConfig($configLocation, $configuration);
   }
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9009');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
 }
