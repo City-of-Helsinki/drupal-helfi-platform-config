@@ -11,7 +11,7 @@
       var openChatButton = `<button
         class="hds-button hds-button--primary"
         data-design="hds-button hds-button--primary"
-        data-link-text="Aloita chat"
+        data-link-text="` + Drupal.t('Start a chat') + `"
         data-selected-icon="speechbubble-text"
         id="openChat"
       >
