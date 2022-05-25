@@ -191,3 +191,20 @@ function helfi_news_item_update_9008() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Added new display mode for news
+ */
+function helfi_news_item_update_9009() {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'core.entity_view_display.node.news_item.card_teaser',
+    'core.entity_view_mode.node.card_teaser'
+  ];
+
+  // Install new display mode for news item
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+  }
+}
