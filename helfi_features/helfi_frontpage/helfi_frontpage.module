@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Module functions for HELfi Frontpage module.
+ */
+
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
