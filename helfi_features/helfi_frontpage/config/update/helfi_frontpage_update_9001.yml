@@ -1,0 +1,12 @@
+field.field.node.landing_page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            popular_services: popular_services
+          target_bundles_drag_drop:
+            popular_services:
+              enabled: true
+              weight: 42

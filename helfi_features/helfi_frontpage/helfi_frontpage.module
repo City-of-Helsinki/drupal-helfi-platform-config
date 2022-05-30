@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Module functions for HELfi Frontpage module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_frontpage_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($bundle === 'popular_services' && isset($fields['field_service_items'])) {
+    $fields['field_service_items']->addConstraint('MinimumCount', ['count' => 2]);
+  }
+}

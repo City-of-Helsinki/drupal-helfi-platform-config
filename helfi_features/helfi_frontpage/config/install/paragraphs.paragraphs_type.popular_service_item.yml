@@ -1,0 +1,10 @@
+uuid: 53d8337f-6a18-49a8-bae2-c25346795aab
+langcode: en
+status: true
+dependencies: {  }
+id: popular_service_item
+label: 'Popular service item'
+icon_uuid: null
+icon_default: null
+description: 'Showcase popular service.'
+behavior_plugins: {  }
