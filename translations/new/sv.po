@@ -23,3 +23,6 @@ msgstr "Kvällsvård"
 
 msgid "Part-time day care"
 msgstr "Halvdagsgrupp"
+
+msgid "Start a chat"
+msgstr "Starta chatten"

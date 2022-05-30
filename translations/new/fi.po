@@ -470,3 +470,6 @@ msgstr "Iltahoito"
 
 msgid "Part-time day care"
 msgstr "Osapäiväryhmä"
+
+msgid "Start a chat"
+msgstr "Aloita chat"

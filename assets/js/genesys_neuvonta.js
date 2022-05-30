@@ -7,7 +7,24 @@
 
   Drupal.behaviors.genesys_chat = {
     attach: function (context, settings) {
-      // Open chat from an external button.
+      // Replace the link with a button.
+      var openChatButton = `<button
+        class="hds-button hds-button--primary"
+        data-design="hds-button hds-button--primary"
+        data-link-text="` + Drupal.t('Start a chat') + `"
+        data-selected-icon="speechbubble-text"
+        id="openChat"
+      >
+        <span
+          class="hel-icon hel-icon--speechbubble-text "
+          aria-hidden="true"
+        ></span>
+        <span class="hds-button__label">` + Drupal.t('Start a chat') + `</span>
+      </button>`;
+
+      $("#openChat").replaceWith(openChatButton);
+
+      // Open chat when clicking the button.
       $('#openChat').click(function(e) {
         e.preventDefault();
         $("#chatButtonStart").click();
