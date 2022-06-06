@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 33d12e8c-0f73-4b81-b395-65f72debc91b
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    60e62d94-f114-4a9c-ac23-4360bd75b4ae: menu_link_content
+    59b3d264-141e-4f4b-b88b-17612765b788: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Level 6'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 59b3d264-141e-4f4b-b88b-17612765b788
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -50
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:60e62d94-f114-4a9c-ac23-4360bd75b4ae'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654500130

@@ -1,0 +1,48 @@
+name: 'HELfi Platform test content'
+type: module
+core: 8.x
+core_version_requirement: '^8 || ^9'
+package: HELfi
+dependencies:
+  - default_content
+  - helfi_content
+default_content:
+  node:
+    - 3a8dd5fc-a5aa-4976-9ec0-3432d9984c6e
+    - 3e0c28fb-cdd4-4226-81f9-e14f56c6bc8f
+    - 5d8bef83-2611-4cde-9423-b30db1fad6f4
+    - 8ab5397e-2ddd-43e9-b9e4-b9e7dcb34cd1
+    - 8c052656-f57d-42d4-8723-021c37c4e40d
+    - 21a2273a-1c42-4d50-85a4-d3d0687fa709
+    - 36f0547c-e7e1-4cf6-b196-32d6d14988fd
+    - 42eba98a-6141-4201-bb8c-244ee8d1905d
+    - 59b3d264-141e-4f4b-b88b-17612765b788
+    - 73c88cd5-f665-4822-9d05-dfc094c0d26f
+    - 83f25d9d-3fdc-42ea-ae82-bd60cb4c73a3
+    - 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
+    - 329149fd-3e4b-40b9-a7d4-59fb34234320
+    - 482655a9-4767-4564-9edb-68ce6a668674
+    - 58495558-51f7-49dc-af8e-45af540f42ac
+    - a23b06b0-090b-46a1-b761-b86f04e61f7e
+    - a9033e6e-9009-40d8-95c1-402ad4604709
+    - cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
+    - d25582a2-3b71-4374-b11b-536e210fa498
+    - e735e24a-76bc-42f8-9e5d-f51c1a8926dd
+    - f2413cec-9944-4c89-9c3d-971d8576b08a
+  menu_link_content:
+    - 3b444534-9ba6-4fda-a29e-374ba87b5bd1
+    - 3c10d958-fbb4-42d2-83d4-adb7a4830bad
+    - 5a2b1a0a-c43e-436e-8043-09b19353cb46
+    - 7cbbc640-f34e-4d7f-9b47-76b30afbfb11
+    - 8c29a38f-4057-4b99-9bfc-a2188900a0b5
+    - 8ffeb5a8-23ed-4bd1-8f25-e92026db504f
+    - 19dd2e39-77dd-49da-acc2-d2b2933cf2c5
+    - 33d12e8c-0f73-4b81-b395-65f72debc91b
+    - 59fe4431-bc87-48b4-8f71-1b08b30e0f2a
+    - 60e62d94-f114-4a9c-ac23-4360bd75b4ae
+    - 1096c7f2-9579-4c40-9f01-d38b84f1c882
+    - a4bc1f8e-1b84-406b-8c5a-78be6d06d7ec
+    - cc62a113-8f3a-43d6-bf0f-9ff29bab152f
+    - d0e23094-7fdf-4141-8ab3-175a79cf688f
+    - de345ceb-c2d9-44f2-a308-bc7a6974dcc3
+    - ee18347b-5964-4d72-a42b-50f1f166457a

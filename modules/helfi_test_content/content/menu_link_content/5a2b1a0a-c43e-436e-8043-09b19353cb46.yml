@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 5a2b1a0a-c43e-436e-8043-09b19353cb46
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    8c29a38f-4057-4b99-9bfc-a2188900a0b5: menu_link_content
+    5d8bef83-2611-4cde-9423-b30db1fad6f4: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Level 8'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 5d8bef83-2611-4cde-9423-b30db1fad6f4
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -50
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:8c29a38f-4057-4b99-9bfc-a2188900a0b5'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654500131
