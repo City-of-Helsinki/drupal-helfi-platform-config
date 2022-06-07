@@ -2,19 +2,31 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.news_list.field_description
     - field.field.paragraph.news_list.field_groups
     - field.field.paragraph.news_list.field_limit
     - field.field.paragraph.news_list.field_neighbourhoods
     - field.field.paragraph.news_list.field_tags
+    - field.field.paragraph.news_list.field_title
     - paragraphs.paragraphs_type.news_list
+  module:
+    - text
 id: paragraph.news_list.default
 targetEntityType: paragraph
 bundle: news_list
 mode: default
 content:
+  field_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_groups:
     type: string_textfield
-    weight: 2
+    weight: 4
     region: content
     settings:
       size: 60
@@ -22,20 +34,28 @@ content:
     third_party_settings: {  }
   field_limit:
     type: number
-    weight: 3
+    weight: 5
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_neighbourhoods:
     type: string_textfield
-    weight: 1
+    weight: 3
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_tags:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_title:
     type: string_textfield
     weight: 0
     region: content

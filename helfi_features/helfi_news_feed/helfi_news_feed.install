@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\helfi_platform_config\ConfigHelper;
+
 /**
  * Implements hook_install().
  */
@@ -21,5 +23,32 @@ function helfi_news_feed_install() : void {
   }
   catch (\InvalidArgumentException $e) {
     \Drupal::messenger()->addWarning($e->getMessage());
+  }
+}
+
+/**
+ * Adds new fields to the "news_list" paragraph.
+ */
+function helfi_news_feed_update_9001(&$sandbox = NULL) {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Update existing configuration.
+  $configurations = [
+    'core.entity_form_display.paragraph.news_list.default',
+    'core.entity_view_display.paragraph.news_list.default',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
+
+  // Add new configuration.
+  $configurations = [
+    'field.field.paragraph.news_list.field_description',
+    'field.field.paragraph.news_list.field_title',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
   }
 }
