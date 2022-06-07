@@ -27,9 +27,10 @@ function helfi_news_feed_install() : void {
 }
 
 /**
- * News list paragraph changes.
+ * "News list" paragraph type changes.
  */
 function helfi_news_feed_update_9001(&$sandbox = NULL) {
+  // Add "Title" and "Description" fields for the paragraph type.
   $configLocation = dirname(__FILE__) . '/config/install/';
 
   // Update existing configuration.
@@ -46,13 +47,38 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
   $configurations = [
     'field.field.paragraph.news_list.field_description',
     'field.field.paragraph.news_list.field_title',
-    'field.field.node.page.field_content',
-    'field.field.node.page.field_lower_content',
-    'field.field.tpr_service.tpr_service.field_lower_content',
-    'field.field.tpr_unit.tpr_unit.field_lower_content',
   ];
 
   foreach ($configurations as $configuration) {
     ConfigHelper::installNewConfig($configLocation, $configuration);
+  }
+
+  // Enable the paragraph type in some content and TPR entity types.
+  try {
+    // "Page" content type.
+    helfi_platform_config_enable_paragraph_fields(
+      'node',
+      'page',
+      ['field_content', 'field_lower_content'],
+      'news_list'
+    );
+
+    // "TPR Service" entity type.
+    helfi_platform_config_enable_paragraph_fields(
+      'tpr_service',
+      'tpr_service',
+      ['field_lower_content'],
+      'news_list'
+    );
+
+    // "TPR Unit" entity type.
+    helfi_platform_config_enable_paragraph_fields(
+      'tpr_unit',
+      'tpr_unit',
+      ['field_lower_content'],
+      'news_list'
+    );
+  } catch (\InvalidArgumentException $e) {
+    \Drupal::messenger()->addWarning($e->getMessage());
   }
 }
