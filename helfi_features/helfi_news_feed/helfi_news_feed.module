@@ -72,7 +72,7 @@ function helfi_news_feed_paragraph_view(
 
       $build['news_list'][] = Drupal::entityTypeManager()
         ->getViewBuilder('helfi_news')
-        ->view($item);
+        ->view($item, 'medium_teaser');
     }
   }
 }
