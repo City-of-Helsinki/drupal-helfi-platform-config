@@ -27,7 +27,7 @@ function helfi_news_feed_install() : void {
 }
 
 /**
- * Adds new fields to the "news_list" paragraph.
+ * News list paragraph changes.
  */
 function helfi_news_feed_update_9001(&$sandbox = NULL) {
   $configLocation = dirname(__FILE__) . '/config/install/';
@@ -46,21 +46,6 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
   $configurations = [
     'field.field.paragraph.news_list.field_description',
     'field.field.paragraph.news_list.field_title',
-  ];
-
-  foreach ($configurations as $configuration) {
-    ConfigHelper::installNewConfig($configLocation, $configuration);
-  }
-}
-
-/**
- * Adds "news_list" paragraph to some content types and TPR entities.
- */
-function helfi_news_feed_update_9002(&$sandbox = NULL) {
-  $configLocation = dirname(__FILE__) . '/config/install/';
-
-  // Add new configuration.
-  $configurations = [
     'field.field.node.page.field_content',
     'field.field.node.page.field_lower_content',
     'field.field.tpr_service.tpr_service.field_lower_content',
