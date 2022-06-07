@@ -1,0 +1,140 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lower_content
+    - node.type.page
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.banner
+    - paragraphs.paragraphs_type.chart
+    - paragraphs.paragraphs_type.columns
+    - paragraphs.paragraphs_type.contact_card_listing
+    - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.content_liftup
+    - paragraphs.paragraphs_type.event_list
+    - paragraphs.paragraphs_type.from_library
+    - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.list_of_links
+    - paragraphs.paragraphs_type.list_of_plans
+    - paragraphs.paragraphs_type.map
+    - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.remote_video
+    - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.unit_search
+  module:
+    - entity_reference_revisions
+id: node.page.field_lower_content
+field_name: field_lower_content
+entity_type: node
+bundle: page
+label: 'Lower content region'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      text: text
+      columns: columns
+      accordion: accordion
+      image: image
+      list_of_links: list_of_links
+      content_cards: content_cards
+      content_liftup: content_liftup
+      banner: banner
+      unit_search: unit_search
+      from_library: from_library
+      chart: chart
+      news_list: news_list
+      event_list: event_list
+      contact_card_listing: contact_card_listing
+      map: map
+      remote_video: remote_video
+      list_of_plans: list_of_plans
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: -27
+        enabled: true
+      accordion_item:
+        weight: -22
+        enabled: false
+      banner:
+        weight: -21
+        enabled: true
+      chart:
+        weight: 25
+        enabled: true
+      columns:
+        weight: -28
+        enabled: true
+      contact_card:
+        weight: 30
+        enabled: false
+      contact_card_listing:
+        weight: 31
+        enabled: true
+      content_cards:
+        weight: -23
+        enabled: true
+      content_liftup:
+        weight: -22
+        enabled: true
+      event_list:
+        weight: 30
+        enabled: true
+      from_library:
+        weight: 21
+        enabled: true
+      gallery:
+        weight: -25
+        enabled: false
+      gallery_slide:
+        weight: -20
+        enabled: false
+      hero:
+        weight: -19
+        enabled: false
+      image:
+        weight: -26
+        enabled: true
+      liftup_with_image:
+        weight: -18
+        enabled: false
+      list_of_links:
+        weight: -24
+        enabled: true
+      list_of_links_item:
+        weight: -17
+        enabled: false
+      list_of_plans:
+        weight: 43
+        enabled: true
+      map:
+        weight: 31
+        enabled: true
+      news_list:
+        weight: 28
+        enabled: true
+      remote_video:
+        weight: 32
+        enabled: true
+      service_list:
+        weight: 46
+        enabled: false
+      sidebar_text:
+        weight: 47
+        enabled: false
+      social_media_link:
+        weight: 46
+        enabled: false
+      text:
+        weight: -29
+        enabled: true
+      unit_search:
+        weight: -16
+        enabled: true
+field_type: entity_reference_revisions

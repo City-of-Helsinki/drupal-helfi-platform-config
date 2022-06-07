@@ -52,3 +52,22 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
     ConfigHelper::installNewConfig($configLocation, $configuration);
   }
 }
+
+/**
+ * Adds "news_list" paragraph to some content types and TPR entities.
+ */
+function helfi_news_feed_update_9002(&$sandbox = NULL) {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Add new configuration.
+  $configurations = [
+    'field.field.node.page.field_content',
+    'field.field.node.page.field_lower_content',
+    'field.field.tpr_service.tpr_service.field_lower_content',
+    'field.field.tpr_unit.tpr_unit.field_lower_content',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+  }
+}
