@@ -8,7 +8,7 @@ _meta:
 default:
   id:
     -
-      value: 4
+      value: 1000004
   sync_attempts:
     -
       value: 0

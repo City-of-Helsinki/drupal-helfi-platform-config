@@ -9,7 +9,7 @@ _meta:
 default:
   id:
     -
-      value: 1
+      value: 1000001
   sync_attempts:
     -
       value: 0
