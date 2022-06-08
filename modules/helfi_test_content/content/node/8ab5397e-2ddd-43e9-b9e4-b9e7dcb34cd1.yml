@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-layout-standard-no-hero-no-subnav-sidebar
+      alias: /dc-helfi-platform-test-content/dc-page-types/dc-layout-standard-no-hero-no-subnav-sidebar
       langcode: en
       pathauto: 1
   content_translation_source:
@@ -122,3 +122,32 @@ default:
           field_banner_title:
             -
               value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+  field_sidebar_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 4c42e7d0-1570-4489-9506-2d70d625d8a5
+          bundle: sidebar_text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654696265
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_sidebar_text_text:
+            -
+              value: "<ul>\r\n\t<li>Nulla quis lorem ut libero malesuada feugiat.</li>\r\n\t<li>Pellentesque in ipsum id orci porta dapibus.</li>\r\n</ul>\r\n"
+              format: minimal
+          field_sidebar_text_title:
+            -
+              value: 'Sed porttitor lectus nibh'

@@ -68,9 +68,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_list_of_plans_title:
             -
               value: 'List of plans - Upper content region'
@@ -96,9 +93,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_list_of_plans_title:
             -
               value: 'List of plans - Lower content region'

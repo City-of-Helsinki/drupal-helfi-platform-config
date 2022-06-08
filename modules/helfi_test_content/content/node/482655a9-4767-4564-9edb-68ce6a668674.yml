@@ -108,6 +108,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_hero_bg_color:
             -
               value: coat-of-arms
