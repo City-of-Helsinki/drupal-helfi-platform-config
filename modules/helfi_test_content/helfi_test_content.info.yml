@@ -7,52 +7,83 @@ dependencies:
   - default_content
   - helfi_content
 default_content:
+  menu_link_content:
+    - 1d7dcb8f-92a2-42e9-ab91-b531512a5481
+    - 1e9220f9-207b-426f-8726-94349fdfaec7
+    - 1eba96aa-0228-4e2a-a24f-a7b2d211401d
+    - 3b444534-9ba6-4fda-a29e-374ba87b5bd1
+    - 3c10d958-fbb4-42d2-83d4-adb7a4830bad
+    - 5a2b1a0a-c43e-436e-8043-09b19353cb46
+    - 7cbbc640-f34e-4d7f-9b47-76b30afbfb11
+    - 8c29a38f-4057-4b99-9bfc-a2188900a0b5
+    - 8f0ccfdd-7985-4823-a153-c0280cf982c0
+    - 8ffeb5a8-23ed-4bd1-8f25-e92026db504f
+    - 19dd2e39-77dd-49da-acc2-d2b2933cf2c5
+    - 33d12e8c-0f73-4b81-b395-65f72debc91b
+    - 47d2419d-d4fa-405a-9e67-3e2ef6117913
+    - 59fe4431-bc87-48b4-8f71-1b08b30e0f2a
+    - 60e62d94-f114-4a9c-ac23-4360bd75b4ae
+    - 74e648c1-1520-4d37-81e8-7abd1873acdc
+    - 082d7588-8637-42c1-8844-f60696a9b4e5
+    - 306ec216-c122-44e0-9350-d0c4df45884a
+    - 323a14ae-c3ce-412d-bbb9-41956696095f
+    - 1096c7f2-9579-4c40-9f01-d38b84f1c882
+    - 28540e1c-2840-4a34-840f-f08ecd804955
+    - 15710929-6306-41e5-bc06-02de27d0406c
+    - 19915094-62d9-4098-a583-622d667c70a8
+    - a4bc1f8e-1b84-406b-8c5a-78be6d06d7ec
+    - a7fe55b9-ad0d-44a4-9d13-a22115acc21c
+    - bddac466-2561-4fc5-85e2-12ed6ea35811
+    - bf345e8e-3a54-40ca-9551-d0611af56e0a
+    - c05bfb09-2ac5-4936-afd5-b97796abfcb8
+    - cc9c7113-91c9-4305-b1f2-170ccab6b755
+    - cc19d386-0a05-4d09-93e1-59316692d432
+    - cc62a113-8f3a-43d6-bf0f-9ff29bab152f
+    - cd7730a3-2771-4e1e-8e22-6be246d739fb
+    - d0e23094-7fdf-4141-8ab3-175a79cf688f
+    - d5a8a0ce-27d8-431e-869b-23854d76a80f
+    - d090298b-2810-4140-8f10-bd5adda2a8b3
+    - de345ceb-c2d9-44f2-a308-bc7a6974dcc3
+    - e78ea0ce-b5cf-4ad1-836c-ddf6846bda88
+    - e97d0100-6bb5-4010-8d7f-d90696f4e2bb
+    - eb9fc8cb-fe43-49b1-9ee3-8e1bd746d925
+    - ee18347b-5964-4d72-a42b-50f1f166457a
+    - f39d24ec-d6a6-4a77-a8d7-44042d68e60b
   node:
+    - 2df39a1a-954a-457a-81b1-d09bb6029b0d
     - 3a8dd5fc-a5aa-4976-9ec0-3432d9984c6e
     - 3e0c28fb-cdd4-4226-81f9-e14f56c6bc8f
+    - 03ac17c9-f551-4340-b020-788d4506d2eb
     - 5d8bef83-2611-4cde-9423-b30db1fad6f4
+    - 6cc3f398-67a2-45e6-8302-b13d647b708d
+    - 7fb399fc-0dcf-40e1-88a9-82df1c0c29da
     - 8ab5397e-2ddd-43e9-b9e4-b9e7dcb34cd1
     - 8c052656-f57d-42d4-8723-021c37c4e40d
     - 21a2273a-1c42-4d50-85a4-d3d0687fa709
     - 36f0547c-e7e1-4cf6-b196-32d6d14988fd
     - 42eba98a-6141-4201-bb8c-244ee8d1905d
     - 59b3d264-141e-4f4b-b88b-17612765b788
+    - 69b8ef55-eb29-4014-a558-6ff800e51c06
     - 73c88cd5-f665-4822-9d05-dfc094c0d26f
+    - 83a1baa7-3a11-4be0-a619-dc2fbf0527b1
     - 83f25d9d-3fdc-42ea-ae82-bd60cb4c73a3
+    - 453fd174-bf5b-4eb7-9681-2349f6a759b3
+    - 573d0515-9c94-4cad-9b28-ba21d177b073
+    - 7305a417-bdd6-46e9-8eee-da21e6385afb
     - 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
+    - 20564fcc-87b9-4a9f-beb9-4527f467cad0
     - 329149fd-3e4b-40b9-a7d4-59fb34234320
     - 482655a9-4767-4564-9edb-68ce6a668674
+    - 8778244f-6764-435b-afd1-d97e5afeb743
     - 58495558-51f7-49dc-af8e-45af540f42ac
     - a23b06b0-090b-46a1-b761-b86f04e61f7e
     - a9033e6e-9009-40d8-95c1-402ad4604709
     - cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
+    - d071de08-c422-4090-b122-2f95f87ffe87
     - d25582a2-3b71-4374-b11b-536e210fa498
+    - e9d60c2c-0f51-411b-bde2-56dc9d30c11b
     - e735e24a-76bc-42f8-9e5d-f51c1a8926dd
+    - e897e428-129e-401b-9e01-e98b116163cf
+    - eb03bf4c-2f18-460f-a0c8-bbb1cb0b0182
     - f2413cec-9944-4c89-9c3d-971d8576b08a
-  menu_link_content:
-    - 3b444534-9ba6-4fda-a29e-374ba87b5bd1
-    - 3c10d958-fbb4-42d2-83d4-adb7a4830bad
-    - 5a2b1a0a-c43e-436e-8043-09b19353cb46
-    - 7cbbc640-f34e-4d7f-9b47-76b30afbfb11
-    - 8c29a38f-4057-4b99-9bfc-a2188900a0b5
-    - 8ffeb5a8-23ed-4bd1-8f25-e92026db504f
-    - 19dd2e39-77dd-49da-acc2-d2b2933cf2c5
-    - 33d12e8c-0f73-4b81-b395-65f72debc91b
-    - 59fe4431-bc87-48b4-8f71-1b08b30e0f2a
-    - 60e62d94-f114-4a9c-ac23-4360bd75b4ae
-    - 1096c7f2-9579-4c40-9f01-d38b84f1c882
-    - a4bc1f8e-1b84-406b-8c5a-78be6d06d7ec
-    - cc62a113-8f3a-43d6-bf0f-9ff29bab152f
-    - d0e23094-7fdf-4141-8ab3-175a79cf688f
-    - de345ceb-c2d9-44f2-a308-bc7a6974dcc3
-    - ee18347b-5964-4d72-a42b-50f1f166457a
-  tpr_service:
-    - 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c
-    - 0cadef9b-6538-4e1e-9b3a-35fc895948fb
-    - 2f22ff07-7fe0-4a8c-bcdc-f34614db7906
-    - f7c2128e-fbd2-4641-82fe-69e99c6daf6f
-  tpr_unit:
-    - 1cb8c70b-509b-40a5-8a41-2c872cec3e76
-    - 51f5122a-573d-4ed5-b247-3fdbbc5f1f8e
-    - 269efa2c-3478-40be-a4e3-7436a104f9ae
-    - c25bee12-b074-4f9f-bc95-d6395f633660
+    - f44580a7-123c-4842-9cfa-570b721ccd47

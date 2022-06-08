@@ -1,9 +1,14 @@
 _meta:
   version: '1.0'
   entity_type: node
-  uuid: 3a8dd5fc-a5aa-4976-9ec0-3432d9984c6e
+  uuid: e897e428-129e-401b-9e01-e98b116163cf
   bundle: page
   default_langcode: en
+  depends:
+    18345d84-b4f9-4d5f-bdf0-f1f518411a7b: node
+    329149fd-3e4b-40b9-a7d4-59fb34234320: node
+    482655a9-4767-4564-9edb-68ce6a668674: node
+    a23b06b0-090b-46a1-b761-b86f04e61f7e: node
 default:
   revision_uid:
     -
@@ -16,10 +21,10 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layout standard - no-hero - no-subnav - no-sidebar'
+      value: 'DC: component content cards'
   created:
     -
-      value: 1654501169
+      value: 1654685836
   promote:
     -
       value: false
@@ -31,7 +36,7 @@ default:
       value: true
   hide_sidebar_navigation:
     -
-      value: true
+      value: false
   toc_enabled:
     -
       value: false
@@ -40,7 +45,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-layout-standard-no-hero-no-subnav-no-sidebar
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-content-cards
       langcode: en
       pathauto: 1
   content_translation_source:
@@ -55,8 +60,8 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 7216ad84-23a6-40a7-8a3d-a7b1190507fd
-          bundle: banner
+          uuid: 7e7949e3-a388-4161-b784-8dae30d21957
+          bundle: content_cards
           default_langcode: en
         default:
           status:
@@ -64,26 +69,28 @@ default:
               value: true
           created:
             -
-              value: 1654501662
+              value: 1654686797
           behavior_settings:
             -
               value: {  }
           revision_translation_affected:
             -
               value: true
-          field_banner_desc:
+          field_content_cards_content:
             -
-              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
-              format: full_html
-          field_banner_design:
+              entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
             -
-              value: align-center
-          field_banner_link_design:
+              entity: 329149fd-3e4b-40b9-a7d4-59fb34234320
             -
-              value: primary
-          field_banner_title:
+              entity: 482655a9-4767-4564-9edb-68ce6a668674
             -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+              entity: a23b06b0-090b-46a1-b761-b86f04e61f7e
+          field_content_cards_design:
+            -
+              value: small-cards
+          field_content_cards_title:
+            -
+              value: 'Content cards  - Upper content region'
   field_has_hero:
     -
       value: false
@@ -93,8 +100,8 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 63b1a60b-f018-4024-9c68-db857c699a2b
-          bundle: banner
+          uuid: a0e8bbf7-f682-4386-a104-6f3e469b1f5c
+          bundle: content_cards
           default_langcode: en
         default:
           status:
@@ -102,23 +109,25 @@ default:
               value: true
           created:
             -
-              value: 1654501674
+              value: 1654686807
           behavior_settings:
             -
               value: {  }
           revision_translation_affected:
             -
               value: true
-          field_banner_desc:
+          field_content_cards_content:
             -
-              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
-              format: full_html
-          field_banner_design:
+              entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
             -
-              value: align-center
-          field_banner_link_design:
+              entity: 329149fd-3e4b-40b9-a7d4-59fb34234320
             -
-              value: primary
-          field_banner_title:
+              entity: 482655a9-4767-4564-9edb-68ce6a668674
             -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+              entity: a23b06b0-090b-46a1-b761-b86f04e61f7e
+          field_content_cards_design:
+            -
+              value: small-cards
+          field_content_cards_title:
+            -
+              value: 'Content cards  - Lower content region'

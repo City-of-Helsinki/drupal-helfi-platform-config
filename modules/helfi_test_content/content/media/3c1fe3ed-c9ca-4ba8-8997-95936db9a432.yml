@@ -1,11 +1,9 @@
 _meta:
   version: '1.0'
   entity_type: media
-  uuid: 608c45ab-90c5-466b-bcac-c87649f2ec10
-  bundle: image
+  uuid: 3c1fe3ed-c9ca-4ba8-8997-95936db9a432
+  bundle: hel_map
   default_langcode: en
-  depends:
-    ea829414-e243-4cf5-b94e-fd115626072c: file
 default:
   status:
     -
@@ -15,10 +13,10 @@ default:
       target_id: 1
   name:
     -
-      value: pexels-satu-susanna-11073243.jpg
+      value: 'media:hel_map:3c1fe3ed-c9ca-4ba8-8997-95936db9a432'
   created:
     -
-      value: 1654595454
+      value: 1654687483
   revision_translation_affected:
     -
       value: true
@@ -33,13 +31,8 @@ default:
   content_translation_outdated:
     -
       value: false
-  field_media_image:
+  field_media_hel_map:
     -
-      entity: ea829414-e243-4cf5-b94e-fd115626072c
-      alt: '""'
+      uri: 'https://palvelukartta.hel.fi/fi/embed/?city=helsinki&bbox=60.13466696253271,24.531097412109375,60.475495246668785,25.85494995117188'
       title: ''
-      width: 6000
-      height: 4000
-  field_photographer:
-    -
-      value: 'Satu Susanna'
+      options: {  }

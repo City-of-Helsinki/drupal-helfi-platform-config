@@ -1,9 +1,11 @@
 _meta:
   version: '1.0'
   entity_type: node
-  uuid: 3a8dd5fc-a5aa-4976-9ec0-3432d9984c6e
+  uuid: 20564fcc-87b9-4a9f-beb9-4527f467cad0
   bundle: page
   default_langcode: en
+  depends:
+    937b62aa-f440-4dbd-9960-cdc3a7613087: media
 default:
   revision_uid:
     -
@@ -16,10 +18,10 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layout standard - no-hero - no-subnav - no-sidebar'
+      value: 'DC: component chart'
   created:
     -
-      value: 1654501169
+      value: 1654685829
   promote:
     -
       value: false
@@ -31,7 +33,7 @@ default:
       value: true
   hide_sidebar_navigation:
     -
-      value: true
+      value: false
   toc_enabled:
     -
       value: false
@@ -40,7 +42,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-layout-standard-no-hero-no-subnav-no-sidebar
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-chart
       langcode: en
       pathauto: 1
   content_translation_source:
@@ -55,8 +57,8 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 7216ad84-23a6-40a7-8a3d-a7b1190507fd
-          bundle: banner
+          uuid: eb33ebd4-387e-4033-b7d4-22d4fe4135b5
+          bundle: chart
           default_langcode: en
         default:
           status:
@@ -64,26 +66,22 @@ default:
               value: true
           created:
             -
-              value: 1654501662
+              value: 1654686487
           behavior_settings:
             -
               value: {  }
           revision_translation_affected:
             -
               value: true
-          field_banner_desc:
+          field_chart_chart:
             -
-              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
-              format: full_html
-          field_banner_design:
+              entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
+          field_chart_title:
             -
-              value: align-center
-          field_banner_link_design:
+              value: 'Chart - Upper content region'
+          field_iframe_title:
             -
-              value: primary
-          field_banner_title:
-            -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+              value: 'Chart - Upper content region'
   field_has_hero:
     -
       value: false
@@ -93,8 +91,8 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 63b1a60b-f018-4024-9c68-db857c699a2b
-          bundle: banner
+          uuid: 71a0cfd4-c77b-4a70-a59d-5e6c1ba74db3
+          bundle: chart
           default_langcode: en
         default:
           status:
@@ -102,23 +100,19 @@ default:
               value: true
           created:
             -
-              value: 1654501674
+              value: 1654686513
           behavior_settings:
             -
               value: {  }
           revision_translation_affected:
             -
               value: true
-          field_banner_desc:
+          field_chart_chart:
             -
-              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
-              format: full_html
-          field_banner_design:
+              entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
+          field_chart_title:
             -
-              value: align-center
-          field_banner_link_design:
+              value: 'Chart - Lower content region'
+          field_iframe_title:
             -
-              value: primary
-          field_banner_title:
-            -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+              value: 'Chart - Lower content region'

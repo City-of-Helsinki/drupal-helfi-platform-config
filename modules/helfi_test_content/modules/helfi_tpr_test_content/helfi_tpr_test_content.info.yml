@@ -6,6 +6,21 @@ package: HELfi
 dependencies:
   - helfi_test_content
 default_content:
+  menu_link_content:
+    - 1b2695dd-8b5f-4d48-a7c4-dba1b8522b9f
+    - 8de6a832-76bc-4816-af18-928c253cd61f
+    - 16d5a65e-6ab6-479b-b1ea-3e49d7b5a265
+    - 16f9e218-550d-4e3e-b2d7-e9760deba7b8
+    - 24d1eb93-1aa4-4402-9970-609a25b61077
+    - 105de1eb-b55f-40f2-8b49-3732f103c8f8
+    - 0155c9c2-ef39-49b4-8cc6-9e91107116c5
+    - 6176d666-f415-4617-aced-7ac97a800921
+    - 82809a0b-c5b2-457e-a8ce-82d38efa2a5b
+    - edf0bd1a-d078-4ad3-ba99-030eb0c46d3c
+  node:
+    - 3b289c8d-ac49-4295-bc43-6ebcfd6a0642
+    - 7984dfb0-3c83-4a4b-82f3-ef642a2d830f
+    - e2035957-b333-4a02-88ad-8df1e5128200
   tpr_service:
     - 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c
     - 0cadef9b-6538-4e1e-9b3a-35fc895948fb
