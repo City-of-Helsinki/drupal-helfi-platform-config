@@ -1,25 +1,25 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: 16d5a65e-6ab6-479b-b1ea-3e49d7b5a265
+  uuid: d090298b-2810-4140-8f10-bd5adda2a8b3
   bundle: menu_link_content
   default_langcode: en
   depends:
-    8ffeb5a8-23ed-4bd1-8f25-e92026db504f: menu_link_content
-    f7c2128e-fbd2-4641-82fe-69e99c6daf6f: tpr_service
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    e2035957-b333-4a02-88ad-8df1e5128200: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: 'DC: layout tpr service - subnav - sidebar'
+      value: 'DC: component content liftup'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: f7c2128e-fbd2-4641-82fe-69e99c6daf6f
+      target_uuid: e2035957-b333-4a02-88ad-8df1e5128200
       title: ''
       options: {  }
   external:
@@ -30,13 +30,13 @@ default:
       value: false
   weight:
     -
-      value: -36
+      value: 0
   expanded:
     -
       value: false
   parent:
     -
-      value: 'menu_link_content:8ffeb5a8-23ed-4bd1-8f25-e92026db504f'
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
   revision_translation_affected:
     -
       value: true
@@ -54,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1654683895
+      value: 1654688687

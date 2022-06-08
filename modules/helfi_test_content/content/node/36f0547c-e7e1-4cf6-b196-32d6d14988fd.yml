@@ -26,9 +26,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -40,7 +37,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-layout-standard-no-hero-subnav-no-sidebar
+      alias: /dc-helfi-platform-test-content/dc-page-types/dc-layout-standard-no-hero-subnav-no-sidebar
       langcode: en
       pathauto: 1
   content_translation_source:
@@ -68,9 +65,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_banner_desc:
             -
               value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
@@ -106,9 +100,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_banner_desc:
             -
               value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"

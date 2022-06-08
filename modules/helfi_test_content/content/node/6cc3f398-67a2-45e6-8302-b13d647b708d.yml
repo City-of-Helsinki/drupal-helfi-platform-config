@@ -1,7 +1,7 @@
 _meta:
   version: '1.0'
   entity_type: node
-  uuid: 3a8dd5fc-a5aa-4976-9ec0-3432d9984c6e
+  uuid: 6cc3f398-67a2-45e6-8302-b13d647b708d
   bundle: page
   default_langcode: en
 default:
@@ -16,10 +16,10 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layout standard - no-hero - no-subnav - no-sidebar'
+      value: 'DC: component banner'
   created:
     -
-      value: 1654501169
+      value: 1654685825
   promote:
     -
       value: false
@@ -31,7 +31,7 @@ default:
       value: true
   hide_sidebar_navigation:
     -
-      value: true
+      value: false
   toc_enabled:
     -
       value: false
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-layout-standard-no-hero-no-subnav-no-sidebar
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-banner
       langcode: en
       pathauto: 1
   content_translation_source:
@@ -55,7 +55,7 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 7216ad84-23a6-40a7-8a3d-a7b1190507fd
+          uuid: 16caeef7-0b6f-494b-827b-c7a7d89bc1f7
           bundle: banner
           default_langcode: en
         default:
@@ -64,17 +64,13 @@ default:
               value: true
           created:
             -
-              value: 1654501662
+              value: 1654686298
           behavior_settings:
             -
               value: {  }
           revision_translation_affected:
             -
               value: true
-          field_banner_desc:
-            -
-              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
-              format: full_html
           field_banner_design:
             -
               value: align-center
@@ -83,7 +79,7 @@ default:
               value: primary
           field_banner_title:
             -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+              value: 'Banner - Upper content region'
   field_has_hero:
     -
       value: false
@@ -93,7 +89,7 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 63b1a60b-f018-4024-9c68-db857c699a2b
+          uuid: 06f380c8-62c4-447f-bc21-1aeca250e72f
           bundle: banner
           default_langcode: en
         default:
@@ -102,17 +98,13 @@ default:
               value: true
           created:
             -
-              value: 1654501674
+              value: 1654686316
           behavior_settings:
             -
               value: {  }
           revision_translation_affected:
             -
               value: true
-          field_banner_desc:
-            -
-              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
-              format: full_html
           field_banner_design:
             -
               value: align-center
@@ -121,4 +113,4 @@ default:
               value: primary
           field_banner_title:
             -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+              value: 'Banner - Lower content region'

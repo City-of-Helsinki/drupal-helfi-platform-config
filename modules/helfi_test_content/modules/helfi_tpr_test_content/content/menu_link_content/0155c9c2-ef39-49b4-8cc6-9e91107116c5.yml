@@ -3,7 +3,7 @@ _meta:
   entity_type: menu_link_content
   uuid: 0155c9c2-ef39-49b4-8cc6-9e91107116c5
   bundle: menu_link_content
-  default_langcode: fi
+  default_langcode: en
   depends:
     8ffeb5a8-23ed-4bd1-8f25-e92026db504f: menu_link_content
     269efa2c-3478-40be-a4e3-7436a104f9ae: tpr_unit
@@ -11,6 +11,9 @@ default:
   enabled:
     -
       value: true
+  title:
+    -
+      value: 'DC: layout tpr unit - subnav - no-sidebar'
   menu_name:
     -
       value: main
@@ -52,26 +55,3 @@ default:
   content_translation_created:
     -
       value: 1654683415
-translations:
-  en:
-    title:
-      -
-        value: 'DC: layout tpr unit - subnav - no-sidebar'
-    revision_translation_affected:
-      -
-        value: true
-    content_translation_source:
-      -
-        value: und
-    content_translation_outdated:
-      -
-        value: false
-    content_translation_uid:
-      -
-        target_id: 1
-    content_translation_status:
-      -
-        value: true
-    content_translation_created:
-      -
-        value: 1654683415

@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Contains supportive functions for Helfi Test content
+ */
+
+/**
+ * Implements hook_modules_installed().
+ */
+function helfi_test_content_modules_installed($modules) {
+  if (
+    in_array('helfi_test_content', $modules) &&
+    Drupal::moduleHandler()->moduleExists('helfi_api_base') &&
+    Drupal::moduleHandler()->moduleExists('helfi_tpr') &&
+    !Drupal::moduleHandler()->moduleExists('helfi_tpr_test_content')
+  ) {
+    // Install TPR test content after this module if TPR module is installed.
+    Drupal::service('module_installer')->install(['helfi_tpr_test_content']);
+  }
+}

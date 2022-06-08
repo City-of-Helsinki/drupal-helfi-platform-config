@@ -1,22 +1,25 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: 8de6a832-76bc-4816-af18-928c253cd61f
+  uuid: 16f9e218-550d-4e3e-b2d7-e9760deba7b8
   bundle: menu_link_content
-  default_langcode:
+  default_langcode: en
   depends:
-    8ffeb5a8-23ed-4bd1-8f25-e92026db504f: menu_link_content
-    2f22ff07-7fe0-4a8c-bcdc-f34614db7906: tpr_service
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    3b289c8d-ac49-4295-bc43-6ebcfd6a0642: node
 default:
   enabled:
     -
       value: true
+  title:
+    -
+      value: 'DC: component service list'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: 2f22ff07-7fe0-4a8c-bcdc-f34614db7906
+      target_uuid: 3b289c8d-ac49-4295-bc43-6ebcfd6a0642
       title: ''
       options: {  }
   external:
@@ -27,13 +30,13 @@ default:
       value: false
   weight:
     -
-      value: -34
+      value: 0
   expanded:
     -
       value: false
   parent:
     -
-      value: 'menu_link_content:8ffeb5a8-23ed-4bd1-8f25-e92026db504f'
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
   revision_translation_affected:
     -
       value: true
@@ -51,12 +54,12 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1654683887
+      value: 1654687980
 translations:
   en:
     title:
       -
-        value: 'DC: layout tpr service - no-subnav - sidebar'
+        value: 'DC: component service list'
     revision_translation_affected:
       -
         value: true
@@ -74,4 +77,4 @@ translations:
         value: true
     content_translation_created:
       -
-        value: 1654683887
+        value: 1654687980
