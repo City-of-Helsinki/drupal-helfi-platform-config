@@ -1,25 +1,25 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: cc62a113-8f3a-43d6-bf0f-9ff29bab152f
+  uuid: 1e9220f9-207b-426f-8726-94349fdfaec7
   bundle: menu_link_content
   default_langcode: en
   depends:
     8ffeb5a8-23ed-4bd1-8f25-e92026db504f: menu_link_content
-    a9033e6e-9009-40d8-95c1-402ad4604709: node
+    a23b06b0-090b-46a1-b761-b86f04e61f7e: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: 'DC: layout landing - hero'
+      value: 'DC: layout standard - hero - subnav - sidebar'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: a9033e6e-9009-40d8-95c1-402ad4604709
+      target_uuid: a23b06b0-090b-46a1-b761-b86f04e61f7e
       title: ''
       options: {  }
   external:
@@ -30,7 +30,7 @@ default:
       value: false
   weight:
     -
-      value: -50
+      value: -48
   expanded:
     -
       value: false
@@ -54,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1654499922
+      value: 1654684131
