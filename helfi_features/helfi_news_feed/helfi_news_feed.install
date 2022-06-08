@@ -12,7 +12,7 @@ use Drupal\helfi_platform_config\ConfigHelper;
 /**
  * Implements hook_install().
  */
-function helfi_news_feed_install() : void {
+function helfi_news_feed_install($is_syncing) : void {
   try {
     helfi_platform_config_enable_paragraph_fields(
       'node',
@@ -23,6 +23,10 @@ function helfi_news_feed_install() : void {
   }
   catch (\InvalidArgumentException $e) {
     \Drupal::messenger()->addWarning($e->getMessage());
+  }
+
+  if (!$is_syncing) {
+    helfi_news_feed_update_9001();
   }
 }
 
