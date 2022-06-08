@@ -184,6 +184,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_sidebar_text_text:
             -
               value: "<ul>\r\n\t<li>Nulla quis lorem ut libero malesuada feugiat.</li>\r\n\t<li>Pellentesque in ipsum id orci porta dapibus.</li>\r\n</ul>\r\n"
