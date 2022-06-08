@@ -22,6 +22,8 @@ class NewsFeedParagraphTest extends KernelTestBase {
       'type' => 'news_list',
       'field_tags' => ['first', 'second'],
       'field_limit' => 22,
+      'field_title' => 'test title',
+      'field_description' => 'test description',
     ]);
     $paragraph->save();
     $this->assertInstanceOf(NewsFeedParagraph::class, $paragraph);
