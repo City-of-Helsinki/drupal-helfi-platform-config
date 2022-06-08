@@ -36,17 +36,6 @@ default:
       uri: 'https://localhost/en/1'
       title: ''
       options: {  }
-  address:
-    -
-      langcode: ''
-      country_code: FI
-      administrative_area: ''
-      locality: 'Espoo en 1'
-      dependent_locality: ''
-      postal_code: '02180'
-      sorting_code: ''
-      address_line1: ''
-      address_line2: ''
   call_charge_info:
     -
       value: 'pvm en 1'

@@ -32,15 +32,6 @@ default:
       value: 'Description long en 1'
       format: plain_text
       summary: 'Description short en 1'
-  links:
-    -
-      uri: 'https://localhost/1/en/1'
-      title: '0: en link title 1'
-      options: {  }
-    -
-      uri: 'https://localhost/2/en/1'
-      title: '1: en link title 1'
-      options: {  }
   errand_services:
     -
       target_id: '123'

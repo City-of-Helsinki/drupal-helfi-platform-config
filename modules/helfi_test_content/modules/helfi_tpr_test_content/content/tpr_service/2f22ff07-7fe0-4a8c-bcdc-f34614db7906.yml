@@ -54,7 +54,7 @@ default:
       value: true
   hide_sidebar_navigation:
     -
-      value: false
+      value: true
   toc_enabled:
     -
       value: false
