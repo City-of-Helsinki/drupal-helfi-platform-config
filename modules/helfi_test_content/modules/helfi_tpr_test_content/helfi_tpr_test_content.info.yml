@@ -1,0 +1,18 @@
+name: 'HELfi Platform TPR test content '
+type: module
+core: 8.x
+core_version_requirement: '^8 || ^9'
+package: HELfi
+dependencies:
+  - helfi_test_content
+default_content:
+  tpr_service:
+    - 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c
+    - 0cadef9b-6538-4e1e-9b3a-35fc895948fb
+    - 2f22ff07-7fe0-4a8c-bcdc-f34614db7906
+    - f7c2128e-fbd2-4641-82fe-69e99c6daf6f
+  tpr_unit:
+    - 1cb8c70b-509b-40a5-8a41-2c872cec3e76
+    - 51f5122a-573d-4ed5-b247-3fdbbc5f1f8e
+    - 269efa2c-3478-40be-a4e3-7436a104f9ae
+    - c25bee12-b074-4f9f-bc95-d6395f633660

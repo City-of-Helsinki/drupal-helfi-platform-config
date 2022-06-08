@@ -7,7 +7,7 @@ Helfi test content module holds test content for hel.fi specific layouts, compon
 
 ## How to import the test content
 
-The content is imported when the module is enabled. 
+The content is imported when the module is enabled.
 
 The module can be enabled from admin UI (/admin/modules) or by running the following drush command.
 
@@ -22,7 +22,7 @@ Modify the nodes / menu links / etc. from the admin UI. Once the changes are sav
 drush dcem helfi_test_content
 ```
 
-All content what is listed in [helfi_test_content.info.yml](helfi_test_content.info.yml) will be exported.
+All content what is listed in [helfi_test_content.info.yml](helfi_test_content.info.yml) will be exported. 
 
 ## How to generate new content to this module
 
