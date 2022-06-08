@@ -29,6 +29,8 @@ class NewsFeedParagraphTest extends KernelTestBase {
     $this->assertInstanceOf(NewsFeedParagraph::class, $paragraph);
     $this->assertEquals(['first', 'second'], $paragraph->getTags());
     $this->assertEquals(22, $paragraph->getLimit());
+    $this->assertEquals('test title', $paragraph->getTitle());
+    $this->assertEquals('test description', $paragraph->getDescription());
   }
 
 }
