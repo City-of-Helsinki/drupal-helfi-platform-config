@@ -11,3 +11,4 @@ dependencies:
   - paragraphs
   - imagecache_external
   - responsive_image
+  - helfi_tpr
