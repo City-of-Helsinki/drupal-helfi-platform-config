@@ -71,4 +71,24 @@ final class NewsFeedParagraph extends Paragraph {
     return $limit > 0 ? $limit : 1;
   }
 
+  /**
+   * Gets the paragraph title.
+   *
+   * @return string
+   *   The title.
+   */
+  public function getTitle() : string {
+    return $this->get('field_title')->value;
+  }
+
+  /**
+   * Gets the paragraph description.
+   *
+   * @return string
+   *   The description.
+   */
+  public function getDescription() : string {
+    return $this->get('field_description')->value;
+  }
+
 }
