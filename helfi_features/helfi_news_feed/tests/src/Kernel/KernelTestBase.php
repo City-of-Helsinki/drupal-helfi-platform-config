@@ -28,6 +28,7 @@ class KernelTestBase extends CoreKernelTestBase {
     'helfi_news_feed',
     'helfi_tpr',
     'text',
+    'allowed_formats',
   ];
 
   /**
