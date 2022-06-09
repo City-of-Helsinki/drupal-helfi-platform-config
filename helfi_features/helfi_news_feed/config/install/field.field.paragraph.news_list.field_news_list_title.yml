@@ -1,17 +1,18 @@
+uuid: 4ea26164-7ed4-4c03-94d1-e03f80ffed6e
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_title
+    - field.storage.paragraph.field_news_list_title
     - paragraphs.paragraphs_type.news_list
-id: paragraph.news_list.field_title
-field_name: field_title
+id: paragraph.news_list.field_news_list_title
+field_name: field_news_list_title
 entity_type: paragraph
 bundle: news_list
 label: Title
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

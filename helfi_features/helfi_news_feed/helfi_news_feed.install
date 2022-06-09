@@ -12,7 +12,7 @@ use Drupal\helfi_platform_config\ConfigHelper;
 /**
  * Implements hook_install().
  */
-function helfi_news_feed_install($is_syncing) : void {
+function helfi_news_feed_install() : void {
   try {
     helfi_platform_config_enable_paragraph_fields(
       'node',
@@ -24,10 +24,6 @@ function helfi_news_feed_install($is_syncing) : void {
   catch (\InvalidArgumentException $e) {
     \Drupal::messenger()->addWarning($e->getMessage());
   }
-
-  if (!$is_syncing) {
-    helfi_news_feed_update_9001();
-  }
 }
 
 /**
@@ -37,7 +33,17 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
   // Add "Title" and "Description" fields for the paragraph type.
   $configLocation = dirname(__FILE__) . '/config/install/';
 
-  // Update existing configuration.
+  // Add the new fields and field storages.
+  $configFields = [
+    'field.storage.paragraph.field_news_list_title' => 'field.field.paragraph.news_list.field_news_list_title',
+    'field.storage.paragraph.field_news_list_description' => 'field.field.paragraph.news_list.field_news_list_description',
+  ];
+
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+  // Update the paragraph type.
   $configurations = [
     'core.entity_form_display.paragraph.news_list.default',
     'core.entity_view_display.paragraph.news_list.default',
@@ -45,16 +51,6 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
 
   foreach ($configurations as $configuration) {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
-  }
-
-  // Add new configuration.
-  $configurations = [
-    'field.field.paragraph.news_list.field_description',
-    'field.field.paragraph.news_list.field_title',
-  ];
-
-  foreach ($configurations as $configuration) {
-    ConfigHelper::installNewConfig($configLocation, $configuration);
   }
 
   // Enable the paragraph type in some content and TPR entity types.

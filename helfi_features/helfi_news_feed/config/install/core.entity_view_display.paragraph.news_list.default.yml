@@ -1,40 +1,43 @@
+uuid: 0b395847-e895-4706-a7f0-13ae0b35179f
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.news_list.field_description
     - field.field.paragraph.news_list.field_groups
     - field.field.paragraph.news_list.field_limit
     - field.field.paragraph.news_list.field_neighbourhoods
+    - field.field.paragraph.news_list.field_news_list_description
+    - field.field.paragraph.news_list.field_news_list_title
     - field.field.paragraph.news_list.field_tags
-    - field.field.paragraph.news_list.field_title
     - paragraphs.paragraphs_type.news_list
   module:
     - text
+_core:
+  default_config_hash: Lff1gHanVEf5OcKwvMxWHX0Chv_SlOGHu9Wke_-F9y8
 id: paragraph.news_list.default
 targetEntityType: paragraph
 bundle: news_list
 mode: default
 content:
-  field_description:
+  field_news_list_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
-  field_title:
+  field_news_list_title:
     type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   news_list:
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 0
     region: content
 hidden:
   field_groups: true
