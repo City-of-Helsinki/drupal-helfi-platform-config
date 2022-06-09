@@ -44,7 +44,7 @@ default:
     -
       alias: /dc-helfi-platform-test-content/dc-components/dc-component-map
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und

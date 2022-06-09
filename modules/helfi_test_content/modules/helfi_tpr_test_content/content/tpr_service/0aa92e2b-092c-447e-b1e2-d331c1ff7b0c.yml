@@ -56,7 +56,7 @@ default:
     -
       alias: /dc-helfi-platform-test-content/dc-page-types/dc-layout-tpr-service-no-subnav-no-sidebar
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und

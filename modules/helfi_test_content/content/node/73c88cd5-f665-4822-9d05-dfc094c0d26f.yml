@@ -42,7 +42,7 @@ default:
     -
       alias: /dc-helfi-platform-test-content/dc-navigation/dc-level-3/dc-level-4/dc-level-5/dc-level-6/dc-level-1
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und
