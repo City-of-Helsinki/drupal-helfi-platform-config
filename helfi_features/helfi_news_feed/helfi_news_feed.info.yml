@@ -12,3 +12,4 @@ dependencies:
   - imagecache_external
   - responsive_image
   - helfi_tpr
+  - text
