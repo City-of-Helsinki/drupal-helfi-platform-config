@@ -21,7 +21,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   field_news_list_title:
     type: string
@@ -29,12 +29,12 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
   news_list:
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 2
     region: content
 hidden:
   field_groups: true
