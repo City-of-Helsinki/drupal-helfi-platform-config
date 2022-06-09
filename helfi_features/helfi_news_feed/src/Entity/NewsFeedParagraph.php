@@ -78,7 +78,7 @@ final class NewsFeedParagraph extends Paragraph {
    *   The title.
    */
   public function getTitle() : string {
-    return $this->get('field_title')->value;
+    return $this->get('field_news_list_title')->value;
   }
 
   /**
@@ -88,7 +88,7 @@ final class NewsFeedParagraph extends Paragraph {
    *   The description.
    */
   public function getDescription() : string {
-    return $this->get('field_description')->value;
+    return $this->get('field_news_list_description')->value;
   }
 
 }
