@@ -13,3 +13,4 @@ dependencies:
   - responsive_image
   - helfi_tpr
   - drupal:text
+  - allowed_formats
