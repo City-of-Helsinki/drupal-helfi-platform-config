@@ -73,7 +73,7 @@ default:
               value: true
           field_text:
             -
-              value: "<p>Test content consists of three categories</p>\r\n\r\n<ul>\r\n\t<li>Helfi Platform page types</li>\r\n\t<li>Helfi Platform components</li>\r\n\t<li>Helfi navigation</li>\r\n</ul>\r\n"
+              value: "<p>Test content consists of three categories</p>\r\n\r\n<ul>\r\n\t<li><a class=\"link\" data-design=\"link\" data-link-text=\"Helfi Platform page types\" href=\"/dc-helfi-platform-test-content/dc-page-types\">Helfi Platform page types</a></li>\r\n\t<li><a class=\"link\" data-design=\"link\" data-link-text=\"Helfi Platform components\" href=\"/dc-helfi-platform-test-content/dc-components\">Helfi Platform components</a></li>\r\n\t<li><a class=\"link\" data-design=\"link\" data-link-text=\"Helfi navigation\" href=\"/dc-helfi-platform-test-content/dc-navigation\">Helfi navigation</a></li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -
