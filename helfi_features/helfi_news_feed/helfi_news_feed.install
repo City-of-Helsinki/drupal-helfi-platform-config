@@ -37,11 +37,20 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
   // Add "Title" and "Description" fields for the paragraph type.
   $configLocation = dirname(__FILE__) . '/config/install/';
 
+  // Update existing configuration.
+  $configurations = [
+    'core.entity_form_display.paragraph.news_list.default',
+    'core.entity_view_display.paragraph.news_list.default',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
+
+  // Add new configuration.
   $configurations = [
     'field.field.paragraph.news_list.field_description',
     'field.field.paragraph.news_list.field_title',
-    'core.entity_form_display.paragraph.news_list.default',
-    'core.entity_view_display.paragraph.news_list.default',
   ];
 
   foreach ($configurations as $configuration) {
