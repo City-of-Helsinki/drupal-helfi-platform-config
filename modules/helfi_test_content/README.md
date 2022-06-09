@@ -34,7 +34,9 @@ All content what is listed in [helfi_test_content.info.yml](helfi_test_content.i
 
 ## How to generate new test content
 
-Create the preferred content in admin UI as you would normally do, make a note of the content ID and export the created content via drush to this module. Possible references to other entities (like paragraphs, media entities, etc.) will be created and if the referenced entity is missing from the test content, it will be created as well.
+Create the preferred content in admin UI as you would normally do. Make a note of the content ID and export the created content via drush to this module. Possible references to other entities (like paragraphs, media entities, etc.) will be created and if the referenced entity is missing from the test content, it will be created as well.
+
+Add the test content UUIDs to [helfi_test_content.info.yml](helfi_test_content.info.yml) under appropriate entity to automatically install the content when helfi test content module is being installed.
 
 ### Examples
 
