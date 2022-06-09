@@ -21,7 +21,7 @@ When the module is already enabled and the content should be re-imported, it can
 drush dcim helfi_test_content --update-existing
 ```
 
-## How to export changes to existing test content
+## How to export the test content
 
 Modify the nodes / menu links / etc. from the admin UI. Once the changes are saved, run the following drush command to export the data to this module.
 ```
@@ -32,7 +32,7 @@ All content what is listed in [helfi_test_content.info.yml](helfi_test_content.i
 
 **Note!** As always with exported configurations and/or content, go through the exported changes in the .yml files and remove the unwanted ones before committing the code. 
 
-## How to generate new content to this module
+## How to generate new test content
 
 Create the preferred content in admin UI as you would normally do, make a note of the content ID and export the created content via drush to this module. Possible references to other entities (like paragraphs, media entities, etc.) will be created and if the referenced entity is missing from the test content, it will be created as well.
 
@@ -83,7 +83,7 @@ There seems to be a problem of nodes losing their paths if pathauto is enabled f
 
 ### Exporting nodes with drush dcer won't create the menu item
 
-This is actually not a bug, because the reference is vice versa. Node doesn't know about the menu items, but menu item knows which node it's pointing at.
+This is actually not a bug, because the reference is from menu item --> node.
 
 To fix the problem, the menu item should be imported instead of the node.
 For example: 
