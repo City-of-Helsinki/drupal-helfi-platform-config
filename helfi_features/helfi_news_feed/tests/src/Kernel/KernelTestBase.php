@@ -26,6 +26,8 @@ class KernelTestBase extends CoreKernelTestBase {
     'external_entities',
     'responsive_image',
     'helfi_news_feed',
+    'helfi_tpr',
+    'text',
   ];
 
   /**
