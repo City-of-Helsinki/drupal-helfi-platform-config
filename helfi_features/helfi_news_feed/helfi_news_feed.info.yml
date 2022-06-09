@@ -14,4 +14,3 @@ dependencies:
   - helfi_tpr
   - drupal:text
   - allowed_formats
-  - helfi_news_item

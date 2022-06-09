@@ -53,11 +53,6 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
   }
 
-  // Enable the "HELfi News item" module.
-  if (!\Drupal::moduleHandler()->moduleExists('helfi_news_item')) {
-    \Drupal::service('module_installer')->install(['helfi_news_item']);
-  }
-
   // Add "Medium Teaser" view mode for the "Helfi: News" entity type.
   $configurations = [
     'core.entity_view_display.helfi_news.helfi_news.medium_teaser',
