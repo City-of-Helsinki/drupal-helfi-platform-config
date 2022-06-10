@@ -73,7 +73,7 @@ default:
               value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>Accordion</li>\r\n\t<li>Banner</li>\r\n\t<li>Chart</li>\r\n\t<li>Columns</li>\r\n\t<li>Contact card listing</li>\r\n\t<li>Content cards</li>\r\n\t<li>Events</li>\r\n\t<li>Image</li>\r\n\t<li>Liftup with image</li>\r\n\t<li>List of links</li>\r\n\t<li>Map</li>\r\n\t<li>Popular services</li>\r\n\t<li>Remote video</li>\r\n\t<li>Service list</li>\r\n\t<li>Text</li>\r\n\t<li>Unit search</li>\r\n</ul>\r\n"
+              value: "<ul>\r\n\t<li>DC: component accordion</li>\r\n\t<li>DC: component banner</li>\r\n\t<li>DC: component chart</li>\r\n\t<li>DC: component columns</li>\r\n\t<li>DC: component contact card listing</li>\r\n\t<li>DC: component content cards</li>\r\n\t<li>DC: component content liftup</li>\r\n\t<li>DC: component events</li>\r\n\t<li>DC: component image</li>\r\n\t<li>DC: component liftup with image</li>\r\n\t<li>DC: component list of links</li>\r\n\t<li>DC: component map</li>\r\n\t<li>DC: component remote video</li>\r\n\t<li>DC: component service list</li>\r\n\t<li>DC: component sidebar text</li>\r\n\t<li>DC: component text</li>\r\n\t<li>DC: component unit search</li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -
