@@ -34,32 +34,30 @@
         // Base element for event, wihout text elements from api
         const eventElement = $(`
           <div class="event-list__event">
-            <div class="event-list__events-container">
-              <div class="event-list__image-container">
-                <div class="event-list__tags event-list__tags--mobile" role="Region" aria-label="${eventKeywords}">
+            <div class="event-list__image-container">
+              <div class="event-list__tags event-list__tags--mobile" role="Region" aria-label="${eventKeywords}">
+              </div>
+            </div>
+            <div class="event-list__content-container">
+              <h3 class="event-list__event-name">
+                <a class="event-list__event-link" href="${drupalSettings.helfi_events.baseUrl}/events/${event.id}" aria-label="(${externalLink})"></a>
+              </h3>
+              <div class="event__content event__content--date">
+                <div class="event__date">
+                  ${startDate.toLocaleDateString('fi-FI')}, ${at}
+                  ${startDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}
+                  -
+                  ${endDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}
                 </div>
               </div>
-              <div class="event-list__content-container">
-                <h3 class="event-list__event-name">
-                  <a class="event-list__event-link" href="${drupalSettings.helfi_events.baseUrl}/events/${event.id}" aria-label="(${externalLink})"></a>
-                </h3>
-                <div class="event__content event__content--date">
-                  <div class="event__date">
-                    ${startDate.toLocaleDateString('fi-FI')}, ${at}
-                    ${startDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}
-                    -
-                    ${endDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}
-                  </div>
+              <div class="event__content event__content--location">
+                <div class="event__location"></div>
+              </div>
+              <div class="event__lower-container">
+                <div class="event-list__tags event-list__tags--desktop role="Region" aria-label="${eventKeywords}">
                 </div>
-                <div class="event__content event__content--location">
-                  <div class="event__location"></div>
-                </div>
-                <div class="event__lower-container">
-                  <div class="event-list__tags event-list__tags--desktop role="Region" aria-label="${eventKeywords}">
-                  </div>
-                  <span class="event-list__event-link-indicator">
-                  </span>
-                </div>
+                <span class="event-list__event-link-indicator">
+                </span>
               </div>
             </div>
           </div>
