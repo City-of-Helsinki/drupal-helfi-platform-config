@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-page-types/dc-layout-landing-no-hero
+      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-landing/dc-layout-landing-no-hero
       langcode: en
       pathauto: 0
   content_translation_source:

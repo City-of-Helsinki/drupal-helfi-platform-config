@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: Page types'
+      value: 'DC: layouts'
   created:
     -
       value: 1654499456
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-page-types
+      alias: /dc-helfi-platform-test-content/dc-layouts
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -68,12 +68,9 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>Standard page</li>\r\n\t<li>Landing page</li>\r\n\t<li>TPR Unit</li>\r\n\t<li>TPR Service</li>\r\n</ul>\r\n"
+              value: "<ul>\r\n\t<li>Layout standard page</li>\r\n\t<li>Layout landing page</li>\r\n\t<li>Layout TPR Unit</li>\r\n\t<li>Layout TPR Service</li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -

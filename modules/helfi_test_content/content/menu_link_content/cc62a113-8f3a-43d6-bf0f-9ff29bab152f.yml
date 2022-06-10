@@ -5,7 +5,7 @@ _meta:
   bundle: menu_link_content
   default_langcode: en
   depends:
-    8ffeb5a8-23ed-4bd1-8f25-e92026db504f: menu_link_content
+    9dc342a5-3d6a-40ef-9570-ed70392744fb: menu_link_content
     a9033e6e-9009-40d8-95c1-402ad4604709: node
 default:
   enabled:
@@ -30,13 +30,13 @@ default:
       value: false
   weight:
     -
-      value: -50
+      value: 1
   expanded:
     -
       value: false
   parent:
     -
-      value: 'menu_link_content:8ffeb5a8-23ed-4bd1-8f25-e92026db504f'
+      value: 'menu_link_content:9dc342a5-3d6a-40ef-9570-ed70392744fb'
   revision_translation_affected:
     -
       value: true

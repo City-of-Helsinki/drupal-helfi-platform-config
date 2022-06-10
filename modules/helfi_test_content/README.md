@@ -18,7 +18,7 @@ drush en -y helfi_test_content
 When the module is already enabled and the content should be re-imported, it can be done with following drush command.
 
 ```
-drush dcim helfi_test_content --update-existing
+drush dcim helfi_test_content --update-existing && drush dcim helfi_tpr_test_content --update-existing
 ```
 
 ## How to export the test content
@@ -30,7 +30,7 @@ drush dcem helfi_test_content
 
 All content what is listed in [helfi_test_content.info.yml](helfi_test_content.info.yml) will be exported.
 
-**Note!** As always with exported configurations and/or content, go through the exported changes in the .yml files and remove the unwanted ones before committing the code. 
+**Note!** As always with exported configurations and/or content, go through the exported changes in the .yml files and remove the unwanted ones before committing the code.
 
 ## How to generate new test content
 
@@ -44,7 +44,7 @@ Add the test content UUIDs to [helfi_test_content.info.yml](helfi_test_content.i
 1. Create a node of any type, fill in the desired content and save it.
 2. Retrieve the ID of the content.
    1. Either check from the `/admin/content` list by hovering the edit link or go and edit the node and get the ID from the URL `/node/##/edit`
-3. Run the following drush command. The `1` is the ID of the node. 
+3. Run the following drush command. The `1` is the ID of the node.
 ```
 drush dcer node 1 --folder=/app/public/modules/contrib/helfi_platform_config/modules/helfi_test_content/content
 ```
@@ -54,7 +54,7 @@ drush dcer node 1 --folder=/app/public/modules/contrib/helfi_platform_config/mod
 1. Create a menu link.
 2. Retrieve the ID of the menu link.
    1. Either check from the `/admin/structure/menu/manage/main` list by hovering the edit link or go and edit the menu link and get the ID from the URL `/admin/structure/menu/item/##/edit`
-3. Run the following drush command. The `22` is the ID of the node. 
+3. Run the following drush command. The `22` is the ID of the node.
 ```
 drush dcer menu_link_content 22 --folder=/app/public/modules/contrib/helfi_platform_config/modules/helfi_test_content/content
 ```
@@ -69,12 +69,14 @@ drush dcer [entity type] [id] --folder=/app/public/modules/contrib/helfi_platfor
 
 ## How to delete the test content
 
-The test content can be deleted manually. [There is a fix on the way](https://www.drupal.org/project/default_content/issues/3282547). 
+The test content can be deleted manually. [There is a fix on the way](https://www.drupal.org/project/default_content/issues/3282547).
+
+Notice that TPR test content can not be deleted, even manually.
 
 ## Known bugs
 
 ### Path aliases
-There seems to be a problem of nodes losing their paths if pathauto is enabled for the node. To fix this problem, make sure the paths are not auto generated. For example in a node.yml file check that the pathauto variable is set to 0. 
+There seems to be a problem of nodes losing their paths if pathauto is enabled for the node. To fix this problem, make sure the paths are not auto generated. For example in a node.yml file check that the pathauto variable is set to 0.
 ```
   path:
     -
@@ -88,10 +90,10 @@ There seems to be a problem of nodes losing their paths if pathauto is enabled f
 This is actually not a bug, because the reference is from menu item --> node.
 
 To fix the problem, the menu item should be imported instead of the node.
-For example: 
-- The node is called `DC: Navigation` and it's added to menu with the same name. 
+For example:
+- The node is called `DC: Navigation` and it's added to menu with the same name.
 - We need to retrieve the menu link ID to export it and it's references.
-  - Either check from the /admin/structure/menu/manage/main list by hovering the edit link or go and edit the menu link and get the ID from the URL `/admin/structure/menu/item/##/edit`. In our example it's `/admin/structure/menu/item/10/edit` 
+  - Either check from the /admin/structure/menu/manage/main list by hovering the edit link or go and edit the menu link and get the ID from the URL `/admin/structure/menu/item/##/edit`. In our example it's `/admin/structure/menu/item/10/edit`
 - Then it's as simple as exporting the menu item with references
 ```
 drush dcer menu_link_content 10 --folder=/app/public/modules/contrib/helfi_platform_config/modules/helfi_test_content/content
