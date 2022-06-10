@@ -63,7 +63,7 @@ default:
       value: Sisällysluettelo
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-page-types/dc-layout-tpr-service-no-subnav-sidebar
+      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-tpr-service/dc-layout-tpr-service-no-subnav-sidebar
       langcode: en
       pathauto: 0
   content_translation_source:

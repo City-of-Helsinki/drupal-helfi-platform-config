@@ -64,7 +64,7 @@ default:
       value: false
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-page-types/dc-layout-tpr-unit-subnav-no-sidebar
+      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-tpr-unit/dc-layout-tpr-unit-subnav-no-sidebar
       langcode: en
       pathauto: 0
   content_translation_source:
