@@ -34,13 +34,15 @@
         // Base element for event, wihout text elements from api
         const eventElement = $(`
           <div class="event-list__event">
-            <a class="event-list__events-container" href="${drupalSettings.helfi_events.baseUrl}/events/${event.id}" aria-label="(${externalLink})">
+            <div class="event-list__events-container">
               <div class="event-list__image-container">
                 <div class="event-list__tags event-list__tags--mobile" role="Region" aria-label="${eventKeywords}">
                 </div>
               </div>
               <div class="event-list__content-container">
-                <h3 class="event-list__event-name"></h3>
+                <h3 class="event-list__event-name">
+                  <a class="event-list__event-link" href="${drupalSettings.helfi_events.baseUrl}/events/${event.id}" aria-label="(${externalLink})"></a>
+                </h3>
                 <div class="event__content event__content--date">
                   <div class="event__date">
                     ${startDate.toLocaleDateString('fi-FI')}, ${at}
@@ -55,11 +57,11 @@
                 <div class="event__lower-container">
                   <div class="event-list__tags event-list__tags--desktop role="Region" aria-label="${eventKeywords}">
                   </div>
-                  <span class="link__type link__type--external event-list__event-link-indicator">
+                  <span class="event-list__event-link-indicator">
                   </span>
                 </div>
               </div>
-            </a>
+            </div>
           </div>
         `);
 
@@ -76,7 +78,7 @@
         }
 
         const eventName = document.createTextNode(event.name[currentLanguage]);
-        $(eventElement).find('.event-list__event-name').append(eventName);
+        $(eventElement).find('.event-list__event-link').append(eventName);
 
         // Use first image or fallback to placeholder if no images present
         const imageUrl = (event.images.length && event.images[0].url) ? event.images[0].url : null;
