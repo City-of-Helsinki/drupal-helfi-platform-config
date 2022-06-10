@@ -12,7 +12,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: Helfi Platform test content'
+      value: 'DC: Helfi platform test content'
   menu_name:
     -
       value: main

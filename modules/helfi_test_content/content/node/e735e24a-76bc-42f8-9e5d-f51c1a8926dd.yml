@@ -68,6 +68,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<ul>\r\n\t<li>Layout standard page</li>\r\n\t<li>Layout landing page</li>\r\n\t<li>Layout TPR Unit</li>\r\n\t<li>Layout TPR Service</li>\r\n</ul>\r\n"

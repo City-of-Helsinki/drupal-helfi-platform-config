@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: Navigation'
+      value: 'DC: navigation'
   menu_name:
     -
       value: main

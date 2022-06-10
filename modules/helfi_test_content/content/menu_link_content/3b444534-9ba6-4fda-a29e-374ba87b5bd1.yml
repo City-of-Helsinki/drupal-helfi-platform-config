@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: Components'
+      value: 'DC: components'
   menu_name:
     -
       value: main

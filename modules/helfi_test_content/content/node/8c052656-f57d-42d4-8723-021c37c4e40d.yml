@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: Navigation'
+      value: 'DC: navigation'
   created:
     -
       value: 1654499729
@@ -26,9 +26,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -68,9 +65,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<ul>\r\n\t<li>Level 1 ... 10</li>\r\n\t<li>Link to non hel.fi address</li>\r\n\t<li>Link to non hel.fi address under another link</li>\r\n\t<li>Link with no href</li>\r\n</ul>\r\n"
