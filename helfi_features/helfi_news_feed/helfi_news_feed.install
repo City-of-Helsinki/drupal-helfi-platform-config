@@ -53,6 +53,16 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
     ConfigHelper::updateExistingConfig($configLocation, $configuration);
   }
 
+  // Add "Medium Teaser" view mode for the "Helfi: News" entity type.
+  $configurations = [
+    'core.entity_view_display.helfi_news.helfi_news.medium_teaser',
+    'core.entity_view_mode.helfi_news.medium_teaser',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+  }
+
   // Enable the paragraph type in some content and TPR entity types.
   try {
     // "Page" content type.
