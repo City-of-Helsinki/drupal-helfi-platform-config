@@ -35,7 +35,7 @@
         const eventElement = $(`
           <div class="event-list__event">
             <div class="event-list__image-container">
-              <div class="event-list__tags event-list__tags--mobile" role="Region" aria-label="${eventKeywords}">
+              <div class="event-list__tags event-list__tags--mobile" role="region" aria-label="${eventKeywords}">
               </div>
             </div>
             <div class="event-list__content-container">
@@ -43,21 +43,18 @@
                 <a class="event-list__event-link" href="${drupalSettings.helfi_events.baseUrl}/events/${event.id}" aria-label="(${externalLink})"></a>
               </h3>
               <div class="event__content event__content--date">
-                <div class="event__date">
-                  ${startDate.toLocaleDateString('fi-FI')}, ${at}
-                  ${startDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}
-                  -
-                  ${endDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}
-                </div>
+                ${startDate.toLocaleDateString('fi-FI')}, ${at}
+                ${startDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}
+                -
+                ${endDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}
               </div>
-              <div class="event__content event__content--location">
-                <div class="event__location"></div>
-              </div>
+              <div class="event__content event__content--location"></div>
               <div class="event__lower-container">
-                <div class="event-list__tags event-list__tags--desktop role="Region" aria-label="${eventKeywords}">
+                <div class="event-list__tags event-list__tags--desktop" role="region" aria-label="${eventKeywords}">
                 </div>
-                <span class="event-list__event-link-indicator">
-                </span>
+                <div class="event-list__indicator-container">
+                  <span class="event-list__event-link-indicator"></span>
+                </div>
               </div>
             </div>
           </div>
@@ -80,14 +77,27 @@
 
         // Use first image or fallback to placeholder if no images present
         const imageUrl = (event.images.length && event.images[0].url) ? event.images[0].url : null;
-        const imageAlt = imageUrl && event.images[0].alt_text ? event.images[0].alt_text : eventName.textContent.trim();
-        const imageElement = imageUrl ?
-          `<img class="event-list__event-image" alt="${imageAlt}" src="${event.images[0].url}"></img>` :
-          $(drupalSettings.helfi_events.imagePlaceholder).addClass('event-list__event-image');
+
+        let imageElement;
+        if(imageUrl) {
+          imageElement = $(`<img class="event-list__event-image" src="${event.images[0].url}" />`);
+
+          // Get image alt text from response or use event name.
+          const imageAlt = imageUrl && event.images[0].alt_text ? event.images[0].alt_text : eventName.textContent.trim();
+          imageElement.attr('alt', imageAlt);
+
+          // If image has photographer data, add it as data-attribute.
+          if(event.images[0].photographer_name) {
+            imageElement.attr('data-photographer', event.images[0].photographer_name);
+          }
+        }
+        else {
+          imageElement = $(drupalSettings.helfi_events.imagePlaceholder).addClass('event-list__event-image');
+        }
         $(eventElement).find('.event-list__image-container').append(imageElement);
 
         const location = `${event.location.name[currentLanguage]}${event.location.street_address ? ', ' + event.location.street_address[currentLanguage] : ''}`;
-        $(eventElement).find('.event__location').append(document.createTextNode(location))
+        $(eventElement).find('.event__content--location').append(document.createTextNode(location))
 
         return eventElement;
       });
