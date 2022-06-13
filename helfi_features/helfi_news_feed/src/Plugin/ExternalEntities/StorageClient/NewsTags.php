@@ -72,6 +72,9 @@ final class NewsTags extends ExternalEntityStorageClientBase {
     return $instance;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function loadMultiple(array $ids = NULL) {
     $query = [];
 
@@ -92,7 +95,6 @@ final class NewsTags extends ExternalEntityStorageClientBase {
     return $prepared;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -106,7 +108,6 @@ final class NewsTags extends ExternalEntityStorageClientBase {
   public function delete(ExternalEntityInterface $entity) : void {
     throw new EntityStorageException('::delete() is not supported.');
   }
-
 
   /**
    * {@inheritdoc}
@@ -123,7 +124,7 @@ final class NewsTags extends ExternalEntityStorageClientBase {
     $data = $this->request($query, $query['filter[langcode]']);
 
     $prepared = [];
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
       $prepared[$value["id"]] = $value;
     }
 

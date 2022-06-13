@@ -72,17 +72,11 @@ final class NewsNeighbourhoods extends ExternalEntityStorageClientBase {
     return $instance;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function loadMultiple(array $ids = NULL) {
-    /*
-    $query = [
-      'filter[id][operator]' => 'IN',
-      // Include main image, tags, neighbourhoods and groups fields.
-      'include' => 'main_image.media_image,tags,groups,neighbourhoods',
-      'fields[file--file]' => 'uri,url',
-    ];
-    */
     $query = [];
-
     $language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
@@ -93,13 +87,12 @@ final class NewsNeighbourhoods extends ExternalEntityStorageClientBase {
 
     $data = $this->request($query, $language);
     $prepared = [];
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
       $prepared[$value['id']] = $value;
     }
 
     return $prepared;
   }
-
 
   /**
    * {@inheritdoc}
@@ -114,7 +107,6 @@ final class NewsNeighbourhoods extends ExternalEntityStorageClientBase {
   public function delete(ExternalEntityInterface $entity) : void {
     throw new EntityStorageException('::delete() is not supported.');
   }
-
 
   /**
    * {@inheritdoc}
@@ -131,7 +123,7 @@ final class NewsNeighbourhoods extends ExternalEntityStorageClientBase {
     $data = $this->request($query, $query['filter[langcode]']);
 
     $prepared = [];
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
       $prepared[$value["id"]] = $value;
     }
 
