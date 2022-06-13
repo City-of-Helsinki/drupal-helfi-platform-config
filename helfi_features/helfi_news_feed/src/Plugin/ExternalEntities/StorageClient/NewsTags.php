@@ -88,7 +88,7 @@ final class NewsTags extends ExternalEntityStorageClientBase {
 
     $data = $this->request($query, $language);
     $prepared = [];
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
       $prepared[$value['id']] = $value;
     }
 
