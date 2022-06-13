@@ -31,16 +31,16 @@ function helfi_news_feed_install() : void {
  */
 function helfi_news_feed_update_9001(&$sandbox = NULL) {
   // Add "Title" and "Description" fields for the paragraph type.
-  $configLocation = dirname(__FILE__) . '/config/install/';
+  $config_install = dirname(__FILE__) . '/config/install/';
 
   // Add the new fields and field storages.
-  $configFields = [
+  $paragraph_fields = [
     'field.storage.paragraph.field_news_list_title' => 'field.field.paragraph.news_list.field_news_list_title',
     'field.storage.paragraph.field_news_list_description' => 'field.field.paragraph.news_list.field_news_list_description',
   ];
 
-  foreach ($configFields as $field_storage => $field_config) {
-    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  foreach ($paragraph_fields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($config_install, $field_storage, $field_config);
   }
 
   // Update the paragraph type.
@@ -50,20 +50,22 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
   ];
 
   foreach ($configurations as $configuration) {
-    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+    ConfigHelper::updateExistingConfig($config_install, $configuration);
   }
 
+  $config_optional = dirname(__FILE__) . '/config/optional/';
+
   // Add "Medium Teaser" view mode for the "Helfi: News" entity type.
-  $configurations = [
+  $view_mode_configurations = [
     'core.entity_view_display.helfi_news.helfi_news.medium_teaser',
     'core.entity_view_mode.helfi_news.medium_teaser',
   ];
 
-  foreach ($configurations as $configuration) {
-    ConfigHelper::installNewConfig($configLocation, $configuration);
+  foreach ($view_mode_configurations as $configuration) {
+    ConfigHelper::installNewConfig($config_optional, $configuration);
   }
 
-  // Enable the paragraph type in some content and TPR entity types.
+  // Enable the paragraph type in page content type.
   try {
     // "Page" content type.
     helfi_platform_config_enable_paragraph_fields(
@@ -72,23 +74,30 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
       ['field_content', 'field_lower_content'],
       'news_list'
     );
-
-    // "TPR Service" entity type.
-    helfi_platform_config_enable_paragraph_fields(
-      'tpr_service',
-      'tpr_service',
-      ['field_lower_content'],
-      'news_list'
-    );
-
-    // "TPR Unit" entity type.
-    helfi_platform_config_enable_paragraph_fields(
-      'tpr_unit',
-      'tpr_unit',
-      ['field_lower_content'],
-      'news_list'
-    );
   } catch (\InvalidArgumentException $e) {
     \Drupal::messenger()->addWarning($e->getMessage());
+  }
+
+  // Enable the paragraph type in TPR entity types.
+  if (\Drupal::moduleHandler()->moduleExists('helfi_tpr')) {
+    try {
+      // "TPR Service" entity type.
+      helfi_platform_config_enable_paragraph_fields(
+        'tpr_service',
+        'tpr_service',
+        ['field_lower_content'],
+        'news_list'
+      );
+
+      // "TPR Unit" entity type.
+      helfi_platform_config_enable_paragraph_fields(
+        'tpr_unit',
+        'tpr_unit',
+        ['field_lower_content'],
+        'news_list'
+      );
+    } catch (\InvalidArgumentException $e) {
+      \Drupal::messenger()->addWarning($e->getMessage());
+    }
   }
 }
