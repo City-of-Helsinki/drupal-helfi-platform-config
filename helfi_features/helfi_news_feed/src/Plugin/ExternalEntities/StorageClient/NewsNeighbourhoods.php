@@ -17,15 +17,15 @@ use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * External entity storage client for News groups taxonomy terms.
+ * External entity storage client for News neighbourhoods taxonomy terms.
  *
  * @ExternalEntityStorageClient(
- *   id = "helfi_news_groups",
- *   label = @Translation("Helfi: News groups"),
- *   description = @Translation("Retrieves news groups taxonomy terms from Helfi")
+ *   id = "helfi_news_neighbourhoods",
+ *   label = @Translation("Helfi: News neighbourhoods"),
+ *   description = @Translation("Retrieves news neighbourhoods taxonomy terms from Helfi")
  * )
  */
-final class NewsGroups extends ExternalEntityStorageClientBase {
+final class NewsNeighbourhoods extends ExternalEntityStorageClientBase {
 
   /**
    * The active endpoint environment.
@@ -54,8 +54,8 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
   public static function create(
     ContainerInterface $container,
     array $configuration,
-    $plugin_id,
-    $plugin_definition
+                       $plugin_id,
+                       $plugin_definition
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
@@ -73,7 +73,16 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
   }
 
   public function loadMultiple(array $ids = NULL) {
+    /*
+    $query = [
+      'filter[id][operator]' => 'IN',
+      // Include main image, tags, neighbourhoods and groups fields.
+      'include' => 'main_image.media_image,tags,groups,neighbourhoods',
+      'fields[file--file]' => 'uri,url',
+    ];
+    */
     $query = [];
+
     $language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();

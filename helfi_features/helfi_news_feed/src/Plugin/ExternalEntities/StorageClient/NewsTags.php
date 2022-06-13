@@ -17,15 +17,15 @@ use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * External entity storage client for News groups taxonomy terms.
+ * External entity storage client for News tags taxonomy terms.
  *
  * @ExternalEntityStorageClient(
- *   id = "helfi_news_groups",
- *   label = @Translation("Helfi: News groups"),
- *   description = @Translation("Retrieves news groups taxonomy terms from Helfi")
+ *   id = "helfi_news_tags",
+ *   label = @Translation("Helfi: News tags"),
+ *   description = @Translation("Retrieves news tags taxonomy terms from Helfi")
  * )
  */
-final class NewsGroups extends ExternalEntityStorageClientBase {
+final class NewsTags extends ExternalEntityStorageClientBase {
 
   /**
    * The active endpoint environment.
@@ -74,6 +74,7 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
 
   public function loadMultiple(array $ids = NULL) {
     $query = [];
+
     $language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
