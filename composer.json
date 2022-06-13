@@ -75,7 +75,7 @@
                 "[#UHF-4325] Strip whitespaces from twig debug comments": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/f7c0e380e2deb9a1b46bdf779fb27a945b466575/patches/drupal_core_strip_debug_mode_whitespaces_9.3.x.patch"
             },
             "drupal/default_content": {
-                "https://www.drupal.org/project/default_content/issues/2698425#comment-13809863": "https://www.drupal.org/files/issues/2020-09-02/default_content-integrity_constrait_violation-3162987-2.patch"
+                "https://www.drupal.org/project/default_content/issues/2640734#comment-14399122": "https://www.drupal.org/files/issues/2022-02-04/default_content-2640734-allow_manual_import-108.patch"
             },
             "drupal/eu_cookie_compliance": {
                 "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/d1a6866b2138f7d3597df79f395a5c1a9e19ee2e/patches/eu_cookie_compliance_block_8.x-1.19.patch",

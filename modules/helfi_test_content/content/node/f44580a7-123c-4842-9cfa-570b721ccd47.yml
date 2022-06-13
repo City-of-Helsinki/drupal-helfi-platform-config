@@ -1,0 +1,126 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: f44580a7-123c-4842-9cfa-570b721ccd47
+  bundle: page
+  default_langcode: en
+  depends:
+    30312f77-66a9-43a3-84bc-43c114a4d9c2: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component remote video'
+  created:
+    -
+      value: 1654685846
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-remote-video
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: fc6cf871-506e-48f4-82a7-75f6098b6e7c
+          bundle: remote_video
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654687700
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_iframe_title:
+            -
+              value: 'Remote video - Upper content region'
+          field_remote_video:
+            -
+              entity: 30312f77-66a9-43a3-84bc-43c114a4d9c2
+          field_remote_video_title:
+            -
+              value: 'Remote video - Upper content region'
+          field_remote_video_video_desc:
+            -
+              value: "<p>Remote video - Upper content region</p>\r\n"
+              format: full_html
+  field_has_hero:
+    -
+      value: false
+  field_lower_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 11a8f6f0-f75e-4b11-aa76-2089154387d7
+          bundle: remote_video
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654687860
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_iframe_title:
+            -
+              value: 'Remote video - Lower content region'
+          field_remote_video:
+            -
+              entity: 30312f77-66a9-43a3-84bc-43c114a4d9c2
+          field_remote_video_title:
+            -
+              value: 'Remote video - Lower content region'
+          field_remote_video_video_desc:
+            -
+              value: "<p>Remote video - Lower content region</p>\r\n"
+              format: full_html

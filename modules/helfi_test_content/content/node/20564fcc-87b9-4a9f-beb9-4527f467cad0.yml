@@ -1,0 +1,118 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 20564fcc-87b9-4a9f-beb9-4527f467cad0
+  bundle: page
+  default_langcode: en
+  depends:
+    937b62aa-f440-4dbd-9960-cdc3a7613087: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component chart'
+  created:
+    -
+      value: 1654685829
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-chart
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: eb33ebd4-387e-4033-b7d4-22d4fe4135b5
+          bundle: chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654686487
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_chart_chart:
+            -
+              entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
+          field_chart_title:
+            -
+              value: 'Chart - Upper content region'
+          field_iframe_title:
+            -
+              value: 'Chart - Upper content region'
+  field_has_hero:
+    -
+      value: false
+  field_lower_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 71a0cfd4-c77b-4a70-a59d-5e6c1ba74db3
+          bundle: chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654686513
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_chart_chart:
+            -
+              entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
+          field_chart_title:
+            -
+              value: 'Chart - Lower content region'
+          field_iframe_title:
+            -
+              value: 'Chart - Lower content region'

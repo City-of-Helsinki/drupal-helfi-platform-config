@@ -1,0 +1,91 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: d071de08-c422-4090-b122-2f95f87ffe87
+  bundle: landing_page
+  default_langcode: en
+  depends:
+    608c45ab-90c5-466b-bcac-c87649f2ec10: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component liftup with image'
+  created:
+    -
+      value: 1654687150
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-liftup-with-image
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 70d753f3-45be-4ae4-a390-f1887e71d1e4
+          bundle: liftup_with_image
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654687221
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_liftup_with_image_desc:
+            -
+              value: "<p>Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim.&nbsp;</p>\r\n\r\n<p>Pellentesque in ipsum id orci porta dapibus. Nulla porttitor accumsan tincidunt. Cras ultricies ligula sed magna dictum porta.</p>\r\n"
+              format: full_html
+          field_liftup_with_image_design:
+            -
+              value: image-on-right
+          field_liftup_with_image_image:
+            -
+              entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
+          field_liftup_with_image_title:
+            -
+              value: 'Liftup with image'
+  field_has_hero:
+    -
+      value: false

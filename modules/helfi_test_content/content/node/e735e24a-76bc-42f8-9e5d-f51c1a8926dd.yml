@@ -1,0 +1,80 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: e735e24a-76bc-42f8-9e5d-f51c1a8926dd
+  bundle: page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: layouts'
+  created:
+    -
+      value: 1654499456
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-layouts
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: d6e1ef79-fb3b-487a-85f7-3c747c5de134
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654499474
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<ul>\r\n\t<li>Layout standard page</li>\r\n\t<li>Layout landing page</li>\r\n\t<li>Layout TPR Unit</li>\r\n\t<li>Layout TPR Service</li>\r\n</ul>\r\n"
+              format: full_html
+  field_has_hero:
+    -
+      value: false

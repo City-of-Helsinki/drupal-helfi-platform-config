@@ -1,0 +1,80 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 6be69670-5d48-4283-878c-e4fe85351703
+  bundle: page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: Layout standard'
+  created:
+    -
+      value: 1654845947
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-standard
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: c58d7793-458c-43ec-b77a-95210b5f915c
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654845954
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<ul>\r\n\t<li>DC: layout standard - hero - subnav - sidebar</li>\r\n\t<li>DC: layout standard - hero - subnav - no-sidebar</li>\r\n\t<li>DC: layout standard - hero - no-subnav - sidebar</li>\r\n\t<li>DC: layout standard - hero - no-subnav - no-sidebar</li>\r\n\t<li>DC: layout standard - no-hero - subnav - sidebar</li>\r\n\t<li>DC: layout standard - no-hero - subnav - no-sidebar</li>\r\n\t<li>DC: layout standard - no-hero - no-subnav - sidebar</li>\r\n\t<li>DC: layout standard - no-hero - no-subnav - no-sidebar</li>\r\n</ul>\r\n"
+              format: full_html
+  field_has_hero:
+    -
+      value: false

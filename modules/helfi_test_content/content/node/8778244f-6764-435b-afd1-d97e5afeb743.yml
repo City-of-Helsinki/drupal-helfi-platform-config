@@ -1,0 +1,118 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 8778244f-6764-435b-afd1-d97e5afeb743
+  bundle: page
+  default_langcode: en
+  depends:
+    3c1fe3ed-c9ca-4ba8-8997-95936db9a432: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component map'
+  created:
+    -
+      value: 1654685844
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-map
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 9aee2387-e4be-4c71-9600-a0a00c4df73c
+          bundle: map
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654687437
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_iframe_title:
+            -
+              value: 'Map - Upper content region'
+          field_map_map:
+            -
+              entity: 3c1fe3ed-c9ca-4ba8-8997-95936db9a432
+          field_map_title:
+            -
+              value: 'Map - Upper content region'
+  field_has_hero:
+    -
+      value: false
+  field_lower_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: af4ce552-6bbc-47ff-a23e-2e6b19a52985
+          bundle: map
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654687498
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_iframe_title:
+            -
+              value: 'Map - Lower content region'
+          field_map_map:
+            -
+              entity: 3c1fe3ed-c9ca-4ba8-8997-95936db9a432
+          field_map_title:
+            -
+              value: 'Map - Lower content region'

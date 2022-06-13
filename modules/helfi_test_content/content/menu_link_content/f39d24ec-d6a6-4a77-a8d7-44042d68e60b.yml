@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: f39d24ec-d6a6-4a77-a8d7-44042d68e60b
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    f25609d9-965f-4568-9bae-6e0c1ebe2c9c: menu_link_content
+    18345d84-b4f9-4d5f-bdf0-f1f518411a7b: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: layout standard - hero - no-subnav - no-sidebar'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 5
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:f25609d9-965f-4568-9bae-6e0c1ebe2c9c'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654684170
