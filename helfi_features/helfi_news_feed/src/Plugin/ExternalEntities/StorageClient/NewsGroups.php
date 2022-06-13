@@ -57,6 +57,7 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
     $plugin_id,
     $plugin_definition
   ) : self {
+
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
     $instance->client = $container->get('http_client');
@@ -72,7 +73,11 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
     return $instance;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function loadMultiple(array $ids = NULL) {
+
     $query = [];
     $language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
@@ -84,13 +89,12 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
 
     $data = $this->request($query, $language);
     $prepared = [];
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
       $prepared[$value['id']] = $value;
     }
 
     return $prepared;
   }
-
 
   /**
    * {@inheritdoc}
@@ -105,7 +109,6 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
   public function delete(ExternalEntityInterface $entity) : void {
     throw new EntityStorageException('::delete() is not supported.');
   }
-
 
   /**
    * {@inheritdoc}
@@ -122,7 +125,7 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
     $data = $this->request($query, $query['filter[langcode]']);
 
     $prepared = [];
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
       $prepared[$value["id"]] = $value;
     }
 
