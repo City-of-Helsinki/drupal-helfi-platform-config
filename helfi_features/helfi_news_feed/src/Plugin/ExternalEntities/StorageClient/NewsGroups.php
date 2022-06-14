@@ -57,7 +57,6 @@ final class NewsGroups extends ExternalEntityStorageClientBase {
     $plugin_id,
     $plugin_definition
   ) : self {
-
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
     $instance->client = $container->get('http_client');

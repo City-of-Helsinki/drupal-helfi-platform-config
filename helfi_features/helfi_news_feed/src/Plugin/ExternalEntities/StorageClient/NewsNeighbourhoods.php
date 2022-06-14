@@ -54,8 +54,8 @@ final class NewsNeighbourhoods extends ExternalEntityStorageClientBase {
   public static function create(
     ContainerInterface $container,
     array $configuration,
-                       $plugin_id,
-                       $plugin_definition
+          $plugin_id,
+          $plugin_definition
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
@@ -143,11 +143,11 @@ final class NewsNeighbourhoods extends ExternalEntityStorageClientBase {
    */
   private function request(array $parameters, string $langcode) : array {
     try {
-      $uri = vsprintf('%s/jsonapi/taxonomy_term/news_group?%s', [
+      $uri = vsprintf('%s/jsonapi/taxonomy_term/news_neighbourhoods?%s', [
         $this->environment->getUrl($langcode),
         \GuzzleHttp\http_build_query($parameters),
       ]);
-      $uri = 'https://nginx-etusivu-test.agw.arodevtest.hel.fi/fi/test-etusivu/jsonapi/taxonomy_term/news_group?filter%5Blangcode%5D=fi';
+      $uri = 'https://nginx-etusivu-test.agw.arodevtest.hel.fi/fi/test-etusivu/jsonapi/taxonomy_term/news_neighbourhoods?filter%5Blangcode%5D=fi';
       $content = $this->client->request('GET', $uri);
 
       $json = \GuzzleHttp\json_decode($content->getBody()->getContents(), TRUE);
@@ -155,7 +155,7 @@ final class NewsNeighbourhoods extends ExternalEntityStorageClientBase {
       return $json['data'];
     }
     catch (RequestException | GuzzleException $e) {
-      watchdog_exception('helfi_news_groups', $e);
+      watchdog_exception('helfi_news_neighbourhoods', $e);
     }
     return [];
   }

@@ -144,11 +144,11 @@ final class NewsTags extends ExternalEntityStorageClientBase {
    */
   private function request(array $parameters, string $langcode) : array {
     try {
-      $uri = vsprintf('%s/jsonapi/taxonomy_term/news_group?%s', [
+      $uri = vsprintf('%s/jsonapi/taxonomy_term/news_tags?%s', [
         $this->environment->getUrl($langcode),
         \GuzzleHttp\http_build_query($parameters),
       ]);
-      $uri = 'https://nginx-etusivu-test.agw.arodevtest.hel.fi/fi/test-etusivu/jsonapi/taxonomy_term/news_group?filter%5Blangcode%5D=fi';
+      $uri = 'https://nginx-etusivu-test.agw.arodevtest.hel.fi/fi/test-etusivu/jsonapi/taxonomy_term/news_tags?filter%5Blangcode%5D=fi';
       $content = $this->client->request('GET', $uri);
 
       $json = \GuzzleHttp\json_decode($content->getBody()->getContents(), TRUE);
@@ -156,7 +156,7 @@ final class NewsTags extends ExternalEntityStorageClientBase {
       return $json['data'];
     }
     catch (RequestException | GuzzleException $e) {
-      watchdog_exception('helfi_news_groups', $e);
+      watchdog_exception('helfi_news_tags', $e);
     }
     return [];
   }
