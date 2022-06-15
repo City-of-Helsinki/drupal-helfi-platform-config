@@ -32,6 +32,7 @@ function helfi_news_feed_install() : void {
 function helfi_news_feed_update_9001(&$sandbox = NULL) {
   // Add "Title" and "Description" fields for the paragraph type.
   $config_install = dirname(__FILE__) . '/config/install/';
+  $config_translation_location = dirname(__FILE__) . '/config/language/';
 
   // Add the new fields and field storages.
   $paragraph_fields = [
@@ -41,6 +42,7 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
 
   foreach ($paragraph_fields as $field_storage => $field_config) {
     ConfigHelper::installNewField($config_install, $field_storage, $field_config);
+    ConfigHelper::installNewConfigTranslation($config_translation_location, $field_config);
   }
 
   // Update the paragraph type.
