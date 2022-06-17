@@ -756,5 +756,3 @@ function helfi_content_update_9031() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
-
-
