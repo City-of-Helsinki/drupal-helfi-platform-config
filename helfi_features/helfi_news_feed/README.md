@@ -23,7 +23,7 @@ $config['helfi_news_feed.settings']['source_environment'] = 'dev';
 1. Create a new field through UI (Structure -> Paragraph types -> News list) and export configuration using drush.
 2. Copy configuration from instance's `conf/cmi` folder to `config/install` folder and remove config hashes and uuids.
 3. Provide an update hook to install/update the new configuration.
-4. Add setters/getters to bundle plugin class (optional): `src/Enitty/NewsFeedParagraph.php`.
+4. Add setters/getters to bundle plugin class (optional): `src/Entity/NewsFeedParagraph.php`.
 
 ## How to add new fields to remote entity
 

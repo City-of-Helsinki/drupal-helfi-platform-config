@@ -22,11 +22,15 @@ class NewsFeedParagraphTest extends KernelTestBase {
       'type' => 'news_list',
       'field_tags' => ['first', 'second'],
       'field_limit' => 22,
+      'field_news_list_title' => 'test title',
+      'field_news_list_description' => 'test description',
     ]);
     $paragraph->save();
     $this->assertInstanceOf(NewsFeedParagraph::class, $paragraph);
     $this->assertEquals(['first', 'second'], $paragraph->getTags());
     $this->assertEquals(22, $paragraph->getLimit());
+    $this->assertEquals('test title', $paragraph->getTitle());
+    $this->assertEquals('test description', $paragraph->getDescription());
   }
 
 }
