@@ -367,7 +367,7 @@ function helfi_content_update_9017() {
   ) {
     Drupal::service('module_installer')->install([
       'content_lock',
-      'content_lock_timeout'
+      'content_lock_timeout',
     ]);
   }
 
@@ -544,7 +544,7 @@ function helfi_content_update_9023() {
  */
 function helfi_content_update_9024() {
   if (!Drupal::moduleHandler()->moduleExists('helfi_contact_cards')) {
-    //Install Helfi contact cards module
+    // Install Helfi contact cards module.
     Drupal::service('module_installer')->install(['helfi_contact_cards']);
 
     /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -557,7 +557,6 @@ function helfi_content_update_9024() {
     return $updateHelper->logger()->output();
   }
 }
-
 
 /**
  * Enable Language selector plugin for minimal and html filters.
@@ -640,7 +639,7 @@ function helfi_content_update_9027() {
 }
 
 /**
- * Added assistive technology title field
+ * Added assistive technology title field.
  */
 function helfi_content_update_9028() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -663,7 +662,7 @@ function helfi_content_update_9028() {
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
   $configurations = [
-    'field.field.paragraph.remote_video.field_iframe_title'
+    'field.field.paragraph.remote_video.field_iframe_title',
   ];
 
   // Install configurations and translations.
