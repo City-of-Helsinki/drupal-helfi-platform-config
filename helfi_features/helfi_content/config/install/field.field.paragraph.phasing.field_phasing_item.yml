@@ -1,0 +1,115 @@
+uuid: 18d84c47-a428-46ba-acca-064ae345aad8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_phasing_item
+    - paragraphs.paragraphs_type.phasing
+    - paragraphs.paragraphs_type.phasing_item
+  module:
+    - entity_reference_revisions
+id: paragraph.phasing.field_phasing_item
+field_name: field_phasing_item
+entity_type: paragraph
+bundle: phasing
+label: 'Phasing item'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      phasing_item: phasing_item
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 31
+        enabled: false
+      accordion_item:
+        weight: 32
+        enabled: false
+      banner:
+        weight: 33
+        enabled: false
+      chart:
+        weight: 34
+        enabled: false
+      columns:
+        weight: 35
+        enabled: false
+      contact_card:
+        weight: 36
+        enabled: false
+      contact_card_listing:
+        weight: 37
+        enabled: false
+      content_cards:
+        weight: 38
+        enabled: false
+      content_liftup:
+        weight: 39
+        enabled: false
+      event_list:
+        weight: 40
+        enabled: false
+      from_library:
+        weight: 41
+        enabled: false
+      gallery:
+        weight: 42
+        enabled: false
+      gallery_slide:
+        weight: 43
+        enabled: false
+      hero:
+        weight: 44
+        enabled: false
+      image:
+        weight: 45
+        enabled: false
+      liftup_with_image:
+        weight: 46
+        enabled: false
+      list_of_links:
+        weight: 47
+        enabled: false
+      list_of_links_item:
+        weight: 48
+        enabled: false
+      map:
+        weight: 49
+        enabled: false
+      phasing:
+        weight: 50
+        enabled: false
+      phasing_item:
+        weight: 30
+        enabled: true
+      remote_video:
+        weight: 51
+        enabled: false
+      service_list:
+        weight: 52
+        enabled: false
+      sidebar_text:
+        weight: 53
+        enabled: false
+      social_media_link:
+        weight: 54
+        enabled: false
+      text:
+        weight: 55
+        enabled: false
+      unit_accessibility_information:
+        weight: 56
+        enabled: false
+      unit_contact_card:
+        weight: 57
+        enabled: false
+      unit_search:
+        weight: 58
+        enabled: false
+field_type: entity_reference_revisions
