@@ -351,7 +351,7 @@ function helfi_content_update_9017() {
   ) {
     Drupal::service('module_installer')->install([
       'content_lock',
-      'content_lock_timeout'
+      'content_lock_timeout',
     ]);
   }
 
@@ -528,7 +528,7 @@ function helfi_content_update_9023() {
  */
 function helfi_content_update_9024() {
   if (!Drupal::moduleHandler()->moduleExists('helfi_contact_cards')) {
-    //Install Helfi contact cards module
+    // Install Helfi contact cards module.
     Drupal::service('module_installer')->install(['helfi_contact_cards']);
 
     /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -541,7 +541,6 @@ function helfi_content_update_9024() {
     return $updateHelper->logger()->output();
   }
 }
-
 
 /**
  * Enable Language selector plugin for minimal and html filters.
@@ -624,7 +623,7 @@ function helfi_content_update_9027() {
 }
 
 /**
- * Added assistive technology title field
+ * Added assistive technology title field.
  */
 function helfi_content_update_9028() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -647,7 +646,7 @@ function helfi_content_update_9028() {
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
   $configurations = [
-    'field.field.paragraph.remote_video.field_iframe_title'
+    'field.field.paragraph.remote_video.field_iframe_title',
   ];
 
   // Install configurations and translations.
@@ -695,14 +694,15 @@ function helfi_content_update_9031() {
   // Handle the configuration translation update manually.
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
   $configLocation = dirname(__FILE__) . '/config/install/';
+  $configOptionalLocation = dirname(__FILE__) . '/config/optional/';
 
   $configurations = [
-    'paragraphs.paragraphs_type.phasing_item',
-    'paragraphs.paragraphs_type.phasing',
-    'core.entity_form_display.paragraph.phasing_item.default',
-    'core.entity_form_display.paragraph.phasing.default',
-    'core.entity_view_display.paragraph.phasing_item.default',
-    'core.entity_view_display.paragraph.phasing.default',
+    'paragraphs.paragraphs_type.phasing_item' => $configLocation,
+    'paragraphs.paragraphs_type.phasing' => $configLocation,
+    'core.entity_form_display.paragraph.phasing_item.default' => $configOptionalLocation,
+    'core.entity_form_display.paragraph.phasing.default' => $configOptionalLocation,
+    'core.entity_view_display.paragraph.phasing_item.default' => $configOptionalLocation,
+    'core.entity_view_display.paragraph.phasing.default' => $configOptionalLocation,
   ];
 
   $configFields = [
@@ -727,19 +727,19 @@ function helfi_content_update_9031() {
     'paragraphs.paragraphs_type.phasing',
   ];
 
-  // Install configs
-  foreach ($configurations as $configuration) {
-    ConfigHelper::installNewConfig($configLocation, $configuration);
+  // Install paragraph and view modes.
+  foreach ($configurations as $configuration => $location) {
+    ConfigHelper::installNewConfig($location, $configuration);
   }
 
-  // Install new fields
+  // Install new fields.
   foreach ($configFields as $field_storage => $field_config) {
     ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
   }
 
-  // Install new instances of global fields
+  // Install new instances of common fields.
   foreach ($globalFields as $field_config) {
-    ConfigHelper::installNewField($configLocation, '', $field_config);
+    ConfigHelper::installNewField($configOptionalLocation, '', $field_config);
   }
 
   // Install translations.
