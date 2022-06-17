@@ -697,17 +697,17 @@ function helfi_content_update_9031() {
   $configLocation = dirname(__FILE__) . '/config/install/';
 
   $configurations = [
-    'core.entity_form_display.paragraph.phasing_item.default',
-    'core.entity_form_display.paragraph.phasing.default',
-    'core.entity_view_display.paragraph.phasing_item.default',
-    'core.entity_view_display.paragraph.phasing.default',
+    'paragraphs.paragraphs_type.phasing_item',
+    'paragraphs.paragraphs_type.phasing',
     'field.field.paragraph.phasing_item.field_description',
     'field.field.paragraph.phasing_item.field_title',
     'field.field.paragraph.phasing.field_description',
     'field.field.paragraph.phasing.field_show_phase_numbers',
     'field.field.paragraph.phasing.field_title',
-    'paragraphs.paragraphs_type.phasing_item',
-    'paragraphs.paragraphs_type.phasing',
+    'core.entity_form_display.paragraph.phasing_item.default',
+    'core.entity_form_display.paragraph.phasing.default',
+    'core.entity_view_display.paragraph.phasing_item.default',
+    'core.entity_view_display.paragraph.phasing.default',
   ];
 
   $configFields= [
