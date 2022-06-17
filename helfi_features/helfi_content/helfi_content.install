@@ -699,21 +699,24 @@ function helfi_content_update_9031() {
   $configurations = [
     'paragraphs.paragraphs_type.phasing_item',
     'paragraphs.paragraphs_type.phasing',
-    'field.field.paragraph.phasing_item.field_description',
-    'field.field.paragraph.phasing_item.field_title',
-    'field.field.paragraph.phasing.field_description',
-    'field.field.paragraph.phasing.field_show_phase_numbers',
-    'field.field.paragraph.phasing.field_title',
     'core.entity_form_display.paragraph.phasing_item.default',
     'core.entity_form_display.paragraph.phasing.default',
     'core.entity_view_display.paragraph.phasing_item.default',
     'core.entity_view_display.paragraph.phasing.default',
   ];
 
-  $configFields= [
-    'field.storage.paragraph.field_phasing_item_title_level' => 'field.field.paragraph.phasing.field_phasing_item_title_level',
-    'field.storage.paragraph.field_phasing_item' => 'field.field.paragraph.phasing.field_phasing_item',
+  $configFields = [
     'field.storage.paragraph.field_phasing_title_level' => 'field.field.paragraph.phasing.field_phasing_title_level',
+    'field.storage.paragraph.field_show_phase_numbers' => 'field.field.paragraph.phasing.field_show_phase_numbers',
+    'field.storage.paragraph.field_phasing_item' => 'field.field.paragraph.phasing.field_phasing_item',
+    'field.storage.paragraph.field_phasing_item_title_level' => 'field.field.paragraph.phasing.field_phasing_item_title_level',
+  ];
+
+  $globalFields = [
+    'field.field.paragraph.phasing.field_title',
+    'field.field.paragraph.phasing_item.field_description',
+    'field.field.paragraph.phasing_item.field_title',
+    'field.field.paragraph.phasing.field_description',
   ];
 
   $configurationsLanguage = [
@@ -725,13 +728,18 @@ function helfi_content_update_9031() {
   ];
 
   // Install configs
-   foreach ($configurations as $configuration) {
+  foreach ($configurations as $configuration) {
     ConfigHelper::installNewConfig($configLocation, $configuration);
   }
 
   // Install new fields
   foreach ($configFields as $field_storage => $field_config) {
     ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+  // Install new instances of global fields
+  foreach ($globalFields as $field_config) {
+    ConfigHelper::installNewField($configLocation, '', $field_config);
   }
 
   // Install translations.
