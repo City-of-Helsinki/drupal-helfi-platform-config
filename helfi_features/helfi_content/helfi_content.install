@@ -721,8 +721,8 @@ function helfi_content_update_9031() {
 }
 
 /**
-  * Creates phasing paragraph and adds it to basic, landing and tpr service content areas
-  * and also to accordion item content.
+* Creates phasing paragraph and adds it to basic, landing and tpr service content areas
+* and also to accordion item content.
 */
 function helfi_content_update_9032() {
   // Handle the configuration translation update manually.
@@ -790,4 +790,3 @@ function helfi_content_update_9032() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
-

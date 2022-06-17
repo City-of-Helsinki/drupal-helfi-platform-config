@@ -12,6 +12,7 @@ dependencies:
     - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.list_of_links
+    - paragraphs.paragraphs_type.phasing
     - paragraphs.paragraphs_type.remote_video
     - paragraphs.paragraphs_type.text
   module:
@@ -39,6 +40,7 @@ settings:
       content_liftup: content_liftup
       banner: banner
       from_library: from_library
+      phasing: phasing
       remote_video: remote_video
     negate: 0
     target_bundles_drag_drop:
@@ -83,6 +85,12 @@ settings:
         weight: -22
       list_of_links_item:
         weight: -17
+        enabled: false
+      phasing:
+        weight: 50
+        enabled: true
+      phasing_item:
+        weight: 30
         enabled: false
       remote_video:
         enabled: true
