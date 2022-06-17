@@ -6,6 +6,7 @@ dependencies:
     - paragraphs.paragraphs_type.accordion_item
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.phasing
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
@@ -27,6 +28,7 @@ settings:
       columns: columns
       image: image
       text: text
+      phasing: phasing
     target_bundles_drag_drop:
       accordion:
         weight: 12
@@ -72,6 +74,12 @@ settings:
         enabled: false
       map:
         weight: 35
+        enabled: false
+      phasing:
+        weight: 49
+        enabled: true
+      phasing_item:
+        weight: 50
         enabled: false
       remote_video:
         weight: 36

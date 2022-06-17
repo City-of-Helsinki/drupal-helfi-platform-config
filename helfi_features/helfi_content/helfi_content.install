@@ -724,9 +724,9 @@ function helfi_content_update_9031() {
     'paragraphs.paragraphs_type.phasing',
   ];
 
-  // Install translations.
-  foreach ($configurationsLanguage as $configuration) {
-    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  // Install configs
+   foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
   }
 
   // Install new fields
@@ -734,9 +734,9 @@ function helfi_content_update_9031() {
     ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
   }
 
-   // Install configs
-   foreach ($configurations as $configuration) {
-    ConfigHelper::installNewConfig($configLocation, $configuration);
+  // Install translations.
+  foreach ($configurationsLanguage as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 
   /** @var \Drupal\update_helper\Updater $updateHelper */
