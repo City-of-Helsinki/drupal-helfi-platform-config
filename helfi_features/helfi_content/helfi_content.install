@@ -686,3 +686,67 @@ function helfi_content_update_9030() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Creates phasing paragraph and adds it to basic, landing and tpr service content areas
+ * and also to accordion item content.
+ */
+function helfi_content_update_9031() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'core.entity_form_display.paragraph.phasing_item.default',
+    'core.entity_form_display.paragraph.phasing.default',
+    'core.entity_view_display.paragraph.phasing_item.default',
+    'core.entity_view_display.paragraph.phasing.default',
+    'field.field.paragraph.phasing_item.field_description',
+    'field.field.paragraph.phasing_item.field_title',
+    'field.field.paragraph.phasing.field_description',
+    'field.field.paragraph.phasing.field_show_phase_numbers',
+    'field.field.paragraph.phasing.field_title',
+    'paragraphs.paragraphs_type.phasing_item',
+    'paragraphs.paragraphs_type.phasing',
+  ];
+
+  $configFields= [
+    'field.storage.paragraph.field_phasing_item_title_level' => 'field.field.paragraph.phasing.field_phasing_item_title_level',
+    'field.storage.paragraph.field_phasing_item' => 'field.field.paragraph.phasing.field_phasing_item',
+    'field.storage.paragraph.field_phasing_title_level' => 'field.field.paragraph.phasing.field_phasing_title_level',
+  ];
+
+  $configurationsLanguage = [
+    'field.field.paragraph.phasing.field_phasing_item_title_level',
+    'field.field.paragraph.phasing.field_phasing_item',
+    'field.field.paragraph.phasing.field_show_phase_numbers',
+    'paragraphs.paragraphs_type.phasing_item',
+    'paragraphs.paragraphs_type.phasing',
+  ];
+
+  // Install translations.
+  foreach ($configurationsLanguage as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Install new fields
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+   // Install configs
+   foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+  }
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9031');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+

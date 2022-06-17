@@ -1,0 +1,2 @@
+label: 'Vaiheen otsikkotaso'
+description: 'Otsikkotason tulee olla yksi alempi kuin paragraafin. Jos paragraafille ei tule otsikkoa, valitse h2.'
