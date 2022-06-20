@@ -135,7 +135,7 @@ function helfi_news_feed_preprocess_paragraph__news_list(&$variables) {
   // Get current language ID.
   $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
-  // Get the "Etusivu" instance using the environment resolver.
+  // Get the correct "Etusivu" instance environment URL.
   $instance_name = \Drupal\helfi_api_base\Environment\Project::ETUSIVU;
   $resolver = \Drupal::service('helfi_api_base.environment_resolver');
   $environment = $resolver->getEnvironment($instance_name, getenv('APP_ENV'));
