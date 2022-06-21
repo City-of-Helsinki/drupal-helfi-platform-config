@@ -101,15 +101,15 @@ watson_chatbot:
   version: 1.0.x
   header: false
   js:
-    'https://coh-chat-app-prod.eu-de.mybluemix.net/widget.min.js': {
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/widget.min.js': {
       type: external,
       minified: true
     }
-    'https://coh-chat-app-prod.eu-de.mybluemix.net/static/housing/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=housing': {
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/static/housing/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=housing': {
       type: external,
       minified: true
     }
-    'https://coh-chat-app-prod.eu-de.mybluemix.net/default.min.js': {
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/default.min.js': {
       type: external,
       minified: true
     }
