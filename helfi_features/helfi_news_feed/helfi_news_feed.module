@@ -116,6 +116,20 @@ function helfi_news_feed_entity_bundle_field_info_alter(
         ->setDisplayConfigurable('view', TRUE);
     }
 
+    // Additional entity info fields.
+    $entity_info_fields = [
+      'node_url' => 'Node URL',
+      'published_at' => 'Published at',
+      'short_title' => 'Short title'
+    ];
+
+    foreach ($entity_info_fields as $field_name => $field_label) {
+      $fields[$field_name] = BundleFieldDefinition::create('string')
+        ->setName($field_name)
+        ->setLabel(new TranslatableMarkup($field_label))
+        ->setDisplayConfigurable('view', TRUE)
+        ->setDisplayConfigurable('form', TRUE);
+    }
   }
 }
 

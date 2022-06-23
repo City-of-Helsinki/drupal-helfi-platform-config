@@ -103,3 +103,18 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
     }
   }
 }
+
+/**
+ * Adds fields to the 'helfi_news' external entity type.
+ */
+function helfi_news_feed_update_9002(&$sandbox = NULL) {
+  $config_install = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'external_entities.external_entity_type.helfi_news',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($config_install, $configuration);
+  }
+}
