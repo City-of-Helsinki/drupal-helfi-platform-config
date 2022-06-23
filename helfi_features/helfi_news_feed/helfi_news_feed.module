@@ -173,3 +173,10 @@ function helfi_news_feed_preprocess_paragraph__news_list(&$variables) {
   // Assign the URL variable to the template.
   $variables['news_archive_url'] = $environment_url . $news_path;
 }
+
+function helfi_news_feed_preprocess_external_entity__helfi_news__medium_teaser($variables) {
+  dump($variables);
+  $variables['node_url'] = 'joku';
+  $variables['published_at'] = 'joku';
+  $variables['short_title'] =  'otsikko';
+}
