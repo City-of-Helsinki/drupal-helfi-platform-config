@@ -37,6 +37,20 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   protected ClientInterface $client;
 
   /**
+   * Jsonapi query parameters.
+   *
+   * @var array
+   */
+  protected array $query;
+
+  /**
+   * Which endpoint to query.
+   *
+   * @var string
+   */
+  protected string $endpoint;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -61,14 +75,51 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     return $instance;
   }
 
-  abstract public function loadMultiple(array $ids = NULL);
+  /**
+   * {@inheritDoc}
+   */
+  public function loadMultiple(array $ids = NULL) {
+    foreach ($ids ?? [] as $index => $id) {
+      $this->query[sprintf('filter[id][value][%d]', $index)] = $id;
+    }
 
-  abstract public function query(
+    $data = $this->request($this->endpoint, $this->query);
+    $prepared = [];
+    foreach ($data as $value) {
+      $prepared[$value["id"]] = $value;
+    }
+
+    return $prepared;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function query(
     array $parameters = [],
     array $sorts = [],
-    $start = NULL,
-    $length = NULL
-  );
+          $start = NULL,
+          $length = NULL
+  ) : array {
+
+    foreach($parameters as $param) {
+      ['field' => $field, 'value' => $value, 'operator' => $operator] = $param;
+      if ($field == 'id') {
+        $this->query[sprintf("filter[id][value][%s]", reset($value))] = reset($value);
+      } else {
+        $this->query['filter[name-filter][condition][path]'] = 'name';
+        $this->query['filter[name-filter][condition][operator]'] = $operator;
+        $this->query['filter[name-filter][condition][value]'] = $value;
+      }
+    }
+
+    $data = $this->request($this->endpoint, $this->query);
+    $prepared = [];
+    foreach ($data as $value) {
+      $prepared[$value["id"]] = $value;
+    }
+    return $prepared;
+  }
 
   /**
    * {@inheritdoc}
@@ -110,7 +161,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
       return $json['data'];
     }
     catch (RequestException | GuzzleException $e) {
-      watchdog_exception('helfi_news_tags', $e);
+      watchdog_exception('helfi_external_entity', $e);
     }
     return [];
   }

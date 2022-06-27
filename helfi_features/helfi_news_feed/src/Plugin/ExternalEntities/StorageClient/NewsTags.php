@@ -32,54 +32,6 @@ final class NewsTags extends HelfiExternalEntityBase {
    *
    * @var string
    */
-  private string $endpoint = '/jsonapi/taxonomy_term/news_tags';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function loadMultiple(array $ids = NULL) {
-    foreach ($ids ?? [] as $index => $id) {
-      $this->query[sprintf('filter[id][value][%d]', $index)] = $id;
-    }
-    $contains = isset($parameters[0]) ? $parameters[0]['value'] : '';
-    if ($contains) {
-      $this->query['filter[name-filter][condition][path]'] = 'name';
-      $this->query['filter[name-filter][condition][operator]'] = 'CONTAINS';
-      $this->query['filter[name-filter][condition][value]'] = $contains;
-    }
-
-    $data = $this->request($this->endpoint, $this->query);
-    $prepared = [];
-    foreach ($data as $key => $value) {
-      $prepared[$value["id"]] = $value;
-    }
-
-    return $prepared;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function query(
-    array $parameters = [],
-    array $sorts = [],
-          $start = NULL,
-          $length = NULL
-  ) : array {
-    $contains = isset($parameters[0]) ? $parameters[0]['value'] : '';
-    if ($contains) {
-      $this->query['filter[name-filter][condition][path]'] = 'name';
-      $this->query['filter[name-filter][condition][operator]'] = 'CONTAINS';
-      $this->query['filter[name-filter][condition][value]'] = $contains;
-    }
-
-    $data = $this->request($this->endpoint, $this->query);
-    $prepared = [];
-    foreach ($data as $value) {
-      $prepared[$value["id"]] = $value;
-    }
-
-    return $prepared;
-  }
+  protected string $endpoint = '/jsonapi/taxonomy_term/news_tags';
 
 }
