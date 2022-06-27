@@ -18,14 +18,14 @@ mode: default
 content:
   field_news_list_description:
     type: text_default
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 1
     region: content
   field_news_list_title:
     type: string
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }

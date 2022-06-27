@@ -118,3 +118,18 @@ function helfi_news_feed_update_9002(&$sandbox = NULL) {
     ConfigHelper::updateExistingConfig($config_install, $configuration);
   }
 }
+
+
+/**
+ * Hides title and description labels
+ */
+function helfi_news_feed_update_9003() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_news_feed', 'helfi_news_feed_update_9003');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

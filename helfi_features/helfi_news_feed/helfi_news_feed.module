@@ -197,5 +197,4 @@ function helfi_news_feed_preprocess_external_entity($variables) {
   else {
     $variables['short_title'] =  $entity->title->value;
   }
-  dump($variables);
 }

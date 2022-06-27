@@ -1,0 +1,22 @@
+core.entity_view_display.paragraph.news_list.default:
+  expected_config:
+    content:
+      field_news_list_description:
+        label: above
+      field_news_list_title:
+        label: above
+  update_actions:
+    change:
+      content:
+        field_news_list_description:
+          label: hidden
+        field_news_list_title:
+          label: hidden
+core.entity_view_display.helfi_news.helfi_news.default:
+  expected_config: {  }
+  update_actions:
+    add:
+      hidden:
+        node_url: true
+        published_at: true
+        short_title: true
