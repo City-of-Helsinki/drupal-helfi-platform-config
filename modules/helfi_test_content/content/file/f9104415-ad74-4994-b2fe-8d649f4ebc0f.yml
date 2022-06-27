@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: f9104415-ad74-4994-b2fe-8d649f4ebc0f
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: RiDXWNppq-u3KxGyc6ugvf3Geq76xhNpLU2h44QusBY.jpg
+  uri:
+    -
+      value: 'public://oembed_thumbnails/RiDXWNppq-u3KxGyc6ugvf3Geq76xhNpLU2h44QusBY.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 53248
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1654687824

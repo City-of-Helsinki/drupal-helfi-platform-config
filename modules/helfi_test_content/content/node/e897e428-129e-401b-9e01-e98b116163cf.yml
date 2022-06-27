@@ -1,0 +1,133 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: e897e428-129e-401b-9e01-e98b116163cf
+  bundle: page
+  default_langcode: en
+  depends:
+    18345d84-b4f9-4d5f-bdf0-f1f518411a7b: node
+    329149fd-3e4b-40b9-a7d4-59fb34234320: node
+    482655a9-4767-4564-9edb-68ce6a668674: node
+    a23b06b0-090b-46a1-b761-b86f04e61f7e: node
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component content cards'
+  created:
+    -
+      value: 1654685836
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-content-cards
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7e7949e3-a388-4161-b784-8dae30d21957
+          bundle: content_cards
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654686797
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_content_cards_content:
+            -
+              entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
+            -
+              entity: 329149fd-3e4b-40b9-a7d4-59fb34234320
+            -
+              entity: 482655a9-4767-4564-9edb-68ce6a668674
+            -
+              entity: a23b06b0-090b-46a1-b761-b86f04e61f7e
+          field_content_cards_design:
+            -
+              value: small-cards
+          field_content_cards_title:
+            -
+              value: 'Content cards  - Upper content region'
+  field_has_hero:
+    -
+      value: false
+  field_lower_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a0e8bbf7-f682-4386-a104-6f3e469b1f5c
+          bundle: content_cards
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654686807
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_content_cards_content:
+            -
+              entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
+            -
+              entity: 329149fd-3e4b-40b9-a7d4-59fb34234320
+            -
+              entity: 482655a9-4767-4564-9edb-68ce6a668674
+            -
+              entity: a23b06b0-090b-46a1-b761-b86f04e61f7e
+          field_content_cards_design:
+            -
+              value: small-cards
+          field_content_cards_title:
+            -
+              value: 'Content cards  - Lower content region'

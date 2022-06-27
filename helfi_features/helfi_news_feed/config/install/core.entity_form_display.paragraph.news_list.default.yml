@@ -7,11 +7,12 @@ dependencies:
     - field.field.paragraph.news_list.field_helfi_news_neighbourhoods
     - field.field.paragraph.news_list.field_helfi_news_tags
     - field.field.paragraph.news_list.field_limit
+    - field.field.paragraph.news_list.field_news_list_description
+    - field.field.paragraph.news_list.field_news_list_title
     - paragraphs.paragraphs_type.news_list
   module:
     - select2
-_core:
-  default_config_hash: MgCTCdxVzcVYEjHn8sEq3m1aQtT4ZKT1JAcLScBch44
+    - text
 id: paragraph.news_list.default
 targetEntityType: paragraph
 bundle: news_list
@@ -52,6 +53,22 @@ content:
     weight: 0
     region: content
     settings:
+      placeholder: ''
+    third_party_settings: { }
+  field_news_list_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_news_list_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
 hidden:

@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - external_entities
+id: helfi_news.medium_teaser
+label: 'Medium Teaser'
+targetEntityType: helfi_news
+cache: true

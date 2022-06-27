@@ -1,0 +1,196 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 329149fd-3e4b-40b9-a7d4-59fb34234320
+  bundle: page
+  default_langcode: en
+  depends:
+    608c45ab-90c5-466b-bcac-c87649f2ec10: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: layout standard - hero - no-subnav - sidebar'
+  created:
+    -
+      value: 1654501169
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: true
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-standard/dc-layout-standard-hero-no-subnav
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7216ad84-23a6-40a7-8a3d-a7b1190507fd
+          bundle: banner
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654501662
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_banner_desc:
+            -
+              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
+              format: full_html
+          field_banner_design:
+            -
+              value: align-center
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 6b3cea4c-26eb-4093-883d-98ff1fff2cc8
+          bundle: hero
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654595579
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_bg_color:
+            -
+              value: coat-of-arms
+          field_hero_desc:
+            -
+              value: "<p>Nulla porttitor accumsan tincidunt. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</p>\r\n"
+              format: full_html
+          field_hero_design:
+            -
+              value: with-image-right
+          field_hero_image:
+            -
+              entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
+          field_hero_link_design:
+            -
+              value: primary
+          field_hero_title:
+            -
+              value: 'DC: layout standard - hero - no-subnav - sidebar'
+  field_lower_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 63b1a60b-f018-4024-9c68-db857c699a2b
+          bundle: banner
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654501674
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_banner_desc:
+            -
+              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
+              format: full_html
+          field_banner_design:
+            -
+              value: align-center
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+  field_sidebar_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 0e82f879-374b-47e2-b653-4d4767da45ee
+          bundle: sidebar_text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654595052
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_sidebar_text_text:
+            -
+              value: "<ul>\r\n\t<li>Nulla quis lorem ut libero malesuada feugiat.</li>\r\n\t<li>Pellentesque in ipsum id orci porta dapibus.</li>\r\n</ul>\r\n"
+              format: minimal
+          field_sidebar_text_title:
+            -
+              value: 'Sed porttitor lectus nibh'

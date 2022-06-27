@@ -72,7 +72,7 @@ function helfi_news_feed_paragraph_view(
 
       $build['news_list'][] = Drupal::entityTypeManager()
         ->getViewBuilder('helfi_news')
-        ->view($item);
+        ->view($item, 'medium_teaser');
     }
   }
 }
@@ -126,4 +126,36 @@ function helfi_news_feed_entity_bundle_info_alter(array &$bundles) : void {
   if (isset($bundles['paragraph']['news_list'])) {
     $bundles['paragraph']['news_list']['class'] = NewsFeedParagraph::class;
   }
+}
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function helfi_news_feed_preprocess_paragraph__news_list(&$variables) {
+  // Get current language ID.
+  $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  // Get the correct "Etusivu" instance environment URL.
+  $instance_name = \Drupal\helfi_api_base\Environment\Project::ETUSIVU;
+  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
+  $environment = $resolver->getEnvironment($instance_name, getenv('APP_ENV'));
+
+  $environment_url = $environment->getUrl($language);
+
+  // Set the news archive path based on language.
+  switch ($language) {
+    case 'fi':
+    default:
+      $news_path = '/uutiset';
+      break;
+    case 'sv':
+      $news_path = '/nyheter';
+      break;
+    case 'en':
+      $news_path = '/news';
+      break;
+  }
+
+  // Assign the URL variable to the template.
+  $variables['news_archive_url'] = $environment_url . $news_path;
 }

@@ -1,0 +1,132 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: a9033e6e-9009-40d8-95c1-402ad4604709
+  bundle: landing_page
+  default_langcode: en
+  depends:
+    608c45ab-90c5-466b-bcac-c87649f2ec10: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: layout landing - hero'
+  created:
+    -
+      value: 1654498757
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-landing/dc-layout-landing-hero
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 093b4ecd-1094-49fb-9c16-362d559da6dc
+          bundle: banner
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654498855
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_banner_desc:
+            -
+              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
+              format: full_html
+          field_banner_design:
+            -
+              value: align-center
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: c7251ce4-0879-4808-bf07-55bef330dca0
+          bundle: hero
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654498777
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_bg_color:
+            -
+              value: coat-of-arms
+          field_hero_desc:
+            -
+              value: "<p>Nulla porttitor accumsan tincidunt. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</p>\r\n"
+              format: full_html
+          field_hero_design:
+            -
+              value: with-image-right
+          field_hero_image:
+            -
+              entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
+          field_hero_link_design:
+            -
+              value: primary
+          field_hero_title:
+            -
+              value: 'DC: layout landing - hero'

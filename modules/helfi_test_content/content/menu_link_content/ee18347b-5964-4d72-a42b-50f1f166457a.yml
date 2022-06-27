@@ -1,0 +1,58 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: ee18347b-5964-4d72-a42b-50f1f166457a
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3c10d958-fbb4-42d2-83d4-adb7a4830bad: menu_link_content
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Link to non hel.fi address'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      uri: 'https://en.wikipedia.org/wiki/Helsinki'
+      title: ''
+      options:
+        attributes:
+          class: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -49
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3c10d958-fbb4-42d2-83d4-adb7a4830bad'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654500379

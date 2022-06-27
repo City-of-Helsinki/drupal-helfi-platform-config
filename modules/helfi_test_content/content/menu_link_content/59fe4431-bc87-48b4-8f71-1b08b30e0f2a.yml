@@ -1,0 +1,58 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 59fe4431-bc87-48b4-8f71-1b08b30e0f2a
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    ee18347b-5964-4d72-a42b-50f1f166457a: menu_link_content
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Link to non hel.fi address under another link'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      uri: 'https://en.wikipedia.org/wiki/Helsinki#History'
+      title: ''
+      options:
+        attributes:
+          class: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:ee18347b-5964-4d72-a42b-50f1f166457a'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654500521

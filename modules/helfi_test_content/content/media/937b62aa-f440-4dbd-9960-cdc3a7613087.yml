@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 937b62aa-f440-4dbd-9960-cdc3a7613087
+  bundle: helfi_chart
+  default_langcode: en
+default:
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'media:helfi_chart:937b62aa-f440-4dbd-9960-cdc3a7613087'
+  created:
+    -
+      value: 1654686573
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_helfi_chart_title:
+    -
+      value: Chart
+  field_helfi_chart_transcript:
+    -
+      value: "<p>Chart test</p>\r\n"
+      format: full_html
+  field_helfi_chart_url:
+    -
+      uri: 'https://app.powerbi.com/view?r=eyJrIjoiYjE5OTFhMmEtMWYzNC00YjY2LTllODMtMzhhZDRiNTJiMDQ5IiwidCI6IjNmZWI2YmMxLWQ3MjItNDcyNi05NjZjLTViNThiNjRkZjc1MiIsImMiOjh9'
+      title: ''
+      options: {  }

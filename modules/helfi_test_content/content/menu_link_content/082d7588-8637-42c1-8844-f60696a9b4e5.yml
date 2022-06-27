@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 082d7588-8637-42c1-8844-f60696a9b4e5
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    6cc3f398-67a2-45e6-8302-b13d647b708d: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: component banner'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 6cc3f398-67a2-45e6-8302-b13d647b708d
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654686193

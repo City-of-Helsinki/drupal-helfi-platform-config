@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 105de1eb-b55f-40f2-8b49-3732f103c8f8
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    7984dfb0-3c83-4a4b-82f3-ef642a2d830f: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: component unit search'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 7984dfb0-3c83-4a4b-82f3-ef642a2d830f
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654688109

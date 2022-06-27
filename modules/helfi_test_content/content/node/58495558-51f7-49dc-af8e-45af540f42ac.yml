@@ -1,0 +1,89 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 58495558-51f7-49dc-af8e-45af540f42ac
+  bundle: landing_page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: layout landing - no-hero'
+  created:
+    -
+      value: 1654495567
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-landing/dc-layout-landing-no-hero
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: bb8740d1-bba4-4b62-a8f2-dba8be0ed2f2
+          bundle: banner
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654495768
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_banner_desc:
+            -
+              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
+              format: full_html
+          field_banner_design:
+            -
+              value: align-center
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+  field_has_hero:
+    -
+      value: false

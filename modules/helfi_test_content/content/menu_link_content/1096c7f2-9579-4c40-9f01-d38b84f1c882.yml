@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 1096c7f2-9579-4c40-9f01-d38b84f1c882
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    9dc342a5-3d6a-40ef-9570-ed70392744fb: menu_link_content
+    58495558-51f7-49dc-af8e-45af540f42ac: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: layout landing - no-hero'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 58495558-51f7-49dc-af8e-45af540f42ac
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 2
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:9dc342a5-3d6a-40ef-9570-ed70392744fb'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654499909

@@ -1,0 +1,224 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7fb399fc-0dcf-40e1-88a9-82df1c0c29da
+  bundle: page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component accordion'
+  created:
+    -
+      value: 1654685822
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-accordion
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 492c58d5-3d37-440c-85de-142b40818653
+          bundle: accordion
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654686048
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_accordion_design:
+            -
+              value: white
+          field_accordion_heading_level:
+            -
+              value: '2'
+          field_accordion_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 89478881-2c30-43fa-a972-b78fae7cfc53
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1654686048
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 8eb56f18-c84e-4586-923b-f1d4eae2f10e
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1654686061
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p>\r\n\r\n<p>Curabitur aliquet quam id dui posuere blandit. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Nulla porttitor accumsan tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit.</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion item'
+          field_accordion_title:
+            -
+              value: 'Accordion - Upper content region'
+          field_accordion_title_level:
+            -
+              value: '2'
+  field_has_hero:
+    -
+      value: false
+  field_lower_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 144573da-a6fd-496d-8b2d-caf735401132
+          bundle: accordion
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654686101
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_accordion_design:
+            -
+              value: white
+          field_accordion_heading_level:
+            -
+              value: '2'
+          field_accordion_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 1b5f59d6-8ce7-443d-ac8d-746d7a890e85
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1654686101
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: bc80abd2-7100-41db-8efe-fb07605f78c8
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1654686150
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p>\r\n\r\n<p>Curabitur aliquet quam id dui posuere blandit. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Nulla porttitor accumsan tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit.</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion item'
+          field_accordion_title:
+            -
+              value: 'Accordion - Lower content region'
+          field_accordion_title_level:
+            -
+              value: '2'
