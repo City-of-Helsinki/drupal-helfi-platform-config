@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_news_feed\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\ParagraphInterface;
+use \Drupal\Core\Url;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -174,9 +175,27 @@ function helfi_news_feed_preprocess_paragraph__news_list(&$variables) {
   $variables['news_archive_url'] = $environment_url . $news_path;
 }
 
-function helfi_news_feed_preprocess_external_entity__helfi_news__medium_teaser($variables) {
+function helfi_news_feed_preprocess_external_entity($variables) {
+  $entity = $variables['external_entity'];
+
+
+  // Get current language ID.
+  $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  // Get the correct "Etusivu" instance environment URL.
+  $instance_name = \Drupal\helfi_api_base\Environment\Project::ETUSIVU;
+  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
+  $environment = $resolver->getEnvironment($instance_name, getenv('APP_ENV'));
+
+  $environment_url = $environment->getUrl($language);
+
+  $variables['node_url'] = $environment_url . $entity->node_url->value;
+  $variables['published_at'] = $entity->published_at->value;
+ 
+  if($entity->short_title->value)
+    $variables['short_title'] =  $entity->short_title->value;
+  else {
+    $variables['short_title'] =  $entity->title->value;
+  }
   dump($variables);
-  $variables['node_url'] = 'joku';
-  $variables['published_at'] = 'joku';
-  $variables['short_title'] =  'otsikko';
 }
