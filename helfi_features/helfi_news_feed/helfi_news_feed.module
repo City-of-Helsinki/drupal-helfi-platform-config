@@ -175,7 +175,7 @@ function helfi_news_feed_preprocess_paragraph__news_list(&$variables) {
   $variables['news_archive_url'] = $environment_url . $news_path;
 }
 
-function helfi_news_feed_preprocess_external_entity($variables) {
+function helfi_news_feed_preprocess_external_entity(&$variables) {
   $entity = $variables['external_entity'];
 
 
