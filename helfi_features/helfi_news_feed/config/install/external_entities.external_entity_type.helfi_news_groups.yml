@@ -1,3 +1,4 @@
+uuid: f621f628-1e19-458c-a3ee-a5d3674faf29
 langcode: en
 status: true
 dependencies: {  }
@@ -14,7 +15,11 @@ field_mapper_config:
     uuid:
       value: $.id
     title:
-      value: '$.attributes[''name'']'
+      value: '$.attributes["name"]'
 storage_client_id: helfi_news_groups
+storage_client_config: {  }
 persistent_cache_max_age: -1
+annotation_entity_type_id: null
+annotation_bundle_id: null
+annotation_field_name: null
 inherits_annotation_fields: false

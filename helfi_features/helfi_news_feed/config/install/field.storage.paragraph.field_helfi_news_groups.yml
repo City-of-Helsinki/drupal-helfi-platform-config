@@ -2,15 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
+    - external_entities
     - paragraphs
-id: paragraph.field_neighbourhoods
-field_name: field_neighbourhoods
+id: paragraph.field_helfi_news_groups
+field_name: field_helfi_news_groups
 entity_type: paragraph
-type: string
+type: entity_reference
 settings:
-  max_length: 255
-  case_sensitive: false
-  is_ascii: false
+  target_type: helfi_news_groups
 module: core
 locked: false
 cardinality: -1
