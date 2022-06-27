@@ -1,4 +1,3 @@
-uuid: 01d2989d-6ea7-4396-8f3f-4a0b4cdfa1e8
 langcode: en
 status: true
 dependencies:
@@ -20,7 +19,7 @@ mode: default
 content:
   field_description:
     type: text_textarea
-    weight: 2
+    weight: 3
     region: content
     settings:
       rows: 5
@@ -46,7 +45,7 @@ content:
     third_party_settings: {  }
   field_phasing_item_title_level:
     type: options_select
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -58,14 +57,14 @@ content:
     third_party_settings: {  }
   field_show_phase_numbers:
     type: boolean_checkbox
-    weight: 4
+    weight: 1
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_title:
     type: string_textfield
-    weight: 1
+    weight: 2
     region: content
     settings:
       size: 60
