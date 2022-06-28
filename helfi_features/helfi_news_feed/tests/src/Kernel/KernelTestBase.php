@@ -29,6 +29,7 @@ class KernelTestBase extends CoreKernelTestBase {
     'helfi_tpr',
     'text',
     'allowed_formats',
+    'select2',
   ];
 
   /**
