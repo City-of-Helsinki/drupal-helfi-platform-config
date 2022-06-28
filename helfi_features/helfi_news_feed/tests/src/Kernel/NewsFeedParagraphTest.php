@@ -20,7 +20,8 @@ class NewsFeedParagraphTest extends KernelTestBase {
   public function testBundleClass() : void {
     $paragraph = Paragraph::create([
       'type' => 'news_list',
-      // 'field_helfi_news_tags' => [], @todo Fix tests for the external entities.
+      // @todo Fix tests for the external entities.
+      // 'field_helfi_news_tags' => [],.
       'field_limit' => 22,
       'field_news_list_title' => 'test title',
       'field_news_list_description' => 'test description',
