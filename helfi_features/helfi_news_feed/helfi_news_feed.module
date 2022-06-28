@@ -190,7 +190,7 @@ function helfi_news_feed_preprocess_external_entity(&$variables) {
   $environment_url = $environment->getUrl($language);
 
   $variables['node_url'] = $environment_url . $entity->node_url->value;
-  $variables['published_at'] = $entity->published_at->value;
+  $variables['published_at'] = strtotime($entity->published_at->value);
  
   if($entity->short_title->value)
     $variables['short_title'] =  $entity->short_title->value;
