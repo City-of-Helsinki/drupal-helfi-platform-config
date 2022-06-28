@@ -15,3 +15,5 @@ dependencies:
   - drupal:text
   - allowed_formats
   - select2
+  - hdbt_admin_editorial
+  - helfi_content
