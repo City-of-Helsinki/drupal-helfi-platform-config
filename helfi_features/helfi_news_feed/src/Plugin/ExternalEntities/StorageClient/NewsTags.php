@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_news_feed\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\helfi_news_feed\HelfiExternalEntityBase;
 
 /**
@@ -24,7 +23,7 @@ final class NewsTags extends HelfiExternalEntityBase {
    * @var array|string[]
    */
   protected array $query = [
-    'fields[taxonomy_term--news_tags]' => 'id,name,changed,langcode,status'
+    'fields[taxonomy_term--news_tags]' => 'id,name,changed,langcode,status',
   ];
 
   /**

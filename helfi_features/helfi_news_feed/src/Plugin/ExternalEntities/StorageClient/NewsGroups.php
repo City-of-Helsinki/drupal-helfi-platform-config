@@ -4,9 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_news_feed\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\StringTranslation\TranslationInterface;
-use Drupal\external_entities\ResponseDecoder\ResponseDecoderFactoryInterface;
 use Drupal\helfi_news_feed\HelfiExternalEntityBase;
 
 /**

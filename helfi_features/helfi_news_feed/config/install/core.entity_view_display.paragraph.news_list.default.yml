@@ -32,7 +32,7 @@ content:
       view_mode: default
       link: true
     third_party_settings: {  }
-    weight: 2
+    weight: 5
     region: content
   field_helfi_news_tags:
     type: entity_reference_entity_view
@@ -41,7 +41,7 @@ content:
       view_mode: default
       link: true
     third_party_settings: {  }
-    weight: 1
+    weight: 4
     region: content
   field_news_list_description:
     type: text_default

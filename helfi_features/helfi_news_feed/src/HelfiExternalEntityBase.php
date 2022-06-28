@@ -13,6 +13,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Base class used by taxonomy external entity.
+ */
 abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
 
   /**
@@ -102,7 +105,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
           $length = NULL
   ) : array {
 
-    foreach($parameters as $param) {
+    foreach ($parameters as $param) {
       ['field' => $field, 'value' => $value, 'operator' => $operator] = $param;
       if ($field == 'id') {
         $this->query[sprintf("filter[id][value][%s]", reset($value))] = reset($value);
@@ -118,6 +121,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     foreach ($data as $value) {
       $prepared[$value["id"]] = $value;
     }
+
     return $prepared;
   }
 
@@ -138,6 +142,8 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   /**
    * Creates a request against JSON:API.
    *
+   * @param string $endpoint
+   *   Endpoint to send the request to.
    * @param array $parameters
    *   The query parameters.
    *
@@ -165,4 +171,5 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     }
     return [];
   }
+
 }
