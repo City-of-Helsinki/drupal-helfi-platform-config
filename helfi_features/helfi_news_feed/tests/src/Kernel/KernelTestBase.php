@@ -46,6 +46,9 @@ class KernelTestBase extends CoreKernelTestBase {
     $this->installConfig('paragraphs');
     $this->installConfig('helfi_news_feed');
     $this->installEntitySchema('helfi_news');
+    $this->installEntitySchema('helfi_news_groups');
+    $this->installEntitySchema('helfi_news_neighbourhoods');
+    $this->installEntitySchema('helfi_news_tags');
   }
 
 }
