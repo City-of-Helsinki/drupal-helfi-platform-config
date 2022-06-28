@@ -121,9 +121,27 @@ function helfi_news_feed_update_9001() : void {
 }
 
 /**
- * Update taxonomy string fields to external entity reference fields with select2.
+ * Create groups, neighbourhoods and tags external entities.
  */
 function helfi_news_feed_update_9002(): void {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Create external entities.
+  $newConfigs = [
+    'external_entities.external_entity_type.helfi_news_groups',
+    'external_entities.external_entity_type.helfi_news_neighbourhoods',
+    'external_entities.external_entity_type.helfi_news_tags',
+  ];
+
+  foreach ($newConfigs as $config) {
+    ConfigHelper::installNewConfig($configLocation, $config);
+  }
+}
+
+/**
+ * Update taxonomy string fields to external entity reference fields with select2.
+ */
+function helfi_news_feed_update_9003(): void {
   $configLocation = dirname(__FILE__) . '/config/install/';
   $config_factory = \Drupal::configFactory();
 
@@ -144,17 +162,6 @@ function helfi_news_feed_update_9002(): void {
     }
   }
 
-  // Create external entities.
-  $newConfigs = [
-    'external_entities.external_entity_type.helfi_news_groups',
-    'external_entities.external_entity_type.helfi_news_neighbourhoods',
-    'external_entities.external_entity_type.helfi_news_tags',
-  ];
-
-  foreach ($newConfigs as $config) {
-    ConfigHelper::installNewConfig($configLocation, $config);
-  }
-
   // Create new configuration.
   $configsToCreate = [
     'field.storage.paragraph.field_helfi_news_groups' => 'field.field.paragraph.news_list.field_helfi_news_groups',
@@ -166,6 +173,7 @@ function helfi_news_feed_update_9002(): void {
     ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
   }
 
+  // Update existing configuration.
   $updateConfig = [
     'core.entity_form_display.paragraph.news_list.default',
     'core.entity_view_display.paragraph.news_list.default',
