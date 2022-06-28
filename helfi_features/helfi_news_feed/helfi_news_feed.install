@@ -109,7 +109,7 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
 /**
  * Update taxonomy string fields to external entity reference fields with select2.
  */
-function helfi_news_feed_update_9003(): void {
+function helfi_news_feed_update_9002(): void {
   $configLocation = dirname(__FILE__) . '/config/install/';
   $config_factory = \Drupal::configFactory();
 
