@@ -29,4 +29,7 @@ content:
 hidden:
   groups: true
   neighbourhoods: true
+  node_url: true
+  published_at: true
+  short_title: true
   tags: true
