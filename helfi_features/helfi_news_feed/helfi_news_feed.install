@@ -130,6 +130,15 @@ function helfi_news_feed_update_9003() {
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_news_feed', 'helfi_news_feed_update_9003');
 
+  $config_optional = dirname(__FILE__) . '/config/optional/';
+
+  //Install date format needed for news teaser
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('core.date_format.publication_date_format.');
+  if (empty($config->getRawData())) {
+    ConfigHelper::installNewConfig($config_optional, 'core.date_format.publication_date_format');
+  }
+
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
