@@ -103,3 +103,58 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
     }
   }
 }
+
+/**
+ * Update taxonomy string fields to external entity reference fields with select2.
+ */
+function helfi_news_feed_update_9002() {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $config_factory = \Drupal::configFactory();
+
+  // Create new configuration.
+  $configsToCreate = [
+   'field.storage.paragraph.field_helfi_news_groups' => 'field.field.paragraph.news_list.field_helfi_news_groups',
+   'field.storage.paragraph.field_helfi_news_neighbourhoods' => 'field.field.paragraph.news_list.field_helfi_news_neighbourhoods',
+   'field.storage.paragraph.field_helfi_news_tags' => 'field.field.paragraph.news_list.field_helfi_news_tags',
+  ];
+
+  foreach ($configsToCreate as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+  // Remove useless configurations.
+  $configsToRemove = [
+    'field.storage.paragraph.field_groups',
+    'field.field.paragraph.news_list.field__groups',
+    'field.storage.paragraph.field_neighbourhoods',
+    'field.field.paragraph.news_list.field_neighbourhoods',
+    'field.storage.paragraph.field_tags',
+    'field.field.paragraph.news_list.field_tags'
+  ];
+
+  foreach ($configsToRemove as $field_config) {
+    $config = $config_factory->getEditable($field_config);
+    if (!empty($config->getRawData())) {
+      $config->delete();
+    }
+  }
+
+  $newConfigs = [
+    'external_entities.external_entity_type.helfi_news_groups',
+    'external_entities.external_entity_type.helfi_news_neighbourhoods',
+    'external_entities.external_entity_type.helfi_news_tags',
+  ];
+
+  foreach ($newConfigs as $config) {
+    ConfigHelper::installNewConfig($configLocation, $config);
+  }
+
+  $updateConfig = [
+    'core.entity_form_display.paragraph.news_list.default',
+    'core.entity_view_display.paragraph.news_list.default',
+  ];
+
+  foreach ($updateConfig as $config) {
+    ConfigHelper::updateExistingConfig($configLocation, $config);
+  }
+}
