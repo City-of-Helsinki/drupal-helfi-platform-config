@@ -109,7 +109,8 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
       ['field' => $field, 'value' => $value, 'operator' => $operator] = $param;
       if ($field == 'id') {
         $this->query[sprintf("filter[id][value][%s]", reset($value))] = reset($value);
-      } else {
+      }
+      else {
         $this->query['filter[name-filter][condition][path]'] = 'name';
         $this->query['filter[name-filter][condition][operator]'] = $operator;
         $this->query['filter[name-filter][condition][value]'] = $value;

@@ -76,7 +76,8 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
       ['field_content', 'field_lower_content'],
       'news_list'
     );
-  } catch (\InvalidArgumentException $e) {
+  }
+  catch (\InvalidArgumentException $e) {
     \Drupal::messenger()->addWarning($e->getMessage());
   }
 
@@ -98,7 +99,8 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
         ['field_lower_content'],
         'news_list'
       );
-    } catch (\InvalidArgumentException $e) {
+    }
+    catch (\InvalidArgumentException $e) {
       \Drupal::messenger()->addWarning($e->getMessage());
     }
   }
@@ -113,9 +115,9 @@ function helfi_news_feed_update_9002(): void {
 
   // Create new configuration.
   $configsToCreate = [
-   'field.storage.paragraph.field_helfi_news_groups' => 'field.field.paragraph.news_list.field_helfi_news_groups',
-   'field.storage.paragraph.field_helfi_news_neighbourhoods' => 'field.field.paragraph.news_list.field_helfi_news_neighbourhoods',
-   'field.storage.paragraph.field_helfi_news_tags' => 'field.field.paragraph.news_list.field_helfi_news_tags',
+    'field.storage.paragraph.field_helfi_news_groups' => 'field.field.paragraph.news_list.field_helfi_news_groups',
+    'field.storage.paragraph.field_helfi_news_neighbourhoods' => 'field.field.paragraph.news_list.field_helfi_news_neighbourhoods',
+    'field.storage.paragraph.field_helfi_news_tags' => 'field.field.paragraph.news_list.field_helfi_news_tags',
   ];
 
   foreach ($configsToCreate as $field_storage => $field_config) {
@@ -129,7 +131,7 @@ function helfi_news_feed_update_9002(): void {
     'field.storage.paragraph.field_neighbourhoods',
     'field.field.paragraph.news_list.field_neighbourhoods',
     'field.storage.paragraph.field_tags',
-    'field.field.paragraph.news_list.field_tags'
+    'field.field.paragraph.news_list.field_tags',
   ];
 
   foreach ($configsToRemove as $field_config) {
