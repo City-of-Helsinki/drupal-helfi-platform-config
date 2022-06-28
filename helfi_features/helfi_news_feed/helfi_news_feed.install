@@ -142,6 +142,7 @@ function helfi_news_feed_update_9002(): void {
  * Update taxonomy string fields to external entity reference fields with select2.
  */
 function helfi_news_feed_update_9003(): void {
+  drupal_flush_all_caches();
   $configLocation = dirname(__FILE__) . '/config/install/';
   $config_factory = \Drupal::configFactory();
 
