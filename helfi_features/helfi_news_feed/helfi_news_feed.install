@@ -24,48 +24,17 @@ function helfi_news_feed_install() : void {
   catch (\InvalidArgumentException $e) {
     \Drupal::messenger()->addWarning($e->getMessage());
   }
+
+  // Enable the news feed paragraph type in various entities.
+  helfi_news_feed_add_news_feed_to_entities();
 }
 
 /**
- * "News list" paragraph type changes.
+ * Enable the news feed paragraph type in various entities.
+ *
+ * @return void
  */
-function helfi_news_feed_update_9001(&$sandbox = NULL) {
-  // Add "Title" and "Description" fields for the paragraph type.
-  $config_install = dirname(__FILE__) . '/config/install/';
-  $config_translation_location = dirname(__FILE__) . '/config/language/';
-
-  // Add the new fields and field storages.
-  $paragraph_fields = [
-    'field.storage.paragraph.field_news_list_title' => 'field.field.paragraph.news_list.field_news_list_title',
-    'field.storage.paragraph.field_news_list_description' => 'field.field.paragraph.news_list.field_news_list_description',
-  ];
-
-  foreach ($paragraph_fields as $field_storage => $field_config) {
-    ConfigHelper::installNewField($config_install, $field_storage, $field_config);
-    ConfigHelper::installNewConfigTranslation($config_translation_location, $field_config);
-  }
-
-  // Update the paragraph type.
-  $configurations = [
-    'core.entity_form_display.paragraph.news_list.default',
-    'core.entity_view_display.paragraph.news_list.default',
-  ];
-
-  foreach ($configurations as $configuration) {
-    ConfigHelper::updateExistingConfig($config_install, $configuration);
-  }
-
-  $config_optional = dirname(__FILE__) . '/config/optional/';
-
-  // Add "Medium Teaser" view mode for the "Helfi: News" entity type.
-  $view_mode_configurations = [
-    'core.entity_view_display.helfi_news.helfi_news.medium_teaser',
-    'core.entity_view_mode.helfi_news.medium_teaser',
-  ];
-
-  foreach ($view_mode_configurations as $configuration) {
-    ConfigHelper::installNewConfig($config_optional, $configuration);
-  }
+function helfi_news_feed_add_news_feed_to_entities() : void {
 
   // Enable the paragraph type in page content type.
   try {
@@ -107,6 +76,51 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
 }
 
 /**
+ * "News list" paragraph type changes.
+ */
+function helfi_news_feed_update_9001() : void {
+  // Add "Title" and "Description" fields for the paragraph type.
+  $config_install = dirname(__FILE__) . '/config/install/';
+  $config_translation_location = dirname(__FILE__) . '/config/language/';
+
+  // Add the new fields and field storages.
+  $paragraph_fields = [
+    'field.storage.paragraph.field_news_list_title' => 'field.field.paragraph.news_list.field_news_list_title',
+    'field.storage.paragraph.field_news_list_description' => 'field.field.paragraph.news_list.field_news_list_description',
+  ];
+
+  foreach ($paragraph_fields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($config_install, $field_storage, $field_config);
+    ConfigHelper::installNewConfigTranslation($config_translation_location, $field_config);
+  }
+
+  // Update the paragraph type.
+  $configurations = [
+    'core.entity_form_display.paragraph.news_list.default',
+    'core.entity_view_display.paragraph.news_list.default',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($config_install, $configuration);
+  }
+
+  $config_optional = dirname(__FILE__) . '/config/optional/';
+
+  // Add "Medium Teaser" view mode for the "Helfi: News" entity type.
+  $view_mode_configurations = [
+    'core.entity_view_display.helfi_news.helfi_news.medium_teaser',
+    'core.entity_view_mode.helfi_news.medium_teaser',
+  ];
+
+  foreach ($view_mode_configurations as $configuration) {
+    ConfigHelper::installNewConfig($config_optional, $configuration);
+  }
+
+  // Enable the news feed paragraph type in various entities.
+  helfi_news_feed_add_news_feed_to_entities();
+}
+
+/**
  * Update taxonomy string fields to external entity reference fields with select2.
  */
 function helfi_news_feed_update_9002(): void {
@@ -130,7 +144,7 @@ function helfi_news_feed_update_9002(): void {
     }
   }
 
-  // Create external entities
+  // Create external entities.
   $newConfigs = [
     'external_entities.external_entity_type.helfi_news_groups',
     'external_entities.external_entity_type.helfi_news_neighbourhoods',
@@ -143,9 +157,9 @@ function helfi_news_feed_update_9002(): void {
 
   // Create new configuration.
   $configsToCreate = [
-   'field.storage.paragraph.field_helfi_news_groups' => 'field.field.paragraph.news_list.field_helfi_news_groups',
-   'field.storage.paragraph.field_helfi_news_neighbourhoods' => 'field.field.paragraph.news_list.field_helfi_news_neighbourhoods',
-   'field.storage.paragraph.field_helfi_news_tags' => 'field.field.paragraph.news_list.field_helfi_news_tags',
+    'field.storage.paragraph.field_helfi_news_groups' => 'field.field.paragraph.news_list.field_helfi_news_groups',
+    'field.storage.paragraph.field_helfi_news_neighbourhoods' => 'field.field.paragraph.news_list.field_helfi_news_neighbourhoods',
+    'field.storage.paragraph.field_helfi_news_tags' => 'field.field.paragraph.news_list.field_helfi_news_tags',
   ];
 
   foreach ($configsToCreate as $field_storage => $field_config) {
