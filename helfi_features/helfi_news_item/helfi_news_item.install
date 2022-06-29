@@ -208,3 +208,18 @@ function helfi_news_item_update_9009() {
     ConfigHelper::installNewConfig($configLocation, $configuration);
   }
 }
+
+/**
+ * Adds date format
+ */
+function helfi_news_item_update_9010() {
+  $config_optional = dirname(__FILE__) . '../helfi_content/config/optional/';
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('core.date_format.publication_date_format');
+
+  //Install date format required for news item
+  if (empty($config->getRawData())) {
+    ConfigHelper::installNewConfig($config_optional, 'core.date_format.publication_date_format');
+  }
+}

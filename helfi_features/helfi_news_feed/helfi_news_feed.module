@@ -117,6 +117,20 @@ function helfi_news_feed_entity_bundle_field_info_alter(
         ->setDisplayConfigurable('view', TRUE);
     }
 
+    // Additional entity info fields.
+    $entity_info_fields = [
+      'node_url' => new TranslatableMarkup('Node URL'),
+      'published_at' => new TranslatableMarkup('Published at'),
+      'short_title' => new TranslatableMarkup('Short title'),
+    ];
+
+    foreach ($entity_info_fields as $field_name => $field_label) {
+      $fields[$field_name] = BundleFieldDefinition::create('string')
+        ->setName($field_name)
+        ->setLabel($field_label)
+        ->setDisplayConfigurable('view', TRUE)
+        ->setDisplayConfigurable('form', TRUE);
+    }
   }
 }
 
@@ -161,4 +175,28 @@ function helfi_news_feed_preprocess_paragraph__news_list(&$variables) {
 
   // Assign the URL variable to the template.
   $variables['news_archive_url'] = $environment_url . $news_path;
+}
+
+function helfi_news_feed_preprocess_external_entity(&$variables) {
+  $entity = $variables['external_entity'];
+
+
+  // Get current language ID.
+  $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  // Get the correct "Etusivu" instance environment URL.
+  $instance_name = \Drupal\helfi_api_base\Environment\Project::ETUSIVU;
+  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
+  $environment = $resolver->getEnvironment($instance_name, getenv('APP_ENV'));
+
+  $environment_url = $environment->getUrl($language);
+
+  $variables['node_url'] = $environment_url . $entity->node_url->value;
+  $variables['published_at'] = strtotime($entity->published_at->value);
+ 
+  if($entity->short_title->value)
+    $variables['short_title'] =  $entity->short_title->value;
+  else {
+    $variables['short_title'] =  $entity->title->value;
+  }
 }
