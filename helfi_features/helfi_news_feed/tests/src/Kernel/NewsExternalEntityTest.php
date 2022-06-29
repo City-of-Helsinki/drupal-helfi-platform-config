@@ -50,9 +50,10 @@ class NewsExternalEntityTest extends KernelTestBase {
    * Make sure trying to delete entity throws an exception.
    */
   public function testDelete() : void {
+    $externalEntityStorage = $this->getExternalEntityStorage();
     $this->expectException(EntityStorageException::class);
     $this->expectExceptionMessage('::delete() is not supported.');
-    $this->getExternalEntityStorage()->delete([ExternalEntity::create(['type' => 'helfi_news'])]);
+    $externalEntityStorage->delete([$externalEntityStorage->create(['type' => 'helfi_news'])]);
   }
 
   /**
