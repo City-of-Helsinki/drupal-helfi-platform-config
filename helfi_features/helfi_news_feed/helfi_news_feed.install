@@ -121,9 +121,48 @@ function helfi_news_feed_update_9001() : void {
 }
 
 /**
+ * Adds fields to the 'helfi_news' external entity type.
+ */
+function helfi_news_feed_update_9002(&$sandbox = NULL) {
+  $config_install = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'external_entities.external_entity_type.helfi_news',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($config_install, $configuration);
+  }
+}
+
+/**
+ * Hides title and description labels and adds date format
+ */
+function helfi_news_feed_update_9003() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_news_feed', 'helfi_news_feed_update_9003');
+
+  $config_optional = dirname(__FILE__) . '../helfi_content/config/optional/';
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('core.date_format.publication_date_format');
+
+  //Install date format required for new item
+  if (empty($config->getRawData())) {
+    ConfigHelper::installNewConfig($config_optional, 'core.date_format.publication_date_format');
+  }
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
  * Create groups, neighbourhoods and tags external entities.
  */
-function helfi_news_feed_update_9002(): void {
+function helfi_news_feed_update_9004(): void {
   $configLocation = dirname(__FILE__) . '/config/install/';
 
   // Create external entities.
@@ -141,7 +180,7 @@ function helfi_news_feed_update_9002(): void {
 /**
  * Update taxonomy string fields to external entity reference fields with select2.
  */
-function helfi_news_feed_update_9003(): void {
+function helfi_news_feed_update_9005(): void {
   drupal_flush_all_caches();
   $configLocation = dirname(__FILE__) . '/config/install/';
   $config_factory = \Drupal::configFactory();
@@ -183,44 +222,4 @@ function helfi_news_feed_update_9003(): void {
   foreach ($updateConfig as $config) {
     ConfigHelper::updateExistingConfig($configLocation, $config);
   }
-}
-
-/**
- * Adds fields to the 'helfi_news' external entity type.
- */
-function helfi_news_feed_update_9002(&$sandbox = NULL) {
-  $config_install = dirname(__FILE__) . '/config/install/';
-
-  $configurations = [
-    'external_entities.external_entity_type.helfi_news',
-  ];
-
-  foreach ($configurations as $configuration) {
-    ConfigHelper::updateExistingConfig($config_install, $configuration);
-  }
-}
-
-
-/**
- * Hides title and description labels and adds date format
- */
-function helfi_news_feed_update_9003() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_news_feed', 'helfi_news_feed_update_9003');
-
-  $config_optional = dirname(__FILE__) . '../helfi_content/config/optional/';
-
-  $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('core.date_format.publication_date_format');
-
-  //Install date format required for new item
-  if (empty($config->getRawData())) {
-    ConfigHelper::installNewConfig($config_optional, 'core.date_format.publication_date_format');
-  }
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
 }
