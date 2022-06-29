@@ -24,12 +24,61 @@ function helfi_news_feed_install() : void {
   catch (\InvalidArgumentException $e) {
     \Drupal::messenger()->addWarning($e->getMessage());
   }
+
+  // Enable the news feed paragraph type in various entities.
+  helfi_news_feed_add_news_feed_to_entities();
+}
+
+/**
+ * Enable the news feed paragraph type in various entities.
+ *
+ * @return void
+ */
+function helfi_news_feed_add_news_feed_to_entities() : void {
+
+  // Enable the paragraph type in page content type.
+  try {
+    // "Page" content type.
+    helfi_platform_config_enable_paragraph_fields(
+      'node',
+      'page',
+      ['field_content', 'field_lower_content'],
+      'news_list'
+    );
+  }
+  catch (\InvalidArgumentException $e) {
+    \Drupal::messenger()->addWarning($e->getMessage());
+  }
+
+  // Enable the paragraph type in TPR entity types.
+  if (\Drupal::moduleHandler()->moduleExists('helfi_tpr')) {
+    try {
+      // "TPR Service" entity type.
+      helfi_platform_config_enable_paragraph_fields(
+        'tpr_service',
+        'tpr_service',
+        ['field_lower_content'],
+        'news_list'
+      );
+
+      // "TPR Unit" entity type.
+      helfi_platform_config_enable_paragraph_fields(
+        'tpr_unit',
+        'tpr_unit',
+        ['field_lower_content'],
+        'news_list'
+      );
+    }
+    catch (\InvalidArgumentException $e) {
+      \Drupal::messenger()->addWarning($e->getMessage());
+    }
+  }
 }
 
 /**
  * "News list" paragraph type changes.
  */
-function helfi_news_feed_update_9001(&$sandbox = NULL) {
+function helfi_news_feed_update_9001() : void {
   // Add "Title" and "Description" fields for the paragraph type.
   $config_install = dirname(__FILE__) . '/config/install/';
   $config_translation_location = dirname(__FILE__) . '/config/language/';
@@ -67,41 +116,8 @@ function helfi_news_feed_update_9001(&$sandbox = NULL) {
     ConfigHelper::installNewConfig($config_optional, $configuration);
   }
 
-  // Enable the paragraph type in page content type.
-  try {
-    // "Page" content type.
-    helfi_platform_config_enable_paragraph_fields(
-      'node',
-      'page',
-      ['field_content', 'field_lower_content'],
-      'news_list'
-    );
-  } catch (\InvalidArgumentException $e) {
-    \Drupal::messenger()->addWarning($e->getMessage());
-  }
-
-  // Enable the paragraph type in TPR entity types.
-  if (\Drupal::moduleHandler()->moduleExists('helfi_tpr')) {
-    try {
-      // "TPR Service" entity type.
-      helfi_platform_config_enable_paragraph_fields(
-        'tpr_service',
-        'tpr_service',
-        ['field_lower_content'],
-        'news_list'
-      );
-
-      // "TPR Unit" entity type.
-      helfi_platform_config_enable_paragraph_fields(
-        'tpr_unit',
-        'tpr_unit',
-        ['field_lower_content'],
-        'news_list'
-      );
-    } catch (\InvalidArgumentException $e) {
-      \Drupal::messenger()->addWarning($e->getMessage());
-    }
-  }
+  // Enable the news feed paragraph type in various entities.
+  helfi_news_feed_add_news_feed_to_entities();
 }
 
 /**
@@ -118,7 +134,6 @@ function helfi_news_feed_update_9002(&$sandbox = NULL) {
     ConfigHelper::updateExistingConfig($config_install, $configuration);
   }
 }
-
 
 /**
  * Hides title and description labels and adds date format
@@ -142,4 +157,69 @@ function helfi_news_feed_update_9003() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Create groups, neighbourhoods and tags external entities.
+ */
+function helfi_news_feed_update_9004(): void {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Create external entities.
+  $newConfigs = [
+    'external_entities.external_entity_type.helfi_news_groups',
+    'external_entities.external_entity_type.helfi_news_neighbourhoods',
+    'external_entities.external_entity_type.helfi_news_tags',
+  ];
+
+  foreach ($newConfigs as $config) {
+    ConfigHelper::installNewConfig($configLocation, $config);
+  }
+}
+
+/**
+ * Update taxonomy string fields to external entity reference fields with select2.
+ */
+function helfi_news_feed_update_9005(): void {
+  drupal_flush_all_caches();
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $config_factory = \Drupal::configFactory();
+
+  // Remove useless configurations.
+  $configsToRemove = [
+    'field.storage.paragraph.field_groups',
+    'field.field.paragraph.news_list.field_groups',
+    'field.storage.paragraph.field_neighbourhoods',
+    'field.field.paragraph.news_list.field_neighbourhoods',
+    'field.storage.paragraph.field_tags',
+    'field.field.paragraph.news_list.field_tags',
+  ];
+
+  foreach ($configsToRemove as $field_config) {
+    $config = $config_factory->getEditable($field_config);
+    if (!empty($config->getRawData())) {
+      $config->delete();
+    }
+  }
+
+  // Create new configuration.
+  $configsToCreate = [
+    'field.storage.paragraph.field_helfi_news_groups' => 'field.field.paragraph.news_list.field_helfi_news_groups',
+    'field.storage.paragraph.field_helfi_news_neighbourhoods' => 'field.field.paragraph.news_list.field_helfi_news_neighbourhoods',
+    'field.storage.paragraph.field_helfi_news_tags' => 'field.field.paragraph.news_list.field_helfi_news_tags',
+  ];
+
+  foreach ($configsToCreate as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+  // Update existing configuration.
+  $updateConfig = [
+    'core.entity_form_display.paragraph.news_list.default',
+    'core.entity_view_display.paragraph.news_list.default',
+  ];
+
+  foreach ($updateConfig as $config) {
+    ConfigHelper::updateExistingConfig($configLocation, $config);
+  }
 }

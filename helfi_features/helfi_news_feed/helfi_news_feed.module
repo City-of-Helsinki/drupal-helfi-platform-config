@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -150,7 +151,7 @@ function helfi_news_feed_preprocess_paragraph__news_list(&$variables) {
   $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
   // Get the correct "Etusivu" instance environment URL.
-  $instance_name = \Drupal\helfi_api_base\Environment\Project::ETUSIVU;
+  $instance_name = Project::ETUSIVU;
   $resolver = \Drupal::service('helfi_api_base.environment_resolver');
   $environment = $resolver->getEnvironment($instance_name, getenv('APP_ENV'));
 
@@ -162,9 +163,11 @@ function helfi_news_feed_preprocess_paragraph__news_list(&$variables) {
     default:
       $news_path = '/uutiset';
       break;
+
     case 'sv':
       $news_path = '/nyheter';
       break;
+
     case 'en':
       $news_path = '/news';
       break;

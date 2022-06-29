@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.news_list.field_groups
+    - field.field.paragraph.news_list.field_helfi_news_groups
+    - field.field.paragraph.news_list.field_helfi_news_neighbourhoods
+    - field.field.paragraph.news_list.field_helfi_news_tags
     - field.field.paragraph.news_list.field_limit
-    - field.field.paragraph.news_list.field_neighbourhoods
     - field.field.paragraph.news_list.field_news_list_description
     - field.field.paragraph.news_list.field_news_list_title
-    - field.field.paragraph.news_list.field_tags
     - paragraphs.paragraphs_type.news_list
   module:
     - text
@@ -16,6 +16,33 @@ targetEntityType: paragraph
 bundle: news_list
 mode: default
 content:
+  field_helfi_news_groups:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_helfi_news_neighbourhoods:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_helfi_news_tags:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
   field_news_list_description:
     type: text_default
     label: hidden
@@ -37,7 +64,4 @@ content:
     weight: 2
     region: content
 hidden:
-  field_groups: true
   field_limit: true
-  field_neighbourhoods: true
-  field_tags: true

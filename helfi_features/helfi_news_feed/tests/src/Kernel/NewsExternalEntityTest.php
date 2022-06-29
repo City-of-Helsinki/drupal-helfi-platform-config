@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_news_feed\Kernel;
 
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\external_entities\Entity\ExternalEntity;
 use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\TestLoggerTrait;
@@ -50,9 +49,10 @@ class NewsExternalEntityTest extends KernelTestBase {
    * Make sure trying to delete entity throws an exception.
    */
   public function testDelete() : void {
+    $externalEntityStorage = $this->getExternalEntityStorage();
     $this->expectException(EntityStorageException::class);
     $this->expectExceptionMessage('::delete() is not supported.');
-    $this->getExternalEntityStorage()->delete([ExternalEntity::create(['type' => 'helfi_news'])]);
+    $externalEntityStorage->delete([$externalEntityStorage->create(['type' => 'helfi_news'])]);
   }
 
   /**

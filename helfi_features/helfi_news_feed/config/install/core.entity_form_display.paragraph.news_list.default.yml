@@ -2,43 +2,58 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.news_list.field_groups
+    - field.field.paragraph.news_list.field_helfi_news_groups
+    - field.field.paragraph.news_list.field_helfi_news_neighbourhoods
+    - field.field.paragraph.news_list.field_helfi_news_tags
     - field.field.paragraph.news_list.field_limit
-    - field.field.paragraph.news_list.field_neighbourhoods
     - field.field.paragraph.news_list.field_news_list_description
     - field.field.paragraph.news_list.field_news_list_title
-    - field.field.paragraph.news_list.field_tags
     - paragraphs.paragraphs_type.news_list
   module:
+    - select2
     - text
 id: paragraph.news_list.default
 targetEntityType: paragraph
 bundle: news_list
 mode: default
 content:
-  field_groups:
-    type: string_textfield
-    weight: 4
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_limit:
-    type: number
-    weight: 5
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_neighbourhoods:
-    type: string_textfield
+  field_helfi_news_groups:
+    type: select2_entity_reference
     weight: 3
     region: content
     settings:
-      size: 60
-      placeholder: ''
+      width: 100%
+      autocomplete: true
+      match_operator: CONTAINS
+      match_limit: 10
     third_party_settings: {  }
+  field_helfi_news_neighbourhoods:
+    type: select2_entity_reference
+    weight: 5
+    region: content
+    settings:
+      width: 100%
+      autocomplete: true
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
+  field_helfi_news_tags:
+    type: select2_entity_reference
+    weight: 4
+    region: content
+    settings:
+      width: 100%
+      autocomplete: true
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
+  field_limit:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: { }
   field_news_list_description:
     type: text_textarea
     weight: 1
@@ -50,14 +65,6 @@ content:
   field_news_list_title:
     type: string_textfield
     weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_tags:
-    type: string_textfield
-    weight: 2
     region: content
     settings:
       size: 60
