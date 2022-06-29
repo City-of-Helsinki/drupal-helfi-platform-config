@@ -33,6 +33,22 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9025();
     helfi_content_update_9027();
     helfi_content_update_9028();
+
+    // Override default meta tags configurations.
+    $config_location = dirname(__FILE__) . '/config/override/';
+
+    $configurations = [
+      'metatag.metatag_defaults.403',
+      'metatag.metatag_defaults.404',
+      'metatag.metatag_defaults.front',
+      'metatag.metatag_defaults.global',
+      'metatag.metatag_defaults.node',
+    ];
+
+    // Update meta tag default configurations.
+    foreach ($configurations as $configuration) {
+      ConfigHelper::updateExistingConfig($config_location, $configuration);
+    }
   }
 }
 
@@ -682,6 +698,23 @@ function helfi_content_update_9030() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9030');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Update broken reference to OG image.
+ */
+function helfi_content_update_9031() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9031');
+
+  // Notify users to manually update the configuration.
+  \Drupal::messenger()->addWarning('Please remove the "metatag.metatag_defaults.node.yml" og_image_url manually if the update failed.');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
