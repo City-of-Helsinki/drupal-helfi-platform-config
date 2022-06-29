@@ -40,7 +40,7 @@ class NewsFeedParagraphTest extends KernelTestBase {
    * Tests that paragraph uses proper bundle class.
    */
   public function testBundleClass() : void {
-    $storage =  $this->getExternalEntityStorage();
+    $storage = $this->getExternalEntityStorage();
     $neighbourhood = $storage->create(['type' => 'helfi_news_neighbourhoods']);
 
     $paragraph = Paragraph::create([

@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_news_feed\Kernel;
 
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\external_entities\Entity\ExternalEntity;
 use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\TestLoggerTrait;
