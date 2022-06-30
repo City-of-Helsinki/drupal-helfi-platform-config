@@ -93,10 +93,10 @@ function helfi_tpr_config_update_dependencies() {
   ];
 
   // Run helfi_tpr_config_update_9027() after helfi_content_update_9031()
-  // has been run. helfi_content_update_9031() update will install 
+  // has been run. helfi_content_update_9032() update will install 
   // phasing paragraph.
   $dependencies['helfi_tpr_config'][9027] = [
-    'helfi_content' => 9031,
+    'helfi_content' => 9032,
   ];
 
   return $dependencies;
