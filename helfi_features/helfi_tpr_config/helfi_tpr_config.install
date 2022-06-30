@@ -569,7 +569,7 @@ function helfi_tpr_config_update_9026() {
 }
 
 /**
- * Remove gallery paragraph from TPR unit and TPR service.
+ * Adds phasing paragraph to content areas.
  */
 function helfi_tpr_config_update_9027() {
 

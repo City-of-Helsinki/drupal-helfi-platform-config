@@ -1,0 +1,60 @@
+field.field.node.landing_page.field_content:
+   expected_config: {  }
+   update_actions:
+     add:
+       settings:
+         handler_settings:
+           target_bundles:
+             phasing: phasing
+           target_bundles_drag_drop:
+             phasing:
+               enabled: true
+               weight: 50
+             phasing_item:
+               enabled: false
+               weight: 30
+ field.field.node.page.field_content:
+   expected_config: {  }
+   update_actions:
+     add:
+       settings:
+         handler_settings:
+           target_bundles:
+             phasing: phasing
+           target_bundles_drag_drop:
+             phasing:
+               enabled: true
+               weight: 50
+             phasing_item:
+               enabled: false
+               weight: 30
+ field.field.node.page.field_lower_content:
+   expected_config: {  }
+   update_actions:
+     add:
+       settings:
+         handler_settings:
+           target_bundles:
+             phasing: phasing
+           target_bundles_drag_drop:
+             phasing:
+               enabled: true
+               weight: 50
+             phasing_item:
+               enabled: false
+               weight: 30
+ field.field.paragraph.accordion_item.field_accordion_item_content:
+   expected_config: {  }
+   update_actions:
+     add:
+       settings:
+         handler_settings:
+           target_bundles:
+             phasing: phasing
+           target_bundles_drag_drop:
+             phasing:
+               enabled: true
+               weight: 49
+             phasing_item:
+               enabled: false
+               weight: 50
