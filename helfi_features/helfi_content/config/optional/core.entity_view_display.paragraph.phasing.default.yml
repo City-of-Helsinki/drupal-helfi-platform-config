@@ -1,0 +1,69 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.phasing.field_description
+    - field.field.paragraph.phasing.field_phasing_item
+    - field.field.paragraph.phasing.field_phasing_item_title_level
+    - field.field.paragraph.phasing.field_phasing_title_level
+    - field.field.paragraph.phasing.field_show_phase_numbers
+    - field.field.paragraph.phasing.field_title
+    - paragraphs.paragraphs_type.phasing
+  module:
+    - entity_reference_revisions
+    - options
+    - text
+id: paragraph.phasing.default
+targetEntityType: paragraph
+bundle: phasing
+mode: default
+content:
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_phasing_item:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_phasing_item_title_level:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_phasing_title_level:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_show_phase_numbers:
+    type: boolean
+    label: hidden
+    settings:
+      format: true-false
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.phasing_item.field_description
+    - field.field.paragraph.phasing_item.field_title
+    - paragraphs.paragraphs_type.phasing_item
+  module:
+    - text
+id: paragraph.phasing_item.default
+targetEntityType: paragraph
+bundle: phasing_item
+mode: default
+content:
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

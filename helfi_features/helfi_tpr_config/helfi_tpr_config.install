@@ -92,6 +92,13 @@ function helfi_tpr_config_update_dependencies() {
     'helfi_base_config' => 9008,
   ];
 
+  // Run helfi_tpr_config_update_9027() after helfi_content_update_9031()
+  // has been run. helfi_content_update_9032() update will install 
+  // phasing paragraph.
+  $dependencies['helfi_tpr_config'][9027] = [
+    'helfi_content' => 9032,
+  ];
+
   return $dependencies;
 }
 
@@ -556,6 +563,22 @@ function helfi_tpr_config_update_9026() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9026');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Adds phasing paragraph to content areas.
+ */
+function helfi_tpr_config_update_9027() {
+
+  // Enable the 'Hide sidebar navigation from this page' to unit and service.
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9027');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
