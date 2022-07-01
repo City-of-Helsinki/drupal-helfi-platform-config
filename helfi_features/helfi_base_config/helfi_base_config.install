@@ -241,3 +241,26 @@ function helfi_base_config_update_9011() {
     ]);
   }
 }
+
+/**
+ * Update UID1 email.
+ */
+function helfi_base_config_update_9012() {
+  $query = Drupal::database()->update('users_field_data')
+    ->fields(['mail' => 'drupal@hel.fi'])
+    ->condition('uid', 1)
+    ->condition('mail', 'admin@example.com')
+    ->execute();
+
+  if (!$query) {
+    \Drupal::messenger()->addWarning('Could not update UID1 email address. Check it manually and verify that it does not point to admin@example.com.');
+  } else {
+    \Drupal::messenger()->addMessage('Updated UID1 email address to point to drupal@hel.fi. Please update manually if this is an unwanted change.');
+  }
+
+  $config_factory = \Drupal::configFactory();
+  if ($config_factory->get('system.site')->get('mail') === 'admin@example.com') {
+    $config_factory->getEditable('system.site')->set('mail', 'drupal@hel.fi')->save();
+    \Drupal::messenger()->addMessage('Updated Site email address to point to drupal@hel.fi.');
+  }
+}
