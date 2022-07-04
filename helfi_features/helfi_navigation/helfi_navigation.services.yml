@@ -9,7 +9,7 @@ services:
     arguments: ['@helfi_navigation.schema_storage', '@logger.channel.helfi_navigation']
   helfi_navigation.global_navigation_service:
     class: \Drupal\helfi_navigation\Service\GlobalNavigationService
-    arguments: ['@cache.default', '@http_client', '@helfi_api_base.environment_resolver', '@language_manager', '@logger.channel.helfi_global_navigation', '@request_stack']
+    arguments: ['@cache.default', '@http_client', '@helfi_api_base.environment_resolver', '@language_manager', '@logger.channel.helfi_navigation', '@request_stack']
   helfi_navigation.external_menu_block_base:
     class: \Drupal\helfi_navigation\Plugin\Block\ExternalMenuBlockBase
     arguments: ['@helfi_navigation.external_menu_tree_factory', '@helfi_navigation.global_navigation_service']
