@@ -60,7 +60,8 @@ class ExternalMenuTreeFactory {
    * @return \Drupal\helfi_navigation\ExternalMenuTree|null
    *   The resulting menu tree instance.
    *
-   * @throws \Exception Throws exception.
+   * @throws \Exception
+   *   Throws exception.
    */
   public function fromJson(string $json, int $max_depth = 10):? ExternalMenuTree {
     $data = (array) json_decode($json);
@@ -115,7 +116,7 @@ class ExternalMenuTreeFactory {
    *   Defines how deep into recursion the function is already.
    *
    * @return array
-   *   Resuliting array of menu links.
+   *   Resulting array of menu links.
    */
   protected function transformItems(array $items, int $max_depth, string $name = '', int $depth = 0): array {
     $transformed_items = [];

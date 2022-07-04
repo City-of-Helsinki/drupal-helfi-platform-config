@@ -84,7 +84,7 @@ abstract class ExternalMenuBlockBase extends BlockBase implements ContainerFacto
    * @param string $json
    *   JSON string to generate menu tree from.
    *
-   * @return \Drupal\helfi_navigation\ExternalMenuTree|null The resulting menu tree.
+   * @return \Drupal\helfi_navigation\ExternalMenuTree|null
    *   The resulting menu tree.
    */
   protected function buildFromJson(string $json):? ExternalMenuTree {

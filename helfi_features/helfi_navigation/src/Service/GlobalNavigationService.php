@@ -23,7 +23,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
   /**
    * Current project.
    *
-   * @var ?array
+   * @var array|null
    */
   protected ?array $currentProject;
 
@@ -233,6 +233,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    * Return cache max age.
    *
    * @return int
+   *   The cache max age.
    */
   public function getCacheMaxAge() : int {
     return time() + 60 * 60;

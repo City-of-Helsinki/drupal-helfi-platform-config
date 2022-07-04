@@ -16,6 +16,7 @@ use Drupal\menu_link_content\Plugin\Menu\MenuLinkContent;
  * Synchronizes global menu.
  */
 class MenuUpdater {
+
   /**
    * Main menu machine name.
    */
@@ -79,9 +80,12 @@ class MenuUpdater {
    *
    * @return array
    *   The resulting tree.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function buildMenuTree(): array {
-    // @todo figure out if we can load the menu tree based on langcode.
+    // @todo figure out if we can load the menu tree based on lang code.
     $drupal_tree = \Drupal::menuTree()->load(self::MAIN_MENU, new MenuTreeParameters());
     return $this->transformMenuItems($drupal_tree);
   }
@@ -91,12 +95,16 @@ class MenuUpdater {
    *
    * @param \Drupal\Core\Menu\MenuLinkTreeElement[] $menu_items
    *   Array of menu items.
+   *
+   * @return array
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function transformMenuItems(array $menu_items): array {
     $transformed_items = [];
 
     // @todo Needs to handle the languages (lang codes).
-
     foreach ($menu_items as $menu_item) {
       /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $menu_link */
       $menu_link = $menu_item->link;
@@ -147,7 +155,7 @@ class MenuUpdater {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function getEntity(MenuLinkContent $link): EntityInterface|bool|null {
+  protected function getEntity(MenuLinkContent $link): EntityInterface|bool|NULL {
     // MenuLinkContent::getEntity() has protected visibility and cannot be used
     // to directly fetch the entity.
     $metadata = $link->getMetaData();
