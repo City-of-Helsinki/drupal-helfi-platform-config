@@ -4,6 +4,3 @@ type: module
 core_version_requirement: '^8.9 || ^9'
 dependencies:
   - helfi_api_base
-  - json_field
-  - text
-  - readonly_field_widget
