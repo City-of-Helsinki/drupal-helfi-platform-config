@@ -54,24 +54,24 @@ class MenuUpdater {
       throw new \Exception('No language code set for the menu updater.');
     }
 
-    $currentProject = $this->globalNavigationService->getCurrentProject();
-    $siteName = $this->config->get('system.site')->get('name');
+    $current_project = $this->globalNavigationService->getCurrentProject();
+    $site_name = $this->config->get('system.site')->get('name');
 
     $options = [
       'json' => [
-        'name' => $siteName,
+        'name' => $site_name,
         'langcode' => $lang_code,
         'menu_tree' => (object) [
-          'name' => $siteName,
-          'url' => $currentProject['url'],
-          'id' => $currentProject['id'],
+          'name' => $site_name,
+          'url' => $current_project['url'],
+          'id' => $current_project['id'],
           'menu_tree' => $this->buildMenuTree(),
         ],
       ],
     ];
 
     // @todo Fix this.
-    $endpoint = '/global-menus/' . $currentProject['id'];
+    $endpoint = '/global-menus/' . $current_project['id'];
     $this->globalNavigationService->makeRequest(Project::ETUSIVU, 'POST', $endpoint, $options);
   }
 
