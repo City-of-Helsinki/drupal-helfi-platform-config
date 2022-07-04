@@ -1,0 +1,9 @@
+name: 'HELfi Navigation'
+description: 'Provides global menus and blocks for Hel.fi instances.'
+type: module
+core_version_requirement: '^8.9 || ^9'
+dependencies:
+  - helfi_api_base
+  - json_field
+  - text
+  - readonly_field_widget
