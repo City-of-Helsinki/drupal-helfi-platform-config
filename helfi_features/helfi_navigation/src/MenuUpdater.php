@@ -97,6 +97,7 @@ class MenuUpdater {
    *   Array of menu items.
    *
    * @return array
+   *   Returns an array of transformed menu items.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
