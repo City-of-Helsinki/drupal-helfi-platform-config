@@ -136,7 +136,7 @@ function helfi_news_feed_update_9002(&$sandbox = NULL) {
 }
 
 /**
- * Hides title and description labels and adds date format
+ * Hides title and description labels and adds date format.
  */
 function helfi_news_feed_update_9003() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
@@ -150,7 +150,7 @@ function helfi_news_feed_update_9003() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('core.date_format.publication_date_format');
 
-  //Install date format required for new item
+  // Install date format required for new item.
   if (empty($config->getRawData())) {
     ConfigHelper::installNewConfig($config_optional, 'core.date_format.publication_date_format');
   }

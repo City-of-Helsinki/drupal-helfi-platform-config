@@ -104,23 +104,31 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
           $start = NULL,
           $length = NULL
   ) : array {
+    $prepared = [];
 
     foreach ($parameters as $param) {
-      ['field' => $field, 'value' => $value, 'operator' => $operator] = $param;
+      ['field' => $field, 'value' => $values, 'operator' => $operator] = $param;
       if ($field == 'id') {
-        $this->query[sprintf("filter[id][value][%s]", reset($value))] = reset($value);
+        $storage = \Drupal::entityTypeManager()->getStorage($this->getPluginId());
+        $data = $storage->loadMultiple($values);
+
+        foreach ($data as $value) {
+          $prepared[$value->id()] = [
+            'id' => $value->id(),
+            'title' => $value->title->value,
+          ];
+        }
       }
       else {
         $this->query['filter[name-filter][condition][path]'] = 'name';
+        $this->query['filter[name-filter][condition][value]'] = $values;
         $this->query['filter[name-filter][condition][operator]'] = $operator;
-        $this->query['filter[name-filter][condition][value]'] = $value;
-      }
-    }
+        $data = $this->request($this->endpoint, $this->query);
 
-    $data = $this->request($this->endpoint, $this->query);
-    $prepared = [];
-    foreach ($data as $value) {
-      $prepared[$value["id"]] = $value;
+        foreach ($data as $value) {
+          $prepared[$value["id"]] = $value;
+        }
+      }
     }
 
     return $prepared;

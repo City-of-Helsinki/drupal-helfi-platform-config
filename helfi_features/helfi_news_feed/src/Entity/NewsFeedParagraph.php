@@ -34,7 +34,7 @@ final class NewsFeedParagraph extends Paragraph {
    *   An array of tags.
    */
   public function getTags() : array {
-    return $this->get('field_helfi_news_tags')->value ?? [];
+    return $this->get('field_helfi_news_tags')->getValue() ?? [];
   }
 
   /**
@@ -44,7 +44,7 @@ final class NewsFeedParagraph extends Paragraph {
    *   Anb array of groups.
    */
   public function getGroups() : array {
-    return $this->get('field_helfi_news_groups')->value ?? [];
+    return $this->get('field_helfi_news_groups')->getValue() ?? [];
   }
 
   /**
@@ -54,7 +54,7 @@ final class NewsFeedParagraph extends Paragraph {
    *   An array of neighbourhoods.
    */
   public function getNeighbourhoods() : array {
-    return $this->get('field_helfi_news_neighbourhoods')->value ?? [];
+    return $this->get('field_helfi_news_neighbourhoods')->getValue() ?? [];
   }
 
   /**

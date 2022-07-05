@@ -41,7 +41,12 @@ class NewsFeedParagraphTest extends KernelTestBase {
    */
   public function testBundleClass() : void {
     $storage = $this->getExternalEntityStorage();
-    $neighbourhood = $storage->create(['type' => 'helfi_news_neighbourhoods']);
+    $neighbourhood_uuid = '12345678-1234-1234-1234-12345678';
+    $neighbourhood = $storage->create([
+      'type' => 'helfi_news_neighbourhoods',
+      'id' => $neighbourhood_uuid,
+      'title' => 'Neighbourhood',
+    ]);
 
     $paragraph = Paragraph::create([
       'type' => 'news_list',
@@ -51,9 +56,9 @@ class NewsFeedParagraphTest extends KernelTestBase {
       'field_news_list_description' => 'test description',
     ]);
     $paragraph->save();
+
     $this->assertInstanceOf(NewsFeedParagraph::class, $paragraph);
-    // @todo Fix tests for the external entities, returns always empty array.
-    $this->assertEquals([], $paragraph->getNeighbourhoods());
+    $this->assertEquals([['target_id' => $neighbourhood_uuid]], $paragraph->getNeighbourhoods());
     $this->assertEquals(22, $paragraph->getLimit());
     $this->assertEquals('test title', $paragraph->getTitle());
     $this->assertEquals('test description', $paragraph->getDescription());
