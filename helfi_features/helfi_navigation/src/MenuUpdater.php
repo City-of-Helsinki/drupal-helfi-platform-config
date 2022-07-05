@@ -7,10 +7,11 @@ namespace Drupal\helfi_navigation;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
-use Drupal\menu_link_content\Plugin\Menu\MenuLinkContent;
 
 /**
  * Synchronizes global menu.
@@ -27,44 +28,34 @@ class MenuUpdater {
    */
   protected const MAX_DEPTH = 10;
 
-  private string $lang_code;
-
   /**
    * Constructs MenuUpdater.
    */
   public function __construct(
     protected ConfigFactory $config,
     protected EntityTypeManagerInterface $entityTypeManager,
-    protected GlobalNavigationService $globalNavigationService
+    protected GlobalNavigationService $globalNavigationService,
+    protected LanguageManagerInterface $languageManager
   ) {}
 
   /**
    * Sends main menu tree to frontpage instance.
    *
-   * @param string|null $lang_code
-   *   Language code as string.
-   *
    * @throws \Exception
    *   Throws exception.
    */
-  public function syncMenu(string $lang_code = NULL): void {
+  public function syncMenu(): void {
     if ($this->globalNavigationService->inFrontPage()) {
       return;
     }
 
-    if (!$lang_code) {
-      throw new \Exception('No language code set for the menu updater.');
-    }
-
-    $this->lang_code = $lang_code;
     $current_project = $this->globalNavigationService->getCurrentProject();
     $site_name = $this->config->get('system.site')->get('name');
 
     $options = [
       'json' => [
         'name' => $site_name,
-        'langcode' => $lang_code,
-        'menu_tree' => (object) [
+        'menu_data' => (object) [
           'name' => $site_name,
           'url' => $current_project['url'],
           'id' => $current_project['id'],
@@ -91,9 +82,14 @@ class MenuUpdater {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function buildMenuTree(): array {
-    // @todo figure out if we can load the menu tree based on lang code.
-    $drupal_tree = \Drupal::menuTree()->load(self::MAIN_MENU, new MenuTreeParameters());
-    return $this->transformMenuItems($drupal_tree);
+    $menu_tree = [];
+
+    foreach ($this->languageManager->getLanguages() as $lang_code => $language) {
+      $tree = \Drupal::menuTree()->load(self::MAIN_MENU, new MenuTreeParameters());
+      $menu_tree[$lang_code] = $this->transformMenuItems($tree, $lang_code);
+    }
+
+    return $menu_tree;
   }
 
   /**
@@ -101,6 +97,8 @@ class MenuUpdater {
    *
    * @param \Drupal\Core\Menu\MenuLinkTreeElement[] $menu_items
    *   Array of menu items.
+   * @param string $lang_code
+   *   Language code as a string.
    *
    * @return array
    *   Returns an array of transformed menu items.
@@ -108,30 +106,25 @@ class MenuUpdater {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function transformMenuItems(array $menu_items): array {
+  protected function transformMenuItems(array $menu_items, string $lang_code): array {
     $transformed_items = [];
 
-    // @todo Needs to handle the languages (lang codes).
     foreach ($menu_items as $menu_item) {
-      /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $menu_link */
-      $menu_link = $menu_item->link;
       $sub_tree = $menu_item->subtree;
 
-      if (!$entity = $this->getEntity($menu_link)) {
+      /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $entity */
+      if (!$menu_link_content = $this->getEntity($menu_item->link)) {
         continue;
       }
 
-      $translatable = $entity->isTranslatable();
-
-      // @todo Needs to handle the languages (lang codes).
-      if ($translatable && !$entity->hasTranslation($this->lang_code)) {
+      if (
+        !$menu_link_content->hasTranslation($lang_code) ||
+        !$menu_link_content->isTranslatable()
+      ) {
         continue;
       }
 
-      // @todo Needs to handle the languages (lang codes).
-      if ($translatable) {
-        $menu_link = $entity->getTranslation($this->lang_code);
-      }
+      $menu_link = $menu_link_content->getTranslation($lang_code);
 
       $transformed_item = [
         'id' => $menu_link->getPluginId(),
@@ -139,8 +132,8 @@ class MenuUpdater {
         'url' => $menu_link->getUrlObject()->setAbsolute()->toString(),
       ];
 
-      if (count($sub_tree) > 0 && $menu_item->depth < self::MAX_DEPTH) {
-        $transformed_item['sub_tree'] = $this->transformMenuItems($sub_tree);
+      if (count($sub_tree) > 0) {
+        $transformed_item['sub_tree'] = $this->transformMenuItems($sub_tree, $lang_code);
       }
 
       $transformed_items[] = (object) $transformed_item;
@@ -152,7 +145,7 @@ class MenuUpdater {
   /**
    * Load entity with given menu link.
    *
-   * @param \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $link
+   * @param \Drupal\Core\Menu\MenuLinkInterface $link
    *   The menu link.
    *
    * @return bool|\Drupal\Core\Entity\EntityInterface|null
@@ -162,7 +155,7 @@ class MenuUpdater {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function getEntity(MenuLinkContent $link): EntityInterface|bool|NULL {
+  protected function getEntity(MenuLinkInterface $link): EntityInterface|bool|NULL {
     // MenuLinkContent::getEntity() has protected visibility and cannot be used
     // to directly fetch the entity.
     $metadata = $link->getMetaData();
