@@ -208,7 +208,7 @@ final class News extends ExternalEntityStorageClientBase {
       catch (\UnhandledMatchError) {
       }
     }
-
+    $query['filter[langcode]'] = 'fi';
     if (!isset($query['filter[langcode]'])) {
       throw new \InvalidArgumentException('Missing required "langcode" filter.');
     }

@@ -39,8 +39,11 @@ function _helfi_navigation_queue_item($entity) {
   else {
     $lang_code = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
   }
+  /** @var \Drupal\helfi_navigation\MenuUpdater $menuUpdater */
+  $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
+  $menuUpdater->syncMenu($lang_code);
 
-  $queue = \Drupal::queue('menu_queue');
-  $queue->createQueue();
-  $queue->createItem($lang_code);
+  // $queue = \Drupal::queue('menu_queue');
+  // $queue->createQueue();
+  // $queue->createItem($lang_code);
 }
