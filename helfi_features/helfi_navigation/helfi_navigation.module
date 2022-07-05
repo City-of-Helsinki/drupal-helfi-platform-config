@@ -15,7 +15,7 @@ use Drupal\system\MenuInterface;
  */
 function helfi_navigation_menu_update(MenuInterface $entity) {
   if ($entity->id() === 'main') {
-    _helfi_navigation_queue_item();
+    _helfi_navigation_queue_item($entity);
   }
 }
 
@@ -24,21 +24,22 @@ function helfi_navigation_menu_update(MenuInterface $entity) {
  */
 function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $entity) {
   if ($entity->getMenuName() === 'main') {
-    _helfi_navigation_queue_item();
+    _helfi_navigation_queue_item($entity);
   }
 }
 
 /**
  * Create menu update queue item.
  */
-function _helfi_navigation_queue_item() {
+function _helfi_navigation_queue_item($entity) {
 
-  //  @todo Remove once testing phase is over.
-  //  /** @var \Drupal\helfi_navigation\MenuUpdater $menuUpdater */
-  //  $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
-  //  $menuUpdater->syncMenu();
+  // @todo Remove once testing phase is over.
+  /*
+  $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
+  $menuUpdater->syncMenu();
+   */
 
   $queue = \Drupal::queue('menu_queue');
   $queue->createQueue();
-  $queue->createItem();
+  $queue->createItem($entity);
 }
