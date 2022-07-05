@@ -27,6 +27,8 @@ class MenuUpdater {
    */
   protected const MAX_DEPTH = 10;
 
+  private string $lang_code;
+
   /**
    * Constructs MenuUpdater.
    */
@@ -54,6 +56,7 @@ class MenuUpdater {
       throw new \Exception('No language code set for the menu updater.');
     }
 
+    $this->lang_code = $lang_code;
     $current_project = $this->globalNavigationService->getCurrentProject();
     $site_name = $this->config->get('system.site')->get('name');
 
@@ -70,9 +73,12 @@ class MenuUpdater {
       ],
     ];
 
-    // @todo Fix this.
-    $endpoint = '/global-menus/' . $current_project['id'];
-    $this->globalNavigationService->makeRequest(Project::ETUSIVU, 'POST', $endpoint, $options);
+    $this->globalNavigationService->makeRequest(
+      Project::ETUSIVU,
+      'POST',
+      $this->getGlobalMenuEndpoint(),
+      $options
+    );
   }
 
   /**
@@ -167,6 +173,14 @@ class MenuUpdater {
     return $this->entityTypeManager
       ->getStorage('menu_link_content')
       ->load($metadata['entity_id']);
+  }
+
+  /**
+   * @return string
+   *   Global menu endpoint.
+   */
+  protected function getGlobalMenuEndpoint(): string {
+    return sprintf('/global-menus/%s', $this->globalNavigationService->getCurrentProject()['id']);
   }
 
 }
