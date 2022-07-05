@@ -124,13 +124,13 @@ class MenuUpdater {
       $translatable = $entity->isTranslatable();
 
       // @todo Needs to handle the languages (lang codes).
-      if ($translatable && !$entity->hasTranslation($this->langcode)) {
+      if ($translatable && !$entity->hasTranslation($this->lang_code)) {
         continue;
       }
 
       // @todo Needs to handle the languages (lang codes).
       if ($translatable) {
-        $menu_link = $entity->getTranslation($this->langcode);
+        $menu_link = $entity->getTranslation($this->lang_code);
       }
 
       $transformedItem = [
