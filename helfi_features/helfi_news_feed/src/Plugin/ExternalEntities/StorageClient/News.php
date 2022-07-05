@@ -209,6 +209,14 @@ final class News extends ExternalEntityStorageClientBase {
       }
     }
 
+    // @todo Lancode missing from parameters for some reason.
+    $language = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
+    $query = [
+      'filter[langcode]' => $language
+    ];
+
     if (!isset($query['filter[langcode]'])) {
       throw new \InvalidArgumentException('Missing required "langcode" filter.');
     }

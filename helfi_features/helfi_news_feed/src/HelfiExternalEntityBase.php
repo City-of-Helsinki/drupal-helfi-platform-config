@@ -5,6 +5,7 @@ namespace Drupal\helfi_news_feed;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\external_entities\ExternalEntityInterface;
+use Drupal\external_entities\ExternalEntityStorage;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
@@ -106,21 +107,25 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   ) : array {
 
     foreach ($parameters as $param) {
-      ['field' => $field, 'value' => $value, 'operator' => $operator] = $param;
+      ['field' => $field, 'value' => $values, 'operator' => $operator] = $param;
       if ($field == 'id') {
-        $this->query[sprintf("filter[id][value][%s]", reset($value))] = reset($value);
+        $storage = \Drupal::entityTypeManager()->getStorage($this->getPluginId());
+        $data = $storage->loadMultiple($values);
+        $prepared = [];
+        foreach ($data as $value) {
+          $prepared[$value->id()] = ['id' => $value->id(), 'title' =>  $value->title->value];
+        }
       }
       else {
         $this->query['filter[name-filter][condition][path]'] = 'name';
+        $this->query['filter[name-filter][condition][value]'] = $values;
         $this->query['filter[name-filter][condition][operator]'] = $operator;
-        $this->query['filter[name-filter][condition][value]'] = $value;
+        $data = $this->request($this->endpoint, $this->query);
+        $prepared = [];
+        foreach ($data as $value) {
+          $prepared[$value["id"]] = $value;
+        }
       }
-    }
-
-    $data = $this->request($this->endpoint, $this->query);
-    $prepared = [];
-    foreach ($data as $value) {
-      $prepared[$value["id"]] = $value;
     }
 
     return $prepared;
