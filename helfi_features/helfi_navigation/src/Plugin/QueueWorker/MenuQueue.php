@@ -4,7 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Plugin\QueueWorker;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\helfi_navigation\MenuUpdater;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Processes menu sync tasks.
@@ -15,7 +18,7 @@ use Drupal\Core\Queue\QueueWorkerBase;
  *  cron = {"time" = 15}
  * )
  */
-class MenuQueue extends QueueWorkerBase {
+class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
    * Menu updater.
@@ -33,22 +36,42 @@ class MenuQueue extends QueueWorkerBase {
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\helfi_navigation\MenuUpdater $menu_updater
+   *   The Menu updater service.
    */
   public function __construct(
     array $configuration,
     string $plugin_id,
     mixed $plugin_definition,
+    MenuUpdater $menu_updater
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
+    $this->menuUpdater = $menu_updater;
   }
 
   /**
    * {@inheritdoc}
    */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('helfi_navigation.menu_updater'),
+    );
+  }
+
+  /**
+   * Process queue item.
+   *
+   * @param $data
+   *   Data of the processable menu / menu item.
+   *
+   * @throws \Exception
+   *   Throws exception if language code is not set.
+   */
   public function processItem($data) {
-    $this->menuUpdater->setLangcode($data);
-    $this->menuUpdater->syncMenu();
+    $this->menuUpdater->syncMenu($data);
   }
 
 }
