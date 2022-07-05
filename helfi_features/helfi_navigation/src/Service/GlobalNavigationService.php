@@ -134,6 +134,8 @@ class GlobalNavigationService implements ContainerInjectionInterface {
     // Disable SSL verification in local environment.
     if ($this->env === 'local') {
       $options['verify'] = FALSE;
+      $url = str_replace('https://', '', $url);
+      $url = str_replace('.so/', '.so:8080/', $url);
     }
 
     if ($method === 'GET') {

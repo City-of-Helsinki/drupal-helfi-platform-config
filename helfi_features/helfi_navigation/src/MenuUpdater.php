@@ -133,17 +133,17 @@ class MenuUpdater {
         $menu_link = $entity->getTranslation($this->lang_code);
       }
 
-      $transformedItem = [
+      $transformed_item = [
         'id' => $menu_link->getPluginId(),
         'name' => $menu_link->getTitle(),
         'url' => $menu_link->getUrlObject()->setAbsolute()->toString(),
       ];
 
       if (count($sub_tree) > 0 && $menu_item->depth < self::MAX_DEPTH) {
-        $transformedItem['sub_tree'] = $this->transformMenuItems($sub_tree);
+        $transformed_item['sub_tree'] = $this->transformMenuItems($sub_tree);
       }
 
-      $transformed_items[] = (object) $transformedItem;
+      $transformed_items[] = (object) $transformed_item;
     }
 
     return $transformed_items;
