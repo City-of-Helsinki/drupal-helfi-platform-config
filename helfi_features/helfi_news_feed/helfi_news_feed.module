@@ -197,10 +197,5 @@ function helfi_news_feed_preprocess_external_entity__helfi_news__medium_teaser(&
 
   $variables['node_url'] = $environment_url . $entity->node_url->value;
   $variables['published_at'] = strtotime($entity->published_at->value);
-
-  if($entity->short_title->value)
-    $variables['short_title'] =  $entity->short_title->value;
-  else {
-    $variables['short_title'] =  $entity->title->value;
-  }
+  $variables['short_title'] = $entity->short_title->value ?? $entity->title->value;
 }

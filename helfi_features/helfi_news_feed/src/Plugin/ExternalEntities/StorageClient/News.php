@@ -130,11 +130,13 @@ final class News extends ExternalEntityStorageClientBase {
       return [];
     }
     $query = [
-      sprintf('filter[%s.name][operator]', $name) => 'IN',
+      sprintf('filter[taxonomy_term--news_%s][condition][operator]', $name) => 'IN',
     ];
+    $query[sprintf('filter[taxonomy_term--news_%s][condition][path]', $name)] = "field_news_$name.id";
+
     // Filter by multiple terms using 'OR' condition.
     foreach ($terms as $key => $value) {
-      $query[sprintf('filter[%s.name][value][%d]', $name, $key)] = $value;
+      $query[sprintf('filter[taxonomy_term--news_%s][condition][value][%d]', $name, $key)] = $value['target_id'];
     }
     return $query;
   }
@@ -209,16 +211,12 @@ final class News extends ExternalEntityStorageClientBase {
       }
     }
 
-    // @todo Lancode missing from parameters for some reason.
-    $language = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-      ->getId();
-    $query = [
-      'filter[langcode]' => $language,
-    ];
-
+    // If filter is missing language set it manually.
     if (!isset($query['filter[langcode]'])) {
-      throw new \InvalidArgumentException('Missing required "langcode" filter.');
+      $language = $this->languageManager
+        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+        ->getId();
+      $query['filter[langcode]'] = $language;
     }
     return $this->request($query, $query['filter[langcode]']);
   }
