@@ -24,11 +24,6 @@ class MenuUpdater {
   protected const MAIN_MENU = 'main';
 
   /**
-   * Max depth for menu item synchronization.
-   */
-  protected const MAX_DEPTH = 10;
-
-  /**
    * Constructs MenuUpdater.
    */
   public function __construct(
@@ -117,6 +112,7 @@ class MenuUpdater {
         continue;
       }
 
+      // Handle only menu links with translations.
       if (
         !$menu_link_content->hasTranslation($lang_code) ||
         !$menu_link_content->isTranslatable()
@@ -125,6 +121,11 @@ class MenuUpdater {
       }
 
       $menu_link = $menu_link_content->getTranslation($lang_code);
+
+      // Handle only published menu links.
+      if (!$menu_link->isPublished()) {
+        continue;
+      }
 
       $transformed_item = [
         'id' => $menu_link->getPluginId(),
