@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Contains alterations for the Hel.fi navigation.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\menu_link_content\MenuLinkContentInterface;
+use Drupal\system\MenuInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function helfi_navigation_menu_update(MenuInterface $entity) {
+  if ($entity->id() === 'main') {
+    _helfi_navigation_queue_item($entity);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $entity) {
+  if ($entity->getMenuName() === 'main') {
+    _helfi_navigation_queue_item($entity);
+  }
+}
+
+/**
+ * Create menu update queue item.
+ */
+function _helfi_navigation_queue_item($entity) {
+  if ($entity->language()->getId()) {
+    $lang_code = $entity->language()->getId();
+  }
+  else {
+    $lang_code = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+  }
+
+  $queue = \Drupal::queue('menu_queue');
+  $queue->createQueue();
+  $queue->createItem($lang_code);
+}

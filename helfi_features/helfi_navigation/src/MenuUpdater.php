@@ -25,7 +25,7 @@ class MenuUpdater {
   /**
    * Max depth for menu item synchronization.
    */
-  protected const MAX_DEPTH = 2;
+  protected const MAX_DEPTH = 10;
 
   /**
    * Constructs MenuUpdater.
