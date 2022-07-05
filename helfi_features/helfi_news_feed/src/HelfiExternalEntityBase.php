@@ -5,7 +5,6 @@ namespace Drupal\helfi_news_feed;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\ExternalEntityStorage;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
@@ -113,7 +112,10 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
         $data = $storage->loadMultiple($values);
         $prepared = [];
         foreach ($data as $value) {
-          $prepared[$value->id()] = ['id' => $value->id(), 'title' =>  $value->title->value];
+          $prepared[$value->id()] = [
+            'id' => $value->id(),
+            'title' => $value->title->value
+          ];
         }
       }
       else {

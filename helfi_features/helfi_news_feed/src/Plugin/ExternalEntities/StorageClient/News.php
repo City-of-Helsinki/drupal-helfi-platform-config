@@ -214,7 +214,7 @@ final class News extends ExternalEntityStorageClientBase {
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
     $query = [
-      'filter[langcode]' => $language
+      'filter[langcode]' => $language,
     ];
 
     if (!isset($query['filter[langcode]'])) {
