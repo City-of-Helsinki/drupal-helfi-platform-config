@@ -45,17 +45,13 @@ class MenuUpdater {
     }
 
     $current_project = $this->globalNavigationService->getCurrentProject();
-    $site_name = $this->config->get('system.site')->get('name');
 
     $options = [
       'json' => [
-        'name' => $site_name,
-        'menu_data' => (object) [
-          'name' => $site_name,
-          'url' => $current_project['url'],
-          'id' => $current_project['id'],
-          'menu_tree' => $this->buildMenuTree(),
-        ],
+        'id' => $current_project['id'],
+        'url' => $current_project['url'],
+        'site_name' => $this->siteNames(),
+        'menu_tree' => $this->buildMenuTree(),
       ],
     ];
 
@@ -65,6 +61,27 @@ class MenuUpdater {
       $this->getGlobalMenuEndpoint(),
       $options
     );
+  }
+
+  /**
+   * Get translated site names.
+   *
+   * @return array
+   *   Returns site names as an array or empty array.
+   */
+  protected function siteNames(): array {
+    $site_names = [];
+
+    foreach ($this->languageManager->getLanguages() as $language) {
+      $language_manager = \Drupal::languageManager();
+      $site_name = $language_manager
+        ->getLanguageConfigOverride($language->getId(), 'system.site')
+        ->get('name');
+
+      $site_names[$language->getId()] = $site_name;
+    }
+
+    return $site_names;
   }
 
   /**
