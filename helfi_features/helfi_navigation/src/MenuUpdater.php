@@ -73,10 +73,11 @@ class MenuUpdater {
     $site_names = [];
 
     foreach ($this->languageManager->getLanguages() as $language) {
-      $language_manager = \Drupal::languageManager();
-      $site_name = $language_manager
-        ->getLanguageConfigOverride($language->getId(), 'system.site')
-        ->get('name');
+      $this->languageManager->setConfigOverrideLanguage($language);
+      $override = $this->languageManager->getDefaultLanguage()->getId() !== $language->getId();
+      $site_name = $this->config
+        ->get('system.site')
+        ->getOriginal('name', $override);
 
       $site_names[$language->getId()] = $site_name;
     }
