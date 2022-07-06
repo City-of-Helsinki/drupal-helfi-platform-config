@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
  * Processes menu sync tasks.
  *
  * @QueueWorker(
- *  id = "menu_queue",
+ *  id = "helfi_navigation_menu_queue",
  *  title = @Translation("Queue worker for menu synchronization"),
  *  cron = {"time" = 15}
  * )

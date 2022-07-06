@@ -39,7 +39,10 @@ function _helfi_navigation_queue_item($entity) {
   $menuUpdater->syncMenu();
    */
 
-  $queue = \Drupal::queue('menu_queue');
-  $queue->createQueue();
-  $queue->createItem($entity);
+  // Add item to menu queue.
+  // Sanitize the queue manually by adding an item only if the queue is empty.
+  $queue = \Drupal::queue('helfi_navigation_menu_queue');
+  if ($queue->numberOfItems() < 1) {
+    $queue->createItem($entity);
+  }
 }

@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Contains installation hooks for 'helfi_news_feed' module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ */
+function helfi_navigation_install() : void {
+  // Create Menu queue.
+  $queue = \Drupal::queue('helfi_navigation_menu_queue');
+  $queue->createQueue();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function helfi_navigation_uninstall($is_syncing) {
+  // Delete Menu queue.
+  $queue = \Drupal::queue('helfi_navigation_menu_queue');
+  $queue->deleteQueue();
+}
