@@ -145,13 +145,17 @@ class MenuUpdater {
         continue;
       }
 
+      // @todo External should be changed to use helfi_api_base resolver to resolve the external status.
       $transformed_item = [
         'id' => $menu_link->getPluginId(),
         'name' => $menu_link->getTitle(),
         'url' => $menu_link->getUrlObject()->setAbsolute()->toString(),
+        'external' => $menu_link->get('external')->value,
+        'hasItems' => 0,
       ];
 
       if (count($sub_tree) > 0) {
+        $transformed_item['hasItems'] = 1;
         $transformed_item['sub_tree'] = $this->transformMenuItems($sub_tree, $lang_code);
       }
 
