@@ -11,6 +11,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
 
 /**
@@ -30,7 +31,8 @@ class MenuUpdater {
     protected ConfigFactory $config,
     protected EntityTypeManagerInterface $entityTypeManager,
     protected GlobalNavigationService $globalNavigationService,
-    protected LanguageManagerInterface $languageManager
+    protected LanguageManagerInterface $languageManager,
+    protected InternalDomainResolver $domainResolver,
   ) {}
 
   /**
