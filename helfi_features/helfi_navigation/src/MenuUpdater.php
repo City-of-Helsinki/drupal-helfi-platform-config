@@ -100,7 +100,12 @@ class MenuUpdater {
     $menu_tree = [];
 
     foreach ($this->languageManager->getLanguages() as $lang_code => $language) {
-      $tree = \Drupal::menuTree()->load(self::MAIN_MENU, new MenuTreeParameters());
+      $tree = \Drupal::menuTree()->load(
+        self::MAIN_MENU,
+        (new MenuTreeParameters())
+          ->onlyEnabledLinks()
+      );
+
       $menu_tree[$lang_code] = $this->transformMenuItems($tree, $lang_code);
     }
 
@@ -140,6 +145,7 @@ class MenuUpdater {
         continue;
       }
 
+      /** @var MenuLinkInterface $menu_link */
       $menu_link = $menu_link_content->getTranslation($lang_code);
 
       // Handle only published menu links.
@@ -147,23 +153,24 @@ class MenuUpdater {
         continue;
       }
 
-      // @todo External should be changed to use helfi_api_base resolver to resolve the external status.
       $transformed_item = [
         'id' => $menu_link->getPluginId(),
         'name' => $menu_link->getTitle(),
         'url' => $menu_link->getUrlObject()->setAbsolute()->toString(),
-        'external' => $menu_link->get('external')->value,
-        'hasItems' => 0,
+        'external' => $this->domainResolver->isExternal($menu_link->getUrlObject()),
+        'hasItems' => FALSE,
+        'weight' => $menu_link->getWeight(),
       ];
 
       if (count($sub_tree) > 0) {
-        $transformed_item['hasItems'] = 1;
+        $transformed_item['hasItems'] = TRUE;
         $transformed_item['sub_tree'] = $this->transformMenuItems($sub_tree, $lang_code);
       }
 
       $transformed_items[] = (object) $transformed_item;
     }
 
+    usort($transformed_items, [$this, 'sortMenuItems']);
     return $transformed_items;
   }
 
@@ -199,6 +206,25 @@ class MenuUpdater {
    */
   protected function getGlobalMenuEndpoint(): string {
     return sprintf('/global-menus/%s', $this->globalNavigationService->getCurrentProject()['id']);
+  }
+
+  /**
+   * Sort menu items by weight.
+   *
+   * @param $item1
+   *   First object.
+   * @param $item2
+   *   Second object.
+   *
+   * @return int
+   */
+  private function sortMenuItems($item1, $item2) {
+    $weight1 = $item1->weight;
+    $weight2 = $item2->weight;
+    if ($weight1 == $weight2) {
+      return 0;
+    }
+    return $weight1 < $weight2 ? -1 : 1;
   }
 
 }
