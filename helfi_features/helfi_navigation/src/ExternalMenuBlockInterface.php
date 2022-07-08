@@ -23,6 +23,6 @@ interface ExternalMenuBlockInterface {
    * @return int
    *   The maximum depth.
    */
-  public function maxDepth(): int;
+//  public function maxDepth(): int;
 
 }

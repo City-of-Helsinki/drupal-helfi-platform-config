@@ -1,0 +1,59 @@
+{
+  "title": "Menu tree",
+  "description": "A JSON representation of a Drupal menu tree",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "project": {
+        "type": "string"
+      },
+      "site_name": {
+        "type": "string"
+      },
+      "changed": {
+        "type": "string"
+      },
+      "menu_tree": {
+        "type": "array",
+        "items": {"$ref": "#/$defs/tree"},
+        "minimum": 1
+      },
+      "weight": {
+        "type": "integer"
+      }
+    },
+    "required": ["project", "site_name", "menu_tree", "weight"]
+  },
+  "$defs": {
+    "tree": {
+      "type": "object",
+      "required": ["id", "name", "url"],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "menu_tree": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/tree"}
+        },
+        "external": {
+          "type": "boolean"
+        },
+        "weight": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    }
+  }
+}

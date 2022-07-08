@@ -11,6 +11,16 @@ use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function helfi_navigation_theme_suggestions_block_alter(array &$suggestions, array $variables) {
+  if (in_array('block__external_menu_block', $suggestions)) {
+    // Adds block__system_menu_block suggestion.
+    array_unshift($suggestions, 'block__system_menu_block');
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_update(MenuInterface $entity) {

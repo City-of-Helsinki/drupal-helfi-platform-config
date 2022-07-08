@@ -256,13 +256,24 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    *
    * @param string $id
    *   Project id.
+   * @param string|null $lang_code
+   *   Language code.
    *
    * @return string
    *   The URL.
    */
-  protected function getProjectUrl(string $id): string {
-    $current_language = $this->languageManager->getCurrentLanguage()->getId();
-    return $this->environmentResolver->getEnvironment($id, $this->env)->getUrl($current_language);
+  public function getProjectUrl(string $id, string $lang_code = null): string {
+    if (!$lang_code) {
+      $lang_code = $this->languageManager->getCurrentLanguage()->getId();
+    }
+
+    try {
+      return $this->environmentResolver->getEnvironment($id, $this->env)->getUrl($lang_code);
+    }
+    catch (\throwable $e) {
+      $this->logger->error('Cannot retrieve project URL with provided language. ' . $e->getMessage());
+      return '';
+    }
   }
 
   /**
