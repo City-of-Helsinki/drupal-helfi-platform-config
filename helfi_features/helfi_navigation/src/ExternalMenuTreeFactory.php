@@ -4,14 +4,18 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation;
 
+use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Template\Attribute;
-use Drupal\Core\Url;
+use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
+use Drupal\helfi_navigation\Service\GlobalNavigationService;
 use function GuzzleHttp\json_decode;
 use JsonSchema\Constraints\Factory;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
 use Psr\Log\LoggerInterface;
+use Drupal\helfi_api_base\Link\InternalDomainResolver;
 
 /**
  * Helper class for external menu tree actions.
@@ -39,10 +43,22 @@ class ExternalMenuTreeFactory {
    *   JSON Schema storage.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
+   * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $domainResolver
+   *   Internal domain resolver.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
+   *   EnvironmentResolver helper class.
+   * @param \Drupal\helfi_navigation\Service\GlobalNavigationService $globalNavigationService
+   *   Global navigation service.
+   * @param \Drupal\Component\Uuid\UuidInterface $uuidService
+   *   UUID service.
    */
   public function __construct(
     protected SchemaStorage $schemaStorage,
-    protected LoggerInterface $logger
+    protected LoggerInterface $logger,
+    protected InternalDomainResolver $domainResolver,
+    protected EnvironmentResolver $environmentResolver,
+    protected GlobalNavigationService $globalNavigationService,
+    protected UuidInterface $uuidService,
   ) {
     $this->schema = json_decode(file_get_contents(__DIR__ . '/../assets/schema.json'));
     $this->schemaStorage->addSchema('file://schema', $this->schema);
@@ -65,9 +81,8 @@ class ExternalMenuTreeFactory {
    */
   public function fromJson(string $json, int $max_depth = 10):? ExternalMenuTree {
     $data = (array) json_decode($json);
-    $valid = $this->validate($data);
 
-    if (!$valid) {
+    if (!$this->validate($data)) {
       throw new \Exception('Invalid JSON input');
     }
 
@@ -122,35 +137,18 @@ class ExternalMenuTreeFactory {
     $transformed_items = [];
 
     foreach ($items as $key => $item) {
-      $menu_name = $name ?? $item->name;
+      $menu_name = $name ?: $item->menu_type;
 
-      $link_definition = [
-        'menu_name' => $menu_name,
-        'options' => [],
-        'title' => $item->name,
-      ];
-
-      if (isset($item->description)) {
-        $link_definition['description'] = $item->description;
+      // Convert site to menu link item.
+      if (isset($item->project) && isset($item->menu_tree)) {
+        $item = $item->menu_tree;
       }
 
-      if (isset($item->weight)) {
-        $link_definition['weight'] = $item->weight;
-      }
+      $transformed_item = $this->createLink($item, $menu_name);
 
-      $transformed_item = [
-        'attributes' => new Attribute(),
-        'title' => $item->name,
-        'original_link' => new ExternalMenuLink([], $item->id, $link_definition),
-        'url' => Url::fromUri($item->url),
-      ];
-
-      if (isset($item->menu_tree) && $depth <= $max_depth) {
-        $transformed_item['below'] = $this->transformItems($item->menu_tree, $max_depth, $menu_name, $depth + 1);
-      }
-      else {
-        $transformed_item['below'] = [];
-      }
+      $transformed_item['below'] = (isset($item->sub_tree) && $depth <= $max_depth)
+        ? $this->transformItems($item->sub_tree, $max_depth, $menu_name, $depth + 1)
+        : [];
 
       $transformed_items[] = $transformed_item;
     }
@@ -160,6 +158,52 @@ class ExternalMenuTreeFactory {
     });
 
     return $transformed_items;
+  }
+
+  /**
+   * Create link from menu tree item.
+   *
+   * @param $item
+   *   Menu tree item.
+   * @param $menu_name
+   *   Menu name.
+   *
+   * @return array
+   *   Returns a menu link.
+   */
+  protected function createLink(object $item, string $menu_name): array {
+    $link_definition = [
+      'menu_name' => $menu_name,
+      'options' => [],
+      'title' => $item->name,
+    ];
+
+    // Parse the URL.
+    $item->url = UrlHelper::parse($item->url);
+
+    if (!isset($item->id)) {
+      $item->id = 'menu_link_content:' . $this->uuidService->generate();
+    }
+
+    if (!isset($item->external)) {
+      $item->external = $this->domainResolver->isExternal($item->url);
+    }
+
+    if (isset($item->description)) {
+      $link_definition['description'] = $item->description;
+    }
+
+    if (isset($item->weight)) {
+      $link_definition['weight'] = $item->weight;
+    }
+
+    return [
+      'attributes' => new Attribute(),
+      'title' => $item->name,
+      'original_link' => new ExternalMenuLink([], $item->id, $link_definition),
+      'external' => $item->external,
+      'url' => $item->url,
+    ];
   }
 
 }

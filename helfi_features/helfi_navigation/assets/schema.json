@@ -15,19 +15,22 @@
         "type": "string"
       },
       "menu_tree": {
-        "type": "array",
+        "type": "object",
         "items": {"$ref": "#/$defs/tree"},
         "minimum": 1
       },
       "weight": {
         "type": "integer"
+      },
+      "lang_code": {
+        "type": "string"
       }
     },
-    "required": ["project", "site_name", "menu_tree", "weight"]
+    "required": ["project", "site_name", "menu_tree", "weight", "lang_code"]
   },
   "$defs": {
     "tree": {
-      "type": "object",
+      "type": "array",
       "required": ["id", "name", "url"],
       "properties": {
         "description": {
@@ -42,7 +45,7 @@
         "url": {
           "type": "string"
         },
-        "menu_tree": {
+        "sub_tree": {
           "type": "array",
           "items": {"$ref": "#/$defs/tree"}
         },
