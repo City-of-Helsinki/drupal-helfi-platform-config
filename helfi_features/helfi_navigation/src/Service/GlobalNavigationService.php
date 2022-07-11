@@ -271,7 +271,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
       return $this->environmentResolver->getEnvironment($id, $this->env)->getUrl($lang_code);
     }
     catch (\throwable $e) {
-      $this->logger->error('Cannot retrieve project URL with provided language. ' . $e->getMessage());
+      $this->logger->warning('Cannot retrieve project URL with provided language. ' . $e->getMessage());
       return '';
     }
   }
