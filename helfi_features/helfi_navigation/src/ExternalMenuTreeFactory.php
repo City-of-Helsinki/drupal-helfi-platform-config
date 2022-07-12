@@ -90,7 +90,7 @@ class ExternalMenuTreeFactory {
       throw new \Exception('Invalid JSON input');
     }
 
-    $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_type'])];
+    $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_name'])];
     $tree = $this->transformItems($data, $options);
 
     if (!empty($tree)) {
