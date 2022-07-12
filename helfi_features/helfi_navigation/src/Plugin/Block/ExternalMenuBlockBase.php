@@ -4,18 +4,20 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
-use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Menu\MenuActiveTrailInterface;
+use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
 use Drupal\helfi_navigation\ExternalMenuTree;
 use Drupal\helfi_navigation\ExternalMenuTreeFactory;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
+use Drupal\system\Plugin\Block\SystemMenuBlock;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for creating external menu blocks.
  */
-abstract class ExternalMenuBlockBase extends BlockBase implements ContainerFactoryPluginInterface, ExternalMenuBlockInterface {
+abstract class ExternalMenuBlockBase extends SystemMenuBlock implements ContainerFactoryPluginInterface, ExternalMenuBlockInterface {
 
   /**
    * Constructs an instance of ExternalMenuBlockBase.
@@ -26,13 +28,17 @@ abstract class ExternalMenuBlockBase extends BlockBase implements ContainerFacto
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menu_tree
+   *   The menu tree service.
+   * @param \Drupal\Core\Menu\MenuActiveTrailInterface $menu_active_trail
+   *   The active menu trail service.
    * @param \Drupal\helfi_navigation\ExternalMenuTreeFactory $menuTreeFactory
    *   Factory class for creating an instance of ExternalMenuTree.
    * @param \Drupal\helfi_navigation\Service\GlobalNavigationService $globalNavigationService
    *   Global navigation service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, protected ExternalMenuTreeFactory $menuTreeFactory, protected GlobalNavigationService $globalNavigationService) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, MenuLinkTreeInterface $menu_tree, MenuActiveTrailInterface $menu_active_trail, protected ExternalMenuTreeFactory $menuTreeFactory, protected GlobalNavigationService $globalNavigationService) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $menu_tree, $menu_active_trail);
   }
 
   /**
@@ -43,6 +49,8 @@ abstract class ExternalMenuBlockBase extends BlockBase implements ContainerFacto
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('menu.link_tree'),
+      $container->get('menu.active_trail'),
       $container->get('helfi_navigation.external_menu_tree_factory'),
       $container->get('helfi_navigation.global_navigation_service')
     );
@@ -69,10 +77,6 @@ abstract class ExternalMenuBlockBase extends BlockBase implements ContainerFacto
       $build['#sorted'] = TRUE;
       $build['#theme'] = 'menu__external_menu';
       $build['#items'] = $items;
-
-      // Set cache tag.
-      // @todo set actual tags
-      $build['#cache']['tags'][] = 'external-menu:' . $this->getPluginId();
     }
 
     return $build;
@@ -88,12 +92,49 @@ abstract class ExternalMenuBlockBase extends BlockBase implements ContainerFacto
    *   The resulting menu tree.
    */
   protected function buildFromJson(string $json):? ExternalMenuTree {
+    $options = [
+      'menu_name' => $this->getDerivativeId(),
+      'max_depth' => $this->getMaxDepth(),
+      'starting_level' => $this->getStartingLevel(),
+      'expand_all_items' => $this->getExpandAllItems(),
+    ];
+
     try {
-      return $this->menuTreeFactory->fromJson($json, $this->maxDepth());
+      return $this->menuTreeFactory->fromJson($json, $options);
     }
     catch (\throwable $e) {
       return NULL;
     }
+  }
+
+  /**
+   * Returns the starting level of the menu.
+   *
+   * @return int
+   *   The starting level.
+   */
+  public function getStartingLevel(): int {
+    return (int) $this->getConfiguration()['level'] ?: 0;
+  }
+
+  /**
+   * Returns the max depth of the menu.
+   *
+   * @return int
+   *   The max depth.
+   */
+  public function getMaxDepth(): int {
+    return (int) $this->getConfiguration()['depth'] ?: 0;
+  }
+
+  /**
+   * Returns the information of should the items be expanded by default.
+   *
+   * @return int
+   *   Should the items be expanded.
+   */
+  public function getExpandAllItems(): int {
+    return $this->getConfiguration()['expand_all_items'] ?: 0;
   }
 
 }

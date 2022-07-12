@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Component\Uuid\UuidInterface;
+use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Link\UrlHelper;
@@ -51,6 +52,8 @@ class ExternalMenuTreeFactory {
    *   Global navigation service.
    * @param \Drupal\Component\Uuid\UuidInterface $uuidService
    *   UUID service.
+   * @param \Drupal\Core\Menu\MenuActiveTrailInterface $menuActiveTrail
+   *   The active menu trail service.
    */
   public function __construct(
     protected SchemaStorage $schemaStorage,
@@ -59,6 +62,7 @@ class ExternalMenuTreeFactory {
     protected EnvironmentResolver $environmentResolver,
     protected GlobalNavigationService $globalNavigationService,
     protected UuidInterface $uuidService,
+    protected MenuActiveTrailInterface $menuActiveTrail,
   ) {
     $this->schema = json_decode(file_get_contents(__DIR__ . '/../assets/schema.json'));
     $this->schemaStorage->addSchema('file://schema', $this->schema);
@@ -70,8 +74,8 @@ class ExternalMenuTreeFactory {
    *
    * @param string $json
    *   The JSON string.
-   * @param int $max_depth
-   *   Determines how deep of an array is returned.
+   * @param array $options
+   *   Options for the menu link item handling.
    *
    * @return \Drupal\helfi_navigation\ExternalMenuTree|null
    *   The resulting menu tree instance.
@@ -79,14 +83,15 @@ class ExternalMenuTreeFactory {
    * @throws \Exception
    *   Throws exception.
    */
-  public function fromJson(string $json, int $max_depth = 10):? ExternalMenuTree {
+  public function fromJson(string $json, array $options = []):? ExternalMenuTree {
     $data = (array) json_decode($json);
 
     if (!$this->validate($data)) {
       throw new \Exception('Invalid JSON input');
     }
 
-    $tree = $this->transformItems($data, $max_depth);
+    $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_type'])];
+    $tree = $this->transformItems($data, $options);
 
     if (!empty($tree)) {
       return new ExternalMenuTree($tree);
@@ -119,35 +124,40 @@ class ExternalMenuTreeFactory {
   }
 
   /**
-   * Create menu link instances from json elements.
+   * Create menu link items from JSON elements.
    *
    * @param array $items
    *   Provided JSON input.
-   * @param int $max_depth
-   *   Determines how deep the function recurses.
-   * @param string $name
-   *   Menu name.
-   * @param int $depth
-   *   Defines how deep into recursion the function is already.
+   * @param array $options
+   *   Keyed array of options needed to create menu link items.
    *
    * @return array
    *   Resulting array of menu links.
    */
-  protected function transformItems(array $items, int $max_depth, string $name = '', int $depth = 0): array {
+  protected function transformItems(array $items, array $options): array {
     $transformed_items = [];
+    extract($options);
 
     foreach ($items as $key => $item) {
-      $menu_name = $name ?: $item->menu_type;
+      $menu_name = $menu_name ?: $item->menu_type;
 
       // Convert site to menu link item.
       if (isset($item->project) && isset($item->menu_tree)) {
         $item = $item->menu_tree;
       }
 
-      $transformed_item = $this->createLink($item, $menu_name);
+      $transformed_item = $this->createLink($item, $menu_name, $active_trail, (bool) $expand_all_items);
 
-      $transformed_item['below'] = (isset($item->sub_tree) && $depth <= $max_depth)
-        ? $this->transformItems($item->sub_tree, $max_depth, $menu_name, $depth + 1)
+      $options = [
+        'active_trail' => $active_trail,
+        'max_depth' => $max_depth,
+        'menu_name' => $menu_name,
+        'expand_all_items' => $expand_all_items,
+        'depth' => $depth + 1,
+      ];
+
+      $transformed_item['below'] = (isset($item->sub_tree) && $depth < $max_depth - 1)
+        ? $this->transformItems($item->sub_tree, $options)
         : [];
 
       $transformed_items[] = $transformed_item;
@@ -163,15 +173,19 @@ class ExternalMenuTreeFactory {
   /**
    * Create link from menu tree item.
    *
-   * @param $item
+   * @param object $item
    *   Menu tree item.
-   * @param $menu_name
+   * @param string $menu_name
    *   Menu name.
+   * @param array $active_trail
+   *   An array of menu link items in active trail.
+   * @param bool $expand_all_items
+   *   Should the menu link item be expanded.
    *
    * @return array
    *   Returns a menu link.
    */
-  protected function createLink(object $item, string $menu_name): array {
+  protected function createLink(object $item, string $menu_name, array $active_trail, bool $expand_all_items): array {
     $link_definition = [
       'menu_name' => $menu_name,
       'options' => [],
@@ -200,10 +214,32 @@ class ExternalMenuTreeFactory {
     return [
       'attributes' => new Attribute(),
       'title' => $item->name,
+      'is_expanded' => $expand_all_items,
+      'in_active_trail' => $this->inActiveTrail($item, $active_trail),
       'original_link' => new ExternalMenuLink([], $item->id, $link_definition),
       'external' => $item->external,
       'url' => $item->url,
     ];
+  }
+
+  /**
+   * Check if current menu link item is in active trail.
+   *
+   * @param object $item
+   *   Menu link item.
+   * @param array $active_trail
+   *   An array of active menu links.
+   *
+   * @return bool
+   *   Returns true or false.
+   */
+  protected function inActiveTrail(object $item, array $active_trail): bool {
+    $project_url = $this->globalNavigationService->getCurrentProject()['url'];
+
+    return (
+      $project_url === $item->url->getUri() ||
+      in_array($item->id, $active_trail)
+    );
   }
 
 }

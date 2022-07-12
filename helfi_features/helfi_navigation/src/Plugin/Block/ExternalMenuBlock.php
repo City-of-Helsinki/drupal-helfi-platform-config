@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_api_base\Menu\Menu;
 
 /**
  * Provides an external menu block.
@@ -13,14 +12,17 @@ use Drupal\helfi_api_base\Menu\Menu;
  * @Block(
  *   id = "external_menu_block",
  *   admin_label = @Translation("External menu block"),
- *   category = @Translation("External menu")
+ *   category = @Translation("External menu"),
+ *   deriver = "Drupal\helfi_navigation\Plugin\Derivative\ExternalMenuBlock"
  * )
  */
 class ExternalMenuBlock extends ExternalMenuBlockBase {
 
+  /**
+   * {@inheritdoc}
+   */
   public function getData(): string {
-    // @todo Retrieve menu type from block settings.
-    $menu_type = Menu::MAIN_MENU;
+    $menu_type = $this->getDerivativeId();
 
     return $this->globalNavigationService->makeRequest(
       Project::ETUSIVU,
@@ -28,4 +30,5 @@ class ExternalMenuBlock extends ExternalMenuBlockBase {
       "/global-menus/$menu_type"
     );
   }
+
 }

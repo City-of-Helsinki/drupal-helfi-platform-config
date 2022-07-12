@@ -23,6 +23,22 @@ interface ExternalMenuBlockInterface {
    * @return int
    *   The maximum depth.
    */
-//  public function maxDepth(): int;
+  public function getMaxDepth(): int;
+
+  /**
+   * Returns the starting level of the menu.
+   *
+   * @return int
+   *   The starting level.
+   */
+  public function getStartingLevel(): int;
+
+  /**
+   * Returns the information of should the items be expanded by default.
+   *
+   * @return int
+   *   Should the items be expanded.
+   */
+  public function getExpandAllItems(): int;
 
 }

@@ -164,6 +164,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    *   The response body.
    */
   public function getContent(string $url, array $options = []): string {
+    // @todo This should be more intellectual cache than just 3600sec.
     if ($data = $this->getFromCache($url)) {
       return $data;
     }
@@ -262,7 +263,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    * @return string
    *   The URL.
    */
-  public function getProjectUrl(string $id, string $lang_code = null): string {
+  public function getProjectUrl(string $id, string $lang_code = NULL): string {
     if (!$lang_code) {
       $lang_code = $this->languageManager->getCurrentLanguage()->getId();
     }
