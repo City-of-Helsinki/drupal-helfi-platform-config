@@ -153,10 +153,10 @@ class ExternalMenuTreeFactory {
         'max_depth' => $max_depth,
         'menu_name' => $menu_name,
         'expand_all_items' => $expand_all_items,
-        'depth' => $depth + 1,
+        'level' => $level + 1,
       ];
 
-      $transformed_item['below'] = (isset($item->sub_tree) && $depth < $max_depth - 1)
+      $transformed_item['below'] = (isset($item->sub_tree) && $level < $max_depth)
         ? $this->transformItems($item->sub_tree, $options)
         : [];
 

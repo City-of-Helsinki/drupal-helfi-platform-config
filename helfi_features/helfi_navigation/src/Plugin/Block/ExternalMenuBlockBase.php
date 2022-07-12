@@ -95,7 +95,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
     $options = [
       'menu_name' => $this->getDerivativeId(),
       'max_depth' => $this->getMaxDepth(),
-      'starting_level' => $this->getStartingLevel(),
+      'level' => $this->getStartingLevel(),
       'expand_all_items' => $this->getExpandAllItems(),
     ];
 
