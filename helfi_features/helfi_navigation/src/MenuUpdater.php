@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Menu\Menu;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
 use Drupal\helfi_navigation\Service\MenuTreeBuilder;
 
@@ -40,7 +41,7 @@ class MenuUpdater {
     $menu_tree = [];
 
     foreach (array_keys($this->languageManager->getLanguages()) as $lang_code) {
-      $tree = $this->menuTreeBuilder->buildMenuTree($this->menuTreeBuilder::MAIN_MENU, $lang_code);
+      $tree = $this->menuTreeBuilder->buildMenuTree(Menu::MAIN_MENU, $lang_code);
 
       $menu_tree[$lang_code] = [
         'name' => $this->siteNames()[$lang_code],

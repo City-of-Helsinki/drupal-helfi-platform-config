@@ -17,12 +17,6 @@ use Drupal\helfi_api_base\Link\InternalDomainResolver;
  */
 class MenuTreeBuilder {
 
-  const UNIVERSAL_HEADER_MENU = 'universal_header_menu';
-  const MAIN_MENU = 'main';
-  const FOOTER_TOP_MENU = 'footer_top_menu';
-  const FOOTER_TOP_MENU_2 = 'footer_top_menu_2';
-  const FOOTER_BOTTOM_MENU = 'footer_bottom_menu';
-
   /**
    * Constructs MenuUpdater.
    */
