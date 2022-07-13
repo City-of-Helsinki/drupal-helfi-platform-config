@@ -23,7 +23,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
   /**
    * Current environment.
    *
-   * @var Environment
+   * @var \Drupal\helfi_api_base\Environment\Environment
    */
   protected Environment $currentProject;
 
@@ -89,7 +89,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
   /**
    * Return the current project's environment.
    *
-   * @return Environment
+   * @return \Drupal\helfi_api_base\Environment\Environment
    *   Current project's environment.
    */
   public function getCurrentProject(): Environment {
@@ -253,14 +253,14 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    * @return string
    *   The URL.
    */
-  public function getProjectUrl(string $lang_code = NULL): string {
+  public function getProjectUrl(string $project, string $lang_code = NULL): string {
     if (!$lang_code) {
       $lang_code = $this->languageManager->getCurrentLanguage()->getId();
     }
     try {
-      return $this->currentProject->getUrl($lang_code);
+      return $this->environmentResolver->getEnvironment($project, $this->env)->getUrl($lang_code);
     }
-    catch(\Exception $e) {
+    catch (\Exception $e) {
       $this->logger->warning('Cannot retrieve project URL with provided language. ' . $e->getMessage());
       return '';
     }
@@ -269,7 +269,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
   /**
    * Determine current project.
    *
-   * @return Environment
+   * @return \Drupal\helfi_api_base\Environment\Environment
    *   The resulting project.
    */
   protected function initializeProject(): Environment {
@@ -278,20 +278,6 @@ class GlobalNavigationService implements ContainerInjectionInterface {
       return $environment;
     }
     throw new \InvalidArgumentException(sprintf('No environment found for host %s', $current_host));
-
-    /*
-    $projects = $this->environmentResolver->getProjects();
-    $current_host = $this->requestStack->getCurrentRequest()->getHost();
-    foreach ($projects as $key => $project) {
-      if ($current_host === $project[$this->env]->getDomain()) {
-        return [
-          'id' => $key,
-          'project' => $project,
-          'url' => $this->getProjectUrl($key),
-        ];
-      }
-    }
-    */
   }
 
 }
