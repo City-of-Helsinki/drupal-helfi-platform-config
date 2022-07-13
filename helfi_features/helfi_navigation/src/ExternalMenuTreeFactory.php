@@ -234,7 +234,9 @@ class ExternalMenuTreeFactory {
    *   Returns true or false.
    */
   protected function inActiveTrail(object $item, array $active_trail): bool {
-    $project_url = $this->globalNavigationService->getProjectUrl();
+    $project_url = $this->globalNavigationService->getProjectUrl(
+      $this->globalNavigationService->getCurrentProject()->getId()
+    );
 
     return (
       $project_url === $item->url->getUri() ||
