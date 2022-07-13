@@ -25,6 +25,7 @@ function helfi_navigation_theme_suggestions_block_alter(array &$suggestions, arr
  */
 function helfi_navigation_menu_update(MenuInterface $entity) {
   if ($entity->id() === 'main') {
+    // @todo Check for etusivu and prevent from running.
     _helfi_navigation_queue_item($entity);
   }
 }
@@ -34,6 +35,7 @@ function helfi_navigation_menu_update(MenuInterface $entity) {
  */
 function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $entity) {
   if ($entity->getMenuName() === 'main') {
+    // @todo Check for etusivu and prevent from running.
     _helfi_navigation_queue_item($entity);
   }
 }
@@ -42,17 +44,15 @@ function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $ent
  * Create menu update queue item.
  */
 function _helfi_navigation_queue_item($entity) {
-
   // @todo Remove once testing phase is over.
-  /*
   $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
   $menuUpdater->syncMenu();
-   */
 
+  // @todo Use the queue once testing phase is over.
   // Add item to menu queue.
   // Sanitize the queue manually by adding an item only if the queue is empty.
-  $queue = \Drupal::queue('helfi_navigation_menu_queue');
-  if ($queue->numberOfItems() < 1) {
-    $queue->createItem($entity);
-  }
+  //  $queue = \Drupal::queue('helfi_navigation_menu_queue');
+  //  if ($queue->numberOfItems() < 1) {
+  //    $queue->createItem($entity);
+  //  }
 }
