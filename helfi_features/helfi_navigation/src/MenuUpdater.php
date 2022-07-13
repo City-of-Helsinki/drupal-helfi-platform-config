@@ -45,7 +45,7 @@ class MenuUpdater {
 
       $menu_tree[$lang_code] = [
         'name' => $this->siteNames()[$lang_code],
-        'url' => $this->globalNavigationService->getProjectUrl($lang_code),
+        'url' => $this->globalNavigationService->getProjectUrl($current_project->id(), $lang_code),
         'external' => FALSE,
         'hasItems' => !(empty($tree)),
         'weight' => 0,
@@ -56,7 +56,7 @@ class MenuUpdater {
     $options = [
       'json' => [
         'id' => $current_project->getId(),
-        'url' => $this->globalNavigationService->getProjectUrl(),
+        'url' => $this->globalNavigationService->getProjectUrl($current_project->id()),
         'site_name' => $this->siteNames(),
         'menu_tree' => $menu_tree,
       ],
