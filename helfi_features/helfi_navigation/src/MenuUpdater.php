@@ -93,6 +93,8 @@ class MenuUpdater {
   }
 
   /**
+   * Get global menu endpoint.
+   *
    * @return string
    *   Global menu endpoint.
    */

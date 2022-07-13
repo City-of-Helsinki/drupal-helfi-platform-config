@@ -71,7 +71,7 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
   /**
    * Process queue item.
    *
-   * @param $data
+   * @param object $data
    *   Data of the processable menu / menu item.
    *
    * @throws \Exception
