@@ -1,7 +1,10 @@
 <?php
 
-namespace Drupal\helfi_navigation\Menu;
+namespace Drupal\helfi_api_base\Menu;
 
+/**
+ * Global navigation menu constants.
+ */
 class Menu {
   const MENUS = [
     'footer-bottom-navigation',
@@ -17,7 +20,17 @@ class Menu {
   const HEADER_TOP_NAVIGATION = 'header-top-navigation';
   const MAIN_MENU = 'main';
 
+  /**
+   * Checks if menu exists.
+   *
+   * @param string $menu_type
+   *   Menu type as string.
+   *
+   * @return bool
+   *   Returns true or false.
+   */
   public static function menuExists(string $menu_type = ''): bool {
     return $menu_type && in_array($menu_type, self::MENUS);
   }
+
 }

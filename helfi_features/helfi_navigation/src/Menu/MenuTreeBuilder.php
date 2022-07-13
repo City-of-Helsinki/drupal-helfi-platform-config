@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_navigation\Menu;
+namespace Drupal\helfi_api_base\Menu;
 
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
@@ -85,7 +85,7 @@ class MenuTreeBuilder {
         continue;
       }
 
-      /** @var MenuLinkInterface $menu_link */
+      /** @var \Drupal\Core\Menu\MenuLinkInterface $menu_link */
       $menu_link = $menu_link_content->getTranslation($lang_code);
 
       // Handle only published menu links.
@@ -143,14 +143,15 @@ class MenuTreeBuilder {
   /**
    * Sort menu items by weight.
    *
-   * @param $item1
+   * @param object $item1
    *   First object.
-   * @param $item2
+   * @param object $item2
    *   Second object.
    *
    * @return int
+   *   Returns sorting order.
    */
-  private function sortMenuItems($item1, $item2) {
+  private function sortMenuItems(object $item1, object $item2): int {
     $weight1 = $item1->weight;
     $weight2 = $item2->weight;
     if ($weight1 == $weight2) {
