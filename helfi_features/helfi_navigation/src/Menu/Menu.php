@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\helfi_api_base\Menu;
+namespace Drupal\helfi_navigation\Menu;
 
 /**
  * Global navigation menu constants.
