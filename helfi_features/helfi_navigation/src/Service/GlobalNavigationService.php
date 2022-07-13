@@ -21,11 +21,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class GlobalNavigationService implements ContainerInjectionInterface {
 
   /**
-   * Current project.
+   * Current environment.
    *
-   * @var array|null
+   * @var Environment
    */
-  protected ?array $currentProject;
+  protected Environment $currentProject;
 
   /**
    * Current environment (local/test/prod).
@@ -58,7 +58,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
     protected LoggerInterface $logger,
     protected RequestStack $requestStack
   ) {
-    $this->env = getenv('APP_ENV');
+    $this->env = $environmentResolver::getCurrentEnvironmentName(getenv('APP_ENV'));
     $this->currentProject = $this->initializeProject();
   }
 
@@ -77,16 +77,6 @@ class GlobalNavigationService implements ContainerInjectionInterface {
   }
 
   /**
-   * Check if environment is frontpage.
-   *
-   * @param array $environment
-   *   The environment to check.
-   */
-  public function isFrontPage(array $environment): bool {
-    return $this->currentProject[$this->env]->getDomain() === $environment->getDomain();
-  }
-
-  /**
    * Return current env.
    *
    * @return string
@@ -97,12 +87,12 @@ class GlobalNavigationService implements ContainerInjectionInterface {
   }
 
   /**
-   * Return the current project.
+   * Return the current project's environment.
    *
-   * @return array
-   *   The project
+   * @return Environment
+   *   Current project's environment.
    */
-  public function getCurrentProject(): array {
+  public function getCurrentProject(): Environment {
     return $this->currentProject;
   }
 
@@ -110,7 +100,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    * Check if current instance is frontpage.
    */
   public function inFrontPage(): bool {
-    return $this->getCurrentProject()['project'][$this->env]->getDomain() === $this->getFrontPage()->getDomain();
+    return $this->currentProject->getId() === Project::ETUSIVU;
   }
 
   /**
@@ -263,15 +253,14 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    * @return string
    *   The URL.
    */
-  public function getProjectUrl(string $id, string $lang_code = NULL): string {
+  public function getProjectUrl(string $lang_code = NULL): string {
     if (!$lang_code) {
       $lang_code = $this->languageManager->getCurrentLanguage()->getId();
     }
-
     try {
-      return $this->environmentResolver->getEnvironment($id, $this->env)->getUrl($lang_code);
+      return $this->currentProject->getUrl($lang_code);
     }
-    catch (\throwable $e) {
+    catch(\Exception $e) {
       $this->logger->warning('Cannot retrieve project URL with provided language. ' . $e->getMessage());
       return '';
     }
@@ -280,10 +269,17 @@ class GlobalNavigationService implements ContainerInjectionInterface {
   /**
    * Determine current project.
    *
-   * @return array|null
-   *   The resulting environment or null.
+   * @return Environment
+   *   The resulting project.
    */
-  protected function initializeProject(): array|NULL {
+  protected function initializeProject(): Environment {
+    $current_host = $this->requestStack->getCurrentRequest()->getHost();
+    if ($environment = $this->environmentResolver->getEnvironmentByUrl($current_host)) {
+      return $environment;
+    }
+    throw new \InvalidArgumentException(sprintf('No environment found for host %s', $current_host));
+
+    /*
     $projects = $this->environmentResolver->getProjects();
     $current_host = $this->requestStack->getCurrentRequest()->getHost();
     foreach ($projects as $key => $project) {
@@ -295,8 +291,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
         ];
       }
     }
-
-    return NULL;
+    */
   }
 
 }

@@ -45,7 +45,7 @@ class MenuUpdater {
 
       $menu_tree[$lang_code] = [
         'name' => $this->siteNames()[$lang_code],
-        'url' => $this->globalNavigationService->getProjectUrl($current_project['id'], $lang_code),
+        'url' => $this->globalNavigationService->getProjectUrl($lang_code),
         'external' => FALSE,
         'hasItems' => !(empty($tree)),
         'weight' => 0,
@@ -55,8 +55,8 @@ class MenuUpdater {
 
     $options = [
       'json' => [
-        'id' => $current_project['id'],
-        'url' => $current_project['url'],
+        'id' => $current_project->getId(),
+        'url' => $this->globalNavigationService->getProjectUrl(),
         'site_name' => $this->siteNames(),
         'menu_tree' => $menu_tree,
       ],
@@ -99,7 +99,7 @@ class MenuUpdater {
    *   Global menu endpoint.
    */
   protected function getGlobalMenuEndpoint(): string {
-    return sprintf('/global-menus/%s', $this->globalNavigationService->getCurrentProject()['id']);
+    return sprintf('/global-menus/%s', $this->globalNavigationService->getCurrentProject()->getId());
   }
 
 }
