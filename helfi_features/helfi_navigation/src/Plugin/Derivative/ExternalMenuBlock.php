@@ -6,7 +6,7 @@ namespace Drupal\helfi_navigation\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
-use Drupal\helfi_api_base\Menu\Menu;
+use Drupal\helfi_navigation\Menu\Menu;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

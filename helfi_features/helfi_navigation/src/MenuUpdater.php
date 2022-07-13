@@ -7,8 +7,8 @@ namespace Drupal\helfi_navigation;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_api_base\Menu\Menu;
-use Drupal\helfi_api_base\Menu\MenuTreeBuilder;
+use Drupal\helfi_navigation\Menu\Menu;
+use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
 
 /**
