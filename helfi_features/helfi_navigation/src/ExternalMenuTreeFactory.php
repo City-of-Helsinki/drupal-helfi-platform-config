@@ -11,9 +11,8 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
+use Drupal\helfi_navigation\Validator\ExternalMenuValidator;
 use function GuzzleHttp\json_decode;
-use JsonSchema\Constraints\Factory;
-use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
 use Psr\Log\LoggerInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
@@ -40,8 +39,6 @@ class ExternalMenuTreeFactory {
   /**
    * Constructs a tree instance from supplied JSON.
    *
-   * @param \JsonSchema\SchemaStorage $schemaStorage
-   *   JSON Schema storage.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
    * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $domainResolver
@@ -54,19 +51,18 @@ class ExternalMenuTreeFactory {
    *   UUID service.
    * @param \Drupal\Core\Menu\MenuActiveTrailInterface $menuActiveTrail
    *   The active menu trail service.
+   * @param \Drupal\helfi_navigation\Validator\ExternalMenuValidator $menuValidator
+   *   Json validator.
    */
   public function __construct(
-    protected SchemaStorage $schemaStorage,
     protected LoggerInterface $logger,
     protected InternalDomainResolver $domainResolver,
     protected EnvironmentResolver $environmentResolver,
     protected GlobalNavigationService $globalNavigationService,
     protected UuidInterface $uuidService,
     protected MenuActiveTrailInterface $menuActiveTrail,
+    protected ExternalMenuValidator $menuValidator,
   ) {
-    $this->schema = json_decode(file_get_contents(__DIR__ . '/../assets/schema.json'));
-    $this->schemaStorage->addSchema('file://schema', $this->schema);
-    $this->validator = new Validator(new Factory($this->schemaStorage));
   }
 
   /**
@@ -86,7 +82,7 @@ class ExternalMenuTreeFactory {
   public function fromJson(string $json, array $options = []):? ExternalMenuTree {
     $data = (array) json_decode($json);
 
-    if (!$this->validate($data)) {
+    if (!$this->menuValidator->validate($data)) {
       throw new \Exception('Invalid JSON input');
     }
 
@@ -98,29 +94,6 @@ class ExternalMenuTreeFactory {
     }
 
     return NULL;
-  }
-
-  /**
-   * Validates JSON against the schema.
-   *
-   * @param array $json
-   *   The json string to validate.
-   */
-  protected function validate(array $json): bool {
-    $this->validator->validate($json, $this->schema);
-
-    if ($this->validator->isValid()) {
-      return TRUE;
-    }
-    else {
-      $error_string = '';
-      foreach ($this->validator->getErrors() as $error) {
-        $error_string .= sprintf('[%s] %s \n', $error['property'], $error['message']);
-      }
-
-      $this->logger->notice('Validation failed for external menu. Violations: \n' . $error_string);
-      return FALSE;
-    }
   }
 
   /**

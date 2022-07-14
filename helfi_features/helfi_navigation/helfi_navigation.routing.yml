@@ -1,0 +1,7 @@
+helfi_global_navigation.global_menu_post:
+  path: /menus/main
+  defaults:
+    _controller: Drupal\helfi_navigation\Controller\MobileMenuController::mobileMenuJson
+  methods: ['GET']
+  requirements:
+    _permission: 'access content'
