@@ -4,16 +4,16 @@
 
 ## Description
 
-Helfi navigation allows aggregation of main-navigations between different Helfi-instances.
-The aggregation is handled in `Etusivu`
+Helfi navigation allows aggregation of instance specific menus and sharing menus between Helfi-instances.
+The master repository for all menus is `Etusivu`-instance
 
 
 ## Features
 
-- Sync instance specific main-navigation to Etusivu-instance
-- Fetch aggregated main-navigation from Etusivu-instance
-- Fetch global header and footer navigations from Etusivu-instance
-- Render Fetched navigations with blocks
+- Push instance specific main-navigation to Etusivu-instance.
+- Fetch aggregated main-navigation from Etusivu-instance.
+- Fetch global header and footer navigations from Etusivu-instance.
+- Render Fetched navigations with blocks.
 
 Supported menus:
 - `main`
