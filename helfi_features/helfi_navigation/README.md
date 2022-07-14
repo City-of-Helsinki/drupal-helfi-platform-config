@@ -32,12 +32,12 @@ Global navigation can be fetched to any instance and rendered using blocks.
 - User creates/updates main-navigation's menulink-item (or the main navigation itself).
 - Menu is queued to be synced with queue worker.
 - Cron runs the queue-worker which sends the menu to Etusivu.
-  - Queue worker handles all languages at once in order to keep all menus synced properly.
+  - Queue worker handles all languages at once in order to keep languages synced properly.
 
-- A menu block extending `ExternalMenuBlock`-class handles
-  - Fetching the latest version of the navigation
+- A block extending `ExternalMenuBlock`-class handles
+  - Fetching the latest version of the navigation.
   - Caching the fetched navigation request.
-  - Rendering the navigation
+  - Rendering the navigation.
 
 ### Other navigations
 
