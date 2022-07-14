@@ -134,7 +134,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
 
     try {
       $response = $this->httpClient->request($method, $url, $options);
-      return (string) $response->getBody();
+      return $response->getBody()->getContents();
     }
     catch (\throwable $e) {
       $this->logger->error('Request failed with error: ' . $e->getMessage());
@@ -161,7 +161,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
 
     try {
       $response = $this->httpClient->request('GET', $url, $options);
-      $content = (string) $response->getBody();
+      $content = $response->getBody()->getContents();
       $this->setCache($url, $content);
 
       return $content;
