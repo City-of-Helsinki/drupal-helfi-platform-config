@@ -6,6 +6,7 @@ namespace Drupal\helfi_navigation;
 
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Menu\MenuActiveTrailInterface;
+use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Link\UrlHelper;
@@ -51,6 +52,8 @@ class ExternalMenuTreeFactory {
    *   UUID service.
    * @param \Drupal\Core\Menu\MenuActiveTrailInterface $menuActiveTrail
    *   The active menu trail service.
+   * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuTree
+   *   The active menu trail service.
    * @param \Drupal\helfi_navigation\Validator\ExternalMenuValidator $menuValidator
    *   Json validator.
    */
@@ -61,6 +64,7 @@ class ExternalMenuTreeFactory {
     protected GlobalNavigationService $globalNavigationService,
     protected UuidInterface $uuidService,
     protected MenuActiveTrailInterface $menuActiveTrail,
+    protected MenuLinkTreeInterface $menuTree,
     protected ExternalMenuValidator $menuValidator,
   ) {
   }
@@ -88,6 +92,10 @@ class ExternalMenuTreeFactory {
 
     $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_name'])];
     $tree = $this->transformItems($data, $options);
+
+    if ($options['fallback']) {
+      $tree = $this->buildActiveTrailMenu($options);
+    }
 
     if (!empty($tree)) {
       return new ExternalMenuTree($tree);
@@ -120,6 +128,13 @@ class ExternalMenuTreeFactory {
       }
 
       $transformed_item = $this->createLink($item, $menu_name, $active_trail, (bool) $expand_all_items);
+
+      // Make sure there's parent ids in subtree items.
+      foreach ($item->sub_tree as &$sub_tree_item) {
+        if (empty($sub_tree_item->parentId)) {
+          $sub_tree_item->parentId = $transformed_item['id'];
+        }
+      }
 
       $options = [
         'active_trail' => $active_trail,
@@ -172,6 +187,10 @@ class ExternalMenuTreeFactory {
       $item->id = 'menu_link_content:' . $this->uuidService->generate();
     }
 
+    if (!isset($item->parentId)) {
+      $item->parentId = NULL;
+    }
+
     if (!isset($item->external)) {
       $item->external = $this->domainResolver->isExternal($item->url);
     }
@@ -187,6 +206,8 @@ class ExternalMenuTreeFactory {
     return [
       'attributes' => new Attribute(),
       'title' => $item->name,
+      'id' => $item->id,
+      'parent_id' => $item->parentId,
       'is_expanded' => $expand_all_items,
       'in_active_trail' => $this->inActiveTrail($item, $active_trail),
       'original_link' => new ExternalMenuLink([], $item->id, $link_definition),

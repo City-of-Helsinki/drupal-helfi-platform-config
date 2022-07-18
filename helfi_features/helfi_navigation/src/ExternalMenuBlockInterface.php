@@ -34,11 +34,19 @@ interface ExternalMenuBlockInterface {
   public function getStartingLevel(): int;
 
   /**
+   * Returns the information of should the menu be rendered as fallback menu.
+   *
+   * @return bool
+   *   Should the menu follow active trail and be rendered as fallback menu.
+   */
+  public function getFallback(): bool;
+
+  /**
    * Returns the information of should the items be expanded by default.
    *
-   * @return int
+   * @return bool
    *   Should the items be expanded.
    */
-  public function getExpandAllItems(): int;
+  public function getExpandAllItems(): bool;
 
 }
