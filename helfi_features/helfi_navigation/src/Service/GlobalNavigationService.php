@@ -245,7 +245,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
   /**
    * Return project's environment-specific URL with correct language parameter.
    *
-   * @param string $id
+   * @param string $project
    *   Project id.
    * @param string|null $lang_code
    *   Language code.

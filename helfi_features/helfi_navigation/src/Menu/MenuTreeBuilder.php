@@ -72,7 +72,7 @@ class MenuTreeBuilder {
     foreach ($menu_items as $menu_item) {
       $sub_tree = $menu_item->subtree;
 
-      /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $entity */
+      /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
       if (!$menu_link_content = $this->getEntity($menu_item->link)) {
         continue;
       }
@@ -96,6 +96,7 @@ class MenuTreeBuilder {
       $transformed_item = [
         'id' => $menu_link->getPluginId(),
         'name' => $menu_link->getTitle(),
+        'parentId' => $menu_link->getParentId(),
         'url' => $menu_link->getUrlObject()->setAbsolute()->toString(),
         'external' => $this->domainResolver->isExternal($menu_link->getUrlObject()),
         'hasItems' => FALSE,
