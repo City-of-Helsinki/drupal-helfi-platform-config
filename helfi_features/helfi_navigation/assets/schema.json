@@ -9,7 +9,7 @@
         "type": "string"
       },
       "site_name": {
-        "type": "string"
+        "type": ["string", "null"]
       },
       "changed": {
         "type": "string"
@@ -20,13 +20,13 @@
         "minimum": 1
       },
       "weight": {
-        "type": "integer"
+        "type": ["integer", "boolean"]
       },
       "lang_code": {
         "type": "string"
       }
     },
-    "required": ["project", "site_name", "menu_tree", "weight", "lang_code"]
+    "required": ["project", "site_name", "menu_tree", "lang_code"]
   },
   "$defs": {
     "tree": {

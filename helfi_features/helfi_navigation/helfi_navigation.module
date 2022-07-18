@@ -21,6 +21,35 @@ function helfi_navigation_theme_suggestions_block_alter(array &$suggestions, arr
 }
 
 /**
+ * Implements hook_theme().
+ */
+function helfi_navigation_theme() {
+  return [
+    'menu__external_menu__fallback' => [
+      'variables' => [
+        'menu_name' => NULL,
+        'items' => [],
+        'attributes' => [],
+        'menu_link_back' => [],
+        'menu_link_current_or_parent' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) {
+  if ($variables['menu_name'] === 'main') {
+    foreach ($variables['items'] as &$menu_link) {
+      $menu_link['next_url'] = clone $menu_link['url'];
+      $menu_link['next_url']->setOption('fragment', 'menu');
+    }
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_update(MenuInterface $entity) {
@@ -51,8 +80,8 @@ function _helfi_navigation_queue_item($entity) {
   // @todo Use the queue once testing phase is over.
   // Add item to menu queue.
   // Sanitize the queue manually by adding an item only if the queue is empty.
-  //  $queue = \Drupal::queue('helfi_navigation_menu_queue');
-  //  if ($queue->numberOfItems() < 1) {
-  //    $queue->createItem($entity);
-  //  }
+  /* $queue = \Drupal::queue('helfi_navigation_menu_queue');
+  if ($queue->numberOfItems() < 1) {
+  $queue->createItem($entity);
+  } */
 }
