@@ -45,6 +45,7 @@ class ExternalMenuBlock extends DeriverBase implements ContainerDeriverInterface
       $admin_label = ucfirst(str_replace('-', ' ', $menu));
       $this->derivatives[$menu] = $base_plugin_definition;
       $this->derivatives[$menu]['admin_label'] = 'External - ' . $admin_label;
+      $this->derivatives[$menu]['config_dependencies']['config'] = [$menu];
     }
     return $this->derivatives;
   }

@@ -1,0 +1,16 @@
+block.settings.external_menu_block:*:
+  type: block_settings
+  label: 'External menu block'
+  mapping:
+    fallback:
+      type: boolean
+      label: 'Is the current menu rendered as fallback menu'
+    level:
+      type: integer
+      label: 'Starting level'
+    depth:
+      type: integer
+      label: 'Maximum number of levels'
+    expand_all_items:
+      type: boolean
+      label: 'Expand all items'
