@@ -1,4 +1,4 @@
-helfi_global_navigation.global_menu_post:
+helfi_navigation.mobile_menu:
   path: /menus/main
   defaults:
     _controller: Drupal\helfi_navigation\Controller\MobileMenuController::mobileMenuJson
