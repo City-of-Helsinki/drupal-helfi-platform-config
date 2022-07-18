@@ -35,7 +35,7 @@ class ExternalMenuValidator {
     private SchemaStorage $schemaStorage,
   ) {
     try {
-      $this->schema = json_decode(file_get_contents(__DIR__ . '/../../assets/schema.json'));
+      $this->schema = json_decode(file_get_contents(__DIR__ . '/../../assets/schema.json'), TRUE);
     }
     catch(\Exception $exception) {
       throw new \Exception('Schema file not found: ' . $exception->getMessage());
