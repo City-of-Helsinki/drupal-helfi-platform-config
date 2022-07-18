@@ -26,6 +26,7 @@ Supported menus:
 ### Main-navigation syncing
 
 Helfi_navigation-module can push instance specific `main`-navigation to Etusivu.
+All languages are always pushed in order to simplify the process.
 Etusivu-instance aggregates all instance specific main-navigations to a single `global navigation`.
 Global navigation can be fetched to any instance and rendered using blocks.
 

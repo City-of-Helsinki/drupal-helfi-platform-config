@@ -10,7 +10,7 @@ use JsonSchema\Validator;
 use function GuzzleHttp\json_decode;
 
 /**
- *
+ * Wrapper for JsonSchema validator.
  */
 class ExternalMenuValidator {
 
@@ -29,12 +29,17 @@ class ExternalMenuValidator {
   private Validator $validator;
 
   /**
-   *
+   * Construct.
    */
   public function __construct(
     private SchemaStorage $schemaStorage,
   ) {
-    $this->schema = json_decode(file_get_contents(__DIR__ . '/../assets/schema.json'));
+    try {
+      $this->schema = json_decode(file_get_contents(__DIR__ . '/../../assets/schema.json'));
+    }
+    catch(\Exception $exception) {
+      throw new \Exception('Schema file not found: ' . $exception->getMessage());
+    }
     $this->schemaStorage->addSchema('file://schema', $this->schema);
     $this->validator = new Validator(new Factory($this->schemaStorage));
   }
