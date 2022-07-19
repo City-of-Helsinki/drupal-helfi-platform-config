@@ -54,7 +54,6 @@ function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) 
  */
 function helfi_navigation_menu_update(MenuInterface $entity) {
   if ($entity->id() === 'main') {
-    // @todo Check for etusivu and prevent from running.
     _helfi_navigation_queue_item($entity);
   }
 }
@@ -64,7 +63,6 @@ function helfi_navigation_menu_update(MenuInterface $entity) {
  */
 function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $entity) {
   if ($entity->getMenuName() === 'main') {
-    // @todo Check for etusivu and prevent from running.
     _helfi_navigation_queue_item($entity);
   }
 }
