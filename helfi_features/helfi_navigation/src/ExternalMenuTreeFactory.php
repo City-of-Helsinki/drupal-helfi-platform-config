@@ -91,16 +91,15 @@ class ExternalMenuTreeFactory {
     }
 
     $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_name'])];
-    $tree = $this->transformItems($data, $options);
 
-    if ($options['fallback']) {
-      $tree = $this->buildActiveTrailMenu($options);
+    // Transform items only if menu tree exists.
+    if (isset($data['menu_tree'])) {
+      $tree = $this->transformItems($data['menu_tree'], $options);
+
+      if (!empty($tree)) {
+        return new ExternalMenuTree($tree);
+      }
     }
-
-    if (!empty($tree)) {
-      return new ExternalMenuTree($tree);
-    }
-
     return NULL;
   }
 
@@ -117,17 +116,18 @@ class ExternalMenuTreeFactory {
    */
   protected function transformItems(array $items, array $options): array {
     $transformed_items = [];
-    extract($options);
 
-    foreach ($items as $key => $item) {
-      $menu_name = $menu_name ?: $item->menu_type;
+    [
+      'active_trail' => $active_trail,
+      'expand_all_items' => $expand_all_items,
+      'fallback' => $fallback,
+      'level' => $level,
+      'max_depth' => $max_depth,
+      'menu_type' => $menu_type,
+    ] = $options;
 
-      // Convert site to menu link item.
-      if (isset($item->project) && isset($item->menu_tree)) {
-        $item = $item->menu_tree;
-      }
-
-      $transformed_item = $this->createLink($item, $menu_name, $active_trail, (bool) $expand_all_items);
+    foreach ($items as $item) {
+      $transformed_item = $this->createLink($item, $menu_type, $active_trail, (bool) $expand_all_items);
 
       // Make sure there's parent ids in subtree items.
       foreach ($item->sub_tree as &$sub_tree_item) {
@@ -139,7 +139,7 @@ class ExternalMenuTreeFactory {
       $options = [
         'active_trail' => $active_trail,
         'max_depth' => $max_depth,
-        'menu_name' => $menu_name,
+        'menu_type' => $menu_type,
         'expand_all_items' => $expand_all_items,
         'level' => $level + 1,
       ];

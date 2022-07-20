@@ -347,7 +347,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
    */
   protected function getOptions(): array {
     return [
-      'menu_name' => $this->getDerivativeId(),
+      'menu_type' => $this->getDerivativeId(),
       'max_depth' => $this->getMaxDepth(),
       'level' => $this->getStartingLevel(),
       'expand_all_items' => $this->getExpandAllItems(),
