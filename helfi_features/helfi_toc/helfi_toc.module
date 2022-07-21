@@ -77,6 +77,8 @@ function helfi_toc_apply_form_theme(array &$form) {
     'node_page_edit_form',
     'node_page_form',
     'tpr_service_form',
+    'node_district_edit_form',
+    'node_district_form'
   ];
 
   $form['toc_enabled']['#access'] = FALSE;

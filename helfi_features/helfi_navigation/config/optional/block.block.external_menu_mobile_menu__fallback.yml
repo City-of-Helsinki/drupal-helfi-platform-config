@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+id: external_menu_mobile_menu__fallback
+theme: hdbt
+region: header_branding
+weight: 10
+provider: helfi_navigation
+plugin: 'external_menu_block:main'
+settings:
+  id: 'external_menu_block:main'
+  label: 'External - Mobile menu fallback'
+  label_display: '0'
+  provider: helfi_navigation
+  fallback: true
+  level: 1
+  depth: 0
+  expand_all_items: true
+visibility: {  }

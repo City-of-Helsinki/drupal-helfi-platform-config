@@ -102,6 +102,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
         $build['#sorted'] = TRUE;
         $build['#items'] = $menu_tree->getTree();
         $build['#theme'] = 'menu__external_menu';
+        $build['#menu_type'] = $this->getDerivativeId();
       }
     }
 
@@ -132,7 +133,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
 
     // Adjust the menu tree parameters based on the block's configuration.
     $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters(
-      $options['menu_name']
+      $options['menu_type']
     );
     $depth = $options['max_depth'];
     if ($options['expand_all_items']) {
@@ -165,7 +166,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
     $parameters->setRoot($menu_root)->setMinDepth(1);
 
     // Load the menu tree with.
-    $tree = $this->menuTree->load($options['menu_name'], $parameters);
+    $tree = $this->menuTree->load($options['menu_type'], $parameters);
     $manipulators = [
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
@@ -347,7 +348,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
    */
   protected function getOptions(): array {
     return [
-      'menu_name' => $this->getDerivativeId(),
+      'menu_type' => $this->getDerivativeId(),
       'max_depth' => $this->getMaxDepth(),
       'level' => $this->getStartingLevel(),
       'expand_all_items' => $this->getExpandAllItems(),

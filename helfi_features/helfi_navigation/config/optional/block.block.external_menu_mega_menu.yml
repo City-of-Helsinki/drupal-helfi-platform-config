@@ -1,0 +1,19 @@
+langcode: en
+status: false
+dependencies: {  }
+id: external_menu_mega_menu
+theme: hdbt
+region: header_branding
+weight: 10
+provider: helfi_navigation
+plugin: 'external_menu_block:main'
+settings:
+  id: 'external_menu_block:main'
+  label: 'External - Mega menu'
+  label_display: '0'
+  provider: helfi_navigation
+  fallback: false
+  level: 1
+  depth: 2
+  expand_all_items: true
+visibility: {  }

@@ -30,9 +30,9 @@ We call a macro which calls itself to render the full tree.
   {% import _self as menus %}
   {% if items %}
     {% if menu_level == 0 %}
-<ul{{ attributes }}>
-  {% else %}
-  <ul>
+      <ul{{ attributes }}>
+    {% else %}
+      <ul>
     {% endif %}
     {% for item in items %}
       <li{{ item.attributes }}>
@@ -44,4 +44,4 @@ We call a macro which calls itself to render the full tree.
     {% endfor %}
   </ul>
   {% endif %}
-  {% endmacro %}
+{% endmacro %}
