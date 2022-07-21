@@ -58,8 +58,6 @@ class GlobalNavigationService implements ContainerInjectionInterface {
     protected LoggerInterface $logger,
     protected RequestStack $requestStack
   ) {
-    $this->env = $environmentResolver::getCurrentEnvironmentName(getenv('APP_ENV'));
-    $this->currentProject = $this->initializeProject();
   }
 
   /**
@@ -83,6 +81,13 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    *   The env.
    */
   public function getEnv(): string {
+    if (!isset($this->env)) {
+      if ($env = getenv('APP_ENV')) {
+        $this->env = $this->environmentResolver::getCurrentEnvironmentName($env);
+        return $this->env;
+      }
+      throw new \InvalidArgumentException(sprintf('No environment found for %s', $env));
+    }
     return $this->env;
   }
 
@@ -93,6 +98,15 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    *   Current project's environment.
    */
   public function getCurrentProject(): Environment {
+    if (!isset($this->currentProject)) {
+      $current_host = $this->requestStack->getCurrentRequest()->getHost();
+      if ($environment = $this->environmentResolver->getEnvironmentByUrl($current_host)) {
+        $this->currentProject = $environment;
+        return $environment;
+      }
+      throw new \InvalidArgumentException(sprintf('No environment found for host %s', $current_host));
+    }
+
     return $this->currentProject;
   }
 
@@ -264,20 +278,6 @@ class GlobalNavigationService implements ContainerInjectionInterface {
       $this->logger->warning('Cannot retrieve project URL with provided language. ' . $e->getMessage());
       return '';
     }
-  }
-
-  /**
-   * Determine current project.
-   *
-   * @return \Drupal\helfi_api_base\Environment\Environment
-   *   The resulting project.
-   */
-  protected function initializeProject(): Environment {
-    $current_host = $this->requestStack->getCurrentRequest()->getHost();
-    if ($environment = $this->environmentResolver->getEnvironmentByUrl($current_host)) {
-      return $environment;
-    }
-    throw new \InvalidArgumentException(sprintf('No environment found for host %s', $current_host));
   }
 
 }
