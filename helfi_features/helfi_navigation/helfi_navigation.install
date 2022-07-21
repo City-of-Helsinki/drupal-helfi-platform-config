@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\block\Entity\Block;
+use Drupal\helfi_api_base\Environment\Environment;
 
 /**
  * Implements hook_install().
@@ -28,9 +29,18 @@ function helfi_navigation_install($is_syncing) : void {
       'external_menu_mobile_menu__fallback',
     ];
 
+    $global_navigation_service = \Drupal::service('helfi_navigation.global_navigation_service');
+    try {
+      $current_project = $global_navigation_service->getCurrentProject();
+    }
+    catch(\Exception $exception) {
+      return;
+    }
+
     if (
       $theme_handler->themeExists($theme) &&
-      $theme_handler->getDefault() === $theme
+      $theme_handler->getDefault() === $theme &&
+      is_a($current_project, Environment::class)
     ) {
       foreach ($blocks as $block) {
         $parent_block = Block::load($block);
