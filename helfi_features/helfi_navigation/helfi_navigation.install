@@ -12,27 +12,31 @@ use Drupal\block\Entity\Block;
 /**
  * Implements hook_install().
  */
-function helfi_navigation_install() : void {
+function helfi_navigation_install($is_syncing) : void {
   // Create Menu queue.
   $queue = \Drupal::queue('helfi_navigation_menu_queue');
   $queue->createQueue();
 
-  // Create menu blocks for the theme if sub theme is enabled.
-  $theme = 'hdbt_subtheme';
-  $theme_handler = \Drupal::service('theme_handler');
-  $blocks = [
-    'external_menu_mega_menu',
-    'external_menu_mobile_menu__fallback',
-  ];
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if (!$is_syncing) {
+    // Create menu blocks for the theme if sub theme is enabled.
+    $theme = 'hdbt_subtheme';
+    $theme_handler = \Drupal::service('theme_handler');
+    $blocks = [
+      'external_menu_mega_menu',
+      'external_menu_mobile_menu__fallback',
+    ];
 
-  if (
-    $theme_handler->themeExists($theme) &&
-    $theme_handler->getDefault() === $theme
-  ) {
-    foreach ($blocks as $block) {
-      $parent_block = Block::load($block);
-      $new_block = $parent_block->createDuplicateBlock($theme . '_' . $parent_block->id(), $theme);
-      $new_block->save();
+    if (
+      $theme_handler->themeExists($theme) &&
+      $theme_handler->getDefault() === $theme
+    ) {
+      foreach ($blocks as $block) {
+        $parent_block = Block::load($block);
+        $new_block = $parent_block->createDuplicateBlock($theme . '_' . $parent_block->id(), $theme);
+        $new_block->save();
+      }
     }
   }
 }

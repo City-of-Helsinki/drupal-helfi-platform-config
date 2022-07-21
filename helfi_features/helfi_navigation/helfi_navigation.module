@@ -27,10 +27,14 @@ function helfi_navigation_theme_suggestions_block_alter(array &$suggestions, arr
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function helfi_navigation_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
+function helfi_navigation_theme_suggestions_menu__external_menu_alter(array &$suggestions, array $variables) {
   if ($variables['theme_hook_original'] === 'menu__external_menu') {
-    // @TODO this needs refactoring.
-    $suggestions[] = 'menu__external_menu';
+    if (isset($variables['menu_type'])) {
+      $suggestions[] = 'menu__external_menu__' . $variables['menu_type'];
+    }
+    if (str_contains($variables['attributes']['block_id'], 'mega_menu')) {
+      $suggestions[] = 'menu__external_menu__mega_menu';
+    }
   }
 }
 
@@ -50,7 +54,7 @@ function helfi_navigation_theme() {
     ],
     'menu__external_menu' => [
       'variables' => [
-        'menu_name' => NULL,
+        'menu_type' => NULL,
         'items' => [],
         'attributes' => [],
       ],
@@ -62,7 +66,10 @@ function helfi_navigation_theme() {
  * Implements hook_preprocess_HOOK().
  */
 function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) {
-  if ($variables['menu_name'] === 'main') {
+  if (
+    isset($variables['menu_name']) &&
+    $variables['menu_name'] === 'main'
+  ) {
     foreach ($variables['items'] as &$menu_link) {
       $menu_link['next_url'] = clone $menu_link['url'];
       $menu_link['next_url']->setOption('fragment', 'menu');

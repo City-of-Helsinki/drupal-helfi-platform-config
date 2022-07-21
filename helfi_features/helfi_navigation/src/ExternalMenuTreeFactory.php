@@ -90,7 +90,7 @@ class ExternalMenuTreeFactory {
       throw new \Exception('Invalid JSON input');
     }
 
-    $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_name'])];
+    $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_type'])];
 
     // Transform items only if menu tree exists.
     if (isset($data['menu_tree'])) {
@@ -129,24 +129,28 @@ class ExternalMenuTreeFactory {
     foreach ($items as $item) {
       $transformed_item = $this->createLink($item, $menu_type, $active_trail, (bool) $expand_all_items);
 
-      // Make sure there's parent ids in subtree items.
-      foreach ($item->sub_tree as &$sub_tree_item) {
-        if (empty($sub_tree_item->parentId)) {
-          $sub_tree_item->parentId = $transformed_item['id'];
-        }
-      }
-
       $options = [
         'active_trail' => $active_trail,
         'max_depth' => $max_depth,
         'menu_type' => $menu_type,
+        'fallback' => $fallback,
         'expand_all_items' => $expand_all_items,
         'level' => $level + 1,
       ];
 
-      $transformed_item['below'] = (isset($item->sub_tree) && $level < $max_depth)
-        ? $this->transformItems($item->sub_tree, $options)
-        : [];
+      if (isset($item->sub_tree)) {
+        // Make sure there's parent ids in subtree items.
+        foreach ($item->sub_tree as &$sub_tree_item) {
+          if (empty($sub_tree_item->parentId)) {
+            $sub_tree_item->parentId = $transformed_item['id'];
+          }
+        }
+
+        // Handle subtree.
+        if ($level < $max_depth) {
+          $transformed_item['below'] = $this->transformItems($item->sub_tree, $options);
+        }
+      }
 
       $transformed_items[] = $transformed_item;
     }
@@ -213,6 +217,7 @@ class ExternalMenuTreeFactory {
       'original_link' => new ExternalMenuLink([], $item->id, $link_definition),
       'external' => $item->external,
       'url' => $item->url,
+      'below' => [],
     ];
   }
 
