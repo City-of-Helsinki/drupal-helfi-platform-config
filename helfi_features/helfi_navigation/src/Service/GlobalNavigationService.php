@@ -114,7 +114,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    * Check if current instance is frontpage.
    */
   public function inFrontPage(): bool {
-    return $this->currentProject->getId() === Project::ETUSIVU;
+    return $this->getCurrentProject()->getId() === Project::ETUSIVU;
   }
 
   /**
