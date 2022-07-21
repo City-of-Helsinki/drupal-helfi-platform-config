@@ -8,6 +8,7 @@ use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
@@ -185,7 +186,7 @@ class ExternalMenuTreeFactory {
     ];
 
     // Parse the URL.
-    $item->url = UrlHelper::parse($item->url);
+    $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<none>');
 
     if (!isset($item->id)) {
       $item->id = 'menu_link_content:' . $this->uuidService->generate();
@@ -236,6 +237,10 @@ class ExternalMenuTreeFactory {
     $project_url = $this->globalNavigationService->getProjectUrl(
       $this->globalNavigationService->getCurrentProject()->getId()
     );
+
+    if ($item->url->isRouted() && $item->url->getRouteName() === '<none>') {
+      return FALSE;
+    }
 
     return (
       $project_url === $item->url->getUri() ||
