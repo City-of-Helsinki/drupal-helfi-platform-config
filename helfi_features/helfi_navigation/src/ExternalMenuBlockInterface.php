@@ -10,14 +10,6 @@ namespace Drupal\helfi_navigation;
 interface ExternalMenuBlockInterface {
 
   /**
-   * Return the menu data in JSON form.
-   *
-   * @return string
-   *   The resulting json string.
-   */
-  public function getData(): string;
-
-  /**
    * Returns the maximum depth of the menu.
    *
    * @return int
@@ -32,14 +24,6 @@ interface ExternalMenuBlockInterface {
    *   The starting level.
    */
   public function getStartingLevel(): int;
-
-  /**
-   * Returns the information of should the menu be rendered as fallback menu.
-   *
-   * @return bool
-   *   Should the menu follow active trail and be rendered as fallback menu.
-   */
-  public function getFallback(): bool;
 
   /**
    * Returns the information of should the items be expanded by default.

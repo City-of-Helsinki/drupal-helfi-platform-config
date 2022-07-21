@@ -13,20 +13,6 @@ use Drupal\system\MenuInterface;
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function helfi_navigation_theme_suggestions_block_alter(array &$suggestions, array $variables) {
-  if (in_array('block__external_menu_block', $suggestions)) {
-    if (
-      isset($variables['elements']['#configuration']) &&
-      $variables['elements']['#configuration']['fallback']
-    ) {
-      $suggestions[] = 'block__external_menu_mobile__fallback';
-    }
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
 function helfi_navigation_theme_suggestions_menu__external_menu_alter(array &$suggestions, array $variables) {
   if ($variables['theme_hook_original'] === 'menu__external_menu') {
     if (isset($variables['menu_type'])) {
@@ -43,7 +29,7 @@ function helfi_navigation_theme_suggestions_menu__external_menu_alter(array &$su
  */
 function helfi_navigation_theme() {
   return [
-    'menu__external_menu__mobile__fallback' => [
+    'menu__external_menu__fallback' => [
       'variables' => [
         'menu_name' => NULL,
         'items' => [],
@@ -66,10 +52,7 @@ function helfi_navigation_theme() {
  * Implements hook_preprocess_HOOK().
  */
 function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) {
-  if (
-    isset($variables['menu_name']) &&
-    $variables['menu_name'] === 'main'
-  ) {
+  if (is_array($variables['items']) && !empty($variables['items'])) {
     foreach ($variables['items'] as &$menu_link) {
       $menu_link['next_url'] = clone $menu_link['url'];
       $menu_link['next_url']->setOption('fragment', 'menu');
