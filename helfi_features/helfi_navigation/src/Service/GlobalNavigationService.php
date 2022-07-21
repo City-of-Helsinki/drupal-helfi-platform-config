@@ -136,7 +136,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
     $url = $this->getProjectUrl($project) . $endpoint;
 
     // Disable SSL verification in local environment.
-    if ($this->env === 'local') {
+    if ($this->getEnv() === 'local') {
       $options['verify'] = FALSE;
       $url = str_replace('https://', '', $url);
       $url = str_replace('.so/', '.so:8080/', $url);
@@ -253,7 +253,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    *   The frontpage project.
    */
   protected function getFrontPage(): Environment {
-    return $this->environmentResolver->getEnvironment(Project::ETUSIVU, $this->env);
+    return $this->environmentResolver->getEnvironment(Project::ETUSIVU, $this->getEnv());
   }
 
   /**
@@ -272,7 +272,7 @@ class GlobalNavigationService implements ContainerInjectionInterface {
       $lang_code = $this->languageManager->getCurrentLanguage()->getId();
     }
     try {
-      return $this->environmentResolver->getEnvironment($project, $this->env)->getUrl($lang_code);
+      return $this->environmentResolver->getEnvironment($project, $this->getEnv())->getUrl($lang_code);
     }
     catch (\Exception $e) {
       $this->logger->warning('Cannot retrieve project URL with provided language. ' . $e->getMessage());
