@@ -18,4 +18,4 @@ services:
     arguments: [ '@config.factory', '@entity_type.manager', '@language_manager', '@helfi_api_base.internal_domain_resolver']
   helfi_navigation.external_menu_validator:
     class: \Drupal\helfi_navigation\Validator\ExternalMenuValidator
-    arguments: ['@helfi_navigation.schema_storage']
+    arguments: ['@helfi_navigation.schema_storage', '@logger.channel.helfi_navigation']

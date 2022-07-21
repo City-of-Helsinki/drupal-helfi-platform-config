@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\Validator;
 use JsonSchema\Constraints\Factory;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
+use Psr\Log\LoggerInterface;
 use function GuzzleHttp\json_decode;
 
 /**
@@ -33,6 +34,7 @@ class ExternalMenuValidator {
    */
   public function __construct(
     private SchemaStorage $schemaStorage,
+    private LoggerInterface $logger
   ) {
     try {
       $this->schema = json_decode(file_get_contents(__DIR__ . '/../../assets/schema.json'), TRUE);
