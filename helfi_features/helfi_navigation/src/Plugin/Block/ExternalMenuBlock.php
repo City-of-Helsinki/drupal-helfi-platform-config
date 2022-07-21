@@ -20,7 +20,7 @@ use Drupal\helfi_navigation\ExternalMenuTree;
 class ExternalMenuBlock extends ExternalMenuBlockBase {
 
   /**
-   * Build either fallback menu or external menu tree render array.
+   * Build external menu render array.
    *
    * @return array|null
    *   Returns the render array.

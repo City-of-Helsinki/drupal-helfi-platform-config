@@ -186,7 +186,7 @@ class ExternalMenuTreeFactory {
     ];
 
     // Parse the URL.
-    $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<none>');
+    $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
 
     if (!isset($item->id)) {
       $item->id = 'menu_link_content:' . $this->uuidService->generate();
@@ -238,7 +238,7 @@ class ExternalMenuTreeFactory {
       $this->globalNavigationService->getCurrentProject()->getId()
     );
 
-    if ($item->url->isRouted() && $item->url->getRouteName() === '<none>') {
+    if ($item->url->isRouted() && $item->url->getRouteName() === '<nolink>') {
       return FALSE;
     }
 
