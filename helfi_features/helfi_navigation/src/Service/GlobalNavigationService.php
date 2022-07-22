@@ -169,9 +169,9 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    */
   public function getContent(string $url, array $options = []): string {
     // @todo This should be more intellectual cache than just 3600sec.
-    if ($data = $this->getFromCache($url)) {
-      return $data;
-    }
+    // if ($data = $this->getFromCache($url)) {
+      // return $data;
+    // }
 
     try {
       $response = $this->httpClient->request('GET', $url, $options);
