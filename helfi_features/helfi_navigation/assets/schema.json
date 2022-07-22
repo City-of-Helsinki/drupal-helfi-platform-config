@@ -31,7 +31,7 @@
           "type": "string"
         },
         "name": {
-          "type": "string"
+          "type": ["string", "null"]
         },
         "url": {
           "type": "string"
