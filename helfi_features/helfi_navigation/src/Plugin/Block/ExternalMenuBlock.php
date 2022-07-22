@@ -30,7 +30,7 @@ class ExternalMenuBlock extends ExternalMenuBlockBase {
     $build = [];
 
     $menu_type = $this->getDerivativeId();
-    // @todo Handle menu request elsewhere,
+    // @todo UHF-6196, UHF-6197: Handle menu request elsewhere,
     // Maybe cache the request and build from cached request data.
     /** @var \Drupal\helfi_navigation\ExternalMenuTree $menu_tree */
     $menu_tree = $this->buildFromJson(

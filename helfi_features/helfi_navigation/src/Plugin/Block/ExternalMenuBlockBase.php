@@ -141,7 +141,6 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    // @todo We should add menu request cache tag here.
     return [];
   }
 
