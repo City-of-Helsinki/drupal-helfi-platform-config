@@ -168,10 +168,10 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    *   The response body.
    */
   public function getContent(string $url, array $options = []): string {
-    // @todo UHF-6197: This should be more intellectual cache than just 3600sec.
-    // if ($data = $this->getFromCache($url)) {
-    // return $data;
-    // }
+    if ($data = $this->getFromCache($url)) {
+      return $data;
+    }
+
     try {
       $response = $this->httpClient->request('GET', $url, $options);
       $content = $response->getBody()->getContents();
@@ -181,6 +181,12 @@ class GlobalNavigationService implements ContainerInjectionInterface {
     }
     catch (\throwable $e) {
       $this->logger->error('Request failed with error: ' . $e->getMessage());
+
+      // Check invalidated cache if no valid response received.
+      if ($data = $this->getFromCache($url, TRUE)) {
+        return $data;
+      }
+
       return '';
     }
   }
@@ -205,18 +211,20 @@ class GlobalNavigationService implements ContainerInjectionInterface {
    *
    * @param string $id
    *   The id.
+   * @param bool $allow_invalid
+   *   Return invalidated cache items also.
    *
    * @return string|null
    *   The cached data or null.
    */
-  protected function getFromCache(string $id):? string {
+  protected function getFromCache(string $id, $allow_invalid = FALSE):? string {
     $key = $this->getCacheKey($id);
 
     if (isset($this->data[$key])) {
       return $this->data[$key];
     }
 
-    if ($data = $this->dataCache->get($key)) {
+    if ($data = $this->dataCache->get($key, $allow_invalid)) {
       return $data->data;
     }
     return NULL;
