@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\Menu\Menu;
@@ -38,58 +39,60 @@ class MenuUpdater {
     }
 
     $current_project = $this->globalNavigationService->getCurrentProject();
-    $menu_tree = [];
+    $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
 
-    foreach (array_keys($this->languageManager->getLanguages()) as $lang_code) {
-      $tree = $this->menuTreeBuilder->buildMenuTree(Menu::MAIN_MENU, $lang_code);
+    $tree = $this->menuTreeBuilder->buildMenuTree(Menu::MAIN_MENU, $langcode);
 
-      $menu_tree[$lang_code] = [
-        'name' => $this->siteNames()[$lang_code],
-        'url' => $this->globalNavigationService->getProjectUrl($current_project->getId(), $lang_code),
-        'external' => FALSE,
-        'hasItems' => !(empty($tree)),
-        'weight' => 0,
-        'sub_tree' => $tree,
-      ];
-    }
-
-    $options = [
-      'json' => [
-        'id' => $current_project->getId(),
-        'url' => $this->globalNavigationService->getProjectUrl($current_project->getId()),
-        'site_name' => $this->siteNames(),
-        'menu_tree' => $menu_tree,
-      ],
+    $menu_tree = [
+      'name' => $this->siteName($langcode),
+      'external' => FALSE,
+      'hasItems' => !(empty($tree)),
+      'weight' => 0,
+      'sub_tree' => $tree,
     ];
 
     $this->globalNavigationService->makeRequest(
       Project::ETUSIVU,
-      'POST',
+      'PATCH',
       $this->getGlobalMenuEndpoint(),
-      $options
+      [
+        'headers' => [
+          'Authorization' => 'Basic ' . $this->config->get('helfi_navigation.api')->get('key'),
+        ],
+        'json' => [
+          'id' => $current_project->getId(),
+          'langcode' => $langcode,
+          'url' => $this->globalNavigationService->getProjectUrl($current_project->getId(), $langcode),
+          'site_name' => $this->siteName($langcode),
+          'menu_tree' => $menu_tree,
+        ],
+      ],
     );
   }
 
   /**
-   * Get translated site names.
+   * Get translated site name.
    *
-   * @return array
-   *   Returns site names as an array or empty array.
+   * @return null|string
+   *   Returns site name for given language.
    */
-  protected function siteNames(): array {
-    $site_names = [];
+  protected function siteName(string $langcode): ? string {
+    static $site_names = [];
 
-    foreach ($this->languageManager->getLanguages() as $language) {
-      $this->languageManager->setConfigOverrideLanguage($language);
-      $override = $this->languageManager->getDefaultLanguage()->getId() !== $language->getId();
-      $site_name = $this->config
-        ->get('system.site')
-        ->getOriginal('name', $override);
+    if (!$site_names) {
+      foreach ($this->languageManager->getLanguages() as $language) {
+        $this->languageManager->setConfigOverrideLanguage($language);
 
-      $site_names[$language->getId()] = $site_name;
+        $override = $this->languageManager->getDefaultLanguage()->getId() !== $language->getId();
+        $site_name = $this->config
+          ->get('system.site')
+          ->getOriginal('name', $override);
+
+        $site_names[$language->getId()] = $site_name;
+      }
     }
-
-    return $site_names;
+    return $site_names[$langcode] ?? NULL;
   }
 
   /**
@@ -99,7 +102,7 @@ class MenuUpdater {
    *   Global menu endpoint.
    */
   protected function getGlobalMenuEndpoint(): string {
-    return sprintf('/global-menus/%s', $this->globalNavigationService->getCurrentProject()->getId());
+    return sprintf('/api/v1/global-menu/%s', $this->globalNavigationService->getCurrentProject()->getId());
   }
 
 }

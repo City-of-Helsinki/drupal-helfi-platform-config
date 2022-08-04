@@ -1,0 +1,5 @@
+helfi_navigation.api:
+  type: mapping
+  mapping:
+    key:
+      type: string
