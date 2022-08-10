@@ -14,7 +14,7 @@
         "drupal/content_lock": "^2.2",
         "drupal/core-recommended": ">=9.3",
         "drupal/crop": "^2.1",
-        "drupal/default_content": "^2.0.0-alpha1",
+        "drupal/default_content": "^2.0.0-alpha2",
         "drupal/diff": "^1.0",
         "drupal/gin_toolbar": "^1.0",
         "drupal/editoria11y": "^1.0",
@@ -75,7 +75,7 @@
                 "[#UHF-4325] Strip whitespaces from twig debug comments": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/f7c0e380e2deb9a1b46bdf779fb27a945b466575/patches/drupal_core_strip_debug_mode_whitespaces_9.3.x.patch"
             },
             "drupal/default_content": {
-                "https://www.drupal.org/project/default_content/issues/2640734#comment-14399122": "https://www.drupal.org/files/issues/2022-02-04/default_content-2640734-allow_manual_import-108.patch"
+                "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/main/patches/default_content_2.0.0-alpha2-2640734_manual_imports-e164a354.patch"
             },
             "drupal/eu_cookie_compliance": {
                 "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/d1a6866b2138f7d3597df79f395a5c1a9e19ee2e/patches/eu_cookie_compliance_block_8.x-1.19.patch",
