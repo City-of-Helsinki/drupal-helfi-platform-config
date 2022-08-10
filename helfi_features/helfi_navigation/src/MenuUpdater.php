@@ -7,7 +7,6 @@ namespace Drupal\helfi_navigation;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\Menu\Menu;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
@@ -34,7 +33,7 @@ class MenuUpdater {
    *   Throws exception.
    */
   public function syncMenu(): void {
-    if ($this->globalNavigationService->inFrontPage()) {
+    if (!$authKey = $this->config->get('helfi_navigation.api')->get('key')) {
       return;
     }
 
@@ -52,23 +51,13 @@ class MenuUpdater {
       'sub_tree' => $tree,
     ];
 
-    $this->globalNavigationService->makeRequest(
-      Project::ETUSIVU,
-      'PATCH',
-      $this->getGlobalMenuEndpoint(),
-      [
-        'headers' => [
-          'Authorization' => 'Basic ' . $this->config->get('helfi_navigation.api')->get('key'),
-        ],
-        'json' => [
-          'id' => $current_project->getId(),
-          'langcode' => $langcode,
-          'url' => $this->globalNavigationService->getProjectUrl($current_project->getId(), $langcode),
-          'site_name' => $this->siteName($langcode),
-          'menu_tree' => $menu_tree,
-        ],
-      ],
-    );
+    $this->globalNavigationService->updateMainMenu([
+      'id' => $current_project->getId(),
+      'langcode' => $langcode,
+      'url' => $this->globalNavigationService->getProjectUrl($current_project->getId(), $langcode),
+      'site_name' => $this->siteName($langcode),
+      'menu_tree' => $menu_tree,
+    ], 'Basic' . $authKey);
   }
 
   /**
@@ -93,16 +82,6 @@ class MenuUpdater {
       }
     }
     return $site_names[$langcode] ?? NULL;
-  }
-
-  /**
-   * Get global menu endpoint.
-   *
-   * @return string
-   *   Global menu endpoint.
-   */
-  protected function getGlobalMenuEndpoint(): string {
-    return sprintf('/api/v1/global-menu/%s', $this->globalNavigationService->getCurrentProject()->getId());
   }
 
 }

@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
+use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 
@@ -25,7 +26,9 @@ class MenuTreeBuilder {
     protected EntityTypeManagerInterface $entityTypeManager,
     protected LanguageManagerInterface $languageManager,
     protected InternalDomainResolver $domainResolver,
-  ) {}
+    protected MenuLinkTreeInterface $menuTree
+  ) {
+  }
 
   /**
    * Builds menu tree for synchronization.
@@ -43,7 +46,7 @@ class MenuTreeBuilder {
    */
   public function buildMenuTree(string $menu_type, string $lang_code): array {
 
-    $menu_link_tree = \Drupal::menuTree()->load(
+    $menu_link_tree = $this->menuTree->load(
       $menu_type,
       (new MenuTreeParameters())
         ->onlyEnabledLinks()

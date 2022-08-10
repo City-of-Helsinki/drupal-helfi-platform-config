@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
-use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_navigation\ExternalMenuTree;
 
 /**
  * Provides an external menu block.
@@ -18,48 +16,12 @@ use Drupal\helfi_navigation\ExternalMenuTree;
  *   deriver = "Drupal\helfi_navigation\Plugin\Derivative\ExternalMenuBlock"
  * )
  */
-class ExternalMenuBlock extends ExternalMenuBlockBase {
-
-  /**
-   * Build external menu render array.
-   *
-   * @return array|null
-   *   Returns the render array.
-   */
-  public function build():? array {
-    $build = [];
-
-    $menu_type = $this->getDerivativeId();
-    // @todo UHF-6196, UHF-6197: Handle menu request elsewhere,
-    // Maybe cache the request and build from cached request data.
-    /** @var \Drupal\helfi_navigation\ExternalMenuTree $menu_tree */
-    $menu_tree = $this->buildFromJson(
-      $this->globalNavigationService->makeRequest(
-        Project::ETUSIVU,
-        'GET',
-        "/global-menus/$menu_type"
-      )
-    );
-
-    if ($menu_tree instanceof ExternalMenuTree) {
-      $build['#cache'] = [
-        'cache_context' => $this->getCacheContexts(),
-        'cache_tags' => $this->getCacheTags(),
-      ];
-
-      $build['#sorted'] = TRUE;
-      $build['#items'] = $menu_tree->getTree();
-      $build['#theme'] = 'menu__external_menu';
-      $build['#menu_type'] = $menu_type;
-    }
-
-    return $build;
-  }
+final class ExternalMenuBlock extends ExternalMenuBlockBase {
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags() : array {
     return Cache::mergeTags([$this->getCacheKey()], parent::getCacheTags());
   }
 
@@ -73,6 +35,32 @@ class ExternalMenuBlock extends ExternalMenuBlockBase {
     $context = 'ExternalMenuBlock';
     $menu_type = $this->getDerivativeId();
     return sprintf('%s:%s', $context, $menu_type);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildMenuTree(): array {
+    try {
+      $json = $this->globalNavigationService->getExternalMenu($this->getDerivativeId());
+    }
+    catch (\Exception) {
+      return [];
+    }
+    $menu = [];
+    // @todo Support more than one level.
+    foreach ($json->data as $item) {
+      $menu[] = (object) [
+        'name' => $item->attributes->title,
+        'url' => $item->attributes->url,
+        'parentId' => $item->attributes->parent,
+        'external' => $item->attributes->options->external ?? FALSE,
+        'weight' => $item->attributes->weight,
+        'id' => $item->id,
+        'is_expanded' => $item->attributes->expanded,
+      ];
+    }
+    return $menu;
   }
 
 }

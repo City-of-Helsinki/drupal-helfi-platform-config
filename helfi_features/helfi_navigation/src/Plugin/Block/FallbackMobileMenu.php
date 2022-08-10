@@ -11,15 +11,18 @@ use Drupal\helfi_api_base\Environment\Project;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
- * Provides an external menu block.
+ * Provides a fallback mobile navigation menu block.
+ *
+ * This is used to render the non-javascript version of mobile
+ * navigation.
  *
  * @Block(
  *   id = "external_menu_block_fallback",
- *   admin_label = @Translation("External - Fallback menu"),
+ *   admin_label = @Translation("External - Fallback mobile menu"),
  *   category = @Translation("External menu"),
  * )
  */
-class ExternalMenuBlockFallback extends ExternalMenuBlockBase {
+class FallbackMobileMenu extends ExternalMenuBlockBase {
 
   /**
    * Build the fallback menu render array.
@@ -27,7 +30,7 @@ class ExternalMenuBlockFallback extends ExternalMenuBlockBase {
    * @return array|null
    *   Returns the render array.
    */
-  public function build():? array {
+  public function build() : array {
     $build = [];
 
     // Create fallback menu render array.
@@ -330,7 +333,7 @@ class ExternalMenuBlockFallback extends ExternalMenuBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags() : array {
     $cache_tags = parent::getCacheTags();
     $cache_tags[] = 'config:system.menu.' . $this->getMenuType();
     return $cache_tags;
@@ -339,11 +342,15 @@ class ExternalMenuBlockFallback extends ExternalMenuBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts() : array {
     return Cache::mergeContexts(
       parent::getCacheContexts(),
       ['route.menu_active_trails:' . $this->getMenuType()]
     );
+  }
+
+  protected function buildMenuTree(): array {
+    // TODO: Implement buildMenuTree() method.
   }
 
 }

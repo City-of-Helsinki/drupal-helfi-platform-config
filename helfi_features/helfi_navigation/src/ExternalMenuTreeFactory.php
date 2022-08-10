@@ -13,9 +13,6 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
-use Drupal\helfi_navigation\Validator\ExternalMenuValidator;
-use function GuzzleHttp\json_decode;
-use JsonSchema\Validator;
 use Psr\Log\LoggerInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 
@@ -23,20 +20,6 @@ use Drupal\helfi_api_base\Link\InternalDomainResolver;
  * Helper class for external menu tree actions.
  */
 class ExternalMenuTreeFactory {
-
-  /**
-   * The JSON schema.
-   *
-   * @var object
-   */
-  protected object $schema;
-
-  /**
-   * The JSON validator.
-   *
-   * @var \JsonSchema\Validator
-   */
-  protected Validator $validator;
 
   /**
    * Constructs a tree instance from supplied JSON.
@@ -55,8 +38,6 @@ class ExternalMenuTreeFactory {
    *   The active menu trail service.
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuTree
    *   The active menu trail service.
-   * @param \Drupal\helfi_navigation\Validator\ExternalMenuValidator $menuValidator
-   *   Json validator.
    */
   public function __construct(
     protected LoggerInterface $logger,
@@ -65,41 +46,28 @@ class ExternalMenuTreeFactory {
     protected GlobalNavigationService $globalNavigationService,
     protected UuidInterface $uuidService,
     protected MenuActiveTrailInterface $menuActiveTrail,
-    protected MenuLinkTreeInterface $menuTree,
-    protected ExternalMenuValidator $menuValidator,
+    protected MenuLinkTreeInterface $menuTree
   ) {
   }
 
   /**
-   * Form and return a menu tree instance from json input.
+   * Form and return a menu tree instance for given menu items.
    *
-   * @param string $json
-   *   The JSON string.
+   * @param array $menu
+   *   The menu.
    * @param array $options
    *   Options for the menu link item handling.
    *
    * @return \Drupal\helfi_navigation\ExternalMenuTree|null
    *   The resulting menu tree instance.
-   *
-   * @throws \Exception
-   *   Throws exception.
    */
-  public function fromJson(string $json, array $options = []):? ExternalMenuTree {
-    $data = (array) json_decode($json);
-
-    if (!$this->menuValidator->validate($data)) {
-      throw new \Exception('Invalid JSON input');
-    }
-
+  public function transform(array $menu, array $options = []) :? ExternalMenuTree {
     $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_type'])];
 
-    // Transform items only if menu tree exists.
-    if (isset($data['menu_tree'])) {
-      $tree = $this->transformItems($data['menu_tree'], $options);
+    $tree = $this->transformItems($menu, $options);
 
-      if (!empty($tree)) {
-        return new ExternalMenuTree($tree);
-      }
+    if (!empty($tree)) {
+      return new ExternalMenuTree($tree);
     }
     return NULL;
   }
@@ -234,6 +202,8 @@ class ExternalMenuTreeFactory {
    *   Returns true or false.
    */
   protected function inActiveTrail(object $item, array $active_trail): bool {
+    // @todo fix this.
+    return FALSE;
     $project_url = $this->globalNavigationService->getProjectUrl(
       $this->globalNavigationService->getCurrentProject()->getId()
     );
