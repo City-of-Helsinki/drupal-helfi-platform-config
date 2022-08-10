@@ -27,7 +27,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
   /**
    * Build the fallback menu render array.
    *
-   * @return array|null
+   * @return array
    *   Returns the render array.
    */
   public function build() : array {

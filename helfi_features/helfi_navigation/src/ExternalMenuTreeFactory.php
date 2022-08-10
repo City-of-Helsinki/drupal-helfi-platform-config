@@ -9,17 +9,25 @@ use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
 use Drupal\helfi_navigation\Service\GlobalNavigationService;
 use Psr\Log\LoggerInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Helper class for external menu tree actions.
  */
 class ExternalMenuTreeFactory {
+
+  /**
+   * The current request.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  protected Request $currentRequest;
 
   /**
    * Constructs a tree instance from supplied JSON.
@@ -28,8 +36,8 @@ class ExternalMenuTreeFactory {
    *   Logger channel.
    * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $domainResolver
    *   Internal domain resolver.
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
-   *   EnvironmentResolver helper class.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack.
    * @param \Drupal\helfi_navigation\Service\GlobalNavigationService $globalNavigationService
    *   Global navigation service.
    * @param \Drupal\Component\Uuid\UuidInterface $uuidService
@@ -42,12 +50,13 @@ class ExternalMenuTreeFactory {
   public function __construct(
     protected LoggerInterface $logger,
     protected InternalDomainResolver $domainResolver,
-    protected EnvironmentResolver $environmentResolver,
+    RequestStack $requestStack,
     protected GlobalNavigationService $globalNavigationService,
     protected UuidInterface $uuidService,
     protected MenuActiveTrailInterface $menuActiveTrail,
     protected MenuLinkTreeInterface $menuTree
   ) {
+    $this->currentRequest = $requestStack->getCurrentRequest();
   }
 
   /**
@@ -202,20 +211,16 @@ class ExternalMenuTreeFactory {
    *   Returns true or false.
    */
   protected function inActiveTrail(object $item, array $active_trail): bool {
-    // @todo fix this.
-    return FALSE;
-    $project_url = $this->globalNavigationService->getProjectUrl(
-      $this->globalNavigationService->getCurrentProject()->getId()
-    );
-
     if ($item->url->isRouted() && $item->url->getRouteName() === '<nolink>') {
       return FALSE;
     }
+    $currentPath = parse_url($this->currentRequest->getUri(), PHP_URL_PATH);
+    $linkPath = parse_url($item->url->getUri(), PHP_URL_PATH);
 
-    return (
-      $project_url === $item->url->getUri() ||
-      in_array($item->id, $active_trail)
-    );
+    if ($linkPath === $currentPath || in_array($item->id, $active_trail)) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
 }
