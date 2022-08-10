@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Service class for global navigation related functions.
  */
-class GlobalNavigationService {
+final class GlobalNavigationService {
 
   /**
    * Construct an instance.
@@ -29,21 +29,55 @@ class GlobalNavigationService {
    *   Logger channel.
    */
   public function __construct(
-    protected ClientInterface $httpClient,
-    protected EnvironmentResolver $environmentResolver,
-    protected LanguageManagerInterface $languageManager,
-    protected LoggerInterface $logger,
+    private ClientInterface $httpClient,
+    private EnvironmentResolver $environmentResolver,
+    private LanguageManagerInterface $languageManager,
+    private LoggerInterface $logger,
   ) {
   }
 
+  /**
+   * Makes a request to fetch external menu from Etusivu instance.
+   *
+   * @param string $menuId
+   *   The menu id to get.
+   * @param array $options
+   *   The request options.
+   *
+   * @return object
+   *   The JSON object representing external menu.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
   public function getExternalMenu(string $menuId, array $options = []) : object {
     return $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $options);
   }
 
+  /**
+   * Makes a request to fetch main menu from Etusivu instance.
+   *
+   * @param array $options
+   *   The request options.
+   *
+   * @return object
+   *   The JSON object representing main menu.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
   public function getMainMenu(array $options = []) : object {
     return $this->makeRequest('GET', '/api/v1/global-menu', $options);
   }
 
+  /**
+   * Updates the main menu for currently active project.
+   *
+   * @param array $data
+   *   The JSON data to update.
+   * @param string $authorization
+   *   The authorization header.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
   public function updateMainMenu(array $data, string $authorization) : void {
     $endpoint = sprintf('/api/v1/global-menu/%s', $this->environmentResolver->getActiveEnvironment()->getId());
     $this->makeRequest('POST', $endpoint, [

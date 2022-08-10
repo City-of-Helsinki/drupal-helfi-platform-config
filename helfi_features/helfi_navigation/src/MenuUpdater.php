@@ -14,37 +14,35 @@ use Drupal\helfi_navigation\Service\GlobalNavigationService;
 /**
  * Synchronizes global menu.
  */
-class MenuUpdater {
+final class MenuUpdater {
 
   /**
    * Constructs MenuUpdater.
    */
   public function __construct(
-    protected ConfigFactory $config,
-    protected GlobalNavigationService $globalNavigationService,
-    protected LanguageManagerInterface $languageManager,
-    protected MenuTreeBuilder $menuTreeBuilder,
-  ) {}
+    private ConfigFactory $config,
+    private GlobalNavigationService $globalNavigationService,
+    private LanguageManagerInterface $languageManager,
+    private MenuTreeBuilder $menuTreeBuilder,
+  ) {
+  }
 
   /**
    * Sends main menu tree to frontpage instance.
-   *
-   * @throws \Exception
-   *   Throws exception.
    */
   public function syncMenu(): void {
     if (!$authKey = $this->config->get('helfi_navigation.api')->get('key')) {
       return;
     }
-
-    $current_project = $this->globalNavigationService->getCurrentProject();
     $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
 
-    $tree = $this->menuTreeBuilder->buildMenuTree(Menu::MAIN_MENU, $langcode);
+    $tree = $this->menuTreeBuilder
+      ->buildMenuTree(Menu::MAIN_MENU, $langcode);
+    $siteName = $this->config->get('system.site')->get('name');
 
     $menu_tree = [
-      'name' => $this->siteName($langcode),
+      'name' => $siteName,
       'external' => FALSE,
       'hasItems' => !(empty($tree)),
       'weight' => 0,
@@ -52,36 +50,10 @@ class MenuUpdater {
     ];
 
     $this->globalNavigationService->updateMainMenu([
-      'id' => $current_project->getId(),
       'langcode' => $langcode,
-      'url' => $this->globalNavigationService->getProjectUrl($current_project->getId(), $langcode),
-      'site_name' => $this->siteName($langcode),
+      'site_name' => $siteName,
       'menu_tree' => $menu_tree,
-    ], 'Basic' . $authKey);
-  }
-
-  /**
-   * Get translated site name.
-   *
-   * @return null|string
-   *   Returns site name for given language.
-   */
-  protected function siteName(string $langcode): ? string {
-    static $site_names = [];
-
-    if (!$site_names) {
-      foreach ($this->languageManager->getLanguages() as $language) {
-        $this->languageManager->setConfigOverrideLanguage($language);
-
-        $override = $this->languageManager->getDefaultLanguage()->getId() !== $language->getId();
-        $site_name = $this->config
-          ->get('system.site')
-          ->getOriginal('name', $override);
-
-        $site_names[$language->getId()] = $site_name;
-      }
-    }
-    return $site_names[$langcode] ?? NULL;
+    ], 'Basic ' . $authKey);
   }
 
 }
