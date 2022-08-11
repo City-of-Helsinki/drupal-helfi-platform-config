@@ -37,17 +37,21 @@ final class MenuUpdater {
 
     $siteName = $this->config->get('system.site')->get('name');
 
-    $this->globalNavigationService->updateMainMenu([
-      'langcode' => $langcode,
-      'site_name' => $siteName,
-      'menu_tree' => [
-        'name' => $siteName,
-        'external' => FALSE,
-        'hasItems' => !(empty($tree)),
-        'weight' => 0,
-        'sub_tree' => $tree,
-      ],
-    ], 'Basic ' . $authKey);
+    $this->globalNavigationService->updateMainMenu(
+      $langcode,
+      'Basic ' . $authKey,
+      [
+        'langcode' => $langcode,
+        'site_name' => $siteName,
+        'menu_tree' => [
+          'name' => $siteName,
+          'external' => FALSE,
+          'hasItems' => !(empty($tree)),
+          'weight' => 0,
+          'sub_tree' => $tree,
+        ],
+      ]
+    );
   }
 
 }

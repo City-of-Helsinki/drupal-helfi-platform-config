@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
 
@@ -65,7 +66,12 @@ function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) 
  */
 function helfi_navigation_menu_update(MenuInterface $entity) {
   if ($entity->id() === 'main') {
-    _helfi_navigation_queue_item($entity);
+    $langcode = $entity->language()->getId();
+
+    if ($langcode === LanguageInterface::LANGCODE_NOT_SPECIFIED) {
+      $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+    }
+    _helfi_navigation_queue_item($langcode);
   }
 }
 
@@ -74,25 +80,26 @@ function helfi_navigation_menu_update(MenuInterface $entity) {
  */
 function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $entity) {
   if ($entity->getMenuName() === 'main') {
-    _helfi_navigation_queue_item($entity);
+    _helfi_navigation_queue_item($entity->language()->getId());
   }
 }
 
 /**
  * Create menu update queue item.
  */
-function _helfi_navigation_queue_item(MenuLinkContentInterface|MenuInterface $entity) {
+function _helfi_navigation_queue_item(string $langcode) {
   // @todo Remove once testing phase is over.
   $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
 
+
   try {
-    $menuUpdater->syncMenu($entity->language()->getId());
+    $menuUpdater->syncMenu($langcode);
   }
   catch (\InvalidArgumentException) {
   }
   catch (\Exception) {
     // Queue item if the synchronization failed.
     $queue = \Drupal::queue('helfi_navigation_menu_queue');
-    $queue->createItem($entity);
+    $queue->createItem($langcode);
   }
 }

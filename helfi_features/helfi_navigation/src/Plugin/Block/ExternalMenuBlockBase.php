@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
 use Drupal\helfi_navigation\ExternalMenuTree;
@@ -40,6 +41,13 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
   protected LoggerInterface $logger;
 
   /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected LanguageManagerInterface $languageManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
@@ -47,6 +55,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
     $instance->globalNavigationService = $container->get('helfi_navigation.global_navigation_service');
     $instance->menuTreeFactory = $container->get('helfi_navigation.external_menu_tree_factory');
     $instance->logger = $container->get('logger.channel.helfi_navigation');
+    $instance->languageManager = $container->get('language_manager');
     return $instance;
   }
 

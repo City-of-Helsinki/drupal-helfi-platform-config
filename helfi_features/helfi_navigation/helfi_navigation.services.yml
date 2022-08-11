@@ -7,7 +7,7 @@ services:
     arguments: ['@logger.channel.helfi_navigation', '@helfi_api_base.internal_domain_resolver', '@request_stack', '@helfi_navigation.global_navigation_service', '@uuid', '@menu.active_trail', '@menu.link_tree']
   helfi_navigation.global_navigation_service:
     class: \Drupal\helfi_navigation\Service\GlobalNavigationService
-    arguments: ['@http_client', '@helfi_api_base.environment_resolver', '@language_manager', '@logger.channel.helfi_navigation']
+    arguments: ['@http_client', '@helfi_api_base.environment_resolver', '@logger.channel.helfi_navigation']
   helfi_navigation.menu_updater:
     class: \Drupal\helfi_navigation\MenuUpdater
     arguments: ['@config.factory', '@helfi_navigation.global_navigation_service', '@helfi_navigation.menu_tree_builder_service']

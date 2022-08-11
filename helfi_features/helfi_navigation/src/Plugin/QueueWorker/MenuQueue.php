@@ -26,63 +26,35 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
   use StringTranslationTrait;
 
   /**
-   * Constructs a new MenuQueue.
+   * The menu updater service.
    *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   Logger channel.
-   * @param \Drupal\helfi_navigation\MenuUpdater $menuUpdater
-   *   The Menu updater service.
+   * @var \Drupal\helfi_navigation\MenuUpdater
    */
-  public function __construct(
-    array $configuration,
-    string $plugin_id,
-    mixed $plugin_definition,
-    private LoggerInterface $logger,
-    private MenuUpdater $menuUpdater
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }
+  private MenuUpdater $menuUpdater;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('logger.channel.helfi_navigation'),
-      $container->get('helfi_navigation.menu_updater'),
-    );
+    $instance = new static($configuration, $plugin_id, $plugin_definition);
+    $instance->menuUpdater = $container->get('helfi_navigation.menu_updater');
+    return $instance;
   }
 
   /**
    * Process queue item.
    *
-   * @param object $data
-   *   Data of the processable menu / menu item.
+   * @param string $data
+   *   Data of the processable language code.
    *
    * @throws \Exception
    *   Throws exception if language code is not set.
    */
   public function processItem($data) {
-    if (!$data instanceof MenuLinkContentInterface || !$data instanceof MenuInterface) {
-      $this->logger->error('Failed to sync menu.');
+    if (!is_string($data)) {
       return;
     }
-    $message = $this->t('Global menu queue triggered with: @eid, id: @id, label: @label', [
-      '@eid' => $data->getEntityTypeId(),
-      '@id' => $data->id(),
-      '@label' => $data->label(),
-    ]);
-    $this->logger->info($message);
-    $this->menuUpdater->syncMenu($data->language()->getId());
+    $this->menuUpdater->syncMenu($data);
   }
 
 }

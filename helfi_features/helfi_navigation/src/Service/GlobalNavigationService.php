@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Service;
 
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
@@ -23,15 +22,12 @@ final class GlobalNavigationService {
    *   The HTTP client.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
    *   EnvironmentResolver helper class.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The language manager.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
    */
   public function __construct(
     private ClientInterface $httpClient,
     private EnvironmentResolver $environmentResolver,
-    private LanguageManagerInterface $languageManager,
     private LoggerInterface $logger,
   ) {
   }
@@ -39,6 +35,8 @@ final class GlobalNavigationService {
   /**
    * Makes a request to fetch external menu from Etusivu instance.
    *
+   * @param string $langcode
+   *   The langcode.
    * @param string $menuId
    *   The menu id to get.
    * @param array $options
@@ -49,13 +47,15 @@ final class GlobalNavigationService {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getExternalMenu(string $menuId, array $options = []) : object {
-    return $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $options);
+  public function getExternalMenu(string $langcode, string $menuId, array $options = []) : object {
+    return $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options);
   }
 
   /**
    * Makes a request to fetch main menu from Etusivu instance.
    *
+   * @param string $langcode
+   *   The langcode.
    * @param array $options
    *   The request options.
    *
@@ -64,23 +64,26 @@ final class GlobalNavigationService {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getMainMenu(array $options = []) : object {
-    return $this->makeRequest('GET', '/api/v1/global-menu', $options);
+  public function getMainMenu(string $langcode, array $options = []) : object {
+    return $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options);
   }
 
   /**
    * Updates the main menu for currently active project.
    *
-   * @param array $data
-   *   The JSON data to update.
+   * @param string $langcode
+   *   The langcode.
    * @param string $authorization
    *   The authorization header.
    *
+   * @param array $data
+   *   The JSON data to update.
+   *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function updateMainMenu(array $data, string $authorization) : void {
+  public function updateMainMenu(string $langcode, string $authorization, array $data) : void {
     $endpoint = sprintf('/api/v1/global-menu/%s', $this->environmentResolver->getActiveEnvironment()->getId());
-    $this->makeRequest('POST', $endpoint, [
+    $this->makeRequest('POST', $endpoint, $langcode, [
       'headers' => [
         'Authorization' => $authorization,
       ],
@@ -95,6 +98,8 @@ final class GlobalNavigationService {
    *   Request method.
    * @param string $endpoint
    *   The endpoint in the instance.
+   * @param string $langcode
+   *   The langcode.
    * @param array $options
    *   Body for requests.
    *
@@ -103,14 +108,14 @@ final class GlobalNavigationService {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  private function makeRequest(string $method, string $endpoint, array $options = []): object {
+  private function makeRequest(string $method, string $endpoint, string $langcode, array $options = []): object {
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
       ->getEnvironmentName();
 
     $baseUrl = $this->environmentResolver
       ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
-      ->getUrl($this->languageManager->getCurrentLanguage()->getId());
+      ->getUrl($langcode);
 
     $url = sprintf('%s/%s', $baseUrl, ltrim($endpoint, '/'));
 

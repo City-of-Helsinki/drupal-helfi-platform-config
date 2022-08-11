@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Language\LanguageInterface;
 
 /**
  * Provides an external menu block.
@@ -42,7 +43,12 @@ final class ExternalMenuBlock extends ExternalMenuBlockBase {
    */
   protected function buildMenuTree(): array {
     try {
-      $json = $this->globalNavigationService->getExternalMenu($this->getDerivativeId());
+      $json = $this
+        ->globalNavigationService
+        ->getExternalMenu(
+          $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+          $this->getDerivativeId()
+        );
     }
     catch (\Exception) {
       return [];

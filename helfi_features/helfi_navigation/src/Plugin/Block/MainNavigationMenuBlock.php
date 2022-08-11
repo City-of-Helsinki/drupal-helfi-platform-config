@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
+use Drupal\Core\Language\LanguageInterface;
+
 /**
  * Provides an external menu block for global main navigation..
  *
@@ -27,7 +29,9 @@ final class MainNavigationMenuBlock extends ExternalMenuBlockBase {
    */
   protected function buildMenuTree(): array {
     try {
-      $data = $this->globalNavigationService->getMainMenu();
+      $data = $this->globalNavigationService->getMainMenu(
+        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId()
+      );
 
       $menu = [];
       foreach ($data as $item) {
