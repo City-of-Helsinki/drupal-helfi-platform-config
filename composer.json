@@ -14,6 +14,7 @@
         "drupal/content_lock": "^2.2",
         "drupal/core-recommended": ">=9.3",
         "drupal/crop": "^2.1",
+        "drupal/ctools": "^3.11",
         "drupal/default_content": "^2.0.0-alpha2",
         "drupal/diff": "^1.0",
         "drupal/gin_toolbar": "^1.0",
