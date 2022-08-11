@@ -8,6 +8,8 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\helfi_navigation\MenuUpdater;
+use Drupal\menu_link_content\MenuLinkContentInterface;
+use Drupal\system\MenuInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -24,13 +26,6 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
   use StringTranslationTrait;
 
   /**
-   * Menu updater.
-   *
-   * @var \Drupal\helfi_navigation\MenuUpdater
-   */
-  protected mixed $menuUpdater;
-
-  /**
    * Constructs a new MenuQueue.
    *
    * @param array $configuration
@@ -41,18 +36,17 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
    *   The plugin implementation definition.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
-   * @param \Drupal\helfi_navigation\MenuUpdater $menu_updater
+   * @param \Drupal\helfi_navigation\MenuUpdater $menuUpdater
    *   The Menu updater service.
    */
   public function __construct(
     array $configuration,
     string $plugin_id,
     mixed $plugin_definition,
-    protected LoggerInterface $logger,
-    MenuUpdater $menu_updater
+    private LoggerInterface $logger,
+    private MenuUpdater $menuUpdater
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->menuUpdater = $menu_updater;
   }
 
   /**
@@ -78,13 +72,17 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
    *   Throws exception if language code is not set.
    */
   public function processItem($data) {
+    if (!$data instanceof MenuLinkContentInterface || !$data instanceof MenuInterface) {
+      $this->logger->error('Failed to sync menu.');
+      return;
+    }
     $message = $this->t('Global menu queue triggered with: @eid, id: @id, label: @label', [
       '@eid' => $data->getEntityTypeId(),
       '@id' => $data->id(),
       '@label' => $data->label(),
     ]);
     $this->logger->info($message);
-    $this->menuUpdater->syncMenu();
+    $this->menuUpdater->syncMenu($data->language()->getId());
   }
 
 }

@@ -84,16 +84,16 @@ class ExternalMenuTreeFactory {
   /**
    * Create menu link items from JSON elements.
    *
-   * @param array $items
-   *   Provided JSON input.
+   * @param array $menuItems
+   *   Provided menu items.
    * @param array $options
    *   Keyed array of options needed to create menu link items.
    *
    * @return array
    *   Resulting array of menu links.
    */
-  protected function transformItems(array $items, array $options): array {
-    $transformed_items = [];
+  protected function transformItems(array $menuItems, array $options): array {
+    $items = [];
 
     [
       'active_trail' => $active_trail,
@@ -104,8 +104,8 @@ class ExternalMenuTreeFactory {
       'menu_type' => $menu_type,
     ] = $options;
 
-    foreach ($items as $item) {
-      $transformed_item = $this->createLink($item, $menu_type, $active_trail, (bool) $expand_all_items);
+    foreach ($menuItems as $element) {
+      $item = $this->createLink($element, $menu_type, $active_trail, (bool) $expand_all_items);
 
       $options = [
         'active_trail' => $active_trail,
@@ -116,28 +116,28 @@ class ExternalMenuTreeFactory {
         'level' => $level + 1,
       ];
 
-      if (isset($item->sub_tree)) {
+      if (isset($element->sub_tree)) {
         // Make sure there's parent ids in subtree items.
-        foreach ($item->sub_tree as &$sub_tree_item) {
+        foreach ($element->sub_tree as &$sub_tree_item) {
           if (empty($sub_tree_item->parentId)) {
-            $sub_tree_item->parentId = $transformed_item['id'];
+            $sub_tree_item->parentId = $item['id'];
           }
         }
 
         // Handle subtree.
         if ($level < $max_depth) {
-          $transformed_item['below'] = $this->transformItems($item->sub_tree, $options);
+          $item['below'] = $this->transformItems($element->sub_tree, $options);
         }
       }
 
-      $transformed_items[] = $transformed_item;
+      $items[] = $item;
     }
 
-    usort($transformed_items, function ($a, $b) {
+    usort($items, function ($a, $b) {
       return $a['original_link']->getWeight() - $b['original_link']->getWeight();
     });
 
-    return $transformed_items;
+    return $items;
   }
 
   /**
@@ -217,6 +217,8 @@ class ExternalMenuTreeFactory {
     $currentPath = parse_url($this->currentRequest->getUri(), PHP_URL_PATH);
     $linkPath = parse_url($item->url->getUri(), PHP_URL_PATH);
 
+    // We don't care about the domain when comparing URLs because the
+    // site might be served from multiple different domains.
     if ($linkPath === $currentPath || in_array($item->id, $active_trail)) {
       return TRUE;
     }

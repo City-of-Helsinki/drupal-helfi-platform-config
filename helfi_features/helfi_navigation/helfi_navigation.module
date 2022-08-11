@@ -81,16 +81,18 @@ function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $ent
 /**
  * Create menu update queue item.
  */
-function _helfi_navigation_queue_item($entity) {
+function _helfi_navigation_queue_item(MenuLinkContentInterface|MenuInterface $entity) {
   // @todo Remove once testing phase is over.
   $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
-  $menuUpdater->syncMenu();
 
-  // @todo Use the queue once testing phase is over.
-  // Add item to menu queue.
-  // Sanitize the queue manually by adding an item only if the queue is empty.
-  /* $queue = \Drupal::queue('helfi_navigation_menu_queue');
-  if ($queue->numberOfItems() < 1) {
-  $queue->createItem($entity);
-  } */
+  try {
+    $menuUpdater->syncMenu($entity->language()->getId());
+  }
+  catch (\InvalidArgumentException) {
+  }
+  catch (\Exception) {
+    // Queue item if the synchronization failed.
+    $queue = \Drupal::queue('helfi_navigation_menu_queue');
+    $queue->createItem($entity);
+  }
 }

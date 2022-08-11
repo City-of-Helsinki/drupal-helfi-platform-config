@@ -123,8 +123,6 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
       '#cache' => [
         'cache_context' => $this->getCacheContexts(),
         'cache_tags' => $this->getCacheTags(),
-        // @todo remove this.
-        'max-age' => 0,
       ],
     ];
 
