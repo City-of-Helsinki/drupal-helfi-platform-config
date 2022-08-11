@@ -14,7 +14,6 @@
         "drupal/content_lock": "^2.2",
         "drupal/core-recommended": ">=9.3",
         "drupal/crop": "^2.1",
-        "drupal/ctools": "^3.11",
         "drupal/default_content": "^2.0.0-alpha2",
         "drupal/diff": "^1.0",
         "drupal/gin_toolbar": "^1.0",
@@ -62,6 +61,9 @@
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_edit": "^2.6",
         "drupal/views_bulk_operations": "^4.1"
+    },
+    "conflict": {
+        "drupal/ctools": "<3.11 || ^4.0.1"
     },
     "extra": {
         "patches": {
