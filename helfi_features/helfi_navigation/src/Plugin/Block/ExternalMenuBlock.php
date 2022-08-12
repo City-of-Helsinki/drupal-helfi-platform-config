@@ -44,7 +44,7 @@ final class ExternalMenuBlock extends ExternalMenuBlockBase {
   protected function buildMenuTree(): array {
     try {
       $json = $this
-        ->globalNavigationService
+        ->apiManager
         ->getExternalMenu(
           $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
           $this->getDerivativeId()

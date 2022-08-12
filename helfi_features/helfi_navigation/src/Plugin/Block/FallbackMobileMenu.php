@@ -140,7 +140,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
     else {
       $menu_link_back = [
         'title' => $this->t('Front page'),
-        'url' => $this->globalNavigationService->getProjectUrl(Project::ETUSIVU),
+        'url' => $this->apiManager->getProjectUrl(Project::ETUSIVU),
       ];
       $menu_link_current_or_parent = $grand_parent_link;
     }
@@ -270,7 +270,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
   protected function getSiteFrontPageMenuLink(): array {
     $language = $this->languageManager->getCurrentLanguage()->getId();
     $prefixes = $this->configFactory->get('helfi_proxy.settings')->get('prefixes');
-    $url = $this->globalNavigationService->getCurrentProject()->getUrl($language);
+    $url = $this->apiManager->getCurrentProject()->getUrl($language);
 
     return [
       'is_currentPage' => (

@@ -1,7 +1,0 @@
-helfi_navigation.mobile_menu:
-  path: /mobile-menu/main
-  defaults:
-    _controller: Drupal\helfi_navigation\Controller\MobileMenuController::mobileMenuJson
-  methods: ['GET']
-  requirements:
-    _permission: 'access content'

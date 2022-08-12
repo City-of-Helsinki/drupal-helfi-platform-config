@@ -38,7 +38,7 @@ class ExternalMenuTreeFactory {
    *   Internal domain resolver.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param \Drupal\helfi_navigation\Service\ApiManager $globalNavigationService
+   * @param \Drupal\helfi_navigation\Service\ApiManager $apiManager
    *   Global navigation service.
    * @param \Drupal\Component\Uuid\UuidInterface $uuidService
    *   UUID service.
@@ -51,7 +51,7 @@ class ExternalMenuTreeFactory {
     protected LoggerInterface $logger,
     protected InternalDomainResolver $domainResolver,
     RequestStack $requestStack,
-    protected ApiManager $globalNavigationService,
+    protected ApiManager $apiManager,
     protected UuidInterface $uuidService,
     protected MenuActiveTrailInterface $menuActiveTrail,
     protected MenuLinkTreeInterface $menuTree

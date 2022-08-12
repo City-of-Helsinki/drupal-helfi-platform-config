@@ -29,7 +29,7 @@ final class MainNavigationMenuBlock extends ExternalMenuBlockBase {
    */
   protected function buildMenuTree(): array {
     try {
-      $data = $this->globalNavigationService->getMainMenu(
+      $data = $this->apiManager->getMainMenu(
         $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId()
       );
 

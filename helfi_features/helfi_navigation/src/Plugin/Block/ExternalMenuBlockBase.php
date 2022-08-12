@@ -31,7 +31,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
    *
    * @var \Drupal\helfi_navigation\Service\ApiManager
    */
-  protected ApiManager $globalNavigationService;
+  protected ApiManager $apiManager;
 
   /**
    * The logger.
@@ -52,7 +52,7 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->globalNavigationService = $container->get('helfi_navigation.global_navigation_service');
+    $instance->apiManager = $container->get('helfi_navigation.global_navigation_service');
     $instance->menuTreeFactory = $container->get('helfi_navigation.external_menu_tree_factory');
     $instance->logger = $container->get('logger.channel.helfi_navigation');
     $instance->languageManager = $container->get('language_manager');

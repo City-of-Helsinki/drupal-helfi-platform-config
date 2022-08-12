@@ -19,7 +19,7 @@ final class MenuUpdater {
    */
   public function __construct(
     private ConfigFactory $config,
-    private ApiManager $globalNavigationService,
+    private ApiManager $apiManager,
     private MenuTreeBuilder $menuTreeBuilder,
   ) {
   }
@@ -37,7 +37,7 @@ final class MenuUpdater {
 
     $siteName = $this->config->get('system.site')->get('name');
 
-    $this->globalNavigationService->updateMainMenu(
+    $this->apiManager->updateMainMenu(
       $langcode,
       'Basic ' . $authKey,
       [
