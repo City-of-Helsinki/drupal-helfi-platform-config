@@ -7,7 +7,6 @@ namespace Drupal\helfi_navigation;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\helfi_navigation\Menu\Menu;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
-use Drupal\helfi_navigation\Service\ApiManager;
 
 /**
  * Synchronizes global menu.
@@ -15,7 +14,14 @@ use Drupal\helfi_navigation\Service\ApiManager;
 final class MenuUpdater {
 
   /**
-   * Constructs MenuUpdater.
+   * Constructs a new instance.
+   *
+   * @param \Drupal\Core\Config\ConfigFactory $config
+   *   The config factory.
+   * @param \Drupal\helfi_navigation\ApiManager $apiManager
+   *   The api manager.
+   * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
+   *   The menu builder.
    */
   public function __construct(
     private ConfigFactory $config,

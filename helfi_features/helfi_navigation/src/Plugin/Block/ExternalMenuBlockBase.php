@@ -8,7 +8,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
 use Drupal\helfi_navigation\ExternalMenuTree;
 use Drupal\helfi_navigation\ExternalMenuTreeFactory;
-use Drupal\helfi_navigation\Service\ApiManager;
+use Drupal\helfi_navigation\ApiManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -26,7 +26,7 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   /**
    * The global navigation service.
    *
-   * @var \Drupal\helfi_navigation\Service\ApiManager
+   * @var \Drupal\helfi_navigation\ApiManager
    */
   protected ApiManager $apiManager;
 
