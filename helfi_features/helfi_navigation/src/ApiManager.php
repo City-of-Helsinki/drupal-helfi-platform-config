@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Service class for global navigation related functions.
  */
-final class GlobalNavigationService {
+final class ApiManager {
 
   /**
    * Construct an instance.
@@ -75,7 +75,6 @@ final class GlobalNavigationService {
    *   The langcode.
    * @param string $authorization
    *   The authorization header.
-   *
    * @param array $data
    *   The JSON data to update.
    *

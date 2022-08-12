@@ -11,7 +11,7 @@ use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
-use Drupal\helfi_navigation\Service\GlobalNavigationService;
+use Drupal\helfi_navigation\Service\ApiManager;
 use Psr\Log\LoggerInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +38,7 @@ class ExternalMenuTreeFactory {
    *   Internal domain resolver.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param \Drupal\helfi_navigation\Service\GlobalNavigationService $globalNavigationService
+   * @param \Drupal\helfi_navigation\Service\ApiManager $globalNavigationService
    *   Global navigation service.
    * @param \Drupal\Component\Uuid\UuidInterface $uuidService
    *   UUID service.
@@ -51,7 +51,7 @@ class ExternalMenuTreeFactory {
     protected LoggerInterface $logger,
     protected InternalDomainResolver $domainResolver,
     RequestStack $requestStack,
-    protected GlobalNavigationService $globalNavigationService,
+    protected ApiManager $globalNavigationService,
     protected UuidInterface $uuidService,
     protected MenuActiveTrailInterface $menuActiveTrail,
     protected MenuLinkTreeInterface $menuTree

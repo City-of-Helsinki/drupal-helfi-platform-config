@@ -88,9 +88,7 @@ function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $ent
  * Create menu update queue item.
  */
 function _helfi_navigation_queue_item(string $langcode) {
-  // @todo Remove once testing phase is over.
   $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
-
 
   try {
     $menuUpdater->syncMenu($langcode);

@@ -9,7 +9,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
 use Drupal\helfi_navigation\ExternalMenuTree;
 use Drupal\helfi_navigation\ExternalMenuTreeFactory;
-use Drupal\helfi_navigation\Service\GlobalNavigationService;
+use Drupal\helfi_navigation\Service\ApiManager;
 use Drupal\system\Plugin\Block\SystemMenuBlock;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,9 +29,9 @@ abstract class ExternalMenuBlockBase extends SystemMenuBlock implements Containe
   /**
    * The global navigation service.
    *
-   * @var \Drupal\helfi_navigation\Service\GlobalNavigationService
+   * @var \Drupal\helfi_navigation\Service\ApiManager
    */
-  protected GlobalNavigationService $globalNavigationService;
+  protected ApiManager $globalNavigationService;
 
   /**
    * The logger.

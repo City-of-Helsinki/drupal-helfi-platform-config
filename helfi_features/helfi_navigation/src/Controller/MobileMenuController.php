@@ -7,7 +7,7 @@ namespace Drupal\helfi_navigation\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_navigation\Service\GlobalNavigationService;
+use Drupal\helfi_navigation\Service\ApiManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -19,10 +19,10 @@ class MobileMenuController extends ControllerBase implements ContainerInjectionI
   /**
    * Constructs a MobileMenuController object.
    *
-   * @param \Drupal\helfi_navigation\Service\GlobalNavigationService $globalNavigationService
+   * @param \Drupal\helfi_navigation\Service\ApiManager $globalNavigationService
    *   Global navigation service.
    */
-  public function __construct(private GlobalNavigationService $globalNavigationService) {}
+  public function __construct(private ApiManager $globalNavigationService) {}
 
   /**
    * {@inheritdoc}
