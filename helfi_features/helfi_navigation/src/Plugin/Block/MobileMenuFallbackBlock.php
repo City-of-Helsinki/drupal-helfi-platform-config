@@ -5,10 +5,14 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Template\Attribute;
-use Drupal\helfi_api_base\Environment\Project;
+use Drupal\Core\Url;
 use Drupal\menu_link_content\MenuLinkContentInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a fallback mobile navigation menu block.
@@ -22,7 +26,44 @@ use Drupal\menu_link_content\MenuLinkContentInterface;
  *   category = @Translation("External menu"),
  * )
  */
-class FallbackMobileMenu extends ExternalMenuBlockBase {
+final class MobileMenuFallbackBlock extends MenuBlockBase {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  private EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  private ConfigFactoryInterface $configFactory;
+
+  /**
+   * The current request.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  private Request $currentRequest;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition
+  ): static {
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->entityTypeManager = $container->get('entity_type.manager');
+    $instance->configFactory = $container->get('config.factory');
+    $instance->currentRequest = $container->get('request_stack')->getCurrentRequest();
+    return $instance;
+  }
 
   /**
    * Build the fallback menu render array.
@@ -59,7 +100,6 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function buildActiveTrailMenu(array $options): array {
-
     // Adjust the menu tree parameters based on the block's configuration.
     $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters(
       $options['menu_type']
@@ -140,7 +180,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
     else {
       $menu_link_back = [
         'title' => $this->t('Front page'),
-        'url' => $this->apiManager->getProjectUrl(Project::ETUSIVU),
+        'url' => Url::fromRoute('<front>')->setAbsolute()->toString(),
       ];
       $menu_link_current_or_parent = $grand_parent_link;
     }
@@ -153,10 +193,10 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
     $build['#cache'] = [
       'contexts' => [
         'url',
-        'route.menu_active_trails:' . $this->getMenuType(),
+        'route.menu_active_trails:main',
       ],
       'tags' => [
-        'config:system.menu.' . $this->getMenuType(),
+        'config:system.menu.main',
       ],
     ];
 
@@ -175,18 +215,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
       'max_depth' => $this->getMaxDepth(),
       'level' => $this->getStartingLevel(),
       'expand_all_items' => $this->getExpandAllItems(),
-      'fallback' => TRUE,
     ];
-  }
-
-  /**
-   * Get menu type.
-   *
-   * @return string
-   *   Returns the menu type as a string.
-   */
-  protected function getMenuType(): string {
-    return $this->getOptions()['menu_type'];
   }
 
   /**
@@ -224,7 +253,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
     $children = $this->entityTypeManager
       ->getStorage('menu_link_content')
       ->loadByProperties([
-        'menu_name' => $this->getMenuType(),
+        'menu_name' => 'main',
         'enabled' => 1,
         'parent' => $menu_link_content->getPluginId(),
       ]);
@@ -234,7 +263,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
   /**
    * Load menu link content entity with menu link content derivative id.
    *
-   * @param bool|string $id
+   * @param int|string $id
    *   Menu link derivative id.
    *
    * @return \Drupal\Core\Entity\EntityInterface|null
@@ -242,13 +271,14 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function loadMenuLinkByDerivativeId(bool|string $id): ?EntityInterface {
-    $menu_link = NULL;
-    if ($id) {
-      $menu_link = $this->entityRepository
-        ->loadEntityByUuid('menu_link_content', $this->convertToUuid($id));
-    }
-    return $menu_link;
+  protected function loadMenuLinkByDerivativeId(int|string $id): ?EntityInterface {
+    $menu_link = $this->entityTypeManager
+      ->getStorage('menu_link_content')
+      ->loadByProperties([
+        'uuid' => $this->convertToUuid($id),
+      ]);
+
+    return $menu_link ? reset($menu_link) : NULL;
   }
 
   /**
@@ -258,7 +288,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
    *   The active trail menu item IDs.
    */
   protected function getDerivativeActiveTrailIds(): array {
-    return array_filter($this->menuActiveTrail->getActiveTrailIds($this->getMenuType()));
+    return array_filter($this->menuActiveTrail->getActiveTrailIds('main'));
   }
 
   /**
@@ -268,18 +298,14 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
    *   Returns current instance front page menu link array.
    */
   protected function getSiteFrontPageMenuLink(): array {
-    $language = $this->languageManager->getCurrentLanguage()->getId();
-    $prefixes = $this->configFactory->get('helfi_proxy.settings')->get('prefixes');
-    $url = $this->apiManager->getCurrentProject()->getUrl($language);
+    $url = Url::fromRoute('<front>');
+    $path = parse_url($this->currentRequest->getUri(), PHP_URL_PATH);
 
     return [
-      'is_currentPage' => (
-        isset($prefixes[$language]) &&
-        \Drupal::request()->getUri() == "$url/$prefixes[$language]"
-      ),
+      'is_currentPage' => $url->getUri() === $path,
       'attributes' => new Attribute(),
       'title' => $this->getSiteName(),
-      'url' => $url,
+      'url' => $url->toString(),
     ];
   }
 
@@ -290,28 +316,27 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
    *   Returns site name as string or translated front page text.
    */
   protected function getSiteName(): mixed {
-    $config_override_language = $this->languageManager->getCurrentLanguage();
-    $this->languageManager->setConfigOverrideLanguage($this->languageManager->getCurrentLanguage());
-    $site_name = $this->configFactory->get('system.site')->getOriginal('name');
-    $this->languageManager->setConfigOverrideLanguage($config_override_language);
+    $site_name = $this->configFactory->get('system.site')->get('name');
     return !empty($site_name) ? $site_name : $this->t('Front page');
   }
 
   /**
    * Create simple render array from menu link content.
    *
-   * @param \Drupal\menu_link_content\MenuLinkContentInterface $menu_link_content
+   * @param \Drupal\menu_link_content\MenuLinkContentInterface $link
    *   Menu link content entity.
    *
    * @return array
    *   Returns an array of menu link content title and URL object.
    */
-  protected function createRenderArrayFromMenuLinkContent(MenuLinkContentInterface $menu_link_content): array {
-    $current_path = \Drupal::request()->getRequestUri();
+  protected function createRenderArrayFromMenuLinkContent(MenuLinkContentInterface $link): array {
+    $path = parse_url($this->currentRequest->getUri(), PHP_URL_PATH);
+    $linkPath = parse_url($link->getUrlObject()->toString(), PHP_URL_PATH);
+
     return [
-      'is_currentPage' => $menu_link_content->getUrlObject()->toString() == $current_path,
-      'title' => $menu_link_content->getTitle(),
-      'url' => $menu_link_content->getUrlObject(),
+      'is_currentPage' => $path === $linkPath,
+      'title' => $link->getTitle(),
+      'url' => $link->getUrlObject(),
     ];
   }
 
@@ -335,7 +360,7 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
    */
   public function getCacheTags() : array {
     $cache_tags = parent::getCacheTags();
-    $cache_tags[] = 'config:system.menu.' . $this->getMenuType();
+    $cache_tags[] = 'config:system.menu.main';
     return $cache_tags;
   }
 
@@ -345,12 +370,8 @@ class FallbackMobileMenu extends ExternalMenuBlockBase {
   public function getCacheContexts() : array {
     return Cache::mergeContexts(
       parent::getCacheContexts(),
-      ['route.menu_active_trails:' . $this->getMenuType()]
+      ['route.menu_active_trails:main']
     );
-  }
-
-  protected function buildMenuTree(): array {
-    // TODO: Implement buildMenuTree() method.
   }
 
 }

@@ -2,9 +2,6 @@ block.settings.external_menu_block:*:
   type: block_settings
   label: 'External menu block'
   mapping:
-    fallback:
-      type: boolean
-      label: 'Is the current menu rendered as fallback menu'
     level:
       type: integer
       label: 'Starting level'

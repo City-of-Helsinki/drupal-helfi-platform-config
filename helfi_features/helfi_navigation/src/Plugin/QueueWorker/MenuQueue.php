@@ -8,10 +8,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\helfi_navigation\MenuUpdater;
-use Drupal\menu_link_content\MenuLinkContentInterface;
-use Drupal\system\MenuInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Processes menu sync tasks.
@@ -35,7 +32,7 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
     $instance = new static($configuration, $plugin_id, $plugin_definition);
     $instance->menuUpdater = $container->get('helfi_navigation.menu_updater');
     return $instance;

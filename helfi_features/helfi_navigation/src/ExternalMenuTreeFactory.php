@@ -98,7 +98,6 @@ class ExternalMenuTreeFactory {
     [
       'active_trail' => $active_trail,
       'expand_all_items' => $expand_all_items,
-      'fallback' => $fallback,
       'level' => $level,
       'max_depth' => $max_depth,
       'menu_type' => $menu_type,
@@ -111,7 +110,6 @@ class ExternalMenuTreeFactory {
         'active_trail' => $active_trail,
         'max_depth' => $max_depth,
         'menu_type' => $menu_type,
-        'fallback' => $fallback,
         'expand_all_items' => $expand_all_items,
         'level' => $level + 1,
       ];
