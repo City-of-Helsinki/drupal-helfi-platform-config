@@ -247,3 +247,28 @@ function helfi_gdpr_compliance_update_9009() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Remove Hotjar cookies from settings.
+ */
+function helfi_gdpr_compliance_update_9010() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_gdpr_compliance', 'helfi_gdpr_compliance_update_9010');
+
+  // Install updated translations.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'eu_cookie_compliance.cookie_category.statistics',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
