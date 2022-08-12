@@ -133,3 +133,16 @@ genesys_neuvonta:
     - core/jquery
     - core/drupal
     - core/drupalSettings
+
+chat_leijuke:
+  version: 1.0.x
+  header: true
+  js:
+    assets/js/chat_leijuke.js: {}
+  css:
+    theme:
+      assets/css/chat_leijuke.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
