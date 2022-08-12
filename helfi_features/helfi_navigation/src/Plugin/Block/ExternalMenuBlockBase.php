@@ -42,7 +42,7 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->apiManager = $container->get('helfi_navigation.global_navigation_service');
+    $instance->apiManager = $container->get('helfi_navigation.api_manager');
     $instance->menuTreeFactory = $container->get('helfi_navigation.external_menu_tree_factory');
     $instance->languageManager = $container->get('language_manager');
     return $instance;
