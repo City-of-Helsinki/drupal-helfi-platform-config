@@ -55,7 +55,11 @@ class ChatLeijuke extends BlockBase {
       '#title' => $this->t('Chat Leijuke'),
       '#attached' => [
         'library' => $library,
-        'drupalSettings' => ['chat_selection' => $config['chat_selection'] ?? ''],
+        'drupalSettings' => [
+          'leijuke_state' => [
+            'chat_selection' => $config['chat_selection'] ?? ''
+          ],
+        ],
       ]
     ];
 
