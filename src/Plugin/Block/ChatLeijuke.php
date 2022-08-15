@@ -51,13 +51,17 @@ class ChatLeijuke extends BlockBase {
     $config = $this->getConfiguration();
     $build = [];
 
+    // lataa valittujen kirjastojen datat yml / json tiedostosta
+
     $build['leijuke'] = [
       '#title' => $this->t('Chat Leijuke'),
       '#attached' => [
         'library' => $library,
         'drupalSettings' => [
           'leijuke_state' => [
-            'chat_selection' => $config['chat_selection'] ?? ''
+            'chat_selection' => $config['chat_selection'] ?? '',
+            // passaa library datat tänne?
+            'libraries' => [],
           ],
         ],
       ]
