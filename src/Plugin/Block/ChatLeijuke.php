@@ -46,6 +46,14 @@ class ChatLeijuke extends BlockBase {
   /**
    * {@inheritdoc}
    */
+  public function blockSubmit($form, FormStateInterface $formState)
+  {
+      $this->configuration['chat_selection'] = $formState->getValue('chat_selection');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     $library = ['helfi_platform_config/chat_leijuke'];
     $config = $this->getConfiguration();

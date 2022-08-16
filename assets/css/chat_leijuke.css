@@ -1,11 +1,28 @@
 #block-chatleijuke {
-  background: #333;
   position: fixed;
   bottom: 0;
-  left: 0;
+  right: 0;
   color: white;
 }
 
 .region--attachments {
   visibility: visible !important;
+}
+
+#chat-leijuke {
+  background: var(--color-black);
+  border: 2px solid var(--color-white);
+  color: var(--color-white);
+  border-radius: 0.5em;
+  display: flex;
+  flex: auto;
+  font-size: var(--fontsize-body-l);
+  padding: 0.25em;
+  cursor: pointer;
+}
+
+#chat-leijuke > * {
+  display: inline-block;
+  margin: 0.5em;
+  line-height: 1em;
 }

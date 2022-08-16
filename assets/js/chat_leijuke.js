@@ -18,34 +18,31 @@
 })(jQuery, Drupal, drupalSettings);
 
 
+
 class Leijuke {
   constructor(leijukeState) {
-    this.state = {
-      cookies: [],
-      chatSelection: '',
-      isOpen: false,
-      modulePath: leijukeState.modulepath
+    // required cookies kovakoodattu
+    this.requiredCookies = {
+      genesys_chat: ['chat'],
+      genesys_suunte: ['chat'],
+      genesys_neuvonta: ['chat'],
+      kuura_health_chat: ['chat', 'tilasto_chat'],
+      watson_chatbot: ['chat'],
+      smartti_chatbot: ['chat'],
     };
 
-    this.loadChat();
-    // this.checkCookies(this.state.cookies);
-    // this.isChatOpen(this.isOpen);
-    this.render();
-
-  }
-
-  checkCookies(cookies) {
-    if (cookies) {
-      return true
+    // leijuke title kovakoodattu
+    this.leijukeTitle = {
+      genesys_chat: 'Chat',
+      genesys_suunte: 'Chat',
+      genesys_neuvonta: 'Chat',
+      kuura_health_chat: 'Chat',
+      watson_chatbot: 'Chatbot',
+      smartti_chatbot: 'Chatbot',
     }
 
-    return false
-  }
-
-  loadChat() {
-    const { modulePath } = this.state;
-    // modulePath genesys chat kovakoodattu
-    const library = {
+    // genesys chat kovakoodattu
+    this.library = {
       js: [
         {
           url: 'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js',
@@ -63,7 +60,54 @@ class Leijuke {
       ]
     }
 
-    library.js.map((script) => {
+    this.state = {
+      cookies: [
+        { name: 'tilasto_chat', value: false },
+        { name: 'chat', value: true }
+      ],
+      chatSelection: leijukeState.chat_selection,
+      isOpen: false,
+      modulePath: leijukeState.modulepath,
+      chatLoaded: false,
+    };
+
+    // this.loadChat();
+    // this.checkCookies(this.state.cookies);
+    // this.isChatOpen(this.isOpen);
+    this.render();
+
+    const button = document.querySelector('#chat-leijuke');
+
+    button.addEventListener('click', (event) => {
+      if (this.state.chatLoaded) {
+        this.openChat();
+      }
+      if (this.checkCookies(this.state.cookies)) {
+        this.loadChat();
+      }
+    });
+  }
+
+  openChat() {
+    // do what now?
+  }
+
+  checkCookies(cookies) {
+    let cookiesOk = true;
+    cookies.map((cookie) => {
+      if (!cookie.value && this.requiredCookies[this.state.chatSelection].indexOf(cookie.name) !== -1) {
+        cookiesOk = false;
+      }
+    }, cookiesOk);
+
+    console.log({cookiesOk});
+    return cookiesOk;
+  }
+
+  loadChat() {
+    const { modulePath } = this.state;
+
+    this.library.js.map((script) => {
       // Create a new element
       let chatScript = document.createElement('script');
       chatScript.src = script.ext ? script.url : `/${modulePath}/${script.url}`;
@@ -80,7 +124,7 @@ class Leijuke {
 
     })
 
-    library.css.map((script) => {
+    this.library.css.map((script) => {
       // Create new link Element for loading css
       let css= document.createElement('link');
       css.rel = 'stylesheet';
@@ -105,8 +149,8 @@ class Leijuke {
     document
       .getElementById("block-chatleijuke")
       .innerHTML = `
-        <div>
-          Leijuke
+        <div id="chat-leijuke">
+          <span class="hel-icon hel-icon--speechbubble-text"></span><span>${this.leijukeTitle[this.state.chatSelection]}</span><span class="hel-icon hel-icon--angle-up"></span>
         </div>
      `;
   }
