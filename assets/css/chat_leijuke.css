@@ -1,0 +1,11 @@
+#block-chatleijuke {
+  background: #333;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  color: white;
+}
+
+.region--attachments {
+  visibility: visible !important;
+}

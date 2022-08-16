@@ -62,6 +62,8 @@ class ChatLeijuke extends BlockBase {
             'chat_selection' => $config['chat_selection'] ?? '',
             // passaa library datat tänne?
             'libraries' => [],
+            // modulepath
+            'modulepath' => \Drupal::service('extension.list.module')->getPath('helfi_platform_config')
           ],
         ],
       ]
@@ -69,5 +71,4 @@ class ChatLeijuke extends BlockBase {
 
     return $build;
   }
-
 }

@@ -3,7 +3,7 @@
 
   Drupal.behaviors.chat_leijuke = {
     attach: function (context, settings) {
-
+      
       const leijukeState = drupalSettings.leijuke_state;
       new Leijuke(leijukeState);
 
@@ -26,12 +26,14 @@ class Leijuke {
       cookies: [],
       chatSelection: '',
       isOpen: false,
+      modulePath: leijukeState.modulepath
     };
 
     this.loadChat();
     // this.checkCookies(this.state.cookies);
     // this.isChatOpen(this.isOpen);
-    // this.render();
+    this.render();
+
   }
 
   checkCookies(cookies) {
@@ -43,15 +45,17 @@ class Leijuke {
   }
 
   loadChat() {
-    // Genesys chat kovakoodattu
+    const { modulePath } = this.state;
+    // modulePath genesys chat kovakoodattu
     const library = {
       js: [
         {
           url: 'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js',
+          ext: true,
           onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
         },
         {
-          url: 'assets/js/genesys_chat.js',
+          url: 'assets/js/genesys_chat.js'
         }
       ],
       css: [
@@ -64,19 +68,33 @@ class Leijuke {
     library.js.map((script) => {
       // Create a new element
       let chatScript = document.createElement('script');
-      chatScript.src = script.url
+      chatScript.src = script.ext ? script.url : `/${modulePath}/${script.url}`
+
       if (script.onload) {
         chatScript.setAttribute('onload', script.onload)
       }
 
       // Get the parent node
       let head = document.querySelector('head');
-
       // Insert chatScript into head
-      head.append(chatScript);
+      head.appendChild(chatScript);
+
     })
 
-    // lataa css
+    library.css.map((script) => {
+      // Create new link Element for loading css
+      let css= document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = script.ext ? script.url : `/${modulePath}/${script.url}`
+
+      // Get the parent node
+      let head = document.querySelector('head');
+
+      // Insert chatScript into head
+      head.append(css);
+    })
+
+
   }
 
   // funktio joka tsekkaa onko chat auki vai ei - tietääkö chat onko auki vai tarvitaanko oma cookie?
@@ -89,7 +107,7 @@ class Leijuke {
 
     document
       .getElementById("block-chatleijuke")
-      .innerHTML = `  
+      .innerHTML = `
         <div>
           Leijuke
         </div>
