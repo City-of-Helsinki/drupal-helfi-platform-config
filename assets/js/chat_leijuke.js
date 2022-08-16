@@ -3,7 +3,7 @@
 
   Drupal.behaviors.chat_leijuke = {
     attach: function (context, settings) {
-      
+
       const leijukeState = drupalSettings.leijuke_state;
       new Leijuke(leijukeState);
 
@@ -15,8 +15,6 @@
       // Drupal.removeChatIcon() tms
     }
   }
-
-
 })(jQuery, Drupal, drupalSettings);
 
 
@@ -68,10 +66,11 @@ class Leijuke {
     library.js.map((script) => {
       // Create a new element
       let chatScript = document.createElement('script');
-      chatScript.src = script.ext ? script.url : `/${modulePath}/${script.url}`
+      chatScript.src = script.ext ? script.url : `/${modulePath}/${script.url}`;
+      chatScript.type = "text/javascript";
 
       if (script.onload) {
-        chatScript.setAttribute('onload', script.onload)
+        chatScript.setAttribute('onload', script.onload);
       }
 
       // Get the parent node
@@ -93,8 +92,6 @@ class Leijuke {
       // Insert chatScript into head
       head.append(css);
     })
-
-
   }
 
   // funktio joka tsekkaa onko chat auki vai ei - tietääkö chat onko auki vai tarvitaanko oma cookie?
