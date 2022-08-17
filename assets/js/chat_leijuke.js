@@ -42,23 +42,23 @@ class Leijuke {
     }
 
     // genesys chat kovakoodattu
-    this.library = {
-      js: [
-        {
-          url: 'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js',
-          ext: true,
-          onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
-        },
-        {
-          url: 'assets/js/genesys_chat.js'
-        }
-      ],
-      css: [
-        {
-          url: "assets/css/genesys_chat.css"
-        }
-      ]
-    }
+    // this.library = {
+    //   js: [
+    //     {
+    //       url: 'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js',
+    //       ext: true,
+    //       onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
+    //     },
+    //     {
+    //       url: 'assets/js/genesys_chat.js'
+    //     }
+    //   ],
+    //   css: [
+    //     {
+    //       url: "assets/css/genesys_chat.css"
+    //     }
+    //   ]
+    // }
 
     this.state = {
       cookies: [
@@ -66,9 +66,10 @@ class Leijuke {
         { name: 'chat', value: true }
       ],
       chatSelection: leijukeState.chat_selection,
-      isOpen: false,
-      modulePath: leijukeState.modulepath,
       chatLoaded: false,
+      isOpen: true,
+      modulePath: leijukeState.modulepath,
+      libraries: leijukeState.libraries
     };
 
     // this.loadChat();
@@ -82,8 +83,17 @@ class Leijuke {
       if (this.state.chatLoaded) {
         this.openChat();
       }
+
       if (this.checkCookies(this.state.cookies)) {
         this.loadChat();
+
+        this.state = {
+          ...this.state,
+          chatLoaded: true,
+          isOpen: false
+        };
+
+        this.render();
       }
     });
   }
@@ -105,9 +115,9 @@ class Leijuke {
   }
 
   loadChat() {
-    const { modulePath } = this.state;
+    const { modulePath, libraries } = this.state;
 
-    this.library.js.map((script) => {
+    libraries.js.map((script) => {
       // Create a new element
       let chatScript = document.createElement('script');
       chatScript.src = script.ext ? script.url : `/${modulePath}/${script.url}`;
@@ -124,7 +134,7 @@ class Leijuke {
 
     })
 
-    this.library.css.map((script) => {
+    libraries.css.map((script) => {
       // Create new link Element for loading css
       let css= document.createElement('link');
       css.rel = 'stylesheet';
@@ -139,7 +149,7 @@ class Leijuke {
   }
 
   // funktio joka tsekkaa onko chat auki vai ei - tietääkö chat onko auki vai tarvitaanko oma cookie?
-  isChatOpen(isOpen) {
+  isChatOpen() {
 
   }
 
@@ -147,11 +157,12 @@ class Leijuke {
     const { isOpen } = this.state;
 
     document
-      .getElementById("block-chatleijuke")
-      .innerHTML = `
-        <div id="chat-leijuke">
-          <span class="hel-icon hel-icon--speechbubble-text"></span><span>${this.leijukeTitle[this.state.chatSelection]}</span><span class="hel-icon hel-icon--angle-up"></span>
-        </div>
-     `;
+    .getElementById("block-chatleijuke")
+    .innerHTML = `
+      <div id="chat-leijuke" ${isOpen ? 'class="open"' : ''}>
+        <span class="hel-icon hel-icon--speechbubble-text"></span><span>${this.leijukeTitle[this.state.chatSelection]}</span><span class="hel-icon hel-icon--angle-up"></span>
+      </div>
+    `;
+
   }
 }
