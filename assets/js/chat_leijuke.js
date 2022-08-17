@@ -147,7 +147,6 @@ class Leijuke {
 
   loadChat() {
     const { modulePath, libraries } = this.state;
-
     libraries.js.map((script) => {
       // Create a new element
       let chatScript = document.createElement('script');
@@ -156,6 +155,14 @@ class Leijuke {
 
       if (script.onload) {
         chatScript.setAttribute('onload', script.onload);
+      }
+
+      if (script.async) {
+        chatScript.setAttribute('async', '');
+      }
+
+      if (script.dataContainerId) {
+        chatScript.setAttribute('data-container-id', script.data_container_id);
       }
 
       // Get the parent node
