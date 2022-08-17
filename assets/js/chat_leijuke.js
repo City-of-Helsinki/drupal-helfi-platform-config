@@ -4,8 +4,24 @@
   Drupal.behaviors.chat_leijuke = {
     attach: function (context, settings) {
 
+      let cookieCheck = (cookieNames) => {
+        let cookiesOk = true;
+        cookieNames.map((cookieName) => {
+          if (!Drupal.eu_cookie_compliance.hasAgreedWithCategory(cookieName)) cookiesOk = false;
+        });
+        console.log(`${cookiesOk ? 'OK: ': 'NO: '} Checked cookies: `, cookieNames);
+        return cookiesOk;
+      };
+
+      let cookieSet = (cookieNames) => {
+        Drupal.eu_cookie_compliance.setAcceptedCategories([ ...Drupal.eu_cookie_compliance.getAcceptedCategories(), ...cookieNames ]);
+        console.log('Checked cookies: ', cookieNames);
+      };
+
       const leijukeState = drupalSettings.leijuke_state;
-      new Leijuke(leijukeState);
+      setTimeout(() => {
+        new Leijuke(leijukeState, cookieCheck, cookieSet);
+      });
 
       // tsekataan cookie(t)
       // ladataan oikea chat/chatbot
@@ -20,13 +36,13 @@
 
 
 class Leijuke {
-  constructor(leijukeState) {
+  constructor(leijukeState, cookieCheck, cookieSet) {
     // required cookies kovakoodattu
     this.requiredCookies = {
       genesys_chat: ['chat'],
       genesys_suunte: ['chat'],
       genesys_neuvonta: ['chat'],
-      kuura_health_chat: ['chat', 'tilasto_chat'],
+      kuura_health_chat: ['chat', 'statistics'],
       watson_chatbot: ['chat'],
       smartti_chatbot: ['chat'],
     };
@@ -41,33 +57,11 @@ class Leijuke {
       smartti_chatbot: 'Chatbot',
     }
 
-    // genesys chat kovakoodattu
-    // this.library = {
-    //   js: [
-    //     {
-    //       url: 'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js',
-    //       ext: true,
-    //       onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
-    //     },
-    //     {
-    //       url: 'assets/js/genesys_chat.js'
-    //     }
-    //   ],
-    //   css: [
-    //     {
-    //       url: "assets/css/genesys_chat.css"
-    //     }
-    //   ]
-    // }
-
     this.state = {
-      cookies: [
-        { name: 'tilasto_chat', value: false },
-        { name: 'chat', value: true }
-      ],
+      cookies: cookieCheck(this.requiredCookies[leijukeState.chat_selection]),
       chatSelection: leijukeState.chat_selection,
       chatLoaded: false,
-      isOpen: true,
+      isOpen: this.isChatOpen(),
       modulePath: leijukeState.modulepath,
       libraries: leijukeState.libraries
     };
@@ -75,43 +69,80 @@ class Leijuke {
     // this.loadChat();
     // this.checkCookies(this.state.cookies);
     // this.isChatOpen(this.isOpen);
+    if (this.state.cookies) {
+      this.loadChat();
+      this.state = {
+        ...this.state,
+        chatLoaded: true
+      };
+    }
+    console.log('current state', this.state);
     this.render();
 
     const button = document.querySelector('#chat-leijuke');
 
     button.addEventListener('click', (event) => {
       if (this.state.chatLoaded) {
+        console.log('Chat was loaded previously, just opening it now.');
+
         this.openChat();
+        return;
       }
 
-      if (this.checkCookies(this.state.cookies)) {
-        this.loadChat();
+      if (!this.state.cookies) {
+        // Implicitly allow chat cookies if clicking Leijuke.
+        console.log('Chat cookies allowed implicitly and chat being loaded.');
 
+        cookieSet(this.requiredCookies[this.state.chatSelection]);
+        this.loadChat();
         this.state = {
           ...this.state,
-          chatLoaded: true,
-          isOpen: false
+          cookies: cookieCheck(this.requiredCookies[this.state.chatSelection]),
+          chatLoaded: true
         };
-
-        this.render();
       }
+      this.openChat();
+
+      console.log('Chat should be opened and rerender leijuke.');
     });
+  }
+
+  persist(cookiename, value) {
+    if (value === undefined) {
+      let cookie = this.getCookie(cookiename);
+      console.log({cookie});
+      return cookie != false;
+    }
+    this.setCookie(cookiename, value);
+  }
+
+  setCookie(cname, cvalue) {
+    document.cookie = cname + "=" + cvalue + ";path=/";
+  }
+
+  getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
   }
 
   openChat() {
     // do what now?
-  }
-
-  checkCookies(cookies) {
-    let cookiesOk = true;
-    cookies.map((cookie) => {
-      if (!cookie.value && this.requiredCookies[this.state.chatSelection].indexOf(cookie.name) !== -1) {
-        cookiesOk = false;
-      }
-    }, cookiesOk);
-
-    console.log({cookiesOk});
-    return cookiesOk;
+    this.persist('leijuke.isOpen', true);
+    this.state = {
+      ...this.state,
+      isOpen: true,
+    };
+    this.render();
   }
 
   loadChat() {
@@ -150,7 +181,7 @@ class Leijuke {
 
   // funktio joka tsekkaa onko chat auki vai ei - tietääkö chat onko auki vai tarvitaanko oma cookie?
   isChatOpen() {
-
+    return this.persist('leijuke.isOpen');
   }
 
   render() {
