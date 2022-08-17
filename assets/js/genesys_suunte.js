@@ -56,7 +56,7 @@ var gcReturnSessionId = '';
     return !str || /^\s*$/.test(str);
   }
 
-  Drupal.behaviors.genesys_chat = {
+  Drupal.behaviors.genesys_suunte = {
     attach: function (context, settings) {
       var helFiChatPageUrl = document.location.href;
       helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
@@ -434,5 +434,7 @@ var gcReturnSessionId = '';
       };
     }
   };
+
+  Drupal.behaviors.genesys_suunte.attach();
 
 })(jQuery, Drupal, drupalSettings);
