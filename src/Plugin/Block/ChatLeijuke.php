@@ -91,7 +91,7 @@ class ChatLeijuke extends BlockBase {
       '#attached' => [
         'library' => $library,
         'drupalSettings' => [
-          'leijuke_state' => [
+          'leijuke_data' => [
             'chat_selection' => $config['chat_selection'] ?? '',
             'libraries' => $chatLibrary,
             'modulepath' => \Drupal::service('extension.list.module')->getPath('helfi_platform_config')

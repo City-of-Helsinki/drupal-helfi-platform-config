@@ -233,9 +233,11 @@
         return buttonHtml;
       }
 
-      if (!window._genesys) { window._genesys = {};
+      if (!window._genesys) {
+        window._genesys = {};
       }
-      if (!window._gt) { window._gt = [];
+      if (!window._gt) {
+        window._gt = [];
       }
 
       window._genesys.widgets = {

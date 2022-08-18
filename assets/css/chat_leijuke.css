@@ -14,15 +14,15 @@
   border: 2px solid var(--color-white);
   color: var(--color-white);
   border-radius: 0.5em;
-  display: none;
+  display: flex;
   flex: auto;
   font-size: var(--fontsize-body-l);
   padding: 0.25em;
   cursor: pointer;
 }
 
-#chat-leijuke.open {
-  display: flex;
+#chat-leijuke.hidden {
+  display: none;
 }
 
 #chat-leijuke > * {

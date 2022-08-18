@@ -18,25 +18,17 @@
         console.log('Checked cookies: ', cookieNames);
       };
 
-      const leijukeState = drupalSettings.leijuke_state;
+      const leijukeData = drupalSettings.leijuke_data;
       setTimeout(() => {
-        new Leijuke(leijukeState, cookieCheck, cookieSet);
+        new Leijuke(leijukeData, cookieCheck, cookieSet);
       });
-
-      // tsekataan cookie(t)
-      // ladataan oikea chat/chatbot
-      // tsekataan onko chat auki vai ei - tietääkö chat onko auki vai tarvitaanko oma cookie?
-      // piirretään leijuke, jos ei cookieita tai jos chat ei auki
-      // jos clikataan leijukkeesta niin implisiittisesti asetetaan chat cookiet
-      // Drupal.removeChatIcon() tms
     }
   }
 })(jQuery, Drupal, drupalSettings);
 
 
-
 class Leijuke {
-  constructor(leijukeState, cookieCheck, cookieSet) {
+  constructor(leijukeData, cookieCheck, cookieSet) {
     // required cookies kovakoodattu
     this.requiredCookies = {
       genesys_chat: ['chat'],
@@ -57,18 +49,20 @@ class Leijuke {
       smartti_chatbot: 'Chatbot',
     }
 
+    this.static = {
+      chatSelection: leijukeData.chat_selection,
+      cookieName: `leijuke.${leijukeData.chat_selection}.isOpen`,
+      modulePath: leijukeData.modulepath,
+      libraries: leijukeData.libraries
+    }
+
     this.state = {
-      cookies: cookieCheck(this.requiredCookies[leijukeState.chat_selection]),
-      chatSelection: leijukeState.chat_selection,
+      cookies: cookieCheck(this.requiredCookies[leijukeData.chat_selection]),
       chatLoaded: false,
-      isOpen: this.isChatOpen(),
-      modulePath: leijukeState.modulepath,
-      libraries: leijukeState.libraries
+      isChatOpen: this.isChatOpen(),
+      isHidden: false,
     };
 
-    // this.loadChat();
-    // this.checkCookies(this.state.cookies);
-    // this.isChatOpen(this.isOpen);
     if (this.state.cookies) {
       this.loadChat();
       this.state = {
@@ -93,11 +87,11 @@ class Leijuke {
         // Implicitly allow chat cookies if clicking Leijuke.
         console.log('Chat cookies allowed implicitly and chat being loaded.');
 
-        cookieSet(this.requiredCookies[this.state.chatSelection]);
+        cookieSet(this.requiredCookies[this.static.chatSelection]);
         this.loadChat();
         this.state = {
           ...this.state,
-          cookies: cookieCheck(this.requiredCookies[this.state.chatSelection]),
+          cookies: cookieCheck(this.requiredCookies[this.static.chatSelection]),
           chatLoaded: true
         };
       }
@@ -107,20 +101,11 @@ class Leijuke {
     });
   }
 
-  persist(cookiename, value) {
-    if (value === undefined) {
-      let cookie = this.getCookie(cookiename);
-      console.log({cookie});
-      return cookie != false;
-    }
-    this.setCookie(cookiename, value);
-  }
-
-  setCookie(cname, cvalue) {
+  setLeijukeCookie(cname, cvalue) {
     document.cookie = cname + "=" + cvalue + ";path=/";
   }
 
-  getCookie(cname) {
+  getLeijukeCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {
@@ -136,17 +121,16 @@ class Leijuke {
   }
 
   openChat() {
-    // do what now?
-    this.persist('leijuke.isOpen', true);
+    this.setLeijukeCookie(this.static.cookieName, true);
     this.state = {
       ...this.state,
-      isOpen: true,
+      isChatOpen: true,
     };
     this.render();
   }
 
   loadChat() {
-    const { modulePath, libraries } = this.state;
+    const { modulePath, libraries } = this.static;
     libraries.js.map((script) => {
       // Create a new element
       let chatScript = document.createElement('script');
@@ -176,7 +160,7 @@ class Leijuke {
       // Create new link Element for loading css
       let css= document.createElement('link');
       css.rel = 'stylesheet';
-      css.href = script.ext ? script.url : `/${modulePath}/${script.url}`
+      css.href = script.ext ? script.url : `/${modulePath}/${script.url}`;
 
       // Get the parent node
       let head = document.querySelector('head');
@@ -188,17 +172,17 @@ class Leijuke {
 
   // funktio joka tsekkaa onko chat auki vai ei - tietääkö chat onko auki vai tarvitaanko oma cookie?
   isChatOpen() {
-    return this.persist('leijuke.isOpen');
+    return this.getLeijukeCookie(this.static.cookieName);
   }
 
   render() {
-    const { isOpen } = this.state;
+    const { isChatOpen } = this.state;
 
     document
     .getElementById("block-chatleijuke")
     .innerHTML = `
-      <div id="chat-leijuke" ${isOpen ? 'class="open"' : ''}>
-        <span class="hel-icon hel-icon--speechbubble-text"></span><span>${this.leijukeTitle[this.state.chatSelection]}</span><span class="hel-icon hel-icon--angle-up"></span>
+      <div id="chat-leijuke" ${isChatOpen ? 'class="hidden"' : ''}>
+        <span class="hel-icon hel-icon--speechbubble-text"></span><span>${this.leijukeTitle[this.static.chatSelection]}</span><span class="hel-icon hel-icon--angle-up"></span>
       </div>
     `;
 
