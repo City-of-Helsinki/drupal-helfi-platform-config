@@ -1,10 +1,10 @@
-(function ($, Drupal, drupalSettings) {
+(function (Drupal, drupalSettings) {
   'use strict';
 
   Drupal.behaviors.chat_leijuke = {
     attach: function (context, settings) {
 
-      let cookieCheck = (cookieNames) => {
+      const cookieCheck = (cookieNames) => {
         let cookiesOk = true;
         cookieNames.map((cookieName) => {
           if (!Drupal.eu_cookie_compliance.hasAgreedWithCategory(cookieName)) cookiesOk = false;
@@ -13,7 +13,7 @@
         return cookiesOk;
       };
 
-      let cookieSet = (cookieNames) => {
+      const cookieSet = (cookieNames) => {
         Drupal.eu_cookie_compliance.setAcceptedCategories([ ...Drupal.eu_cookie_compliance.getAcceptedCategories(), ...cookieNames ]);
         console.log('Checked cookies: ', cookieNames);
       };
@@ -24,40 +24,22 @@
       });
     }
   }
-})(jQuery, Drupal, drupalSettings);
+})(Drupal, drupalSettings);
 
 
 class Leijuke {
   constructor(leijukeData, cookieCheck, cookieSet) {
-    // required cookies kovakoodattu
-    this.requiredCookies = {
-      genesys_chat: ['chat'],
-      genesys_suunte: ['chat'],
-      genesys_neuvonta: ['chat'],
-      kuura_health_chat: ['chat', 'statistics'],
-      watson_chatbot: ['chat'],
-      smartti_chatbot: ['chat'],
-    };
-
-    // leijuke title kovakoodattu
-    this.leijukeTitle = {
-      genesys_chat: 'Chat',
-      genesys_suunte: 'Chat',
-      genesys_neuvonta: 'Chat',
-      kuura_health_chat: 'Chat',
-      watson_chatbot: 'Chatbot',
-      smartti_chatbot: 'Chatbot',
-    }
-
     this.static = {
       chatSelection: leijukeData.chat_selection,
       cookieName: `leijuke.${leijukeData.chat_selection}.isOpen`,
       modulePath: leijukeData.modulepath,
-      libraries: leijukeData.libraries
+      libraries: leijukeData.libraries,
+      leijukeTitle: leijukeData.leijuke_title,
+      requiredCookies: leijukeData.required_cookies
     }
 
     this.state = {
-      cookies: cookieCheck(this.requiredCookies[leijukeData.chat_selection]),
+      cookies: cookieCheck(this.static.requiredCookies),
       chatLoaded: false,
       isChatOpen: this.isChatOpen(),
       isHidden: false,
@@ -71,6 +53,9 @@ class Leijuke {
       };
     }
     console.log('current state', this.state);
+    console.log('current static', this.static);
+
+    this.initWrapper();
     this.render();
 
     const button = document.querySelector('#chat-leijuke');
@@ -87,11 +72,11 @@ class Leijuke {
         // Implicitly allow chat cookies if clicking Leijuke.
         console.log('Chat cookies allowed implicitly and chat being loaded.');
 
-        cookieSet(this.requiredCookies[this.static.chatSelection]);
+        cookieSet(this.static.requiredCookies);
         this.loadChat();
         this.state = {
           ...this.state,
-          cookies: cookieCheck(this.requiredCookies[this.static.chatSelection]),
+          cookies: cookieCheck(this.static.requiredCookies),
           chatLoaded: true
         };
       }
@@ -102,7 +87,7 @@ class Leijuke {
   }
 
   setLeijukeCookie(cname, cvalue) {
-    document.cookie = cname + "=" + cvalue + ";path=/";
+    document.cookie = `${cname}=${cvalue}; path=/; SameSite=Strict; `;
   }
 
   getLeijukeCookie(cname) {
@@ -132,7 +117,7 @@ class Leijuke {
   loadChat() {
     const { modulePath, libraries } = this.static;
     libraries.js.map((script) => {
-      // Create a new element
+
       let chatScript = document.createElement('script');
       chatScript.src = script.ext ? script.url : `/${modulePath}/${script.url}`;
       chatScript.type = "text/javascript";
@@ -149,40 +134,41 @@ class Leijuke {
         chatScript.setAttribute('data-container-id', script.data_container_id);
       }
 
-      // Get the parent node
-      let head = document.querySelector('head');
       // Insert chatScript into head
+      let head = document.querySelector('head');
       head.appendChild(chatScript);
-
     })
 
     libraries.css.map((script) => {
       // Create new link Element for loading css
-      let css= document.createElement('link');
+      let css = document.createElement('link');
       css.rel = 'stylesheet';
       css.href = script.ext ? script.url : `/${modulePath}/${script.url}`;
 
-      // Get the parent node
-      let head = document.querySelector('head');
-
       // Insert chatScript into head
+      let head = document.querySelector('head');
       head.append(css);
     })
   }
 
-  // funktio joka tsekkaa onko chat auki vai ei - tietääkö chat onko auki vai tarvitaanko oma cookie?
   isChatOpen() {
-    return this.getLeijukeCookie(this.static.cookieName);
+    return this.getLeijukeCookie(this.static.cookieName) === '' ? false : true;
+  }
+
+  initWrapper() {
+    let leijukeWrapper = document.createElement('div');
+    leijukeWrapper.id = 'chat-leijuke-wrapper';
+    document.body.append(leijukeWrapper)
   }
 
   render() {
     const { isChatOpen } = this.state;
 
     document
-    .getElementById("block-chatleijuke")
+    .getElementById("chat-leijuke-wrapper")
     .innerHTML = `
       <div id="chat-leijuke" ${isChatOpen ? 'class="hidden"' : ''}>
-        <span class="hel-icon hel-icon--speechbubble-text"></span><span>${this.leijukeTitle[this.static.chatSelection]}</span><span class="hel-icon hel-icon--angle-up"></span>
+        <span class="hel-icon hel-icon--speechbubble-text"></span><span>${this.static.leijukeTitle}</span><span class="hel-icon hel-icon--angle-up"></span>
       </div>
     `;
 

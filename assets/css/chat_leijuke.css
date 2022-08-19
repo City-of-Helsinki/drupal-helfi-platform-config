@@ -1,12 +1,9 @@
-#block-chatleijuke {
+#chat-leijuke-wrapper {
   position: fixed;
   bottom: 0;
   right: 0;
   color: white;
-}
-
-.region--attachments {
-  visibility: visible !important;
+  z-index: 1;
 }
 
 #chat-leijuke {

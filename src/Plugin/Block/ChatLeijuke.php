@@ -16,7 +16,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ChatLeijuke extends BlockBase {
 
-  // TODO: block configiin käyttäjälle valinta mikä chat kilke, jonka perusteella ladataan ja triggeröidään sopiva js
   /**
    * {@inheritdoc}
    */
@@ -45,8 +44,7 @@ class ChatLeijuke extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $formState)
-  {
+  public function blockSubmit($form, FormStateInterface $formState) {
     $this->configuration['chat_selection'] = $formState->getValue('chat_selection');
   }
 
@@ -58,18 +56,19 @@ class ChatLeijuke extends BlockBase {
     $config = $this->getConfiguration();
     $build = [];
     $chatLibrary = [];
+    $modulePath = \Drupal::service('extension.list.module')->getPath('helfi_platform_config');
 
-    $librariesYml = Yaml::parseFile(DRUPAL_ROOT . '/modules/contrib/helfi_platform_config/helfi_platform_config.libraries.yml');
+    $librariesYml = Yaml::parseFile($modulePath . '/helfi_platform_config.libraries.yml');
 
     foreach ($librariesYml as $k => $lib) {
       if ($k === $config['chat_selection']) {
         foreach ($lib['js'] as $key => $value) {
           $js = [
             'url' => $key,
-            'ext' => $value['type'] === 'external' ? TRUE : FALSE,
-            'onload' => $value['attributes']['onload'],
-            'async' => $value['attributes']['async'] ? TRUE : FALSE,
-            'data_container_id' => $value['attributes']['data-container-id']
+            'ext' => $value['type'] ?? FALSE,
+            'onload' => $value['attributes']['onload'] ?? FALSE,
+            'async' => $value['attributes']['async'] ?? FALSE,
+            'data_container_id' => $value['attributes']['data-container-id'] ?? FALSE
           ];
 
           $chatLibrary['js'][] = $js;
@@ -78,7 +77,7 @@ class ChatLeijuke extends BlockBase {
         foreach ($lib['css']['theme'] as $key => $value) {
           $css = [
             'url' => $key,
-            'ext' => $value['type'] === 'external' ? TRUE : FALSE,
+            'ext' => $value['type'] ?? FALSE
           ];
 
           $chatLibrary['css'][] = $css;
@@ -94,7 +93,9 @@ class ChatLeijuke extends BlockBase {
           'leijuke_data' => [
             'chat_selection' => $config['chat_selection'] ?? '',
             'libraries' => $chatLibrary,
-            'modulepath' => \Drupal::service('extension.list.module')->getPath('helfi_platform_config')
+            'modulepath' => $modulePath,
+            'leijuke_title' => str_contains($config['chat_selection'], 'chatbot') ? 'Chatbot' : 'Chat',
+            'required_cookies' => $config['chat_selection'] === 'kuura_health_chat' ? ['chat', 'statistics'] : ['chat']
           ],
         ],
       ]

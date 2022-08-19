@@ -143,6 +143,5 @@ chat_leijuke:
     theme:
       assets/css/chat_leijuke.css: {}
   dependencies:
-    - core/jquery
     - core/drupal
     - core/drupalSettings
