@@ -5,18 +5,18 @@ dependencies:
     - helfi_navigation
   theme:
     - hdbt
-id: external_fallback_menu
+id: external_menu_mega_menu_hdbt
 theme: hdbt
-region: header_branding
+region: header_bottom
 weight: 0
 provider: null
-plugin: external_menu_block_fallback
+plugin: 'external_menu_block_main_navigation'
 settings:
-  id: external_menu_block_fallback
-  label: 'External - Fallback menu'
+  id: 'external_menu_block_main_navigation'
+  label: 'External - Mega menu'
   label_display: '0'
   provider: helfi_navigation
-  level: '1'
-  depth: '0'
+  level: 1
+  depth: 2
   expand_all_items: true
 visibility: {  }

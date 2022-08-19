@@ -4,10 +4,10 @@ dependencies:
   module:
     - helfi_navigation
   theme:
-    - hdbt
-id: external_menu_mega_menu
-theme: hdbt
-region: header_branding
+    - hdbt_subtheme
+id: external_menu_mega_menu_hdbt_subtheme
+theme: hdbt_subtheme
+region: header_bottom
 weight: 0
 provider: null
 plugin: 'external_menu_block_main_navigation'

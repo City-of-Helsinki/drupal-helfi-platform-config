@@ -5,7 +5,7 @@ dependencies:
     - helfi_navigation
   theme:
     - hdbt
-id: external_footer_bottom_navigation
+id: external_footer_bottom_navigation_hdbt
 theme: hdbt
 region: footer_bottom
 weight: 0

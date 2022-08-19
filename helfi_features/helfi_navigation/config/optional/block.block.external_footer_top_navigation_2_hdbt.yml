@@ -5,15 +5,15 @@ dependencies:
     - helfi_navigation
   theme:
     - hdbt
-id: external_footer_top_navigation
+id: external_footer_top_navigation_2_hdbt
 theme: hdbt
 region: footer_top
-weight: 1
+weight: 2
 provider: null
-plugin: 'external_menu_block:footer-top-navigation'
+plugin: 'external_menu_block:footer-top-navigation-2'
 settings:
-  id: 'external_menu_block:footer-top-navigation'
-  label: 'City of Helsinki'
+  id: 'external_menu_block:footer-top-navigation-2'
+  label: Connect
   label_display: visible
   provider: helfi_navigation
   level: 1

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_navigation
+  theme:
+    - hdbt_subtheme
+id: external_footer_bottom_navigation_hdbt_subtheme
+theme: hdbt_subtheme
+region: footer_bottom
+weight: 0
+provider: null
+plugin: 'external_menu_block:footer-bottom-navigation'
+settings:
+  id: 'external_menu_block:footer-bottom-navigation'
+  label: 'External - Footer bottom navigation'
+  label_display: '0'
+  provider: helfi_navigation
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }
