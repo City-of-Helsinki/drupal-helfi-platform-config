@@ -38,6 +38,12 @@ class ChatLeijuke extends BlockBase {
       ],
     ];
 
+    $form['chat_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Chat title'),
+      '#default_value' => $config['chat_title'] ?? '',
+    ];
+
     return $form;
   }
 
@@ -46,6 +52,8 @@ class ChatLeijuke extends BlockBase {
    */
   public function blockSubmit($form, FormStateInterface $formState) {
     $this->configuration['chat_selection'] = $formState->getValue('chat_selection');
+    $this->configuration['chat_title'] = $formState->getValue('chat_title');
+
   }
 
   /**
@@ -94,8 +102,7 @@ class ChatLeijuke extends BlockBase {
             'chat_selection' => $config['chat_selection'] ?? '',
             'libraries' => $chatLibrary,
             'modulepath' => $modulePath,
-            'leijuke_title' => str_contains($config['chat_selection'], 'chatbot') ? 'Chatbot' : 'Chat',
-            'required_cookies' => $config['chat_selection'] === 'kuura_health_chat' ? ['chat', 'statistics'] : ['chat']
+            'title' => $config['chat_title'] ?? 'Chat',
           ],
         ],
       ]
