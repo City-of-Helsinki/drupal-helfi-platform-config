@@ -436,5 +436,4 @@
 
     }
   };
-  Drupal.behaviors.genesys_chat.attach();
 })(jQuery, Drupal, drupalSettings);

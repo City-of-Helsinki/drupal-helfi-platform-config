@@ -43,7 +43,11 @@ genesys_chat:
         onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
       }
     }
-    assets/js/genesys_chat.js: {}
+    assets/js/genesys_chat.js: {
+      attributes: {
+        onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_chat.attach();}}, 100);"
+      }
+    }
   css:
     theme:
       assets/css/genesys_chat.css: {}
