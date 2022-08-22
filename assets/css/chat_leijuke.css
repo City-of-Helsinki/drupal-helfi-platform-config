@@ -27,3 +27,7 @@
   margin: 0.5em;
   line-height: 1em;
 }
+
+.cx-widget.cx-side-button-group {
+  display: none;
+}
