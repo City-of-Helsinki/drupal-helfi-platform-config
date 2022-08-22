@@ -41,17 +41,17 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
   /**
    * Process queue item.
    *
-   * @param string $data
+   * @param string $langcode
    *   Data of the processable language code.
    *
    * @throws \Exception
    *   Throws exception if language code is not set.
    */
-  public function processItem($data) {
-    if (!is_string($data)) {
+  public function processItem($langcode) {
+    if (!is_string($langcode)) {
       return;
     }
-    $this->menuUpdater->syncMenu($data);
+    $this->menuUpdater->syncMenu($langcode);
   }
 
 }

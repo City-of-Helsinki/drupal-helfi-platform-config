@@ -66,12 +66,7 @@ function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) 
  */
 function helfi_navigation_menu_update(MenuInterface $entity) {
   if ($entity->id() === 'main') {
-    $langcode = $entity->language()->getId();
-
-    if ($langcode === LanguageInterface::LANGCODE_NOT_SPECIFIED) {
-      $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
-    }
-    _helfi_navigation_queue_item($langcode);
+    _helfi_navigation_queue_item($entity->language()->getId());
   }
 }
 
@@ -90,6 +85,11 @@ function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $ent
 function _helfi_navigation_queue_item(string $langcode) {
   $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
 
+  // Fallback to currently active language if item has no language.
+  if ($langcode === LanguageInterface::LANGCODE_NOT_SPECIFIED) {
+    $langcode = \Drupal::languageManager()
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+  }
   try {
     $menuUpdater->syncMenu($langcode);
   }
