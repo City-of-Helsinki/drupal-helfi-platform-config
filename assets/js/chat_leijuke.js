@@ -22,19 +22,17 @@ function getAdapter(chatSelection) {
 }
 
 class EuCookieManager {
-  cookieCheck = (cookieNames) => {
+  cookieCheck(cookieNames) {
     let cookiesOk = true;
     cookieNames.map((cookieName) => {
       if (!Drupal.eu_cookie_compliance.hasAgreedWithCategory(cookieName)) cookiesOk = false;
     });
-    console.log(`${cookiesOk ? 'OK: ': 'NO: '} Checked cookies: `, cookieNames);
     return cookiesOk;
-  };
+  }
 
-  cookieSet = (cookieNames) => {
-    Drupal.eu_cookie_compliance.setAcceptedCategories([ ...Drupal.eu_cookie_compliance.getAcceptedCategories(), ...cookieNames ]);
-    console.log('Checked cookies: ', cookieNames);
-  };
+  cookieSet() {
+    Drupal.eu_cookie_compliance.setAcceptedCategories([ ...Drupal.eu_cookie_compliance.getAcceptedCategories(), 'chat' ]);
+  }
 }
 
 class GenesysAdapter {
@@ -58,12 +56,12 @@ class GenesysAdapter {
 
   open(callback) {
     // send open command
-    this.getChatExtension().then((ext) => chatExtension.command('WebChat.open').done(callback).fail('Failed WebChat open command.'));
+    this.getChatExtension().then((ext) => chatExtension.command('WebChat.open').done(callback).fail(console.warn('Failed WebChat open command.')));
   }
 
   close(callback) {
     // send close command
-    this.getChatExtension().then((ext) => chatExtension.command('WebChat.close').done(callback).fail('Failed WebChat close command.'));
+    this.getChatExtension().then((ext) => chatExtension.command('WebChat.close').done(callback).fail(console.warn('Failed WebChat close command.')));
   }
 
   onOpened(callback) {
@@ -100,14 +98,12 @@ class Leijuke {
     this.state = {
       cookies: extCookieManager.cookieCheck(this.adapter.requiredCookies),
       chatLoaded: false,
-      isChatOpen: this.isChatOpen(),
+      isChatOpen: this.isChatOpen()
     };
 
     if (this.state.cookies) {
       this.loadChat();
     }
-    console.log('current state', this.state);
-    console.log('current static', this.static);
 
     this.initWrapper();
     this.render();
@@ -117,9 +113,8 @@ class Leijuke {
     const button = document.querySelector('#chat-leijuke');
 
     button.addEventListener('click', (event) => {
+      // If chat was loaded, cookies are ok.
       if (this.state.chatLoaded) {
-        console.log('Chat was loaded previously, just opening it now.');
-
         this.openChat();
         return;
       }
@@ -128,16 +123,21 @@ class Leijuke {
         // Implicitly allow chat cookies if clicking Leijuke.
         console.log('Chat cookies allowed implicitly and chat being loaded.');
 
-        this.extCookieManager.cookieSet(this.adapter.requiredCookies);
+        this.extCookieManager.cookieSet();
       }
 
-      this.loadChat();
       this.state = {
         ...this.state,
-        cookies: this.extCookieManager.cookieCheck(this.adapter.requiredCookies),
-        chatLoaded: true
+        cookies: this.extCookieManager.cookieCheck(this.adapter.requiredCookies)
       };
-      this.adapter.onLoaded(this.openChat.bind(this));
+
+      if (this.state.cookies) {
+        this.loadChat();
+        this.adapter.onLoaded(this.openChat.bind(this));
+      } else {
+        console.warn('Missing the required cookies to open chat. Missing cookie not allowed to be set implicitly.')
+      }
+
     });
   }
 
@@ -161,11 +161,9 @@ class Leijuke {
   }
 
   openChat() {
-    console.log('Trying to open chat!');
     const leijuke = this;
-    // try to open genesys chat
+    // Try to open a chat via adapter.
     this.adapter.open(function(e){
-      console.log('Opened genesys chat succesfully!');
       leijuke.setLeijukeCookie(leijuke.static.cookieName, true);
       leijuke.state = {
         ...leijuke.state,
@@ -220,12 +218,10 @@ class Leijuke {
       ...this.state,
       chatLoaded: true
     };
-    console.log('Chat loaded complete!');
     this.render();
   }
 
   closeChat() {
-    console.log('Chat closed event.');
     this.setLeijukeCookie(this.static.cookieName, false);
     this.state = {
       ...this.state,
@@ -243,13 +239,14 @@ class Leijuke {
   }
 
   initWrapper() {
+    if (document.getElementById('chat-leijuke-wrapper')) return;
+
     let leijukeWrapper = document.createElement('div');
     leijukeWrapper.id = 'chat-leijuke-wrapper';
     document.body.append(leijukeWrapper)
   }
 
   render() {
-    console.log('current state during render', this.state);
 
     const { isChatOpen } = this.state;
 
