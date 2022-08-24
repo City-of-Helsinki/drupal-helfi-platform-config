@@ -6,7 +6,7 @@
   z-index: 1;
 }
 
-#chat-leijuke {
+.chat-leijuke {
   background: var(--color-black);
   border: 2px solid var(--color-white);
   color: var(--color-white);
@@ -18,11 +18,11 @@
   cursor: pointer;
 }
 
-#chat-leijuke.hidden {
+.chat-leijuke.hidden {
   display: none;
 }
 
-#chat-leijuke > * {
+.chat-leijuke > * {
   display: inline-block;
   margin: 0.5em;
   line-height: 1em;

@@ -53,7 +53,6 @@ class ChatLeijuke extends BlockBase {
   public function blockSubmit($form, FormStateInterface $formState) {
     $this->configuration['chat_selection'] = $formState->getValue('chat_selection');
     $this->configuration['chat_title'] = $formState->getValue('chat_title');
-
   }
 
   /**
@@ -93,20 +92,25 @@ class ChatLeijuke extends BlockBase {
       }
     }
 
-    $build['leijuke'] = [
-      '#title' => $this->t('Chat Leijuke'),
-      '#attached' => [
-        'library' => $library,
-        'drupalSettings' => [
-          'leijuke_data' => [
-            'chat_selection' => $config['chat_selection'] ?? '',
-            'libraries' => $chatLibrary,
-            'modulepath' => $modulePath,
-            'title' => $config['chat_title'] ?? 'Chat',
+    // We only build it if it makes sense.
+    if ($config['chat_selection']) {
+      $build['leijuke'] = [
+        '#title' => $this->t('Chat Leijuke'),
+        '#attached' => [
+          'library' => $library,
+          'drupalSettings' => [
+            'leijuke_data' => [
+              $config['chat_selection'] => [
+                'name' => $config['chat_selection'],
+                'libraries' => $chatLibrary,
+                'modulepath' => $modulePath,
+                'title' => $config['chat_title'] ?? 'Chat',
+              ],
+            ],
           ],
-        ],
-      ]
-    ];
+        ]
+      ];
+    }
 
     return $build;
   }

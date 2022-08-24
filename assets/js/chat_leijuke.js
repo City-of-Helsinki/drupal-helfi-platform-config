@@ -5,12 +5,15 @@
     attach: function (context, settings) {
 
       const leijukeData = drupalSettings.leijuke_data;
+      console.log({leijukeData});
 
-      const adapter = getAdapter(leijukeData.chat_selection);
+      for (const chat_selection in leijukeData) {
+        const adapter = getAdapter(chat_selection);
 
-      setTimeout(() => {
-        new Leijuke(leijukeData, new EuCookieManager, adapter);
-      });
+        setTimeout(() => {
+          new Leijuke(leijukeData[chat_selection], new EuCookieManager, adapter);
+        });
+      }
     }
   }
 })(Drupal, drupalSettings);
@@ -18,6 +21,9 @@
 function getAdapter(chatSelection) {
   if (chatSelection.indexOf('genesys') != -1) {
     return new GenesysAdapter;
+  }
+  if (chatSelection.indexOf('smartti') != -1) {
+    return new SmarttiAdapter;
   }
 }
 
@@ -80,6 +86,42 @@ class GenesysAdapter {
   }
 }
 
+
+class SmarttiAdapter {
+
+  constructor() {
+    this.requiredCookies = ['chat'];
+    this.bot = true;
+  }
+
+  open(callback) {
+    // send open command
+    // Smartti.open(); // this doesn't work?
+    Smartti.show();
+  }
+
+  close(callback) {
+    // send close command
+    Smartti.close();
+    // Smartti.hide(); // this also hides the button sometimes?
+  }
+
+  onOpened(callback) {
+    // subscribe to opened event
+    // Smartti.on('open', callback); // need to find docs
+  }
+
+  onClosed(callback) {
+    // subscribe to closed event
+    // Smartti.on('close', callback); // need to find docs
+  }
+
+  onLoaded(callback) {
+    // subscribe to ready event
+    // Smartti.on('load', callback); // need to find docs
+  }
+}
+
 class Leijuke {
 
   constructor(leijukeData, extCookieManager, chatAdapter) {
@@ -88,8 +130,9 @@ class Leijuke {
     this.adapter = chatAdapter;
 
     this.static = {
-      chatSelection: leijukeData.chat_selection,
-      cookieName: `leijuke.${leijukeData.chat_selection}.isOpen`,
+      selector: `chat-leijuke-${leijukeData.name}`,
+      chatSelection: leijukeData.name,
+      cookieName: `leijuke.${leijukeData.name}.isOpen`,
       modulePath: leijukeData.modulepath,
       libraries: leijukeData.libraries,
       title: leijukeData.title
@@ -109,8 +152,7 @@ class Leijuke {
     this.render();
   }
 
-  prepButton() {
-    const button = document.querySelector('#chat-leijuke');
+  prepButton(button) {
 
     button.addEventListener('click', (event) => {
       // If chat was loaded, cookies are ok.
@@ -239,11 +281,19 @@ class Leijuke {
   }
 
   initWrapper() {
-    if (document.getElementById('chat-leijuke-wrapper')) return;
+    let leijukeWrapper = document.getElementById('chat-leijuke-wrapper');
+    if (!leijukeWrapper) {
+      leijukeWrapper = document.createElement('div');
+      leijukeWrapper.id = 'chat-leijuke-wrapper';
+      document.body.append(leijukeWrapper)
+    }
 
-    let leijukeWrapper = document.createElement('div');
-    leijukeWrapper.id = 'chat-leijuke-wrapper';
-    document.body.append(leijukeWrapper)
+    let leijukeInstance = document.createElement('div');
+    leijukeInstance.id = this.static.selector;
+    leijukeInstance.classList.add('chat-leijuke')
+    leijukeWrapper.append(leijukeInstance);
+
+    this.prepButton(leijukeInstance);
   }
 
   render() {
@@ -252,14 +302,19 @@ class Leijuke {
 
     const icon = this.adapter.bot ? 'customer-bot-neutral' : 'speechbubble-text';
 
-    document
-    .getElementById("chat-leijuke-wrapper")
-    .innerHTML = `
-      <div id="chat-leijuke" ${isChatOpen ? 'class="hidden"' : ''}>
-        <span class="hel-icon hel-icon--${icon}"></span><span>${this.static.title}</span><span class="hel-icon hel-icon--angle-up"></span>
-      </div>
+    const element = document.getElementById(this.static.selector);
+
+    const innerHTML = `
+      <span class="hel-icon hel-icon--${icon}"></span>
+      <span>${this.static.title}</span>
+      <span class="hel-icon hel-icon--angle-up"></span>
     `;
 
-    this.prepButton();
+    if (element.innerHTML != innerHTML) {
+      element.innerHTML = innerHTML;
+    }
+
+    element.classList.toggle('hidden', isChatOpen);
+
   }
 }
