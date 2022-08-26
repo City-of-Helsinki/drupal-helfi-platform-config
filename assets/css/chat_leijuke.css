@@ -31,3 +31,11 @@
 .cx-widget.cx-side-button-group {
   display: none;
 }
+
+.smartti-button-closed {
+  display: none;
+}
+
+#aca--widget-button {
+  opacity: 0;
+}

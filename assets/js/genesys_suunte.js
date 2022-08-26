@@ -431,10 +431,10 @@ var gcReturnSessionId = '';
 
         chatExtension.republish("ready");
         chatExtension.ready();
+        window.chatExtension = chatExtension;
+
       };
     }
   };
-
-  Drupal.behaviors.genesys_suunte.attach();
 
 })(jQuery, Drupal, drupalSettings);

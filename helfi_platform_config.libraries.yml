@@ -75,7 +75,11 @@ genesys_suunte:
         onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
       }
     }
-    assets/js/genesys_suunte.js: {}
+    assets/js/genesys_suunte.js: {
+      attributes: {
+        onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_suunte.attach();console.log('suunte attaching');}}, 100);"
+      }
+    }
   css:
     theme:
       assets/css/genesys_chat.css: {}
@@ -129,7 +133,11 @@ genesys_neuvonta:
         onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
       }
     }
-    assets/js/genesys_neuvonta.js: {}
+    assets/js/genesys_neuvonta.js: {
+      attributes: {
+        onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_neuvonta.attach();}}, 100);"
+      }
+    }
   css:
     theme:
       assets/css/genesys_chat.css: {}

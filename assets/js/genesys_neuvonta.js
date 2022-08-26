@@ -469,11 +469,10 @@
 
         chatExtension.republish("ready");
         chatExtension.ready();
+        window.chatExtension = chatExtension;
       };
 
     }
   };
-
-  Drupal.behaviors.genesys_neuvonta.attach();
 
 })(jQuery, Drupal, drupalSettings);
