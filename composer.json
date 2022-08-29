@@ -22,7 +22,7 @@
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/elasticsearch_connector": "^7.0@alpha",
         "drupal/entity_browser": "^2.5",
-        "drupal/eu_cookie_compliance": "^1.14",
+        "drupal/eu_cookie_compliance": "1.19",
         "drupal/external_entities": "^2.0@alpha",
         "drupal/features": "^3.12",
         "drupal/field_group": "^3.1",
