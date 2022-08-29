@@ -8,7 +8,6 @@ dependencies:
   - 'admin_toolbar_tools:admin_toolbar_tools'
   - 'config_rewrite:config_rewrite'
   - 'config_ignore:config_ignore'
-  - 'ctools:ctools'
   - 'diff:diff'
   - 'drupal:block'
   - 'drupal:config_translation'
