@@ -2,9 +2,9 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.target_group_links.field_description
     - field.field.paragraph.target_group_links.field_target_group_item
-    - field.field.paragraph.target_group_links.field_title
+    - field.field.paragraph.target_group_links.field_target_group_links_desc
+    - field.field.paragraph.target_group_links.field_target_group_links_title
     - paragraphs.paragraphs_type.target_group_links
   module:
     - paragraphs
@@ -14,14 +14,6 @@ targetEntityType: paragraph
 bundle: target_group_links
 mode: default
 content:
-  field_description:
-    type: text_textarea
-    weight: 1
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
   field_target_group_item:
     type: paragraphs
     weight: 2
@@ -40,7 +32,15 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
-  field_title:
+  field_target_group_links_desc:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_target_group_links_title:
     type: string_textfield
     weight: 0
     region: content
