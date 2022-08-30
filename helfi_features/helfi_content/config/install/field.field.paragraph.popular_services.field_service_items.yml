@@ -1,0 +1,98 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_service_items
+    - paragraphs.paragraphs_type.popular_service_item
+    - paragraphs.paragraphs_type.popular_services
+  module:
+    - entity_reference_revisions
+_core:
+  default_config_hash: 0ddJrtexrKteDoii5212VeduC6M0wuP3xND_Q2DJ-CE
+id: paragraph.popular_services.field_service_items
+field_name: field_service_items
+entity_type: paragraph
+bundle: popular_services
+label: 'Service items'
+description: 'Service items to showcase.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      popular_service_item: popular_service_item
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 24
+        enabled: false
+      accordion_item:
+        weight: 25
+        enabled: false
+      banner:
+        weight: 26
+        enabled: false
+      chart:
+        weight: 27
+        enabled: false
+      columns:
+        weight: 28
+        enabled: false
+      contact_card:
+        weight: 29
+        enabled: false
+      contact_card_listing:
+        weight: 30
+        enabled: false
+      content_cards:
+        weight: 31
+        enabled: false
+      content_liftup:
+        weight: 32
+        enabled: false
+      from_library:
+        weight: 33
+        enabled: false
+      gallery:
+        weight: 34
+        enabled: false
+      gallery_slide:
+        weight: 35
+        enabled: false
+      hero:
+        weight: 36
+        enabled: false
+      image:
+        weight: 37
+        enabled: false
+      liftup_with_image:
+        weight: 38
+        enabled: false
+      list_of_links:
+        weight: 39
+        enabled: false
+      list_of_links_item:
+        weight: 40
+        enabled: false
+      popular_service_item:
+        weight: 42
+        enabled: true
+      popular_services:
+        weight: 41
+        enabled: false
+      remote_video:
+        weight: 43
+        enabled: false
+      sidebar_text:
+        weight: 44
+        enabled: false
+      social_media_link:
+        weight: 45
+        enabled: false
+      text:
+        weight: 46
+        enabled: false
+field_type: entity_reference_revisions
