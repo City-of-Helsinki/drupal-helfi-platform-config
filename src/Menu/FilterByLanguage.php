@@ -23,7 +23,9 @@ final class FilterByLanguage implements EventSubscriberInterface {
     'branding-navigation',
     'footer-bottom-navigation',
     'footer-top-navigation',
+    'footer-top-navigation-2',
     'header-top-navigation',
+    'header-language-links',
     'main',
   ];
 
