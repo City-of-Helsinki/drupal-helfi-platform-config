@@ -75,7 +75,7 @@ class ChatLeijuke extends BlockBase {
             'ext' => $value['type'] ?? FALSE,
             'onload' => $value['attributes']['onload'] ?? FALSE,
             'async' => $value['attributes']['async'] ?? FALSE,
-            'data_container_id' => $value['attributes']['data-container-id'] ?? FALSE
+            'data_container_id' => $value['attributes']['data-container-id'] ?? FALSE,
           ];
 
           $chatLibrary['js'][] = $js;
@@ -84,7 +84,7 @@ class ChatLeijuke extends BlockBase {
         foreach ($lib['css']['theme'] as $key => $value) {
           $css = [
             'url' => $key,
-            'ext' => $value['type'] ?? FALSE
+            'ext' => $value['type'] ?? FALSE,
           ];
 
           $chatLibrary['css'][] = $css;
@@ -108,10 +108,11 @@ class ChatLeijuke extends BlockBase {
               ],
             ],
           ],
-        ]
+        ],
       ];
     }
 
     return $build;
   }
+
 }

@@ -390,5 +390,7 @@
       element.classList.toggle('hidden', isChatOpen);
 
     }
+
   }
+
 })(Drupal, drupalSettings);
