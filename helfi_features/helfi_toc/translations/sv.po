@@ -12,3 +12,6 @@ msgstr "Innehållsförteckningens titel"
 
 msgid "Loading table of contents"
 msgstr "Laddar innehållsförteckningen"
+
+msgid "On this page"
+msgstr "På den här sidan"
