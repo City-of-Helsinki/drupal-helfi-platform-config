@@ -87,10 +87,10 @@ function helfi_toc_apply_form_theme(array &$form) {
   // Control Table of contents title field visibility via checkbox states.
   if (in_array($form['#form_id'], $whitelisted_forms)) {
     $form['toc_enabled']['#access'] = TRUE;
-    $form['toc_title']['#access'] = TRUE;
+    $form['toc_title']['#access'] = FALSE;
     $form['toc_title']['#states'] = [
       'visible' => [
-        ':input[name="toc_enabled[value]"]' => ['checked' => TRUE],
+        ':input[name="toc_enabled[value]"]' => ['checked' => FALSE],
       ],
     ];
   }
@@ -117,7 +117,7 @@ function helfi_toc_preprocess_field__toc_enabled(&$variables) {
 
   if ($entity instanceof ContentEntityInterface) {
     $variables['toc_enabled'] = (bool) $entity->get('toc_enabled')->value;
-    $variables['toc_title'] = $entity->get('toc_title')->value;
+    $variables['toc_title'] = t('On this page');
     $variables['#attached']['library'][] = 'helfi_toc/table_of_contents';
   }
 }
