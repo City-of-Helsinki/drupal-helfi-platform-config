@@ -1,4 +1,3 @@
-uuid: b9d3be18-1d4e-49c7-8ceb-918b26685b77
 langcode: en
 status: true
 dependencies:
@@ -8,6 +7,8 @@ dependencies:
     - paragraphs.paragraphs_type.popular_service_item
   module:
     - link
+_core:
+  default_config_hash: YxHYX90hf2fi4r4X4a0GttjwLRbpjSUsYZYx5H9-iG0
 id: paragraph.popular_service_item.default
 targetEntityType: paragraph
 bundle: popular_service_item
@@ -33,4 +34,5 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden: {  }
+hidden:
+  search_api_excerpt: true

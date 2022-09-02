@@ -6,7 +6,14 @@ field.field.node.landing_page.field_content:
         handler_settings:
           target_bundles:
             popular_services: popular_services
+            target_group_links: target_group_links
           target_bundles_drag_drop:
             popular_services:
-              enabled: true
               weight: 42
+              enabled: true
+            target_group_link_item:
+              weight: 45
+              enabled: false
+            target_group_links:
+              weight: 24
+              enabled: true

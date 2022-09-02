@@ -1,7 +1,8 @@
-uuid: 53d8337f-6a18-49a8-bae2-c25346795aab
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: 2bMZkUDyWvsIuHFmjQt91AdkLTKouO-E3eBtDLrGLeM
 id: popular_service_item
 label: 'Popular service item'
 icon_uuid: null

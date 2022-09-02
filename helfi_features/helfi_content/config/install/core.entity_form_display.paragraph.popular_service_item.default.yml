@@ -1,4 +1,3 @@
-uuid: f0c1eeab-a45b-44b6-b2b6-e21db1f5b128
 langcode: en
 status: true
 dependencies:
@@ -8,6 +7,8 @@ dependencies:
     - paragraphs.paragraphs_type.popular_service_item
   module:
     - link
+_core:
+  default_config_hash: v78WTnVzQ2_15bLzRt8l2A47tL6LZYy6H84dj1zhduA
 id: paragraph.popular_service_item.default
 targetEntityType: paragraph
 bundle: popular_service_item

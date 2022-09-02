@@ -1,4 +1,3 @@
-uuid: 1ec40238-2a0a-40bc-ace9-4a463f41ca96
 langcode: en
 status: true
 dependencies:
@@ -8,6 +7,8 @@ dependencies:
     - paragraphs.paragraphs_type.popular_services
   module:
     - entity_reference_revisions
+_core:
+  default_config_hash: 0ddJrtexrKteDoii5212VeduC6M0wuP3xND_Q2DJ-CE
 id: paragraph.popular_services.field_service_items
 field_name: field_service_items
 entity_type: paragraph
