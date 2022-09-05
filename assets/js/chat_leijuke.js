@@ -26,6 +26,9 @@
     if (chatSelection.indexOf('watson') != -1) {
       return new WatsonAdapter;
     }
+    if (chatSelection.indexOf('kuura') != -1) {
+      return new KuuraAdapter;
+    }
   }
 
   class EuCookieManager {
@@ -47,6 +50,7 @@
     constructor() {
       this.requiredCookies = ['chat'];
       this.bot = false;
+      this.persist = true;
     }
 
     async getChatExtension() {
@@ -76,12 +80,12 @@
     }
   }
 
-
   class SmarttiAdapter {
 
     constructor() {
       this.requiredCookies = ['chat'];
       this.bot = true;
+      this.persist = true;
     }
 
     async getChatExtension() {
@@ -132,6 +136,7 @@
     constructor() {
       this.requiredCookies = ['chat'];
       this.bot = false;
+      this.persist = true;
     }
 
     async getChatExtension() {
@@ -186,11 +191,79 @@
 
           }
         }, 1000);
-
-
       });
 
     }
+  }
+
+  class KuuraAdapter {
+
+    constructor() {
+      this.requiredCookies = ['chat', 'statistics'];
+      this.bot = false;
+      this.persist = false;
+    }
+
+    async getChatExtension() {
+      return await new Promise(resolve => {
+        let findKuura = setInterval(()=> {
+          const kuuracontainer = document.getElementsByClassName('kuura-widget-container')[0];
+          if (typeof kuuracontainer != 'undefined') {
+            console.log('kuura extension found');
+            resolve(kuuracontainer);
+            clearInterval(findKuura);
+          }
+        }, 100);
+      });
+    }
+
+    open(callback) {
+      // send open command
+      this.getChatExtension().then((ext) => {
+        let findButton = setInterval(()=> {
+          const kuurabutton = ext.getElementsByClassName('kuura-chat-toggle')[0];
+          if (typeof kuurabutton != 'undefined') {
+              kuurabutton.click();
+              console.log('kuura open command');
+              callback();
+              clearInterval(findButton);
+          }
+        }, 100);
+      });
+    }
+
+    onClosed(callback) {
+      // subscribe to closed event
+      this.getChatExtension().then((ext) => {
+        console.log('kuura on closed event setup');
+        let findButton = setInterval(()=> {
+          const kuurabutton = ext.getElementsByClassName('kuura-chat-toggle')[0];
+          if (typeof kuurabutton != 'undefined') {
+            if (kuurabutton.classList.contains('closed-chat')) {
+              console.log('kuura on closed event triggered');
+              callback();
+              clearInterval(findButton);
+            }
+          }
+        }, 1000);
+      });
+    }
+
+    onLoaded(callback) {
+      // subscribe to ready event
+      this.getChatExtension().then((ext) => {
+        console.log('setting up on loaded interval');
+        let findbutton = setInterval(() => {
+          const kuurabutton = ext.getElementsByClassName('kuura-chat-toggle')[0];
+          if (typeof kuurabutton != 'undefined') {
+            console.log('kuura on loaded event');
+            callback();
+            clearInterval(findbutton);
+          }
+        }, 100);
+      });
+    }
+
   }
 
   class Leijuke {
@@ -278,7 +351,9 @@
       const leijuke = this;
       // Try to open a chat via adapter.
       this.adapter.open((e) => {
-        leijuke.setLeijukeCookie(leijuke.static.cookieName, true);
+        if(leijuke.adapter.persist) {
+          leijuke.setLeijukeCookie(leijuke.static.cookieName, true);
+        }
         leijuke.state = {
           ...leijuke.state,
           isChatOpen: true,
@@ -338,7 +413,9 @@
     }
 
     closeChat() {
-      this.setLeijukeCookie(this.static.cookieName, false);
+      if(this.adapter.persist) {
+        this.setLeijukeCookie(this.static.cookieName, false);
+      }
       this.state = {
         ...this.state,
         isChatOpen: false,

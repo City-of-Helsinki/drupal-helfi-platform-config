@@ -39,3 +39,7 @@
 #aca--widget-button {
   opacity: 0;
 }
+
+.kuura-chat-toggle.closed-chat {
+  display: none;
+}
