@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+id: chat
+label: 'Functional chat cookies'
+description:
+  value: "<p>The chats on the hel.fi&nbsp; website require functional chat cookies to function. By using a chat, you automatically accept the functional cookies it requires.&nbsp; No separate cookie consent is needed. Functional chat cookies are only downloaded to your device if you start a chat.</p>\r\n\r\n<table>\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<th>Type</th>\r\n\t\t</tr>\r\n\t</thead>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td>_genesys.widgets.*</td>\r\n\t\t\t<td>hel.fi</td>\r\n\t\t\t<td>Used for storing data required by the chat functionality.</td>\r\n\t\t\t<td>Session</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>__VCAP_ID__</td>\r\n\t\t\t<td>coh-chat-app-prod.eu-de.mybluemix.net</td>\r\n\t\t\t<td>The cookie is an obligatory cookie that facilitates visiting the website.</td>\r\n\t\t\t<td>Session</td>\r\n\t\t\t<td>Third party</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>gcReturnSessionId&nbsp;<br />\r\n\t\t\tgcAlternativeReturnUrl&nbsp;<br />\r\n\t\t\tgcReturnUrl&nbsp;<br />\r\n\t\t\tgcLoginButtonState</td>\r\n\t\t\t<td>hel.fi</td>\r\n\t\t\t<td>Used for authentication in the chat.</td>\r\n\t\t\t<td>Session</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
+  format: full_html
+checkbox_default_state: unchecked
+weight: -5
