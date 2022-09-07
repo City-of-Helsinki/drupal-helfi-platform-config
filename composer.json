@@ -68,7 +68,7 @@
     "extra": {
         "patches": {
             "drupal/content_lock": {
-                "[#3307402]": "https://git.drupalcode.org/project/content_lock/-/merge_requests/11.patch"
+                "[#3307402]": "https://git.drupalcode.org/project/content_lock/-/merge_requests/11.patch",
                 "[#UHF-4553] Fix unlock content button redirect": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/82081691e4a6d05b3716052d5fff46a04027bdc3/patches/content-lock-uhf-4553.patch"
             },
             "drupal/core": {
