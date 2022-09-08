@@ -285,7 +285,8 @@
       this.state = {
         cookies: extCookieManager.cookieCheck(this.adapter.requiredCookies),
         chatLoaded: false,
-        isChatOpen: this.isChatOpen()
+        isChatOpen: this.isChatOpen(),
+        busy: false
       };
 
       if (this.state.cookies) {
@@ -299,6 +300,15 @@
     prepButton(button) {
 
       button.addEventListener('click', (event) => {
+
+        // Debounce button.
+        if (this.state.busy) {
+          return;
+        }
+        this.state = {
+          ...this.state,
+          busy: true,
+        };
 
         // If chat was loaded, cookies are ok.
         if (this.state.chatLoaded) {
@@ -357,6 +367,7 @@
         leijuke.state = {
           ...leijuke.state,
           isChatOpen: true,
+          busy: false,
         };
         leijuke.render();
         leijuke.adapter.onClosed(leijuke.closeChat.bind(leijuke));
@@ -418,7 +429,7 @@
       }
       this.state = {
         ...this.state,
-        isChatOpen: false,
+        isChatOpen: false
       };
       this.render();
     }
