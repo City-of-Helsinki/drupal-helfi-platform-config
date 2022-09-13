@@ -297,9 +297,11 @@ function helfi_gdpr_compliance_update_9011() {
   ];
 
   // Install configurations and translations.
-  foreach ($configurations as $idx => $configuration) {
+  foreach ($configurations as $configuration) {
     ConfigHelper::installNewConfig($configLocation, $configuration);
-    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configurationTranslations[$idx]);
+  }
+  foreach ($configurationTranslations as $configurationTranslation) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configurationTranslation);
   }
 
   // Output logged messages to related channel of update execution.
