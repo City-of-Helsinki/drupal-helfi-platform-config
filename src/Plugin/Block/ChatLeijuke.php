@@ -53,9 +53,7 @@ class ChatLeijuke extends BlockBase {
    */
   public function blockSubmit($form, FormStateInterface $formState) {
     $this->configuration['chat_selection'] = $formState->getValue('chat_selection');
-    if ($title = $formState->getValue('chat_title')) {
-      $this->configuration['chat_title'] = $title;
-    }
+    $this->configuration['chat_title'] = $formState->getValue('chat_title');
   }
 
   /**
