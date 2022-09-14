@@ -5,6 +5,7 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\Yaml\Yaml;
+use Drupal\Component\Utility\Xss;
 
 /**
  * Provides a Chat Leijuke block.
@@ -52,7 +53,9 @@ class ChatLeijuke extends BlockBase {
    */
   public function blockSubmit($form, FormStateInterface $formState) {
     $this->configuration['chat_selection'] = $formState->getValue('chat_selection');
-    $this->configuration['chat_title'] = $formState->getValue('chat_title');
+    if ($title = $formState->getValue('chat_title')) {
+      $this->configuration['chat_title'] = $title;
+    }
   }
 
   /**
@@ -104,7 +107,7 @@ class ChatLeijuke extends BlockBase {
                 'name' => $config['chat_selection'],
                 'libraries' => $chatLibrary,
                 'modulepath' => $modulePath,
-                'title' => $config['chat_title'] ?? 'Chat',
+                'title' => $config['chat_title'] ? Xss::filter($config['chat_title']) : 'Chat',
               ],
             ],
           ],
