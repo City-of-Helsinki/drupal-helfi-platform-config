@@ -860,3 +860,25 @@ function helfi_content_update_9033() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Removes background image and without image center from hero layouts.
+ */
+function helfi_content_update_9034() {
+  $config_factory = \Drupal::configFactory();
+
+  $hero_designs = $config_factory->getEditable('field.storage.paragraph.field_hero_design');
+  $hero_designs_data = $hero_designs->getRawData();
+  foreach ($hero_designs_data['settings']['allowed_values'] as $key => $allowed_value) {
+    if (in_array('without-image-center', $allowed_value)) {
+      unset($hero_designs_data['settings']['allowed_values'][$key]);
+    }
+    if (in_array('background-image', $allowed_value)) {
+      unset($hero_designs_data['settings']['allowed_values'][$key]);
+    }
+  }
+
+  $hero_designs_data['settings']['allowed_values'] = array_values($hero_designs_data['settings']['allowed_values']);
+
+  $hero_designs->setData($hero_designs_data)->save(TRUE);
+}
