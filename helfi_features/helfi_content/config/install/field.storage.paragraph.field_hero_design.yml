@@ -14,9 +14,6 @@ settings:
       value: without-image-left
       label: 'Without image, align left'
     -
-      value: without-image-center
-      label: 'Without image, align center'
-    -
       value: with-image-right
       label: 'Image on the right'
     -
@@ -25,9 +22,6 @@ settings:
     -
       value: with-image-bottom
       label: 'Image on the bottom'
-    -
-      value: background-image
-      label: 'Background image'
     -
       value: diagonal
       label: Diagonal
