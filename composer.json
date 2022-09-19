@@ -43,7 +43,7 @@
         "drupal/metatag": "^1.16",
         "drupal/oembed_providers": "^2.0",
         "drupal/paragraphs": "^1.12",
-        "drupal/paragraphs_asymmetric_translation_widgets": "^1.0-beta4",
+        "drupal/paragraphs_asymmetric_translation_widgets": "^1.0",
         "drupal/pathauto": "^1.8",
         "drupal/publication_date": "^2.0@beta",
         "drupal/redirect": "^1.6",
@@ -92,7 +92,7 @@
                 "[#UHF-2059] Enhancements for the Admin UI": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/fdccb32397cc6fa19b4d0077b21a2b18aa6be297/patches/helfi_customizations_for_paragraphs_widget_8.x-1.12.patch"
             },
             "drupal/paragraphs_asymmetric_translation_widgets": {
-                "https://www.drupal.org/project/paragraphs_asymmetric_translation_widgets/issues/3171810#comment-13836806": "https://www.drupal.org/files/issues/2020-09-25/3171810-2.patch"
+                "https://www.drupal.org/project/paragraphs_asymmetric_translation_widgets/issues/3310368": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/fcf0f392edd8531089c6c9d15e2a15026dae79fb/patches/paragraphs_asymmetric_translation_widgets-3310368-check-for-subform.patch"
             },
             "drupal/linkit": {
                 "[#UHF-1872] Linkit support for link field": "https://www.drupal.org/files/issues/2021-08-20/avoid-linkit-CI-issue.patch"
