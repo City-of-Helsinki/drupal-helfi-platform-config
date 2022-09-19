@@ -1,0 +1,100 @@
+diff --git a/includes/field_ui.inc b/includes/field_ui.inc
+index d6ee0e8..628107e 100644
+--- a/includes/field_ui.inc
++++ b/includes/field_ui.inc
+@@ -183,7 +183,7 @@ function field_group_field_ui_display_form_alter(&$form, FormStateInterface $for
+       '#region_callback' => 'field_group_display_overview_row_region',
+       '#js_settings' => ['rowHandler' => 'group'],
+       'human_name' => [
+-        '#markup' => $group->label,
++        '#markup' => t($group->label),
+         '#prefix' => '<span class="group-label">',
+         '#suffix' => '</span>',
+       ],
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/AccordionItem.php b/src/Plugin/field_group/FieldGroupFormatter/AccordionItem.php
+index b738f43..08085cc 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/AccordionItem.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/AccordionItem.php
+@@ -35,7 +35,7 @@ class AccordionItem extends FieldGroupFormatterBase {
+     $element += [
+       '#type' => 'field_group_accordion_item',
+       '#effect' => $this->getSetting('effect'),
+-      '#title' => $this->getLabel(),
++      '#title' => $this->t($this->getLabel()),
+       // Prevent \Drupal\content_translation\ContentTranslationHandler::addTranslatabilityClue()
+       // from adding an incorrect suffix to the field group title.
+       '#multilingual' => TRUE,
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/Details.php b/src/Plugin/field_group/FieldGroupFormatter/Details.php
+index 079b85c..5563a38 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/Details.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/Details.php
+@@ -27,10 +27,10 @@ class Details extends FieldGroupFormatterBase {
+ 
+     $element += [
+       '#type' => 'details',
+-      '#title' => $this->getLabel(),
++      '#title' => $this->t($this->getLabel()),
+       '#open' => $this->getSetting('open'),
+       '#show_empty_fields' => $this->getSetting('show_empty_fields'),
+-      '#description' => $this->getSetting('description'),
++      '#description' => $this->getSetting('description') ? $this->t($this->getSetting('description')) : ''
+     ];
+ 
+     if ($this->getSetting('id')) {
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/Fieldset.php b/src/Plugin/field_group/FieldGroupFormatter/Fieldset.php
+index 24c917c..92a4c99 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/Fieldset.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/Fieldset.php
+@@ -27,9 +27,9 @@ class Fieldset extends FieldGroupFormatterBase {
+ 
+     $element += [
+       '#type' => 'fieldset',
+-      '#title' => $this->getLabel(),
++      '#title' => $this->t($this->getLabel()),
+       '#attributes' => [],
+-      '#description' => $this->getSetting('description'),
++      '#description' => $this->getSetting('description') ? $this->t($this->getSetting('description')) : '',
+       '#description_display' => 'after',
+       // Prevent \Drupal\content_translation\ContentTranslationHandler::addTranslatabilityClue()
+       // from adding an incorrect suffix to the field group title.
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/HtmlElement.php b/src/Plugin/field_group/FieldGroupFormatter/HtmlElement.php
+index 9bdf170..21cd949 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/HtmlElement.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/HtmlElement.php
+@@ -72,7 +72,7 @@ class HtmlElement extends FieldGroupFormatterBase {
+     $element['#attributes'] = $element_attributes;
+     if ($this->getSetting('show_label')) {
+       $element['#title_element'] = $this->getSetting('label_element');
+-      $element['#title'] = $this->getLabel();
++      $element['#title'] = $this->t($this->getLabel());
+       // Prevent \Drupal\content_translation\ContentTranslationHandler::addTranslatabilityClue()
+       // from adding an incorrect suffix to the field group title.
+       $element['#multilingual'] = TRUE;
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/Tab.php b/src/Plugin/field_group/FieldGroupFormatter/Tab.php
+index 233e4ca..a01263d 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/Tab.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/Tab.php
+@@ -34,8 +34,8 @@ class Tab extends FieldGroupFormatterBase {
+ 
+     $add = [
+       '#type' => 'details',
+-      '#title' => $this->getLabel(),
+-      '#description' => $this->getSetting('description'),
++      '#title' => $this->t($this->getLabel()),
++      '#description' => $this->getSetting('description') ? t($this->getSetting('description')) : '',
+       '#group' => $this->group->parent_name,
+     ];
+ 
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/Tabs.php b/src/Plugin/field_group/FieldGroupFormatter/Tabs.php
+index a1984d3..f584512 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/Tabs.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/Tabs.php
+@@ -45,7 +45,7 @@ class Tabs extends FieldGroupFormatterBase {
+ 
+     // By default tabs don't have titles but you can override it in the theme.
+     if ($this->getLabel()) {
+-      $element['#title'] = $this->getLabel();
++      $element['#title'] = $this->t($this->getLabel());
+     }
+ 
+     $element += [
