@@ -5,7 +5,7 @@
     $(".cx-window-manager").css("display", "none");
   }
 
-  Drupal.behaviors.genesys_chat = {
+  Drupal.behaviors.genesys_kymp = {
     attach: function (context, settings) {
       var helFiChatPageUrl = document.location.href;
       helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
@@ -233,9 +233,11 @@
         return buttonHtml;
       }
 
-      if (!window._genesys) { window._genesys = {};
+      if (!window._genesys) {
+        window._genesys = {};
       }
-      if (!window._gt) { window._gt = [];
+      if (!window._gt) {
+        window._gt = [];
       }
 
       window._genesys.widgets = {
@@ -434,5 +436,4 @@
 
     }
   };
-
 })(jQuery, Drupal, drupalSettings);

@@ -18,11 +18,11 @@ class GenesysChat extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $library = ['helfi_platform_config/genesys_chat'];
+    $library = ['helfi_platform_config/genesys_kymp'];
     $build = [];
 
     $build['genesys_chat'] = [
-      '#title' => t('Genesys Chat'),
+      '#title' => t('Genesys KYMP'),
       '#attached' => [
         'library' => $library,
       ],
