@@ -32,7 +32,7 @@ smartti_chatbot:
       'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.css': { type: external, minified: true }
       assets/css/smartti_chat.css: {}
 
-genesys_chat:
+genesys_kymp:
   version: 1.0.x
   header: true
   js:
@@ -43,9 +43,9 @@ genesys_chat:
         onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
       }
     }
-    assets/js/genesys_chat.js: {
+    assets/js/genesys_kymp.js: {
       attributes: {
-        onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_chat.attach();}}, 100);"
+        onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_kymp.attach();}}, 100);"
       }
     }
   css:

@@ -5,7 +5,7 @@
     $(".cx-window-manager").css("display", "none");
   }
 
-  Drupal.behaviors.genesys_chat = {
+  Drupal.behaviors.genesys_kymp = {
     attach: function (context, settings) {
       var helFiChatPageUrl = document.location.href;
       helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
