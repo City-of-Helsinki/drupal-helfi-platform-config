@@ -888,14 +888,26 @@ function helfi_content_update_9034() {
  * and "editor" roles.
  */
 function helfi_content_update_9035() {
-  $configLocation = dirname(__FILE__) . '/config/install/';
+  // Remove permissions manually.
+  $config_factory = \Drupal::configFactory();
 
-  $configurations = [
+  $role_ids = [
     'user.role.content_producer',
-    'user.role.editor',
+    'user.role.editor'
   ];
 
-  foreach ($configurations as $configuration) {
-    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  foreach ($role_ids as $role_id) {
+    $role = $config_factory->getEditable($role_id);
+    $role_data = $role->getRawData();
+
+    if (isset($role_data['permissions'])) {
+      $updated_permissions = array_diff($role_data['permissions'], ['access site in maintenance mode']);
+
+      if (!empty($updated_permissions)) {
+        $role_data['permissions'] = $updated_permissions;
+
+        $role->setData($role_data)->save(TRUE);
+      }
+    }
   }
 }
