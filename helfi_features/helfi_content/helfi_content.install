@@ -882,3 +882,20 @@ function helfi_content_update_9034() {
 
   $hero_designs->setData($hero_designs_data)->save(TRUE);
 }
+
+/**
+ * Remove "access site in maintenance mode" permission from "content_producer"
+ * and "editor" roles.
+ */
+function helfi_content_update_9035() {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'user.role.content_producer',
+    'user.role.editor',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+  }
+}
