@@ -882,3 +882,32 @@ function helfi_content_update_9034() {
 
   $hero_designs->setData($hero_designs_data)->save(TRUE);
 }
+
+/**
+ * Remove "access site in maintenance mode" permission from "content_producer"
+ * and "editor" roles.
+ */
+function helfi_content_update_9035() {
+  // Remove permissions manually.
+  $config_factory = \Drupal::configFactory();
+
+  $role_ids = [
+    'user.role.content_producer',
+    'user.role.editor'
+  ];
+
+  foreach ($role_ids as $role_id) {
+    $role = $config_factory->getEditable($role_id);
+    $role_data = $role->getRawData();
+
+    if (isset($role_data['permissions'])) {
+      $updated_permissions = array_diff($role_data['permissions'], ['access site in maintenance mode']);
+
+      if (!empty($updated_permissions)) {
+        $role_data['permissions'] = $updated_permissions;
+
+        $role->setData($role_data)->save(TRUE);
+      }
+    }
+  }
+}
