@@ -1,4 +1,3 @@
-uuid: f4d6607c-e8dd-4c31-b4c7-1309356cdbf2
 langcode: en
 status: true
 dependencies:
@@ -6,10 +5,15 @@ dependencies:
     - field.field.paragraph.event_list.field_api_url
     - field.field.paragraph.event_list.field_event_list_description
     - field.field.paragraph.event_list.field_event_list_title
+    - field.field.paragraph.event_list.field_event_location
+    - field.field.paragraph.event_list.field_event_time
+    - field.field.paragraph.event_list.field_free_events
     - field.field.paragraph.event_list.field_load_more
+    - field.field.paragraph.event_list.field_remote_event_info_text
+    - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
-_core:
-  default_config_hash: nGj1yREuVhXjkThRtA0yqFSF9Z8E6auVFz2kUVTlQgk
+  module:
+    - text
 id: paragraph.event_list.default
 targetEntityType: paragraph
 bundle: event_list
@@ -18,7 +22,7 @@ content:
   field_event_list_description:
     type: text_default
     label: hidden
-    settings: { }
+    settings: {  }
     third_party_settings: {  }
     weight: 1
     region: content
@@ -29,6 +33,53 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_event_location:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_event_time:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_free_events:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_remote_event_info_text:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_remote_events:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 4
     region: content
 hidden:
   field_api_url: true
