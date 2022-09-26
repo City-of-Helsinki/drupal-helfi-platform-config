@@ -201,29 +201,29 @@ function helfi_platform_config_preprocess_breadcrumb(&$variables) {
  */
 function helfi_platform_config_page_attachments_alter(array &$attachments) {
   // Set custom content type metatag on all content pages.
-  if (!empty($attachments['#attached']['html_head'])) {
-    $entity = NULL;
-    $tag_name = 'helfi_content_type';
-    foreach (\Drupal::routeMatch()->getParameters() as $param) {
-      if ($param instanceof \Drupal\Core\Entity\EntityInterface) {
-        $entity = $param;
-        break;
-      }
-    }
+  if (empty($attachments['#attached']['html_head'])) {
+    return;
+  }
 
-    if (
-      $entity &&
-      $type = $entity->getType()
-    ) {
-      $helfi_content_type = [
-        '#tag' => 'meta',
-        '#attributes' => [
-          'name' => $tag_name,
-          'content' => $type,
-        ],
-      ];
-      $attachments['#attached']['html_head'][] = [$helfi_content_type, $tag_name];
+  $entities = array_filter(
+    iterator_to_array(\Drupal::routeMatch()->getParameters()),
+    function($param) {
+      return ($param instanceof \Drupal\Core\Entity\EntityInterface && method_exists($param, 'getType'));
     }
+  );
+
+  $entity = !empty($entities) ? reset($entities) : NULL;
+  if ($entity) {
+    $type = $entity->getType();
+    $tag_name = 'helfi_content_type';
+    $helfi_content_type = [
+      '#tag' => 'meta',
+      '#attributes' => [
+        'name' => $tag_name,
+        'content' => $type,
+      ],
+    ];
+    $attachments['#attached']['html_head'][] = [$helfi_content_type, $tag_name];
   }
 }
 
