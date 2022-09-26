@@ -25,12 +25,11 @@ function helfi_content_page_attachments_alter(array &$attachments) {
   if ($entity) {
     $tag_name = 'helfi_content_type';
 
-    $type = method_exists($entity, 'getType') ? $entity->getType() : $entity->getEntityTypeId();
     $helfi_content_type = [
       '#tag' => 'meta',
       '#attributes' => [
         'name' => $tag_name,
-        'content' => $type,
+        'content' => $entity->bundle(),
       ],
     ];
     $attachments['#attached']['html_head'][] = [$helfi_content_type, $tag_name];
