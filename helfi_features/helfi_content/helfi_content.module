@@ -17,18 +17,20 @@ function helfi_content_page_attachments_alter(array &$attachments) {
   $entities = array_filter(
     iterator_to_array(\Drupal::routeMatch()->getParameters()),
     function($param) {
-      return ($param instanceof \Drupal\Core\Entity\EntityInterface && method_exists($param, 'getType'));
+      return $param instanceof \Drupal\Core\Entity\EntityInterface;
     }
   );
 
   $entity = !empty($entities) ? reset($entities) : NULL;
   if ($entity) {
     $tag_name = 'helfi_content_type';
+
+    $type = method_exists($entity, 'getType') ? $entity->getType() : $entity->getEntityTypeId();
     $helfi_content_type = [
       '#tag' => 'meta',
       '#attributes' => [
         'name' => $tag_name,
-        'content' => $entity->getType(),
+        'content' => $type,
       ],
     ];
     $attachments['#attached']['html_head'][] = [$helfi_content_type, $tag_name];
