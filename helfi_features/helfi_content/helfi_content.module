@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function helfi_content_page_attachments_alter(array &$attachments) {
+  // Set custom content type metatag on all content pages.
+  if (empty($attachments['#attached']['html_head'])) {
+    return;
+  }
+
+  $entities = array_filter(
+    iterator_to_array(\Drupal::routeMatch()->getParameters()),
+    function($param) {
+      return ($param instanceof \Drupal\Core\Entity\EntityInterface && method_exists($param, 'getType'));
+    }
+  );
+
+  $entity = !empty($entities) ? reset($entities) : NULL;
+  if ($entity) {
+    $tag_name = 'helfi_content_type';
+    $helfi_content_type = [
+      '#tag' => 'meta',
+      '#attributes' => [
+        'name' => $tag_name,
+        'content' => $entity->getType(),
+      ],
+    ];
+    $attachments['#attached']['html_head'][] = [$helfi_content_type, $tag_name];
+  }
+}
