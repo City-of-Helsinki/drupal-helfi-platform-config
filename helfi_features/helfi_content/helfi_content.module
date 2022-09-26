@@ -15,7 +15,7 @@ function helfi_content_page_attachments_alter(array &$attachments) {
   }
 
   $entities = array_filter(
-    iterator_to_array(\Drupal::routeMatch()->getParameters()),
+    \Drupal::routeMatch()->getParameters()->all(),
     function($param) {
       return $param instanceof \Drupal\Core\Entity\EntityInterface;
     }
