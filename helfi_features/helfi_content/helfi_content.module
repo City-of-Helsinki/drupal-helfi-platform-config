@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Contains HELfi content alterations.
+ */
+
+/**
  * Implements hook_page_attachments_alter().
  */
 function helfi_content_page_attachments_alter(array &$attachments) {
