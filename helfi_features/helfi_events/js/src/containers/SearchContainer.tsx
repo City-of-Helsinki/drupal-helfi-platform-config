@@ -7,6 +7,7 @@ import useSWR from 'swr';
 import type FilterSettings from '../types/FilterSettings';
 import type Location from '../types/Location';
 
+
 type ResponseType = {
   data: Event[],
   meta: {
@@ -17,6 +18,7 @@ type ResponseType = {
 }
 
 const getEvents = async (url: string): Promise<ResponseType | null> => {
+
   const response = await fetch(url);
 
   if (response.status === 200) {
@@ -69,7 +71,6 @@ const SearchContainer = ({ filterSettings, queryBuilder }:{
       setLocationsLoaded(true);
     }
   },[data,locationsLoaded,currentLanguage])
-
   return (
     <div className='component--event-list'>
       <FormContainer filterSettings={filterSettings} queryBuilder={queryBuilder} onSubmit={submit} loading={loading} locationOptions={locationOptions} />
