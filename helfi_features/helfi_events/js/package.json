@@ -4,7 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "date-fns": "^2.16.1",
+    "date-fns": "^2.29.3",
     "eslint-config-react-app": "^7.0.1",
     "hds-design-tokens": "^2.1.1",
     "hds-react": "^2.1.1",

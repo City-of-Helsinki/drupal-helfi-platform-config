@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import FormContainer from './FormContainer';
 import ResultsContainer from './ResultsContainer';
 import type Event from '../types/Event';
+import { QueryBuilder } from '../utils/QueryBuilder';
 
 type ResponseType = {
   data: Event[],
@@ -12,7 +13,7 @@ type ResponseType = {
   }
 }
 
-const getEvents = async(url: string): Promise<ResponseType|null> => {
+export const getEvents = async(url: string): Promise<ResponseType|null> => {
   const response = await fetch(url);
 
   if (response.status === 200) {
@@ -26,16 +27,18 @@ const getEvents = async(url: string): Promise<ResponseType|null> => {
   throw new Error('Failed to get data from the API');
 }
 
-const SearchContainer = () => {
+type SearchContainerProps = {
+  queryBuilder: QueryBuilder
+}
+
+const SearchContainer = ({ queryBuilder }: SearchContainerProps) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [count, setCount] = useState<Number|null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [failed, setFailed] = useState<boolean>(false);
-  const { eventsUrl } = drupalSettings.helfi_events;
 
-  // Initialize data
-  useEffect(() => {
-    getEvents(eventsUrl).then(response => {
+  const fetchEvents = () => {
+    getEvents(queryBuilder.getUrl()).then(response => {
       if (response) {
         setCount(response.meta.count)
         setEvents(response.data);
@@ -43,11 +46,17 @@ const SearchContainer = () => {
     })
     .catch(e => setFailed(true))
     .finally(() => setLoading(false));
-  }, [eventsUrl]);
+  };
+
+  // Initialize events. Keep dependency array empty to make sure this hook is run only once.
+  useEffect(() => {
+    fetchEvents();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className='component--event-list'>
-      <FormContainer />
+      <FormContainer queryBuilder={queryBuilder} triggerQuery={fetchEvents} />
       <ResultsContainer count={count} failed={failed} loading={loading} events={events} />
     </div>
   )
