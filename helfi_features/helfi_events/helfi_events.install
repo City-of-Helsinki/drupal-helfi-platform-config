@@ -61,7 +61,6 @@ function helfi_events_update_9002() {
     'field.storage.paragraph.field_event_location' => 'field.field.paragraph.event_list.field_event_location',
     'field.storage.paragraph.field_event_time' => 'field.field.paragraph.event_list.field_event_time',
     'field.storage.paragraph.field_free_events' => 'field.field.paragraph.event_list.field_free_events',
-    'field.storage.paragraph.field_remote_event_info_text' => 'field.field.paragraph.event_list.field_remote_event_info_text',
     'field.storage.paragraph.field_remote_events' => 'field.field.paragraph.event_list.field_remote_events',
   ];
 

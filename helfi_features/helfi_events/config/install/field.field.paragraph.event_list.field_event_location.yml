@@ -15,7 +15,7 @@ field_name: field_event_location
 entity_type: paragraph
 bundle: event_list
 label: 'Event location'
-description: 'Show "event location" filter.'
+description: 'Show "event location" filter. Do not use at the same time with the "Remote events" filter.'
 required: false
 translatable: false
 default_value:
