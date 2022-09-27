@@ -911,3 +911,21 @@ function helfi_content_update_9035() {
     }
   }
 }
+
+
+/**
+ * Update translation for hero design
+ */
+function helfi_content_update_9036() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.storage.paragraph.field_hero_design',
+  ];
+
+  // Update translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
