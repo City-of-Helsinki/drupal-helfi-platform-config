@@ -1,0 +1,7 @@
+block.settings.chat_leijuke:
+  type: block_settings
+  label: 'Example configurable text block configuration'
+  mapping:
+    chat_title:
+      type: text
+      label: 'Chat title'
