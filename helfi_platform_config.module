@@ -203,6 +203,17 @@ function helfi_platform_config_system_breadcrumb_alter(
   $links = $breadcrumb->getLinks();
   array_unshift($links, Link::fromTextAndUrl($link['text'], Url::fromUri($link['url'])));
 
+  // Include front page in breadcrumb if it's the only item.
+  if (count($links) === 1 && Drupal::service('path.matcher')->isFrontPage()) {
+    $entities = array_filter($route_match->getParameters()->all(), function ($value) {
+      return $value instanceof EntityInterface;
+    });
+
+    if ($entity = reset($entities)) {
+      $links[] = Link::createFromRoute($entity->label(), '<none>');
+    }
+  }
+
   // We have to recreate entire breadcrumb trail here, because breadcrumb
   // class forbids setting links after they've been set once.
   // @see \Drupal\Core\Breadcrumb\Breadcrumb::setLinks().
