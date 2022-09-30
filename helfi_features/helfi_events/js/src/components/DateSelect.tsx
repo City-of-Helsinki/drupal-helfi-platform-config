@@ -31,13 +31,29 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
     queryBuilder.setParams({[key]: format(parsedDate, 'y-MM-dd')});
   };
 
+  const getTitle = () => {
+    if ((!startDate || startDate ==='') && (!endDate || endDate === '')) {
+      return Drupal.t('All dates');
+    }
+
+    if((startDate && startDate !== '') && (!endDate || endDate === '')) {
+      return startDate;
+    }
+
+    if((!startDate || startDate === '') && (endDate && endDate !== '')) {
+      return `- ${endDate}`;
+    }
+
+    return `${startDate} - ${endDate}`;
+  }
+
   return (
     <div className='hdbt-search__filter event-form__filter--date'>
       <Collapsible
         id='event-search__date-select'
         label={Drupal.t('Pick dates')}
         helper={Drupal.t('Pick a range between which events shoud take place')}
-        title='123'
+        title={getTitle()}
       >
         <div className='event-form__date-container'>
           <Checkbox
