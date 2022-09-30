@@ -19,7 +19,7 @@ export const getEvents = async(url: string): Promise<ResponseType|null> => {
   if (response.status === 200) {
     const result = await response.json();
 
-    if (result.meta && result.meta.count > 0) {
+    if (result.meta && result.meta.count >= 0) {
       return result;
     }
   }

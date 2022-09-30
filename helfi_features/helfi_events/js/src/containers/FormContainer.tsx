@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { parse, format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 
 import { getEvents } from './SearchContainer';
 import LocationFilter from '../components/LocationFilter';
 import type Location from '../types/Location';
-import { QueryBuilder } from '../utils/QueryBuilder'
-import Collapsible from '../components/Collapsible';
-import { Button, Checkbox, DateInput } from 'hds-react';
+import { QueryBuilder } from '../utils/QueryBuilder';
 import ApiKeys from '../enum/ApiKeys';
+import SubmitButton from '../components/SubmitButton';
+import DateSelect from '../components/DateSelect';
+import CheckboxFilter from '../components/CheckboxFilter';
 
 type FormContainerProps = {
   queryBuilder: QueryBuilder,
@@ -33,6 +33,8 @@ const FormContainer = ({ queryBuilder, triggerQuery }: FormContainerProps) => {
   const [endDisabled, disableEnd] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
+  const [freeFilter, setFreeFilter] = useState<boolean>(false);
+  const [remoteFilter, setRemoteFilter] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const { currentLanguage } = drupalSettings.path;
 
@@ -47,58 +49,66 @@ const FormContainer = ({ queryBuilder, triggerQuery }: FormContainerProps) => {
     .finally(() => setLoading(false));
   }, [currentLanguage, queryBuilder])
 
-  const changeDate = (value: string, date: 'start' | 'end') => {
-    const key = date === 'start' ? ApiKeys.START : ApiKeys.END;
-    date === 'start' ? setStartDate(value) : setEndDate(value);
+  const toggleFreeEvents = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event?.target?.checked;
 
-    if (!value || value === '') {
-      queryBuilder.resetParam(key);
+    if (!checked) {
+      setFreeFilter(false);
+      queryBuilder.resetParam(ApiKeys.FREE);
+
       return;
     }
-    
-    const parsedDate = parse(value, 'd.M.y', new Date());
 
-    queryBuilder.setParams({[key]: format(parsedDate, 'y-MM-dd')});
-  };
+    setFreeFilter(true);
+    queryBuilder.setParams({[ApiKeys.FREE]: 'true'})
+  }
+
+  const toggleRemoteEvents = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event?.target?.checked;
+
+    if (!checked) {
+      setRemoteFilter(false);
+      queryBuilder.resetParam(ApiKeys.REMOTE);
+
+      return;
+    }
+
+    setRemoteFilter(true);
+    queryBuilder.setParams({[ApiKeys.REMOTE]: 'true'})
+  }
 
   return (
     <div className='event-form-container'>
       <h3>{Drupal.t('Filter events')}</h3>
       <div className='event-form__filters-container'>
-        <div className='event-form__filter event-form__filter--location'>
+        <div className='event-form__filter-section-container'>
           <LocationFilter loading={loading} options={locationOptions} queryBuilder={queryBuilder} />
+          <DateSelect 
+            endDate={endDate}
+            endDisabled={endDisabled}
+            disableEnd={disableEnd}
+            queryBuilder={queryBuilder}
+            setEndDate={setEndDate}
+            setStartDate={setStartDate}
+            startDate={startDate}
+          />
         </div>
-        <div className='event-form__filter event-form__filter--date'>
-          <Collapsible
-            title='123'
-          >
-            <div className='event-form__date-container'>
-              <Checkbox
-                id='end-disabled'
-                label={Drupal.t('End date is the same as start date')}
-                checked={endDisabled}
-                onChange={() => disableEnd(!endDisabled)}
-              />
-              <DateInput
-                helperText='Use format D.M.YYYY'
-                id='start-date'
-                label='Choose a date'
-                lang={currentLanguage}
-                value={startDate}
-                onChange={(value) => changeDate(value, 'start')}
-              />
-              <DateInput
-                disabled={endDisabled}
-                helperText='Use format D.M.YYYY'
-                id='end-date'
-                label='Choose a date'
-                lang={currentLanguage}
-                value={endDisabled ? startDate : endDate}
-                onChange={(value) => changeDate(value, 'end')}
-              />
-            </div>
-          </Collapsible>
-          <Button onClick={() => triggerQuery()}>{Drupal.t('Search')}</Button>
+        <div className='event-form__filter-section-container'>
+          <CheckboxFilter
+            checked={freeFilter}
+            className='hdbt-search__filter'
+            id='free-toggle'
+            label={`${Drupal.t('Show only')} ${Drupal.t('Free events')}`}
+            onChange={toggleFreeEvents}
+          />
+          <CheckboxFilter
+            checked={remoteFilter}
+            className='hdbt-search__filter'
+            id='remote-toggle'
+            label={`${Drupal.t('Show only')} ${Drupal.t('Remote events')}`}
+            onChange={toggleRemoteEvents}
+          />
+          <SubmitButton triggerQuery={triggerQuery} />
         </div>
       </div>
     </div>
