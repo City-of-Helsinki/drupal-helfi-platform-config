@@ -54,9 +54,7 @@ export class QueryBuilder {
   }
 };
 
-const init = () => {
-  const { eventsUrl } = drupalSettings.helfi_events;
-
+const init = (eventsUrl: string) => {
   return new QueryBuilder(eventsUrl);
 }
 
