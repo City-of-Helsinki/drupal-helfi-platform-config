@@ -6,9 +6,11 @@ import QueryBuilder from './utils/QueryBuilder';
 
 const rootSelector: string = 'helfi-events-search';
 const rootElement: HTMLElement | null = document.getElementById(rootSelector);
-const queryBuilder = QueryBuilder();
+const eventsUrl = rootElement?.dataset?.eventsUrl;
 
-if (rootElement) {
+if (eventsUrl) {
+  const queryBuilder = QueryBuilder(eventsUrl);
+
   ReactDOM.render(
     <React.StrictMode>
       <SearchContainer queryBuilder={queryBuilder}/>

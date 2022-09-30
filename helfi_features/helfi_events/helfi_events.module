@@ -14,37 +14,9 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
     if (!$paragraph->get('field_api_url')->isEmpty()) {
       $intialUrl = $paragraph->get('field_api_url')->first()->getUrl()->toString();
       $params = $linkedEvents->parseParams($intialUrl);
-      $variables['#attached']['drupalSettings']['helfi_events']['eventsUrl'] = $linkedEvents->getEventsRequest($params);
-
-      // Render link for refiging serach in events service for use in frontend
-      $variables['#attached']['drupalSettings']['helfi_events']['refineSearchButton'] = twig_render_template(
-        drupal_get_path('theme', 'hdbt') . '/templates/navigation/link-button.html.twig',
-        [
-          'type' => 'secondary',
-          'label' => t('Refine search in tapahtumat.hel.fi'),
-          'class' => 'event-list__refine-button',
-          'url' => $intialUrl,
-          'theme_hook_original' => ''
-        ]
-      );
-    }
-
-    if ($loadMore = $paragraph->get('field_load_more')->value) {
-      $variables['#attached']['drupalSettings']['helfi_events']['loadMore'] = $loadMore;
+      $variables['events_url'] = $linkedEvents->getEventsRequest($params);
     }
   }
-
-  // Render link to events service for use in frontend
-  $variables['#attached']['drupalSettings']['helfi_events']['seeAllButton'] = twig_render_template(
-    drupal_get_path('theme', 'hdbt') . '/templates/navigation/link-button.html.twig',
-    [
-      'type' => 'primary',
-      'label' => t('See all events'),
-      'class' => 'event-list__see-all-button',
-      'url' => LinkedEvents::BASE_URL,
-      'theme_hook_original' => ''
-    ]
-  );
 
   //Render image placeholder for use in frontend
   $variables['#attached']['drupalSettings']['helfi_events']['imagePlaceholder'] = twig_render_template(
@@ -57,27 +29,4 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
 
   $variables['#attached']['library'][] = 'helfi_events/events_list';
   $variables['#attached']['drupalSettings']['helfi_events']['baseUrl'] = LinkedEvents::BASE_URL;
-  $variables['#attached']['drupalSettings']['helfi_events']['translations'] = _helfi_events_translations();
-}
-
-/**
- * Returns string translations for frontend
- *
- * @return array
- *   the translated strings
- */
-function _helfi_events_translations() : array {
-  return [
-    'at' => t('at', [], ['context' => 'Indication that events take place in a certain timeframe']),
-    'emptyList' => t('This event list is empty.'),
-    'emptyListSubText' => t('No worries though, this city does not run out of things to do.'),
-    'eventKeywords' => t('Event keywords'),
-    'eventsCount' => t('events'),
-    'externalLink' => t(
-      'Link leads to external service',
-      [],
-      ['context' => 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.']
-    ),
-    'loadMore' => t('Load more events'),
-  ];
 }
