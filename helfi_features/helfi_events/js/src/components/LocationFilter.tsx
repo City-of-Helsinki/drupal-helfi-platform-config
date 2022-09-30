@@ -16,16 +16,18 @@ const LocationFilter = ({ loading, options, queryBuilder }: LocationFilterProps)
   }
 
   return (
-    <Select
-      clearButtonAriaLabel={Drupal.t('Clear selection', {}, { context: 'News archive clear button aria label' })}
-      disabled={loading}
-      helper={Drupal.t('If you wish to see remote events only, select the option "Internet"')}
-      label={Drupal.t('Select a location')}
-      multiselect
-      onChange={onChange}
-      options={options}
-      selectedItemRemoveButtonAriaLabel={Drupal.t('Remove item', {}, { context: 'News archive remove item aria label' })}
-    />
+    <div className='hdbt-search__filter event-form__filter--location'>
+      <Select
+        clearButtonAriaLabel={Drupal.t('Clear selection', {}, { context: 'News archive clear button aria label' })}
+        disabled={loading}
+        helper={Drupal.t('If you wish to see remote events only, select the option "Internet"')}
+        label={Drupal.t('Select a location')}
+        multiselect
+        onChange={onChange}
+        options={options}
+        selectedItemRemoveButtonAriaLabel={Drupal.t('Remove item', {}, { context: 'News archive remove item aria label' })}
+      />
+    </div>
   );
 }
 
