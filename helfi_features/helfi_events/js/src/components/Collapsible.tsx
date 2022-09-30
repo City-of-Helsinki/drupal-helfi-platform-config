@@ -14,6 +14,15 @@ type Props = {
   title: string|React.ReactNode;
 }
 
+<<<<<<< HEAD
+=======
+// Match HDS styles for helper text
+const helperStyles = {
+  color:' var(--helper-color-default)',
+  marginTop: 'var(--spacing-3-xs)'
+};
+
+>>>>>>> fa3170f (UHF-6666: Move filter to own components)
 const Collapsible = ({active, ariaControls, helper, id, label, title, children, showHandle}: Props) => {
   const [isActive, setActive] = useState<boolean>(active||false);
   const ref = useRef<HTMLDivElement|null>(null);
@@ -49,7 +58,11 @@ const Collapsible = ({active, ariaControls, helper, id, label, title, children, 
         </div>
       }
       {helper &&
+<<<<<<< HEAD
         <div aria-hidden={true} className='collapsible__helper'>{helper}</div>
+=======
+        <div aria-hidden={true} style={helperStyles} className='collapsible__helper'>{helper}</div>
+>>>>>>> fa3170f (UHF-6666: Move filter to own components)
       }
     </div>
   );

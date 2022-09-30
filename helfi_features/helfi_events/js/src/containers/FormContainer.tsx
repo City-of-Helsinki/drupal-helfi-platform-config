@@ -10,6 +10,7 @@ import CheckboxFilter from '../components/CheckboxFilter';
 import type FilterSettings from '../types/FilterSettings';
 import HDS_DATE_FORMAT from '../utils/HDS_DATE_FORMAT';
 
+
 // TODO: Please use ISO standard date format for all date parsing in frontend AND backend.
 // Formatting to userland format should be done in the view from ISO stardard date string or reliably parsed date object 
 // https://www.iso.org/iso-8601-date-and-time-format.html
@@ -69,7 +70,6 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
       setStartDate(start);
       setErrors({ ...errors, invalidStartDate: false })
     }
-
   }
 
   const setEnd = (d: string) => {
@@ -139,6 +139,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
     if (!event?.target?.checked) {
       setRemoteFilter(false);
       queryBuilder.resetParam(ApiKeys.REMOTE);
+
       return;
     }
 
@@ -161,6 +162,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
   const remoteTranslation = Drupal.t('Remote events');
   const freeLabel = bothCheckboxes ? freeTranslation : `${showOnlyLabel} ${freeTranslation.toLowerCase()}`;
   const remoteLabel = bothCheckboxes ? remoteTranslation : `${showOnlyLabel} ${remoteTranslation.toLowerCase()}`;
+
 
   return (
     <form className='event-form-container' onSubmit={handleSubmit}>
