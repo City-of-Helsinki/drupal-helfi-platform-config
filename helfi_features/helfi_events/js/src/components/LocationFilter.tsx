@@ -25,6 +25,7 @@ const LocationFilter = ({ loading, options, queryBuilder }: LocationFilterProps)
         multiselect
         onChange={onChange}
         options={options}
+        placeholder={Drupal.t('All locations')}
         selectedItemRemoveButtonAriaLabel={Drupal.t('Remove item', {}, { context: 'News archive remove item aria label' })}
       />
     </div>
