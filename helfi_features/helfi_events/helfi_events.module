@@ -16,6 +16,19 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
       $params = $linkedEvents->parseParams($intialUrl);
       $variables['events_url'] = $linkedEvents->getEventsRequest($params);
     }
+
+    $booleanFields = [
+      'field_event_location',
+      'field_event_time',
+      'field_free_events',
+      'field_remote_events'
+    ];
+
+    foreach ($booleanFields as $field) {
+      if(!$paragraph->get($field)->isEmpty()) {
+        $variables[$field] = (boolean) $paragraph->get($field);
+      }
+    }
   }
 
   //Render image placeholder for use in frontend
