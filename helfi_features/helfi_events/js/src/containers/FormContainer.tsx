@@ -61,6 +61,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
         setErrors({ ...errors, invalidStartDate: false })
       } else {
         setErrors({ ...errors, invalidStartDate: true })
+
       }
     } else {
       if (isOutOfRange({ startDate: start, endDate })) {

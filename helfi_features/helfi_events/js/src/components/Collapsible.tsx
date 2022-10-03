@@ -17,8 +17,6 @@ type Props = {
 const Collapsible = ({active, ariaControls, helper, id, label, title, children, showHandle}: Props) => {
   const [isActive, setActive] = useState<boolean>(active||false);
   const ref = useRef<HTMLDivElement|null>(null);
-  const controlRef = useRef<HTMLButtonElement|null>(null);
-  const labelRef = useRef<HTMLLabelElement|null>(null);
 
   const getHandle = () => {
     if(showHandle !== false) {
@@ -28,36 +26,25 @@ const Collapsible = ({active, ariaControls, helper, id, label, title, children, 
     }
   }
 
-  const getChildrenStyle = () => {
-    let topMargin = 0;
-
-    if (controlRef && controlRef.current) {
-      console.log(controlRef.current);
-    }
-
-    return {marginTop: topMargin + 'px'}
-  }
-
   useOutsideClick(ref, () => {
     setActive(false);
   });
 
   return (
     <div className='collapsible-wrapper' ref={ref}>
-      <label className='collapsible__label' htmlFor={id} ref={labelRef}>{label}</label>
+      <label className='collapsible__label' htmlFor={id}>{label}</label>
       <button
         id={id}
         className='collapsible__element collapsible__control'
         aria-controls={ariaControls}
         aria-expanded={isActive}
         onClick={() => setActive(!isActive)}
-        ref={controlRef}
       >
         <span className='collapsible__title'>{ title }</span>
         {getHandle()}
       </button>
       {isActive &&
-        <div style={getChildrenStyle()} className='collapsible__element collapsible__children'>
+        <div className='collapsible__element collapsible__children'>
           {children}
         </div>
       }
