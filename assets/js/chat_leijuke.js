@@ -199,7 +199,7 @@
   class KuuraAdapter {
 
     constructor() {
-      this.requiredCookies = ['chat', 'statistics'];
+      this.requiredCookies = ['chat'];
       this.bot = false;
       this.persist = false;
     }
