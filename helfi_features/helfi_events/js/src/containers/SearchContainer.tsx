@@ -3,6 +3,7 @@ import FormContainer from './FormContainer';
 import ResultsContainer from './ResultsContainer';
 import type Event from '../types/Event';
 import { QueryBuilder } from '../utils/QueryBuilder';
+import type FilterSettings from '../types/FilterSettings';
 
 type ResponseType = {
   data: Event[],
@@ -28,10 +29,11 @@ export const getEvents = async(url: string): Promise<ResponseType|null> => {
 }
 
 type SearchContainerProps = {
+  filterSettings: FilterSettings,
   queryBuilder: QueryBuilder
 }
 
-const SearchContainer = ({ queryBuilder }: SearchContainerProps) => {
+const SearchContainer = ({ filterSettings, queryBuilder }: SearchContainerProps) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [count, setCount] = useState<Number|null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,7 +58,7 @@ const SearchContainer = ({ queryBuilder }: SearchContainerProps) => {
 
   return (
     <div className='component--event-list'>
-      <FormContainer queryBuilder={queryBuilder} triggerQuery={fetchEvents} />
+      <FormContainer filterSettings={filterSettings} queryBuilder={queryBuilder} triggerQuery={fetchEvents} />
       <ResultsContainer count={count} failed={failed} loading={loading} events={events} />
     </div>
   )
