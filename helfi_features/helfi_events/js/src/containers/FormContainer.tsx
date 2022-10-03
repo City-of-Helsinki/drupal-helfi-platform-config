@@ -8,8 +8,10 @@ import ApiKeys from '../enum/ApiKeys';
 import SubmitButton from '../components/SubmitButton';
 import DateSelect from '../components/DateSelect';
 import CheckboxFilter from '../components/CheckboxFilter';
+import type FilterSettings from '../types/FilterSettings';
 
 type FormContainerProps = {
+  filterSettings: FilterSettings,
   queryBuilder: QueryBuilder,
   triggerQuery: Function
 };
@@ -28,7 +30,7 @@ const transformLocations = (data: any, currentLanguage: string): Location[] => {
   return locations;
 }
 
-const FormContainer = ({ queryBuilder, triggerQuery }: FormContainerProps) => {
+const FormContainer = ({ filterSettings, queryBuilder, triggerQuery }: FormContainerProps) => {
   const [locationOptions, setLocationOptions] = useState<Location[]>([]);
   const [endDisabled, disableEnd] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<string>();
@@ -76,37 +78,60 @@ const FormContainer = ({ queryBuilder, triggerQuery }: FormContainerProps) => {
     queryBuilder.setParams({[ApiKeys.REMOTE]: 'true'})
   }
 
+  const bothCheckboxes = filterSettings.showFreeFilter && filterSettings.showRemoteFilter;
+  const showOnlyLabel = Drupal.t('Show only');
+  const freeTranslation = Drupal.t('Free events');
+  const remoteTranslation = Drupal.t('Remote events');
+  const freeLabel = bothCheckboxes ? freeTranslation : `${showOnlyLabel} ${freeTranslation.toLowerCase()}`;
+  const remoteLabel = bothCheckboxes ? remoteTranslation : `${showOnlyLabel} ${remoteTranslation.toLowerCase()}`;
+
   return (
     <div className='event-form-container'>
       <h3>{Drupal.t('Filter events')}</h3>
       <div className='event-form__filters-container'>
         <div className='event-form__filter-section-container'>
-          <LocationFilter loading={loading} options={locationOptions} queryBuilder={queryBuilder} />
-          <DateSelect 
-            endDate={endDate}
-            endDisabled={endDisabled}
-            disableEnd={disableEnd}
-            queryBuilder={queryBuilder}
-            setEndDate={setEndDate}
-            setStartDate={setStartDate}
-            startDate={startDate}
-          />
+          {
+            filterSettings.showLocation &&
+            <LocationFilter loading={loading} options={locationOptions} queryBuilder={queryBuilder} />
+          }
+          {
+            filterSettings.showTimeFilter &&
+            <DateSelect 
+              endDate={endDate}
+              endDisabled={endDisabled}
+              disableEnd={disableEnd}
+              queryBuilder={queryBuilder}
+              setEndDate={setEndDate}
+              setStartDate={setStartDate}
+              startDate={startDate}
+            />
+          }
         </div>
+        {
+          bothCheckboxes &&
+          <div className='event-form__checkboxes-label'>{Drupal.t('Show only')}</div>
+        }
         <div className='event-form__filter-section-container'>
-          <CheckboxFilter
-            checked={freeFilter}
-            id='free-toggle'
-            label={`${Drupal.t('Show only')} ${Drupal.t('Free events')}`}
-            onChange={toggleFreeEvents}
-          />
-          <CheckboxFilter
-            checked={remoteFilter}
-            id='remote-toggle'
-            label={`${Drupal.t('Show only')} ${Drupal.t('Remote events')}`}
-            onChange={toggleRemoteEvents}
-          />
-          <SubmitButton triggerQuery={triggerQuery} />
+          {
+            filterSettings.showFreeFilter &&
+            <CheckboxFilter
+              checked={freeFilter}
+              id='free-toggle'
+              label={freeLabel}
+              onChange={toggleFreeEvents}
+            />
+          }
+          {
+            filterSettings.showRemoteFilter &&
+            <CheckboxFilter
+              checked={remoteFilter}
+              id='remote-toggle'
+              label={remoteLabel}
+              onChange={toggleRemoteEvents}
+            />
+          }
         </div>
+        <SubmitButton triggerQuery={triggerQuery} />
       </div>
     </div>
   )
