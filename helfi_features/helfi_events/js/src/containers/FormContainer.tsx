@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { parse, format } from 'date-fns';
 
 import { getEvents } from './SearchContainer';
 import LocationFilter from '../components/LocationFilter';
@@ -49,6 +50,34 @@ const FormContainer = ({ filterSettings, queryBuilder, triggerQuery }: FormConta
     })
     .finally(() => setLoading(false));
   }, [currentLanguage, queryBuilder])
+
+  useEffect(() => {
+    const setDate = (key: string, value: string|undefined) => {
+      if (!value || value === '') {
+        queryBuilder.resetParam(key);
+        return;
+      }
+  
+      let parsedDate = null;
+      try {
+        parsedDate = parse(value, 'd.M.y', new Date());
+      }
+      catch (e) {
+      }
+  
+      if (parsedDate) {
+        queryBuilder.setParams({[key]: format(parsedDate, 'y-MM-dd')});
+      }
+    }
+
+    setDate(ApiKeys.START, startDate);
+    if (endDisabled) {
+      setDate(ApiKeys.END, startDate);
+    }
+    if (!endDisabled) {
+      setDate(ApiKeys.END, endDate);
+    }
+  }, [startDate, endDate, endDisabled, queryBuilder])
 
   const toggleFreeEvents = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event?.target?.checked;
