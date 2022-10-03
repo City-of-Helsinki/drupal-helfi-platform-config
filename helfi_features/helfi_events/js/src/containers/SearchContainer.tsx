@@ -42,8 +42,7 @@ const SearchContainer = () => {
       }
     })
     .catch(e => setFailed(true))
-    .finally(() => setLoading(false))
-    ;
+    .finally(() => setLoading(false));
   }, [eventsUrl]);
 
   return (
