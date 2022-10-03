@@ -29,6 +29,7 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
         $variables[$field] = (boolean) $paragraph->get($field)->first()->getValue()['value'];
       }
 
+
     }
   }
 
