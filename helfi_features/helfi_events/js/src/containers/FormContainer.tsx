@@ -40,7 +40,6 @@ const FormContainer = ({ queryBuilder, triggerQuery }: FormContainerProps) => {
 
   // Initiate locations
   useEffect(() => {
-    console.log('get all events')
     getEvents(queryBuilder.allEventsQuery()).then(response => {
       if (response && response.data && response.data.length) {
         setLocationOptions(transformLocations(response.data, currentLanguage));
@@ -96,14 +95,12 @@ const FormContainer = ({ queryBuilder, triggerQuery }: FormContainerProps) => {
         <div className='event-form__filter-section-container'>
           <CheckboxFilter
             checked={freeFilter}
-            className='hdbt-search__filter'
             id='free-toggle'
             label={`${Drupal.t('Show only')} ${Drupal.t('Free events')}`}
             onChange={toggleFreeEvents}
           />
           <CheckboxFilter
             checked={remoteFilter}
-            className='hdbt-search__filter'
             id='remote-toggle'
             label={`${Drupal.t('Show only')} ${Drupal.t('Remote events')}`}
             onChange={toggleRemoteEvents}
