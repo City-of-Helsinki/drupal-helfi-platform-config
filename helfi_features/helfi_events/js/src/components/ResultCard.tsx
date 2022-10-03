@@ -1,4 +1,3 @@
-import { getDate } from 'date-fns';
 import type { Event, EventImage } from '../types/Event';
 import type { EventKeyword } from '../types/Event';
 
