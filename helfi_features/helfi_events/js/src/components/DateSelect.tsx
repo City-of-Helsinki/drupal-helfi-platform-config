@@ -1,8 +1,6 @@
 import Collapsible from '../components/Collapsible';
 import { DateInput } from 'hds-react';
-import { parse, format } from 'date-fns';
 import { QueryBuilder } from '../utils/QueryBuilder'
-import ApiKeys from '../enum/ApiKeys';
 import CheckboxFilter from '../components/CheckboxFilter';
 
 type DateSelectProps = {
@@ -19,17 +17,7 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
   const { currentLanguage } = drupalSettings.path;
 
   const changeDate = (value: string, date: 'start' | 'end') => {
-    const key = date === 'start' ? ApiKeys.START : ApiKeys.END;
     date === 'start' ? setStartDate(value) : setEndDate(value);
-
-    if (!value || value === '') {
-      queryBuilder.resetParam(key);
-      return;
-    }
-    
-    const parsedDate = parse(value, 'd.M.y', new Date());
-
-    queryBuilder.setParams({[key]: format(parsedDate, 'y-MM-dd')});
   };
 
   const getTitle = () => {
