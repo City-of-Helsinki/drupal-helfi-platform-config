@@ -1,0 +1,28 @@
+
+# Ignore build folders
+build/
+dist/
+
+# Ignore IDE folders
+.idea/*
+.vscode/*
+
+# Ignore OSX generated files
+.DS_Store
+._*
+
+!*.gitkeep
+!*.keepme
+
+# Ignore .env
+.env
+
+# Ignore node_modules
+node_modules
+
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+coverage
