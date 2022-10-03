@@ -1,8 +1,9 @@
 import Collapsible from '../components/Collapsible';
-import { Checkbox, DateInput } from 'hds-react';
+import { DateInput } from 'hds-react';
 import { parse, format } from 'date-fns';
 import { QueryBuilder } from '../utils/QueryBuilder'
 import ApiKeys from '../enum/ApiKeys';
+import CheckboxFilter from '../components/CheckboxFilter';
 
 type DateSelectProps = {
   endDate: string|undefined;
@@ -56,13 +57,14 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
         title={getTitle()}
       >
         <div className='event-form__date-container'>
-          <Checkbox
+          <CheckboxFilter
+            checked={endDisabled}
             id='end-disabled'
             label={Drupal.t('End date is the same as start date')}
-            checked={endDisabled}
             onChange={() => disableEnd(!endDisabled)}
           />
           <DateInput
+            className='hdbt-search__filter hdbt-search__date-input'
             helperText='Use format D.M.YYYY'
             id='start-date'
             label='Choose a date'
@@ -71,6 +73,7 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
             onChange={(value: string) => changeDate(value, 'start')}
           />
           <DateInput
+            className='hdbt-search__filter hdbt-search__date-input'
             disabled={endDisabled}
             helperText='Use format D.M.YYYY'
             id='end-date'
