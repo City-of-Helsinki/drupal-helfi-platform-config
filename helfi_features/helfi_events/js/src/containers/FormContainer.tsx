@@ -164,7 +164,6 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
   const freeLabel = bothCheckboxes ? freeTranslation : `${showOnlyLabel} ${freeTranslation.toLowerCase()}`;
   const remoteLabel = bothCheckboxes ? remoteTranslation : `${showOnlyLabel} ${remoteTranslation.toLowerCase()}`;
 
-
   return (
     <form className='event-form-container' onSubmit={handleSubmit}>
       <h3>{Drupal.t('Filter events')}</h3>
@@ -187,6 +186,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
               setStartDate={setStart}
               startDate={startDate}
               // outOfRangeError={errors.outOfRange}
+
             />
           }
         </div>

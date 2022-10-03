@@ -29,7 +29,6 @@ const start = () => {
     showRemoteFilter: rootElement?.dataset?.showRemoteEventsFilter === '1'
   };
 
-
   ReactDOM.render(
     <React.StrictMode>
       <SearchContainer queryBuilder={queryBuilder} filterSettings={filterSettings} />

@@ -53,6 +53,7 @@ const SWR_REFRESH_OPTIONS = {
   refreshInterval: 6000000, //10 minutes,in millis
 };
 
+
 const SearchContainer = ({ filterSettings, queryBuilder }:{
   filterSettings: FilterSettings,
   queryBuilder: QueryBuilder
