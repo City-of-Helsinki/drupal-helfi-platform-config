@@ -1,4 +1,4 @@
-export type MultilingualString = {
+type MultilingualString = {
   fi?: string,
   en?: string,
   sv?: string
