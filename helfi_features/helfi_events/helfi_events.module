@@ -10,7 +10,7 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
   if(isset($variables['paragraph'])) {
     $paragraph = $variables['paragraph'];
     $linkedEvents = Drupal::service('helfi_events_linked_events');
-    
+
     if (!$paragraph->get('field_api_url')->isEmpty()) {
       $intialUrl = $paragraph->get('field_api_url')->first()->getUrl()->toString();
       $params = $linkedEvents->parseParams($intialUrl);
@@ -54,7 +54,7 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
       'theme_hook_original' => ''
     ]
   );
-  
+
   $variables['#attached']['library'][] = 'helfi_events/events_list';
   $variables['#attached']['drupalSettings']['helfi_events']['baseUrl'] = LinkedEvents::BASE_URL;
   $variables['#attached']['drupalSettings']['helfi_events']['translations'] = _helfi_events_translations();
@@ -62,7 +62,7 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
 
 /**
  * Returns string translations for frontend
- * 
+ *
  * @return array
  *   the translated strings
  */

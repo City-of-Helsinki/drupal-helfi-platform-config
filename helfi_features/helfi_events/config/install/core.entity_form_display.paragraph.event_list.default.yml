@@ -1,4 +1,3 @@
-uuid: e478d84e-0e63-4c35-ba22-4db0f1f2fe54
 langcode: en
 status: true
 dependencies:
@@ -6,12 +5,15 @@ dependencies:
     - field.field.paragraph.event_list.field_api_url
     - field.field.paragraph.event_list.field_event_list_description
     - field.field.paragraph.event_list.field_event_list_title
+    - field.field.paragraph.event_list.field_event_location
+    - field.field.paragraph.event_list.field_event_time
+    - field.field.paragraph.event_list.field_free_events
     - field.field.paragraph.event_list.field_load_more
+    - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
   module:
     - link
-_core:
-  default_config_hash: fi3ARI4tFWq7YIeTEOsXVXkhwXFDyPL0QrPZJOmfRf4
+    - text
 id: paragraph.event_list.default
 targetEntityType: paragraph
 bundle: event_list
@@ -41,9 +43,37 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_event_location:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_event_time:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_free_events:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_load_more:
     type: boolean_checkbox
     weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_remote_events:
+    type: boolean_checkbox
+    weight: 6
     region: content
     settings:
       display_label: true
