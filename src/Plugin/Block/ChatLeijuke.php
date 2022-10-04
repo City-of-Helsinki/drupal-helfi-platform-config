@@ -65,6 +65,7 @@ class ChatLeijuke extends BlockBase {
     $build = [];
     $chatLibrary = [];
     $modulePath = \Drupal::service('extension.list.module')->getPath('helfi_platform_config');
+    $assetPath = \Drupal::config('helfi_proxy.settings')->get('asset_path');
 
     $librariesYml = Yaml::parseFile($modulePath . '/helfi_platform_config.libraries.yml');
 
@@ -104,7 +105,7 @@ class ChatLeijuke extends BlockBase {
               $config['chat_selection'] => [
                 'name' => $config['chat_selection'],
                 'libraries' => $chatLibrary,
-                'modulepath' => $modulePath,
+                'modulepath' => $assetPath . '/' . $modulePath,
                 'title' => $config['chat_title'] ? Xss::filter($config['chat_title']) : 'Chat',
               ],
             ],
