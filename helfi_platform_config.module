@@ -6,10 +6,13 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
 
@@ -29,10 +32,10 @@ use Drupal\Core\Render\BubbleableMetadata;
  */
 function helfi_platform_config_enable_paragraph_fields(string $entityType, string $bundle, array $fields, string $paragraphType) : void {
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
-  $entityFieldManager = \Drupal::service('entity_field.manager');
+  $entityFieldManager = Drupal::service('entity_field.manager');
 
   if (!$definitions = $entityFieldManager->getFieldDefinitions($entityType, $bundle)) {
-    throw new \InvalidArgumentException(
+    throw new InvalidArgumentException(
       sprintf('Failed to load field definition for %s, %s', $entityType, $bundle)
     );
   }
@@ -42,7 +45,7 @@ function helfi_platform_config_enable_paragraph_fields(string $entityType, strin
 
   foreach ($definitions as $field) {
     if (!str_contains($field->getSetting('handler'), 'paragraph')) {
-      throw new \InvalidArgumentException(
+      throw new InvalidArgumentException(
         sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
       );
     }
@@ -67,7 +70,7 @@ function helfi_platform_config_node_view_alter(array &$build, EntityInterface $e
   // Replace node title on nodes with the visible title field.
   // @todo Needs work on caches, wrong title is displayed if user visits content listing.
   if ($entity->hasField('field_unit_visible_title')) {
-    $entity->set('title', \Drupal::token()->replace((string) $entity->get('field_unit_visible_title')->value));
+    $entity->set('title', Drupal::token()->replace((string) $entity->get('field_unit_visible_title')->value));
   }
 }
 
@@ -76,7 +79,7 @@ function helfi_platform_config_node_view_alter(array &$build, EntityInterface $e
  */
 function helfi_platform_config_module_implements_alter(&$implementations, $hook) {
   if ($hook == 'modules_installed') {
-    $moduleHandler = \Drupal::service('module_handler');
+    $moduleHandler = Drupal::service('module_handler');
     if ($moduleHandler->moduleExists('locale')) {
       unset($implementations['locale']);
     }
@@ -87,7 +90,7 @@ function helfi_platform_config_module_implements_alter(&$implementations, $hook)
  * Implements hook_modules_installed().
  */
 function helfi_platform_config_modules_installed() {
-  $moduleHandler = \Drupal::service('module_handler');
+  $moduleHandler = Drupal::service('module_handler');
   if ($moduleHandler->moduleExists('locale')) {
     locale_system_set_config_langcodes();
   }
@@ -165,35 +168,62 @@ function helfi_platform_config_tokens(
 }
 
 /**
- * Implements hook__preprocess_HOOK().
+ * Implements hook_system_breadcrumb_alter().
  */
-function helfi_platform_config_preprocess_breadcrumb(&$variables) {
-  $config = \Drupal::config('helfi_base_config.breadcrumb');
-  if ($config && !$config->get('breadcrumb_base_links')) {
+function helfi_platform_config_system_breadcrumb_alter(
+  Breadcrumb &$breadcrumb,
+  RouteMatchInterface $route_match,
+  array $context
+) {
+  // Skip admin routes.
+  if ($route_match->getRouteObject()?->getOption('_admin_route')) {
     return;
   }
+  // @todo Replace this with Etusivu instance once it's live.
+  $list = [
+    'en' => [
+      'text' => 'Frontpage',
+      'url' => 'https://www.hel.fi/helsinki/en',
+    ],
+    'fi' => [
+      'text' => 'Etusivu',
+      'url' => 'https://www.hel.fi/helsinki/fi',
+    ],
+    'sv' => [
+      'text' => 'Framsida',
+      'url' => 'https://www.hel.fi/helsinki/sv',
+    ],
+  ];
+  $currentLanguage = Drupal::languageManager()
+    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+    ->getId();
 
-  foreach (array_reverse($config->get('breadcrumb_base_links')) as $crumb) {
-    if (empty($crumb['text']) || !filter_var($crumb['url'], FILTER_VALIDATE_URL)) {
-      continue;
+  $link = $list[$currentLanguage] ?? $list['en'];
+
+  $links = $breadcrumb->getLinks();
+  array_unshift($links, Link::fromTextAndUrl($link['text'], Url::fromUri($link['url'])));
+
+  // Include front page in breadcrumb if it's the only item.
+  if (count($links) === 1 && Drupal::service('path.matcher')->isFrontPage()) {
+    $entities = array_filter($route_match->getParameters()->all(), function ($value) {
+      return $value instanceof EntityInterface;
+    });
+
+    if ($entity = reset($entities)) {
+      $links[] = Link::createFromRoute($entity->label(), '<none>');
     }
-    array_unshift(
-      $variables['links'],
-      Link::fromTextAndUrl(
-        $crumb['text'],
-        UrlHelper::isExternal($crumb['url'])
-          ? Url::fromUri($crumb['url'])
-          : Url::fromUserInput($crumb['url'])
-      )
-    );
-    array_unshift(
-      $variables['breadcrumb'],
-      [
-        'text' => $crumb['text'],
-        'url' => $crumb['url'],
-      ]
-    );
   }
+
+  // We have to recreate entire breadcrumb trail here, because breadcrumb
+  // class forbids setting links after they've been set once.
+  // @see \Drupal\Core\Breadcrumb\Breadcrumb::setLinks().
+  $newBreadcrumb = new Breadcrumb();
+  $newBreadcrumb->setLinks($links);
+  // Merge cacheable metadata.
+  $newBreadcrumb->addCacheTags($breadcrumb->getCacheTags())
+    ->addCacheContexts($breadcrumb->getCacheContexts());
+
+  $breadcrumb = $newBreadcrumb;
 }
 
 /**

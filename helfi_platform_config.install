@@ -259,3 +259,30 @@ function helfi_platform_config_update_9010() {
     ]);
   }
 }
+
+/**
+ * Remove unused base config breadcrumb config.
+ */
+function helfi_platform_config_update_9011() : void {
+  $config = Drupal::configFactory()->getEditable('helfi_base_config.breadcrumb');
+
+  if (!$config) {
+    return;
+  }
+  $config->delete();
+}
+
+/**
+ * Ignore system.site:page.front configuration.
+ */
+function helfi_platform_config_update_9012() : void {
+  if (!Drupal::moduleHandler()->moduleExists('config_ignore')) {
+    return;
+  }
+  $config = Drupal::configFactory()->getEditable('config_ignore.settings');
+  $ignored = $config->get('ignored_config_entities') ?? [];
+
+  $ignored[] = 'system.site:page.front';
+  $config->set('ignored_config_entities', $ignored)
+    ->save();
+}
