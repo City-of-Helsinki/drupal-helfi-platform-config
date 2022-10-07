@@ -1,15 +1,26 @@
+import type FilterSettings from './types/FilterSettings';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SearchContainer from './containers/SearchContainer';
-
-import type FilterSettings from './types/FilterSettings';
 import QueryBuilder from './utils/QueryBuilder';
 
-const rootSelector: string = 'helfi-events-search';
-const rootElement: HTMLElement | null = document.getElementById(rootSelector);
-const eventsUrl = rootElement?.dataset?.eventsUrl;
+const ROOT_ID = 'helfi-events-search';
 
-if (eventsUrl) {
+const start = () => {
+  const rootElement: HTMLElement | null = document.getElementById(ROOT_ID);
+  const eventsUrl = rootElement?.dataset?.eventsUrl;
+  
+  
+  if(!rootElement) {
+    console.warn('Root id missing for Events filter',{ROOT_ID})
+    return
+  }
+
+  if(!eventsUrl) {
+    console.warn('Events API url missing for Events filter.')
+    return
+  }
+
   const queryBuilder = QueryBuilder(eventsUrl);
   const filterSettings: FilterSettings = {
     showLocation: rootElement?.dataset?.showLocationFilter === '1',
@@ -25,3 +36,5 @@ if (eventsUrl) {
     rootElement
   );
 }
+
+document.addEventListener('DOMContentLoaded',start);

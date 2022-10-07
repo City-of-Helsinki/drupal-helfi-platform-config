@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { parse, format } from 'date-fns';
-
-import { getEvents } from './SearchContainer';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
 import LocationFilter from '../components/LocationFilter';
 import type Location from '../types/Location';
 import { QueryBuilder } from '../utils/QueryBuilder';
@@ -10,73 +8,118 @@ import SubmitButton from '../components/SubmitButton';
 import DateSelect from '../components/DateSelect';
 import CheckboxFilter from '../components/CheckboxFilter';
 import type FilterSettings from '../types/FilterSettings';
+import HDS_DATE_FORMAT from '../utils/HDS_DATE_FORMAT';
 
-type FormContainerProps = {
-  filterSettings: FilterSettings,
-  queryBuilder: QueryBuilder,
-  triggerQuery: Function
-};
+// TODO: Please use ISO standard date format for all date parsing in frontend AND backend.
+// Formatting to userland format should be done in the view from ISO stardard date string or reliably parsed date object 
+// https://www.iso.org/iso-8601-date-and-time-format.html
 
-const transformLocations = (data: any, currentLanguage: string): Location[] => {
-  const usedIds: string[] = [];
-  const locations = data.reduce((prev: any, current: any) => {
-    if (current.location && current.location.id && !(usedIds.indexOf(current.location.id) >= 0) && current.location.name && current.location.name[currentLanguage]) {
-      usedIds.push(current.location.id);
-      return [...prev, {value: current.location.id, label: current.location.name[currentLanguage]}]
-    }
+// This somewhat handles date parsing and validation in custom UI format but is subject to parse errors.
+const getDateTimeFromHDSFormat = (d: string): DateTime => DateTime.fromFormat(d, HDS_DATE_FORMAT, { locale: 'fi' });
 
-    return prev;
-  }, [])
+// End date must be after start date. But only if both are defined.
+const isOutOfRange = ({ endDate, startDate }: { endDate: DateTime | undefined, startDate: DateTime | undefined }): boolean => !!(startDate && endDate && startDate.startOf("day") >= endDate.startOf("day"))
 
-  return locations;
+// Date must be in within the next 1000 years or so....
+// This also validates that the string is not too long even though it might be valid.
+const INVALID_DATE = (dt: DateTime | undefined): boolean => {
+  if (!dt) { return false }
+  return (!dt.isValid || dt.year > 9999)
 }
 
-const FormContainer = ({ filterSettings, queryBuilder, triggerQuery }: FormContainerProps) => {
-  const [locationOptions, setLocationOptions] = useState<Location[]>([]);
+type FormErrors = {
+  invalidEndDate: boolean,
+  invalidStartDate: boolean,
+  // outOfRange: boolean
+}
+
+const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locationOptions }: {
+  filterSettings: FilterSettings,
+  queryBuilder: QueryBuilder,
+  onSubmit: Function,
+  loading: boolean,
+  locationOptions: Location[],
+}) => {
   const [endDisabled, disableEnd] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStartDate] = useState<DateTime>();
+  const [endDate, setEndDate] = useState<DateTime>();
   const [freeFilter, setFreeFilter] = useState<boolean>(false);
   const [remoteFilter, setRemoteFilter] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const { currentLanguage } = drupalSettings.path;
+  const [errors, setErrors] = useState<FormErrors>({
+    invalidEndDate: false,
+    invalidStartDate: false,
+    // outOfRange: false
+  })
 
-  // Initiate locations
-  useEffect(() => {
-    getEvents(queryBuilder.allEventsQuery()).then(response => {
-      if (response && response.data && response.data.length) {
-        setLocationOptions(transformLocations(response.data, currentLanguage));
+  const setStart = (d: string) => {
+    const start = getDateTimeFromHDSFormat(d);
+    if (INVALID_DATE(start)) {
+      console.warn('invalid start date', { start, endDate })
+      if (d.length === 0) {
+        setStartDate(undefined);
+        setErrors({ ...errors, invalidStartDate: false })
+      } else {
+        setErrors({ ...errors, invalidStartDate: true })
       }
-    })
-    .finally(() => setLoading(false));
-  }, [currentLanguage, queryBuilder])
+    } else {
+      if (isOutOfRange({ startDate: start, endDate })) {
+        console.warn('selected start date is out of range with end date, setting end date to next day after start date')
+        setEndDate(start?.plus({ 'days': 1 }))
+      }
+      setStartDate(start);
+      setErrors({ ...errors, invalidStartDate: false })
+    }
+
+  }
+
+  const setEnd = (d: string) => {
+
+    const end = getDateTimeFromHDSFormat(d);
+    if (INVALID_DATE(end)) {
+      console.warn('invalid end date', { end, d })
+      if (d.length === 0) {
+        setErrors({ ...errors, invalidEndDate: false })
+        setEndDate(undefined);
+      } else {
+        setErrors({ ...errors, invalidEndDate: true })
+      }
+    } else {
+
+      if (isOutOfRange({ startDate, endDate: end })) {
+        console.warn('selected end date is out of range, setting end date to next day after start date')
+        setEndDate(startDate?.plus({ 'days': 1 }))
+      } else {
+        setEndDate(end);
+      }
+      setErrors({ ...errors, invalidEndDate: false })
+    }
+
+  }
 
   useEffect(() => {
-    const setDate = (key: string, value: string|undefined) => {
-      if (!value || value === '') {
+    const setDate = (key: string, date: DateTime | undefined) => {
+      if (!date || !date.isValid) {
         queryBuilder.resetParam(key);
         return;
       }
-  
-      let parsedDate = null;
-      try {
-        parsedDate = parse(value, 'd.M.y', new Date());
-      }
-      catch (e) {
-      }
-  
-      if (parsedDate) {
-        queryBuilder.setParams({[key]: format(parsedDate, 'y-MM-dd')});
+      if (date.isValid) {
+        queryBuilder.setParams({ [key]: date.toISODate() });
+      } else {
+        console.warn('invalid date given to setDate', { date })
+        return;
       }
     }
 
     setDate(ApiKeys.START, startDate);
+
     if (endDisabled) {
       setDate(ApiKeys.END, startDate);
     }
+    
     if (!endDisabled) {
       setDate(ApiKeys.END, endDate);
     }
+
   }, [startDate, endDate, endDisabled, queryBuilder])
 
   const toggleFreeEvents = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,26 +128,31 @@ const FormContainer = ({ filterSettings, queryBuilder, triggerQuery }: FormConta
     if (!checked) {
       setFreeFilter(false);
       queryBuilder.resetParam(ApiKeys.FREE);
-
       return;
     }
 
     setFreeFilter(true);
-    queryBuilder.setParams({[ApiKeys.FREE]: 'true'})
+    queryBuilder.setParams({ [ApiKeys.FREE]: 'true' })
   }
 
   const toggleRemoteEvents = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event?.target?.checked;
-
-    if (!checked) {
+    if (!event?.target?.checked) {
       setRemoteFilter(false);
       queryBuilder.resetParam(ApiKeys.REMOTE);
-
       return;
     }
 
     setRemoteFilter(true);
-    queryBuilder.setParams({[ApiKeys.REMOTE]: 'true'})
+    queryBuilder.setParams({ [ApiKeys.REMOTE]: 'true' })
+  }
+  const handleDisableEnd = () => {
+    disableEnd(!endDisabled);
+    setErrors({ ...errors, invalidEndDate: false })
+  }
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    onSubmit(); return false;
   }
 
   const bothCheckboxes = filterSettings.showFreeFilter && filterSettings.showRemoteFilter;
@@ -115,7 +163,7 @@ const FormContainer = ({ filterSettings, queryBuilder, triggerQuery }: FormConta
   const remoteLabel = bothCheckboxes ? remoteTranslation : `${showOnlyLabel} ${remoteTranslation.toLowerCase()}`;
 
   return (
-    <div className='event-form-container'>
+    <form className='event-form-container' onSubmit={handleSubmit}>
       <h3>{Drupal.t('Filter events')}</h3>
       <div className='event-form__filters-container'>
         <div className='event-form__filter-section-container'>
@@ -125,14 +173,17 @@ const FormContainer = ({ filterSettings, queryBuilder, triggerQuery }: FormConta
           }
           {
             filterSettings.showTimeFilter &&
-            <DateSelect 
+            <DateSelect
               endDate={endDate}
+              invalidEndDate={errors.invalidEndDate}
+              invalidStartDate={errors.invalidStartDate}
               endDisabled={endDisabled}
-              disableEnd={disableEnd}
+              disableEnd={handleDisableEnd}
               queryBuilder={queryBuilder}
-              setEndDate={setEndDate}
-              setStartDate={setStartDate}
+              setEndDate={setEnd}
+              setStartDate={setStart}
               startDate={startDate}
+              // outOfRangeError={errors.outOfRange}
             />
           }
         </div>
@@ -160,9 +211,9 @@ const FormContainer = ({ filterSettings, queryBuilder, triggerQuery }: FormConta
             />
           }
         </div>
-        <SubmitButton triggerQuery={triggerQuery} />
+        <SubmitButton disabled={errors.invalidEndDate || errors.invalidStartDate} />
       </div>
-    </div>
+    </form>
   )
 }
 
