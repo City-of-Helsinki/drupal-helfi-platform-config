@@ -47,15 +47,22 @@ const ResultCard = ({ end_time, id, location, name, keywords, start_time, images
   }
 
   const getDate = () => {
-    const startDate = new Date(start_time);
-    const endDate = new Date(end_time);
-    const isMultiDate = overDayApart(startDate, endDate);
+    let  startDate;
+    let endDate;
+    let isMultiDate;
+    try {
+       startDate = new Date(start_time);
+       endDate = new Date(end_time);
+       isMultiDate = overDayApart(startDate, endDate);
+    } catch(e) {
+      throw new Error('DATE ERROR');
+    }
 
     if (isMultiDate) {
       return `${formatStartDate(startDate, endDate)} - ${endDate.toLocaleDateString('fi-FI')}`
     }
 
-    return `${startDate.toLocaleDateString('fi-FI')}, ${Drupal.t('at', {}, {context: 'Indication that events take place in a certain timeframe'})} ${startDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})} - ${endDate.toLocaleTimeString('fi-FI', {hour: '2-digit', minute: '2-digit'})}`
+    return `${startDate.toLocaleDateString('fi-FI')}, ${Drupal.t('at', {}, { context: 'Indication that events take place in a certain timeframe' })} ${startDate.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' })}`
   }
 
   const getLocation = () => {
@@ -68,7 +75,7 @@ const ResultCard = ({ end_time, id, location, name, keywords, start_time, images
     }
 
     if (hasAddress) {
-      hasName ? locationString += `, ${location.street_address?.[currentLanguage]}` : locationString += location.street_address?.[currentLanguage]; 
+      hasName ? locationString += `, ${location.street_address?.[currentLanguage]}` : locationString += location.street_address?.[currentLanguage];
     }
 
     return locationString;
@@ -76,8 +83,8 @@ const ResultCard = ({ end_time, id, location, name, keywords, start_time, images
 
   const imageToElement = (image: EventImage) => {
     const imageProps: React.ImgHTMLAttributes<HTMLImageElement> & { 'data-photographer'?: string } = {};
-    
-    if(image.url) {
+
+    if (image.url) {
       imageProps.src = image.url;
     }
 
@@ -91,7 +98,7 @@ const ResultCard = ({ end_time, id, location, name, keywords, start_time, images
     if (image.photographer_name) {
       imageProps['data-photographer'] = image.photographer_name;
     }
-  
+
     return <img className='event-list__event-image' alt='' {...imageProps} />
   }
 
@@ -104,20 +111,20 @@ const ResultCard = ({ end_time, id, location, name, keywords, start_time, images
         <div className='event-list__tags event-list__tags--mobile' role='region' aria-label={Drupal.t('Event keywords')}>
           {getKeywords()}
         </div>
-        {image ? imageToElement(image) : <div className='event-list__event-image-placeholder' dangerouslySetInnerHTML={{__html: imagePlaceholder.trim()}} />}
+        {image ? imageToElement(image) : <div className='event-list__event-image-placeholder' dangerouslySetInnerHTML={{ __html: imagePlaceholder.trim() }} />}
       </div>
       <div className='event-list__content-container'>
         <h3 className='event-list__event-name'>
-          <a className='event-list__event-link' href={`${baseUrl}/events/${id}`} aria-label={Drupal.t('Link leads to external service', [], {context: 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.'})}>
+          <a className='event-list__event-link' href={`${baseUrl}/events/${id}`} aria-label={Drupal.t('Link leads to external service', [], { context: 'Explanation for screen-reader software that the icon visible next to this link means that the link leads to an external service.' })}>
             {name[currentLanguage]}
           </a>
         </h3>
         <div className='event__content event__content--date'>
-         {getDate()}
+          {getDate()}
         </div>
         {location &&
           <div className='event__content event__content--location'>
-            {isRemote ?'Internet' : getLocation() }
+            {isRemote ? 'Internet' : getLocation()}
           </div>
         }
         <div className='event__lower-container'>
