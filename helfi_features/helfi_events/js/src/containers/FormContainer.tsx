@@ -10,7 +10,6 @@ import CheckboxFilter from '../components/CheckboxFilter';
 import type FilterSettings from '../types/FilterSettings';
 import HDS_DATE_FORMAT from '../utils/HDS_DATE_FORMAT';
 
-
 // TODO: Please use ISO standard date format for all date parsing in frontend AND backend.
 // Formatting to userland format should be done in the view from ISO stardard date string or reliably parsed date object 
 // https://www.iso.org/iso-8601-date-and-time-format.html
@@ -124,31 +123,29 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
   }, [startDate, endDate, endDisabled, queryBuilder])
 
   useEffect(() => {
-    const setDate = (key: string, value: string|undefined) => {
-      if (!value || value === '') {
+    const setDate = (key: string, date: DateTime | undefined) => {
+      if (!date || !date.isValid) {
         queryBuilder.resetParam(key);
         return;
       }
-  
-      let parsedDate = null;
-      try {
-        parsedDate = parse(value, 'd.M.y', new Date());
-      }
-      catch (e) {
-      }
-  
-      if (parsedDate) {
-        queryBuilder.setParams({[key]: format(parsedDate, 'y-MM-dd')});
+      if (date.isValid) {
+        queryBuilder.setParams({ [key]: date.toISODate() });
+      } else {
+        console.warn('invalid date given to setDate', { date })
+        return;
       }
     }
 
     setDate(ApiKeys.START, startDate);
+
     if (endDisabled) {
       setDate(ApiKeys.END, startDate);
     }
+    
     if (!endDisabled) {
       setDate(ApiKeys.END, endDate);
     }
+
   }, [startDate, endDate, endDisabled, queryBuilder])
 
   const toggleFreeEvents = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,7 +165,6 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
     if (!event?.target?.checked) {
       setRemoteFilter(false);
       queryBuilder.resetParam(ApiKeys.REMOTE);
-
       return;
     }
 
@@ -214,7 +210,6 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
               setStartDate={setStart}
               startDate={startDate}
               // outOfRangeError={errors.outOfRange}
-
             />
           }
         </div>

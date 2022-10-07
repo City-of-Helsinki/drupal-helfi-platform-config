@@ -5,7 +5,6 @@ import CheckboxFilter from '../components/CheckboxFilter';
 import type { DateTime } from 'luxon';
 import HDS_DATE_FORMAT from '../utils/HDS_DATE_FORMAT';
 
-
 type DateSelectProps = {
   endDate: DateTime | undefined;
   endDisabled: boolean;
@@ -61,8 +60,7 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
             id='end-disabled'
             label={Drupal.t('End date is the same as start date')}
             onChange={disableEnd}
-
-          />
+         />
 
           <DateInput
             className='hdbt-search__filter hdbt-search__date-input'

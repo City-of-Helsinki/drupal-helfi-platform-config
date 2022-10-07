@@ -7,7 +7,6 @@ import useSWR from 'swr';
 import type FilterSettings from '../types/FilterSettings';
 import type Location from '../types/Location';
 
-
 type ResponseType = {
   data: Event[],
   meta: {
@@ -18,8 +17,7 @@ type ResponseType = {
 }
 
 const getEvents = async (url: string): Promise<ResponseType | null> => {
-
-  const response = await fetch(url);
+const response = await fetch(url);
 
   if (response.status === 200) {
     const result = await response.json();

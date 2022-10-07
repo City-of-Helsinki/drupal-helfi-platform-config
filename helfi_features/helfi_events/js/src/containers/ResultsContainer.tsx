@@ -18,7 +18,6 @@ const ResultsContainer = ({ count , events, loading,error }: ResultsContainerPro
   return (
     <div className='event-list__list-container'>
       {! loading && count && !Number.isNaN(count) &&
-
         <div className='event-list__count'>
           <strong>{!loading && count}{loading && Drupal.t('loading')}</strong> {Drupal.t('events')}
         </div>
@@ -26,7 +25,6 @@ const ResultsContainer = ({ count , events, loading,error }: ResultsContainerPro
       { !loading && events?.length > 0 && events.map(event => <ResultCard key={event.id} {...event} />) }
       { !loading && events?.length === 0 && <EmptyMessage /> }
       { loading  &&
-
         <div className='event-list-spinner' dangerouslySetInnerHTML={{__html: Drupal.theme('ajaxProgressThrobber')}} />
       }
     </div>
