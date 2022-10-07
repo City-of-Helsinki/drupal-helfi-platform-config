@@ -4,24 +4,27 @@ import type Event from '../types/Event';
 
 type ResultsContainerProps = {
   count: Number|null,
-  failed: boolean,
   events: Event[],
-  loading: boolean
+  loading: boolean,
+  error?:Error,
 };
 
-const ResultsContainer = ({ count, failed, events, loading }: ResultsContainerProps) => {
+const ResultsContainer = ({ count , events, loading,error }: ResultsContainerProps) => {
+
+  if(error) {
+    return <p>{Drupal.t('Could not retrieve events')}</p>
+  }
+  
   return (
     <div className='event-list__list-container'>
-      {!Number.isNaN(count) &&
+      {! loading && count && !Number.isNaN(count) &&
         <div className='event-list__count'>
-          <strong>{count}</strong> {Drupal.t('events')}
+          <strong>{!loading && count}{loading && Drupal.t('loading')}</strong> {Drupal.t('events')}
         </div>
       }
-      {events.length > 0 ?
-        events.map(event => <ResultCard key={event.id} {...event} />) :
-        <EmptyMessage />
-      }
-      {(loading || failed) &&
+      { !loading && events?.length > 0 && events.map(event => <ResultCard key={event.id} {...event} />) }
+      { !loading && events?.length === 0 && <EmptyMessage /> }
+      { loading  &&
         <div className='event-list-spinner' dangerouslySetInnerHTML={{__html: Drupal.theme('ajaxProgressThrobber')}} />
       }
     </div>

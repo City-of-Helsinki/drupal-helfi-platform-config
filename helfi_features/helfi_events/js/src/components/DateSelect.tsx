@@ -2,38 +2,48 @@ import Collapsible from '../components/Collapsible';
 import { DateInput } from 'hds-react';
 import { QueryBuilder } from '../utils/QueryBuilder'
 import CheckboxFilter from '../components/CheckboxFilter';
+import type { DateTime } from 'luxon';
+import HDS_DATE_FORMAT from '../utils/HDS_DATE_FORMAT';
 
 type DateSelectProps = {
-  endDate: string|undefined;
+  endDate: DateTime | undefined;
   endDisabled: boolean;
   disableEnd: Function;
   queryBuilder: QueryBuilder;
   setEndDate: Function;
   setStartDate: Function;
-  startDate: string|undefined;
+  startDate: DateTime | undefined;
+  invalidStartDate?: boolean;
+  invalidEndDate?: boolean;
+  // outOfRangeError?: boolean;
 };
 
-const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate, setStartDate, startDate }: DateSelectProps) => {
+const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate, setStartDate, startDate, invalidStartDate = false, invalidEndDate = false }: DateSelectProps) => {
+
   const { currentLanguage } = drupalSettings.path;
 
   const changeDate = (value: string, date: 'start' | 'end') => {
+    // This calendar doe not support dates past year 9999
+    if (value.length > 10) {
+      console.warn('too much future')
+      return;
+    }
     date === 'start' ? setStartDate(value) : setEndDate(value);
   };
 
   const getTitle = () => {
-    if ((!startDate || startDate ==='') && (!endDate || endDate === '')) {
+    if ((!startDate || !startDate.isValid) && (!endDate || !endDate.isValid)) {
       return Drupal.t('All dates');
     }
 
-    if((startDate && startDate !== '') && (!endDate || endDate === '')) {
-      return startDate;
+    if ((startDate && startDate.isValid) && (!endDate || !endDate.isValid)) {
+      return startDate.toFormat(HDS_DATE_FORMAT);
     }
 
-    if((!startDate || startDate === '') && (endDate && endDate !== '')) {
-      return `- ${endDate}`;
+    if ((!startDate || !startDate.isValid) && endDate?.isValid) {
+      return `- ${endDate.toFormat(HDS_DATE_FORMAT)}`;
     }
-
-    return `${startDate} - ${endDate}`;
+    return `${startDate?.toFormat(HDS_DATE_FORMAT)|| 'unset?'} - ${endDate?.toFormat(HDS_DATE_FORMAT)}`;
   }
 
   return (
@@ -49,27 +59,38 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
             checked={endDisabled}
             id='end-disabled'
             label={Drupal.t('End date is the same as start date')}
-            onChange={() => disableEnd(!endDisabled)}
+            onChange={disableEnd}
           />
+
           <DateInput
             className='hdbt-search__filter hdbt-search__date-input'
-            helperText='Use format D.M.YYYY'
+            helperText={Drupal.t('Use format D.M.YYYY')}
             id='start-date'
-            label='Choose a date'
+            label={Drupal.t('Choose a date')}
             lang={currentLanguage}
-            value={startDate}
+            invalid={invalidStartDate}
+            errorText={invalidStartDate ? "Invalid start date" : ''}
+            value={startDate?.toFormat('d.M.yyyy')}
             onChange={(value: string) => changeDate(value, 'start')}
           />
+          {invalidStartDate && <p>Invalid start date</p>}
+
           <DateInput
+            minDate={endDisabled ? undefined : startDate?.plus({ 'days': 1 }).toJSDate()}
             className='hdbt-search__filter hdbt-search__date-input'
             disabled={endDisabled}
-            helperText='Use format D.M.YYYY'
+            helperText={Drupal.t('Use format D.M.YYYY')}
             id='end-date'
-            label='Choose a date'
+            label={Drupal.t('Choose a date')}
             lang={currentLanguage}
-            value={endDisabled ? startDate : endDate}
+            invalid={invalidEndDate}
+            errorText={invalidEndDate ? "Invalid end date" : ''}
+            value={endDisabled ? startDate?.toFormat(HDS_DATE_FORMAT) : endDate?.toFormat(HDS_DATE_FORMAT)}
             onChange={(value: string) => changeDate(value, 'end')}
           />
+          {invalidEndDate && <p>Invalid end date</p>}
+          {/* {outOfRangeError && <p>Out of range error</p>} */}
+
         </div>
       </Collapsible>
     </div>

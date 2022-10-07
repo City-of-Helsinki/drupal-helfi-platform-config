@@ -11,10 +11,10 @@ export class QueryBuilder {
 
   constructor(eventsUrl: string) {
     if (eventsUrl.indexOf('?') !== -1) {
-      const split = eventsUrl.split('?');
-      this.baseUrl = split[0];
-      this.originalParams = new URLSearchParams(split[1]);
-      this.params = new URLSearchParams(split[1]);
+      const [baseUrl, queryString] = eventsUrl.split('?');
+      this.baseUrl = baseUrl;
+      this.originalParams = new URLSearchParams(queryString);
+      this.params = new URLSearchParams(queryString);
     }
     else {
       this.baseUrl = eventsUrl;
