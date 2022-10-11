@@ -1,0 +1,13 @@
+diff --git a/composer.json b/composer.json
+index 5dbf2f5..597ae5d 100644
+--- a/composer.json
++++ b/composer.json
+@@ -28,7 +28,7 @@
+     },
+     "require-dev": {
+         "drupal/checklistapi": "~1.0 || ~2.0",
+-        "drush/drush": "~10.2"
++        "drush/drush": "~10.2 || ^11"
+     },
+     "suggest": {
+         "drupal/checklistapi": "Provides an API for creating fillable, persistent checklists. Required by the Update Helper Checklist module."
