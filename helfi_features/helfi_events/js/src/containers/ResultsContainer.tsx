@@ -3,29 +3,29 @@ import ResultCard from '../components/ResultCard';
 import type Event from '../types/Event';
 
 type ResultsContainerProps = {
-  count: Number|null,
+  count: Number | null,
   events: Event[],
   loading: boolean,
-  error?:Error,
+  error?: Error,
 };
 
-const ResultsContainer = ({ count , events, loading,error }: ResultsContainerProps) => {
+const ResultsContainer = ({ count, events, loading, error }: ResultsContainerProps) => {
 
-  if(error) {
+  if (error) {
     return <p>{Drupal.t('Could not retrieve events')}</p>
   }
-  
+
   return (
     <div className='event-list__list-container'>
-      {! loading && count && !Number.isNaN(count) &&
+      {!loading && count && !Number.isNaN(count) &&
         <div className='event-list__count'>
           <strong>{!loading && count}{loading && Drupal.t('loading')}</strong> {Drupal.t('events')}
         </div>
       }
-      { !loading && events?.length > 0 && events.map(event => <ResultCard key={event.id} {...event} />) }
-      { !loading && events?.length === 0 && <EmptyMessage /> }
-      { loading  &&
-        <div className='event-list-spinner' dangerouslySetInnerHTML={{__html: Drupal.theme('ajaxProgressThrobber')}} />
+      {!loading && events?.length > 0 && events.map(event => <ResultCard key={event.id} {...event} />)}
+      {!loading && events?.length === 0 && <EmptyMessage />}
+      {loading &&
+        <div className='event-list-spinner' dangerouslySetInnerHTML={{ __html: Drupal.theme('ajaxProgressThrobber') }} />
       }
     </div>
   )

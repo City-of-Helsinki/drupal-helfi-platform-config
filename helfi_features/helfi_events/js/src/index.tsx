@@ -9,14 +9,13 @@ const ROOT_ID = 'helfi-events-search';
 const start = () => {
   const rootElement: HTMLElement | null = document.getElementById(ROOT_ID);
   const eventsUrl = rootElement?.dataset?.eventsUrl;
-  
-  
-  if(!rootElement) {
-    console.warn('Root id missing for Events filter',{ROOT_ID})
+
+  if (!rootElement) {
+    console.warn('Root id missing for Events filter', { ROOT_ID })
     return
   }
 
-  if(!eventsUrl) {
+  if (!eventsUrl) {
     console.warn('Events API url missing for Events filter.')
     return
   }
@@ -37,4 +36,4 @@ const start = () => {
   );
 }
 
-document.addEventListener('DOMContentLoaded',start);
+document.addEventListener('DOMContentLoaded', start);

@@ -13,7 +13,8 @@
   },
   "scripts": {
     "start": "BROWSER=none react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired build && mv build/static/js/main.*.js ../assets/js/filter-events.js",
+    "":"",
     "test": "TZ=UTC react-app-rewired test",
     "lint":"eslint --rule 'no-console: error'",
     "eject": "react-app-rewired eject",

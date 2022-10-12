@@ -9,28 +9,37 @@ import DateSelect from '../components/DateSelect';
 import CheckboxFilter from '../components/CheckboxFilter';
 import type FilterSettings from '../types/FilterSettings';
 import HDS_DATE_FORMAT from '../utils/HDS_DATE_FORMAT';
+import type DateSelectDateTimes from '../types/DateSelectDateTimes';
+
 
 // TODO: Please use ISO standard date format for all date parsing in frontend AND backend.
 // Formatting to userland format should be done in the view from ISO stardard date string or reliably parsed date object 
+// and passed back as a valid Date object or ISO-string.
 // https://www.iso.org/iso-8601-date-and-time-format.html
 
-// This somewhat handles date parsing and validation in custom UI format but is subject to parse errors.
 const getDateTimeFromHDSFormat = (d: string): DateTime => DateTime.fromFormat(d, HDS_DATE_FORMAT, { locale: 'fi' });
 
 // End date must be after start date. But only if both are defined.
-const isOutOfRange = ({ endDate, startDate }: { endDate: DateTime | undefined, startDate: DateTime | undefined }): boolean => !!(startDate && endDate && startDate.startOf("day") >= endDate.startOf("day"))
+const isOutOfRange = ({ endDate, startDate }: DateSelectDateTimes): boolean => !!(startDate && endDate && startDate.startOf("day") >= endDate.startOf("day"))
 
 // Date must be in within the next 1000 years or so....
 // This also validates that the string is not too long even though it might be valid.
 const INVALID_DATE = (dt: DateTime | undefined): boolean => {
-  if (!dt) { return false }
-  return (!dt.isValid || dt.year > 9999)
+
+  if (!dt) {
+    return false
+  }
+
+  if (dt.year > 9999) {
+    return true;
+  }
+
+  return !dt.isValid
 }
 
 type FormErrors = {
   invalidEndDate: boolean,
   invalidStartDate: boolean,
-  // outOfRange: boolean
 }
 
 const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locationOptions }: {
@@ -48,10 +57,10 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
   const [errors, setErrors] = useState<FormErrors>({
     invalidEndDate: false,
     invalidStartDate: false,
-    // outOfRange: false
   })
 
   const setStart = (d: string) => {
+
     const start = getDateTimeFromHDSFormat(d);
     if (INVALID_DATE(start)) {
       console.warn('invalid start date', { start, endDate })
@@ -63,8 +72,9 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
 
       }
     } else {
+
       if (isOutOfRange({ startDate: start, endDate })) {
-        console.warn('selected start date is out of range with end date, setting end date to next day after start date')
+        console.warn('Selected start date is out of range with end date, setting end date to next day after start date.')
         setEndDate(start?.plus({ 'days': 1 }))
       }
       setStartDate(start);
@@ -86,7 +96,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
     } else {
 
       if (isOutOfRange({ startDate, endDate: end })) {
-        console.warn('selected end date is out of range, setting end date to next day after start date')
+        console.warn('Selected end date is out of range, setting end date to next day after start date.')
         setEndDate(startDate?.plus({ 'days': 1 }))
       } else {
         setEndDate(end);
@@ -115,7 +125,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
     if (endDisabled) {
       setDate(ApiKeys.END, startDate);
     }
-    
+
     if (!endDisabled) {
       setDate(ApiKeys.END, endDate);
     }
@@ -209,7 +219,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
               setEndDate={setEnd}
               setStartDate={setStart}
               startDate={startDate}
-              // outOfRangeError={errors.outOfRange}
+            // outOfRangeError={errors.outOfRange}
             />
           }
         </div>
