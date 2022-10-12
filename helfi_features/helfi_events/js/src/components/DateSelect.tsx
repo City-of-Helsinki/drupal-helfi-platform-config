@@ -2,49 +2,50 @@ import Collapsible from '../components/Collapsible';
 import { DateInput } from 'hds-react';
 import { QueryBuilder } from '../utils/QueryBuilder'
 import CheckboxFilter from '../components/CheckboxFilter';
-import type { DateTime } from 'luxon';
+import type DateSelectDateTimes from '../types/DateSelectDateTimes';
 import HDS_DATE_FORMAT from '../utils/HDS_DATE_FORMAT';
-
-type DateSelectProps = {
-  endDate: DateTime | undefined;
+interface DateSelectActions {
   endDisabled: boolean;
   disableEnd: Function;
   queryBuilder: QueryBuilder;
   setEndDate: Function;
   setStartDate: Function;
-  startDate: DateTime | undefined;
   invalidStartDate?: boolean;
   invalidEndDate?: boolean;
-  // outOfRangeError?: boolean;
 };
+
+type DateSelectProps = DateSelectDateTimes & DateSelectActions;
+
+const getTitle = ({ startDate, endDate }: DateSelectDateTimes): string => {
+  if ((!startDate || !startDate.isValid) && (!endDate || !endDate.isValid)) {
+    return Drupal.t('All dates');
+  }
+
+  if ((startDate && startDate.isValid) && (!endDate || !endDate.isValid)) {
+    return startDate.toFormat(HDS_DATE_FORMAT);
+  }
+
+  if ((!startDate || !startDate.isValid) && endDate?.isValid) {
+    return `- ${endDate.toFormat(HDS_DATE_FORMAT)}`;
+  }
+  return `${startDate?.toFormat(HDS_DATE_FORMAT) || 'unset?'} - ${endDate?.toFormat(HDS_DATE_FORMAT)}`;
+}
+
+
+const dateHelperText = Drupal.t('Use format D.M.YYYY')
+const dateLabel = Drupal.t('Choose a date')
 
 const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate, setStartDate, startDate, invalidStartDate = false, invalidEndDate = false }: DateSelectProps) => {
 
   const { currentLanguage } = drupalSettings.path;
 
   const changeDate = (value: string, date: 'start' | 'end') => {
-    // This calendar doe not support dates past year 9999
-    if (value.length > 10) {
-      console.warn('too much future')
-      return;
-    }
     date === 'start' ? setStartDate(value) : setEndDate(value);
   };
 
-  const getTitle = () => {
-    if ((!startDate || !startDate.isValid) && (!endDate || !endDate.isValid)) {
-      return Drupal.t('All dates');
-    }
-
-    if ((startDate && startDate.isValid) && (!endDate || !endDate.isValid)) {
-      return startDate.toFormat(HDS_DATE_FORMAT);
-    }
-
-    if ((!startDate || !startDate.isValid) && endDate?.isValid) {
-      return `- ${endDate.toFormat(HDS_DATE_FORMAT)}`;
-    }
-    return `${startDate?.toFormat(HDS_DATE_FORMAT)|| 'unset?'} - ${endDate?.toFormat(HDS_DATE_FORMAT)}`;
-  }
+  const title = getTitle({ startDate, endDate });
+  const startDateErrorText = invalidStartDate ? Drupal.t("Invalid start date") : ''
+  const endDateErrorText = invalidEndDate ? Drupal.t("Invalid end date") : ''
 
   return (
     <div className='hdbt-search__filter event-form__filter--date'>
@@ -52,7 +53,7 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
         id='event-search__date-select'
         label={Drupal.t('Pick dates')}
         helper={Drupal.t('Pick a range between which events shoud take place')}
-        title={getTitle()}
+        title={title}
       >
         <div className='event-form__date-container'>
           <CheckboxFilter
@@ -64,33 +65,28 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
 
           <DateInput
             className='hdbt-search__filter hdbt-search__date-input'
-            helperText={Drupal.t('Use format D.M.YYYY')}
+            helperText={dateHelperText}
             id='start-date'
-            label={Drupal.t('Choose a date')}
+            label={dateLabel}
             lang={currentLanguage}
             invalid={invalidStartDate}
-            errorText={invalidStartDate ? "Invalid start date" : ''}
-            value={startDate?.toFormat('d.M.yyyy')}
+            errorText={startDateErrorText}
+            value={startDate?.toFormat(HDS_DATE_FORMAT)}
             onChange={(value: string) => changeDate(value, 'start')}
           />
-          {invalidStartDate && <p>Invalid start date</p>}
-
           <DateInput
             minDate={endDisabled ? undefined : startDate?.plus({ 'days': 1 }).toJSDate()}
             className='hdbt-search__filter hdbt-search__date-input'
             disabled={endDisabled}
-            helperText={Drupal.t('Use format D.M.YYYY')}
+            helperText={dateHelperText}
             id='end-date'
-            label={Drupal.t('Choose a date')}
+            label={dateLabel}
             lang={currentLanguage}
             invalid={invalidEndDate}
-            errorText={invalidEndDate ? "Invalid end date" : ''}
+            errorText={endDateErrorText}
             value={endDisabled ? startDate?.toFormat(HDS_DATE_FORMAT) : endDate?.toFormat(HDS_DATE_FORMAT)}
             onChange={(value: string) => changeDate(value, 'end')}
           />
-          {invalidEndDate && <p>Invalid end date</p>}
-          {/* {outOfRangeError && <p>Out of range error</p>} */}
-
         </div>
       </Collapsible>
     </div>
