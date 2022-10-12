@@ -26,3 +26,5 @@ msgctxt "PHP date format"
 msgid "l, F j, Y - H:i"
 msgstr "j.n.Y - H:i"
 
+msgid "Front page"
+msgstr "Framsida"

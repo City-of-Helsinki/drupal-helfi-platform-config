@@ -15,6 +15,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\helfi_api_base\Environment\Project;
 
 /**
  * Helper function to enable paragraph type for given entity/bundle/field combination.
@@ -179,29 +180,25 @@ function helfi_platform_config_system_breadcrumb_alter(
   if ($route_match->getRouteObject()?->getOption('_admin_route')) {
     return;
   }
-  // @todo Replace this with Etusivu instance once it's live.
-  $list = [
-    'en' => [
-      'text' => 'Frontpage',
-      'url' => 'https://www.hel.fi/helsinki/en',
-    ],
-    'fi' => [
-      'text' => 'Etusivu',
-      'url' => 'https://www.hel.fi/helsinki/fi',
-    ],
-    'sv' => [
-      'text' => 'Framsida',
-      'url' => 'https://www.hel.fi/helsinki/sv',
-    ],
-  ];
+
+  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
+  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
+  $activeEnvironment = $resolver->getActiveEnvironment()->getEnvironmentName();
+  $environment = $resolver->getEnvironment(Project::ETUSIVU, $activeEnvironment);
   $currentLanguage = Drupal::languageManager()
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
     ->getId();
 
-  $link = $list[$currentLanguage] ?? $list['en'];
+  // Revert to English path, if current language path is not found.
+  try {
+    $url = $environment->getUrl($currentLanguage);
+  }
+  catch (\Exception $e) {
+    $url = $environment->getUrl('en');
+  }
 
   $links = $breadcrumb->getLinks();
-  array_unshift($links, Link::fromTextAndUrl($link['text'], Url::fromUri($link['url'])));
+  array_unshift($links, Link::fromTextAndUrl(t('Front page'), Url::fromUri($url)));
 
   // Include front page in breadcrumb if it's the only item.
   if (count($links) === 1 && Drupal::service('path.matcher')->isFrontPage()) {

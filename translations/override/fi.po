@@ -45,6 +45,9 @@ msgstr ""
 "Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
 "esimerkiksi \"/kaupunkisymposium\"."
 
+msgid "Front page"
+msgstr "Etusivu"
+
 # Pathauto
 msgid "Automatic alias"
 msgstr "Osoitealias käytössä"
