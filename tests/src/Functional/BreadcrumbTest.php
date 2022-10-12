@@ -81,7 +81,7 @@ class BreadcrumbTest extends BrowserTestBase {
    */
   public function testBreadcrumb() : void {
     // Make sure first item is always link to hel.fi Etusivu instance.
-    foreach (['en' => 'Frontpage', 'sv' => 'Framsida', 'fi' => 'Etusivu'] as $language => $title) {
+    foreach (['en' => 'Front page', 'sv' => 'Framsida', 'fi' => 'Etusivu'] as $language => $title) {
       $this->drupalGet('/' . $language);
       $parts = $this->getBreadcrumbParts();
       $this->assertEquals($title, $parts[0]['text']);
