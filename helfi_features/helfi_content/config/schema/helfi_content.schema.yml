@@ -1,0 +1,13 @@
+helfi_content.settings:
+  type: config_object
+  label: 'Helfi search form'
+  mapping:
+    events_link_url:
+      type: label
+      label: 'Helfi events search url'
+    decisions_link_url:
+      type: label
+      label: 'Helfi decisions search url'
+    helfi_search_form_url:
+      type: label
+      label: 'Helfi search url'

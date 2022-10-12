@@ -929,3 +929,22 @@ function helfi_content_update_9036() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
+
+/**
+ * Update translation for hero design
+ */
+function helfi_content_update_9037() {
+  // Override the default configuration by the content lock module.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'helfi_content.settings',
+  ];
+
+  // Update the configurations and translations.
+  foreach ($configurations as $config) {
+    ConfigHelper::installNewConfig($configLocation, $config);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $config);
+  }
+}

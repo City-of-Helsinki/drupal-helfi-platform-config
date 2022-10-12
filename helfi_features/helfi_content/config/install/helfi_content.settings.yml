@@ -1,0 +1,4 @@
+langcode: en
+events_link_url: 'https://tapahtumat.hel.fi/en/'
+decisions_link_url: 'https://www.hel.fi/en/search-decisions'
+helfi_search_form_url: 'https://www.hel.fi/search'
