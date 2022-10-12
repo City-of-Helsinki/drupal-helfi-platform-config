@@ -197,6 +197,9 @@ function helfi_platform_config_system_breadcrumb_alter(
     $url = $environment->getUrl('en');
   }
 
+  // @todo We need a better way to deal with local docker.so urls.
+  $url = str_replace(['http://', ':8080'], ['https://', ''], $url);
+
   $links = $breadcrumb->getLinks();
   array_unshift($links, Link::fromTextAndUrl(t('Front page'), Url::fromUri($url)));
 
