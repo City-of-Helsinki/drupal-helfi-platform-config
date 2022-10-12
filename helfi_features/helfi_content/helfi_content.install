@@ -931,7 +931,7 @@ function helfi_content_update_9036() {
 }
 
 /**
- * Update translation for hero design
+ * Adds helfi search and related links
  */
 function helfi_content_update_9037() {
   // Override the default configuration by the content lock module.
