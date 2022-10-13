@@ -11,12 +11,6 @@ import type FilterSettings from '../types/FilterSettings';
 import HDS_DATE_FORMAT from '../utils/HDS_DATE_FORMAT';
 import type DateSelectDateTimes from '../types/DateSelectDateTimes';
 
-
-// TODO: Please use ISO standard date format for all date parsing in frontend AND backend.
-// Formatting to userland format should be done in the view from ISO stardard date string or reliably parsed date object 
-// and passed back as a valid Date object or ISO-string.
-// https://www.iso.org/iso-8601-date-and-time-format.html
-
 const getDateTimeFromHDSFormat = (d: string): DateTime => DateTime.fromFormat(d, HDS_DATE_FORMAT, { locale: 'fi' });
 
 // End date must be after start date. But only if both are defined.
@@ -69,7 +63,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
         setErrors({ ...errors, invalidStartDate: false })
       } else {
         setErrors({ ...errors, invalidStartDate: true })
-
+        return
       }
     } else {
 
@@ -92,6 +86,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
         setEndDate(undefined);
       } else {
         setErrors({ ...errors, invalidEndDate: true })
+        return
       }
     } else {
 
@@ -132,31 +127,6 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
 
   }, [startDate, endDate, endDisabled, queryBuilder])
 
-  useEffect(() => {
-    const setDate = (key: string, date: DateTime | undefined) => {
-      if (!date || !date.isValid) {
-        queryBuilder.resetParam(key);
-        return;
-      }
-      if (date.isValid) {
-        queryBuilder.setParams({ [key]: date.toISODate() });
-      } else {
-        console.warn('invalid date given to setDate', { date })
-        return;
-      }
-    }
-
-    setDate(ApiKeys.START, startDate);
-
-    if (endDisabled) {
-      setDate(ApiKeys.END, startDate);
-    }
-    
-    if (!endDisabled) {
-      setDate(ApiKeys.END, endDate);
-    }
-
-  }, [startDate, endDate, endDisabled, queryBuilder])
 
   const toggleFreeEvents = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event?.target?.checked;
