@@ -33,7 +33,7 @@ const response = await fetch(url);
 const transformLocations = (data: any, currentLanguage: string): Location[] => {
   const usedIds: string[] = [];
   const locations = data?.reduce((prev: any, current: any) => {
-    if (current.location && current.location.id && !(usedIds.indexOf(current.location.id) >= 0) && current.location.name && current.location.name[currentLanguage]) {
+    if (current.location && current.location.id && (usedIds.indexOf(current.location.id) < 0) && current.location.name && current.location.name[currentLanguage]) {
       usedIds.push(current.location.id);
       return [...prev, { value: current.location.id, label: current.location.name[currentLanguage] }]
     }

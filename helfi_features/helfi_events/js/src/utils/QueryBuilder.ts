@@ -2,7 +2,7 @@ import ApiKeys from "../enum/ApiKeys";
 
 interface Options {
  [key: string]: string
-};
+}
 
 export class QueryBuilder {
   baseUrl: string;
@@ -52,7 +52,7 @@ export class QueryBuilder {
       }
     })
   }
-};
+}
 
 const init = (eventsUrl: string) => {
   return new QueryBuilder(eventsUrl);

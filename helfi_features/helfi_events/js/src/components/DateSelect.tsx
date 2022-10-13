@@ -12,7 +12,7 @@ interface DateSelectActions {
   setStartDate: Function;
   invalidStartDate?: boolean;
   invalidEndDate?: boolean;
-};
+}
 
 type DateSelectProps = DateSelectDateTimes & DateSelectActions;
 
@@ -61,7 +61,7 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
             id='end-disabled'
             label={Drupal.t('End date is the same as start date')}
             onChange={disableEnd}
-         />
+          />
 
           <DateInput
             className='hdbt-search__filter hdbt-search__date-input'

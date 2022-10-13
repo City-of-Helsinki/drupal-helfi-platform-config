@@ -111,7 +111,6 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
         queryBuilder.setParams({ [key]: date.toISODate() });
       } else {
         console.warn('invalid date given to setDate', { date })
-        return;
       }
     }
 
