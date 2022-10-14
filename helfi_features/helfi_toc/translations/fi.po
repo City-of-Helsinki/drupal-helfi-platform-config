@@ -12,3 +12,6 @@ msgstr "Sisällysluettelon otsikko"
 
 msgid "Loading table of contents"
 msgstr "Ladataan sisällysluetteloa"
+
+msgid "On this page"
+msgstr "Tällä sivulla"

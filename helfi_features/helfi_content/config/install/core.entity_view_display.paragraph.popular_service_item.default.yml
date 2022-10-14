@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.popular_service_item.field_service_links
+    - field.field.paragraph.popular_service_item.field_service_title
+    - paragraphs.paragraphs_type.popular_service_item
+  module:
+    - link
+_core:
+  default_config_hash: YxHYX90hf2fi4r4X4a0GttjwLRbpjSUsYZYx5H9-iG0
+id: paragraph.popular_service_item.default
+targetEntityType: paragraph
+bundle: popular_service_item
+mode: default
+content:
+  field_service_links:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_service_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

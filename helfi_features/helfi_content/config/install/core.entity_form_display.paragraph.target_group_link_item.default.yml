@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.target_group_link_item.field_icon
+    - field.field.paragraph.target_group_link_item.field_target_group_item_link
+    - field.field.paragraph.target_group_link_item.field_target_group_item_subtitle
+    - paragraphs.paragraphs_type.target_group_link_item
+  module:
+    - link
+    - select2_icon
+id: paragraph.target_group_link_item.default
+targetEntityType: paragraph
+bundle: target_group_link_item
+mode: default
+content:
+  field_icon:
+    type: select2_icon_widget
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_target_group_item_link:
+    type: link_default
+    weight: 2
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_target_group_item_subtitle:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

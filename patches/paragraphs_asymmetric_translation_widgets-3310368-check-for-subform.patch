@@ -1,0 +1,23 @@
+diff --git a/src/Plugin/Field/FieldWidget/ParagraphsAsymmetricWidget.php b/src/Plugin/Field/FieldWidget/ParagraphsAsymmetricWidget.php
+index 2e615d2..c5eceaf 100644
+--- a/src/Plugin/Field/FieldWidget/ParagraphsAsymmetricWidget.php
++++ b/src/Plugin/Field/FieldWidget/ParagraphsAsymmetricWidget.php
+@@ -26,11 +26,13 @@ class ParagraphsAsymmetricWidget extends ParagraphsWidget {
+     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+ 
+     // Remove all translatability clues, it makes no sense when running async.
+-    foreach (Element::children($element['subform']) as $field) {
+-      if (isset($element['subform'][$field]['widget']['#after_build']) && is_array($element['subform'][$field]['widget']['#after_build'])) {
+-        foreach ($element['subform'][$field]['widget']['#after_build'] as $index => $after_build) {
+-          if (in_array('addTranslatabilityClue', $after_build, TRUE)) {
+-            unset($element['subform'][$field]['widget']['#after_build'][$index]);
++    if (isset($element['subform'])) {
++      foreach (Element::children($element['subform']) as $field) {
++        if (isset($element['subform'][$field]['widget']['#after_build']) && is_array($element['subform'][$field]['widget']['#after_build'])) {
++          foreach ($element['subform'][$field]['widget']['#after_build'] as $index => $after_build) {
++            if (in_array('addTranslatabilityClue', $after_build, TRUE)) {
++              unset($element['subform'][$field]['widget']['#after_build'][$index]);
++            }
+           }
+         }
+       }

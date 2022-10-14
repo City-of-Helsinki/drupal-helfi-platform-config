@@ -789,3 +789,143 @@ function helfi_content_update_9032() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+
+/**
+* Creates popular service and target group links paragraphs and adds it
+* to landing page content.
+*/
+function helfi_content_update_9033() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  $configurations = [
+    'paragraphs.paragraphs_type.popular_services' => $configLocation,
+    'paragraphs.paragraphs_type.popular_service_item' => $configLocation,
+    'core.entity_view_display.paragraph.popular_services.default' => $configLocation,
+    'core.entity_view_display.paragraph.popular_service_item.default' => $configLocation,
+    'core.entity_form_display.paragraph.popular_services.default' => $configLocation,
+    'core.entity_form_display.paragraph.popular_service_item.default' => $configLocation,
+    'paragraphs.paragraphs_type.target_group_links' => $configLocation,
+    'paragraphs.paragraphs_type.target_group_link_item' => $configLocation,
+    'core.entity_view_display.paragraph.target_group_links.default' => $configLocation,
+    'core.entity_view_display.paragraph.target_group_link_item.default' => $configLocation,
+    'core.entity_form_display.paragraph.target_group_links.default' => $configLocation,
+    'core.entity_form_display.paragraph.target_group_link_item.default' => $configLocation,
+  ];
+
+  $configFields = [
+    'field.storage.paragraph.field_service_items' => 'field.field.paragraph.popular_services.field_service_items',
+    'field.storage.paragraph.field_service_links' => 'field.field.paragraph.popular_service_item.field_service_links',
+    'field.storage.paragraph.field_service_title' => 'field.field.paragraph.popular_service_item.field_service_title',
+    'field.storage.paragraph.field_icon' => 'field.field.paragraph.target_group_link_item.field_icon',
+    'field.storage.paragraph.field_target_group_item_link' => 'field.field.paragraph.target_group_link_item.field_target_group_item_link',
+    'field.storage.paragraph.field_target_group_item_subtitle' => 'field.field.paragraph.target_group_link_item.field_target_group_item_subtitle',
+    'field.storage.paragraph.field_target_group_item' => 'field.field.paragraph.target_group_links.field_target_group_item',
+    'field.storage.paragraph.field_target_group_links_desc' => 'field.field.paragraph.target_group_links.field_target_group_links_desc',
+    'field.storage.paragraph.field_target_group_links_title' => 'field.field.paragraph.target_group_links.field_target_group_links_title',
+  ];
+
+  $configurationsLanguage = [
+    'core.entity_form_display.paragraph.popular_services.default',
+    'field.field.paragraph.popular_service_item.field_service_links',
+    'field.field.paragraph.popular_service_item.field_service_title',
+    'field.field.paragraph.popular_services.field_service_items',
+    'paragraphs.paragraphs_type.popular_service_item',
+    'paragraphs.paragraphs_type.popular_services'
+  ];
+
+  // Install paragraph and view modes.
+  foreach ($configurations as $configuration => $location) {
+    ConfigHelper::installNewConfig($location, $configuration);
+  }
+
+  // Install new fields.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+  }
+
+  // Install translations.
+  foreach ($configurationsLanguage as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9033');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Removes background image and without image center from hero layouts.
+ */
+function helfi_content_update_9034() {
+  $config_factory = \Drupal::configFactory();
+
+  $hero_designs = $config_factory->getEditable('field.storage.paragraph.field_hero_design');
+  $hero_designs_data = $hero_designs->getRawData();
+  foreach ($hero_designs_data['settings']['allowed_values'] as $key => $allowed_value) {
+    if (in_array('without-image-center', $allowed_value)) {
+      unset($hero_designs_data['settings']['allowed_values'][$key]);
+    }
+    if (in_array('background-image', $allowed_value)) {
+      unset($hero_designs_data['settings']['allowed_values'][$key]);
+    }
+  }
+
+  $hero_designs_data['settings']['allowed_values'] = array_values($hero_designs_data['settings']['allowed_values']);
+
+  $hero_designs->setData($hero_designs_data)->save(TRUE);
+}
+
+/**
+ * Remove "access site in maintenance mode" permission from "content_producer"
+ * and "editor" roles.
+ */
+function helfi_content_update_9035() {
+  // Remove permissions manually.
+  $config_factory = \Drupal::configFactory();
+
+  $role_ids = [
+    'user.role.content_producer',
+    'user.role.editor'
+  ];
+
+  foreach ($role_ids as $role_id) {
+    $role = $config_factory->getEditable($role_id);
+    $role_data = $role->getRawData();
+
+    if (isset($role_data['permissions'])) {
+      $updated_permissions = array_diff($role_data['permissions'], ['access site in maintenance mode']);
+
+      if (!empty($updated_permissions)) {
+        $role_data['permissions'] = $updated_permissions;
+
+        $role->setData($role_data)->save(TRUE);
+      }
+    }
+  }
+}
+
+
+/**
+ * Update translation for hero design
+ */
+function helfi_content_update_9036() {
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.storage.paragraph.field_hero_design',
+  ];
+
+  // Update translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}

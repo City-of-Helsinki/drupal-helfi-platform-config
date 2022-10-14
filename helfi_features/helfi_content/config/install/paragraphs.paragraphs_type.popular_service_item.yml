@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 2bMZkUDyWvsIuHFmjQt91AdkLTKouO-E3eBtDLrGLeM
+id: popular_service_item
+label: 'Popular service item'
+icon_uuid: null
+icon_default: null
+description: 'Showcase popular service.'
+behavior_plugins: {  }

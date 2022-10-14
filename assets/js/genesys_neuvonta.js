@@ -5,7 +5,7 @@
     $(".cx-window-manager").css("display", "none");
   }
 
-  Drupal.behaviors.genesys_chat = {
+  Drupal.behaviors.genesys_neuvonta = {
     attach: function (context, settings) {
       // Replace the link with a button.
       var openChatButton = `<button
@@ -469,6 +469,7 @@
 
         chatExtension.republish("ready");
         chatExtension.ready();
+        window.chatExtension = chatExtension;
       };
 
     }

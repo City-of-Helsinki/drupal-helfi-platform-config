@@ -1,0 +1,43 @@
+uuid: a12c4350-6acc-4cd0-8919-194389e0fe14
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.target_group_links.field_target_group_item
+    - field.field.paragraph.target_group_links.field_target_group_links_desc
+    - field.field.paragraph.target_group_links.field_target_group_links_title
+    - paragraphs.paragraphs_type.target_group_links
+  module:
+    - entity_reference_revisions
+    - text
+id: paragraph.target_group_links.default
+targetEntityType: paragraph
+bundle: target_group_links
+mode: default
+content:
+  field_target_group_item:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_target_group_links_desc:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_target_group_links_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true
