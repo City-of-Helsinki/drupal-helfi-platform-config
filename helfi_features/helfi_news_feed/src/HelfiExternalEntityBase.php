@@ -166,7 +166,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     try {
       $langcode = $this->languageManager->getCurrentLanguage()->getId();
       $uri = vsprintf('%s%s?%s', [
-        $this->environment->getUrl($langcode),
+        $this->environment->getInternalAddress($langcode),
         $endpoint,
         \GuzzleHttp\http_build_query($parameters),
       ]);
