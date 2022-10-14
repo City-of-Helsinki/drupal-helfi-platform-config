@@ -235,7 +235,7 @@ final class News extends ExternalEntityStorageClientBase {
   private function request(array $parameters, string $langcode) : array {
     try {
       $uri = vsprintf('%s/jsonapi/node/news?%s', [
-        $this->environment->getUrl($langcode),
+        $this->environment->getInternalAddress($langcode),
         \GuzzleHttp\http_build_query($parameters),
       ]);
       $content = $this->client->request('GET', $uri);

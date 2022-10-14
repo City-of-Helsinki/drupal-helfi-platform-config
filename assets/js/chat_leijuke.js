@@ -8,9 +8,17 @@
 
       for (const chat_selection in leijukeData) {
         const adapter = getAdapter(chat_selection);
+        if (!adapter) return;
 
         setTimeout(() => {
+          // Only load any leijuke once, in case of ajax triggers.
+          if (leijukeData[chat_selection].initialized) {
+            console.warn(`Already initialized ${chat_selection}!`);
+            return;
+          }
+
           new Leijuke(leijukeData[chat_selection], new EuCookieManager, adapter);
+          drupalSettings.leijuke_data[chat_selection].initialized = true;
         });
       }
     }
@@ -29,6 +37,7 @@
     if (chatSelection.indexOf('kuura') != -1) {
       return new KuuraAdapter;
     }
+    console.warn(`No adapter found for ${chatSelection}!`);
   }
 
   class EuCookieManager {
