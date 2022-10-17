@@ -81,8 +81,7 @@
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/main/patches/default_content_2.0.0-alpha2-2640734_manual_imports-e164a354.patch"
             },
             "drupal/eu_cookie_compliance": {
-                "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/d1a6866b2138f7d3597df79f395a5c1a9e19ee2e/patches/eu_cookie_compliance_block_8.x-1.19.patch",
-                "[#UHF-2956] Fix JavaScript error at cookie preference page": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/97683d32e57808a4c9a4f6a2d20757af7a0b8c37/patches/eu_cookie_compliance_js_error_8.x-1.19-patched.patch"
+                "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/3572e8e6b840cb250585727bab7c5f627523f8b4/patches/eu_cookie_compliance_block_8.x-1.20.patch"
             },
             "drupal/features": {
                 "https://www.drupal.org/project/features/issues/2869336": "https://www.drupal.org/files/issues/features_export-config-translation-2869336-2.patch"
