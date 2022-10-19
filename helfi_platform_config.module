@@ -183,8 +183,16 @@ function helfi_platform_config_system_breadcrumb_alter(
 
   /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
   $resolver = \Drupal::service('helfi_api_base.environment_resolver');
-  $activeEnvironment = $resolver->getActiveEnvironment()->getEnvironmentName();
-  $environment = $resolver->getEnvironment(Project::ETUSIVU, $activeEnvironment);
+
+  // Do nothing if the current project is not in environments list.
+  try {
+    $activeEnvironment = $resolver->getActiveEnvironment()->getEnvironmentName();
+    $environment = $resolver->getEnvironment(Project::ETUSIVU, $activeEnvironment);
+  }
+  catch (\Exception $e) {
+    return;
+  }
+
   $currentLanguage = Drupal::languageManager()
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
     ->getId();
