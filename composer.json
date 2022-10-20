@@ -81,7 +81,7 @@
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/main/patches/default_content_2.0.0-alpha2-2640734_manual_imports-e164a354.patch"
             },
             "drupal/eu_cookie_compliance": {
-                "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/3572e8e6b840cb250585727bab7c5f627523f8b4/patches/eu_cookie_compliance_block_8.x-1.20.patch"
+                "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/0d09f4a7d7046dcec7610353e139fa5a59db8aa2/patches/eu_cookie_compliance_block_8.x-1.24.patch"
             },
             "drupal/features": {
                 "https://www.drupal.org/project/features/issues/2869336": "https://www.drupal.org/files/issues/features_export-config-translation-2869336-2.patch"
