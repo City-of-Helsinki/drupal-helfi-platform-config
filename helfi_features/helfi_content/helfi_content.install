@@ -929,13 +929,3 @@ function helfi_content_update_9036() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
-
-/**
- * Reinstall publication date format.
- */
-function helfi_content_update_9037() {
-  ConfigHelper::installNewConfig(
-    dirname(__FILE__) . '/config/optional/',
-    'core.date_format.publication_date_format'
-  );
-}
