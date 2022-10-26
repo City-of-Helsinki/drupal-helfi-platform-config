@@ -88,8 +88,8 @@ function helfi_events_update_9003() {
   $updateHelper = \Drupal::service('update_helper.updater');
 
   $configLocation = dirname(__FILE__) . '/config/install/';
-  ConfigHelper::installNewConfig($configLocation, 'field.field.paragraph.event_list.field_event_count');
-
+  ConfigHelper::installNewField($configLocation, 'field.field.paragraph.event_list.field_event_count');
+  
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_events', 'helfi_events_update_9003');
 
