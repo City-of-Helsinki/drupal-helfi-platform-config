@@ -3,12 +3,12 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.event_list.field_api_url
+    - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_description
     - field.field.paragraph.event_list.field_event_list_title
     - field.field.paragraph.event_list.field_event_location
     - field.field.paragraph.event_list.field_event_time
     - field.field.paragraph.event_list.field_free_events
-    - field.field.paragraph.event_list.field_load_more
     - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
   module:
@@ -26,6 +26,12 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_event_count:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_event_list_description:
     type: text_textarea
@@ -60,13 +66,6 @@ content:
   field_free_events:
     type: boolean_checkbox
     weight: 7
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_load_more:
-    type: boolean_checkbox
-    weight: 3
     region: content
     settings:
       display_label: true

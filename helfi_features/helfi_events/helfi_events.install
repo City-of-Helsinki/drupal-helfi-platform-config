@@ -79,3 +79,20 @@ function helfi_events_update_9002() {
     ConfigHelper::updateExistingConfig($config_location, $config_item);
   }
 }
+
+/**
+ * Remove the show more button and add int list field.
+ */
+function helfi_events_update_9003() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_events', 'helfi_events_update_9003');
+
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  ConfigHelper::installNewConfig($configLocation, 'field.field.paragraph.event_list.field_event_count');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
