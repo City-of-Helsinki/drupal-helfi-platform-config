@@ -15,19 +15,21 @@ const LocationFilter = ({ loading, options, queryBuilder }: LocationFilterProps)
     queryBuilder.setParams({[ApiKeys.LOCATION]: value.map((location: Location) => location.value).join(',')});
   }
 
+  const locationHelper = Drupal.t("If you want to search for remote events, select only the option 'Internet (remote events)'");
+
   return (
     <div className='hdbt-search__filter event-form__filter--location'>
       <Select
         className='hdbt-search__dropdown'
-        clearButtonAriaLabel={Drupal.t('Clear selection', {}, { context: 'News archive clear button aria label' })}
+        clearButtonAriaLabel={Drupal.t('Clear selections', {}, { context: 'Event search: clear button aria label' })}
         disabled={loading}
-        helper={Drupal.t('If you wish to see remote events only, select the option "Internet"')}
-        label={Drupal.t('Select a location')}
+        helper={locationHelper}
+        label={Drupal.t('Select a venue')}
         multiselect
         onChange={onChange}
         options={options}
-        placeholder={Drupal.t('All locations')}
-        selectedItemRemoveButtonAriaLabel={Drupal.t('Remove item', {}, { context: 'News archive remove item aria label' })}
+        placeholder={Drupal.t('All', {}, {context: 'Event search: all available options'})}
+        selectedItemRemoveButtonAriaLabel={Drupal.t('Remove item', {}, { context: 'Event search: remove item aria label' })}
         theme={{
           '--focus-outline-color': 'var(--hdbt-color-black)',
           '--multiselect-checkbox-background-selected': 'var(--hdbt-color-black)',

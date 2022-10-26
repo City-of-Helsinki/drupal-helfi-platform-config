@@ -14,7 +14,7 @@ import type DateSelectDateTimes from '../types/DateSelectDateTimes';
 const getDateTimeFromHDSFormat = (d: string): DateTime => DateTime.fromFormat(d, HDS_DATE_FORMAT, { locale: 'fi' });
 
 // End date must be after start date. But only if both are defined.
-const isOutOfRange = ({ endDate, startDate }: DateSelectDateTimes): boolean => !!(startDate && endDate && startDate.startOf("day") >= endDate.startOf("day"))
+const isOutOfRange = ({ endDate, startDate }: DateSelectDateTimes): boolean => !!(startDate && endDate && startDate.startOf('day') >= endDate.startOf('day'))
 
 // Date must be in within the next 1000 years or so....
 // This also validates that the string is not too long even though it might be valid.
@@ -161,15 +161,15 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
   }
 
   const bothCheckboxes = filterSettings.showFreeFilter && filterSettings.showRemoteFilter;
-  const showOnlyLabel = Drupal.t('Show only');
-  const freeTranslation = Drupal.t('Free events');
+  const showOnlyLabel = Drupal.t('Show only', {}, {context: 'Event search: event type prefix'});
+  const freeTranslation = Drupal.t('Free-of-charge events');
   const remoteTranslation = Drupal.t('Remote events');
   const freeLabel = bothCheckboxes ? freeTranslation : `${showOnlyLabel} ${freeTranslation.toLowerCase()}`;
   const remoteLabel = bothCheckboxes ? remoteTranslation : `${showOnlyLabel} ${remoteTranslation.toLowerCase()}`;
 
   return (
     <form className='event-form-container' onSubmit={handleSubmit}>
-      <h3>{Drupal.t('Filter events')}</h3>
+      <h3>{Drupal.t('Filter events', {}, {context: 'Event search: search form title'})}</h3>
       <div className='event-form__filters-container'>
         <div className='event-form__filter-section-container'>
           {
@@ -194,7 +194,7 @@ const FormContainer = ({ filterSettings, queryBuilder, onSubmit, loading, locati
         </div>
         {
           bothCheckboxes &&
-          <div className='event-form__checkboxes-label'>{Drupal.t('Show only')}</div>
+          <div className='event-form__checkboxes-label'>{showOnlyLabel}</div>
         }
         <div className='event-form__filter-section-container'>
           {
