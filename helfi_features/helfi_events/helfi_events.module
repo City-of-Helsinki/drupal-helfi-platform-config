@@ -44,7 +44,13 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
   $variables['#attached']['drupalSettings']['helfi_events']['baseUrl'] = LinkedEvents::BASE_URL;
 }
 
-function helfi_events_event_list_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+/**
+ * Event count dropdown selectable values.
+ *
+ * @return int[]
+ *   Values to select.
+ */
+function helfi_events_event_list_allowed_values_function() {
   return [
     3 => 3,
     5 => 5,
