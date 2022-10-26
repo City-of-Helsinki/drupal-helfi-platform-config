@@ -98,11 +98,11 @@ function helfi_base_config_update_9002() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = Drupal::service('update_helper.updater');
 
+    $configLocation = dirname(__FILE__) . '/config/install/';
+  ConfigHelper::installNewConfig($configLocation, 'helfi_base_config.breadcrumb');
+
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_base_config', 'helfi_base_config_update_9002');
-
-  $configLocation = dirname(__FILE__) . '/config/install/';
-  ConfigHelper::installNewConfig($configLocation, 'helfi_base_config.breadcrumb');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
