@@ -38,7 +38,7 @@ settings:
     -
       value: 9
       label: '9'
-  allowed_values_function: ''
+  allowed_values_function: 'helfi_events_event_list_allowed_values_function'
 module: options
 locked: false
 cardinality: 1
