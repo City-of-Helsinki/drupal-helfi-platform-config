@@ -63,7 +63,7 @@ function helfi_news_feed_paragraph_view(
       $query->condition($name, $value, 'IN');
     }
 
-    $query->sort('created', 'DESC');
+    $query->sort('published_at', 'DESC');
 
     $ids = $query->execute();
     $entities = $storage->loadMultiple(array_keys($ids));

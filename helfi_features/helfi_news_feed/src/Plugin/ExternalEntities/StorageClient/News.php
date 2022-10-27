@@ -132,7 +132,9 @@ final class News extends ExternalEntityStorageClientBase {
     $query = [
       sprintf('filter[taxonomy_term--news_%s][condition][operator]', $name) => 'IN',
     ];
-    $query[sprintf('filter[taxonomy_term--news_%s][condition][path]', $name)] = "field_news_$name.id";
+    $query[sprintf('filter[taxonomy_term--news_%s][condition][path]', $name)] = $name === 'tags'
+      ? "field_news_item_$name.id"
+      : "field_news_$name.id";
 
     // Filter by multiple terms using 'OR' condition.
     foreach ($terms as $key => $value) {
@@ -196,10 +198,10 @@ final class News extends ExternalEntityStorageClientBase {
     foreach ($sorts as $sort) {
       ['field' => $field, 'direction' => $direction] = $sort;
       $match = match ($field) {
-        'created' => function (string $direction) : array {
+        'published_at' => function (string $direction) : array {
           return [
-            'sort[created][path]' => 'created',
-            'sort[created][direction]' => $direction,
+            'sort[published_at][path]' => 'published_at',
+            'sort[published_at][direction]' => $direction,
           ];
         },
       };
