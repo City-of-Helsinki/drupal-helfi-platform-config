@@ -929,3 +929,17 @@ function helfi_content_update_9036() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
+
+/**
+ * Remove phasing item heading level
+ */
+function helfi_content_update_9037() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9037');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

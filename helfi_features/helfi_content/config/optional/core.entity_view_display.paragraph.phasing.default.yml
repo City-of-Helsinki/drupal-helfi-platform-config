@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.field.paragraph.phasing.field_description
     - field.field.paragraph.phasing.field_phasing_item
-    - field.field.paragraph.phasing.field_phasing_item_title_level
     - field.field.paragraph.phasing.field_phasing_title_level
     - field.field.paragraph.phasing.field_show_phase_numbers
     - field.field.paragraph.phasing.field_title
@@ -33,13 +32,6 @@ content:
       link: ''
     third_party_settings: {  }
     weight: 2
-    region: content
-  field_phasing_item_title_level:
-    type: list_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
     region: content
   field_phasing_title_level:
     type: list_key
