@@ -82,8 +82,10 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
    * {@inheritDoc}
    */
   public function loadMultiple(array $ids = NULL) {
+    $this->query['filter[id][condition][path]'] = 'id';
+    $this->query['filter[id][condition][operator]'] = 'IN';
     foreach ($ids ?? [] as $index => $id) {
-      $this->query[sprintf('filter[id][value][%d]', $index)] = $id;
+      $this->query[sprintf('filter[id][condition][value][%d]', $index)] = $id;
     }
 
     $data = $this->request($this->endpoint, $this->query);
@@ -166,7 +168,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     try {
       $langcode = $this->languageManager->getCurrentLanguage()->getId();
       $uri = vsprintf('%s%s?%s', [
-        $this->environment->getUrl($langcode),
+        $this->environment->getInternalAddress($langcode),
         $endpoint,
         \GuzzleHttp\http_build_query($parameters),
       ]);

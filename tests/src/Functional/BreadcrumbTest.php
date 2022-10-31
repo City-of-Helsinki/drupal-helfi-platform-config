@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_platform_config\Functional;
 
+use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -25,6 +27,7 @@ class BreadcrumbTest extends BrowserTestBase {
    */
   protected static $modules = [
     'language',
+    'locale',
     'content_translation',
     'node',
     'block',
@@ -55,6 +58,10 @@ class BreadcrumbTest extends BrowserTestBase {
     $this->config('language.negotiation')
       ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
       ->save();
+    $this->config('helfi_api_base.environment_resolver.settings')
+      ->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local')
+      ->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN)
+      ->save();
 
     NodeType::create([
       'type' => 'page',
@@ -81,14 +88,14 @@ class BreadcrumbTest extends BrowserTestBase {
    */
   public function testBreadcrumb() : void {
     // Make sure first item is always link to hel.fi Etusivu instance.
-    foreach (['en' => 'Frontpage', 'sv' => 'Framsida', 'fi' => 'Etusivu'] as $language => $title) {
+    foreach (['en', 'sv', 'fi'] as $language) {
       $this->drupalGet('/' . $language);
       $parts = $this->getBreadcrumbParts();
-      $this->assertEquals($title, $parts[0]['text']);
+      $this->assertEquals(t('Front page'), $parts[0]['text']);
 
       $this->drupalGet('/' . $language . '/node/' . $this->node->id());
       $parts = $this->getBreadcrumbParts();
-      $this->assertEquals($title, $parts[0]['text']);
+      $this->assertEquals(t('Front page'), $parts[0]['text']);
     }
   }
 
