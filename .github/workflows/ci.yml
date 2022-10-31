@@ -47,7 +47,7 @@ jobs:
         run: |
           cd $DRUPAL_ROOT
           composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/${{ secrets.MODULE_NAME }}
+          composer require drupal/${{ secrets.MODULE_NAME }} -W
           vendor/bin/drush en ${{ secrets.MODULE_NAME }} -y
 
       - name: Run PHPCS

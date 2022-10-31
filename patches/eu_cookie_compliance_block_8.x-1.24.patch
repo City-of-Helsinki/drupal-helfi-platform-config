@@ -12,24 +12,33 @@ index 041bf25..c708f6f 100644
      checkbox_default_state:
        type: string
 diff --git a/eu_cookie_compliance.libraries.yml b/eu_cookie_compliance.libraries.yml
-index f64bd25..05317d1 100644
+index 28b4e51..d2e5646 100644
 --- a/eu_cookie_compliance.libraries.yml
 +++ b/eu_cookie_compliance.libraries.yml
-@@ -29,3 +29,9 @@ admin:
+@@ -1,7 +1,7 @@
+ eu_cookie_compliance:
+   version: VERSION
+   js:
+-    js/eu_cookie_compliance.min.js: { attributes: { defer: true } }
++    js/eu_cookie_compliance.js: { attributes: { defer: true } }
+   dependencies:
+     - core/jquery
+     - core/drupal
+@@ -36,3 +36,9 @@ admin:
        css/eu_cookie_compliance_admin.css: {}
    js:
      js/eu_cookie_compliance_admin.js: {}
 +eu_cookie_compliance_cookie_values:
-+  version: 1.9
++  version: 1.24
 +  js:
 +    js/eu_cookie_compliance_cookie_values.js: {}
 +  dependencies:
 +    - eu_cookie_compliance/eu_cookie_compliance
 diff --git a/eu_cookie_compliance.module b/eu_cookie_compliance.module
-index aa291e8..e6b63a1 100644
+index 9c289c9..046b452 100644
 --- a/eu_cookie_compliance.module
 +++ b/eu_cookie_compliance.module
-@@ -378,7 +378,7 @@ function eu_cookie_compliance_build_data() {
+@@ -413,7 +413,7 @@ function eu_cookie_compliance_build_data() {
        $click_confirmation = FALSE;
        $scroll_confirmation = FALSE;
        if ($config->get('enable_save_preferences_button')) {
@@ -39,11 +48,11 @@ index aa291e8..e6b63a1 100644
        }
        else {
 diff --git a/js/eu_cookie_compliance.js b/js/eu_cookie_compliance.js
-index 2865333..4d5496e 100644
+index f1072fe..33d623d 100644
 --- a/js/eu_cookie_compliance.js
 +++ b/js/eu_cookie_compliance.js
-@@ -444,7 +444,7 @@
-
+@@ -597,7 +597,7 @@
+ 
      if (drupalSettings.eu_cookie_compliance.method === 'categories') {
        // Select Checked categories.
 -      var categories = $("#eu-cookie-compliance-categories input:checkbox:checked").map(function () {
@@ -51,9 +60,9 @@ index 2865333..4d5496e 100644
          return $(this).val();
        }).get();
        Drupal.eu_cookie_compliance.setAcceptedCategories(categories);
-@@ -474,8 +474,8 @@
+@@ -633,8 +633,8 @@
    }
-
+ 
    Drupal.eu_cookie_compliance.savePreferencesAction = function () {
 -    var categories = $("#eu-cookie-compliance-categories input:checkbox:checked").map(function () {
 -      return $(this).val();
@@ -64,7 +73,7 @@ index 2865333..4d5496e 100644
      var nextStatus = cookieValueAgreedShowThankYou;
 diff --git a/js/eu_cookie_compliance_cookie_values.js b/js/eu_cookie_compliance_cookie_values.js
 new file mode 100644
-index 0000000..9e25704
+index 0000000..917c6ad
 --- /dev/null
 +++ b/js/eu_cookie_compliance_cookie_values.js
 @@ -0,0 +1,58 @@
@@ -74,13 +83,13 @@ index 0000000..9e25704
 + *
 + * Get cookie values.
 + */
-+(function ($, Drupal, drupalSettings, cookies) {
++(function ($, Drupal, drupalSettings, cookies, once) {
 +  'use strict';
 +
 +  Drupal.behaviors.euCookieComplianceCookieValues = {
 +    attach: function (context, settings) {
-+      $('body').once('eu-cookie-compliance-block').each(function () {
-+
++      const elements = once('eu-cookie-compliance-block', 'body');
++      elements.forEach(function () {
 +        var cookieName = drupalSettings.eu_cookie_compliance_cookie_values.cookieName === '' ? 'cookie-agreed' : drupalSettings.eu_cookie_compliance_cookie_values.cookieName;
 +        var categories = drupalSettings.eu_cookie_compliance_cookie_values.cookieCategories;
 +        var values = cookies.get(cookieName + '-categories');
@@ -125,7 +134,7 @@ index 0000000..9e25704
 +      });
 +    }
 +  }
-+})(jQuery, Drupal, drupalSettings, window.Cookies);
++})(jQuery, Drupal, drupalSettings, window.Cookies, once);
 diff --git a/src/CookieCategoryListBuilder.php b/src/CookieCategoryListBuilder.php
 index 5a6c160..2062e95 100644
 --- a/src/CookieCategoryListBuilder.php
@@ -137,7 +146,7 @@ index 5a6c160..2062e95 100644
 -    $row['description'] = ['#markup' => $entity->get('description')];
 +    $row['description'] = ['#markup' => $entity->get('description')['value']];
      $row['checkbox_default_state'] = ['#markup' => isset($mapping[$entity->get('checkbox_default_state')]) ? $mapping[$entity->get('checkbox_default_state')] : $mapping['unchecked']];
-
+ 
      return $row + parent::buildRow($entity);
 diff --git a/src/Form/CookieCategoryForm.php b/src/Form/CookieCategoryForm.php
 index 1bc1277..8980d53 100644
@@ -161,7 +170,7 @@ index 1bc1277..8980d53 100644
      $cookie_category = $this->entity;
      $status = $cookie_category->save();
 +    $status = 0;
-
+ 
      switch ($status) {
        case SAVED_NEW:
 diff --git a/src/Form/EuCookieComplianceBlockForm.php b/src/Form/EuCookieComplianceBlockForm.php
@@ -484,18 +493,18 @@ index 0000000..8db047b
 +
 +}
 diff --git a/templates/eu_cookie_compliance_popup_info.html.twig b/templates/eu_cookie_compliance_popup_info.html.twig
-index 196f6cf..c1213f1 100644
+index 3502672..60b1704 100644
 --- a/templates/eu_cookie_compliance_popup_info.html.twig
 +++ b/templates/eu_cookie_compliance_popup_info.html.twig
-@@ -52,19 +52,13 @@
-
+@@ -60,19 +60,13 @@
+ 
      {% if cookie_categories %}
        <div id="eu-cookie-compliance-categories" class="eu-cookie-compliance-categories">
 +        {# Hide categories by using hidden fields in place of checkboxes on popup #}
          {% for key, category in cookie_categories %}
 -          <div class="eu-cookie-compliance-category">
 -            <div>
--              <input type="checkbox" name="cookie-categories" id="cookie-category-{{ key }}"
+-              <input type="checkbox" name="cookie-categories" class="eu-cookie-compliance-category-checkbox" id="cookie-category-{{ key }}"
 -                     value="{{ key }}"
 -                     {% if category.checkbox_default_state in ['checked', 'required'] %} checked {% endif %}
 -                     {% if category.checkbox_default_state == 'required' %} disabled {% endif %} >
