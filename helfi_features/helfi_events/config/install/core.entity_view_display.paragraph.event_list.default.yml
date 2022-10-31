@@ -12,7 +12,6 @@ dependencies:
     - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
   module:
-    - paragraphs.paragraphs_type.event_list
     - options
     - text
 id: paragraph.event_list.default
