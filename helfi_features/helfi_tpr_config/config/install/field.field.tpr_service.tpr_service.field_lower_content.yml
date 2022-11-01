@@ -7,6 +7,7 @@ dependencies:
     - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.event_list
     - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.liftup_with_image
@@ -38,6 +39,7 @@ settings:
       banner: banner
       liftup_with_image: liftup_with_image
       from_library: from_library
+      event_list: event_list
       phasing: phasing
       remote_video: remote_video
     negate: 0
@@ -57,6 +59,9 @@ settings:
       content_cards:
         enabled: true
         weight: -23
+      event_list:
+        weight: 44
+        enabled: true
       from_library:
         enabled: true
         weight: 21
