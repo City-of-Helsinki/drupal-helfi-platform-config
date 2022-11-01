@@ -3,21 +3,29 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.event_list.field_api_url
+    - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_description
     - field.field.paragraph.event_list.field_event_list_title
     - field.field.paragraph.event_list.field_event_location
     - field.field.paragraph.event_list.field_event_time
     - field.field.paragraph.event_list.field_free_events
-    - field.field.paragraph.event_list.field_load_more
     - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
   module:
+    - options
     - text
 id: paragraph.event_list.default
 targetEntityType: paragraph
 bundle: event_list
 mode: default
 content:
+  field_event_count:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_event_list_description:
     type: text_default
     label: hidden
@@ -75,4 +83,3 @@ content:
     region: content
 hidden:
   field_api_url: true
-  field_load_more: true

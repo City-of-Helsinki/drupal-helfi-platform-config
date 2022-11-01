@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use Drupal\helfi_events\LinkedEvents;
 
 /**
@@ -11,10 +13,14 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
     $paragraph = $variables['paragraph'];
     $linkedEvents = Drupal::service('helfi_events_linked_events');
 
-    if (!$paragraph->get('field_api_url')->isEmpty()) {
+    if ($paragraph->hasField('field_api_url') && !$paragraph->get('field_api_url')->isEmpty()) {
       $intialUrl = $paragraph->get('field_api_url')->first()->getUrl()->toString();
       $params = $linkedEvents->parseParams($intialUrl);
       $variables['events_url'] = $linkedEvents->getEventsRequest($params);
+    }
+
+    if ($paragraph->hasField('field_event_count') && !$paragraph->get('field_event_count')->isEmpty()) {
+      $variables['#attached']['drupalSettings']['helfi_events']['eventCount'] = $paragraph->get('field_event_count')->first()->getValue()['value'];
     }
 
     $booleanFields = [
@@ -25,11 +31,9 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
     ];
 
     foreach ($booleanFields as $field) {
-      if(!$paragraph->get($field)->isEmpty()) {
+      if ($paragraph->hasField($field) && !$paragraph->get($field)->isEmpty()) {
         $variables[$field] = (boolean) $paragraph->get($field)->first()->getValue()['value'];
       }
-
-
     }
   }
 
@@ -44,4 +48,17 @@ function helfi_events_preprocess_paragraph__event_list(&$variables) {
 
   $variables['#attached']['library'][] = 'helfi_events/events_list';
   $variables['#attached']['drupalSettings']['helfi_events']['baseUrl'] = LinkedEvents::BASE_URL;
+}
+
+/**
+ * Event count dropdown selectable values.
+ *
+ * @return int[]
+ *   Values to select.
+ */
+function helfi_events_event_list_allowed_values_function() {
+  return [
+    3 => 3,
+    5 => 5,
+  ];
 }
