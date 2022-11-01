@@ -1,4 +1,4 @@
-import ApiKeys from "../enum/ApiKeys";
+import ApiKeys from '../enum/ApiKeys';
 
 interface Options {
  [key: string]: string

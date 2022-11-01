@@ -14,14 +14,59 @@ msgstr "Tämä tapahtumakalenteri on tyhjä."
 msgid "No worries though, this city does not run out of things to do."
 msgstr "Ei hätää, nimittäin tästä kaupungista ei tekeminen lopu."
 
-msgid "See all events"
-msgstr "Katso kaikki tapahtumat"
-
-msgid "Load more events"
-msgstr "Lataa lisää tapahtumia"
-
 msgid "Refine search in tapahtumat.hel.fi"
 msgstr "Tarkenna hakua tapahtumat.hel.fi:ssä"
 
 msgid "Event keywords"
 msgstr "Tapahtuman avainsanat"
+
+msgctxt "Event search: search form title"
+msgid "Filter events"
+msgstr "Etsi tapahtumia"
+
+msgctxt "Event search: all available options"
+msgid "All"
+msgstr "Kaikki"
+
+msgid "If you want to search for remote events, select only the option 'Internet (remote events)'"
+msgstr "Jos haluat etsiä etätapahtumia, valitse vaihtoehto 'Internet (etätapahtumat)'"
+
+msgid "Select a venue"
+msgstr "Valitse tapahtumapaikka"
+
+msgctxt "Event search: remove item aria label"
+msgid "Remove item"
+msgstr "Poista valinta"
+
+msgctxt "Event search: clear button aria label"
+msgid "Clear selections"
+msgstr "Tyhjennä kaikki valinnat"
+
+msgid "Use the format D.M.YYYY"
+msgstr "Käytä muotoa P.K.VVVV"
+
+msgctxt "Event search: date selection label"
+msgid "Date"
+msgstr "Ajankohta"
+
+msgid "Select a time period in which in which the event takes place"
+msgstr "Valitse ajankohta, johon tapahtuma sijoittuu"
+
+msgid "First day of the time period"
+msgstr "Alkaen"
+
+msgid "The last day of the time period is the same as the first day"
+msgstr "Aikavälin viimeinen päivä on sama kuin ensimmäinen"
+
+msgid "Last day of the time period"
+msgstr "Asti"
+
+msgctxt "Event search: event type prefix"
+msgid "Show only"
+msgstr "Näytä vain"
+
+msgid "Free-of-charge events"
+msgstr "Maksuttomat tapahtumat"
+
+msgid "Remote events"
+msgstr "Etätapahtumat"

@@ -18,7 +18,7 @@ type DateSelectProps = DateSelectDateTimes & DateSelectActions;
 
 const getTitle = ({ startDate, endDate }: DateSelectDateTimes): string => {
   if ((!startDate || !startDate.isValid) && (!endDate || !endDate.isValid)) {
-    return Drupal.t('All dates');
+    return Drupal.t('All', {}, {context: ''});
   }
 
   if ((startDate && startDate.isValid) && (!endDate || !endDate.isValid)) {
@@ -32,8 +32,7 @@ const getTitle = ({ startDate, endDate }: DateSelectDateTimes): string => {
 }
 
 
-const dateHelperText = Drupal.t('Use format D.M.YYYY')
-const dateLabel = Drupal.t('Choose a date')
+const dateHelperText = Drupal.t('Use the format D.M.YYYY')
 
 const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate, setStartDate, startDate, invalidStartDate = false, invalidEndDate = false }: DateSelectProps) => {
 
@@ -44,35 +43,34 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
   };
 
   const title = getTitle({ startDate, endDate });
-  const startDateErrorText = invalidStartDate ? Drupal.t("Invalid start date") : ''
-  const endDateErrorText = invalidEndDate ? Drupal.t("Invalid end date") : ''
+  const startDateErrorText = invalidStartDate ? Drupal.t('Invalid start date') : ''
+  const endDateErrorText = invalidEndDate ? Drupal.t('Invalid end date') : ''
 
   return (
     <div className='hdbt-search__filter event-form__filter--date'>
       <Collapsible
         id='event-search__date-select'
-        label={Drupal.t('Pick dates')}
-        helper={Drupal.t('Pick a range between which events shoud take place')}
+        label={Drupal.t('Date', {}, {context: 'Event search: date selection label'})}
+        helper={Drupal.t('Select a time period in which in which the event takes place')}
         title={title}
       >
         <div className='event-form__date-container'>
-          <CheckboxFilter
-            checked={endDisabled}
-            id='end-disabled'
-            label={Drupal.t('End date is the same as start date')}
-            onChange={disableEnd}
-          />
-
           <DateInput
             className='hdbt-search__filter hdbt-search__date-input'
             helperText={dateHelperText}
             id='start-date'
-            label={dateLabel}
+            label={Drupal.t('First day of the time period')} 
             lang={currentLanguage}
             invalid={invalidStartDate}
             errorText={startDateErrorText}
             value={startDate?.toFormat(HDS_DATE_FORMAT)}
             onChange={(value: string) => changeDate(value, 'start')}
+          />
+          <CheckboxFilter
+            checked={endDisabled}
+            id='end-disabled'
+            label={Drupal.t('The last day of the time period is the same as the first day')}
+            onChange={disableEnd}
           />
           <DateInput
             minDate={endDisabled ? undefined : startDate?.plus({ 'days': 1 }).toJSDate()}
@@ -80,7 +78,7 @@ const DateSelect = ({ endDate, endDisabled, disableEnd, queryBuilder, setEndDate
             disabled={endDisabled}
             helperText={dateHelperText}
             id='end-date'
-            label={dateLabel}
+            label={Drupal.t('Last day of the time period')}
             lang={currentLanguage}
             invalid={invalidEndDate}
             errorText={endDateErrorText}
