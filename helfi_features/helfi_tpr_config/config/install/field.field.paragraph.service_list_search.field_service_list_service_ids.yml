@@ -1,0 +1,23 @@
+uuid: c7efbd13-f426-41de-995c-854e2b880a5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_service_list_service_ids
+    - paragraphs.paragraphs_type.service_list_search
+id: paragraph.service_list_search.field_service_list_service_ids
+field_name: field_service_list_service_ids
+entity_type: paragraph
+bundle: service_list_search
+label: 'Service IDs'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

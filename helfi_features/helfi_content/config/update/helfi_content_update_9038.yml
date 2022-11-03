@@ -1,0 +1,15 @@
+field.field.node.landing_page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      dependencies:
+        config:
+          - paragraphs.paragraphs_type.service_list_search
+      settings:
+        handler_settings:
+          target_bundles:
+            service_list_search: service_list_search
+          target_bundles_drag_drop:
+            service_list_search:
+              weight: 50
+              enabled: true

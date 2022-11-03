@@ -1,0 +1,50 @@
+uuid: 2d2595cf-05ad-478d-bb6e-149412827954
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.service_list_search.field_service_list_description
+    - field.field.paragraph.service_list_search.field_service_list_service_ids
+    - field.field.paragraph.service_list_search.field_service_list_services
+    - field.field.paragraph.service_list_search.field_service_list_title
+    - paragraphs.paragraphs_type.service_list_search
+  module:
+    - text
+id: paragraph.service_list_search.default
+targetEntityType: paragraph
+bundle: service_list_search
+mode: default
+content:
+  field_service_list_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_service_list_service_ids:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_service_list_services:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_service_list_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden: {  }

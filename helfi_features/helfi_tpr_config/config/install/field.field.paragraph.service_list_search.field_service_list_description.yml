@@ -1,0 +1,25 @@
+uuid: 184d3743-790d-4ff0-b203-77d22adeb3ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_service_list_description
+    - paragraphs.paragraphs_type.service_list_search
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats: {  }
+id: paragraph.service_list_search.field_service_list_description
+field_name: field_service_list_description
+entity_type: paragraph
+bundle: service_list_search
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
