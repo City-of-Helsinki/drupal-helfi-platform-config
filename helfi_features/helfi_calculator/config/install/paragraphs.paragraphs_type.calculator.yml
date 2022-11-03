@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+id: calculator
+label: Calculator
+icon_uuid: null
+icon_default: null
+description: 'A paragraph that adds a predefined calculator to the page.'
+behavior_plugins: {  }
