@@ -1,4 +1,3 @@
-uuid: 2d2595cf-05ad-478d-bb6e-149412827954
 langcode: en
 status: true
 dependencies:
@@ -17,34 +16,19 @@ mode: default
 content:
   field_service_list_description:
     type: text_default
-    label: above
+    label: hidden
     settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  field_service_list_service_ids:
-    type: number_integer
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  field_service_list_services:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
     third_party_settings: {  }
     weight: 1
     region: content
   field_service_list_title:
     type: string
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 0
     region: content
-hidden: {  }
+hidden:
+  field_service_list_service_ids: true
+  field_service_list_services: true

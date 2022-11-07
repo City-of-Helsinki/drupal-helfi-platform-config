@@ -1,4 +1,3 @@
-uuid: e8c1f4ac-063e-42cd-b875-abae137235a7
 langcode: en
 status: true
 dependencies:
@@ -26,14 +25,14 @@ content:
     third_party_settings: {  }
   field_service_list_service_ids:
     type: number
-    weight: 3
+    weight: 2
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_service_list_services:
     type: select2_entity_reference
-    weight: 2
+    weight: 3
     region: content
     settings:
       width: 100%

@@ -1,7 +1,11 @@
-uuid: e6b203eb-949e-466c-b126-66440eef3829
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
 id: service_list_search
 label: 'Service List Search'
 icon_uuid: null

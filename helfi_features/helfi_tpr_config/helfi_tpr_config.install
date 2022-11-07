@@ -613,10 +613,8 @@ function helfi_tpr_config_update_9029() {
 
   // Configurations to be installed.
   $configurations = [
-    'field.storage.paragraph.field_service_list_service_ids',
     'paragraphs.paragraphs_type.service_list_search',
     'field.field.paragraph.service_list_search.field_service_list_title',
-    'field.field.paragraph.service_list_search.field_service_list_service_ids',
     'field.field.paragraph.service_list_search.field_service_list_services',
     'field.field.paragraph.service_list_search.field_service_list_description',
     'core.entity_view_display.paragraph.service_list_search.default',
@@ -627,6 +625,53 @@ function helfi_tpr_config_update_9029() {
     ConfigHelper::installNewConfig($configInstallLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
+
+  // Install services_ids
+  ConfigHelper::installNewField(
+    $configInstallLocation,
+    'field.storage.paragraph.field_service_list_service_ids',
+    'field.field.paragraph.service_list_search.field_service_list_service_ids'
+  );
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Creating new view mode teaser search result.
+ */
+function helfi_tpr_config_update_9030() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Configurations location.
+  $configInstallLocation = dirname(__FILE__) . '/config/install/';
+
+  // Configurations to be installed.
+  $configurations = [
+    'core.entity_view_display.tpr_service.tpr_service.teaser_search_result',
+    'core.entity_view_mode.tpr_service.teaser_search_result'
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configInstallLocation, $configuration);
+  }
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add new display for service list view.
+ */
+function helfi_tpr_config_update_9031() {
+
+  // Enable the 'Hide sidebar navigation from this page' to unit and service.
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9031');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
