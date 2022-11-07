@@ -151,9 +151,6 @@ chat_leijuke:
   header: true
   js:
     assets/js/chat_leijuke.js: {}
-  css:
-    theme:
-      assets/css/chat_leijuke.css: {}
   dependencies:
     - core/drupal
     - core/drupalSettings
