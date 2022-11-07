@@ -223,3 +223,20 @@ function helfi_news_item_update_9010() {
     ConfigHelper::installNewConfig($config_optional, 'core.date_format.publication_date_format');
   }
 }
+
+/**
+ * Add translations for the news item groups and neighbourhoods.
+ */
+function helfi_news_item_update_9011() {
+  $config_location = dirname(__FILE__) . '/config/language/';
+  $configurations = [
+    'field.field.node.news_item.field_news_groups',
+    'field.field.node.news_item.field_news_neighbourhoods',
+  ];
+
+  // Install new url pattern for News items and update News item promoted
+  // to front page field default value.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($config_location, $configuration);
+  }
+}
