@@ -1,0 +1,24 @@
+#--variable ADMIN_URL:docker exec helfi-kymp-app drush uli
+--variable ADMIN_URL:docker exec helfi-etusivu-app drush uli
+#--variable ADMIN_URL:docker exec hel-platform-app drush uli
+#--variable ADMIN_URL:docker exec helfi-app drush uli
+#--variable ADMIN_URL:docker exec mysite-app drush uli
+#--variable BROWSER:chrome
+--variable BROWSER:headlesschrome
+--variable PICCOMPARE:$false
+--variable BASE_URL:varnish-helfi-kymp.docker.so
+#--variable BASE_URL:varnish-helfi-sote.docker.so
+#--variable BASE_URL:helfi-sote.docker.so
+#--variable BASE_URL:helfi.docker.so
+#--variable BASE_URL:helfi-etusivu.docker.so
+#--variable BASE_URL:hel-platform.docker.so
+#--variable BASE_URL:mysite.docker.so
+
+--variable PROTOCOL:https
+--variable CI:$false
+--variable CI_LOCALTEST:$false
+--variable DEBUG:$true
+--variable USEORIGINALNAME:$false
+--variable PREFIX:/kaupunkiymparisto-ja-liikenne
+#--variable PREFIX:/sosiaali-ja-terveyspalvelut
+#--variable PREFIX:

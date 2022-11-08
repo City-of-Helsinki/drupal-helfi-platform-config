@@ -1,0 +1,7 @@
+--variable BROWSER:headlesschrome
+--variable PROTOCOL:https
+--variable CI:$true
+--variable CI_LOCALTEST:$false
+--variable DEBUG:$true
+--variable REPORTS_PATH:app/helfi-test-automation-python/robotframework-reports
+

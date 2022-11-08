@@ -1,0 +1,22 @@
+ [
+	 {
+    "page": 1,
+    "name": "Date Field",
+    "type": "coordinates",
+    "x": 229,
+    "y": 54,
+    "height": 2,
+    "width": 28,
+    "unit": "mm"
+    },
+    {
+    "page": 1,
+    "name": "Top Left Bar. Remove This Later?!",
+    "type": "coordinates",
+    "x": 0,
+    "y": 0,
+    "height": 10,
+    "width": 210,
+    "unit": "mm"
+    }
+]

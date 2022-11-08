@@ -1,0 +1,12 @@
+{
+--test Helfi-Test-Automation-Python.Robotframework-Tests.Repositories.Drupal-Helfi-Platform.Announcements.Announcements.All Pages
+--test Helfi-Test-Automation-Python.Robotframework-Tests.Repositories.Drupal-Helfi-Platform.Announcements.Announcements.Certain Pages
+--test Helfi-Test-Automation-Python.Robotframework-Tests.Repositories.Drupal-Helfi-Platform.Announcements.Announcements.All Pages After Modify
+--test Helfi-Test-Automation-Python.Robotframework-Tests.Repositories.Drupal-Helfi-Platform.Announcements.Announcements.Unpublished
+--test Helfi-Test-Automation-Python.Robotframework-Tests.Repositories.Drupal-Helfi-Platform.Announcements.Announcements.English Translation
+--test Helfi-Test-Automation-Python.Robotframework-Tests.Repositories.Drupal-Helfi-Platform.Announcements.Announcements.Notification Layout
+--test Helfi-Test-Automation-Python.Robotframework-Tests.Repositories.Drupal-Helfi-Platform.Announcements.Announcements.Attention Layout
+--test Helfi-Test-Automation-Python.Robotframework-Tests.Repositories.Drupal-Helfi-Platform.Announcements.Announcements.Alert Layout
+}
+#WAIT
+
