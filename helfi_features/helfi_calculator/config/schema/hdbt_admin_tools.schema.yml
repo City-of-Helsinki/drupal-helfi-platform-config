@@ -1,0 +1,17 @@
+helfi_calculator.calculator_settings:
+  type: config_object
+  label: 'Calculator settings'
+  mapping:
+    calculator_settings:
+      label: 'Calculator settings'
+      type: mapping
+      mapping:
+        default_icon:
+          label: 'Default icon'
+          type: label
+        theme_color:
+          label: 'Theme color'
+          type: label
+        koro:
+          label: 'Koro'
+          type: label

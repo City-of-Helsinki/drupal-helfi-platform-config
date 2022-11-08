@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Calculators.
+ */
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\helfi_calculator\Form\CalculatorSettings;
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function helfi_calculator_toolbar_alter(&$items) {
+  foreach ($items as $key => $value) {
+    if (isset($items[$key]['#attached']) && is_array($items[$key]['#attached']['library'])) {
+      $items[$key]['#attached']['library'][] = 'hdbt_admin_tools/menu_styles';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alter config translation edit form.
+ */
+function helfi_calculator_form_config_translation_form_alter(&$form, &$form_state, $form_id) {
+  if (in_array($form_id, [
+    'config_translation_add_form',
+    'config_translation_edit_form',
+  ])) {
+    $settings = &$form['config_names']['helfi_calculator.calculator_settings'];
+
+    // Don't translate global fields.
+    $settings['footer_settings']['footer_top_content']['#open'] = TRUE;
+    $settings['footer_settings']['footer_color']['#disabled'] = TRUE;
+    $settings['site_settings']['koro']['#disabled'] = TRUE;
+    $settings['site_settings']['theme_color']['#disabled'] = TRUE;
+
+    // Custom submit callback to invalidate caches.
+    $form['#submit'][] = '_hdbt_admin_tools_config_translation_form_submit';
+  }
+}
+
+/**
+ * Submit callback for config translations.
+ *
+ * @param array $form
+ *   Form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state.
+ */
+function _helfi_calculator_config_translation_form_submit(array $form, FormStateInterface $form_state) {
+  Cache::invalidateTags([
+    'config:block.block.footertopblock',
+  ]);
+}
