@@ -175,10 +175,10 @@ index 1bc1277..8980d53 100644
        case SAVED_NEW:
 diff --git a/src/Form/EuCookieComplianceBlockForm.php b/src/Form/EuCookieComplianceBlockForm.php
 new file mode 100644
-index 0000000..77cb34b
+index 0000000..5c8fc9d
 --- /dev/null
 +++ b/src/Form/EuCookieComplianceBlockForm.php
-@@ -0,0 +1,223 @@
+@@ -0,0 +1,233 @@
 +<?php
 +
 +namespace Drupal\eu_cookie_compliance\Form;
@@ -217,11 +217,19 @@ index 0000000..77cb34b
 +  protected static $cookieName;
 +
 +  /**
++   * Eu cookie compliance policy version.
++   *
++   * @var string
++   */
++  protected static string $cookiePolicyVersion;
++
++  /**
 +   * {@inheritdoc}
 +   */
 +  public static function create(ContainerInterface $container) {
 +    self::$config = \Drupal::config('eu_cookie_compliance.settings');
 +    self::$cookieName = !empty(self::$config->get('cookie_name')) ? self::$config->get('cookie_name') : 'cookie-agreed';
++    self::$cookiePolicyVersion = !empty(self::$config->get('cookie_policy_version')) ? self::$config->get('cookie_policy_version') : 'unknown';
 +    return new static();
 +  }
 +
@@ -348,6 +356,7 @@ index 0000000..77cb34b
 +    $time = \Drupal::time()->getRequestTime() + ($cookie_lifetime * 24 * 60 * 60);
 +    setrawcookie(self::$cookieName, '2', $time, '/');
 +    setrawcookie(self::$cookieName . '-categories', $values, $time, '/');
++    setrawcookie(self::$cookieName . '-version', self::$cookiePolicyVersion, $time, '/');
 +  }
 +
 +  /**
@@ -364,6 +373,7 @@ index 0000000..77cb34b
 +    $time = \Drupal::time()->getRequestTime() + ($cookie_lifetime * 24 * 60 * 60);
 +    setrawcookie(self::$cookieName, '2', $time, '/');
 +    setrawcookie(self::$cookieName . '-categories', $values, $time, '/');
++    setrawcookie(self::$cookieName . '-version', self::$cookiePolicyVersion, $time, '/');
 +  }
 +
 +  /**
