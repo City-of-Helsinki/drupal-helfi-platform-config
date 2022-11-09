@@ -20,13 +20,14 @@ jobs:
           sudo apt-get update
           composer create-project city-of-helsinki/drupal-helfi-platform:dev-robo-fixes $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
           cd $DRUPAL_ROOT
-          composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/${{ secrets.MODULE_NAME }} -W
           DRUPAL_BUILD_FROM_SCRATCH=true make setup-robo
 
       - name: Run tests
         run: |
           cd $DRUPAL_ROOT
+          composer config repositories.5 path $GITHUB_WORKSPACE
+          composer require drupal/${{ secrets.MODULE_NAME }} -W
+          docker compose exec -T robo sh -c set -e && /app/vendor/bin/drush en helfi_platform_config && for d in /app/public/modules/contrib/${{ secrets.MODULE_NAME }}/helfi_features/*; do /appvendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
           APP_PATH=/app/public/modules/contrib/helfi_platform_config/tests/robotframework make run-robo-tests
 
       - name: Export app logs
