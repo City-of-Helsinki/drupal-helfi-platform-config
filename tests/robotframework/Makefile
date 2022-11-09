@@ -5,7 +5,7 @@ SITE_PREFIX ?= /
 SETUP_ROBO_TARGETS :=
 CI_POST_INSTALL_TARGETS :=
 
-SETUP_ROBO_TARGETS += install-stonehenge start-stonehenge set-permissions up composer-install fix-files-permissions install-drupal post-install-tasks
+SETUP_ROBO_TARGETS += install-stonehenge start-stonehenge up composer-install fix-files-permissions install-drupal post-install-tasks
 
 install-stonehenge: $(STONEHENGE_PATH)/.git
 
@@ -35,11 +35,6 @@ post-install-tasks:
 	$(call docker_run_ci,app,drush helfi:migrate-fixture tpr_errand_service --publish)
 	$(call docker_run_ci,app,drush helfi:migrate-fixture tpr_service_channel --publish)
 	$(call docker_run_ci,app,drush pmu editoria11y -y)
-
-PHONY += set-permissions
-set-permissions:
-	chmod 777 /home/runner/.cache/composer -R
-	chmod 777 -R $(PROJECT_DIR)
 
 PHONY += fix-files-permission
 fix-files-permission:
