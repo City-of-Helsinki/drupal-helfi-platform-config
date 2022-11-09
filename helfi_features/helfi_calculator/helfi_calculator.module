@@ -17,21 +17,11 @@
 function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
   $config = Drupal::config('helfi_calculator.calculator_settings');
   $calculator_settings = $config->get('calculator_settings');
-  $active_calculators = [];
+  $active = [];
   foreach ($calculator_settings as $key => $value) {
     $variables['#attached']['drupalSettings'][$key] = $calculator_settings[$key]['json'];
     if ($value['active']) {
-      $active_calculators[] = $key;
+      $active[] = $key;
     }
-  }
-
-  dump($variables);
-
-  dump($variables['paragraph']->get('field_calculator'));
-
-  foreach ($active_calculators as $calculator) {
-    $str = ucfirst(str_replace("_", " ", $calculator));
-    dump($calculator);
-    dump($str);
   }
 }
