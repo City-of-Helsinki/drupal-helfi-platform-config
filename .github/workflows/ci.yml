@@ -20,7 +20,7 @@ jobs:
           sudo apt-get update
           composer create-project city-of-helsinki/drupal-helfi-platform:dev-robo-fixes $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
           cd $DRUPAL_ROOT
-          DRUPAL_INSTALL_TARGET=install-drupal-ci-clean make setup-robo
+          DRUPAL_INSTALL_TARGET=install-drupal-ci make setup-robo
 
       - name: Run tests
         run: |
