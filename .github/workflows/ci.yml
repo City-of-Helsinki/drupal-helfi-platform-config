@@ -4,8 +4,8 @@ env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
   SYMFONY_DEPRECATIONS_HELPER: disabled
-  DRUPAL_ROOT: $HOME/drupal
-  MODULE_FOLDER: $DRUPAL_ROOT/public/modules/contrib/${{ secrets.MODULE_NAME }}
+  DRUPAL_ROOT: "$HOME/drupal"
+  MODULE_FOLDER: "$HOME/drupal/public/modules/contrib/${{ secrets.MODULE_NAME }}"
 jobs:
   integration-tests:
     runs-on: ubuntu-latest
