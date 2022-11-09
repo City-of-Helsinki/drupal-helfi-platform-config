@@ -88,19 +88,26 @@ You can use external tools configuration feature to run command prompt command i
       
 You can also configure shortcut key to run tests with one keyboard button press by setting: Preferences -> General -> Keys -> Run last launched external Tool
 
-Robotframework CI image
+# Robotframework CI image
+
 Docker image used to test Drupal using Robotframework.
 
 Available tags:
 
-ghcr.io/city-of-helsinki/drupal-robo:dev
-ghcr.io/city-of-helsinki/drupal-robo:latest
-Development
-It's highly recommended to build dev tag first and test the changes locally before pushing them into latest tag.
+- `ghcr.io/city-of-helsinki/drupal-robo:dev`
+- `ghcr.io/city-of-helsinki/drupal-robo:latest`
 
-Building
-To build dev tag: make build
-To build latest tag: make build-latest
-Release process
-To release dev tag: make push
-To release latest tag: make push-latest
+## Development
+
+It's highly recommended to build `dev` tag first and test the changes locally before pushing them into `latest` tag.
+
+### Building
+
+- To build `dev` tag: `make build`
+- To build `latest` tag: `make build-latest`
+
+### Release process
+
+- To release `dev` tag: `make push`
+- To release `latest` tag: `make push-latest`
+
