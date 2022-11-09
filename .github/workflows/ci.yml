@@ -20,7 +20,7 @@ jobs:
           sudo apt-get update
           composer create-project city-of-helsinki/drupal-helfi-platform:dev-robo-fixes $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
           cd $DRUPAL_ROOT
-          DRUPAL_BUILD_FROM_SCRATCH=true make setup-robo
+          DRUPAL_INSTALL_TARGET=install-drupal-ci-clean make setup-robo
 
       - name: Run tests
         run: |
@@ -105,12 +105,6 @@ jobs:
           cd $DRUPAL_ROOT
           vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
-
-      - name: Enable all HELfi features
-        run: |
-          cd $DRUPAL_ROOT
-          # Enable all HELfi features.
-          set -e && for d in public/modules/contrib/${{ secrets.MODULE_NAME }}/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
 
       - name: Run PHPUnit tests
         run: |
