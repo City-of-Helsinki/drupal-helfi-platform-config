@@ -17,12 +17,12 @@ jobs:
       - name: Build project
         run: |
           sudo apt-get update
-          cd $MODULE_FOLDER/tests/robotframework
+          cd tests/robotframework
           make setup-robo
 
       - name: Run tests
         run: |
-          cd $MODULE_FOLDER/tests/robotframework
+          cd tests/robotframework
           make run-robo-tests
 
       - name: Export app logs
