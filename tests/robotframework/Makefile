@@ -17,7 +17,7 @@ start-stonehenge:
 	cd $(STONEHENGE_PATH) && COMPOSE_FILE=docker-compose.yml make up
 
 $(PROJECT_DIR):
-	composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+	composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $(DRUPAL_ROOT) --no-interaction --repository https://repository.drupal.hel.ninja/
 
 PHONY += install-drupal
 install-drupal: $(PROJECT_DIR)
