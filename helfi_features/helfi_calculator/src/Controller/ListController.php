@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\hdbt_admin_tools\Controller;
+namespace Drupal\helfi_calculator\Controller;
 
 /**
  * @file
- * Contains \Drupal\hdbt_admin_tools\Controller\ListController.
+ * Contains \Drupal\helfi_calculator\Controller\ListController.
  */
 
 use Drupal\user\Entity\User;

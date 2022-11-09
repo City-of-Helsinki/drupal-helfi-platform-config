@@ -78,67 +78,46 @@ class CalculatorSettings extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $settings = $this->getSiteSettings();
+    $settings = $this->getCalculatorSettings();
 
     $form['#tree'] = TRUE;
     $form['#prefix'] = '<div class="layer-wrapper">';
     $form['#suffix'] = '</div>';
 
-    $form['calculator_settings'] = [
-      '#type' => 'fieldset',
-      '#open' => TRUE,
-      '#title' => $this->t('Site wide settings'),
+    $form['calculator_settings']['house_cleaning_service_voucher']['active'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('House cleaning service voucher'),
+      '#default_value' =>  $settings->get('calculator_settings')['house_cleaning_service_voucher']['active'],
     ];
 
-    $icons = [
-      'abstract-1' => $this->t('Icon 1'),
-      'abstract-2' => $this->t('Icon 2'),
-      'abstract-3' => $this->t('Icon 3'),
-      'abstract-4' => $this->t('Icon 4'),
-      'abstract-5' => $this->t('Icon 5'),
-      'abstract-6' => $this->t('Icon 6'),
+    $form['calculator_settings']['house_cleaning_service_voucher']['json'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('House cleaning service voucher'),
+      '#default_value' =>  $settings->get('calculator_settings')['house_cleaning_service_voucher']['json'],
     ];
 
-    $form['calculator_settings']['default_icon'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Default liftup image'),
-      '#options' => $icons,
-      '#required' => TRUE,
-      '#description' => $this->t('This liftup image will be used site wide if none are provided.'),
-      '#default_value' => $settings->get('calculator_settings')['default_icon'] ?: [],
+    $form['calculator_settings']['home_care_service_voucher']['active'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Home care service voucher'),
+      '#default_value' =>  $settings->get('calculator_settings')['home_care_service_voucher']['active'],
     ];
 
-    $wave_motifs = [
-      'wave' => $this->t('Wave'),
-      'vibration' => $this->t('Vibration'),
-      'beat' => $this->t('Beat'),
-      'pulse' => $this->t('Pulse'),
-      'basic' => $this->t('Basic motif'),
-      // 'calm' => $this->t('Calm'),
-    ];
-
-    $form['calculator_settings']['koro'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Select wave motif'),
-      '#options' => $wave_motifs,
-      '#required' => TRUE,
-      '#description' => $this->t(
-        'See wave motifs from <a href=":vig" target="_blank">Visual Identity Guidelines</a>.',
-        [':vig' => 'https://brand.hel.fi/en/wave-motifs/']
-      ),
-      '#default_value' => $settings->get('calculator_settings')['koro'] ?: [],
+    $form['calculator_settings']['home_care_service_voucher']['json'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Home care service voucher'),
+      '#default_value' =>  $settings->get('calculator_settings')['home_care_service_voucher']['json'],
     ];
 
     return $form;
   }
 
   /**
-   * Get site settings based on current language.
+   * Get calculator settings based on current language.
    *
    * @return \Drupal\Core\Config\ImmutableConfig|\Drupal\Core\Config\Config|\Drupal\language\Config\LanguageConfigOverride
-   *   Returns site settings configuration based on language.
+   *   Returns calculator settings configuration based on language.
    */
-  protected function getSiteSettings(): ImmutableConfig|Config|LanguageConfigOverride {
+  protected function getCalculatorSettings(): ImmutableConfig|Config|LanguageConfigOverride {
     if (
       $this->languageManager->getDefaultLanguage()->getId() !==
       $this->languageManager->getCurrentLanguage()->getId()
@@ -158,7 +137,7 @@ class CalculatorSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save site settings (koro, color and icon) to all languages.
+    // Save calculator settings (active, json) to all languages.
     foreach ($this->languageManager->getLanguages() as $language) {
       $this->saveConfiguration('calculator_settings', $form_state, $language);
     }

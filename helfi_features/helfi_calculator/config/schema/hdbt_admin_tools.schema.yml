@@ -2,16 +2,23 @@ helfi_calculator.calculator_settings:
   type: config_object
   label: 'Calculator settings'
   mapping:
-    calculator_settings:
-      label: 'Calculator settings'
+    house_cleaning_service_voucher:
+      label: 'House cleaning service voucher'
       type: mapping
       mapping:
-        default_icon:
-          label: 'Default icon'
-          type: label
-        theme_color:
-          label: 'Theme color'
-          type: label
-        koro:
-          label: 'Koro'
-          type: label
+        active:
+          label: 'Is active'
+          type: boolean
+        json:
+          label: 'Json'
+          type: text
+    home_care_service_voucher:
+      label: 'Home care service voucher'
+      type: mapping
+      mapping:
+        active:
+          label: 'Is active'
+          type: boolean
+        json:
+          label: 'Json'
+          type: text

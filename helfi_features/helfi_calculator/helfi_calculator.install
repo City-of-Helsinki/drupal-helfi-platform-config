@@ -22,4 +22,3 @@ function helfi_calculator_install() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
-
