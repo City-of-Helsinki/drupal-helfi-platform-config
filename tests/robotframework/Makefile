@@ -1,5 +1,5 @@
 STONEHENGE_PATH ?= ${HOME}/stonehenge
-PROJECT_DIR ?= ${DRUPAL_ROOT}
+PROJECT_DIR ?= ${HOME}/drupal
 SITE_PREFIX ?= /
 
 SETUP_ROBO_TARGETS :=
@@ -18,6 +18,9 @@ start-stonehenge:
 
 $(PROJECT_DIR):
 	composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $(PROJECT_DIR) --no-interaction --repository https://repository.drupal.hel.ninja/
+	cd $(PROJECT_DIR)
+	composer config repositories.5 path ${GITHUB_WORKSPACE}
+	composer require drupal/helfi_platform_config -W
 
 PHONY += up
 up:
