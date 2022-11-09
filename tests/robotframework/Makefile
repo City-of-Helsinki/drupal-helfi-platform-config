@@ -1,5 +1,5 @@
 STONEHENGE_PATH ?= ${HOME}/stonehenge
-PROJECT_DIR ?= ${GITHUB_WORKSPACE}
+PROJECT_DIR ?= ${DRUPAL_ROOT}
 SITE_PREFIX ?= /
 
 SETUP_ROBO_TARGETS :=
@@ -16,8 +16,11 @@ PHONY += start-stonehenge
 start-stonehenge:
 	cd $(STONEHENGE_PATH) && COMPOSE_FILE=docker-compose.yml make up
 
+$(PROJECT_DIR):
+	composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+
 PHONY += install-drupal
-install-drupal:
+install-drupal: $(PROJECT_DIR)
 	$(call docker_run_ci,app,drush si minimal -y)
 	$(call docker_run_ci,app,drush cr)
 	$(call docker_run_ci,app,drush si minimal --existing-config -y)
