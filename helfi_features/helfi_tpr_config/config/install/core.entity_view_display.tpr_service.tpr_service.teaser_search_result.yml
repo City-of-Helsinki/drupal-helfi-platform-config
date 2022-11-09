@@ -27,7 +27,7 @@ content:
     weight: 1
     region: content
   errand_services:
-    type: tpr_errand_servie_formatter
+    type: tpr_service_err_channel_list
     label: hidden
     settings:
       view_mode: default
@@ -52,7 +52,6 @@ content:
           weight: '8'
         TELEFAX:
           weight: '9'
-      link: false
     third_party_settings: {  }
     weight: 2
     region: content

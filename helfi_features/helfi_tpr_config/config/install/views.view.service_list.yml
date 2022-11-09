@@ -322,9 +322,7 @@ display:
     position: 1
     display_options:
       display_extenders:
-        metatag_display_extender:
-          metatags: {  }
-          tokenize: false
+        metatag_display_extender: {  }
     cache_metadata:
       max-age: -1
       contexts:
@@ -398,7 +396,7 @@ display:
           settings:
             link_to_entity: false
           group_column: value
-          group_columns: { }
+          group_columns: {  }
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -460,9 +458,9 @@ display:
           hide_alter_empty: true
           click_sort_column: value
           type: basic_string
-          settings: { }
+          settings: {  }
           group_column: value
-          group_columns: { }
+          group_columns: {  }
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -524,9 +522,9 @@ display:
           hide_alter_empty: true
           click_sort_column: value
           type: text_default
-          settings: { }
+          settings: {  }
           group_column: value
-          group_columns: { }
+          group_columns: {  }
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -543,10 +541,10 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: 'Next ›'
-            previous: '‹ Previous'
-            first: '« First'
-            last: 'Last »'
+            next: Next
+            previous: Previous
+            first: 'First'
+            last: 'Last'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -556,6 +554,16 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Search
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       sorts:
         name:
           id: name
@@ -621,7 +629,7 @@ display:
           validate:
             type: none
             fail: 'not found'
-          validate_options: { }
+          validate_options: {  }
       filters:
         content_translation_status:
           id: content_translation_status
@@ -635,7 +643,7 @@ display:
           expose:
             operator: ''
             operator_limit_selection: false
-            operator_list: { }
+            operator_list: {  }
         langcode:
           id: langcode
           table: tpr_service_field_data
@@ -658,7 +666,7 @@ display:
             use_operator: false
             operator: ''
             operator_limit_selection: false
-            operator_list: { }
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -676,8 +684,8 @@ display:
             multiple: false
             remember: false
             default_group: All
-            default_group_multiple: { }
-            group_items: { }
+            default_group_multiple: {  }
+            group_items: {  }
         combine:
           id: combine
           table: views
@@ -692,12 +700,12 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'Services search'
+            label: 'Advisory service name or Search term'
             description: ''
             use_operator: false
             operator: combine_op
             operator_limit_selection: false
-            operator_list: { }
+            operator_list: {  }
             identifier: combine
             required: false
             remember: false
@@ -709,7 +717,7 @@ display:
               content_producer: '0'
               editor: '0'
               admin: '0'
-            placeholder: 'Enter a keyword'
+            placeholder: 'e.g Social Counseling, Health, or Digital'
           is_grouped: false
           group_info:
             label: ''
@@ -720,8 +728,8 @@ display:
             multiple: false
             remember: false
             default_group: All
-            default_group_multiple: { }
-            group_items: { }
+            default_group_multiple: {  }
+            group_items: {  }
           fields:
             name: name
             name_synonyms: name_synonyms
@@ -746,7 +754,7 @@ display:
             use_operator: false
             operator: ''
             operator_limit_selection: false
-            operator_list: { }
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -763,8 +771,8 @@ display:
             multiple: false
             remember: false
             default_group: All
-            default_group_multiple: { }
-            group_items: { }
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
@@ -783,6 +791,7 @@ display:
       defaults:
         title: false
         pager: false
+        exposed_form: false
         style: false
         row: false
         relationships: false
@@ -791,10 +800,10 @@ display:
         arguments: false
         filters: false
         filter_groups: false
-      relationships: { }
+      relationships: {  }
       display_extenders:
         metatag_display_extender:
-          metatags: { }
+          metatags: {  }
           tokenize: false
     cache_metadata:
       max-age: -1
@@ -805,7 +814,7 @@ display:
         - url.query_args
         - user
         - user.permissions
-      tags: { }
+      tags: {  }
   entity_reference_1:
     id: entity_reference_1
     display_title: 'Entity Reference'

@@ -70,7 +70,7 @@ views.view.service_list:
                 settings:
                   link_to_entity: false
                 group_column: value
-                group_columns: {  }
+                group_columns: { }
                 group_rows: true
                 delta_limit: 0
                 delta_offset: 0
@@ -132,9 +132,9 @@ views.view.service_list:
                 hide_alter_empty: true
                 click_sort_column: value
                 type: basic_string
-                settings: {  }
+                settings: { }
                 group_column: value
-                group_columns: {  }
+                group_columns: { }
                 group_rows: true
                 delta_limit: 0
                 delta_offset: 0
@@ -196,9 +196,9 @@ views.view.service_list:
                 hide_alter_empty: true
                 click_sort_column: value
                 type: text_default
-                settings: {  }
+                settings: { }
                 group_column: value
-                group_columns: {  }
+                group_columns: { }
                 group_rows: true
                 delta_limit: 0
                 delta_offset: 0
@@ -215,10 +215,10 @@ views.view.service_list:
                 total_pages: null
                 id: 0
                 tags:
-                  next: 'Next ›'
-                  previous: '‹ Previous'
-                  first: '« First'
-                  last: 'Last »'
+                  next: Next
+                  previous: Previous
+                  first: 'First'
+                  last: 'Last'
                 expose:
                   items_per_page: false
                   items_per_page_label: 'Items per page'
@@ -228,6 +228,16 @@ views.view.service_list:
                   offset: false
                   offset_label: Offset
                 quantity: 9
+            exposed_form:
+              type: basic
+              options:
+                submit_button: Search
+                reset_button: false
+                reset_button_label: Reset
+                exposed_sorts_label: 'Sort by'
+                expose_sort_order: true
+                sort_asc_label: Asc
+                sort_desc_label: Desc
             sorts:
               name:
                 id: name
@@ -293,7 +303,7 @@ views.view.service_list:
                 validate:
                   type: none
                   fail: 'not found'
-                validate_options: {  }
+                validate_options: { }
             filters:
               content_translation_status:
                 id: content_translation_status
@@ -307,7 +317,7 @@ views.view.service_list:
                 expose:
                   operator: ''
                   operator_limit_selection: false
-                  operator_list: {  }
+                  operator_list: { }
               langcode:
                 id: langcode
                 table: tpr_service_field_data
@@ -330,7 +340,7 @@ views.view.service_list:
                   use_operator: false
                   operator: ''
                   operator_limit_selection: false
-                  operator_list: {  }
+                  operator_list: { }
                   identifier: ''
                   required: false
                   remember: false
@@ -348,8 +358,8 @@ views.view.service_list:
                   multiple: false
                   remember: false
                   default_group: All
-                  default_group_multiple: {  }
-                  group_items: {  }
+                  default_group_multiple: { }
+                  group_items: { }
               combine:
                 id: combine
                 table: views
@@ -364,12 +374,12 @@ views.view.service_list:
                 exposed: true
                 expose:
                   operator_id: combine_op
-                  label: 'Search services'
-                  description: 'Search services by name or description.'
+                  label: 'Advisory service name or Search term'
+                  description: ''
                   use_operator: false
                   operator: combine_op
                   operator_limit_selection: false
-                  operator_list: {  }
+                  operator_list: { }
                   identifier: combine
                   required: false
                   remember: false
@@ -381,7 +391,7 @@ views.view.service_list:
                     content_producer: '0'
                     editor: '0'
                     admin: '0'
-                  placeholder: ''
+                  placeholder: 'e.g Social Counseling, Health, or Digital'
                 is_grouped: false
                 group_info:
                   label: ''
@@ -392,8 +402,8 @@ views.view.service_list:
                   multiple: false
                   remember: false
                   default_group: All
-                  default_group_multiple: {  }
-                  group_items: {  }
+                  default_group_multiple: { }
+                  group_items: { }
                 fields:
                   name: name
                   name_synonyms: name_synonyms
@@ -418,7 +428,7 @@ views.view.service_list:
                   use_operator: false
                   operator: ''
                   operator_limit_selection: false
-                  operator_list: {  }
+                  operator_list: { }
                   identifier: ''
                   required: false
                   remember: false
@@ -435,8 +445,8 @@ views.view.service_list:
                   multiple: false
                   remember: false
                   default_group: All
-                  default_group_multiple: {  }
-                  group_items: {  }
+                  default_group_multiple: { }
+                  group_items: { }
             filter_groups:
               operator: AND
               groups:
@@ -455,6 +465,7 @@ views.view.service_list:
             defaults:
               title: false
               pager: false
+              exposed_form: false
               style: false
               row: false
               relationships: false
@@ -463,10 +474,10 @@ views.view.service_list:
               arguments: false
               filters: false
               filter_groups: false
-            relationships: {  }
+            relationships: { }
             display_extenders:
               metatag_display_extender:
-                metatags: {  }
+                metatags: { }
                 tokenize: false
           cache_metadata:
             max-age: -1
@@ -477,4 +488,4 @@ views.view.service_list:
               - url.query_args
               - user
               - user.permissions
-            tags: {  }
+            tags: { }

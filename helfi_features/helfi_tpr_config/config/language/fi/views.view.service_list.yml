@@ -1,10 +1,10 @@
 display:
   default:
-    display_title: Isäntä
+    display_title: Oletus
     display_options:
       exposed_form:
         options:
-          submit_button: Käytä
+          submit_button: Etsi
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
@@ -17,12 +17,29 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
           views_infinite_scroll:
             button_text: 'Lataa lisää palveluita'
       arguments:
         id:
           exception:
             title: Kaikki
-  service_units:
-    display_title: Lohko
+      empty:
+        area:
+          content:
+            value: "<p>Ei tuloksia</p>\r\n"
+            format: full_html
+  block_1:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Etsi
+      pager:
+        options:
+          tags:
+            previous: 'Edellinen'
+            next: 'Seuraava'
+      filters:
+        combine:
+          expose:
+            label: 'Neuvontapalvelun nimi tai hakusana'
+            placeholder: 'Esim. Sosiaalineuvonta, terveys tai digi'

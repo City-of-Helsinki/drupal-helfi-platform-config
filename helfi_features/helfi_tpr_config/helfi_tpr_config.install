@@ -662,7 +662,7 @@ function helfi_tpr_config_update_9030() {
 }
 
 /**
- * Add new display for service list view.
+ * Add new display for service list view with labels translations.
  */
 function helfi_tpr_config_update_9031() {
 
@@ -672,6 +672,9 @@ function helfi_tpr_config_update_9031() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9031');
+
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'views.view.service_list');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
