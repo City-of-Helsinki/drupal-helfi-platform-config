@@ -945,7 +945,7 @@ function helfi_content_update_9037() {
 }
 
 /**
- * Remove phasing item heading level
+ * Adds calculator paragraph to standard page
  */
 function helfi_content_update_9038() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
