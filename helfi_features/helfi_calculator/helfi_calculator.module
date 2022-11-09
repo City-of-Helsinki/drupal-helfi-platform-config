@@ -5,54 +5,33 @@
  * Calculators.
  */
 
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\helfi_calculator\Form\CalculatorSettings;
-
 /**
- * Implements hook_toolbar_alter().
+ * Implements template_preprocess_paragraph().
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ *   - paragraph: The paragraph object.
+ *   - view_mode: View mode; e.g., 'full', 'teaser'...
  */
-function helfi_calculator_toolbar_alter(&$items) {
-  foreach ($items as $key => $value) {
-    if (isset($items[$key]['#attached']) && is_array($items[$key]['#attached']['library'])) {
-      $items[$key]['#attached']['library'][] = 'hdbt_admin_tools/menu_styles';
+function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
+  $config = Drupal::config('helfi_calculator.calculator_settings');
+  $calculator_settings = $config->get('calculator_settings');
+  $active_calculators = [];
+  foreach ($calculator_settings as $key => $value) {
+    $variables['#attached']['drupalSettings'][$key] = $calculator_settings[$key]['json'];
+    if ($value['active']) {
+      $active_calculators[] = $key;
     }
   }
-}
 
-/**
- * Implements hook_form_FORM_ID_alter().
- *
- * Alter config translation edit form.
- */
-function helfi_calculator_form_config_translation_form_alter(&$form, &$form_state, $form_id) {
-  if (in_array($form_id, [
-    'config_translation_add_form',
-    'config_translation_edit_form',
-  ])) {
-    $settings = &$form['config_names']['helfi_calculator.calculator_settings'];
+  dump($variables);
 
-    // Don't translate global fields.
-    $settings['footer_settings']['footer_top_content']['#open'] = TRUE;
-    $settings['footer_settings']['footer_color']['#disabled'] = TRUE;
-    $settings['site_settings']['koro']['#disabled'] = TRUE;
-    $settings['site_settings']['theme_color']['#disabled'] = TRUE;
+  dump($variables['paragraph']->get('field_calculator'));
 
-    // Custom submit callback to invalidate caches.
-    $form['#submit'][] = '_hdbt_admin_tools_config_translation_form_submit';
+  foreach ($active_calculators as $calculator) {
+    $str = ucfirst(str_replace("_", " ", $calculator));
+    dump($calculator);
+    dump($str);
   }
-}
-
-/**
- * Submit callback for config translations.
- *
- * @param array $form
- *   Form array.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   Form state.
- */
-function _helfi_calculator_config_translation_form_submit(array $form, FormStateInterface $form_state) {
-  Cache::invalidateTags([
-    'config:block.block.footertopblock',
-  ]);
 }

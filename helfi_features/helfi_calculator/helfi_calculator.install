@@ -3,7 +3,7 @@
 use Drupal\helfi_platform_config\ConfigHelper;
 
 /**
- * Update configuration translations for Helfi Contact cards.
+ * Installs helfi calculator module.
  */
 function helfi_calculator_install() {
 

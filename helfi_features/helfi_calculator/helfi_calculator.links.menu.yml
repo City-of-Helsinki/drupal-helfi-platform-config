@@ -3,4 +3,3 @@ helfi_calculator.helfi_calculator_settings_form:
   parent: hdbt_admin_tools.overview
   route_name: helfi_calculator.calculator_settings_form
   weight: 1
-  

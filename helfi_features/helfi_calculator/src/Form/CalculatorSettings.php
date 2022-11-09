@@ -87,25 +87,25 @@ class CalculatorSettings extends ConfigFormBase {
     $form['calculator_settings']['house_cleaning_service_voucher']['active'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('House cleaning service voucher'),
-      '#default_value' =>  $settings->get('calculator_settings')['house_cleaning_service_voucher']['active'],
+      '#default_value' => $settings->get('calculator_settings')['house_cleaning_service_voucher']['active'],
     ];
 
     $form['calculator_settings']['house_cleaning_service_voucher']['json'] = [
       '#type' => 'textarea',
       '#title' => $this->t('House cleaning service voucher'),
-      '#default_value' =>  $settings->get('calculator_settings')['house_cleaning_service_voucher']['json'],
+      '#default_value' => $settings->get('calculator_settings')['house_cleaning_service_voucher']['json'],
     ];
 
     $form['calculator_settings']['home_care_service_voucher']['active'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Home care service voucher'),
-      '#default_value' =>  $settings->get('calculator_settings')['home_care_service_voucher']['active'],
+      '#default_value' => $settings->get('calculator_settings')['home_care_service_voucher']['active'],
     ];
 
     $form['calculator_settings']['home_care_service_voucher']['json'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Home care service voucher'),
-      '#default_value' =>  $settings->get('calculator_settings')['home_care_service_voucher']['json'],
+      '#default_value' => $settings->get('calculator_settings')['home_care_service_voucher']['json'],
     ];
 
     return $form;
