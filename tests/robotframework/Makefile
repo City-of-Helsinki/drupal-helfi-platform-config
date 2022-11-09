@@ -5,7 +5,7 @@ SITE_PREFIX ?= /
 SETUP_ROBO_TARGETS :=
 CI_POST_INSTALL_TARGETS :=
 
-SETUP_ROBO_TARGETS += install-stonehenge start-stonehenge up composer-install fix-files-permissions install-drupal post-install-tasks
+SETUP_ROBO_TARGETS += install-stonehenge start-stonehenge $(PROJECT_DIR) up composer-install fix-files-permissions install-drupal post-install-tasks
 
 install-stonehenge: $(STONEHENGE_PATH)/.git
 
