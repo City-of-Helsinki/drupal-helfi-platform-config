@@ -12,15 +12,19 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Set Drupal root
+        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+
       - name: Build project
         run: |
           sudo apt-get update
-          cd tests/robotframework
+          composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+          cd $DRUPAL_ROOT
           make setup-robo
 
       - name: Run tests
         run: |
-          cd tests/robotframework
+          cd $DRUPAL_ROOT
           make run-robo-tests
 
       - name: Export app logs
