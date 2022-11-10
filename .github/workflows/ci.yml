@@ -21,13 +21,13 @@ jobs:
           sudo apt-get update
           composer create-project city-of-helsinki/drupal-helfi-platform:dev-robo-fixes $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
           cd $DRUPAL_ROOT
+          # Symlink module to a folder accessible to app container.
+          ln -s $GITHUB_WORKSPACE .
           DRUPAL_INSTALL_TARGET=install-drupal-ci make setup-robo
 
       - name: Run tests
         run: |
           cd $DRUPAL_ROOT
-          composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/${{ secrets.MODULE_NAME }} -W
           APP_PATH=/app/public/modules/contrib/helfi_platform_config/tests/robotframework make run-robo-tests
 
       - name: Export app logs
