@@ -29,3 +29,25 @@ jobs:
         run: |
           cd $DRUPAL_ROOT
           APP_PATH=/app/public/modules/contrib/helfi_platform_config/tests/robotframework make run-robo-tests
+
+      - name: Export app logs
+        if: always()
+        run: |
+          cd $DRUPAL_ROOT
+          docker compose logs app > logs.txt
+
+      - name: Create an artifact from logs report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: logs
+          path: $DRUPAL_ROOT/logs.txt
+          retention-days: 7
+
+      - name: Create an artifact from test report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: results
+          path: $DRUPAL_ROOT/helfi_platform_config/tests/robotframework/robotframework-reports/
+          retention-days: 7
