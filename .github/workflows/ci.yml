@@ -4,6 +4,7 @@ env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
   SYMFONY_DEPRECATIONS_HELPER: disabled
+  COMPOSE_PROFILES: testing
 jobs:
   integration-tests:
     runs-on: ubuntu-latest
@@ -27,7 +28,6 @@ jobs:
           cd $DRUPAL_ROOT
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/${{ secrets.MODULE_NAME }} -W
-          docker compose exec -T robo sh -c set -e && /app/vendor/bin/drush en helfi_platform_config && for d in /app/public/modules/contrib/${{ secrets.MODULE_NAME }}/helfi_features/*; do /appvendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
           APP_PATH=/app/public/modules/contrib/helfi_platform_config/tests/robotframework make run-robo-tests
 
       - name: Export app logs
