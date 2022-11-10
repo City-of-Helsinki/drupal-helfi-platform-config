@@ -41,7 +41,7 @@ jobs:
         if: always()
         with:
           name: logs
-          path: $DRUPAL_ROOT/logs.txt
+          path: ${{ env.DRUPAL_ROOT }}/logs.txt
           retention-days: 7
 
       - name: Create an artifact from test report
@@ -49,5 +49,5 @@ jobs:
         if: always()
         with:
           name: results
-          path: $DRUPAL_ROOT/helfi_platform_config/tests/robotframework/robotframework-reports/
+          path: ${{ env.DRUPAL_ROOT }}/helfi_platform_config/tests/robotframework/robotframework-reports/
           retention-days: 7
