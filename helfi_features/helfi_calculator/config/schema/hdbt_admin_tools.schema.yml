@@ -22,3 +22,13 @@ helfi_calculator.calculator_settings:
         json:
           label: 'Json'
           type: text
+    home_care_client_payment:
+      label: 'Home care client payment'
+      type: mapping
+      mapping:
+        active:
+          label: 'Is active'
+          type: boolean
+        json:
+          label: 'Json'
+          type: text

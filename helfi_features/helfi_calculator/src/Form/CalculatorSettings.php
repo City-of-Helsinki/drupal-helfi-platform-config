@@ -84,29 +84,23 @@ class CalculatorSettings extends ConfigFormBase {
     $form['#prefix'] = '<div class="layer-wrapper">';
     $form['#suffix'] = '</div>';
 
-    $form['calculator_settings']['house_cleaning_service_voucher']['active'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('House cleaning service voucher'),
-      '#default_value' => $settings->get('calculator_settings')['house_cleaning_service_voucher']['active'],
-    ];
+    $calculators = $settings->get('calculator_settings');
 
-    $form['calculator_settings']['house_cleaning_service_voucher']['json'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('House cleaning service voucher'),
-      '#default_value' => $settings->get('calculator_settings')['house_cleaning_service_voucher']['json'],
-    ];
+    foreach($calculators as $key => $value) {
+      $title = ucfirst(str_replace("_", " ", $key));
 
-    $form['calculator_settings']['home_care_service_voucher']['active'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Home care service voucher'),
-      '#default_value' => $settings->get('calculator_settings')['home_care_service_voucher']['active'],
-    ];
-
-    $form['calculator_settings']['home_care_service_voucher']['json'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Home care service voucher'),
-      '#default_value' => $settings->get('calculator_settings')['home_care_service_voucher']['json'],
-    ];
+      $form['calculator_settings'][$key]['active'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t($title),
+        '#default_value' => $settings->get('calculator_settings')[$key]['active'],
+      ];
+  
+      $form['calculator_settings'][$key]['json'] = [
+        '#type' => 'textarea',
+        '#title' => $this->t($title),
+        '#default_value' => $settings->get('calculator_settings')[$key]['json'],
+      ];
+    }
 
     return $form;
   }
@@ -118,16 +112,6 @@ class CalculatorSettings extends ConfigFormBase {
    *   Returns calculator settings configuration based on language.
    */
   protected function getCalculatorSettings(): ImmutableConfig|Config|LanguageConfigOverride {
-    if (
-      $this->languageManager->getDefaultLanguage()->getId() !==
-      $this->languageManager->getCurrentLanguage()->getId()
-    ) {
-      return $this->languageManager->getLanguageConfigOverride(
-        $this->languageManager->getCurrentLanguage()->getId(),
-        $this->configName
-      );
-    }
-
     return $this->config($this->configName);
   }
 
@@ -162,6 +146,26 @@ class CalculatorSettings extends ConfigFormBase {
       : $this->languageManager->getLanguageConfigOverride($language->getId(), $this->configName);
 
     $settings->set($setting, $form_state->getValue($setting))->save();
+
+    $calculators = $settings->get('calculator_settings');
+    $active = [];
+
+    foreach($calculators as $key => $value) {
+      if($value['active']) {
+        $str = ucfirst(str_replace("_", " ", $key));
+        $active[] = [
+          'value' => $key,
+          'label'=> $str,
+        ];
+      }
+    }
+
+    // Update calculator paraagraph based on active calculators
+    $config_factory = \Drupal::configFactory();
+    $active_calculators = $config_factory->getEditable('field.storage.paragraph.field_calculator');
+    $active_calculators_data = $active_calculators->getRawData();
+    $active_calculators_data['settings']['allowed_values'] = $active;
+    $active_calculators->setData($active_calculators_data)->save(TRUE);
 
     // Invalidate caches.
     Cache::invalidateTags($settings->getCacheTags());

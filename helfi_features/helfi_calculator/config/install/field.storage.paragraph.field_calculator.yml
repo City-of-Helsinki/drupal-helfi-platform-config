@@ -11,14 +11,14 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: test-1
-      label: 'Test 1'
+      value: house_cleaning_service_voucher
+      label: 'House cleaning service voucher'
     -
-      value: test-2
-      label: 'Test 2'
+      value: home_care_service_voucher
+      label: 'Home care service voucher'
     -
-      value: test-3
-      label: 'Test 3'
+      value: home_care_client_payment
+      label: 'Home care client payment'
   allowed_values_function: ''
 module: options
 locked: false

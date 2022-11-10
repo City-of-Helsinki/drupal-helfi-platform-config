@@ -1,8 +1,11 @@
 langcode: en
 calculator_settings:
   house_cleaning_service_voucher:
-    active: FALSE
+    active: TRUE
     json: 'house cleaning json'
   home_care_service_voucher:
-    active: FALSE
+    active: TRUE
     json: 'home care json'
+  home_care_client_payment:
+    active: TRUE
+    json: 'home care client json'

@@ -24,4 +24,7 @@ function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
       $active[] = $key;
     }
   }
+
+  $selected_calculator = $variables['paragraph']->get('field_calculator')->value;
+  $variables['is_active'] = in_array($selected_calculator, $active);
 }
