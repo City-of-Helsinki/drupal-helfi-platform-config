@@ -153,3 +153,11 @@ function helfi_media_update_9007() {
     return $updateHelper->logger()->output();
   }
 }
+
+/**
+ * Fix the media edit link url in media library widget.
+ */
+function helfi_media_update_9008() {
+  $configLocation = dirname(__FILE__) . '/config/override/';
+  ConfigHelper::updateExistingConfig($configLocation, 'views.view.media_library');
+}
