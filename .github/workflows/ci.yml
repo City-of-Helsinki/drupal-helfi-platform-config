@@ -22,9 +22,7 @@ jobs:
           composer create-project city-of-helsinki/drupal-helfi-platform:dev-robo-fixes $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
           cd $DRUPAL_ROOT
           # Symlink module to a folder accessible to app container.
-          ln -s $GITHUB_WORKSPACE .
-          pwd $GITHUB_WORKSPACE
-          ls -la
+          ln -s $GITHUB_WORKSPACE ./helfi_platform_config
           DRUPAL_INSTALL_TARGET=install-drupal-ci make setup-robo
 
       - name: Run tests
