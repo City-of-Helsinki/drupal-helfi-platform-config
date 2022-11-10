@@ -23,6 +23,7 @@ jobs:
           cd $DRUPAL_ROOT
           # Symlink module to a folder accessible to app container.
           ln -s $GITHUB_WORKSPACE .
+          ls -la $GITHUB_WORKSPACE
           DRUPAL_INSTALL_TARGET=install-drupal-ci make setup-robo
 
       - name: Run tests
@@ -31,13 +32,14 @@ jobs:
           APP_PATH=/app/public/modules/contrib/helfi_platform_config/tests/robotframework make run-robo-tests
 
       - name: Export app logs
-        if: always()
+        if: failure()
         run: |
+          cd $DRUPAL_ROOT
           docker compose logs app > logs.txt
 
       - name: Create an artifact from logs report
         uses: actions/upload-artifact@v3
-        if: always()
+        if: failure()
         with:
           name: logs
           path: logs.txt
@@ -50,68 +52,68 @@ jobs:
           name: results
           path: helfi-test-automation-python/robotframework-reports/
           retention-days: 7
-  tests:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-versions: ['8.0', '8.1']
-    container:
-      image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
-
-    services:
-      db:
-        image: mariadb:10.5
-        env:
-          MYSQL_USER: drupal
-          MYSQL_PASSWORD: drupal
-          MYSQL_DATABASE: drupal
-          MYSQL_ROOT_PASSWORD: drupal
-        ports:
-          - 3306:3306
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-
-      - name: Set Drupal root
-        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
-
-      - name: Set module folder
-        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/${{ secrets.MODULE_NAME }}" >> $GITHUB_ENV
-
-      - name: Build project
-        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
-
-      - name: Install Drupal
-        run: |
-          cd $DRUPAL_ROOT
-          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-
-      - name: Update modules
-        run: |
-          cd $DRUPAL_ROOT
-          composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/${{ secrets.MODULE_NAME }} -W
-          vendor/bin/drush en ${{ secrets.MODULE_NAME }} -y
-
-      - name: Run PHPCS
-        run: |
-          cd $DRUPAL_ROOT
-          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,inc,test,info
-
-      - name: Start services
-        run: |
-          cd $DRUPAL_ROOT
-          vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
-          chromedriver --port=4444 > /dev/null 2>&1 &
-
-      - name: Run PHPUnit tests
-        run: |
-          cd $DRUPAL_ROOT
-          php -d pcov.directory=$MODULE_FOLDER \
-            vendor/bin/phpunit \
-            --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
-            -c $MODULE_FOLDER/phpunit.xml \
+#  tests:
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        php-versions: ['8.0', '8.1']
+#    container:
+#      image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
+#
+#    services:
+#      db:
+#        image: mariadb:10.5
+#        env:
+#          MYSQL_USER: drupal
+#          MYSQL_PASSWORD: drupal
+#          MYSQL_DATABASE: drupal
+#          MYSQL_ROOT_PASSWORD: drupal
+#        ports:
+#          - 3306:3306
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 1
+#
+#      - name: Set Drupal root
+#        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+#
+#      - name: Set module folder
+#        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/${{ secrets.MODULE_NAME }}" >> #$GITHUB_ENV
+#
+#      - name: Build project
+#        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT #--no-interaction --repository https://repository.drupal.hel.ninja/
+#
+#      - name: Install Drupal
+#        run: |
+#          cd $DRUPAL_ROOT
+#          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal #--db-url="$SIMPLETEST_DB"
+#
+#      - name: Update modules
+#        run: |
+#          cd $DRUPAL_ROOT
+#          composer config repositories.5 path $GITHUB_WORKSPACE
+#          composer require drupal/${{ secrets.MODULE_NAME }} -W
+#          vendor/bin/drush en ${{ secrets.MODULE_NAME }} -y
+#
+#      - name: Run PHPCS
+#        run: |
+#          cd $DRUPAL_ROOT
+#          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,inc,test,info
+#
+#      - name: Start services
+#        run: |
+#          cd $DRUPAL_ROOT
+#          vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
+#          chromedriver --port=4444 > /dev/null 2>&1 &
+#
+#      - name: Run PHPUnit tests
+#        run: |
+#          cd $DRUPAL_ROOT
+#          php -d pcov.directory=$MODULE_FOLDER \
+#            vendor/bin/phpunit \
+#            --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
+#            -c $MODULE_FOLDER/phpunit.xml \
             --coverage-clover=coverage.xml \
             $MODULE_FOLDER
