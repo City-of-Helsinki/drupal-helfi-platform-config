@@ -24,6 +24,7 @@ jobs:
           # Symlink module to a folder accessible to app container.
           ln -s $GITHUB_WORKSPACE .
           pwd $GITHUB_WORKSPACE
+          ls -la
           DRUPAL_INSTALL_TARGET=install-drupal-ci make setup-robo
 
       - name: Run tests
