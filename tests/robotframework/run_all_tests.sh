@@ -3,7 +3,7 @@ echo "#######################################"
 echo "# Running portfolio a first time      #"
 echo "#######################################"
 echo
-pabot --testlevelsplit --ordering ./environments/helfi_pabot_order_ci --processes 9 -e ETUSIVU_SPESIFIC -v PREFIX:$PREFIX -v BASE_URL:$BASE_URL -v CI_TA_PATH:/app/public/modules/contrib/helfi_platform_config/tests -v PICCOMPARE:False -v useoriginalname:False -v images_dir:robotframework-resources/screenshots/headlesschrome -v actual_dir:robotframework-reports -A ./environments/ci.args -d robotframework-reports . $@
+pabot --testlevelsplit --ordering ./environments/helfi_pabot_order_ci --processes 9 -e ETUSIVU_SPESIFIC -v PREFIX:$PREFIX -v BASE_URL:$BASE_URL -v CI_TA_PATH:/app/public/modules/contrib/helfi_platform_config/tests/robotframework -v PICCOMPARE:False -v useoriginalname:False -v images_dir:robotframework-resources/screenshots/headlesschrome -v actual_dir:robotframework-reports -A ./environments/ci.args -d robotframework-reports . $@
 EXIT_CODE=$?
 
 # we stop the script here if all the tests were OK
@@ -22,7 +22,7 @@ echo "#######################################"
 echo "# Running again the tests that failed #"
 echo "#######################################"
 echo
-pabot --processes 9 -e ETUSIVU_SPESIFIC -v PREFIX:$PREFIX -v BASE_URL:$BASE_URL -v CI_TA_PATH:/app/public/modules/contrib/helfi_platform_config/tests -v PICCOMPARE:False -v useoriginalname:False -v images_dir:robotframework-resources/screenshots/headlesschrome -v actual_dir:robotframework-reports -A ./environments/ci.args --rerunfailed robotframework-reports/output.xml --output rerun.xml -d robotframework-reports . $@
+pabot --processes 9 -e ETUSIVU_SPESIFIC -v PREFIX:$PREFIX -v BASE_URL:$BASE_URL -v CI_TA_PATH:/app/public/modules/contrib/helfi_platform_config/tests/robotframework -v PICCOMPARE:False -v useoriginalname:False -v images_dir:robotframework-resources/screenshots/headlesschrome -v actual_dir:robotframework-reports -A ./environments/ci.args --rerunfailed robotframework-reports/output.xml --output rerun.xml -d robotframework-reports . $@
 EXIT_CODE2=$?
 
 # => Robot Framework generates file rerun.xml
