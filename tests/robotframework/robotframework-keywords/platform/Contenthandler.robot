@@ -212,7 +212,7 @@ Click Content Link From Notification Banner
 	Element Should Not Be Visible   //a[contains(@href, '/node/add')]
 
 Accept Cookies
-	Wait Until Keyword Succeeds  6x  400ms  Click Button  //button[@class='agree-button eu-cookie-compliance-default-button hds-button hds-button--primary']
+	Wait Until Keyword Succeeds  6x  400ms  Click Button  //button[@class='agree-button eu-cookie-compliance-default-button hds-button hds-button--secondary']
 
 Open Created Content
 	Run Keyword If  '${CI}'!='true'  Open Content In Non CI Environments
