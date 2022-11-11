@@ -23,12 +23,12 @@ jobs:
           cd $DRUPAL_ROOT
           # Copy module to a folder accessible to app container.
           cp -r $GITHUB_WORKSPACE ./helfi_platform_config
-          DRUPAL_INSTALL_TARGET=install-drupal-ci make setup-robo
+          PROJECT_DIR="$DRUPAL_ROOT/" DRUPAL_INSTALL_TARGET=install-drupal-ci make setup-robo
 
       - name: Run tests
         run: |
           cd $DRUPAL_ROOT
-          APP_PATH=/app/public/modules/contrib/helfi_platform_config/tests/robotframework make run-robo-tests
+          PROJECT_DIR="$DRUPAL_ROOT/" APP_PATH=/app/public/modules/contrib/helfi_platform_config/tests/robotframework make run-robo-tests
 
       - name: Export app logs
         if: always()
