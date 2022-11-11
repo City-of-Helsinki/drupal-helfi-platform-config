@@ -1,11 +1,3 @@
-if [[ ! -n "$PREFIX" ]]; then
-  PREFIX="/kaupunkiymparisto-ja-liikenne"
-fi
-
-if [[ ! -n "$BASE_URL" ]]; then
-  BASE_URL="varnish-helfi-kymp.docker.so"
-fi
-
 echo
 echo "#######################################"
 echo "# Running portfolio a first time      #"
