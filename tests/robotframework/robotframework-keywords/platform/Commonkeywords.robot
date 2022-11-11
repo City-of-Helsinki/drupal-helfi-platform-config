@@ -20,10 +20,10 @@ Debug Error
 	${width}=  Get From List   ${wsize}   0
 	${height}=  Get From List   ${wsize}   1
 	IF    ${CI}
-		Capture Page Screenshot    filename=${CI_TA_PATH}/helfi-test-automation-python/robotframework-reports/debug/${SUITE NAME}-${TEST NAME}_error_normal.png
+		Capture Page Screenshot    filename=${CI_TA_PATH}/robotframework-reports/debug/${SUITE NAME}-${TEST NAME}_error_normal.png
 		Set Window Size  3840   3160    # SO THAT WHOLE ELEMENT GETS CAPTURED SUCCESFULLY
 		Execute javascript  document.body.style.zoom="80%"
-		Capture Element Screenshot	css:body   ${CI_TA_PATH}/helfi-test-automation-python/robotframework-reports/debug/${SUITE NAME}-${TEST NAME}_error_zoomout.png
+		Capture Element Screenshot	css:body   ${CI_TA_PATH}/robotframework-reports/debug/${SUITE NAME}-${TEST NAME}_error_zoomout.png
     ELSE
     	Capture Page Screenshot    filename=${REPORTS_PATH}/debug/${SUITE NAME}-${TEST NAME}_error_normal.png
     	Set Window Size  3840   3160    # SO THAT WHOLE ELEMENT GETS CAPTURED SUCCESFULLY
