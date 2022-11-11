@@ -148,22 +148,29 @@ class CalculatorSettings extends ConfigFormBase {
     $settings->set($setting, $form_state->getValue($setting))->save();
 
     $calculators = $settings->get('calculator_settings');
+
+    $config_factory = \Drupal::configFactory();
+    $active_calculators = $config_factory->getEditable('field.storage.paragraph.field_calculator');
+    $active_calculators_data = $active_calculators->getRawData();
+
     $active = [];
+
+    // Get the first element (disabled) from allowed values and keep it
+    $disabled = $active_calculators_data['settings']['allowed_values'][0];
+    $active[] = $disabled;
 
     foreach($calculators as $key => $value) {
       if($value['active']) {
         $str = ucfirst(str_replace("_", " ", $key));
-        $active[] = [
+        $calculator = [
           'value' => $key,
           'label'=> $str,
         ];
+        array_push($active, $calculator);
       }
-    }
+    };
 
-    // Update calculator paraagraph based on active calculators
-    $config_factory = \Drupal::configFactory();
-    $active_calculators = $config_factory->getEditable('field.storage.paragraph.field_calculator');
-    $active_calculators_data = $active_calculators->getRawData();
+    // Update calculator paragraph based on active calculators
     $active_calculators_data['settings']['allowed_values'] = $active;
     $active_calculators->setData($active_calculators_data)->save(TRUE);
 

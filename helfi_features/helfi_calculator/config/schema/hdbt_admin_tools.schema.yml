@@ -32,3 +32,43 @@ helfi_calculator.calculator_settings:
         json:
           label: 'Json'
           type: text
+    service_housing_service_voucher:
+      label: 'Service housing service voucher'
+      type: mapping
+      mapping:
+        active:
+          label: 'Is active'
+          type: boolean
+        json:
+          label: 'Json'
+          type: text
+    family_with_kids_home_service_client_payment:
+      label: 'Family with kids home service client payment'
+      type: mapping
+      mapping:
+        active:
+          label: 'Is active'
+          type: boolean
+        json:
+          label: 'Json'
+          type: text
+    daycare_payment:
+      label: 'Daycare payment'
+      type: mapping
+      mapping:
+        active:
+          label: 'Is active'
+          type: boolean
+        json:
+          label: 'Json'
+          type: text
+    oral_health_care_procedure:
+      label: 'Oral health care prodecure'
+      type: mapping
+      mapping:
+        active:
+          label: 'Is active'
+          type: boolean
+        json:
+          label: 'Json'
+          type: text

@@ -11,14 +11,8 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: house_cleaning_service_voucher
-      label: 'House cleaning service voucher'
-    -
-      value: home_care_service_voucher
-      label: 'Home care service voucher'
-    -
-      value: home_care_client_payment
-      label: 'Home care client payment'
+      value: disabled
+      label: 'Disabled'
   allowed_values_function: ''
 module: options
 locked: false
