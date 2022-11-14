@@ -16,7 +16,7 @@ Get All Currently Used Cookies
 	[Return]   ${cookies}
 
 Accept All Cookies
-	Wait Until Keyword Succeeds  6x  400ms  Click Button  //button[@class='agree-button eu-cookie-compliance-default-button hds-button hds-button--primary']	
+	Wait Until Keyword Succeeds  6x  400ms  Click Button  //button[@class='agree-button eu-cookie-compliance-default-button hds-button hds-button--secondary']	
 
 Accept Essential Cookies
 	Wait Until Keyword Succeeds  6x  400ms  Click Button  //button[@class='eu-cookie-compliance-save-preferences-button hds-button hds-button--secondary']
