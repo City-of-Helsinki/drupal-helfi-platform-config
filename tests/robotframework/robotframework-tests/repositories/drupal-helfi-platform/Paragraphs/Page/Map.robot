@@ -39,4 +39,4 @@ User Adds Map Using ${source} Map Location
 	 
 Layout Should Not Have Changed
 	Page Should Contain Element   css:.component__container
-	Page Should Contain Link   Avaa kartta uuteen ikkunaan
+	Page Should Contain Link   Avaa kartta uudessa ikkunassa
