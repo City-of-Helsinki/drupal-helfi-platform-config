@@ -21,6 +21,8 @@ jobs:
           sudo apt-get update
           composer create-project city-of-helsinki/drupal-helfi-platform:dev-robo-fixes $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
           cd $DRUPAL_ROOT
+          # @todo Remove this.
+          composer require drupal/hdbt_admin:dev-UHF-7459
           # Copy module to a folder accessible to app container.
           cp -r $GITHUB_WORKSPACE ./helfi_platform_config
           PROJECT_DIR="$DRUPAL_ROOT/" DRUPAL_INSTALL_TARGET=install-drupal-ci make setup-robo
