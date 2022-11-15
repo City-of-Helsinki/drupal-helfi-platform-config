@@ -347,11 +347,3 @@ views.view.content:
                   name:
                     sortable: true
           display_title: Default
-select2_icon.settings:
-  expected_config:
-    path_to_json: ''
-    path_to_sprite: ''
-  update_actions:
-    change:
-      path_to_json: /themes/contrib/hdbt/src/icons/ui-icons.json
-      path_to_sprite: /themes/contrib/hdbt/dist/icons/sprite.svg
