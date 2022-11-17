@@ -1,0 +1,24 @@
+<?php
+
+use Drupal\helfi_platform_config\ConfigHelper;
+
+/**
+ * Installs helfi calculator module.
+ */
+function helfi_calculator_install() {
+
+  // Handle the configuration translation update manually.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.field.paragraph.calculator.field_calculator_description',
+    'field.field.paragraph.calculator.field_calculator_title',
+    'field.field.paragraph.calculator.field_calculator',
+    'paragraphs.paragraphs_type.calculator',
+  ];
+
+  // Install translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
