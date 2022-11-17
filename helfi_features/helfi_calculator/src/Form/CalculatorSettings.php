@@ -17,8 +17,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Calculator settings.
@@ -88,20 +86,20 @@ class CalculatorSettings extends ConfigFormBase {
 
     $calculators = $settings->get('calculator_settings');
 
-    foreach($calculators as $key => $value) {
+    foreach ($calculators as $key => $value) {
       $title = ucfirst(str_replace("_", " ", $key));
 
-      $form['calculator_settings'][$key] = array(
+      $form['calculator_settings'][$key] = [
         '#type' => 'fieldset',
         '#title' => t($title),
-      );
+      ];
 
       $form['calculator_settings'][$key]['active'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('On/off'),
         '#default_value' => $settings->get('calculator_settings')[$key]['active'],
       ];
-  
+
       $form['calculator_settings'][$key]['json'] = [
         '#type' => 'textarea',
         '#title' => $this->t('Calculator data'),
@@ -162,29 +160,29 @@ class CalculatorSettings extends ConfigFormBase {
 
     $active = [];
 
-    // Get the first element (disabled) from allowed values and keep it
+    // Get the first element (disabled) from allowed values and keep it.
     $disabled = $active_calculators_data['settings']['allowed_values'][0];
     $active[] = $disabled;
 
-    foreach($calculators as $key => $value) {
-      if($value['active']) {
+    foreach ($calculators as $key => $value) {
+      if ($value['active']) {
         $str = ucfirst(str_replace("_", " ", $key));
         $calculator = [
           'value' => $key,
-          'label'=> $str,
+          'label' => $str,
         ];
         array_push($active, $calculator);
       }
     };
 
-    //Update calculator paragraph based on active calculators
+    // Update calculator paragraph based on active calculators.
     $active_calculators_data['settings']['allowed_values'] = $active;
     $active_calculators->setData($active_calculators_data)->save(TRUE);
 
     // Invalidate caches.
     Cache::invalidateTags($settings->getCacheTags());
 
-    // Paragraph related cache tags
+    // Paragraph related cache tags.
     $tags = ['config:paragraphs.paragraphs_type.calculator', 'config:field.storage.paragraph.field_calculator', 'config:core.entity_form_display.paragraph.calculator.default', 'config:core.entity_view_display.paragraph.calculator.default'];
 
     // Invalidate paragraph caches.
