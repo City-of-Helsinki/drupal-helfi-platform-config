@@ -110,6 +110,7 @@ class CalculatorSettings extends ConfigFormBase {
   }
 
   /**
+   * Get calculator settings.
    *
    * @return \Drupal\Core\Config\ImmutableConfig|\Drupal\Core\Config\Config|\Drupal\language\Config\LanguageConfigOverride
    *   Returns calculator settings configuration based on language.
@@ -171,7 +172,7 @@ class CalculatorSettings extends ConfigFormBase {
     // Invalidate caches.
     Cache::invalidateTags($settings->getCacheTags());
 
-    // Invalidate paragraph related configs
+    // Invalidate paragraph related caches.
     \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
   }
 
