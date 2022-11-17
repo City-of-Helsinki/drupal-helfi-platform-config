@@ -183,7 +183,12 @@ class CalculatorSettings extends ConfigFormBase {
     Cache::invalidateTags($settings->getCacheTags());
 
     // Paragraph related cache tags.
-    $tags = ['config:paragraphs.paragraphs_type.calculator', 'config:field.storage.paragraph.field_calculator', 'config:core.entity_form_display.paragraph.calculator.default', 'config:core.entity_view_display.paragraph.calculator.default'];
+    $tags = [
+      'config:paragraphs.paragraphs_type.calculator',
+      'config:field.storage.paragraph.field_calculator',
+      'config:core.entity_form_display.paragraph.calculator.default',
+      'config:core.entity_view_display.paragraph.calculator.default'
+    ];
 
     // Invalidate paragraph caches.
     Cache::invalidateTags($tags);
