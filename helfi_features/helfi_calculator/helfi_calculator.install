@@ -37,7 +37,7 @@ function helfi_calculator_update_9001() : void {
     $ignored,
     'field.storage.paragraph.field_calculator:settings.allowed_values',
     'helfi_calculator.calculator_settings',
-    )
+    );
   $config->set('ignored_config_entities', $ignored)
     ->save();
 }
