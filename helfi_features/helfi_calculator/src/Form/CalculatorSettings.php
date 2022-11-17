@@ -17,6 +17,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Calculator settings.
@@ -81,7 +83,7 @@ class CalculatorSettings extends ConfigFormBase {
     $settings = $this->getCalculatorSettings();
 
     $form['#tree'] = TRUE;
-    $form['#prefix'] = '<div class="layer-wrapper">';
+    $form['#prefix'] = '<div class="layer-wrapper"><h2>' . t('Available calculators') . '</h2>';
     $form['#suffix'] = '</div>';
 
     $calculators = $settings->get('calculator_settings');
@@ -89,15 +91,20 @@ class CalculatorSettings extends ConfigFormBase {
     foreach($calculators as $key => $value) {
       $title = ucfirst(str_replace("_", " ", $key));
 
+      $form['calculator_settings'][$key] = array(
+        '#type' => 'fieldset',
+        '#title' => t($title),
+      );
+
       $form['calculator_settings'][$key]['active'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t($title),
+        '#title' => $this->t('On/off'),
         '#default_value' => $settings->get('calculator_settings')[$key]['active'],
       ];
   
       $form['calculator_settings'][$key]['json'] = [
         '#type' => 'textarea',
-        '#title' => $this->t($title),
+        '#title' => $this->t('Calculator data'),
         '#default_value' => $settings->get('calculator_settings')[$key]['json'],
       ];
     }
@@ -170,12 +177,18 @@ class CalculatorSettings extends ConfigFormBase {
       }
     };
 
-    // Update calculator paragraph based on active calculators
+    //Update calculator paragraph based on active calculators
     $active_calculators_data['settings']['allowed_values'] = $active;
     $active_calculators->setData($active_calculators_data)->save(TRUE);
 
     // Invalidate caches.
     Cache::invalidateTags($settings->getCacheTags());
+
+    // Paragraph related cache tags
+    $tags = ['config:paragraphs.paragraphs_type.calculator', 'config:field.storage.paragraph.field_calculator', 'config:core.entity_form_display.paragraph.calculator.default', 'config:core.entity_view_display.paragraph.calculator.default'];
+
+    // Invalidate paragraph caches.
+    Cache::invalidateTags($tags);
   }
 
 }
