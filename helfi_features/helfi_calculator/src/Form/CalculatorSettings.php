@@ -14,7 +14,6 @@ use Drupal\Core\Config\ImmutableConfig;
 use Drupal\language\Config\LanguageConfigOverride;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -90,7 +89,7 @@ class CalculatorSettings extends ConfigFormBase {
       $title = ucfirst(str_replace("_", " ", $key));
 
       $form['calculator_settings'][$key] = [
-        '#type' => 'fieldset',
+        '#type' => 'details',
         '#title' => t($title),
       ];
 
@@ -111,7 +110,6 @@ class CalculatorSettings extends ConfigFormBase {
   }
 
   /**
-   * Get calculator settings based on current language.
    *
    * @return \Drupal\Core\Config\ImmutableConfig|\Drupal\Core\Config\Config|\Drupal\language\Config\LanguageConfigOverride
    *   Returns calculator settings configuration based on language.
@@ -126,10 +124,8 @@ class CalculatorSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save calculator settings (active, json) to all languages.
-    foreach ($this->languageManager->getLanguages() as $language) {
-      $this->saveConfiguration('calculator_settings', $form_state, $language);
-    }
+    // Save calculator settings (active, json).
+    $this->saveConfiguration('calculator_settings', $form_state);
   }
 
   /**
@@ -139,16 +135,9 @@ class CalculatorSettings extends ConfigFormBase {
    *   Setting name as a string.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Current form state.
-   * @param \Drupal\Core\Language\LanguageInterface $language
-   *   Language to be handled.
    */
-  protected function saveConfiguration(string $setting, FormStateInterface $form_state, LanguageInterface $language) {
-
-    // Check whether the handled language is site default language and
-    // save the configuration as default language or translation.
-    $settings = ($this->languageManager->getDefaultLanguage()->getId() === $language->getId())
-      ? $this->configFactory->getEditable($this->configName)
-      : $this->languageManager->getLanguageConfigOverride($language->getId(), $this->configName);
+  protected function saveConfiguration(string $setting, FormStateInterface $form_state) {
+    $settings = $this->configFactory->getEditable($this->configName);
 
     $settings->set($setting, $form_state->getValue($setting))->save();
 
@@ -182,16 +171,8 @@ class CalculatorSettings extends ConfigFormBase {
     // Invalidate caches.
     Cache::invalidateTags($settings->getCacheTags());
 
-    // Paragraph related cache tags.
-    $tags = [
-      'config:paragraphs.paragraphs_type.calculator',
-      'config:field.storage.paragraph.field_calculator',
-      'config:core.entity_form_display.paragraph.calculator.default',
-      'config:core.entity_view_display.paragraph.calculator.default',
-    ];
-
-    // Invalidate paragraph caches.
-    Cache::invalidateTags($tags);
+    // Invalidate paragraph related configs
+    \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
   }
 
 }
