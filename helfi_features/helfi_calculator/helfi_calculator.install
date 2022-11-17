@@ -22,3 +22,22 @@ function helfi_calculator_install() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
+
+/**
+ * Ignore calculator settings configuration.
+ */
+function helfi_calculator_update_9001() : void {
+  if (!Drupal::moduleHandler()->moduleExists('config_ignore')) {
+    return;
+  }
+  $config = Drupal::configFactory()->getEditable('config_ignore.settings');
+  $ignored = $config->get('ignored_config_entities') ?? [];
+
+  array_push(
+    $ignored,
+    'field.storage.paragraph.field_calculator:settings.allowed_values',
+    'helfi_calculator.calculator_settings',
+    )
+  $config->set('ignored_config_entities', $ignored)
+    ->save();
+}
