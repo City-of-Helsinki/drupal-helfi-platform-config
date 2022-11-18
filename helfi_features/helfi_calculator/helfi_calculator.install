@@ -22,6 +22,7 @@ function helfi_calculator_install() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 
+  // Adds paragraph related configs to config ignore
   if (!Drupal::moduleHandler()->moduleExists('config_ignore')) {
     return;
   }
