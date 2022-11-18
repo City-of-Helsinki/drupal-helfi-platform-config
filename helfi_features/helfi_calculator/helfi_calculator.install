@@ -21,12 +21,7 @@ function helfi_calculator_install() {
   foreach ($configurations as $configuration) {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
-}
 
-/**
- * Ignore calculator settings configuration.
- */
-function helfi_calculator_update_9001() : void {
   if (!Drupal::moduleHandler()->moduleExists('config_ignore')) {
     return;
   }
