@@ -91,7 +91,7 @@ class CalculatorSettings extends ConfigFormBase {
       $form['calculator_settings'][$key] = [
         '#type' => 'details',
         '#title' => $title,
-        '#open' => $settings->get('calculator_settings')[$key]['active']
+        '#open' => $settings->get('calculator_settings')[$key]['active'],
       ];
 
       $form['calculator_settings'][$key]['active'] = [
