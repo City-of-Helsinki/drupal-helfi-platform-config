@@ -50,6 +50,8 @@
     }
 
     cookieSet() {
+      if (Drupal.eu_cookie_compliance.hasAgreedWithCategory('chat')) return;
+
       Drupal.eu_cookie_compliance.setAcceptedCategories([ ...Drupal.eu_cookie_compliance.getAcceptedCategories(), 'chat' ]);
     }
   }
