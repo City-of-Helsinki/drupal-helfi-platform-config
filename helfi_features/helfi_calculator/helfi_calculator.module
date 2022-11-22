@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Calculators.
+ */
+
+/**
+ * Implements template_preprocess_paragraph().
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ *   - paragraph: The paragraph object.
+ *   - view_mode: View mode; e.g., 'full', 'teaser'...
+ */
+function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
+  $config = Drupal::config('helfi_calculator.calculator_settings');
+  $calculator_settings = $config->get('calculator_settings');
+  $active = [];
+  foreach ($calculator_settings as $key => $value) {
+    $variables['#attached']['drupalSettings'][$key] = $calculator_settings[$key]['json'];
+    if ($value['active']) {
+      $active[] = $key;
+    }
+  }
+
+  $selected_calculator = $variables['paragraph']->get('field_calculator')->value;
+  $variables['is_active'] = in_array($selected_calculator, $active);
+}

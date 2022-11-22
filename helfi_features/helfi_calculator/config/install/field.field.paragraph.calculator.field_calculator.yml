@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_calculator
+    - paragraphs.paragraphs_type.calculator
+  module:
+    - options
+id: paragraph.calculator.field_calculator
+field_name: field_calculator
+entity_type: paragraph
+bundle: calculator
+label: Calculator
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: disabled
+default_value_callback: ''
+settings: {  }
+field_type: list_string
