@@ -57,7 +57,7 @@
         "drupal/token": "^1.9",
         "drupal/token_filter": "^1.2",
         "drupal/translatable_menu_link_uri": "^2.0",
-        "drupal/update_helper": "^2.0",
+        "drupal/update_helper": "^3.0",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_edit": "^2.7",
         "drupal/views_bulk_operations": "^4.1"
