@@ -454,12 +454,17 @@
     initWrapper() {
       let leijukeWrapper = document.getElementById('chat-leijuke-wrapper');
       if (!leijukeWrapper) {
-        leijukeWrapper = document.createElement('div');
+        leijukeWrapper = document.createElement('aside');
         leijukeWrapper.id = 'chat-leijuke-wrapper';
         document.body.append(leijukeWrapper)
       }
 
-      let leijukeInstance = document.createElement('div');
+      let leijukeTitle = document.createElement('h2');
+      leijukeTitle.classList.add('visually-hidden');
+      leijukeTitle.innerHTML = Drupal.t('Chat', {}, { context: 'Floating chat title' });
+      leijukeWrapper.append(leijukeTitle);
+
+      let leijukeInstance = document.createElement('button');
       leijukeInstance.id = this.static.selector;
       leijukeInstance.classList.add('chat-leijuke')
       leijukeWrapper.append(leijukeInstance);
