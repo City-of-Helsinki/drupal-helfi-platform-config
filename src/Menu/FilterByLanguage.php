@@ -20,7 +20,7 @@ final class FilterByLanguage implements EventSubscriberInterface {
    *
    * @var string[]
    */
-  protected $menuNames = [
+  protected array $menuNames = [
     'branding-navigation',
     'footer-bottom-navigation',
     'footer-top-navigation',
@@ -40,12 +40,16 @@ final class FilterByLanguage implements EventSubscriberInterface {
   }
 
   /**
-   * Responds to MenuLinkTreeEvents::ALTER_MANUPULATORS event.
+   * Responds to MenuLinkTreeEvents::ALTER_MANIPULATORS event.
    *
    * @param \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent $event
    *   The event to subscribe to.
    */
   public function filter(MenuLinkTreeManipulatorsAlterEvent $event) : void {
+    // Drush defaults to site's default language. In our case, finnish.
+    // This causes '::filterLanguages' manipulator to set AccessResultForbidden
+    // to all non-finnish links when run via Drush.
+    // @see UHF-7615.
     if (!$this->adminContext->isAdminRoute()) {
       return;
     }
