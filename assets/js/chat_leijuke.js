@@ -463,7 +463,6 @@
       leijukeTitle.classList.add('visually-hidden');
       leijukeTitle.innerHTML = Drupal.t('Chat', {}, { context: 'Floating chat title' });
       leijukeWrapper.append(leijukeTitle);
-      
 
       let leijukeInstance = document.createElement('button');
       leijukeInstance.id = this.static.selector;
