@@ -177,12 +177,6 @@ msgstr ""
 msgid "Lower content region"
 msgstr "Alempi sisältöalue"
 
-msgid "Meta information"
-msgstr "Metatiedot"
-
-msgid "Metatags"
-msgstr "Metatunnisteet"
-
 msgid "Next ›"
 msgstr "Seuraava ›"
 

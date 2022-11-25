@@ -1,6 +1,8 @@
 services:
   helfi_platform_config.menu_language_filter:
     class: Drupal\helfi_platform_config\Menu\FilterByLanguage
+    arguments:
+      - '@router.admin_context'
     tags:
       - { name: event_subscriber }
 

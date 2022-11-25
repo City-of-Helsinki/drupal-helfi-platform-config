@@ -1,8 +1,10 @@
-# TASKNAME [UHF-0000](https://helsinkisolutionoffice.atlassian.net/browse/UHF-0000)
-A longer description of the task
+# [UHF-0000](https://helsinkisolutionoffice.atlassian.net/browse/UHF-0000)
+<!-- What problem does this solve? -->
 
 ## What was done
-* Describe what was done
+<!-- Describe what was done -->
+
+* This thing was fixed
 
 ## How to install
 * Make sure your instance is up and running on latest dev branch.
@@ -13,7 +15,12 @@ A longer description of the task
 * Run `make drush-updb drush-cr`
 
 ## How to test
-* Describe how to test the feature
+<!-- Describe steps how to test the features, add as many steps as you want to be tested -->
+
+* [ ] Check that this feature works
+* [ ] Check that code follows our standards
 
 ## Other PRs
-* 
+<!-- For example an related PR in another repository -->
+
+* Link to other PR

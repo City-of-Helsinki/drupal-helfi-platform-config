@@ -264,3 +264,13 @@ function helfi_base_config_update_9012() {
     \Drupal::messenger()->addMessage('Updated Site email address to point to drupal@hel.fi.');
   }
 }
+
+/**
+ * Fix Drupal core localization file download URLs.
+ */
+function helfi_base_config_update_9013() {
+  $keys = \Drupal::keyValue('locale.translation_status');
+  if ($keys->has('drupal')) {
+    $keys->delete('drupal');
+  }
+}

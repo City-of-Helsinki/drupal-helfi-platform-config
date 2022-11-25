@@ -473,3 +473,7 @@ msgstr "Osapäiväryhmä"
 
 msgid "Start a chat"
 msgstr "Aloita chat"
+
+msgctxt "Floating chat title"
+msgid "Chat"
+msgstr "Chat"
