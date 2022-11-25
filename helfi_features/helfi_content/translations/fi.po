@@ -465,6 +465,9 @@ msgstr "Oletus"
 msgid "Menu link title"
 msgstr "Valikon linkin otsikko"
 
+msgid "Meta information"
+msgstr "Metatiedot"
+
 msgid "Metatags"
 msgstr "Metatunnisteet"
 
