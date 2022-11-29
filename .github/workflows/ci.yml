@@ -33,7 +33,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Parse module name as $MODULE_NAME
+      - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
 
       - name: Set variables
