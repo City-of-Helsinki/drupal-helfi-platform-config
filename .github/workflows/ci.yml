@@ -6,8 +6,10 @@ on:
 name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
-  SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
+  SIMPLETEST_BASE_URL: "http://127.0.0.1:8888"
+  DRUPAL_CORE_VERSION: 9.4.x
   SYMFONY_DEPRECATIONS_HELPER: disabled
+  BROWSERTEST_OUTPUT_DIRECTORY: 'sites/simpletest'
 jobs:
   tests:
     runs-on: ubuntu-latest
