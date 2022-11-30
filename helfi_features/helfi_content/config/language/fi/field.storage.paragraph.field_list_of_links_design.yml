@@ -4,5 +4,3 @@ settings:
       label: Kuvallinen
     -
       label: 'Ilman kuvaa'
-    -
-      label: 'Ilman kuvaa ja kuvausta'

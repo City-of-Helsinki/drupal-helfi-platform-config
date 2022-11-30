@@ -267,11 +267,11 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items:
-              1:
+              -
                 title: Published
                 operator: '='
                 value: '1'
-              2:
+              -
                 title: Unpublished
                 operator: '='
                 value: '0'
@@ -360,9 +360,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items:
-              1: {  }
-              2: {  }
-              3: {  }
+              - {  }
         status_extra:
           id: status_extra
           table: media_field_data
@@ -786,6 +784,107 @@ display:
     position: 2
     display_options:
       fields:
+        media_library_select_form:
+          id: media_library_select_form
+          table: media
+          field: media_library_select_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          plugin_id: media_library_select_form
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        rendered_entity:
+          id: rendered_entity
+          table: media
+          field: rendered_entity
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          plugin_id: rendered_entity
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          view_mode: media_library
         mid:
           id: mid
           table: media_field_data
@@ -917,107 +1016,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        media_library_select_form:
-          id: media_library_select_form
-          table: media
-          field: media_library_select_form
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: media
-          plugin_id: media_library_select_form
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-        rendered_entity:
-          id: rendered_entity
-          table: media
-          field: rendered_entity
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: media
-          plugin_id: rendered_entity
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          view_mode: media_library
         edit_media:
           id: edit_media
           table: media
@@ -1031,7 +1029,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<a href="/media/{{ mid }}/edit" class="media-library-item__edit icon-link" title="{% trans %}Edit {{ name }}. Opens in a new tab.{% endtrans %}" target="_new">{% trans %}Edit {{ name }}{% endtrans %}</a>'
+            text: "<a href=\"{{ path('entity.media.edit_form', {'media': mid }) }}\" class=\"media-library-item__edit icon-link\" title=\"{% trans %}Edit {{ name }}. Opens in a new tab.{% endtrans %}\" target=\"_new\">{% trans %}Edit {{ name }}{% endtrans %}</a>\r\n"
             make_link: false
             path: ''
             absolute: false
@@ -1068,9 +1066,30 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          absolute: 0
-          output_url_as_text: 0
           text: Edit
+          output_url_as_text: 0
+          absolute: 0
+      pager:
+        type: full
+        options:
+          offset: 0
+          items_per_page: 24
+          total_pages: null
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '6, 12, 24, 48'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       access:
         type: perm
         options:
@@ -1243,7 +1262,7 @@ display:
       filter_groups:
         operator: AND
         groups:
-          1: AND
+          - AND
       defaults:
         access: false
         css_class: false
@@ -1313,6 +1332,8 @@ display:
           settings:
             image_link: ''
             image_style: media_library
+            image_loading:
+              attribute: lazy
         name:
           id: name
           table: media_field_data
@@ -1523,7 +1544,7 @@ display:
       filter_groups:
         operator: AND
         groups:
-          1: AND
+          - AND
       style:
         type: table
         options:

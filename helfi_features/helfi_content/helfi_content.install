@@ -943,3 +943,34 @@ function helfi_content_update_9037() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Removes without image and description design from list of links.
+ */
+function helfi_content_update_9038() {
+  $config_factory = \Drupal::configFactory();
+
+  $links_designs = $config_factory->getEditable('field.storage.paragraph.field_list_of_links_design');
+  $links_designs_data = $links_designs->getRawData();
+
+  foreach ($links_designs_data['settings']['allowed_values'] as $key => $allowed_value) {
+    if (in_array('without-image-desc', $allowed_value)) {
+      unset($links_designs_data['settings']['allowed_values'][$key]);
+    }
+  }
+
+  $links_designs_data['settings']['allowed_values'] = array_values($links_designs_data['settings']['allowed_values']);
+
+  $links_designs->setData($links_designs_data)->save(TRUE);
+
+  // Update translations for list of links desgin.
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'field.storage.paragraph.field_list_of_links_design',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+}
