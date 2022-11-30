@@ -42,7 +42,7 @@ jobs:
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
       - name: Set module folder
-        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
+        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
 
       - name: Clone drupal
         run: git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" http://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
@@ -86,7 +86,7 @@ jobs:
         run: |
           cd $DRUPAL_ROOT
           # Enable all HELfi features.
-          set -e && for d in public/modules/contrib/$MODULE_NAME/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
+          set -e && for d in $MODULE_FOLDER/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
 
       - name: Run PHPUnit tests
         run: |
