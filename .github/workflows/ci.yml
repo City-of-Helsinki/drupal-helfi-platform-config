@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        # @todo Enable 8.0 tests.
         php-versions: ['8.1']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
@@ -73,6 +74,7 @@ jobs:
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/$MODULE_NAME -W
           vendor/bin/drush en $MODULE_NAME -y
+          # @todo Remove these.
           vendor/bin/drush theme:enable hdbt hdbt_admin
           vendor/bin/drush config:set system.theme admin hdbt_admin -y
           vendor/bin/drush config:set system.theme default hdbt -y
