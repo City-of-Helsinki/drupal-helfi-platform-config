@@ -62,9 +62,6 @@
         "drupal/views_bulk_edit": "^2.7",
         "drupal/views_bulk_operations": "^4.1"
     },
-    "require-dev": {
-        "drush/drush": "^11"
-    },
     "conflict": {
         "drupal/ctools": "<3.11 || ^4.0.1"
     },
