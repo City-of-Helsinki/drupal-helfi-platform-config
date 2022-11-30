@@ -70,6 +70,9 @@ jobs:
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/$MODULE_NAME -W
           vendor/bin/drush en $MODULE_NAME -y
+          vendor/bin/drush theme:enable hdbt hdbt_admin
+          vendor/bin/drush config:set system.theme admin hdbt_admin -y
+          vendor/bin/drush config:set system.theme default hdbt -y
 
       - name: Run PHPCS
         run: |
