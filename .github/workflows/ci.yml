@@ -19,7 +19,7 @@ jobs:
 
     services:
       db:
-        image: mariadb:10.5
+        image: mariadb:10.10
         env:
           MYSQL_USER: drupal
           MYSQL_PASSWORD: drupal
@@ -42,8 +42,20 @@ jobs:
       - name: Set module folder
         run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
 
-      - name: Build project
-        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+      - name: Clone drupal
+        run: git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" http://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
+
+      - name: Install required composer dependencies
+        run: |
+          cd $DRUPAL_ROOT
+          composer config platform.php ${{ matrix.php-versions }}
+          composer config repositories.4 composer https://repository.drupal.hel.ninja/
+          composer config repositories.5 path $GITHUB_WORKSPACE
+          composer require drupal/$MODULE_NAME -W
+          composer run-script drupal-phpunit-upgrade
+          composer require "drush/drush ^11.0"
+          composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer require --dev "drupal/coder"
 
       - name: Install Drupal
         run: |
