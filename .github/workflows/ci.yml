@@ -1,4 +1,8 @@
-on: [push]
+on:
+  pull_request:
+    push:
+      branches:
+        - main
 name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
@@ -29,11 +33,14 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Parse $MODULE_NAME from composer.json
+        run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
+
       - name: Set variables
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
       - name: Set module folder
-        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/${{ secrets.MODULE_NAME }}" >> $GITHUB_ENV
+        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
 
       - name: Build project
         run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
@@ -47,8 +54,8 @@ jobs:
         run: |
           cd $DRUPAL_ROOT
           composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/${{ secrets.MODULE_NAME }} -W
-          vendor/bin/drush en ${{ secrets.MODULE_NAME }} -y
+          composer require drupal/$MODULE_NAME -W
+          vendor/bin/drush en $MODULE_NAME -y
 
       - name: Run PHPCS
         run: |
@@ -65,7 +72,7 @@ jobs:
         run: |
           cd $DRUPAL_ROOT
           # Enable all HELfi features.
-          set -e && for d in public/modules/contrib/${{ secrets.MODULE_NAME }}/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
+          set -e && for d in public/modules/contrib/$MODULE_NAME/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
 
       - name: Run PHPUnit tests
         run: |
