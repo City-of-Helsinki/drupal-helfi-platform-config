@@ -58,6 +58,8 @@ jobs:
           composer require "drush/drush ^11.0"
           composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
           composer require --dev "drupal/coder"
+          # @todo remove this.
+          composer require drupal/hdbt:dev-UHF-7219
 
       - name: Install Drupal
         run: |
