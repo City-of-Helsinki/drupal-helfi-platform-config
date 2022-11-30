@@ -60,6 +60,7 @@ jobs:
           composer require --dev "drupal/coder"
           # @todo remove this.
           composer require drupal/hdbt:dev-UHF-7219
+          composer require drupal/hdbt_admin:dev-UHF-7219
 
       - name: Install Drupal
         run: |
