@@ -68,17 +68,6 @@ jobs:
           cd $DRUPAL_ROOT
           php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
 
-      - name: Update modules
-        run: |
-          cd $DRUPAL_ROOT
-          composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/$MODULE_NAME -W
-          vendor/bin/drush en $MODULE_NAME -y
-          # @todo Remove these.
-          vendor/bin/drush theme:enable hdbt hdbt_admin
-          vendor/bin/drush config:set system.theme admin hdbt_admin -y
-          vendor/bin/drush config:set system.theme default hdbt -y
-
       - name: Run PHPCS
         run: |
           cd $DRUPAL_ROOT
@@ -93,6 +82,10 @@ jobs:
       - name: Enable all HELfi features
         run: |
           cd $DRUPAL_ROOT
+          vendor/bin/drush theme:enable hdbt hdbt_admin
+          vendor/bin/drush config:set system.theme admin hdbt_admin -y
+          vendor/bin/drush config:set system.theme default hdbt -y
+
           # Enable all HELfi features.
           set -e && for d in $MODULE_FOLDER/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
 
