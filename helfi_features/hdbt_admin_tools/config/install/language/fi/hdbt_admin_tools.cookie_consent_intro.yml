@@ -1,0 +1,5 @@
+cc:
+  title: Evästeasetukset
+  content:
+    value: "<p>Eväste on pienimuotoinen tiedontallennusohjelma, jonka tietokoneen selain asentaa käyttäjän tietokoneen kovalevylle. Aina kun käyttäjän selain hakee sivuston Helsingin kaupungin palvelimilta, viesti lähetetään takaisin käyttäjän tietokoneelle. Javascriptin ja palvelinlokien avulla tilastoidaan esimerkiksi käyttäjämäärä, käyttömaa, käyttöaika ja käytetty selain sekä sisällöt, joissa kävijä on vieraillut. Eväste ei vahingoita käyttölaitetta.</p>\r\n\r\n<p>Evästeitä käytetään nopeuttamaan, analysoimaan ja kehittämään sivustoa sekä kohdentamaan sisältöä kullekin käyttäjälle.</p>\r\n"
+    format: full_html

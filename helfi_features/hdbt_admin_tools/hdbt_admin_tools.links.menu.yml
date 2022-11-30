@@ -1,0 +1,91 @@
+hdbt_admin_tools.overview:
+  title: 'Tools'
+  description: 'Content management helper pages.'
+  route_name: hdbt_admin_tools.list_all
+  parent: system.admin
+  weight: -9
+
+hdbt_admin_tools.site_information:
+  title: 'Site information'
+  parent: hdbt_admin_tools.overview
+  route_name: system.site_information_settings
+  weight: 0
+
+hdbt_admin_tools.site_information_child:
+  title: 'Site information'
+  parent: hdbt_admin_tools.site_information
+  route_name: system.site_information_settings
+  weight: 0
+
+hdbt_admin_tools.site_settings_form:
+  title: 'Site settings'
+  parent: hdbt_admin_tools.site_information
+  route_name: hdbt_admin_tools.site_settings_form
+  weight: -8
+
+hdbt_admin_tools.menus:
+  title: 'Menus'
+  parent: hdbt_admin_tools.overview
+  route_name: entity.menu.collection
+  weight: 0
+
+hdbt_admin_tools.header_top_menu:
+  title: 'Header top navigation menu links'
+  parent: hdbt_admin_tools.menus
+  route_name: entity.menu.edit_form
+  route_parameters: { menu: 'header-top-navigation' }
+  weight: 0
+
+hdbt_admin_tools.header_branding_menu:
+  title: 'Header branding navigation menu links'
+  parent: hdbt_admin_tools.menus
+  route_name: entity.menu.edit_form
+  route_parameters: { menu: 'branding-navigation' }
+  weight: 1
+
+hdbt_admin_tools.main_menu:
+  title: 'Main menu'
+  parent: hdbt_admin_tools.menus
+  route_name: entity.menu.edit_form
+  route_parameters: { menu: 'main' }
+  weight: 2
+
+hdbt_admin_tools.footer_top_menu:
+  title: 'Footer top navigation menu links'
+  parent: hdbt_admin_tools.menus
+  route_name: entity.menu.edit_form
+  route_parameters: { menu: 'footer-top-navigation' }
+  weight: 3
+
+hdbt_admin_tools.footer_bottom_menu:
+  title: 'Footer bottom navigation menu links'
+  parent: hdbt_admin_tools.menus
+  route_name: entity.menu.edit_form
+  route_parameters: { menu: 'footer-bottom-navigation' }
+  weight: 4
+
+hdbt_admin_tools.component_library:
+  title: 'HDBT - Component library'
+  parent: hdbt_admin_tools.overview
+  route_name: hdbt_component_library.component_library
+  weight: 1
+
+hdbt_admin_tools.taxonomy:
+  title: 'Taxonomy'
+  parent: hdbt_admin_tools.overview
+  route_name: hdbt_admin_tools.taxonomy
+
+hdbt_admin_tools.user_interface_translations:
+  title: 'User interface translations'
+  parent: hdbt_admin_tools.overview
+  route_name: locale.translate_page
+
+hdbt_admin_tools.cookie_consent_content:
+  title: 'Cookie consent intro'
+  parent: hdbt_admin_tools.site_information
+  route_name: hdbt_admin_tools.cookie_consent_intro_form
+
+hdbt_admin_tools.eu_cookie_consent_content:
+  title: 'Cookie consent intro'
+  parent: eu_cookie_compliance
+  route_name: hdbt_admin_tools.cookie_consent_intro_form

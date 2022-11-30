@@ -1,0 +1,130 @@
+msgid ""
+msgstr ""
+
+msgid ""
+"Allows linking to this content using a URL fragment (#). Must be "
+"unique."
+msgstr ""
+"Sallii linkityksen tähän sisältöön URL-fragmentin (#) avulla. "
+"Täytyy olla uniikki."
+
+msgid "Basic tags"
+msgstr "Perustägit"
+
+msgid "Button primary"
+msgstr "Täysvärinen"
+
+msgid "Button secondary"
+msgstr "Reunustettu"
+
+msgid "Button supplementary"
+msgstr "Ei reunuksia tai taustaväriä"
+
+msgid "Color palette"
+msgstr "Väripaletti"
+
+msgid "Dark"
+msgstr "Tumma"
+
+msgctxt "HDBT Admin editorial"
+msgid ""
+"A succinct description of the page content. Max. 160 characters. "
+"May be visible in search results. The description is fetched from "
+"the Lead-field and does not need to be set here."
+msgstr ""
+"Tiivis kuvaus sivun sisällöstä. Enintään 160 merkkiä. "
+"Voi näkyä hakukoneiden tuloksissa. Kuvaus haetaan Ingressi-kentästä, "
+"eikä sitä tarvitse muuttaa."
+
+msgctxt "HDBT Admin editorial"
+msgid "Add image"
+msgstr "Lisää kuva"
+
+msgctxt "HDBT Admin editorial"
+msgid "Can be left unchanged. Tokens can be used to set metadata."
+msgstr ""
+"Näitä asetuksia ei tarvitse muuttaa. "
+"Metatietojen asettamisessa voidaan käyttää valmiita korvauskuvioita."
+
+msgctxt "HDBT Admin editorial"
+msgid "Description for search engines"
+msgstr "Kuvaus hakukoneille"
+
+msgctxt "HDBT Admin editorial"
+msgid "Editing metadata"
+msgstr "Metatietojen muuttaminen"
+
+msgctxt "HDBT Admin editorial"
+msgid "Hiding the page"
+msgstr "Ajastettu piilottaminen"
+
+msgctxt "HDBT Admin editorial"
+msgid "Image is not selected."
+msgstr "Kuvaa ei ole valittu."
+
+msgctxt "HDBT Admin editorial"
+msgid ""
+"Page title is visible in search results and browser tab heading. "
+"The title is set automatically and does not need to be set here. "
+"Recommended max. length: 55–65 characters."
+msgstr ""
+"Sivun title näkyy hakutuloksissa ja selaimen välilehden otsikkona."
+"Title asetetaan automaattisesti, eikä sitä tarvitse muuttaa tästä. "
+"Suosituspituus: enintään 55–65 merkkiä."
+
+msgctxt "HDBT Admin editorial"
+msgid "Release time"
+msgstr "Julkaisuaika"
+
+msgctxt "HDBT Admin editorial"
+msgid "Version notes"
+msgstr "Miten muutit sivua?"
+
+msgid "Hide sidebar navigation from this page"
+msgstr "Piilota sivupalkin navigaatio tältä sivulta"
+
+msgid ""
+"I have made sure that the description "
+"of this link clearly states that it will open in a new tab. "
+"<a href=\"@wcag-techniques\" target=\"_blank\">See WCAG 3.2.5 accessibility requirement (the link opens in a new tab).</a>"
+msgstr ""
+"Olen huolehtinut, että tämän linkin kuvauksessa "
+"kerrotaan selkeästi sen aukeavan uuteen välilehteen. "
+"<a href=\"@wcag-techniques\" target=\"_blank\">Katso WCAG 3.2.5 saavutettavuusvaatimukset (linkki avautuu uuteen välilehteen).</a>"
+
+msgid "Light"
+msgstr "Vaalea"
+
+msgid "Open in new window/tab"
+msgstr "Avaa uudessa ikkunassa / välilehdellä"
+
+msgid "The link meets the accessibility requirements"
+msgstr "Linkki täyttää saavutettavuusvaatimukset"
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "One-time login link for %user_name"
+msgstr "Kertakäyttöinen kirjautumislinkki käyttäjälle %user_name"
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "<strong>Do not send the one time link via MS Teams</strong> or any other instant messaging application!<br />Doing so will invalidate the login link, and it will become useless."
+msgstr "<strong>Älä lähetä kertakäyttöistä linkkiä MS Teamsin kautta</strong> tai minkään muun pikaviestisovelluksen kautta!<br />Pikaviestimet lataavat URL-osoitteen esikatseluun ja tämä toimenpide mitätöi kirjautumislinkin."
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "Copy and send the one-time login link to the user via <strong>email</strong>."
+msgstr "Kopioi Kertakäyttöinen kirjautumislinkki ja lähetä se käyttäjälle <strong>sähköpostitse</strong>"
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "Click the button below to generate a one-time login link for <strong>%user_name</strong>."
+msgstr "Klikkaa alla olevaa painiketta luodaksesi kertakäyttöisen kirjautumislinkin käyttäjälle <strong>%user_name</strong>."
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "Generate the URL"
+msgstr "Generoi URL-osoite"
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "This link is valid for %hr. Do not visit the URL yourself as it will invalidate the login link."
+msgstr "Tämä linkki on voimassa %hr. Älä käy URL-osoitteessa itse, sillä se mitätöi kirjautumislinkin."
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "Update user password"
+msgstr "Päivitä käyttäjän salasana"

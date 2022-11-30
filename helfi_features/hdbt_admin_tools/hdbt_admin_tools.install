@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains install functions for HDBT Admin tools.
+ */
+
+/**
+ * Remove footer top content and top title configuration.
+ */
+function hdbt_admin_tools_update_9001() {
+  $theme_handler = Drupal::service('theme_handler');
+  $config_factory = \Drupal::configFactory();
+
+  // Handle HDBT Admin.
+  if ($theme_handler->themeExists('hdbt_admin')) {
+    $hdbt_admin_tools_site_settings = $config_factory->getEditable('hdbt_admin_tools.site_settings');
+    $hdbt_admin_tools_site_settings_data = $hdbt_admin_tools_site_settings->getRawData();
+    if (!empty($hdbt_admin_tools_site_settings_data)) {
+      unset($hdbt_admin_tools_site_settings_data['footer_settings']['footer_top_content']);
+      unset($hdbt_admin_tools_site_settings_data['footer_settings']['footer_top_title']);
+      $hdbt_admin_tools_site_settings->setData($hdbt_admin_tools_site_settings_data)->save(TRUE);
+    }
+  }
+}

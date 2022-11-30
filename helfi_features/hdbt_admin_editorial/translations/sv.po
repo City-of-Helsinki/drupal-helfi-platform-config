@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+
+msgctxt "HDBT Admin editorial"
+msgid "Version notes"
+msgstr "Hur ändrade du sidan?"
+
+msgid "Hide sidebar navigation from this page"
+msgstr "Dölj sidofältsnavigering från den här sidan"
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "One-time login link for %user_name"
+msgstr "Engångsinloggningslänk för %user_name"
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "<strong>Do not send the one time link via MS Teams</strong> or any other instant messaging application!<br />Doing so will invalidate the login link, and it will become useless."
+msgstr "<strong>Skicka inte engångslänken via MS Teams</strong> eller något annat program för snabbmeddelanden!<br />Om du gör det ogiltigförklaras inloggningslänken och den blir värdelös."
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "Copy and send the one-time login link to the user via <strong>email</strong>."
+msgstr "Kopiera och skicka engångsinloggningslänken till användaren via <strong>e-post</strong>."
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "Click the button below to generate a one-time login link for <strong>%user_name</strong>."
+msgstr "Klicka på knappen nedan för att skapa en engångsinloggningslänk för <strong>%user_name</strong>."
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "Generate the URL"
+msgstr "Skapa URL:en"
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "This link is valid for %hr. Do not visit the URL yourself as it will invalidate the login link."
+msgstr "Denna länk är giltig i %hr. Besök inte webbadressen själv eftersom det kommer att ogiltigförklara inloggningslänken."
+
+msgctxt "HDBT Admin editorial - One-time login link"
+msgid "Update user password"
+msgstr "Uppdatera användarlösenord"

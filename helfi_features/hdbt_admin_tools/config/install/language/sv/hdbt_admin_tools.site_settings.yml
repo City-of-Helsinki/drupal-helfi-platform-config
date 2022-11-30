@@ -1,0 +1,5 @@
+footer_settings:
+  footer_top_title: 'Ta kontakt'
+  footer_top_content:
+    value: "<ul class=\"menu\">\r\n\t<li class=\"menu__item menu__item--external\"><a class=\"link\" data-design=\"link\" data-link-text=\"Helsingfors-info\" data-protocol=\"false\" href=\"https://www.hel.fi/kanslia/neuvonta-sv/\">Helsingfors-info</a></li>\r\n\t<li class=\"menu__item menu__item--external\"><a class=\"link\" data-design=\"link\" data-link-text=\"Sök kontaktuppgifter och telefonnummer\" data-protocol=\"false\" href=\"https://numerot.hel.fi/\">Sök kontaktuppgifter och telefonnummer</a></li>\r\n\t<li class=\"menu__item menu__item--external\"><a class=\"link\" data-design=\"link\" data-link-text=\"Ge respons\" data-protocol=\"false\" href=\"https://www.hel.fi/respons/\">Ge respons</a></li>\r\n</ul>\r\n"
+    format: full_html

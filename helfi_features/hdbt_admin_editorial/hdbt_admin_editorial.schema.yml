@@ -1,0 +1,10 @@
+field.widget.settings.design_field_widget:
+  type: mapping
+  label: 'Design field widget widget settings'
+  mapping:
+    size:
+      type: integer
+      label: 'Size'
+    placeholder:
+      type: textfield
+      label: 'Placeholder'

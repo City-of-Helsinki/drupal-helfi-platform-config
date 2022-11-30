@@ -1,0 +1,11 @@
+hdbt_admin_tools.site_settings:
+  title: 'Site settings'
+  base_route_name: hdbt_admin_tools.site_settings_form
+  names:
+    - hdbt_admin_tools.site_settings
+
+hdbt_admin_tools.cookie_consent_intro:
+  title: 'Cookie consent intro'
+  base_route_name: hdbt_admin_tools.cookie_consent_intro_form
+  names:
+    - hdbt_admin_tools.cookie_consent_intro

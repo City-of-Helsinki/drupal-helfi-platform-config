@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Contains necessary hooks for Select2 icons.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function select2_icon_theme() {
+  return [
+    'select2_icon_widget' => [
+      'render element' => 'element',
+      'preprocess functions' => [
+        'template_preprocess_select2_icon',
+        'template_preprocess_select',
+      ],
+    ],
+    'select2_icon' => [
+      'variables' => [
+        'icon_id' => NULL,
+        'icon_label' => NULL,
+      ],
+    ],
+  ];
+}

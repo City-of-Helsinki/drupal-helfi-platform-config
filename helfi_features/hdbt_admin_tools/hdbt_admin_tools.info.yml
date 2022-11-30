@@ -1,0 +1,7 @@
+name: 'HDBT Admin tools'
+description: 'Admin tools for administrators and content producers.'
+package: 'HDBT Admin'
+core_version_requirement: ^8 || ^9
+type: module
+dependencies:
+  - config_translation

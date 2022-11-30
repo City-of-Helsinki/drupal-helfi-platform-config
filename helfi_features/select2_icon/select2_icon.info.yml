@@ -1,0 +1,7 @@
+name: 'Select2 Icon'
+type: module
+description: 'Select2 integration for previewing icons in select lists.'
+package: User interface
+core_version_requirement: ^8 || ^9
+dependencies:
+  - select2

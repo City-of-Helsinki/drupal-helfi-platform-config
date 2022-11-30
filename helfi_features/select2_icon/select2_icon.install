@@ -1,0 +1,70 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Select2 Icon module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function select2_icon_install() {
+  _select2_icon_install_configuration();
+}
+
+/**
+ * Install initial path for HDS icons to be used in Select2 Icon widget.
+ */
+function select2_icon_update_9101() {
+  _select2_icon_install_configuration();
+}
+
+/**
+ * Update path for the editor selectable icons.
+ */
+function select2_icon_update_9102() {
+  _select2_icon_install_configuration();
+}
+
+/**
+ * Craft paths for icons to be used in Select2 Icon widget.
+ */
+function _select2_icon_install_configuration() {
+  $theme_handler = \Drupal::service('theme_handler');
+
+  if ($theme_handler->themeExists('hdbt')) {
+    $theme_path = '/' . $theme_handler->getTheme('hdbt')->getPath();
+    $config_path = \Drupal::root() . $theme_path . '/.hdbtconfig.json';
+    $config_hdbt = FALSE;
+    $data = file_get_contents($config_path);
+
+    if ($data !== FALSE) {
+      $config_hdbt = json_decode($data, TRUE);
+    }
+
+    if (is_array($config_hdbt) && !empty($config_hdbt)) {
+      $config = \Drupal::getContainer()->get('config.factory')->getEditable('select2_icon.settings');
+      $configurations = [
+        'path_to_sprite' => 'pathToIconSprite',
+        'path_to_json' => 'pathToIconJson',
+      ];
+
+      foreach ($configurations as $key => $value) {
+        if (array_key_exists($value, $config_hdbt)) {
+          $path = $theme_path . $config_hdbt[$value];
+          $config->set($key, $path)->save();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function select2_icon_uninstall() {
+  \Drupal::getContainer()
+    ->get('config.factory')
+    ->getEditable('select2_icon.settings')
+    ->delete();
+}

@@ -1,0 +1,5 @@
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon.toolbar-icon-hdbt-admin-tools-overview:before {
+  -webkit-mask-image: url(../icons/tools.svg);
+  mask-image: url(../icons/tools.svg);
+}
+

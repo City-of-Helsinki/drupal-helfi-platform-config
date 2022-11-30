@@ -1,0 +1,14 @@
+name: 'HDBT Admin - Editorial'
+type: module
+description: 'Editorial provides editorial enhancements for content editors.'
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - drupal:ckeditor
+  - drupal:editor
+  - linkit:linkit
+  - hdbt_admin_tools:hdbt_admin_tools
+  - select2_icon:select2_icon
+'interface translation project': hdbt_admin_editorial
+'interface translation server pattern': themes/contrib/hdbt_admin/modules/hdbt_admin_editorial/translations/%language.po

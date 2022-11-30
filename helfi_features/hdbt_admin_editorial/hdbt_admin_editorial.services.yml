@@ -1,0 +1,4 @@
+services:
+  hdbt_admin_editorial.design_selection_manager:
+    class: Drupal\hdbt_admin_editorial\DesignSelectionManager
+    arguments: [ '@module_handler' ]
