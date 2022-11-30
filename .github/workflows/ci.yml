@@ -83,10 +83,6 @@ jobs:
       - name: Enable all HELfi features
         run: |
           cd $DRUPAL_ROOT
-          vendor/bin/drush theme:enable hdbt hdbt_admin
-          vendor/bin/drush config:set system.theme admin hdbt_admin -y
-          vendor/bin/drush config:set system.theme default hdbt -y
-
           # Enable all HELfi features.
           set -e && for d in $MODULE_FOLDER/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
 
