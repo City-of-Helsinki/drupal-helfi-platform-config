@@ -274,3 +274,20 @@ function helfi_base_config_update_9013() {
     $keys->delete('drupal');
   }
 }
+
+/**
+ * Update notifications emails.
+ */
+function helfi_base_config_update_9014() {
+  $config_factory = \Drupal::configFactory();
+  $old_email = 'admin@example.com';
+  $new_email = 'drupal@hel.fi';
+
+  if (in_array($old_email, $emails = $config_factory->get('update.settings')->get('notification.emails'))) {
+    foreach ($emails as $key => &$value) {
+      $value = $value === $old_email ? $new_email : $value;
+    }
+    $config_factory->getEditable('update.settings')->set('notification.emails', $emails)->save();
+    \Drupal::messenger()->addMessage('Updated the sending address of update email notifications to drupal@hel.fi');
+  }
+}
