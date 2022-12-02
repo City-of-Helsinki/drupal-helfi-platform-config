@@ -408,45 +408,6 @@ views.view.service_list:
                   name: name
                   name_synonyms: name_synonyms
                   description__summary: description__summary
-              status_extra:
-                id: status_extra
-                table: tpr_service_field_data
-                field: status_extra
-                relationship: none
-                group_type: group
-                admin_label: ''
-                entity_type: tpr_service
-                plugin_id: tpr_status
-                operator: '='
-                value: ''
-                group: 1
-                exposed: false
-                expose:
-                  operator_id: ''
-                  label: ''
-                  description: ''
-                  use_operator: false
-                  operator: ''
-                  operator_limit_selection: false
-                  operator_list: { }
-                  identifier: ''
-                  required: false
-                  remember: false
-                  multiple: false
-                  remember_roles:
-                    authenticated: authenticated
-                is_grouped: false
-                group_info:
-                  label: ''
-                  description: ''
-                  identifier: ''
-                  optional: true
-                  widget: select
-                  multiple: false
-                  remember: false
-                  default_group: All
-                  default_group_multiple: { }
-                  group_items: { }
             filter_groups:
               operator: AND
               groups:
@@ -486,6 +447,5 @@ views.view.service_list:
               - 'languages:language_interface'
               - url
               - url.query_args
-              - user
               - user.permissions
             tags: { }
