@@ -1,12 +1,9 @@
-uuid: 336e1fac-c40a-409f-b0ef-6b005566bcd2
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.media.field_photographer
     - media.type.image
-_core:
-  default_config_hash: sYJCb04aGvsGWCN_L6JvWIOb-_8c-c0gI4Rw2HL8K80
 id: media.image.field_photographer
 field_name: field_photographer
 entity_type: media

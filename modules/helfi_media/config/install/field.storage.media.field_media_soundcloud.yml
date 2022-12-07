@@ -1,11 +1,8 @@
-uuid: aebb07dd-95a0-4723-b255-53588f6b7bb7
 langcode: en
 status: true
 dependencies:
   module:
     - media
-_core:
-  default_config_hash: YEjIsCifCqMEs4MBG8xeDLzXyN2W_RxPen88lhgBGAo
 id: media.field_media_soundcloud
 field_name: field_media_soundcloud
 entity_type: media

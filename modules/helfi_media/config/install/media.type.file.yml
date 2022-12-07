@@ -1,9 +1,6 @@
-uuid: 61b7b1d7-2ce0-4a56-b974-bc0aa503e470
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: akfMZKbbDlCyIEtmbuAMd7jSSwu8eFf5bjOr87xDx1A
 id: file
 label: File
 description: 'Media type file for general files such as documents and charts.'

@@ -1,4 +1,3 @@
-uuid: 5d79c691-f492-4d8d-b341-716ac755146c
 langcode: en
 status: true
 dependencies:
@@ -9,8 +8,6 @@ dependencies:
     - media.type.soundcloud
   module:
     - image
-_core:
-  default_config_hash: Jjj_ulBE97zsWBWZTn1yNz6Hs1o5i5VD9Z1eCns09SE
 id: media.soundcloud.media_library
 targetEntityType: media
 bundle: soundcloud
