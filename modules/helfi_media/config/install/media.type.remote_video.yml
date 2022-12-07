@@ -1,0 +1,24 @@
+uuid: aad8735c-559e-4215-927e-b7b6a038061b
+langcode: en
+status: true
+dependencies:
+  module:
+    - crop
+third_party_settings:
+  crop:
+    image_field: null
+_core:
+  default_config_hash: GPjIi9MrHVi7nlw_vlwKWBVl87xGuOfiebbDTBkVRfQ
+id: remote_video
+label: 'Remote video'
+description: 'Media type for remote media from external sources.'
+source: 'oembed:video'
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_oembed_video
+  thumbnails_directory: 'public://oembed_thumbnails'
+  providers:
+    - YouTube
+    - 'Icareus Suite'
+field_map: {  }

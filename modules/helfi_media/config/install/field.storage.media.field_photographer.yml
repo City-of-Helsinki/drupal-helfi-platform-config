@@ -1,0 +1,23 @@
+uuid: 7c83ff44-5a8f-4caa-93be-7365f3852d41
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+_core:
+  default_config_hash: 8Z0eiVit80ouZV9CZXXe4h7P6SnIaIJnWjN1HRrSj8A
+id: media.field_photographer
+field_name: field_photographer
+entity_type: media
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

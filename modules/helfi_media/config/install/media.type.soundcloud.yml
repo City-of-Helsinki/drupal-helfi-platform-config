@@ -1,0 +1,17 @@
+uuid: 4fa3dc5d-483b-4a27-9c79-4bf725e90921
+langcode: en
+status: true
+dependencies:
+  module:
+    - media_entity_soundcloud
+_core:
+  default_config_hash: AzAE2ltBPeyP7TmzBO8timcqOmYaJX2RhmRy8qYs6Tc
+id: soundcloud
+label: SoundCloud
+description: 'Media type for adding SoundCloud items.'
+source: soundcloud
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_soundcloud
+field_map: {  }

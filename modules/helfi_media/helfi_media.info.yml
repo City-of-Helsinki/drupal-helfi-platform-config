@@ -1,0 +1,6 @@
+name: 'HELfi: media'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - drupal:media
+  - drupal:media_library

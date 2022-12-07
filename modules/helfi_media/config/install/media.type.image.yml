@@ -1,0 +1,20 @@
+uuid: ba32eab9-c5f9-44e3-94cd-c23732f8de46
+langcode: en
+status: true
+dependencies:
+  module:
+    - crop
+third_party_settings:
+  crop:
+    image_field: _none
+_core:
+  default_config_hash: Hn0ivZE8RL9Lnq_9mVi3F3QWBLhYN8SsJQrRznRIC54
+id: image
+label: Image
+description: 'Use local image for reusable media.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: field_media_image
+field_map: {  }
