@@ -1,0 +1,6 @@
+name: 'HELfi Node Landing page'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - drupal:menu_ui
+  - helfi_base_content:helfi_base_content

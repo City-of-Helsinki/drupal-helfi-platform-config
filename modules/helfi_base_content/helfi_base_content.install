@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_base_content module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\language\Entity\ConfigurableLanguage;
+
+/**
+ * Implements hook_install().
+ */
+function helfi_base_content_install() : void {
+  foreach (['fi', 'sv'] as $langcode) {
+    ConfigurableLanguage::createFromLangcode($langcode)
+      ->save();
+  }
+
+  $prefixes = [];
+  foreach (Drupal::languageManager()->getLanguages() as $language) {
+    $prefixes[$language->getId()] = $language->getId();
+  }
+
+  Drupal::configFactory()->getEditable('language.negotiation')
+    ->set('url.prefixes', $prefixes)
+    ->save();
+}

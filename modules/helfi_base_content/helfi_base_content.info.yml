@@ -1,0 +1,12 @@
+name: 'HELfi Base Content'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - drupal:language
+  - drupal:node
+  - drupal:media
+  - paragraphs:paragraphs
+  - helfi_platform_config:helfi_platform_config
+  - paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets
+  - paragraphs_library:paragraphs_library
+  - entity_reference_revisions:entity_reference_revisions

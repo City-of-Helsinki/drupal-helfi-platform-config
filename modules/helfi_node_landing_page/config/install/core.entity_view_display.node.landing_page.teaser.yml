@@ -1,0 +1,40 @@
+uuid: d2414379-adde-46e5-b2ea-71c73d8a9a13
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.landing_page.field_content
+    - field.field.node.landing_page.field_has_hero
+    - field.field.node.landing_page.field_hero
+    - field.field.node.landing_page.field_liftup_image
+    - field.field.node.landing_page.field_metatags
+    - node.type.landing_page
+  module:
+    - user
+_core:
+  default_config_hash: RFefjJBQl6poRfg0xzeEciZDr5a8b93mTvBPo_c5vt8
+id: node.landing_page.teaser
+targetEntityType: node
+bundle: landing_page
+mode: teaser
+content:
+  field_liftup_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: content_card
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_content: true
+  field_has_hero: true
+  field_hero: true
+  field_metatags: true
+  langcode: true
+  links: true
+  published_at: true
+  search_api_excerpt: true
+  toc_enabled: true
