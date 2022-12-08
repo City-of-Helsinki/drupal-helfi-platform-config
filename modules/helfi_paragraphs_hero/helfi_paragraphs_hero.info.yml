@@ -2,11 +2,12 @@ name: 'HELfi Paragraphs: Hero'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - allowed_formats:allowed_formats
-  - drupal:link
-  - drupal:image
-  - drupal:media
-  - drupal:media_library
-  - drupal:options
-  - hdbt_admin_editorial:hdbt_admin_editorial
-  - helfi_base_content:helfi_base_content
+  - 'allowed_formats:allowed_formats'
+  - 'drupal:link'
+  - 'drupal:image'
+  - 'drupal:media'
+  - 'drupal:media_library'
+  - 'drupal:options'
+  - 'hdbt_admin_editorial:hdbt_admin_editorial'
+  - 'helfi_base_content:helfi_base_content'
+  - 'helfi_media:helfi_media'

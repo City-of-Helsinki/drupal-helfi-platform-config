@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_base_content\Functional;
 
-use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\helfi_platform_config\Functional\BrowserTestBase;
 
 /**
  * Tests helfi_base_content module.
@@ -17,11 +17,6 @@ class BaseContentTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'paragraphs',
-    'paragraphs_asymmetric_translation_widgets',
-    'media',
-    'node',
-    'helfi_platform_config',
     'helfi_base_content',
   ];
 

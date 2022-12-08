@@ -51,12 +51,8 @@ content:
     weight: 6
     region: content
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
       linkit_profile: tpr_content
-      linkit_auto_link_text: 0
-      link_target: ''
-      icon: ''
+      linkit_auto_link_text: false
     third_party_settings: {  }
   field_hero_link_design:
     type: design_field_widget
