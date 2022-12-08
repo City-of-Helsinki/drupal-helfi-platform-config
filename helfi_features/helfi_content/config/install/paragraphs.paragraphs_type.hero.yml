@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: hero
-label: Hero
-icon_uuid: null
-icon_default: null
-description: 'Very diverse paragraph that covers a large area of the content and is traditionally placed on top of the page.'
-behavior_plugins: {  }

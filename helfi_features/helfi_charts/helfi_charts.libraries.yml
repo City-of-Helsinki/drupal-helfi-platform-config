@@ -1,4 +1,0 @@
-helfi_charts:
-  version: 1.0.x
-  js:
-    assets/js/helfi-charts-cookie-compliance.js: {}

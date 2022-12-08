@@ -1,6 +1,0 @@
-easy_breadcrumb.settings:
-  expected_config:
-    include_home_segment: true
-  update_actions:
-    change:
-      include_home_segment: false

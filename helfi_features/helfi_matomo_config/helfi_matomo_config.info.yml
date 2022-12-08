@@ -1,5 +1,0 @@
-name: 'HELfi Matomo config (Deprecated)'
-type: module
-description: 'Deprecated'
-core_version_requirement: '^8.9 || ^9'
-package: HELfi

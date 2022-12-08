@@ -1,5 +1,0 @@
-permissions:
-  - 'create helfi_chart media'
-  - 'delete own helfi_chart media'
-  - 'edit any helfi_chart media'
-  - 'edit own helfi_chart media'

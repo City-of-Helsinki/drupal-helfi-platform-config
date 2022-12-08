@@ -1,8 +1,0 @@
-image.style.linkit_result_thumbnail:
-  expected_config: {  }
-  update_actions:
-    add:
-      effects:
-        2943df29-38ea-459c-ba1d-290489bb1807:
-          data:
-            anchor: center-center

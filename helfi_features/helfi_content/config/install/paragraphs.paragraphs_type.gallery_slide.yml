@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: gallery_slide
-label: 'Gallery slide'
-icon_uuid: null
-icon_default: null
-description: 'Not in use.'
-behavior_plugins: {  }

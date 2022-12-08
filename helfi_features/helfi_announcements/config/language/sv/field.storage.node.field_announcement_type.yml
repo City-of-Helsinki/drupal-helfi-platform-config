@@ -1,8 +1,0 @@
-settings:
-  allowed_values:
-    -
-      label: Notifikation
-    -
-      label: Obs
-    -
-      label: Varning

@@ -1,7 +1,0 @@
-helfi_hotjar_settings:
-  title: 'Hotjar settings'
-  parent: system.admin_config_services
-  description: 'Manage Hotjar ID and snippet version.'
-  route_name: helfi_hotjar_settings
-  weight: -20
-

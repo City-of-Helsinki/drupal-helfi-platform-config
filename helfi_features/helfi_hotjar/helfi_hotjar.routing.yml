@@ -1,7 +1,0 @@
-helfi_hotjar_settings:
-  path: '/admin/config/services/hotjar'
-  defaults:
-    _form: '\Drupal\helfi_hotjar\Form\HotjarConfigForm'
-    _title: 'Hotjar settings'
-  requirements:
-    _permission: 'administer hotjar settings'

@@ -1,8 +1,0 @@
-hotjar:
-  version: 1.0.x
-  js:
-    assets/js/hotjar.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - core/drupalSettings

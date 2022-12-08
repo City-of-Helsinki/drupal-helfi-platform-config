@@ -1,9 +1,0 @@
-msgid ""
-msgstr ""
-
-msgid "Show on service pages"
-msgstr "Visa at servicesidan"
-
-msgid "Show on unit pages"
-msgstr "Visa at anstalt sidan"
-

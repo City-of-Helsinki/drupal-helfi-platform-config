@@ -1,8 +1,0 @@
-msgid ""
-msgstr ""
-
-msgid "Show on service pages"
-msgstr "Näytä palvelusivuilla"
-
-msgid "Show on unit pages"
-msgstr "Näytä toimipistesivuilla"

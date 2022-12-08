@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: list_of_links_item
-label: 'List of links item'
-icon_uuid: null
-icon_default: null
-description: 'One item - a link with metadata - of list of links.'
-behavior_plugins: {  }

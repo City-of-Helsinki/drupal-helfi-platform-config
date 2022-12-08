@@ -1,5 +1,0 @@
-eu_cookie_compliance.settings:
-  expected_config: { }
-  update_actions:
-    change:
-      cookie_policy_version: 1.1.0

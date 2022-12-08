@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - helfi_tpr
-id: tpr_unit.minimal
-label: Minimal
-targetEntityType: tpr_unit
-cache: true

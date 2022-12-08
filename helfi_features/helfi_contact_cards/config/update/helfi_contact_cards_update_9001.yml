@@ -1,6 +1,0 @@
-field.field.paragraph.contact_card.field_contact_title:
-  expected_config:
-    label: Title
-  update_actions:
-    change:
-      label: Job title

@@ -1,4 +1,0 @@
-helfi_calculator.calculator_settings:
-  route_name: helfi_calculator.calculator_settings_form
-  title: 'Calculator settings'
-  base_route: helfi_calculator.calculator_settings_form

@@ -1,7 +1,0 @@
-name: 'HELfi Helsinki neighbourhoods'
-description: 'Adds Helsinki neighbourhoods to the Neighbourhoods taxonomy.'
-type: module
-core_version_requirement: '^8.9 || ^9'
-dependencies:
-  - 'helfi_tpr_unit_districts:helfi_tpr_unit_districts'
-package: HELfi

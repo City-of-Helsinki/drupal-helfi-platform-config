@@ -1,9 +1,0 @@
-user.role.admin:
-  expected_config: {  }
-  update_actions:
-    add:
-      dependencies:
-        module:
-          - content_lock
-      permissions:
-        - 'break content lock'

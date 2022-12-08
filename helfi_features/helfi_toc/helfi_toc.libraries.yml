@@ -1,8 +1,0 @@
-table_of_contents:
-  version: 1.x
-  js:
-    assets/js/tableOfContents.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - core/jquery.once

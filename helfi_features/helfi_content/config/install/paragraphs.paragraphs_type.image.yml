@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: image
-label: Image
-icon_uuid: null
-icon_default: null
-description: 'Image with a caption'
-behavior_plugins: {  }
