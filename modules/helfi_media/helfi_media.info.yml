@@ -3,6 +3,7 @@ type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
   - drupal:content_translation
+  - drupal:link
   - drupal:media
   - drupal:media_library
   - drupal:path

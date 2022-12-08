@@ -1024,7 +1024,7 @@ display:
           group_type: group
           admin_label: ''
           entity_type: media
-          plugin_id: helfi_media_entity_link_edit
+          plugin_id: entity_link_edit
           label: ''
           exclude: false
           alter:
