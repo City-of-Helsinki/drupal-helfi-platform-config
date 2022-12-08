@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - media
-id: media.image
-label: Image
-targetEntityType: media
-cache: true
