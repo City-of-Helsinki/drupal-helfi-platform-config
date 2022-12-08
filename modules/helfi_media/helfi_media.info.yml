@@ -7,4 +7,5 @@ dependencies:
   - drupal:media_library
   - drupal:path
   - drupal:responsive_image
+  - helfi_platform_config:helfi_platform_config
   - focal_point:focal_point
