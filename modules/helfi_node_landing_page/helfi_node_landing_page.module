@@ -7,30 +7,24 @@
 
 declare(strict_types = 1);
 
-use Drupal\helfi_platform_config\DTO\EnabledParagraphTypes;
+use Drupal\helfi_platform_config\DTO\EnableParagraphTypes;
 
 /**
- * Implements hook_enabled_paragraph_fields().
+ * Implements hook_enable_paragraph_fields().
  */
-function helfi_node_landing_page_enabled_paragraph_fields() : array {
+function helfi_node_landing_page_enable_paragraph_fields() : array {
   return [
-    new EnabledParagraphTypes('node', 'landing_page', 'field_hero', ['hero']),
-    new EnabledParagraphTypes('node', 'landing_page', 'field_content', [
-      'content_cards',
-      'content_liftup',
-      'columns',
-      'banner',
-      'list_of_links',
-      'liftup_with_image',
-      'from_library',
-      'chart',
-      'remote_video',
-      'event_list',
-      'current',
-      'phasing',
-      'popular_services',
-      'target_group_links',
-      'map',
-    ]),
+    new EnableParagraphTypes('node', 'landing_page', ['field_hero'], 'hero'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'content_card'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'content_cards'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'content_liftup'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'columns'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'banner'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'list_of_links'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'liftup_with_image'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'remote_video'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'current'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'target_group_links'),
+    new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'map'),
   ];
 }

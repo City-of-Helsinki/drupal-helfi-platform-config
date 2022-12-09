@@ -35,7 +35,6 @@ class LandingPageTest extends BrowserTestBase {
     // Make sure we can enable paragraphs hero.
     $this->enableModule('helfi_paragraphs_hero');
 
-
     /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
     $entityFieldManager = $this->container->get('entity_field.manager');
     $definition = $entityFieldManager->getFieldDefinitions('node', 'landing_page')['field_hero'];
