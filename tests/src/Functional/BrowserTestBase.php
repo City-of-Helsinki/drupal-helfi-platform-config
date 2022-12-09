@@ -34,7 +34,18 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
   protected function enableModule(string|array $module) : void {
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleHandler */
     $moduleHandler = $this->container->get('module_installer');
-    $moduleHandler->install(is_array($module) ? [$module] : $module);
+    $moduleHandler->install(is_array($module) ? $module : [$module]);
+  }
+
+  /**
+   * Make sure front page works with all languages.
+   */
+  protected function assertFrontPageLanguages() : void {
+    foreach (['fi', 'en', 'sv'] as $langcode) {
+      $this->drupalGet('<front>', ['language' => $this->getLanguage($langcode)]);
+      $this->assertSession()->statusCodeEquals(200);
+      $this->assertSession()->responseHeaderEquals('content-language', $langcode);
+    }
   }
 
 }

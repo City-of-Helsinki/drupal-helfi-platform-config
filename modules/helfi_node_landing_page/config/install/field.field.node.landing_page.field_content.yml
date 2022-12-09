@@ -1,25 +1,11 @@
-uuid: a921980d-be6e-4b17-9e75-fd66b5bff75c
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_content
     - node.type.landing_page
-    - paragraphs.paragraphs_type.banner
-    - paragraphs.paragraphs_type.chart
-    - paragraphs.paragraphs_type.columns
-    - paragraphs.paragraphs_type.content_cards
-    - paragraphs.paragraphs_type.content_liftup
-    - paragraphs.paragraphs_type.current
-    - paragraphs.paragraphs_type.from_library
-    - paragraphs.paragraphs_type.front_page_latest_news
-    - paragraphs.paragraphs_type.liftup_with_image
-    - paragraphs.paragraphs_type.list_of_links
-    - paragraphs.paragraphs_type.remote_video
   module:
     - entity_reference_revisions
-_core:
-  default_config_hash: D7s90vFMq6Tjc-ThXp4s3q8tO6lTN1lBPY3e63U8chU
 id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
@@ -33,116 +19,7 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    target_bundles:
-      content_cards: content_cards
-      content_liftup: content_liftup
-      columns: columns
-      banner: banner
-      front_page_latest_news: front_page_latest_news
-      list_of_links: list_of_links
-      liftup_with_image: liftup_with_image
-      from_library: from_library
-      front_page_top_news: front_page_top_news
-      chart: chart
-      remote_video: remote_video
-      event_list: event_list
-      current: current
-      phasing: phasing
-      popular_services: popular_services
-      target_group_links: target_group_links
-      map: map
+    target_bundles: { }
     negate: 0
-    target_bundles_drag_drop:
-      accordion:
-        weight: -22
-        enabled: false
-      accordion_item:
-        weight: -21
-        enabled: false
-      banner:
-        weight: -26
-        enabled: true
-      chart:
-        weight: 25
-        enabled: true
-      columns:
-        weight: -27
-        enabled: true
-      contact_card:
-        weight: 30
-        enabled: false
-      contact_card_listing:
-        weight: 31
-        enabled: false
-      content_cards:
-        weight: -33
-        enabled: true
-      content_liftup:
-        weight: -32
-        enabled: true
-      current:
-        weight: 32
-        enabled: true
-      event_list:
-        weight: 30
-      from_library:
-        weight: 21
-        enabled: true
-      front_page_latest_news:
-        weight: 24
-        enabled: true
-      front_page_top_news:
-        weight: 25
-        enabled: true
-      gallery:
-        weight: -20
-        enabled: false
-      gallery_slide:
-        weight: -19
-        enabled: false
-      hero:
-        weight: -18
-        enabled: false
-      image:
-        weight: -17
-        enabled: false
-      liftup_with_image:
-        weight: -24
-        enabled: true
-      list_of_links:
-        weight: -25
-        enabled: true
-      list_of_links_item:
-        weight: -16
-        enabled: false
-      map:
-        weight: -20
-        enabled: true
-      phasing:
-        weight: 50
-        enabled: true
-      phasing_item:
-        weight: 30
-        enabled: false
-      popular_services:
-        weight: 42
-        enabled: true
-      remote_video:
-        weight: 27
-        enabled: true
-      sidebar_text:
-        weight: 43
-        enabled: false
-      social_media_link:
-        weight: 44
-        enabled: false
-      target_group_link_item:
-        weight: 45
-        enabled: false
-      target_group_links:
-        weight: 24
-        enabled: true
-      text:
-        weight: -15
-        enabled: false
+    target_bundles_drag_drop: { }
 field_type: entity_reference_revisions

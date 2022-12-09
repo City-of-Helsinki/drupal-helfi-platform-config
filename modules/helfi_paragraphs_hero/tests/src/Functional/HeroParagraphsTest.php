@@ -17,7 +17,6 @@ class HeroParagraphsTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_landing_page',
     'helfi_paragraphs_hero',
   ];
 
@@ -30,11 +29,7 @@ class HeroParagraphsTest extends BrowserTestBase {
    * Tests hero paragraph.
    */
   public function testParagraphs() : void {
-    foreach (['fi', 'en', 'sv'] as $langcode) {
-      $this->drupalGet('<front>', ['language' => $this->getLanguage($langcode)]);
-      $this->assertSession()->statusCodeEquals(200);
-      $this->assertSession()->responseHeaderEquals('content-language', $langcode);
-    }
+    $this->assertFrontPageLanguages();
   }
 
 }

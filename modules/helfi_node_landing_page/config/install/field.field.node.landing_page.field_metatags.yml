@@ -1,4 +1,3 @@
-uuid: a12437d7-e373-4b4e-be04-d0e3d15a887d
 langcode: en
 status: true
 dependencies:
@@ -7,8 +6,6 @@ dependencies:
     - node.type.landing_page
   module:
     - metatag
-_core:
-  default_config_hash: i5JpOyh9B9vJHXsqh-XHmZBoSaWMT3XTnBGCFLtDntw
 id: node.landing_page.field_metatags
 field_name: field_metatags
 entity_type: node

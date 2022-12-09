@@ -1,4 +1,3 @@
-uuid: d2414379-adde-46e5-b2ea-71c73d8a9a13
 langcode: en
 status: true
 dependencies:
@@ -12,8 +11,6 @@ dependencies:
     - node.type.landing_page
   module:
     - user
-_core:
-  default_config_hash: RFefjJBQl6poRfg0xzeEciZDr5a8b93mTvBPo_c5vt8
 id: node.landing_page.teaser
 targetEntityType: node
 bundle: landing_page

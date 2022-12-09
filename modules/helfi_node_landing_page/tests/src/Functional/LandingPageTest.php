@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_node_landing_page\Functional;
 
-use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\helfi_platform_config\Functional\BrowserTestBase;
 
 /**
  * Tests helfi_node_landing_page module.
@@ -18,6 +18,7 @@ class LandingPageTest extends BrowserTestBase {
    */
   protected static $modules = [
     'helfi_base_content',
+    'helfi_node_landing_page',
   ];
 
   /**
@@ -26,14 +27,19 @@ class LandingPageTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Make sure all languages are enabled.
+   * Tests landing page content type.
    */
-  public function testLanguages() : void {
-    foreach (['fi', 'en', 'sv'] as $language) {
-      $this->drupalGet('/' . $language);
-      $this->assertSession()->statusCodeEquals(200);
-      $this->assertSession()->responseHeaderEquals('content-language', $language);
-    }
+  public function testLandingPage() : void {
+    $this->assertFrontPageLanguages();
+
+    // Make sure we can enable paragraphs hero.
+    $this->enableModule('helfi_paragraphs_hero');
+
+
+    /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
+    $entityFieldManager = $this->container->get('entity_field.manager');
+    $definition = $entityFieldManager->getFieldDefinitions('node', 'landing_page')['field_hero'];
+    $this->assertContains('hero', $definition->getSetting('handler_settings')['target_bundles']);
   }
 
 }

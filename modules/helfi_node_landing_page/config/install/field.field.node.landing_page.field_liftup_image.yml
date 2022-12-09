@@ -1,4 +1,3 @@
-uuid: 018ebc30-4d51-48bf-b01d-8e5edee4c849
 langcode: en
 status: true
 dependencies:
@@ -6,8 +5,6 @@ dependencies:
     - field.storage.node.field_liftup_image
     - media.type.image
     - node.type.landing_page
-_core:
-  default_config_hash: tjssmYxe5qbWn7P7--dg9YMnck83F4dImAQiwIz4eJs
 id: node.landing_page.field_liftup_image
 field_name: field_liftup_image
 entity_type: node
