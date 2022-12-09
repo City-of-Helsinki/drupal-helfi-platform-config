@@ -24,4 +24,17 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
   protected function getLanguage(string $langcode) : LanguageInterface {
     return $this->container->get('language_manager')->getLanguage($langcode);
   }
+
+  /**
+   * Enables the given module(s).
+   *
+   * @param string|array $module
+   *   The module(s) to enable.
+   */
+  protected function enableModule(string|array $module) : void {
+    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleHandler */
+    $moduleHandler = $this->container->get('module_installer');
+    $moduleHandler->install(is_array($module) ? [$module] : $module);
+  }
+
 }

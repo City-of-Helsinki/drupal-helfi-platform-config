@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_node_landing_page' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_platform_config\DTO\EnabledParagraphTypes;
+
+/**
+ * Implements hook_enabled_paragraph_fields().
+ */
+function helfi_node_landing_page_enabled_paragraph_fields() : array {
+  return [
+    new EnabledParagraphTypes('node', 'landing_page', 'field_hero', ['hero']),
+    new EnabledParagraphTypes('node', 'landing_page', 'field_content', [
+      'content_cards',
+      'content_liftup',
+      'columns',
+      'banner',
+      'list_of_links',
+      'liftup_with_image',
+      'from_library',
+      'chart',
+      'remote_video',
+      'event_list',
+      'current',
+      'phasing',
+      'popular_services',
+      'target_group_links',
+      'map',
+    ]),
+  ];
+}

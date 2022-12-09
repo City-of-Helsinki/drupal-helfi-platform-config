@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_base_content\Functional;
+namespace Drupal\Tests\helfi_media\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 

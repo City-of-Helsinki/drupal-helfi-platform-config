@@ -16,52 +16,67 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_platform_config\DTO\EnabledParagraphTypes;
+
+/**
+ * Implements hook_modules_installed().
+ */
+function helfi_platform_config_modules_installed() : void {
+  $moduleHandler = Drupal::service('module_handler');
+  if ($moduleHandler->moduleExists('locale')) {
+    locale_system_set_config_langcodes();
+  }
+
+  $paragraphType = $moduleHandler->invokeAll('enabled_paragraph_fields');
+
+  foreach ($paragraphType as $type) {
+    if (!$type instanceof EnabledParagraphTypes) {
+      throw new \LogicException(
+        sprintf('$type must be an instance of %s, %s given.', EnabledParagraphTypes::class, gettype($type))
+      );
+    }
+    helfi_platform_config_enable_paragraph_fields($type);
+  }
+}
 
 /**
  * Helper function to enable paragraph type for given entity/bundle/field combination.
  *
- * @param string $entityType
- *   The entity type.
- * @param string $bundle
- *   The entity bundle.
- * @param string $fields
- *   The field name.
- * @param string $paragraphType
- *   The paragraph type to enable.
- *
- * @throws \InvalidArgumentException
+ * @param \Drupal\helfi_platform_config\DTO\EnabledParagraphTypes $type
+ *   The paragraph type DTO.
  */
-function helfi_platform_config_enable_paragraph_fields(string $entityType, string $bundle, array $fields, string $paragraphType) : void {
+function helfi_platform_config_enable_paragraph_fields(EnabledParagraphTypes $type) : void {
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
   $entityFieldManager = Drupal::service('entity_field.manager');
 
-  if (!$definitions = $entityFieldManager->getFieldDefinitions($entityType, $bundle)) {
+  // Nothing to do if the entity type/bundle does not exist.
+  if (
+    (!$definitions = $entityFieldManager->getFieldDefinitions($type->entityType, $type->bundle)) ||
+    !isset($definitions[$type->field])
+  ) {
+    return;
+  }
+
+  $field = $definitions[$type->field];
+
+  if (!str_contains($field->getSetting('handler'), 'paragraph')) {
     throw new InvalidArgumentException(
-      sprintf('Failed to load field definition for %s, %s', $entityType, $bundle)
+      sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
     );
   }
-  $definitions = array_filter($definitions, function (FieldDefinitionInterface $definition) use ($fields) : bool {
-    return in_array($definition->getName(), $fields);
-  });
+  $handlerSettings = $field->getSetting('handler_settings');
 
-  foreach ($definitions as $field) {
-    if (!str_contains($field->getSetting('handler'), 'paragraph')) {
-      throw new InvalidArgumentException(
-        sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
-      );
-    }
-    $handlerSettings = $field->getSetting('handler_settings');
-
-    if (isset($handlerSettings['target_bundles'])) {
+  if (isset($handlerSettings['target_bundles'])) {
+    foreach ($type->paragraphTypes as $paragraphType) {
       $handlerSettings['target_bundles'][$paragraphType] = $paragraphType;
       $handlerSettings['target_bundles_drag_drop'][$paragraphType] = [
         'weight' => 30,
         'enabled' => TRUE,
       ];
     }
-    $field->setSetting('handler_settings', $handlerSettings);
-    $field->save();
   }
+  $field->setSetting('handler_settings', $handlerSettings);
+  $field->save();
 }
 
 /**
@@ -84,16 +99,6 @@ function helfi_platform_config_module_implements_alter(&$implementations, $hook)
     if ($moduleHandler->moduleExists('locale')) {
       unset($implementations['locale']);
     }
-  }
-}
-
-/**
- * Implements hook_modules_installed().
- */
-function helfi_platform_config_modules_installed() {
-  $moduleHandler = Drupal::service('module_handler');
-  if ($moduleHandler->moduleExists('locale')) {
-    locale_system_set_config_langcodes();
   }
 }
 
