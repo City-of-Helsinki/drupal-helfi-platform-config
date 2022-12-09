@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+    - image_style_quality
+name: 1_1_thumbnail_2x
+label: '1:1 thumbnail (2x)'
+effects:
+  bbeb2baa-6c3e-4865-a1e4-c7e35f9fa4eb:
+    uuid: bbeb2baa-6c3e-4865-a1e4-c7e35f9fa4eb
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 360
+      height: 360
+      crop_type: focal_point
+  b101e3cd-1bc6-421f-9148-b989422d754e:
+    uuid: b101e3cd-1bc6-421f-9148-b989422d754e
+    id: image_style_quality
+    weight: 2
+    data:
+      quality: 65

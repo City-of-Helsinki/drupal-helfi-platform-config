@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 3_2_xxs
+label: '3:2 XXS'
+effects:
+  6bc1f53e-970d-4a85-a1a0-c41af5f5834b:
+    uuid: 6bc1f53e-970d-4a85-a1a0-c41af5f5834b
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 320
+      height: 213
+      crop_type: focal_point

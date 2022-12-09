@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+    - image_style_quality
+name: 1_1_l_2x
+label: '1:1 L (2x)'
+effects:
+  e7da735e-aa35-463b-b99a-b61aba89a53f:
+    uuid: e7da735e-aa35-463b-b99a-b61aba89a53f
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 2880
+      height: 2880
+      crop_type: focal_point
+  a9ed654a-a81b-4bfb-8f0e-0ca3188de581:
+    uuid: a9ed654a-a81b-4bfb-8f0e-0ca3188de581
+    id: image_style_quality
+    weight: 2
+    data:
+      quality: 65

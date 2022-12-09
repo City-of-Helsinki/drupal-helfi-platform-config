@@ -1,0 +1,43 @@
+helfi_image_styles.xxs:
+  label: XXS
+  mediaQuery: 'all and (max-width: 320px)'
+  weight: 0
+  multipliers:
+    - 1x
+    - 2x
+helfi_image_styles.xs:
+  label: XS
+  mediaQuery: 'all and (min-width: 320px)'
+  weight: 0
+  multipliers:
+    - 1x
+    - 2x
+helfi_image_styles.s:
+  label: S
+  mediaQuery: 'all and (min-width: 576px)'
+  weight: 1
+  multipliers:
+    - 1x
+    - 2x
+helfi_image_styles.m:
+  label: M
+  mediaQuery: 'all and (min-width: 768px)'
+  weight: 2
+  multipliers:
+    - 1x
+    - 2x
+helfi_image_styles.l:
+  label: L
+  mediaQuery: 'all and (min-width: 992px)'
+  weight: 3
+  multipliers:
+    - 1x
+    - 2x
+helfi_image_styles.xl:
+  label: XL
+  mediaQuery: 'all and (min-width: 1248px)'
+  weight: 4
+  multipliers:
+    - 1x
+    - 2x
+

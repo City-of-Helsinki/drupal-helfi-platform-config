@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.1_1_thumbnail
+    - image.style.1_1_thumbnail_2x
+id: gallery_thumbnail
+label: 'Gallery thumbnail'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_1_thumbnail
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_1_thumbnail_2x
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_1_thumbnail
+    breakpoint_id: helfi_image_styles.xxs
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_1_thumbnail_2x
+    breakpoint_id: helfi_image_styles.xxs
+    multiplier: 2x
+breakpoint_group: helfi_image_styles
+fallback_image_style: 1_1_thumbnail

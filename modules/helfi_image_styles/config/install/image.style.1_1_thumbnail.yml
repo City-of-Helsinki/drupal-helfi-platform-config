@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 1_1_thumbnail
+label: '1:1 thumbnail'
+effects:
+  281cebc2-0471-44f8-a46c-4111298d4398:
+    uuid: 281cebc2-0471-44f8-a46c-4111298d4398
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 180
+      height: 180
+      crop_type: focal_point
