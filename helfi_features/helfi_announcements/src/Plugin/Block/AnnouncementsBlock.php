@@ -122,7 +122,6 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
         $referencedEntities = $announcementNode->get($entityTypeFields[$currentEntity->getEntityType()->id()])->referencedEntities();
       }
 
-
       // Add announcement to showed announcements if current page's entity
       // is found from the list of referenced entities.
       foreach ($referencedEntities as $referencedEntity) {
