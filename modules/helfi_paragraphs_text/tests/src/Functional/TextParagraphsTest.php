@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helf_paragraphs_hero\Functional;
+namespace Drupal\Tests\helf_paragraphs_text\Functional;
 
 use Drupal\Tests\helfi_platform_config\Functional\BrowserTestBase;
 
