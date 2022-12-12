@@ -67,17 +67,15 @@ function helfi_platform_config_configure_paragraph_field_handler(EnableParagraph
     }
     $handlerSettings = $field->getSetting('handler_settings');
 
-    if (isset($handlerSettings['target_bundles'][$type->paragraphType])) {
-      continue;
+    if (isset($handlerSettings['target_bundles'])) {
+      $handlerSettings['target_bundles'][$type->paragraphType] = $type->paragraphType;
+      $handlerSettings['target_bundles_drag_drop'][$type->paragraphType] = [
+        'weight' => 30,
+        'enabled' => TRUE,
+      ];
+      $field->setSetting('handler_settings', $handlerSettings);
+      $field->save();
     }
-    $handlerSettings['target_bundles'][$type->paragraphType] = $type->paragraphType;
-    $handlerSettings['target_bundles_drag_drop'][$type->paragraphType] = [
-      'weight' => 30,
-      'enabled' => TRUE,
-    ];
-
-    $field->setSetting('handler_settings', $handlerSettings);
-    $field->save();
   }
 }
 
