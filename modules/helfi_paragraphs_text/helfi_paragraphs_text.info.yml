@@ -5,4 +5,3 @@ dependencies:
   - 'allowed_formats:allowed_formats'
   - 'helfi_base_content:helfi_base_content'
   - drupal:text
-  - drupal:options
