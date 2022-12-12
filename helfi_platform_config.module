@@ -21,7 +21,7 @@ use Drupal\helfi_platform_config\DTO\EnableParagraphTypes;
 /**
  * Implements hook_modules_installed().
  */
-function helfi_platform_config_modules_installed() : void {
+function helfi_platform_config_modules_installed(array $modules) : void {
   /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
   $moduleHandler = Drupal::service('module_handler');
   if ($moduleHandler->moduleExists('locale')) {

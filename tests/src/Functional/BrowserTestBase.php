@@ -84,6 +84,7 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
   protected function paragraphTypeIsEnabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : bool {
     /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
     $entityFieldManager = $this->container->get('entity_field.manager');
+    $entityFieldManager->clearCachedFieldDefinitions();
     $definition = $entityFieldManager->getFieldDefinitions($entityType, $bundle)[$paragraphField];
 
     return !empty($definition->getSetting('handler_settings')['target_bundles'][$paragraphType]);
