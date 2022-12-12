@@ -27,9 +27,9 @@ class PageTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests  page content type.
+   * Tests page content type.
    */
-  public function testLandingPage() : void {
+  public function testDefault() : void {
     $this->assertFrontPageLanguages();
 
     $this->assertParagraphTypeDisabled('node', 'page', 'field_hero', 'hero');

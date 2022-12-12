@@ -5,3 +5,4 @@ dependencies:
   - 'drupal:menu_ui'
   - 'helfi_media:helfi_media'
   - 'helfi_base_content:helfi_base_content'
+  - publication_date:publication_date
