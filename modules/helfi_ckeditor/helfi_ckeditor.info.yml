@@ -1,0 +1,5 @@
+name: 'HELfi: ckeditor'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - drupal:ckeditor
