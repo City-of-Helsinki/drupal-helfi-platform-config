@@ -10,4 +10,5 @@ dependencies:
   - 'drupal:options'
   - 'hdbt_admin_editorial:hdbt_admin_editorial'
   - 'helfi_base_content:helfi_base_content'
+  - helfi_image_styles:helfi_image_styles
   - 'helfi_media:helfi_media'

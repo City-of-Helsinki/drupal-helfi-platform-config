@@ -38,6 +38,25 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
   }
 
   /**
+   * Asserts that paragraph type is enabled for given entity type and field.
+   *
+   * @param string $entityType
+   *   The entity type.
+   * @param string $bundle
+   *   The entity bundle.
+   * @param string $paragraphField
+   *   The paragraph field.
+   * @param string $paragraphType
+   *   The paragraph type.
+   */
+  protected function assertParagraphTypeIsEnabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : void {
+    /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
+    $entityFieldManager = $this->container->get('entity_field.manager');
+    $definition = $entityFieldManager->getFieldDefinitions($entityType, $bundle)[$paragraphField];
+    $this->assertContains($paragraphType, $definition->getSetting('handler_settings')['target_bundles']);
+  }
+
+  /**
    * Make sure front page works with all languages.
    */
   protected function assertFrontPageLanguages() : void {
