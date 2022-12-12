@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_hero' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_platform_config\DTO\EnableParagraphTypes;
+
+/**
+ * Implements hook_enable_paragraph_fields().
+ */
+function helfi_paragraphs_hero_enable_paragraph_fields() : array {
+  return [
+    // @todo Figure out all content types and paragraphs fields.
+    new EnableParagraphTypes('node', 'landing_page', ['field_hero'], 'hero'),
+  ];
+}

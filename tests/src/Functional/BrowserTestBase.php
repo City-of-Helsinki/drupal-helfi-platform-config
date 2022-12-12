@@ -49,11 +49,44 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
    * @param string $paragraphType
    *   The paragraph type.
    */
-  protected function assertParagraphTypeIsEnabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : void {
+  protected function assertParagraphTypeEnabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : void {
+    $this->assertTrue($this->paragraphTypeIsEnabled($entityType, $bundle, $paragraphField, $paragraphType));
+  }
+
+  /**
+   * Asserts that paragraph type is not enabled for given entity type and field.
+   *
+   * @param string $entityType
+   *   The entity type.
+   * @param string $bundle
+   *   The entity bundle.
+   * @param string $paragraphField
+   *   The paragraph field.
+   * @param string $paragraphType
+   *   The paragraph type.
+   */
+  protected function assertParagraphTypeDisabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : void {
+    $this->assertFalse($this->paragraphTypeIsEnabled($entityType, $bundle, $paragraphField, $paragraphType));
+  }
+
+  /**
+   * Checks if the paragraph type is enabled for given entity type and field.
+   *
+   * @param string $entityType
+   *   The entity type.
+   * @param string $bundle
+   *   The entity bundle.
+   * @param string $paragraphField
+   *   The paragraph field.
+   * @param string $paragraphType
+   *   The paragraph type.
+   */
+  protected function paragraphTypeIsEnabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : bool {
     /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
     $entityFieldManager = $this->container->get('entity_field.manager');
     $definition = $entityFieldManager->getFieldDefinitions($entityType, $bundle)[$paragraphField];
-    $this->assertContains($paragraphType, $definition->getSetting('handler_settings')['target_bundles']);
+
+    return !empty($definition->getSetting('handler_settings')['target_bundles'][$paragraphType]);
   }
 
   /**
