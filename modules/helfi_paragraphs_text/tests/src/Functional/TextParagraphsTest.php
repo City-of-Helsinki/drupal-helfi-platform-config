@@ -30,6 +30,14 @@ class TextParagraphsTest extends BrowserTestBase {
    */
   public function testParagraphs() : void {
     $this->assertFrontPageLanguages();
+
+    $this->assertParagraphTypeDisabled('node', 'page', 'field_content', 'text');
+    $this->assertParagraphTypeDisabled('node', 'page', 'field_lower_content', 'text');
+    // Make sure we can enable text paragraphs.
+    $this->enableModule('helfi_paragraphs_text');
+    // Make sure paragraph type 'text' is enabled for page content type.
+    $this->assertParagraphTypeEnabled('node', 'page', 'field_content', 'text');
+    $this->assertParagraphTypeEnabled('node', 'page', 'field_lower_content', 'text');
   }
 
 }

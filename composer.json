@@ -53,7 +53,6 @@
         "drupal/simple_sitemap": "^4.1",
         "drupal/siteimprove": "^1.11",
         "drupal/token": "^1.9",
-        "drupal/token_filter": "^1.2",
         "drupal/translatable_menu_link_uri": "^2.0",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_edit": "^2.7",

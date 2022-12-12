@@ -1,0 +1,86 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sidebar_content
+    - node.type.page
+    - paragraphs.paragraphs_type.from_library
+    - paragraphs.paragraphs_type.sidebar_text
+  module:
+    - entity_reference_revisions
+id: node.page.field_sidebar_content
+field_name: field_sidebar_content
+entity_type: node
+bundle: page
+label: 'Sidebar content'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      sidebar_text: sidebar_text
+      from_library: from_library
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: -39
+        enabled: false
+      accordion_item:
+        weight: -38
+        enabled: false
+      banner:
+        weight: -37
+        enabled: false
+      columns:
+        weight: -36
+        enabled: false
+      content_cards:
+        weight: -35
+        enabled: false
+      content_liftup:
+        weight: -34
+        enabled: false
+      from_library:
+        weight: -32
+        enabled: true
+      gallery:
+        weight: -31
+        enabled: false
+      gallery_slide:
+        weight: -30
+        enabled: false
+      hero:
+        weight: -29
+        enabled: false
+      image:
+        weight: -28
+        enabled: false
+      liftup_with_image:
+        weight: -27
+        enabled: false
+      list_of_links:
+        weight: -26
+        enabled: false
+      list_of_links_item:
+        weight: -25
+        enabled: false
+      map:
+        weight: -24
+        enabled: false
+      remote_video:
+        weight: -23
+        enabled: false
+      sidebar_text:
+        weight: -33
+        enabled: true
+      text:
+        weight: -22
+        enabled: false
+      unit_search:
+        weight: -21
+        enabled: false
+field_type: entity_reference_revisions

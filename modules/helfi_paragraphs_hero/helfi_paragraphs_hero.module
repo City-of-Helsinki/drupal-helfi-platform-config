@@ -16,5 +16,6 @@ function helfi_paragraphs_hero_enable_paragraph_fields() : array {
   return [
     // @todo Figure out all content types and paragraphs fields.
     new EnableParagraphTypes('node', 'landing_page', ['field_hero'], 'hero'),
+    new EnableParagraphTypes('node', 'page', ['field_hero'], 'hero'),
   ];
 }
