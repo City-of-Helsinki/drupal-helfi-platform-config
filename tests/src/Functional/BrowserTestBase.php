@@ -53,7 +53,13 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
 
     foreach ($paragraphFields as $field) {
       $enabled = $this->getEnabledParagraphTypes($entityType, $bundle, $field);
-      $this->assertTrue(!empty($enabled[$paragraphType]));
+      $message = vsprintf('Paragraph type (%s) is enabled for field %s in %s (%s)', [
+        $paragraphType,
+        $field,
+        $entityType,
+        $bundle,
+      ]);
+      $this->assertTrue(!empty($enabled[$paragraphType]), $message);
     }
   }
 
@@ -73,7 +79,13 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
 
     foreach ($paragraphFields as $field) {
       $enabled = $this->getEnabledParagraphTypes($entityType, $bundle, $field);
-      $this->assertTrue(empty($enabled[$paragraphType]));
+      $message = vsprintf('Paragraph type (%s) is not enabled for field %s in %s (%s)', [
+        $paragraphType,
+        $field,
+        $entityType,
+        $bundle,
+      ]);
+      $this->assertTrue(empty($enabled[$paragraphType]), $message);
     }
   }
 
