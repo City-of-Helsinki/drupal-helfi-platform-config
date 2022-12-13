@@ -44,13 +44,17 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
    *   The entity type.
    * @param string $bundle
    *   The entity bundle.
-   * @param string $paragraphField
-   *   The paragraph field.
+   * @param array $paragraphFields
+   *   The paragraph fields.
    * @param string $paragraphType
    *   The paragraph type.
    */
-  protected function assertParagraphTypeEnabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : void {
-    $this->assertTrue($this->paragraphTypeIsEnabled($entityType, $bundle, $paragraphField, $paragraphType));
+  protected function assertParagraphTypeEnabled(string $entityType, string $bundle, array $paragraphFields, string $paragraphType) : void {
+
+    foreach ($paragraphFields as $field) {
+      $enabled = $this->getEnabledParagraphTypes($entityType, $bundle, $field);
+      $this->assertTrue(!empty($enabled[$paragraphType]));
+    }
   }
 
   /**
@@ -60,13 +64,17 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
    *   The entity type.
    * @param string $bundle
    *   The entity bundle.
-   * @param string $paragraphField
-   *   The paragraph field.
+   * @param array $paragraphFields
+   *   The paragraph fields.
    * @param string $paragraphType
    *   The paragraph type.
    */
-  protected function assertParagraphTypeDisabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : void {
-    $this->assertFalse($this->paragraphTypeIsEnabled($entityType, $bundle, $paragraphField, $paragraphType));
+  protected function assertParagraphTypeDisabled(string $entityType, string $bundle, array $paragraphFields, string $paragraphType) : void {
+
+    foreach ($paragraphFields as $field) {
+      $enabled = $this->getEnabledParagraphTypes($entityType, $bundle, $field);
+      $this->assertTrue(empty($enabled[$paragraphType]));
+    }
   }
 
   /**
@@ -78,16 +86,16 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
    *   The entity bundle.
    * @param string $paragraphField
    *   The paragraph field.
-   * @param string $paragraphType
-   *   The paragraph type.
    */
-  protected function paragraphTypeIsEnabled(string $entityType, string $bundle, string $paragraphField, string $paragraphType) : bool {
+  protected function getEnabledParagraphTypes(string $entityType, string $bundle, string $paragraphField) : array {
     /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
     $entityFieldManager = $this->container->get('entity_field.manager');
     $entityFieldManager->clearCachedFieldDefinitions();
-    $definition = $entityFieldManager->getFieldDefinitions($entityType, $bundle)[$paragraphField];
 
-    return !empty($definition->getSetting('handler_settings')['target_bundles'][$paragraphType]);
+    $definitions = $entityFieldManager->getFieldDefinitions($entityType, $bundle)[$paragraphField];
+    $types = $definitions->getSetting('handler_settings')['target_bundles'];
+
+    return $types;
   }
 
   /**
