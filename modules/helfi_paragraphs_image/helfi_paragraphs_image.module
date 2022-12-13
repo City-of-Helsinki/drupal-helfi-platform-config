@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_image' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_platform_config\DTO\EnableParagraphTypes;
+
+/**
+ * Implements hook_enable_paragraph_fields().
+ */
+function helfi_paragraphs_image_enable_paragraph_fields() : array {
+  return [
+    new EnableParagraphTypes('node', 'page', ['field_content', 'field_lower_content'], 'image'),
+    new EnableParagraphTypes('paragraph', 'accordion', ['field_accordion_item_content'], 'image'),
+    new EnableParagraphTypes('paragraph', 'columns', ['field_columns_left_column', 'field_columns_right_column'], 'image'),
+  ];
+}
+

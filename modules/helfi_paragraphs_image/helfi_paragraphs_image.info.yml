@@ -1,0 +1,6 @@
+name: 'HELfi Paragraphs: Image'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - 'helfi_base_content:helfi_base_content'
+  - 'helfi_media:helfi_media'
