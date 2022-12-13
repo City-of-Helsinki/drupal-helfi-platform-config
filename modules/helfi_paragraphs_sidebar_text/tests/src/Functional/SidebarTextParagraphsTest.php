@@ -2,22 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helf_paragraphs_text\Functional;
+namespace Drupal\Tests\helf_paragraphs_sidebar_text\Functional;
 
 use Drupal\Tests\helfi_platform_config\Functional\BrowserTestBase;
 
 /**
- * Tests helfi_h module.
+ * Tests 'helfi_paragraphs_sidebar_text' module.
  *
  * @group helfi_platform_config
  */
-class TextParagraphsTest extends BrowserTestBase {
+class SidebarTextParagraphsTest extends BrowserTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_paragraphs_text',
+    'helfi_paragraphs_sidebar_text',
   ];
 
   /**
@@ -26,7 +26,7 @@ class TextParagraphsTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests hero paragraph.
+   * Tests paragraph type.
    */
   public function testParagraphs() : void {
     $this->assertFrontPageLanguages();
