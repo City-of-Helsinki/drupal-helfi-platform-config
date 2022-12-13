@@ -1,0 +1,20 @@
+settings:
+  allowed_values:
+    0:
+      label: Vaakuna
+    1:
+      label: Kulta
+    2:
+      label: Hopea
+    3:
+      label: Tiili
+    4:
+      label: Bussi
+    5:
+      label: Kupari
+    7:
+      label: Sumu
+    9:
+      label: Kesä
+    11:
+      label: Spåra
