@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_announcement_content_pages
+    - node.type.announcement
+    - node.type.landing_page
+    - node.type.page
+id: node.announcement.field_announcement_content_pages
+field_name: field_announcement_content_pages
+entity_type: node
+bundle: announcement
+label: 'Show on content pages'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      page: page
+      landing_page: landing_page
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: page
+field_type: entity_reference

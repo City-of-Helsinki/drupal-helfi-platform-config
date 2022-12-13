@@ -1,0 +1,8 @@
+settings:
+  allowed_values:
+    -
+      label: Notifikation
+    -
+      label: Osb
+    -
+      label: Varning

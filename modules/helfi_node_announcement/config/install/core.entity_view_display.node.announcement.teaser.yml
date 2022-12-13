@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.announcement.body
+    - field.field.node.announcement.field_announcement_all_pages
+    - field.field.node.announcement.field_announcement_content_pages
+    - field.field.node.announcement.field_announcement_link
+    - field.field.node.announcement.field_announcement_type
+    - node.type.announcement
+  module:
+    - text
+    - user
+id: node.announcement.teaser
+targetEntityType: node
+bundle: announcement
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_announcement_all_pages: true
+  field_announcement_content_pages: true
+  field_announcement_link: true
+  field_announcement_service_pages: true
+  field_announcement_type: true
+  field_announcement_unit_pages: true
+  langcode: true
+  toc_enabled: true
