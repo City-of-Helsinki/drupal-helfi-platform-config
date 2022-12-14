@@ -1,6 +1,9 @@
 langcode: en
 status: true
 dependencies:
+  enforced:
+    config:
+      - paragraphs.paragraphs_type.columns
   module:
     - entity_reference_revisions
     - paragraphs
