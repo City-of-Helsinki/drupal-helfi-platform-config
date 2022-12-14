@@ -7,7 +7,7 @@ namespace Drupal\Tests\helf_paragraphs_text\Functional;
 use Drupal\Tests\helfi_platform_config\Functional\BrowserTestBase;
 
 /**
- * Tests helfi_h module.
+ * Tests helfi_paragraphs_text module.
  *
  * @group helfi_platform_config
  */
@@ -26,7 +26,7 @@ class TextParagraphsTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests hero paragraph.
+   * Tests text paragraph.
    */
   public function testParagraphs() : void {
     $this->assertFrontPageLanguages();
