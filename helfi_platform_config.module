@@ -15,7 +15,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_platform_config\DTO\EnableParagraphTypes;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
  * Implements hook_modules_installed().
@@ -27,12 +27,12 @@ function helfi_platform_config_modules_installed(array $modules) : void {
     locale_system_set_config_langcodes();
   }
 
-  $paragraphType = $moduleHandler->invokeAll('enable_paragraph_fields');
+  $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
 
-  foreach ($paragraphType as $type) {
-    if (!$type instanceof EnableParagraphTypes) {
+  foreach ($paragraphTypes as $type) {
+    if (!$type instanceof ParagraphTypeCollection) {
       throw new \LogicException(
-        sprintf('$type must be an instance of %s, %s given.', EnableParagraphTypes::class, gettype($type))
+        sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
       );
     }
     helfi_platform_config_configure_paragraph_field_handler($type);
@@ -42,10 +42,10 @@ function helfi_platform_config_modules_installed(array $modules) : void {
 /**
  * Helper function to enable paragraph type for given entity/bundle/field combination.
  *
- * @param \Drupal\helfi_platform_config\DTO\EnableParagraphTypes $type
+ * @param \Drupal\helfi_platform_config\DTO\ParagraphTypeCollection $type
  *   The paragraph type DTO.
  */
-function helfi_platform_config_configure_paragraph_field_handler(EnableParagraphTypes $type) : void {
+function helfi_platform_config_configure_paragraph_field_handler(ParagraphTypeCollection $type) : void {
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
   $entityFieldManager = Drupal::service('entity_field.manager');
 

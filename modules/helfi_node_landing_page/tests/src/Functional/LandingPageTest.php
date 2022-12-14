@@ -32,6 +32,11 @@ class LandingPageTest extends BrowserTestBase {
   public function testLandingPage() : void {
     $this->assertFrontPageLanguages();
 
+    /** @var \Drupal\helfi_platform_config\DTO\ParagraphTypeCollection $type */
+    foreach (helfi_node_landing_page_paragraph_types() as $type) {
+      $this->enableModule('helfi_' . $type->paragraph);
+    }
+
     $paragraphTypes = [
       'helfi_paragraphs_hero' => [
         ['field_hero'],

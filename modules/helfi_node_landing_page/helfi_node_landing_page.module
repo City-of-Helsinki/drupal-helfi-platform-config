@@ -7,12 +7,12 @@
 
 declare(strict_types = 1);
 
-use Drupal\helfi_platform_config\DTO\EnableParagraphTypes;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
- * Implements hook_enable_paragraph_fields().
+ * Implements hook_helfi_paragraph_types().
  */
-function helfi_node_landing_page_enable_paragraph_fields() : array {
+function helfi_node_landing_page_helfi_paragraph_types() : array {
   $types = [
     'field_hero' => [
       'hero',
@@ -38,7 +38,7 @@ function helfi_node_landing_page_enable_paragraph_fields() : array {
   $enabled = [];
   foreach ($types as $field => $paragraphTypes) {
     foreach ($paragraphTypes as $paragraphType) {
-      $enabled[] = new EnableParagraphTypes('node', 'landing_page', $field, $paragraphType);
+      $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType);
     }
   }
   return $enabled;

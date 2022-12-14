@@ -5,13 +5,14 @@ declare(strict_types = 1);
 namespace Drupal\helfi_platform_config\DTO;
 
 /**
- * Provides a DTO class to define enabled paragraph types.
+ * Provides a DTO class to define paragraph types for given entity type/bundle.
  *
  * This is used to figure out what paragraph types should be enabled for each
- * paragraph reference field.
+ * entity type and bundle combinations.
  *
  * For example: Lower content paragraph reference field in page node should
- * have 'hero', 'image' and 'accordion' paragraph types enabled.
+ * have 'image' and 'accordion' paragraph types enabled, and field hero should
+ * have 'hero' paragraph type enabled.
  *
  * @code
  * function hook_enabled_paragraph_types() : array {
@@ -23,7 +24,7 @@ namespace Drupal\helfi_platform_config\DTO;
  * }
  * @endcode
  */
-final class EnableParagraphTypes {
+final class ParagraphTypeCollection {
 
   /**
    * Constructs a new instance.

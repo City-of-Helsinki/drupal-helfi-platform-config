@@ -7,14 +7,14 @@
 
 declare(strict_types = 1);
 
-use Drupal\helfi_platform_config\DTO\EnableParagraphTypes;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
- * Implements hook_enable_paragraph_fields().
+ * Implements hook_helfi_paragraph_types().
  */
-function helfi_paragraphs_phasing_enable_paragraph_fields() : array {
+function helfi_paragraphs_phasing_helfi_paragraph_types() : array {
   return [
-    new EnableParagraphTypes('paragraph', 'phasing', 'field_phasing_item', 'phasing_item'),
+    new ParagraphTypeCollection('paragraph', 'phasing', 'field_phasing_item', 'phasing_item'),
   ];
 }
 
