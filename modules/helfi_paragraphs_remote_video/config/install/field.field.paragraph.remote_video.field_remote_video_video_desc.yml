@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_remote_video_video_desc
+    - paragraphs.paragraphs_type.remote_video
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats: {  }
+id: paragraph.remote_video.field_remote_video_video_desc
+field_name: field_remote_video_video_desc
+entity_type: paragraph
+bundle: remote_video
+label: 'Description of the video'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

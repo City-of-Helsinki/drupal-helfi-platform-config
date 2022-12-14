@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_target_group_links' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_target_group_links_helfi_paragraph_types() : array {
+  return [
+    new ParagraphTypeCollection('paragraph', 'target_group_links', 'field_target_group_item', 'target_group_link_item'),
+  ];
+}
+

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_target_group_links_title
+    - paragraphs.paragraphs_type.target_group_links
+id: paragraph.target_group_links.field_target_group_links_title
+field_name: field_target_group_links_title
+entity_type: paragraph
+bundle: target_group_links
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
