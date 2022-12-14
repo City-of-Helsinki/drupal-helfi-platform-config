@@ -1,9 +1,7 @@
 on:
   pull_request:
-    push:
-      branches:
-        - main
-        - 3.x
+  push:
+    branches: ['main', '3.x']
 name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
