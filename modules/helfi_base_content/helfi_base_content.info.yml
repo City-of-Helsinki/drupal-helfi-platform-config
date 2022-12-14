@@ -7,6 +7,7 @@ dependencies:
   - drupal:media
   - drupal:path_alias
   - drupal:text
+  - linkit:linkit
   - paragraphs:paragraphs
   - metatag:metatag
   - metatag:metatag_twitter_cards
@@ -19,3 +20,4 @@ dependencies:
   - paragraphs_library:paragraphs_library
   - entity_reference_revisions:entity_reference_revisions
   - scheduler:scheduler
+  - select2_icon:select2_icon

@@ -51,7 +51,7 @@ content:
     weight: 6
     region: content
     settings:
-      linkit_profile: tpr_content
+      linkit_profile: helfi
       linkit_auto_link_text: false
     third_party_settings: {  }
   field_hero_link_design:
