@@ -1,0 +1,15 @@
+name: 'HELfi Paragraphs: News list'
+type: module
+package: Custom
+core_version_requirement: ^9.3
+dependencies:
+  - helfi_api_base
+  - field
+  - external_entities
+  - entity
+  - paragraphs
+  - imagecache_external
+  - responsive_image
+  - drupal:text
+  - allowed_formats
+  - select2

@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies: {  }
+id: helfi_news
+label: 'Helfi: News'
+label_plural: 'Helfi: News'
+description: ''
+read_only: true
+field_mapper_id: jsonpath
+field_mapper_config:
+  field_mappings:
+    id:
+      value: $.id
+    uuid:
+      value: $.id
+    title:
+      value: '$.attributes[''title'']'
+    main_image:
+      uri: '$.relationships[''main_image''][''data''][''relationships''][''media_image''][''data''][''attributes''][''uri''][''url'']'
+      title: '$.relationships[''main_image''][''data''][''relationships''][''media_image''][''data''][''meta''][''alt'']'
+    tags:
+      value: '$.relationships[''tags''][''data''][*][''attributes''][''name'']'
+    groups:
+      value: '$.relationships[''groups''][''data''][*][''attributes''][''name'']'
+    neighbourhoods:
+      value: '$.relationships[''neighbourhoods''][''data''][*][''attributes''][''name'']'
+    node_url:
+      value: '$.attributes[''path''][''alias'']'
+    published_at:
+      value: '$.attributes[''published_at'']'
+    short_title:
+      value: '$.attributes[''short_title'']'
+storage_client_id: helfi_news
+persistent_cache_max_age: -1
+inherits_annotation_fields: false

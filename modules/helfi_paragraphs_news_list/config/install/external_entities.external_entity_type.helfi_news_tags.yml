@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies: {  }
+id: helfi_news_tags
+label: 'Helfi: News tags'
+label_plural: 'Helfi: News tags'
+description: 'Retrieves news tags taxonomy terms from Helfi'
+read_only: true
+field_mapper_id: jsonpath
+field_mapper_config:
+  field_mappings:
+    id:
+      value: $.id
+    uuid:
+      value: $.id
+    title:
+      value: '$.attributes["name"]'
+storage_client_id: helfi_news_tags
+storage_client_config: {  }
+persistent_cache_max_age: -1
+annotation_entity_type_id: null
+annotation_bundle_id: null
+annotation_field_name: null
+inherits_annotation_fields: false

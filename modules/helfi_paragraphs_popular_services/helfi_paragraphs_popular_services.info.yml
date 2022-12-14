@@ -1,8 +1,5 @@
-name: 'HELfi Paragraphs: Text'
+name: 'HELfi Paragraphs: Popular services'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - 'allowed_formats:allowed_formats'
   - 'helfi_base_content:helfi_base_content'
-  - drupal:text
-  - helfi_ckeditor:helfi_ckeditor

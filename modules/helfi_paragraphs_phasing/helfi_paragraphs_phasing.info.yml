@@ -1,4 +1,4 @@
-name: 'HELfi Paragraphs: Text'
+name: 'HELfi Paragraphs: Phasing'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
