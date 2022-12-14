@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_columns_design
+field_name: field_columns_design
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 50-50
+      label: 'Divided 50/50'
+    -
+      value: 30-70
+      label: 'Divided 30/70'
+    -
+      value: 70-30
+      label: 'Divided 70/30'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
