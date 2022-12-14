@@ -1,8 +1,7 @@
 on:
   pull_request:
-    push:
-      branches:
-        - main
+  push:
+    branches: ['main', '3.x']
 name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
@@ -13,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0', '8.1']
+        php-versions: ['8.1']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
 
@@ -43,7 +42,8 @@ jobs:
         run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
 
       - name: Build project
-        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+        # @todo change this back to dev-main
+        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-UHF-7219 $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
 
       - name: Install Drupal
         run: |
