@@ -53,7 +53,7 @@ content:
     region: content
     settings:
       placeholder: ''
-    third_party_settings: { }
+    third_party_settings: {  }
   field_news_list_description:
     type: text_textarea
     weight: 1

@@ -3,5 +3,4 @@ helfi_news_feed.settings:
   mapping:
     source_environment:
       type: string
-      label: The source environment
-
+      label: 'The source environment'
