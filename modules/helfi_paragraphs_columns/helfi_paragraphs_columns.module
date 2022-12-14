@@ -16,7 +16,5 @@ function helfi_paragraphs_columns_enable_paragraph_fields() : array {
   return [
     new EnableParagraphTypes('node', 'page', ['field_content', 'field_lower_content'], 'columns'),
     new EnableParagraphTypes('node', 'landing_page', ['field_content'], 'columns'),
-    new EnableParagraphTypes('paragraph', 'columns', ['field_columns_left_column', 'field_columns_right_column'], 'text'),
-    new EnableParagraphTypes('paragraph', 'columns', ['field_columns_left_column', 'field_columns_right_column'], 'image'),
   ];
 }
