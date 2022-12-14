@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helf_paragraphs_sidebar_text\Functional;
+namespace Drupal\Tests\helfi_paragraphs_sidebar_text\Functional;
 
 use Drupal\Tests\helfi_platform_config\Functional\BrowserTestBase;
 
