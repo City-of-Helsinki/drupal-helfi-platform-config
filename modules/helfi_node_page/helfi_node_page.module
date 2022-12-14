@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_phasing' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_platform_config\DTO\EnableParagraphTypes;
+
+/**
+ * Implements hook_enable_paragraph_fields().
+ */
+function helfi_node_page_enable_paragraph_fields() : array {
+  $types = [
+    'field_hero' => [
+      'hero',
+    ],
+    'field_content' => [
+      'text',
+      'columns',
+      'image',
+      'accordion',
+      'list_of_links' ,
+      'content_cards',
+      'banner',
+      'from_library',
+      'chart',
+      'remote_video',
+      'map',
+    ],
+    'field_lower_content' => [
+      'text',
+      'columns',
+      'image',
+      'accordion',
+      'list_of_links' ,
+      'content_cards',
+      'banner',
+      'from_library',
+      'chart',
+      'remote_video',
+      'map',
+    ],
+  ];
+
+  $enabled = [];
+  foreach ($types as $paragraphField => $fields) {
+    foreach ($fields as $field) {
+      $enabled[] = new EnableParagraphTypes('node', 'page', $paragraphField, $field);
+    }
+  }
+  return $enabled;
+}
+

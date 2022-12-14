@@ -105,9 +105,7 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
     $entityFieldManager->clearCachedFieldDefinitions();
 
     $definitions = $entityFieldManager->getFieldDefinitions($entityType, $bundle)[$paragraphField];
-    $types = $definitions->getSetting('handler_settings')['target_bundles'];
-
-    return $types;
+    return $definitions->getSetting('handler_settings')['target_bundles'];
   }
 
   /**

@@ -16,9 +16,9 @@ namespace Drupal\helfi_platform_config\DTO;
  * @code
  * function hook_enabled_paragraph_types() : array {
  *   return [
- *     new EnabledParagraphTypes('node', 'page', ['field_hero'], 'hero'),
- *     new EnabledParagraphTypes('node', 'page', ['field_lower_content'], 'image'),
- *     new EnabledParagraphTypes('node', 'page', ['field_lower_content'], 'accordion'),
+ *     new EnabledParagraphTypes('node', 'page', 'field_hero', 'hero'),
+ *     new EnabledParagraphTypes('node', 'page', 'field_lower_content', 'image'),
+ *     new EnabledParagraphTypes('node', 'page', 'field_lower_content', 'accordion'),
  *   ];
  * }
  * @endcode
@@ -32,15 +32,15 @@ final class EnableParagraphTypes {
    *   The entity type.
    * @param string $bundle
    *   The entity bundle.
-   * @param array $fields
-   *   The entity reference fields in given entity type/bundle combo.
+   * @param string $field
+   *   The entity reference field.
    * @param string $paragraphType
    *   The paragraph type to enable.
    */
   public function __construct(
     public string $entityType,
     public string $bundle,
-    public array $fields,
+    public string $field,
     public string $paragraphType,
   ) {
   }

@@ -55,27 +55,26 @@ function helfi_platform_config_configure_paragraph_field_handler(EnableParagraph
     return;
   }
 
-  $definitions = array_filter($definitions, function (FieldDefinitionInterface $definition) use ($type): bool {
-    return in_array($definition->getName(), $type->fields);
-  });
+  if (!isset($definitions[$type->field])) {
+    return;
+  }
+  $field = $definitions[$type->field];
 
-  foreach ($definitions as $field) {
-    if (!str_contains($field->getSetting('handler'), 'paragraph')) {
-      throw new InvalidArgumentException(
-        sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
-      );
-    }
-    $handlerSettings = $field->getSetting('handler_settings');
+  if (!str_contains($field->getSetting('handler'), 'paragraph')) {
+    throw new InvalidArgumentException(
+      sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
+    );
+  }
+  $handlerSettings = $field->getSetting('handler_settings');
 
-    if (isset($handlerSettings['target_bundles'])) {
-      $handlerSettings['target_bundles'][$type->paragraphType] = $type->paragraphType;
-      $handlerSettings['target_bundles_drag_drop'][$type->paragraphType] = [
-        'weight' => 30,
-        'enabled' => TRUE,
-      ];
-      $field->setSetting('handler_settings', $handlerSettings);
-      $field->save();
-    }
+  if (isset($handlerSettings['target_bundles'])) {
+    $handlerSettings['target_bundles'][$type->paragraphType] = $type->paragraphType;
+    $handlerSettings['target_bundles_drag_drop'][$type->paragraphType] = [
+      'weight' => 30,
+      'enabled' => TRUE,
+    ];
+    $field->setSetting('handler_settings', $handlerSettings);
+    $field->save();
   }
 }
 

@@ -34,26 +34,22 @@ class PageTest extends BrowserTestBase {
 
     $paragraphTypes = [
       'helfi_paragraphs_hero' => [
-        'node',
-        'page',
         ['field_hero'],
         'hero',
       ],
       'helfi_paragraphs_text' => [
-        'node',
-        'page',
         ['field_content', 'field_lower_content'],
         'text',
       ],
     ];
 
     foreach ($paragraphTypes as $module => $type) {
-      [$entityType, $bundle, $fields, $paragraphType] = $type;
+      [$fields, $paragraphType] = $type;
       // Paragraph type should be disabled by default.
-      $this->assertParagraphTypeDisabled($entityType, $bundle, $fields, $paragraphType);
+      $this->assertParagraphTypeDisabled('node', 'page', $fields, $paragraphType);
       // Enable the module and make sure the paragraph type is enabled.
       $this->enableModule($module);
-      $this->assertParagraphTypeEnabled($entityType, $bundle, $fields, $paragraphType);
+      $this->assertParagraphTypeEnabled('node', 'page', $fields, $paragraphType);
     }
   }
 
