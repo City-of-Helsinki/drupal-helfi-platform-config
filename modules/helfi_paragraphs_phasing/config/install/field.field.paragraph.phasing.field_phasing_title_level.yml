@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_phasing_title_level
+    - paragraphs.paragraphs_type.phasing
+  module:
+    - options
+id: paragraph.phasing.field_phasing_title_level
+field_name: field_phasing_title_level
+entity_type: paragraph
+bundle: phasing
+label: 'Paragraph title level'
+description: 'Select the title level depending on if the phasing element is inside of another element.'
+required: true
+translatable: false
+default_value:
+  -
+    value: '2'
+default_value_callback: ''
+settings: {  }
+field_type: list_string

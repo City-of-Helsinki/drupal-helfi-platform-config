@@ -30,6 +30,9 @@ class PhasingParagraphsTest extends BrowserTestBase {
    */
   public function testParagraphs() : void {
     $this->assertFrontPageLanguages();
+
+    // Make sure phasing_item is enabled for phasing paragraph type.
+    $this->assertParagraphTypeEnabled('paragraph', 'phasing', ['field_phasing_item'], 'phasing_item');
   }
 
 }

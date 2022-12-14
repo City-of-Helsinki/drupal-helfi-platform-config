@@ -6,6 +6,7 @@ dependencies:
   - drupal:node
   - drupal:media
   - drupal:path_alias
+  - drupal:text
   - paragraphs:paragraphs
   - metatag:metatag
   - metatag:metatag_twitter_cards

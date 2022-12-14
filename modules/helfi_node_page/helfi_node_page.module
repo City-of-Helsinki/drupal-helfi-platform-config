@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains hooks for 'helfi_paragraphs_phasing' module.
+ * Contains hooks for 'helfi_node_page' module.
  */
 
 declare(strict_types = 1);
