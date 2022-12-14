@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.liftup_with_image.field_liftup_with_image_desc
+    - field.field.paragraph.liftup_with_image.field_liftup_with_image_design
+    - field.field.paragraph.liftup_with_image.field_liftup_with_image_image
+    - field.field.paragraph.liftup_with_image.field_liftup_with_image_title
+    - paragraphs.paragraphs_type.liftup_with_image
+  module:
+    - options
+    - text
+id: paragraph.liftup_with_image.default
+targetEntityType: paragraph
+bundle: liftup_with_image
+mode: default
+content:
+  field_liftup_with_image_desc:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_liftup_with_image_design:
+    type: list_key
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_liftup_with_image_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: image
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_liftup_with_image_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

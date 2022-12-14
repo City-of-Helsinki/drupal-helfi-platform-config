@@ -1,0 +1,14 @@
+settings:
+  allowed_values:
+    -
+      label: 'Kuva oikealla'
+    -
+      label: 'Kuva vasemmalla'
+    -
+      label: 'Kuva oikealla, toissijainen väri'
+    -
+      label: 'Kuva vasemmalla, toissijainen väri'
+    -
+      label: 'Taustakuva, teksti oikealla'
+    -
+      label: 'Taustakuva, teksti vasemmalla'
