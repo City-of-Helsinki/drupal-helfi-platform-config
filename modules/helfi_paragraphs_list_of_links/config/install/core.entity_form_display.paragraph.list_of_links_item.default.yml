@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - linkit
+  config:
+    - field.field.paragraph.list_of_links_item.field_list_of_links_desc
+    - field.field.paragraph.list_of_links_item.field_list_of_links_image
+    - field.field.paragraph.list_of_links_item.field_list_of_links_link
+    - paragraphs.paragraphs_type.list_of_links_item
+  module:
+    - media_library
+id: paragraph.list_of_links_item.default
+targetEntityType: paragraph
+bundle: list_of_links_item
+mode: default
+content:
+  field_list_of_links_desc:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_list_of_links_image:
+    type: media_library_widget
+    weight: 0
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_list_of_links_link:
+    type: link_target_field_widget
+    weight: 1
+    region: content
+    settings:
+      linkit_auto_link_text: false
+      linkit_profile: helfi
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

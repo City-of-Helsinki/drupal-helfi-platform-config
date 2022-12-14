@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_list_of_links_links
+  module:
+    - entity_reference_revisions
+id: paragraph.list_of_links.field_list_of_links_links
+field_name: field_list_of_links_links
+entity_type: paragraph
+bundle: list_of_links
+label: Links
+description: 'The links that you want the paragraph to display.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: {  }
+    negate: 0
+    target_bundles_drag_drop: {  }
+field_type: entity_reference_revisions

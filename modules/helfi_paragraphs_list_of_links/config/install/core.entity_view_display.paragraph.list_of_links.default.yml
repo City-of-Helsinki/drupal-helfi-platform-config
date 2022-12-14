@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.list_of_links.field_list_of_links_design
+    - field.field.paragraph.list_of_links.field_list_of_links_links
+    - field.field.paragraph.list_of_links.field_list_of_links_title
+    - paragraphs.paragraphs_type.list_of_links
+  module:
+    - entity_reference_revisions
+    - options
+id: paragraph.list_of_links.default
+targetEntityType: paragraph
+bundle: list_of_links
+mode: default
+content:
+  field_list_of_links_design:
+    type: list_key
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_list_of_links_links:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_list_of_links_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }
