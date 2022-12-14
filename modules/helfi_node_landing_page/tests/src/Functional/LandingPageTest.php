@@ -32,11 +32,22 @@ class LandingPageTest extends BrowserTestBase {
   public function testLandingPage() : void {
     $this->assertFrontPageLanguages();
 
-    $this->assertParagraphTypeDisabled('node', 'landing_page', ['field_hero'], 'hero');
-    // Make sure we can enable paragraphs hero.
-    $this->enableModule('helfi_paragraphs_hero');
-    // Make sure paragraph type 'hero' is enabled for landing page.
-    $this->assertParagraphTypeEnabled('node', 'landing_page', ['field_hero'], 'hero');
+    $paragraphTypes = [
+      'helfi_paragraphs_hero' => [
+        ['field_hero'],
+        'hero',
+      ],
+      'helfi_paragraphs_text' => [
+        ['field_content'],
+        'phasing',
+      ],
+    ];
+
+    foreach ($paragraphTypes as $module => $type) {
+      [$fields, $paragraphType] = $type;
+      $this->enableModule($module);
+      $this->assertParagraphTypeEnabled('node', 'landing_page', $fields, $paragraphType);
+    }
   }
 
 }
