@@ -34,14 +34,14 @@ final class EnableParagraphTypes {
    *   The entity bundle.
    * @param string $field
    *   The entity reference field.
-   * @param string $paragraphType
+   * @param string $paragraph
    *   The paragraph type to enable.
    */
   public function __construct(
     public string $entityType,
     public string $bundle,
     public string $field,
-    public string $paragraphType,
+    public string $paragraph,
   ) {
   }
 

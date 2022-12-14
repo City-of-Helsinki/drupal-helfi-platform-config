@@ -46,9 +46,9 @@ function helfi_node_page_enable_paragraph_fields() : array {
   ];
 
   $enabled = [];
-  foreach ($types as $paragraphField => $fields) {
-    foreach ($fields as $field) {
-      $enabled[] = new EnableParagraphTypes('node', 'page', $paragraphField, $field);
+  foreach ($types as $field => $paragraphTypes) {
+    foreach ($paragraphTypes as $paragraphType) {
+      $enabled[] = new EnableParagraphTypes('node', 'page', $field, $paragraphType);
     }
   }
   return $enabled;

@@ -45,9 +45,6 @@ class PageTest extends BrowserTestBase {
 
     foreach ($paragraphTypes as $module => $type) {
       [$fields, $paragraphType] = $type;
-      // Paragraph type should be disabled by default.
-      $this->assertParagraphTypeDisabled('node', 'page', $fields, $paragraphType);
-      // Enable the module and make sure the paragraph type is enabled.
       $this->enableModule($module);
       $this->assertParagraphTypeEnabled('node', 'page', $fields, $paragraphType);
     }
