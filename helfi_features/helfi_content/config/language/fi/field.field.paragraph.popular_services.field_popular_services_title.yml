@@ -1,0 +1,4 @@
+default_value:
+  -
+    value: 'Suosittuja palveluja'
+description: 'Jos kenttä jätetään tyhjäksi, otsikoksi tulee "Suosittuja palveluja"'
