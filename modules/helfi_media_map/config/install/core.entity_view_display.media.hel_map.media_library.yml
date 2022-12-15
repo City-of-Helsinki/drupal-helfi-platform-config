@@ -1,0 +1,29 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.hel_map.field_media_hel_map
+    - media.type.hel_map
+  module:
+    - helfi_media_map
+id: media.hel_map.media_library
+targetEntityType: media
+bundle: hel_map
+mode: media_library
+content:
+  field_media_hel_map:
+    type: hel_media_map
+    label: hidden
+    settings:
+      link_title: 'Open map in new window'
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

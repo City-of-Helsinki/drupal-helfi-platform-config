@@ -1,0 +1,10 @@
+media.source.hel_map:
+  type: media.source.field_aware
+  label: '"Map" media source configuration'
+field.formatter.settings.hel_media_map:
+  type: mapping
+  label: 'Hel map formatter'
+  mapping:
+    link_title:
+      type: label
+      label: 'Link title'

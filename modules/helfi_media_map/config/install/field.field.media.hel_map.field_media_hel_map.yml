@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_hel_map
+    - media.type.hel_map
+  module:
+    - link
+id: media.hel_map.field_media_hel_map
+field_name: field_media_hel_map
+entity_type: media
+bundle: hel_map
+label: Url
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 17
+field_type: link
