@@ -1,0 +1,27 @@
+config_rewrite: replace
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.from_library.field_reusable_paragraph
+    - paragraphs.paragraphs_type.from_library
+  module:
+    - select2
+id: paragraph.from_library.default
+targetEntityType: paragraph
+bundle: from_library
+mode: default
+content:
+  field_reusable_paragraph:
+    type: select2_entity_reference
+    weight: 0
+    region: content
+    settings:
+      autocomplete: false
+      match_operator: CONTAINS
+      match_limit: 20
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true
