@@ -20,5 +20,4 @@ dependencies:
   - paragraphs_library:paragraphs_library
   - entity_reference_revisions:entity_reference_revisions
   - scheduler:scheduler
-  - select2:select2
   - select2_icon:select2_icon
