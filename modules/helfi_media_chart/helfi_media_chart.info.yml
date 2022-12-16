@@ -1,0 +1,14 @@
+name: 'HELfi: Media Charts'
+description: 'Provides media type for charts'
+type: module
+core_version_requirement: '^8.9 || ^9'
+dependencies:
+  - allowed_formats:allowed_formats
+  - helfi_ckeditor:helfi_ckeditor
+  - 'helfi_base_content:helfi_base_content'
+  - drupal:path
+  - drupal:media
+  - drupal:media_library
+  - drupal:link
+'interface translation project': helfi_media_chart
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_media_chart/translations/%language.po

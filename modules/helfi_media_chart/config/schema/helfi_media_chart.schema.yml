@@ -1,0 +1,10 @@
+media.source.helfi_chart:
+  type: media.source.field_aware
+  label: '"Chart" media source configuration'
+field.formatter.settings.helfi_chart:
+  type: mapping
+  label: Chart
+  mapping:
+    link_title:
+      type: label
+      label: 'Link title'

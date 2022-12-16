@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_helfi_chart_transcript
+    - media.type.helfi_chart
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - minimal
+id: media.helfi_chart.field_helfi_chart_transcript
+field_name: field_helfi_chart_transcript
+entity_type: media
+bundle: helfi_chart
+label: Transcript
+description: 'Provide a descriptive transcript of the visual information what is presented in the chart.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

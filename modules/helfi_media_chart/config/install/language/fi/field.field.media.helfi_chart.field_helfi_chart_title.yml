@@ -1,0 +1,2 @@
+label: Otsikko
+description: 'Kaavio esitetään iframe elementin kautta. Iframe tarvitsee sisältöä kuvaavan otsikon, jotta käyttäjät voivat tietää mitä sisältöä iframe-kehyksessä esitetään.'

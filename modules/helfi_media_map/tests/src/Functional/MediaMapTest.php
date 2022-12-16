@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_tpr\Functional;
+namespace Drupal\Tests\helfi_media_map\Functional;
 
 use Drupal\Core\Url;
 use Drupal\media\Entity\Media;
