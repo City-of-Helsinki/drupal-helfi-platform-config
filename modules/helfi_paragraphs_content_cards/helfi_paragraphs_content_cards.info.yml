@@ -1,0 +1,7 @@
+name: 'HELfi Paragraphs: Content cards'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - 'helfi_base_content:helfi_base_content'
+  - 'helfi_node_page:helfi_node_page'
+  - 'helfi_node_landing_page:helfi_node_landing_page'
