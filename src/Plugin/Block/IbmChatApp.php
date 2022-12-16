@@ -56,6 +56,16 @@ class IbmChatApp extends BlockBase {
   /**
    * {@inheritdoc}
    */
+  public function blockSubmit($form, FormStateInterface $formState) {
+    $this->configuration['hostname'] = $formState->getValue('hostname');
+    $this->configuration['engagementId'] = $formState->getValue('engagementId');
+    $this->configuration['tenantId'] = $formState->getValue('tenantId');
+    $this->configuration['assistantId'] = $formState->getValue('assistantId');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     $build = [];
 
@@ -66,36 +76,45 @@ class IbmChatApp extends BlockBase {
     $tenantId = $config['tenantId'];
     $assistantId = $config['assistantId'];
 
-    $optionsSrc = `<script type="text/javascript" src="$hostname/get-widget-options?tenantId=$tenantId&assistantId=$assistantId&engagementId=$engagementId"></script>`;
-    $widgetSrc = `<script type="text/javascript" src="$hostname/get-widget?tenantId=$tenantId&assistantId=$assistantId&engagementId=$engagementId"></script>`;
-    $defaultSrc = `<script type="text/javascript" src="$hostname/get-widget-default?tenantId=<$tenantId&assistantId=$assistantId&engagementId=$engagementId"></script>`;
-
+    $optionsSrc = sprintf('%s/get-widget-options?tenantId=%s&assistantId=%s&engagementId=%s', $hostname, $tenantId, $assistantId, $engagementId);
+    $widgetSrc = sprintf('%s/get-widget?tenantId=%s&assistantId=%s&engagementId=%s', $hostname, $tenantId, $assistantId, $engagementId);
+    $defaultSrc = sprintf('%s/get-widget-default?tenantId=%s&assistantId=%s&engagementId=%s', $hostname, $tenantId, $assistantId, $engagementId);
 
     $build['ibm_chat_app'] = [
       '#title' => $this->t('IBM Chat App'),
       '#attached' => [
+        'drupalSettings' => [
+          'chatapp' => $widgetSrc,
+        ],
         'html_head' => [
           [
-            '#tag' => 'script',
-            '#attributes' => [
-              'type' => 'text/javascript',
-              'src' => $optionsSrc,
+            [
+              '#tag' => 'script',
+              '#attributes' => [
+                'type' => 'text/javascript',
+                'src' => $optionsSrc,
+              ],
             ],
-          ],  'chat_app_options',
+            'chat_app_options',
+          ],
           [
-            '#tag' => 'script',
-            '#attributes' => [
-              'type' => 'text/javascript',
-              'src' => $widgetSrc,
-            ],
-          ],  'chat_app_widget',
+            [
+              '#tag' => 'script',
+              '#attributes' => [
+                'type' => 'text/javascript',
+                'src' => $widgetSrc,
+              ],
+            ],  'chat_app_widget',
+          ],
           [
-            '#tag' => 'script',
-            '#attributes' => [
-              'type' => 'text/javascript',
-              'src' => $defaultSrc,
-            ],
-          ],  'chat_app_default',
+            [
+              '#tag' => 'script',
+              '#attributes' => [
+                'type' => 'text/javascript',
+                'src' => $defaultSrc,
+              ],
+            ],  'chat_app_default',
+          ],
         ],
       ],
     ];
