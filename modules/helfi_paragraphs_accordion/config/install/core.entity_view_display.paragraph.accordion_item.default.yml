@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.accordion_item.field_accordion_item_content
+    - field.field.paragraph.accordion_item.field_accordion_item_heading
+    - field.field.paragraph.accordion_item.field_icon
+    - paragraphs.paragraphs_type.accordion_item
+  module:
+    - entity_reference_revisions
+    - select2_icon
+id: paragraph.accordion_item.default
+targetEntityType: paragraph
+bundle: accordion_item
+mode: default
+content:
+  field_accordion_item_content:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_accordion_item_heading:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_icon:
+    type: select2_icon_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden: {  }

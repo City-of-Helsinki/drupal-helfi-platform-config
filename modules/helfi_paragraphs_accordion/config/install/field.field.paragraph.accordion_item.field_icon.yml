@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_icon
+    - paragraphs.paragraphs_type.accordion_item
+  module:
+    - select2_icon
+id: paragraph.accordion_item.field_icon
+field_name: field_icon
+entity_type: paragraph
+bundle: accordion_item
+label: Icon
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: select2_icon
