@@ -974,3 +974,32 @@ function helfi_content_update_9038() {
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
+
+/**
+ * Update the popular service paragraph with new field.
+ */
+function helfi_content_update_9039() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Add the new fields for popular services paragraph.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_popular_services_title' => 'field.field.paragraph.popular_services.field_popular_services_title',
+  ];
+
+  // Install title field and its translations.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $field_config);
+  }
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9039');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
