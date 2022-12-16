@@ -1211,6 +1211,9 @@ msgstr "Hyväksy kaikki evästeet"
 msgid "Accept selected cookies"
 msgstr "Hyväksy valitut evästeet"
 
+msgid "Accept only essential cookies"
+msgstr "Hyväksy vain välttämättömät evästeet"
+
 msgid "Cookie settings"
 msgstr "Evästeasetukset"
 

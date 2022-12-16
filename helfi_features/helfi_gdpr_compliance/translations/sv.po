@@ -1226,6 +1226,9 @@ msgstr "Acceptera alla cookies"
 msgid "Accept selected cookies"
 msgstr "Acceptera valda cookies"
 
+msgid "Accept only essential cookies"
+msgstr "Acceptera endast nödvändiga cookies"
+
 msgid "Cookie settings"
 msgstr "Cookie -inställningar"
 
