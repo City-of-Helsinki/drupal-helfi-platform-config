@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: event_list
+label: Events
+icon_uuid: null
+icon_default: null
+description: 'Create a feed of events from LinkedEvents data'
+behavior_plugins: {  }

@@ -248,6 +248,10 @@ function _helfi_platform_config_eu_cookie_compliance_get_privacy_policy_url(): U
   $config = Drupal::config('eu_cookie_compliance.settings');
   $link = $config->get('popup_link');
 
+  if (!$link) {
+    return Url::fromRoute('<front>');
+  }
+
   return (UrlHelper::isExternal($link))
     ? Url::fromUri($link)
     : Url::fromUserInput($link === '<front>' ? '/' : $link);

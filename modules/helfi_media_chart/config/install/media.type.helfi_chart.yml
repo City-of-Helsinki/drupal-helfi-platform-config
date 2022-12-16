@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_media_chart
+id: helfi_chart
+label: Chart
+description: 'Media type Chart can be used to present interactive charts. Supports Microsoft Power BI.'
+source: helfi_chart
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_helfi_chart_url
+field_map: {  }

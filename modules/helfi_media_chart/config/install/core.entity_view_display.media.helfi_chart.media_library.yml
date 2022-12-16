@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.helfi_chart.field_helfi_chart_title
+    - field.field.media.helfi_chart.field_helfi_chart_transcript
+    - field.field.media.helfi_chart.field_helfi_chart_url
+    - media.type.helfi_chart
+  module:
+    - helfi_media_chart
+id: media.helfi_chart.media_library
+targetEntityType: media
+bundle: helfi_chart
+mode: media_library
+content:
+  field_helfi_chart_url:
+    type: helfi_chart_media_library
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  created: true
+  field_helfi_chart_title: true
+  field_helfi_chart_transcript: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

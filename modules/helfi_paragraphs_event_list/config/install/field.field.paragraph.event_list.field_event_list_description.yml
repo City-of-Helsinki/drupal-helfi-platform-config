@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_list_description
+    - paragraphs.paragraphs_type.event_list
+id: paragraph.event_list.field_event_list_description
+field_name: field_event_list_description
+entity_type: paragraph
+bundle: event_list
+label: Description
+description: 'Brief description for the events in the list.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
