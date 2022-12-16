@@ -5,63 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\helfi_paragraphs_event_list;
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\helfi_paragraphs_event_list\Enum\CategoryKeywords;
-use GuzzleHttp\ClientInterface;
 
 /**
  * Base class for retrieving events data.
  */
 class EventsApiBase {
-
-  /**
-   * The constructor.
-   *
-   * @param \GuzzleHttp\ClientInterface $httpClient
-   *   HTTP Client.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $dataCache
-   *   Data Cache.
-   */
-  public function __construct(
-    protected ClientInterface $httpClient,
-    protected CacheBackendInterface $dataCache
-  ) {}
-
-  /**
-   * Sets cache.
-   *
-   * @param string $id
-   *   Cache id.
-   * @param mixed $data
-   *   The data.
-   */
-  protected function setCache(string $id, $data) : void {
-    $key = $this->getCacheKey($id);
-    $this->dataCache->set($key, $data, $this->getCacheMaxAge(), []);
-  }
-
-  /**
-   * Get cached data for given id.
-   *
-   * @param string $id
-   *   The id.
-   *
-   * @return mixed|null
-   *   Cached data or null
-   */
-  protected function getFromCache(string $id) : mixed {
-    $key = $this->getCacheKey($id);
-
-    if (isset($this->data[$key])) {
-      return $this->data[$key];
-    }
-
-    if ($data = $this->dataCache->get($key)) {
-      return $data->data;
-    }
-
-    return NULL;
-  }
 
   /**
    * Parse query params from request url.
