@@ -67,6 +67,9 @@ class IbmChatApp extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
+
+    $library = ['helfi_platform_config/user_consent_functions'];
+
     $build = [];
 
     $config = $this->getConfiguration();
@@ -83,9 +86,7 @@ class IbmChatApp extends BlockBase {
     $build['ibm_chat_app'] = [
       '#title' => $this->t('IBM Chat App'),
       '#attached' => [
-        'drupalSettings' => [
-          'chatapp' => $widgetSrc,
-        ],
+        'library' => $library,
         'html_head' => [
           [
             [

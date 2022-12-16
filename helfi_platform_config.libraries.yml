@@ -171,3 +171,11 @@ chat_leijuke:
   dependencies:
     - core/drupal
     - core/drupalSettings
+
+user_consent_functions:
+  version: 1.0.x
+  header: true
+  js:
+    assets/js/user_consent_functions.js: {}
+  dependencies:
+    - core/drupal
