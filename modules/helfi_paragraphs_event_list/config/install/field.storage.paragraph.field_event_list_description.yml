@@ -1,0 +1,21 @@
+uuid: 15d39e42-938c-4abc-b5f0-5ede9719f4ae
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+_core:
+  default_config_hash: jEfT1S05qwT11BZeMt-9_Bb4ibiWj9JULgjB1uOr0FU
+id: paragraph.field_event_list_description
+field_name: field_event_list_description
+entity_type: paragraph
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

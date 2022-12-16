@@ -1,0 +1,36 @@
+field.field.node.landing_page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            event_list: event_list
+          target_bundles_drag_drop:
+            event_list:
+              enabled: true
+              weight: 30
+field.field.node.page.field_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            event_list: event_list
+          target_bundles_drag_drop:
+            event_list:
+              enabled: true
+              weight: 30
+field.field.node.page.field_lower_content:
+  expected_config: {  }
+  update_actions:
+    add:
+      settings:
+        handler_settings:
+          target_bundles:
+            event_list: event_list
+          target_bundles_drag_drop:
+            event_list:
+              enabled: true
+              weight: 30
