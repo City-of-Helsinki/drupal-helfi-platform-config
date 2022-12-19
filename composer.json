@@ -12,7 +12,6 @@
         "drupal/config_rewrite": "^1.4",
         "drupal/config_replace": "^2.0",
         "drupal/content_lock": "^2.2",
-        "drupal/core-recommended": ">=9.3",
         "drupal/crop": "^2.1",
         "drupal/default_content": "^2.0.0-alpha2",
         "drupal/diff": "^1.0",
@@ -33,7 +32,7 @@
         "drupal/helfi_media_formtool": "*",
         "drupal/image_style_quality": "^1.4",
         "drupal/imagecache_external": "^3.0",
-	"drupal/imagemagick": "^3.4",
+	    "drupal/imagemagick": "^3.4",
         "drupal/linkit": "^6.0@beta",
         "drupal/matomo": "^1.11",
         "drupal/matomo_reports": "^1.1",
@@ -64,7 +63,6 @@
         "drupal/views_bulk_operations": "^4.1"
     },
     "conflict": {
-        "drupal/core-recommended": "<9.5",
         "drupal/ctools": "<3.11 || ^4.0.1"
     },
     "extra": {
