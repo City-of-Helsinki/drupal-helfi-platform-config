@@ -29,21 +29,21 @@ class IbmChatApp extends BlockBase {
       '#default_value' => $config['hostname'] ?? '',
     ];
 
-    // engagementId: will define how our chat application looks and behaves, and the versionto be used
+    // engagementId: will define how our chat application looks and behaves.
     $form['engagementId'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Chat Engagement Id'),
       '#default_value' => $config['engagementId'] ?? '',
     ];
 
-    // tenantId: defines the environment to be used by the chat and chatbotservices
+    // tenantId: defines the environment to be used.
     $form['tenantId'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Chat Tenant Id'),
       '#default_value' => $config['tenantId'] ?? '',
     ];
 
-    // assistantId: identifies the bot instance to be used
+    // assistantId: identifies the bot instance to be used.
     $form['assistantId'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Chat Assistant Id'),
@@ -95,8 +95,7 @@ class IbmChatApp extends BlockBase {
                 'type' => 'text/javascript',
                 'src' => $optionsSrc,
               ],
-            ],
-            'chat_app_options',
+            ], 'chat_app_options',
           ],
           [
             [
@@ -105,7 +104,7 @@ class IbmChatApp extends BlockBase {
                 'type' => 'text/javascript',
                 'src' => $widgetSrc,
               ],
-            ],  'chat_app_widget',
+            ], 'chat_app_widget',
           ],
           [
             [
@@ -114,7 +113,7 @@ class IbmChatApp extends BlockBase {
                 'type' => 'text/javascript',
                 'src' => $defaultSrc,
               ],
-            ],  'chat_app_default',
+            ], 'chat_app_default',
           ],
         ],
       ],
