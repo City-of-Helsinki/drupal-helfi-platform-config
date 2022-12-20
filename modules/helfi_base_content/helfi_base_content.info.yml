@@ -6,6 +6,7 @@ dependencies:
   - drupal:node
   - drupal:media
   - drupal:path_alias
+  - pathauto:pathauto
   - drupal:text
   - linkit:linkit
   - paragraphs:paragraphs
