@@ -17,6 +17,7 @@ dependencies:
   # @todo Refactor hdbt_admin_editorial module and remove the dependency.
   - hdbt_admin_editorial:hdbt_admin_editorial
   - helfi_platform_config:helfi_platform_config
+  - helfi_user_roles:helfi_user_roles
   - paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets
   - paragraphs_library:paragraphs_library
   - entity_reference_revisions:entity_reference_revisions

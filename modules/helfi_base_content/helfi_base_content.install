@@ -8,6 +8,43 @@
 declare(strict_types = 1);
 
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\user\Entity\Role;
+
+function helfi_base_content_grant_permissions() : void {
+  $permissions = [
+    'anonymous' => [
+      'access content',
+    ],
+    'authenticated' => [
+      'access content',
+      'view unpublished paragraphs',
+    ],
+    'admin' => [
+      'view unpublished paragraphs',
+      'administer nodes',
+      'delete all revisions',
+      'revert all revisions',
+      'view all revisions',
+      'view own unpublished content',
+    ],
+    'content_producer' => [
+      'view unpublished paragraphs',
+      'administer nodes',
+      'view all revisions',
+      'view own unpublished content',
+    ],
+    'editor' => [
+      'view unpublished paragraphs',
+      'administer nodes',
+      'view all revisions',
+      'view own unpublished content',
+    ],
+    'read_only' => [
+      'view own unpublished content',
+    ],
+  ];
+  helfi_platform_config_grant_permissions($permissions);
+}
 
 /**
  * Implements hook_install().
@@ -27,4 +64,6 @@ function helfi_base_content_install() : void {
     ->set('selected_langcode', 'fi')
     ->set('url.prefixes', $prefixes)
     ->save();
+
+  helfi_base_content_grant_permissions();
 }
