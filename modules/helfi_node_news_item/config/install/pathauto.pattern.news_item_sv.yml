@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: news_item_sv
+label: 'News item | SV'
+type: 'canonical_entities:node'
+pattern: 'nyheter/[node:short-title]'
+selection_criteria:
+  d3b12b5b-bb8c-4829-af2e-ca020b74facb:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: d3b12b5b-bb8c-4829-af2e-ca020b74facb
+    context_mapping:
+      node: node
+    bundles:
+      news_item: news_item
+  e43924c5-8ff6-465f-9067-8afdfe26fd2e:
+    id: language
+    negate: false
+    uuid: e43924c5-8ff6-465f-9067-8afdfe26fd2e
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      sv: sv
+selection_logic: and
+weight: -9
+relationships:
+  'node:langcode:language':
+    label: Language

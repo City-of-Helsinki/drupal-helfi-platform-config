@@ -1,0 +1,5 @@
+label: Otsikko
+description: 'Linkkilistan otsikko'
+default_value:
+  -
+    value: 'Lisää aiheesta'

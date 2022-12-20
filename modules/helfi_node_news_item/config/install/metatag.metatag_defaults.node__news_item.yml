@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: node__news_item
+label: 'Content: News item'
+tags:
+  title: '[node:short-title] | [site:page-title-suffix]'

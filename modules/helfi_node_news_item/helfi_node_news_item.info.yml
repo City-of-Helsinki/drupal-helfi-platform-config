@@ -1,0 +1,13 @@
+name: 'HELfi Node news item'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - field_group:field_group
+  - drupal:menu_ui
+  - drupal:taxonomy
+  - helfi_base_content:helfi_base_content
+  - helfi_image_styles:helfi_image_styles
+  - helfi_media:helfi_media
+  - publication_date:publication_date
+'interface translation project': helfi_node_news_item
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_node_news_item/translations/%language.po

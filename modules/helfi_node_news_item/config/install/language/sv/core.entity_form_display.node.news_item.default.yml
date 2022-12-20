@@ -1,0 +1,11 @@
+third_party_settings:
+  field_group:
+    group_news_item_links:
+      label: Länkar
+    group_news_item_links_wrapper:
+      label: Länkar
+content:
+  field_content:
+    settings:
+      title: Paragraf
+      title_plural: Paragrafer

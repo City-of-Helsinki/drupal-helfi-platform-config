@@ -1,6 +1,6 @@
 langcode: en
 status: true
-dependencies: { }
+dependencies: {  }
 id: content_producer
 label: 'Content producer'
 weight: 3

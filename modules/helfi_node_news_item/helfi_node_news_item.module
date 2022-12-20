@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_node_news_item' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_node_news_item_helfi_paragraph_types() : array {
+  $types = [
+    'field_content' => [
+      'text',
+      'banner',
+      'image',
+      'remote_video',
+    ],
+  ];
+
+  $enabled = [];
+  foreach ($types as $field => $paragraphTypes) {
+    foreach ($paragraphTypes as $paragraphType) {
+      $enabled[] = new ParagraphTypeCollection('node', 'news_item', $field, $paragraphType);
+    }
+  }
+  return $enabled;
+}

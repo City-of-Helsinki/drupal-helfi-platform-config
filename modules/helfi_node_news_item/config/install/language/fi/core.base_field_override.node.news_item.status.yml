@@ -1,0 +1,4 @@
+label: Julkaistu
+settings:
+  on_label: Käytössä
+  off_label: 'Pois päältä'
