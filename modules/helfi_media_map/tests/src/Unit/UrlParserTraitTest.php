@@ -21,7 +21,6 @@ class UrlParserTraitTest extends UnitTestCase {
    *
    * @covers \Drupal\helfi_media_map\UrlParserTrait::getMapUrl
    * @covers \Drupal\helfi_media_map\UrlParserTrait::assertMediaLink
-   * @covers \Drupal\helfi_media_map\UrlParserTrait::getEmbedUrl
    *
    * @dataProvider getTestMapUrlData
    */
@@ -62,6 +61,9 @@ class UrlParserTraitTest extends UnitTestCase {
 
   /**
    * Tests that we can convert links to embed urls.
+   *
+   * @covers \Drupal\helfi_media_map\UrlParserTrait::getEmbedUrl
+   * @covers \Drupal\helfi_media_map\UrlParserTrait::assertMediaLink
    *
    * @dataProvider getTestEmbedLink
    */
