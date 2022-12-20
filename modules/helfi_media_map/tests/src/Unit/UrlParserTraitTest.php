@@ -10,7 +10,6 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Tests UrlParserTrait.
  *
- * @covers \Drupal\helfi_media_map\UrlParseTrait
  * @group helfi_media_map
  */
 class UrlParserTraitTest extends UnitTestCase {
