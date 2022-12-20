@@ -2,8 +2,8 @@ name: 'HELfi: image styles'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - drupal:responsive_image
   - drupal:image
+  - drupal:responsive_image
   - focal_point:focal_point
-  - image_style_quality:image_style_quality
   - helfi_platform_config:helfi_platform_config
+  - image_style_quality:image_style_quality

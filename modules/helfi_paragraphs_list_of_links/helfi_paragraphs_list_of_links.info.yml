@@ -2,6 +2,6 @@ name: 'HELfi Paragraphs: List of links'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - 'helfi_base_content:helfi_base_content'
-  - 'helfi_media:helfi_media'
-  - 'helfi_image_styles:helfi_image_styles'
+  - helfi_base_content:helfi_base_content
+  - helfi_image_styles:helfi_image_styles
+  - helfi_media:helfi_media

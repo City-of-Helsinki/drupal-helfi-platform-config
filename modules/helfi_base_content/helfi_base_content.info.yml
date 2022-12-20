@@ -3,21 +3,21 @@ type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
   - drupal:language
-  - drupal:node
   - drupal:media
+  - drupal:node
   - drupal:path_alias
   - drupal:text
-  - linkit:linkit
-  - paragraphs:paragraphs
-  - metatag:metatag
-  - metatag:metatag_twitter_cards
-  - metatag:metatag_open_graph
-  - redirect:redirect
+  - entity_reference_revisions:entity_reference_revisions
   # @todo Refactor hdbt_admin_editorial module and remove the dependency.
   - hdbt_admin_editorial:hdbt_admin_editorial
   - helfi_platform_config:helfi_platform_config
+  - linkit:linkit
+  - metatag:metatag
+  - metatag:metatag_open_graph
+  - metatag:metatag_twitter_cards
+  - paragraphs:paragraphs
   - paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets
   - paragraphs_library:paragraphs_library
-  - entity_reference_revisions:entity_reference_revisions
+  - redirect:redirect
   - scheduler:scheduler
   - select2_icon:select2_icon

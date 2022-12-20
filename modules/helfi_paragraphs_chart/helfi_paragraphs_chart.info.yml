@@ -2,5 +2,5 @@ name: 'HELfi Paragraphs: Chart'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
+  - helfi_base_content:helfi_base_content
   - helfi_media_chart:helfi_media_chart
-  - 'helfi_base_content:helfi_base_content'

@@ -3,13 +3,13 @@ type: module
 package: Custom
 core_version_requirement: ^9.3
 dependencies:
-  - helfi_api_base
-  - field
-  - external_entities
-  - entity
-  - paragraphs
-  - imagecache_external
-  - responsive_image
+  - allowed_formats:allowed_formats
+  - drupal:entity
+  - drupal:field
+  - drupal:responsive_image
   - drupal:text
-  - allowed_formats
-  - select2
+  - external_entities:external_entities
+  - helfi_api_base:helfi_api_base
+  - helfi_base_content:helfi_base_content
+  - imagecache_external:imagecache_external
+  - select2:select2

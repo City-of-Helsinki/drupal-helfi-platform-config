@@ -2,8 +2,8 @@ name: 'HELfi Node announcement'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - 'allowed_formats:allowed_formats'
-  - 'drupal:menu_ui'
-  - 'helfi_base_content:helfi_base_content'
-  - 'helfi_node_landing_page:helfi_node_landing_page'
-  - 'helfi_node_page:helfi_node_page'
+  - allowed_formats:allowed_formats
+  - drupal:menu_ui
+  - helfi_base_content:helfi_base_content
+  - helfi_node_landing_page:helfi_node_landing_page
+  - helfi_node_page:helfi_node_page
