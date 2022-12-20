@@ -7,8 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\user\Entity\Role;
-
 /**
  * Gets the permissions.
  */
