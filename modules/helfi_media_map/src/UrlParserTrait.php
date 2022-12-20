@@ -43,7 +43,7 @@ trait UrlParserTrait {
 
     if ($uri->getHost() === Map::KARTTA_URL) {
       // Link is already a valid embed link.
-      if (strpos($uri->getPath(), 'embed') !== FALSE) {
+      if (str_contains($uri->getPath(), 'embed')) {
         return (string) $uri;
       }
       // Parse the url prefix (/link) and the ID /link/{id}, fallback to NULL.
@@ -63,7 +63,7 @@ trait UrlParserTrait {
 
     if ($uri->getHost() === Map::PALVELUKARTTA_URL) {
       // Link is already a valid embed link.
-      if (strpos($uri->getPath(), '/embed') !== FALSE) {
+      if (str_contains($uri->getPath(), '/embed')) {
         return (string) $uri;
       }
 
@@ -105,7 +105,7 @@ trait UrlParserTrait {
 
     if ($uri->getHost() === Map::KARTTA_URL) {
       // Link is already a direct map link.
-      if (strpos($uri->getPath(), 'embed') === FALSE) {
+      if (!str_contains($uri->getPath(), 'embed')) {
         return (string) $uri;
       }
       $path = ltrim(str_replace('/embed', '', $uri->getPath()), '/');

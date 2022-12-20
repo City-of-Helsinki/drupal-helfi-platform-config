@@ -19,6 +19,9 @@ class UrlParserTraitTest extends UnitTestCase {
   /**
    * Tests that we can convert links to canonical map links.
    *
+   * @covers \Drupal\helfi_media_map\UrlParserTrait::getMapUrl
+   * @covers \Drupal\helfi_media_map\UrlParserTrait::assertMediaLink
+   *
    * @dataProvider getTestMapUrlData
    */
   public function testMapUrl(string $url, string $expected) : void {
@@ -58,6 +61,9 @@ class UrlParserTraitTest extends UnitTestCase {
 
   /**
    * Tests that we can convert links to embed urls.
+   *
+   * @covers \Drupal\helfi_media_map\UrlParserTrait::getEmbedUrl
+   * @covers \Drupal\helfi_media_map\UrlParserTrait::assertMediaLink
    *
    * @dataProvider getTestEmbedLink
    */

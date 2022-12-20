@@ -1,0 +1,21 @@
+enabled_entity_types:
+  - user
+punctuation:
+  hyphen: 1
+verbose: false
+separator: '-'
+max_length: 100
+max_component_length: 100
+transliterate: true
+reduce_ascii: false
+case: true
+ignore_words: ''
+update_action: 2
+safe_tokens:
+  - alias
+  - path
+  - join-path
+  - login-url
+  - url
+  - url-brief
+  - menu-link-parents

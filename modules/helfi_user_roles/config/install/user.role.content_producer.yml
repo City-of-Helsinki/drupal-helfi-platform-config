@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: { }
+id: content_producer
+label: 'Content producer'
+weight: 3
+is_admin: null
+permissions: {  }

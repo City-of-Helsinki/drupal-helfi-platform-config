@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_node_landing_page module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Gets the permissions.
+ */
+function helfi_node_landing_page_grant_permissions() : array {
+  $permissions = [
+    'admin' => [
+      'view landing_page revisions',
+      'revert landing_page revisions',
+      'edit own landing_page content',
+      'edit any landing_page content',
+      'delete landing_page revisions',
+      'delete own landing_page content',
+      'delete any landing_page content',
+      'create landing_page content',
+    ],
+    'content_producer' => [
+      'view landing_page revisions',
+      'revert landing_page revisions',
+      'edit own landing_page content',
+      'edit any landing_page content',
+      'delete landing_page revisions',
+      'delete own landing_page content',
+      'create landing_page content',
+    ],
+    'editor' => [
+      'view landing_page revisions',
+      'revert landing_page revisions',
+      'edit own landing_page content',
+      'edit any landing_page content',
+      'delete landing_page revisions',
+      'delete own landing_page content',
+      'delete any landing_page content',
+      'create landing_page content',
+    ],
+  ];
+  helfi_platform_config_grant_permissions($permissions);
+}
+
+/**
+ * Implements hook_install().
+ */
+function helfi_node_landing_page_install() : void {
+  helfi_node_landing_page_grant_permissions();
+}

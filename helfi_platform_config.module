@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_modules_installed().
@@ -130,6 +131,20 @@ function helfi_platform_config_token_info() {
     'description' => t('Official suffix for page title.'),
   ];
   return $info;
+}
+
+/**
+ * Grants permissions for given role.
+ *
+ * @param array $permissions
+ *   The permissions.
+ */
+function helfi_platform_config_grant_permissions(array $permissions): void {
+  foreach ($permissions as $rid => $perms) {
+    $rid = Role::load($rid);
+
+    array_map(fn (string $permission) => $rid->grantPermission($permission), $perms);
+  }
 }
 
 /**
