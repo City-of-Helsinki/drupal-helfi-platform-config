@@ -99,6 +99,9 @@
             },
             "drupal/field_group": {
                 "[#UHF-3268] Support for field group translations": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/736077493b73d83b63081820790dc68e226a6460/patches/field_group_fix-translations_label_description-3111107-31-rerolled.patch"
+            },
+            "drupal/publication_date": {
+                "[#UHF-7721] Fixed node preview when publication date is not set. (https://www.drupal.org/project/publication_date/issues/3074373)": "https://www.drupal.org/files/issues/2022-12-20/publication_date_is_required_for_completing_the_form-3074373-11.patch"
             }
         }
     }
