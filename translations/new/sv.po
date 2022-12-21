@@ -26,3 +26,7 @@ msgstr "Halvdagsgrupp"
 
 msgid "Start a chat"
 msgstr "Starta chatten"
+
+msgctxt "Floating chat title"
+msgid "Chat"
+msgstr "Chatt"

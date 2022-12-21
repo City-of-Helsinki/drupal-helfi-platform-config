@@ -122,6 +122,23 @@ watson_chatbot:
       minified: true
     }
 
+watson_sote:
+  version: 1.0.x
+  header: false
+  js:
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/widget.min.js': {
+      type: external,
+      minified: true
+    }
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/static/sote-bot/custom.widget.min.js?tenantId=sote-prod&assistantId=sote-bot': {
+      type: external,
+      minified: true
+    }
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/default.min.js': {
+      type: external,
+      minified: true
+    }
+
 genesys_neuvonta:
   version: 1.0.x
   header: true
@@ -151,9 +168,14 @@ chat_leijuke:
   header: true
   js:
     assets/js/chat_leijuke.js: {}
-  css:
-    theme:
-      assets/css/chat_leijuke.css: {}
   dependencies:
     - core/drupal
     - core/drupalSettings
+
+user_consent_functions:
+  version: 1.0.x
+  header: true
+  js:
+    assets/js/user_consent_functions.js: {}
+  dependencies:
+    - core/drupal

@@ -117,7 +117,10 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
 
       // Get announcement's referenced entities from the appropriate field,
       // depending on the current page's entity.
-      $referencedEntities = $announcementNode->get($entityTypeFields[$currentEntity->getEntityType()->id()])->referencedEntities();
+      $referencedEntities = [];
+      if ($announcementNode->hasField($entityTypeFields[$currentEntity->getEntityType()->id()])) {
+        $referencedEntities = $announcementNode->get($entityTypeFields[$currentEntity->getEntityType()->id()])->referencedEntities();
+      }
 
       // Add announcement to showed announcements if current page's entity
       // is found from the list of referenced entities.
@@ -262,13 +265,18 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
     }
 
     if (
-      !$announcement->get('field_announcement_unit_pages')->isEmpty() ||
-      !$announcement->get('field_announcement_service_pages')->isEmpty()
+      ($announcement->hasField('field_announcement_unit_pages') &&
+      !$announcement->get('field_announcement_unit_pages')->isEmpty()) ||
+      ($announcement->hasField('field_announcement_service_pages') &&
+      !$announcement->get('field_announcement_service_pages')->isEmpty())
     ) {
       return self::VISIBILITY_REGION_WEIGHT;
     }
 
-    if (!$announcement->get('field_announcement_content_pages')->isEmpty()) {
+    if (
+      ($announcement->hasField('field_announcement_content_pages') &&
+      !$announcement->get('field_announcement_content_pages')->isEmpty())
+    ) {
       return self::VISIBILITY_PAGE_WEIGHT;
     }
 
