@@ -184,5 +184,8 @@ function helfi_media_update_9009() {
     foreach ($configurations as $configuration) {
       ConfigHelper::installNewConfig($configLocation, $configuration);
     }
+
+    $updateLocation = dirname(__FILE__) . '/config/override/';
+    ConfigHelper::updateExistingConfig($updateLocation, 'system.image');
   }
 }
