@@ -1,0 +1,6 @@
+field.field.node.news_item.field_main_image:
+  expected_config:
+    translatable: false
+  update_actions:
+    change:
+      translatable: true
