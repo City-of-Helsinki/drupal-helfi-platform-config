@@ -1,0 +1,4 @@
+services:
+  helfi_react_search_linked_events:
+    class: Drupal\helfi_react_search\LinkedEvents
+    arguments: ['@http_client', '@cache.default']
