@@ -19,38 +19,9 @@ function helfi_react_search_install($is_syncing) {
 }
 
 /**
- * Update landing page and page content fields to include events list
- */
-function helfi_react_search_update_9001() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
-  // Install config translations
-  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
-
-  $configurations = [
-    'field.field.paragraph.event_list.field_api_url',
-    'field.field.paragraph.event_list.field_event_list_description',
-    'field.field.paragraph.event_list.field_event_list_title',
-    'field.field.paragraph.event_list.field_load_more',
-    'paragraphs.paragraphs_type.event_list'
-  ];
-
-  foreach($configurations as $configuration) {
-    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
-  }
-
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_react_search', 'helfi_react_search_update_9001');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
-}
-
-/**
  * Adds new fields to the Events paragraph.
  */
-function helfi_react_search_update_9002() {
+function helfi_react_search_update_9001() {
   drupal_flush_all_caches();
 
   $config_location = dirname(__FILE__) . '/config/install/';
@@ -83,7 +54,7 @@ function helfi_react_search_update_9002() {
 /**
  * Remove the show more button and add int list field.
  */
-function helfi_react_search_update_9003() {
+function helfi_react_search_update_9002() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 

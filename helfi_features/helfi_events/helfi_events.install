@@ -48,57 +48,6 @@ function helfi_events_update_9001() {
 }
 
 /**
- * Adds new fields to the Events paragraph.
- */
-function helfi_events_update_9002() {
-  drupal_flush_all_caches();
-
-  $config_location = dirname(__FILE__) . '/config/install/';
-  $config_translation_location = dirname(__FILE__) . '/config/language/';
-
-  // Add new config.
-  $new_config = [
-    'field.storage.paragraph.field_event_location' => 'field.field.paragraph.event_list.field_event_location',
-    'field.storage.paragraph.field_event_time' => 'field.field.paragraph.event_list.field_event_time',
-    'field.storage.paragraph.field_free_events' => 'field.field.paragraph.event_list.field_free_events',
-    'field.storage.paragraph.field_remote_events' => 'field.field.paragraph.event_list.field_remote_events',
-  ];
-
-  foreach ($new_config as $field_storage => $field_config) {
-    ConfigHelper::installNewField($config_location, $field_storage, $field_config);
-    ConfigHelper::installNewConfigTranslation($config_translation_location, $field_config);
-  }
-
-  // Update existing config.
-  $update_config = [
-    'core.entity_form_display.paragraph.event_list.default',
-    'core.entity_view_display.paragraph.event_list.default',
-  ];
-
-  foreach ($update_config as $config_item) {
-    ConfigHelper::updateExistingConfig($config_location, $config_item);
-  }
-}
-
-/**
- * Remove the show more button and add int list field.
- */
-function helfi_events_update_9003() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
-  $configLocation = dirname(__FILE__) . '/config/install/';
-  ConfigHelper::installNewField($configLocation, 'field.storage.paragraph.field_event_count', 'field.field.paragraph.event_list.field_event_count');
-  ConfigHelper::installNewConfigTranslation('/config/language/', 'field.field.paragraph.event_list.field_event_count');
-
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_events', 'helfi_events_update_9003');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
-}
-
-/**
  * Implements hook_uninstall().
  * 
  * Remove configs. 
