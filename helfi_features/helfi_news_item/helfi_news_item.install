@@ -261,9 +261,9 @@ function helfi_news_item_update_9012() {
  */
 function helfi_news_item_update_9013() {
   $nids = \Drupal::entityQuery('node')->condition('type','news_item')->execute();
-  $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+  $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
 
-  foreach ( $nodes as $node) {
+  foreach ($nodes as $node) {
     if ($node->hasField('field_main_image') && !$node->get('field_main_image')->isEmpty()) {
       $image = $node->get('field_main_image');
 
