@@ -301,6 +301,8 @@ function helfi_news_item_update_9013(&$sandbox) {
         $finnish->save();
       }
     }
+
+    $sandbox['current']++;
   }
   
   if ($sandbox['total'] == 0) {
