@@ -12,7 +12,7 @@ bundle: news_item
 label: 'Main image'
 description: 'Main image is also used as liftup image in listings and social media shares.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
