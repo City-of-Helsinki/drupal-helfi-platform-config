@@ -5,6 +5,7 @@
  */
 
 use Drupal\helfi_platform_config\ConfigHelper;
+use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_install().
@@ -259,11 +260,26 @@ function helfi_news_item_update_9012() {
 /**
  * Adds old image to all language versions of news item main image
  */
-function helfi_news_item_update_9013() {
-  $nids = \Drupal::entityQuery('node')->condition('type','news_item')->execute();
-  $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
-
-  foreach ($nodes as $node) {
+function helfi_news_item_update_9013(&$sandbox) {
+  // Initialize some variables during the first pass through.
+  if (!isset($sandbox['total'])) {
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'news_item')
+      ->execute();
+    $sandbox['total'] = count($nids);
+    $sandbox['current'] = 0;
+  }
+  
+  $nodes_per_batch = 25;
+  
+  // Handle one pass through.
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'news_item')
+    ->range($sandbox['current'], $sandbox['current'] + $nodes_per_batch)
+    ->execute();
+  
+  foreach($nids as $nid) {
+    $node = Node::load($nid);
     if ($node->hasField('field_main_image') && !$node->get('field_main_image')->isEmpty()) {
       $image = $node->get('field_main_image');
 
@@ -285,5 +301,11 @@ function helfi_news_item_update_9013() {
         $finnish->save();
       }
     }
+  }
+  
+  if ($sandbox['total'] == 0) {
+    $sandbox['#finished'] = 1;
+  } else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
