@@ -175,7 +175,6 @@ function helfi_media_update_9009() {
     $configurations = [
       'imagemagick.file_metadata_plugin.imagemagick_identify',
       'imagemagick.settings',
-      'sophron.settings'
     ];
 
     foreach ($configurations as $configuration) {
@@ -187,6 +186,7 @@ function helfi_media_update_9009() {
       'system.image',
       'file_mdm.file_metadata_plugin.getimagesize',
       'file_mdm.settings',
+      'sophron.settings',
     ];
 
     foreach ($update_configuration as $configuration) {
