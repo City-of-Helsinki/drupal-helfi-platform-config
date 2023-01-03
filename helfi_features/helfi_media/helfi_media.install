@@ -171,12 +171,9 @@ function helfi_media_update_9009() {
   if (!Drupal::moduleHandler()->moduleExists('imagemagick')) {
     Drupal::service('module_installer')->install(['imagemagick']);
 
+    // TODO: Clean up after tested.
     $config_location = dirname(__FILE__) . '/config/install/';
-    $configurations = [
-      'imagemagick.file_metadata_plugin.imagemagick_identify',
-      'imagemagick.settings',
-    ];
-
+    $configurations = [];
     foreach ($configurations as $configuration) {
       ConfigHelper::installNewConfig($config_location, $configuration);
     }
@@ -187,6 +184,8 @@ function helfi_media_update_9009() {
       'file_mdm.file_metadata_plugin.getimagesize',
       'file_mdm.settings',
       'sophron.settings',
+      'imagemagick.file_metadata_plugin.imagemagick_identify',
+      'imagemagick.settings',
     ];
 
     foreach ($update_configuration as $configuration) {
