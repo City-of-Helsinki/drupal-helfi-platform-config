@@ -1,7 +1,6 @@
 <?php
 
 use Drupal\helfi_platform_config\ConfigHelper;
-use Drupal\Core\Config\ImmutableConfig;
 
 /**
  * Implements hook_install().
@@ -174,25 +173,25 @@ function helfi_media_update_9009() {
 
     $config_location = dirname(__FILE__) . '/config/install/';
     $configurations = [
-      'file_mdm.file_metadata_plugin.getimagesize',
-      'file_mdm.settings',
       'imagemagick.file_metadata_plugin.imagemagick_identify',
       'imagemagick.settings',
       'sophron.settings'
     ];
 
-    ;
-
-    // Install configurations.
     foreach ($configurations as $configuration) {
-      $config = \Drupal::configFactory()->get("{$configuration}.yml");
-      if ($config instanceof ImmutableConfig) {
-        continue;
-      }
       ConfigHelper::installNewConfig($config_location, $configuration);
     }
 
     $updateLocation = dirname(__FILE__) . '/config/override/';
-    ConfigHelper::updateExistingConfig($updateLocation, 'system.image');
+    $update_configuration = [
+      'system.image',
+      'file_mdm.file_metadata_plugin.getimagesize',
+      'file_mdm.settings',
+    ];
+
+    foreach ($update_configuration as $configuration) {
+      ConfigHelper::updateExistingConfig($updateLocation, $configuration);
+    }
+
   }
 }
