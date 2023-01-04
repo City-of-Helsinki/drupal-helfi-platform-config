@@ -1226,6 +1226,9 @@ msgstr "Acceptera alla cookies"
 msgid "Accept selected cookies"
 msgstr "Acceptera valda cookies"
 
+msgid "Accept only essential cookies"
+msgstr "Acceptera endast nödvändiga cookies"
+
 msgid "Cookie settings"
 msgstr "Cookie -inställningar"
 
@@ -1262,3 +1265,8 @@ msgstr "Statistik"
 msgid "Withdraw consent"
 msgstr "Återkalla samtycke"
 
+msgid "<p>Your current cookie settings are below. Submit the form to make changes.</p>"
+msgstr "<p>Dina nuvarande cookie -inställningar finns nedan. Skicka in formuläret för att göra ändringar.</p>"
+
+msgid "<p><strong>You have not saved any cookie preferences.</strong> By default only essential cookies are saved. See details below.</p>"
+msgstr "<p><strong>Du har inte sparat några cookieinställningar.</strong> Som standard sparas endast viktiga cookies. Se detaljer nedan.</p>"

@@ -720,9 +720,9 @@ function helfi_content_update_9031() {
 }
 
 /**
-* Creates phasing paragraph and adds it to basic, landing and tpr service content areas
-* and also to accordion item content.
-*/
+ * Creates phasing paragraph and adds it to basic, landing and tpr service content areas
+ * and also to accordion item content.
+ */
 function helfi_content_update_9032() {
   // Handle the configuration translation update manually.
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
@@ -792,9 +792,9 @@ function helfi_content_update_9032() {
 
 
 /**
-* Creates popular service and target group links paragraphs and adds it
-* to landing page content.
-*/
+ * Creates popular service and target group links paragraphs and adds it
+ * to landing page content.
+ */
 function helfi_content_update_9033() {
   // Handle the configuration translation update manually.
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
@@ -976,15 +976,29 @@ function helfi_content_update_9038() {
 }
 
 /**
- * Enable service_list_search paragraph type on content region in landing page.
+ * Update the popular service paragraph with new field.
  */
 function helfi_content_update_9039() {
-  // Enable the 'Hide sidebar navigation from this page' to unit and service.
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
+  // Add the new fields for popular services paragraph.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Key field storage and value is field configuration.
+  $configFields = [
+    'field.storage.paragraph.field_popular_services_title' => 'field.field.paragraph.popular_services.field_popular_services_title',
+  ];
+
+  // Install title field and its translations.
+  foreach ($configFields as $field_storage => $field_config) {
+    ConfigHelper::installNewField($configLocation, $field_storage, $field_config);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $field_config);
+  }
+
   // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9038');
+  $updateHelper->executeUpdate('helfi_content', 'helfi_content_update_9039');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

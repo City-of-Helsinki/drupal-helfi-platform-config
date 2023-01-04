@@ -1,0 +1,40 @@
+core.entity_form_display.paragraph.popular_services.default:
+  expected_config:
+    content:
+      field_service_items:
+        weight: 0
+  update_actions:
+    add:
+      content:
+        field_popular_services_title:
+          type: string_textfield
+          weight: 0
+          region: content
+          settings:
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+    change:
+      content:
+        field_service_items:
+          weight: 1
+core.entity_view_display.paragraph.popular_services.default:
+  expected_config:
+    content:
+      field_service_items:
+        weight: 0
+  update_actions:
+    add:
+      content:
+        field_popular_services_title:
+          type: string
+          label: hidden
+          settings:
+            link_to_entity: false
+          third_party_settings: {  }
+          weight: 0
+          region: content
+    change:
+      content:
+        field_service_items:
+          weight: 1
