@@ -5,6 +5,7 @@
  */
 
 use Drupal\helfi_platform_config\ConfigHelper;
+use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_install().
@@ -238,5 +239,75 @@ function helfi_news_item_update_9011() {
   // to front page field default value.
   foreach ($configurations as $configuration) {
     ConfigHelper::installNewConfigTranslation($config_location, $configuration);
+  }
+}
+
+
+/**
+ * Enables translations for news item main image
+ */
+function helfi_news_item_update_9012() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_news_item', 'helfi_news_item_update_9012');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Adds old image to all language versions of news item main image
+ */
+function helfi_news_item_update_9013(&$sandbox) {
+  // Initialize some variables during the first pass through.
+  if (!isset($sandbox['total'])) {
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'news_item')
+      ->execute();
+    $sandbox['total'] = count($nids);
+    $sandbox['current'] = 0;
+  }
+  
+  $nodes_per_batch = 25;
+  
+  // Handle one pass through.
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'news_item')
+    ->range($sandbox['current'], $sandbox['current'] + $nodes_per_batch)
+    ->execute();
+  
+  foreach($nids as $nid) {
+    $node = Node::load($nid);
+    if ($node->hasField('field_main_image') && !$node->get('field_main_image')->isEmpty()) {
+      $image = $node->get('field_main_image');
+
+      if ($node->hasTranslation('sv')) {
+        $swedish = $node->getTranslation('sv');
+        $swedish->field_main_image = $image;
+        $swedish->save();
+      }
+
+      if ($node->hasTranslation('en')) {
+        $english = $node->getTranslation('en');
+        $english->field_main_image = $image;
+        $english->save();
+      }
+
+      if ($node->hasTranslation('fi')) {
+        $finnish = $node->getTranslation('fi');
+        $finnish->field_main_image = $image;
+        $finnish->save();
+      }
+    }
+
+    $sandbox['current']++;
+  }
+  
+  if ($sandbox['total'] == 0) {
+    $sandbox['#finished'] = 1;
+  } else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
