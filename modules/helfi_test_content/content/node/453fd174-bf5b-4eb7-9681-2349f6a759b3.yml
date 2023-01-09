@@ -6,6 +6,10 @@ _meta:
   default_langcode: en
   depends:
     608c45ab-90c5-466b-bcac-c87649f2ec10: media
+    16e7e2d9-7c10-4804-91a0-75f6a1fd8185: media
+    3b608631-13fe-4035-922b-e43616ab13a2: media
+    e7582d1e-4f18-4f0d-85b7-b26bd2a8caec: media
+    bbbc4df2-d64a-4c91-9718-51fef74f9ac4: media
 default:
   revision_uid:
     -
@@ -57,6 +61,28 @@ default:
         _meta:
           version: '1.0'
           entity_type: paragraph
+          uuid: 7f8ebbd8-f199-423c-aba2-173e7e391853
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657102851
+          behavior_settings:
+            -
+              value: {  }
+          field_text:
+            -
+              value: "<h3>Different Caption Text Lengths:</h3>\r\n\r\n<p>(Photographer always added)</p>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
           uuid: 4e9adb18-1fa9-4322-9e21-2fc55b4048e1
           bundle: image
           default_langcode: en
@@ -70,9 +96,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
@@ -82,16 +105,12 @@ default:
           field_original_aspect_ratio:
             -
               value: false
-  field_has_hero:
-    -
-      value: false
-  field_lower_content:
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 769566fa-226d-4cf4-9d6c-c2865da1fcd2
+          uuid: 046767f0-169f-46e9-8df5-19b9b245055e
           bundle: image
           default_langcode: en
         default:
@@ -100,19 +119,195 @@ default:
               value: true
           created:
             -
-              value: 1654687080
+              value: 1654687041
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
           field_image_caption:
             -
-              value: 'Image - Lower content region'
+              value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
           field_original_aspect_ratio:
             -
               value: false
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 2f325792-6715-4f94-b2e9-1c1798f94332
+          bundle: image
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654687041
+          behavior_settings:
+            -
+              value: {  }
+          field_image:
+            -
+              entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
+          field_original_aspect_ratio:
+            -
+              value: false
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 532a30c0-9503-4055-a135-b2c9bdd2d6ce
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657093645
+          behavior_settings:
+            -
+              value: {  }
+          field_text:
+            -
+              value: "<h3>Original Aspect Ratio ON:</h3>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 29422fc6-040d-4fec-a3cf-27031e41e1c7
+          bundle: image
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657093675
+          behavior_settings:
+            -
+              value: {  }
+          field_image:
+            -
+              entity: 16e7e2d9-7c10-4804-91a0-75f6a1fd8185
+          field_image_caption:
+            -
+              value: 'Wider than Taller'
+          field_original_aspect_ratio:
+            -
+              value: true
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 42181af0-6e74-4f42-a9ab-b070de867710
+          bundle: image
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657093675
+          behavior_settings:
+            -
+              value: {  }
+          field_image:
+            -
+              entity: 3b608631-13fe-4035-922b-e43616ab13a2
+          field_image_caption:
+            -
+              value: 'Taller Than Wider'
+          field_original_aspect_ratio:
+            -
+              value: true
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 3e31beea-a599-4d00-a4bd-0df1cb956502
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657103718
+          behavior_settings:
+            -
+              value: {  }
+          field_text:
+            -
+              value: "<h3>Image Size Tests:</h3>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7367120b-3221-48c4-bbd2-07c61bc8285e
+          bundle: image
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657103742
+          behavior_settings:
+            -
+              value: {  }
+          field_image:
+            -
+              entity: e7582d1e-4f18-4f0d-85b7-b26bd2a8caec
+          field_image_caption:
+            -
+              value: 'Small resolution'
+          field_original_aspect_ratio:
+            -
+              value: false
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: e226c0d1-9a83-45fc-9c97-8b481d0e8637
+          bundle: image
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657103742
+          behavior_settings:
+            -
+              value: {  }
+          field_image:
+            -
+              entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+          field_image_caption:
+            -
+              value: 'Large resolution'
+          field_original_aspect_ratio:
+            -
+              value: false
+  field_has_hero:
+    -
+      value: false

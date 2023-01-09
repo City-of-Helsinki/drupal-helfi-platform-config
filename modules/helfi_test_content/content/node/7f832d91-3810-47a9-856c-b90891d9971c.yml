@@ -1,0 +1,104 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7f832d91-3810-47a9-856c-b90891d9971c
+  bundle: landing_page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component news list'
+  created:
+    -
+      value: 1658299041
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-news-list
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 09603c6a-358e-4e2f-8962-09bc6c93bc1e
+          bundle: news_list
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1658299046
+          behavior_settings:
+            -
+              value: {  }
+          field_limit:
+            -
+              value: 10
+          field_news_list_title:
+            -
+              value: 'Without Description'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: f3a30e81-7d38-4fbf-98fa-dfbebf06d6da
+          bundle: news_list
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1658299046
+          behavior_settings:
+            -
+              value: {  }
+          field_limit:
+            -
+              value: 10
+          field_news_list_description:
+            -
+              value: "<p>Vestibulum massa purus, tempor vitae dignissim at, fringilla ut justo. Ut vestibulum odio enim, a dignissim neque auctor id. Nam maximus lacus sit amet sem pretium, a laoreet nibh scelerisque. Duis lobortis tristique turpis, sed molestie eros hendrerit ac. Suspendisse tempus dui vitae finibus pellentesque. Nunc feugiat erat eget volutpat cursus. Integer ultricies magna id lobortis elementum. Proin pretium iaculis ornare. Ut sed nisi non sem tempor finibus. Aliquam finibus felis non tortor ullamcorper, sed cursus turpis euismod. Mauris elementum posuere felis, quis pharetra ex ultrices eu. Etiam consequat purus non tellus consectetur, in pretium mauris imperdiet. Morbi at felis eget lacus semper efficitur cursus et magna.</p>\r\n"
+              format: minimal
+          field_news_list_title:
+            -
+              value: 'With Description'
+  field_has_hero:
+    -
+      value: false

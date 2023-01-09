@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 8de6a832-76bc-4816-af18-928c253cd61f
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    8ffeb5a8-23ed-4bd1-8f25-e92026db504f: menu_link_content
+    2f22ff07-7fe0-4a8c-bcdc-f34614db7906: tpr_service
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: layout tpr service - no-subnav - sidebar'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 2f22ff07-7fe0-4a8c-bcdc-f34614db7906
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -34
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:8ffeb5a8-23ed-4bd1-8f25-e92026db504f'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1654683887

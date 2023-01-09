@@ -70,28 +70,21 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_iframe_title:
             -
-              value: 'Map - Upper content region'
+              value: 'Map - No Description'
           field_map_map:
             -
               entity: 3c1fe3ed-c9ca-4ba8-8997-95936db9a432
           field_map_title:
             -
-              value: 'Map - Upper content region'
-  field_has_hero:
-    -
-      value: false
-  field_lower_content:
+              value: 'Map - No Description'
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: af4ce552-6bbc-47ff-a23e-2e6b19a52985
+          uuid: 006fe4e7-66a8-452b-99f3-9ed3f5c04eb0
           bundle: map
           default_langcode: en
         default:
@@ -100,19 +93,23 @@ default:
               value: true
           created:
             -
-              value: 1654687498
+              value: 1654687437
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_iframe_title:
             -
-              value: 'Map - Lower content region'
+              value: 'Map - With Description'
+          field_map_description:
+            -
+              value: "<p>Praesent pharetra lectus odio, a venenatis eros maximus nec. Donec vitae ipsum ornare, venenatis sapien sit amet, porta dui. Vestibulum pellentesque diam eget nisi tincidunt vulputate. Sed tempor pharetra volutpat. Quisque nec dolor commodo, tincidunt eros sit amet, ultricies neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut non egestas diam. Aliquam tincidunt rutrum magna. Proin vitae porta ex. Cras egestas et tortor vitae fermentum. Etiam sit amet maximus tellus. Phasellus aliquam neque pretium elit porttitor, non maximus elit vehicula. Fusce dapibus faucibus sapien et consequat. Maecenas tristique mi fringilla, venenatis nibh ac, dignissim turpis.</p>\r\n"
+              format: full_html
           field_map_map:
             -
               entity: 3c1fe3ed-c9ca-4ba8-8997-95936db9a432
           field_map_title:
             -
-              value: 'Map - Lower content region'
+              value: 'Map - With Description'
+  field_has_hero:
+    -
+      value: false

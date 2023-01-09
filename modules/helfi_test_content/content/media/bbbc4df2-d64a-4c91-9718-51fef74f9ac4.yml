@@ -1,0 +1,42 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+  bundle: image
+  default_langcode: en
+  depends:
+    95e79ea8-af6e-47af-97cd-a16187930ce9: file
+default:
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: raindrops.jpg
+  created:
+    -
+      value: 1657172359
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_media_image:
+    -
+      entity: 95e79ea8-af6e-47af-97cd-a16187930ce9
+      alt: raindrops
+      title: ''
+      width: 5631
+      height: 3518

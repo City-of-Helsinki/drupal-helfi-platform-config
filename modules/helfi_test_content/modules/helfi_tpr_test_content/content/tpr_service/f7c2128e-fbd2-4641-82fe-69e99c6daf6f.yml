@@ -3,12 +3,7 @@ _meta:
   entity_type: tpr_service
   uuid: f7c2128e-fbd2-4641-82fe-69e99c6daf6f
   default_langcode: en
-  depends:
-    8f728ddc-7470-4a9b-a598-703112de8a6a: menu_link_content
 default:
-  id:
-    -
-      value: 1000004
   sync_attempts:
     -
       value: 0
@@ -46,9 +41,6 @@ default:
       target_id: '123'
     -
       target_id: '456'
-  menu_link:
-    -
-      entity: 8f728ddc-7470-4a9b-a598-703112de8a6a
   revision_translation_affected:
     -
       value: true

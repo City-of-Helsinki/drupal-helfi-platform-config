@@ -1,0 +1,42 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 16e7e2d9-7c10-4804-91a0-75f6a1fd8185
+  bundle: image
+  default_langcode: en
+  depends:
+    ac8177ed-6485-419e-80da-7c9249307567: file
+default:
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: tulips.jpg
+  created:
+    -
+      value: 1657093694
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_media_image:
+    -
+      entity: ac8177ed-6485-419e-80da-7c9249307567
+      alt: 'alternative text'
+      title: ''
+      width: 1920
+      height: 1280

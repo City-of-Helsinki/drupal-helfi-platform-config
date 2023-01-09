@@ -26,6 +26,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -65,6 +68,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<ul>\r\n\t<li>DC: component accordion</li>\r\n\t<li>DC: component banner</li>\r\n\t<li>DC: component chart</li>\r\n\t<li>DC: component columns</li>\r\n\t<li>DC: component contact card listing</li>\r\n\t<li>DC: component content cards</li>\r\n\t<li>DC: component content liftup</li>\r\n\t<li>DC: component events</li>\r\n\t<li>DC: component image</li>\r\n\t<li>DC: component liftup with image</li>\r\n\t<li>DC: component list of links</li>\r\n\t<li>DC: component map</li>\r\n\t<li>DC: component remote video</li>\r\n\t<li>DC: component service list</li>\r\n\t<li>DC: component sidebar text</li>\r\n\t<li>DC: component text</li>\r\n\t<li>DC: component unit search</li>\r\n</ul>\r\n"
