@@ -19,6 +19,39 @@ function helfi_react_search_install($is_syncing) {
 }
 
 /**
+ * Implements hook_uninstall().
+ * 
+ * Remove configs. 
+ */
+function helfi_react_search_uninstall() {
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
+  $configFactory = \Drupal::configFactory();
+  $logger = \Drupal::logger('helfi_react_search');
+
+  $configNames = [
+    'core.entity_form_display.paragraph.event_list.default',
+    'core.entity_view_display.paragraph.event_list.default',
+    'field.field.paragraph.event_list.field_api_url',
+    'field.field.paragraph.event_list.field_event_list_description',
+    'field.field.paragraph.event_list.field_event_list_title',
+    'field.storage.paragraph.field_api_url',
+    'field.storage.paragraph.field_event_list_description',
+    'field.storage.paragraph.field_event_list_title',
+    'paragraphs.paragraphs_type.event_list'
+  ];
+
+  foreach ($configNames as $configName) {
+    try {
+      $configFactory->getEditable($configName)->delete();
+   }
+    catch (\Exception $e) {
+      $logger->warning(sprintf('Unable to uninstall config: %s.', $configName));
+    }
+  }
+
+}
+
+/**
  * Adds new fields to the Events paragraph.
  */
 function helfi_react_search_update_9001() {
