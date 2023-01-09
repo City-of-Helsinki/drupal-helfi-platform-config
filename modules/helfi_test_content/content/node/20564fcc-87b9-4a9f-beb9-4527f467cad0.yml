@@ -6,6 +6,7 @@ _meta:
   default_langcode: en
   depends:
     937b62aa-f440-4dbd-9960-cdc3a7613087: media
+    b8877864-15c3-48c1-b13e-0e92cf719d41: media
 default:
   revision_uid:
     -
@@ -70,28 +71,21 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_chart_chart:
             -
               entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
           field_chart_title:
             -
-              value: 'Chart - Upper content region'
+              value: 'Chart - Without Description'
           field_iframe_title:
             -
               value: 'Chart - Upper content region'
-  field_has_hero:
-    -
-      value: false
-  field_lower_content:
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 71a0cfd4-c77b-4a70-a59d-5e6c1ba74db3
+          uuid: f7198b32-da06-4cff-a360-7b6e2156682f
           bundle: chart
           default_langcode: en
         default:
@@ -100,19 +94,23 @@ default:
               value: true
           created:
             -
-              value: 1654686513
+              value: 1657260612
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_chart_chart:
             -
-              entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
+              entity: b8877864-15c3-48c1-b13e-0e92cf719d41
+          field_chart_description:
+            -
+              value: "<p>Phasellus placerat dignissim consequat. Sed et lorem erat. Aliquam sed ante sagittis nibh porttitor laoreet. Nunc quis nunc vitae justo mollis vehicula non ac nunc. Donec aliquet metus sed luctus maximus. Duis non sapien mattis, lacinia eros a, bibendum lectus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>\r\n"
+              format: full_html
           field_chart_title:
             -
-              value: 'Chart - Lower content region'
+              value: 'Chart - With Description'
           field_iframe_title:
             -
-              value: 'Chart - Lower content region'
+              value: 'assistive technology title'
+  field_has_hero:
+    -
+      value: false

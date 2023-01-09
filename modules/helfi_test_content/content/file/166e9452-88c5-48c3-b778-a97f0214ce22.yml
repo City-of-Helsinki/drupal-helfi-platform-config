@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 166e9452-88c5-48c3-b778-a97f0214ce22
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: helsingin_kaupunki_small.png
+  uri:
+    -
+      value: 'public://helsingin_kaupunki_small.png'
+  filemime:
+    -
+      value: image/png
+  filesize:
+    -
+      value: 1783
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1657104209

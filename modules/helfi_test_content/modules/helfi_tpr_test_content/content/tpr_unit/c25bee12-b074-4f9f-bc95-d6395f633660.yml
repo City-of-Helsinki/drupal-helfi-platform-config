@@ -5,11 +5,7 @@ _meta:
   default_langcode: en
   depends:
     608c45ab-90c5-466b-bcac-c87649f2ec10: media
-    f48c6149-0186-41ca-8409-4fe27b323750: menu_link_content
 default:
-  id:
-    -
-      value: 1000004
   sync_attempts:
     -
       value: 0
@@ -54,9 +50,6 @@ default:
   service_map_embed:
     -
       value: '1'
-  menu_link:
-    -
-      entity: f48c6149-0186-41ca-8409-4fe27b323750
   accessibility_sentences:
     -
       group: 'Group en 1'
