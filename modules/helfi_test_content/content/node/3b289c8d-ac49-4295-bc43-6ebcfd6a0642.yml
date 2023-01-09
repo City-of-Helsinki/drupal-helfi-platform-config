@@ -73,6 +73,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_service_list_meta_load_mor:
             -
               value: 'Load more services'
@@ -87,71 +90,7 @@ default:
               entity: f7c2128e-fbd2-4641-82fe-69e99c6daf6f
           field_service_list_title:
             -
-              value: 'Service list - Without Description'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: cb83ced9-6124-4a3d-b64a-f74568bc767e
-          bundle: service_list
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1654688461
-          behavior_settings:
-            -
-              value: {  }
-          field_service_list_description:
-            -
-              value: "<p>Mauris mattis venenatis urna sit amet tristique. Donec rhoncus sagittis magna id ullamcorper. Mauris ac justo ultrices, faucibus massa non, lacinia odio. Duis sit amet ante facilisis, imperdiet nulla tempus, tempor odio. Aliquam sed enim suscipit, bibendum tortor vestibulum, ullamcorper dui. Nulla facilisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec posuere blandit malesuada.</p>\r\n\r\n<p>Nulla mattis nunc eget mattis ullamcorper. Nulla sagittis vulputate mi eu venenatis. Donec tincidunt iaculis purus, et convallis sem consectetur sit amet. Cras eget feugiat mauris, nec euismod purus. Mauris convallis, nulla suscipit volutpat tempor, nulla mi scelerisque lacus, vel ornare velit eros non arcu. Integer scelerisque, leo at tempor gravida, augue lorem porta dolor, posuere malesuada purus nisi non arcu. Aenean rhoncus eleifend condimentum. Phasellus vitae blandit neque.</p>\r\n"
-              format: full_html
-          field_service_list_meta_load_mor:
-            -
-              value: 'Load more services'
-          field_service_list_services:
-            -
-              entity: 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c
-            -
-              entity: 0cadef9b-6538-4e1e-9b3a-35fc895948fb
-            -
-              entity: 2f22ff07-7fe0-4a8c-bcdc-f34614db7906
-            -
-              entity: f7c2128e-fbd2-4641-82fe-69e99c6daf6f
-          field_service_list_title:
-            -
-              value: 'Service list - With Description'
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: b8591631-2d2c-40d2-930a-4483c72da8d7
-          bundle: service_list
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1654688461
-          behavior_settings:
-            -
-              value: {  }
-          field_service_list_meta_load_mor:
-            -
-              value: 'Load more services'
-          field_service_list_services:
-            -
-              entity: 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c
-          field_service_list_title:
-            -
-              value: 'Minimum Data'
+              value: 'Service list - Upper content region'
   field_has_hero:
     -
       value: false
