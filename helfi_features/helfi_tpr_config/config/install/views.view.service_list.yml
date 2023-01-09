@@ -332,9 +332,9 @@ display:
         - url.query_args
         - user.permissions
       tags: {  }
-  block_1:
-    id: block_1
-    display_title: Block
+  block_search:
+    id: block_search
+    display_title: Block with search
     display_plugin: block
     position: 3
     display_options:

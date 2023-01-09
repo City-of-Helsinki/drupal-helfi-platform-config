@@ -28,7 +28,7 @@ display:
           content:
             value: "<p>Ei tuloksia</p>\r\n"
             format: full_html
-  block_1:
+  block_search:
     display_options:
       exposed_form:
         options:

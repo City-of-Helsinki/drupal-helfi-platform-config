@@ -6,8 +6,8 @@ views.view.service_list:
         config:
           - core.entity_view_mode.tpr_service.teaser_search_result
       display:
-        block_1:
-          id: block_1
+        block_search:
+          id: block_search
           display_title: Block
           display_plugin: block
           position: 3

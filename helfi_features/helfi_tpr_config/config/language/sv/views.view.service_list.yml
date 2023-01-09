@@ -13,7 +13,7 @@ display:
       exposed_form:
         options:
           submit_button: Sök
-  block_1:
+  block_search:
     display_options:
       exposed_form:
         options:
