@@ -71,6 +71,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Designs With Text Content Only</h2>\r\n"
@@ -93,6 +96,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 50-50
@@ -115,6 +121,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Proin eget tortor risus. Nulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta.</p>\r\n\r\n<p>Donec rutrum congue leo eget malesuada. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
@@ -138,6 +147,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.<br />\r\n&nbsp;</p>\r\n"
@@ -163,6 +175,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 30-70
@@ -185,6 +200,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Proin eget tortor risus. Nulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta.</p>\r\n\r\n<p>Donec rutrum congue leo eget malesuada. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
@@ -208,6 +226,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.<br />\r\n&nbsp;</p>\r\n"
@@ -233,6 +254,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 70-30
@@ -255,6 +279,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Proin eget tortor risus. Nulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta.</p>\r\n\r\n<p>Donec rutrum congue leo eget malesuada. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
@@ -278,6 +305,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.<br />\r\n&nbsp;</p>\r\n"
@@ -303,6 +333,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Designs With Text And Image Content</h2>\r\n"
@@ -325,6 +358,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 50-50
@@ -347,6 +383,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_image:
                     -
                       entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
@@ -372,6 +411,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
@@ -397,6 +439,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 30-70
@@ -419,6 +464,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_image:
                     -
                       entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
@@ -444,6 +492,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
@@ -469,6 +520,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 70-30
@@ -491,6 +545,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_image:
                     -
                       entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
@@ -516,6 +573,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
@@ -541,6 +601,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Special Cases</h2>\r\n"
@@ -563,6 +626,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 50-50
@@ -585,6 +651,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_image:
                     -
                       entity: 910b8296-bca3-4f42-b184-843888c17cd5
@@ -610,6 +679,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
@@ -635,6 +707,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 30-70
@@ -657,6 +732,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_image:
                     -
                       entity: 910b8296-bca3-4f42-b184-843888c17cd5
@@ -682,6 +760,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
@@ -707,6 +788,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_columns_design:
             -
               value: 70-30
@@ -729,6 +813,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_image:
                     -
                       entity: 910b8296-bca3-4f42-b184-843888c17cd5
@@ -754,6 +841,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
