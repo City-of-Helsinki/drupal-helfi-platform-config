@@ -13,5 +13,3 @@ dependencies:
   - 'paragraphs:paragraphs'
   - 'update_helper:update_helper'
 package: HELfi
-'interface translation project': helfi_events
-'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_events/translations/%language.po
