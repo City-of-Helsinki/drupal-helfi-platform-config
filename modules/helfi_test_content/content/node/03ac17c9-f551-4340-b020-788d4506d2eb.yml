@@ -5,10 +5,10 @@ _meta:
   bundle: page
   default_langcode: en
   depends:
+    5aa93e60-d57f-4d7c-9bb9-be738c2461e5: file
     fbd5b487-2f0a-4301-9c18-5d7d68855529: file
     59b9a7a0-4608-4e0d-8bdc-ac3bba38af77: file
     3069fcea-d0fe-432b-965b-eb19beb68379: file
-    5aa93e60-d57f-4d7c-9bb9-be738c2461e5: file
 default:
   revision_uid:
     -
@@ -95,6 +95,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: 'In nec enim sed nunc consequat tincidunt ut sed mauris. Donec dignissim quam finibus ex sodales interdum. Suspendisse viverra molestie mauris, non convallis lorem egestas at.'
@@ -130,6 +133,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: email
@@ -196,6 +202,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: 'Maecenas et neque non risus blandit blandit ut a diam. Sed pretium, odio at placerat gravida, lacus arcu viverra leo, in porta ex ante id sem'
@@ -231,6 +240,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                   field_contact_title:
                     -
                       value: 'Job Title 1'
@@ -258,6 +270,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: 'Fusce nec neque velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris faucibus elementum elit, vitae suscipit purus sollicitudin in.'
@@ -293,6 +308,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: email
@@ -319,6 +337,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: face-smile
@@ -358,6 +379,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: 'Morbi vel varius augue, a convallis enim. Proin luctus volutpat consectetur. Nulla euismod libero nec justo ornare varius in id augue. Sed euismod orci purus, eget suscipit leo dignissim vitae. Aenean congue fringilla aliquam. '
@@ -393,6 +417,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                   field_contact_title:
                     -
                       value: 'Job Title 3'
@@ -417,6 +444,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_image:
                     -
                       entity: 3069fcea-d0fe-432b-965b-eb19beb68379
@@ -449,6 +479,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: tiktok
@@ -489,6 +522,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Special Cases</h2>\r\n"
@@ -511,6 +547,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_contact_card:
             -
               entity:
@@ -530,6 +569,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_social_media:
                     -
                       entity:
@@ -549,6 +591,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
           field_title:
             -
               value: 'Minimum Data'
@@ -630,6 +675,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: discord
@@ -656,6 +704,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: facebook
@@ -682,6 +733,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: youtube
@@ -708,6 +762,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: whatsapp
@@ -734,6 +791,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: globe

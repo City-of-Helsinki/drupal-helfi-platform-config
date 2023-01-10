@@ -71,6 +71,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_chart_chart:
             -
               entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
@@ -98,6 +101,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_chart_chart:
             -
               entity: b8877864-15c3-48c1-b13e-0e92cf719d41

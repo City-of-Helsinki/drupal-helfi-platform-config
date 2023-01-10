@@ -68,6 +68,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: without-image
@@ -90,6 +93,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_desc:
                     -
                       value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
@@ -121,6 +127,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: without-image
@@ -143,6 +152,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -171,6 +183,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: without-image
@@ -193,6 +208,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_desc:
                     -
                       value: 'Nunc vitae egestas enim. Nullam at facilisis nulla. Pellentesque tempor pretium convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas accumsan nisl a tincidunt faucibus. Sed orci lectus, ullamcorper non turpis a, accumsan faucibus n'
@@ -224,6 +242,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: with-image
@@ -246,6 +267,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -274,6 +298,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: without-image-desc
@@ -296,6 +323,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -324,6 +354,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: without-image
@@ -346,6 +379,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -371,6 +407,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -396,6 +435,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -421,6 +463,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -446,6 +491,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -471,6 +519,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -499,6 +550,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: with-image
@@ -521,6 +575,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -546,6 +603,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -571,6 +631,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -596,6 +659,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -621,6 +687,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -646,6 +715,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -674,6 +746,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_list_of_links_design:
             -
               value: with-image
@@ -696,6 +771,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -721,6 +799,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -746,6 +827,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -771,6 +855,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -796,6 +883,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
@@ -821,6 +911,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_list_of_links_link:
                     -
                       uri: 'https://www.hel.fi'
