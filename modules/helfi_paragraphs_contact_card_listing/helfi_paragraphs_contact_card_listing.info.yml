@@ -1,0 +1,10 @@
+name: 'HELfi Paragraphs: Contact card listing'
+description: 'Provides paragraph type for contact card listing'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - allowed_formats:allowed_formats
+  - drupal:telephone
+  - helfi_base_content:helfi_base_content
+  - helfi_image_styles:helfi_image_styles
+  - helfi_node_page:helfi_node_page
