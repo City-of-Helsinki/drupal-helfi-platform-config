@@ -4,6 +4,9 @@ _meta:
   uuid: 0cadef9b-6538-4e1e-9b3a-35fc895948fb
   default_langcode: en
 default:
+  id:
+    -
+      value: 1002
   sync_attempts:
     -
       value: 0

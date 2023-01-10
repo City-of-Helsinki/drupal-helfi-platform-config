@@ -6,6 +6,9 @@ _meta:
   depends:
     608c45ab-90c5-466b-bcac-c87649f2ec10: media
 default:
+  id:
+    -
+      value: 1001
   sync_attempts:
     -
       value: 0
