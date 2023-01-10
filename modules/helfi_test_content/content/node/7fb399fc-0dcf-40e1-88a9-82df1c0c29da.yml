@@ -4,6 +4,14 @@ _meta:
   uuid: 7fb399fc-0dcf-40e1-88a9-82df1c0c29da
   bundle: page
   default_langcode: en
+  depends:
+    c231f43b-1629-46e3-94b8-8f4465742d28: media
+    7c36a698-3d99-4215-8e59-e87986053363: media
+    15c88893-b4e3-45d8-a180-11a80b4d4d13: media
+    24a1ce91-97d1-405b-b4ba-0e038907d64a: media
+    ed3c3be5-c469-4eba-b6c1-f03d1643d9f2: media
+    41c41049-c78d-4dab-913f-b10f3433c52c: media
+    c2ad81d6-64cc-48fc-8587-a85d4b2b6bed: media
 default:
   revision_uid:
     -
@@ -128,22 +136,71 @@ default:
                   field_accordion_item_heading:
                     -
                       value: 'Accordion item'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: c0d9b5bf-3e49-400f-b6cc-a5ecb5a88155
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1654686048
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 21a0681c-175d-4d4a-9eb4-57ad8d255ce1
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1654686061
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion item'
+                  field_icon:
+                    -
+                      icon: face-smile
           field_accordion_title:
             -
-              value: 'Accordion - Upper content region'
+              value: 'White - With and Without icon'
           field_accordion_title_level:
             -
               value: '2'
-  field_has_hero:
-    -
-      value: false
-  field_lower_content:
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 144573da-a6fd-496d-8b2d-caf735401132
+          uuid: 67596541-4f9f-4086-9871-02309b005221
           bundle: accordion
           default_langcode: en
         default:
@@ -152,7 +209,144 @@ default:
               value: true
           created:
             -
-              value: 1654686101
+              value: 1654686048
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_accordion_design:
+            -
+              value: grey
+          field_accordion_heading_level:
+            -
+              value: '2'
+          field_accordion_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: a15d2ef7-83ec-400f-80b3-a920689120f4
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1654686048
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 6b769cc2-581e-4a58-8c69-562d7bb0c6e6
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1654686061
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p>\r\n\r\n<p>Curabitur aliquet quam id dui posuere blandit. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Nulla porttitor accumsan tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit.</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion item'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 38ab59ce-4e6f-4664-822d-293d0a2bb7d6
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1654686048
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 4c5e9c41-ac95-4163-9232-ac770732b35f
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1654686061
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion item'
+                  field_icon:
+                    -
+                      icon: face-smile
+          field_accordion_title:
+            -
+              value: 'Grey - With and Without icon'
+          field_accordion_title_level:
+            -
+              value: '2'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: f3a1899d-db42-469b-af03-41f341d69b49
+          bundle: accordion
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654686048
           behavior_settings:
             -
               value: {  }
@@ -171,7 +365,7 @@ default:
                 _meta:
                   version: '1.0'
                   entity_type: paragraph
-                  uuid: 1b5f59d6-8ce7-443d-ac8d-746d7a890e85
+                  uuid: b1b277fc-d5ae-49a8-9a5e-7381b2678598
                   bundle: accordion_item
                   default_langcode: en
                 default:
@@ -180,7 +374,7 @@ default:
                       value: true
                   created:
                     -
-                      value: 1654686101
+                      value: 1657173131
                   behavior_settings:
                     -
                       value: {  }
@@ -193,7 +387,7 @@ default:
                         _meta:
                           version: '1.0'
                           entity_type: paragraph
-                          uuid: bc80abd2-7100-41db-8efe-fb07605f78c8
+                          uuid: bf6943ae-4bba-4062-be1f-9486c3640603
                           bundle: text
                           default_langcode: en
                         default:
@@ -202,7 +396,7 @@ default:
                               value: true
                           created:
                             -
-                              value: 1654686150
+                              value: 1657173157
                           behavior_settings:
                             -
                               value: {  }
@@ -211,14 +405,1171 @@ default:
                               value: true
                           field_text:
                             -
-                              value: "<p>Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p>\r\n\r\n<p>Curabitur aliquet quam id dui posuere blandit. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Nulla porttitor accumsan tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit.</p>\r\n"
+                              value: "<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>\r\n"
                               format: full_html
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: b12945d7-1de5-4252-9601-699035a91080
+                          bundle: image
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657173192
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_image:
+                            -
+                              entity: c231f43b-1629-46e3-94b8-8f4465742d28
+                          field_image_caption:
+                            -
+                              value: 'Wider Than Taller'
+                          field_original_aspect_ratio:
+                            -
+                              value: false
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 335c78f3-57d7-4896-97c0-c2c0374f9ff5
+                          bundle: image
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657173238
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_image:
+                            -
+                              entity: 7c36a698-3d99-4215-8e59-e87986053363
+                          field_image_caption:
+                            -
+                              value: 'Taller than wider'
+                          field_original_aspect_ratio:
+                            -
+                              value: false
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 337bf6c1-0b4d-4204-8df7-5b5b9bb71094
+                          bundle: image
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657173288
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_image:
+                            -
+                              entity: 15c88893-b4e3-45d8-a180-11a80b4d4d13
+                          field_image_caption:
+                            -
+                              value: 'Wider Than Taller - Original aspect ratio ON'
+                          field_original_aspect_ratio:
+                            -
+                              value: true
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 617c09e0-540c-441c-ba3b-d0b59f862e1a
+                          bundle: image
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657173342
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_image:
+                            -
+                              entity: 24a1ce91-97d1-405b-b4ba-0e038907d64a
+                          field_image_caption:
+                            -
+                              value: 'Taller Than Wider - Original aspect ratio ON'
+                          field_original_aspect_ratio:
+                            -
+                              value: true
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: e3b0e9fc-c62f-4db1-a559-bdea529cd1ad
+                          bundle: columns
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657173604
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_columns_design:
+                            -
+                              value: 50-50
+                          field_columns_left_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 498284e9-c843-48e0-952b-faeca54b7a78
+                                  bundle: text
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657173629
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_text:
+                                    -
+                                      value: "<p>Ut sit amet pretium turpis. Cras aliquam, erat ut imperdiet vulputate, nisi magna dapibus velit, in hendrerit est massa sit amet ipsum. Ut ut eros eu risus suscipit laoreet ut in quam. Donec congue, elit non tristique egestas, mauris velit tempor dolor, eu facilisis erat orci non quam. Quisque elementum, velit ut dictum pulvinar, arcu velit efficitur erat, euismod semper lectus eros ut sapien. Vivamus feugiat eleifend nisl, eu vestibulum risus tincidunt eget.</p>\r\n"
+                                      format: full_html
+                          field_columns_right_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 20c2ead1-a4a7-4058-8525-f4e5995c6320
+                                  bundle: text
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657173665
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_text:
+                                    -
+                                      value: "<p>Quisque porta turpis et vulputate ornare. Praesent non scelerisque magna, at laoreet tortor. Nulla lacus est, dictum ut tristique quis, mollis nec ex. Vivamus mattis tortor eu purus eleifend, sit amet dapibus lorem mollis. Pellentesque congue orci in magna feugiat imperdiet.</p>\r\n"
+                                      format: full_html
+                          field_columns_title:
+                            -
+                              value: 'Columns 50-50 With Text'
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: acdc23e3-5f39-4d44-af57-2431565b9322
+                          bundle: columns
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657173693
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_columns_design:
+                            -
+                              value: 50-50
+                          field_columns_left_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 12f68c42-d563-41d5-b4da-1685f99f242d
+                                  bundle: image
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657173715
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_image:
+                                    -
+                                      entity: ed3c3be5-c469-4eba-b6c1-f03d1643d9f2
+                                  field_original_aspect_ratio:
+                                    -
+                                      value: false
+                          field_columns_right_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 2ab3882b-8bb4-4a4a-8c47-154667d8f493
+                                  bundle: text
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657173762
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_text:
+                                    -
+                                      value: "<p>Curabitur iaculis ac felis ac vestibulum. In dignissim nunc eget enim accumsan lacinia. Quisque viverra lorem nulla. Nulla eu vestibulum turpis, vitae sodales nulla. Curabitur nibh nulla, tincidunt et lobortis ut, venenatis at ex. Cras accumsan sit amet ligula eget facilisis. Donec consequat tellus arcu, et ullamcorper ex cursus in. Vestibulum vehicula massa et nisl euismod aliquam. Nam id hendrerit risus. Praesent est orci, vestibulum vehicula egestas vel, suscipit vel augue.</p>\r\n"
+                                      format: full_html
+                          field_columns_title:
+                            -
+                              value: 'Columns 50-50 With Image And Text'
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: b396ea3e-049b-4676-8feb-d990a1eed5fe
+                          bundle: columns
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657173775
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_columns_design:
+                            -
+                              value: 50-50
+                          field_columns_left_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: ce3a5e01-222d-4a36-ad02-64db3f3e7f3a
+                                  bundle: image
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657173807
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_image:
+                                    -
+                                      entity: 41c41049-c78d-4dab-913f-b10f3433c52c
+                                  field_original_aspect_ratio:
+                                    -
+                                      value: true
+                          field_columns_right_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 81306d89-a1e9-434b-8a98-4ea801e1d254
+                                  bundle: text
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657173834
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_text:
+                                    -
+                                      value: "<p>Nunc ut bibendum ex, non hendrerit tortor. Integer posuere nulla dui, a ornare augue dictum ut. Cras ex enim, imperdiet ac ultricies quis, tempus nec augue. Nullam posuere varius magna, feugiat malesuada orci lacinia et.</p>\r\n"
+                                      format: full_html
+                          field_columns_title:
+                            -
+                              value: 'Columns 50-50 With Image And Text - Original Aspect Ratio ON'
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: fe07fe9a-3d4c-459f-b24e-a9b872f77fb8
+                          bundle: columns
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657174005
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_columns_design:
+                            -
+                              value: 30-70
+                          field_columns_left_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 37ad2194-36e7-4202-8bef-5087eda55405
+                                  bundle: image
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657174030
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_image:
+                                    -
+                                      entity: c2ad81d6-64cc-48fc-8587-a85d4b2b6bed
+                                  field_original_aspect_ratio:
+                                    -
+                                      value: true
+                          field_columns_right_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 40d2ca11-6afb-461b-b662-3ffb723bc881
+                                  bundle: text
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657174062
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_text:
+                                    -
+                                      value: "<p>Vivamus posuere tincidunt ligula non consequat. Mauris vulputate, libero a molestie porta, risus leo luctus ex, eget vulputate nisl eros et nunc. Donec lectus ligula, sodales ac tristique eget, ultrices et massa. Etiam fringilla nunc vitae tortor efficitur, eu sodales mauris porttitor. Vivamus non consequat dui, eu varius ipsum</p>\r\n"
+                                      format: full_html
+                          field_columns_title:
+                            -
+                              value: 'Columns 30-70 With Image And Text - Original Aspect Ratio ON'
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 6fdc7380-e2c4-4c97-8a6c-c1b0d6374a00
+                          bundle: columns
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657174005
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_columns_design:
+                            -
+                              value: 30-70
+                          field_columns_left_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: e5f8fc65-8cd2-422c-8fb6-72c9e9309fd6
+                                  bundle: image
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657174030
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_image:
+                                    -
+                                      entity: c2ad81d6-64cc-48fc-8587-a85d4b2b6bed
+                                  field_image_caption:
+                                    -
+                                      value: 'Raindrop flowers'
+                                  field_original_aspect_ratio:
+                                    -
+                                      value: true
+                          field_columns_right_column:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: e3538973-70ad-47e4-a13e-6e87d226f918
+                                  bundle: text
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657174062
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_text:
+                                    -
+                                      value: "<p>Vivamus posuere tincidunt ligula non consequat. Mauris vulputate, libero a molestie porta, risus leo luctus ex, eget vulputate nisl eros et nunc. Donec lectus ligula, sodales ac tristique eget, ultrices et massa. Etiam fringilla nunc vitae tortor efficitur, eu sodales mauris porttitor. Vivamus non consequat dui, eu varius ipsum</p>\r\n"
+                                      format: full_html
+                          field_columns_title:
+                            -
+                              value: 'Columns 30-70 With Image And Text - Original Aspect Ratio ON - With Caption'
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 85977e79-b524-405b-b360-b6ca0ffb78a5
+                          bundle: phasing
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657174265
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_description:
+                            -
+                              value: "<p>Proin feugiat ante ipsum, nec volutpat turpis semper non. Etiam ac nisi ac lectus facilisis suscipit rhoncus sit amet urna. Vestibulum vitae ultricies lacus. Cras dictum nulla non purus accumsan, lacinia dapibus felis lacinia.</p>\r\n"
+                              format: minimal
+                          field_phasing_item:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 7dbe6ee4-0ef6-461b-8b28-82589256e428
+                                  bundle: phasing_item
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657174265
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_description:
+                                    -
+                                      value: "<p>Etiam ullamcorper massa at felis convallis finibus. Curabitur fringilla dui a sagittis vulputate. Vestibulum non fermentum velit, porta vestibulum libero</p>\r\n"
+                                      format: minimal
+                                  field_title:
+                                    -
+                                      value: 'Phasing Item 1'
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 1508fe29-f34f-402f-91e3-12bb53260f98
+                                  bundle: phasing_item
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657174265
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_description:
+                                    -
+                                      value: "<p>Mauris vel finibus ipsum, id viverra velit. Praesent a lorem vel ipsum faucibus tristique. Nunc ac ante eget dolor imperdiet fringilla a ut sapien</p>\r\n"
+                                      format: minimal
+                                  field_title:
+                                    -
+                                      value: 'Phasing Item 2'
+                          field_phasing_item_title_level:
+                            -
+                              value: '2'
+                          field_phasing_title_level:
+                            -
+                              value: '2'
+                          field_show_phase_numbers:
+                            -
+                              value: false
+                          field_title:
+                            -
+                              value: 'Phasing 1'
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 92f92663-17d5-49bb-9fda-432f58c44d6c
+                          bundle: phasing
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657174265
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_description:
+                            -
+                              value: "<p>Proin feugiat ante ipsum, nec volutpat turpis semper non. Etiam ac nisi ac lectus facilisis suscipit rhoncus sit amet urna. Vestibulum vitae ultricies lacus. Cras dictum nulla non purus accumsan, lacinia dapibus felis lacinia.</p>\r\n"
+                              format: minimal
+                          field_phasing_item:
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 685f7f52-390f-4c56-a22c-47c4429ab5fe
+                                  bundle: phasing_item
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657174265
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_description:
+                                    -
+                                      value: "<p>Etiam ullamcorper massa at felis convallis finibus. Curabitur fringilla dui a sagittis vulputate. Vestibulum non fermentum velit, porta vestibulum libero</p>\r\n"
+                                      format: minimal
+                                  field_title:
+                                    -
+                                      value: 'Phasing Item 1'
+                            -
+                              entity:
+                                _meta:
+                                  version: '1.0'
+                                  entity_type: paragraph
+                                  uuid: 181daad9-ad2d-49d7-8516-11665b5272ca
+                                  bundle: phasing_item
+                                  default_langcode: en
+                                default:
+                                  status:
+                                    -
+                                      value: true
+                                  created:
+                                    -
+                                      value: 1657174265
+                                  behavior_settings:
+                                    -
+                                      value: {  }
+                                  revision_translation_affected:
+                                    -
+                                      value: true
+                                  field_description:
+                                    -
+                                      value: "<p>Mauris vel finibus ipsum, id viverra velit. Praesent a lorem vel ipsum faucibus tristique. Nunc ac ante eget dolor imperdiet fringilla a ut sapien</p>\r\n"
+                                      format: minimal
+                                  field_title:
+                                    -
+                                      value: 'Phasing Item 2'
+                          field_phasing_item_title_level:
+                            -
+                              value: '2'
+                          field_phasing_title_level:
+                            -
+                              value: '2'
+                          field_show_phase_numbers:
+                            -
+                              value: true
+                          field_title:
+                            -
+                              value: 'Phasing 2 - With Phase Numbers'
                   field_accordion_item_heading:
                     -
-                      value: 'Accordion item'
+                      value: 'With Text, Image, Columns And Phasing Content'
           field_accordion_title:
             -
-              value: 'Accordion - Lower content region'
+              value: 'Content Types And Variations'
           field_accordion_title_level:
             -
               value: '2'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: d96cadf5-8267-4b11-852a-2ffe33db12db
+          bundle: accordion
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657176909
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_accordion_description:
+            -
+              value: "<p>Accordion Description - h2</p>\r\n"
+              format: minimal
+          field_accordion_design:
+            -
+              value: white
+          field_accordion_heading_level:
+            -
+              value: '2'
+          field_accordion_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: b32763a5-8924-4b9e-a590-8be608ee50fb
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657176909
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: fd006307-79a7-43a9-9047-127f5e0c142b
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657176987
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion Item- h2'
+          field_accordion_title:
+            -
+              value: 'Accordion Title and Item Levels - h2'
+          field_accordion_title_level:
+            -
+              value: '2'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 02ae4639-8492-4551-a16e-9d96ed390bb1
+          bundle: accordion
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657176909
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_accordion_description:
+            -
+              value: "<p>Accordion Description - h3</p>\r\n"
+              format: minimal
+          field_accordion_design:
+            -
+              value: white
+          field_accordion_heading_level:
+            -
+              value: '3'
+          field_accordion_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 0daf6454-d199-4568-954d-64061a64b01d
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657176909
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 444a36ea-42e2-4cb7-9cb5-7f6f224064ea
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657176987
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion Item- h3'
+          field_accordion_title:
+            -
+              value: 'Accordion Title and Item Levels - h3'
+          field_accordion_title_level:
+            -
+              value: '3'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a258f4f6-e39f-4c47-9568-e0ac8a1e3005
+          bundle: accordion
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657176909
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_accordion_description:
+            -
+              value: "<p>Accordion Description - h4</p>\r\n"
+              format: minimal
+          field_accordion_design:
+            -
+              value: white
+          field_accordion_heading_level:
+            -
+              value: '4'
+          field_accordion_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: f43c3a6d-57da-4674-8e17-4f9bf066df03
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657176909
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 20ce4096-65f5-491e-be3e-f995727fbef8
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657176987
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion Item- h4'
+          field_accordion_title:
+            -
+              value: 'Accordion Title and Item Levels - h4'
+          field_accordion_title_level:
+            -
+              value: '4'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: dce89f85-4286-48f2-b44d-ccf0deda5538
+          bundle: accordion
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657176909
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_accordion_description:
+            -
+              value: "<p>Accordion Description - h5</p>\r\n"
+              format: minimal
+          field_accordion_design:
+            -
+              value: white
+          field_accordion_heading_level:
+            -
+              value: '5'
+          field_accordion_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: e123ba3e-1a55-43c3-ac5a-b45e2681c0d7
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657176909
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 76667bfe-4a93-4cc5-9b56-77709695006d
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657176987
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion Item- h5'
+          field_accordion_title:
+            -
+              value: 'Accordion Title and Item Levels - h5'
+          field_accordion_title_level:
+            -
+              value: '5'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: fe3f386f-9458-4350-b25b-bfbcaeb2e7e4
+          bundle: accordion
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657176909
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_accordion_description:
+            -
+              value: "<p>Accordion Description - h6</p>\r\n"
+              format: minimal
+          field_accordion_design:
+            -
+              value: white
+          field_accordion_heading_level:
+            -
+              value: '6'
+          field_accordion_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: ddfb9f8f-a34d-4be1-aae3-eddab13d505d
+                  bundle: accordion_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657176909
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_accordion_item_content:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 2cedeed6-0c52-4768-8a2d-f7645fd6ac75
+                          bundle: text
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657176987
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_text:
+                            -
+                              value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+                              format: full_html
+                  field_accordion_item_heading:
+                    -
+                      value: 'Accordion Item- h6'
+          field_accordion_title:
+            -
+              value: 'Accordion Title and Item Levels - h6'
+          field_accordion_title_level:
+            -
+              value: '6'
+  field_has_hero:
+    -
+      value: false

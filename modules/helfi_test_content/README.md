@@ -4,6 +4,9 @@ Helfi test content module holds test content for hel.fi specific layouts, compon
 
 **Note!** This module should not be enabled in production environment as it uses [default content](https://www.drupal.org/project/default_content) module to produce the test content. The test content is created with normal content entities, like nodes and menu links, and it will be automatically visible for anonymous users!
 
+## Dependencies
+- [Default content](https://www.drupal.org/project/default_content)
+- [TPR module](https://github.com/City-of-Helsinki/drupal-module-helfi-tpr#drupal-tpr-integration)
 
 ## How to import the test content
 
@@ -30,7 +33,7 @@ drush dcem helfi_test_content
 
 All content what is listed in [helfi_test_content.info.yml](helfi_test_content.info.yml) will be exported.
 
-**Note!** As always with exported configurations and/or content, go through the exported changes in the .yml files and remove the unwanted ones before committing the code.
+**Note!** As always with exported configurations and/or content, go through the exported changes in the .yml files and remove the unwanted ones before committing the code. For example in TPR Services and TPR Units the IDs will be removed when exporting content - this should not be committed.
 
 ## How to generate new test content
 
