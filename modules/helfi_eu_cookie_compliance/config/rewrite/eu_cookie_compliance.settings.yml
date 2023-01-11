@@ -1,0 +1,74 @@
+langcode: en
+popup_enabled: true
+popup_clicking_confirmation: false
+popup_scrolling_confirmation: false
+eu_only: null
+eu_only_js: null
+popup_position: false
+fixed_top_position: true
+popup_info:
+  value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>We use essential cookies on our website to make the site work. Also third party cookies are used if you give us your permission.</p>\r\n"
+  format: full_html
+mobile_popup_info:
+  value: ''
+  format: full_html
+popup_info_template: new
+popup_agree_button_message: Accept
+popup_more_info_button_message: 'Show cookies'
+mobile_breakpoint: 768
+popup_agreed_enabled: false
+popup_hide_agreed: false
+disagree_button_label: 'No, thanks'
+popup_agreed:
+  value: "<h2>Thank you for accepting cookies</h2>\r\n\r\n<p>You can now hide this message or find out more about cookies.</p>\r\n"
+  format: full_html
+popup_find_more_button_message: 'Show cookies'
+popup_hide_button_message: Hide
+popup_link: /cookie-information-and-settings
+popup_link_new_window: false
+popup_height: null
+popup_width: ''
+popup_delay: 1000
+show_more_info: true
+popup_bg_hex: ''
+popup_text_hex: ''
+domain: ''
+domains_option: 1
+domains_list: ''
+exclude_paths: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/user/*/*"
+exclude_admin_theme: false
+cookie_session: 0
+set_cookie_session_zero_on_disagree: 0
+cookie_lifetime: 100
+use_mobile_message: false
+use_bare_css: true
+disagree_do_not_show_popup: false
+reload_page: true
+reload_options: 0
+reload_routes_list: ''
+cookie_name: ''
+exclude_uid_1: false
+better_support_for_screen_readers: false
+method: categories
+disabled_javascripts: ''
+automatic_cookies_removal: true
+allowed_cookies: "essential:AWSELB\r\nessential:AWSELBCORS\r\nessential:cookiehub\r\nessential:mtm_cookie_consent\r\nessential:frosmo_quickContext\r\nessential:id\r\nessential:JSESSIONID\r\nessential:COOKIE_SUPPORT\r\npreference:httpskartta.hel.fi.SWCulture\r\npreference:icareus-device\r\npreference:VISITOR_INFO1_LIVE\r\npreference:CONSENT\r\nstatistics:Snoobisession_hel_fi\r\nstatistics:Snoobi30minute_hel_fi\r\nstatistics:SnoobiID\r\nstatistics:nmstat\r\nstatistics:Snoobisession_hel_projektit\r\nstatistics:Snoobi30minute_hel_projektit\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.141.89f6\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:__utma\r\nstatistics:__utmc\r\nstatistics:__utmz\r\nstatistics:__utmt\r\nstatistics:__utmb\r\nstatistics:__utmb\r\nstatistics:YSC\r\nmarketing:IDE\r\nchat:_genesys.widgets.*\r\nchat:__VCAP_ID__\r\nchat:gcReturnSessionId \r\nchat:gcAlternativeReturnUrl \r\nchat:gcReturnUrl \r\nchat:gcLoginButtonState\r\nchat:leijuke.*\r\nchat:connect.sid"
+consent_storage_method: do_not_store
+withdraw_message:
+  value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
+  format: full_html
+withdraw_tab_button_label: 'Privacy settings'
+withdraw_action_button_label: 'Withdraw consent'
+withdraw_enabled: false
+withdraw_button_on_info_popup: false
+save_preferences_button_label: 'Accept selected cookies'
+accept_all_categories_button_label: 'Accept all cookies'
+enable_save_preferences_button: true
+domain_all_sites: true
+settings_tab_enabled: false
+containing_element: body
+cookie_policy_version: 1.1.0
+close_button_action: close_banner
+reject_button_label: ''
+reject_button_enabled: false
+close_button_enabled: false

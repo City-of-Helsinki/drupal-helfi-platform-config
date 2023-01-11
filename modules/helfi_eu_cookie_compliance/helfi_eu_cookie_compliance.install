@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Contains installation hooks for 'helfi_eu_cookie_compliance' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\block\Entity\Block;
+
+/**
+ * Implements hook_install().
+ */
+function helfi_eu_cookie_compliance_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+  $theme_handler = \Drupal::service('theme_handler');
+
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+    return;
+  }
+
+  // Generate global navigation blocks.
+  helfi_eu_cookie_compliance_generate_blocks($theme_handler->getDefault());
+}
+
+/**
+ * Gets the block configuration.
+ *
+ * @return array[]
+ *   The block configuration.
+ */
+function helfi_eu_cookie_compliance_get_block_configuration() : array {
+  return [
+    'eu_cookie_compliance_block' => [
+      'plugin' => 'eu_cookie_compliance_block',
+      'region' => 'after_content',
+      'settings' => [
+        'label' => 'Eu Cookie Compliance Block',
+        'label_display' => '0',
+      ],
+      'weight' => 1,
+      'visibility' => [
+        'request_path' => [
+          'id' => 'request_path',
+          'negate' => false,
+          'pages' => '/cookie-information-and-settings'
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Generate Helfi EU cookie compliance block.
+ *
+ * @param string $theme
+ *   Current default theme machine name.
+ * @param string|null $region
+ *   The region.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function helfi_eu_cookie_compliance_generate_blocks(string $theme, ?string $region = NULL, bool $labelDisplay = FALSE) : void {
+  $default_config = [
+    'settings' => [
+      'provider' => 'helfi_eu_cookie_compliance',
+    ],
+    'langcode' => 'en',
+    'status' => TRUE,
+    'provider' => NULL,
+    'theme' => $theme,
+    'visibility' => [],
+    'weight' => 0,
+  ];
+
+  foreach (helfi_eu_cookie_compliance_get_block_configuration() as $id => $config) {
+    $block_config = array_replace_recursive($default_config, $config);
+
+    if ($labelDisplay) {
+      $block_config['settings']['label_display'] = 'visible';
+    }
+    if ($region) {
+      $block_config['region'] = $region;
+    }
+    $block_config['id'] = $id;
+    $block_config['settings']['id'] = $config['plugin'];
+
+    $block = Block::create($block_config);
+    $block->save();
+  }
+}

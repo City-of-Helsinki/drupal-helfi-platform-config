@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+id: preference
+label: Preference
+description:
+  value: "<p>Preference cookies modify the visuals and functions of the website based on the user's previous sessions.</p>\r\n\r\n<table>\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<th>Type</th>\r\n\t\t</tr>\r\n\t</thead>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td>httpskartta.hel.fi.SWCulture</td>\r\n\t\t\t<td>kartta.hel.fi</td>\r\n\t\t\t<td>\r\n\t\t\t<p>The City's map service cookie saves the language in which the service is used.</p>\r\n\t\t\t</td>\r\n\t\t\t<td>1826 days</td>\r\n<td></td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>icareus-device</td>\r\n\t\t\t<td>helsinkikanava.fi</td>\r\n\t\t\t<td>\r\n\t\t\t<p>The Helsinki Channel video server cookie facilitates including videos as part of the website's content.</p>\r\n\t\t\t</td>\r\n\t\t\t<td>365 days</td>\r\n\t\t\t<td>Third party</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>VISITOR_INFO1_LIVE</td>\r\n\t\t\t<td>youtube.com</td>\r\n\t\t\t<td>\r\n\t\t\t<p>The YouTube cookie selects the old or new video player depending on the connection speed.</p>\r\n\t\t\t</td>\r\n\t\t\t<td>180 days</td>\r\n\t\t\t<td>Third party</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>CONSENT</td>\r\n\t\t\t<td>youtube.com</td>\r\n\t\t\t<td>\r\n\t\t\t<p>Used by Google to store user consent preferences</p>\r\n\t\t\t</td>\r\n\t\t\t<td>5947 days, 15 hours</td>\r\n\t\t\t<td>Third party</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
+  format: full_html
+checkbox_default_state: unchecked
+weight: -8

@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+id: marketing
+label: Marketing
+description:
+  value: "<p>Marketing cookies are used to target content to the user.</p>\r\n\r\n<table>\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th>Name</th>\r\n\t\t\t<th>Provider</th>\r\n\t\t\t<th>Purpose of the cookie</th>\r\n\t\t\t<th>Validity</th>\r\n\t\t\t<th>Type</th>\r\n\t\t</tr>\r\n\t</thead>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td>IDE</td>\r\n\t\t\t<td>doubleclick.net</td>\r\n\t\t\t<td>\r\n\t\t\t<p>The Google cookie facilitates targeted communication to users of the website.</p>\r\n\t\t\t</td>\r\n\t\t\t<td>390 days</td>\r\n\t\t\t<td>Third party</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n"
+  format: full_html
+checkbox_default_state: unchecked
+weight: -6
