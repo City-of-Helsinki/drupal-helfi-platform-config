@@ -1,6 +1,10 @@
 msgid ""
 msgstr ""
 
+msgctxt "React search"
+msgid "Search"
+msgstr "Sök"
+
 msgid "at"
 msgctxt "Indication that events take place in a certain timeframe"
 msgstr "klockan"

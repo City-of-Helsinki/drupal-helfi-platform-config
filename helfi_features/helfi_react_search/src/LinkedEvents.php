@@ -30,7 +30,6 @@ class LinkedEvents extends EventsApiBase {
       'format' => 'json',
       'include' => 'keywords,location',
       'page' => 1,
-      'page_size' => 5,
       'sort' => 'end_time',
       'start' => 'now',
       'super_event_type' => 'umbrella,none',
