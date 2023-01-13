@@ -19,10 +19,13 @@ class LinkedEvents extends EventsApiBase {
    * @param array $options
    *   Filters as key = value array.
    *
+   * @param string pageSize
+   *   How many events to load in a page.
+   *
    * @return string
    *   Resulting api url with params a query string
    */
-  public function getEventsRequest(array $options = []) : string {
+  public function getEventsRequest(array $options = [], string $pageSize = '-1') : string {
     $url = Url::fromUri(self::API_URL . 'event');
 
     $defaultOptions = [
@@ -30,6 +33,7 @@ class LinkedEvents extends EventsApiBase {
       'format' => 'json',
       'include' => 'keywords,location',
       'page' => 1,
+      'page_size' => $pageSize,
       'sort' => 'end_time',
       'start' => 'now',
       'super_event_type' => 'umbrella,none',
