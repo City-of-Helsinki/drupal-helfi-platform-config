@@ -10,7 +10,7 @@ helfi_calculator.calculator_settings:
           label: 'Is active'
           type: boolean
         json:
-          label: 'Json'
+          label: Json
           type: text
     home_care_service_voucher:
       label: 'Home care service voucher'
@@ -20,7 +20,7 @@ helfi_calculator.calculator_settings:
           label: 'Is active'
           type: boolean
         json:
-          label: 'Json'
+          label: Json
           type: text
     home_care_client_payment:
       label: 'Home care client payment'
@@ -30,7 +30,7 @@ helfi_calculator.calculator_settings:
           label: 'Is active'
           type: boolean
         json:
-          label: 'Json'
+          label: Json
           type: text
     service_housing_service_voucher:
       label: 'Service housing service voucher'
@@ -40,7 +40,7 @@ helfi_calculator.calculator_settings:
           label: 'Is active'
           type: boolean
         json:
-          label: 'Json'
+          label: Json
           type: text
     family_with_kids_home_service_client_payment:
       label: 'Family with kids home service client payment'
@@ -50,7 +50,7 @@ helfi_calculator.calculator_settings:
           label: 'Is active'
           type: boolean
         json:
-          label: 'Json'
+          label: Json
           type: text
     daycare_payment:
       label: 'Daycare payment'
@@ -60,7 +60,7 @@ helfi_calculator.calculator_settings:
           label: 'Is active'
           type: boolean
         json:
-          label: 'Json'
+          label: Json
           type: text
     oral_health_care_procedure:
       label: 'Oral health care prodecure'
@@ -70,5 +70,5 @@ helfi_calculator.calculator_settings:
           label: 'Is active'
           type: boolean
         json:
-          label: 'Json'
+          label: Json
           type: text

@@ -2,8 +2,11 @@ name: 'HELfi Base Content'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
+  - config_ignore:config_ignore
+  - content_lock_timeout:content_lock_timeout
   - drupal:language
   - drupal:media
+  - drupal:menu_link_content
   - drupal:node
   - drupal:path_alias
   - drupal:text
@@ -18,7 +21,6 @@ dependencies:
   - metatag:metatag_twitter_cards
   - paragraphs:paragraphs
   - paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets
-  - paragraphs_library:paragraphs_library
   - pathauto:pathauto
   - redirect:redirect
   - scheduler:scheduler

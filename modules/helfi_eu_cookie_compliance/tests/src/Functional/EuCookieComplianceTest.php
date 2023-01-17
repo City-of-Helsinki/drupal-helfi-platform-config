@@ -37,9 +37,9 @@ class EuCookieComplianceTest extends BrowserTestBase {
   }
 
   /**
-   * Make sure the cookie intro from page loads.
+   * Make sure the cookie intro form page loads.
    */
-  public function testCookieIntroFromPage() : void {
+  public function testCookieIntroFormPage() : void {
     $this->drupalGet(Url::fromRoute('helfi_eu_cookie_compliance.cookie_consent_intro_form'));
     $this->assertSession()->statusCodeEquals(403);
 

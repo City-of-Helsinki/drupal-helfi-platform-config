@@ -12,7 +12,7 @@ settings:
   allowed_values:
     -
       value: disabled
-      label: 'Disabled'
+      label: Disabled
   allowed_values_function: ''
 module: options
 locked: false
