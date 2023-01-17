@@ -4,12 +4,6 @@ dependencies:
   config:
     - field.storage.paragraph.field_free_events
     - paragraphs.paragraphs_type.event_list
-  module:
-    - disable_field
-third_party_settings:
-  disable_field:
-    add_disable: none
-    edit_disable: none
 id: paragraph.event_list.field_free_events
 field_name: field_free_events
 entity_type: paragraph
