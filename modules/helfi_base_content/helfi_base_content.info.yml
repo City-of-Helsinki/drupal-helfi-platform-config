@@ -4,6 +4,7 @@ core_version_requirement: '^9 || ^10'
 dependencies:
   - config_ignore:config_ignore
   - content_lock_timeout:content_lock_timeout
+  - diff:diff
   - drupal:content_translation
   - drupal:language
   - drupal:media
@@ -11,12 +12,15 @@ dependencies:
   - drupal:node
   - drupal:path_alias
   - drupal:text
+  - easy_breadcrumb:easy_breadcrumb
+  - editoria11y:editoria11y
   - entity_reference_revisions:entity_reference_revisions
   # @todo Refactor hdbt_admin_editorial module and remove the dependency.
   - hdbt_admin_editorial:hdbt_admin_editorial
   - helfi_platform_config:helfi_platform_config
   - helfi_user_roles:helfi_user_roles
   - linkit:linkit
+  - menu_link_attributes:menu_link_attributes
   - metatag:metatag
   - metatag:metatag_open_graph
   - metatag:metatag_twitter_cards
