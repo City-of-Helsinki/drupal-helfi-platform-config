@@ -1,7 +1,7 @@
 langcode: en
 status: true
 dependencies: {  }
-name: 'News tags'
-vid: news_tags
+name: 'News group'
+vid: news_group
 description: ''
 weight: 0
