@@ -1,22 +1,22 @@
 diff --git a/core/modules/media_library/tests/src/FunctionalJavascript/MediaOverviewTest.php b/core/modules/media_library/tests/src/FunctionalJavascript/MediaOverviewTest.php
-index e3eaab22e1..f46882c3b0 100644
+index 88e6cecb18..6fe4ec4916 100644
 --- a/core/modules/media_library/tests/src/FunctionalJavascript/MediaOverviewTest.php
 +++ b/core/modules/media_library/tests/src/FunctionalJavascript/MediaOverviewTest.php
-@@ -96,7 +96,7 @@ public function testAdministrationPage() {
- 
+@@ -105,7 +105,7 @@ public function testAdministrationPage() {
+
      // Test that selecting elements as a part of bulk operations works.
      $page->selectFieldOption('Media type', '- Any -');
 -    $assert_session->elementExists('css', '#views-exposed-form-media-library-page')->submit();
 +    $assert_session->elementExists('css', 'form[id^=views-exposed-form-media-library-page]')->submit();
      $this->waitForText('Dog');
- 
+
      // This tests that anchor tags clicked inside the preview are suppressed.
 diff --git a/core/modules/views/js/ajax_view.es6.js b/core/modules/views/js/ajax_view.es6.js
 index 9423bb1d64..e85ef75fc6 100644
 --- a/core/modules/views/js/ajax_view.es6.js
 +++ b/core/modules/views/js/ajax_view.es6.js
 @@ -100,10 +100,7 @@
- 
+
      // Add the ajax to exposed forms.
      this.$exposed_form = $(
 -      `form#views-exposed-form-${settings.view_name.replace(
@@ -48,18 +48,17 @@ index 225836f4f8..2ddec6f650 100644
 \ No newline at end of file
 +})(jQuery, Drupal, drupalSettings);
 diff --git a/core/modules/views/src/Form/ViewsExposedForm.php b/core/modules/views/src/Form/ViewsExposedForm.php
-index bbeb4db276..50eb634674 100644
+index bbeb4db276..beabca55fd 100644
 --- a/core/modules/views/src/Form/ViewsExposedForm.php
 +++ b/core/modules/views/src/Form/ViewsExposedForm.php
-@@ -144,7 +144,21 @@ public function buildForm(array $form, FormStateInterface $form_state) {
- 
+@@ -144,7 +144,20 @@ public function buildForm(array $form, FormStateInterface $form_state) {
+
      $form['#action'] = $form_action;
      $form['#theme'] = $view->buildThemeFunctions('views_exposed_form');
 -    $form['#id'] = Html::cleanCssIdentifier('views_exposed_form-' . $view->storage->id() . '-' . $display['id']);
-+
-+    // There is no way to determine the relation between a particular view
++    // There is no way to determine the relationship between a particular view
 +    // and the corresponding exposed form, because the form can be built
-+    // outside of the view processing pipeline, e.g. as a exposed form block.
++    // outside of the view processing pipeline, e.g. as an exposed form block.
 +
 +    // If a view has the dom ID already set, rely on it.
 +    if (!empty($view->dom_id)) {
@@ -71,25 +70,27 @@ index bbeb4db276..50eb634674 100644
 +      $form['#attributes']['data-drupal-target-view'] = $view->storage->id() . '-' . $display['id'];
 +    }
 +    $form['#id'] = Html::getUniqueId(Html::cleanCssIdentifier('views_exposed_form-' . $view->storage->id() . '-' . $display['id']));
- 
+
      /** @var \Drupal\views\Plugin\views\exposed_form\ExposedFormPluginInterface $exposed_form_plugin */
      $exposed_form_plugin = $view->display_handler->getPlugin('exposed_form');
 diff --git a/core/modules/views/src/Plugin/Block/ViewsExposedFilterBlock.php b/core/modules/views/src/Plugin/Block/ViewsExposedFilterBlock.php
-index d877277d72..7e9857fa79 100644
+index 299964e82d..8728bd4e65 100644
 --- a/core/modules/views/src/Plugin/Block/ViewsExposedFilterBlock.php
 +++ b/core/modules/views/src/Plugin/Block/ViewsExposedFilterBlock.php
-@@ -32,15 +32,17 @@ public function getCacheContexts() {
+@@ -31,16 +31,18 @@ public function getCacheContexts() {
+    *   A renderable array representing the content of the block with additional
     *   context of current view and display ID.
     */
-   public function build() {
--    $output = $this->view->display_handler->viewExposedFormBlocks();
+-  public function build() {
+-    $output = $this->view->display_handler->viewExposedFormBlocks() ?? [];
++  public function build() : array {
 +    $output = [];
 +    $build = $this->view->display_handler->viewExposedFormBlocks();
      // Provide the context for block build and block view alter hooks.
      // \Drupal\views\Plugin\Block\ViewsBlock::build() adds the same context in
      // \Drupal\views\ViewExecutable::buildRenderable() using
      // \Drupal\views\Plugin\views\display\DisplayPluginBase::buildRenderable().
--    if (is_array($output) && !empty($output)) {
+-    if (!empty($output)) {
 -      $output += [
 +    if (is_array($build) && !empty($build)) {
 +      $output = [
@@ -98,9 +99,9 @@ index d877277d72..7e9857fa79 100644
 +        'content' => $build,
        ];
      }
- 
+
 diff --git a/core/modules/views/tests/modules/views_test_config/test_views/views.view.test_block_exposed_ajax_with_page.yml b/core/modules/views/tests/modules/views_test_config/test_views/views.view.test_block_exposed_ajax_with_page.yml
-index 5528c4c1fa..11dc0b53ae 100644
+index 5528c4c1fa..92bd43c167 100644
 --- a/core/modules/views/tests/modules/views_test_config/test_views/views.view.test_block_exposed_ajax_with_page.yml
 +++ b/core/modules/views/tests/modules/views_test_config/test_views/views.view.test_block_exposed_ajax_with_page.yml
 @@ -93,3 +93,20 @@ display:
@@ -113,7 +114,7 @@ index 5528c4c1fa..11dc0b53ae 100644
 +    display_title: Page
 +    position: 2
 +    display_options:
-+      display_extenders: {  }
++      display_extenders: { }
 +      path: some-other-path
 +      exposed_block: true
 +    cache_metadata:
@@ -123,20 +124,12 @@ index 5528c4c1fa..11dc0b53ae 100644
 +        - url
 +        - url.query_args
 +        - 'user.node_grants:view'
-+      tags: {  }
++      tags: { }
 diff --git a/core/modules/views/tests/src/Functional/Plugin/ExposedFormTest.php b/core/modules/views/tests/src/Functional/Plugin/ExposedFormTest.php
-index f0616d58ab..3b54594e1b 100644
+index b653c35279..b1b1c7ef37 100644
 --- a/core/modules/views/tests/src/Functional/Plugin/ExposedFormTest.php
 +++ b/core/modules/views/tests/src/Functional/Plugin/ExposedFormTest.php
-@@ -259,7 +259,6 @@ public function testExposedBlock($display) {
-     // Test there is only one views exposed form on the page.
-     $xpath = '//form[@id="' . $this->getExpectedExposedFormId($view) . '"]';
-     $this->assertSession()->elementsCount('xpath', $xpath, 1);
--    $element = $this->assertSession()->elementExists('xpath', $xpath);
- 
-     // Test that the correct option is selected after form submission.
-     $this->assertCacheContext('url');
-@@ -270,13 +269,14 @@ public function testExposedBlock($display) {
+@@ -273,13 +273,14 @@ public function testExposedBlock($display) {
        'page' => ['page'],
      ];
      foreach ($arguments as $argument => $bundles) {
@@ -153,36 +146,36 @@ index f0616d58ab..3b54594e1b 100644
 +    $exposed_form->findButton('Reset')->click();
      $this->assertNodesExist($arguments['All']);
    }
- 
-@@ -436,7 +436,7 @@ protected function assertIds(array $ids): void {
+
+@@ -439,7 +440,7 @@ protected function assertIds(array $ids): void {
     *   The form ID.
     */
    protected function getExpectedExposedFormId(ViewExecutable $view) {
 -    return Html::cleanCssIdentifier('views-exposed-form-' . $view->storage->id() . '-' . $view->current_display);
 +    return Html::getId('views-exposed-form-' . $view->storage->id() . '-' . $view->current_display);
    }
- 
+
    /**
 diff --git a/core/modules/views/tests/src/FunctionalJavascript/BlockExposedFilterAJAXTest.php b/core/modules/views/tests/src/FunctionalJavascript/BlockExposedFilterAJAXTest.php
-index 8a8e864106..2eea6b5d28 100644
+index 8a8e864106..4af0488e0b 100644
 --- a/core/modules/views/tests/src/FunctionalJavascript/BlockExposedFilterAJAXTest.php
 +++ b/core/modules/views/tests/src/FunctionalJavascript/BlockExposedFilterAJAXTest.php
 @@ -93,4 +93,254 @@ public function testExposedFilteringAndReset() {
      $this->assertSession()->addressEquals('some-path');
    }
- 
+
 +  /**
-+   * Tests if exposed forms works when multiple instances of the same view
++   * Tests if exposed forms work when multiple instances of the same view
 +   * is present on the page.
 +   */
 +  public function testMultipleExposedFormsForTheSameView() {
-+    $this->drupalPlaceBlock('views_exposed_filter_block:test_block_exposed_ajax_with_page-page_2', ['region' => 'content', 'weight' => -100, 'id' => 'page-exposed-form']);
-+    $this->drupalPlaceBlock('views_block:test_block_exposed_ajax_with_page-block_1', ['id' => 'block-one-exposed-form', 'weight' => 0]);
-+    $this->drupalPlaceBlock('views_block:test_block_exposed_ajax_with_page-block_1', ['id' => 'block-two-exposed-form', 'weight' => 10]);
++    $this->drupalPlaceBlock('views_exposed_filter_block:test_block_exposed_ajax_with_page-page_2', ['region' => 'content', 'weight' => -10, 'id' => 'page-exposed-form']);
++    $this->drupalPlaceBlock('views_block:test_block_exposed_ajax_with_page-block_1', ['id' => 'block-one-exposed-form', 'weight' => 50]);
++    $this->drupalPlaceBlock('views_block:test_block_exposed_ajax_with_page-block_1', ['id' => 'block-two-exposed-form', 'weight' => 100]);
 +
 +    $assert_session = $this->assertSession();
 +
-+    // Go to the page and check that all 3 views are displaying correct
++    // Go to the page and check that all 3 views are displaying the correct
 +    // results.
 +    $this->drupalGet('some-other-path');
 +
@@ -427,9 +420,9 @@ index a581f8922c..c5fbe0d1b3 100644
 --- a/core/modules/views/tests/src/Kernel/Plugin/ExposedFormRenderTest.php
 +++ b/core/modules/views/tests/src/Kernel/Plugin/ExposedFormRenderTest.php
 @@ -2,7 +2,6 @@
- 
+
  namespace Drupal\Tests\views\Kernel\Plugin;
- 
+
 -use Drupal\Component\Utility\Html;
  use Drupal\node\Entity\NodeType;
  use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -437,10 +430,10 @@ index a581f8922c..c5fbe0d1b3 100644
 @@ -43,7 +42,8 @@ public function testExposedFormRender() {
      $output = $exposed_form->renderExposedForm();
      $this->setRawContent(\Drupal::service('renderer')->renderRoot($output));
- 
+
 -    $this->assertFieldByXpath('//form/@id', Html::cleanCssIdentifier('views-exposed-form-' . $view->storage->id() . '-' . $view->current_display), 'Expected form ID found.');
 +    $result = $this->xpath('//form[@data-drupal-target-view=:target]', [':target' => $view->dom_id]);
 +    $this->assertCount(1, $result, 'Expected form "data-drupal-target-view" attribute found.');
- 
+
      $view->setDisplay('page_1');
      $expected_action = $view->display_handler->getUrlInfo()->toString();
