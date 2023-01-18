@@ -21,6 +21,7 @@ dependencies:
   - metatag:metatag_twitter_cards
   - paragraphs:paragraphs
   - paragraphs_asymmetric_translation_widgets:paragraphs_asymmetric_translation_widgets
+  - paragraphs_library:paragraphs_library
   - pathauto:pathauto
   - redirect:redirect
   - scheduler:scheduler
