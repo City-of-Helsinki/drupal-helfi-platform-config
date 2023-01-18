@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_list_of_links' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_list_of_links_helfi_paragraph_types() : array {
+  return [
+    new ParagraphTypeCollection('paragraph', 'from_library', 'field_reusable_paragraph', 'list_of_links'),
+  ];
+}

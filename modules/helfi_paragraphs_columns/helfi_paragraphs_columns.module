@@ -18,6 +18,7 @@ function helfi_paragraphs_columns_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('paragraph', 'columns', 'field_columns_right_column', 'image'),
     new ParagraphTypeCollection('paragraph', 'columns', 'field_columns_left_column', 'text'),
     new ParagraphTypeCollection('paragraph', 'columns', 'field_columns_left_column', 'image'),
+    new ParagraphTypeCollection('paragraph', 'from_library', 'field_reusable_paragraph', 'columns'),
   ];
 }
 
