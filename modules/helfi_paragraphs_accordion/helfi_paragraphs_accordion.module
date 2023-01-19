@@ -14,6 +14,6 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
  */
 function helfi_paragraphs_accordion_helfi_paragraph_types() : array {
   return [
-    new ParagraphTypeCollection('paragraph', 'from_library', 'field_reusable_paragraph', 'accordion'),
+    new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'accordion'),
   ];
 }

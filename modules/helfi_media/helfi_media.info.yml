@@ -8,4 +8,5 @@ dependencies:
   - drupal:path
   - drupal:responsive_image
   - focal_point:focal_point
+  - helfi_image_styles:helfi_image_styles
   - helfi_platform_config:helfi_platform_config
