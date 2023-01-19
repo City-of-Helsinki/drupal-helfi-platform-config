@@ -1,0 +1,9 @@
+name: 'HELfi TPR configuration'
+type: module
+core_version_requirement: '^9 || ^10'
+package: HELfi
+dependencies:
+  - 'helfi_base_content:helfi_base_content'
+  - 'helfi_tpr:helfi_tpr'
+'interface translation project': helfi_tpr_config
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_tpr_config/translations/%language.po
