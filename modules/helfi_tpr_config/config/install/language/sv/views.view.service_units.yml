@@ -1,0 +1,7 @@
+display:
+  default:
+    display_options:
+      pager:
+        options:
+          views_infinite_scroll:
+            button_text: 'Ladda fler serviceställen'

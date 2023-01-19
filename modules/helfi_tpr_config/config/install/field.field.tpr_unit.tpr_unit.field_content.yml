@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tpr_unit.field_content
+  module:
+    - entity_reference_revisions
+    - helfi_tpr
+id: tpr_unit.tpr_unit.field_content
+field_name: field_content
+entity_type: tpr_unit
+bundle: tpr_unit
+label: 'Upper content region'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: {  }
+    negate: 0
+    target_bundles_drag_drop: {  }
+field_type: entity_reference_revisions

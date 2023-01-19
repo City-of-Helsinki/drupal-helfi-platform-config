@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tpr_service.field_sidebar_content
+  module:
+    - entity_reference_revisions
+    - helfi_tpr
+id: tpr_service.tpr_service.field_sidebar_content
+field_name: field_sidebar_content
+entity_type: tpr_service
+bundle: tpr_service
+label: 'Sidebar content'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: {  }
+    negate: 0
+    target_bundles_drag_drop: {  }
+field_type: entity_reference_revisions

@@ -1,0 +1,20 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Palauta
+          exposed_sorts_label: Järjestä
+          sort_asc_label: Nouseva
+          sort_desc_label: Laskeva
+      pager:
+        options:
+          tags:
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
+          expose:
+            items_per_page_label: 'Kohteita sivulla'
+            items_per_page_options_all_label: '- Kaikki -'
+          views_infinite_scroll:
+            button_text: 'Lataa lisää palvelupaikkoja'

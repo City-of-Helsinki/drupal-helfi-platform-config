@@ -1,0 +1,58 @@
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Verkställ
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+            next: ››
+            first: '« Första'
+            last: 'Sista »'
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      fields:
+        tpr_errand_service_bulk_form:
+          label: Massuppdatera
+          action_title: Åtgärd
+        id:
+          label: ID
+          separator: ', '
+        name:
+          label: Namn
+          separator: ', '
+        langcode:
+          label: Språk
+          separator: ', '
+        content_translation_status:
+          label: Status
+          settings:
+            format_custom_true: Publicerad
+            format_custom_false: 'Ej publicerad'
+          separator: ', '
+        content_translation_changed:
+          label: Uppdaterad
+          separator: ', '
+        operations:
+          label: Funktioner
+      filters:
+        combine:
+          expose:
+            label: Sök
+        langcode:
+          expose:
+            label: Språk
+      header:
+        result:
+          content: 'Visar @start - @end av @total'
+  page_1:
+    display_title: Sida
