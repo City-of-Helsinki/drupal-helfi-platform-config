@@ -41,7 +41,7 @@ function helfi_platform_config_modules_installed(array $modules) : void {
 }
 
 /**
- * Helper function to enable paragraph type for given entity/bundle/field combination.
+ * Enable paragraph type for given entity/bundle/field combination.
  *
  * @param \Drupal\helfi_platform_config\DTO\ParagraphTypeCollection $type
  *   The paragraph type DTO.

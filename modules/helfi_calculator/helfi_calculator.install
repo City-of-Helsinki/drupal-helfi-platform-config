@@ -1,12 +1,15 @@
 <?php
 
-use Drupal\helfi_platform_config\ConfigHelper;
+/**
+ * @file
+ * Contains installation logic for helfi_calculator module.
+ */
 
 /**
  * Installs helfi calculator module.
  */
 function helfi_calculator_install() : void {
-  // Adds paragraph related configs to config ignore
+  // Adds paragraph related configs to config ignore.
   if (!Drupal::moduleHandler()->moduleExists('config_ignore')) {
     return;
   }

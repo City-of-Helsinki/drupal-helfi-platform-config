@@ -17,4 +17,3 @@ function helfi_paragraphs_popular_services_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('paragraph', 'popular_services', 'field_service_items', 'popular_service_item'),
   ];
 }
-

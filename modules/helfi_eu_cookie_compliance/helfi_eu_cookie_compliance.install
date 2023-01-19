@@ -49,8 +49,8 @@ function helfi_eu_cookie_compliance_get_block_configuration() : array {
       'visibility' => [
         'request_path' => [
           'id' => 'request_path',
-          'negate' => false,
-          'pages' => '/cookie-information-and-settings'
+          'negate' => FALSE,
+          'pages' => '/cookie-information-and-settings',
         ],
       ],
     ],

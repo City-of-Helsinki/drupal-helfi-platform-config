@@ -19,4 +19,3 @@ function helfi_paragraphs_contact_card_listing_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'contact_card'),
   ];
 }
-

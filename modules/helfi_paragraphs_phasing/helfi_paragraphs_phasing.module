@@ -17,4 +17,3 @@ function helfi_paragraphs_phasing_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('paragraph', 'phasing', 'field_phasing_item', 'phasing_item'),
   ];
 }
-

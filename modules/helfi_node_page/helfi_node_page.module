@@ -22,7 +22,7 @@ function helfi_node_page_helfi_paragraph_types() : array {
       'columns',
       'image',
       'accordion',
-      'list_of_links' ,
+      'list_of_links',
       'contact_card_listing',
       'content_cards',
       'banner',
@@ -36,7 +36,7 @@ function helfi_node_page_helfi_paragraph_types() : array {
       'columns',
       'image',
       'accordion',
-      'list_of_links' ,
+      'list_of_links',
       'contact_card_listing',
       'content_cards',
       'banner',
@@ -55,4 +55,3 @@ function helfi_node_page_helfi_paragraph_types() : array {
   }
   return $enabled;
 }
-

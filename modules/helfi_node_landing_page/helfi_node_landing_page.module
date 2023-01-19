@@ -19,7 +19,7 @@ function helfi_node_landing_page_helfi_paragraph_types() : array {
     ],
     'field_content' => [
       'columns',
-      'list_of_links' ,
+      'list_of_links',
       'content_cards',
       'banner',
       'liftup_with_image',
@@ -43,4 +43,3 @@ function helfi_node_landing_page_helfi_paragraph_types() : array {
   }
   return $enabled;
 }
-

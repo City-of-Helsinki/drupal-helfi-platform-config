@@ -9,6 +9,9 @@ declare(strict_types = 1);
 
 use Drupal\language\Entity\ConfigurableLanguage;
 
+/**
+ * Implements hook_grant_permissions().
+ */
 function helfi_base_content_grant_permissions() : void {
   $permissions = [
     'anonymous' => [

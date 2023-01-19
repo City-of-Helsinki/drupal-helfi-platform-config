@@ -25,7 +25,7 @@ function helfi_media_map_theme($existing, $type, $theme, $path) {
   return [
     'helfi_media_map' => [
       'variables' => ['link' => NULL, 'iframe' => NULL],
-      'template' => 'helfi-media-map'
+      'template' => 'helfi-media-map',
     ],
   ];
 }

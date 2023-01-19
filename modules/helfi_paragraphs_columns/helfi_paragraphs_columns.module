@@ -21,4 +21,3 @@ function helfi_paragraphs_columns_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'columns'),
   ];
 }
-
