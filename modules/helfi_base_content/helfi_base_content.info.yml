@@ -32,4 +32,4 @@ dependencies:
   - redirect:redirect
   - scheduler:scheduler
   - select2_icon:select2_icon
-  - social_media:social_media
+  - simple_sitemap:simple_sitemap
