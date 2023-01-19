@@ -3,7 +3,8 @@ type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
   - config_ignore:config_ignore
-  - content_lock_timeout:content_lock_timeout
+  - content_lock:content_lock
+  - content_lock:content_lock_timeout
   - diff:diff
   - drupal:content_translation
   - drupal:language
@@ -31,3 +32,4 @@ dependencies:
   - redirect:redirect
   - scheduler:scheduler
   - select2_icon:select2_icon
+  - social_media:social_media
