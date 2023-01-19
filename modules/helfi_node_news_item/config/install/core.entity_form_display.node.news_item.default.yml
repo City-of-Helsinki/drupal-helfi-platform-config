@@ -129,7 +129,7 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
-      linkit_profile: tpr_content
+      linkit_profile: helfi
       linkit_auto_link_text: true
     third_party_settings: {  }
   field_news_item_links_title:
