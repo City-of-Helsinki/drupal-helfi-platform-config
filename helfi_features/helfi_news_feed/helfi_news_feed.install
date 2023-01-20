@@ -241,7 +241,7 @@ function helfi_news_feed_update_9006() : void {
 }
 
 /**
- * Change field weights.
+ * Change news feed external entity cache from persistant to 1d.
  */
 function helfi_news_feed_update_9007() : void {
   $configLocation = dirname(__FILE__) . '/config/install/';
