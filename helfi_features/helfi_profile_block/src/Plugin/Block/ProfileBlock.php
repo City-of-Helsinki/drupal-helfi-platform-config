@@ -70,7 +70,7 @@ class ProfileBlock extends BlockBase implements ContainerFactoryPluginInterface 
     $renderArray = [
       '#theme' => 'profile_block',
       '#logged_in' => FALSE,
-      '#url' => Url::fromRoute('user.login')
+      '#url' => Url::fromRoute('user.login'),
     ];
 
     if ($this->currentUser->isAuthenticated()) {
