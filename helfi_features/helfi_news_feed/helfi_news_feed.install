@@ -248,10 +248,10 @@ function helfi_news_feed_update_9007() : void {
 
   // Update existing configuration.
   $updateConfig = [
-    'external_entities.external_entity_type.helfi_news.yml',
-    'external_entities.external_entity_type.helfi_news_groups.yml',
-    'external_entities.external_entity_type.helfi_news_neighbourhoods.yml',
-    'external_entities.external_entity_type.helfi_news_tags.yml',
+    'external_entities.external_entity_type.helfi_news',
+    'external_entities.external_entity_type.helfi_news_groups',
+    'external_entities.external_entity_type.helfi_news_neighbourhoods',
+    'external_entities.external_entity_type.helfi_news_tags',
   ];
 
   foreach ($updateConfig as $config) {
