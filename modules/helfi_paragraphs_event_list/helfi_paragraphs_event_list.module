@@ -11,6 +11,8 @@ use Drupal\helfi_paragraphs_event_list\LinkedEvents;
  * Implements hook_preprocess_paragraph().
  */
 function helfi_paragraphs_event_list_preprocess_paragraph__event_list(&$variables) {
+  $basePath = \Drupal::service('extension.list.theme')->getPath('hdbt');
+
   // Expose event list variables to frontend.
   if (isset($variables['paragraph'])) {
     $paragraph = $variables['paragraph'];
@@ -23,7 +25,7 @@ function helfi_paragraphs_event_list_preprocess_paragraph__event_list(&$variable
 
       // Render link for refiging serach in events service for use in frontend.
       $variables['#attached']['drupalSettings']['helfi_paragraphs_event_list']['refineSearchButton'] = twig_render_template(
-        drupal_get_path('theme', 'hdbt') . '/templates/navigation/link-button.html.twig',
+        $basePath . '/templates/navigation/link-button.html.twig',
         [
           'type' => 'secondary',
           'label' => t('Refine search in tapahtumat.hel.fi'),
@@ -41,7 +43,7 @@ function helfi_paragraphs_event_list_preprocess_paragraph__event_list(&$variable
 
   // Render link to events service for use in frontend.
   $variables['#attached']['drupalSettings']['helfi_paragraphs_event_list']['seeAllButton'] = twig_render_template(
-    drupal_get_path('theme', 'hdbt') . '/templates/navigation/link-button.html.twig',
+    $basePath . '/templates/navigation/link-button.html.twig',
     [
       'type' => 'primary',
       'label' => t('See all events'),
@@ -53,7 +55,7 @@ function helfi_paragraphs_event_list_preprocess_paragraph__event_list(&$variable
 
   // Render image placeholder for use in frontend.
   $variables['#attached']['drupalSettings']['helfi_paragraphs_event_list']['imagePlaceholder'] = twig_render_template(
-    drupal_get_path('theme', 'hdbt') . '/templates/misc/image-placeholder.twig',
+    $basePath . '/templates/misc/image-placeholder.twig',
     [
       'image_placeholder' => 'calendar-clock',
       'theme_hook_original' => '',

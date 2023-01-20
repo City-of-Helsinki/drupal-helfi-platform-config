@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_tpr_config' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_tpr_config_helfi_paragraph_types() : array {
+  $fields = [
+    'tpr_unit' => [
+      'field_content' => [
+        'text',
+        'columns',
+        'accordion',
+        'image',
+        'list_of_links',
+        'content_cards',
+        'banner',
+        'from_library',
+        'contact_card_listing',
+        'remote_video',
+      ],
+      'field_lower_content' => [
+        'columns',
+        'accordion',
+        'image',
+        'list_of_links',
+        'content_cards',
+        'banner',
+        'liftup_with_image',
+        'from_library',
+        'news_list',
+        'contact_card_listing',
+        'remote_video',
+        'event_list',
+      ],
+    ],
+    'tpr_service' => [
+      'field_content' => [
+        'text',
+        'columns',
+        'accordion',
+        'image',
+        'list_of_links',
+        'content_cards',
+        'banner',
+        'from_library',
+        'remote_video',
+        'phasing',
+      ],
+      'field_sidebar_content' => [
+        'text',
+        'from_library',
+      ],
+      'field_lower_content' => [
+        'columns',
+        'accordion',
+        'image',
+        'list_of_links',
+        'content_cards',
+        'banner',
+        'liftup_with_image',
+        'from_library',
+        'remote_video',
+        'event_list',
+        'phasing',
+      ],
+    ],
+  ];
+
+  $enabled = [];
+  foreach ($fields as $entityTypeId => $types) {
+    foreach ($types as $field => $paragraphTypes) {
+      foreach ($paragraphTypes as $paragraphType) {
+        $enabled[] = new ParagraphTypeCollection($entityTypeId, $entityTypeId, $field, $paragraphType);
+      }
+    }
+  }
+  return $enabled;
+}

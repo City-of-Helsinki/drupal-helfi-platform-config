@@ -10,16 +10,20 @@ declare(strict_types = 1);
 use Drupal\language\Entity\ConfigurableLanguage;
 
 /**
- * Implements hook_grant_permissions().
+ * Grants required permissions.
  */
 function helfi_base_content_grant_permissions() : void {
   $permissions = [
     'anonymous' => [
       'access content',
+      // @helfi_api_base
+      'view remote entities',
     ],
     'authenticated' => [
       'access content',
       'view unpublished paragraphs',
+      // @helfi_api_base.
+      'view remote entities',
     ],
     'admin' => [
       'view unpublished paragraphs',
@@ -28,18 +32,29 @@ function helfi_base_content_grant_permissions() : void {
       'revert all revisions',
       'view all revisions',
       'view own unpublished content',
+      // @helfi_api_base.
+      'access remote entities overview',
+      'create remote entities',
+      'delete remote entities',
+      'edit remote entities',
     ],
     'content_producer' => [
       'view unpublished paragraphs',
       'administer nodes',
       'view all revisions',
       'view own unpublished content',
+      // @helfi_api_base.
+      'access remote entities overview',
     ],
     'editor' => [
       'view unpublished paragraphs',
       'administer nodes',
       'view all revisions',
       'view own unpublished content',
+      // @helfi_api_base.
+      'access remote entities overview',
+      'delete remote entities',
+      'edit remote entities',
     ],
     'read_only' => [
       'view own unpublished content',

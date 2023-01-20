@@ -10,41 +10,117 @@ declare(strict_types=1);
 use Drupal\linkit\Entity\Profile;
 
 /**
+ * Grants required permissions.
+ */
+function helfi_tpr_config_grant_permissions() : void {
+  $permissions = [
+    'anonymous' => [
+      'view tpr_service',
+      'view tpr_unit',
+    ],
+    'authenticated' => [
+      'view tpr_service',
+      'view tpr_unit',
+    ],
+    'admin' => [
+      'access tpr_service overview',
+      'access tpr_unit overview',
+      'administer tpr_service',
+      'administer tpr_unit',
+      'revert all tpr_service revisions',
+      'revert all tpr_unit revisions',
+      'update any tpr_service',
+      'update any tpr_unit',
+      'update own tpr_service',
+      'update own tpr_unit',
+      'view all tpr_service revisions',
+      'view all tpr_unit revisions',
+      'view unpublished tpr_errand_service',
+      'view unpublished tpr_service',
+      'view unpublished tpr_service_channel',
+      'view unpublished tpr_unit',
+    ],
+    'content_producer' => [
+      'access tpr_service overview',
+      'access tpr_unit overview',
+      'update any tpr_service',
+      'update any tpr_unit',
+      'update own tpr_service',
+      'update own tpr_unit',
+      'view all tpr_service revisions',
+      'view all tpr_unit revisions',
+      'view unpublished tpr_errand_service',
+      'view unpublished tpr_service',
+      'view unpublished tpr_service_channel',
+      'view unpublished tpr_unit',
+    ],
+    'editor' => [
+      'access tpr_service overview',
+      'access tpr_unit overview',
+      'revert all tpr_service revisions',
+      'revert all tpr_unit revisions',
+      'update any tpr_service',
+      'update any tpr_unit',
+      'update own tpr_service',
+      'update own tpr_unit',
+      'view all tpr_service revisions',
+      'view all tpr_unit revisions',
+      'view unpublished tpr_errand_service',
+      'view unpublished tpr_service',
+      'view unpublished tpr_service_channel',
+      'view unpublished tpr_unit',
+    ],
+    'read_only' => [
+      'view unpublished tpr_errand_service',
+      'view unpublished tpr_service',
+      'view unpublished tpr_service_channel',
+      'view unpublished tpr_unit',
+    ],
+  ];
+  helfi_platform_config_grant_permissions($permissions);
+}
+
+/**
  * Implements hook_install().
  */
 function helfi_tpr_config_install(bool $is_syncing) : void {
-  if ($is_syncing || !$profile = Profile::load('helfi')) {
+  if ($is_syncing) {
     return;
   }
-  $matchers = [
-    [
-      'uuid' => '744298c6-f701-49e7-ba32-bed4e527cffc',
-      'id' => 'entity:tpr_unit',
-      'weight' => -1,
-      'settings' => [
-        'metadata' => '',
-        'bundles' => NULL,
-        'group_by_bundle' => NULL,
-        'substitution_type' => 'canonical',
-        'limit' => 20,
-      ],
-    ],
-    [
-      'uuid' => '8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649',
-      'id' => 'entity:tpr_service',
-      'weight' => -2,
-      'settings' => [
-        'metadata' => '',
-        'bundles' => NULL,
-        'group_by_bundle' => NULL,
-        'substitution_type' => 'canonical',
-        'limit' => 20,
-      ],
-    ],
-  ];
 
-  foreach ($matchers as $matcher) {
-    $profile->getMatchers()->addInstanceId($matcher['uuid'], $matcher);
+  helfi_tpr_config_grant_permissions();
+
+  if ($profile = Profile::load('helfi')) {
+    $matchers = [
+      [
+        'uuid' => '744298c6-f701-49e7-ba32-bed4e527cffc',
+        'id' => 'entity:tpr_unit',
+        'weight' => -1,
+        'settings' => [
+          'metadata' => '',
+          'bundles' => NULL,
+          'group_by_bundle' => NULL,
+          'substitution_type' => 'canonical',
+          'limit' => 20,
+        ],
+      ],
+      [
+        'uuid' => '8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649',
+        'id' => 'entity:tpr_service',
+        'weight' => -2,
+        'settings' => [
+          'metadata' => '',
+          'bundles' => NULL,
+          'group_by_bundle' => NULL,
+          'substitution_type' => 'canonical',
+          'limit' => 20,
+        ],
+      ],
+    ];
+
+    foreach ($matchers as $matcher) {
+      $profile->getMatchers()->addInstanceId($matcher['uuid'], $matcher);
+    }
+    $profile->save();
   }
-  $profile->save();
 }
