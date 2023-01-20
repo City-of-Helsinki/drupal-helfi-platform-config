@@ -31,7 +31,8 @@ class ContactCardListingParagraphsTest extends ParagraphTestBase {
   public function testParagraphs() : void {
     $this->assertFrontPageLanguages();
 
-    // Make sure phasing_item is enabled for phasing paragraph type.
+    // Make sure contact card is enabled for contact card listing paragraph type
+    // and social media link paragraph is enabled for contact card paragraph.
     $this->assertParagraphTypeEnabled();
   }
 
