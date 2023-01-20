@@ -239,3 +239,22 @@ function helfi_news_feed_update_9006() : void {
     ConfigHelper::updateExistingConfig($configLocation, $config);
   }
 }
+
+/**
+ * Change field weights.
+ */
+function helfi_news_feed_update_9007() : void {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Update existing configuration.
+  $updateConfig = [
+    'external_entities.external_entity_type.helfi_news.yml',
+    'external_entities.external_entity_type.helfi_news_groups.yml',
+    'external_entities.external_entity_type.helfi_news_neighbourhoods.yml',
+    'external_entities.external_entity_type.helfi_news_tags.yml',
+  ];
+
+  foreach ($updateConfig as $config) {
+    ConfigHelper::updateExistingConfig($configLocation, $config);
+  }
+}
