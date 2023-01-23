@@ -3,7 +3,7 @@ status: true
 dependencies:
   enforced:
     config:
-      - paragraphs.paragraphs_type.contact_card_listing
+      - paragraphs.paragraphs_type.social_media_link
   module:
     - link
     - paragraphs
