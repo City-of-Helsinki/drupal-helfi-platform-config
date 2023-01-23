@@ -1,0 +1,27 @@
+uuid: b8818373-8c1b-42c2-949e-dc7f8cbd9165
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_content_liftup_unit
+    - paragraphs.paragraphs_type.content_liftup
+_core:
+  default_config_hash: PDfXJdsEFnyW-qrv229_Y5bkaK0ztYhLPJc6JutjBfs
+id: paragraph.content_liftup.field_content_liftup_unit
+field_name: field_content_liftup_unit
+entity_type: paragraph
+bundle: content_liftup
+label: Unit
+description: 'Add here the content that you want to appear as cards to the block. <span class="notice">Works only with TPR Unit in alpha version</span>'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: er_tpr_unit
+      display_name: entity_reference
+      arguments: {  }
+field_type: entity_reference

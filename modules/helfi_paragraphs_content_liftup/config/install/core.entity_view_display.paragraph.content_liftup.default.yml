@@ -1,0 +1,23 @@
+uuid: 6cd5fd85-1b67-4cd0-b125-66f2f91c82f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_liftup.field_content_liftup_unit
+    - paragraphs.paragraphs_type.content_liftup
+id: paragraph.content_liftup.default
+targetEntityType: paragraph
+bundle: content_liftup
+mode: default
+content:
+  field_content_liftup_unit:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: wide_teaser
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  search_api_excerpt: true

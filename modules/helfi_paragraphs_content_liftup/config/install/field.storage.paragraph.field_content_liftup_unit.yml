@@ -1,0 +1,22 @@
+uuid: fc29b82f-a142-43d3-84c3-3e6802a9013e
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+    - paragraphs
+_core:
+  default_config_hash: qDXN7Cf4Za-x_Udo3DzY4P9LhxH6YTQW0D0YhB66BnQ
+id: paragraph.field_content_liftup_unit
+field_name: field_content_liftup_unit
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: tpr_unit
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
