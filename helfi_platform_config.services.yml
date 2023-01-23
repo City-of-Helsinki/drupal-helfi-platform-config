@@ -1,4 +1,11 @@
 services:
+  helfi_platform_config.helper.block_installer:
+    class: Drupal\helfi_platform_config\Helper\BlockInstaller
+    arguments:
+      - '@theme_handler'
+      - '@entity_type.manager'
+      - '@language_manager'
+
   helfi_platform_config.menu_language_filter:
     class: Drupal\helfi_platform_config\Menu\FilterByLanguage
     arguments:
