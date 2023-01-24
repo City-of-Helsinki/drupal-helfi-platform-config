@@ -66,7 +66,13 @@ function helfi_base_content_grant_permissions() : void {
 /**
  * Implements hook_install().
  */
-function helfi_base_content_install() : void {
+function helfi_base_content_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
   foreach (['fi', 'sv'] as $langcode) {
     ConfigurableLanguage::createFromLangcode($langcode)
       ->save();
@@ -83,4 +89,40 @@ function helfi_base_content_install() : void {
     ->save();
 
   helfi_base_content_grant_permissions();
+
+  // Install blocks.
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
+
+  $block = [
+    'id' => 'brandingnavigation',
+    'plugin' => 'eu_cookie_compliance_block',
+    'settings' => [
+      'label' => 'Eu Cookie Compliance Block',
+      'label_display' => '0',
+    ],
+    'provider' => 'helfi_node_announcement',
+    'weight' => 1,
+    'visibility' => [
+      'request_path' => [
+        'id' => 'request_path',
+        'negate' => FALSE,
+        'pages' => '/cookie-information-and-settings',
+      ],
+    ],
+  ];
+
+  $variations = [
+    [
+      'theme' => 'hdbt',
+      'region' => 'header_branding',
+    ],
+    [
+      'theme' => 'stark',
+      'region' => 'content',
+    ],
+  ];
+
+  $block_installer->install($block, $variations);
+
 }

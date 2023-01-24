@@ -1,0 +1,10 @@
+uuid: 5429c70d-8f37-47c4-ab71-2752fae44b16
+langcode: und
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: XF03x7sTGKHXr9snkobFVOuxt8Wz1WbCCnnZGarmARU
+id: branding-navigation
+label: 'Branding - Navigation'
+description: 'Navigation for branding bar'
+locked: false

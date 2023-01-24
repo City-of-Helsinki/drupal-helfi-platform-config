@@ -43,6 +43,7 @@ final class BlockInstaller {
    *   'plugin' => 'external_menu_block_main_navigation',
    *   'settings' => [
    *     'label' => 'External - Mega menu',
+   *     'label_display' => TRUE,
    *     'depth' => 2,
    *     'expand_all_items' => TRUE,
    *   ],
