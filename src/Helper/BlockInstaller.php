@@ -36,62 +36,83 @@ final class BlockInstaller {
    * Installs the given block configuration.
    *
    * Example block:
+   *
    * @code
-   * [
+   * $block = [
    *   'id' => 'external_header_language_links',
    *   'plugin' => 'external_menu_block_main_navigation',
-   *   'region' => 'header_branding',
    *   'settings' => [
    *     'label' => 'External - Mega menu',
    *     'depth' => 2,
    *     'expand_all_items' => TRUE,
    *   ],
+   *   'provider' => 'helfi_navigation',
    *   'translations' => [
    *     'fi' => 'Ota yhteyttä',
    *     'sv' => 'Ta kontakt',
    *   ],
-   * ]
+   * ];
+   * $variations = [
+   *   [
+   *     'theme' => 'hdbt',
+   *     'region' => 'sidebar',
+   *   ],
+   *   [
+   *     'theme' => 'stark',
+   *     'region' => 'content',
+   *   ],
+   * ];
    * @endcode
    *
    * @param array $block
    *   The block config.
-   * @param string|null $theme
-   *   The theme.
+   * @param array $variations
+   *   The supported theme variations.
    */
-  public function install(array $block, string $theme = NULL) : void {
-    $theme = $theme ?: $this->themeHandler->getDefault();
+  public function install(array $block, array $variations) : void {
+    $installed = 0;
 
-    if (!str_starts_with($theme, 'hdbt')) {
-      throw new ConfigException('The default theme must be either "hdbt" or "hdbt_subtheme".');
+    foreach ($variations as $variation) {
+      if (!isset($variation['theme'], $variation['region'])) {
+        throw new ConfigException('Missing required "theme" or "region" variation.');
+      }
+
+      ['theme' => $theme, 'region' => $region] = $variation;
+
+      // Skip if theme is not installed.
+      if (!$this->themeHandler->themeExists($theme)) {
+        continue;
+      }
+      $default = [
+        'settings' => [
+          'label_display' => FALSE,
+        ],
+        'theme' => $theme,
+        'langcode' => 'en',
+        'status' => TRUE,
+        'visibility' => [],
+        'weight' => 0,
+        'region' => $region,
+      ];
+
+      $config = NestedArray::mergeDeep($default, $block);
+
+      if (!isset($config['id'], $config['provider'])) {
+        throw new ConfigException('Missing required "id" or "provider" block config.');
+      }
+
+      $this->entityTypeManager->getStorage('block')
+        ->create($config)
+        ->save();
+
+      $installed++;
     }
 
-    $default = [
-      'settings' => [
-        'label_display' => FALSE,
-        'provider' => 'helfi_navigation',
-        'level' => 1,
-        'depth' => 1,
-        'expand_all_items' => FALSE,
-      ],
-      'langcode' => 'en',
-      'status' => TRUE,
-      'provider' => NULL,
-      'theme' => $theme,
-      'visibility' => [],
-      'weight' => 0,
-    ];
-
-    $config = NestedArray::mergeDeep($default, $block);
-
-    array_map(function (string $key) use ($block) : void {
-      if (!isset($block[$key])) {
-        throw new ConfigException(sprintf('Missing required "%s" block config.', $key));
-      }
-    }, ['id', 'region']);
-
-    $this->entityTypeManager->getStorage('block')
-      ->create($config)
-      ->save();
+    if ($installed === 0) {
+      throw new ConfigException(
+        sprintf('No valid theme variations found for given block: %s', $block['id'])
+      );
+    }
 
     if (isset($config['translations'])) {
       $this->createTranslations($block['id'], $config['translations']);
