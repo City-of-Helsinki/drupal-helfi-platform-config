@@ -29,3 +29,12 @@ services:
     arguments: ['@current_route_match']
     tags:
       - { name: event_subscriber }
+
+  helfi_platform_config.entity_version_matcher:
+    class: Drupal\helfi_platform_config\EntityVersionMatcher
+    arguments: ['@entity_type.manager', '@current_route_match', '@language_manager']
+
+  helfi_platform_config.twig.DrupalEntityRevision:
+    class: Drupal\helfi_platform_config\TwigExtension\DrupalEntityRevision
+    tags:
+      - { name: twig.extension }
