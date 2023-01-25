@@ -96,20 +96,20 @@ function helfi_base_content_install($is_syncing) : void {
 
   $block = [
     'id' => 'brandingnavigation',
-    'plugin' => 'eu_cookie_compliance_block',
+    'plugin' => 'menu_block_current_language:branding-navigation',
     'settings' => [
-      'label' => 'Eu Cookie Compliance Block',
-      'label_display' => '0',
-    ],
-    'provider' => 'helfi_node_announcement',
-    'weight' => 1,
-    'visibility' => [
-      'request_path' => [
-        'id' => 'request_path',
-        'negate' => FALSE,
-        'pages' => '/cookie-information-and-settings',
+      'id' => 'menu_block_current_language:branding-navigation',
+      'label' => 'Branding - Navigation',
+      'depth' => 1,
+      'level' => 1,
+      'expand_all_items' => FALSE,
+      'translation_providers' => [
+        'views' => 'views',
+        'menu_link_content' => 'menu_link_content',
+        'default' => '0',
       ],
     ],
+    'provider' => 'helfi_base_content',
   ];
 
   $variations = [
@@ -124,5 +124,4 @@ function helfi_base_content_install($is_syncing) : void {
   ];
 
   $block_installer->install($block, $variations);
-
 }
