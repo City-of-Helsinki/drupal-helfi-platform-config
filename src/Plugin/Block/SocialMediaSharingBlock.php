@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SocialMediaSharingBlock extends SocialSharingBlock {
 
   /**
-   * The file url generator
+   * The file url generator.
    *
    * @var \Drupal\Core\File\FileUrlGeneratorInterface
    */

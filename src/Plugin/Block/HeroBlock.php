@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
-use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 
@@ -17,29 +15,7 @@ use Drupal\helfi_platform_config\EntityVersionMatcher;
  *  admin_label = @Translation("Hero block"),
  * )
  */
-class HeroBlock extends BlockBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheTags() : array {
-    $matcher = \Drupal::service('hdbt_content.entity_version_matcher')->getType();
-
-    if (
-      !$matcher['entity'] ||
-      $matcher['entity_version'] == EntityVersionMatcher::ENTITY_VERSION_REVISION
-    ) {
-      return parent::getCacheTags();
-    }
-    return Cache::mergeTags(parent::getCacheTags(), $matcher['entity']->getCacheTags());
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function getCacheContexts() : array {
-    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
-  }
+class HeroBlock extends ContentBlockBase {
 
   /**
    * {@inheritdoc}
@@ -47,12 +23,8 @@ class HeroBlock extends BlockBase {
   public function build() : array {
     $build = [];
 
-    // Get current entity and entity version.
-    $entity_matcher = \Drupal::service('hdbt_content.entity_version_matcher')->getType();
-
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = $entity_matcher['entity'];
-    $entity_version = $entity_matcher['entity_version'];
+    ['entity' => $entity, 'entity_version' => $entity_version] = $this->getCurrentEntityVersion();
 
     // No need to continue if current entity doesn't have has_hero field.
     if (
