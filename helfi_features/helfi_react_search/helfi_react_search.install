@@ -13,8 +13,9 @@ use Drupal\helfi_platform_config\ConfigHelper;
 function helfi_react_search_install($is_syncing) {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
-  if (!$is_syncing && Drupal::moduleHandler()->moduleExists('update_helper')) {
+  if (!$is_syncing) {
     helfi_react_search_update_9001();
+    helfi_react_search_update_9002();
   }
 }
 
