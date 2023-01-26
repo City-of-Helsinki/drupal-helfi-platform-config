@@ -19,22 +19,14 @@ class EuCookieComplianceTest extends BrowserTestBase {
    */
   protected static $modules = [
     'block',
-    'helfi_eu_cookie_compliance',
     'helfi_api_base',
+    'helfi_eu_cookie_compliance',
   ];
 
   /**
    * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setUp() : void {
-    parent::setUp();
-    helfi_eu_cookie_compliance_generate_blocks($this->defaultTheme, 'content', TRUE);
-  }
 
   /**
    * Make sure the cookie intro form page loads.
@@ -55,11 +47,11 @@ class EuCookieComplianceTest extends BrowserTestBase {
   public function testCookieConsentBlock() : void {
     $this->drupalGet('<front>');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('Eu Cookie Compliance Block');
+    $this->assertSession()->pageTextNotContains('Cookie settings');
 
     $this->drupalGet(Url::fromRoute('helfi_eu_cookie_compliance.cookie_consent'));
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Eu Cookie Compliance Block');
+    $this->assertSession()->pageTextContains('Cookie settings');
   }
 
 }

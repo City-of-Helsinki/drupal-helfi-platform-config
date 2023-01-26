@@ -7,8 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\block\Entity\Block;
-
 /**
  * Implements hook_install().
  */
@@ -19,80 +17,68 @@ function helfi_eu_cookie_compliance_install($is_syncing) : void {
     return;
   }
 
-  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
-  $theme_handler = \Drupal::service('theme_handler');
+  // Install blocks.
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 
-  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
-    return;
+  foreach (helfi_eu_cookie_compliance_get_block_configuration() as $block_config) {
+    ['block' => $block, 'variations' => $variations] = $block_config;
+    $block_installer->install($block, $variations);
   }
-
-  // Generate global navigation blocks.
-  helfi_eu_cookie_compliance_generate_blocks($theme_handler->getDefault());
 }
 
 /**
- * Gets the block configuration.
+ * Gets the block configurations.
+ *
+ * Example block:
+ *
+ * @code
+ * [
+ *   'breadbrumbs' => [
+ *     'block' => [
+ *       ...
+ *     ],
+ *     'variations' => [
+ *       ...
+ *     ],
+ *   ],
+ * ];
+ * @endcode
  *
  * @return array[]
- *   The block configuration.
+ *   The block configurations.
  */
 function helfi_eu_cookie_compliance_get_block_configuration() : array {
   return [
-    'eu_cookie_compliance_block' => [
-      'plugin' => 'eu_cookie_compliance_block',
-      'region' => 'after_content',
-      'settings' => [
-        'label' => 'Eu Cookie Compliance Block',
-        'label_display' => '0',
+    'eucookiecomplianceblock' => [
+      'block' => [
+        'id' => 'eucookiecomplianceblock',
+        'plugin' => 'eu_cookie_compliance_block',
+        'provider' => 'helfi_eu_cookie_compliance',
+        'settings' => [
+          'id' => 'eu_cookie_compliance_block',
+          'label' => 'Eu Cookie Compliance Block',
+          'provider' => 'eu_cookie_compliance',
+        ],
+        'weight' => -8,
+        'visibility' => [
+          'request_path' => [
+            'id' => 'request_path',
+            'negate' => FALSE,
+            'pages' => '/cookie-information-and-settings',
+          ],
+        ],
       ],
-      'weight' => 1,
-      'visibility' => [
-        'request_path' => [
-          'id' => 'request_path',
-          'negate' => FALSE,
-          'pages' => '/cookie-information-and-settings',
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'after_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
         ],
       ],
     ],
   ];
-}
-
-/**
- * Generate Helfi EU cookie compliance block.
- *
- * @param string $theme
- *   Current default theme machine name.
- * @param string|null $region
- *   The region.
- *
- * @throws \Drupal\Core\Entity\EntityStorageException
- */
-function helfi_eu_cookie_compliance_generate_blocks(string $theme, ?string $region = NULL, bool $labelDisplay = FALSE) : void {
-  $default_config = [
-    'settings' => [
-      'provider' => 'helfi_eu_cookie_compliance',
-    ],
-    'langcode' => 'en',
-    'status' => TRUE,
-    'provider' => NULL,
-    'theme' => $theme,
-    'visibility' => [],
-    'weight' => 0,
-  ];
-
-  foreach (helfi_eu_cookie_compliance_get_block_configuration() as $id => $config) {
-    $block_config = array_replace_recursive($default_config, $config);
-
-    if ($labelDisplay) {
-      $block_config['settings']['label_display'] = 'visible';
-    }
-    if ($region) {
-      $block_config['region'] = $region;
-    }
-    $block_config['id'] = $id;
-    $block_config['settings']['id'] = $config['plugin'];
-
-    $block = Block::create($block_config);
-    $block->save();
-  }
 }
