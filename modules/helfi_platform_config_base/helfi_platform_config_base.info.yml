@@ -17,12 +17,15 @@ dependencies:
   - helfi_paragraphs_banner:helfi_paragraphs_banner
   - helfi_paragraphs_chart:helfi_paragraphs_chart
   - helfi_paragraphs_columns:helfi_paragraphs_columns
+  - helfi_paragraphs_contact_card_listing:helfi_paragraphs_contact_card_listing
   - helfi_paragraphs_content_cards:helfi_paragraphs_content_cards
+  - helfi_paragraphs_content_liftup:helfi_paragraphs_content_liftup
   - helfi_paragraphs_event_list:helfi_paragraphs_event_list
   - helfi_paragraphs_hero:helfi_paragraphs_hero
   - helfi_paragraphs_image:helfi_paragraphs_image
   - helfi_paragraphs_liftup_with_image:helfi_paragraphs_liftup_with_image
   - helfi_paragraphs_list_of_links:helfi_paragraphs_list_of_links
+  - helfi_paragraphs_map:helfi_paragraphs_map
   - helfi_paragraphs_news_list:helfi_paragraphs_news_list
   - helfi_paragraphs_phasing:helfi_paragraphs_phasing
   - helfi_paragraphs_popular_services:helfi_paragraphs_popular_services
@@ -30,3 +33,4 @@ dependencies:
   - helfi_paragraphs_sidebar_text:helfi_paragraphs_sidebar_text
   - helfi_paragraphs_target_group_links:helfi_paragraphs_target_group_links
   - helfi_paragraphs_text:helfi_paragraphs_text
+  - helfi_user_roles:helfi_user_roles
