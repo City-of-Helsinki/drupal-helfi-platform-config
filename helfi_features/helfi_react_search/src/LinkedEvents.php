@@ -130,9 +130,12 @@ class LinkedEvents extends EventsApiBase {
    * @param string $url
    *   The Api url for events.
    *
+   * @return array
+   *   Array of all possible places.
+   *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getPlacesList($url) {
+  public function getPlacesList($url) : array {
     if ($data = $this->getFromCache($url)) {
       return $data;
     }

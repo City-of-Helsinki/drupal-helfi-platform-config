@@ -10,7 +10,7 @@ use Drupal\helfi_react_search\Enum\CategoryKeywords;
 /**
  * Base class for retrieving events data.
  */
-class EventsApiBase {
+abstract class EventsApiBase {
 
   /**
    * Parse query params from request url.
