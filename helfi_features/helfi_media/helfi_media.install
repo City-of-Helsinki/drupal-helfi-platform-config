@@ -15,6 +15,7 @@ function helfi_media_install($is_syncing) {
     helfi_media_update_9001();
     helfi_media_update_9003();
     helfi_media_update_9007();
+    helfi_media_update_9009();
   }
 }
 
@@ -160,4 +161,17 @@ function helfi_media_update_9007() {
 function helfi_media_update_9008() {
   $configLocation = dirname(__FILE__) . '/config/override/';
   ConfigHelper::updateExistingConfig($configLocation, 'views.view.media_library');
+}
+
+/**
+ * ImageMagick install & configuration.
+ */
+function helfi_media_update_9009() {
+  // Install ImageMagick module if not installed.
+  if (!Drupal::moduleHandler()->moduleExists('imagemagick')) {
+    Drupal::service('module_installer')->install(['imagemagick']);
+
+    $updateLocation = dirname(__FILE__) . '/config/override/';
+    ConfigHelper::updateExistingConfig($updateLocation, 'system.image');
+  }
 }

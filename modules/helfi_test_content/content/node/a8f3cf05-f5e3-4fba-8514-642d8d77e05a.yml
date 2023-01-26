@@ -1,0 +1,106 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: a8f3cf05-f5e3-4fba-8514-642d8d77e05a
+  bundle: landing_page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component list of plans'
+  created:
+    -
+      value: 1658295204
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-list-of-plans
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 84c73935-661c-49c4-9e53-a98b55944cf2
+          bundle: list_of_plans
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1658295706
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_list_of_plans_title:
+            -
+              value: 'List Of Plans - No Description'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 38b60625-a9b2-4b8f-8275-d4f9f911ea9f
+          bundle: list_of_plans
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1658295706
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_list_of_plans_description:
+            -
+              value: 'Proin ullamcorper elit non tempor consectetur. Vestibulum ut felis porta, sagittis felis suscipit, sollicitudin turpis. Etiam sed erat varius, eleifend diam rutrum, porta dolor. Ut in lacinia arcu, et laoreet arcu. Morbi id vehicula eros, et porttitor est. Etiam eu mollis ipsum. Phasellus elementum tempor orci.'
+          field_list_of_plans_title:
+            -
+              value: 'List Of Plans - With Description'
+  field_has_hero:
+    -
+      value: false

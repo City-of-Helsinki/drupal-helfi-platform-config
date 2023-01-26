@@ -4,6 +4,11 @@ _meta:
   uuid: 03ac17c9-f551-4340-b020-788d4506d2eb
   bundle: page
   default_langcode: en
+  depends:
+    5aa93e60-d57f-4d7c-9bb9-be738c2461e5: file
+    fbd5b487-2f0a-4301-9c18-5d7d68855529: file
+    59b9a7a0-4608-4e0d-8bdc-ac3bba38af77: file
+    3069fcea-d0fe-432b-965b-eb19beb68379: file
 default:
   revision_uid:
     -
@@ -93,6 +98,22 @@ default:
                   revision_translation_affected:
                     -
                       value: true
+                  field_contact_description:
+                    -
+                      value: 'In nec enim sed nunc consequat tincidunt ut sed mauris. Donec dignissim quam finibus ex sodales interdum. Suspendisse viverra molestie mauris, non convallis lorem egestas at.'
+                  field_contact_image:
+                    -
+                      entity: 5aa93e60-d57f-4d7c-9bb9-be738c2461e5
+                      alt: 'alternative text'
+                      title: ''
+                      width: 853
+                      height: 1280
+                  field_contact_image_photographer:
+                    -
+                      value: Photographer
+                  field_contact_name:
+                    -
+                      value: Name
                   field_contact_social_media:
                     -
                       entity:
@@ -115,19 +136,38 @@ default:
                           revision_translation_affected:
                             -
                               value: true
+                          field_icon:
+                            -
+                              icon: email
+                          field_social_media_link:
+                            -
+                              uri: 'mailto:test@mail.com'
+                              title: ''
+                              options: {  }
+                  field_contact_title:
+                    -
+                      value: 'Job Title'
+                  field_email:
+                    -
+                      value: test@mail.com
+                  field_phone_number:
+                    -
+                      value: '+012 3456789'
+                    -
+                      value: '+987 6543210'
+                    -
+                      value: '010 121232'
+                    -
+                      value: '999 888777'
           field_title:
             -
-              value: 'Contact card listing  - Upper content region'
-  field_has_hero:
-    -
-      value: false
-  field_lower_content:
+              value: '1 Contact Card '
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 6a3e0906-0863-4170-9088-edc6b2dba483
+          uuid: 1893090f-3653-4646-a622-f86c3a809084
           bundle: contact_card_listing
           default_langcode: en
         default:
@@ -136,7 +176,7 @@ default:
               value: true
           created:
             -
-              value: 1654686641
+              value: 1657273524
           behavior_settings:
             -
               value: {  }
@@ -149,7 +189,7 @@ default:
                 _meta:
                   version: '1.0'
                   entity_type: paragraph
-                  uuid: 4794eeb5-830b-47b6-ad06-f50408dd839b
+                  uuid: 233d0f1c-be8d-4805-b2e5-e05dddf2d5a3
                   bundle: contact_card
                   default_langcode: en
                 default:
@@ -158,7 +198,374 @@ default:
                       value: true
                   created:
                     -
-                      value: 1654686641
+                      value: 1657273524
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_contact_description:
+                    -
+                      value: 'Maecenas et neque non risus blandit blandit ut a diam. Sed pretium, odio at placerat gravida, lacus arcu viverra leo, in porta ex ante id sem'
+                  field_contact_image:
+                    -
+                      entity: fbd5b487-2f0a-4301-9c18-5d7d68855529
+                      alt: 'alt text'
+                      title: ''
+                      width: 1635
+                      height: 1920
+                  field_contact_image_photographer:
+                    -
+                      value: 'Photographer 1'
+                  field_contact_name:
+                    -
+                      value: 'Name Surname 1'
+                  field_contact_social_media:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: b7f750f8-afde-4aef-b227-16885e24ae43
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657273524
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                  field_contact_title:
+                    -
+                      value: 'Job Title 1'
+                  field_email:
+                    -
+                      value: test.testing@testmail.com
+                  field_phone_number:
+                    -
+                      value: '010 020030401'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 017b3b9f-2187-4cfd-8837-eb21b2c3ceab
+                  bundle: contact_card
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657273725
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_contact_description:
+                    -
+                      value: 'Fusce nec neque velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris faucibus elementum elit, vitae suscipit purus sollicitudin in.'
+                  field_contact_image:
+                    -
+                      entity: 5aa93e60-d57f-4d7c-9bb9-be738c2461e5
+                      alt: 'alt text'
+                      title: ''
+                      width: 853
+                      height: 1280
+                  field_contact_image_photographer:
+                    -
+                      value: 'Photographer 2'
+                  field_contact_name:
+                    -
+                      value: 'Name Surname 2'
+                  field_contact_social_media:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 507360a3-9866-4438-b9f1-0a0788c5f619
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657273725
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: email
+                          field_social_media_link:
+                            -
+                              uri: 'mailto:e-mail@email.com'
+                              title: ''
+                              options: {  }
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 95fafd81-56ef-43ef-8e00-336ef2f773f8
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657273895
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: face-smile
+                          field_social_media_link:
+                            -
+                              uri: 'https://www.helsinki.fi'
+                              title: ''
+                              options: {  }
+                  field_contact_title:
+                    -
+                      value: 'Job Title 2 '
+                  field_email:
+                    -
+                      value: test.tester@testmail.com
+                  field_phone_number:
+                    -
+                      value: '+090 08087654'
+                    -
+                      value: '+023 08084655'
+                    -
+                      value: '+123 48184555'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 9ee2b2d1-c190-4f45-bda4-2454fa17f675
+                  bundle: contact_card
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657273917
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_contact_description:
+                    -
+                      value: 'Morbi vel varius augue, a convallis enim. Proin luctus volutpat consectetur. Nulla euismod libero nec justo ornare varius in id augue. Sed euismod orci purus, eget suscipit leo dignissim vitae. Aenean congue fringilla aliquam. '
+                  field_contact_image:
+                    -
+                      entity: 59b9a7a0-4608-4e0d-8bdc-ac3bba38af77
+                      alt: 'alt text'
+                      title: ''
+                      width: 1138
+                      height: 1275
+                  field_contact_image_photographer:
+                    -
+                      value: 'Photo Grapher 3'
+                  field_contact_name:
+                    -
+                      value: 'Name ThisIsSurname 3'
+                  field_contact_social_media:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 3222ce48-8fa0-490a-a006-86f590b1e545
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657273917
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                  field_contact_title:
+                    -
+                      value: 'Job Title 3'
+                  field_phone_number:
+                    -
+                      value: '+029 339919992'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 4354b015-9ff3-4df6-b7df-524cb259177c
+                  bundle: contact_card
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657274041
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_contact_image:
+                    -
+                      entity: 3069fcea-d0fe-432b-965b-eb19beb68379
+                      alt: 'alt text'
+                      title: ''
+                      width: 1920
+                      height: 1755
+                  field_contact_image_photographer:
+                    -
+                      value: 'Photo Grapher 4'
+                  field_contact_name:
+                    -
+                      value: 'Name SurnameIsThis'
+                  field_contact_social_media:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 2a2b41de-7574-47c8-89d4-6e971b14993a
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657274041
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: tiktok
+                          field_social_media_link:
+                            -
+                              uri: 'https://www.helsinki.fi'
+                              title: ''
+                              options: {  }
+                  field_contact_title:
+                    -
+                      value: 'Job TitleOfJob'
+                  field_email:
+                    -
+                      value: testing.test@testermail.com
+                  field_phone_number:
+                    -
+                      value: '042 291010101'
+                    -
+                      value: '041 291160411'
+          field_title:
+            -
+              value: '4 Contact Cards'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: ec7552d5-ae49-44b2-a79a-202bd143a283
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657274282
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<h2>Special Cases</h2>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 161f8f12-e7f8-45ed-bebb-41d56c24c1cd
+          bundle: contact_card_listing
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657274294
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_contact_card:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: b46256f5-2370-4daa-8df3-bd15d4e2a534
+                  bundle: contact_card
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657274294
                   behavior_settings:
                     -
                       value: {  }
@@ -171,7 +578,7 @@ default:
                         _meta:
                           version: '1.0'
                           entity_type: paragraph
-                          uuid: 18de901b-0c67-43f5-bb92-76a7c7a60449
+                          uuid: 06fad22e-6fcb-4639-8d47-392309225bec
                           bundle: social_media_link
                           default_langcode: en
                         default:
@@ -180,7 +587,7 @@ default:
                               value: true
                           created:
                             -
-                              value: 1654686641
+                              value: 1657274294
                           behavior_settings:
                             -
                               value: {  }
@@ -189,4 +596,263 @@ default:
                               value: true
           field_title:
             -
-              value: 'Contact card listing  - Lower content region'
+              value: 'Minimum Data'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 820e9d66-2b31-4dd0-8c91-c98c269e153c
+          bundle: contact_card_listing
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657274381
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_contact_card:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 62c66342-7081-4152-9a30-201ce07777b3
+                  bundle: contact_card
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657274381
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_contact_description:
+                    -
+                      value: "Curabitur fringilla sapien a orci sodales, nec hendrerit lorem fringilla. Mauris euismod ut massa non iaculis. Curabitur aliquet libero ut nulla rhoncus, a pretium nunc imperdiet. Vivamus sed sapien non turpis lacinia ultricies. Integer facilisis vel ipsum ut finibus. Integer urna magna, tincidunt ut leo nec, vestibulum consectetur est. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec pretium ipsum nec tincidunt volutpat. Proin condimentum malesuada sem, non viverra magna ultricies ac. In eget nisl quam. Nullam non placerat felis. Proin quis felis vitae tellus elementum pharetra. Fusce eleifend vitae ante eu imperdiet. Duis cursus quis risus ut volutpat. Fusce a orci a purus faucibus tempus. Donec tempus, mauris at porttitor vehicula, ex augue viverra nulla, euismod hendrerit purus nulla eu ligula.\r\n\r\nCurabitur tincidunt nec eros ut cursus. Etiam sagittis tempus diam, ac rutrum odio posuere cursus. Nulla accumsan eros placerat, dapibus tellus vel, efficitur quam. In pretium vestibulum mollis. Nullam vestibulum ex tristique, euismod sapien sit amet, feugiat dui. Nulla fringilla euismod ante ac dictum. Suspendisse semper tristique velit, nec scelerisque leo euismod non. Aliquam sem mi, fermentum ut pretium in, dictum nec leo. Aenean viverra ultrices dui non consequat. Cras lacinia enim ac velit placerat, quis euismod ante finibus. Fusce tristique vel elit ac pharetra. Nam non bibendum tortor. Vestibulum tincidunt, felis vel iaculis posuere, libero massa eleifend enim, sed volutpat orci turpis eget urna."
+                  field_contact_image:
+                    -
+                      entity: 5aa93e60-d57f-4d7c-9bb9-be738c2461e5
+                      alt: 'Morbi vel varius augue, a convallis enim. Proin luctus volutpat consectetur. Nulla euismod libero nec justo ornare varius in id augue. Sed euismod orci purus, eget suscipit leo dignissim vitae. Aenean congue fringilla aliquam. Duis facilisis felis at rutrum dapibus. Proin sollicitudin arcu at neque ornare, non venenatis turpis scelerisque. Quisque in sapien a eros vulputate luctus.'
+                      title: ''
+                      width: 853
+                      height: 1280
+                  field_contact_image_photographer:
+                    -
+                      value: 'Morbi vel varius augue, a convallis enim'
+                  field_contact_name:
+                    -
+                      value: 'Proin luctus volutpat consectetur. Nulla euismod'
+                  field_contact_social_media:
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 63aa0669-3fa9-4f24-9e21-70ec9760ef8a
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657274381
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: discord
+                          field_social_media_link:
+                            -
+                              uri: 'https://www.lipsum.com/'
+                              title: ''
+                              options: {  }
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: ba10fe0f-55a1-444c-8ff4-e4af26d1b92d
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657274592
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: facebook
+                          field_social_media_link:
+                            -
+                              uri: 'https://www.facebook.com'
+                              title: ''
+                              options: {  }
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 9d3b6307-7c0a-4329-b4e0-9506bab3b0d8
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657274604
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: youtube
+                          field_social_media_link:
+                            -
+                              uri: 'https://www.youtube.com'
+                              title: ''
+                              options: {  }
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 69544fae-b18d-4965-8977-752a974e20fa
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657274616
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: whatsapp
+                          field_social_media_link:
+                            -
+                              uri: 'https://www.helsinki.fi'
+                              title: ''
+                              options: {  }
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: 532ebb6d-518e-4bf9-ba73-6274e334ddf7
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657274631
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: globe
+                          field_social_media_link:
+                            -
+                              uri: 'https://www.helsinki.fi'
+                              title: ''
+                              options: {  }
+                    -
+                      entity:
+                        _meta:
+                          version: '1.0'
+                          entity_type: paragraph
+                          uuid: f235f8a1-a8e1-4194-a5b4-99fc47b05788
+                          bundle: social_media_link
+                          default_langcode: en
+                        default:
+                          status:
+                            -
+                              value: true
+                          created:
+                            -
+                              value: 1657274749
+                          behavior_settings:
+                            -
+                              value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
+                          field_icon:
+                            -
+                              icon: star
+                          field_social_media_link:
+                            -
+                              uri: 'https://www.helsinki.fi'
+                              title: ''
+                              options: {  }
+                  field_contact_title:
+                    -
+                      value: 'Ut accumsan justo consectetur dui consectetur, ut venenatis'
+                  field_email:
+                    -
+                      value: test.test.test.test.testingtest@mailtest.com
+                  field_phone_number:
+                    -
+                      value: '+292 929191999'
+                    -
+                      value: '+412 922121999'
+                    -
+                      value: '+194 925191941'
+                    -
+                      value: '+444 552193241'
+          field_description:
+            -
+              value: "<p>Duis eget elit sed sapien luctus tempus et non orci. Vestibulum aliquam lorem at nulla faucibus blandit. Suspendisse lacus nisl, eleifend eu aliquet id, ornare et urna. Aenean ac ligula sollicitudin, venenatis nisl sit amet, volutpat nisi. Suspendisse a magna sed eros cursus aliquet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum non lorem sed mi facilisis gravida sit amet non risus. Aenean euismod volutpat risus in ullamcorper. Vivamus sagittis purus sit amet erat tempor auctor venenatis condimentum enim. Vestibulum et mauris id eros laoreet euismod. Vivamus ante ante, feugiat sed pulvinar a, condimentum id tellus. Proin non imperdiet orci. Maecenas sagittis felis eget massa bibendum consequat quis id neque. Fusce at quam hendrerit, volutpat mi sit amet, venenatis mauris.&nbsp;Morbi vel varius augue, a convallis enim. Proin luctus volutpat consectetur. Nulla euismod libero nec justo ornare varius in id augue. Sed euismod orci purus, eget suscipit leo dignissim vitae. Aenean congue fringilla aliquam. Duis facilisis felis at rutrum dapibus. Proin sollicitudin arcu at neque ornare, non venenatis turpis scelerisque. Quisque in sapien a eros vulputate luctus.</p>\r\n"
+              format: minimal
+          field_title:
+            -
+              value: 'All data - long texts'
+  field_has_hero:
+    -
+      value: false

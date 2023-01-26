@@ -239,3 +239,22 @@ function helfi_news_feed_update_9006() : void {
     ConfigHelper::updateExistingConfig($configLocation, $config);
   }
 }
+
+/**
+ * Change news feed external entity cache from persistant to 1d.
+ */
+function helfi_news_feed_update_9007() : void {
+  $configLocation = dirname(__FILE__) . '/config/install/';
+
+  // Update existing configuration.
+  $updateConfig = [
+    'external_entities.external_entity_type.helfi_news',
+    'external_entities.external_entity_type.helfi_news_groups',
+    'external_entities.external_entity_type.helfi_news_neighbourhoods',
+    'external_entities.external_entity_type.helfi_news_tags',
+  ];
+
+  foreach ($updateConfig as $config) {
+    ConfigHelper::updateExistingConfig($configLocation, $config);
+  }
+}

@@ -1,0 +1,42 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: e7582d1e-4f18-4f0d-85b7-b26bd2a8caec
+  bundle: image
+  default_langcode: en
+  depends:
+    166e9452-88c5-48c3-b778-a97f0214ce22: file
+default:
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: helsingin_kaupunki_small.png
+  created:
+    -
+      value: 1657104209
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_media_image:
+    -
+      entity: 166e9452-88c5-48c3-b778-a97f0214ce22
+      alt: 'alternative text'
+      title: ''
+      width: 95
+      height: 44

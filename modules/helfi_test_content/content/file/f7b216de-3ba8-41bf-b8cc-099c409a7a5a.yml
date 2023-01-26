@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: f7b216de-3ba8-41bf-b8cc-099c409a7a5a
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: tulips.jpg
+  uri:
+    -
+      value: 'public://tulips.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 412804
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1657261159
