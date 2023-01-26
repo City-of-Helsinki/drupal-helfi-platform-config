@@ -21,9 +21,9 @@ function helfi_node_announcement_install($is_syncing) : void {
 }
 
 /**
- * Implements hook_batch_alter().
+ * Install blocks for announcements.
  */
-function helfi_node_announcement_install_blocks() {
+function helfi_node_announcement_install_blocks() : void {
   /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 
