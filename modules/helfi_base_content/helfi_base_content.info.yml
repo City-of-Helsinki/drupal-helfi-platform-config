@@ -34,3 +34,4 @@ dependencies:
   - scheduler:scheduler
   - select2_icon:select2_icon
   - simple_sitemap:simple_sitemap
+  - twig_tweak:twig_tweak

@@ -64,6 +64,480 @@ function helfi_base_content_grant_permissions() : void {
 }
 
 /**
+ * Gets the block configurations.
+ *
+ * Example block:
+ *
+ * @code
+ * [
+ *   'breadbrumbs' => [
+ *     'block' => [
+ *       ...
+ *     ],
+ *     'variations' => [
+ *       ...
+ *     ],
+ *   ],
+ * ];
+ * @endcode
+ *
+ * @return array[]
+ *   The block configurations.
+ */
+function helfi_base_content_get_block_configurations() : array {
+  return [
+    'brandingnavigation' => [
+      'block' => [
+        'id' => 'brandingnavigation',
+        'plugin' => 'menu_block_current_language:branding-navigation',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'menu_block_current_language:branding-navigation',
+          'label' => 'Branding - Navigation',
+          'depth' => 1,
+          'level' => 1,
+          'expand_all_items' => FALSE,
+          'translation_providers' => [
+            'views' => 'views',
+            'menu_link_content' => 'menu_link_content',
+            'default' => '0',
+          ],
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'header_branding',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'breadcrumbs' => [
+      'block' => [
+        'id' => 'breadcrumbs',
+        'plugin' => 'system_breadcrumb_block',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'system_breadcrumb_block',
+          'label' => 'Breadcrumbs',
+          'provider' => 'system',
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'breadcrumb',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'hero_block' => [
+      'block' => [
+        'id' => 'heroblock',
+        'plugin' => 'hero_block',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'hero_block',
+          'label' => 'Hero block',
+          'provider' => 'helfi_platform_config',
+        ],
+        'weight' => -11,
+        'visibility' => [
+          'entity_bundle:node' => [
+            'id' => 'entity_bundle:node',
+            'negate' => FALSE,
+            'context_mapping' => [
+              'node' => '@node.node_route_context:node',
+            ],
+            'bundles' => [
+              'landing_page' => 'landing_page',
+              'page' => 'page',
+            ],
+          ],
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'mainnavigation' => [
+      'block' => [
+        'id' => 'mainnavigation',
+        'plugin' => 'menu_block_current_language:main',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'menu_block_current_language:main',
+          'label' => 'Main navigation',
+          'level' => 1,
+          'expand_all_items' => TRUE,
+          'depth' => 2,
+          'provider' => 'menu_block_current_language',
+          'translation_providers' => [
+            'views' => 'views',
+            'menu_link_content' => 'menu_link_content',
+            'default' => '0',
+          ],
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'header_bottom',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'main_navigation_level_2' => [
+      'block' => [
+        'id' => 'main_navigation_level_2',
+        'plugin' => 'menu_block_current_language:main',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'menu_block_current_language:main',
+          'label' => 'Main navigation (Level 2 ->)',
+          'level' => 2,
+          'expand_all_items' => TRUE,
+          'depth' => 0,
+          'provider' => 'menu_block_current_language',
+          'translation_providers' => [
+            'views' => 'views',
+            'menu_link_content' => 'menu_link_content',
+            'default' => '0',
+          ],
+        ],
+        'visibility' => [
+          'entity_bundle:node' => [
+            'id' => 'entity_bundle:node',
+            'negate' => TRUE,
+            'context_mapping' => [
+              'node' => '@node.node_route_context:node',
+            ],
+            'bundles' => [
+              'landing_page' => 'landing_page',
+            ],
+          ],
+        ],
+        'weight' => -12,
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'sidebar_first',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'mobile_navigation' => [
+      'block' => [
+        'id' => 'mobile_navigation',
+        'plugin' => 'menu_block_current_language:main',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'menu_block_current_language:main',
+          'label' => 'Mobile navigation',
+          'level' => 1,
+          'expand_all_items' => TRUE,
+          'depth' => 0,
+          'provider' => 'menu_block_current_language',
+          'translation_providers' => [
+            'views' => 'views',
+            'menu_link_content' => 'menu_link_content',
+            'default' => '0',
+          ],
+        ],
+        'weight' => 4,
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'header_branding',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'footerbottomnavigation' => [
+      'block' => [
+        'id' => 'footerbottomnavigation',
+        'plugin' => 'menu_block_current_language:footer-bottom-navigation',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'menu_block_current_language:footer-bottom-navigation',
+          'label' => 'Footer - Bottom navigation',
+          'level' => 1,
+          'expand_all_items' => FALSE,
+          'depth' => 1,
+          'provider' => 'menu_block_current_language',
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'footer_bottom',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'footertopnavigation' => [
+      'block' => [
+        'id' => 'footertopnavigation',
+        'plugin' => 'menu_block_current_language:footer-top-navigation',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'menu_block_current_language:footer-top-navigation',
+          'label' => 'City of Helsinki',
+          'label_display' => TRUE,
+          'level' => 1,
+          'expand_all_items' => FALSE,
+          'depth' => 1,
+          'provider' => 'menu_block_current_language',
+          'translation_providers' => [
+            'views' => 'views',
+            'menu_link_content' => 'menu_link_content',
+            'default' => '0',
+          ],
+        ],
+        'weight' => -4,
+        'translations' => [
+          'fi' => 'Helsingin kaupunki',
+          'sv' => 'Helsingfors stad',
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'footer_top',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'footertopnavigationsecond' => [
+      'block' => [
+        'id' => 'footertopnavigationsecond',
+        'plugin' => 'menu_block_current_language:footer-top-navigation-2',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'menu_block_current_language:footer-top-navigation-2',
+          'label' => 'Connect',
+          'label_display' => TRUE,
+          'level' => 1,
+          'expand_all_items' => FALSE,
+          'depth' => 1,
+          'provider' => 'menu_block_current_language',
+          'translation_providers' => [
+            'views' => 'views',
+            'menu_link_content' => 'menu_link_content',
+            'default' => '0',
+          ],
+        ],
+        'weight' => 2,
+        'translations' => [
+          'fi' => 'Ota yhteyttä',
+          'sv' => 'Ta kontakt',
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'footer_top',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'headertopnavigation' => [
+      'block' => [
+        'id' => 'headertopnavigation',
+        'plugin' => 'menu_block_current_language:header-top-navigation',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'menu_block_current_language:header-top-navigation',
+          'label' => 'Header - Top navigation',
+          'level' => 1,
+          'expand_all_items' => FALSE,
+          'depth' => 1,
+          'provider' => 'menu_block_current_language',
+          'translation_providers' => [
+            'views' => 'views',
+            'menu_link_content' => 'menu_link_content',
+            'default' => '0',
+          ],
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'header_top',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'language_switcher' => [
+      'block' => [
+        'id' => 'language_switcher',
+        'plugin' => 'language_block:language_content',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'language_block:language_content',
+          'label' => 'Language switcher',
+          'provider' => 'language',
+        ],
+        'weight' => 2,
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'header_branding',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'page_title' => [
+      'block' => [
+        'id' => 'page_title',
+        'plugin' => 'page_title_block',
+        'provider' => 'helfi_base_content',
+        'weight' => -12,
+        'settings' => [
+          'id' => 'page_title_block',
+          'label' => 'Page title',
+          'provider' => 'core',
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'lowercontentblock' => [
+      'block' => [
+        'id' => 'lowercontentblock',
+        'plugin' => 'lower_content_block',
+        'provider' => 'helfi_base_content',
+        'weight' => -9,
+        'settings' => [
+          'id' => 'lower_content_block',
+          'label' => 'Lower content block',
+          'provider' => 'helfi_platform_config',
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'after_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'sidebarcontentblock' => [
+      'block' => [
+        'id' => 'sidebarcontentblock',
+        'plugin' => 'sidebar_content_block',
+        'provider' => 'helfi_base_content',
+        'weight' => -9,
+        'settings' => [
+          'id' => 'sidebar_content_block',
+          'label' => 'Sidebar content block',
+          'provider' => 'helfi_platform_config',
+        ],
+        'visibility' => [
+          'entity_bundle:node' => [
+            'id' => 'entity_bundle:node',
+            'negate' => TRUE,
+            'context_mapping' => [
+              'node' => '@node.node_route_context:node',
+            ],
+            'bundles' => [
+              'landing_page' => 'landing_page',
+            ],
+          ],
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'sidebar_second',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'sitebranding' => [
+      'block' => [
+        'id' => 'sitebranding',
+        'plugin' => 'system_branding_block',
+        'provider' => 'helfi_base_content',
+        'weight' => 1,
+        'settings' => [
+          'id' => 'system_branding_block',
+          'label' => 'Site branding',
+          'provider' => 'system',
+          'use_site_logo' => TRUE,
+          'use_site_name' => TRUE,
+          'use_site_slogan' => FALSE,
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => 'hdbt',
+          'region' => 'header_branding',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
  * Implements hook_install().
  */
 function helfi_base_content_install($is_syncing) : void {
@@ -94,34 +568,9 @@ function helfi_base_content_install($is_syncing) : void {
   /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 
-  $block = [
-    'id' => 'brandingnavigation',
-    'plugin' => 'menu_block_current_language:branding-navigation',
-    'settings' => [
-      'id' => 'menu_block_current_language:branding-navigation',
-      'label' => 'Branding - Navigation',
-      'depth' => 1,
-      'level' => 1,
-      'expand_all_items' => FALSE,
-      'translation_providers' => [
-        'views' => 'views',
-        'menu_link_content' => 'menu_link_content',
-        'default' => '0',
-      ],
-    ],
-    'provider' => 'helfi_base_content',
-  ];
+  foreach (helfi_base_content_get_block_configurations() as $block_config) {
+    ['block' => $block, 'variations' => $variations] = $block_config;
+    $block_installer->install($block, $variations);
+  }
 
-  $variations = [
-    [
-      'theme' => 'hdbt',
-      'region' => 'header_branding',
-    ],
-    [
-      'theme' => 'stark',
-      'region' => 'content',
-    ],
-  ];
-
-  $block_installer->install($block, $variations);
 }
