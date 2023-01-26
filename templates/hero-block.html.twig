@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Template for the hero block.
+ *
+ * Variables:
+ * - paragraphs: An array of paragraph entities
+ * - computed: Automatically computed data from parent entity
+ *
+ * @see \Drupal\helfi_platform_config\Plugin\Block\HeroBlock
+ */
+#}
+
+
+{% if paragraphs %}
+  <div class="hero-wrapper {{ first_paragraph_grey }}">
+    {% for paragraph in paragraphs %}
+      {% if is_revision %}
+        {{ drupal_entity_revision('paragraph', paragraph.target_revision_id) }}
+      {% else %}
+        {{ drupal_entity('paragraph', paragraph.target_id) }}
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}

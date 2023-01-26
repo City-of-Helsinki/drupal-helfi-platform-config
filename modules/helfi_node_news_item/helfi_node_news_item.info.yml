@@ -9,5 +9,6 @@ dependencies:
   - helfi_image_styles:helfi_image_styles
   - helfi_media:helfi_media
   - publication_date:publication_date
+  - social_media:social_media
 'interface translation project': helfi_node_news_item
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_node_news_item/translations/%language.po

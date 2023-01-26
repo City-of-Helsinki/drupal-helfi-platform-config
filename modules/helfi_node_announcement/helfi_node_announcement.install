@@ -35,6 +35,7 @@ function helfi_node_announcement_install_blocks() {
       'label' => 'Announcements',
     ],
     'provider' => 'helfi_node_announcement',
+    'weight' => -12,
   ];
 
   $variations = [
