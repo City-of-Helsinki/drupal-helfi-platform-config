@@ -14,3 +14,20 @@ function helfi_react_search_event_list_allowed_values_function() : array {
     5 => 5,
   ];
 }
+
+function helfi_react_search_preprocess_paragraph(array &$variables) {
+  $reactParagraphs = [
+    'school_search'
+  ];
+  
+  $type = $variables['paragraph']->getType();
+
+  $config = \Drupal::config('elastic_proxy.settings');
+  if (
+    isset($variables['paragraph']) &&
+    in_array($variables['paragraph']->getType(), $reactParagraphs) &&
+    $proxyUrl = $config->get('elastic_proxy_url')
+  ) {
+    $variables['#attached']['drupalSettings']['helfi_react_search']['elastic_proxy_url'] = $proxyUrl;
+  }
+}
