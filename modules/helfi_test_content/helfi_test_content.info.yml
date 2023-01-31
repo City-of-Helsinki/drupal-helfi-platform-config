@@ -5,7 +5,10 @@ core_version_requirement: '^8 || ^9'
 package: HELfi
 dependencies:
   - default_content:default_content
+  - helfi_charts:helfi_charts
   - helfi_content:helfi_content
+  - helfi_media:helfi_media
+  - helfi_media_map_config:helfi_media_map_config
   - helfi_tpr:helfi_tpr
 default_content:
   menu_link_content:
