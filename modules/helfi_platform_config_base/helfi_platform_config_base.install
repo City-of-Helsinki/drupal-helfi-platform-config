@@ -23,7 +23,7 @@ function helfi_platform_config_base_install($is_syncing) : void {
   // Remove the obsolete footer menu.
   Drupal::configFactory()->getEditable('system.menu.footer')->delete();
 
-  // Install ahdbt and hdbt_admin themes.
+  // Install hdbt and hdbt_admin themes.
   Drupal::service('theme_installer')->install(['hdbt', 'hdbt_admin']);
   Drupal::configFactory()->getEditable('system.theme')
     ->set('default', 'hdbt')

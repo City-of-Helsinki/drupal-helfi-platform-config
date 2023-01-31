@@ -72,6 +72,7 @@ final class BlockInstaller {
    */
   public function install(array $block, array $variations) : void {
     $installed = 0;
+    $storage = $this->entityTypeManager->getStorage('block');
 
     foreach ($variations as $variation) {
       if (!isset($variation['theme'], $variation['region'])) {
@@ -102,20 +103,13 @@ final class BlockInstaller {
         throw new ConfigException('Missing required "id" or "provider" block config.');
       }
 
-      $this->entityTypeManager->getStorage('block')
-        ->create($config)
-        ->save();
-
-      $installed++;
+      if (!$storage->load($config['id'])) {
+        $storage->create($config)->save();
+        $installed++;
+      }
     }
 
-    if ($installed === 0) {
-      throw new ConfigException(
-        sprintf('No valid theme variations found for given block: %s', $block['id'])
-      );
-    }
-
-    if (isset($config['translations'])) {
+    if ($installed > 0 && isset($config['translations'])) {
       $this->createTranslations($block['id'], $config['translations']);
       unset($config['translations']);
     }

@@ -16,7 +16,12 @@ function helfi_base_content_themes_installed($theme_list) {
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 
   foreach ($theme_list as $theme) {
-    if (str_starts_with($theme, 'hdbt')) {
+    if (in_array($theme, ['hdbt', 'hdbt_subtheme'])) {
+      // Set the current theme as default theme.
+      Drupal::configFactory()->getEditable('system.theme')
+        ->set('default', $theme)
+        ->save();
+
       foreach (helfi_base_content_get_block_configurations($theme) as $block_config) {
         ['block' => $block, 'variations' => $variations] = $block_config;
         $block_installer->install($block, $variations);
