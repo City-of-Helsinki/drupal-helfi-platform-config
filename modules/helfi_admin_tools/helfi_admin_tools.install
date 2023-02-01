@@ -2,51 +2,28 @@
 
 /**
  * @file
- * Update hooks for helfi admin tools and general content.
+ * Contains install functions for Helfi admin tools.
  */
 
 declare(strict_types = 1);
 
 /**
- * Manually update HDBT and HDBT Subtheme favicon settings.
- *
- * @todo käy tää läpi
+ * Installs Helfi admin tools module.
  */
-function hdbt_content_update_9006() {
-  $theme_handler = Drupal::service('theme_handler');
-  $config_factory = \Drupal::configFactory();
-
-  // Handle HDBT theme.
-  if ($theme_handler->themeExists('hdbt')) {
-
-    // Update HDBT favicon settings.
-    $hdbt = $config_factory->getEditable('hdbt.settings');
-    $hdbt_data = $hdbt->getRawData();
-    if (!empty($hdbt_data)) {
-      $hdbt_data['favicon']['path'] = '';
-      $hdbt_data['favicon']['use_default'] = 0;
-      $hdbt->setData($hdbt_data)->save(TRUE);
-    }
+function helfi_admin_tools_install() : void {
+  if (!Drupal::moduleHandler()->moduleExists('config_ignore')) {
+    return;
   }
 
-  // Handle HDBT Subtheme.
-  if ($theme_handler->themeExists('hdbt_subtheme')) {
+  // Add hdbt_admin_tools settings to config ignore.
+  $config = Drupal::configFactory()->getEditable('config_ignore.settings');
+  $ignored = $config->get('ignored_config_entities') ?? [];
 
-    // Update HDBT favicon settings.
-    $hdbt_subtheme = $config_factory->getEditable('hdbt_subtheme.settings');
-    $hdbt_subtheme_data = $hdbt_subtheme->getRawData();
-    if (!empty($hdbt_subtheme_data)) {
-      $hdbt_subtheme_data['favicon']['path'] = '';
-      $hdbt_subtheme_data['favicon']['use_default'] = 0;
-    }
-    else {
-      $hdbt_subtheme_data = [
-        'favicon' => [
-          'use_default' => 0,
-          'path' => '',
-        ],
-      ];
-    }
-    $hdbt_subtheme->setData($hdbt_subtheme_data)->save(TRUE);
+  // @todo Find out if we can change the hdbt_admin_tools configuration prefix without BC breaks.
+  $config_ignore = 'hdbt_admin_tools.site_settings';
+
+  if (!in_array($config_ignore, $ignored)) {
+    $ignored[] = $config_ignore;
   }
+  $config->set('ignored_config_entities', $ignored)->save();
 }

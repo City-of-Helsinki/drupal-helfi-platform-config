@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_admin_tools\Form\SiteSettings;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\helfi_tpr\Entity\Unit;
 use Drupal\node\NodeInterface;
@@ -294,4 +295,76 @@ function helfi_admin_tools_preprocess_toolbar(&$variables) : void {
       }
     }
   }
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function helfi_admin_tools_toolbar_alter(&$items) : void {
+  foreach ($items as &$value) {
+    if (!array_key_exists('#attached', $value)) {
+      continue;
+    }
+
+    if (is_array($value['#attached']['library'])) {
+      $value['#attached']['library'][] = 'helfi_admin_tools/menu_styles';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alter config translation edit form.
+ */
+function helfi_admin_tools_form_config_translation_form_alter(&$form, &$form_state, $form_id) : void {
+  $form_ids = [
+    'config_translation_add_form',
+    'config_translation_edit_form',
+  ];
+
+  if (in_array($form_id, $form_ids)) {
+    // @todo Find out if we can change the hdbt_admin_tools configuration prefix without BC breaks.
+    $settings = &$form['config_names']['hdbt_admin_tools.site_settings'];
+
+    // Don't translate global fields.
+    $settings['footer_settings']['footer_color']['#disabled'] = TRUE;
+    $settings['site_settings']['koro']['#disabled'] = TRUE;
+    $settings['site_settings']['theme_color']['#disabled'] = TRUE;
+  }
+}
+
+/**
+ * Provides options for the color palettes field.
+ *
+ * @todo Check if this is needed.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function helfi_admin_tools_color_palette_allowed_values() : array {
+  return SiteSettings::getColorPalettes();
+}
+
+/**
+ * Provides default value for the color palettes field.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function helfi_admin_tools_color_palette_default_value() : array {
+  $cached = \Drupal::cache()->get('hdbt_settings:theme_color');
+
+  if ($cached) {
+    return [
+      ['value' => $cached->data],
+    ];
+  }
+  // @todo Find out if we can change the hdbt_admin_tools configuration prefix without BC breaks.
+  $settings = \Drupal::config('hdbt_admin_tools.site_settings');
+  return ($value = $settings->get('site_settings.theme_color')) ? [['value' => $value]] : [];
 }
