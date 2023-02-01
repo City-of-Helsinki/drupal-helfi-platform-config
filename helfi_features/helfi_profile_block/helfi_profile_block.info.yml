@@ -1,0 +1,7 @@
+name: 'HELfi Profile Block'
+type: module
+description: Provides a block that has user information and logout button.
+package: HELfi
+core: 8.x
+core_version_requirement: ^8 || ^9
+'interface translation project': helfi_profile_block
