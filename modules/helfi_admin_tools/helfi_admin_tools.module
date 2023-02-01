@@ -1,0 +1,297 @@
+<?php
+
+/**
+ * @file
+ * Contains alterations for content.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_tpr\Entity\Service;
+use Drupal\helfi_tpr\Entity\Unit;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_language_switch_links_alter().
+ */
+function helfi_admin_tools_language_switch_links_alter(array &$links): void {
+  $route_match = Drupal::routeMatch();
+  $entity = FALSE;
+
+  // Determine if the current route represents an entity.
+  if (
+    ($route = $route_match->getRouteObject()) &&
+    ($parameters = $route->getOption('parameters'))
+  ) {
+    foreach ($parameters as $name => $options) {
+      if (
+        isset($options['type']) &&
+        str_starts_with($options['type'], 'entity:')
+      ) {
+        $parameter = $route_match->getParameter($name);
+        if (
+          $parameter instanceof ContentEntityInterface &&
+          $parameter->hasLinkTemplate('canonical')
+        ) {
+          $entity = $parameter;
+          break;
+        }
+      }
+    }
+  }
+
+  // @todo Needs a functionality for the alternative languages which should be shown in an alternative menu.
+  $alternative_languages = [
+    'ru',
+  ];
+
+  // Compare the links with current entity and check for possible translations.
+  foreach ($links as $lang_code => &$link) {
+    $link['#abbreviation'] = $lang_code;
+
+    if (in_array($lang_code, $alternative_languages)) {
+      $link['#alternative_language'] = TRUE;
+    }
+
+    if (!$entity instanceof ContentEntityInterface) {
+      continue;
+    }
+
+    if (!$entity->hasTranslation($lang_code)) {
+      $link['#untranslated'] = TRUE;
+      continue;
+    }
+
+    if (
+      method_exists($entity->getTranslation($lang_code), 'isPublished') &&
+      !$entity->getTranslation($lang_code)->isPublished()
+    ) {
+      $link['#untranslated'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function helfi_admin_tools_form_eu_cookie_compliance_block_form_alter(&$form): void {
+  // Hide 'withdraw' button from EU Cookie compliance block form.
+  $form['buttons']['withdraw']['#access'] = FALSE;
+}
+
+/**
+ * Gets the current page main entity.
+ *
+ * @return \Drupal\Core\Entity\EntityInterface|null
+ *   Current page main entity.
+ */
+function helfi_admin_tools_get_page_entity(): ?EntityInterface {
+  $page_entity = &drupal_static(__FUNCTION__, NULL);
+  if (!empty($page_entity)) {
+    return $page_entity;
+  }
+  $types = array_keys(Drupal::entityTypeManager()->getDefinitions());
+  $route = Drupal::routeMatch();
+  $params = $route->getParameters()->all();
+
+  foreach ($types as $type) {
+    foreach (['revision' => $type . '_revision', 'canonical' => $type] as $route_name => $version) {
+      if (!empty($params[$version]) && $route->getRouteName() === "entity.$type.$route_name") {
+        return $params[$version];
+      }
+    }
+  }
+  return NULL;
+}
+
+/**
+ * Gets the current page main entity.
+ *
+ * @codingStandardsIgnoreStart
+ * @deprecated in helfi_platform_config:3.0.0 and is removed from helfi_platform_config:3.2.0.
+ *   Use helfi_admin_tools_get_page_entity() instead.
+ *
+ * @return \Drupal\Core\Entity\EntityInterface
+ *   Current page main entity.
+ */
+function hdbt_content_get_page_entity() {
+  return helfi_admin_tools_get_page_entity();
+}
+// @codingStandardsIgnoreEnd
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_admin_tools_preprocess_page(&$variables) : void {
+  $variables['has_sidebar'] = FALSE;
+
+  // Handle sidebar visibility.
+  $entity = helfi_admin_tools_get_page_entity();
+  if ($entity instanceof ContentEntityInterface) {
+
+    // Set has_hero variable according to field_has_hero.
+    if ($entity->hasField('field_has_hero')) {
+      $variables['has_hero'] = $entity->field_has_hero->value;
+    }
+
+    // Handle sidebar visibility.
+    helfi_admin_tools_handle_sidebar_visibility($variables, $entity);
+  }
+}
+
+/**
+ * Handle sidebar visibility based on current entity menu links.
+ *
+ * @param array $variables
+ *   Variables array.
+ * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ *   Content entity, like tpr_service, tpr_unit or node.
+ */
+function helfi_admin_tools_handle_sidebar_visibility(array &$variables, ContentEntityInterface $entity) : void {
+
+  // The entities that need to be handled listed as content type => entity type.
+  $allowed_entities = [
+    'page' => 'node',
+    'news_item' => 'node',
+    'tpr_unit' => 'tpr_unit',
+    'tpr_service' => 'tpr_service',
+  ];
+
+  // Trigger hook_sidebar_visibility_allowed_entities_alter().
+  // Allow modules to alter the list of allowed entities.
+  \Drupal::service('module_handler')
+    ->alter('sidebar_visibility_allowed_entities', $allowed_entities);
+
+  // Get possible (node) content type.
+  $content_type = $entity instanceof NodeInterface ? $entity->getType() : FALSE;
+
+  // Check if (node) content type is in allowed content types.
+  if ($content_type && !array_key_exists($content_type, $allowed_entities)) {
+    return;
+  }
+
+  // Check if entity type is in allowed entity types.
+  if (!in_array($entity->getEntityTypeId(), $allowed_entities)) {
+    return;
+  }
+
+  // Load menu links for the current page entity.
+  $menu_link_manager = Drupal::service('plugin.manager.menu.link');
+  $menu_links = $menu_link_manager->loadLinksByRoute(
+    "entity.{$entity->getEntityTypeId()}.canonical",
+    [$entity->getEntityTypeId() => $entity->id()],
+    'main'
+  );
+
+  $variables['has_sidebar_first'] = FALSE;
+  $variables['has_sidebar_second'] = FALSE;
+
+  // If there are links in current language, apply "has_sidebar_first" variable
+  // to indicate twig templates how to render the sidebar.
+  // However, if the menu link is set to first level, do not render the
+  // sidebar.
+  if (!empty($menu_links)) {
+    $langcode = \Drupal::languageManager()
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
+
+    foreach ($menu_links as $menu_link) {
+      /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $menu_link */
+      if ($menu_link) {
+        /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
+        $menu_link_content = \Drupal::service('entity.repository')
+          ->loadEntityByUuid('menu_link_content', $menu_link->getDerivativeId());
+        if (
+          $menu_link_content->hasTranslation($langcode) &&
+          !empty($menu_link_content->getParentId())
+        ) {
+          $variables['has_sidebar_first'] = TRUE;
+        }
+      }
+    }
+  }
+
+  // Hide the sidebar and menu if the current entity has
+  // "hide sidebar navigation" value set.
+  if (
+    $entity->hasField('hide_sidebar_navigation') &&
+    $entity->get('hide_sidebar_navigation')->value
+  ) {
+    $variables['has_sidebar_first'] = FALSE;
+  }
+
+  // Check if page entity has sidebar content field available and set
+  // "has_sidebar_second" variable accordingly.
+  if (
+    $entity->hasField('field_sidebar_content') &&
+    !$entity->get('field_sidebar_content')->isEmpty()
+  ) {
+    $variables['has_sidebar_second'] = TRUE;
+  }
+
+  // Enable sidebar second for News item.
+  if (isset($content_type) && $content_type === 'news_item') {
+    $variables['has_sidebar_second'] = TRUE;
+  }
+
+  // Enable sidebar second for TPR unit if contact information exists.
+  if ($entity instanceof Unit) {
+    if (
+      !$entity->get('address')->isEmpty() ||
+      !$entity->get('email')->isEmpty() ||
+      !$entity->get('phone')->isEmpty() ||
+      !$entity->get('address_postal')->isEmpty() ||
+      !$entity->get('opening_hours')->isEmpty() ||
+      !$entity->get('www')->isEmpty()
+    ) {
+      $variables['has_sidebar_second'] = TRUE;
+    }
+  }
+
+  // Enable sidebar second for TPR service if important links exists.
+  if ($entity instanceof Service && !$entity->get('links')->isEmpty()) {
+    $variables['has_sidebar_second'] = TRUE;
+  }
+}
+
+/**
+ * Handle sidebar visibility based on current entity menu links.
+ *
+ * @codingStandardsIgnoreStart
+ * @deprecated in helfi_platform_config:3.0.0 and is removed from helfi_platform_config:3.2.0.
+ *   Use helfi_admin_tools_handle_sidebar_visibility() instead.
+ *
+ * @param array $variables
+ *   Variables array.
+ * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ *   Content entity, like tpr_service, tpr_unit or node.
+ */
+function _hdbt_content_handle_sidebar_visibility(array &$variables, ContentEntityInterface $entity): void {
+  helfi_admin_tools_handle_sidebar_visibility($variables, $entity);
+}
+// @codingStandardsIgnoreEnd
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_admin_tools_preprocess_toolbar(&$variables) : void {
+  if ($variables['element']['#attributes']['id'] === 'toolbar-administration') {
+    $theme_handler = Drupal::service('theme_handler');
+    if (!$theme_handler->themeExists('hdbt')) {
+      return;
+    }
+
+    $variables['#attached']['library'][] = 'hdbt/environment-indicator';
+    $environment = getenv('APP_ENV');
+    $environments = ['local', 'testing', 'staging', 'production', 'development'];
+
+    foreach ($environments as $value) {
+      if ($environment === $value) {
+        $variables['attributes']['class'][] = 'env-' . $value;
+      }
+    }
+  }
+}

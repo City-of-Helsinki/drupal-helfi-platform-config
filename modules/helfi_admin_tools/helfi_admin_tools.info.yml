@@ -1,0 +1,6 @@
+name: 'Helfi admin tools'
+type: module
+description: 'Performs alterations to hdbt and hdbt admin related content.'
+core_version_requirement: ^9 || ^10
+'interface translation project': helfi_admin_tools
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_admin_tools/translations/%language.po
