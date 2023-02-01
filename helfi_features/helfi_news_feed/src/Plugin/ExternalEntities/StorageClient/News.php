@@ -156,7 +156,7 @@ final class News extends ExternalEntityStorageClientBase {
       'fields[node--news_item]' => 'id',
       // No need to fetch non-published entities.
       'fields[status]' => 1,
-      'filter[status][value]' => 1
+      'filter[status][value]' => 1,
     ];
 
     if ($start) {
