@@ -11,18 +11,20 @@ use Drupal\Core\Field\Entity\BaseFieldOverride;
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function helfi_media_chart_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  if ($entity_type->id() === 'media' && $bundle === 'helfi_chart') {
-    if (isset($fields['field_helfi_chart_url'])) {
-      $fields['field_helfi_chart_url']->addConstraint('ValidHelfiChartLink', []);
-    }
+function helfi_media_chart_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) : void {
+  if (
+    $entity_type->id() === 'media' &&
+    $bundle === 'helfi_chart' &&
+    isset($fields['field_helfi_chart_url'])
+  ) {
+    $fields['field_helfi_chart_url']->addConstraint('ValidHelfiChartLink', []);
   }
 }
 
 /**
  * Implements hook_entity_bundle_field_info().
  */
-function helfi_media_chart_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
+function helfi_media_chart_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) : array {
   $fields = [];
 
   // Switch Helfi Chart media type 'name' label to "Administrative title".
@@ -42,7 +44,7 @@ function helfi_media_chart_entity_bundle_field_info(EntityTypeInterface $entity_
 /**
  * Implements hook_theme().
  */
-function helfi_media_chart_theme($existing, $type, $theme, $path) {
+function helfi_media_chart_theme($existing, $type, $theme, $path) : array {
   return [
     'chart_iframe' => [
       'variables' => [
@@ -67,5 +69,8 @@ function helfi_media_chart_theme($existing, $type, $theme, $path) {
  */
 function helfi_media_chart_preprocess_chart_iframe(&$variables) {
   $variables['chart_service_url'] = $variables['domain'];
-  $variables['privacy_policy_url'] = _helfi_platform_config_eu_cookie_compliance_get_privacy_policy_url();
+
+  if (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
+    $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
+  }
 }

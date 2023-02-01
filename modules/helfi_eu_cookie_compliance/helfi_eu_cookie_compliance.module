@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Contains alterations for 'helfi_eu_cookie_compliance' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Url;
+
+/**
+ * Helper function to get the privacy policy link URL.
+ */
+function helfi_eu_cookie_compliance_get_privacy_policy_url(): Url|string {
+  $config = Drupal::config('eu_cookie_compliance.settings');
+  $link = $config->get('popup_link');
+
+  if (!$link) {
+    return Url::fromRoute('<front>');
+  }
+
+  return (UrlHelper::isExternal($link))
+    ? Url::fromUri($link)
+    : Url::fromUserInput($link === '<front>' ? '/' : $link);
+}

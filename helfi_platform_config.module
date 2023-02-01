@@ -5,8 +5,9 @@
  * Contains HELfi platform configuration alterations.
  */
 
+declare(strict_types = 1);
+
 use Drupal\block\Entity\Block;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -85,7 +86,7 @@ function helfi_platform_config_configure_paragraph_field_handler(ParagraphTypeCo
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
  */
-function helfi_platform_config_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+function helfi_platform_config_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) : void {
   // Replace node title on nodes with the visible title field.
   // @todo Needs work on caches, wrong title is displayed if user visits content listing.
   if ($entity->hasField('field_unit_visible_title')) {
@@ -96,7 +97,7 @@ function helfi_platform_config_node_view_alter(array &$build, EntityInterface $e
 /**
  * Implements hook_module_implements_alter().
  */
-function helfi_platform_config_module_implements_alter(&$implementations, $hook) {
+function helfi_platform_config_module_implements_alter(&$implementations, $hook) : void {
   if ($hook == 'modules_installed') {
     $moduleHandler = Drupal::service('module_handler');
     if ($moduleHandler->moduleExists('locale')) {
@@ -108,14 +109,14 @@ function helfi_platform_config_module_implements_alter(&$implementations, $hook)
 /**
  * Implements hook_page_attachments().
  */
-function helfi_platform_config_page_attachments(array &$attachments) {
+function helfi_platform_config_page_attachments(array &$attachments) : void {
   $attachments['#attached']['library'][] = 'helfi_platform_config/clear_localstorage';
 }
 
 /**
  * Implements hook_theme().
  */
-function helfi_platform_config_theme() {
+function helfi_platform_config_theme() : array {
   return [
     'cookie_consent_intro' => [
       'variables' => [
@@ -159,7 +160,7 @@ function helfi_platform_config_theme() {
 /**
  * Implements hook_block_access().
  */
-function helfi_platform_config_block_access(Block $block, $operation, AccountInterface $account) {
+function helfi_platform_config_block_access(Block $block, $operation, AccountInterface $account): AccessResult {
   // Handle page title block access based on field_has_hero value.
   if ($operation === 'view' && $block->getPluginId() === 'page_title_block') {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
@@ -183,7 +184,7 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
 /**
  * Implements hook_token_info().
  */
-function helfi_platform_config_token_info() {
+function helfi_platform_config_token_info() : array {
   $info['tokens']['site']['page-title-suffix'] = [
     'name' => t('Page title suffix'),
     'description' => t('Official suffix for page title.'),
@@ -221,23 +222,12 @@ function helfi_platform_config_tokens(
     if ($name === 'page-title-suffix') {
       $language = Drupal::languageManager()->getCurrentLanguage();
 
-      switch ($language->getId()) {
-        case 'fi':
-          $replacements[$original] = 'Helsingin kaupunki';
-          break;
-
-        case 'sv':
-          $replacements[$original] = 'Helsingfors stad';
-          break;
-
-        case 'ru':
-          $replacements[$original] = 'Гopoд Xeльcинки';
-          break;
-
-        default:
-          $replacements[$original] = 'City of Helsinki';
-          break;
-      }
+      $replacements[$original] = match ($language->getId()) {
+        'fi' => 'Helsingin kaupunki',
+        'sv' => 'Helsingfors stad',
+        'ru' => 'Гopoд Xeльcинки',
+        default => 'City of Helsinki',
+      };
     }
   }
 
@@ -251,7 +241,7 @@ function helfi_platform_config_system_breadcrumb_alter(
   Breadcrumb &$breadcrumb,
   RouteMatchInterface $route_match,
   array $context
-) {
+) : void {
   // Skip admin routes.
   if ($route_match->getRouteObject()?->getOption('_admin_route')) {
     return;
@@ -310,22 +300,8 @@ function helfi_platform_config_system_breadcrumb_alter(
 /**
  * Implements hook_preprocess_HOOK().
  */
-function helfi_platform_config_preprocess_react_and_share(&$variables) {
-  $variables['privacy_policy_url'] = _helfi_platform_config_eu_cookie_compliance_get_privacy_policy_url();
-}
-
-/**
- * Helper function to get the privacy policy link URL.
- */
-function _helfi_platform_config_eu_cookie_compliance_get_privacy_policy_url(): Url|string {
-  $config = Drupal::config('eu_cookie_compliance.settings');
-  $link = $config->get('popup_link');
-
-  if (!$link) {
-    return Url::fromRoute('<front>');
+function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
+  if (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
+    $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
   }
-
-  return (UrlHelper::isExternal($link))
-    ? Url::fromUri($link)
-    : Url::fromUserInput($link === '<front>' ? '/' : $link);
 }
