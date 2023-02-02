@@ -17,22 +17,31 @@ function helfi_platform_config_base_install($is_syncing) : void {
     return;
   }
 
+  $config_factory = Drupal::configFactory();
+  $theme_installer = Drupal::service('theme_installer');
+  $module_installer = Drupal::service('module_installer');
+
   // Remove the default frontpage view.
-  Drupal::configFactory()->getEditable('views.view.frontpage')->delete();
+  $config_factory->getEditable('views.view.frontpage')->delete();
 
   // Remove the obsolete footer menu.
-  Drupal::configFactory()->getEditable('system.menu.footer')->delete();
+  $config_factory->getEditable('system.menu.footer')->delete();
 
   // Install hdbt and hdbt_admin themes.
-  Drupal::service('theme_installer')->install(['hdbt', 'hdbt_admin']);
-  Drupal::configFactory()->getEditable('system.theme')
+  $theme_installer->install(['hdbt', 'hdbt_admin']);
+  $config_factory->getEditable('system.theme')
     ->set('default', 'hdbt')
     ->set('admin', 'hdbt_admin')
     ->save();
 
+  // Install gin_toolbar as installing it as a theme dependency will not install
+  // HDBT Admin theme at all.
+  // See: https://git.drupalcode.org/project/gin/-/blob/8.x-3.x/gin.info.yml#L7
+  $module_installer->install(['gin_toolbar']);
+
   // Uninstall stark theme.
-  Drupal::service('theme_installer')->uninstall(['stark']);
+  $theme_installer->uninstall(['stark']);
 
   // Remove an obsolete block that is named hdbt_admin.
-  Drupal::configFactory()->getEditable('block.block.hdbt_admin')->delete();
+  $config_factory->getEditable('block.block.hdbt_admin')->delete();
 }
