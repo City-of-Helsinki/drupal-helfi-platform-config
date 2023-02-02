@@ -23,7 +23,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SiteSettings extends ConfigFormBase {
 
-  // @todo Find out if we can change the hdbt_admin_tools configuration prefix without BC breaks.
   const SITE_SETTINGS_CONFIGURATION = 'hdbt_admin_tools.site_settings';
 
   /**

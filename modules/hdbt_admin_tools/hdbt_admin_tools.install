@@ -20,8 +20,6 @@ function hdbt_admin_tools_install(): void {
   // Add hdbt_admin_tools settings to config ignore.
   $config = Drupal::configFactory()->getEditable('config_ignore.settings');
   $ignored = $config->get('ignored_config_entities') ?? [];
-
-  // @todo Find out if we can change the hdbt_admin_tools configuration prefix without BC breaks.
   $config_ignore = 'hdbt_admin_tools.site_settings';
 
   if (!in_array($config_ignore, $ignored)) {
