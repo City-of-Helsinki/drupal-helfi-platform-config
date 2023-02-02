@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function helfi_media_map_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+function helfi_media_map_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) : void {
   if ($entity_type->id() === 'media' && $bundle === 'hel_map') {
     if (isset($fields['field_media_hel_map'])) {
       $fields['field_media_hel_map']->addConstraint('ValidMediaMapLink', []);
@@ -21,7 +21,7 @@ function helfi_media_map_entity_bundle_field_info_alter(&$fields, EntityTypeInte
 /**
  * Implements hook_theme().
  */
-function helfi_media_map_theme($existing, $type, $theme, $path) {
+function helfi_media_map_theme($existing, $type, $theme, $path) : array {
   return [
     'helfi_media_map' => [
       'variables' => ['link' => NULL, 'iframe' => NULL],
