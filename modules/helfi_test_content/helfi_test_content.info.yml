@@ -1,11 +1,10 @@
 name: 'HELfi Platform test content'
 type: module
-core: 8.x
-core_version_requirement: '^8 || ^9'
+core_version_requirement: ^9 || ^10
 package: HELfi
 dependencies:
-  - default_content
-  - helfi_content
+  - default_content:default_content
+  - helfi_base_content
 default_content:
   menu_link_content:
     - 1d7dcb8f-92a2-42e9-ab91-b531512a5481

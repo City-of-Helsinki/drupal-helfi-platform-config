@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+
+msgid "Table of contents"
+msgstr "Sisällysluettelo"
+
+msgid "Enable checkbox to create automatic table of contents for the page."
+msgstr "Valitse tämä jos haluat aktivoida automaattisen sisällysluettelon sivulle."
+
+msgid "Table of contents title"
+msgstr "Sisällysluettelon otsikko"
+
+msgid "Loading table of contents"
+msgstr "Ladataan sisällysluetteloa"
+
+msgid "On this page"
+msgstr "Tällä sivulla"

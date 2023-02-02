@@ -1,10 +1,9 @@
 name: 'HELfi Platform TPR test content '
 type: module
-core: 8.x
-core_version_requirement: '^8 || ^9'
+core_version_requirement: ^9 || ^10
 package: HELfi
 dependencies:
-  - helfi_test_content
+  - helfi_test_content:helfi_test_content
 default_content:
   menu_link_content:
     - 1b2695dd-8b5f-4d48-a7c4-dba1b8522b9f

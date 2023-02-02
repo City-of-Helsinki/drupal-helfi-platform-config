@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+
+msgid "Table of contents"
+msgstr "Innehållsförteckning"
+
+msgid "Enable checkbox to create automatic table of contents for the page."
+msgstr "Aktivera kryssrutan för att skapa automatisk innehållsförteckning för sidan."
+
+msgid "Table of contents title"
+msgstr "Innehållsförteckningens titel"
+
+msgid "Loading table of contents"
+msgstr "Laddar innehållsförteckningen"
+
+msgid "On this page"
+msgstr "På den här sidan"
