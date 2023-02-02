@@ -1,0 +1,123 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function helfi_toc_entity_base_field_info(EntityTypeInterface $entity_type) {
+
+  // Entity types to be updated.
+  $entity_types = [
+    'node',
+    'tpr_service',
+  ];
+
+  // Add color palette field to each entity type.
+  if (in_array($entity_type->id(), $entity_types)) {
+    $configurable_form = $entity_type->id() === 'tpr_service';
+
+    $fields['toc_enabled'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Table of contents'))
+      ->setDescription(t('Enable checkbox to create automatic table of contents for the page.'))
+      ->setDefaultValue(FALSE)
+      ->setInitialValue(FALSE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
+        'settings' => ['display_label' => TRUE],
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', $configurable_form)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['toc_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Table of contents title'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDefaultValue(t('Table of contents'))
+      ->setDisplayConfigurable('form', $configurable_form);
+
+    return $fields;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function helfi_toc_form_tpr_service_form_alter(&$form) {
+  helfi_toc_apply_form_theme($form);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function helfi_toc_form_node_form_alter(&$form) {
+  helfi_toc_apply_form_theme($form);
+}
+
+/**
+ * Handle Table of contents fields visibility and access.
+ *
+ * @param array $form
+ *   Form.
+ */
+function helfi_toc_apply_form_theme(array &$form) {
+  $whitelisted_forms = [
+    'node_page_edit_form',
+    'node_page_form',
+    'tpr_service_form',
+    'node_district_edit_form',
+    'node_district_form'
+  ];
+
+  $form['toc_enabled']['#access'] = FALSE;
+  $form['toc_title']['#access'] = FALSE;
+
+  // Control Table of contents title field visibility via checkbox states.
+  if (in_array($form['#form_id'], $whitelisted_forms)) {
+    $form['toc_enabled']['#access'] = TRUE;
+    $form['toc_title']['#access'] = FALSE;
+    $form['toc_title']['#states'] = [
+      'visible' => [
+        ':input[name="toc_enabled[value]"]' => ['checked' => FALSE],
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_toc_preprocess_page(array &$variables) {
+  /** @var \Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  // Attach table of contents JS to every non-admin page.
+  if (!$admin_context->isAdminRoute()) {
+    $variables['#attached']['library'][] = 'helfi_toc/table_of_contents';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_toc_preprocess_field__toc_enabled(&$variables) {
+  $entity = $variables['element']['#object'];
+
+  if ($entity instanceof ContentEntityInterface) {
+    $variables['toc_enabled'] = (bool) $entity->get('toc_enabled')->value;
+    $variables['toc_title'] = t('On this page');
+    $variables['#attached']['library'][] = 'helfi_toc/table_of_contents';
+  }
+}
