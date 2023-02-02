@@ -4,7 +4,9 @@ hdbt_admin_tools.list_all:
     _controller: '\Drupal\hdbt_admin_tools\Controller\ListController::build'
     _title: 'Tools'
   requirements:
-    _permission: 'administer nodes'
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
 
 hdbt_admin_tools.site_settings_form:
   path: '/admin/tools/site-settings'
