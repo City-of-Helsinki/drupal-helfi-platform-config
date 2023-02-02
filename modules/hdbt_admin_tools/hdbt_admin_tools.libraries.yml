@@ -1,0 +1,87 @@
+color_palette_selection:
+  version: 1.x
+  js:
+    assets/js/colorPaletteSelection.js: { weight: -1 }
+  dependencies:
+    - core/jquery
+    - hdbt/color-palette
+    - hdbt_admin_tools/select2_icon
+
+columns-toggle:
+  js:
+    dist/js/columnsToggle.min.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+
+design_selection:
+  version: 1.x
+  js:
+    assets/js/designSelection.js: { weight: -1 }
+  dependencies:
+    - core/jquery
+    - hdbt_admin_tools/image_previewer
+    - hdbt_admin_tools/select2_icon
+
+image_previewer:
+  version: 1.x
+  js:
+    assets/js/imagePreviewer.js: { weight: -2 }
+  dependencies:
+    - core/jquery
+
+language_selector:
+  css:
+    theme:
+      assets/css/language_selector.css: {}
+  dependencies:
+    - core/drupal
+
+link_plugin_enhancements:
+  version: 1.x
+  js:
+    assets/js/linkPluginEnhancements.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+
+menu_styles:
+  css:
+    theme:
+       assets/css/menu.css: {}
+
+modal_window_position:
+  version: 1.x
+  js:
+    assets/js/modalWindowPosition.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+
+paragraph_selection:
+  version: 1.x
+  js:
+    assets/js/paragraphSelection.js: {}
+  dependencies:
+    - core/jquery
+    - hdbt_admin_tools/image_previewer
+    - hdbt_admin_tools/select2_icon
+
+site_settings:
+  js:
+    assets/js/siteSettingsDefaultColor.js: {}
+  dependencies:
+    - hdbt/hdbt-icons
+
+select2_icon:
+  version: 1.x
+  css:
+    theme:
+      assets/css/select2_icon.css: {}
+  js:
+    assets/js/select2_icon.js: { weight: -1 }
+  dependencies:
+    - select2/select2.min
+    - hdbt/hdbt-icons

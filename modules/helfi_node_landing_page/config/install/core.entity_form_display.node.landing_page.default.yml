@@ -9,7 +9,7 @@ dependencies:
     - field.field.node.landing_page.field_metatags
     - node.type.landing_page
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - media_library
     - metatag
     - paragraphs

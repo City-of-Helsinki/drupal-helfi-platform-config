@@ -8,7 +8,7 @@ dependencies:
     - paragraphs.paragraphs_type.target_group_link_item
   module:
     - link
-    - select2_icon
+    - hdbt_admin_tools
 id: paragraph.target_group_link_item.default
 targetEntityType: paragraph
 bundle: target_group_link_item

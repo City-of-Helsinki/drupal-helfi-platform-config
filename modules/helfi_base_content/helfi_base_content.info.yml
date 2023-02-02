@@ -17,8 +17,6 @@ dependencies:
   - easy_breadcrumb:easy_breadcrumb
   - editoria11y:editoria11y
   - entity_reference_revisions:entity_reference_revisions
-  # @todo Refactor hdbt_admin_editorial module and remove the dependency.
-  - hdbt_admin_editorial:hdbt_admin_editorial
   - helfi_platform_config:helfi_platform_config
   - helfi_user_roles:helfi_user_roles
   - linkit:linkit
@@ -32,6 +30,6 @@ dependencies:
   - pathauto:pathauto
   - redirect:redirect
   - scheduler:scheduler
-  - select2_icon:select2_icon
+  - hdbt_admin_tools:hdbt_admin_tools
   - simple_sitemap:simple_sitemap
   - twig_tweak:twig_tweak

@@ -5,7 +5,7 @@ dependencies:
     - field.storage.paragraph.field_icon
     - paragraphs.paragraphs_type.accordion_item
   module:
-    - select2_icon
+    - hdbt_admin_tools
 id: paragraph.accordion_item.field_icon
 field_name: field_icon
 entity_type: paragraph

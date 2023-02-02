@@ -9,7 +9,7 @@ dependencies:
     - field.field.node.announcement.field_announcement_type
     - node.type.announcement
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - link
     - path
     - scheduler

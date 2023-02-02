@@ -1,0 +1,10 @@
+hdbt_admin_tools.user_login_link:
+  path: '/user/{user}/login-link'
+  defaults:
+    _form: 'Drupal\hdbt_admin_tools\Form\UserLoginLink'
+    _title: 'Reset password'
+  requirements:
+    _permission: 'administer users'
+    _csrf_token: 'TRUE'
+  options:
+    _admin_route: TRUE

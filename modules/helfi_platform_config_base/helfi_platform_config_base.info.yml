@@ -2,7 +2,7 @@ name: 'HELfi Platform config: Base'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - hdbt_admin_editorial:hdbt_admin_editorial
+  - hdbt_admin_tools:hdbt_admin_tools
   - hdbt_admin_tools:hdbt_admin_tools
   - hdbt_content:hdbt_content
   - helfi_base_content:helfi_base_content

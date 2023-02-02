@@ -8,7 +8,7 @@ dependencies:
     - field.field.tpr_unit.tpr_unit.field_metatags
     - field.field.tpr_unit.tpr_unit.field_unit_type
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - helfi_tpr
     - media_library
     - metatag

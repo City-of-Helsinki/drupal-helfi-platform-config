@@ -12,7 +12,7 @@ dependencies:
   module:
     - link
     - options
-    - select2_icon
+    - hdbt_admin_tools
     - text
 id: paragraph.banner.default
 targetEntityType: paragraph

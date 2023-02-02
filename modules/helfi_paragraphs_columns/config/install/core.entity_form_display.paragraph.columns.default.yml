@@ -8,7 +8,7 @@ dependencies:
     - field.field.paragraph.columns.field_columns_title
     - paragraphs.paragraphs_type.columns
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - paragraphs
 id: paragraph.columns.default
 targetEntityType: paragraph

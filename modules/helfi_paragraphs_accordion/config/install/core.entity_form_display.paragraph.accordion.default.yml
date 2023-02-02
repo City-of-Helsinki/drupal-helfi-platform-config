@@ -10,7 +10,7 @@ dependencies:
     - field.field.paragraph.accordion.field_accordion_title_level
     - paragraphs.paragraphs_type.accordion
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - paragraphs
 id: paragraph.accordion.default
 targetEntityType: paragraph

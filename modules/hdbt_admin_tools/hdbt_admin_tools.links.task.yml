@@ -1,0 +1,4 @@
+hdbt_admin_tools.site_settings:
+  route_name: hdbt_admin_tools.site_settings_form
+  title: 'Site settings'
+  base_route: hdbt_admin_tools.site_settings_form

@@ -8,7 +8,7 @@ dependencies:
     - paragraphs.paragraphs_type.accordion_item
   module:
     - entity_reference_revisions
-    - select2_icon
+    - hdbt_admin_tools
 id: paragraph.accordion_item.default
 targetEntityType: paragraph
 bundle: accordion_item

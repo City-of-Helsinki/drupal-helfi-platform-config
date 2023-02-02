@@ -1,0 +1,990 @@
+<?php
+
+/**
+ * @file
+ * Contains alterations for content.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\hdbt_admin_tools\Form\SiteSettings;
+use Drupal\helfi_tpr\Entity\Service;
+use Drupal\helfi_tpr\Entity\Unit;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Url;
+use Drupal\helfi_api_base\Link\UrlHelper;
+use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\Select2Icon;
+use Drupal\user\UserInterface;
+
+/**
+ * Register routes to apply Gin’s content edit form layout.
+ *
+ * @return array
+ *   An array of route names.
+ *
+ * @see GinContentFormHelper->isContentForm()
+ */
+function hdbt_admin_tools_gin_content_form_routes(): array {
+  // Apply gin theme to TPR unit, TPR service and Taxonomy terms.
+  return [
+    'entity.tpr_unit.add_form',
+    'entity.tpr_unit.edit_form',
+    'entity.tpr_service.add_form',
+    'entity.tpr_service.edit_form',
+    'entity.tpr_service_channel.add_form',
+    'entity.tpr_service_channel.edit_form',
+    'entity.tpr_errand_service.add_form',
+    'entity.tpr_errand_service.edit_form',
+    'entity.tpr_ontology_word_details.add_form',
+    'entity.tpr_ontology_word_details.edit_form',
+    'entity.taxonomy_term.add_form',
+    'entity.taxonomy_term.edit_form',
+  ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function hdbt_admin_tools_theme(): array {
+  return [
+    'select2_icon_widget' => [
+      'render element' => 'element',
+      'preprocess functions' => [
+        'template_preprocess_select2_icon',
+        'template_preprocess_select',
+      ],
+    ],
+    'select2_icon' => [
+      'variables' => [
+        'icon_id' => NULL,
+        'icon_label' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function hdbt_admin_tools_form_node_form_alter(&$form, &$form_state, $form_id): void {
+  switch ($form_id) {
+    case 'node_landing_page_edit_form':
+    case 'node_landing_page_form':
+    case 'node_page_edit_form':
+    case 'node_page_form':
+      // Control Hero paragraph visibility via checkbox states.
+      $form['field_hero']['#states'] = [
+        'visible' => [
+          ':input[name="field_has_hero[value]"]' => ['checked' => TRUE],
+        ],
+      ];
+      break;
+  }
+  // Custom submit callback.
+  $form['actions']['submit']['#submit'][] = 'hdbt_admin_tools_node_form_submit_callback';
+}
+
+/**
+ * Form submit callback for node forms.
+ *
+ * Redirect content editor to correct translation after saving the node.
+ */
+function hdbt_admin_tools_node_form_submit_callback($form, FormStateInterface $form_state): void {
+  if ($lang_code = $form_state->get('langcode')) {
+    $language = [
+      'language' => \Drupal::languageManager()->getLanguage($lang_code),
+    ];
+    if ($nid = $form_state->get('nid')) {
+      $node = [
+        'node' => $nid,
+      ];
+      $form_state->setRedirect('entity.node.canonical', $node, $language);
+    }
+  }
+}
+
+/**
+ * Implements hook_language_switch_links_alter().
+ */
+function hdbt_admin_tools_language_switch_links_alter(array &$links): void {
+  $route_match = Drupal::routeMatch();
+  $entity = FALSE;
+
+  // Determine if the current route represents an entity.
+  if (
+    ($route = $route_match->getRouteObject()) &&
+    ($parameters = $route->getOption('parameters'))
+  ) {
+    foreach ($parameters as $name => $options) {
+      if (
+        isset($options['type']) &&
+        str_starts_with($options['type'], 'entity:')
+      ) {
+        $parameter = $route_match->getParameter($name);
+        if (
+          $parameter instanceof ContentEntityInterface &&
+          $parameter->hasLinkTemplate('canonical')
+        ) {
+          $entity = $parameter;
+          break;
+        }
+      }
+    }
+  }
+
+  // @todo Needs a functionality for the alternative languages which should be shown in an alternative menu.
+  $alternative_languages = [
+    'ru',
+  ];
+
+  // Compare the links with current entity and check for possible translations.
+  foreach ($links as $lang_code => &$link) {
+    $link['#abbreviation'] = $lang_code;
+
+    if (in_array($lang_code, $alternative_languages)) {
+      $link['#alternative_language'] = TRUE;
+    }
+
+    if (!$entity instanceof ContentEntityInterface) {
+      continue;
+    }
+
+    if (!$entity->hasTranslation($lang_code)) {
+      $link['#untranslated'] = TRUE;
+      continue;
+    }
+
+    if (
+      method_exists($entity->getTranslation($lang_code), 'isPublished') &&
+      !$entity->getTranslation($lang_code)->isPublished()
+    ) {
+      $link['#untranslated'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function hdbt_admin_tools_form_eu_cookie_compliance_block_form_alter(&$form): void {
+  // Hide 'withdraw' button from EU Cookie compliance block form.
+  $form['buttons']['withdraw']['#access'] = FALSE;
+}
+
+/**
+ * Gets the current page main entity.
+ *
+ * @return \Drupal\Core\Entity\EntityInterface|null
+ *   Current page main entity.
+ */
+function hdbt_admin_tools_get_page_entity(): ?EntityInterface {
+  $page_entity = &drupal_static(__FUNCTION__, NULL);
+  if (!empty($page_entity)) {
+    return $page_entity;
+  }
+  $types = array_keys(Drupal::entityTypeManager()->getDefinitions());
+  $route = Drupal::routeMatch();
+  $params = $route->getParameters()->all();
+
+  foreach ($types as $type) {
+    foreach (['revision' => $type . '_revision', 'canonical' => $type] as $route_name => $version) {
+      if (!empty($params[$version]) && $route->getRouteName() === "entity.$type.$route_name") {
+        return $params[$version];
+      }
+    }
+  }
+  return NULL;
+}
+
+// @codingStandardsIgnoreStart
+/**
+ * Gets the current page main entity.
+ *
+ * @deprecated in helfi_platform_config:3.0.0 and is removed from helfi_platform_config:3.2.0.
+ *   Use hdbt_admin_tools_get_page_entity() instead.
+ *
+ * @return \Drupal\Core\Entity\EntityInterface
+ *   Current page main entity.
+ */
+function hdbt_content_get_page_entity(): ?EntityInterface {
+  return hdbt_admin_tools_get_page_entity();
+}
+// @codingStandardsIgnoreEnd
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_admin_tools_preprocess_page(&$variables): void {
+  $variables['has_sidebar'] = FALSE;
+
+  // Handle sidebar visibility.
+  $entity = hdbt_admin_tools_get_page_entity();
+  if ($entity instanceof ContentEntityInterface) {
+
+    // Set has_hero variable according to field_has_hero.
+    if ($entity->hasField('field_has_hero')) {
+      $variables['has_hero'] = $entity->get('field_has_hero')->value;
+    }
+
+    // Handle sidebar visibility.
+    hdbt_admin_tools_handle_sidebar_visibility($variables, $entity);
+  }
+}
+
+/**
+ * Handle sidebar visibility based on current entity menu links.
+ *
+ * @param array $variables
+ *   Variables array.
+ * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ *   Content entity, like tpr_service, tpr_unit or node.
+ */
+function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEntityInterface $entity): void {
+
+  // The entities that need to be handled listed as content type => entity type.
+  $allowed_entities = [
+    'page' => 'node',
+    'news_item' => 'node',
+    'tpr_unit' => 'tpr_unit',
+    'tpr_service' => 'tpr_service',
+  ];
+
+  // Trigger hook_sidebar_visibility_allowed_entities_alter().
+  // Allow modules to alter the list of allowed entities.
+  \Drupal::service('module_handler')
+    ->alter('sidebar_visibility_allowed_entities', $allowed_entities);
+
+  // Get possible (node) content type.
+  $content_type = $entity instanceof NodeInterface ? $entity->getType() : FALSE;
+
+  // Check if (node) content type is in allowed content types.
+  if ($content_type && !array_key_exists($content_type, $allowed_entities)) {
+    return;
+  }
+
+  // Check if entity type is in allowed entity types.
+  if (!in_array($entity->getEntityTypeId(), $allowed_entities)) {
+    return;
+  }
+
+  // Load menu links for the current page entity.
+  $menu_link_manager = Drupal::service('plugin.manager.menu.link');
+  $menu_links = $menu_link_manager->loadLinksByRoute(
+    "entity.{$entity->getEntityTypeId()}.canonical",
+    [$entity->getEntityTypeId() => $entity->id()],
+    'main'
+  );
+
+  $variables['has_sidebar_first'] = FALSE;
+  $variables['has_sidebar_second'] = FALSE;
+
+  // If there are links in current language, apply "has_sidebar_first" variable
+  // to indicate twig templates how to render the sidebar.
+  // However, if the menu link is set to first level, do not render the
+  // sidebar.
+  if (!empty($menu_links)) {
+    $lang_code = \Drupal::languageManager()
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
+
+    foreach ($menu_links as $menu_link) {
+      /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $menu_link */
+      if ($menu_link) {
+        /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
+        $menu_link_content = \Drupal::service('entity.repository')
+          ->loadEntityByUuid('menu_link_content', $menu_link->getDerivativeId());
+        if (
+          $menu_link_content->hasTranslation($lang_code) &&
+          !empty($menu_link_content->getParentId())
+        ) {
+          $variables['has_sidebar_first'] = TRUE;
+        }
+      }
+    }
+  }
+
+  // Hide the sidebar and menu if the current entity has
+  // "hide sidebar navigation" value set.
+  if (
+    $entity->hasField('hide_sidebar_navigation') &&
+    $entity->get('hide_sidebar_navigation')->value
+  ) {
+    $variables['has_sidebar_first'] = FALSE;
+  }
+
+  // Check if page entity has sidebar content field available and set
+  // "has_sidebar_second" variable accordingly.
+  if (
+    $entity->hasField('field_sidebar_content') &&
+    !$entity->get('field_sidebar_content')->isEmpty()
+  ) {
+    $variables['has_sidebar_second'] = TRUE;
+  }
+
+  // Enable sidebar second for News item.
+  if (isset($content_type) && $content_type === 'news_item') {
+    $variables['has_sidebar_second'] = TRUE;
+  }
+
+  // Enable sidebar second for TPR unit if contact information exists.
+  if ($entity instanceof Unit) {
+    if (
+      !$entity->get('address')->isEmpty() ||
+      !$entity->get('email')->isEmpty() ||
+      !$entity->get('phone')->isEmpty() ||
+      !$entity->get('address_postal')->isEmpty() ||
+      !$entity->get('opening_hours')->isEmpty() ||
+      !$entity->get('www')->isEmpty()
+    ) {
+      $variables['has_sidebar_second'] = TRUE;
+    }
+  }
+
+  // Enable sidebar second for TPR service if important links exists.
+  if ($entity instanceof Service && !$entity->get('links')->isEmpty()) {
+    $variables['has_sidebar_second'] = TRUE;
+  }
+}
+
+// @codingStandardsIgnoreStart
+/**
+ * Handle sidebar visibility based on current entity menu links.
+ *
+ * @deprecated in helfi_platform_config:3.0.0 and is removed from helfi_platform_config:3.2.0.
+ *   Use hdbt_admin_tools_handle_sidebar_visibility() instead.
+ *
+ * @param array $variables
+ *   Variables array.
+ * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ *   Content entity, like tpr_service, tpr_unit or node.
+ */
+function _hdbt_content_handle_sidebar_visibility(array &$variables, ContentEntityInterface $entity): void {
+  hdbt_admin_tools_handle_sidebar_visibility($variables, $entity);
+}
+// @codingStandardsIgnoreEnd
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_admin_tools_preprocess_toolbar(&$variables): void {
+  if ($variables['element']['#attributes']['id'] === 'toolbar-administration') {
+    $theme_handler = Drupal::service('theme_handler');
+    if (!$theme_handler->themeExists('hdbt')) {
+      return;
+    }
+
+    $variables['#attached']['library'][] = 'hdbt/environment-indicator';
+    $environment = getenv('APP_ENV');
+    $environments = ['local', 'testing', 'staging', 'production', 'development'];
+
+    foreach ($environments as $value) {
+      if ($environment === $value) {
+        $variables['attributes']['class'][] = 'env-' . $value;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function hdbt_admin_tools_toolbar_alter(&$items): void {
+  foreach ($items as &$value) {
+    if (!array_key_exists('#attached', $value)) {
+      continue;
+    }
+
+    if (is_array($value['#attached']['library'])) {
+      $value['#attached']['library'][] = 'hdbt_admin_tools/menu_styles';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alter config translation edit form.
+ */
+function hdbt_admin_tools_form_config_translation_form_alter(&$form, &$form_state, $form_id): void {
+  $form_ids = [
+    'config_translation_add_form',
+    'config_translation_edit_form',
+  ];
+
+  if (in_array($form_id, $form_ids)) {
+    // @todo Find out if we can change the hdbt_admin_tools configuration prefix without BC breaks.
+    $settings = &$form['config_names']['hdbt_admin_tools.site_settings'];
+
+    // Don't translate global fields.
+    $settings['footer_settings']['footer_color']['#disabled'] = TRUE;
+    $settings['site_settings']['koro']['#disabled'] = TRUE;
+    $settings['site_settings']['theme_color']['#disabled'] = TRUE;
+  }
+}
+
+/**
+ * Provides options for the color palettes field.
+ *
+ * @todo Check if this is needed.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function hdbt_admin_tools_color_palette_allowed_values(): array {
+  return SiteSettings::getColorPalettes();
+}
+
+/**
+ * Provides default value for the color palettes field.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function hdbt_admin_tools_color_palette_default_value(): array {
+  $cached = \Drupal::cache()->get('hdbt_settings:theme_color');
+
+  if ($cached) {
+    return [
+      ['value' => $cached->data],
+    ];
+  }
+  // @todo Find out if we can change the hdbt_admin_tools configuration prefix without BC breaks.
+  $settings = \Drupal::config('hdbt_admin_tools.site_settings');
+  return ($value = $settings->get('site_settings.theme_color')) ? [['value' => $value]] : [];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\taxonomy\TermForm.
+ */
+function hdbt_admin_tools_form_taxonomy_term_form_alter(array &$form, FormStateInterface $form_state) {
+  // Move relations into sidebar.
+  $form['relations']['#group'] = 'advanced';
+
+  /** @var \Drupal\Core\Entity\ContentEntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $form_object->getEntity();
+
+  // Move pathauto into sidebar.
+  $form['path_settings'] = [
+    '#type' => 'details',
+    '#title' => t('URL path settings'),
+    '#open' => !empty($form['path']['widget'][0]['alias']['#value']),
+    '#group' => 'advanced',
+    '#access' =>
+    !empty($form['path']['#access']) &&
+    $term->hasField('path') &&
+    $term->get('path')->access('edit'),
+    '#attributes' => [
+      'class' => ['path-form'],
+    ],
+    '#attached' => [
+      'library' => ['path/drupal.path'],
+    ],
+    '#weight' => 30,
+  ];
+  $form['path']['#group'] = 'path_settings';
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
+  if ($entity_type->id() === 'paragraph' && $bundle == 'hero') {
+    // Add constraint to check if Hero image is mandatory.
+    if (array_key_exists('field_hero_image', $fields)) {
+      $fields['field_hero_image']->addConstraint('HeroImage', []);
+    }
+  }
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ *
+ * Hero designs:
+ *   background-image     = "Background image"
+ *   diagonal             = "Diagonal"
+ *   with-image-bottom    = "Image on the bottom"
+ *   with-image-left      = "Image on the left"
+ *   with-image-right     = "Image on the right"
+ *   without-image-center = "Without image, align center"
+ *   without-image-left   = "Without image, align left"
+ *   with-search          = "With search"
+ */
+function hdbt_admin_tools_field_widget_paragraphs_form_alter(&$element, &$form_state, $context): void {
+
+  // Early return if paragraph type is not set.
+  if (!isset($element['#paragraph_type'])) {
+    return;
+  }
+
+  // Perform alterations to Hero paragraph.
+  if ($element['#paragraph_type'] == 'hero') {
+
+    // Hero designs & hero design selection.
+    $design_select = ':input[name="field_hero[' . $element['#delta'] . '][subform][field_hero_design][0]"]';
+
+    // Show description only if design needs it.
+    $element['subform']['field_hero_desc']['#states'] = [
+      'invisible' => [
+        [$design_select => ['value' => 'background-image']],
+        'or',
+        [$design_select => ['value' => 'with-search']],
+      ],
+    ];
+
+    // Show image only if design needs it.
+    $element['subform']['field_hero_image']['#states'] = [
+      'invisible' => [
+        [$design_select => ['value' => 'without-image-center']],
+        'or',
+        [$design_select => ['value' => 'without-image-left']],
+      ],
+    ];
+
+    // Show link and link design only if design needs them.
+    $link_states = [
+      'visible' => [
+        [$design_select => ['value' => 'background-image']],
+      ],
+    ];
+    $element['subform']['field_hero_link']['#states'] = $link_states;
+    $element['subform']['field_hero_link_design']['#states'] = $link_states;
+
+    $fields = [
+      'field_hero_desc',
+      'field_hero_image',
+      'field_hero_link',
+      'field_hero_link_design',
+    ];
+
+    // Set types if they're missing to prevent undefined index error in
+    // /core/lib/Drupal/Core/Form/FormHelper.php:211.
+    foreach ($fields as $field) {
+      if (!isset($element['subform'][$field]['#type'])) {
+        $element['subform'][$field]['#type'] = '';
+      }
+    }
+  }
+
+  // Perform alterations to Columns paragraph.
+  if ($element['#paragraph_type'] == 'columns') {
+    // Attach columns toggle JS when necessary.
+    $element['#attached']['library'][] = 'hdbt_admin_tools/columns-toggle';
+  }
+
+  // Perform alterations to Banner paragraph.
+  if ($element['#paragraph_type'] == 'banner') {
+    // Banner design selection.
+    $design_select = ':input[name="field_content[' . $element['#delta'] . '][subform][field_banner_design][0]"]';
+
+    // Show icon only if design needs it.
+    $element['subform']['field_icon']['#states'] = [
+      'visible' => [
+        [$design_select => ['value' => 'align-left']],
+        'or',
+        [$design_select => ['value' => 'align-left-secondary']],
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add a title, design and target fields to EditorLinkDialog.
+ */
+function hdbt_admin_tools_form_editor_link_dialog_alter(&$form, FormStateInterface $form_state) {
+
+  if (isset($form_state->getUserInput()['editor_object'])) {
+    $input = $form_state->getUserInput()['editor_object'];
+    $form_state->set('link_element', $input);
+    $form_state->setCached(TRUE);
+  }
+  else {
+    // Retrieve the link element's attributes from form state.
+    $input = $form_state->get('link_element') ?: [];
+  }
+
+  // Helper function to retrieve form field default values.
+  $get_default_value = function ($attribute_name, $fallback = '') use ($input) {
+    return !empty($input[$attribute_name]) ? $input[$attribute_name] : $fallback;
+  };
+
+  $form['#attached']['library'][] = 'hdbt_admin_tools/modal_window_position';
+  $form['#attached']['library'][] = 'hdbt_admin_tools/link_plugin_enhancements';
+
+  $form['attributes']['data-link-text'] = [
+    '#type' => 'textfield',
+    '#title' => t('Link text'),
+    '#default_value' => $get_default_value('data-link-text'),
+    '#maxlength' => 512,
+  ];
+
+  $form['attributes']['data-protocol'] = [
+    '#type' => 'select',
+    '#title' => t('Protocol'),
+    '#default_value' => $get_default_value('data-protocol'),
+    '#options' => [
+      'false' => t('Select'),
+      'https://' => t('https://'),
+      'http://' => t('http://'),
+      'tel:' => t('tel:'),
+      'mailto:' => t('mailto:'),
+    ],
+    '#weight' => -100,
+  ];
+
+  $form['attributes']['data-design'] = [
+    '#type' => 'select',
+    '#title' => t('Design'),
+    '#default_value' => $get_default_value('data-design'),
+    '#options' => [
+      'link' => t('Default'),
+      'hds-button hds-button--primary' => t('Button primary'),
+      'hds-button hds-button--secondary' => t('Button secondary'),
+      'hds-button hds-button--supplementary' => t('Button supplementary'),
+    ],
+    '#weight' => 1,
+  ];
+
+  $form['attributes']['data-selected-icon'] = [
+    '#title' => t('Icon'),
+    '#type' => 'select2_icon_element',
+    '#default_value' => $get_default_value('data-selected-icon', NULL),
+    '#options' => Select2Icon::loadIcons(),
+    '#weight' => 2,
+  ];
+
+  $form['attributes']['target'] = [
+    '#title' => t('Open in new window/tab'),
+    '#type' => 'checkbox',
+    '#default_value' => $get_default_value('target', FALSE),
+    '#return_value' => '_blank',
+    '#weight' => 3,
+  ];
+
+  $form['attributes']['target_check'] = [
+    '#title' => t('The link meets the accessibility requirements'),
+    '#description' => t('I have made sure that the description of this link clearly states that it will open in a new tab. <a href="@wcag-techniques" target="_blank">See WCAG 3.2.5 accessibility requirement (the link opens in a new tab).</a>', [
+      '@wcag-techniques' => 'https://www.w3.org/WAI/WCAG21/Techniques/general/G200.html',
+    ]),
+    '#type' => 'checkbox',
+    '#default_value' => $get_default_value('target', FALSE) === '_blank',
+    '#weight' => 3,
+    '#states' => [
+      'visible' => [
+        ':input[name="attributes[target]"]' => ['checked' => TRUE],
+      ],
+      'required' => [
+        ':input[name="attributes[target]"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+
+  $form['advanced'] = [
+    '#type' => 'details',
+    '#title' => t('Advanced settings'),
+    '#weight' => 4,
+  ];
+
+  $form['attributes']['title'] = [
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#description' => t(
+      'Populates the title attribute of the link, usually shown as a small tooltip on hover.'
+    ),
+    '#default_value' => '',
+    '#maxlength' => 512,
+    '#group' => 'advanced',
+  ];
+
+  $form['attributes']['id'] = [
+    '#type' => 'textfield',
+    '#title' => t('ID'),
+    '#description' => t(
+      'Allows linking to this content using a URL fragment (#). Must be unique.'
+    ),
+    '#default_value' => $get_default_value('id'),
+    '#maxlength' => 512,
+    '#group' => 'advanced',
+  ];
+
+  // Add validation callback for empty attributes.
+  array_unshift(
+    $form['#validate'],
+    '_hdbt_admin_tools_attributes_validate'
+  );
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function hdbt_admin_tools_form_linkit_editor_dialog_form_alter(&$form, FormStateInterface $form_state) {
+  hdbt_admin_tools_form_editor_link_dialog_alter($form, $form_state);
+}
+
+/**
+ * Validation for link attributes.
+ *
+ * String "true" / "false" values are handled in javascript.
+ * See: ./modules/hdbt_admin_tools/assets/js/plugins/hds-button/plugin.js.
+ */
+function _hdbt_admin_tools_attributes_validate(array &$form, FormStateInterface $form_state) {
+  $attributes = $form_state->getValue('attributes');
+
+  // Allow icons only for the links with button design.
+  if (isset($attributes['data-selected-icon'])) {
+    if ($attributes['data-design'] === 'link' || empty($attributes['data-selected-icon'])) {
+      $form_state->unsetValue(['attributes', 'data-selected-icon']);
+    }
+  }
+
+  // Remove empty values to prevent rendering them in markup.
+  foreach (['target', 'target_check', 'title'] as $attribute) {
+    if (isset($attributes[$attribute]) && empty($attributes[$attribute])) {
+      $form_state->setValue(['attributes', $attribute], FALSE);
+    }
+  }
+
+  // If the accessibility consent is not accepted,
+  // uncheck the open in new window / tab checkbox.
+  if ($attributes['target'] && !$attributes['target_check']) {
+    $form_state->setValue(['attributes', 'target'], FALSE);
+  }
+
+  // Check if user has input value to href attribute.
+  if (array_key_exists('href', $attributes) && !empty($attributes['href'])) {
+    // Get Url object based on the href attribute.
+    $url = UrlHelper::parse($attributes['href']);
+
+    // Check if current link is external (not whitelisted) and
+    // set data attributes accordingly.
+    /** @var \Drupal\helfi_api_base\Link\InternalDomainResolver $resolver */
+    $resolver = \Drupal::service('helfi_api_base.internal_domain_resolver');
+    $is_external = $resolver->isExternal($url);
+
+    // Set form value is-external based on domain resolver.
+    $form_state->setValue(['attributes', 'data-is-external'], $is_external ? 'true' : 'false');
+
+    // Parse URL scheme from the href attribute and set it as data variable.
+    $scheme = parse_url(($is_external) ? $url->getUri() : $attributes['href'], PHP_URL_SCHEME);
+
+    // Check for tel-link.
+    $scheme = (empty($scheme) && str_contains($attributes['href'], 'tel:')) ? 'tel' : $scheme;
+
+    // Construct a protocol value for external links if user has not selected
+    // any value for the protocol.
+    if ($is_external && empty($scheme) && $attributes['data-protocol'] === 'false') {
+      $scheme = ($scheme === 'https' || $scheme === 'http') ? $scheme . '://' : $scheme;
+    }
+
+    // Set scheme to data-protocol attribute.
+    $form_state->setValue(['attributes', 'data-protocol'], !(empty($scheme)) ? $scheme : 'false');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Set paragraph information as data-attributes for the paragraph dropbutton.
+ */
+function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&$variables) {
+  $buttons = &$variables['links'];
+
+  if ($buttons && is_array($buttons)) {
+
+    // Attach paragraph selection library.
+    $variables['attributes']['class'][] = 'paragraph-selection';
+
+    // Get paragraph types.
+    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraphs_type');
+    $paragraph_types = $paragraph_storage->loadMultiple();
+
+    // Go through buttons and set the necessary data-attributes.
+    $paragraph_images = [];
+
+    foreach ($buttons as $button) {
+      /** @var \Drupal\paragraphs\Entity\ParagraphsType $bundle */
+      $bundle = $paragraph_types[$button['text']['#bundle_machine_name']];
+      $paragraph_images[] = str_replace('_', '-', $bundle->get('id'));
+    }
+
+    // Set images for the paragraph preview tool.
+    $design_selection_manager = \Drupal::service('hdbt_admin_tools.design_selection_manager');
+    $variables['#attached']['drupalSettings']['paragraphSelect']['images'] = $design_selection_manager->getImages('paragraph', $paragraph_images);
+    $variables['#attached']['library'][] = 'hdbt_admin_tools/paragraph_selection';
+
+    // Go through buttons and set the necessary data-attributes.
+    foreach ($buttons as &$button) {
+      /** @var \Drupal\paragraphs\Entity\ParagraphsType $bundle */
+      $bundle = $paragraph_types[$button['text']['#bundle_machine_name']];
+      $image = str_replace('_', '-', $bundle->get('id'));
+      $button['attributes']->setAttribute('data-paragraph-title', $bundle->get('label'));
+      $button['attributes']->setAttribute('data-paragraph-description', $bundle->get('description'));
+      $button['attributes']->setAttribute('data-paragraph-image', $image);
+
+      // Fix the translation when paragraph type names are being rendered.
+      $button['text']['#value'] = t('Add @type', ['@type' => strtolower($bundle->get('label'))]);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function hdbt_admin_tools_form_alter(&$form, $form_state) {
+
+  // Handle only admin routes.
+  if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+
+  // Attach design selection library and path to images to current form.
+  // If design selection field widget is in use in f.e. a paragraph and it is
+  // loaded via ajax, there might be situation where the select2 library is
+  // loaded before the design selection library.
+  $form['#attached']['library'][] = 'hdbt_admin_tools/design_selection';
+
+  // Perform alterations for Drupal core and contrib module field titles,
+  // descriptions and field visibility based on customer needs.
+  if ($form_state->getFormObject() instanceof EntityForm) {
+
+    // Alter revision log title based on customer needs.
+    if (isset($form['revision_log'])) {
+      $form['revision_log']['widget'][0]['value']['#title'] = t('Version notes', [], ['context' => 'HDBT Admin editorial']);
+    }
+
+    // Alter metatags based on customer needs.
+    if (isset($form['field_metatags'])) {
+      $field_metatags = &$form['field_metatags']['widget'][0];
+
+      // Remove basic tags description.
+      unset($form['field_metatags']['widget'][0]['basic']['#description']);
+
+      // Alter the preamble and intro text markup.
+      $field_metatags['preamble']['#markup'] = '<p><strong>' . t('Editing metadata', [], ['context' => 'HDBT Admin editorial']) . '</strong></p>';
+      $field_metatags['intro_text']['#markup'] = '<p>' . t('Can be left unchanged. Tokens can be used to set metadata.', [], ['context' => 'HDBT Admin editorial']) . '</p>';
+
+      // Alter basic tags title field descriptions.
+      $field_metatags['basic']['title']['#description'] = t('Page title is visible in search results and browser tab heading. The title is set automatically and does not need to be set here. Recommended max. legth: 55–65 characters.', [], ['context' => 'HDBT Admin editorial']);
+
+      // Alter basic tags description field title and descriptions.
+      $field_metatags['basic']['description']['#title'] = t('Description for search engines', [], ['context' => 'HDBT Admin editorial']);
+      $field_metatags['basic']['description']['#description'] = t('A succinct description of the page content. Max. 160 characters. May be visible in search results. The description is fetched from the Lead-field and does not need to be set here.', [], ['context' => 'HDBT Admin editorial']);
+    }
+
+    // Alter liftup image help texts and descriptions based on customer needs.
+    if (isset($form['field_liftup_image'])) {
+      $field_liftup_image = &$form['field_liftup_image']['widget'];
+      $field_liftup_image['open_button']['#value'] = t('Add image', [], ['context' => 'HDBT Admin editorial']);
+
+      if (isset($field_liftup_image['#field_prefix']['empty_selection'])) {
+        $field_liftup_image['#field_prefix']['empty_selection'] = [
+          '#markup' => t('Image is not selected.', [], ['context' => 'HDBT Admin editorial']),
+        ];
+      }
+    }
+
+    // Alter publish on and unpublish on titles based on customer needs.
+    if (isset($form['publish_on']) && isset($form['unpublish_on'])) {
+      $form['publish_on']['widget'][0]['value']['#title'] = t('Release time', [], ['context' => 'HDBT Admin editorial']);
+      $form['unpublish_on']['widget'][0]['value']['#title'] = t('Hiding the page', [], ['context' => 'HDBT Admin editorial']);
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function hdbt_admin_tools_entity_base_field_info(EntityTypeInterface $entity_type): array {
+  $fields = [];
+
+  // Entity types to be updated.
+  $entity_types = [
+    'node',
+    'tpr_unit',
+    'tpr_service',
+  ];
+
+  // Add color palette field to each entity type.
+  if (in_array($entity_type->id(), $entity_types)) {
+    $fields['color_palette'] = BaseFieldDefinition::create('list_string')
+      ->setRequired(FALSE)
+      ->setTranslatable(FALSE)
+      ->setLabel(t('Color palette'))
+      ->setSettings([
+        'allowed_values_function' => 'Drupal\hdbt_admin_tools\Form\SiteSettings::getColorPalettes',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'color_palette_field_widget',
+        'weight' => 0,
+      ]);
+    $fields['hide_sidebar_navigation'] = BaseFieldDefinition::create('boolean')
+      ->setRequired(FALSE)
+      ->setTranslatable(FALSE)
+      ->setLabel(t('Hide sidebar navigation from this page'))
+      ->setDefaultValue(FALSE)
+      ->setRevisionable(TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+  }
+  return $fields;
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function hdbt_admin_tools_entity_presave($entity): void {
+  if (
+    !method_exists($entity, 'hasField') ||
+    !$entity->hasField('color_palette')
+  ) {
+    return;
+  }
+
+  // Do not save the color palette override value if chosen color palette is
+  // same as global color palette value. This will prevent possible false
+  // overrides if global color palette is changed.
+  if ($entity->color_palette->value == SiteSettings::getColorPaletteDefaultValue()) {
+    $entity->set('color_palette', NULL);
+  }
+}
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ */
+function hdbt_admin_tools_ckeditor_css_alter(array &$css): void {
+  $css[] = Drupal::service('extension.list.theme')
+    ->getPath('hdbt_admin') . '/dist/css/ckeditor.min.css';
+}
+
+/**
+ * Implements hook_entity_operation().
+ *
+ * Add update password operation to users list action list.
+ */
+function hdbt_admin_tools_entity_operation(EntityInterface $entity): array {
+  $operations = [];
+  if (
+    $entity instanceof UserInterface &&
+    \Drupal::currentUser()->hasPermission('administer users')
+  ) {
+    $operations['update_password'] = [
+      'title' => t('Update user password', [], ['context' => 'HDBT Admin editorial - One-time login link']),
+      'url' => Url::fromRoute('hdbt_admin_tools.user_login_link', ['user' => $entity->id()]),
+      'weight' => 50,
+    ];
+  }
+  return $operations;
+}

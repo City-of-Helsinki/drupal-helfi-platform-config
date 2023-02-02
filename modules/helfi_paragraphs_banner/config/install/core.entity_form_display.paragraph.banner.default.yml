@@ -3,7 +3,7 @@ status: true
 dependencies:
   enforced:
     module:
-      - hdbt_admin_editorial
+      - hdbt_admin_tools
   config:
     - field.field.paragraph.banner.field_banner_desc
     - field.field.paragraph.banner.field_banner_design
@@ -13,8 +13,7 @@ dependencies:
     - field.field.paragraph.banner.field_icon
     - paragraphs.paragraphs_type.banner
   module:
-    - hdbt_admin_editorial
-    - select2_icon
+    - hdbt_admin_tools
     - text
 id: paragraph.banner.default
 targetEntityType: paragraph

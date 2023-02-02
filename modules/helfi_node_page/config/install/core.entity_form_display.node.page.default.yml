@@ -12,7 +12,7 @@ dependencies:
     - field.field.node.page.field_sidebar_content
     - node.type.page
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - media_library
     - metatag
     - paragraphs

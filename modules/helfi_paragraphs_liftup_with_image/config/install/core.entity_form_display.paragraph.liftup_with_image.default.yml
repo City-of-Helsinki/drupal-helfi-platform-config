@@ -8,7 +8,7 @@ dependencies:
     - field.field.paragraph.liftup_with_image.field_liftup_with_image_title
     - paragraphs.paragraphs_type.liftup_with_image
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - media_library
     - text
 id: paragraph.liftup_with_image.default

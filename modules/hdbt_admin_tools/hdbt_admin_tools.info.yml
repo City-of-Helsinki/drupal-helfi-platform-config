@@ -1,0 +1,13 @@
+name: 'Helfi admin tools'
+type: module
+description: 'Performs alterations to hdbt and hdbt admin related content.'
+core_version_requirement: ^9 || ^10
+dependencies:
+  - drupal:ckeditor
+  - drupal:config_translation
+  - drupal:editor
+  - drupal:options
+  - linkit:linkit
+  - select2:select2
+'interface translation project': hdbt_admin_tools
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/hdbt_admin_tools/translations/%language.po

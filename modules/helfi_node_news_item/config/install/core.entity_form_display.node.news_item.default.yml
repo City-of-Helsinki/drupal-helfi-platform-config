@@ -13,7 +13,7 @@ dependencies:
     - node.type.news_item
   module:
     - field_group
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - linkit
     - media_library
     - paragraphs

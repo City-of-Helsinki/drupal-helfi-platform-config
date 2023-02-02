@@ -11,7 +11,7 @@ dependencies:
     - field.field.paragraph.hero.field_hero_title
     - paragraphs.paragraphs_type.hero
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - media_library
     - text
 id: paragraph.hero.default

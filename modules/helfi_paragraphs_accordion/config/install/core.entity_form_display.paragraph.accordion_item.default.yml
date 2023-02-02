@@ -10,7 +10,7 @@ dependencies:
     - field.field.paragraph.accordion_item.field_icon
   module:
     - paragraphs
-    - select2_icon
+    - hdbt_admin_tools
 id: paragraph.accordion_item.default
 targetEntityType: paragraph
 bundle: accordion_item
