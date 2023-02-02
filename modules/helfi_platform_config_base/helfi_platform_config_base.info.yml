@@ -3,8 +3,6 @@ type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
   - hdbt_admin_tools:hdbt_admin_tools
-  - hdbt_admin_tools:hdbt_admin_tools
-  - hdbt_content:hdbt_content
   - helfi_base_content:helfi_base_content
   - helfi_ckeditor:helfi_ckeditor
   - helfi_eu_cookie_compliance:helfi_eu_cookie_compliance
