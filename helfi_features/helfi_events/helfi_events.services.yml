@@ -1,4 +1,0 @@
-services:
-  helfi_events_linked_events:
-    class: Drupal\helfi_events\LinkedEvents
-    arguments: ['@http_client', '@cache.default']

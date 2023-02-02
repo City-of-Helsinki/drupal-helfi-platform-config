@@ -2,66 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_events;
+namespace Drupal\helfi_react_search;
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\helfi_events\Enum\CategoryKeywords;
-use GuzzleHttp\ClientInterface;
+use Drupal\helfi_react_search\Enum\CategoryKeywords;
 
 /**
  * Base class for retrieving events data.
  */
-class EventsApiBase {
-
-  /**
-   * The constructor.
-   *
-   * @param \GuzzleHttp\ClientInterface $httpClient
-   *   HTTP Client.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $dataCache
-   *   Data Cache.
-   */
-  public function __construct(
-    protected ClientInterface $httpClient,
-    protected CacheBackendInterface $dataCache
-  ) {}
-
-  /**
-   * Sets cache.
-   *
-   * @param string $id
-   *   Cache id.
-   * @param mixed $data
-   *   The data.
-   */
-  protected function setCache(string $id, $data) : void {
-    $key = $this->getCacheKey($id);
-    $this->dataCache->set($key, $data, $this->getCacheMaxAge(), []);
-  }
-
-  /**
-   * Get cached data for given id.
-   *
-   * @param string $id
-   *   The id.
-   *
-   * @return mixed|null
-   *   Cached data or null
-   */
-  protected function getFromCache(string $id) : mixed {
-    $key = $this->getCacheKey($id);
-
-    if (isset($this->data[$key])) {
-      return $this->data[$key];
-    }
-
-    if ($data = $this->dataCache->get($key)) {
-      return $data->data;
-    }
-
-    return NULL;
-  }
+abstract class EventsApiBase {
 
   /**
    * Parse query params from request url.
@@ -103,7 +52,6 @@ class EventsApiBase {
 
           case 'dateTypes':
             $dateTypes = explode(',', $param);
-            $dateParams = '';
             foreach ($dateTypes as $dataType) {
               switch ($param) {
                 case 'today':

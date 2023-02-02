@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_events\Enum;
+namespace Drupal\helfi_react_search\Enum;
 
 /**
  * Enum class CategoryKeywords.

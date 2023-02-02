@@ -1,13 +1,10 @@
-uuid: 776fafd9-c109-451b-8237-419c378e7a5a
 langcode: en
 status: true
 dependencies:
   module:
     - paragraphs
-_core:
-  default_config_hash: ZhUgtRcKcDHF_w9mzjd7qeu79oxePLBhAD4JQVk4zD0
-id: paragraph.field_load_more
-field_name: field_load_more
+id: paragraph.field_event_time
+field_name: field_event_time
 entity_type: paragraph
 type: boolean
 settings: {  }
