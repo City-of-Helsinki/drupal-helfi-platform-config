@@ -58,6 +58,7 @@ class QuoteCKEditorButton extends CKEditorPluginBase implements ContainerFactory
       $container->get('extension.path.resolver'),
     );
   }
+
   /**
    * {@inheritdoc}
    *

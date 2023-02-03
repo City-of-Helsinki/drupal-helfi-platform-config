@@ -70,7 +70,7 @@ class HDSButtonCKEditor extends PluginBase implements CKEditorPluginInterface, C
    */
   public function getFile(): string {
     return $this->extensionPathResolver
-        ->getPath('module', 'hdbt_admin_tools') .
+      ->getPath('module', 'hdbt_admin_tools') .
       '/assets/js/plugins/hds-button/plugin.js';
   }
 
