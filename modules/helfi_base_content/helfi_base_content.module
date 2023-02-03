@@ -11,12 +11,12 @@ declare(strict_types = 1);
  * Implements hook_themes_installed().
  */
 function helfi_base_content_themes_installed($theme_list) {
-  // Install blocks.
+
   /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 
   foreach ($theme_list as $theme) {
-    if (in_array($theme, ['hdbt', 'hdbt_subtheme'])) {
+    if (in_array($theme, ['stark', 'hdbt', 'hdbt_subtheme'])) {
       // Set the current theme as default theme.
       Drupal::configFactory()->getEditable('system.theme')
         ->set('default', $theme)

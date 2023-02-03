@@ -171,14 +171,6 @@ function hdbt_admin_tools_language_switch_links_alter(array &$links): void {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function hdbt_admin_tools_form_eu_cookie_compliance_block_form_alter(&$form): void {
-  // Hide 'withdraw' button from EU Cookie compliance block form.
-  $form['buttons']['withdraw']['#access'] = FALSE;
-}
-
-/**
  * Gets the current page main entity.
  *
  * @return \Drupal\Core\Entity\EntityInterface|null

@@ -27,29 +27,64 @@ function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $for
  * Implements hook_themes_installed().
  */
 function helfi_node_announcement_themes_installed($theme_list) {
+
   /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 
-  $block = [
-    'id' => 'announcements',
-    'plugin' => 'announcements',
-    'settings' => [
-      'id' => 'announcements',
-      'label' => 'Announcements',
-    ],
-    'provider' => 'helfi_node_announcement',
-    'weight' => -12,
-  ];
+  foreach ($theme_list as $theme) {
+    if (in_array($theme, ['stark', 'hdbt', 'hdbt_subtheme'])) {
+      foreach (helfi_node_announcement_get_block_configurations($theme) as $block_config) {
+        ['block' => $block, 'variations' => $variations] = $block_config;
+        $block_installer->install($block, $variations);
+      }
+    }
+  }
+}
 
-  $variations = [
-    [
-      'theme' => 'hdbt',
-      'region' => 'before_content',
-    ],
-    [
-      'theme' => 'stark',
-      'region' => 'content',
+/**
+ * Gets the block configurations.
+ *
+ * Example block:
+ *
+ * @code
+ * [
+ *   'breadbrumbs' => [
+ *     'block' => [
+ *       ...
+ *     ],
+ *     'variations' => [
+ *       ...
+ *     ],
+ *   ],
+ * ];
+ * @endcode
+ *
+ * @return array[]
+ *   The block configurations.
+ */
+function helfi_node_announcement_get_block_configurations(string $theme) : array {
+  return [
+    'announcements' => [
+      'block' => [
+        'id' => 'announcements',
+        'plugin' => 'announcements',
+        'settings' => [
+          'id' => 'announcements',
+          'label' => 'Announcements',
+        ],
+        'provider' => 'helfi_node_announcement',
+        'weight' => -12,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
     ],
   ];
-  $block_installer->install($block, $variations);
 }
