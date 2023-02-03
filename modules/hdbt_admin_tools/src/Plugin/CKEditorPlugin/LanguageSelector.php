@@ -64,7 +64,6 @@ class LanguageSelector extends CKEditorPluginBase implements ContainerFactoryPlu
     );
   }
 
-
   /**
    * {@inheritdoc}
    *

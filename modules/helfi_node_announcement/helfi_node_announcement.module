@@ -22,3 +22,34 @@ function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $for
       break;
   }
 }
+
+/**
+ * Implements hook_themes_installed().
+ */
+function helfi_node_announcement_themes_installed($theme_list) {
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
+
+  $block = [
+    'id' => 'announcements',
+    'plugin' => 'announcements',
+    'settings' => [
+      'id' => 'announcements',
+      'label' => 'Announcements',
+    ],
+    'provider' => 'helfi_node_announcement',
+    'weight' => -12,
+  ];
+
+  $variations = [
+    [
+      'theme' => 'hdbt',
+      'region' => 'before_content',
+    ],
+    [
+      'theme' => 'stark',
+      'region' => 'content',
+    ],
+  ];
+  $block_installer->install($block, $variations);
+}
