@@ -7,7 +7,6 @@ dependencies:
     - address
     - helfi_tpr
     - user
-    - views_infinite_scroll
 id: unit_search
 label: 'Unit search'
 module: views
@@ -40,23 +39,25 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Käytä
+          submit_button: Use
           reset_button: false
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
+          reset_button_label: Reset
+          exposed_sorts_label: Sort
           expose_sort_order: true
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+          sort_asc_label: Ascending
+          sort_desc_label: Descending
       pager:
-        type: infinite_scroll
+        type: full
         options:
           items_per_page: 5
           offset: 0
           id: 0
           total_pages: null
           tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
+            next: Next
+            previous: Previous
+            first: First
+            last: Last
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -65,10 +66,7 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          views_infinite_scroll:
-            button_text: 'Load more results'
-            automatically_load_content: false
-            initially_load_all_pages: false
+          quantity: 9
       style:
         type: default
         options:

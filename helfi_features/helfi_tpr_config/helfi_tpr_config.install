@@ -28,6 +28,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9022();
       helfi_tpr_config_update_9023();
       helfi_tpr_config_update_9025();
+      helfi_tpr_config_update_9029();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -595,6 +596,20 @@ function helfi_tpr_config_update_9028() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9028');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Remove infinite scroll and replace it with full pager.
+ */
+function helfi_tpr_config_update_9029() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9029');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();

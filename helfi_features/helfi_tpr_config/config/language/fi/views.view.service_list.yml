@@ -12,14 +12,14 @@ display:
       pager:
         options:
           tags:
-            previous: '‹ Edellinen'
-            next: 'Seuraava ›'
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
             offset_label: Offset
-          views_infinite_scroll:
-            button_text: 'Lataa lisää palveluita'
       arguments:
         id:
           exception:

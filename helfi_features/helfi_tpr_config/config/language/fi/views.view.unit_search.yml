@@ -12,17 +12,24 @@ display:
         area:
           content:
             value: "<p>Ei tuloksia</p>\r\n"
+      exposed_form:
+        options:
+          submit_button: Käytä
+          reset_button_label: Palauta
+          exposed_sorts_label: Järjestä
+          sort_asc_label: Nouseva
+          sort_desc_label: Laskeva
       pager:
         options:
           tags:
-            previous: '‹ Edellinen'
-            next: 'Seuraava ›'
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
             offset_label: Offset
-          views_infinite_scroll:
-            button_text: 'Lataa lisää'
       arguments:
         id:
           exception:
