@@ -5,9 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\hdbt_admin_tools\Plugin\CKEditorPlugin;
 
 use Drupal\ckeditor\CKEditorPluginBase;
+use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManager;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\editor\Entity\Editor;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines the "language_selector" plugin.
@@ -22,7 +25,45 @@ use Drupal\editor\Entity\Editor;
  *   module = "ckeditor"
  * )
  */
-class LanguageSelector extends CKEditorPluginBase {
+class LanguageSelector extends CKEditorPluginBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * Extension path resolver.
+   *
+   * @var \Drupal\Core\Extension\ExtensionPathResolver
+   */
+  protected ExtensionPathResolver $extensionPathResolver;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    ExtensionPathResolver $extension_path_resolver,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->extensionPathResolver = $extension_path_resolver;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition
+  ) : static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('extension.path.resolver'),
+    );
+  }
+
 
   /**
    * {@inheritdoc}
@@ -44,7 +85,9 @@ class LanguageSelector extends CKEditorPluginBase {
    * {@inheritdoc}
    */
   public function getFile(): string {
-    return $this->getModuleList()->getPath('hdbt_admin_tools') . '/assets/js/plugins/language_selector/plugin.js';
+    return $this->extensionPathResolver
+      ->getPath('module', 'hdbt_admin_tools') .
+      '/assets/js/plugins/language_selector/plugin.js';
   }
 
   /**

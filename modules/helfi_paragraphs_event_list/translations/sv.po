@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 
-msgid "at"
 msgctxt "Indication that events take place in a certain timeframe"
+msgid "at"
 msgstr "klockan"
 
 msgid "events"
