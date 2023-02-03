@@ -4,6 +4,7 @@ core_version_requirement: '^9 || ^10'
 package: HELfi
 dependencies:
   - 'helfi_base_content:helfi_base_content'
+  - 'helfi_paragraphs_content_liftup:helfi_paragraphs_content_liftup'
   - 'helfi_media:helfi_media'
   - 'views:views'
   - 'helfi_tpr:helfi_tpr'

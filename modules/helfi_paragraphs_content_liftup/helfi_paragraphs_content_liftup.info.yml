@@ -3,4 +3,3 @@ type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
   - helfi_base_content:helfi_base_content
-  - helfi_tpr_config:helfi_tpr_config
