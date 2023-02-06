@@ -47,11 +47,11 @@ class EuCookieComplianceTest extends BrowserTestBase {
   public function testCookieConsentBlock() : void {
     $this->drupalGet('<front>');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('Cookie settings');
+    $this->assertSession()->pageTextNotContains('Consent management');
 
     $this->drupalGet(Url::fromRoute('helfi_eu_cookie_compliance.cookie_consent'));
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Cookie settings');
+    $this->assertSession()->pageTextContains('Consent management');
   }
 
 }
