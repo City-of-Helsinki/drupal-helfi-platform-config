@@ -19,6 +19,7 @@ class MediaChartTest extends BrowserTestBase {
    */
   protected static $modules = [
     'media',
+    'menu_ui',
     'helfi_media_chart',
   ];
 
