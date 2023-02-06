@@ -52,7 +52,8 @@
         "drupal/translatable_menu_link_uri": "^2.0",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_edit": "^2.7",
-        "drupal/views_bulk_operations": "^4.1"
+        "drupal/views_bulk_operations": "^4.1",
+        "league/uri": "^6.0"
     },
     "conflict": {
         "drupal/ctools": "<3.11 || ^4.0.1",
