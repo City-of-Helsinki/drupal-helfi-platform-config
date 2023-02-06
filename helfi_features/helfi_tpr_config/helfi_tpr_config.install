@@ -7,6 +7,7 @@
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_platform_config\ConfigHelper;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Implements hook_install().
@@ -602,15 +603,47 @@ function helfi_tpr_config_update_9028() {
 }
 
 /**
- * Remove infinite scroll and replace it with full pager.
+ * Remove infinite scroll from service list and unit search paragraphs and replace it with full pager.
  */
 function helfi_tpr_config_update_9029() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
 
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9029');
+  $configurations = [
+    'views.view.service_list',
+    'views.view.unit_search',
+  ];
 
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Remove the meta load more label field because load more pager is not used anymore.
+  FieldStorageConfig::loadByName('paragraph', 'field_service_list_meta_load_mor')->delete();
+
+  // Remove the meta load more label field because load more pager is not used anymore.
+  FieldStorageConfig::loadByName('paragraph', 'field_unit_search_meta_load_more')->delete();
+}
+
+/**
+ * Remove infinite scroll from TPR service units and unit services views and replace it with full pager.
+ */
+function helfi_tpr_config_update_9030() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/optional/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'views.view.service_units',
+    'views.view.unit_services',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
 }
