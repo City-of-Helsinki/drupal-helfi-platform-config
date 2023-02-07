@@ -6,4 +6,5 @@ dependencies:
   - drupal:filter
   - helfi_api_base:helfi_api_base
   - helfi_platform_config:helfi_platform_config
+  - helfi_user_roles:helfi_user_roles
   - linkit:linkit

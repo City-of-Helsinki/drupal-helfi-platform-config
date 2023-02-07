@@ -10,3 +10,4 @@ dependencies:
   - focal_point:focal_point
   - helfi_image_styles:helfi_image_styles
   - helfi_platform_config:helfi_platform_config
+  - helfi_user_roles:helfi_user_roles
