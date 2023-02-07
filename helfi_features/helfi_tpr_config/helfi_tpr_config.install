@@ -608,10 +608,14 @@ function helfi_tpr_config_update_9029() {
   }
 
   // Remove the meta load more label field because load more pager is not used anymore.
-  FieldStorageConfig::loadByName('paragraph', 'field_service_list_meta_load_mor')->delete();
+  if ($field_service_list_meta_load_mor = FieldStorageConfig::loadByName('paragraph', 'field_service_list_meta_load_mor')) {
+    $field_service_list_meta_load_mor->delete();
+  }
 
   // Remove the meta load more label field because load more pager is not used anymore.
-  FieldStorageConfig::loadByName('paragraph', 'field_unit_search_meta_load_more')->delete();
+  if ($field_unit_search_meta_load_more = FieldStorageConfig::loadByName('paragraph', 'field_unit_search_meta_load_more')) {
+    $field_unit_search_meta_load_more->delete();
+  }
 }
 
 /**
