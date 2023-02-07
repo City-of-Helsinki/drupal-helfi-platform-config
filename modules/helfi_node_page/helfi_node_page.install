@@ -13,6 +13,14 @@ declare(strict_types = 1);
 function helfi_node_page_grant_permissions() : void {
   $permissions = [
     'admin' => [
+      'create page content',
+      'delete any page content',
+      'delete own page content',
+      'delete page revisions',
+      'edit any page content',
+      'edit own page content',
+      'revert page revisions',
+      'view page revisions',
     ],
     'content_producer' => [
       'create page content',
@@ -25,6 +33,14 @@ function helfi_node_page_grant_permissions() : void {
       'set page published on date',
     ],
     'editor' => [
+      'create page content',
+      'delete any page content',
+      'delete own page content',
+      'delete page revisions',
+      'edit any page content',
+      'edit own page content',
+      'revert page revisions',
+      'view page revisions',
     ],
     'read_only' => [
       'view any unpublished page content',
