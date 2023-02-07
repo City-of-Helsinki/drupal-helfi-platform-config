@@ -8,3 +8,4 @@ dependencies:
   - drupal:media
   - drupal:media_library
   - drupal:path
+  - helfi_media:helfi_media
