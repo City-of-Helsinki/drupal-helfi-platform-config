@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_node_announcement module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Grants required permissions.
+ */
+function helfi_node_announcement_grant_permissions() : void {
+  $permissions = [
+    'content_producer' => [
+      'create announcement content',
+      'delete own announcement content',
+      'edit any announcement content',
+      'edit own announcement content',
+      'revert announcement revisions',
+      'view announcement revisions',
+      'set announcement published on date',
+    ],
+  ];
+  helfi_platform_config_grant_permissions($permissions);
+}
+
+/**
+ * Implements hook_install().
+ */
+function helfi_node_announcement_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  helfi_node_announcement_grant_permissions();
+}

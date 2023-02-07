@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_media_chart module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Grants required permissions.
+ */
+function helfi_media_chart_grant_permissions() : void {
+  $permissions = [
+    'content_producer' => [
+      'create helfi_chart media',
+      'delete own helfi_chart media',
+      'edit any helfi_chart media',
+      'edit own helfi_chart media',
+    ],
+  ];
+  helfi_platform_config_grant_permissions($permissions);
+}
+
+/**
+ * Implements hook_install().
+ */
+function helfi_media_chart_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  helfi_media_chart_grant_permissions();
+}

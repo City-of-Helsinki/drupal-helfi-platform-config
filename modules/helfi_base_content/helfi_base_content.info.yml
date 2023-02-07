@@ -12,11 +12,12 @@ dependencies:
   - drupal:menu_link_content
   - drupal:node
   - drupal:path_alias
-  - drupal:text
   - drupal:taxonomy
+  - drupal:text
   - easy_breadcrumb:easy_breadcrumb
   - editoria11y:editoria11y
   - entity_reference_revisions:entity_reference_revisions
+  - hdbt_admin_tools:hdbt_admin_tools
   - helfi_platform_config:helfi_platform_config
   - helfi_user_roles:helfi_user_roles
   - linkit:linkit
@@ -30,6 +31,6 @@ dependencies:
   - pathauto:pathauto
   - redirect:redirect
   - scheduler:scheduler
-  - hdbt_admin_tools:hdbt_admin_tools
   - simple_sitemap:simple_sitemap
   - twig_tweak:twig_tweak
+  - view_unpublished:view_unpublished

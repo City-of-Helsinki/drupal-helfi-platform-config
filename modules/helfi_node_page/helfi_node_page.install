@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_node_page module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Gets the permissions.
+ */
+function helfi_node_page_grant_permissions() : void {
+  $permissions = [
+    'admin' => [
+    ],
+    'content_producer' => [
+      'create page content',
+      'delete own page content',
+      'edit any page content',
+      'edit own page content',
+      'view any unpublished page content',
+      'revert page revisions',
+      'view page revisions',
+      'set page published on date',
+    ],
+    'editor' => [
+    ],
+  ];
+  helfi_platform_config_grant_permissions($permissions);
+}
+
+/**
+ * Implements hook_install().
+ */
+function helfi_node_page_install() : void {
+  helfi_node_page_grant_permissions();
+}

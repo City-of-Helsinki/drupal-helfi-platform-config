@@ -39,12 +39,33 @@ function helfi_base_content_grant_permissions() : void {
       'edit remote entities',
     ],
     'content_producer' => [
-      'view unpublished paragraphs',
+      // @node.
+      'access content overview',
       'administer nodes',
       'view all revisions',
       'view own unpublished content',
+      // @content_translation.
+      'translate editable entities',
+      // @editorially.
+      'view editoria11y checker',
+      // @paragraphs.
+      'administer paragraphs library',
+      'create paragraph library item',
+      'view unpublished paragraphs',
+      'edit paragraph library item',
       // @helfi_api_base.
       'access remote entities overview',
+      // @taxonomy.
+      'access taxonomy overview',
+      // @path / path_alias.
+      'create url aliases',
+      // @scheduler.
+      'schedule publishing of nodes',
+      'view scheduled content',
+      // @view_unpublished.
+      'view any unpublished content',
+      // @system.
+      'view the administration theme',
     ],
     'editor' => [
       'view unpublished paragraphs',

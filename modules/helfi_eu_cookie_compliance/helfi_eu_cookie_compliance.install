@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_eu_cookie_compliance module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Grants required permissions.
+ */
+function helfi_eu_cookie_compliance_grant_permissions() : void {
+  $permissions = [
+    'anonymous' => [
+      'display eu cookie compliance popup',
+    ],
+    'authenticated' => [
+      'display eu cookie compliance popup',
+    ],
+  ];
+  helfi_platform_config_grant_permissions($permissions);
+}
+
+/**
+ * Implements hook_install().
+ */
+function helfi_eu_cookie_compliance_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  helfi_eu_cookie_compliance_grant_permissions();
+}
