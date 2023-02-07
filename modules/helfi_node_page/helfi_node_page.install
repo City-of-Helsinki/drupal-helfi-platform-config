@@ -26,6 +26,9 @@ function helfi_node_page_grant_permissions() : void {
     ],
     'editor' => [
     ],
+    'read_only' => [
+      'view any unpublished page content',
+    ],
   ];
   helfi_platform_config_grant_permissions($permissions);
 }

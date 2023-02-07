@@ -21,6 +21,9 @@ function helfi_node_announcement_grant_permissions() : void {
       'view announcement revisions',
       'set announcement published on date',
     ],
+    'read_only' => [
+      'view any unpublished announcement content',
+    ],
   ];
   helfi_platform_config_grant_permissions($permissions);
 }

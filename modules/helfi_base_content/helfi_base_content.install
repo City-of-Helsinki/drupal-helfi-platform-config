@@ -79,6 +79,7 @@ function helfi_base_content_grant_permissions() : void {
     ],
     'read_only' => [
       'view own unpublished content',
+      'view unpublished paragraphs',
     ],
   ];
   helfi_platform_config_grant_permissions($permissions);

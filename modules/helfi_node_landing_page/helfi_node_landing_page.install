@@ -43,6 +43,9 @@ function helfi_node_landing_page_grant_permissions() : void {
       'revert landing_page revisions',
       'view landing_page revisions',
     ],
+    'read_only' => [
+      'view any unpublished landing_page content',
+    ],
   ];
   helfi_platform_config_grant_permissions($permissions);
 }
