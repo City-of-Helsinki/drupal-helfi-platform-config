@@ -12,14 +12,39 @@ declare(strict_types = 1);
  */
 function helfi_node_announcement_grant_permissions() : void {
   $permissions = [
+    'admin' => [
+      'create announcement content',
+      'delete announcement revisions',
+      'delete any announcement content',
+      'delete own announcement content',
+      'edit any announcement content',
+      'edit own announcement content',
+      'revert announcement revisions',
+      'set announcement published on date',
+      'translate announcement node',
+      'view announcement revisions',
+    ],
     'content_producer' => [
       'create announcement content',
       'delete own announcement content',
       'edit any announcement content',
       'edit own announcement content',
       'revert announcement revisions',
-      'view announcement revisions',
       'set announcement published on date',
+      'translate announcement node',
+      'view announcement revisions',
+    ],
+    'editor' => [
+      'create announcement content',
+      'delete announcement revisions',
+      'delete any announcement content',
+      'delete own announcement content',
+      'edit any announcement content',
+      'edit own announcement content',
+      'revert announcement revisions',
+      'set announcement published on date',
+      'translate announcement node',
+      'view announcement revisions',
     ],
     'read_only' => [
       'view any unpublished announcement content',

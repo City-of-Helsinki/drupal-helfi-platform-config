@@ -26,7 +26,29 @@ function helfi_base_content_grant_permissions() : void {
       'view remote entities',
     ],
     'admin' => [
-      'view unpublished paragraphs',
+      // @block.
+      'administer blocks',
+      // @content_translation.
+      'create content translations',
+      'delete content translations',
+      'translate any entity',
+      'translate editable entities',
+      'update content translations',
+      // @config_translation.
+      'translate configuration',
+      // @content_lock.
+      'break content lock',
+      // @editorially.
+      'view editoria11y checker',
+      // @locale.
+      'translate interface',
+      // @menu_link_attributes.
+      'use menu link attributes',
+      // @menu_link_content.
+      // @todo check if 'translate any entity' is enough
+      'translate menu_link_content',
+      // @node.
+      'access content overview',
       'administer nodes',
       'delete all revisions',
       'revert all revisions',
@@ -37,48 +59,119 @@ function helfi_base_content_grant_permissions() : void {
       'create remote entities',
       'delete remote entities',
       'edit remote entities',
+      // @view_unpublished.
+      'view any unpublished content',
+      // @paragraphs.
+      'administer paragraphs library',
+      'create paragraph library item',
+      'edit paragraph library item',
+      'view unpublished paragraphs',
+      // @path / path_alias.
+      'create url aliases',
+      'administer url aliases',
+      // @pathauto.
+      'administer pathauto',
+      // @redirect.
+      'administer redirects',
+      // @role_delegation.
+      'assign admin role',
+      'assign content_producer role',
+      'assign editor role',
+      'assign read_only role',
+      // @scheduler.
+      'schedule publishing of nodes',
+      'view scheduled content',
+      // @simple_sitemap.
+      'administer sitemap settings',
+      // @system.
+      'administer menu',
+      'access administration pages',
+      'access site in maintenance mode',
+      'view the administration theme',
+      // @taxonomy.
+      'access taxonomy overview',
     ],
     'content_producer' => [
+      // @content_translation.
+      'translate editable entities',
+      // @editorially.
+      'view editoria11y checker',
+      // @helfi_api_base.
+      'access remote entities overview',
       // @node.
       'access content overview',
       'administer nodes',
       'view all revisions',
       'view own unpublished content',
-      // @content_translation.
-      'translate editable entities',
-      // @editorially.
-      'view editoria11y checker',
       // @paragraphs.
       'administer paragraphs library',
       'create paragraph library item',
-      'view unpublished paragraphs',
       'edit paragraph library item',
-      // @helfi_api_base.
-      'access remote entities overview',
-      // @taxonomy.
-      'access taxonomy overview',
+      'view unpublished paragraphs',
       // @path / path_alias.
       'create url aliases',
       // @scheduler.
       'schedule publishing of nodes',
       'view scheduled content',
-      // @view_unpublished.
-      'view any unpublished content',
       // @system.
       'view the administration theme',
+      // @taxonomy.
+      'access taxonomy overview',
+      // @view_unpublished.
+      'view any unpublished content',
     ],
     'editor' => [
-      'view unpublished paragraphs',
+      // @content_translation.
+      'create content translations',
+      'delete content translations',
+      'translate any entity',
+      'translate editable entities',
+      'update content translations',
+      // @editorially.
+      'view editoria11y checker',
+      // @node.
+      'access content overview',
       'administer nodes',
       'view all revisions',
       'view own unpublished content',
       // @helfi_api_base.
       'access remote entities overview',
+      'create remote entities',
       'delete remote entities',
       'edit remote entities',
+      // @locale.
+      'translate interface',
+      // @menu_link_attributes.
+      'use menu link attributes',
+      // @menu_link_content.
+      // @todo check if 'translate any entity' is enough
+      'translate menu_link_content',
+      // @paragraphs.
+      'administer paragraphs library',
+      'create paragraph library item',
+      'edit paragraph library item',
+      'view unpublished paragraphs',
+      // @path / path_alias.
+      'create url aliases',
+      'administer url aliases',
+      // @redirect.
+      'administer redirects',
+      // @scheduler.
+      'schedule publishing of nodes',
+      'view scheduled content',
+      // @system.
+      'administer menu',
+      'access administration pages',
+      'view the administration theme',
+      // @taxonomy.
+      'access taxonomy overview',
+      // @view_unpublished.
+      'view any unpublished content',
     ],
     'read_only' => [
+      // @node.
       'view own unpublished content',
+      // @paragraphs.
       'view unpublished paragraphs',
     ],
   ];

@@ -12,6 +12,33 @@ declare(strict_types = 1);
  */
 function helfi_media_grant_permissions() : void {
   $permissions = [
+    'admin' => [
+      // @file.
+      'access files overview',
+      // @media.
+      'access media overview',
+      'create file media',
+      'create image media',
+      'create media',
+      'delete any file media',
+      'delete any image media',
+      'delete any media',
+      'delete media',
+      'delete own file media',
+      'delete own image media',
+      'edit any file media',
+      'edit any image media',
+      'edit own file media',
+      'edit own image media',
+      // @todo check if 'translate any entity' is enough
+      'translate file media',
+      'translate image media',
+      'update any media',
+      'update media',
+      'view media',
+      'view all media revisions',
+      'view own unpublished media',
+    ],
     'anonymous' => [
       'view media',
     ],
@@ -33,6 +60,33 @@ function helfi_media_grant_permissions() : void {
       'edit any image media',
       'edit own file media',
       'edit own image media',
+      'translate file media',
+      'update media',
+      'view all media revisions',
+      'view own unpublished media',
+    ],
+    'editor' => [
+      // @file.
+      'access files overview',
+      // @media.
+      'access media overview',
+      'create file media',
+      'create image media',
+      'create media',
+      'delete any file media',
+      'delete any image media',
+      'delete any media',
+      'delete media',
+      'delete own file media',
+      'delete own image media',
+      'edit any file media',
+      'edit any image media',
+      'edit own file media',
+      'edit own image media',
+      // @todo check if 'translate any entity' is enough
+      'translate file media',
+      'translate image media',
+      'update any media',
       'update media',
       'view all media revisions',
       'view own unpublished media',

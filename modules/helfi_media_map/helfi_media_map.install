@@ -12,8 +12,22 @@ declare(strict_types = 1);
  */
 function helfi_media_map_grant_permissions() : void {
   $permissions = [
+    'admin' => [
+      'create hel_map media',
+      'delete any hel_map media',
+      'delete own hel_map media',
+      'edit any hel_map media',
+      'edit own hel_map media',
+    ],
     'content_producer' => [
       'create hel_map media',
+      'delete own hel_map media',
+      'edit any hel_map media',
+      'edit own hel_map media',
+    ],
+    'editor' => [
+      'create hel_map media',
+      'delete any hel_map media',
       'delete own hel_map media',
       'edit any hel_map media',
       'edit own hel_map media',

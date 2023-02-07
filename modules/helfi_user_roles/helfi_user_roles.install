@@ -12,7 +12,20 @@ declare(strict_types = 1);
  */
 function helfi_user_roles_grant_permissions() : void {
   $permissions = [
+    'admin' => [
+      // @user.
+      'access user profiles',
+      'administer users',
+      'cancel account',
+      'change own username',
+    ],
     'content_producer' => [
+      // @user.
+      'access user profiles',
+      'cancel account',
+      'change own username',
+    ],
+    'editor' => [
       // @user.
       'access user profiles',
       'cancel account',

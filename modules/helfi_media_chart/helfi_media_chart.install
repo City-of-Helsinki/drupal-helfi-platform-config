@@ -12,8 +12,22 @@ declare(strict_types = 1);
  */
 function helfi_media_chart_grant_permissions() : void {
   $permissions = [
+    'admin' => [
+      'create helfi_chart media',
+      'delete any helfi_chart media',
+      'delete own helfi_chart media',
+      'edit any helfi_chart media',
+      'edit own helfi_chart media',
+    ],
     'content_producer' => [
       'create helfi_chart media',
+      'delete own helfi_chart media',
+      'edit any helfi_chart media',
+      'edit own helfi_chart media',
+    ],
+    'editor' => [
+      'create helfi_chart media',
+      'delete any helfi_chart media',
       'delete own helfi_chart media',
       'edit any helfi_chart media',
       'edit own helfi_chart media',

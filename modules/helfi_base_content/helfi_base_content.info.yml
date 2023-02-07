@@ -8,6 +8,7 @@ dependencies:
   - diff:diff
   - drupal:content_translation
   - drupal:language
+  - drupal:locale
   - drupal:media
   - drupal:menu_link_content
   - drupal:node
@@ -30,6 +31,7 @@ dependencies:
   - paragraphs_library:paragraphs_library
   - pathauto:pathauto
   - redirect:redirect
+  - role_delegation:role_delegation
   - scheduler:scheduler
   - simple_sitemap:simple_sitemap
   - twig_tweak:twig_tweak

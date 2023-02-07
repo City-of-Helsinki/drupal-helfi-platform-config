@@ -12,11 +12,29 @@ declare(strict_types = 1);
  */
 function helfi_media_remote_video_grant_permissions() : void {
   $permissions = [
+    'admin' => [
+      'create remote_video media',
+      'delete any remote_video media',
+      'delete own remote_video media',
+      'edit any remote_video media',
+      'edit own remote_video media',
+      // @todo check if 'translate any entity' is enough
+      'translate remote_video media',
+    ],
     'content_producer' => [
       'create remote_video media',
       'delete own remote_video media',
       'edit any remote_video media',
       'edit own remote_video media',
+    ],
+    'editor' => [
+      'create remote_video media',
+      'delete any remote_video media',
+      'delete own remote_video media',
+      'edit any remote_video media',
+      'edit own remote_video media',
+      // @todo check if 'translate any entity' is enough
+      'translate remote_video media',
     ],
   ];
   helfi_platform_config_grant_permissions($permissions);

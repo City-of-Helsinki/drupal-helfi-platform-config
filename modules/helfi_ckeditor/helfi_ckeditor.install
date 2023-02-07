@@ -12,7 +12,15 @@ declare(strict_types = 1);
  */
 function helfi_ckeditor_grant_permissions() : void {
   $permissions = [
+    'admin' => [
+      'use text format full_html',
+      'use text format minimal',
+    ],
     'content_producer' => [
+      'use text format full_html',
+      'use text format minimal',
+    ],
+    'editor' => [
       'use text format full_html',
       'use text format minimal',
     ],

@@ -18,6 +18,10 @@ function helfi_eu_cookie_compliance_grant_permissions() : void {
     'authenticated' => [
       'display eu cookie compliance popup',
     ],
+    'admin' => [
+      'administer eu cookie compliance categories',
+      'administer eu cookie compliance popup',
+    ],
   ];
   helfi_platform_config_grant_permissions($permissions);
 }
