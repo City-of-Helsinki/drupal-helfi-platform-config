@@ -1,0 +1,11 @@
+services:
+  logger.channel.helfi_react_search:
+    parent: logger.channel_base
+    arguments:
+      - 'helfi_react_search'
+  helfi_react_search_linked_events:
+    class: Drupal\helfi_react_search\LinkedEvents
+    arguments:
+      - '@cache.default'
+      - '@http_client'
+      - '@logger.channel.helfi_react_search'

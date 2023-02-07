@@ -1,0 +1,42 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 7c36a698-3d99-4215-8e59-e87986053363
+  bundle: image
+  default_langcode: en
+  depends:
+    29bd12c4-3726-4538-a4b9-3c91fbe510f3: file
+default:
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: snowdrops.jpg
+  created:
+    -
+      value: 1657173250
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_media_image:
+    -
+      entity: 29bd12c4-3726-4538-a4b9-3c91fbe510f3
+      alt: 'alternative text'
+      title: ''
+      width: 1280
+      height: 1920

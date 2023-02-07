@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: efa4ebeb-7b3a-442b-b1c4-370cae548442
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    a8f3cf05-f5e3-4fba-8514-642d8d77e05a: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: component list of plans'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: a8f3cf05-f5e3-4fba-8514-642d8d77e05a
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1658296112

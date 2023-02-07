@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types = 1);
+
+/**
+ * Event count dropdown selectable values.
+ *
+ * @return int[]
+ *   Values to select.
+ */
+function helfi_react_search_event_list_allowed_values_function() : array {
+  return [
+    3 => 3,
+    5 => 5,
+  ];
+}

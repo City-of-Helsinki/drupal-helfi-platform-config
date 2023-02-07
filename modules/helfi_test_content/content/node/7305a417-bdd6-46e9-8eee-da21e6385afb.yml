@@ -4,6 +4,9 @@ _meta:
   uuid: 7305a417-bdd6-46e9-8eee-da21e6385afb
   bundle: page
   default_langcode: en
+  depends:
+    eb57113a-b852-4ce3-9192-559c4d79f9f0: media
+    910b8296-bca3-4f42-b184-843888c17cd5: media
 default:
   revision_uid:
     -
@@ -50,6 +53,31 @@ default:
     -
       value: false
   field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 9a5e953e-8724-40a4-a541-2402795bfb9c
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657260957
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<h2>Designs With Text Content Only</h2>\r\n"
+              format: full_html
     -
       entity:
         _meta:
@@ -128,17 +156,13 @@ default:
                       format: full_html
           field_columns_title:
             -
-              value: 'Columns - Upper content region'
-  field_has_hero:
-    -
-      value: false
-  field_lower_content:
+              value: '50 - 50'
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 3ea2ad43-9b49-4ab6-bd3d-401d46bfbabf
+          uuid: 6bb33fa5-8465-4b8c-a48c-ed0a58ed4d1c
           bundle: columns
           default_langcode: en
         default:
@@ -147,7 +171,7 @@ default:
               value: true
           created:
             -
-              value: 1654686391
+              value: 1654686385
           behavior_settings:
             -
               value: {  }
@@ -156,14 +180,14 @@ default:
               value: true
           field_columns_design:
             -
-              value: 50-50
+              value: 30-70
           field_columns_left_column:
             -
               entity:
                 _meta:
                   version: '1.0'
                   entity_type: paragraph
-                  uuid: 888e0e56-6d98-446e-a910-9f813f54bb02
+                  uuid: f0840708-ae71-4d1e-b642-c53d8bc3a7df
                   bundle: text
                   default_langcode: en
                 default:
@@ -172,7 +196,7 @@ default:
                       value: true
                   created:
                     -
-                      value: 1654686427
+                      value: 1654686419
                   behavior_settings:
                     -
                       value: {  }
@@ -189,7 +213,7 @@ default:
                 _meta:
                   version: '1.0'
                   entity_type: paragraph
-                  uuid: e4821f5f-9e7d-4ff3-8a2a-d6e77ce0b1ee
+                  uuid: e5e37b06-9319-4e9e-99d5-dfa5498a7d63
                   bundle: text
                   default_langcode: en
                 default:
@@ -198,7 +222,7 @@ default:
                       value: true
                   created:
                     -
-                      value: 1654686431
+                      value: 1654686423
                   behavior_settings:
                     -
                       value: {  }
@@ -211,4 +235,706 @@ default:
                       format: full_html
           field_columns_title:
             -
-              value: 'Columns - Lower content region'
+              value: '30 - 70'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: d7f76ce5-f178-4c52-b6d0-77782d466c94
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1654686385
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 70-30
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 71ca1f1c-35fc-4c3b-a733-49486159d211
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1654686419
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Proin eget tortor risus. Nulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta.</p>\r\n\r\n<p>Donec rutrum congue leo eget malesuada. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
+                      format: full_html
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: a210cdc2-0ca4-4d9a-a32b-ba89ce5e1ae4
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1654686423
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.<br />\r\n&nbsp;</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: '70 - 30'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 5c54efcf-71f2-48d6-964d-718330061969
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261110
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<h2>Designs With Text And Image Content</h2>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 57a84374-54b3-4849-8420-25724a7039f3
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261128
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 50-50
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: e5e1c180-c914-42ef-af52-f83bae5a8329
+                  bundle: image
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261140
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_original_aspect_ratio:
+                    -
+                      value: false
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 9af01638-6c8d-48f1-b9b9-97d541b6f218
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261170
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: '50 - 50'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a63c26ce-5fb9-49a7-9e3d-cd60a8c95613
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261128
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 30-70
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 2d3df2df-549a-4f9d-82b5-a3a20d8257e2
+                  bundle: image
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261140
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_original_aspect_ratio:
+                    -
+                      value: false
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 4fa15edf-8248-4f32-beda-0cfebcabc0fa
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261170
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: '30 - 70'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 5e8bdc6e-4469-4494-b657-2c8036fa62f5
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261128
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 70-30
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: d6572c9b-4493-48b8-b9ba-308096d82d7e
+                  bundle: image
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261140
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_original_aspect_ratio:
+                    -
+                      value: false
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 49094a12-aa21-4340-88a4-2725623a8162
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261170
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: '70 - 30'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: ee8a0dd8-4a43-4977-a9a9-54720acb4524
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261542
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<h2>Special Cases</h2>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: e0754bfe-e07c-42d6-bf6a-2e4816423f0d
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261128
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 50-50
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 4ce0f4cb-e9ff-464f-baf1-4de7ce297c70
+                  bundle: image
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261140
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_original_aspect_ratio:
+                    -
+                      value: true
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: e48f43c9-b87a-4e96-8b9e-b44c45591dcb
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261170
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: '50 - 50 - Original aspect ratio ON'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7d523bd0-dbcc-4cfc-8c64-8ed7b77b09b7
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261128
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 30-70
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 82b7c37c-8009-49d8-a6a2-d7216561b86b
+                  bundle: image
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261140
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_original_aspect_ratio:
+                    -
+                      value: true
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: d1867f20-10c2-4abe-9769-250824c5b860
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261170
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: '30 - 70  - Original aspect ratio ON'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: c6ce6acf-3d29-4834-83a2-6adb7ee8d1e1
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261128
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 70-30
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: c60a01dd-dc2d-4b51-be98-0f4c83e3940b
+                  bundle: image
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261140
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_original_aspect_ratio:
+                    -
+                      value: true
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 932e984c-3626-4f99-808f-ae39bb4fa03f
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261170
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: '70 - 30  - Original aspect ratio ON'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 624614af-e9a2-439f-985c-993979b46f2c
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1657261128
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 50-50
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 445ac55b-86b3-4b8a-9aa8-705bd34d398a
+                  bundle: image
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261140
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_image_caption:
+                    -
+                      value: 'Morbi urna sem, volutpat vitae imperdiet vel, cursus eu lacus'
+                  field_original_aspect_ratio:
+                    -
+                      value: false
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 530c6bc2-ab45-4719-8adb-c67c9a8f34e0
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1657261170
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Aenean hendrerit tristique purus eget pretium. Donec at ligula laoreet, sollicitudin mauris in, cursus quam. Vivamus porta odio ut ultrices euismod. Pellentesque laoreet, lorem eu dapibus volutpat, lorem mauris lobortis lacus, ac sollicitudin nibh nulla nec ligula. Nunc hendrerit nec nulla vitae rhoncus.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: '50 - 50 - Image Has Caption'
+  field_has_hero:
+    -
+      value: false

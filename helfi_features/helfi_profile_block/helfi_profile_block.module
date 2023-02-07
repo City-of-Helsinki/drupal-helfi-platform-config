@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Helfi Profile Block module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_profile_block_theme() {
+  return [
+    'profile_block' => [
+      'variables' => [
+        'logged_in' => FALSE,
+        'display_name' => NULL,
+        'full_name' => NULL,
+        'email' => NULL,
+        'url' => NULL,
+      ],
+    ],
+  ];
+}
