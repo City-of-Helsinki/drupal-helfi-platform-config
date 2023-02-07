@@ -1,3 +1,4 @@
+uuid: c56b8225-e14b-42ba-8c5c-2a17499cef34
 langcode: en
 status: true
 dependencies:
@@ -8,8 +9,8 @@ id: paragraph.service_list_search.field_service_list_service_ids
 field_name: field_service_list_service_ids
 entity_type: paragraph
 bundle: service_list_search
-label: 'Service IDs'
-description: ''
+label: 'Service group ID'
+description: 'You’ll find the service group ID by opening a service you want to list for editing, and scrolling to the bottom of the form.'
 required: false
 translatable: false
 default_value: {  }
