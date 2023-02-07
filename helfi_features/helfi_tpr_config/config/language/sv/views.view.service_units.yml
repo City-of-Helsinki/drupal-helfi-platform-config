@@ -20,8 +20,6 @@ display:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
-          views_infinite_scroll:
-            button_text: 'Ladda fler serviceställen'
       fields:
         name:
           separator: ', '

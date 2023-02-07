@@ -121,10 +121,6 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          views_infinite_scroll:
-            button_text: 'Load more services'
-            automatically_load_content: false
-            initially_load_all_pages: false
       exposed_form:
         type: basic
         options:
