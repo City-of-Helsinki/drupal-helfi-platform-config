@@ -24,6 +24,11 @@ function helfi_platform_config_update_9300(): void {
   $database = \Drupal::database();
 
   $moduleMap = [
+    'aet' => NULL,
+    'config_update' => NULL,
+    'hdbt_admin_editorial' => 'hdbt_admin_tools',
+    'hdbt_component_library' => 'hdbt_admin_tools',
+    'hdbt_content' => 'hdbt_admin_tools',
     'helfi_announcements' => 'helfi_node_announcement',
     'helfi_base_config' => 'helfi_base_content',
     'helfi_charts' => 'helfi_paragraphs_chart',
@@ -39,11 +44,20 @@ function helfi_platform_config_update_9300(): void {
     'helfi_news_feed' => 'helfi_paragraphs_news_list',
     'helfi_news_item' => 'helfi_node_news_item',
     'helfi_siteimprove_config' => NULL,
+    'helfi_tpr_unit_districts' => NULL,
+    'media_entity_soundcloud' => NULL,
+    'select2_icon' => 'hdbt_admin_tools',
+    'token_filter' => NULL,
+    'update_helper' => NULL,
+    // @todo check these.
+    'helfi_helsinki_neighbourhoods' => NULL,
+    'helfi_announcements_tpr' => NULL,
   ];
 
   $enabledModules = [];
   foreach ($moduleMap as $oldModule => $newModule) {
-    // Delete key_value data for old modules and track what modules were enabled.
+    // Delete key_value data for old modules and track what modules were
+    // enabled.
     $status = $database->delete('key_value')
       ->condition('name', $oldModule)
       ->execute();
@@ -76,5 +90,5 @@ function helfi_platform_config_update_9300(): void {
   }
 
   // @todo remove helfi_media_map from composer.json.
-
+  // @todo Update drush.
 }
