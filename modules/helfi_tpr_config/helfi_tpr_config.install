@@ -29,7 +29,6 @@ function helfi_tpr_config_grant_permissions() : void {
       'administer tpr_unit',
       'revert all tpr_service revisions',
       'revert all tpr_unit revisions',
-      // @todo check if 'translate any entity' is enough
       'translate tpr_errand_service',
       'translate tpr_service',
       'translate tpr_service_channel',
@@ -72,7 +71,6 @@ function helfi_tpr_config_grant_permissions() : void {
       'access tpr_unit overview',
       'revert all tpr_service revisions',
       'revert all tpr_unit revisions',
-      // @todo check if 'translate any entity' is enough
       'translate tpr_errand_service',
       'translate tpr_service',
       'translate tpr_service_channel',

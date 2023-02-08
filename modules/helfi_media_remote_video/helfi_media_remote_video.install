@@ -18,7 +18,6 @@ function helfi_media_remote_video_grant_permissions() : void {
       'delete own remote_video media',
       'edit any remote_video media',
       'edit own remote_video media',
-      // @todo check if 'translate any entity' is enough
       'translate remote_video media',
     ],
     'content_producer' => [
@@ -33,7 +32,6 @@ function helfi_media_remote_video_grant_permissions() : void {
       'delete own remote_video media',
       'edit any remote_video media',
       'edit own remote_video media',
-      // @todo check if 'translate any entity' is enough
       'translate remote_video media',
     ],
   ];

@@ -31,7 +31,6 @@ function helfi_node_announcement_grant_permissions() : void {
       'edit own announcement content',
       'revert announcement revisions',
       'set announcement published on date',
-      'translate announcement node',
       'view announcement revisions',
     ],
     'editor' => [

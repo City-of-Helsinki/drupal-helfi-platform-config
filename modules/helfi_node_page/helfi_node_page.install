@@ -21,7 +21,6 @@ function helfi_node_page_grant_permissions() : void {
       'edit own page content',
       'revert page revisions',
       'set page published on date',
-      // @todo check if 'translate any entity' is enough
       'translate page node',
       'view page revisions',
     ],
@@ -45,7 +44,6 @@ function helfi_node_page_grant_permissions() : void {
       'edit own page content',
       'revert page revisions',
       'set page published on date',
-      // @todo check if 'translate any entity' is enough
       'translate page node',
       'view page revisions',
     ],

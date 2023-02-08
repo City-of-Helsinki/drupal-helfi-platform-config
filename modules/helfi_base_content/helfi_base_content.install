@@ -45,7 +45,6 @@ function helfi_base_content_grant_permissions() : void {
       // @menu_link_attributes.
       'use menu link attributes',
       // @menu_link_content.
-      // @todo check if 'translate any entity' is enough
       'translate menu_link_content',
       // @node.
       'access content overview',
@@ -98,6 +97,8 @@ function helfi_base_content_grant_permissions() : void {
       'view editoria11y checker',
       // @helfi_api_base.
       'access remote entities overview',
+      // @menu_link_content.
+      'translate menu_link_content',
       // @node.
       'access content overview',
       'administer nodes',
@@ -144,7 +145,6 @@ function helfi_base_content_grant_permissions() : void {
       // @menu_link_attributes.
       'use menu link attributes',
       // @menu_link_content.
-      // @todo check if 'translate any entity' is enough
       'translate menu_link_content',
       // @paragraphs.
       'administer paragraphs library',

@@ -30,7 +30,6 @@ function helfi_node_news_item_grant_permissions() : void {
       'edit terms in news_tags',
       'revert news_item revisions',
       'set news_item published on date',
-      // @todo check if 'translate any entity' is enough
       'translate news_group taxonomy_term',
       'translate news_item node',
       'translate news_neighbourhoods taxonomy_term',
@@ -55,7 +54,9 @@ function helfi_node_news_item_grant_permissions() : void {
       'edit own news_item content',
       'revert news_item revisions',
       'set news_item published on date',
+      'translate news_group taxonomy_term',
       'translate news_item node',
+      'translate news_neighbourhoods taxonomy_term',
       'translate news_tags taxonomy_term',
       'view news_item revisions',
     ],
