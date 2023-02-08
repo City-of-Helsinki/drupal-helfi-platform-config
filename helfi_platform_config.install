@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Contains installation hooks for helfi_platform_config module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Component\Serialization\Yaml;
+
+/**
+ * Update platform config to 3.x.
+ */
+function helfi_platform_config_update_9300(): void {
+  /** @var \Drupal\Core\Update\UpdateHookRegistry $service */
+  $service = \Drupal::service('update.update_hook_registry');
+  $schema = $service->getInstalledVersion('helfi_platform_config');
+
+  // Skip update if schema is not in the latest version.
+  if ($schema < 9000) {
+    return;
+  }
+  $database = \Drupal::database();
+
+  $moduleMap = [
+    'helfi_announcements' => 'helfi_node_announcement',
+    'helfi_base_config' => 'helfi_base_content',
+    'helfi_charts' => 'helfi_paragraphs_chart',
+    'helfi_contact_cards' => 'helfi_paragraphs_contact_card_listing',
+    'helfi_content' => 'helfi_base_content',
+    'helfi_events' => 'helfi_paragraphs_event_list',
+    'helfi_gdpr_compliance' => 'helfi_eu_cookie_compliance',
+    'helfi_hotjar' => NULL,
+    'helfi_languages' => NULL,
+    'helfi_matomo_config' => NULL,
+    'helfi_media_formtool_config' => NULL,
+    'helfi_media_map_config' => 'helfi_media_map',
+    'helfi_news_feed' => 'helfi_paragraphs_news_list',
+    'helfi_news_item' => 'helfi_node_news_item',
+    'helfi_siteimprove_config' => NULL,
+  ];
+
+  $enabledModules = [];
+  foreach ($moduleMap as $oldModule => $newModule) {
+    // Delete key_value data for old modules and track what modules were enabled.
+    $status = $database->delete('key_value')
+      ->condition('name', $oldModule)
+      ->execute();
+
+    if ($status > 0) {
+      $enabledModules[$oldModule] = $oldModule;
+    }
+  }
+
+  $file = __DIR__ . '/modules/helfi_platform_config_base/helfi_platform_config_base.info.yml';
+  $content = Yaml::decode(file_get_contents($file));
+
+  $modules = array_map(function (string $name) : string {
+    return explode(':', $name)[0];
+  }, $content['dependencies']);
+
+  if (Drupal::moduleHandler()->moduleExists('helfi_tpr')) {
+    $modules[] = 'helfi_tpr_config';
+    $modules[] = 'helfi_paragraphs_content_liftup';
+  }
+
+  foreach ($modules as $module) {
+    $database->insert('key_value')
+      ->fields([
+        'collection' => 'system.schema',
+        'name' => $module,
+        'value' => 9000,
+      ])
+      ->execute();
+  }
+
+  // @todo remove helfi_media_map from composer.json.
+
+}
