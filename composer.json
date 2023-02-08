@@ -56,7 +56,8 @@
     },
     "conflict": {
         "drupal/ctools": "<3.11 || ^4.0.1",
-        "drupal/helfi_media_map": "*"
+        "drupal/helfi_media_map": "*",
+        "drush/drush": "<11"
     },
     "extra": {
         "patches": {
