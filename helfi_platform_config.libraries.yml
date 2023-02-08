@@ -139,6 +139,23 @@ watson_sote:
       minified: true
     }
 
+watson_talpa:
+  version: 1.0.x
+  header: false
+  js:
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/widget.min.js': {
+      type: external,
+      minified: true
+    }
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/static/talpa/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=talpa': {
+      type: external,
+      minified: true
+    }
+    'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/default.min.js': {
+      type: external,
+      minified: true
+    }
+
 genesys_neuvonta:
   version: 1.0.x
   header: true
