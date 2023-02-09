@@ -36,7 +36,7 @@ class ConfigHelper {
 
     // Retain possible active configuration uuid.
     if (!empty($active_config->get('uuid'))) {
-      $data['uuid'] = $active_config->get('uuid');
+      $data = ['uuid' => $active_config->get('uuid')] + $data;
     }
 
     // Save the configuration.
