@@ -636,4 +636,8 @@ function helfi_tpr_config_update_9030() {
     ConfigHelper::installNewConfig($configLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
+
+  // Manually uninstall views_infinite_scroll module.
+  $installer = Drupal::service('module_installer');
+  $installer->uninstall(['views_infinite_scroll']);
 }
