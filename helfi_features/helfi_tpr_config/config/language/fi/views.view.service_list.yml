@@ -24,5 +24,3 @@ display:
         id:
           exception:
             title: Kaikki
-  service_units:
-    display_title: Lohko
