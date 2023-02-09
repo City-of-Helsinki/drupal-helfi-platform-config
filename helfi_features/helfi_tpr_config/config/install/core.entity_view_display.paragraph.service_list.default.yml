@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.service_list.field_service_list_description
-    - field.field.paragraph.service_list.field_service_list_meta_load_mor
     - field.field.paragraph.service_list.field_service_list_services
     - field.field.paragraph.service_list.field_service_list_title
     - paragraphs.paragraphs_type.service_list
@@ -15,33 +14,26 @@ bundle: service_list
 mode: default
 content:
   field_service_list_description:
-    weight: 1
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
-    region: content
-  field_service_list_meta_load_mor:
-    weight: 3
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_service_list_services:
-    weight: 2
+    type: entity_reference_entity_id
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: entity_reference_entity_id
+    weight: 2
     region: content
   field_service_list_title:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
-hidden: {  }
+hidden:
+  search_api_excerpt: true

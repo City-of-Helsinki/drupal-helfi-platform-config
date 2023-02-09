@@ -1,6 +1,6 @@
 display:
   default:
-    display_title: Isäntä
+    display_title: Oletus
     display_options:
       exposed_form:
         options:
@@ -24,5 +24,5 @@ display:
         id:
           exception:
             title: Kaikki
-  service_units:
+  unit_services:
     display_title: Lohko
