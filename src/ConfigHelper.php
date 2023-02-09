@@ -23,13 +23,24 @@ class ConfigHelper {
    */
   public static function installNewConfig(string $config_location, string $config_name): void {
     $config_factory = \Drupal::configFactory();
+    $active_config = $config_factory->getEditable($config_name);
     $filepath = "{$config_location}{$config_name}.yml";
-    if (file_exists($filepath)) {
-      $data = Yaml::parse(file_get_contents($filepath));
-      if (is_array($data)) {
-        $config_factory->getEditable($config_name)->setData($data)->save(TRUE);
-      }
+
+    // Return if file is not found or it is empty.
+    if (
+      !file_exists($filepath) ||
+      empty($data = Yaml::parse(file_get_contents($filepath)))
+    ) {
+      return;
     }
+
+    // Retain possible active configuration uuid.
+    if (!empty($active_config->get('uuid'))) {
+      $data['uuid'] = $active_config->get('uuid');
+    }
+
+    // Save the configuration.
+    $active_config->setData($data)->save(TRUE);
   }
 
   /**
