@@ -603,7 +603,7 @@ function helfi_tpr_config_update_9029() {
 
   // Install configurations and translations.
   foreach ($configurations as $configuration) {
-    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfig($configLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 
@@ -633,7 +633,7 @@ function helfi_tpr_config_update_9030() {
 
   // Install configurations and translations.
   foreach ($configurations as $configuration) {
-    ConfigHelper::updateExistingConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfig($configLocation, $configuration);
     ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
   }
 }
