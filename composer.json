@@ -62,8 +62,7 @@
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_edit": "^2.7",
         "drupal/views_bulk_operations": "^4.1",
-        "ext-curl": "*",
-        "violet/streaming-json-encoder": "^1.1"
+        "ext-curl": "*"
     },
     "conflict": {
         "drupal/core-recommended": "<9.5",
