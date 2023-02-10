@@ -14,4 +14,3 @@ dependencies:
   - drupal:text
   - allowed_formats
   - select2
-  - views_bulk_operations
