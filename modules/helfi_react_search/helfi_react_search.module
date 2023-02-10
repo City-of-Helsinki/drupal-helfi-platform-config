@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains hooks for helfi_react_search module.
+ */
+
 declare(strict_types = 1);
 
 /**
@@ -15,12 +20,13 @@ function helfi_react_search_event_list_allowed_values_function() : array {
   ];
 }
 
-function helfi_react_search_preprocess_paragraph(array &$variables) {
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function helfi_react_search_preprocess_paragraph(array &$variables) : void {
   $reactParagraphs = [
-    'school_search'
+    'school_search',
   ];
-  
-  $type = $variables['paragraph']->getType();
 
   $config = \Drupal::config('elastic_proxy.settings');
   if (
