@@ -5,7 +5,6 @@ dependencies:
     - editor
     - linkit
     - media
-    - token_filter
 name: HTML
 format: full_html
 weight: 0
@@ -84,13 +83,6 @@ filters:
       default_view_mode: default
       allowed_view_modes: {  }
       allowed_media_types: {  }
-  token_filter:
-    id: token_filter
-    provider: token_filter
-    status: true
-    weight: -47
-    settings:
-      replace_empty: '1'
   helfi_link_converter:
     id: helfi_link_converter
     provider: helfi_api_base

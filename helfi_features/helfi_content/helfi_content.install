@@ -1003,3 +1003,27 @@ function helfi_content_update_9039() {
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
 }
+
+/**
+ * Uninstall token_filter and aet modules.
+ */
+function helfi_content_update_9040() : void {
+  if (\Drupal::moduleHandler()->moduleExists('token_filter')) {
+    $formatters = \Drupal::entityTypeManager()
+      ->getStorage('filter_format')
+      ->loadMultiple();
+
+    /** @var \Drupal\filter\Entity\FilterFormat $format */
+    foreach ($formatters as $format) {
+      $format->setFilterConfig('token_filter', [
+        'status' => FALSE,
+      ])
+        ->save();
+    }
+
+    Drupal::service('module_installer')->uninstall([
+      'token_filter',
+      'aet',
+    ]);
+  }
+}
