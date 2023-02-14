@@ -17,7 +17,7 @@ field_mapper_config:
       value: '$.attributes["name"]'
 storage_client_id: helfi_news_tags
 storage_client_config: {  }
-persistent_cache_max_age: -1
+persistent_cache_max_age: 86400
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null

@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+
+msgid "Description"
+msgstr "Beskrivning"
+
+msgid "Map"
+msgstr "Karta"
+
+msgid "Open map in new window"
+msgstr "Öppna kartan i nytt fönster"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Given host (%value) is not valid, must be one of: %domains"
+msgstr "Given värd (%value) är inte giltig, måste vara en av: %domains"
