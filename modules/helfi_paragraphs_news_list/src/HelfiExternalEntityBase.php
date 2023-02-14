@@ -173,7 +173,9 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
         \GuzzleHttp\http_build_query($parameters),
       ]);
 
-      $content = $this->client->request('GET', $uri);
+      $content = $this->client->request('GET', $uri, [
+        'curl' => [CURLOPT_TCP_KEEPALIVE => TRUE],
+      ]);
       $json = \GuzzleHttp\json_decode($content->getBody()->getContents(), TRUE);
       return $json['data'];
     }
