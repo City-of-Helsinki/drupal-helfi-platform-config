@@ -1,9 +1,3 @@
-hdbt_admin_tools.settings:
-  type: config_entity
-  label: 'HDBT Admin tools settings'
-  mapping:
-    path_to_json:
-      type: string
 hdbt_admin_tools.site_settings:
   type: config_object
   label: 'Site settings'
@@ -28,6 +22,8 @@ hdbt_admin_tools.site_settings:
         footer_color:
           label: 'Footer color'
           type: label
+    path_to_json:
+      type: string
 field.widget.settings.link_target_field_widget:
   type: field.widget.settings.linkit
 field.widget.settings.link_target_icon_field_widget:
