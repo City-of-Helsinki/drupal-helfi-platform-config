@@ -12,18 +12,16 @@ use Drupal\Component\Serialization\Yaml;
 /**
  * Update platform config to 3.x.
  */
-function helfi_platform_config_update_9300(): void {
-  /** @var \Drupal\Core\Update\UpdateHookRegistry $service */
-  $service = \Drupal::service('update.update_hook_registry');
-  $schema = $service->getInstalledVersion('helfi_platform_config');
+function helfi_platform_config_update_9310(): void {
+  /** @var \Drupal\helfi_platform_config\Helper\MajorUpdateHelper $service */
+  $service = \Drupal::service('helfi_platform_config.major_update_helper');
 
-  // Skip update if schema is not in the latest version.
-  if ($schema < 9000) {
+  if (!$service->needsUpdate()) {
     return;
   }
-  $database = \Drupal::database();
 
   $moduleMap = [
+    'api_tools' => NULL,
     'aet' => NULL,
     'config_update' => NULL,
     'hdbt_admin_editorial' => 'hdbt_admin_tools',
@@ -34,7 +32,7 @@ function helfi_platform_config_update_9300(): void {
     'helfi_charts' => 'helfi_paragraphs_chart',
     'helfi_contact_cards' => 'helfi_paragraphs_contact_card_listing',
     'helfi_content' => 'helfi_base_content',
-    'helfi_events' => 'helfi_paragraphs_event_list',
+    'helfi_events' => 'helfi_react_search',
     'helfi_gdpr_compliance' => 'helfi_eu_cookie_compliance',
     'helfi_hotjar' => NULL,
     'helfi_languages' => NULL,
@@ -46,49 +44,49 @@ function helfi_platform_config_update_9300(): void {
     'helfi_siteimprove_config' => NULL,
     'helfi_tpr_unit_districts' => NULL,
     'media_entity_soundcloud' => NULL,
-    'select2_icon' => 'hdbt_admin_tools',
     'token_filter' => NULL,
     'update_helper' => NULL,
     // @todo check these.
     'helfi_helsinki_neighbourhoods' => NULL,
     'helfi_announcements_tpr' => NULL,
+    'select2_icon' => NULL,
   ];
+  $service->forceDisableModules($moduleMap);
 
-  $enabledModules = [];
-  foreach ($moduleMap as $oldModule => $newModule) {
-    // Delete key_value data for old modules and track what modules were
-    // enabled.
-    $status = $database->delete('key_value')
-      ->condition('name', $oldModule)
-      ->execute();
-
-    if ($status > 0) {
-      $enabledModules[$oldModule] = $oldModule;
-    }
-  }
-
-  $file = __DIR__ . '/modules/helfi_platform_config_base/helfi_platform_config_base.info.yml';
-  $content = Yaml::decode(file_get_contents($file));
-
-  $modules = array_map(function (string $name) : string {
-    return explode(':', $name)[0];
-  }, $content['dependencies']);
-
+  $modules = $service->getBaseModules();
+  // Enable TPR related modules if TPR is enabled.
   if (Drupal::moduleHandler()->moduleExists('helfi_tpr')) {
     $modules[] = 'helfi_tpr_config';
     $modules[] = 'helfi_paragraphs_content_liftup';
   }
+  $service->forceEnableModules($modules);
+
+  $configExportFolder = Drupal::root() . '/../conf/cmi';
+  $extensions = Yaml::decode(file_get_contents($configExportFolder . '/core.extension.yml'));
+  $extensionsConfig = \Drupal::configFactory()->getEditable('core.extension');
+
+  foreach ($extensions['module'] as $module => $weight) {
+    if (!in_array($module, array_keys($moduleMap))) {
+      continue;
+    }
+    unset($extensions['module'][$module]);
+  }
+  $extensionsConfig->set('module', $extensions['module'])->save();
 
   foreach ($modules as $module) {
-    $database->insert('key_value')
-      ->fields([
-        'collection' => 'system.schema',
-        'name' => $module,
-        'value' => 9000,
-      ])
-      ->execute();
+    $extensions['module'][$module] = 0;
   }
+  file_put_contents($configExportFolder . '/core.extension.yml', Yaml::encode($extensions));
 
+  // Replace config.
+  foreach ($modules as $module) {
+    $service->replaceConfig($configExportFolder, $module);
+  }
+  foreach ($modules as $module) {
+    if (!function_exists($module . '_install')) {
+      continue;
+    }
+    call_user_func($module . '_install');
+  }
   // @todo remove helfi_media_map from composer.json.
-  // @todo Update drush.
 }

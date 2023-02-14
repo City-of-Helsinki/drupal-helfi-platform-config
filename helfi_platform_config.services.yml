@@ -38,3 +38,11 @@ services:
     class: Drupal\helfi_platform_config\TwigExtension\DrupalEntityRevision
     tags:
       - { name: twig.extension }
+
+  helfi_platform_config.major_update_helper:
+    class: Drupal\helfi_platform_config\Helper\MajorUpdateHelper
+    arguments:
+      - '@update.update_hook_registry'
+      - '@database'
+      - '@module_handler'
+      - '@extension.list.module'
