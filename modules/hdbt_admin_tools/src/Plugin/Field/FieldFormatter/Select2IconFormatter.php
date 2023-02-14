@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Select2IconFormatter extends FormatterBase {
 
   /**
-   * Contains the select2_icon.settings configuration object.
+   * Contains the hdbt_admin_tools.settings configuration object.
    *
    * @var \Drupal\Core\Config\Config
    */
@@ -65,7 +65,7 @@ class Select2IconFormatter extends FormatterBase {
       $configuration['label'],
       $configuration['view_mode'],
       $configuration['third_party_settings'],
-      $container->get('config.factory')->getEditable('select2_icon.settings')
+      $container->get('config.factory')->getEditable('hdbt_admin_tools.settings')
     );
   }
 

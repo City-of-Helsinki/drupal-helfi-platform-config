@@ -1,3 +1,9 @@
+hdbt_admin_tools.settings:
+  type: config_entity
+  label: 'HDBT Admin tools settings'
+  mapping:
+    path_to_json:
+      type: string
 hdbt_admin_tools.site_settings:
   type: config_object
   label: 'Site settings'
@@ -36,11 +42,3 @@ field.widget.settings.design_field_widget:
     placeholder:
       type: textfield
       label: Placeholder
-select2_icon.settings:
-  type: config_entity
-  label: 'Select 2 icon settings'
-  mapping:
-    path_to_json:
-      type: string
-    path_to_sprite:
-      type: string
