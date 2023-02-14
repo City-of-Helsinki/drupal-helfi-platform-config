@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_react_search;
 
+use Drupal\search_api\IndexInterface;
+
 /**
  * Trait for enabling a processor for TPR unit indices only.
  */
