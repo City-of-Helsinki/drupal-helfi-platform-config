@@ -49,7 +49,7 @@ function helfi_platform_config_update_9310(): void {
     // @todo check these.
     'helfi_helsinki_neighbourhoods' => NULL,
     'helfi_announcements_tpr' => NULL,
-    'select2_icon' => NULL,
+    'select2_icon' => 'hdbt_admin_tools',
   ];
   $service->forceDisableModules($moduleMap);
 
