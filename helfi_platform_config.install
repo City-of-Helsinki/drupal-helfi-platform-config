@@ -7,87 +7,9 @@
 
 declare(strict_types = 1);
 
-use Drupal\Component\Serialization\Yaml;
-
 /**
  * Update platform config to 3.x.
  */
 function helfi_platform_config_update_9310(): void {
-  /** @var \Drupal\helfi_platform_config\Helper\MajorUpdateHelper $service */
-  $service = \Drupal::service('helfi_platform_config.major_update_helper');
-
-  if (!$service->needsUpdate()) {
-    return;
-  }
-
-  $moduleMap = [
-    'api_tools' => NULL,
-    'aet' => NULL,
-    'config_update' => NULL,
-    'hdbt_admin_editorial' => 'hdbt_admin_tools',
-    'hdbt_component_library' => 'hdbt_admin_tools',
-    'hdbt_content' => 'hdbt_admin_tools',
-    'helfi_announcements' => 'helfi_node_announcement',
-    'helfi_base_config' => 'helfi_base_content',
-    'helfi_charts' => 'helfi_paragraphs_chart',
-    'helfi_contact_cards' => 'helfi_paragraphs_contact_card_listing',
-    'helfi_content' => 'helfi_base_content',
-    'helfi_events' => 'helfi_react_search',
-    'helfi_gdpr_compliance' => 'helfi_eu_cookie_compliance',
-    'helfi_hotjar' => NULL,
-    'helfi_languages' => NULL,
-    'helfi_matomo_config' => NULL,
-    'helfi_media_formtool_config' => NULL,
-    'helfi_media_map_config' => 'helfi_media_map',
-    'helfi_news_feed' => 'helfi_paragraphs_news_list',
-    'helfi_news_item' => 'helfi_node_news_item',
-    'helfi_profile_block' => NULL,
-    'helfi_siteimprove_config' => NULL,
-    'helfi_tpr_unit_districts' => NULL,
-    'media_entity_soundcloud' => NULL,
-    'token_filter' => NULL,
-    'update_helper' => NULL,
-    // @todo check these.
-    'helfi_helsinki_neighbourhoods' => NULL,
-    'helfi_announcements_tpr' => NULL,
-    'select2_icon' => 'hdbt_admin_tools',
-  ];
-  $service->forceDisableModules($moduleMap);
-
-  $modules = $service->getBaseModules();
-  // Enable TPR related modules if TPR is enabled.
-  if (Drupal::moduleHandler()->moduleExists('helfi_tpr')) {
-    $modules[] = 'helfi_tpr_config';
-    $modules[] = 'helfi_paragraphs_content_liftup';
-  }
-  $service->forceEnableModules($modules);
-
-  $configExportFolder = Drupal::root() . '/../conf/cmi';
-  $extensions = Yaml::decode(file_get_contents($configExportFolder . '/core.extension.yml'));
-  $extensionsConfig = \Drupal::configFactory()->getEditable('core.extension');
-
-  foreach ($extensions['module'] as $module => $weight) {
-    if (!in_array($module, array_keys($moduleMap))) {
-      continue;
-    }
-    unset($extensions['module'][$module]);
-  }
-  $extensionsConfig->set('module', $extensions['module'])->save();
-
-  foreach ($modules as $module) {
-    $extensions['module'][$module] = 0;
-  }
-  file_put_contents($configExportFolder . '/core.extension.yml', Yaml::encode($extensions));
-
-  // Replace config.
-  foreach ($modules as $module) {
-    $service->replaceConfig($configExportFolder, $module);
-  }
-  foreach ($modules as $module) {
-    if (!function_exists($module . '_install')) {
-      continue;
-    }
-    call_user_func($module . '_install');
-  }
   // @todo remove helfi_media_map from composer.json.
 }

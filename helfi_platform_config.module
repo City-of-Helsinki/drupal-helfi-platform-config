@@ -66,9 +66,10 @@ function helfi_platform_config_configure_paragraph_field_handler(ParagraphTypeCo
   $field = $definitions[$type->field];
 
   if (!str_contains($field->getSetting('handler'), 'paragraph')) {
-    throw new InvalidArgumentException(
+    \Drupal::messenger()->addError(
       sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
     );
+    return;
   }
   $handlerSettings = $field->getSetting('handler_settings');
 
@@ -204,15 +205,16 @@ function helfi_platform_config_token_info() : array {
 /**
  * Grants permissions for given role.
  *
- * @param array $permissions
- *   The permissions.
+ * @param array $map
+ *   The role => permissions map.
  */
-function helfi_platform_config_grant_permissions(array $permissions): void {
-  foreach ($permissions as $rid => $perms) {
+function helfi_platform_config_grant_permissions(array $map): void {
+  foreach ($map as $rid => $permissions) {
     if (!$rid = Role::load($rid)) {
       throw new \InvalidArgumentException("Role ($rid) not found.");
     }
-    array_map(fn (string $permission) => $rid->grantPermission($permission), $perms);
+    array_map(fn (string $permission) => $rid->grantPermission($permission), $permissions);
+    $rid->save();
   }
 }
 

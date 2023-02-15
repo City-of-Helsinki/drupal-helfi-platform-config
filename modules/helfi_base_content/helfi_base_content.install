@@ -189,6 +189,9 @@ function helfi_base_content_install($is_syncing) : void {
   }
 
   foreach (['fi', 'sv'] as $langcode) {
+    if (ConfigurableLanguage::load($langcode)) {
+      continue;
+    }
     ConfigurableLanguage::createFromLangcode($langcode)
       ->save();
   }
