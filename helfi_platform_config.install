@@ -41,6 +41,7 @@ function helfi_platform_config_update_9310(): void {
     'helfi_media_map_config' => 'helfi_media_map',
     'helfi_news_feed' => 'helfi_paragraphs_news_list',
     'helfi_news_item' => 'helfi_node_news_item',
+    'helfi_profile_block' => NULL,
     'helfi_siteimprove_config' => NULL,
     'helfi_tpr_unit_districts' => NULL,
     'media_entity_soundcloud' => NULL,
@@ -49,7 +50,7 @@ function helfi_platform_config_update_9310(): void {
     // @todo check these.
     'helfi_helsinki_neighbourhoods' => NULL,
     'helfi_announcements_tpr' => NULL,
-    'select2_icon' => NULL,
+    'select2_icon' => 'hdbt_admin_tools',
   ];
   $service->forceDisableModules($moduleMap);
 

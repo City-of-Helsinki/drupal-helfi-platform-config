@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 29bd12c4-3726-4538-a4b9-3c91fbe510f3
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: snowdrops.jpg
+  uri:
+    -
+      value: 'public://snowdrops.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 270773
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1657261639

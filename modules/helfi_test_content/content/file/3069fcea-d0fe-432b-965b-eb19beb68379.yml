@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 3069fcea-d0fe-432b-965b-eb19beb68379
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: contactcard_picture_4.jpg
+  uri:
+    -
+      value: 'public://contactcard_picture_4.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 335457
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1657274051

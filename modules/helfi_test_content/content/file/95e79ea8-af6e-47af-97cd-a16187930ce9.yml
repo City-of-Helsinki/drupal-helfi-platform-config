@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 95e79ea8-af6e-47af-97cd-a16187930ce9
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: raindrops.jpg
+  uri:
+    -
+      value: 'public://raindrops.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 5447664
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1657172359

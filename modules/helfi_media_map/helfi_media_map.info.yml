@@ -9,3 +9,5 @@ dependencies:
   - drupal:media_library
   - drupal:path
   - helfi_media:helfi_media
+'interface translation project': helfi_media_map
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_media_map/translations/%language.po

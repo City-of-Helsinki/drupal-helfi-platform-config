@@ -78,9 +78,8 @@ final class News extends ExternalEntityStorageClientBase {
   public function loadMultiple(array $ids = NULL) : array {
     $query = [
       'filter[id][operator]' => 'IN',
-      // Include main image, tags, neighbourhoods and groups fields.
-      'include' => 'main_image.media_image,tags,groups,neighbourhoods',
-      'fields[file--file]' => 'uri,url',
+      // Include tags, neighbourhoods and groups fields.
+      'include' => 'tags,groups,neighbourhoods',
     ];
     $language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
@@ -157,6 +156,7 @@ final class News extends ExternalEntityStorageClientBase {
       'fields[node--news_item]' => 'id',
       // No need to fetch non-published entities.
       'fields[status]' => 1,
+      'filter[status][value]' => 1,
     ];
 
     if ($start) {

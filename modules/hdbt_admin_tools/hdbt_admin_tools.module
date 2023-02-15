@@ -736,6 +736,12 @@ function hdbt_admin_tools_form_linkit_editor_dialog_form_alter(&$form, FormState
 function _hdbt_admin_tools_attributes_validate(array &$form, FormStateInterface $form_state) {
   $attributes = $form_state->getValue('attributes');
 
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = Drupal::service('module_handler');
+
+  // Let other modules alter the CKEditor link dialog form validation.
+  $moduleHandler->alter('helfi_form_editor_link_dialog', $form, $form_state);
+
   // Allow icons only for the links with button design.
   if (isset($attributes['data-selected-icon'])) {
     if ($attributes['data-design'] === 'link' || empty($attributes['data-selected-icon'])) {

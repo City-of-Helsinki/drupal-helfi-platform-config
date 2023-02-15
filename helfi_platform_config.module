@@ -140,6 +140,15 @@ function helfi_platform_config_theme() : array {
         'computed' => NULL,
       ],
     ],
+    'profile_block' => [
+      'variables' => [
+        'logged_in' => FALSE,
+        'display_name' => NULL,
+        'full_name' => NULL,
+        'email' => NULL,
+        'url' => NULL,
+      ],
+    ],
     'sidebar_content_block' => [
       'variables' => [
         'title' => NULL,
