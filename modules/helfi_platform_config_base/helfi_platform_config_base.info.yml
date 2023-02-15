@@ -8,6 +8,7 @@ dependencies:
   - helfi_eu_cookie_compliance:helfi_eu_cookie_compliance
   - helfi_image_styles:helfi_image_styles
   - helfi_media:helfi_media
+  - publication_date:publication_date
   - helfi_media_chart:helfi_media_chart
   - helfi_media_map:helfi_media_map
   - helfi_media_remote_video:helfi_media_remote_video
