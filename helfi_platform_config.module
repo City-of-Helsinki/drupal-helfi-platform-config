@@ -66,7 +66,7 @@ function helfi_platform_config_configure_paragraph_field_handler(ParagraphTypeCo
   $field = $definitions[$type->field];
 
   $handler = $field->getSetting('handler');
-  if (!str_contains($handler, 'paragraph') || !str_contains($handler, 'default')) {
+  if (!str_contains($handler, 'paragraph') && !str_contains($handler, 'default')) {
     throw new \InvalidArgumentException(
       sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
     );
