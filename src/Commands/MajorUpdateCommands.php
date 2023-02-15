@@ -225,7 +225,6 @@ final class MajorUpdateCommands extends DrushCommands {
     foreach ($modules as $module) {
       $this->replaceConfig($configExportFolder, $module);
     }
-    $this->runInstallHooks($this->getBaseModules());
   }
 
   /**
