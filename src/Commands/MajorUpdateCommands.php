@@ -204,7 +204,7 @@ final class MajorUpdateCommands extends DrushCommands {
     $modules = $this->getBaseModules();
     $this->forceEnableModules($modules);
 
-    $configExportFolder = Drupal::root() . '/../conf/cmi';
+    $configExportFolder = \Drupal::root() . '/../conf/cmi';
     $extensions = Yaml::decode(file_get_contents($configExportFolder . '/core.extension.yml'));
     $extensionsConfig = \Drupal::configFactory()->getEditable('core.extension');
 
