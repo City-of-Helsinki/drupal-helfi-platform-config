@@ -47,6 +47,10 @@ function helfi_node_page_helfi_paragraph_types() : array {
       'remote_video',
       'map',
     ],
+    'field_sidebar_content' => [
+      'sidebar_text',
+      'from_library',
+    ],
   ];
 
   $enabled = [];
