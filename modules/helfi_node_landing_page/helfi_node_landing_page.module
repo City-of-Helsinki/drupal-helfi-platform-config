@@ -29,7 +29,7 @@ function helfi_node_landing_page_helfi_paragraph_types() : array {
       'remote_video',
       'map',
       'news_list',
-      'events',
+      'event_list',
       'phasing',
       'popular_services',
       'target_group_links',
