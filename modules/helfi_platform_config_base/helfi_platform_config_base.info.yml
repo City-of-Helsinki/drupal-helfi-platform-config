@@ -8,7 +8,6 @@ dependencies:
   - helfi_eu_cookie_compliance:helfi_eu_cookie_compliance
   - helfi_image_styles:helfi_image_styles
   - helfi_media:helfi_media
-  - publication_date:publication_date
   - helfi_media_chart:helfi_media_chart
   - helfi_media_map:helfi_media_map
   - helfi_media_remote_video:helfi_media_remote_video
@@ -26,11 +25,12 @@ dependencies:
   - helfi_paragraphs_liftup_with_image:helfi_paragraphs_liftup_with_image
   - helfi_paragraphs_list_of_links:helfi_paragraphs_list_of_links
   - helfi_paragraphs_map:helfi_paragraphs_map
-  - helfi_react_search:helfi_react_search
   - helfi_paragraphs_phasing:helfi_paragraphs_phasing
   - helfi_paragraphs_popular_services:helfi_paragraphs_popular_services
   - helfi_paragraphs_remote_video:helfi_paragraphs_remote_video
   - helfi_paragraphs_sidebar_text:helfi_paragraphs_sidebar_text
   - helfi_paragraphs_target_group_links:helfi_paragraphs_target_group_links
   - helfi_paragraphs_text:helfi_paragraphs_text
+  - helfi_react_search:helfi_react_search
   - helfi_user_roles:helfi_user_roles
+  - publication_date:publication_date

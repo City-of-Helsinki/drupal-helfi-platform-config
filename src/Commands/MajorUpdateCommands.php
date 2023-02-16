@@ -254,6 +254,15 @@ final class MajorUpdateCommands extends DrushCommands {
   public function updateDatabase() : void {
     $this->runInstallHooks($this->getBaseModules());
     helfi_platform_config_update_paragraph_target_types();
+
+    // Manually update editoria11y module from 1.x to 2.x.
+    if (
+      $this->moduleHandler->moduleExists('editoria11y') &&
+      $this->updateHookRegistry->getInstalledVersion('editoria11y') < 9001
+    ) {
+      editoria11y_update_9001();
+      editoria11y_update_9003();
+    }
   }
   // @codingStandardsIgnoreEnd
 }
