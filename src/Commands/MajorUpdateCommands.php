@@ -193,7 +193,7 @@ final class MajorUpdateCommands extends DrushCommands {
 
     // Make sure 'helfi_paragraphs_news_list' module is enabled if it was
     // previously enabled.
-    if (ParagraphsType::load('news_list')) {
+    if ($this->moduleHandler->moduleExists('helfi_news_feed')) {
       $modules[] = 'helfi_paragraphs_news_list';
     }
 
@@ -204,8 +204,11 @@ final class MajorUpdateCommands extends DrushCommands {
    * Deletes deprecated paragraph types.
    */
   private function deleteParagraphTypes() : void {
-    foreach (['gallery', 'gallery_slide'] as $paragraphType) {
-      ParagraphsType::load($paragraphType)->delete();
+    foreach (['gallery', 'gallery_slide'] as $item) {
+      if (!$paragraphsType = ParagraphsType::load($item)) {
+        continue;
+      }
+      $paragraphsType->delete();
     }
   }
 
@@ -214,7 +217,6 @@ final class MajorUpdateCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:platform-config:update-config')]
   public function updateConfig() : void {
-    $this->deleteParagraphTypes();
     $moduleMap = $this->getModuleMap();
     $this->forceDisableModules($moduleMap);
 
