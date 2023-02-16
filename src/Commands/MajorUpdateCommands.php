@@ -9,6 +9,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Update\UpdateHookRegistry;
+use Drupal\paragraphs\Entity\ParagraphsType;
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
 
@@ -194,10 +195,20 @@ final class MajorUpdateCommands extends DrushCommands {
   }
 
   /**
+   * Deletes deprecated paragraph types.
+   */
+  private function deleteParagraphTypes() : void {
+    foreach (['gallery', 'gallery_slide'] as $paragraphType) {
+      ParagraphsType::load($paragraphType)->delete();
+    }
+  }
+
+  /**
    * Runs config update.
    */
   #[Command(name: 'helfi:platform-config:update-config')]
   public function updateConfig() : void {
+    $this->deleteParagraphTypes();
     $moduleMap = $this->getModuleMap();
     $this->forceDisableModules($moduleMap);
 
@@ -232,6 +243,7 @@ final class MajorUpdateCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:platform-config:update-database')]
   public function updateDatabase() : void {
+    $this->deleteParagraphTypes();
     $this->runInstallHooks($this->getBaseModules());
   }
 
