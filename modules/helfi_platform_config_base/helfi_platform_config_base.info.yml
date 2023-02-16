@@ -26,7 +26,6 @@ dependencies:
   - helfi_paragraphs_liftup_with_image:helfi_paragraphs_liftup_with_image
   - helfi_paragraphs_list_of_links:helfi_paragraphs_list_of_links
   - helfi_paragraphs_map:helfi_paragraphs_map
-  - helfi_paragraphs_news_list:helfi_paragraphs_news_list
   - helfi_react_search:helfi_react_search
   - helfi_paragraphs_phasing:helfi_paragraphs_phasing
   - helfi_paragraphs_popular_services:helfi_paragraphs_popular_services

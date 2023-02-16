@@ -191,6 +191,12 @@ final class MajorUpdateCommands extends DrushCommands {
       $modules[] = 'helfi_paragraphs_content_liftup';
     }
 
+    // Make sure 'helfi_paragraphs_news_list' module is enabled if it was
+    // previously enabled.
+    if (ParagraphsType::load('news_list')) {
+      $modules[] = 'helfi_paragraphs_news_list';
+    }
+
     return $modules;
   }
 
