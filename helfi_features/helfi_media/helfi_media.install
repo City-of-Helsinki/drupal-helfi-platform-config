@@ -175,3 +175,23 @@ function helfi_media_update_9009() {
     ConfigHelper::updateExistingConfig($updateLocation, 'system.image');
   }
 }
+
+/**
+ * Uninstall media_entity_soundcloud module.
+ */
+function helfi_media_update_9011() : void {
+  if (!Drupal::moduleHandler()->moduleExists('media_entity_soundcloud')) {
+    return;
+  }
+  $count = \Drupal::database()->select('media')
+    ->condition('bundle', 'soundcloud')
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+
+  if ($count > 0) {
+    \Drupal::messenger()->addWarning('The "media_entity_soundcloud" dependency will be removed from helfi_platform_config module in next major release. To continue using it, run "composer require drupal/media_entity_soundcloud" in your project root.');
+    return;
+  }
+  Drupal::service('module_installer')->uninstall(['media_entity_soundcloud']);
+}
