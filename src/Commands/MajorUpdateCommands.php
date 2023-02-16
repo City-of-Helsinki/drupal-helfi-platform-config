@@ -220,6 +220,10 @@ final class MajorUpdateCommands extends DrushCommands {
     $this->forceEnableModules($modules);
 
     $configExportFolder = \Drupal::root() . '/../conf/cmi';
+
+    if (file_exists($configExportFolder . '/select2_icon.settings.yml')) {
+      unlink($configExportFolder . '/select2_icon.settings.yml');
+    }
     $extensions = Yaml::decode(file_get_contents($configExportFolder . '/core.extension.yml'));
     $extensionsConfig = \Drupal::configFactory()->getEditable('core.extension');
 
