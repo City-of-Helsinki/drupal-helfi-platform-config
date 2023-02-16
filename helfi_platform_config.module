@@ -32,7 +32,15 @@ function helfi_platform_config_modules_installed(array $modules) : void {
   if ($moduleHandler->moduleExists('locale')) {
     locale_system_set_config_langcodes();
   }
+  helfi_platform_config_update_paragraph_target_types();
+}
 
+/**
+ * Invokes all helfi_paragraph_types hooks and updates the field configuration.
+ */
+function helfi_platform_config_update_paragraph_target_types() : void {
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = Drupal::service('module_handler');
   $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
 
   foreach ($paragraphTypes as $type) {

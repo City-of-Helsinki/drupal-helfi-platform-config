@@ -214,10 +214,9 @@ final class MajorUpdateCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:platform-config:update-config')]
   public function updateConfig() : void {
+    $modules = $this->getBaseModules();
     $moduleMap = $this->getModuleMap();
     $this->forceDisableModules($moduleMap);
-
-    $modules = $this->getBaseModules();
     $this->forceEnableModules($modules);
 
     $configExportFolder = \Drupal::root() . '/../conf/cmi';
@@ -249,6 +248,7 @@ final class MajorUpdateCommands extends DrushCommands {
   #[Command(name: 'helfi:platform-config:update-database')]
   public function updateDatabase() : void {
     $this->runInstallHooks($this->getBaseModules());
+    helfi_platform_config_update_paragraph_target_types();
   }
 
 }
