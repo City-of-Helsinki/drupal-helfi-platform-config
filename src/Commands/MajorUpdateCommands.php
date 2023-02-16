@@ -260,8 +260,13 @@ final class MajorUpdateCommands extends DrushCommands {
       $this->moduleHandler->moduleExists('editoria11y') &&
       $this->updateHookRegistry->getInstalledVersion('editoria11y') < 9001
     ) {
-      editoria11y_update_9001();
-      editoria11y_update_9003();
+      foreach (['editoria11y_update_9001', 'editoria11y_update_9003'] as $updateHook) {
+        $this->moduleHandler->loadInclude('editoria11y', 'install');
+        if (!function_exists($updateHook)) {
+          continue;
+        }
+        call_user_func_array($updateHook, [&$sandbox]);
+      }
     }
   }
   // @codingStandardsIgnoreEnd
