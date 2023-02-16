@@ -8,7 +8,7 @@ id: paragraph.contact_card.field_contact_title
 field_name: field_contact_title
 entity_type: paragraph
 bundle: contact_card
-label: Title
+label: 'Job title'
 description: ''
 required: false
 translatable: false
