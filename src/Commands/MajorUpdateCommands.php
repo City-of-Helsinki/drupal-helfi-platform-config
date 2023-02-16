@@ -9,7 +9,6 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Update\UpdateHookRegistry;
-use Drupal\paragraphs\Entity\ParagraphsType;
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
 
@@ -209,6 +208,8 @@ final class MajorUpdateCommands extends DrushCommands {
     return $modules;
   }
 
+  // @codingStandardsIgnoreStart
+  // @todo Remove this once the local and CI phpcs sniffer results match.
   /**
    * Runs config update.
    */
@@ -254,5 +255,5 @@ final class MajorUpdateCommands extends DrushCommands {
     $this->runInstallHooks($this->getBaseModules());
     helfi_platform_config_update_paragraph_target_types();
   }
-
+  // @codingStandardsIgnoreEnd
 }
