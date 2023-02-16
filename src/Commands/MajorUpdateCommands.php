@@ -90,6 +90,15 @@ final class MajorUpdateCommands extends DrushCommands {
   private function replaceConfig(string $configExportFolder, string $module) : void {
     $configFolder = sprintf('%s/config', $this->moduleExtensionList->getPath($module));
 
+    $ignoredModules = [
+      'helfi_user_roles',
+    ];
+
+    // Never replace config from ignored modules.
+    if (in_array($module, $ignoredModules)) {
+      return;
+    }
+
     if (!is_dir($configFolder)) {
       return;
     }
@@ -201,18 +210,6 @@ final class MajorUpdateCommands extends DrushCommands {
   }
 
   /**
-   * Deletes deprecated paragraph types.
-   */
-  private function deleteParagraphTypes() : void {
-    foreach (['gallery', 'gallery_slide'] as $item) {
-      if (!$paragraphsType = ParagraphsType::load($item)) {
-        continue;
-      }
-      $paragraphsType->delete();
-    }
-  }
-
-  /**
    * Runs config update.
    */
   #[Command(name: 'helfi:platform-config:update-config')]
@@ -251,7 +248,6 @@ final class MajorUpdateCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:platform-config:update-database')]
   public function updateDatabase() : void {
-    $this->deleteParagraphTypes();
     $this->runInstallHooks($this->getBaseModules());
   }
 
