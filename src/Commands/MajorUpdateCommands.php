@@ -208,8 +208,6 @@ final class MajorUpdateCommands extends DrushCommands {
     return $modules;
   }
 
-  // @codingStandardsIgnoreStart
-  // @todo Remove this once the local and CI phpcs sniffer results match.
   /**
    * Runs config update.
    */
@@ -269,5 +267,5 @@ final class MajorUpdateCommands extends DrushCommands {
       }
     }
   }
-  // @codingStandardsIgnoreEnd
+
 }
