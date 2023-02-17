@@ -195,3 +195,11 @@ function helfi_media_update_9011() : void {
   }
   Drupal::service('module_installer')->uninstall(['media_entity_soundcloud']);
 }
+
+/**
+ * Update Icareus Suita OEmbed providers.
+ */
+function helfi_media_update_9012() {
+  $configLocation = dirname(__FILE__) . '/config/override/';
+  ConfigHelper::updateExistingConfig($configLocation, 'oembed_providers.provider.icareus_suite');
+}
