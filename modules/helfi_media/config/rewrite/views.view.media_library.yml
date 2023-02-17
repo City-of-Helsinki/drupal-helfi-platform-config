@@ -1369,7 +1369,7 @@ display:
           label: Updated
           type: timestamp
           settings:
-            date_format: short
+            date_format: long
             custom_date_format: ''
             timezone: ''
       access:

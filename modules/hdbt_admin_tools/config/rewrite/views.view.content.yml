@@ -1,0 +1,7 @@
+display:
+  default:
+    display_options:
+      fields:
+        changed:
+          settings:
+            date_format: long
