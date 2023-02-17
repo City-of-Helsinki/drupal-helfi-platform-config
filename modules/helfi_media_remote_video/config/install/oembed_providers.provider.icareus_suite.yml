@@ -7,10 +7,17 @@ provider_url: 'https://www.helsinkikanava.fi'
 endpoints:
   -
     schemes:
+      - 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/embed/vod?assetId=*'
+      - 'https://helsinkikanava.fi/*/web/helsinkikanava/player/embed/vod?assetId=*'
+    url: 'https://suite.icareus.com/api/oembed'
+    discovery: false
+    formats:
+      json: true
+      xml: false
+  -
+    schemes:
       - 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*'
-      - 'http://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*'
       - 'https://helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*'
-      - 'http://helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*'
     url: 'https://suite.icareus.com/api/oembed'
     discovery: false
     formats:
@@ -19,9 +26,7 @@ endpoints:
   -
     schemes:
       - 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/event/view?*assetId=*'
-      - 'http://www.helsinkikanava.fi/*/web/helsinkikanava/player/event/view?*assetId=*'
       - 'https://helsinkikanava.fi/*/web/helsinkikanava/player/event/view?*assetId=*'
-      - 'http://helsinkikanava.fi/*/web/helsinkikanava/player/event/view?*assetId=*'
     url: 'https://suite.icareus.com/api/oembed'
     discovery: false
     formats:
@@ -30,9 +35,7 @@ endpoints:
   -
     schemes:
       - 'https://www.helsinkikanava.fi/*/webcast?*assetId=*'
-      - 'http://www.helsinkikanava.fi/*/webcast?*assetId=*'
       - 'https://helsinkikanava.fi/*/webcast?*assetId=*'
-      - 'http://helsinkikanava.fi/*/webcast?*assetId=*'
     url: 'https://suite.icareus.com/api/oembed'
     discovery: false
     formats:
