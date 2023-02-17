@@ -8,13 +8,15 @@ This repository primarily holds configuration for the Hel.fi platform.
 
 - [Translations in Helfi Platform](documentation/translations.md)
 
-## Upgrade instructions for 1.* to 2.*
+## Upgrade instructions for 2.x to 3.x
 
-1. Install the site with existing configuration by running either `make new` or `make fresh`.
-2. When the site is up and running, run `composer require drupal/helfi_platform_config:^2.0` to retrieve the new version of HELfi Platform config.
-3. Run updates and export the configurations by running `make drush-updb drush-cr drush-cex`.
-4. Go through configuration changes from `/conf/cmi/` and revert/modify any changes what will override customised configurations.
-5. Commit the changes to your repository.
+1. Update the module to latest 2.x version:
+   1. `composer update drupal/helfi_platform_config`
+   2. Run database updates (`drush updb`)
+   3. Export your configuration (`drush config:export`)
+2. Remove `helfi_media_map` module: `composer remove drupal/helfi_media_map` (this will be included in 3.x platform config module)
+3. Update the module to 3.x version: `composer require drupal/helfi_platform_config:^3.0 drush/drush:^11 -W `
+4. @todo fill this.
 
 ## Contact
 
