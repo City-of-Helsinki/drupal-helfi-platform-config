@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
+use Drupal\helfi_react_search\SupportsUnitIndexTrait;
 use Drupal\search_api\Processor\ProcessorPluginBase;
-use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
 
 /**
@@ -22,6 +22,8 @@ use Drupal\search_api\Item\ItemInterface;
  */
 class IsSchool extends ProcessorPluginBase {
 
+  use SupportsUnitIndexTrait;
+
   /**
    * Checks the entity against these to determine if it should index.
    *
@@ -31,24 +33,6 @@ class IsSchool extends ProcessorPluginBase {
     '3105',
     '3106',
   ];
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function supportsIndex(IndexInterface $index): bool {
-    foreach ($index->getDatasources() as $datasource) {
-      $entityTypeId = $datasource->getEntityTypeId();
-      if (!$entityTypeId) {
-        continue;
-      }
-
-      if ($entityTypeId === 'tpr_unit') {
-        return TRUE;
-      }
-    }
-
-    return FALSE;
-  }
 
   /**
    * {@inheritdoc}

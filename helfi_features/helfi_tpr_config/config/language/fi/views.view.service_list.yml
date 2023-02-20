@@ -1,10 +1,10 @@
 display:
   default:
-    display_title: Oletus
+    display_title: Isäntä
     display_options:
       exposed_form:
         options:
-          submit_button: Etsi
+          submit_button: Käytä
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
@@ -12,22 +12,18 @@ display:
       pager:
         options:
           tags:
-            previous: '‹ Edellinen'
-            next: 'Seuraava ›'
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-          views_infinite_scroll:
-            button_text: 'Lataa lisää palveluita'
+            offset_label: Offset
       arguments:
         id:
           exception:
             title: Kaikki
-      empty:
-        area:
-          content:
-            value: "<p>Ei tuloksia</p>\r\n"
-            format: full_html
   block_search:
     display_options:
       exposed_form:

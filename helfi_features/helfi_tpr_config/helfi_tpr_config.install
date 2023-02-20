@@ -7,6 +7,7 @@
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_platform_config\ConfigHelper;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Implements hook_install().
@@ -28,6 +29,7 @@ function helfi_tpr_config_install($is_syncing) {
       helfi_tpr_config_update_9022();
       helfi_tpr_config_update_9023();
       helfi_tpr_config_update_9025();
+      helfi_tpr_config_update_9029();
     }
 
     // If HELfi Announcements module is installed, install also
@@ -174,20 +176,6 @@ function helfi_tpr_config_update_9005() {
 
   // Execute configuration update definitions with logging of success.
   $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9005');
-
-  // Output logged messages to related channel of update execution.
-  return $updateHelper->logger()->output();
-}
-
-/**
- * Update label for Unit views load more button.
- */
-function helfi_tpr_config_update_9006() {
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  $updateHelper = \Drupal::service('update_helper.updater');
-
-  // Execute configuration update definitions with logging of success.
-  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9006');
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
@@ -601,9 +589,63 @@ function helfi_tpr_config_update_9028() {
 }
 
 /**
- * Installing configuration files for paragraph type Service List Search and its fields.
+ * Remove infinite scroll from service list and unit search paragraphs and replace it with full pager.
  */
 function helfi_tpr_config_update_9029() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'views.view.service_list',
+    'views.view.unit_search',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Remove the meta load more label field because load more pager is not used anymore.
+  if ($field_service_list_meta_load_mor = FieldStorageConfig::loadByName('paragraph', 'field_service_list_meta_load_mor')) {
+    $field_service_list_meta_load_mor->delete();
+  }
+
+  // Remove the meta load more label field because load more pager is not used anymore.
+  if ($field_unit_search_meta_load_more = FieldStorageConfig::loadByName('paragraph', 'field_unit_search_meta_load_more')) {
+    $field_unit_search_meta_load_more->delete();
+  }
+}
+
+/**
+ * Remove infinite scroll from TPR service units and unit services views and replace it with full pager.
+ */
+function helfi_tpr_config_update_9030() {
+  // Handle the configuration update manually.
+  $configLocation = dirname(__FILE__) . '/config/optional/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  $configurations = [
+    'views.view.service_units',
+    'views.view.unit_services',
+  ];
+
+  // Install configurations and translations.
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Manually uninstall views_infinite_scroll module.
+  $installer = Drupal::service('module_installer');
+  $installer->uninstall(['views_infinite_scroll']);
+}
+
+/**
+ * Installing configuration files for paragraph type Service List Search and its fields.
+ */
+function helfi_tpr_config_update_9031() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
@@ -640,7 +682,7 @@ function helfi_tpr_config_update_9029() {
 /**
  * Creating new view mode teaser search result.
  */
-function helfi_tpr_config_update_9030() {
+function helfi_tpr_config_update_9032() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
@@ -669,7 +711,7 @@ function helfi_tpr_config_update_9030() {
 /**
  * Add new display for service list view with labels translations.
  */
-function helfi_tpr_config_update_9031() {
+function helfi_tpr_config_update_9033() {
 
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');

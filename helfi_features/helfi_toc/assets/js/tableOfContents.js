@@ -93,43 +93,6 @@
 
       // Remove loading text.
       $('.js-remove', tableOfContents).remove();
-
-      // Open accordions that contain linked anchors
-      function handleAccordionAnchors() {
-        var hash = window.location.hash;
-        if (!hash) return;
-
-        var hashTarget = document.getElementById(hash.replace('#', ''));
-        if (!hashTarget) return;
-
-        var hashParent = hashTarget.closest('.handorgel__content');
-        if (!hashParent) return;
-
-        if (document.readyState === 'complete') { // if document has already been loaded
-
-          if (!window.handorgel_accordions) return; // We need access to the accordion objects to open them
-
-          window.handorgel_accordions.forEach(function (accordion) {
-            accordion.folds.forEach(function (fold) {
-              if (fold.id === hashParent.id.replace('-content','')) {
-                fold.open(false); // false prevents animation
-                hashTarget.scrollIntoView();
-              }
-            });
-          });
-          hashTarget.scrollIntoView();
-
-        } else { // If we have not yet loaded the document
-          hashParent.setAttribute('data-open', '');
-          window.addEventListener('DOMContentLoaded', function () {
-            window.setTimeout(function () {
-              hashTarget.scrollIntoView();
-            }, 1000);
-          })
-        }
-      }
-      handleAccordionAnchors();
-      window.addEventListener('popstate', handleAccordionAnchors); //popstate instead of hashchange to handle re-click
     },
   };
 })(jQuery, Drupal);

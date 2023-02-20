@@ -3,16 +3,11 @@ display:
     display_options:
       pager:
         options:
-          views_infinite_scroll:
-            button_text: 'Ladda fler tjänster'
-      empty:
-        area:
-          content:
-            value: "<p>Inga resultat</p>\r\n"
-            format: full_html
-      exposed_form:
-        options:
-          submit_button: Sök
+          tags:
+            next: Nästa
+            previous: Föregående
+            first: Första
+            last: Sista
   block_search:
     display_options:
       exposed_form:
