@@ -1,0 +1,39 @@
+label: 'Lukitut palvelut'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      title: 'Lukitut palvelut'
+      pager:
+        options:
+          tags: {  }
+          expose: {  }
+      exposed_form:
+        options:
+          submit_button: Käytä
+          exposed_sorts_label: Järjestä
+          sort_asc_label: Nouseva
+          sort_desc_label: Laskeva
+      empty:
+        area_text_custom:
+          content: 'Lukittuja palveluja ei ole.'
+      filters:
+        name:
+          expose:
+            label: Otsikko
+      fields:
+        tpr_service_bulk_form:
+          label: Bulkkipäivitys
+          action_title: Toiminto
+        name:
+          label: Otsikko
+        name_1:
+          label: 'Lukituksen tekijä'
+        timestamp:
+          label: 'Lukituksen ajankohta'
+        langcode:
+          label: 'Sisällön kieli'
+        operations:
+          label: Toiminnot
+  locked_services_block:
+    display_title: Lohko

@@ -69,7 +69,10 @@ function hdbt_admin_tools_modules_installed(array $modules) : void {
   }
 
   // Install color palette field to selected entities.
-  $field = 'color_palette';
+  $fields = [
+    'color_palette',
+    'hide_sidebar_navigation',
+  ];
   $entityTypes = [
     'node',
     'tpr_unit',
@@ -77,19 +80,21 @@ function hdbt_admin_tools_modules_installed(array $modules) : void {
   ];
 
   foreach ($entityTypes as $entityType) {
-    $entityDefinitionUpdateManager = \Drupal::entityDefinitionUpdateManager();
-    $fieldDefinitions = \Drupal::service('entity_field.manager')
-      ->getFieldDefinitions($entityType, $entityType);
-    if (
-      !empty($fieldDefinitions[$field]) &&
-      $fieldDefinitions[$field] instanceof FieldStorageDefinitionInterface
-    ) {
-      $entityDefinitionUpdateManager->installFieldStorageDefinition(
-        $field,
-        $entityType,
-        'hdbt_admin_tools',
-        $fieldDefinitions[$field]
-      );
+    foreach ($fields as $field) {
+      $entityDefinitionUpdateManager = \Drupal::entityDefinitionUpdateManager();
+      $fieldDefinitions = \Drupal::service('entity_field.manager')
+        ->getFieldDefinitions($entityType, $entityType);
+      if (
+        !empty($fieldDefinitions[$field]) &&
+        $fieldDefinitions[$field] instanceof FieldStorageDefinitionInterface
+      ) {
+        $entityDefinitionUpdateManager->installFieldStorageDefinition(
+          $field,
+          $entityType,
+          'hdbt_admin_tools',
+          $fieldDefinitions[$field]
+        );
+      }
     }
   }
 }

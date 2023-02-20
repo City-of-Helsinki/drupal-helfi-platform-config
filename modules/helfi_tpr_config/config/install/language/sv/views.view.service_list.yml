@@ -1,0 +1,10 @@
+display:
+  default:
+    display_options:
+      pager:
+        options:
+          tags:
+            next: Nästa
+            previous: Föregående
+            first: Första
+            last: Sista

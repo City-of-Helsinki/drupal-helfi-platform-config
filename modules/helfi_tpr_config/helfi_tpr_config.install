@@ -106,6 +106,7 @@ function helfi_tpr_config_install(bool $is_syncing) : void {
 
   helfi_tpr_config_grant_permissions();
 
+  // Add unit and service to linkit profile.
   if ($profile = Profile::load('helfi')) {
     $matchers = [
       [

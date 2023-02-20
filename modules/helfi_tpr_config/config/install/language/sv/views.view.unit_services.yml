@@ -20,12 +20,9 @@ display:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
-      fields:
-        name:
-          separator: ', '
       arguments:
         id:
           exception:
             title: Alla
-  service_units:
+  unit_services:
     display_title: Block

@@ -1,0 +1,91 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.unit_search.field_unit_search_description
+    - field.field.paragraph.unit_search.field_unit_search_meta_button
+    - field.field.paragraph.unit_search.field_unit_search_meta_label
+    - field.field.paragraph.unit_search.field_unit_search_meta_placehold
+    - field.field.paragraph.unit_search.field_unit_search_title
+    - field.field.paragraph.unit_search.field_unit_search_units
+    - paragraphs.paragraphs_type.unit_search
+  module:
+    - field_group
+    - select2
+    - text
+third_party_settings:
+  field_group:
+    group_unit_search_metadata:
+      children:
+        - field_unit_search_meta_label
+        - field_unit_search_meta_placehold
+        - field_unit_search_meta_button
+      label: 'Meta information'
+      region: content
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        classes: ''
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+id: paragraph.unit_search.default
+targetEntityType: paragraph
+bundle: unit_search
+mode: default
+content:
+  field_unit_search_description:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_search_meta_button:
+    type: string_textfield
+    weight: 6
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_search_meta_label:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_search_meta_placehold:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_search_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_search_units:
+    type: select2_entity_reference
+    weight: 1
+    region: content
+    settings:
+      width: 100%
+      autocomplete: false
+      match_operator: CONTAINS
+      match_limit: 20
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

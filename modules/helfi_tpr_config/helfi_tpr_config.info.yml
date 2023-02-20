@@ -3,14 +3,14 @@ type: module
 core_version_requirement: '^9 || ^10'
 package: HELfi
 dependencies:
+  - 'hdbt_admin_tools:hdbt_admin_tools'
   - 'helfi_base_content:helfi_base_content'
-  - 'helfi_paragraphs_content_liftup:helfi_paragraphs_content_liftup'
   - 'helfi_media:helfi_media'
-  - 'views:views'
+  - 'helfi_paragraphs_content_liftup:helfi_paragraphs_content_liftup'
   - 'helfi_tpr:helfi_tpr'
   - 'imagecache_external:imagecache_external'
-  - 'views_infinite_scroll:views_infinite_scroll'
-  - 'views_bulk_operations:views_bulk_operations'
+  - 'views:views'
   - 'views_bulk_edit:views_bulk_edit'
+  - 'views_bulk_operations:views_bulk_operations'
 'interface translation project': helfi_tpr_config
 'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_tpr_config/translations/%language.po

@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.service_list.field_service_list_description
+    - field.field.paragraph.service_list.field_service_list_services
+    - field.field.paragraph.service_list.field_service_list_title
+    - paragraphs.paragraphs_type.service_list
+  module:
+    - text
+id: paragraph.service_list.default
+targetEntityType: paragraph
+bundle: service_list
+mode: default
+content:
+  field_service_list_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_service_list_services:
+    type: entity_reference_entity_id
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_service_list_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

@@ -90,6 +90,92 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
 }
 
 /**
+ * Implements hook_themes_installed().
+ */
+function helfi_tpr_config_themes_installed($theme_list) {
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $blockInstaller */
+  $blockInstaller = Drupal::service('helfi_platform_config.helper.block_installer');
+
+  foreach ($theme_list as $theme) {
+    if (in_array($theme, ['stark', 'hdbt', 'hdbt_subtheme'])) {
+      foreach (helfi_tpr_config_get_block_configurations($theme) as $blockConfiguration) {
+        ['block' => $block, 'variations' => $variations] = $blockConfiguration;
+        $blockInstaller->install($block, $variations);
+      }
+    }
+  }
+}
+
+/**
+ * Gets the block configurations.
+ *
+ * @return array[]
+ *   The block configurations.
+ */
+function helfi_tpr_config_get_block_configurations(string $theme) : array {
+  return [
+    'views_block__locked_services_locked_services_block' => [
+      'block' => [
+        'id' => 'views_block__locked_services_locked_services_block',
+        'plugin' => 'views_block:locked_services-locked_services_block',
+        'settings' => [
+          'id' => 'views_block:locked_services-locked_services_block',
+          'label' => '',
+          'provider' => 'views',
+        ],
+        'weight' => 1,
+        'visibility' => [
+          'request_path' => [
+            'id' => 'request_path',
+            'negate' => FALSE,
+            'pages' => '/admin/content/locked-content',
+          ],
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'views_block__locked_units_locked_units_block' => [
+      'block' => [
+        'id' => 'views_block__locked_units_locked_units_block',
+        'plugin' => 'views_block:locked_units-locked_units_block',
+        'settings' => [
+          'id' => 'views_block:locked_units-locked_units_block',
+          'label' => '',
+          'provider' => 'views',
+        ],
+        'weight' => 2,
+        'visibility' => [
+          'request_path' => [
+            'id' => 'request_path',
+            'negate' => FALSE,
+            'pages' => '/admin/content/locked-content',
+          ],
+        ],
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
  * Implements hook_theme().
  */
 function helfi_tpr_config_theme() {

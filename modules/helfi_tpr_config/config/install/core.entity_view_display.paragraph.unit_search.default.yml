@@ -1,0 +1,66 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.unit_search.field_unit_search_description
+    - field.field.paragraph.unit_search.field_unit_search_meta_button
+    - field.field.paragraph.unit_search.field_unit_search_meta_label
+    - field.field.paragraph.unit_search.field_unit_search_meta_placehold
+    - field.field.paragraph.unit_search.field_unit_search_title
+    - field.field.paragraph.unit_search.field_unit_search_units
+    - paragraphs.paragraphs_type.unit_search
+  module:
+    - text
+id: paragraph.unit_search.default
+targetEntityType: paragraph
+bundle: unit_search
+mode: default
+content:
+  field_unit_search_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_unit_search_meta_button:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_unit_search_meta_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_unit_search_meta_placehold:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_unit_search_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_unit_search_units:
+    type: entity_reference_entity_id
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  search_api_excerpt: true

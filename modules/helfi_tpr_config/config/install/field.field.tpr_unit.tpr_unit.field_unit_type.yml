@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.tpr_unit.field_unit_type
+    - taxonomy.vocabulary.unit_type
   module:
     - helfi_tpr
 id: tpr_unit.tpr_unit.field_unit_type

@@ -1,7 +1,17 @@
 display:
   default:
-    display_title: Oletus
     display_options:
+      filters:
+        combine:
+          group_info:
+            description: ''
+            label: 'Kentät yhdistävä suodatin'
+          expose:
+            label: Etsi
+      empty:
+        area:
+          content:
+            value: "<p>Ei tuloksia</p>\r\n"
       exposed_form:
         options:
           submit_button: Käytä
@@ -17,15 +27,16 @@ display:
             first: Ensimmäinen
             last: Viimeinen
           expose:
-            items_per_page_label: 'Kohteita sivulla'
+            items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
             offset_label: Offset
-      fields:
-        name:
-          separator: ', '
       arguments:
         id:
           exception:
             title: Kaikki
-  service_units:
+    display_title: Oletus
+  block:
     display_title: Lohko
+  entity_reference:
+    display_title: Entiteettiviittaus
+label: Toimipistehaku
