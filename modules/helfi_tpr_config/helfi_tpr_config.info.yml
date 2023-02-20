@@ -3,6 +3,7 @@ type: module
 core_version_requirement: '^9 || ^10'
 package: HELfi
 dependencies:
+  - 'field_group:field_group'
   - 'hdbt_admin_tools:hdbt_admin_tools'
   - 'helfi_base_content:helfi_base_content'
   - 'helfi_media:helfi_media'
