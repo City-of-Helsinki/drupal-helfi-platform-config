@@ -20,7 +20,7 @@ function helfi_toc_entity_base_field_info(EntityTypeInterface $entity_type) : ar
     'tpr_service',
   ];
 
-  // Add color palette field to each entity type.
+  // Add table of contents field to each entity type.
   if (in_array($entity_type->id(), $entity_types)) {
     $configurable_form = $entity_type->id() === 'tpr_service';
 
