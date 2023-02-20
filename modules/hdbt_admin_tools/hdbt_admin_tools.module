@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\hdbt_admin_tools\Form\SiteSettings;
 use Drupal\helfi_tpr\Entity\Service;
@@ -47,6 +48,50 @@ function hdbt_admin_tools_gin_content_form_routes(): array {
     'entity.taxonomy_term.add_form',
     'entity.taxonomy_term.edit_form',
   ];
+}
+
+/**
+ * Implements hook_modules_installed().
+ */
+function hdbt_admin_tools_modules_installed(array $modules) : void {
+
+  // Modules containing entities which needs color palette field.
+  $moduleList = [
+    'helfi_node_announcement',
+    'helfi_node_landing_page',
+    'helfi_node_news_item',
+    'helfi_node_page',
+    'helfi_tpr_config',
+  ];
+
+  if (!in_array($moduleList, $modules)) {
+    return;
+  }
+
+  // Install color palette field to selected entities.
+  $field = 'color_palette';
+  $entityTypes = [
+    'node',
+    'tpr_unit',
+    'tpr_service',
+  ];
+
+  foreach ($entityTypes as $entityType) {
+    $entityDefinitionUpdateManager = \Drupal::entityDefinitionUpdateManager();
+    $fieldDefinitions = \Drupal::service('entity_field.manager')
+      ->getFieldDefinitions($entityType, $entityType);
+    if (
+      !empty($fieldDefinitions[$field]) &&
+      $fieldDefinitions[$field] instanceof FieldStorageDefinitionInterface
+    ) {
+      $entityDefinitionUpdateManager->installFieldStorageDefinition(
+        $field,
+        $entityType,
+        'hdbt_admin_tools',
+        $fieldDefinitions[$field]
+      );
+    }
+  }
 }
 
 /**

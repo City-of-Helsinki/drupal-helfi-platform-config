@@ -7,8 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-
 /**
  * Installs Helfi admin tools module.
  */
@@ -26,22 +24,4 @@ function hdbt_admin_tools_install(): void {
     $ignored[] = $config_ignore;
   }
   $config->set('ignored_config_entities', $ignored)->save();
-
-  // Install color palette field to nodes.
-  $field = 'color_palette';
-  $entity_type = 'node';
-
-  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
-  $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
-  if (
-    !empty($field_definitions[$field]) &&
-    $field_definitions[$field] instanceof FieldStorageDefinitionInterface
-  ) {
-    $entity_definition_update_manager->installFieldStorageDefinition(
-      $field,
-      $entity_type,
-      'hdbt_admin_tools',
-      $field_definitions[$field]
-    );
-  }
 }
