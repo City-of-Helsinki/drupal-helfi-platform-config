@@ -1,0 +1,10 @@
+endpoints:
+  -
+    schemes:
+      - 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/embed/vod?assetId=*'
+      - 'https://helsinkikanava.fi/*/web/helsinkikanava/player/embed/vod?assetId=*'
+    url: 'https://suite.icareus.com/api/oembed'
+    discovery: false
+    formats:
+      json: true
+      xml: false
