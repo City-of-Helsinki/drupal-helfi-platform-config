@@ -31,6 +31,7 @@ function helfi_media_form_alter(&$form, &$form_state, $form_id) {
   // Handle input URLs in form after build.
   if (in_array($form_id, $forms)) {
     $form['#after_build'][] = '_helfi_media_remote_video_validate';
+    $form['container']['submit']['#validate'][] = '_helfi_media_remote_video_provider_validation';
 
     // Switch provider names to more understandable format as the true provider
     // for Helsinki-kanava is Icareus Suite.
@@ -44,6 +45,48 @@ function helfi_media_form_alter(&$form, &$form_state, $form_id) {
       $form['container']['url']['#description'] = t('Allowed providers: @providers.', $providers);
     }
   }
+}
+
+/**
+ * Check that the video provider is allowed.
+ *
+ * @param array $form
+ *   An associative array containing the structure of the form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ *
+ * @return array
+ *   Returns the form.
+ */
+function _helfi_media_remote_video_provider_validation($form, &$form_state) {
+  // No need for validation if user input is empty.
+  if (empty($form_state->getUserInput())) {
+    return $form;
+  }
+
+  // Skip if OEmbed providers module doesn't exist.
+  if (!Drupal::moduleHandler()->moduleExists('oembed_providers')) {
+    return $form;
+  }
+
+  $config = \Drupal::configFactory()->getEditable('media.type.remote_video');
+  $config_data = $config->getRawData();
+
+  if (isset($config_data['source_configuration']['providers'])) {
+    $user_input = $form_state->getUserInput();
+    $allowed_providers = $config_data['source_configuration']['providers'];
+    $url_resolver = Drupal::service('media.oembed.url_resolver');
+    $provider = $url_resolver->getProviderByUrl($user_input['url']);
+    $provider_name = $provider->getName();
+  
+    if (!in_array($provider_name, $allowed_providers)) {
+      $form_state->setErrorByName('url', t('@provider is not an allowed video provider.', [
+        '@provider' => $provider_name,
+      ]));
+    }
+  }
+
+  return $form;
 }
 
 /**
@@ -82,10 +125,6 @@ function _helfi_media_remote_video_validate($form, &$form_state) {
   ) {
     $oembed_video_field = 'url';
     $video_url = &$user_input[$oembed_video_field];
-
-    // Do not validate URL as it is cached in media library form and would in
-    // some cases try to validate wrong URL.
-    $form_state->setValidationComplete(TRUE);
   }
 
   // Convert the video url if needed.
