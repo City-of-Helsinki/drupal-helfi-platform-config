@@ -19,6 +19,8 @@ function helfi_platform_config_base_install($is_syncing) : void {
 
   $config_factory = Drupal::configFactory();
   $theme_installer = Drupal::service('theme_installer');
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+  $theme_handler = \Drupal::service('theme_handler');
   $module_installer = Drupal::service('module_installer');
 
   // Remove the default frontpage view.
@@ -35,7 +37,9 @@ function helfi_platform_config_base_install($is_syncing) : void {
     ->save();
 
   // Uninstall stark theme.
-  $theme_installer->uninstall(['stark']);
+  if (array_key_exists('stark', $theme_handler->listInfo())) {
+    $theme_installer->uninstall(['stark']);
+  }
 
   // Remove an obsolete block that is named hdbt_admin.
   $config_factory->getEditable('block.block.hdbt_admin')->delete();
