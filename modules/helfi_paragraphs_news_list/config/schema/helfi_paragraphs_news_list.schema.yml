@@ -1,4 +1,4 @@
-helfi_news_feed.settings:
+helfi_paragraphs_news_list.settings:
   type: mapping
   mapping:
     source_environment:

@@ -67,7 +67,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     $instance->client = $container->get('http_client');
 
     $environment = $container->get('config.factory')
-      ->get('helfi_news_feed.settings')
+      ->get('helfi_paragraphs_news_list.settings')
       ->get('source_environment') ?: 'prod';
 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
