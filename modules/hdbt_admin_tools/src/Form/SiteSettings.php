@@ -78,7 +78,6 @@ class SiteSettings extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $form = parent::buildForm($form, $form_state);
-    $settings = $this->getSiteSettings();
 
     $form['#tree'] = TRUE;
     $form['#prefix'] = '<div class="layer-wrapper">';
@@ -96,7 +95,7 @@ class SiteSettings extends ConfigFormBase {
       '#options' => $this->getColorPalettes(),
       '#required' => TRUE,
       '#description' => $this->t('The chosen color palette will be used site wide in various components.'),
-      '#default_value' => $settings->get('site_settings')['theme_color'] ?: [],
+      '#default_value' => $this->getConfig('site_settings', 'theme_color'),
     ];
 
     $icons = [
@@ -114,7 +113,7 @@ class SiteSettings extends ConfigFormBase {
       '#options' => $icons,
       '#required' => TRUE,
       '#description' => $this->t('This liftup image will be used site wide if none are provided.'),
-      '#default_value' => $settings->get('site_settings')['default_icon'] ?: [],
+      '#default_value' => $this->getConfig('site_settings', 'default_icon'),
     ];
 
     $wave_motifs = [
@@ -123,7 +122,6 @@ class SiteSettings extends ConfigFormBase {
       'beat' => $this->t('Beat'),
       'pulse' => $this->t('Pulse'),
       'basic' => $this->t('Basic motif'),
-      // 'calm' => $this->t('Calm'),
     ];
 
     $form['site_settings']['koro'] = [
@@ -135,7 +133,7 @@ class SiteSettings extends ConfigFormBase {
         'See wave motifs from <a href=":vig" target="_blank">Visual Identity Guidelines</a>.',
         [':vig' => 'https://brand.hel.fi/en/wave-motifs/']
       ),
-      '#default_value' => $settings->get('site_settings')['koro'] ?: [],
+      '#default_value' => $this->getConfig('site_settings', 'koro'),
     ];
 
     $form['footer_settings'] = [
@@ -151,13 +149,31 @@ class SiteSettings extends ConfigFormBase {
         'dark' => $this->t('Dark'),
         'light' => $this->t('Light'),
       ],
-      '#default_value' => $settings->get('footer_settings')['footer_color'],
+      '#default_value' => $this->getConfig('site_settings', 'footer_color'),
     ];
 
     $form['#attached']['library'][] = 'hdbt_admin_tools/site_settings';
     $form['#attached']['library'][] = 'hdbt/color-palette';
 
     return $form;
+  }
+
+  /**
+   * Get configuration value
+   *
+   * @param string $configKey
+   *   Configuration key.
+   * @param string $key
+   *   Configuration sub-key.
+   *
+   * @return string|null
+   *   Returns the config value or null.
+   */
+  protected function getConfig(string $configKey, string $key): string|null {
+    return (
+      !empty($this->getSiteSettings()->get($configKey)) ||
+      array_key_exists($key, $this->getSiteSettings()->get($configKey) ?? [])
+    ) ? $this->getSiteSettings()->get($configKey)[$key] : '';
   }
 
   /**

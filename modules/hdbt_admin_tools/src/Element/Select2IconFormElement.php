@@ -7,7 +7,7 @@ use Drupal\select2\Element\Select2;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\Select2Icon;
 
 /**
- * Provides an Select2 Icon form element.
+ * Provides a Select2 Icon form element.
  *
  * @FormElement("select2_icon_element")
  */
