@@ -10,12 +10,12 @@ Enable the `helfi_news_feed` module.
 
 ## Overriding the source environment
 
-The source environment (production by default) can be changed by overriding the  `helfi_news_feed.settings.source_environment` configuration.
+The source environment (production by default) can be changed by overriding the  `helfi_paragraphs_news_list.settings.source_environment` configuration.
 
 For example:
 ```php
 # public/sites/default/local.settings.php
-$config['helfi_news_feed.settings']['source_environment'] = 'dev';
+$config['helfi_paragraphs_news_list.settings']['source_environment'] = 'dev';
 ```
 
 ## How to add new fields to paragraph type
