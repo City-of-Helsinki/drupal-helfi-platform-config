@@ -8,7 +8,6 @@ use Drupal\Core\Url;
 use Drupal\Core\Cache\CacheBackendInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\json_decode;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -38,7 +37,7 @@ class LinkedEvents extends EventsApiBase {
    * Max age for cache.
    */
   public function getCacheMaxAge() : int {
-    return time() + 60 * 60;
+    return time() + 60 * 60 * 8;
   }
 
   /**
@@ -136,6 +135,9 @@ class LinkedEvents extends EventsApiBase {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getPlacesList($url) : array {
+    // Remove keywords from api url not to get detailed keyword data for places.
+    $url = str_replace('keywords%2C', '', $url);
+
     if ($data = $this->getFromCache($url)) {
       return $data;
     }
