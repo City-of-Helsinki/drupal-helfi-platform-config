@@ -76,6 +76,20 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
         'phasing',
       ],
     ],
+    'page' => [
+      'field_content' => [
+        'unit_search',
+      ],
+      'field_lower_content' => [
+        'unit_search',
+      ],
+    ],
+    'landing_page' => [
+      'field_content' => [
+        'unit_search',
+        'service_list',
+      ],
+    ],
   ];
 
   $enabled = [];
