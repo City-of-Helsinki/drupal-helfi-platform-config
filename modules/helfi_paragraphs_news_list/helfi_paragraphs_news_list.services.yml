@@ -1,4 +1,0 @@
-services:
-  logger.channel.helfi_news_feed:
-    parent: logger.channel_base
-    arguments: [ 'helfi_news_feed' ]

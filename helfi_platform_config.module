@@ -215,6 +215,9 @@ function helfi_platform_config_token_info() : array {
  *
  * @param array $map
  *   The role => permissions map.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ * @throws \InvalidArgumentException
  */
 function helfi_platform_config_grant_permissions(array $map): void {
   foreach ($map as $rid => $permissions) {
@@ -235,7 +238,7 @@ function helfi_platform_config_tokens(
   array $data,
   array $options,
   BubbleableMetadata $bubbleable_metadata
-) {
+): array {
   $replacements = [];
 
   foreach ($tokens as $name => $original) {

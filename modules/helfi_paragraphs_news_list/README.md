@@ -6,7 +6,7 @@ News items are fetched runtime using [external_entities](https://www.drupal.org/
 
 ## Usage
 
-Enable the `helfi_news_feed` module.
+Enable the `helfi_paragraphs_news_list` module.
 
 ## Overriding the source environment
 
@@ -27,7 +27,7 @@ $config['helfi_paragraphs_news_list.settings']['source_environment'] = 'dev';
 
 ## How to add new fields to remote entity
 
-1. Add a new field to `helfi_news_feed_entity_bundle_field_info_alter()` hook.
+1. Add a new field to `helfi_paragraphs_news_list_entity_bundle_field_info_alter()` hook.
 2. Flush caches and go to Structure -> External entity types -> Helfi: News.
 3. Make sure you can see the field under Manage display tab.
 4. Go to Edit and follow the JSONPath documentation to map a value to field.
@@ -36,4 +36,4 @@ $config['helfi_paragraphs_news_list.settings']['source_environment'] = 'dev';
 
 ## Enable paragraph type in a paragraph reference field
 
-See `helfi_news_feed_install()` hook.
+See `helfi_paragraphs_news_list_install()` hook.

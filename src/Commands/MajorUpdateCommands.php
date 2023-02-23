@@ -190,7 +190,6 @@ final class MajorUpdateCommands extends DrushCommands {
 
     $modules = array_map(function (string $line) : string {
       return explode(':', $line)[0];
-
     }, $fileContent['dependencies']);
 
     // Enable TPR related modules if TPR is enabled.
@@ -204,6 +203,9 @@ final class MajorUpdateCommands extends DrushCommands {
     if ($this->moduleHandler->moduleExists('helfi_news_feed')) {
       $modules[] = 'helfi_paragraphs_news_list';
     }
+
+    // Enable helfi_platform_config_base module.
+    $modules[] = 'helfi_platform_config_base';
 
     return $modules;
   }

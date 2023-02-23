@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\helfi_news_feed\HelfiExternalEntityBase;
+use Drupal\helfi_paragraphs_news_list\HelfiExternalEntityBase;
 
 /**
  * External entity storage client for News tags taxonomy terms.

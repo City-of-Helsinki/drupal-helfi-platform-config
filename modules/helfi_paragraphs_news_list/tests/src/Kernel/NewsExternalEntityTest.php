@@ -14,7 +14,7 @@ use Psr\Http\Message\RequestInterface;
 /**
  * Tests News external entity.
  *
- * @group helfi_news_feed
+ * @group helfi_paragraphs_news_list
  */
 class NewsExternalEntityTest extends KernelTestBase {
 
