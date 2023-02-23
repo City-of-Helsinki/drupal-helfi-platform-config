@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component events'
+      value: 'DC: component event list'
   created:
     -
       value: 1654685838
