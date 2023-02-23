@@ -202,7 +202,7 @@ final class MajorUpdateCommands extends DrushCommands {
     // previously enabled.
     if (
       $this->moduleHandler->moduleExists('helfi_news_feed') ||
-      in_array('helfi_news_feed', $this->getExtensions()['modules'])
+      in_array('helfi_news_feed', $this->getExtensions()['module'])
     ) {
       $modules[] = 'helfi_paragraphs_news_list';
     }
