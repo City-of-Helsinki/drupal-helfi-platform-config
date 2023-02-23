@@ -200,7 +200,10 @@ final class MajorUpdateCommands extends DrushCommands {
 
     // Make sure 'helfi_paragraphs_news_list' module is enabled if it was
     // previously enabled.
-    if ($this->moduleHandler->moduleExists('helfi_news_feed')) {
+    if (
+      $this->moduleHandler->moduleExists('helfi_news_feed') ||
+      in_array('helfi_news_feed', $this->getExtensions()['modules'])
+    ) {
       $modules[] = 'helfi_paragraphs_news_list';
     }
 
@@ -208,6 +211,19 @@ final class MajorUpdateCommands extends DrushCommands {
     $modules[] = 'helfi_platform_config_base';
 
     return $modules;
+  }
+
+  /**
+   * Gets the contents of core.extension.yml.
+   *
+   * @return array
+   *   The contents of core extension yaml as an array.
+   */
+  private function getExtensions(): array {
+    $configExportFolder = \Drupal::root() . '/../conf/cmi';
+    return Yaml::decode(
+      file_get_contents($configExportFolder . '/core.extension.yml')
+    );
   }
 
   /**
@@ -231,7 +247,7 @@ final class MajorUpdateCommands extends DrushCommands {
         unlink("$configExportFolder/$file");
       }
     }
-    $extensions = Yaml::decode(file_get_contents($configExportFolder . '/core.extension.yml'));
+    $extensions = $this->getExtensions();
     $extensionsConfig = \Drupal::configFactory()->getEditable('core.extension');
 
     foreach ($extensions['module'] as $module => $weight) {
