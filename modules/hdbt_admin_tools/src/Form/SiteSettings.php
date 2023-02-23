@@ -159,7 +159,7 @@ class SiteSettings extends ConfigFormBase {
   }
 
   /**
-   * Get configuration value
+   * Get configuration value.
    *
    * @param string $configKey
    *   Configuration key.
