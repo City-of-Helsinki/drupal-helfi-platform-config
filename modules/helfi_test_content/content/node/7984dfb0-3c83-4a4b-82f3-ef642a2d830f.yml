@@ -31,9 +31,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -54,6 +51,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1654685848
   field_content:
     -
       entity:
@@ -73,18 +73,12 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_unit_search_meta_button:
             -
               value: 'Search for units'
           field_unit_search_meta_label:
             -
               value: 'Search for a unit'
-          field_unit_search_meta_load_more:
-            -
-              value: 'Load more units'
           field_unit_search_meta_placehold:
             -
               value: 'Enter name, address or postal code'
@@ -122,18 +116,12 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_unit_search_meta_button:
             -
               value: 'Search for units'
           field_unit_search_meta_label:
             -
               value: 'Search for a unit'
-          field_unit_search_meta_load_more:
-            -
-              value: 'Load more units'
           field_unit_search_meta_placehold:
             -
               value: 'Enter name, address or postal code'

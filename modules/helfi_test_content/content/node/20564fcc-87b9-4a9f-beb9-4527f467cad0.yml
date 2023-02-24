@@ -29,9 +29,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -52,6 +49,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1654685829
   field_content:
     -
       entity:
@@ -71,9 +71,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_chart_chart:
             -
               entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
@@ -101,9 +98,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_chart_chart:
             -
               entity: b8877864-15c3-48c1-b13e-0e92cf719d41

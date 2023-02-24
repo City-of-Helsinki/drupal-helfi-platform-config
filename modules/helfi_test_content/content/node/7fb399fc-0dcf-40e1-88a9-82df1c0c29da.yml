@@ -34,9 +34,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -57,6 +54,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1677155227
   field_content:
     -
       entity:
@@ -76,9 +76,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_accordion_design:
             -
               value: white
@@ -104,9 +101,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -126,9 +120,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p>\r\n\r\n<p>Curabitur aliquet quam id dui posuere blandit. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Nulla porttitor accumsan tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit.</p>\r\n"
@@ -154,9 +145,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -176,9 +164,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>\r\n"
@@ -213,9 +198,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_accordion_design:
             -
               value: grey
@@ -241,9 +223,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -263,9 +242,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p>\r\n\r\n<p>Curabitur aliquet quam id dui posuere blandit. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Nulla porttitor accumsan tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit.</p>\r\n"
@@ -291,9 +267,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -313,9 +286,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>\r\n"
@@ -350,9 +320,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_accordion_design:
             -
               value: white
@@ -378,9 +345,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -400,9 +364,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>\r\n"
@@ -425,9 +386,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_image:
                             -
                               entity: c231f43b-1629-46e3-94b8-8f4465742d28
@@ -455,9 +413,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_image:
                             -
                               entity: 7c36a698-3d99-4215-8e59-e87986053363
@@ -485,9 +440,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_image:
                             -
                               entity: 15c88893-b4e3-45d8-a180-11a80b4d4d13
@@ -515,9 +467,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_image:
                             -
                               entity: 24a1ce91-97d1-405b-b4ba-0e038907d64a
@@ -545,9 +494,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_columns_design:
                             -
                               value: 50-50
@@ -570,9 +516,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_text:
                                     -
                                       value: "<p>Ut sit amet pretium turpis. Cras aliquam, erat ut imperdiet vulputate, nisi magna dapibus velit, in hendrerit est massa sit amet ipsum. Ut ut eros eu risus suscipit laoreet ut in quam. Donec congue, elit non tristique egestas, mauris velit tempor dolor, eu facilisis erat orci non quam. Quisque elementum, velit ut dictum pulvinar, arcu velit efficitur erat, euismod semper lectus eros ut sapien. Vivamus feugiat eleifend nisl, eu vestibulum risus tincidunt eget.</p>\r\n"
@@ -596,9 +539,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_text:
                                     -
                                       value: "<p>Quisque porta turpis et vulputate ornare. Praesent non scelerisque magna, at laoreet tortor. Nulla lacus est, dictum ut tristique quis, mollis nec ex. Vivamus mattis tortor eu purus eleifend, sit amet dapibus lorem mollis. Pellentesque congue orci in magna feugiat imperdiet.</p>\r\n"
@@ -624,9 +564,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_columns_design:
                             -
                               value: 50-50
@@ -649,9 +586,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_image:
                                     -
                                       entity: ed3c3be5-c469-4eba-b6c1-f03d1643d9f2
@@ -677,9 +611,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_text:
                                     -
                                       value: "<p>Curabitur iaculis ac felis ac vestibulum. In dignissim nunc eget enim accumsan lacinia. Quisque viverra lorem nulla. Nulla eu vestibulum turpis, vitae sodales nulla. Curabitur nibh nulla, tincidunt et lobortis ut, venenatis at ex. Cras accumsan sit amet ligula eget facilisis. Donec consequat tellus arcu, et ullamcorper ex cursus in. Vestibulum vehicula massa et nisl euismod aliquam. Nam id hendrerit risus. Praesent est orci, vestibulum vehicula egestas vel, suscipit vel augue.</p>\r\n"
@@ -705,9 +636,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_columns_design:
                             -
                               value: 50-50
@@ -730,9 +658,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_image:
                                     -
                                       entity: 41c41049-c78d-4dab-913f-b10f3433c52c
@@ -758,9 +683,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_text:
                                     -
                                       value: "<p>Nunc ut bibendum ex, non hendrerit tortor. Integer posuere nulla dui, a ornare augue dictum ut. Cras ex enim, imperdiet ac ultricies quis, tempus nec augue. Nullam posuere varius magna, feugiat malesuada orci lacinia et.</p>\r\n"
@@ -786,9 +708,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_columns_design:
                             -
                               value: 30-70
@@ -811,9 +730,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_image:
                                     -
                                       entity: c2ad81d6-64cc-48fc-8587-a85d4b2b6bed
@@ -839,9 +755,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_text:
                                     -
                                       value: "<p>Vivamus posuere tincidunt ligula non consequat. Mauris vulputate, libero a molestie porta, risus leo luctus ex, eget vulputate nisl eros et nunc. Donec lectus ligula, sodales ac tristique eget, ultrices et massa. Etiam fringilla nunc vitae tortor efficitur, eu sodales mauris porttitor. Vivamus non consequat dui, eu varius ipsum</p>\r\n"
@@ -867,9 +780,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_columns_design:
                             -
                               value: 30-70
@@ -892,9 +802,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_image:
                                     -
                                       entity: c2ad81d6-64cc-48fc-8587-a85d4b2b6bed
@@ -923,9 +830,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_text:
                                     -
                                       value: "<p>Vivamus posuere tincidunt ligula non consequat. Mauris vulputate, libero a molestie porta, risus leo luctus ex, eget vulputate nisl eros et nunc. Donec lectus ligula, sodales ac tristique eget, ultrices et massa. Etiam fringilla nunc vitae tortor efficitur, eu sodales mauris porttitor. Vivamus non consequat dui, eu varius ipsum</p>\r\n"
@@ -951,9 +855,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_description:
                             -
                               value: "<p>Proin feugiat ante ipsum, nec volutpat turpis semper non. Etiam ac nisi ac lectus facilisis suscipit rhoncus sit amet urna. Vestibulum vitae ultricies lacus. Cras dictum nulla non purus accumsan, lacinia dapibus felis lacinia.</p>\r\n"
@@ -977,9 +878,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_description:
                                     -
                                       value: "<p>Etiam ullamcorper massa at felis convallis finibus. Curabitur fringilla dui a sagittis vulputate. Vestibulum non fermentum velit, porta vestibulum libero</p>\r\n"
@@ -1005,9 +903,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_description:
                                     -
                                       value: "<p>Mauris vel finibus ipsum, id viverra velit. Praesent a lorem vel ipsum faucibus tristique. Nunc ac ante eget dolor imperdiet fringilla a ut sapien</p>\r\n"
@@ -1045,9 +940,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_description:
                             -
                               value: "<p>Proin feugiat ante ipsum, nec volutpat turpis semper non. Etiam ac nisi ac lectus facilisis suscipit rhoncus sit amet urna. Vestibulum vitae ultricies lacus. Cras dictum nulla non purus accumsan, lacinia dapibus felis lacinia.</p>\r\n"
@@ -1071,9 +963,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_description:
                                     -
                                       value: "<p>Etiam ullamcorper massa at felis convallis finibus. Curabitur fringilla dui a sagittis vulputate. Vestibulum non fermentum velit, porta vestibulum libero</p>\r\n"
@@ -1099,9 +988,6 @@ default:
                                   behavior_settings:
                                     -
                                       value: {  }
-                                  revision_translation_affected:
-                                    -
-                                      value: true
                                   field_description:
                                     -
                                       value: "<p>Mauris vel finibus ipsum, id viverra velit. Praesent a lorem vel ipsum faucibus tristique. Nunc ac ante eget dolor imperdiet fringilla a ut sapien</p>\r\n"
@@ -1148,9 +1034,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_accordion_description:
             -
               value: "<p>Accordion Description - h2</p>\r\n"
@@ -1180,9 +1063,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -1202,9 +1082,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
@@ -1236,9 +1113,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_accordion_description:
             -
               value: "<p>Accordion Description - h3</p>\r\n"
@@ -1268,9 +1142,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -1290,9 +1161,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
@@ -1324,9 +1192,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_accordion_description:
             -
               value: "<p>Accordion Description - h4</p>\r\n"
@@ -1356,9 +1221,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -1378,9 +1240,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
@@ -1412,9 +1271,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_accordion_description:
             -
               value: "<p>Accordion Description - h5</p>\r\n"
@@ -1444,9 +1300,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -1466,9 +1319,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"
@@ -1500,9 +1350,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_accordion_description:
             -
               value: "<p>Accordion Description - h6</p>\r\n"
@@ -1532,9 +1379,6 @@ default:
                   behavior_settings:
                     -
                       value: {  }
-                  revision_translation_affected:
-                    -
-                      value: true
                   field_accordion_item_content:
                     -
                       entity:
@@ -1554,9 +1398,6 @@ default:
                           behavior_settings:
                             -
                               value: {  }
-                          revision_translation_affected:
-                            -
-                              value: true
                           field_text:
                             -
                               value: "<p>Accordion Item Content</p>\r\n\r\n<p>&nbsp;</p>\r\n"

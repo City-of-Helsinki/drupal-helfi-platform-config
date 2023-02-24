@@ -31,9 +31,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -54,6 +51,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1654687918
   field_content:
     -
       entity:
@@ -73,12 +73,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_service_list_meta_load_mor:
-            -
-              value: 'Load more services'
           field_service_list_services:
             -
               entity: 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c

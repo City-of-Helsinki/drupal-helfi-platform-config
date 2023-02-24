@@ -35,9 +35,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -58,6 +55,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1654685836
   field_content:
     -
       entity:
@@ -77,9 +77,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_content_cards_content:
             -
               entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
@@ -113,9 +110,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_content_cards_content:
             -
               entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
@@ -149,9 +143,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_content_cards_content:
             -
               entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
@@ -185,9 +176,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_content_cards_content:
             -
               entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
@@ -221,9 +209,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<h2>Special cases</h2>\r\n"
@@ -246,9 +231,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<h3>Small data</h3>\r\n"
@@ -271,9 +253,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_content_cards_content:
             -
               entity: e9d60c2c-0f51-411b-bde2-56dc9d30c11b
@@ -298,9 +277,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<h3>Large data</h3>\r\n"
@@ -323,9 +299,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_content_cards_content:
             -
               entity: e9d60c2c-0f51-411b-bde2-56dc9d30c11b

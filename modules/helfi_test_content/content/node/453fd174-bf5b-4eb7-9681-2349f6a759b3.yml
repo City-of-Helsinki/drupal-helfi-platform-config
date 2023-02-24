@@ -32,9 +32,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -55,6 +52,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1654685840
   field_content:
     -
       entity:
@@ -74,9 +74,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<h3>Different Caption Text Lengths:</h3>\r\n\r\n<p>(Photographer always added)</p>\r\n"
@@ -99,9 +96,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
@@ -129,9 +123,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
@@ -159,9 +150,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
@@ -186,9 +174,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<h3>Original Aspect Ratio ON:</h3>\r\n"
@@ -211,9 +196,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: 16e7e2d9-7c10-4804-91a0-75f6a1fd8185
@@ -241,9 +223,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: 3b608631-13fe-4035-922b-e43616ab13a2
@@ -271,9 +250,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_text:
             -
               value: "<h3>Image Size Tests:</h3>\r\n"
@@ -296,9 +272,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: e7582d1e-4f18-4f0d-85b7-b26bd2a8caec
@@ -326,9 +299,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_image:
             -
               entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4

@@ -28,9 +28,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -51,6 +48,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1654685844
   field_content:
     -
       entity:
@@ -70,9 +70,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_iframe_title:
             -
               value: 'Map - No Description'
@@ -100,9 +97,6 @@ default:
           behavior_settings:
             -
               value: {  }
-          revision_translation_affected:
-            -
-              value: true
           field_iframe_title:
             -
               value: 'Map - With Description'

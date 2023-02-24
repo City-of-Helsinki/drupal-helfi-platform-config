@@ -51,6 +51,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1654498757
   field_content:
     -
       entity:

@@ -49,6 +49,9 @@ default:
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1677155227
   field_content:
     -
       entity:
@@ -73,48 +76,30 @@ default:
               value: true
           field_api_url:
             -
-              uri: 'https://tapahtumat.hel.fi/fi/events?onlyEveningEvents=true'
+              uri: 'https://tapahtumat.hel.fi/fi/events'
               title: ''
               options: {  }
+          field_event_count:
+            -
+              value: 3
           field_event_list_title:
             -
-              value: 'Events - Upper content region'
+              value: 'Event list - Upper content region'
+          field_event_location:
+            -
+              value: true
+          field_event_time:
+            -
+              value: false
+          field_free_events:
+            -
+              value: false
           field_load_more:
+            -
+              value: true
+          field_remote_events:
             -
               value: true
   field_has_hero:
     -
       value: false
-  field_lower_content:
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 1c1f00b2-4afd-4d0f-bcdd-c4aa185558e1
-          bundle: event_list
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1654686980
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-          field_api_url:
-            -
-              uri: 'https://tapahtumat.hel.fi/fi/events?onlyEveningEvents=true'
-              title: ''
-              options: {  }
-          field_event_list_title:
-            -
-              value: 'Events - Lower content region'
-          field_load_more:
-            -
-              value: true
