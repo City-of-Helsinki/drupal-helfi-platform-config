@@ -145,14 +145,23 @@ watson_talpa:
   js:
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/widget.min.js': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/static/talpa/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=talpa': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/default.min.js': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
 
