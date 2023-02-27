@@ -73,7 +73,7 @@ class ChatLeijuke extends BlockBase {
 
     foreach ($librariesYml as $k => $lib) {
       if ($k === $config['chat_selection']) {
-        if (array_key_exists('js',$lib)) {
+        if (array_key_exists('js', $lib)) {
           foreach ($lib['js'] as $key => $value) {
             $js = [
               'url' => $key,
@@ -86,7 +86,7 @@ class ChatLeijuke extends BlockBase {
             $chatLibrary['js'][] = $js;
           }
         }
-        if (array_key_exists('css',$lib)) {
+        if (array_key_exists('css', $lib)) {
           foreach ($lib['css']['theme'] as $key => $value) {
             $css = [
               'url' => $key,
