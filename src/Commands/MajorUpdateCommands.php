@@ -200,10 +200,7 @@ final class MajorUpdateCommands extends DrushCommands {
 
     // Make sure 'helfi_paragraphs_news_list' module is enabled if it was
     // previously enabled.
-    if (
-      $this->moduleHandler->moduleExists('helfi_news_feed') ||
-      array_key_exists('helfi_news_feed', $this->getExtensions()['module'])
-    ) {
+    if (array_key_exists('helfi_news_feed', $this->getExtensions()['module'])) {
       $modules[] = 'helfi_paragraphs_news_list';
     }
 
@@ -220,10 +217,24 @@ final class MajorUpdateCommands extends DrushCommands {
    *   The contents of core extension yaml as an array.
    */
   private function getExtensions(): array {
-    $configExportFolder = \Drupal::root() . '/../conf/cmi';
-    return Yaml::decode(
-      file_get_contents($configExportFolder . '/core.extension.yml')
-    );
+    static $content;
+
+    if (!$content) {
+      $content = Yaml::decode(
+        file_get_contents($this->getConfigExportFolder() . '/core.extension.yml')
+      );
+    }
+    return $content;
+  }
+
+  /**
+   * Gets the configuration export folder.
+   *
+   * @return string
+   *   The cmi folder.
+   */
+  private function getConfigExportFolder() : string {
+    return \Drupal::root() . '/../conf/cmi';
   }
 
   /**
@@ -236,7 +247,7 @@ final class MajorUpdateCommands extends DrushCommands {
     $this->forceDisableModules($moduleMap);
     $this->forceEnableModules($modules);
 
-    $configExportFolder = \Drupal::root() . '/../conf/cmi';
+    $configExportFolder = $this->getConfigExportFolder();
     $obsoleteFiles = [
       'select2_icon.settings.yml',
       'helfi_news_feed.settings.yml',
