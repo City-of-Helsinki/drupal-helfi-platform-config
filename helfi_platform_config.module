@@ -93,17 +93,6 @@ function helfi_platform_config_configure_paragraph_field_handler(ParagraphTypeCo
 }
 
 /**
- * Implements hook_ENTITY_TYPE_view_alter().
- */
-function helfi_platform_config_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) : void {
-  // Replace node title on nodes with the visible title field.
-  // @todo Needs work on caches, wrong title is displayed if user visits content listing.
-  if ($entity->hasField('field_unit_visible_title')) {
-    $entity->set('title', Drupal::token()->replace((string) $entity->get('field_unit_visible_title')->value));
-  }
-}
-
-/**
  * Implements hook_module_implements_alter().
  */
 function helfi_platform_config_module_implements_alter(&$implementations, $hook) : void {
