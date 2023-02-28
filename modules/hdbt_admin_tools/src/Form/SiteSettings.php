@@ -171,7 +171,7 @@ class SiteSettings extends ConfigFormBase {
    */
   protected function getConfig(string $configKey, string $key): string|null {
     return (
-      !empty($this->getSiteSettings()->get($configKey)) ||
+      !empty($this->getSiteSettings()->get($configKey)) &&
       array_key_exists($key, $this->getSiteSettings()->get($configKey) ?? [])
     ) ? $this->getSiteSettings()->get($configKey)[$key] : '';
   }
