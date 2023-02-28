@@ -513,7 +513,7 @@ display:
       filter_groups:
         operator: AND
         groups:
-          1: AND
+          - AND
       style:
         type: table
         options:

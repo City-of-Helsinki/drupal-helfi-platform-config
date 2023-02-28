@@ -140,4 +140,24 @@ function helfi_tpr_config_install(bool $is_syncing) : void {
     }
     $profile->save();
   }
+
+  $config_factory = \Drupal::configFactory();
+
+  // Add unit and service to simple sitemap settings.
+  if (Drupal::moduleHandler()->moduleExists('simple_sitemap')) {
+    $sitemap_settings = $config_factory->getEditable('simple_sitemap.settings');
+    $sitemap_config = $sitemap_settings->get('enabled_entity_types');
+    $sitemap_config[] = 'tpr_service';
+    $sitemap_config[] = 'tpr_unit';
+    $sitemap_settings->set('enabled_entity_types', $sitemap_config)->save();
+  }
+
+  // Add unit and service to pathauto settings.
+  if (Drupal::moduleHandler()->moduleExists('pathauto')) {
+    $pathauto_settings = $config_factory->getEditable('pathauto.settings');
+    $pathauto_config = $pathauto_settings->get('enabled_entity_types');
+    $pathauto_config[] = 'tpr_service';
+    $pathauto_config[] = 'tpr_unit';
+    $pathauto_settings->set('enabled_entity_types', $pathauto_config)->save();
+  }
 }

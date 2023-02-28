@@ -62,7 +62,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'phasing',
         ],
         'field_sidebar_content' => [
-          'text',
+          'sidebar_text',
           'from_library',
         ],
         'field_lower_content' => [
@@ -75,6 +75,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'liftup_with_image',
           'from_library',
           'remote_video',
+          'news_list',
           'event_list',
           'phasing',
         ],
@@ -91,6 +92,14 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
       ],
       'landing_page' => [
         'field_content' => [
+          'unit_search',
+          'service_list',
+        ],
+      ],
+    ],
+    'paragraphs_library_item' => [
+      'paragraphs_library_item' => [
+        'paragraphs' => [
           'unit_search',
           'service_list',
         ],

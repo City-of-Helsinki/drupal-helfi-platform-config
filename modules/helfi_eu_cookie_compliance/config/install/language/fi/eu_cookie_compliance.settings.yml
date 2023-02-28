@@ -1,5 +1,3 @@
-popup_agreed:
-  value: "<h2>Thank you for accepting cookies</h2>\r\n\r\n<p>You can now hide this message or find out more about cookies.</p>\r\n"
 popup_agree_button_message: Hyväksy
 popup_more_info_button_message: 'Näytä evästeet'
 popup_find_more_button_message: 'Näytä evästeet'
@@ -8,8 +6,6 @@ popup_info:
   value: '<h2>Hel.fi käyttää evästeitä</h2><p>Tämä sivusto käyttää välttämättömiä evästeitä suorituskyvyn varmistamiseksi sekä yleisen käytön seurantaan. Lisäksi käytämme kohdennusevästeitä käyttäjäkokemuksen parantamiseksi, analytiikkaan ja kohdistetun sisällön näyttämiseen.</p>'
 popup_link: /cookie-information-and-settings
 disagree_button_label: 'Ei kiitos'
-withdraw_message:
-  value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
 withdraw_tab_button_label: Tietosuoja-asetukset
 save_preferences_button_label: 'Hyväksy valitut evästeet'
 accept_all_categories_button_label: 'Hyväksy kaikki evästeet'

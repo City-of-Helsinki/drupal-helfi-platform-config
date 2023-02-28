@@ -1,2 +1,4 @@
 ignored_config_entities:
   - 'system.site:page.front'
+  - 'hdbt_admin_tools.site_settings:site_settings'
+  - 'hdbt_admin_tools.site_settings:footer_settings'

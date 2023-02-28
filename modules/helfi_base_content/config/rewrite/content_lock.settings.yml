@@ -1,0 +1,15 @@
+verbose: 1
+types:
+  node:
+    '*': '*'
+  paragraphs_library_item:
+    '*': '*'
+  taxonomy_term:
+    '*': '*'
+  tpr_service:
+    '*': '*'
+  tpr_unit:
+    '*': '*'
+types_translation_lock: {  }
+types_js_lock: {  }
+form_op_lock: {  }

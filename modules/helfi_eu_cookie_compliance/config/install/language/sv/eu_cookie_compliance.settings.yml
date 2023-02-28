@@ -1,15 +1,10 @@
-popup_agreed:
-  value: "<h2>Thank you for accepting cookies</h2>\r\n\r\n<p>You can now hide this message or find out more about cookies.</p>\r\n"
 popup_agree_button_message: Accepterar
 popup_more_info_button_message: 'Visa cookies'
 popup_find_more_button_message: 'Visa cookies'
 popup_hide_button_message: Dölj
 popup_info:
   value: '<h2>Hel.fi använder cookies</h2><p>Vi använder viktiga cookies på vår webbplats för att få webbplatsen att fungera. Även tredjepartscookies används om du ger oss ditt tillstånd.</p>'
-popup_link: /cookie-information-and-settings
 disagree_button_label: 'Nej, tack'
-withdraw_message:
-  value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
 withdraw_action_button_label: 'Återkalla samtycke'
 withdraw_tab_button_label: Sekretessinställningar
 save_preferences_button_label: 'Acceptera valda cookies'
