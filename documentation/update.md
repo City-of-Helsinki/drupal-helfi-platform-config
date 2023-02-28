@@ -9,7 +9,7 @@
    - Run database updates (`drush updb`)
    - Export your configuration (`drush config:export`)
 - Remove `helfi_media_map` module: `composer remove drupal/helfi_media_map` (this will be included in 3.x platform config module)
-- Update the module to 3.x version: `composer require drupal/helfi_platform_config:^3.0 drush/drush:^11 -W `
+- Update the module to 3.x version: `composer require drupal/helfi_platform_config:^3.0 drupal/hdbt:^5.0 drupal/hdbt_admin:^2.0 drush/drush:^11 -W`
 - Run `drush helfi:platform-config:update-config`. This will override _all_ configuration in your config export folder. Make sure to review and discard any unwanted changes before the next step
 - Run `drush config:import` to import overridden configuration. The import command will most likely fail to something like:
 ```
