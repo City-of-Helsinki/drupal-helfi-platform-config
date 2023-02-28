@@ -13,11 +13,6 @@ services:
     tags:
       - { name: event_subscriber }
 
-  helfi_platform_config.image_cache_external:
-    class: Drupal\helfi_platform_config\TwigExtension\TwigExtension
-    tags:
-      - { name: twig.extension }
-
   helfi_platform_config.translation_writer_command:
     class: Drupal\helfi_platform_config\Commands\TranslationWriterCommand
     arguments: ['@language_manager','@string_translation', '@file_system']
@@ -38,11 +33,3 @@ services:
     class: Drupal\helfi_platform_config\TwigExtension\DrupalEntityRevision
     tags:
       - { name: twig.extension }
-
-  helfi_platform_config.major_update_helper:
-    class: Drupal\helfi_platform_config\Helper\MajorUpdateHelper
-    arguments:
-      - '@update.update_hook_registry'
-      - '@database'
-      - '@module_handler'
-      - '@extension.list.module'
