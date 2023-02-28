@@ -111,14 +111,23 @@ watson_chatbot:
   js:
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/widget.min.js': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/static/housing/custom.widget.min.js?tenantId=www-hel-fi-prod&assistantId=housing': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/default.min.js': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
 
@@ -128,14 +137,23 @@ watson_sote:
   js:
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/widget.min.js': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/static/sote-bot/custom.widget.min.js?tenantId=sote-prod&assistantId=sote-bot': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
     'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud/default.min.js': {
       type: external,
+      attributes: {
+        async: true,
+      },
       minified: true
     }
 

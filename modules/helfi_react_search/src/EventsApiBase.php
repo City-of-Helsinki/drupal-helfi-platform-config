@@ -29,7 +29,7 @@ abstract class EventsApiBase {
       foreach ($parsed['query'] as $key => $param) {
         switch ($key) {
           case 'categories':
-            $params['keyword_OR_set1'] = $this->categoriesToKeywords($param);
+            $params['keyword'] = $this->categoriesToKeywords($param);
             break;
 
           case 'start':
