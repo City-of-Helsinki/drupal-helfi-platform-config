@@ -35,7 +35,7 @@ eo, file, image, audio_file, helfi_chart
 - Review and manually discard any unwanted changes
 
 ### Updating remote environments (test/stage/prod)
-- @todo
+- Run `drush helfi:platform-config:update-database` and re-import configuration `drush config:import`
 
 ## Updating from 1.x to 2.x
 

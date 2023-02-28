@@ -79,6 +79,36 @@ final class MajorUpdateCommands extends DrushCommands {
   }
 
   /**
+   * Updates core extensions.
+   *
+   * @return array
+   *   The new extensions.
+   */
+  private function updateCoreExtensions() : array {
+    $modules = $this->getBaseModules();
+    $moduleMap = $this->getModuleMap();
+    $this->forceDisableModules($moduleMap);
+    $this->forceEnableModules($modules);
+
+    $extensions = $this->getExtensions();
+    $extensionsConfig = \Drupal::configFactory()->getEditable('core.extension');
+
+    foreach ($extensions['module'] as $module => $weight) {
+      if (!in_array($module, array_keys($moduleMap))) {
+        continue;
+      }
+      unset($extensions['module'][$module]);
+    }
+    $extensionsConfig->set('module', $extensions['module'])->save();
+
+    foreach ($modules as $module) {
+      $extensions['module'][$module] = 0;
+    }
+
+    return $extensions;
+  }
+
+  /**
    * Replaces the config for given module.
    *
    * @param string $configExportFolder
@@ -242,11 +272,6 @@ final class MajorUpdateCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:platform-config:update-config')]
   public function updateConfig() : void {
-    $modules = $this->getBaseModules();
-    $moduleMap = $this->getModuleMap();
-    $this->forceDisableModules($moduleMap);
-    $this->forceEnableModules($modules);
-
     $configExportFolder = $this->getConfigExportFolder();
     $obsoleteFiles = [
       'select2_icon.settings.yml',
@@ -258,24 +283,12 @@ final class MajorUpdateCommands extends DrushCommands {
         unlink("$configExportFolder/$file");
       }
     }
-    $extensions = $this->getExtensions();
-    $extensionsConfig = \Drupal::configFactory()->getEditable('core.extension');
 
-    foreach ($extensions['module'] as $module => $weight) {
-      if (!in_array($module, array_keys($moduleMap))) {
-        continue;
-      }
-      unset($extensions['module'][$module]);
-    }
-    $extensionsConfig->set('module', $extensions['module'])->save();
-
-    foreach ($modules as $module) {
-      $extensions['module'][$module] = 0;
-    }
+    $extensions = $this->updateCoreExtensions();
     file_put_contents($configExportFolder . '/core.extension.yml', Yaml::encode($extensions));
 
     // Replace config.
-    foreach ($modules as $module) {
+    foreach ($this->getBaseModules() as $module) {
       $this->replaceConfig($configExportFolder, $module);
     }
   }
@@ -285,6 +298,7 @@ final class MajorUpdateCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:platform-config:update-database')]
   public function updateDatabase() : void {
+    $this->updateCoreExtensions();
     $this->runInstallHooks($this->getBaseModules());
     helfi_platform_config_update_paragraph_target_types();
 
