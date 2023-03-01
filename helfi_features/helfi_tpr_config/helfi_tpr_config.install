@@ -641,3 +641,87 @@ function helfi_tpr_config_update_9030() {
   $installer = Drupal::service('module_installer');
   $installer->uninstall(['views_infinite_scroll']);
 }
+
+/**
+ * Installing configuration files for paragraph type Service List Search and its fields.
+ */
+function helfi_tpr_config_update_9031() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Configuration locations
+  $configInstallLocation = dirname(__FILE__) . '/config/install/';
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+
+  // Configurations to be installed.
+  $configurations = [
+    'paragraphs.paragraphs_type.service_list_search',
+    'field.field.paragraph.service_list_search.field_service_list_title',
+    'field.field.paragraph.service_list_search.field_service_list_services',
+    'field.field.paragraph.service_list_search.field_service_list_description',
+    'core.entity_view_display.paragraph.service_list_search.default',
+    'core.entity_form_display.paragraph.service_list_search.default'
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configInstallLocation, $configuration);
+    ConfigHelper::installNewConfigTranslation($configTranslationLocation, $configuration);
+  }
+
+  // Install services_ids
+  ConfigHelper::installNewField(
+    $configInstallLocation,
+    'field.storage.paragraph.field_service_list_service_ids',
+    'field.field.paragraph.service_list_search.field_service_list_service_ids'
+  );
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Creating new view mode teaser search result.
+ */
+function helfi_tpr_config_update_9032() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Configurations location.
+  $configInstallLocation = dirname(__FILE__) . '/config/install/';
+
+  // Configurations to be installed.
+  $configurations = [
+    'core.entity_view_display.tpr_service.tpr_service.teaser_search_result',
+    'core.entity_view_mode.tpr_service.teaser_search_result',
+  ];
+
+  foreach ($configurations as $configuration) {
+    ConfigHelper::installNewConfig($configInstallLocation, $configuration);
+
+  }
+
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'core.entity_view_display.tpr_service.tpr_service.teaser_search_result');
+
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}
+
+/**
+ * Add new display for service list view with labels translations.
+ */
+function helfi_tpr_config_update_9033() {
+
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('helfi_tpr_config', 'helfi_tpr_config_update_9031');
+
+  $configTranslationLocation = dirname(__FILE__) . '/config/language/';
+  ConfigHelper::installNewConfigTranslation($configTranslationLocation, 'views.view.service_list');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

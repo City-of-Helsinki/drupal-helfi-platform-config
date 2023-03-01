@@ -1,0 +1,102 @@
+uuid: null
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.tpr_service.teaser_search_result
+    - field.field.tpr_service.tpr_service.field_content
+    - field.field.tpr_service.tpr_service.field_lower_content
+    - field.field.tpr_service.tpr_service.field_metatags
+    - field.field.tpr_service.tpr_service.field_sidebar_content
+  module:
+    - helfi_tpr
+    - text
+_core:
+  default_config_hash: xI-QgKUvsjLc0SRc8bpDE336uJXT5rVP6K8TirZUzw8
+id: tpr_service.tpr_service.teaser_search_result
+targetEntityType: tpr_service
+bundle: tpr_service
+mode: teaser_search_result
+content:
+  description:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  errand_services:
+    type: tpr_service_err_channel_list
+    label: hidden
+    settings:
+      view_mode: default
+      sort_order:
+        ESERVICE:
+          label: E-service
+          weight: '0'
+          show: 0
+        CHAT:
+          label: Chat
+          show: '1'
+          weight: '1'
+        EMAIL:
+          label: Email
+          show: '1'
+          weight: '2'
+        TELEPHONE:
+          label: Telephone
+          show: '1'
+          weight: '3'
+        PRINTABLE_FORM:
+          label: Form
+          show: '1'
+          weight: '4'
+        LOCAL:
+          label: 'Local service'
+          weight: '5'
+          show: 0
+        SMS:
+          label: SMS
+          weight: '6'
+          show: 0
+        WEBPAGE:
+          label: Webpage
+          weight: '7'
+          show: 0
+        MAIL:
+          label: 'Postal mail'
+          weight: '8'
+          show: 0
+        TELEFAX:
+          label: Telefax
+          weight: '9'
+          show: 0
+        OFFICE:
+          label: 'Service point'
+          weight: '99'
+          show: 0
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_content: true
+  field_lower_content: true
+  field_metatags: true
+  field_sidebar_content: true
+  has_unit: true
+  langcode: true
+  links: true
+  name_override: true
+  name_synonyms: true
+  service_id: true
+  toc_enabled: true

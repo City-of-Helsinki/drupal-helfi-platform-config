@@ -720,9 +720,9 @@ function helfi_content_update_9031() {
 }
 
 /**
-* Creates phasing paragraph and adds it to basic, landing and tpr service content areas
-* and also to accordion item content.
-*/
+ * Creates phasing paragraph and adds it to basic, landing and tpr service content areas
+ * and also to accordion item content.
+ */
 function helfi_content_update_9032() {
   // Handle the configuration translation update manually.
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
@@ -792,9 +792,9 @@ function helfi_content_update_9032() {
 
 
 /**
-* Creates popular service and target group links paragraphs and adds it
-* to landing page content.
-*/
+ * Creates popular service and target group links paragraphs and adds it
+ * to landing page content.
+ */
 function helfi_content_update_9033() {
   // Handle the configuration translation update manually.
   $configTranslationLocation = dirname(__FILE__) . '/config/language/';
