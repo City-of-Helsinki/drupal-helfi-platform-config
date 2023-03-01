@@ -128,6 +128,10 @@ class CategoryKeywords {
     'yso:p2625',
   ];
 
+  public const NATURE = [
+    'yso:p2771',
+  ];
+
   public const CHILDREN = 'yso:p4354';
 
   /**
