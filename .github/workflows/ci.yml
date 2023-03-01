@@ -43,8 +43,7 @@ jobs:
         run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
 
       - name: Build project
-        # @todo change this back to dev-main
-        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-UHF-7219 $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
 
       - name: Install Drupal
         run: |
