@@ -94,6 +94,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
         'field_content' => [
           'unit_search',
           'service_list',
+          'service_list_search',
         ],
       ],
     ],

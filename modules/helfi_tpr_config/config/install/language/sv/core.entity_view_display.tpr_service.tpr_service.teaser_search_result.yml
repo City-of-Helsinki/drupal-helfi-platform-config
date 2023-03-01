@@ -5,13 +5,13 @@ content:
         ESERVICE:
           label: E-service
         CHAT:
-          label: Chat
+          label: Chatt
         EMAIL:
-          label: Sähköposti
+          label: E-post
         TELEPHONE:
-          label: Puhelin
+          label: Telefon
         PRINTABLE_FORM:
-          label: Lomake
+          label: Blankett
         LOCAL:
           label: 'Local service'
         SMS:
@@ -23,4 +23,4 @@ content:
         TELEFAX:
           label: Telefax
         OFFICE:
-          label: Palvelupiste
+          label: Serviceställe
