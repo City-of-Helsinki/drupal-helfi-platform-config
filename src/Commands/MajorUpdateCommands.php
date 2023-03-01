@@ -228,10 +228,16 @@ final class MajorUpdateCommands extends DrushCommands {
       $modules[] = 'helfi_paragraphs_content_liftup';
     }
 
-    // Make sure 'helfi_paragraphs_news_list' module is enabled if it was
-    // previously enabled.
-    if (array_key_exists('helfi_news_feed', $this->getExtensions()['module'])) {
-      $modules[] = 'helfi_paragraphs_news_list';
+    // Reinstall modules which were previously installed.
+    $modules = [
+      'helfi_news_feed' => 'helfi_paragraphs_news_list',
+      'helfi_media' => 'helfi_media_remote_video',
+    ];
+
+    foreach ($modules as $oldModule => $newModule) {
+      if (array_key_exists($oldModule, $this->getExtensions()['module'])) {
+        $modules[] = $newModule;
+      }
     }
 
     // Enable helfi_platform_config_base module.
