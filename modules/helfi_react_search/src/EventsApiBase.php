@@ -129,7 +129,7 @@ abstract class EventsApiBase {
         'culture' => CategoryKeywords::CULTURE,
         'movie' => CategoryKeywords::MOVIE,
         'sport' => CategoryKeywords::SPORT,
-        'nature' => CategoryKeywords::CAMPS,
+        'nature' => CategoryKeywords::NATURE,
         'museum' => CategoryKeywords::MUSEUM,
         'music' => CategoryKeywords::MUSIC,
         'influence' => CategoryKeywords::INFLUENCE,
