@@ -8,3 +8,18 @@ display:
             previous: Föregående
             first: Första
             last: Sista
+  block_search:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Sök
+      pager:
+        options:
+          tags:
+            previous: Tidigare
+            next: Nästa
+      filters:
+        combine:
+          expose:
+            label: 'Rådgivningstjänstens namn eller sökterm'
+            placeholder: 't.ex. Socialrådgivning, hälsa eller digitalt Sök'

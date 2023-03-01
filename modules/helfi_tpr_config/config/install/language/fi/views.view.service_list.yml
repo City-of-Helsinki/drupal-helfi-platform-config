@@ -24,3 +24,18 @@ display:
         id:
           exception:
             title: Kaikki
+  block_search:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Etsi
+      pager:
+        options:
+          tags:
+            previous: Edellinen
+            next: Seuraava
+      filters:
+        combine:
+          expose:
+            label: 'Neuvontapalvelun nimi tai hakusana'
+            placeholder: 'Esim. Sosiaalineuvonta, terveys tai digi'

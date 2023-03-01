@@ -33,6 +33,7 @@ function helfi_node_landing_page_helfi_paragraph_types() : array {
       'phasing',
       'popular_services',
       'target_group_links',
+      'service_list_search',
     ],
   ];
 

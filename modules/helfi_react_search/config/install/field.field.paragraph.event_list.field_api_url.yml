@@ -1,4 +1,3 @@
-uuid: 1f3c2a80-fb81-48e7-af02-ac80a0d2cda9
 langcode: en
 status: true
 dependencies:
@@ -7,8 +6,6 @@ dependencies:
     - paragraphs.paragraphs_type.event_list
   module:
     - link
-_core:
-  default_config_hash: jgY2yAGVcRW7J75ynuV4SZHILhZGvE6Z2g4yj2FmRUE
 id: paragraph.event_list.field_api_url
 field_name: field_api_url
 entity_type: paragraph

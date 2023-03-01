@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_service_list_service_ids
+    - paragraphs.paragraphs_type.service_list_search
+id: paragraph.service_list_search.field_service_list_service_ids
+field_name: field_service_list_service_ids
+entity_type: paragraph
+bundle: service_list_search
+label: 'Service group ID'
+description: 'You’ll find the service group ID by opening a service you want to list for editing, and scrolling to the bottom of the form.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

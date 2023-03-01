@@ -1,11 +1,8 @@
-uuid: 50a4ce42-6329-4b24-b644-22e872780804
 langcode: en
 status: true
 dependencies:
   module:
     - paragraphs
-_core:
-  default_config_hash: _xF8iz7PLLf53XHBaUnByGHQXs04k8Y0rOzN4BzNMSM
 id: paragraph.field_event_list_title
 field_name: field_event_list_title
 entity_type: paragraph

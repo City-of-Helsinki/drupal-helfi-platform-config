@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: tpr_service.teaser_search_result
+label: 'Teaser search result'
+targetEntityType: tpr_service
+cache: true

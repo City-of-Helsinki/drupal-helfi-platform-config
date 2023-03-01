@@ -189,7 +189,7 @@ function hdbt_admin_tools_language_switch_links_alter(array &$links): void {
     }
   }
 
-  // @todo Needs a functionality for the alternative languages which should be shown in an alternative menu.
+  // @todo UHF-6102 Needs refactoring during "Muut kielet" epic.
   $alternative_languages = [
     'ru',
   ];
