@@ -27,23 +27,22 @@ jobs:
           MYSQL_ROOT_PASSWORD: drupal
         ports:
           - 3306:3306
-
     steps:
-      - name: Set variables
-        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
-
-      - name: Build project
-        run: git clone git@github.com:City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
-
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
+
+      - name: Set variables
+        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
 
       - name: Set module folder
         run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
+
+      - name: Clone platform
+        run: git clone git@github.com:City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
 
       - name: Update modules
         run: |
