@@ -29,26 +29,21 @@ jobs:
           - 3306:3306
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Set variables
+        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+
+      - name: Build project
+        run: git clone git@github.com:City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
+
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
 
-      - name: Set variables
-        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
-
       - name: Set module folder
         run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
-
-      - name: Build project
-        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
-
-      - name: Install Drupal
-        run: |
-          cd $DRUPAL_ROOT
-          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
 
       - name: Update modules
         run: |
@@ -56,6 +51,11 @@ jobs:
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/$MODULE_NAME -W
           vendor/bin/drush en $MODULE_NAME -y
+
+      - name: Install Drupal
+        run: |
+          cd $DRUPAL_ROOT
+          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
 
       - name: Run PHPCS
         run: |
