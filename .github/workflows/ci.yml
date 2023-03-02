@@ -49,12 +49,12 @@ jobs:
           cd $DRUPAL_ROOT
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/$MODULE_NAME -W
-          vendor/bin/drush en $MODULE_NAME -y
 
       - name: Install Drupal
         run: |
           cd $DRUPAL_ROOT
           php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
+          vendor/bin/drush en $MODULE_NAME -y
 
       - name: Run PHPCS
         run: |
