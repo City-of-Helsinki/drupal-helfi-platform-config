@@ -2,22 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_paragraphs_content_cards\Functional;
+namespace Drupal\Tests\helfi_platform_config_base\Functional;
 
 use Drupal\Tests\helfi_platform_config\Functional\BrowserTestBase;
 
 /**
- * Tests helfi_paragraphs_content_cards module.
+ * Tests that all modules can be enabled.
  *
  * @group helfi_platform_config
  */
-class ContentCardsParagraphsTest extends BrowserTestBase {
+class ModuleEnableTest extends BrowserTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_paragraphs_content_cards',
+    'helfi_platform_config_base',
   ];
 
   /**
@@ -26,9 +26,9 @@ class ContentCardsParagraphsTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests content_cards paragraph.
+   * Make sure all modules can be enabled.
    */
-  public function testParagraphs() : void {
+  public function testEnable() : void {
     $this->assertFrontPageLanguages();
   }
 
