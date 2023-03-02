@@ -73,25 +73,28 @@ class ChatLeijuke extends BlockBase {
 
     foreach ($librariesYml as $k => $lib) {
       if ($k === $config['chat_selection']) {
-        foreach ($lib['js'] as $key => $value) {
-          $js = [
-            'url' => $key,
-            'ext' => $value['type'] ?? FALSE,
-            'onload' => $value['attributes']['onload'] ?? FALSE,
-            'async' => $value['attributes']['async'] ?? FALSE,
-            'data_container_id' => $value['attributes']['data-container-id'] ?? FALSE,
-          ];
+        if (array_key_exists('js', $lib)) {
+          foreach ($lib['js'] as $key => $value) {
+            $js = [
+              'url' => $key,
+              'ext' => $value['type'] ?? FALSE,
+              'onload' => $value['attributes']['onload'] ?? FALSE,
+              'async' => $value['attributes']['async'] ?? FALSE,
+              'data_container_id' => $value['attributes']['data-container-id'] ?? FALSE,
+            ];
 
-          $chatLibrary['js'][] = $js;
+            $chatLibrary['js'][] = $js;
+          }
         }
+        if (array_key_exists('css', $lib)) {
+          foreach ($lib['css']['theme'] as $key => $value) {
+            $css = [
+              'url' => $key,
+              'ext' => $value['type'] ?? FALSE,
+            ];
 
-        foreach ($lib['css']['theme'] as $key => $value) {
-          $css = [
-            'url' => $key,
-            'ext' => $value['type'] ?? FALSE,
-          ];
-
-          $chatLibrary['css'][] = $css;
+            $chatLibrary['css'][] = $css;
+          }
         }
       }
     }

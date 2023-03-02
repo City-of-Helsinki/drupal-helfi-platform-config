@@ -172,14 +172,14 @@
     onClosed(callback) {
       // subscribe to closed event
       this.getChatExtension().then((ext) => {
-        let findbutton = setInterval(()=> {
-          const acabutton = document.getElementById('aca--widget-button');
-          if (typeof acabutton != 'null') {
-            const style = window.getComputedStyle(acabutton);
+        let findButton = setInterval(()=> {
+          const acaButton = document.getElementById('aca--widget-button');
+          if (typeof acaButton != 'undefined') {
+            const style = window.getComputedStyle(acaButton);
             if (style.display !== 'none') {
               ext.__hideStartButton();
               callback();
-              clearInterval(findbutton);
+              clearInterval(findButton);
             }
           }
         }, 1000);
@@ -190,14 +190,14 @@
       // subscribe to ready event
       this.getChatExtension().then((ext) => {
 
-        let findbutton = setInterval(()=> {
-          const acabutton = document.getElementById('aca--widget-button');
-          if (typeof acabutton != 'null') {
-            const style = window.getComputedStyle(acabutton);
+        let findButton = setInterval(()=> {
+          const acaButton = document.getElementById('aca--widget-button');
+          if (typeof acaButton != 'undefined') {
+            const style = window.getComputedStyle(acaButton);
             if (style.display !== 'none') {
               ext.__hideStartButton();
               callback();
-              clearInterval(findbutton);
+              clearInterval(findButton);
             }
 
           }
@@ -342,12 +342,31 @@
         if (this.state.cookies) {
           this.loadChat();
           this.adapter.onLoaded(this.openChat.bind(this));
+          // Check if the adapter is of type Watson
+          if (this.adapter instanceof WatsonAdapter) {
+            // Cannot call open before adapter is loaded.
+            setTimeout(this.openAdapter, 500);
+          } else {
+            this.adapter.onLoaded(this.openChat.bind(this));
+          }
         } else {
           console.warn('Missing the required cookies to open chat. Missing cookie not allowed to be set implicitly.')
         }
 
       });
     }
+
+    openAdapter = () => {
+      this.adapter.open(()=>{});
+      let acaWidgetInitialized = setInterval(() => {
+        if (acaWidget) {
+          setTimeout(this.doOpenAdapter, 800);
+          clearInterval(acaWidgetInitialized);
+        }
+      }, 500)
+    }
+
+    doOpenAdapter = () => this.adapter.open(()=>{});
 
     setLeijukeCookie(cname, cvalue) {
       document.cookie = `${cname}=${cvalue}; path=/; SameSite=Strict; `;
