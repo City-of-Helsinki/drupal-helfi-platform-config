@@ -207,4 +207,19 @@ function helfi_base_content_install($is_syncing) : void {
     ->save();
 
   helfi_base_content_grant_permissions();
+
+  // Add unit and service to pathauto settings.
+  if (Drupal::moduleHandler()->moduleExists('content_lock')) {
+    $types = [
+      'node' => ['*' => '*'],
+      'paragraphs_library_item' => ['*' => '*'],
+      'taxonomy_term' => ['*' => '*'],
+    ];
+
+    $config_factory = \Drupal::configFactory();
+    $content_lock_settings = $config_factory->getEditable('content_lock.settings');
+    $content_lock_config = $content_lock_settings->get('types');
+    $content_lock_config = array_merge($content_lock_config, $types);
+    $content_lock_settings->set('types', $content_lock_config)->save();
+  }
 }

@@ -140,4 +140,38 @@ function helfi_tpr_config_install(bool $is_syncing) : void {
     }
     $profile->save();
   }
+
+  $config_factory = Drupal::configFactory();
+  $module_handler = Drupal::moduleHandler();
+
+  // Add unit and service to simple sitemap settings.
+  if ($module_handler->moduleExists('simple_sitemap')) {
+    $sitemap_settings = $config_factory->getEditable('simple_sitemap.settings');
+    $sitemap_config = $sitemap_settings->get('enabled_entity_types');
+    $sitemap_config[] = 'tpr_service';
+    $sitemap_config[] = 'tpr_unit';
+    $sitemap_settings->set('enabled_entity_types', $sitemap_config)->save();
+  }
+
+  // Add unit and service to pathauto settings.
+  if ($module_handler->moduleExists('pathauto')) {
+    $pathauto_settings = $config_factory->getEditable('pathauto.settings');
+    $pathauto_config = $pathauto_settings->get('enabled_entity_types');
+    $pathauto_config[] = 'tpr_service';
+    $pathauto_config[] = 'tpr_unit';
+    $pathauto_settings->set('enabled_entity_types', $pathauto_config)->save();
+  }
+
+  // Add unit and service to content lock settings.
+  if ($module_handler->moduleExists('content_lock')) {
+    $types = [
+      'tpr_service' => ['*' => '*'],
+      'tpr_unit' => ['*' => '*'],
+    ];
+    $config_factory = \Drupal::configFactory();
+    $content_lock_settings = $config_factory->getEditable('content_lock.settings');
+    $content_lock_config = $content_lock_settings->get('types');
+    $content_lock_config = array_merge($content_lock_config, $types);
+    $content_lock_settings->set('types', $content_lock_config)->save();
+  }
 }

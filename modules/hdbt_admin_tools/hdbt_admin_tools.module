@@ -189,7 +189,7 @@ function hdbt_admin_tools_language_switch_links_alter(array &$links): void {
     }
   }
 
-  // @todo Needs a functionality for the alternative languages which should be shown in an alternative menu.
+  // @todo UHF-6102 Needs refactoring during "Muut kielet" epic.
   $alternative_languages = [
     'ru',
   ];
@@ -461,7 +461,6 @@ function hdbt_admin_tools_form_config_translation_form_alter(&$form, &$form_stat
   ];
 
   if (in_array($form_id, $form_ids)) {
-    // @todo Find out if we can change the hdbt_admin_tools configuration prefix without BC breaks.
     $settings = &$form['config_names']['hdbt_admin_tools.site_settings'];
 
     // Don't translate global fields.

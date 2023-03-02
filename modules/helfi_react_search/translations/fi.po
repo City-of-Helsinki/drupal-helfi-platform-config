@@ -28,7 +28,7 @@ msgctxt "Event search: search form title"
 msgid "Filter events"
 msgstr "Etsi tapahtumia"
 
-msgctxt "Event search: all available options"
+msgctxt "React search: all available options"
 msgid "All"
 msgstr "Kaikki"
 
@@ -38,18 +38,18 @@ msgstr "Jos haluat etsiä etätapahtumia, valitse vaihtoehto 'Internet (etätapa
 msgid "Select a venue"
 msgstr "Valitse tapahtumapaikka"
 
-msgctxt "Event search: remove item aria label"
+msgctxt "React search: remove item aria label"
 msgid "Remove item"
 msgstr "Poista valinta"
 
-msgctxt "Event search: clear button aria label"
+msgctxt "React search: clear selections"
 msgid "Clear selections"
 msgstr "Tyhjennä kaikki valinnat"
 
 msgid "Use the format D.M.YYYY"
 msgstr "Käytä muotoa P.K.VVVV"
 
-msgctxt "Event search: date selection label"
+msgctxt "React search: date selection label"
 msgid "Date"
 msgstr "Ajankohta"
 

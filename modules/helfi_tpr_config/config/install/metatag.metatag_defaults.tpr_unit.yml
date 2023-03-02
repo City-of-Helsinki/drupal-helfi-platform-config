@@ -16,7 +16,6 @@ tags:
   og_latitude: '[tpr_unit:latitude]'
   og_longitude: '[tpr_unit:longitude]'
   og_phone_number: '[tpr_unit:phone]'
-  og_site_name: '[site:name]'
   og_title: '[tpr_unit:label]'
   og_updated_time: '[tpr_unit:changed:html_datetime]'
   og_url: '[current-page:url:absolute]'

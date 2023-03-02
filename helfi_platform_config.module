@@ -180,7 +180,7 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
       return AccessResult::neutral();
     }
 
-    return AccessResult::allowedIf(!$entity->field_has_hero->value)
+    return AccessResult::allowedIf(!$entity->get('field_has_hero')->value)
       ->addCacheableDependency($block);
   }
 

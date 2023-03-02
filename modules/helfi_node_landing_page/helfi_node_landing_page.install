@@ -26,7 +26,6 @@ function helfi_node_landing_page_grant_permissions() : void {
     ],
     'content_producer' => [
       'create landing_page content',
-      'delete landing_page revisions',
       'delete own landing_page content',
       'edit any landing_page content',
       'edit own landing_page content',

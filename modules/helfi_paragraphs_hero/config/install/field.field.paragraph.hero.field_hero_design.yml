@@ -11,7 +11,7 @@ field_name: field_hero_design
 entity_type: paragraph
 bundle: hero
 label: Layout
-description: 'Set the hero layout from the menu. The layout affects what information is required below. Use with search layout only on the frontpage of this instance.'
+description: 'Set the hero layout from the menu. The layout affects what information is required below.'
 required: true
 translatable: false
 default_value:

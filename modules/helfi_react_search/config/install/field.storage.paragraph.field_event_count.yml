@@ -10,7 +10,7 @@ entity_type: paragraph
 type: list_integer
 settings:
   allowed_values: {  }
-  allowed_values_function: 'helfi_react_search_event_list_allowed_values_function'
+  allowed_values_function: helfi_react_search_event_list_allowed_values_function
 module: options
 locked: false
 cardinality: 1

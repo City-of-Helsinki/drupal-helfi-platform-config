@@ -341,7 +341,6 @@
 
         if (this.state.cookies) {
           this.loadChat();
-          this.adapter.onLoaded(this.openChat.bind(this));
           // Check if the adapter is of type Watson
           if (this.adapter instanceof WatsonAdapter) {
             // Cannot call open before adapter is loaded.

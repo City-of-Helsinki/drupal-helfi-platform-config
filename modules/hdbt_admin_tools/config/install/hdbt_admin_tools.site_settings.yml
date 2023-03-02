@@ -1,7 +1,2 @@
-site_settings:
-  theme_color: coat-of-arms
-  default_icon: home-smoke
-  koro: basic
-footer_settings:
-  footer_color: dark
+langcode: en
 path_to_json: /themes/contrib/hdbt/src/icons/editor-selectable-icons.json
