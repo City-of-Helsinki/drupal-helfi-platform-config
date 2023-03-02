@@ -343,7 +343,7 @@
           // Check if the adapter is of type Watson
           if (this.adapter instanceof WatsonAdapter) {
             // Cannot call open before adapter is loaded.
-            setTimeout(this.openAdapter, 1100);
+            setTimeout(this.openAdapter, 500);
           } else {
             this.adapter.onLoaded(this.openChat.bind(this));
           }
@@ -355,8 +355,15 @@
     }
 
     openAdapter = () => {
-      this.adapter.open(()=>{});
+      let acaWidgetInitialized = setInterval(() => {
+        if (acaWidget) {
+          setTimeout(this.doOpenAdapter, 800);
+          clearInterval(acaWidgetInitialized);
+        }
+      }, 500)
     }
+
+    doOpenAdapter = () => this.adapter.open(()=>{});
 
     setLeijukeCookie(cname, cvalue) {
       document.cookie = `${cname}=${cvalue}; path=/; SameSite=Strict; `;
