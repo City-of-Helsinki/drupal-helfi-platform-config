@@ -27,52 +27,51 @@ content:
     type: tpr_service_err_channel_list
     label: hidden
     settings:
-      view_mode: default
       sort_order:
         ESERVICE:
           label: E-service
-          weight: '0'
-          show: 0
+          weight: 0
+          show: false
         CHAT:
           label: Chat
-          show: '1'
-          weight: '1'
+          show: true
+          weight: 1
         EMAIL:
           label: Email
-          show: '1'
-          weight: '2'
+          show: true
+          weight: 2
         TELEPHONE:
           label: Telephone
-          show: '1'
-          weight: '3'
+          show: true
+          weight: 3
         PRINTABLE_FORM:
           label: Form
-          show: '1'
-          weight: '4'
+          show: true
+          weight: 4
         LOCAL:
-          label: 'Local service'
-          weight: '5'
-          show: 0
+          label: Local service
+          weight: 5
+          show: false
         SMS:
           label: SMS
-          weight: '6'
-          show: 0
+          weight: 6
+          show: false
         WEBPAGE:
           label: Webpage
-          weight: '7'
-          show: 0
+          weight: 7
+          show: false
         MAIL:
-          label: 'Postal mail'
-          weight: '8'
-          show: 0
+          label: Postal mail
+          weight: 8
+          show: false
         TELEFAX:
           label: Telefax
-          weight: '9'
-          show: 0
+          weight: 9
+          show: false
         OFFICE:
-          label: 'Service point'
-          weight: '99'
-          show: 0
+          label: Service point
+          weight: 99
+          show: false
     third_party_settings: {  }
     weight: 2
     region: content

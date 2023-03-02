@@ -193,6 +193,11 @@ final class MajorUpdateCommands extends DrushCommands {
    *   An array of module hooks to run.
    */
   private function runInstallHooks(array $modules) : void {
+    // Never re-run contrib module install hooks.
+    $modules = array_filter($modules, function (string $module) {
+      return str_starts_with($module, 'hdbt') || str_starts_with($module, 'helfi_');
+    });
+
     foreach ($modules as $module) {
       $this->moduleHandler->loadInclude($module, 'install');
 
@@ -201,6 +206,8 @@ final class MajorUpdateCommands extends DrushCommands {
       }
       call_user_func($module . '_install', FALSE);
     }
+
+    module_set_weight('publication_date', 99);
   }
 
   /**
@@ -227,19 +234,6 @@ final class MajorUpdateCommands extends DrushCommands {
       $modules[] = 'helfi_tpr_config';
       $modules[] = 'helfi_paragraphs_content_liftup';
     }
-
-    // Reinstall modules which were previously installed.
-    $modules = [
-      'helfi_news_feed' => 'helfi_paragraphs_news_list',
-      'helfi_media' => 'helfi_media_remote_video',
-    ];
-
-    foreach ($modules as $oldModule => $newModule) {
-      if (array_key_exists($oldModule, $this->getExtensions()['module'])) {
-        $modules[] = $newModule;
-      }
-    }
-
     // Enable helfi_platform_config_base module.
     $modules[] = 'helfi_platform_config_base';
 
@@ -253,14 +247,9 @@ final class MajorUpdateCommands extends DrushCommands {
    *   The contents of core extension yaml as an array.
    */
   private function getExtensions(): array {
-    static $content;
-
-    if (!$content) {
-      $content = Yaml::decode(
-        file_get_contents($this->getConfigExportFolder() . '/core.extension.yml')
-      );
-    }
-    return $content;
+    return Yaml::decode(
+      file_get_contents($this->getConfigExportFolder() . '/core.extension.yml')
+    );
   }
 
   /**
