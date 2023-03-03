@@ -36,6 +36,7 @@ eo, file, image, audio_file, helfi_chart
 
 ### Updating remote environments (test/stage/prod)
 - Run `drush helfi:platform-config:update-database` and re-import configuration `drush config:import`
+- If the configuration import fails, run `drush cache:rebuild` and `drush config:import` until the import is succesful
 
 ## Updating from 1.x to 2.x
 
