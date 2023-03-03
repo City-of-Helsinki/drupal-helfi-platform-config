@@ -89,13 +89,6 @@ function hdbt_admin_tools_tokens(
         // If liftup image has an image set, use it as the shareable image.
         $image_entity = $node->field_liftup_image->entity->field_media_image;
         $image_path = $image_entity->entity->getFileUri();
-        $image_uri = $image_style->buildUri($image_path);
-
-        // Create derivative if necessary.
-        if (!file_exists($image_uri)) {
-          $image_style->createDerivative($image_path, $image_uri);
-        }
-
         $image_url = $image_style->buildUrl($image_path);
       }
       elseif (
@@ -107,13 +100,6 @@ function hdbt_admin_tools_tokens(
         // If the node has an image, use that.
         $image_entity = $node->field_image->entity->field_media_image;
         $image_path = $image_entity->entity->getFileUri();
-        $image_uri = $image_style->buildUri($image_path);
-
-        // Create derivative if necessary.
-        if (!file_exists($image_uri)) {
-          $image_style->createDerivative($image_path, $image_uri);
-        }
-
         $image_url = $image_style->buildUrl($image_path);
       }
       elseif (
@@ -125,13 +111,6 @@ function hdbt_admin_tools_tokens(
         $taxonomy_term = $node->field_organization->entity;
         $image_entity = $taxonomy_term->field_default_image;
         $image_path = $image_entity->entity->getFileUri();
-        $image_uri = $image_style->buildUri($image_path);
-
-        // Create derivative if necessary.
-        if (!file_exists($image_uri)) {
-          $image_style->createDerivative($image_path, $image_uri);
-        }
-
         $image_url = $image_style->buildUrl($image_path);
       }
 
