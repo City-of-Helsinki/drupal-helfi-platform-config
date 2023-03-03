@@ -83,7 +83,7 @@ function helfi_platform_config_configure_paragraph_field_handler(ParagraphTypeCo
   if (!isset($handlerSettings['target_bundles'][$type->paragraph])) {
     $handlerSettings['target_bundles'][$type->paragraph] = $type->paragraph;
     $handlerSettings['target_bundles_drag_drop'][$type->paragraph] = [
-      'weight' => 30,
+      'weight' => $type->weight,
       'enabled' => TRUE,
     ];
     $field->setSetting('handler_settings', $handlerSettings);
