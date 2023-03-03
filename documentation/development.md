@@ -71,7 +71,7 @@ All paragraph fields are stripped off `target_bundles` so we don't have to add h
 
 The module using paragraphs should define a `hook_helfi_paragraph_types()` hook that returns an array of `\Drupal\helfi_platform_config\DTO\ParagraphTypeCollection` objects. See the class for more documentation and [helfi_node_page](/modules/helfi_node_page/helfi_node_page.module) module for an example implementation.
 
-Projects using custom paragraph types must implement the `hook_helfi_paragraph_types()` hook, for example:
+Projects using custom paragraph types must implement the `hook_helfi_paragraph_types()` hook that contains project specific paragraph types, for example:
 
 ```php
 # public/modules/custom/helfi_sote/helfi_sote.module:
