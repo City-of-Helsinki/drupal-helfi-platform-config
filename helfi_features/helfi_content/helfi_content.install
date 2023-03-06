@@ -33,6 +33,7 @@ function helfi_content_install($is_syncing) {
     helfi_content_update_9025();
     helfi_content_update_9027();
     helfi_content_update_9028();
+    helfi_content_update_9041();
 
     // Override default meta tags configurations.
     $config_location = dirname(__FILE__) . '/config/override/';
@@ -1026,4 +1027,12 @@ function helfi_content_update_9040() : void {
       'aet',
     ]);
   }
+}
+
+/**
+ * Add description metatag default for landing page content type.
+ */
+function helfi_content_update_9041() {
+  // Update the configuration
+  ConfigHelper::updateExistingConfig(dirname(__FILE__) . '/config/install/', 'metatag.metatag_defaults.node__landing_page');
 }
