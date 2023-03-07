@@ -104,10 +104,14 @@ function helfi_announcements_update_9005() {
   $updateHelper = \Drupal::service('update_helper.updater');
 
   if (Drupal::moduleHandler()->moduleExists('external_entities')) {
-    // Handle the configuration update manually.
     $configLocation = dirname(__FILE__) . '/config/install/';
-    $configurations = ['external_entities.external_entity_type.helfi_announcements'];
-    ConfigHelper::installNewConfig($configLocation, $configurations);
+    $configurations = [
+      'block.block.externalannouncements',
+      'external_entities.external_entity_type.helfi_announcements'
+    ];
+    foreach($configurations as $configuration){
+      ConfigHelper::installNewConfig($configLocation, $configuration);
+    }
   }
 
   // Output logged messages to related channel of update execution.

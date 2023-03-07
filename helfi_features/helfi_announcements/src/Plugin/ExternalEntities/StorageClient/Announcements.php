@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_announcements\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -62,7 +63,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
     $instance->client = $container->get('http_client');
 
     $environment = $container->get('config.factory')
-      ->get('helfi_news_feed.settings')
+      ->get('helfi_announcement.settings')
       ->get('source_environment') ?: 'prod';
 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */

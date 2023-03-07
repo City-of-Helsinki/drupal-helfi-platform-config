@@ -45,7 +45,7 @@ class ExternalAnnouncementBlock extends AnnouncementsBlockBase {
         'field_announcement_type' => $announcement->get('announcement_type')->value,
         'field_announcement_link' => ['uri' => $linkUrl, 'title' => $linkText],
         'langcode' => $announcement->get('langcode')->value,
-        'body' => $announcement->get('body')->value,
+        'body' => strip_tags(html_entity_decode($announcement->get('body')->value)),
         'title' => strip_tags(html_entity_decode($announcement->get('title')->value)),
         'status' => $announcement->get('status')->value
       ]);

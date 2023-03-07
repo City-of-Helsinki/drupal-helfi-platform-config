@@ -29,7 +29,7 @@ field_mapper_config:
     status:
       value: '$.attributes[''status'']'
     announcement_type:
-      value: '$.attributes[''announcement_type'']'
+      value: '$.attributes[''field_announcement_type'']'
     announcement_link_text:
       value: '$.attributes[''field_announcement_link''][''title'']'
     announcement_link_url:

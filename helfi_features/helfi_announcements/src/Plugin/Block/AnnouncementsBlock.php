@@ -14,7 +14,7 @@ use Drupal\node\NodeInterface;
  *   admin_label = @Translation("Announcements"),
  * )
  */
-class AnnouncementsBlock extends AnnouncementsBlockBase implements ContainerFactoryPluginInterface {
+class AnnouncementsBlock extends AnnouncementsBlockBase {
 
   /**
    * {@inheritdoc}
