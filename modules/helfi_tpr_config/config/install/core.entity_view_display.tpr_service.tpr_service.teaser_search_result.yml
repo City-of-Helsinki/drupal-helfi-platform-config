@@ -49,7 +49,7 @@ content:
           show: true
           weight: 4
         LOCAL:
-          label: Local service
+          label: 'Local service'
           weight: 5
           show: false
         SMS:
@@ -61,7 +61,7 @@ content:
           weight: 7
           show: false
         MAIL:
-          label: Postal mail
+          label: 'Postal mail'
           weight: 8
           show: false
         TELEFAX:
@@ -69,7 +69,7 @@ content:
           weight: 9
           show: false
         OFFICE:
-          label: Service point
+          label: 'Service point'
           weight: 99
           show: false
     third_party_settings: {  }

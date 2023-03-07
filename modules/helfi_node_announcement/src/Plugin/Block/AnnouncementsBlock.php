@@ -14,6 +14,7 @@ use Drupal\node\NodeInterface;
  * )
  */
 class AnnouncementsBlock extends AnnouncementsBlockBase {
+
   /**
    * {@inheritdoc}
    */
@@ -37,11 +38,24 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
       ->execute();
     $announcementNodes = $this->entityTypeManager->getStorage('node')->loadMultiple($nids);
 
-    $showAnnouncements = [];
+    $localAnnouncements = [];
+    $globalAnnouncements = [];
+
+    // TODOOOOOO
     foreach ($announcementNodes as $announcementNode) {
       // Check if the announcement should be shown at all pages.
+
+      // Global announcements should be shown on all pages.
+      if (
+        $announcementNode->hasField('field_publish_externally')
+        && $announcementNode->get('field_publish_externally')->value
+      ) {
+        $globalAnnouncements[] = $announcementNode;
+        continue;
+      }
+
       if ($announcementNode->get('field_announcement_all_pages')->value === "1") {
-        $showAnnouncements[] = $announcementNode;
+        $localAnnouncements[] = $announcementNode;
         continue;
       }
 
@@ -60,20 +74,21 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
       // is found from the list of referenced entities.
       foreach ($referencedEntities as $referencedEntity) {
         if ($referencedEntity->id() === $currentEntity->id()) {
-          $showAnnouncements[] = $announcementNode;
+          $localAnnouncements[] = $announcementNode;
         }
       }
     }
 
-    if (empty($showAnnouncements)) {
+    if (empty($localAnnouncements)) {
       return [];
     }
 
-    $this->sortAnnouncements($showAnnouncements);
-    // Set global announcements on the top.
+    $this->sortAnnouncements($localAnnouncements);
+    $this->sortAnnouncements($globalAnnouncements);
 
     $viewMode = 'default';
-    $renderArray = $this->entityTypeManager->getViewBuilder('node')->viewMultiple($showAnnouncements, $viewMode);
+    $renderArray = $this->entityTypeManager->getViewBuilder('node')
+      ->viewMultiple(array_merge($globalAnnouncements, $localAnnouncements), $viewMode);
 
     return $renderArray;
   }

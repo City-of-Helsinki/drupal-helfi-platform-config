@@ -90,13 +90,35 @@ function helfi_node_announcement_get_block_configurations(string $theme) : array
         ],
       ],
     ],
+    'global_announcements' => [
+      'block' => [
+        'id' => 'global_announcements',
+        'plugin' => 'global_announcements',
+        'settings' => [
+          'id' => 'global_announcements',
+          'label' => 'Global announcements',
+        ],
+        'provider' => 'helfi_node_announcement',
+        'weight' => -14,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
   ];
 }
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function helfi_announcements_entity_bundle_field_info_alter(
+function helfi_node_announcement_entity_bundle_field_info_alter(
   &$fields,
   EntityTypeInterface $entity_type
 ) : void {

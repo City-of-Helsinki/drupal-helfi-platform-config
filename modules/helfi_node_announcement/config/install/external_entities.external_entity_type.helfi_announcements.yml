@@ -1,4 +1,3 @@
-uuid: f49859c7-6910-4928-b73e-aead98270ea2
 langcode: en
 status: true
 dependencies: {  }
@@ -29,7 +28,7 @@ field_mapper_config:
     status:
       value: '$.attributes[''status'']'
     announcement_type:
-      value: '$.attributes[''announcement_type'']'
+      value: '$.attributes[''field_announcement_type'']'
     announcement_link_text:
       value: '$.attributes[''field_announcement_link''][''title'']'
     announcement_link_url:

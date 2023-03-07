@@ -2,13 +2,15 @@
 
 namespace Drupal\helfi_node_announcement\Plugin\Block;
 
+use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class AnnouncementsBlockBase {
+abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFactoryPluginInterface {
 
   public const VISIBILITY_ALL_WEIGHT = 0;
   public const VISIBILITY_REGION_WEIGHT = 1;

@@ -3,6 +3,7 @@
 namespace Drupal\helfi_node_announcement\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\node\Entity\Node;
 
 /**
  * Provides an 'Announcements' block.
@@ -12,7 +13,7 @@ use Drupal\Core\Cache\Cache;
  *   admin_label = @Translation("Announcements"),
  * )
  */
-class ExternalAnnouncementsBlock extends AnnouncementsBlockBase {
+class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
 
   /**
    * {@inheritdoc}
@@ -23,10 +24,10 @@ class ExternalAnnouncementsBlock extends AnnouncementsBlockBase {
       ->getQuery()
       ->execute();
 
-    $externalEntityStorage = $this->entityTypeManager->getStorage('helfi_announcements');
-    $cacheMaxAge = $externalEntityStorage->getExternalEntityType()->get('persistent_cache_max_age');
+    $globalEntityStorage = $this->entityTypeManager->getStorage('helfi_announcements');
+    $cacheMaxAge = $globalEntityStorage->getExternalEntityType()->get('persistent_cache_max_age');
 
-    $externalAnnouncements = $externalEntityStorage
+    $externalAnnouncements = $globalEntityStorage
       ->loadMultiple($uuids);
 
     $announcementNodes = [];
@@ -44,7 +45,7 @@ class ExternalAnnouncementsBlock extends AnnouncementsBlockBase {
         'field_announcement_type' => $announcement->get('announcement_type')->value,
         'field_announcement_link' => ['uri' => $linkUrl, 'title' => $linkText],
         'langcode' => $announcement->get('langcode')->value,
-        'body' => $announcement->get('body')->value,
+        'body' => strip_tags(html_entity_decode($announcement->get('body')->value)),
         'title' => strip_tags(html_entity_decode($announcement->get('title')->value)),
         'status' => $announcement->get('status')->value
       ]);
