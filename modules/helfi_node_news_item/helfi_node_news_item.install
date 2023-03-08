@@ -70,6 +70,12 @@ function helfi_node_news_item_grant_permissions() : void {
 /**
  * Implements hook_install().
  */
-function helfi_node_news_item_install() : void {
+function helfi_node_news_item_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
   helfi_node_news_item_grant_permissions();
 }
