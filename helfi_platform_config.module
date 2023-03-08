@@ -209,11 +209,11 @@ function helfi_platform_config_token_info() : array {
  */
 function helfi_platform_config_grant_permissions(array $map): void {
   foreach ($map as $rid => $permissions) {
-    if (!$rid = Role::load($rid)) {
+    if (!$role = Role::load($rid)) {
       throw new \InvalidArgumentException("Role ($rid) not found.");
     }
-    array_map(fn (string $permission) => $rid->grantPermission($permission), $permissions);
-    $rid->save();
+    array_map(fn (string $permission) => $role->grantPermission($permission), $permissions);
+    $role->save();
   }
 }
 

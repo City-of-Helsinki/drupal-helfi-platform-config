@@ -8,6 +8,7 @@ use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\Core\Update\UpdateHookRegistry;
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
@@ -28,12 +29,15 @@ final class MajorUpdateCommands extends DrushCommands {
    *   The module handler service.
    * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
    *   The module extension list service.
+   * @param \Drupal\Core\KeyValueStore\KeyValueFactoryInterface $keyValueFactory
+   *   The key-value factory.
    */
   public function __construct(
     private UpdateHookRegistry $updateHookRegistry,
     private Connection $database,
     private ModuleHandlerInterface $moduleHandler,
     private ModuleExtensionList $moduleExtensionList,
+    private KeyValueFactoryInterface $keyValueFactory,
   ) {
   }
 
@@ -173,16 +177,13 @@ final class MajorUpdateCommands extends DrushCommands {
    */
   private function forceEnableModules(array $modules) : void {
     foreach ($modules as $module) {
-      if ($this->updateHookRegistry->getInstalledVersion($module) > UpdateHookRegistry::SCHEMA_UNINSTALLED) {
+      if (
+        $this->updateHookRegistry->getInstalledVersion($module) > UpdateHookRegistry::SCHEMA_UNINSTALLED &&
+        $this->updateHookRegistry->getInstalledVersion($module) !== 0
+      ) {
         continue;
       }
-      $this->database->insert('key_value')
-        ->fields([
-          'collection' => 'system.schema',
-          'name' => $module,
-          'value' => 9000,
-        ])
-        ->execute();
+      $this->keyValueFactory->get('system.schema')->set($module, 9000);
     }
   }
 

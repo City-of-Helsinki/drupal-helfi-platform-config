@@ -33,7 +33,7 @@ function mymodule_install() : void {
 
 If the same field storage is used in multiple different modules (like `field_lower_content` paragraph reference field used in most of our content types), the field storage config must be placed in `helfi_base_content` module's `config/install/` folder.
 
-When using nested paragraphs, like `list_of_links` paragraph type that references `list_of_links_item` paragraph types, the field storage seems to require the paragraph type to be added as `enforced` dependency.
+When using nested paragraphs, like `list_of_links` paragraph type that references `list_of_links_item` paragraph type, the field storage seems to require the paragraph type to be added as `enforced` dependency.
 
 ```yaml
 # modules/helfi_paragraphs_list_of_links/config/install/field.storage.paragraph.field_list_of_links_links.yml
@@ -60,6 +60,9 @@ function mymodule_grant_permissions() : void {
   helfi_platform_config_grant_permissions($permissions);
 }
 
+/**
+ * Implements hook_install().
+ */
 function mymodule_install() : void {
   mymodule_grant_permissions();
 }
@@ -67,7 +70,9 @@ function mymodule_install() : void {
 
 ## Paragraph types
 
-All paragraph fields are stripped off `target_bundles` so we don't have to add hard dependencies between all modules.
+All paragraph reference fields are stripped off `target_bundles` field configuration, so we don't have to add hard dependencies between modules.
+
+The target bundles are overridden every time a module is installed (by `helfi_platform_config_modules_installed()` hook) or when `helfi_platform_config_update_paragraph_target_types()` is called manually. The target bundles list is compiled from modules implementing `hook_helfi_paragraph_types()` hook.
 
 The module using paragraphs should define a `hook_helfi_paragraph_types()` hook that returns an array of `\Drupal\helfi_platform_config\DTO\ParagraphTypeCollection` objects. See the class for more documentation and [helfi_node_page](/modules/helfi_node_page/helfi_node_page.module) module for an example implementation.
 
