@@ -17,5 +17,6 @@ services:
       - '@database'
       - '@module_handler'
       - '@extension.list.module'
+      - '@keyvalue'
     tags:
       - { name: drush.command }
