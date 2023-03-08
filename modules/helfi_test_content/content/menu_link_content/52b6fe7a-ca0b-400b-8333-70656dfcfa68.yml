@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 52b6fe7a-ca0b-400b-8333-70656dfcfa68
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    f970351f-81aa-4efd-831f-d7e89d7404ee: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: component popular services'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: f970351f-81aa-4efd-831f-d7e89d7404ee
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1678270411
