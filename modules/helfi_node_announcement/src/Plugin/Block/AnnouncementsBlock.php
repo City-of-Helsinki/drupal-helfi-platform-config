@@ -6,11 +6,11 @@ use Drupal\Core\Cache\Cache;
 use Drupal\node\NodeInterface;
 
 /**
- * Provides 'global announcements' block.
+ * Provides an 'Announcements' block.
  *
  * @Block(
- *   id = "global_announcements",
- *   admin_label = @Translation("External announcements"),
+ *   id = "announcements",
+ *   admin_label = @Translation("Announcements"),
  * )
  */
 class AnnouncementsBlock extends AnnouncementsBlockBase {
