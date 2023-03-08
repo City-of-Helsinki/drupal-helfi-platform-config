@@ -99,7 +99,9 @@ function helfi_tpr_config_grant_permissions() : void {
 /**
  * Implements hook_install().
  */
-function helfi_tpr_config_install(bool $is_syncing) : void {
+function helfi_tpr_config_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
   if ($is_syncing) {
     return;
   }
