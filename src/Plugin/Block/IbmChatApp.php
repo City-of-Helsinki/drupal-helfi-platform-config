@@ -79,9 +79,7 @@ class IbmChatApp extends BlockBase {
     $tenantId = $config['tenantId'];
     $assistantId = $config['assistantId'];
 
-    $optionsSrc = sprintf('%s/get-widget-options?tenantId=%s&assistantId=%s&engagementId=%s', $hostname, $tenantId, $assistantId, $engagementId);
-    $widgetSrc = sprintf('%s/get-widget?tenantId=%s&assistantId=%s&engagementId=%s', $hostname, $tenantId, $assistantId, $engagementId);
-    $defaultSrc = sprintf('%s/get-widget-default?tenantId=%s&assistantId=%s&engagementId=%s', $hostname, $tenantId, $assistantId, $engagementId);
+    $widgetSrc = sprintf('%s/get-widget-button?tenantId=%s&assistantId=%s&engagementId=%s', $hostname, $tenantId, $assistantId, $engagementId);
 
     $build['ibm_chat_app'] = [
       '#title' => $this->t('IBM Chat App'),
@@ -93,27 +91,9 @@ class IbmChatApp extends BlockBase {
               '#tag' => 'script',
               '#attributes' => [
                 'type' => 'text/javascript',
-                'src' => $optionsSrc,
-              ],
-            ], 'chat_app_options',
-          ],
-          [
-            [
-              '#tag' => 'script',
-              '#attributes' => [
-                'type' => 'text/javascript',
                 'src' => $widgetSrc,
               ],
-            ], 'chat_app_widget',
-          ],
-          [
-            [
-              '#tag' => 'script',
-              '#attributes' => [
-                'type' => 'text/javascript',
-                'src' => $defaultSrc,
-              ],
-            ], 'chat_app_default',
+            ], 'chat_app_widget_button',
           ],
         ],
       ],
