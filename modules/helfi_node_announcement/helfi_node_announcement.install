@@ -88,4 +88,3 @@ function helfi_node_announcement_update_9001() {
   $block_installer->install($block, $variations);
 
 }
-

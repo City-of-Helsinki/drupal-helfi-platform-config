@@ -41,11 +41,10 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
     $localAnnouncements = [];
     $globalAnnouncements = [];
 
-    // TODOOOOOO
     foreach ($announcementNodes as $announcementNode) {
       // Check if the announcement should be shown at all pages.
+      // Global announcements should be shown on top of all pages.
 
-      // Global announcements should be shown on all pages.
       if (
         $announcementNode->hasField('field_publish_externally')
         && $announcementNode->get('field_publish_externally')->value
@@ -111,4 +110,5 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
   public function getCacheTags(): array {
     return Cache::mergeTags(parent::getCacheTags(), ['node_list:announcement']);
   }
+
 }

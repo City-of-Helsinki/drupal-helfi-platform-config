@@ -32,9 +32,9 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
 
     $announcementNodes = [];
 
-    foreach($externalAnnouncements as $announcement) {
-      $linkUrl = null;
-      $linkText = null;
+    foreach ($externalAnnouncements as $announcement) {
+      $linkUrl = NULL;
+      $linkText = NULL;
       if ($announcement->hasField('announcement_link_text')) {
         $linkText = $announcement->get('announcement_link_text')->value;
         $linkUrl = $announcement->get('announcement_link_url')->value;
@@ -47,7 +47,7 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
         'langcode' => $announcement->get('langcode')->value,
         'body' => strip_tags(html_entity_decode($announcement->get('body')->value)),
         'title' => strip_tags(html_entity_decode($announcement->get('title')->value)),
-        'status' => $announcement->get('status')->value
+        'status' => $announcement->get('status')->value,
       ]);
     }
 
