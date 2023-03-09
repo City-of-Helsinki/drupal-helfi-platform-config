@@ -44,7 +44,6 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
     foreach ($announcementNodes as $announcementNode) {
       // Check if the announcement should be shown at all pages.
       // Global announcements should be shown on top of all pages.
-
       if (
         $announcementNode->hasField('field_publish_externally')
         && $announcementNode->get('field_publish_externally')->value
