@@ -106,7 +106,7 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
    * {@inheritdoc}
    */
   public function getCacheTags(): array {
-    return parent::getCacheTags();
+    return Cache::mergeTags(parent::getCacheTags(), ['node_list:announcement']);
   }
 
 }
