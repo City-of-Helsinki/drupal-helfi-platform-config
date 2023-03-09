@@ -77,10 +77,6 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
       }
     }
 
-    if (empty($localAnnouncements)) {
-      return [];
-    }
-
     $this->sortAnnouncements($localAnnouncements);
 
     $viewMode = 'default';

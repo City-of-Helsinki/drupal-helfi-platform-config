@@ -51,13 +51,7 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
         'status' => $announcement->get('status')->value,
       ]);
     }
-
-    if (empty($announcementNodes)) {
-      return [];
-    }
-
-    $this->sortAnnouncements($announcementNodes);
-
+    
     $viewMode = 'default';
     $renderArray = $this->entityTypeManager->getViewBuilder('node')->viewMultiple($announcementNodes, $viewMode);
 
