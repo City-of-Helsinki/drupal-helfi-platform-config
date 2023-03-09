@@ -82,7 +82,6 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
     }
 
     $this->sortAnnouncements($localAnnouncements);
-    $this->sortAnnouncements($globalAnnouncements);
 
     $viewMode = 'default';
     $renderArray = $this->entityTypeManager->getViewBuilder('node')
@@ -107,7 +106,7 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
    * {@inheritdoc}
    */
   public function getCacheTags(): array {
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list:announcement']);
+    return parent::getCacheTags();
   }
 
 }

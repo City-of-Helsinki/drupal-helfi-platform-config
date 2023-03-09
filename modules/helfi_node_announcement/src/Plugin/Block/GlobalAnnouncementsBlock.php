@@ -3,6 +3,7 @@
 namespace Drupal\helfi_node_announcement\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\helfi_node_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\node\Entity\Node;
 
 /**
@@ -59,7 +60,13 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
 
     $viewMode = 'default';
     $renderArray = $this->entityTypeManager->getViewBuilder('node')->viewMultiple($announcementNodes, $viewMode);
-    $renderArray['#cache']['max-age'] = $cacheMaxAge;
+
+    $renderArray['#cache'] = [
+      'max-age' => $cacheMaxAge,
+      'tags' => [
+        Announcements::$CUSTOM_CACHE_TAG,
+      ],
+    ];
 
     return $renderArray;
   }
