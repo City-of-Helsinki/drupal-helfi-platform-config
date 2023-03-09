@@ -149,8 +149,21 @@ final class MajorUpdateCommands extends DrushCommands {
       }
       $fileName = str_replace(['rewrite', 'optional', 'install'], '', $fileName);
       $fileName = ltrim($fileName, '/');
+      $originalFile = $configExportFolder . '/' . $fileName;
 
       $fileContent = file_get_contents($item->getPathName());
+
+      // Preserve original UUIDs when possible.
+      if (file_exists($originalFile)) {
+        $originalFileContent = Yaml::decode(file_get_contents($originalFile));
+
+        if (isset($originalFileContent['uuid'])) {
+          $fileContent = Yaml::decode($fileContent);
+          $fileContent = ['uuid' => $originalFileContent['uuid']] + $fileContent;
+          $fileContent = Yaml::encode($fileContent);
+        }
+      }
+
       file_put_contents($configExportFolder . '/' . $fileName, $fileContent);
     }
   }
