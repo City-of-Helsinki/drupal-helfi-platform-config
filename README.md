@@ -20,4 +20,4 @@ This repository primarily holds configuration for the Hel.fi platform.
 
 Slack: #helfi-drupal (http://helsinkicity.slack.com/)
 
-Mail: drupal@hel.fi
+Mail: `drupal@hel.fi`
