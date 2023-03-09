@@ -10,6 +10,9 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Base class for announcement blocks.
+ */
 abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFactoryPluginInterface {
 
   public const VISIBILITY_ALL_WEIGHT = 0;
@@ -55,8 +58,8 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
    */
   public function __construct(
     array $configuration,
-    $plugin_id,
-    $plugin_definition,
+          $plugin_id,
+          $plugin_definition,
     RouteMatchInterface $route_match,
     EntityTypeManagerInterface $entity_type_manager,
     LanguageManagerInterface $language_manager

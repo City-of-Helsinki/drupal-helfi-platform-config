@@ -3,6 +3,7 @@
 namespace Drupal\helfi_announcements\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\helfi_announcements\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\node\Entity\Node;
 
 /**
@@ -10,10 +11,10 @@ use Drupal\node\Entity\Node;
  *
  * @Block(
  *   id = "global_announcements",
- *   admin_label = @Translation("External announcements"),
+ *   admin_label = @Translation("Global announcements"),
  * )
  */
-class ExternalAnnouncementBlock extends AnnouncementsBlockBase {
+class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
 
   /**
    * {@inheritdoc}
@@ -24,17 +25,17 @@ class ExternalAnnouncementBlock extends AnnouncementsBlockBase {
       ->getQuery()
       ->execute();
 
-    $externalEntityStorage = $this->entityTypeManager->getStorage('helfi_announcements');
-    $cacheMaxAge = $externalEntityStorage->getExternalEntityType()->get('persistent_cache_max_age');
+    $globalEntityStorage = $this->entityTypeManager->getStorage('helfi_announcements');
+    $cacheMaxAge = $globalEntityStorage->getExternalEntityType()->get('persistent_cache_max_age');
 
-    $externalAnnouncements = $externalEntityStorage
+    $externalAnnouncements = $globalEntityStorage
       ->loadMultiple($uuids);
 
     $announcementNodes = [];
 
-    foreach($externalAnnouncements as $announcement) {
-      $linkUrl = null;
-      $linkText = null;
+    foreach ($externalAnnouncements as $announcement) {
+      $linkUrl = NULL;
+      $linkText = NULL;
       if ($announcement->hasField('announcement_link_text')) {
         $linkText = $announcement->get('announcement_link_text')->value;
         $linkUrl = $announcement->get('announcement_link_url')->value;
@@ -47,7 +48,7 @@ class ExternalAnnouncementBlock extends AnnouncementsBlockBase {
         'langcode' => $announcement->get('langcode')->value,
         'body' => strip_tags(html_entity_decode($announcement->get('body')->value)),
         'title' => strip_tags(html_entity_decode($announcement->get('title')->value)),
-        'status' => $announcement->get('status')->value
+        'status' => $announcement->get('status')->value,
       ]);
     }
 
@@ -59,7 +60,13 @@ class ExternalAnnouncementBlock extends AnnouncementsBlockBase {
 
     $viewMode = 'default';
     $renderArray = $this->entityTypeManager->getViewBuilder('node')->viewMultiple($announcementNodes, $viewMode);
-    $renderArray['#cache']['max-age'] = $cacheMaxAge;
+
+    $renderArray['#cache'] = [
+      'max-age' => $cacheMaxAge,
+      'tags' => [
+        Announcements::$CUSTOM_CACHE_TAG,
+      ],
+    ];
 
     return $renderArray;
   }
@@ -80,7 +87,7 @@ class ExternalAnnouncementBlock extends AnnouncementsBlockBase {
    * {@inheritdoc}
    */
   public function getCacheTags(): array {
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list:announcement']);
+    return parent::getCacheTags();
   }
 
 }

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_announcements\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -27,6 +27,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 final class Announcements extends ExternalEntityStorageClientBase {
+
+  static string $CUSTOM_CACHE_TAG = 'helfi_external_entity_announcement';
 
   /**
    * The active endpoint environment.
@@ -55,8 +57,8 @@ final class Announcements extends ExternalEntityStorageClientBase {
   public static function create(
     ContainerInterface $container,
     array $configuration,
-    $plugin_id,
-    $plugin_definition
+                       $plugin_id,
+                       $plugin_definition
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
@@ -95,6 +97,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
     usort($data, function (array $a, array $b) use ($ids) {
       return array_search($a['id'], $ids) - array_search($b['id'], $ids);
     });
+    Cache::invalidateTags([self::$CUSTOM_CACHE_TAG]);
 
     return $data;
   }
