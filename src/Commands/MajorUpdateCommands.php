@@ -248,6 +248,13 @@ final class MajorUpdateCommands extends DrushCommands {
       $modules[] = 'helfi_tpr_config';
       $modules[] = 'helfi_paragraphs_content_liftup';
     }
+
+    // Enable the Helfi paragraphs news list module if the Helfi news feed was
+    // enabled previously.
+    if ($this->moduleHandler->moduleExists('helfi_news_feed')) {
+      $modules[] = 'helfi_paragraphs_news_list';
+    }
+
     // Enable helfi_platform_config_base module.
     $modules[] = 'helfi_platform_config_base';
 
