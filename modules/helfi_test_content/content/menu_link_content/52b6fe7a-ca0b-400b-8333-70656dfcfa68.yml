@@ -1,25 +1,25 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: efa4ebeb-7b3a-442b-b1c4-370cae548442
+  uuid: 52b6fe7a-ca0b-400b-8333-70656dfcfa68
   bundle: menu_link_content
   default_langcode: en
   depends:
     3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
-    a8f3cf05-f5e3-4fba-8514-642d8d77e05a: node
+    f970351f-81aa-4efd-831f-d7e89d7404ee: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: 'DC: component list of plans'
+      value: 'DC: component popular services'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: a8f3cf05-f5e3-4fba-8514-642d8d77e05a
+      target_uuid: f970351f-81aa-4efd-831f-d7e89d7404ee
       title: ''
       options: {  }
   external:
@@ -54,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1658296112
+      value: 1678270411

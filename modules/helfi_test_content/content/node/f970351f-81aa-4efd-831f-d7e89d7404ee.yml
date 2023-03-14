@@ -1,0 +1,242 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: f970351f-81aa-4efd-831f-d7e89d7404ee
+  bundle: landing_page
+  default_langcode: en
+  depends:
+    cd0c6a07-09e1-41bb-bd84-87e5d9cad62a: node
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component popular services'
+  created:
+    -
+      value: 1678269875
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-popular-services
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 10b574b8-950f-40fb-9032-061b0b98606d
+          bundle: popular_services
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1678270063
+          behavior_settings:
+            -
+              value: {  }
+          field_service_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: bbed6e51-bec4-4766-b0a0-29dac3db0008
+                  bundle: popular_service_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270063
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_service_links:
+                    -
+                      uri: 'http://example.com'
+                      title: 'Example.com link'
+                      options: {  }
+                    -
+                      uri: 'internal:/'
+                      title: 'Link to front page'
+                      options: {  }
+                    -
+                      target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
+                      title: 'Internal link'
+                      options: {  }
+                  field_service_title:
+                    -
+                      value: 'Popular service item with link texts'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 254f9f34-8e71-48ea-96c5-029845aa3e1b
+                  bundle: popular_service_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270158
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_service_links:
+                    -
+                      uri: 'http://example.com'
+                      title: ''
+                      options: {  }
+                    -
+                      uri: 'internal:/'
+                      title: ''
+                      options: {  }
+                    -
+                      target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
+                      title: ''
+                      options: {  }
+                  field_service_title:
+                    -
+                      value: 'Popular service item without link texts'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 97837543-2767-4ef0-b792-2e42f776a920
+                  bundle: popular_service_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270245
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_service_links:
+                    -
+                      uri: 'route:<nolink>'
+                      title: 'Nolink wth link text'
+                      options: {  }
+                    -
+                      uri: 'route:<nolink>'
+                      title: ''
+                      options: {  }
+                  field_service_title:
+                    -
+                      value: 'Popular service item with nolinks'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 928a70d7-95f6-4308-9ca5-a44a3a3ccba8
+                  bundle: popular_service_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270277
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_service_links:
+                    -
+                      uri: 'http://example.com'
+                      title: 'Example.com link'
+                      options: {  }
+                  field_service_title:
+                    -
+                      value: 'Popular service item with only one item'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 49c25bbf-9e44-441b-96bf-c84eeb339045
+          bundle: popular_services
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1678270334
+          behavior_settings:
+            -
+              value: {  }
+          field_service_items:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 996781ad-0a81-4c8a-a4c2-4f2f4c91bb77
+                  bundle: popular_service_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270334
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_service_links:
+                    -
+                      uri: 'http://example.com'
+                      title: 'Example.com link'
+                      options: {  }
+                  field_service_title:
+                    -
+                      value: 'Popular services with just one link'
+  field_has_hero:
+    -
+      value: false
