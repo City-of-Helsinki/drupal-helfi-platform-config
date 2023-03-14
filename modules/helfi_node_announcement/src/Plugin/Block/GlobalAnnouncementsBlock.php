@@ -51,14 +51,14 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
         'status' => $announcement->get('status')->value,
       ]);
     }
-    
+
     $viewMode = 'default';
     $renderArray = $this->entityTypeManager->getViewBuilder('node')->viewMultiple($announcementNodes, $viewMode);
 
     $renderArray['#cache'] = [
       'max-age' => $cacheMaxAge,
       'tags' => [
-        Announcements::$CUSTOM_CACHE_TAG,
+        Announcements::$customCacheTag,
       ],
     ];
 

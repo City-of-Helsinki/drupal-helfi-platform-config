@@ -107,7 +107,9 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
    *   Array of nodes.
    */
   protected function sortAnnouncements(array &$announcements): void {
-    if (empty($announcements)) { return; }
+    if (empty($announcements)) {
+      return;
+    }
 
     // Get all possible values for the announcement types.
     $announcementTypeDefinition = $announcements[0]->getFieldDefinitions()['field_announcement_type'];
