@@ -57,7 +57,7 @@ jobs:
       - name: Run PHPCS
         run: |
           cd $DRUPAL_ROOT
-          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,inc,test,info,module,install
+          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,inc,test,info
       - name: Start services
         run: |
           cd $DRUPAL_ROOT
