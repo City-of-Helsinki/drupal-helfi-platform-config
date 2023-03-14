@@ -1,25 +1,25 @@
 on:
   pull_request:
-    push:
-      branches:
-        - main
+  push:
+    branches: ['main', '3.x']
 name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
   SYMFONY_DEPRECATIONS_HELPER: disabled
+  BROWSERTEST_OUTPUT_DIRECTORY: 'public/sites/simpletest'
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0', '8.1']
+        php-versions: ['8.1']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
 
     services:
       db:
-        image: mariadb:10.5
+        image: mariadb
         env:
           MYSQL_USER: drupal
           MYSQL_PASSWORD: drupal
@@ -27,53 +27,47 @@ jobs:
           MYSQL_ROOT_PASSWORD: drupal
         ports:
           - 3306:3306
-
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 1
-
-      - name: Parse $MODULE_NAME from composer.json
-        run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
 
       - name: Set variables
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
+      - name: Parse $MODULE_NAME from composer.json
+        run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
+
       - name: Set module folder
         run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
 
-      - name: Build project
-        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
-
-      - name: Install Drupal
-        run: |
-          cd $DRUPAL_ROOT
-          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
+      - name: Clone platform
+        run: git clone https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
 
       - name: Update modules
         run: |
           cd $DRUPAL_ROOT
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/$MODULE_NAME -W
+      - name: Install Drupal
+        run: |
+          cd $DRUPAL_ROOT
+          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
           vendor/bin/drush en $MODULE_NAME -y
-
       - name: Run PHPCS
         run: |
           cd $DRUPAL_ROOT
-          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,inc,test,info
-
+          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,inc,test,info,module,install
       - name: Start services
         run: |
           cd $DRUPAL_ROOT
           vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
-
       - name: Enable all HELfi features
         run: |
           cd $DRUPAL_ROOT
           # Enable all HELfi features.
           set -e && for d in public/modules/contrib/$MODULE_NAME/helfi_features/*; do vendor/bin/drush -y en $(echo "$d" | awk -F/ '{print $NF}'); done
-
       - name: Run PHPUnit tests
         run: |
           cd $DRUPAL_ROOT
@@ -83,3 +77,11 @@ jobs:
             -c $MODULE_FOLDER/phpunit.xml \
             --coverage-clover=coverage.xml \
             $MODULE_FOLDER
+      - name: Create an artifact from test report
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: results
+          path: |
+            ${{ env.DRUPAL_ROOT }}/public/sites/simpletest/browser_output/
+          retention-days: 1
