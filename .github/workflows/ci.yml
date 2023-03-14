@@ -47,6 +47,8 @@ jobs:
       - name: Update modules
         run: |
           cd $DRUPAL_ROOT
+          composer require drupal/hdbt:^4.0
+          composer require drupal/hdbt_admin:^1.0
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/$MODULE_NAME -W
       - name: Install Drupal
