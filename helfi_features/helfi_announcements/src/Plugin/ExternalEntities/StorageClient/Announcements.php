@@ -28,7 +28,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class Announcements extends ExternalEntityStorageClientBase {
 
-  static string $CUSTOM_CACHE_TAG = 'helfi_external_entity_announcement';
+  /**
+   * Cache tag for announcements.
+   *
+   * @var string
+   */
+  static public string $customCacheTag = 'helfi_external_entity_announcement';
 
   /**
    * The active endpoint environment.

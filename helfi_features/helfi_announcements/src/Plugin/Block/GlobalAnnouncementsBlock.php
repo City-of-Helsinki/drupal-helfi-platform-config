@@ -58,7 +58,7 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
     $renderArray['#cache'] = [
       'max-age' => $cacheMaxAge,
       'tags' => [
-        Announcements::$CUSTOM_CACHE_TAG,
+        Announcements::$customCacheTag,
       ],
     ];
 
