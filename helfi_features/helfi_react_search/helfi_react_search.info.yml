@@ -9,6 +9,7 @@ dependencies:
   - 'drupal:language'
   - 'drupal:link'
   - 'drupal:text'
+  - 'elasticsearch_connector:elasticsearch_connector'
   - 'helfi_platform_config:helfi_platform_config'
   - 'paragraphs:paragraphs'
 package: HELfi
