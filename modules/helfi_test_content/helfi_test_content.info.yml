@@ -8,6 +8,7 @@ dependencies:
   - helfi_tpr_config:helfi_tpr_config
 default_content:
   menu_link_content:
+    - 0ff492a2-dbd5-4fee-8b99-107dd475eea8
     - 1d7dcb8f-92a2-42e9-ab91-b531512a5481
     - 1e9220f9-207b-426f-8726-94349fdfaec7
     - 1eba96aa-0228-4e2a-a24f-a7b2d211401d
@@ -21,6 +22,7 @@ default_content:
     - 19dd2e39-77dd-49da-acc2-d2b2933cf2c5
     - 33d12e8c-0f73-4b81-b395-65f72debc91b
     - 47d2419d-d4fa-405a-9e67-3e2ef6117913
+    - 52b6fe7a-ca0b-400b-8333-70656dfcfa68
     - 59fe4431-bc87-48b4-8f71-1b08b30e0f2a
     - 60e62d94-f114-4a9c-ac23-4360bd75b4ae
     - 74e648c1-1520-4d37-81e8-7abd1873acdc
@@ -61,6 +63,7 @@ default_content:
     - 82809a0b-c5b2-457e-a8ce-82d38efa2a5b
     - edf0bd1a-d078-4ad3-ba99-030eb0c46d3c
   node:
+    - 1a89e8f5-03d5-440c-a8ba-a09b460f2ad2
     - 3a8dd5fc-a5aa-4976-9ec0-3432d9984c6e
     - 3e0c28fb-cdd4-4226-81f9-e14f56c6bc8f
     - 03ac17c9-f551-4340-b020-788d4506d2eb
@@ -103,6 +106,7 @@ default_content:
     - 3b289c8d-ac49-4295-bc43-6ebcfd6a0642
     - 7984dfb0-3c83-4a4b-82f3-ef642a2d830f
     - e2035957-b333-4a02-88ad-8df1e5128200
+    - f970351f-81aa-4efd-831f-d7e89d7404ee
   tpr_service:
     - 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c
     - 0cadef9b-6538-4e1e-9b3a-35fc895948fb
