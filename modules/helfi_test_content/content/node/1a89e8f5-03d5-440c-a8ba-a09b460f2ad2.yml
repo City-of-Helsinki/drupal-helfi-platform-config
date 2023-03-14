@@ -1,0 +1,509 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 1a89e8f5-03d5-440c-a8ba-a09b460f2ad2
+  bundle: landing_page
+  default_langcode: en
+  depends:
+    cd0c6a07-09e1-41bb-bd84-87e5d9cad62a: node
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: component target group links'
+  created:
+    -
+      value: 1678270509
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-helfi-platform-test-content/dc-components/dc-component-target-group-links
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: eadca10f-a17f-499a-8926-66369a868a9f
+          bundle: target_group_links
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1678271006
+          behavior_settings:
+            -
+              value: {  }
+          field_target_group_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: b1c914ea-c2ed-4647-a1e1-68e77d4b867f
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678271006
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: star
+                  field_target_group_item_link:
+                    -
+                      target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
+                      title: 'DC: components'
+                      options: {  }
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: cadb137b-3988-4017-b3c4-4d5d1386c8d4
+          bundle: target_group_links
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1678271145
+          behavior_settings:
+            -
+              value: {  }
+          field_target_group_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 031da248-d161-449f-b95e-98b8762ab5e7
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678271145
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: locate
+                  field_target_group_item_link:
+                    -
+                      uri: 'route:<nolink>'
+                      title: 'No link'
+                      options: {  }
+                  field_target_group_item_subtitle:
+                    -
+                      value: 'Subtitle for the link'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 1724548f-eb2b-4c32-a421-131ccb20f66e
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678271180
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: refresh
+                  field_target_group_item_link:
+                    -
+                      target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
+                      title: 'DC: components'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 9d331fa2-39cf-482e-9ba0-ec407079a707
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678271219
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: speechbubble
+                  field_target_group_item_link:
+                    -
+                      uri: 'internal:/'
+                      title: 'Link to front page'
+                      options: {  }
+                  field_target_group_item_subtitle:
+                    -
+                      value: 'Subtitle for the link'
+          field_target_group_links_title:
+            -
+              value: 'Tagret group links, only title'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: b38bbd83-eaa3-4f21-9238-faf6de46e876
+          bundle: target_group_links
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1678271085
+          behavior_settings:
+            -
+              value: {  }
+          field_target_group_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: db326ccf-96f9-4564-90fd-25a0921e8f8f
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678271085
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: abstract-3
+                  field_target_group_item_link:
+                    -
+                      uri: 'internal:/'
+                      title: 'Link to front page'
+                      options: {  }
+                  field_target_group_item_subtitle:
+                    -
+                      value: 'Subtitle for the link'
+          field_target_group_links_desc:
+            -
+              value: "<p>Target group links description only</p>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7bceb24b-aed4-4b59-a171-cd72a905d77e
+          bundle: target_group_links
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1678270945
+          behavior_settings:
+            -
+              value: {  }
+          field_target_group_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 92324414-8ef5-40f7-b2a5-ce92799baecf
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270945
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: question-circle
+                  field_target_group_item_link:
+                    -
+                      uri: 'http://example.com'
+                      title: 'Link to example.com'
+                      options: {  }
+                  field_target_group_item_subtitle:
+                    -
+                      value: 'Subtitle for the link'
+          field_target_group_links_desc:
+            -
+              value: "<p>Target group links description</p>\r\n"
+              format: full_html
+          field_target_group_links_title:
+            -
+              value: 'Target group links, one link'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 72956419-1355-4b0a-9687-93232fd6a571
+          bundle: target_group_links
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1678270537
+          behavior_settings:
+            -
+              value: {  }
+          field_target_group_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 84c19f79-db5f-465d-b4c3-cb12e55e2359
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270537
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: check-circle
+                  field_target_group_item_link:
+                    -
+                      uri: 'https://example.com'
+                      title: 'Example.com link'
+                      options: {  }
+                  field_target_group_item_subtitle:
+                    -
+                      value: 'Subtitle for the link'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: b6424730-5ee5-469a-b8c1-97d20cb03168
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270670
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: clock
+                  field_target_group_item_link:
+                    -
+                      uri: 'https://example.com'
+                      title: 'Example.com link'
+                      options: {  }
+                  field_target_group_item_subtitle:
+                    -
+                      value: 'Subtitle for the link'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 1100ca61-c8f6-48db-b126-4ad2030b09b2
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270791
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: cross-circle
+                  field_target_group_item_link:
+                    -
+                      uri: 'internal:/'
+                      title: 'Link to front page'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: b94c33b6-f633-4c02-b803-92f130b6df73
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270811
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: alert-circle
+                  field_target_group_item_link:
+                    -
+                      target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
+                      title: 'DC: components'
+                      options: {  }
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 33700b2e-ef61-4975-b131-7ba8a57e9c24
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270836
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: face-smile
+                  field_target_group_item_link:
+                    -
+                      uri: 'internal:/'
+                      title: 'Link to front page'
+                      options: {  }
+                  field_target_group_item_subtitle:
+                    -
+                      value: 'Subtitle for the link'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 6764b2ce-2141-43f5-a4a9-81e7d397a5bf
+                  bundle: target_group_link_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1678270874
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_icon:
+                    -
+                      icon: info-circle
+                  field_target_group_item_link:
+                    -
+                      target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
+                      title: 'DC: components'
+                      options: {  }
+                  field_target_group_item_subtitle:
+                    -
+                      value: 'Subtitle for the link'
+          field_target_group_links_desc:
+            -
+              value: "<p>Target group links description</p>\r\n"
+              format: full_html
+          field_target_group_links_title:
+            -
+              value: 'Target group links, multiple links'
+  field_has_hero:
+    -
+      value: false
