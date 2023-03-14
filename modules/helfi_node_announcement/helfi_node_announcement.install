@@ -64,3 +64,27 @@ function helfi_node_announcement_install($is_syncing) : void {
 
   helfi_node_announcement_grant_permissions();
 }
+
+/**
+ * Added external entity for announcements and enable block.
+ */
+function helfi_node_announcement_update_9001() {
+  \Drupal::service('config.installer')
+    ->installDefaultConfig('module', 'helfi_node_announcement');
+
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+  $theme_handler = \Drupal::service('theme_handler');
+
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+    return;
+  }
+
+  $theme = $theme_handler->getDefault();
+  $block_config = helfi_node_announcement_get_block_configurations($theme)['global_announcements'];
+  ['block' => $block, 'variations' => $variations] = $block_config;
+  $block_installer->install($block, $variations);
+
+}
