@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains HELfi platform configuration alterations.
+ * Contains HELfi test content alterations.
  */
 
 declare(strict_types = 1);
