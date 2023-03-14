@@ -183,5 +183,5 @@ final class Announcements extends ExternalEntityStorageClientBase {
     }
     return [];
   }
-  
+
 }
