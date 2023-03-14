@@ -3,6 +3,11 @@
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity\BundleFieldDefinition;
+
 function helfi_announcements_form_node_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id) {
     case 'node_announcement_edit_form':
@@ -13,5 +18,38 @@ function helfi_announcements_form_node_form_alter(&$form, &$form_state, $form_id
         ],
       ];
       break;
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_announcements_entity_bundle_field_info_alter(
+  &$fields,
+  EntityTypeInterface $entity_type,
+  $bundle
+) : void {
+  if ($entity_type->id() === 'helfi_announcements') {
+
+    // Additional entity info fields.
+    $entity_info_fields = [
+      'published_at' => new TranslatableMarkup('Published at'),
+      'unpublish_on' => new TranslatableMarkup('Unpublish on'),
+      'notification' => new TranslatableMarkup('Notification'),
+      'langcode' => new TranslatableMarkup('Langcode'),
+      'body' => new TranslatableMarkup('Body'),
+      'status' => new TranslatableMarkup('Status'),
+      'announcement_type' => new TranslatableMarkup('Announcement type'),
+      'announcement_link_text' => new TranslatableMarkup('Announcement link text'),
+      'announcement_link_url' => new TranslatableMarkup('Announcement link url'),
+    ];
+
+    foreach ($entity_info_fields as $field_name => $field_label) {
+      $fields[$field_name] = BundleFieldDefinition::create('string')
+        ->setName($field_name)
+        ->setLabel($field_label)
+        ->setDisplayConfigurable('view', TRUE)
+        ->setDisplayConfigurable('form', TRUE);
+    }
   }
 }
