@@ -5,6 +5,7 @@ core: 8.x
 core_version_requirement: ^8 || ^9
 dependencies:
   - 'drupal:language'
+  - 'elasticsearch_connector:elasticsearch_connector'
   - 'helfi_api_base:helfi_api_base'
   - 'menu_block_current_language:menu_block_current_language'
   - 'update_helper:update_helper'
