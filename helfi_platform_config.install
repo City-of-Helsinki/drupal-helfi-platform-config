@@ -314,14 +314,3 @@ function helfi_platform_config_update_9014() : void {
     ]);
   }
 }
-
-/**
- * Make sure elasticsearch_connector is installed to prevent errors.
- */
-function helfi_platform_config_update_9014() : void {
-  if (!Drupal::moduleHandler()->moduleExists('elasticsearch_connector')) {
-    Drupal::service('module_installer')->install([
-      'elasticsearch_connector',
-    ]);
-  }
-}
