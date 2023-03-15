@@ -8,6 +8,7 @@ use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\Core\Update\UpdateHookRegistry;
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
@@ -28,12 +29,15 @@ final class MajorUpdateCommands extends DrushCommands {
    *   The module handler service.
    * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
    *   The module extension list service.
+   * @param \Drupal\Core\KeyValueStore\KeyValueFactoryInterface $keyValueFactory
+   *   The key-value factory.
    */
   public function __construct(
     private UpdateHookRegistry $updateHookRegistry,
     private Connection $database,
     private ModuleHandlerInterface $moduleHandler,
     private ModuleExtensionList $moduleExtensionList,
+    private KeyValueFactoryInterface $keyValueFactory,
   ) {
   }
 
@@ -145,8 +149,21 @@ final class MajorUpdateCommands extends DrushCommands {
       }
       $fileName = str_replace(['rewrite', 'optional', 'install'], '', $fileName);
       $fileName = ltrim($fileName, '/');
+      $originalFile = $configExportFolder . '/' . $fileName;
 
       $fileContent = file_get_contents($item->getPathName());
+
+      // Preserve original UUIDs when possible.
+      if (file_exists($originalFile)) {
+        $originalFileContent = Yaml::decode(file_get_contents($originalFile));
+
+        if (isset($originalFileContent['uuid'])) {
+          $fileContent = Yaml::decode($fileContent);
+          $fileContent = ['uuid' => $originalFileContent['uuid']] + $fileContent;
+          $fileContent = Yaml::encode($fileContent);
+        }
+      }
+
       file_put_contents($configExportFolder . '/' . $fileName, $fileContent);
     }
   }
@@ -173,16 +190,13 @@ final class MajorUpdateCommands extends DrushCommands {
    */
   private function forceEnableModules(array $modules) : void {
     foreach ($modules as $module) {
-      if ($this->updateHookRegistry->getInstalledVersion($module) > UpdateHookRegistry::SCHEMA_UNINSTALLED) {
+      if (
+        $this->updateHookRegistry->getInstalledVersion($module) > UpdateHookRegistry::SCHEMA_UNINSTALLED &&
+        $this->updateHookRegistry->getInstalledVersion($module) !== 0
+      ) {
         continue;
       }
-      $this->database->insert('key_value')
-        ->fields([
-          'collection' => 'system.schema',
-          'name' => $module,
-          'value' => 9000,
-        ])
-        ->execute();
+      $this->keyValueFactory->get('system.schema')->set($module, 9000);
     }
   }
 
@@ -234,6 +248,13 @@ final class MajorUpdateCommands extends DrushCommands {
       $modules[] = 'helfi_tpr_config';
       $modules[] = 'helfi_paragraphs_content_liftup';
     }
+
+    // Enable the Helfi paragraphs news list module if the Helfi news feed was
+    // enabled previously.
+    if ($this->moduleHandler->moduleExists('helfi_news_feed')) {
+      $modules[] = 'helfi_paragraphs_news_list';
+    }
+
     // Enable helfi_platform_config_base module.
     $modules[] = 'helfi_platform_config_base';
 

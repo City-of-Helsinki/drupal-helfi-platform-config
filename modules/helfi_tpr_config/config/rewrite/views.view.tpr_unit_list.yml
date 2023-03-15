@@ -616,7 +616,6 @@ display:
             fi: fi
             sv: sv
             en: en
-            ru: ru
           group: 1
           exposed: true
           expose:
