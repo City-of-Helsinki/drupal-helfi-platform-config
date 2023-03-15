@@ -190,16 +190,18 @@ function hdbt_admin_tools_language_switch_links_alter(array &$links): void {
   }
 
   // @todo UHF-6102 Needs refactoring during "Muut kielet" epic.
-  $alternative_languages = [
-    'ru',
+  $primary_languages = [
+    'fi',
+    'sv',
+    'en',
   ];
 
   // Compare the links with current entity and check for possible translations.
   foreach ($links as $lang_code => &$link) {
     $link['#abbreviation'] = $lang_code;
 
-    if (in_array($lang_code, $alternative_languages)) {
-      $link['#alternative_language'] = TRUE;
+    if (in_array($lang_code, $primary_languages)) {
+      $link['#primary_language'] = TRUE;
     }
 
     if (!$entity instanceof ContentEntityInterface) {
