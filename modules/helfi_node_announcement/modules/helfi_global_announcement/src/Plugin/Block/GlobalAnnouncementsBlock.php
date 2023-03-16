@@ -4,8 +4,8 @@ namespace Drupal\helfi_global_announcement\Plugin\Block;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Cache\Cache;
+use Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\helfi_node_announcement\Plugin\Block\AnnouncementsBlockBase;
-use Drupal\helfi_node_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\node\Entity\Node;
 
 /**
