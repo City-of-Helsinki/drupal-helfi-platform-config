@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_global_announcement module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install.
+ */
+function helfi_node_announcement_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  _helfi_global_announcement_create_block();
+}
+
+/**
+ * Added external entity for announcements and enable block.
+ */
+function _helfi_global_announcement_create_block() {
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+  $theme_handler = \Drupal::service('theme_handler');
+
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+    return;
+  }
+
+  $theme = $theme_handler->getDefault();
+  $block_config = helfi_global_announcement_get_block_configurations($theme)['global_announcement'];
+  ['block' => $block, 'variations' => $variations] = $block_config;
+  $block_installer->install($block, $variations);
+}
+q
