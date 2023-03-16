@@ -63,4 +63,24 @@ function helfi_node_announcement_install($is_syncing) : void {
   }
 
   helfi_node_announcement_grant_permissions();
+  _global_announcement_enable();
 }
+
+function _global_announcement_enable() {
+  if (
+    Drupal::moduleHandler()->moduleExists('external_entities') &&
+    Drupal::moduleHandler()->moduleExists('helfi_node_announcement')
+  ) {
+    Drupal::service('module_installer')->install([
+      'helfi_global_announcement',
+    ]);
+  }
+}
+
+/**
+ * Implements hook_update().
+ */
+function helfi_node_announcement_update_9001() : void {
+  _global_announcement_enable();
+}
+
