@@ -7,10 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\entity\BundleFieldDefinition;
-
 /**
  * Implements hook_form_FORM_ID_alter().
  */

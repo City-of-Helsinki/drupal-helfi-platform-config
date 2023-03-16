@@ -8,7 +8,7 @@
 declare(strict_types = 1);
 
 /**
- * Implements hook_install.
+ * Implements hook_install().
  */
 function helfi_node_announcement_install($is_syncing) : void {
   // Do not perform following steps if the module is being installed as part

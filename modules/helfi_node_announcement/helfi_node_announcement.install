@@ -86,4 +86,3 @@ function _helfi_global_announcement_enable() {
 function helfi_node_announcement_update_9001() : void {
   _helfi_global_announcement_enable();
 }
-
