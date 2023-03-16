@@ -2,6 +2,7 @@
 
 namespace Drupal\helfi_node_announcement\Plugin\Block;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Cache\Cache;
 use Drupal\helfi_node_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\node\Entity\Node;
@@ -46,8 +47,8 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
         'field_announcement_type' => $announcement->get('announcement_type')->value,
         'field_announcement_link' => ['uri' => $linkUrl, 'title' => $linkText],
         'langcode' => $announcement->get('langcode')->value,
-        'body' => strip_tags(html_entity_decode($announcement->get('body')->value)),
-        'title' => strip_tags(html_entity_decode($announcement->get('title')->value)),
+        'body' => Xss::filter($announcement->get('body')->value ?? ''),
+        'title' => Xss::filter($announcement->get('title')->value ?? ''),
         'status' => $announcement->get('status')->value,
       ]);
     }
