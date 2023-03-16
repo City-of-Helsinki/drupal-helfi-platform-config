@@ -20,6 +20,10 @@ class BoostStripper implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
+    if (!class_exists('Drupal\elasticsearch_connector\Event\PrepareIndexMappingEvent')) {
+      return [];
+    }
+
     return [
       PrepareIndexMappingEvent::PREPARE_INDEX_MAPPING => 'stripBoost',
     ];
