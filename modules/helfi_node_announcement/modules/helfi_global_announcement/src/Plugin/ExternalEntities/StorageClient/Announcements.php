@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -102,7 +101,6 @@ final class Announcements extends ExternalEntityStorageClientBase {
     usort($data, function (array $a, array $b) use ($ids) {
       return array_search($a['id'], $ids) - array_search($b['id'], $ids);
     });
-    Cache::invalidateTags([self::$CUSTOM_CACHE_TAG]);
 
     return $data;
   }
