@@ -1,6 +1,6 @@
 name: 'HELfi global Announcements'
 type: module
-description: 'Adds announcements that can be shown on other pages.'
+description: 'Import announcements using external entities that can be shown on other pages.'
 core_version_requirement: '^8.9 || ^9'
 package: HELfi
 dependencies:
