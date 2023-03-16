@@ -303,3 +303,17 @@ function helfi_platform_config_update_9013() : void {
     ]);
   }
 }
+
+/**
+ * Install helfi_global_announcements if announcements and external entities are enabled.
+ */
+function helfi_platform_config_update_9014() : void {
+  if (
+    Drupal::moduleHandler()->moduleExists('external_entities') &&
+    Drupal::moduleHandler()->moduleExists('helfi_announcements')
+  ) {
+    Drupal::service('module_installer')->install([
+      'helfi_global_announcements',
+    ]);
+  }
+}
