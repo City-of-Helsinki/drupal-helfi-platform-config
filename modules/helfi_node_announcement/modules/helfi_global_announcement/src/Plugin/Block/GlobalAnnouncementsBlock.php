@@ -22,19 +22,13 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
    * {@inheritdoc}
    */
   public function build(): array {
-    $uuids = \Drupal::entityTypeManager()
-      ->getStorage('helfi_announcements')
-      ->getQuery()
-      ->execute();
-
     $globalEntityStorage = $this->entityTypeManager->getStorage('helfi_announcements');
     $cacheMaxAge = $globalEntityStorage->getExternalEntityType()->get('persistent_cache_max_age');
 
     $externalAnnouncements = $globalEntityStorage
-      ->loadMultiple($uuids);
+      ->loadMultiple();
 
     $announcementNodes = [];
-
     foreach ($externalAnnouncements as $announcement) {
       $linkUrl = NULL;
       $linkText = NULL;
@@ -43,6 +37,7 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
         $linkUrl = $announcement->get('announcement_link_url')->value;
       }
 
+      // Create announcement nodes based on external entity data.
       $announcementNodes[] = Node::create([
         'type' => 'announcement',
         'field_announcement_type' => $announcement->get('announcement_type')->value,
