@@ -1,0 +1,22 @@
+name: 'HELfi global Announcements'
+type: module
+description: 'Adds announcements that can be shown on other pages.'
+core_version_requirement: '^8.9 || ^9'
+package: HELfi
+dependencies:
+  - link
+  - path
+  - text
+  - options
+  - user
+  - node
+  - menu_ui
+  - allowed_formats
+  - scheduler
+  - select2
+  - hdbt_admin_editorial
+  - helfi_content
+  - external_entities
+  - helfi_announcements
+'interface translation project': helfi_global_announcements
+'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_global_announcements/translations/%language.po

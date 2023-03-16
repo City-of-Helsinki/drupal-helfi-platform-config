@@ -1,0 +1,20 @@
+uuid: 437d25d1-3fa2-4d43-bf8b-841878600ae6
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_announcements
+  theme:
+    - hdbt_subtheme
+id: externalannouncements
+theme: hdbt_subtheme
+region: before_content
+weight: -14
+provider: null
+plugin: global_announcements
+settings:
+  id: global_announcements
+  label: 'External announcements'
+  label_display: '0'
+  provider: helfi_announcements
+visibility: {  }
