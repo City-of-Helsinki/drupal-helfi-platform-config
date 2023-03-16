@@ -37,7 +37,7 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
         $linkUrl = $announcement->get('announcement_link_url')->value;
       }
 
-      // Create announcement nodes based on external entity data.
+      // Create announcement nodes for the block based on external entity data.
       $announcementNodes[] = Node::create([
         'type' => 'announcement',
         'field_announcement_type' => $announcement->get('announcement_type')->value,
