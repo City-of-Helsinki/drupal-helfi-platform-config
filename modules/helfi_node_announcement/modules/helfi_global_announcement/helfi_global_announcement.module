@@ -12,24 +12,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
 
 /**
- * Implements hook_themes_installed().
- */
-function helfi_global_announcement_themes_installed($theme_list) {
-
-  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
-  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
-
-  foreach ($theme_list as $theme) {
-    if (in_array($theme, ['stark', 'hdbt', 'hdbt_subtheme'])) {
-      foreach (helfi_node_announcement_get_block_configurations($theme) as $block_config) {
-        ['block' => $block, 'variations' => $variations] = $block_config;
-        $block_installer->install($block, $variations);
-      }
-    }
-  }
-}
-
-/**
  * Gets the block configurations.
  *
  * Example block:
