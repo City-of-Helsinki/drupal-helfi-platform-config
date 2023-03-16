@@ -39,4 +39,3 @@ function _helfi_global_announcement_create_block() {
   ['block' => $block, 'variations' => $variations] = $block_config;
   $block_installer->install($block, $variations);
 }
-q
