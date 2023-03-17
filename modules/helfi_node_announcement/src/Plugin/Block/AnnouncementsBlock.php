@@ -91,9 +91,7 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
    */
   public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), [
-      'user.permissions',
       'url.path',
-      'url.query_args',
       'languages:language_content',
     ]);
   }
