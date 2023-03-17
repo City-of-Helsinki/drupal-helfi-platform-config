@@ -75,6 +75,7 @@ function helfi_node_announcement_get_block_configurations(string $theme) : array
         'settings' => [
           'id' => 'announcements',
           'label' => 'Announcements',
+          'provider' => 'helfi_node_announcement',
         ],
         'provider' => 'helfi_node_announcement',
         'weight' => -12,
@@ -97,6 +98,7 @@ function helfi_node_announcement_get_block_configurations(string $theme) : array
         'settings' => [
           'id' => 'global_announcements',
           'label' => 'Global announcements',
+          'provider' => 'helfi_node_announcement',
         ],
         'provider' => 'helfi_node_announcement',
         'weight' => -14,
