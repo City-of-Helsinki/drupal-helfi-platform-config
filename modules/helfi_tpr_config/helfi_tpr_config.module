@@ -150,6 +150,7 @@ function helfi_tpr_config_get_block_configurations(string $theme) : array {
       'block' => [
         'id' => 'views_block__locked_services_locked_services_block',
         'plugin' => 'views_block:locked_services-locked_services_block',
+        'provider' => 'helfi_tpr_config',
         'settings' => [
           'id' => 'views_block:locked_services-locked_services_block',
           'label' => '',
@@ -179,6 +180,7 @@ function helfi_tpr_config_get_block_configurations(string $theme) : array {
       'block' => [
         'id' => 'views_block__locked_units_locked_units_block',
         'plugin' => 'views_block:locked_units-locked_units_block',
+        'provider' => 'helfi_tpr_config',
         'settings' => [
           'id' => 'views_block:locked_units-locked_units_block',
           'label' => '',

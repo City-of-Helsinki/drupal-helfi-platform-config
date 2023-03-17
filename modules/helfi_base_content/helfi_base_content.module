@@ -69,6 +69,7 @@ function helfi_base_content_get_block_configurations(string $theme) : array {
             'menu_link_content' => 'menu_link_content',
             'default' => '0',
           ],
+          'provider' => 'helfi_base_content',
         ],
       ],
       'variations' => [
