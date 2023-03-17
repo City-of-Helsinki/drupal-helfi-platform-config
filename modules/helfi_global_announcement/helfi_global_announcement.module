@@ -41,6 +41,7 @@ function helfi_global_announcement_get_block_configurations(string $theme) : arr
         'settings' => [
           'id' => 'global_announcement',
           'label' => 'Global announcement',
+          'provider' => 'helfi_global_announcement',
         ],
         'provider' => 'helfi_global_announcement',
         'weight' => -14,
