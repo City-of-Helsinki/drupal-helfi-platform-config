@@ -1,0 +1,6 @@
+name: 'HELfi Global announcement'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - external_entities:external_entities
+  - helfi_node_announcement:helfi_node_announcement

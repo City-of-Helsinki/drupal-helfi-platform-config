@@ -1,9 +1,11 @@
 <?php
 
-namespace Drupal\helfi_node_announcement\Plugin\Block;
+namespace Drupal\helfi_global_announcement\Plugin\Block;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Cache\Cache;
-use Drupal\helfi_node_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
+use Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
+use Drupal\helfi_node_announcement\Plugin\Block\AnnouncementsBlockBase;
 use Drupal\node\Entity\Node;
 
 /**
@@ -20,19 +22,13 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
    * {@inheritdoc}
    */
   public function build(): array {
-    $uuids = \Drupal::entityTypeManager()
-      ->getStorage('helfi_announcements')
-      ->getQuery()
-      ->execute();
-
     $globalEntityStorage = $this->entityTypeManager->getStorage('helfi_announcements');
     $cacheMaxAge = $globalEntityStorage->getExternalEntityType()->get('persistent_cache_max_age');
 
     $externalAnnouncements = $globalEntityStorage
-      ->loadMultiple($uuids);
+      ->loadMultiple();
 
     $announcementNodes = [];
-
     foreach ($externalAnnouncements as $announcement) {
       $linkUrl = NULL;
       $linkText = NULL;
@@ -41,13 +37,14 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
         $linkUrl = $announcement->get('announcement_link_url')->value;
       }
 
+      // Create announcement nodes for the block based on external entity data.
       $announcementNodes[] = Node::create([
         'type' => 'announcement',
         'field_announcement_type' => $announcement->get('announcement_type')->value,
         'field_announcement_link' => ['uri' => $linkUrl, 'title' => $linkText],
         'langcode' => $announcement->get('langcode')->value,
-        'body' => strip_tags(html_entity_decode($announcement->get('body')->value)),
-        'title' => strip_tags(html_entity_decode($announcement->get('title')->value)),
+        'body' => Xss::filter($announcement->get('body')->value),
+        'title' => Xss::filter($announcement->get('title')->value),
         'status' => $announcement->get('status')->value,
       ]);
     }
@@ -70,9 +67,7 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
    */
   public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), [
-      'user.permissions',
       'url.path',
-      'url.query_args',
       'languages:language_content',
     ]);
   }

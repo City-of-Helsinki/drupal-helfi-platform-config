@@ -63,28 +63,26 @@ function helfi_node_announcement_install($is_syncing) : void {
   }
 
   helfi_node_announcement_grant_permissions();
+  _helfi_global_announcement_enable();
 }
 
 /**
- * Added external entity for announcements and enable block.
+ * Enable global announcement.
  */
-function helfi_node_announcement_update_9001() {
-  \Drupal::service('config.installer')
-    ->installDefaultConfig('module', 'helfi_node_announcement');
-
-  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
-  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
-
-  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
-  $theme_handler = \Drupal::service('theme_handler');
-
-  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
-    return;
+function _helfi_global_announcement_enable() {
+  if (
+    Drupal::moduleHandler()->moduleExists('external_entities') &&
+    Drupal::moduleHandler()->moduleExists('helfi_node_announcement')
+  ) {
+    Drupal::service('module_installer')->install([
+      'helfi_global_announcement',
+    ]);
   }
+}
 
-  $theme = $theme_handler->getDefault();
-  $block_config = helfi_node_announcement_get_block_configurations($theme)['global_announcements'];
-  ['block' => $block, 'variations' => $variations] = $block_config;
-  $block_installer->install($block, $variations);
-
+/**
+ * Implements hook_update().
+ */
+function helfi_node_announcement_update_9001() : void {
+  _helfi_global_announcement_enable();
 }
