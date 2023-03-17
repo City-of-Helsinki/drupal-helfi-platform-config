@@ -9,3 +9,6 @@ services:
       - '@cache.default'
       - '@http_client'
       - '@logger.channel.helfi_react_search'
+  Drupal\helfi_react_search\EventSubscriber\BoostStripper:
+    tags:
+      - { name: 'event_subscriber' }
