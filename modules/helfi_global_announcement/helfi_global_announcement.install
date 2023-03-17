@@ -23,7 +23,7 @@ function helfi_global_announcement_install($is_syncing) : void {
 /**
  * Added external entity for announcements and enable block.
  */
-function _helfi_global_announcement_create_block() {
+function _helfi_global_announcement_create_block() : void {
   /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 

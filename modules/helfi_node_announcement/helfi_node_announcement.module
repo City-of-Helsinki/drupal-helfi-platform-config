@@ -10,7 +10,7 @@ declare(strict_types = 1);
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $form_id) {
+function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $form_id) : void {
   switch ($form_id) {
     case 'node_announcement_edit_form':
     case 'node_announcement_form':
@@ -26,7 +26,7 @@ function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $for
 /**
  * Implements hook_themes_installed().
  */
-function helfi_node_announcement_themes_installed($theme_list) {
+function helfi_node_announcement_themes_installed($theme_list) : void {
 
   /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
