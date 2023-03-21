@@ -14,25 +14,25 @@ field_mapper_config:
     uuid:
       value: $.id
     title:
-      value: '$.attributes[''title'']'
+      value: '$.attributes["title"]'
     published_at:
-      value: '$.attributes[''published_at'']'
+      value: '$.attributes["published_at"]'
     unpublish_on:
-      value: '$.attributes[''unpublish_on'']'
+      value: '$.attributes["unpublish_on"]'
     notification:
-      value: '$.attributes[''notification'']'
+      value: '$.attributes["notification"]'
     langcode:
-      value: '$.attributes[''langcode'']'
+      value: '$.attributes["langcode"]'
     body:
-      value: '$.attributes[''body''][''value'']'
+      value: '$.attributes["body"]["value"]'
     status:
-      value: '$.attributes[''status'']'
+      value: '$.attributes["status"]'
     announcement_type:
-      value: '$.attributes[''field_announcement_type'']'
+      value: '$.attributes["field_announcement_type"]'
     announcement_link_text:
-      value: '$.attributes[''field_announcement_link''][''title'']'
+      value: '$.attributes["field_announcement_link"]["title"]'
     announcement_link_url:
-      value: '$.attributes[''field_announcement_link''][''uri'']'
+      value: '$.attributes["field_announcement_link"]["uri"]'
 storage_client_id: helfi_announcements
 storage_client_config: {  }
 persistent_cache_max_age: 600
