@@ -69,7 +69,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
     $instance->client = $container->get('http_client');
 
     $environment = $container->get('config.factory')
-      ->get('helfi_announcement.settings')
+      ->get('helfi_global_announcement.settings')
       ->get('source_environment') ?: 'prod';
 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
@@ -83,18 +83,17 @@ final class Announcements extends ExternalEntityStorageClientBase {
    * {@inheritdoc}
    */
   public function loadMultiple(array $ids = NULL) : array {
+    $ids = $ids ?: [];
+
     $query = [
       'filter[id][operator]' => 'IN',
     ];
 
-    $language = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-      ->getId();
-
-    foreach ($ids ?? [] as $index => $id) {
+    foreach ($ids as $index => $id) {
       $query[sprintf('filter[id][value][%d]', $index)] = $id;
     }
-    $data = $this->request($query, $language);
+
+    $data = $this->query($query);
 
     // The $ids are passed in correct order, but the external data is not
     // in same order. Sort data by given $ids.
