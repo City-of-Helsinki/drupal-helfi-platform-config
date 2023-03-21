@@ -131,6 +131,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
       'fields[node--announcements]' => 'id',
       'fields[status]' => 1,
       'filter[status][value]' => 1,
+      'filter[field_publish_externally][value]' => 1,
     ];
 
     if ($start) {
