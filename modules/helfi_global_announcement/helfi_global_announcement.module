@@ -36,10 +36,10 @@ function helfi_global_announcement_get_block_configurations(string $theme) : arr
   return [
     'global_announcement' => [
       'block' => [
-        'id' => 'global_announcement',
-        'plugin' => 'global_announcement',
+        'id' => 'globalannouncement',
+        'plugin' => 'global_announcements',
         'settings' => [
-          'id' => 'global_announcement',
+          'id' => 'global_announcements',
           'label' => 'Global announcement',
           'provider' => 'helfi_global_announcement',
         ],
