@@ -13,8 +13,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_themes_installed().
  */
-function helfi_eu_cookie_compliance_themes_installed($theme_list) {
-
+function helfi_eu_cookie_compliance_themes_installed($theme_list) : void {
   /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 

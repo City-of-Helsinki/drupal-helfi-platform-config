@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\helfi_eu_cookie_compliance\Form;
 
 /**
@@ -18,7 +20,7 @@ class CookieConsentIntro extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
+  protected function getEditableConfigNames() : array {
     return [
       'helfi_eu_cookie_compliance.cookie_consent_intro',
     ];
@@ -27,14 +29,14 @@ class CookieConsentIntro extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId() : string {
     return 'helfi_eu_cookie_compliance_cookie_consent_intro';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state) : array {
     $form = parent::buildForm($form, $form_state);
     $config = $this->config('helfi_eu_cookie_compliance.cookie_consent_intro');
     $defaults = $config->get('cc');
@@ -65,7 +67,7 @@ class CookieConsentIntro extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state) : void {
     parent::submitForm($form, $form_state);
     $config = $this->configFactory->getEditable('helfi_eu_cookie_compliance.cookie_consent_intro');
     $config->set('cc', $form_state->getValue('cc'))->save();

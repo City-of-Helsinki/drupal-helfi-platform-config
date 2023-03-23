@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\helfi_eu_cookie_compliance\Controller;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -12,17 +14,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CookieConsentController extends ControllerBase {
 
   /**
-   * The configuration factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
-    $this->configFactory = $config_factory;
+  public function __construct(ConfigFactoryInterface $configFactory) {
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -40,7 +35,7 @@ class CookieConsentController extends ControllerBase {
    * @return array
    *   Return markup array.
    */
-  public function content() {
+  public function content() : array {
     $settings = $this->configFactory->get('helfi_eu_cookie_compliance.cookie_consent_intro');
     $content = [];
 
