@@ -8,7 +8,38 @@
 declare(strict_types = 1);
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\eu_cookie_compliance\Entity\CookieCategory;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function helfi_eu_cookie_compliance_form_cookie_category_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\eu_cookie_compliance\Entity\CookieCategory $entity */
+  $entity = $form_state->getFormObject()->getEntity();
+  $settings = $entity->getThirdPartySettings('helfi_eu_cookie_compliance');
+
+  // Disable the original description field.
+  $form['description']['#access'] = FALSE;
+
+  $form['third_party_settings']['helfi_eu_cookie_compliance']['content'] = [
+    '#type' => 'text_format',
+    '#format' => $settings['content']['format'] ?? NULL,
+    '#title' => t('Description'),
+    '#default_value' => $settings['content']['value'] ?? NULL,
+    '#description' => t("The description that will be shown to the website visitor."),
+    '#required' => FALSE,
+  ];
+  $form['#entity_builders'][] = 'helfi_eu_cookie_compliance_category_form_builder';
+}
+
+/**
+ * The entity builder form callback.
+ */
+function helfi_eu_cookie_compliance_category_form_builder(string $entity_type, CookieCategory $category, array &$form, FormStateInterface $formState) : void {
+  $category->setThirdPartySetting('helfi_eu_cookie_compliance', 'content', $formState->getValue('content'));
+}
 
 /**
  * Implements hook_themes_installed().

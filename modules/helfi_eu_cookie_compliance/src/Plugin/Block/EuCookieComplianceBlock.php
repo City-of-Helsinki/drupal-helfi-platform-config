@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\helfi_eu_cookie_compliance\Plugin\Block;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -9,9 +11,12 @@ use Drupal\helfi_eu_cookie_compliance\Form\EuCookieComplianceBlockForm;
 /**
  * EU Cookie Compliance Block.
  *
+ * This block is shown on '/cookie-information-and-settings' page
+ * and allows users to update cookie consent settings.
+ *
  * @Block(
- *     id = "eu_cookie_compliance_block",
- *     admin_label = @Translation("EU Cookie Compliance Block"),
+ *  id = "eu_cookie_compliance_block",
+ *  admin_label = @Translation("EU Cookie Compliance Block"),
  * )
  */
 class EuCookieComplianceBlock extends BlockBase {
@@ -28,11 +33,10 @@ class EuCookieComplianceBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() : array {
-
     $form = \Drupal::formBuilder()->getForm(EuCookieComplianceBlockForm::class);
 
     if (!isset($form['categories'])) {
-      return;
+      return [];
     }
 
     $build = [];
@@ -59,8 +63,7 @@ class EuCookieComplianceBlock extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
-
+  public function blockForm($form, FormStateInterface $form_state) : array {
     $settings = $this->getBlockSettings();
 
     $form[$this->getBaseId() . '_settings']['description'] = [
@@ -76,7 +79,7 @@ class EuCookieComplianceBlock extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
+  public function blockSubmit($form, FormStateInterface $form_state) : void {
     $settingsKey = $this->getBaseId() . '_settings';
     $this->configuration[$settingsKey] = $form_state->getValue($settingsKey);
   }

@@ -1,3 +1,11 @@
+eu_cookie_compliance.cookie_category.*.third_party.helfi_eu_cookie_compliance:
+  type: config_entity
+  label: 'Description'
+  mapping:
+    content:
+      type: text_format
+      label: 'Description'
+
 helfi_eu_cookie_compliance.cookie_consent_intro:
   type: config_object
   label: 'Cookie consent intro'

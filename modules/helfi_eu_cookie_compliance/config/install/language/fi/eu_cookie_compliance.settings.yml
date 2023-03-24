@@ -7,5 +7,5 @@ popup_info:
 popup_link: /cookie-information-and-settings
 disagree_button_label: 'Ei kiitos'
 withdraw_tab_button_label: Tietosuoja-asetukset
-save_preferences_button_label: 'Hyväksy valitut evästeet'
+save_preferences_button_label: 'Hyväksy vain välttämättömät evästeet'
 accept_all_categories_button_label: 'Hyväksy kaikki evästeet'

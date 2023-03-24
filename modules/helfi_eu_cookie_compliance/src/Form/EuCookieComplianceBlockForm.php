@@ -4,15 +4,53 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_eu_cookie_compliance\Form;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\eu_cookie_compliance\CategoryStorageManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Generate the form displayed inside the EuCookieComplianceBlock.
  */
-class EuCookieComplianceBlockForm extends FormBase {
+final class EuCookieComplianceBlockForm extends FormBase {
+
+  /**
+   * Eu cookie compliance settings.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
+   */
+  private ImmutableConfig $config;
+
+  /**
+   * Eu cookie compliance cookie.
+   *
+   * @var string
+   */
+  private string $cookieName;
+
+  /**
+   * Eu cookie compliance policy version.
+   *
+   * @var string
+   */
+  private string $cookiePolicyVersion;
+
+  /**
+   * The cookie category storage manager.
+   *
+   * @var \Drupal\eu_cookie_compliance\CategoryStorageManager
+   */
+  private CategoryStorageManager $categoryStorageManager;
+
+  /**
+   * The time component.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  private TimeInterface $time;
 
   /**
    * {@inheritdoc}
@@ -22,48 +60,31 @@ class EuCookieComplianceBlockForm extends FormBase {
   }
 
   /**
-   * Eu cookie compliance settings.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  protected static $config;
-
-  /**
-   * Eu cookie compliance cookie.
-   *
-   * @var string
-   */
-  protected static $cookieName;
-
-  /**
-   * Eu cookie compliance policy version.
-   *
-   * @var string
-   */
-  protected static string $cookiePolicyVersion;
-
-  /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    self::$config = \Drupal::config('eu_cookie_compliance.settings');
-    self::$cookieName = !empty(self::$config->get('cookie_name')) ? self::$config->get('cookie_name') : 'cookie-agreed';
-    self::$cookiePolicyVersion = !empty(self::$config->get('cookie_policy_version')) ? self::$config->get('cookie_policy_version') : 'unknown';
-    return new static();
+  public static function create(ContainerInterface $container) : self {
+    $instance = parent::create($container);
+    $configFactory = $container->get('config.factory');
+
+    $instance->config = $configFactory->get('eu_cookie_compliance.settings');
+    $instance->cookieName = $instance->config->get('cookie_name') ?: 'cookie-agreed';
+    $instance->cookiePolicyVersion = $instance->config->get('cookie_policy_version') ?: 'unknown';
+    $instance->categoryStorageManager = $container->get('entity_type.manager')->getStorage('cookie_category');
+    $instance->time = $container->get('datetime.time');
+    return $instance;
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = self::$config;
-    $current_cookie_value = isset($_COOKIE[self::$cookieName]) ? $_COOKIE[self::$cookieName] : null;
+    $current_cookie_value = $_COOKIE[$this->cookieName] ?? NULL;
 
-    if ($config->get('method') !== 'categories') {
-      return;
+    if ($this->config->get('method') !== 'categories') {
+      return [];
     }
 
-    $eu_cookie_categories = \Drupal::entityTypeManager()->getStorage('cookie_category')->getCookieCategories();
+    $eu_cookie_categories = $this->categoryStorageManager->getCookieCategories();
 
     $cookie_categories = [];
     $cookie_categories_descriptions = [];
@@ -72,16 +93,11 @@ class EuCookieComplianceBlockForm extends FormBase {
       $cookie_categories_descriptions[$key] = ['#description' => $value['description']['value']];
     }
 
-    // If user has already chosen something, show helpful information
-    if ($current_cookie_value !== null) {
-      if ($current_cookie_value == 0) {
-        $form['#markup'] = '<div class="cookie-selection-instruction">' . $this->t('<p>Your current setting is to <strong>only allow essential cookies, that are required for the site to function correctly.</strong> Submit the form below to make changes.</p>') . '</div>';
-      } else {
-        $form['#markup'] = '<div class="cookie-selection-instruction">' . $this->t('<p>Your current cookie settings are below. Submit the form to make changes.</p>') . '</div>';
-      }
-    } else {
-      $form['#markup'] = '<div class="cookie-selection-instruction">' . $this->t('<p><strong>You have not saved any cookie preferences.</strong> By default only essential cookies are saved. See details below.</p>') . '</div>';
-    }
+    $form['#markup'] = match($current_cookie_value) {
+      NULL => '<div class="cookie-selection-instruction">' . $this->t('<p><strong>You have not saved any cookie preferences.</strong> By default only essential cookies are saved. See details below.</p>') . '</div>',
+      '0' => '<div class="cookie-selection-instruction">' . $this->t('<p>Your current setting is to <strong>only allow essential cookies, that are required for the site to function correctly.</strong> Submit the form below to make changes.</p>') . '</div>',
+      default => '<div class="cookie-selection-instruction">' . $this->t('<p>Your current cookie settings are below. Submit the form to make changes.</p>') . '</div>',
+    };
 
     $form['categories'] = [
       '#type' => 'checkboxes',
@@ -108,14 +124,14 @@ class EuCookieComplianceBlockForm extends FormBase {
     $form['buttons'] = [
       'save' => [
         '#type' => 'submit',
-        '#value' => $config->get('save_preferences_button_label'),
+        '#value' => $this->config->get('save_preferences_button_label'),
         '#attributes' => [
           'class' => ['save'],
         ],
       ],
       'accept_all' => [
         '#type' => 'submit',
-        '#value' => $config->get('accept_all_categories_button_label'),
+        '#value' => $this->config->get('accept_all_categories_button_label'),
         '#submit' => ['::submitAcceptAllHandler'],
         '#attributes' => [
           'class' => ['accept'],
@@ -125,7 +141,7 @@ class EuCookieComplianceBlockForm extends FormBase {
       ],
       'withdraw' => [
         '#type' => 'submit',
-        '#value' => $config->get('withdraw_action_button_label'),
+        '#value' => $this->config->get('withdraw_action_button_label'),
         '#submit' => ['::submitWithdrawHandler'],
         '#attributes' => [
           'class' => ['withdraw'],
@@ -142,11 +158,11 @@ class EuCookieComplianceBlockForm extends FormBase {
 
     $form['#attached'] = [
       'library' => [
-        'eu_cookie_compliance/eu_cookie_compliance_cookie_values',
+        'helfi_eu_cookie_compliance/eu_cookie_compliance_cookie_values',
       ],
       'drupalSettings' => [
         'eu_cookie_compliance_cookie_values' => [
-          'cookieName' => self::$cookieName,
+          'cookieName' => $this->cookieName,
           'cookieCategories' => array_keys($cookie_categories),
         ],
       ],
@@ -160,8 +176,7 @@ class EuCookieComplianceBlockForm extends FormBase {
   /**
    * Default submission handler for saving selected categories.
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $cookie_lifetime = self::$config->get('cookie_lifetime');
+  public function submitForm(array &$form, FormStateInterface $form_state) : void {
     $values = array_reverse($form_state->getValue('categories'));
 
     $selected = [];
@@ -170,12 +185,22 @@ class EuCookieComplianceBlockForm extends FormBase {
         $selected[] = $key;
       }
     }
-    $values = $this->stringify($selected);
+    $this->submitCookieValues($selected);
+  }
 
-    $time = \Drupal::time()->getRequestTime() + ($cookie_lifetime * 24 * 60 * 60);
-    setrawcookie(self::$cookieName, '2', $time, '/');
-    setrawcookie(self::$cookieName . '-categories', $values, $time, '/');
-    setrawcookie(self::$cookieName . '-version', self::$cookiePolicyVersion, $time, '/');
+  /**
+   * Submits the cookie categories.
+   *
+   * @param array $categories
+   *   The categories.
+   */
+  private function submitCookieValues(array $categories) : void {
+    $cookie_lifetime = (int) $this->config->get('cookie_lifetime');
+    $time = $this->time->getRequestTime() + ($cookie_lifetime * 24 * 60 * 60);
+
+    setrawcookie($this->cookieName, '2', $time, '/');
+    setrawcookie($this->cookieName . '-categories', $this->stringify($categories), $time, '/');
+    setrawcookie($this->cookieName . '-version', $this->cookiePolicyVersion, $time, '/');
   }
 
   /**
@@ -187,23 +212,20 @@ class EuCookieComplianceBlockForm extends FormBase {
    *   The current state of the form.
    */
   public function submitAcceptAllHandler(array &$form, FormStateInterface $form_state) {
-    $cookie_lifetime = self::$config->get('cookie_lifetime');
-    $values = $this->stringify(array_keys($form_state->getValue('categories')));
-    $time = \Drupal::time()->getRequestTime() + ($cookie_lifetime * 24 * 60 * 60);
-    setrawcookie(self::$cookieName, '2', $time, '/');
-    setrawcookie(self::$cookieName . '-categories', $values, $time, '/');
-    setrawcookie(self::$cookieName . '-version', self::$cookiePolicyVersion, $time, '/');
+    $values = array_keys($form_state->getValue('categories'));
+    $this->submitCookieValues($values);
   }
 
   /**
    * Custom submission handler for withdrawing consent for all categories.
    */
   public function submitWithdrawHandler(array &$form, FormStateInterface $form_state) {
-    $first_read_only = !empty(self::$config->get('fix_first_cookie_category')) ? self::$config->get('fix_first_cookie_category') : FALSE;
-    if (!$first_read_only) {
-      setrawcookie(self::$cookieName, '', \Drupal::time()->getRequestTime() - 3600, '/');
+    $time = $this->time->getRequestTime() - 3600;
+
+    if (!$this->config->get('fix_first_cookie_category')) {
+      setrawcookie($this->cookieName, '', $time, '/');
     }
-    setrawcookie(self::$cookieName . '-categories', '', \Drupal::time()->getRequestTime() - 3600, '/');
+    setrawcookie($this->cookieName . '-categories', '', $time, '/');
   }
 
   /**

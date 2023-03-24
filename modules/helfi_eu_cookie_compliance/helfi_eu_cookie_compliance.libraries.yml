@@ -1,0 +1,6 @@
+eu_cookie_compliance_cookie_values:
+  version: 1.24
+  js:
+    js/eu_cookie_compliance_cookie_values.js: {}
+  dependencies:
+    - eu_cookie_compliance/eu_cookie_compliance

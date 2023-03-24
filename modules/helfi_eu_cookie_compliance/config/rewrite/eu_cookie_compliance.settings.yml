@@ -61,7 +61,7 @@ withdraw_tab_button_label: 'Privacy settings'
 withdraw_action_button_label: 'Withdraw consent'
 withdraw_enabled: false
 withdraw_button_on_info_popup: false
-save_preferences_button_label: 'Accept selected cookies'
+save_preferences_button_label: 'Accept only essential cookies'
 accept_all_categories_button_label: 'Accept all cookies'
 enable_save_preferences_button: true
 domain_all_sites: true

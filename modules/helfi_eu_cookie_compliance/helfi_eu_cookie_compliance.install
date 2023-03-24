@@ -38,3 +38,58 @@ function helfi_eu_cookie_compliance_install($is_syncing) : void {
 
   helfi_eu_cookie_compliance_grant_permissions();
 }
+
+/**
+ * Update preferences button label text.
+ */
+function helfi_eu_cookie_compliance_update_9001() : void {
+  Drupal::configFactory()->getEditable('eu_cookie_compliance.settings')
+    ->set('save_preferences_button_label', 'Accept only essential cookies')
+    ->save();
+
+  $translations = [
+    'fi' => 'Hyväksy vain välttämättömät evästeet',
+    'sv' => 'Acceptera endast nödvändiga cookies',
+  ];
+
+  foreach (['fi', 'sv'] as $langcode) {
+    \Drupal::languageManager()
+      ->getLanguageConfigOverride($langcode, 'eu_cookie_compliance.settings')
+      ->set('save_preferences_button_label', $translations[$langcode])
+      ->save();
+  }
+}
+
+/**
+ * Remove the old description field.
+ */
+function helfi_eu_cookie_compliance_update_9002() : void {
+  /** @var \Drupal\eu_cookie_compliance\CategoryStorageManager $storage */
+  $storage = \Drupal::entityTypeManager()->getStorage('cookie_category');
+
+  $languageManager = \Drupal::languageManager();
+  $currentLanguage = $languageManager->getConfigOverrideLanguage();
+
+  foreach (['en', 'fi', 'sv'] as $langcode) {
+    $languageManager->setConfigOverrideLanguage($languageManager->getLanguage($langcode));
+
+    /** @var \Drupal\eu_cookie_compliance\Entity\CookieCategory[] $entities */
+    if (!$entities = $storage->loadMultiple()) {
+      continue;
+    }
+    foreach ($entities as $entity) {
+      $entity
+        ->set('description', '')
+        ->save();
+    }
+    $languageManager->setConfigOverrideLanguage($currentLanguage);
+  }
+}
+
+/**
+ * Import updated cookie categories.
+ */
+function helfi_eu_cookie_compliance_update_9003() : void {
+  \Drupal::service('config.installer')
+    ->installDefaultConfig('module', 'helfi_eu_cookie_compliance');
+}

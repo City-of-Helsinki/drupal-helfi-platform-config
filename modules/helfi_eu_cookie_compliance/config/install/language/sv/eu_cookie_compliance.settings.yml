@@ -7,5 +7,5 @@ popup_info:
 disagree_button_label: 'Nej, tack'
 withdraw_action_button_label: 'Återkalla samtycke'
 withdraw_tab_button_label: Sekretessinställningar
-save_preferences_button_label: 'Acceptera valda cookies'
+save_preferences_button_label: 'Acceptera endast nödvändiga cookies'
 accept_all_categories_button_label: 'Acceptera alla cookies'
