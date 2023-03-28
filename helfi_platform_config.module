@@ -114,6 +114,17 @@ function helfi_platform_config_page_attachments(array &$attachments) : void {
 }
 
 /**
+ * Implements hook_page_attachments_alter().
+ */
+function helfi_platform_config_page_attachments_alter(array &$attachments): void {
+  foreach ($attachments['#attached']['html_head'] as $key => $attachment) {
+    if ($attachment[1] == 'system_meta_generator') {
+      unset($attachments['#attached']['html_head'][$key]);
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function helfi_platform_config_theme() : array {
