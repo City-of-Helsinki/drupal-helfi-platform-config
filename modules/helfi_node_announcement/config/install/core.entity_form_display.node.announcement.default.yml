@@ -12,6 +12,7 @@ dependencies:
     - hdbt_admin_tools
     - link
     - path
+    - publication_date
     - scheduler
     - select2
     - text
@@ -107,11 +108,22 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  published_at:
+    type: publication_date_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   scheduler_settings:
     weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   status:
     type: boolean_checkbox
     weight: 9

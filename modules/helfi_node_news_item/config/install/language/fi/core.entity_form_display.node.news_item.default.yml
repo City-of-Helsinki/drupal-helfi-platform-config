@@ -6,3 +6,8 @@ third_party_settings:
       label: Linkit
     group_main_image:
       label: Pääkuva
+content:
+  field_content:
+    settings:
+      title: Lohko
+      title_plural: Lohkot
