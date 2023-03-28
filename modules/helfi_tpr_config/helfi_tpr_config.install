@@ -177,3 +177,12 @@ function helfi_tpr_config_install($is_syncing) : void {
     $content_lock_settings->set('types', $content_lock_config)->save();
   }
 }
+
+/**
+ * Implements hook_update_N().
+ */
+function helfi_tpr_config_update_9001(): void {
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('config.installer')
+    ->installDefaultConfig('module', 'helfi_tpr_config');
+}

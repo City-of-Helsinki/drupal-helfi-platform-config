@@ -4,6 +4,8 @@ third_party_settings:
       label: Länkar
     group_news_item_links_wrapper:
       label: Länkar
+    group_main_image:
+      label: Huvudbild
 content:
   field_content:
     settings:

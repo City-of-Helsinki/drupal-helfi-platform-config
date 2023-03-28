@@ -79,3 +79,12 @@ function helfi_node_news_item_install($is_syncing) : void {
 
   helfi_node_news_item_grant_permissions();
 }
+
+/**
+ * Implements hook_update_N().
+ */
+function helfi_node_news_item_update_9001(): void {
+  // Re-import 'helfi_node_news_item' configuration.
+  \Drupal::service('config.installer')
+    ->installDefaultConfig('module', 'helfi_node_news_item');
+}
