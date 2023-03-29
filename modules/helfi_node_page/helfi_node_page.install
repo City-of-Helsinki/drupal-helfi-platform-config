@@ -66,3 +66,10 @@ function helfi_node_page_install($is_syncing) : void {
 
   helfi_node_page_grant_permissions();
 }
+
+/**
+ * Add news list paragraph to upper content area on basic page.
+ */
+function helfi_node_page_update_9001() : void {
+  helfi_platform_config_update_paragraph_target_types();
+}
