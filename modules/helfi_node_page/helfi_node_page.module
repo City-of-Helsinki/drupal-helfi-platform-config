@@ -28,6 +28,7 @@ function helfi_node_page_helfi_paragraph_types() : array {
       'content_liftup',
       'banner',
       'event_list',
+      'news_list',
       'from_library',
       'phasing',
       'chart',
