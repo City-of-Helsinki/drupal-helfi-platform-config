@@ -166,3 +166,14 @@ function helfi_media_update_9001() : void {
 ```
 The update hook above will re-import all configuration from `helfi_media` module's `config/install` folder.
 
+### Updating configuration coming outside of helfi_platform_config module
+
+To update configurations that doesn't originate from helfi_platform_configuration module, you must use config rewrite.
+Add configuration to config/rewrite folder and use update hook to rewrite the configuration.
+
+```php
+function helfi_base_content_update_9001() : void {
+  \Drupal::service('config_rewrite.config_rewriter')
+    ->rewriteModuleConfig('helfi_base_content');
+}
+```
