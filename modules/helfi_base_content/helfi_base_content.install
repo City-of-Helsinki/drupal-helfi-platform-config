@@ -223,3 +223,13 @@ function helfi_base_content_install($is_syncing) : void {
     $content_lock_settings->set('types', $content_lock_config)->save();
   }
 }
+
+/**
+ * UHF-8090 added and enabled new language negotiator.
+ */
+function helfi_base_content_update_9001() : void {
+  // Re-import 'helfi_platform_config' configuration.
+  \Drupal::service('config_rewrite.config_rewriter')
+    ->rewriteModuleConfig('helfi_base_content');
+}
+
