@@ -1,7 +1,0 @@
-<?php
-
-function helfi_platform_config_update_9001() : void {
-  // Re-import 'helfi_platform_config' configuration.
-  \Drupal::service('config.installer')
-    ->installDefaultConfig('module', 'helfi_platform_config');
-}
