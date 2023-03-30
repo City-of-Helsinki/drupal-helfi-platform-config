@@ -20,6 +20,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\Entity\Role;
 
 /**
@@ -70,7 +71,7 @@ function helfi_platform_config_configure_paragraph_field_handler(ParagraphTypeCo
     return;
   }
 
-  if (!isset($definitions[$type->field])) {
+  if (!isset($definitions[$type->field]) || !ParagraphsType::load($type->paragraph)) {
     return;
   }
   $field = $definitions[$type->field];
