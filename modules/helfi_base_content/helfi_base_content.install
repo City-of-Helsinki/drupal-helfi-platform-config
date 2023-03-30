@@ -228,8 +228,7 @@ function helfi_base_content_install($is_syncing) : void {
  * UHF-8090 added and enabled new language negotiator.
  */
 function helfi_base_content_update_9001() : void {
-  // Re-import 'helfi_platform_config' configuration.
+  // Re-import 'helfi_base_content' configuration.
   \Drupal::service('config_rewrite.config_rewriter')
     ->rewriteModuleConfig('helfi_base_content');
 }
-
