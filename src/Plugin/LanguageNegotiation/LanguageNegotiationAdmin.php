@@ -22,15 +22,18 @@ class LanguageNegotiationAdmin extends LanguageNegotiationMethodBase {
   /**
    * The language negotiation method id.
    */
-  const METHOD_ID = 'language-admin-preference';
+  public const METHOD_ID = 'language-admin-preference';
 
   /**
    * {@inheritdoc}
    */
-  public function getLangcode(Request $request = NULL) {
+  public function getLangcode(Request $request = NULL): ?string {
     $langcode = NULL;
 
-    if ($this->languageManager && $this->currentUser->isAuthenticated()) {
+    if ($this->languageManager && $this->currentUser->isAuthenticated()
+        && ($this->currentUser->hasPermission('access administration pages')
+        || $this->currentUser->hasPermission('view the administration theme'))
+    ) {
       $preferred_langcode = $this->currentUser->getPreferredAdminLangcode();
       $languages = $this->languageManager->getLanguages();
       if (!empty($preferred_langcode) && isset($languages[$preferred_langcode])) {
