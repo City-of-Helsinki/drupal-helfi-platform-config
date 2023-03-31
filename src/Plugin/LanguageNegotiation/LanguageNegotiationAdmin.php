@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\helfi_platform_config\Plugin\LanguageNegotiation;
 
 use Drupal\language\LanguageNegotiationMethodBase;
