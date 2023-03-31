@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class for identifying language from the user preferences.
+ * Prevents local tasks from changing based on url language parameter.
  *
  * @LanguageNegotiation(
  *   id = \Drupal\helfi_platform_config\Plugin\LanguageNegotiation\LanguageNegotiationAdmin::METHOD_ID,
