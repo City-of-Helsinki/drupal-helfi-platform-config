@@ -32,7 +32,7 @@ class LanguageNegotiationAdmin extends LanguageNegotiationMethodBase {
     $langcode = NULL;
 
     if ($this->languageManager && $this->currentUser->isAuthenticated()) {
-      $preferred_langcode = $this->currentUser->getPreferredAdminLangcode();
+      $preferred_langcode = $this->currentUser->getPreferredAdminLangcode(FALSE);
       $languages = $this->languageManager->getLanguages();
       if (!empty($preferred_langcode) && isset($languages[$preferred_langcode])) {
         $langcode = $preferred_langcode;
