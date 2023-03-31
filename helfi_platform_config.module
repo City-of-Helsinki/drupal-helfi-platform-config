@@ -319,3 +319,10 @@ function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
     $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_platform_config_form_user_form_alter(array &$form) {
+  $form['language']['preferred_admin_langcode']['#access'] = TRUE;
+}
