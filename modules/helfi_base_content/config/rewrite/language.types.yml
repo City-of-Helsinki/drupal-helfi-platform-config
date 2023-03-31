@@ -1,3 +1,5 @@
+_core:
+  default_config_hash: dqouFqVseNJNvEjsoYKxbinFOITuCxYhi4y2OTNQP_8
 all:
   - language_interface
   - language_content
@@ -9,7 +11,6 @@ negotiation:
   language_content:
     enabled:
       language-url: -20
-      language-interface: -15
       language-selected: -14
     method_weights:
       language-url: -20
@@ -26,13 +27,13 @@ negotiation:
       language-url-fallback: 1
   language_interface:
     enabled:
-      language-admin-preference: -19
-      language-url: -18
+      language-admin-preference: -20
+      language-url: -19
       language-selected: -14
     method_weights:
-      language-user-admin: -20
-      language-admin-preference: -19
-      language-url: -18
+      language-user-admin: -18
+      language-admin-preference: -20
+      language-url: -19
       language-session: -17
       language-user: -16
       language-browser: -15
