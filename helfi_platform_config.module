@@ -20,6 +20,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\Entity\Role;
 
 /**
@@ -45,52 +46,57 @@ function helfi_platform_config_update_paragraph_target_types() : void {
   $moduleHandler = Drupal::service('module_handler');
   $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
 
+  $collection = [];
   foreach ($paragraphTypes as $type) {
     if (!$type instanceof ParagraphTypeCollection) {
       throw new \LogicException(
         sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
       );
     }
-    helfi_platform_config_configure_paragraph_field_handler($type);
-  }
-}
 
-/**
- * Enable paragraph type for given entity/bundle/field combination.
- *
- * @param \Drupal\helfi_platform_config\DTO\ParagraphTypeCollection $type
- *   The paragraph type DTO.
- */
-function helfi_platform_config_configure_paragraph_field_handler(ParagraphTypeCollection $type) : void {
+    if (!ParagraphsType::load($type->paragraph)) {
+      continue;
+    }
+    $collection[$type->entityType][$type->bundle][$type->field][] = $type;
+  }
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
   $entityFieldManager = Drupal::service('entity_field.manager');
 
-  // Nothing to do if the entity type/bundle does not exist.
-  if (!$definitions = $entityFieldManager->getFieldDefinitions($type->entityType, $type->bundle)) {
-    return;
-  }
+  foreach ($collection as $entity_type => $bundles) {
+    foreach ($bundles as $bundle => $fields) {
+      // Nothing to do if the entity type/bundle does not exist.
+      if (!$definitions = $entityFieldManager->getFieldDefinitions($entity_type, $bundle)) {
+        continue;
+      }
 
-  if (!isset($definitions[$type->field])) {
-    return;
-  }
-  $field = $definitions[$type->field];
+      foreach ($fields as $name => $types) {
+        if (!isset($definitions[$name])) {
+          continue;
+        }
+        $field = $definitions[$name];
 
-  $handler = $field->getSetting('handler');
-  if (!str_contains($handler, 'paragraph') && !str_contains($handler, 'default')) {
-    throw new \InvalidArgumentException(
-      sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
-    );
-  }
-  $handlerSettings = $field->getSetting('handler_settings');
+        $handler = $field->getSetting('handler');
 
-  if (!isset($handlerSettings['target_bundles'][$type->paragraph])) {
-    $handlerSettings['target_bundles'][$type->paragraph] = $type->paragraph;
-    $handlerSettings['target_bundles_drag_drop'][$type->paragraph] = [
-      'weight' => $type->weight,
-      'enabled' => TRUE,
-    ];
-    $field->setSetting('handler_settings', $handlerSettings);
-    $field->save();
+        if (!str_contains($handler, 'paragraph') && !str_contains($handler, 'default')) {
+          throw new \InvalidArgumentException(
+            sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
+          );
+        }
+        $handlerSettings = $field->getSetting('handler_settings');
+        $handlerSettings['target_bundles'] = [];
+        $handlerSettings['target_bundles_drag_drop'] = [];
+
+        foreach ($types as $type) {
+          $handlerSettings['target_bundles'][$type->paragraph] = $type->paragraph;
+          $handlerSettings['target_bundles_drag_drop'][$type->paragraph] = [
+            'weight' => $type->weight,
+            'enabled' => TRUE,
+          ];
+        }
+        $field->setSetting('handler_settings', $handlerSettings);
+        $field->save();
+      }
+    }
   }
 }
 
