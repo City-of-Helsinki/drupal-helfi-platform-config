@@ -184,4 +184,5 @@ function helfi_tpr_config_install($is_syncing) : void {
 function helfi_tpr_config_update_9034(): void {
   \Drupal::service('config.installer')
     ->installDefaultConfig('module', 'helfi_tpr_config');
+  helfi_platform_config_update_paragraph_target_types();
 }
