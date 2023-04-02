@@ -181,7 +181,7 @@ function helfi_tpr_config_install($is_syncing) : void {
 /**
  * UHF-8099 Update field_group translations for the unit search paragraph.
  */
-function helfi_tpr_config_update_9034(): void {
+function helfi_tpr_config_update_9035(): void {
   \Drupal::service('config.installer')
     ->installDefaultConfig('module', 'helfi_tpr_config');
   helfi_platform_config_update_paragraph_target_types();

@@ -162,9 +162,13 @@ function helfi_media_update_9001() : void {
   // Re-import 'helfi_media' configuration.
   \Drupal::service('config.installer')
     ->installDefaultConfig('module', 'helfi_media');
+  // This is required if module defines paragraph fields.
+  // helfi_platform_config_update_paragraph_target_types();
 }
 ```
 The update hook above will re-import all configuration from `helfi_media` module's `config/install` folder.
+
+_NOTE_: If the module defines paragraph fields, you must call `helfi_platform_config_update_paragraph_target_types()` function manually after `::installDefaultConfig`.
 
 ### Updating configuration coming outside of helfi_platform_config module
 
