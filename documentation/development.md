@@ -155,25 +155,13 @@ function mymodule_update_9001(): void {
 
 ### Update all configuration
 
-Use `config.installer` service to replace existing configuration:
+Use `helfi_platform_config.config_update_helper` service to replace existing configuration:
 
 ```php
 function helfi_media_update_9001() : void {
   // Re-import 'helfi_media' configuration.
-  \Drupal::service('config.installer')
-    ->installDefaultConfig('module', 'helfi_media');
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_media');
 }
 ```
-The update hook above will re-import all configuration from `helfi_media` module's `config/install` folder.
-
-### Updating configuration coming outside of helfi_platform_config module
-
-To update configurations that doesn't originate from helfi_platform_configuration module, you must use config rewrite.
-Add configuration to config/rewrite folder and use update hook to rewrite the configuration.
-
-```php
-function helfi_base_content_update_9001() : void {
-  \Drupal::service('config_rewrite.config_rewriter')
-    ->rewriteModuleConfig('helfi_base_content');
-}
-```
+The update hook above will re-import all configuration from `helfi_media` module's `config/install` and `config/rewrite` folders and run necessary post-update hooks, such as `helfi_platform_config_update_paragraph_target_types()`.
