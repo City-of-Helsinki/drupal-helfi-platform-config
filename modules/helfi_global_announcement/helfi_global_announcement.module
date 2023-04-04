@@ -95,6 +95,7 @@ function helfi_global_announcement_entity_bundle_field_info_alter(
 }
 
 function helfi_global_announcement_cron(): void {
+  $store = \Drupal::service('tempstore.shared')->get('global_announcement');
   $globalEntityStorage = \Drupal::entityTypeManager()
     ->getStorage('helfi_announcements');
 
@@ -102,7 +103,6 @@ function helfi_global_announcement_cron(): void {
     ->loadMultiple();
 
   $newHash = hash('sha256', serialize($externalAnnouncements));
-  $store = \Drupal::service('tempstore.shared')->get('global_announcement');
   $hash = $store->get('announcements');
   if ($hash !== $newHash) {
     $store->set('announcements', $newHash);
