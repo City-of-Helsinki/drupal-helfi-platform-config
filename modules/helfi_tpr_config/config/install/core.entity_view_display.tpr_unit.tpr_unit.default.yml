@@ -7,6 +7,7 @@ dependencies:
     - field.field.tpr_unit.tpr_unit.field_lower_content
     - field.field.tpr_unit.tpr_unit.field_metatags
     - field.field.tpr_unit.tpr_unit.field_unit_type
+    - responsive_image.styles.image__3_2
   module:
     - address
     - entity_reference_revisions
