@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.tpr_unit.tpr_unit.field_content
-    - field.field.tpr_unit.tpr_unit.field_districts
     - field.field.tpr_unit.tpr_unit.field_lower_content
     - field.field.tpr_unit.tpr_unit.field_metatags
     - field.field.tpr_unit.tpr_unit.field_unit_type
@@ -119,16 +118,6 @@ content:
         add_above: '0'
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
-    third_party_settings: {  }
-  field_districts:
-    type: select2_entity_reference
-    weight: 29
-    region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: STARTS_WITH
-      match_limit: 10
     third_party_settings: {  }
   field_lower_content:
     type: paragraphs
