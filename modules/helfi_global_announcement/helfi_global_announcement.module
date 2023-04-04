@@ -94,6 +94,9 @@ function helfi_global_announcement_entity_bundle_field_info_alter(
   }
 }
 
+/**
+ * Implements hook_cron().
+ */
 function helfi_global_announcement_cron(): void {
   $store = \Drupal::service('tempstore.shared')->get('global_announcement');
   $globalEntityStorage = \Drupal::entityTypeManager()
