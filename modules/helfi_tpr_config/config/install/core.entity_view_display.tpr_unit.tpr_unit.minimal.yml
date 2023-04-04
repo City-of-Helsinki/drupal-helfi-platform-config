@@ -49,7 +49,6 @@ hidden:
   description: true
   email: true
   field_content: true
-  field_districts: true
   field_lower_content: true
   field_metatags: true
   field_unit_type: true
