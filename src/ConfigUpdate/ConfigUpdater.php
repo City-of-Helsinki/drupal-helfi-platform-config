@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_platform_config\Helper;
+namespace Drupal\helfi_platform_config\ConfigUpdate;
 
 use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Config\ConfigInstallerInterface;
@@ -10,7 +10,7 @@ use Drupal\Core\Config\ConfigInstallerInterface;
 /**
  * A helper class to deal with config updates.
  */
-final class ConfigUpdate {
+final class ConfigUpdater {
 
   /**
    * Constructs a new instance.
