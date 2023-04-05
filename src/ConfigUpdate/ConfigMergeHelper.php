@@ -3,7 +3,7 @@
 namespace Drupal\helfi_platform_config\ConfigUpdate;
 
 /**
- * A helper class to deal with config merging.
+ * Helper class to deal with config merging.
  */
 class ConfigMergeHelper {
 

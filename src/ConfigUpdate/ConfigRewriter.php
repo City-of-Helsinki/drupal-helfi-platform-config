@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_platform_config\ConfigUpdate;
 
-use Drupal\config_rewrite\ConfigRewriter;
+use Drupal\config_rewrite\ConfigRewriter as ConfigRewriterBase;
 
 /**
  * A service decorating config rewriter.
  */
-final class ConfigRewriterDecorator extends ConfigRewriter {
+final class ConfigRewriter extends ConfigRewriterBase {
 
   /**
    * {@inheritdoc}
