@@ -251,7 +251,8 @@ function helfi_platform_config_tokens(
 
   foreach ($tokens as $name => $original) {
     if ($name === 'page-title-suffix') {
-      $language = Drupal::languageManager()->getCurrentLanguage();
+      $language = Drupal::languageManager()
+        ->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE);
 
       $replacements[$original] = match ($language->getId()) {
         'fi' => 'Helsingin kaupunki',
