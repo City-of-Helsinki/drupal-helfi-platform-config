@@ -84,6 +84,7 @@ function helfi_platform_config_field_config_presave(
   }
   $field->setSetting('handler_settings', $handlerSettings);
 }
+
 /**
  * Invokes all helfi_paragraph_types hooks and updates the field configuration.
  */
