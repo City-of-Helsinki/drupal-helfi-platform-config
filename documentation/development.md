@@ -72,7 +72,7 @@ function mymodule_install() : void {
 
 All paragraph reference fields are stripped off `target_bundles` field configuration, so we don't have to add hard dependencies between modules.
 
-The target bundles are overridden every time a module is installed (by `helfi_platform_config_modules_installed()` hook) or when `helfi_platform_config_update_paragraph_target_types()` is called manually. The target bundles list is compiled from modules implementing `hook_helfi_paragraph_types()` hook.
+The target bundles are overridden every time field configuration is saved (by `helfi_platform_config_field_config_presave()` hook). The target bundles list is compiled from modules implementing `hook_helfi_paragraph_types()` hook.
 
 The module using paragraphs should define a `hook_helfi_paragraph_types()` hook that returns an array of `\Drupal\helfi_platform_config\DTO\ParagraphTypeCollection` objects. See the class for more documentation and [helfi_node_page](/modules/helfi_node_page/helfi_node_page.module) module for an example implementation.
 
@@ -145,14 +145,6 @@ function mymodule_update_9001(): void {
 }
 ```
 
-### Update paragraph reference fields
-
-```php
-function mymodule_update_9001(): void {
-  helfi_platform_config_update_paragraph_target_types();
-}
-```
-
 ### Update all configuration
 
 Use `helfi_platform_config.config_update_helper` service to replace existing configuration:
@@ -164,4 +156,4 @@ function helfi_media_update_9001() : void {
     ->update('helfi_media');
 }
 ```
-The update hook above will re-import all configuration from `helfi_media` module's `config/install` and `config/rewrite` folders and run necessary post-update hooks, such as `helfi_platform_config_update_paragraph_target_types()`.
+The update hook above will re-import all configuration from `helfi_media` module's `config/install` and `config/rewrite` folders and run necessary post-update hooks.
