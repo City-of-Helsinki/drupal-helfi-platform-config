@@ -83,9 +83,6 @@
             "drupal/eu_cookie_compliance": {
                 "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/923b35f699820b544397a35b7696570e101cd02c/patches/eu_cookie_compliance_block_8.x-1.24.patch"
             },
-            "drupal/linkit": {
-              "[#UHF-1872] Linkit support for link field (https://www.drupal.org/i/2712951)": "https://www.drupal.org/files/issues/2023-03-07/2712951_329.6.x.diff"
-            },
             "drupal/paragraphs": {
                 "https://www.drupal.org/project/paragraphs/issues/2904705#comment-13836790": "https://www.drupal.org/files/issues/2020-09-25/2904705-115.patch",
                 "[#UHF-2059] Enhancements for the Admin UI": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/fdccb32397cc6fa19b4d0077b21a2b18aa6be297/patches/helfi_customizations_for_paragraphs_widget_8.x-1.12.patch"
