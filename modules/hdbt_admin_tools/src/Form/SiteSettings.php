@@ -185,10 +185,10 @@ class SiteSettings extends ConfigFormBase {
   protected function getSiteSettings(): ImmutableConfig|Config|LanguageConfigOverride {
     if (
       $this->languageManager->getDefaultLanguage()->getId() !==
-      $this->languageManager->getCurrentLanguage()->getId()
+      $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId()
     ) {
       return $this->languageManager->getLanguageConfigOverride(
-        $this->languageManager->getCurrentLanguage()->getId(),
+        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId(),
         $this->configName
       );
     }
@@ -245,7 +245,11 @@ class SiteSettings extends ConfigFormBase {
     }
 
     // Save the footer settings to current language only.
-    $this->saveConfiguration('footer_settings', $form_state, $this->languageManager->getCurrentLanguage());
+    $this->saveConfiguration(
+      'footer_settings',
+      $form_state,
+      $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)
+    );
   }
 
   /**

@@ -3,6 +3,7 @@
 namespace Drupal\helfi_node_announcement\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\node\NodeInterface;
 
 /**
@@ -28,13 +29,16 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
     ];
 
     $currentEntity = $this->getCurrentPageEntity(array_keys($entityTypeFields));
+    $langcode = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
 
     // Get all published announcement nodes.
     $nids = \Drupal::entityQuery('node')
       ->accessCheck(TRUE)
       ->condition('type', 'announcement')
       ->condition('status', NodeInterface::PUBLISHED)
-      ->condition('langcode', $this->languageManager->getCurrentLanguage()->getId())
+      ->condition('langcode', $langcode)
       ->execute();
     $announcementNodes = $this->entityTypeManager->getStorage('node')->loadMultiple($nids);
 

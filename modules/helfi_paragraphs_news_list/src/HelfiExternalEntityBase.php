@@ -3,6 +3,7 @@
 namespace Drupal\helfi_paragraphs_news_list;
 
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
@@ -166,7 +167,9 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     array $parameters,
   ) : array {
     try {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+      $langcode = $this->languageManager
+        ->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)
+        ->getId();
       $uri = vsprintf('%s%s?%s', [
         $this->environment->getInternalAddress($langcode),
         $endpoint,
