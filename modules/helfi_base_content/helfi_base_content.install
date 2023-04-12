@@ -223,3 +223,12 @@ function helfi_base_content_install($is_syncing) : void {
     $content_lock_settings->set('types', $content_lock_config)->save();
   }
 }
+
+/**
+ * UHF-8274 pathauto max length from 100 to 255.
+ */
+function helfi_base_content_update_9001() : void {
+  // Re-import 'helfi_base_content' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_base_content');
+}
