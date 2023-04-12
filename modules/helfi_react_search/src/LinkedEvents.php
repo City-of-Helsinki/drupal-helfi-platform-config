@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_react_search;
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Cache\CacheBackendInterface;
 use GuzzleHttp\ClientInterface;
@@ -109,7 +110,9 @@ class LinkedEvents extends EventsApiBase {
       'sort' => 'end_time',
       'start' => 'now',
       'super_event_type' => 'umbrella,none',
-      'language' => \Drupal::languageManager()->getCurrentLanguage()->getId(),
+      'language' => \Drupal::languageManager()
+        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+        ->getId(),
     ];
 
     $options = array_merge($defaultOptions, $options);

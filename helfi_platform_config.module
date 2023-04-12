@@ -18,6 +18,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\field\FieldConfigInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\paragraphs\Entity\ParagraphsType;
@@ -39,6 +40,52 @@ function helfi_platform_config_modules_installed(array $modules, bool $is_syncin
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function helfi_platform_config_field_config_presave(
+  FieldConfigInterface $field
+) : void {
+  if ($field->isSyncing() || $field->getType() !== 'entity_reference_revisions') {
+    return;
+  }
+  static $collection = [];
+
+  if (!$collection) {
+    /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+    $moduleHandler = Drupal::service('module_handler');
+    $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
+
+    $collection = [];
+    foreach ($paragraphTypes as $type) {
+      if (!$type instanceof ParagraphTypeCollection) {
+        throw new LogicException(
+          sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
+        );
+      }
+
+      if (!ParagraphsType::load($type->paragraph)) {
+        continue;
+      }
+      $collection[$type->entityType][$type->bundle][$type->field][] = $type;
+    }
+  }
+  if (!isset($collection[$field->getTargetEntityTypeId()][$field->getTargetBundle()][$field->getName()])) {
+    return;
+  }
+  $paragraphTypes = $collection[$field->getTargetEntityTypeId()][$field->getTargetBundle()][$field->getName()];
+  $handlerSettings = $field->getSetting('handler_settings');
+
+  foreach ($paragraphTypes as $type) {
+    $handlerSettings['target_bundles'][$type->paragraph] = $type->paragraph;
+    $handlerSettings['target_bundles_drag_drop'][$type->paragraph] = [
+      'weight' => $type->weight,
+      'enabled' => TRUE,
+    ];
+  }
+  $field->setSetting('handler_settings', $handlerSettings);
+}
+
+/**
  * Invokes all helfi_paragraph_types hooks and updates the field configuration.
  */
 function helfi_platform_config_update_paragraph_target_types() : void {
@@ -46,57 +93,25 @@ function helfi_platform_config_update_paragraph_target_types() : void {
   $moduleHandler = Drupal::service('module_handler');
   $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
 
-  $collection = [];
-  foreach ($paragraphTypes as $type) {
-    if (!$type instanceof ParagraphTypeCollection) {
-      throw new \LogicException(
-        sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
-      );
-    }
-
-    if (!ParagraphsType::load($type->paragraph)) {
-      continue;
-    }
-    $collection[$type->entityType][$type->bundle][$type->field][] = $type;
-  }
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
   $entityFieldManager = Drupal::service('entity_field.manager');
 
-  foreach ($collection as $entity_type => $bundles) {
-    foreach ($bundles as $bundle => $fields) {
-      // Nothing to do if the entity type/bundle does not exist.
-      if (!$definitions = $entityFieldManager->getFieldDefinitions($entity_type, $bundle)) {
-        continue;
-      }
-
-      foreach ($fields as $name => $types) {
-        if (!isset($definitions[$name])) {
-          continue;
-        }
-        $field = $definitions[$name];
-
-        $handler = $field->getSetting('handler');
-
-        if (!str_contains($handler, 'paragraph') && !str_contains($handler, 'default')) {
-          throw new \InvalidArgumentException(
-            sprintf('"%s" field is not a valid paragraph reference', $field->getName()),
-          );
-        }
-        $handlerSettings = $field->getSetting('handler_settings');
-        $handlerSettings['target_bundles'] = [];
-        $handlerSettings['target_bundles_drag_drop'] = [];
-
-        foreach ($types as $type) {
-          $handlerSettings['target_bundles'][$type->paragraph] = $type->paragraph;
-          $handlerSettings['target_bundles_drag_drop'][$type->paragraph] = [
-            'weight' => $type->weight,
-            'enabled' => TRUE,
-          ];
-        }
-        $field->setSetting('handler_settings', $handlerSettings);
-        $field->save();
-      }
+  foreach ($paragraphTypes as $type) {
+    if (!$type instanceof ParagraphTypeCollection) {
+      throw new LogicException(
+        sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
+      );
     }
+    if (!$definitions = $entityFieldManager->getFieldDefinitions($type->entityType, $type->bundle)) {
+      continue;
+    }
+    if (!isset($definitions[$type->field])) {
+      continue;
+    }
+    $field = $definitions[$type->field];
+    // Save the field to trigger re-build of target_bundles.
+    // @see helfi_platform_config_field_config_presave().
+    $field->save();
   }
 }
 
@@ -109,6 +124,13 @@ function helfi_platform_config_module_implements_alter(&$implementations, $hook)
     if ($moduleHandler->moduleExists('locale')) {
       unset($implementations['locale']);
     }
+  }
+
+  // Move our field_config_presave hook to the top of the list, so it's run
+  // before field module.
+  if ($hook === 'field_config_presave') {
+    $group = $implementations['helfi_platform_config'];
+    $implementations = ['helfi_platform_config' => $group] + $implementations;
   }
 }
 
@@ -230,7 +252,7 @@ function helfi_platform_config_token_info() : array {
 function helfi_platform_config_grant_permissions(array $map): void {
   foreach ($map as $rid => $permissions) {
     if (!$role = Role::load($rid)) {
-      throw new \InvalidArgumentException("Role ($rid) not found.");
+      throw new InvalidArgumentException("Role ($rid) not found.");
     }
     array_map(fn (string $permission) => $role->grantPermission($permission), $permissions);
     $role->save();
@@ -251,7 +273,8 @@ function helfi_platform_config_tokens(
 
   foreach ($tokens as $name => $original) {
     if ($name === 'page-title-suffix') {
-      $language = Drupal::languageManager()->getCurrentLanguage();
+      $language = Drupal::languageManager()
+        ->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE);
 
       $replacements[$original] = match ($language->getId()) {
         'fi' => 'Helsingin kaupunki',
@@ -279,14 +302,14 @@ function helfi_platform_config_system_breadcrumb_alter(
   }
 
   /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
-  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
+  $resolver = Drupal::service('helfi_api_base.environment_resolver');
 
   // Do nothing if the current project is not in environments list.
   try {
     $activeEnvironment = $resolver->getActiveEnvironment()->getEnvironmentName();
     $environment = $resolver->getEnvironment(Project::ETUSIVU, $activeEnvironment);
   }
-  catch (\Exception $e) {
+  catch (Exception $e) {
     return;
   }
 
@@ -298,7 +321,7 @@ function helfi_platform_config_system_breadcrumb_alter(
   try {
     $url = $environment->getUrl($currentLanguage);
   }
-  catch (\Exception $e) {
+  catch (Exception $e) {
     $url = $environment->getUrl('en');
   }
 

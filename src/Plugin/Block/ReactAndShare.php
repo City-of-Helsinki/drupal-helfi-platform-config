@@ -3,6 +3,7 @@
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 
 /**
@@ -35,7 +36,7 @@ class ReactAndShare extends BlockBase {
    */
   public function build() {
     $langcode = $this->languageManager
-      ->getCurrentLanguage()
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
 
     if (!$apikey = getenv('REACT_AND_SHARE_APIKEY_' . strtoupper($langcode))) {
