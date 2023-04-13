@@ -15,8 +15,8 @@
  *   - view_mode: View mode; e.g., 'full', 'teaser'...
  */
 function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
-  $config = Drupal::config('helfi_calculator.calculator_settings');
-  $calculator_settings = $config->get('calculator_settings');
+  $config = Drupal::config('helfi_calculator.settings');
+  $calculator_settings = $config->get('calculators');
   $active = [];
   foreach ($calculator_settings as $key => $value) {
     $variables['#attached']['drupalSettings'][$key] = $value['json'];

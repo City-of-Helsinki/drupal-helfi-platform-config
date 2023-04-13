@@ -11,10 +11,12 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\Config;
 use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\Config\LanguageConfigOverride;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\language\ConfigurableLanguageManagerInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class CalculatorSettings extends ConfigFormBase {
 
-  const CALCULATOR_SETTINGS_CONFIGURATION = 'helfi_calculator.calculator_settings';
+  const CALCULATOR_SETTINGS_CONFIGURATION = 'helfi_calculator.settings';
 
   /**
    * The configurable language manager.
@@ -61,7 +63,7 @@ class CalculatorSettings extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'helfi_calculator.calculator_settings',
+      'helfi_calculator.settings',
     ];
   }
 
@@ -70,6 +72,39 @@ class CalculatorSettings extends ConfigFormBase {
    */
   public function getFormId() {
     return 'helfi_calculator_calculator_settings';
+  }
+
+  /**
+   * Get translated calculator label value from configuration.
+   *
+   * @param string $calculator
+   *   Calculator machine name.
+   *
+   * @return string
+   *   Returns translated calculator label or original label if there is no
+   *   translation.
+   */
+  protected function getCalculatorLabel(string $calculator): string {
+    if (
+      $this->languageManager->getDefaultLanguage()->getId() !==
+      $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId()
+    ) {
+      $configuration = $this->languageManager->getLanguageConfigOverride(
+        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId(),
+        'helfi_calculator.settings'
+      );
+      if (
+        !empty($configuration->get('calculators')) &&
+        array_key_exists('label', $configuration->get('calculators')[$calculator])
+      ) {
+        return $configuration->get('calculators')[$calculator]['label'];
+      }
+    }
+    if (array_key_exists('label',  $this->config('helfi_calculator.settings')->get('calculators')[$calculator])) {
+      return $this->config('helfi_calculator.settings')->get('calculators')[$calculator]['label'];
+    }
+
+    return '';
   }
 
   /**
@@ -83,27 +118,26 @@ class CalculatorSettings extends ConfigFormBase {
     $form['#prefix'] = '<div class="layer-wrapper"><h2>' . t('Available calculators') . '</h2>';
     $form['#suffix'] = '</div>';
 
-    $calculators = $settings->get('calculator_settings');
+    $calculators = $settings->get('calculators');
 
     foreach ($calculators as $key => $value) {
-      $title = ucfirst(str_replace("_", " ", $key));
-
-      $form['calculator_settings'][$key] = [
+      $a = $this->getCalculatorLabel($key);
+      $form['calculators'][$key] = [
         '#type' => 'details',
-        '#title' => $title,
-        '#open' => $settings->get('calculator_settings')[$key]['active'],
+        '#title' => $this->getCalculatorLabel($key),
+        '#open' => $settings->get('calculators')[$key]['active'],
       ];
 
-      $form['calculator_settings'][$key]['active'] = [
+      $form['calculators'][$key]['active'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('On/off'),
-        '#default_value' => $settings->get('calculator_settings')[$key]['active'],
+        '#default_value' => $settings->get('calculators')[$key]['active'],
       ];
 
-      $form['calculator_settings'][$key]['json'] = [
+      $form['calculators'][$key]['json'] = [
         '#type' => 'textarea',
         '#title' => $this->t('Calculator data'),
-        '#default_value' => $settings->get('calculator_settings')[$key]['json'],
+        '#default_value' => $settings->get('calculators')[$key]['json'],
       ];
     }
 
@@ -126,55 +160,60 @@ class CalculatorSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save calculator settings (active, json).
-    $this->saveConfiguration('calculator_settings', $form_state);
+    $calculators = $this->configFactory->getEditable($this->configName)->get('calculators');
+
+    foreach ($calculators as $machine_name => &$calculator) {
+      $calculator['active'] = (bool) $form_state->getValue('calculators')[$machine_name]['active'];
+      $calculator['json'] = $form_state->getValue('calculators')[$machine_name]['json'];
+    }
+
+    $settings = $this->configFactory->getEditable($this->configName);
+    $settings->set('calculators', $calculators)->save();
   }
 
   /**
-   * Save configuration.
+   * Get active calculators list.
    *
-   * @param string $setting
-   *   Setting name as a string.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   Current form state.
+   * @return array
+   *   Returns active calculators list.
    */
-  protected function saveConfiguration(string $setting, FormStateInterface $form_state) {
-    $settings = $this->configFactory->getEditable($this->configName);
+  public static function getActiveCalculators(): array {
+    $language_manager = \Drupal::languageManager();
+    $calculator_settings = \Drupal::config('helfi_calculator.settings')
+      ->get('calculators');
 
-    $settings->set($setting, $form_state->getValue($setting))->save();
+    $allowed_values = [
+      'disabled' => t('Disabled'),
+    ];
 
-    $calculators = $settings->get('calculator_settings');
+    foreach ($calculator_settings as $machine_name => $configuration) {
+      if ($configuration['active']) {
+        $calculator_label = $machine_name;
 
-    $config_factory = \Drupal::configFactory();
-    $active_calculators = $config_factory->getEditable('field.storage.paragraph.field_calculator');
-    $active_calculators_data = $active_calculators->getRawData();
+        if (array_key_exists('label',  $calculator_settings[$machine_name])) {
+          $calculator_label = $calculator_settings[$machine_name]['label'];
+        }
 
-    $active = [];
+        if (
+          $language_manager->getDefaultLanguage()->getId() !==
+          $language_manager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId()
+        ) {
+          $configuration = $language_manager->getLanguageConfigOverride(
+            $language_manager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId(),
+            'helfi_calculator.settings'
+          );
+          if (
+            isset($configuration->get('calculators')[$machine_name]) &&
+            array_key_exists('label', $configuration->get('calculators')[$machine_name])
+          ) {
+            $calculator_label = $configuration->get('calculators')[$machine_name]['label'];
+          }
+        }
 
-    // Get the first element (disabled) from allowed values and keep it.
-    $disabled = $active_calculators_data['settings']['allowed_values'][0];
-    $active[] = $disabled;
-
-    foreach ($calculators as $key => $value) {
-      if ($value['active']) {
-        $str = ucfirst(str_replace("_", " ", $key));
-        $calculator = [
-          'value' => $key,
-          'label' => $str,
-        ];
-        array_push($active, $calculator);
+        $allowed_values[$machine_name] = $calculator_label;
       }
-    };
-
-    // Update calculator paragraph based on active calculators.
-    $active_calculators_data['settings']['allowed_values'] = $active;
-    $active_calculators->setData($active_calculators_data)->save(TRUE);
-
-    // Invalidate caches.
-    Cache::invalidateTags($settings->getCacheTags());
-
-    // Invalidate paragraph related caches.
-    \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+    }
+    return $allowed_values;
   }
 
 }

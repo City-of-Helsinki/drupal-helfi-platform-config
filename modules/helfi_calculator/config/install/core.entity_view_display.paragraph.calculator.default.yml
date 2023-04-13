@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.calculator.field_calculator
-    - field.field.paragraph.calculator.field_calculator_description
     - field.field.paragraph.calculator.field_calculator_title
     - paragraphs.paragraphs_type.calculator
   module:
@@ -20,13 +19,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 2
-    region: content
-  field_calculator_description:
-    type: text_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
     region: content
   field_calculator_title:
     type: string

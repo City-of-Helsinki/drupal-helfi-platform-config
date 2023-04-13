@@ -1,74 +1,19 @@
-helfi_calculator.calculator_settings:
+helfi_calculator.settings:
   type: config_object
   label: 'Calculator settings'
   mapping:
-    house_cleaning_service_voucher:
-      label: 'House cleaning service voucher'
-      type: mapping
-      mapping:
-        active:
-          label: 'Is active'
-          type: boolean
-        json:
-          label: Json
-          type: text
-    home_care_service_voucher:
-      label: 'Home care service voucher'
-      type: mapping
-      mapping:
-        active:
-          label: 'Is active'
-          type: boolean
-        json:
-          label: Json
-          type: text
-    home_care_client_payment:
-      label: 'Home care client fee'
-      type: mapping
-      mapping:
-        active:
-          label: 'Is active'
-          type: boolean
-        json:
-          label: Json
-          type: text
-    service_housing_service_voucher:
-      label: '24-hour housing service voucher'
-      type: mapping
-      mapping:
-        active:
-          label: 'Is active'
-          type: boolean
-        json:
-          label: Json
-          type: text
-    family_with_kids_home_service_client_payment:
-      label: 'Families home services client fee'
-      type: mapping
-      mapping:
-        active:
-          label: 'Is active'
-          type: boolean
-        json:
-          label: Json
-          type: text
-    daycare_payment:
-      label: 'Early childhood education fee'
-      type: mapping
-      mapping:
-        active:
-          label: 'Is active'
-          type: boolean
-        json:
-          label: Json
-          type: text
-    oral_health_care_procedure:
-      label: 'Oral health care procedure'
-      type: mapping
-      mapping:
-        active:
-          label: 'Is active'
-          type: boolean
-        json:
-          label: Json
-          type: text
+    calculators:
+      type: sequence
+      label: Calculators
+      sequence:
+        type: mapping
+        mapping:
+          active:
+            label: 'Is active'
+            type: boolean
+          json:
+            label: Json
+            type: text
+          label:
+            label: 'Calculator label'
+            type: label
