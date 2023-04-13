@@ -119,7 +119,6 @@ class CalculatorSettings extends ConfigFormBase {
     $calculators = $settings->get('calculators');
 
     foreach ($calculators as $key => $value) {
-      $a = $this->getCalculatorLabel($key);
       $form['calculators'][$key] = [
         '#type' => 'details',
         '#title' => $this->getCalculatorLabel($key),
