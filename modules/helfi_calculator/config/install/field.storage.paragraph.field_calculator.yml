@@ -9,11 +9,8 @@ field_name: field_calculator
 entity_type: paragraph
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: disabled
-      label: Disabled
-  allowed_values_function: ''
+  allowed_values: {  }
+  allowed_values_function: 'Drupal\helfi_calculator\Form\CalculatorSettings::getActiveCalculators'
 module: options
 locked: false
 cardinality: 1
