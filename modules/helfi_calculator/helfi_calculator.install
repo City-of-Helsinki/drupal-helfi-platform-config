@@ -24,11 +24,3 @@ function helfi_calculator_install() : void {
   $config->set('ignored_config_entities', $ignored)
     ->save();
 }
-
-/**
- * UHF-7568 update calculator labels.
- */
-function helfi_calculator_update_9001() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_calculator');
-}
