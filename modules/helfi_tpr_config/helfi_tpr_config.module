@@ -10,6 +10,7 @@ declare(strict_types=1);
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\linkit\Entity\Profile;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
@@ -136,6 +137,68 @@ function helfi_tpr_config_themes_installed($theme_list) {
       }
     }
   }
+}
+
+/**
+ * Get linkit profile matchers for the TPR unit and TPR service.
+ *
+ * @return array
+ *   Returns TPR entity matchers for linkit profile.
+ */
+function helfi_tpr_config_get_linkit_profile_matchers(): array {
+  return [
+    [
+      'uuid' => '744298c6-f701-49e7-ba32-bed4e527cffc',
+      'id' => 'entity:tpr_unit',
+      'weight' => -1,
+      'settings' => [
+        'metadata' => '',
+        'bundles' => NULL,
+        'group_by_bundle' => NULL,
+        'substitution_type' => 'canonical',
+        'limit' => 20,
+      ],
+    ],
+    [
+      'uuid' => '8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649',
+      'id' => 'entity:tpr_service',
+      'weight' => -2,
+      'settings' => [
+        'metadata' => '',
+        'bundles' => NULL,
+        'group_by_bundle' => NULL,
+        'substitution_type' => 'canonical',
+        'limit' => 20,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function helfi_tpr_config_linkit_profile_presave(Profile $profile) : void {
+  if ($profile->isSyncing() || $profile->id() !== 'helfi') {
+    return;
+  }
+
+  // The uuids are defined in helfi_tpr_config_get_linkit_profile_matchers().
+  $uuids = [
+    '744298c6-f701-49e7-ba32-bed4e527cffc',
+    '8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649',
+  ];
+
+  // Return if both linkit profile matchers already exist in the configuration.
+  if (empty(array_diff($uuids, $profile->getMatchers()->getInstanceIds()))) {
+    return;
+  }
+
+  // Add the TPR linkit profile matchers to the linkit profile configuration
+  // if original 'helfi' linkit profile is updated.
+  foreach (helfi_tpr_config_get_linkit_profile_matchers() as $matcher) {
+    $profile->getMatchers()->addInstanceId($matcher['uuid'], $matcher);
+  }
+  $profile->save();
 }
 
 /**
