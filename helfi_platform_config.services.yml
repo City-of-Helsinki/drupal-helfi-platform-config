@@ -39,3 +39,4 @@ services:
     arguments:
       - '@config.installer'
       - '@config_rewrite.config_rewriter'
+      - '@module_handler'

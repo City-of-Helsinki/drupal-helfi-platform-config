@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\config_rewrite\ConfigRewriterInterface;
+use Drupal\Core\Field\Entity\BaseFieldOverride;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
@@ -199,6 +201,20 @@ function helfi_tpr_config_linkit_profile_presave(Profile $profile) : void {
     $profile->getMatchers()->addInstanceId($matcher['uuid'], $matcher);
   }
   $profile->save();
+}
+
+/**
+ * Implements hook_helfi_configuration_update().
+ */
+function helfi_tpr_config_helfi_configuration_update(
+  string $module,
+  ConfigRewriterInterface $configRewriter
+): void {
+  // Rewrite helfi_tpr_config configuration changes if the helfi_base_content
+  // is being updated.
+  if ($module === 'helfi_base_content') {
+    $configRewriter->rewriteModuleConfig('helfi_tpr_config');
+  }
 }
 
 /**

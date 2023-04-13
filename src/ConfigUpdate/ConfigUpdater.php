@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\ConfigUpdate;
 
 use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Config\ConfigInstallerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**
  * A helper class to deal with config updates.
@@ -19,10 +20,13 @@ final class ConfigUpdater {
    *   The config installer service.
    * @param \Drupal\config_rewrite\ConfigRewriterInterface $configRewriter
    *   The config rewriter service.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
+   *   The module handler.
    */
   public function __construct(
     private ConfigInstallerInterface $configInstaller,
     private ConfigRewriterInterface $configRewriter,
+    private ModuleHandlerInterface $moduleHandler,
   ) {
   }
 
@@ -35,6 +39,9 @@ final class ConfigUpdater {
   public function update(string $module) : void {
     $this->configInstaller->installDefaultConfig('module', $module);
     $this->configRewriter->rewriteModuleConfig($module);
+
+    // Let other modules know of current module configuration update.
+    $this->moduleHandler->invokeAll('helfi_configuration_update', [$module, $this->configRewriter]);
 
     // Update all paragraph field handlers.
     helfi_platform_config_update_paragraph_target_types();
