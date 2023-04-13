@@ -7,7 +7,6 @@ namespace Drupal\helfi_calculator\Form;
  * Contains Drupal\helfi_calculator\Form\CalculatorSettings.
  */
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\Config;
 use Drupal\Core\Config\ImmutableConfig;
@@ -16,7 +15,6 @@ use Drupal\language\Config\LanguageConfigOverride;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\language\ConfigurableLanguageManagerInterface;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -100,7 +98,7 @@ class CalculatorSettings extends ConfigFormBase {
         return $configuration->get('calculators')[$calculator]['label'];
       }
     }
-    if (array_key_exists('label',  $this->config('helfi_calculator.settings')->get('calculators')[$calculator])) {
+    if (array_key_exists('label', $this->config('helfi_calculator.settings')->get('calculators')[$calculator])) {
       return $this->config('helfi_calculator.settings')->get('calculators')[$calculator]['label'];
     }
 
@@ -190,7 +188,7 @@ class CalculatorSettings extends ConfigFormBase {
       if ($configuration['active']) {
         $calculator_label = $machine_name;
 
-        if (array_key_exists('label',  $calculator_settings[$machine_name])) {
+        if (array_key_exists('label', $calculator_settings[$machine_name])) {
           $calculator_label = $calculator_settings[$machine_name]['label'];
         }
 
