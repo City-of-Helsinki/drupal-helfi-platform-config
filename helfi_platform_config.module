@@ -12,14 +12,13 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Field\Entity\BaseFieldOverride;
+use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\field\FieldConfigInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\paragraphs\Entity\ParagraphsType;
@@ -44,7 +43,7 @@ function helfi_platform_config_modules_installed(array $modules, bool $is_syncin
  * Implements hook_ENTITY_TYPE_presave().
  */
 function helfi_platform_config_base_field_override_presave(
- BaseFieldOverride $field
+ FieldConfigBase $field
 ) : void {
   if ($field->get('entity_type') !== 'paragraphs_library_item') {
     return;
@@ -56,7 +55,7 @@ function helfi_platform_config_base_field_override_presave(
  * Implements hook_ENTITY_TYPE_presave().
  */
 function helfi_platform_config_field_config_presave(
-  FieldConfigInterface $field
+  FieldConfigBase $field
 ) : void {
   helfi_platform_config_rebuild_handler_settings($field);
 }
@@ -64,11 +63,11 @@ function helfi_platform_config_field_config_presave(
 /**
  * Rebuild field handler settings target bundles after saving fields.
  *
- * @param BaseFieldOverride|FieldConfigInterface $field
+ * @param \Drupal\Core\Field\FieldConfigBase $field
  *   Base field override or field config.
  */
 function helfi_platform_config_rebuild_handler_settings(
-  BaseFieldOverride|FieldConfigInterface $field
+  FieldConfigBase $field
 ): void {
   if ($field->isSyncing() || $field->getType() !== 'entity_reference_revisions') {
     return;

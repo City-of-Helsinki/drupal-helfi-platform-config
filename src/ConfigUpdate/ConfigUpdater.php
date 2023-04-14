@@ -40,8 +40,13 @@ final class ConfigUpdater {
     $this->configInstaller->installDefaultConfig('module', $module);
     $this->configRewriter->rewriteModuleConfig($module);
 
-    // Let other modules know of current module configuration update.
-    $this->moduleHandler->invokeAll('helfi_configuration_update', [$module, $this->configRewriter]);
+    if ($module === 'helfi_base_content') {
+      // Rewrite helfi_tpr_config configuration if the helfi_base_content is
+      // being updated.
+      if ($this->moduleHandler->moduleExists('helfi_tpr_config')) {
+        $this->configRewriter->rewriteModuleConfig('helfi_tpr_config');
+      }
+    }
 
     // Update all paragraph field handlers.
     helfi_platform_config_update_paragraph_target_types();
