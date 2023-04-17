@@ -222,40 +222,6 @@ function helfi_base_content_install($is_syncing) : void {
     $content_lock_config = array_merge($content_lock_config, $types);
     $content_lock_settings->set('types', $content_lock_config)->save();
   }
-
-  // Install metatag settings manually as customizations will be overridden
-  // during default content installation.
-  if (Drupal::moduleHandler()->moduleExists('metatag')) {
-    helfi_base_content_install_metatag_settings();
-  }
-}
-
-/**
- * Install metatag configurations manually.
- */
-function helfi_base_content_install_metatag_settings(): void {
-  $entity_type_groups = [
-    'node' => [
-      'landing_page' => [
-        'basic' => 'basic',
-        'open_graph' => 'open_graph',
-        'twitter_cards' => 'twitter_cards',
-      ],
-      'page' => [
-        'basic' => 'basic',
-        'open_graph' => 'open_graph',
-        'twitter_cards' => 'twitter_cards',
-      ],
-    ],
-  ];
-
-  $config_factory = \Drupal::configFactory();
-  $metatag_settings = $config_factory->getEditable('metatag.settings');
-  $existing_groups = $metatag_settings->get('entity_type_groups');
-  if (is_array($existing_groups)) {
-    $entity_type_groups = array_merge($existing_groups, $entity_type_groups);
-  }
-  $metatag_settings->set('entity_type_groups', $entity_type_groups)->save();
 }
 
 /**
