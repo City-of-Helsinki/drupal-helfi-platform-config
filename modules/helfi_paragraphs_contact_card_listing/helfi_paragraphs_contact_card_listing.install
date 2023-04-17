@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * Labels visibility to hidden
+ */
+function helfi_paragraphs_contact_card_listing_update_9001() : void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_contact_card_listing');
+}

@@ -23,7 +23,7 @@ mode: default
 content:
   field_contact_description:
     type: text_span
-    label: visually_hidden
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 5
@@ -47,7 +47,7 @@ content:
     region: content
   field_contact_name:
     type: string
-    label: visually_hidden
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -64,7 +64,7 @@ content:
     region: content
   field_contact_title:
     type: string
-    label: visually_hidden
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -72,14 +72,14 @@ content:
     region: content
   field_email:
     type: email_mailto
-    label: visually_hidden
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 4
     region: content
   field_phone_number:
     type: telephone_link
-    label: visually_hidden
+    label: hidden
     settings:
       title: ''
     third_party_settings: {  }
