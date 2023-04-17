@@ -97,6 +97,36 @@ function helfi_tpr_config_grant_permissions() : void {
 }
 
 /**
+ * Install metatag configurations manually.
+ */
+function helfi_tpr_config_install_metatag_settings(): void {
+  $entity_type_groups = [
+    'tpr_service' => [
+      'tpr_service' => [
+        'basic' => 'basic',
+        'open_graph' => 'open_graph',
+        'twitter_cards' => 'twitter_cards',
+      ],
+    ],
+    'tpr_unit' => [
+      'tpr_unit' => [
+        'basic' => 'basic',
+        'open_graph' => 'open_graph',
+        'twitter_cards' => 'twitter_cards',
+      ],
+    ],
+  ];
+
+  $config_factory = \Drupal::configFactory();
+  $metatag_settings = $config_factory->getEditable('metatag.settings');
+  $existing_groups = $metatag_settings->get('entity_type_groups');
+  if (is_array($existing_groups)) {
+    $entity_type_groups = array_merge($existing_groups, $entity_type_groups);
+  }
+  $metatag_settings->set('entity_type_groups', $entity_type_groups)->save();
+}
+
+/**
  * Implements hook_install().
  */
 function helfi_tpr_config_install($is_syncing) : void {
@@ -110,34 +140,7 @@ function helfi_tpr_config_install($is_syncing) : void {
 
   // Add unit and service to linkit profile.
   if ($profile = Profile::load('helfi')) {
-    $matchers = [
-      [
-        'uuid' => '744298c6-f701-49e7-ba32-bed4e527cffc',
-        'id' => 'entity:tpr_unit',
-        'weight' => -1,
-        'settings' => [
-          'metadata' => '',
-          'bundles' => NULL,
-          'group_by_bundle' => NULL,
-          'substitution_type' => 'canonical',
-          'limit' => 20,
-        ],
-      ],
-      [
-        'uuid' => '8d7c9a5a-51fa-4f1b-9e0e-4ca58c6e6649',
-        'id' => 'entity:tpr_service',
-        'weight' => -2,
-        'settings' => [
-          'metadata' => '',
-          'bundles' => NULL,
-          'group_by_bundle' => NULL,
-          'substitution_type' => 'canonical',
-          'limit' => 20,
-        ],
-      ],
-    ];
-
-    foreach ($matchers as $matcher) {
+    foreach (helfi_tpr_config_get_linkit_profile_matchers() as $matcher) {
       $profile->getMatchers()->addInstanceId($matcher['uuid'], $matcher);
     }
     $profile->save();
@@ -175,6 +178,12 @@ function helfi_tpr_config_install($is_syncing) : void {
     $content_lock_config = $content_lock_settings->get('types');
     $content_lock_config = array_merge($content_lock_config, $types);
     $content_lock_settings->set('types', $content_lock_config)->save();
+  }
+
+  // Install metatag settings manually as customizations will be overridden
+  // during default content installation.
+  if ($module_handler->moduleExists('metatag')) {
+    helfi_tpr_config_install_metatag_settings();
   }
 }
 

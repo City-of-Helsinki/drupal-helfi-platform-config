@@ -1,3 +1,4 @@
 ignored_config_entities:
   - 'system.site:page.front'
   - 'hdbt_admin_tools.site_settings:site_settings'
+  - 'easy_breadcrumb.settings:home_segment_title'
