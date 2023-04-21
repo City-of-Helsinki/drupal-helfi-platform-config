@@ -179,10 +179,10 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
   $refFields = [
     'field_helfi_news_groups' => 'groups',
     'field_helfi_news_tags' => 'topic',
-    'field_helfi_news_neighbourhoods' => 'neighbourhoods'
+    'field_helfi_news_neighbourhoods' => 'neighbourhoods',
   ];
 
-  foreach($refFields as $fieldName => $paramKey) {
+  foreach ($refFields as $fieldName => $paramKey) {
     $field = $paragraph->get($fieldName);
 
     if ($field->isEmpty()) {
@@ -191,7 +191,7 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
 
     $terms = $field->referencedEntities();
     foreach ($terms as $term) {
-      // Format name to match app query param format
+      // Format name to match app query param format.
       $params[$paramKey][] = str_replace(' ', '+', strtolower($term->get('title')->value));
     }
   }
