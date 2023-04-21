@@ -149,7 +149,9 @@ function helfi_paragraphs_news_list_entity_bundle_info_alter(array &$bundles) : 
  */
 function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables) {
   $paragraph = $variables['paragraph'];
-  $language_id = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $language_id = \Drupal::languageManager()
+    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+    ->getId();
   $resolver = \Drupal::service('helfi_api_base.environment_resolver');
   $environment = \Drupal::configFactory()
     ->get('helfi_paragraphs_news_list.settings')
