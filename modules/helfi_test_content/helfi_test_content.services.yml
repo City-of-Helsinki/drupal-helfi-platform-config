@@ -1,0 +1,8 @@
+services:
+  helfi_test_content.helper.import:
+    class: Drupal\helfi_test_content\Helper\TestContentImport
+    arguments:
+      - '@default_content.exporter'
+      - '@default_content.importer'
+      - '%container.modules%'
+      - '@messenger'

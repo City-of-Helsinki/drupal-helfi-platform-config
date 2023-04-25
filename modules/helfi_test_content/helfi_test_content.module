@@ -21,6 +21,15 @@ function helfi_test_content_modules_installed(array $modules) : void {
       /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
       $moduleInstaller = Drupal::service('module_installer');
       $moduleInstaller->install(['helfi_custom_test_content']);
+
+      // Re-import instance specific custom test content as the default_content
+      // sorter function will not sort the dependencies correctly if the
+      // dependable content is located in another module.
+      $testContentImporter = Drupal::service('helfi_test_content.helper.import');
+      $testContentImporter->importContent([
+        'helfi_test_content',
+        'helfi_custom_test_content',
+      ]);
     }
   }
 }
