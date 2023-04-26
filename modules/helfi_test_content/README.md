@@ -21,7 +21,7 @@ drush en -y helfi_test_content
 When the module is already enabled and the content should be re-imported, it can be done with following drush command.
 
 ```
-drush dcim helfi_test_content && drush dcim helfi_tpr_test_content
+drush dcim helfi_test_content
 ```
 
 ## How to export the test content
