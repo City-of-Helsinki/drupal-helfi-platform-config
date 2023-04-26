@@ -246,7 +246,14 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
       return AccessResult::neutral();
     }
 
-    return AccessResult::allowedIf(!$entity->get('field_has_hero')->value)
+    // Show title block if the "has hero" checkbox is not checked (=false).
+    if (!$entity->get('field_has_hero')->value) {
+      return AccessResult::allowed()->addCacheableDependency($block);
+    }
+
+    // Show title block if the "has hero" checkbox is checked (=true) and
+    // the Hero paragraph is not found.
+    return AccessResult::allowedIf(!$entity->get('field_hero')->entity)
       ->addCacheableDependency($block);
   }
 

@@ -131,3 +131,6 @@ msgstr "Tämä linkki on voimassa %hr. Älä käy URL-osoitteessa itse, sillä s
 msgctxt "HDBT Admin editorial - One-time login link"
 msgid "Update user password"
 msgstr "Päivitä käyttäjän salasana"
+
+msgid "Hero paragraph is mandatory if the Hero checkbox has been selected. Either unselect the checkbox or create the hero paragraph by clicking the Add Hero button."
+msgstr "Hero-lohko on pakollinen jos Hero-lohko -valintaruutu on valittuna. Poista valintaruudun valinta tai luo Hero-lohko klikkaamalla \"Lisää hero\" -painiketta."
