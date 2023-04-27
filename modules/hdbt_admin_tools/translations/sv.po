@@ -38,3 +38,6 @@ msgstr "Denna länk är giltig i %hr. Besök inte webbadressen själv eftersom d
 msgctxt "HDBT Admin editorial - One-time login link"
 msgid "Update user password"
 msgstr "Uppdatera användarlösenord"
+
+msgid "Hero paragraph is mandatory if the Hero checkbox has been selected. Either unselect the checkbox or create the hero paragraph by clicking the Add Hero button."
+msgstr "Hero paragraph är obligatoriskt om kryssrutan Hero har markerats. Avmarkera antingen kryssrutan eller skapa hero paragraph genom att klicka på knappen Lägg till Hero"

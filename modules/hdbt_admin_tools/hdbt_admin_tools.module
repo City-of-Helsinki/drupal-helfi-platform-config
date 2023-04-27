@@ -272,9 +272,11 @@ function hdbt_admin_tools_preprocess_page(&$variables): void {
   $entity = hdbt_admin_tools_get_page_entity();
   if ($entity instanceof ContentEntityInterface) {
 
-    // Set has_hero variable according to field_has_hero.
+    // Set has_hero variable according to field_has_hero and existence of
+    // field_hero reference.
     if ($entity->hasField('field_has_hero')) {
-      $variables['has_hero'] = $entity->get('field_has_hero')->value;
+      $variables['has_hero'] = $entity->get('field_has_hero')->value &&
+        !$entity->get('field_hero')->isEmpty();
     }
 
     // Handle sidebar visibility.
@@ -549,6 +551,14 @@ function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInt
     if (array_key_exists('field_hero_image', $fields)) {
       $fields['field_hero_image']->addConstraint('HeroImage', []);
     }
+  }
+
+  // Add constraint to check that Hero entity exists when necessary.
+  if (
+    array_key_exists('field_has_hero', $fields) &&
+    array_key_exists('field_hero', $fields)
+  ) {
+    $fields['field_has_hero']->addConstraint('Hero', []);
   }
 }
 
