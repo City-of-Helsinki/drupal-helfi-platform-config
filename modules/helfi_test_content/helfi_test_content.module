@@ -17,6 +17,7 @@ function helfi_test_content_modules_installed(array $modules) : void {
     /** @var \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList */
     $moduleExtensionList = Drupal::service('extension.list.module');
     $allModules = $moduleExtensionList->getList();
+
     if (array_key_exists('helfi_custom_test_content', $allModules)) {
       /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
       $moduleInstaller = Drupal::service('module_installer');
