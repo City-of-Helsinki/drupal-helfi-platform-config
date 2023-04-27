@@ -138,8 +138,6 @@ CKEDITOR.dialog.add('quoteDialog', function (editor) {
       if (!element || !element.hasClass('quote')) {
         element = editor.document.createElement('blockquote');
         element.addClass('quote');
-        element.setAttribute('aria-label', editor.lang.quote.quoteText);
-        element.setAttribute('role', 'region');
         // Flag the insertion mode for later use.
         this.insertMode = true;
       }
