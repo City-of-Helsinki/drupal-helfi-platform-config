@@ -46,7 +46,7 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
       ->accessCheck(TRUE)
       ->condition('type', 'announcement')
       ->condition('status', NodeInterface::PUBLISHED)
-      ->condition('langcode', $langcode , 'IN')
+      ->condition('langcode', $langcode, 'IN')
       ->execute();
     $announcementNodes = $this->entityTypeManager->getStorage('node')->loadMultiple($nids);
 
