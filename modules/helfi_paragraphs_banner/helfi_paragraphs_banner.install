@@ -15,9 +15,9 @@ use Drupal\paragraphs\Entity\Paragraph;
 function helfi_paragraphs_banner_update_9001() : void {
   // Get all paragraphs with centered design.
   $pids = \Drupal::entityQuery('paragraph')
-  ->condition('type', 'banner')
-  ->condition('field_banner_design', ['align-center', 'align-center-secondary'], "IN")
-  ->execute();
+    ->condition('type', 'banner')
+    ->condition('field_banner_design', ['align-center', 'align-center-secondary'], "IN")
+    ->execute();
 
   $paragraphs = Paragraph::loadMultiple($pids);
 
@@ -35,5 +35,5 @@ function helfi_paragraphs_banner_update_9001() : void {
 
   // Re-import 'helfi_paragraphs_banner' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
-  ->update('helfi_paragraphs_banner');
+    ->update('helfi_paragraphs_banner');
 }
