@@ -148,6 +148,7 @@ function helfi_paragraphs_news_list_entity_bundle_info_alter(array &$bundles) : 
  * Implements hook_preprocess_paragraph().
  */
 function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables) {
+  $paragraph = $variables['paragraph'];
   $language_id = \Drupal::languageManager()
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
     ->getId();
@@ -175,8 +176,34 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
       break;
   }
 
+  $archiveUrl = $environment_url . $news_path;
+  $params = [];
+  $refFields = [
+    'field_helfi_news_groups' => 'groups',
+    'field_helfi_news_tags' => 'topic',
+    'field_helfi_news_neighbourhoods' => 'neighbourhoods',
+  ];
+
+  foreach ($refFields as $fieldName => $paramKey) {
+    $field = $paragraph->get($fieldName);
+
+    if ($field->isEmpty()) {
+      continue;
+    }
+
+    $terms = $field->referencedEntities();
+    foreach ($terms as $term) {
+      // Format name to match app query param format.
+      $params[$paramKey][] = str_replace(' ', '+', strtolower($term->get('title')->value));
+    }
+  }
+
+  if (count($params)) {
+    $archiveUrl .= '?' . urldecode(http_build_query($params));
+  }
+
   // Assign the URL variable to the template.
-  $variables['news_archive_url'] = $environment_url . $news_path;
+  $variables['news_archive_url'] = $archiveUrl;
 }
 
 /**
