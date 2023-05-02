@@ -11,14 +11,8 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: align-center
-      label: 'Aligned to the center'
-    -
       value: align-left
       label: 'Aligned to the left'
-    -
-      value: align-center-secondary
-      label: 'Aligned to the center, secondary color'
     -
       value: align-left-secondary
       label: 'Aligned to the left, secondary color'

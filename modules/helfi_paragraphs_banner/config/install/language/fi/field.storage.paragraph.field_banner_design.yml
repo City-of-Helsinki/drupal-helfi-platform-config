@@ -1,10 +1,6 @@
 settings:
   allowed_values:
     -
-      label: Keskitetty
-    -
       label: 'Tasattu vasemmalle'
-    -
-      label: 'Keskitetty, toissijainen väri'
     -
       label: 'Tasattu vasemmalle, toissijainen väri'
