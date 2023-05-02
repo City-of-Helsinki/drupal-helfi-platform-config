@@ -18,7 +18,7 @@ function helfi_paragraphs_banner_update_9001() : void {
     ->condition('type', 'banner')
     ->condition('field_banner_design', [
       'align-center',
-      'align-center-secondary'
+      'align-center-secondary',
     ], "IN")
     ->execute();
 
