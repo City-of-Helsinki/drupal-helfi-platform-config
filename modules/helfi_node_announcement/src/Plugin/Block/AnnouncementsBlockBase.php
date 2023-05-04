@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -41,6 +42,13 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
   protected LanguageManagerInterface $languageManager;
 
   /**
+   * Default language resolver.
+   *
+   * @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver
+   */
+  protected DefaultLanguageResolver $defaultLanguageResolver;
+
+  /**
    * Constructs a new AnnouncementsBlock instance.
    *
    * @param array $configuration
@@ -55,6 +63,8 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
    *   The entity type manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
+   * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver @default_language_resolver
+   *   Default language resolver.
    */
   public function __construct(
     array $configuration,
@@ -62,12 +72,14 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
     $plugin_definition,
     RouteMatchInterface $route_match,
     EntityTypeManagerInterface $entity_type_manager,
-    LanguageManagerInterface $language_manager
+    LanguageManagerInterface $language_manager,
+    DefaultLanguageResolver $default_language_resolver
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->entityTypeManager = $entity_type_manager;
     $this->languageManager = $language_manager;
+    $this->defaultLanguageResolver = $default_language_resolver;
   }
 
   /**
@@ -77,7 +89,8 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
     return new static($configuration, $plugin_id, $plugin_definition,
       $container->get('current_route_match'),
       $container->get('entity_type.manager'),
-      $container->get('language_manager')
+      $container->get('language_manager'),
+      $container->get('helfi_api_base.default_language_resolver'),
     );
   }
 

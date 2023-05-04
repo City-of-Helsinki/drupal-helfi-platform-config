@@ -34,8 +34,9 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
     $currentLangcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
-    if (!in_array($currentLangcode, ['en', 'fi', 'sv'])) {
-      $langcode = ['en', $currentLangcode];
+
+    if ($this->defaultLanguageResolver->isAltLanguage($currentLangcode)) {
+      $langcode = [$this->defaultLanguageResolver->getFallbackLanguage(), $currentLangcode];
     }
     else {
       $langcode = [$currentLangcode];

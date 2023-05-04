@@ -8,3 +8,4 @@ dependencies:
   - helfi_node_landing_page:helfi_node_landing_page
   - helfi_node_page:helfi_node_page
   - publication_date:publication_date
+  - helfi_api_base:helfi_api_base
