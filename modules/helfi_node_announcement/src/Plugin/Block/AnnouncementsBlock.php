@@ -36,7 +36,10 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
       ->getId();
 
     if ($this->defaultLanguageResolver->isAltLanguage($currentLangcode)) {
-      $langcode = [$this->defaultLanguageResolver->getFallbackLanguage(), $currentLangcode];
+      $langcode = [
+        $this->defaultLanguageResolver->getFallbackLanguage(),
+        $currentLangcode,
+      ];
     }
     else {
       $langcode = [$currentLangcode];

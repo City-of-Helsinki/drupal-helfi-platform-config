@@ -63,7 +63,7 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
    *   The entity type manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
-   * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver @default_language_resolver
+   * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver $default_language_resolver
    *   Default language resolver.
    */
   public function __construct(
