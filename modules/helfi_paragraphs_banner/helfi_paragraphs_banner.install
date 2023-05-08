@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * UHF-6469: Remove centered banner designs and convert them to be left aligned.
@@ -25,15 +26,18 @@ function helfi_paragraphs_banner_update_9001() : void {
   $paragraphs = Paragraph::loadMultiple($pids);
 
   // Convert to left aligned design.
+  /** @var \Drupal\paragraphs\Entity\ParagraphInterface $paragraph */
   foreach ($paragraphs as $paragraph) {
-    $field_update_map = [
-      'align-center' => 'align-left',
-      'align-center-secondary' => 'align-left-secondary',
-    ];
+    if ($paragraph instanceof ParagraphInterface) {
+      $field_update_map = [
+        'align-center' => 'align-left',
+        'align-center-secondary' => 'align-left-secondary',
+      ];
 
-    $paragraph
-      ->set('field_banner_design', $field_update_map[$paragraph->field_banner_design->value])
-      ->save();
+      $paragraph
+        ->set('field_banner_design', $field_update_map[$paragraph->field_banner_design->value])
+        ->save();
+    }
   }
 
   // Re-import 'helfi_paragraphs_banner' configuration.
