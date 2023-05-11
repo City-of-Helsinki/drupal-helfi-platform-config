@@ -29,16 +29,28 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
     ];
 
     $currentEntity = $this->getCurrentPageEntity(array_keys($entityTypeFields));
-    $langcode = $this->languageManager
+
+    // Also fetch english announcements for languages with non standard support.
+    $currentLangcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
+
+    if ($this->defaultLanguageResolver->isAltLanguage($currentLangcode)) {
+      $langcode = [
+        $this->defaultLanguageResolver->getFallbackLanguage(),
+        $currentLangcode,
+      ];
+    }
+    else {
+      $langcode = [$currentLangcode];
+    }
 
     // Get all published announcement nodes.
     $nids = \Drupal::entityQuery('node')
       ->accessCheck(TRUE)
       ->condition('type', 'announcement')
       ->condition('status', NodeInterface::PUBLISHED)
-      ->condition('langcode', $langcode)
+      ->condition('langcode', $langcode, 'IN')
       ->execute();
     $announcementNodes = $this->entityTypeManager->getStorage('node')->loadMultiple($nids);
 
