@@ -18,18 +18,21 @@ function helfi_user_roles_grant_permissions() : void {
       'administer users',
       'cancel account',
       'change own username',
+      'access entity usage statistics',
     ],
     'content_producer' => [
       // @user.
       'access user profiles',
       'cancel account',
       'change own username',
+      'access entity usage statistics',
     ],
     'editor' => [
       // @user.
       'access user profiles',
       'cancel account',
       'change own username',
+      'access entity usage statistics',
     ],
   ];
   helfi_platform_config_grant_permissions($permissions);
