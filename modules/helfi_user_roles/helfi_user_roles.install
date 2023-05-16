@@ -47,5 +47,3 @@ function helfi_user_roles_install($is_syncing) : void {
 
   helfi_user_roles_grant_permissions();
 }
-
-
