@@ -50,3 +50,10 @@ function helfi_user_roles_install($is_syncing) : void {
 
   helfi_user_roles_grant_permissions();
 }
+
+/**
+ * UHF-8353 give editors entity usage permission.
+ */
+function helfi_user_roles__update_9001(): void {
+  helfi_user_roles_grant_permissions();
+}
