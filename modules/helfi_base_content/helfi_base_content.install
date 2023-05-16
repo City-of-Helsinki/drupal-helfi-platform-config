@@ -89,6 +89,8 @@ function helfi_base_content_grant_permissions() : void {
       'view the administration theme',
       // @taxonomy.
       'access taxonomy overview',
+      // @entity_usage
+      'access entity usage statistics',
     ],
     'content_producer' => [
       // @content_translation.
@@ -120,6 +122,8 @@ function helfi_base_content_grant_permissions() : void {
       'access taxonomy overview',
       // @view_unpublished.
       'view any unpublished content',
+      // @entity_usage
+      'access entity usage statistics',
     ],
     'editor' => [
       // @content_translation.
@@ -167,6 +171,8 @@ function helfi_base_content_grant_permissions() : void {
       'access taxonomy overview',
       // @view_unpublished.
       'view any unpublished content',
+      // @entity_usage
+      'access entity usage statistics',
     ],
     'read_only' => [
       // @node.
@@ -231,4 +237,11 @@ function helfi_base_content_update_9001() : void {
   // Re-import 'helfi_base_content' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_base_content');
+}
+
+/**
+ * UHF-8353 give editors entity usage permission.
+ */
+function helfi_base_content_update_9002(): void {
+  helfi_base_content_grant_permissions();
 }
