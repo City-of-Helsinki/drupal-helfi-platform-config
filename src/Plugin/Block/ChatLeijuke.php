@@ -35,7 +35,6 @@ class ChatLeijuke extends BlockBase {
         'genesys_suunte' => 'Genesys SUUNTE',
         'genesys_neuvonta' => 'Genesys Neuvonta',
         'watson_chatbot' => 'Asunnonhakubotti (watson)',
-        'kuura_health_chat' => 'Kuura Health Chat',
         'watson_sote' => 'Hester/Sotebotti (watson)',
         'watson_talpa' => 'Talbotti (watson)',
       ],

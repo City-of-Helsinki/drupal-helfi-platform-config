@@ -1,17 +1,3 @@
-kuura_health_chat:
-  version: 1.0.x
-  js:
-    https://hel-thk-botti.kuurahealth.com/widget/kuura-chat.js: {
-      type: external,
-      minified: true,
-      attributes: {
-        data-container-id: block-kuurahealthchat
-      }
-    }
-  css:
-    theme:
-      https://hel-thk-botti.kuurahealth.com/widget/kuura-chat.css: { type: external, minified: true }
-
 react_and_share:
   version: 1.0.x
   js:
