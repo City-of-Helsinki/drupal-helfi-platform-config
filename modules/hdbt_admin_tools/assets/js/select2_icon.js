@@ -2,7 +2,7 @@
  * @file
  * Select2 Icon integration.
  */
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, once) {
   'use strict';
 
   Drupal.behaviors.select2IconIntegration = {
@@ -47,7 +47,7 @@
       // This will prevent the race condition when the select2 widget
       // initialization is supposed to be run before any custom widget
       // reacting to "select2-init" event.
-      $('.select2-widget', context).once('select2-init').each(function () {
+      $(once('select2-init', '.select2-widget', context)).each(function () {
         var config = $(this).data('select2-config');
         config.createTag = function (params) {
           var term = $.trim(params.term);
@@ -118,4 +118,4 @@
     }
   };
 
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, once);
