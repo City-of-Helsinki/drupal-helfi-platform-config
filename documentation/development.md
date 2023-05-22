@@ -117,10 +117,9 @@ function helfi_sote_helfi_paragraph_types() : array {
 ```
 
 ## Blocks
+To install blocks in your module, you should define them in the module's `.module` file and use the `BlockInstaller` service to handle block installations.
 
-To install blocks in your module, you should define them in the module's `.module` file and use the BlockInstaller service to handle block installations.
-
-Usually, block configurations are installed using YAML files located in `./config/optional/block.block.block_name.yml`, similar to how it is done in install profiles. However, in our case, using this approach would result in unnecessary configuration reverts when the `helfi_platform_config.config_update_helper` service is used.
+Usually, block configurations are installed using YAML files located in `./config/optional/block.block.block_name.yml`, similar to how it is done in install profiles. However, in our case, using this approach would result in unnecessary configuration reverts when the `helfi_platform_config.config_update_helper` service is used. With `BlockInstaller` service, you can install the block configurations for multiple themes without having the unnecessary configuration reverts during module updates and without duplicated configuration files under config folders. 
 
 Define the block as follows:
 ```
