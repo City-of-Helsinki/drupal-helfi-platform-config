@@ -202,3 +202,10 @@ function helfi_tpr_config_update_9036(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }
+
+/**
+ * UHF-8479 Update standard & landing page to include service_list_search.
+ */
+function helfi_tpr_config_update_9037(): void {
+  helfi_platform_config_update_paragraph_target_types();
+}
