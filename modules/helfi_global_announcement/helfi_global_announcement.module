@@ -20,7 +20,7 @@ use Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient\Annou
  *
  * @code
  * [
- *   'breadbrumbs' => [
+ *   'breadcrumbs' => [
  *     'block' => [
  *       ...
  *     ],

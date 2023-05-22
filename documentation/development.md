@@ -118,7 +118,75 @@ function helfi_sote_helfi_paragraph_types() : array {
 
 ## Blocks
 
-@todo document block hooks
+To install blocks in your module, you should define them in the module's `.module` file and use the BlockInstaller service to handle block installations.
+
+Usually, block configurations are installed using YAML files located in `./config/optional/block.block.block_name.yml`, similar to how it is done in install profiles. However, in our case, using this approach would result in unnecessary configuration reverts when the `helfi_platform_config.config_update_helper` service is used.
+
+Define the block as follows:
+```
+/**
+ * Gets the block configurations.
+ *
+ * @return array[]
+ *   The block configurations.
+ */
+function my_example_get_block_configurations(string $theme) : array {
+  return [
+    'block' => [
+      'id' => 'my_example_block',
+      'plugin' => 'my_example_block_plugin',
+      'settings' => [
+        'label' => 'My example',
+        'label_display' => TRUE,
+      ],
+      'provider' => 'my_example',
+      'translations' => [
+        'fi' => 'Minun esimerkki',
+        'sv' => 'Mitt exempel',
+      ],
+    ],
+    'variations' => [
+      [
+        'theme' => 'hdbt',
+        'region' => 'content',
+      ],
+      [
+        'theme' => 'stark',
+        'region' => 'content',
+      ],
+    ],
+  ];
+```
+
+And install the blocks in the modules install/update hooks:
+```
+/**
+ * Implements hook_install().
+ */
+function my_example_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+  $theme_handler = \Drupal::service('theme_handler');
+
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+    return;
+  }
+
+  $theme = $theme_handler->getDefault();
+  $block_config = my_example_get_block_configurations($theme);
+  ['block' => $block, 'variations' => $variations] = $block_config;
+  $block_installer->install($block, $variations);
+}
+```
+See examples in `helfi_global_announcement` and `helfi_tpr_config` modules.
 
 ## Updating existing configuration
 
