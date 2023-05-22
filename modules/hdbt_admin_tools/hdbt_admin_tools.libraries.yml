@@ -43,8 +43,6 @@ link_plugin_enhancements:
     assets/js/linkPluginEnhancements.js: {}
   dependencies:
     - core/drupal
-    - core/jquery
-    - core/jquery.once
 
 menu_styles:
   css:
@@ -58,7 +56,7 @@ modal_window_position:
   dependencies:
     - core/drupal
     - core/jquery
-    - core/jquery.once
+    - core/once
 
 paragraph_selection:
   version: 1.x
@@ -66,6 +64,7 @@ paragraph_selection:
     assets/js/paragraphSelection.js: {}
   dependencies:
     - core/jquery
+    - core/once
     - hdbt_admin_tools/image_previewer
     - hdbt_admin_tools/select2_icon
 
@@ -83,5 +82,7 @@ select2_icon:
   js:
     assets/js/select2_icon.js: { weight: -1 }
   dependencies:
+    - core/jquery
+    - core/once
     - select2/select2.min
     - hdbt/hdbt-icons
