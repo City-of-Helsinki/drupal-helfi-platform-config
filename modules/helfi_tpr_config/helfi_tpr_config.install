@@ -208,6 +208,5 @@ function helfi_tpr_config_update_9036(): void {
  * service_list_search paragraph.
  */
 function helfi_tpr_config_update_9037(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
+  helfi_platform_config_update_paragraph_target_types();
 }
