@@ -204,8 +204,7 @@ function helfi_tpr_config_update_9036(): void {
 }
 
 /**
- * UHF-8479 Update standard page & landing page to include
- * service_list_search paragraph.
+ * UHF-8479 Update standard & landing page to include service_list_search.
  */
 function helfi_tpr_config_update_9037(): void {
   helfi_platform_config_update_paragraph_target_types();
