@@ -31,7 +31,7 @@ function hdbt_admin_tools_install(): void {
 /**
  * UHF-8135: Set super admin (UID1) preferred admin pages langcode to NULL.
  */
-function hdbt_admin_tools_update_9001() : void {
+function hdbt_admin_tools_update_9002() : void {
   $user = User::load(1);
 
   if ($user && !empty($user->getPreferredAdminLangcode(FALSE))) {
