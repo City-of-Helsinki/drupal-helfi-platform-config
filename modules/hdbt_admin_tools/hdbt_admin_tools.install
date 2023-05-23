@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\user\Entity\User;
+
 /**
  * Installs Helfi admin tools module.
  */
@@ -24,4 +26,15 @@ function hdbt_admin_tools_install(): void {
     $ignored[] = $config_ignore;
   }
   $config->set('ignored_config_entities', $ignored)->save();
+}
+
+/**
+ * UHF-8135: Set super admin (UID1) preferred admin pages langcode to NULL.
+ */
+function hdbt_admin_tools_update_9001() : void {
+  $user = User::load(1);
+
+  if ($user && !empty($user->getPreferredAdminLangcode(FALSE))) {
+    $user->set('preferred_admin_langcode', '')->save();
+  }
 }
