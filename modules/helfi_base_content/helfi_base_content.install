@@ -208,7 +208,7 @@ function helfi_base_content_install($is_syncing) : void {
   }
 
   Drupal::configFactory()->getEditable('language.negotiation')
-    ->set('selected_langcode', 'fi')
+    ->set('selected_langcode', 'site_default')
     ->set('url.prefixes', $prefixes)
     ->save();
 
@@ -244,4 +244,13 @@ function helfi_base_content_update_9001() : void {
  */
 function helfi_base_content_update_9002(): void {
   helfi_base_content_grant_permissions();
+}
+
+/**
+ * UHF-8135 update fallback language to site_default.
+ */
+function helfi_base_content_update_9003() : void {
+  Drupal::configFactory()->getEditable('language.negotiation')
+    ->set('selected_langcode', 'site_default')
+    ->save();
 }
