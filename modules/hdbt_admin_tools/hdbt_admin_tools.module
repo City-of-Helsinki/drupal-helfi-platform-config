@@ -937,7 +937,8 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
       $field_metatags['intro_text']['#markup'] = '<p>' . t('Can be left unchanged. Tokens can be used to set metadata.', [], ['context' => 'HDBT Admin editorial']) . '</p>';
 
       // Alter basic tags title field descriptions.
-      $field_metatags['basic']['title']['#description'] = t('Page title is visible in search results and browser tab heading. The title is set automatically and does not need to be set here. Recommended max. legth: 55–65 characters.', [], ['context' => 'HDBT Admin editorial']);
+      $field_metatags['basic']['title']['#title'] = t('Title', [], ['context' => 'HDBT Admin editorial']);
+      $field_metatags['basic']['title']['#description'] = t('Page title is visible in search results and browser tab heading. The title is set automatically and does not need to be set here. Recommended max. length: 55–65 characters.', [], ['context' => 'HDBT Admin editorial']);
 
       // Alter basic tags description field title and descriptions.
       $field_metatags['basic']['description']['#title'] = t('Description for search engines', [], ['context' => 'HDBT Admin editorial']);

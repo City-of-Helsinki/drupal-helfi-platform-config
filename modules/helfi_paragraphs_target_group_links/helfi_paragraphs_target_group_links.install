@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_paragraphs_target_group_links module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * UHF-8135 Update target group links translations.
+ */
+function helfi_paragraphs_target_group_links_update_9001(): void {
+  \Drupal::service('config.installer')
+    ->installDefaultConfig('module', 'helfi_paragraphs_target_group_links');
+}
