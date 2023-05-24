@@ -11,6 +11,6 @@ declare(strict_types = 1);
  * UHF-8135 Update target group links translations.
  */
 function helfi_paragraphs_target_group_links_update_9001(): void {
-  \Drupal::service('config.installer')
-    ->installDefaultConfig('module', 'helfi_paragraphs_target_group_links');
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_target_group_links');
 }

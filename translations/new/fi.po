@@ -502,3 +502,6 @@ msgstr ""
 
 msgid "This must be an external URL such as %url."
 msgstr "Tämän on oltava ulkoinen URL-osoite, kuten %url."
+
+msgid "Start typing to find content or paste a URL and click on the suggestion below."
+msgstr "Kirjoita osa sisällön otsikosta tai liitä URL-osoite ja napsauta alla olevaa ehdotusta."

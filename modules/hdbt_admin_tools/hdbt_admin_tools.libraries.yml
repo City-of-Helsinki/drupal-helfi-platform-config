@@ -9,7 +9,7 @@ color_palette_selection:
 
 columns-toggle:
   js:
-    dist/js/columnsToggle.js: {}
+    assets/js/columnsToggle.js: {}
   dependencies:
     - core/drupal
     - core/jquery
