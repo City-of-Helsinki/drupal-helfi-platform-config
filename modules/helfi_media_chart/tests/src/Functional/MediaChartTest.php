@@ -70,7 +70,7 @@ class MediaChartTest extends BrowserTestBase {
       'field_helfi_chart_title[0][value]' => 'Test value',
       'field_helfi_chart_transcript[0][value]' => '123',
     ], 'Save');
-    $this->assertSession()->pageTextContainsOnce('Kaavio Chart has been created.');
+    $this->assertSession()->pageTextContainsOnce('Chart Chart has been created.');
 
     $medias = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
       'name' => 'Chart',
