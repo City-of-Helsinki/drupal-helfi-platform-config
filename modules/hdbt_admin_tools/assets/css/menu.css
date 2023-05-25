@@ -6,3 +6,8 @@
   -webkit-mask-image: url(../icons/debug.svg);
   mask-image: url(../icons/debug.svg);
 }
+
+[dir="ltr"] .gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-icon,
+[dir="ltr"] .gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-box > .toolbar-icon:not(.toolbar-handle) {
+  padding-right: 1em;
+}
