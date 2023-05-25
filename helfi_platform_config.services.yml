@@ -40,3 +40,8 @@ services:
       - '@config.installer'
       - '@config_rewrite.config_rewriter'
       - '@module_handler'
+
+  helfi_platform_config.term_route_subscriber:
+    class: Drupal\helfi_platform_config\Routing\TermRouteSubscriber
+    tags:
+      - { name: event_subscriber }
