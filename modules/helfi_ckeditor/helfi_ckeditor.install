@@ -48,3 +48,57 @@ function helfi_ckeditor_update_9001(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_ckeditor');
 }
+
+/**
+ * UHF-8404 Reconstruct CKEditor generated blockquote elements.
+ */
+function helfi_ckeditor_update_9002(): void {
+  $entity_type_manager = Drupal::entityTypeManager();
+  $field_storage = $entity_type_manager->getStorage('field_config');
+
+  // Load all field configurations.
+  /** @var \Drupal\field\Entity\FieldConfig $field_config */
+  foreach ($field_storage->loadMultiple() as $field_config) {
+
+    // Go through each field and check for long text fields (html formatted).
+    if ($field_config->getType() === 'text_long') {
+      $field_storage_definition = $field_config->getFieldStorageDefinition();
+      $entity_type = $field_config->getTargetEntityTypeId();
+
+      /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+      $table_mapping = $entity_type_manager->getStorage($entity_type)->getTableMapping();
+
+      // Get current field's table name and column.
+      $table_name = $table_mapping->getDedicatedDataTableName($field_storage_definition);
+      $column = $table_mapping->getFieldColumnName($field_storage_definition,'value');
+
+      // Search for <blockquote> elements containing aria-label and
+      // role="region" attributes. Remove them if found.
+      $regex = '<blockquote([^>]*)aria-label="[^"]*"([^>]*) role="region"([^>]*)>';
+      $query = \Drupal::database()->select($table_name, 'v')
+        ->distinct()
+        ->fields('v', ['entity_id', $column])
+        ->condition($column, $regex, 'REGEXP');
+
+      $query_result = $query->execute()->fetchAll();
+
+      if (!empty($query_result)) {
+        \Drupal::messenger()->addMessage(
+          t('Removed aria-label and role="region" attributes from @number blockquote elements found in %column.',
+          [
+            '@number' => count($query_result),
+            '%column' => str_replace('/', '', $column),
+          ]
+        ));
+        $replacement = '<blockquote$1$2$3>';
+        $update = \Drupal::database()->update($table_name);
+        $update->expression(
+          $column,
+          "REGEXP_REPLACE($column, :pattern, :replacement)",
+          [':pattern' => $regex, ':replacement' => $replacement]
+        );
+        $result = $update->execute();
+      }
+    }
+  }
+}
