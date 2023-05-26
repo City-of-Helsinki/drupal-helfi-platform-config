@@ -31,9 +31,6 @@
     if (chatSelection.indexOf('smartti') != -1) {
       return new SmarttiAdapter;
     }
-    if (chatSelection.indexOf('watson') != -1) {
-      return new WatsonAdapter;
-    }
     if (chatSelection.indexOf('kuura') != -1) {
       return new KuuraAdapter;
     }
@@ -137,71 +134,6 @@
       // subscribe to ready event
       this.getChatExtension().then((ext) => {
         callback();
-      });
-
-    }
-  }
-
-  class WatsonAdapter {
-
-    constructor() {
-      this.requiredCookies = ['chat'];
-      this.bot = false;
-      this.persist = true;
-    }
-
-    async getChatExtension() {
-      return await new Promise(resolve => {
-        let checkChatExtension = setInterval(()=> {
-          if (typeof acaWidget != 'undefined') {
-            resolve(acaWidget);
-            clearInterval(checkChatExtension);
-          }
-        }, 100);
-      });
-    }
-
-    open(callback) {
-      // send open command
-      this.getChatExtension().then((ext) => {
-        ext.__open();
-        callback();
-      });
-    }
-
-    onClosed(callback) {
-      // subscribe to closed event
-      this.getChatExtension().then((ext) => {
-        let findButton = setInterval(()=> {
-          const acaButton = document.getElementById('aca--widget-button');
-          if (typeof acaButton != 'undefined') {
-            const style = window.getComputedStyle(acaButton);
-            if (style.display !== 'none') {
-              ext.__hideStartButton();
-              callback();
-              clearInterval(findButton);
-            }
-          }
-        }, 1000);
-      });
-    }
-
-    onLoaded(callback) {
-      // subscribe to ready event
-      this.getChatExtension().then((ext) => {
-
-        let findButton = setInterval(()=> {
-          const acaButton = document.getElementById('aca--widget-button');
-          if (typeof acaButton != 'undefined') {
-            const style = window.getComputedStyle(acaButton);
-            if (style.display !== 'none') {
-              ext.__hideStartButton();
-              callback();
-              clearInterval(findButton);
-            }
-
-          }
-        }, 1000);
       });
 
     }
@@ -341,13 +273,7 @@
 
         if (this.state.cookies) {
           this.loadChat();
-          // Check if the adapter is of type Watson
-          if (this.adapter instanceof WatsonAdapter) {
-            // Cannot call open before adapter is loaded.
-            setTimeout(this.openAdapter, 500);
-          } else {
-            this.adapter.onLoaded(this.openChat.bind(this));
-          }
+          this.adapter.onLoaded(this.openChat.bind(this));
         } else {
           console.warn('Missing the required cookies to open chat. Missing cookie not allowed to be set implicitly.')
         }
