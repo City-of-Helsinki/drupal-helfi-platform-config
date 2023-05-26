@@ -91,10 +91,12 @@
         });
 
       // Remove loading text.
-      const removeElements = tableOfContents.querySelectorAll('.js-remove');
-      removeElements.forEach(function (element) {
-        element.remove();
-      });
+      if (tableOfContents) {
+        const removeElements = tableOfContents.querySelectorAll('.js-remove');
+        removeElements.forEach(function (element) {
+          element.remove();
+        });
+      }
     },
   };
 })(Drupal, once);
