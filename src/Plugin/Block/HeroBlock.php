@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Provides a 'HeroBlock' block.
@@ -46,8 +47,17 @@ class HeroBlock extends ContentBlockBase {
         // Check if the content field first paragraph is Unit search
         // and add classes accordingly.
         $paragraph = $entity->get('field_content')->entity;
-        if (!empty($paragraph) && $paragraph->getType() === 'unit_search') {
-          $first_paragraph_grey = 'has-first-gray-bg-block';
+        $paragraphs_with_grey_bg = [
+          'unit_search',
+          'service_list_search',
+        ];
+        foreach ($paragraphs_with_grey_bg as $paragraph_with_grey_bg) {
+          if (
+            $paragraph instanceof ParagraphInterface &&
+            $paragraph->getType() === $paragraph_with_grey_bg
+          ) {
+            $first_paragraph_grey = 'has-first-gray-bg-block';
+          }
         }
       }
 
