@@ -39,3 +39,11 @@ function _helfi_global_announcement_create_block() : void {
   ['block' => $block, 'variations' => $variations] = $block_config;
   $block_installer->install($block, $variations);
 }
+
+/**
+ * Re-install configuration to update cache lifetime.
+ */
+function helfi_global_announcement_update_9001() : void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_global_announcement');
+}
