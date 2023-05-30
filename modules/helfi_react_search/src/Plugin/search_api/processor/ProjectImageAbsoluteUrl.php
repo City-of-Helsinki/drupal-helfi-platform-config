@@ -71,11 +71,11 @@ class ProjectImageAbsoluteUrl extends ProcessorPluginBase {
       return;
     }
 
-    if (!$field_project_image = $node->get('field_project_image')->entity) {
+    if (!$node->get('field_project_image')->entity) {
       return;
     }
 
-    if ($file = $field_project_image->get('field_media_image')->entity) {
+    if ($file = $node->get('field_project_image')->entity->get('field_media_image')->entity) {
       $imageStyle = ImageStyle::load('3_2_s');
 
       $fields['project_image_absolute_url']->addValue($imageStyle->buildUrl($file->getFileUri()));
