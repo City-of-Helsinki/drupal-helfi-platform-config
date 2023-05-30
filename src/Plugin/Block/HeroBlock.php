@@ -49,7 +49,7 @@ class HeroBlock extends ContentBlockBase {
         $paragraph = $entity->get('field_content')->entity;
         $paragraphs_with_grey_bg = [
           'unit_search',
-          'service_list_search'
+          'service_list_search',
         ];
         foreach ($paragraphs_with_grey_bg as $paragraph_with_grey_bg) {
           if (
