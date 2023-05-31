@@ -96,7 +96,7 @@ function helfi_ckeditor_update_9002(): void {
                 '@attribute' => $attribute,
               ]
             ));
-          $replacement = '<blockquote\\1\\2>';
+          $replacement = '<blockquote$1$2>';
           $update = \Drupal::database()->update($table_name);
           $update->expression(
             $column,
