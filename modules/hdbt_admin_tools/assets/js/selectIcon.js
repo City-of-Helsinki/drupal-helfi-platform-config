@@ -1,0 +1,49 @@
+/**
+ * @file
+ * Select icons.
+ */
+(function (Drupal, once) {
+  'use strict';
+
+  Drupal.behaviors.selectIcons = {
+    attach: function (context) {
+
+      function renderTemplate(item, escape) {
+        return `
+          <span style="align-items: center; display: flex; height: 100%;">
+            <span class="hel-icon hel-icon--${item.select2Icon}" aria-hidden="true"></span>
+            <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.name)}</span>
+          </span>
+        `;
+      }
+
+      document.querySelectorAll('.select-icon').forEach((element)=>{
+        const settings = {
+          plugins: {
+            dropdown_input: {},
+            remove_button: {
+              title: 'Remove this item',
+            }
+          },
+          allowEmptyOption: true,
+          valueField: 'url',
+          labelField: 'name',
+          searchField: ['name','description'],
+          create: false,
+          // Custom rendering functions for options and items
+          render: {
+            option: function(item, escape) {
+              return renderTemplate(item, escape);
+            },
+            item: function(item, escape) {
+              return renderTemplate(item, escape);
+            }
+          }
+        };
+        new TomSelect(element, settings);
+      });
+
+    }
+  };
+
+})(Drupal, once);

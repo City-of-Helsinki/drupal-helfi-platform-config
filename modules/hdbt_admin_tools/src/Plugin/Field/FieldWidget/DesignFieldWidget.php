@@ -59,7 +59,7 @@ class DesignFieldWidget extends OptionsSelectWidget {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    $element['#type'] = 'select2';
+    $element['#type'] = 'select';
     $element['#cardinality'] = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
     $element['#select2'] = [
       'width' => $this->getSetting('width') ?? '400px',

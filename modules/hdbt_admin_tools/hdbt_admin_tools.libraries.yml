@@ -1,11 +1,26 @@
+tom_select:
+  version: 1.x
+  js:
+    https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js: { type: external, minified: true }
+  css:
+    theme:
+      assets/css/tom_select.css: {}
+
+select_icon:
+  version: 1.x
+  js:
+    assets/js/selectIcon.js: { weight: -1 }
+  dependencies:
+    - core/once
+    - hdbt_admin_tools/tom_select
+
 color_palette_selection:
   version: 1.x
   js:
-    assets/js/colorPaletteSelection.js: { weight: -1 }
+    assets/js/selectColorPalette.js: { weight: -1 }
   dependencies:
-    - core/jquery
     - hdbt/color-palette
-    - hdbt_admin_tools/select2_icon
+    - hdbt_admin_tools/tom_select
 
 columns-toggle:
   js:
@@ -21,7 +36,7 @@ design_selection:
   dependencies:
     - core/jquery
     - hdbt_admin_tools/image_previewer
-    - hdbt_admin_tools/select2_icon
+    - hdbt_admin_tools/tom_select
 
 image_previewer:
   version: 1.x
@@ -67,6 +82,7 @@ paragraph_selection:
     - core/once
     - hdbt_admin_tools/image_previewer
     - hdbt_admin_tools/select2_icon
+    - hdbt_admin_tools/select_icon
 
 site_settings:
   js:

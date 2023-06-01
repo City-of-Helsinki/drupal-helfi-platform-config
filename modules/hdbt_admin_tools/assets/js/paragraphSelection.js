@@ -33,7 +33,7 @@
 
         // Assign image preview to the paragraph selection.
         const selector = '.paragraph-selection .paragraph-selection__thumbnail';
-        $(selector, context).imagePreviewer(selector);
+        imagePreviewer(selector);
       }
     }
   };

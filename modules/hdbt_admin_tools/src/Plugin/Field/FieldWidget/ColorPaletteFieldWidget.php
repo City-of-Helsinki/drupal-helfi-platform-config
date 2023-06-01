@@ -44,7 +44,7 @@ class ColorPaletteFieldWidget extends OptionsSelectWidget {
       ? $this->getSelectedOptions($items)
       : SiteSettings::getColorPaletteDefaultValue();
     $element['#attached']['library'][] = 'hdbt_admin_tools/color_palette_selection';
-    $element['#attributes']['class'][] = 'color-palette-selection';
+    $element['#attributes']['class'][] = 'tom-select-color-palette';
     $element['#attributes']['data-color-palette-select'] = $this->getFieldName();
 
     return $element;

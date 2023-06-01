@@ -21,7 +21,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Link\UrlHelper;
-use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\Select2Icon;
+use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Drupal\user\UserInterface;
 
 /**
@@ -104,6 +104,19 @@ function hdbt_admin_tools_modules_installed(array $modules) : void {
  */
 function hdbt_admin_tools_theme(): array {
   return [
+    'select_icon_widget' => [
+      'render element' => 'element',
+      'preprocess functions' => [
+        'template_preprocess_select_icon',
+        'template_preprocess_select',
+      ],
+    ],
+    'select_icon' => [
+      'variables' => [
+        'icon_id' => NULL,
+        'icon_label' => NULL,
+      ],
+    ],
     'select2_icon_widget' => [
       'render element' => 'element',
       'preprocess functions' => [
@@ -714,9 +727,9 @@ function hdbt_admin_tools_form_editor_link_dialog_alter(&$form, FormStateInterfa
 
   $form['attributes']['data-selected-icon'] = [
     '#title' => t('Icon'),
-    '#type' => 'select2_icon_element',
+    '#type' => 'select_icon_element',
     '#default_value' => $get_default_value('data-selected-icon', NULL),
-    '#options' => Select2Icon::loadIcons(),
+    '#options' => SelectIcon::loadIcons(),
     '#weight' => 2,
   ];
 
@@ -884,6 +897,7 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
     $design_selection_manager = \Drupal::service('hdbt_admin_tools.design_selection_manager');
     $variables['#attached']['drupalSettings']['paragraphSelect']['images'] = $design_selection_manager->getImages('paragraph', $paragraph_images);
     $variables['#attached']['library'][] = 'hdbt_admin_tools/paragraph_selection';
+
 
     // Go through buttons and set the necessary data-attributes.
     foreach ($buttons as &$button) {

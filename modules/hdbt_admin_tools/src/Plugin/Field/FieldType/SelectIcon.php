@@ -7,19 +7,22 @@ use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Field\FieldItemBase;
 
 /**
- * Plugin implementation of the 'select2_icon' field type.
+ * Plugin implementation of the 'select_icon' field type.
+ *
+ * Note. The field type machine name is still old select2_icon as changing
+ * field types when content exists can potentially lose data.
  *
  * @FieldType(
  *   id = "select2_icon",
- *   label = @Translation("Select2 Icon"),
+ *   label = @Translation("Select Icon"),
  *   category = @Translation("Helfi"),
- *   default_widget = "select2_icon_widget",
- *   default_formatter = "select2_icon_formatter"
+ *   default_widget = "select_icon_widget",
+ *   default_formatter = "select_icon_formatter"
  * )
  */
-class Select2Icon extends FieldItemBase {
+class SelectIcon extends FieldItemBase {
 
-  const SELECT2_ICON_CACHE = 'select2_icon_cache';
+  const SELECT_ICON_CACHE = 'select_icon_cache';
 
   /**
    * {@inheritdoc}
@@ -61,7 +64,7 @@ class Select2Icon extends FieldItemBase {
    *   Returns an array of icons or empty array.
    */
   public static function loadIcons(): array {
-    if ($icons = \Drupal::cache()->get(static::SELECT2_ICON_CACHE)) {
+    if ($icons = \Drupal::cache()->get(static::SELECT_ICON_CACHE)) {
       return $icons->data;
     }
     else {
@@ -81,7 +84,7 @@ class Select2Icon extends FieldItemBase {
 
       if (is_array($json) && !empty($json)) {
         $icons = array_combine($json, $json);
-        \Drupal::cache()->set(static::SELECT2_ICON_CACHE, $icons);
+        \Drupal::cache()->set(static::SELECT_ICON_CACHE, $icons);
       }
     }
     return $icons;

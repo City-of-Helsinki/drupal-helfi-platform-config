@@ -25,3 +25,25 @@ function hdbt_admin_tools_install(): void {
   }
   $config->set('ignored_config_entities', $ignored)->save();
 }
+
+/**
+ * Update new selection tool.
+ */
+function hdbt_admin_tools_update_9002(): void {
+  $modules = [
+    'helfi_base_content',
+    'helfi_paragraphs_accordion',
+    'helfi_paragraphs_banner',
+    'helfi_paragraphs_contact_card_listing',
+    'helfi_paragraphs_target_group_links',
+  ];
+
+  foreach ($modules as $module) {
+    if (!Drupal::moduleHandler()->moduleExists($module)) {
+      continue;
+    }
+
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update($module);
+  }
+}

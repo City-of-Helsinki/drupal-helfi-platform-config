@@ -11,7 +11,7 @@
        * Perform alterations for each "design select" select element, when
        * select2 initialization has been triggered.
        */
-      $('.design-selection', context).on('select2-init', function (event) {
+      $('.ddesign-selection', context).on('select2-init', function (event) {
         let config = $(event.target).data('select2-config');
         let designSelect = $(event.target).data('designSelect');
 
@@ -49,8 +49,7 @@
       /**
        * Assign image preview to selection thumbnail.
        */
-      const selector = '.select2-container--open .design-selection__thumbnail';
-      $(selector, context).imagePreviewer(selector);
+      imagePreviewer('.select2-container--open .design-selection__thumbnail');
     }
   };
 
