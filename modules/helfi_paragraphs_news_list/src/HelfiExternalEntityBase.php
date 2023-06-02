@@ -86,6 +86,12 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     $this->query['filter[id][condition][path]'] = 'id';
     $this->query['filter[id][condition][operator]'] = 'IN';
     foreach ($ids ?? [] as $index => $id) {
+      $parts = explode(':', $id);
+
+      if (count($parts) > 1) {
+        $id = $parts[1];
+      }
+
       $this->query[sprintf('filter[id][condition][value][%d]', $index)] = $id;
     }
 
@@ -111,30 +117,16 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
 
     foreach ($parameters as $param) {
       ['field' => $field, 'value' => $values, 'operator' => $operator] = $param;
-      if ($field == 'id') {
-        $storage = \Drupal::entityTypeManager()->getStorage($this->getPluginId());
-        $data = $storage->loadMultiple($values);
 
-        foreach ($data as $value) {
-          $prepared[$value->id()] = [
-            'id' => $value->id(),
-            'title' => $value->title->value,
-          ];
-        }
+      if ($field === 'title') {
+        $field = 'name';
       }
-      else {
-        $this->query['filter[name-filter][condition][path]'] = 'name';
-        $this->query['filter[name-filter][condition][value]'] = $values;
-        $this->query['filter[name-filter][condition][operator]'] = $operator;
-        $data = $this->request($this->endpoint, $this->query);
-
-        foreach ($data as $value) {
-          $prepared[$value["id"]] = $value;
-        }
-      }
+      $prepared[sprintf('filter[%s-filter][condition][path]', $field)] = $field;
+      $prepared[sprintf('filter[%s-filter][condition][value]', $field)] = $values;
+      $prepared[sprintf('filter[%s-filter][condition][operator]', $field)] = $operator;
     }
 
-    return $prepared;
+    return $this->request($this->endpoint, $prepared);
   }
 
   /**
@@ -168,7 +160,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   ) : array {
     try {
       $langcode = $this->languageManager
-        ->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)
+        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
         ->getId();
       $uri = vsprintf('%s%s?%s', [
         $this->environment->getInternalAddress($langcode),
