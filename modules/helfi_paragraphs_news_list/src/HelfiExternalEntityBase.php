@@ -86,12 +86,6 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     $this->query['filter[id][condition][path]'] = 'id';
     $this->query['filter[id][condition][operator]'] = 'IN';
     foreach ($ids ?? [] as $index => $id) {
-      $parts = explode(':', $id);
-
-      if (count($parts) > 1) {
-        $id = $parts[1];
-      }
-
       $this->query[sprintf('filter[id][condition][value][%d]', $index)] = $id;
     }
 
