@@ -87,7 +87,8 @@ final class News extends HelfiExternalEntityBase {
 
     // Filter by multiple terms using 'OR' condition.
     foreach ($terms as $key => $value) {
-      $query[sprintf('filter[taxonomy_term--news_%s][condition][value][%d]', $name, $key)] = $this->prepareQueryParameter('id', $value['target_id']);
+      $query[sprintf('filter[taxonomy_term--news_%s][condition][value][%d]', $name, $key)] = $this
+        ->prepareQueryParameter('id', $value['target_id']);
     }
     return $query;
   }
