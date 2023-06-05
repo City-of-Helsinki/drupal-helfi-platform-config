@@ -226,6 +226,8 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
       if (isset($json['included'])) {
         $this->resolveRelationShip($item, $json['included']);
       }
+      // Suffix all IDs with a language code to make sure they are cached
+      // per language.
       if (isset($item['id'])) {
         $item['id'] = $this->getUniqueId($item);
       }
