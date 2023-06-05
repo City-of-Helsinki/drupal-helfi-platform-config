@@ -11,7 +11,7 @@
       function renderTemplate(item, escape) {
         return `
           <span style="align-items: center; display: flex; height: 100%;">
-            <span class="hel-icon hel-icon--${item.select2Icon}" aria-hidden="true"></span>
+            <span class="hel-icon hel-icon--${item.icon}" aria-hidden="true"></span>
             <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.name)}</span>
           </span>
         `;
@@ -25,10 +25,9 @@
               title: 'Remove this item',
             }
           },
-          allowEmptyOption: true,
-          valueField: 'url',
+          valueField: 'icon',
           labelField: 'name',
-          searchField: ['name','description'],
+          searchField: ['name'],
           create: false,
           // Custom rendering functions for options and items
           render: {

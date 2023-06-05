@@ -19,7 +19,7 @@ class SelectIconFormElement extends Select {
    */
   public static function processSelect(&$element, FormStateInterface $form_state, &$complete_form): array {
     // Set icons for the options.
-    $element['#options'] = [$element['#empty_value'] => ''] + SelectIcon::loadIcons();
+    $element['#options'] = ['' => t('- None -')] + SelectIcon::loadIcons();
     return $element;
   }
 
