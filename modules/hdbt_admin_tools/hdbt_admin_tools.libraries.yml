@@ -1,7 +1,11 @@
 tom_select:
-  version: 1.x
+  version: 2.2.2
+  remote: https://github.com/orchidjs/tom-select
+  license:
+    name: Apache license 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
   js:
-    https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js: { type: external, minified: true }
+    assets/js/tomSelectComplete.min.js: { weight: -1, minified: true }
   css:
     theme:
       assets/css/tom_select.css: {}
