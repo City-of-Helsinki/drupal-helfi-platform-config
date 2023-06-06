@@ -15,16 +15,35 @@ select_icon:
   js:
     assets/js/selectIcon.js: { weight: -1 }
   dependencies:
+    - core/drupal
     - core/once
     - hdbt_admin_tools/tom_select
+    - hdbt/hdbt-icons
 
-color_palette_selection:
+select_color_palette:
   version: 1.x
   js:
     assets/js/selectColorPalette.js: { weight: -1 }
   dependencies:
+    - core/drupal
+    - core/once
     - hdbt/color-palette
     - hdbt_admin_tools/tom_select
+
+select_design:
+  version: 1.x
+  js:
+    assets/js/selectDesign.js: { weight: -1 }
+  dependencies:
+    - core/drupal
+    - core/once
+    - hdbt_admin_tools/image_previewer
+    - hdbt_admin_tools/tom_select
+
+image_previewer:
+  version: 1.x
+  js:
+    assets/js/imagePreviewer.js: { weight: -2 }
 
 columns-toggle:
   js:
@@ -33,28 +52,13 @@ columns-toggle:
     - core/drupal
     - core/jquery
 
-design_selection:
-  version: 1.x
-  js:
-    assets/js/designSelection.js: { weight: -1 }
-  dependencies:
-    - core/jquery
-    - hdbt_admin_tools/image_previewer
-    - hdbt_admin_tools/tom_select
-
-image_previewer:
-  version: 1.x
-  js:
-    assets/js/imagePreviewer.js: { weight: -2 }
-  dependencies:
-    - core/jquery
-
 language_selector:
   css:
     theme:
       assets/css/language_selector.css: {}
   dependencies:
     - core/drupal
+    - hdbt_admin_tools/tom_select
 
 link_plugin_enhancements:
   version: 1.x
@@ -82,8 +86,9 @@ paragraph_selection:
   js:
     assets/js/paragraphSelection.js: {}
   dependencies:
-    - core/jquery
+    - core/drupal
     - core/once
+    - core/jquery
     - hdbt_admin_tools/image_previewer
     - hdbt_admin_tools/select_icon
 

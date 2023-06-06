@@ -721,10 +721,16 @@ function hdbt_admin_tools_form_editor_link_dialog_alter(&$form, FormStateInterfa
 
   $form['attributes']['data-selected-icon'] = [
     '#title' => t('Icon'),
+    '#theme' => 'select_icon_widget',
     '#type' => 'select_icon_element',
     '#default_value' => $get_default_value('data-selected-icon', NULL),
     '#options' => SelectIcon::loadIcons(),
     '#weight' => 2,
+    '#attributes' => [
+      'class' => [
+        'link-plugin-select-design'
+      ],
+    ],
   ];
 
   $form['attributes']['target'] = [

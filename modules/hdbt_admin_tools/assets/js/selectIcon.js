@@ -5,19 +5,21 @@
 (function (Drupal, once) {
   'use strict';
 
+  function renderTemplate(item, escape) {
+    return `
+      <span style="align-items: center; display: flex; height: 100%;">
+        <span class="hel-icon hel-icon--${item.icon}" aria-hidden="true"></span>
+        <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.name)}</span>
+      </span>
+    `;
+  }
+
   Drupal.behaviors.selectIcons = {
     attach: function (context) {
 
-      function renderTemplate(item, escape) {
-        return `
-          <span style="align-items: center; display: flex; height: 100%;">
-            <span class="hel-icon hel-icon--${item.icon}" aria-hidden="true"></span>
-            <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.name)}</span>
-          </span>
-        `;
-      }
+      const elements = once('select-icon', 'select.select-icon', context);
 
-      document.querySelectorAll('.select-icon').forEach((element)=>{
+      elements.forEach((element)=>{
         const settings = {
           plugins: {
             dropdown_input: {},

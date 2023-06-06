@@ -5,7 +5,7 @@
   'use strict';
 
   // Simple show / hide functionality.
-  const handleVisibilty = function (element, show = true) {
+  const handleVisibility = function (element, show = true) {
     return (show) ? element.show(): element.hide();
   }
 
@@ -24,13 +24,13 @@
 
         // Reset protocol select.
         if (hrefInput.val()) {
-          handleVisibilty(protocolSelect, false)
+          handleVisibility(protocolSelect, false)
         }
 
         // Handle protocol select visibility based on user input.
         hrefInput.on('input', (event) => {
           let input = $(event.target);
-          handleVisibilty(protocolSelect,input.val() === '');
+          handleVisibility(protocolSelect,input.val() === '');
         });
 
         // Change input value based on protocol selection.
@@ -63,7 +63,7 @@
       if (design) {
         design.change((event) => {
           let chosenDesign = $(event.target).val();
-          handleVisibilty($('form.editor-link-dialog .form-item--attributes-data-selected-icon'), chosenDesign !== 'link');
+          handleVisibility($('form.editor-link-dialog .form-item--attributes-data-selected-icon'), chosenDesign !== 'link');
         }).change();
       }
     }
