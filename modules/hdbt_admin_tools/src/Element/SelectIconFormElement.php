@@ -6,7 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\Select;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 
-
 /**
  * Provides a Select icon form element.
  *

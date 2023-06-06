@@ -104,6 +104,13 @@ function hdbt_admin_tools_modules_installed(array $modules) : void {
  */
 function hdbt_admin_tools_theme(): array {
   return [
+    'selection_widget' => [
+      'render element' => 'element',
+      'preprocess functions' => [
+        'template_preprocess_selection_widget',
+        'template_preprocess_select',
+      ],
+    ],
     'select_icon_widget' => [
       'render element' => 'element',
       'preprocess functions' => [
@@ -884,7 +891,6 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
     $design_selection_manager = \Drupal::service('hdbt_admin_tools.design_selection_manager');
     $variables['#attached']['drupalSettings']['paragraphSelect']['images'] = $design_selection_manager->getImages('paragraph', $paragraph_images);
     $variables['#attached']['library'][] = 'hdbt_admin_tools/paragraph_selection';
-
 
     // Go through buttons and set the necessary data-attributes.
     foreach ($buttons as &$button) {
