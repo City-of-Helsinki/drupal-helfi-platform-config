@@ -63,7 +63,7 @@ function helfi_paragraphs_news_list_update_9003(&$sandbox) : void {
       }
       // Suffix all existing target ids with langcode.
       foreach ($value as $item) {
-        // Make sure existing items are not affected.
+        // Make sure already updated items are not affected.
         [$id] = explode(':', $item->target_id);
 
         $item->target_id = sprintf('%s:%s', $id, $value->getLangcode());
