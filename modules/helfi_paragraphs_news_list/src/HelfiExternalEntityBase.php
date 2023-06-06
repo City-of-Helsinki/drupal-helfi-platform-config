@@ -103,19 +103,21 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   }
 
   /**
-   * Generates an unique id for given item.
+   * Generates a unique id for given item.
    *
    * @param array $data
    *   The data to generate id for.
+   * @param string $langcode
+   *   The fallback langcode.
    *
    * @return string
-   *   An unique id.
+   *   A unique id.
    */
-  protected function getUniqueId(array $data) : string {
-    if (!isset($data['attributes']['langcode'])) {
-      throw new \LogicException('Data must contain attributes[langcode].');
+  protected function getUniqueId(array $data, string $langcode) : string {
+    if (isset($data['attributes']['langcode'])) {
+      $langcode = $data['attributes']['langcode'];
     }
-    return sprintf('%s:%s', $data['id'], $data['attributes']['langcode']);
+    return sprintf('%s:%s', $data['id'], $langcode);
   }
 
   /**
@@ -215,12 +217,14 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
    *
    * @param array $json
    *   The response JSON.
+   * @param string $langcode
+   *   The fallback langcode.
    *
    * @return array
    *   The data.
    */
-  protected function formatResponse(array $json) : array {
-    return array_map(function (array $item) use ($json) : array {
+  protected function formatResponse(array $json, string $langcode) : array {
+    return array_map(function (array $item) use ($json, $langcode) : array {
       // Resolve and place all relationship data under corresponding parent
       // entity.
       if (isset($json['included'])) {
@@ -229,7 +233,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
       // Suffix all IDs with a language code to make sure they are cached
       // per language.
       if (isset($item['id'])) {
-        $item['id'] = $this->getUniqueId($item);
+        $item['id'] = $this->getUniqueId($item, $langcode);
       }
       return $item;
     }, $json['data']);
@@ -323,7 +327,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
         'curl' => [CURLOPT_TCP_KEEPALIVE => TRUE],
       ]);
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
-      return $this->formatResponse($json);
+      return $this->formatResponse($json, $langcode);
     }
     catch (RequestException | GuzzleException $e) {
       watchdog_exception('helfi_external_entity', $e);
