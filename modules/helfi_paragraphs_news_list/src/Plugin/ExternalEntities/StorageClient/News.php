@@ -14,6 +14,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -242,7 +243,7 @@ final class News extends ExternalEntityStorageClientBase {
       ]);
       $content = $this->client->request('GET', $uri);
 
-      $json = \GuzzleHttp\json_decode($content->getBody()->getContents(), TRUE);
+      $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
 
       return array_map(function (array $item) use ($json) : array {
         // Resolve and place all relationship data under corresponding parent
