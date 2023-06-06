@@ -75,9 +75,6 @@ class SelectIconWidget extends WidgetBase {
       '#type' => 'select',
       '#title' => $this->t('Icon'),
       '#cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
-      '#select2' => [
-        'width' => $this->getSetting('width') ?? '400px',
-      ],
       '#theme' => 'select_icon_widget',
       '#options' => SelectIcon::loadIcons(),
       '#default_value' => $this->getSelectedOptions($items),

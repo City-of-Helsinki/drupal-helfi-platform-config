@@ -117,19 +117,6 @@ function hdbt_admin_tools_theme(): array {
         'icon_label' => NULL,
       ],
     ],
-    'select2_icon_widget' => [
-      'render element' => 'element',
-      'preprocess functions' => [
-        'template_preprocess_select2_icon',
-        'template_preprocess_select',
-      ],
-    ],
-    'select2_icon' => [
-      'variables' => [
-        'icon_id' => NULL,
-        'icon_label' => NULL,
-      ],
-    ],
   ];
 }
 
@@ -923,12 +910,6 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
   if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
     return;
   }
-
-  // Attach design selection library and path to images to current form.
-  // If design selection field widget is in use in f.e. a paragraph and it is
-  // loaded via ajax, there might be situation where the select2 library is
-  // loaded before the design selection library.
-  $form['#attached']['library'][] = 'hdbt_admin_tools/design_selection';
 
   // Perform alterations for Drupal core and contrib module field titles,
   // descriptions and field visibility based on customer needs.

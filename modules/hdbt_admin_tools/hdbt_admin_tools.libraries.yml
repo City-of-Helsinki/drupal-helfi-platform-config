@@ -81,24 +81,10 @@ paragraph_selection:
     - core/jquery
     - core/once
     - hdbt_admin_tools/image_previewer
-    - hdbt_admin_tools/select2_icon
     - hdbt_admin_tools/select_icon
 
 site_settings:
   js:
     assets/js/siteSettingsDefaultColor.js: {}
   dependencies:
-    - hdbt/hdbt-icons
-
-select2_icon:
-  version: 1.x
-  css:
-    theme:
-      assets/css/select2_icon.css: {}
-  js:
-    assets/js/select2_icon.js: { weight: -1 }
-  dependencies:
-    - core/jquery
-    - core/once
-    - select2/select2.min
     - hdbt/hdbt-icons
