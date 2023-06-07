@@ -48,7 +48,7 @@
       });
 
       // Assign image preview to the design selection.
-      imagePreviewer('.select-design .select-design__thumbnail');
+      imagePreviewer('.select-design .ts-control .select-design__thumbnail');
     }
   };
 })(Drupal, drupalSettings, once);

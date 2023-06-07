@@ -13,6 +13,7 @@
 /* TS wrapper styles */
 .ts-wrapper {
   color: #222330;
+  background-color: #fff;
   font-size: 1rem;
   position: relative;
   width: fit-content;
@@ -66,7 +67,6 @@
   box-shadow: 0 1px 2px rgba(18,18,18,.25);
   box-sizing: border-box;
   left: 0;
-  margin: 0.25rem 0 0 0;
   position: absolute;
   top: 100%;
   width: 100%;

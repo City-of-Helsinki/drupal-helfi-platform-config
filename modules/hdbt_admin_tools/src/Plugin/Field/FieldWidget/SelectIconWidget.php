@@ -71,13 +71,19 @@ class SelectIconWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
+    $options = ['' => t('- None -')] + SelectIcon::loadIcons();
     $element['icon'] = [
       '#type' => 'select',
       '#title' => $this->t('Icon'),
       '#cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
       '#theme' => 'select_icon_widget',
-      '#options' => SelectIcon::loadIcons(),
+      '#options' => $options,
       '#default_value' => $this->getSelectedOptions($items),
+      '#attached' => [
+        'library' => [
+          'hdbt_admin_tools/select_icon',
+        ],
+      ],
     ];
 
     return $element;
