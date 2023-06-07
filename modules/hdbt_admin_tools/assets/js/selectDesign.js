@@ -44,7 +44,7 @@
           onDropdownOpen: eventHandler('open'),
           onDropdownClose: eventHandler('close'),
         };
-        new TomSelect(element, settings);
+        const tomSelect = new TomSelect(element, settings);
       });
 
       // Assign image preview to the design selection.

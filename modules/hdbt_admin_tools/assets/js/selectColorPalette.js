@@ -34,7 +34,7 @@
             }
           }
         };
-        new TomSelect(element, settings);
+        const tomSelect = new TomSelect(element, settings);
       });
     }
   };

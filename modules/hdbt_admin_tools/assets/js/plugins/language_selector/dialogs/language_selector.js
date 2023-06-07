@@ -111,7 +111,7 @@
                     }
                   }
                 };
-                new TomSelect(select, settings);
+                const tomSelect = new TomSelect(select, settings);
               },
             },
             {
