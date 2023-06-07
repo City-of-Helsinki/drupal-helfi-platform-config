@@ -39,8 +39,12 @@
   function imagePreviewHandler(selector, imageID, config) {
     return function(event) {
       if (!event.target.matches(selector)) return;
-      // Rest of the code for handling the mouseenter event
 
+      // Stop immediate propagation. Otherwise, the preview image will be
+      // rendered twice.
+      event.stopImmediatePropagation();
+
+      // Rest of the code for handling the mouseenter event
       const image = event.target.dataset.hoverImage;
       const title = event.target.dataset.hoverTitle || '';
       const description = event.target.dataset.hoverDescription || '';
