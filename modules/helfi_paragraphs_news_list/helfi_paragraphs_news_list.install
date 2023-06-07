@@ -10,6 +10,33 @@ declare(strict_types = 1);
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
+ * Grants required permissions.
+ */
+function helfi_paragraphs_news_list_grant_permissions() : void {
+  $permissions = [
+    'view helfi_news external entity',
+    'view helfi_news_groups external entity',
+    'view helfi_news_neighbourhoods external entity',
+    'view helfi_news_tags external entity',
+  ];
+
+  helfi_platform_config_grant_permissions([
+    'anonymous' => $permissions,
+    'authenticated' => $permissions,
+  ]);
+}
+
+/**
+ * Implements hook_install().
+ */
+function helfi_paragraphs_news_list_install(bool $is_syncing) : void {
+  if ($is_syncing) {
+    return;
+  }
+  helfi_paragraphs_news_list_grant_permissions();
+}
+
+/**
  * UHF-8135 Update news list paragraph translations.
  */
 function helfi_paragraphs_news_list_update_9002(): void {
@@ -74,4 +101,11 @@ function helfi_paragraphs_news_list_update_9003(&$sandbox) : void {
   }
 
   $sandbox['#finished'] = $sandbox['current'] >= $sandbox['total'] ? 1 : ($sandbox['current'] / $sandbox['total']);
+}
+
+/**
+ * Grant required permissions to view external entities.
+ */
+function helfi_paragraphs_news_list_update_9004() : void {
+  helfi_paragraphs_news_list_grant_permissions();
 }
