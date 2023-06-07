@@ -728,7 +728,7 @@ function hdbt_admin_tools_form_editor_link_dialog_alter(&$form, FormStateInterfa
     '#weight' => 2,
     '#attributes' => [
       'class' => [
-        'link-plugin-select-design'
+        'link-plugin-select-design',
       ],
     ],
   ];
