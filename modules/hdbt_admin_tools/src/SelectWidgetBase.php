@@ -128,3 +128,11 @@ abstract class SelectWidgetBase extends OptionsSelectWidget {
   }
 
 }
+
+//
+//Schema errors for
+//  core.entity_form_display.paragraph.from_library.default
+//with the following errors:
+//core.entity_form_display.paragraph.from_library.default:content.field_reusable_paragraph.settings.autocomplete
+//core.entity_form_display.paragraph.from_library.default:content.field_reusable_paragraph.settings.match_operator
+//core.entity_form_display.paragraph.from_library.default:content.field_reusable_paragraph.settings.match_limit

@@ -26,7 +26,7 @@
       elements.forEach((element)=>{
         const eventHandler = function(action) {
           return function() {
-            imagePreviewer('.select-design .ts-dropdown .select-design__thumbnail', {}, action);
+            imagePreviewer('.select-design .select-design__thumbnail', {}, action);
           };
         };
 
@@ -48,7 +48,7 @@
       });
 
       // Assign image preview to the design selection.
-      imagePreviewer('.select-design .ts-control .select-design__thumbnail');
+      imagePreviewer('.select-design .select-design__thumbnail');
     }
   };
 })(Drupal, drupalSettings, once);
