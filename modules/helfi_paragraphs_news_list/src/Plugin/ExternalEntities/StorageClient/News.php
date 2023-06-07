@@ -5,16 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClient;
 
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
-use Drupal\helfi_api_base\Environment\Environment;
-use Drupal\helfi_api_base\Environment\Project;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\helfi_paragraphs_news_list\HelfiExternalEntityBase;
 
 /**
  * External entity storage client for News feed entities.
@@ -25,52 +17,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Retrieves 'news' content from Helfi")
  * )
  */
-final class News extends ExternalEntityStorageClientBase {
-
-  /**
-   * The active endpoint environment.
-   *
-   * @var \Drupal\helfi_api_base\Environment\Environment
-   */
-  private Environment $environment;
-
-  /**
-   * The current language service.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  private LanguageManagerInterface $languageManager;
-
-  /**
-   * The HTTP client service.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  private ClientInterface $client;
+final class News extends HelfiExternalEntityBase {
 
   /**
    * {@inheritdoc}
    */
-  public static function create(
-    ContainerInterface $container,
-    array $configuration,
-    $plugin_id,
-    $plugin_definition
-  ) : self {
-    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->languageManager = $container->get('language_manager');
-    $instance->client = $container->get('http_client');
-
-    $environment = $container->get('config.factory')
-      ->get('helfi_paragraphs_news_list.settings')
-      ->get('source_environment') ?: 'prod';
-
-    /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
-    $environmentResolver = $container->get('helfi_api_base.environment_resolver');
-    $instance->environment = $environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $environment);
-    return $instance;
-  }
+  protected string $endpoint = '/jsonapi/node/news';
 
   /**
    * {@inheritdoc}
@@ -81,14 +33,12 @@ final class News extends ExternalEntityStorageClientBase {
       // Include tags, neighbourhoods and groups fields.
       'include' => 'tags,groups,neighbourhoods',
     ];
-    $language = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-      ->getId();
 
     foreach ($ids ?? [] as $index => $id) {
-      $query[sprintf('filter[id][value][%d]', $index)] = $id;
+      $query[sprintf('filter[id][value][%d]', $index)] = $this
+        ->prepareQueryParameter('id', $id);
     }
-    $data = $this->request($query, $language);
+    $data = $this->request($query);
 
     // The $ids are passed in correct order, but the external data is not
     // in same order. Sort data by given $ids.
@@ -137,7 +87,8 @@ final class News extends ExternalEntityStorageClientBase {
 
     // Filter by multiple terms using 'OR' condition.
     foreach ($terms as $key => $value) {
-      $query[sprintf('filter[taxonomy_term--news_%s][condition][value][%d]', $name, $key)] = $value['target_id'];
+      $query[sprintf('filter[taxonomy_term--news_%s][condition][value][%d]', $name, $key)] = $this
+        ->prepareQueryParameter('id', $value['target_id']);
     }
     return $query;
   }
@@ -212,114 +163,7 @@ final class News extends ExternalEntityStorageClientBase {
       catch (\UnhandledMatchError) {
       }
     }
-
-    // If filter is missing language set it manually.
-    if (!isset($query['filter[langcode]'])) {
-      $language = $this->languageManager
-        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-        ->getId();
-      $query['filter[langcode]'] = $language;
-    }
-    return $this->request($query, $query['filter[langcode]']);
-  }
-
-  /**
-   * Creates a request against JSON:API.
-   *
-   * @param array $parameters
-   *   The query parameters.
-   * @param string $langcode
-   *   The langcode.
-   *
-   * @return array
-   *   An array of entities.
-   */
-  private function request(array $parameters, string $langcode) : array {
-    try {
-      $uri = vsprintf('%s/jsonapi/node/news?%s', [
-        $this->environment->getInternalAddress($langcode),
-        \GuzzleHttp\http_build_query($parameters),
-      ]);
-      $content = $this->client->request('GET', $uri);
-
-      $json = \GuzzleHttp\json_decode($content->getBody()->getContents(), TRUE);
-
-      return array_map(function (array $item) use ($json) : array {
-        // Resolve and place all relationship data under corresponding parent
-        // entity.
-        if (isset($json['included'])) {
-          $this->resolveRelationShip($item, $json['included']);
-        }
-        return $item;
-      }, $json['data']);
-    }
-    catch (RequestException | GuzzleException $e) {
-      watchdog_exception('helfi_paragraphs_news_list', $e);
-    }
-    return [];
-  }
-
-  /**
-   * Gets the related entity.
-   *
-   * @param array $element
-   *   The base jsonapi response.
-   * @param string $id
-   *   The id to find.
-   *
-   * @return array|null
-   *   The related element.
-   */
-  private function resolveInclude(array $element, string $id) : ? array {
-    $key = array_search($id, array_column($element, 'id'));
-
-    if ($key === FALSE) {
-      return NULL;
-    }
-    return $element[$key];
-  }
-
-  /**
-   * Resolves the relationships for given item.
-   *
-   * @param array $entity
-   *   The base jsonapi response.
-   * @param array $includes
-   *   The includes array.
-   */
-  private function resolveRelationShip(array &$entity, array $includes) {
-
-    if (empty($entity['relationships'])) {
-      $entity['relationships'] = [];
-    }
-
-    foreach ($entity['relationships'] as &$relationship) {
-      if (empty($relationship['data'])) {
-        continue;
-      }
-      $rdata = &$relationship['data'];
-
-      // Handle elements without nested relationships.
-      if (!isset($rdata[0])) {
-        if (!$element = $this->resolveInclude($includes, $rdata['id'])) {
-          continue;
-        }
-        $this->resolveRelationShip($element, $includes);
-
-        $rdata = $element;
-
-        continue;
-      }
-      foreach ($rdata as &$item) {
-        if (!$element = $this->resolveInclude($includes, $item['id'])) {
-          continue;
-        }
-
-        $item = $element;
-        // Fetch nested relationships.
-        $this->resolveRelationShip($element, $item);
-      }
-    }
+    return $this->request($query);
   }
 
 }
