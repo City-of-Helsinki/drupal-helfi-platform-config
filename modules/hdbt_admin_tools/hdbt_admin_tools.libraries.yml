@@ -40,6 +40,15 @@ select_design:
     - hdbt_admin_tools/image_previewer
     - hdbt_admin_tools/tom_select
 
+select_paragraph:
+  version: 1.x
+  js:
+    assets/js/selectParagraph.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - hdbt_admin_tools/image_previewer
+
 image_previewer:
   version: 1.x
   js:
@@ -80,17 +89,6 @@ modal_window_position:
     - core/drupal
     - core/jquery
     - core/once
-
-paragraph_selection:
-  version: 1.x
-  js:
-    assets/js/paragraphSelection.js: {}
-  dependencies:
-    - core/drupal
-    - core/once
-    - core/jquery
-    - hdbt_admin_tools/image_previewer
-    - hdbt_admin_tools/select_icon
 
 site_settings:
   js:

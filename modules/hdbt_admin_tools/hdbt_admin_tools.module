@@ -878,7 +878,7 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
   if ($buttons && is_array($buttons)) {
 
     // Attach paragraph selection library.
-    $variables['attributes']['class'][] = 'paragraph-selection';
+    $variables['attributes']['class'][] = 'select-paragraph';
 
     // Get paragraph types.
     $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraphs_type');
@@ -895,8 +895,8 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
 
     // Set images for the paragraph preview tool.
     $design_selection_manager = \Drupal::service('hdbt_admin_tools.design_selection_manager');
-    $variables['#attached']['drupalSettings']['paragraphSelect']['images'] = $design_selection_manager->getImages('paragraph', $paragraph_images);
-    $variables['#attached']['library'][] = 'hdbt_admin_tools/paragraph_selection';
+    $variables['#attached']['drupalSettings']['selectParagraph']['images'] = $design_selection_manager->getImages('paragraph', $paragraph_images);
+    $variables['#attached']['library'][] = 'hdbt_admin_tools/select_paragraph';
 
     // Go through buttons and set the necessary data-attributes.
     foreach ($buttons as &$button) {
