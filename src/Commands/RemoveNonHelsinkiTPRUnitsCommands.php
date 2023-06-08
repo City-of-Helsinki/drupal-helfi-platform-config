@@ -42,6 +42,7 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
     $unit_ids = $entityStorage->getQuery()
       ->condition('address__locality', 'Helsinki', '!=')
       ->condition('address__locality', 'Helsingfors', '!=')
+      ->accessCheck(FALSE)
       ->execute();
 
     $unit_count = 0;
