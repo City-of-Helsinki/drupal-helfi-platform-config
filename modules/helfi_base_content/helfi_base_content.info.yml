@@ -33,6 +33,7 @@ dependencies:
   - redirect:redirect
   - role_delegation:role_delegation
   - scheduler:scheduler
+  - select2:select2
   - simple_sitemap:simple_sitemap
   - twig_tweak:twig_tweak
   - view_unpublished:view_unpublished
