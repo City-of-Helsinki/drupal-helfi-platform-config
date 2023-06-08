@@ -46,7 +46,7 @@
         "drupal/select2": "^1.12",
         "drupal/simple_sitemap": "^4.1",
         "drupal/siteimprove": "^1.11",
-        "drupal/social_media": "^1.8",
+        "drupal/social_media": "^2.0",
         "drupal/token": "^1.9",
         "drupal/translatable_menu_link_uri": "^2.0",
         "drupal/view_unpublished": "^1.0",
