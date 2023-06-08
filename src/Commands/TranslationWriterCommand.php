@@ -29,6 +29,8 @@ class TranslationWriterCommand extends DrushCommands {
    *   The translation manager.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The filesystem.
+   * @param \Drupal\Core\Extension\ExtensionPathResolver
+   *   The Extension path resolver.
    */
   public function __construct(
     protected LanguageManager $languageManager,
@@ -59,7 +61,7 @@ class TranslationWriterCommand extends DrushCommands {
    * Get path for the feature.
    */
   private function getModulePath($module): string {
-    return $this->extensionPathResolver->getPath('module', 'helfi_platform_config'). '/helfi_features/' . $module;
+    return $this->extensionPathResolver->getPath('module', 'helfi_platform_config') . '/helfi_features/' . $module;
   }
 
   /**
