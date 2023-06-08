@@ -39,7 +39,7 @@
         ':not(#helfi-toc-table-of-contents *)' +
         ':not(.embedded-content-cookie-compliance *)' +
         ':not(.react-and-share-cookie-compliance *)' +
-        ':not(.handorgel__header)';
+        ':not(.accordion-item__header)'
 
       const titleComponents = [
         'h2'+exclusions,
@@ -47,7 +47,6 @@
         'h4'+exclusions,
         'h5'+exclusions,
         'h6'+exclusions,
-        '.handorgel__header > button',
       ];
 
       // Craft table of contents.
