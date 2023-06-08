@@ -29,7 +29,7 @@ class TranslationWriterCommand extends DrushCommands {
    *   The translation manager.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The filesystem.
-   * @param \Drupal\Core\Extension\ExtensionPathResolver
+   * @param \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver
    *   The Extension path resolver.
    */
   public function __construct(
