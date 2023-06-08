@@ -38,7 +38,8 @@
         ':not(.breadcrumb__container *)' +
         ':not(#helfi-toc-table-of-contents *)' +
         ':not(.embedded-content-cookie-compliance *)' +
-        ':not(.react-and-share-cookie-compliance *)'
+        ':not(.react-and-share-cookie-compliance *)' +
+        ':not(.accordion-item__header)'
 
       const titleComponents = [
         'h2'+exclusions,
