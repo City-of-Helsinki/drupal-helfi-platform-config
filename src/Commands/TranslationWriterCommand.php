@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\Commands;
 
 use Drupal\Component\Gettext\PoItem;
 use Drupal\Component\Gettext\PoStreamWriter;
+use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\StringTranslation\TranslationManager;
@@ -18,26 +19,6 @@ use Symfony\Component\Yaml\Yaml;
  * @package Drupal\drush9_custom_commands\Commands
  */
 class TranslationWriterCommand extends DrushCommands {
-  /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManager
-   */
-  protected $languageManager;
-
-  /**
-   * The translation manager.
-   *
-   * @var \Drupal\Core\StringTranslation\TranslationManager
-   */
-  protected $translationManager;
-
-  /**
-   * The file system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected $fileSystem;
 
   /**
    * Constructor.
@@ -48,11 +29,15 @@ class TranslationWriterCommand extends DrushCommands {
    *   The translation manager.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The filesystem.
+   * @param \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver
+   *   The Extension path resolver.
    */
-  public function __construct(LanguageManager $languageManager, TranslationManager $translationManager, FileSystemInterface $fileSystem) {
-    $this->languageManager = $languageManager;
-    $this->translationManager = $translationManager;
-    $this->fileSystem = $fileSystem;
+  public function __construct(
+    protected LanguageManager $languageManager,
+    protected TranslationManager $translationManager,
+    protected FileSystemInterface $fileSystem,
+    protected ExtensionPathResolver $extensionPathResolver
+  ) {
   }
 
   /**
@@ -76,7 +61,7 @@ class TranslationWriterCommand extends DrushCommands {
    * Get path for the feature.
    */
   private function getModulePath($module): string {
-    return drupal_get_path('module', 'helfi_platform_config') . '/helfi_features/' . $module;
+    return $this->extensionPathResolver->getPath('module', 'helfi_platform_config') . '/helfi_features/' . $module;
   }
 
   /**

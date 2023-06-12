@@ -209,3 +209,12 @@ function helfi_tpr_config_update_9036(): void {
 function helfi_tpr_config_update_9037(): void {
   helfi_platform_config_update_paragraph_target_types();
 }
+
+/**
+ * UHF-8196 Update unit and service views to show unpublished entities.
+ */
+function helfi_tpr_config_update_9038(): void {
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_tpr_config');
+}

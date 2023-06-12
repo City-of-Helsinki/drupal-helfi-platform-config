@@ -65,6 +65,7 @@ function helfi_paragraphs_news_list_paragraph_view(
     }
 
     $query->sort('published_at', 'DESC');
+    $query->accessCheck(FALSE);
 
     $ids = $query->execute();
     $entities = $storage->loadMultiple(array_keys($ids));
