@@ -8,20 +8,20 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Url;
 use Drupal\hdbt_admin_tools\Form\SiteSettings;
+use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
+use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\helfi_tpr\Entity\Unit;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Url;
-use Drupal\helfi_api_base\Link\UrlHelper;
-use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Drupal\user\UserInterface;
 
 /**

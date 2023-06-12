@@ -2,9 +2,9 @@
 
 namespace Drupal\hdbt_admin_tools\Plugin\CKEditorPlugin;
 
+use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\editor\Entity\Editor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
