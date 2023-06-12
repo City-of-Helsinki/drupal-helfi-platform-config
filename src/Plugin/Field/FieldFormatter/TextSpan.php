@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\helfi_platform_config\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FormatterBase;
 
 /**
  * Plugin implementation of the 'Text with span' formatter.
