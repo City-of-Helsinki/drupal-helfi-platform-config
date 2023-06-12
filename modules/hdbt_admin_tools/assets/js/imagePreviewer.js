@@ -25,10 +25,10 @@
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    return prefix + '-' + result;
+    return `${prefix  }-${  result}`;
   }
 
-  let _config = {
+  const _config = {
     fadeIn: 200,
     fadeOut: 200,
     imageYOffset: 32,
@@ -49,22 +49,22 @@
       const title = event.target.dataset.hoverTitle || '';
       const description = event.target.dataset.hoverDescription || '';
 
-      let previewWrapper = document.createElement('p');
+      const previewWrapper = document.createElement('p');
       previewWrapper.id = imageID;
       previewWrapper.className = 'image-previewer__image-wrapper';
 
-      let img = document.createElement('img');
+      const img = document.createElement('img');
       img.className = 'image-previewer__image';
       img.width = 723;
       img.height = 407;
       img.src = image;
       img.alt = title;
 
-      let titleSpan = document.createElement('span');
+      const titleSpan = document.createElement('span');
       titleSpan.className = 'image-previewer__title';
       titleSpan.textContent = title;
 
-      let descriptionSpan = document.createElement('span');
+      const descriptionSpan = document.createElement('span');
       descriptionSpan.className = 'image-previewer__description';
       descriptionSpan.textContent = description;
 
@@ -75,19 +75,19 @@
       document.body.appendChild(previewWrapper);
 
       const imageTemplate = document.getElementById(imageID);
-      imageTemplate.style.top = (event.pageY - config.imageYOffset) + 'px';
-      imageTemplate.style.left = (event.pageX + config.imageXOffset) + 'px';
+      imageTemplate.style.top = `${event.pageY - config.imageYOffset  }px`;
+      imageTemplate.style.left = `${event.pageX + config.imageXOffset  }px`;
 
       function handleMouseMove(event) {
         event.stopImmediatePropagation();
-        let dp = document.getElementById(imageID);
-        let height = dp.offsetHeight;
-        dp.style.top = (event.pageY - config.imageYOffset - height) + 'px';
-        dp.style.left = (event.pageX + config.imageXOffset) + 'px';
+        const dp = document.getElementById(imageID);
+        const height = dp.offsetHeight;
+        dp.style.top = `${event.pageY - config.imageYOffset - height  }px`;
+        dp.style.left = `${event.pageX + config.imageXOffset  }px`;
       }
 
       function handleMouseLeave() {
-        let element = document.getElementById(imageID);
+        const element = document.getElementById(imageID);
         if (element) {
           element.style.display = 'none';
           element.parentNode.removeChild(element);
@@ -96,22 +96,22 @@
 
       event.target.addEventListener('mousemove', handleMouseMove);
       event.target.addEventListener('mouseleave', handleMouseLeave);
-    }
+    };
   }
 
   function imagePreviewer(selector, configuration = {},  action = 'open') {
-    let config = Object.assign({}, _config, configuration);
+    const config = { ..._config, ...configuration};
     const imageID = randomID('image-previewer', 10);
-
     const elements = document.querySelectorAll(selector);
-    elements.forEach(function (element) {
-      return action === 'open'
+
+    elements.forEach((element) => (
+      action === 'open'
         ? element.addEventListener('mouseenter', imagePreviewHandler(selector, imageID, config))
-        : element.removeEventListener('mouseenter', imagePreviewHandler(selector, imageID, config));
-    });
+        : element.removeEventListener('mouseenter', imagePreviewHandler(selector, imageID, config))
+    ));
 
     document.addEventListener('ajaxComplete', function () {
-      let element = document.getElementById(imageID);
+      const element = document.getElementById(imageID);
       if (element) {
         element.style.display = 'none';
         element.parentNode.removeChild(element);

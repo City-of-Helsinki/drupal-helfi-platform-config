@@ -15,10 +15,12 @@
           const buttons = select.querySelectorAll('li.dropbutton__item');
 
           buttons.forEach(function(button) {
-            const title = button.dataset.paragraphTitle;
-            const description = button.dataset.paragraphDescription;
-            const image = button.dataset.paragraphImage;
-            const images = drupalSettings.selectParagraph.images;
+            const {
+              paragraphTitle: title,
+              paragraphDescription: description,
+              paragraphImage: image,
+            } = button.dataset;
+            const { images } = drupalSettings.selectParagraph;
 
             const inputSubmit = button.querySelector('input[type="submit"]');
             const wrapper = document.createElement('div');
@@ -26,7 +28,7 @@
             inputSubmit.parentNode.insertBefore(wrapper, inputSubmit);
             wrapper.appendChild(inputSubmit);
 
-            if (typeof images !== "undefined" && image in images) {
+            if (typeof images !== 'undefined' && image in images) {
               const thumbnail = document.createElement('img');
               thumbnail.src = images[image];
               thumbnail.dataset.hoverTitle = title;
@@ -42,5 +44,5 @@
         imagePreviewer('.select-paragraph .select-paragraph__thumbnail');
       }
     }
-  };
+  }
 })(Drupal, drupalSettings, once);

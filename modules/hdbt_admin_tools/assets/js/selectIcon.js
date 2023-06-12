@@ -19,7 +19,7 @@
 
       const elements = once('select-icon', 'select.select-icon', context);
 
-      elements.forEach((element)=>{
+      elements.forEach((element) => {
         const settings = {
           plugins: {
             dropdown_input: {},
@@ -33,12 +33,12 @@
           create: false,
           // Custom rendering functions for options and items
           render: {
-            option: function(item, escape) {
-              return renderTemplate(item, escape);
-            },
-            item: function(item, escape) {
-              return renderTemplate(item, escape);
-            }
+            option: (item, escape) => (
+              renderTemplate(item, escape)
+            ),
+            item: (item, escape) => (
+              renderTemplate(item, escape)
+            ),
           }
         };
         const tomSelect = new TomSelect(element, settings);

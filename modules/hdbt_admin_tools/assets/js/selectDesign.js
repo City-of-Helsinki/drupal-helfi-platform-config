@@ -4,7 +4,7 @@
 (function (Drupal, drupalSettings, once) {
   "use strict";
 
-  function renderTemplate(item, escape, element) {
+  function renderTemplate(item, escape) {
     const selection = item.$option.value ?? item.$option.value;
 
     // Craft path to thumbnails based on item values and base design.
@@ -23,23 +23,21 @@
     attach: function (context) {
       const elements = once('select-design', 'select.select-design', context);
 
-      elements.forEach((element)=>{
-        const eventHandler = function(action) {
-          return function() {
-            imagePreviewer('.select-design .select-design__thumbnail', {}, action);
-          };
-        };
+      elements.forEach((element)=> {
+        const eventHandler = (action) => (
+          () => imagePreviewer('.select-design .select-design__thumbnail', {}, action)
+        );
 
         const settings = {
           allowEmptyOption: false,
           controlInput: null,
           render: {
-            option: function(item, escape) {
-              return renderTemplate(item, escape, element);
-            },
-            item: function(item, escape) {
-              return renderTemplate(item, escape, element);
-            }
+            option: (item, escape) => (
+              renderTemplate(item, escape)
+            ),
+            item: (item, escape) => (
+              renderTemplate(item, escape)
+            ),
           },
           onDropdownOpen: eventHandler('open'),
           onDropdownClose: eventHandler('close'),

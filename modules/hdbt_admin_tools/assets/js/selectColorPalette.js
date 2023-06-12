@@ -21,17 +21,17 @@
     attach: function (context) {
       const elements = once('select-color-palette', 'select.select-color-palette', context);
 
-      elements.forEach((element)=>{
+      elements.forEach((element)=> {
         const settings = {
           allowEmptyOption: false,
           controlInput: null,
           render: {
-            option: function(item, escape) {
-              return renderTemplate(item, escape);
-            },
-            item: function(item, escape) {
-              return renderTemplate(item, escape);
-            }
+            option: (item, escape) => (
+              renderTemplate(item, escape)
+            ),
+            item: (item, escape) => (
+              renderTemplate(item, escape)
+            ),
           }
         };
         const tomSelect = new TomSelect(element, settings);
