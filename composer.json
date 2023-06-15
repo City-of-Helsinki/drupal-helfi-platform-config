@@ -92,6 +92,9 @@
             },
             "drupal/social_media": {
                 "Add missing schema to social media. (https://www.drupal.org/project/social_media/issues/2986819)": "https://git.drupalcode.org/project/social_media/-/commit/1964f42e5a6fb5d7a97fdf8ec5ca259bc6c5b19a.patch"
+            },
+            "drupal/translatable_menu_link_uri": {
+                "[#UHF-8616] D10 compatibility patch for translatable menu link uri": "patches/translatable_menu_link_uri.patch"
             }
         }
     }
