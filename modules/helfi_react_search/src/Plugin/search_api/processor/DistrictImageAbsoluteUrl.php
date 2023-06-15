@@ -2,12 +2,12 @@
 
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
+use Drupal\image\Entity\ImageStyle;
 use Drupal\node\NodeInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Drupal\image\Entity\ImageStyle;
 
 /**
  * Get start and end date for daterange field.

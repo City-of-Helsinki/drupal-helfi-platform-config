@@ -7,9 +7,9 @@ namespace Drupal\hdbt_admin_tools\Controller;
  * Contains \Drupal\hdbt_admin_tools\Controller\ListController.
  */
 
-use Drupal\user\Entity\User;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\user\Entity\User;
 
 /**
  * List controller.
