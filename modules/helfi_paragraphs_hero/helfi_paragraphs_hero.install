@@ -6,7 +6,7 @@
  */
 
 /**
- * UHF-1781 Update news list paragraph translations.
+ * UHF-1781 Remove hero_bg_color field from hero paragraph.
  */
 function helfi_paragraphs_hero_update_9002(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
