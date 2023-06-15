@@ -5,10 +5,17 @@
  * Contains installation tasks for helfi_paragraphs_hero module.
  */
 
+use Drupal\field\Entity\FieldConfig;
+
 /**
  * UHF-1781 Remove hero_bg_color field from hero paragraph.
  */
 function helfi_paragraphs_hero_update_9002(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_hero');
+
+  $field_hero_bg_color = FieldConfig::loadByName('paragraph', 'hero', 'field_hero_bg_color');
+  if (!empty($field_hero_bg_color)) {
+    $field_hero_bg_color->delete();
+  }
 }
