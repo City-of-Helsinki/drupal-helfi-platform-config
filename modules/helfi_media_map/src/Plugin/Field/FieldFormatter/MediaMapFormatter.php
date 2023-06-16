@@ -30,7 +30,7 @@ final class MediaMapFormatter extends FormatterBase {
    */
   public static function defaultSettings() : array {
     return [
-      'link_title' => 'Open map in new window',
+      'link_title' => 'Open larger map',
     ] + parent::defaultSettings();
   }
 
@@ -78,7 +78,7 @@ final class MediaMapFormatter extends FormatterBase {
           '#type' => 'link',
           '#title' => $link_title,
           '#url' => Url::fromUri($link),
-          '#attributes' => ['target' => '_blank'],
+          '#attributes' => [],
         ];
       }
     }
