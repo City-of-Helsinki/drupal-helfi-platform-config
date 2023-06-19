@@ -2,9 +2,9 @@
 
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldType;
 
+use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
-use Drupal\Core\Field\FieldItemBase;
 
 /**
  * Plugin implementation of the 'select2_icon' field type.

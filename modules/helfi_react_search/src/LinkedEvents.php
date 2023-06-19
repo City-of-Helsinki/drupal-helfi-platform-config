@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_react_search;
 
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Cache\CacheBackendInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
