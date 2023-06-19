@@ -2,10 +2,10 @@
 
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\Yaml\Yaml;
-use Drupal\Component\Utility\Xss;
 
 /**
  * Provides a Chat Leijuke block.

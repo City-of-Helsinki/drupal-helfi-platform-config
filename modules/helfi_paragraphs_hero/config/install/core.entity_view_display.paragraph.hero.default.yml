@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.hero.field_hero_bg_color
     - field.field.paragraph.hero.field_hero_desc
     - field.field.paragraph.hero.field_hero_design
     - field.field.paragraph.hero.field_hero_image
@@ -19,13 +18,6 @@ targetEntityType: paragraph
 bundle: hero
 mode: default
 content:
-  field_hero_bg_color:
-    type: list_key
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
   field_hero_desc:
     type: text_default
     label: hidden

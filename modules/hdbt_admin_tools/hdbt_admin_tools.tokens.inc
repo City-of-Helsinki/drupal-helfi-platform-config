@@ -5,10 +5,10 @@
  * Contains token data for helfi admin tools.
  */
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\MediaInterface;
-use Drupal\Core\Language\LanguageInterface;
 
 /**
  * Implements hook_token_info().
