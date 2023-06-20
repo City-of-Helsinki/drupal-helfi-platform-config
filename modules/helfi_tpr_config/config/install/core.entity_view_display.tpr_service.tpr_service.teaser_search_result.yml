@@ -30,8 +30,8 @@ content:
       sort_order:
         ESERVICE:
           label: E-service
-          weight: 0
           show: false
+          weight: 0
         CHAT:
           label: Chat
           show: true
@@ -50,28 +50,28 @@ content:
           weight: 4
         LOCAL:
           label: 'Local service'
-          weight: 5
           show: false
+          weight: 5
         SMS:
           label: SMS
-          weight: 6
           show: false
+          weight: 6
         WEBPAGE:
           label: Webpage
-          weight: 7
           show: false
+          weight: 7
         MAIL:
           label: 'Postal mail'
-          weight: 8
           show: false
+          weight: 8
         TELEFAX:
           label: Telefax
-          weight: 9
           show: false
+          weight: 9
         OFFICE:
           label: 'Service point'
-          weight: 99
           show: false
+          weight: 99
     third_party_settings: {  }
     weight: 2
     region: content

@@ -15,7 +15,7 @@ content:
     type: hel_media_map
     label: hidden
     settings:
-      link_title: 'Open map in new window'
+      link_title: 'Open larger map'
     third_party_settings: {  }
     weight: 0
     region: content
