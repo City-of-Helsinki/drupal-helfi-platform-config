@@ -113,6 +113,6 @@ function helfi_media_install($is_syncing) : void {
  * The focal point 2.0 requires these modules but doesn't enable them
  * automatically.
  */
-function helfi_media_update_9001() : void {
+function helfi_media_update_9013() : void {
   \Drupal::service('module_installer')->install(['jquery_ui_draggable']);
 }
