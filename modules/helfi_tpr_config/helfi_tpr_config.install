@@ -221,6 +221,7 @@ function helfi_tpr_config_update_9038(): void {
 
 /**
  * UHF-8532 Update the "Open larger map" text on maps.
+ *
  * UHF-8595 Update unit view and form display configs to show new fields.
  */
 function helfi_tpr_config_update_9039(): void {
