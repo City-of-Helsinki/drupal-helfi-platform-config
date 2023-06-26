@@ -42,7 +42,7 @@ content:
     third_party_settings: {  }
   accessibility_www:
     type: readonly_field_widget
-    weight: 12
+    weight: 14
     region: content
     settings:
       label: above
@@ -52,7 +52,7 @@ content:
     third_party_settings: {  }
   address:
     type: readonly_field_widget
-    weight: 14
+    weight: 16
     region: content
     settings:
       label: above
@@ -62,7 +62,7 @@ content:
     third_party_settings: {  }
   address_postal:
     type: readonly_field_widget
-    weight: 16
+    weight: 18
     region: content
     settings:
       label: above
@@ -72,7 +72,17 @@ content:
     third_party_settings: {  }
   call_charge_info:
     type: readonly_field_widget
-    weight: 15
+    weight: 17
+    region: content
+    settings:
+      label: above
+      formatter_type: null
+      formatter_settings: {  }
+      show_description: false
+    third_party_settings: {  }
+  contacts:
+    type: readonly_field_widget
+    weight: 28
     region: content
     settings:
       label: above
@@ -82,7 +92,7 @@ content:
     third_party_settings: {  }
   description:
     type: readonly_field_widget
-    weight: 13
+    weight: 15
     region: content
     settings:
       label: above
@@ -102,7 +112,7 @@ content:
     third_party_settings: {  }
   field_content:
     type: paragraphs
-    weight: 27
+    weight: 29
     region: content
     settings:
       title: Paragraph
@@ -121,7 +131,7 @@ content:
     third_party_settings: {  }
   field_lower_content:
     type: paragraphs
-    weight: 28
+    weight: 30
     region: content
     settings:
       title: Paragraph
@@ -140,14 +150,14 @@ content:
     third_party_settings: {  }
   field_metatags:
     type: metatag_firehose
-    weight: 26
+    weight: 24
     region: content
     settings:
       sidebar: false
     third_party_settings: {  }
   field_unit_type:
     type: entity_reference_autocomplete
-    weight: 28
+    weight: 31
     region: content
     settings:
       match_operator: CONTAINS
@@ -157,7 +167,7 @@ content:
     third_party_settings: {  }
   hide_sidebar_navigation:
     type: boolean_checkbox
-    weight: 29
+    weight: 32
     region: content
     settings:
       display_label: true
@@ -171,7 +181,17 @@ content:
     third_party_settings: {  }
   latitude:
     type: readonly_field_widget
-    weight: 17
+    weight: 19
+    region: content
+    settings:
+      label: above
+      formatter_type: null
+      formatter_settings: {  }
+      show_description: false
+    third_party_settings: {  }
+  links:
+    type: readonly_field_widget
+    weight: 27
     region: content
     settings:
       label: above
@@ -181,7 +201,7 @@ content:
     third_party_settings: {  }
   longitude:
     type: readonly_field_widget
-    weight: 18
+    weight: 20
     region: content
     settings:
       label: above
@@ -207,9 +227,19 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  other_info:
+    type: readonly_field_widget
+    weight: 25
+    region: content
+    settings:
+      label: above
+      formatter_type: null
+      formatter_settings: {  }
+      show_description: false
+    third_party_settings: {  }
   path:
     type: path
-    weight: 11
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -240,9 +270,19 @@ content:
     settings:
       media_types: {  }
     third_party_settings: {  }
+  price_info:
+    type: readonly_field_widget
+    weight: 26
+    region: content
+    settings:
+      label: above
+      formatter_type: null
+      formatter_settings: {  }
+      show_description: false
+    third_party_settings: {  }
   provided_languages:
     type: readonly_field_widget
-    weight: 30
+    weight: 33
     region: content
     settings:
       label: above
@@ -252,7 +292,7 @@ content:
     third_party_settings: {  }
   service_map_embed:
     type: readonly_field_widget
-    weight: 20
+    weight: 22
     region: content
     settings:
       label: above
@@ -262,7 +302,7 @@ content:
     third_party_settings: {  }
   services:
     type: readonly_field_widget
-    weight: 21
+    weight: 23
     region: content
     settings:
       label: above
@@ -272,19 +312,19 @@ content:
     third_party_settings: {  }
   show_www:
     type: boolean_checkbox
-    weight: 11
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   streetview_entrance_url:
     type: readonly_field_widget
-    weight: 19
+    weight: 21
     region: content
     settings:
       label: above

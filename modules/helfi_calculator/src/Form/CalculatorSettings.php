@@ -7,12 +7,18 @@ namespace Drupal\helfi_calculator\Form;
  * Contains Drupal\helfi_calculator\Form\CalculatorSettings.
  */
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\Config;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
+<<<<<<< HEAD
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+=======
+use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
+>>>>>>> main
 use Drupal\language\Config\LanguageConfigOverride;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
