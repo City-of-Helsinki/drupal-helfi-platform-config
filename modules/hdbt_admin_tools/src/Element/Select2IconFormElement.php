@@ -3,8 +3,9 @@
 namespace Drupal\hdbt_admin_tools\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\select2\Element\Select2;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\Select2Icon;
+use Drupal\select2\Element\Select2;
+
 
 /**
  * Provides a Select2 Icon form element.

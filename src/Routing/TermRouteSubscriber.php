@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_platform_config\Routing;
 
+use Drupal\Core\Routing\RoutingEvents;
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Symfony\Component\Routing\RouteCollection;
-use Drupal\Core\Routing\RoutingEvents;
 
 /**
  * A simple RouteSubscriber to alter term page routes.
