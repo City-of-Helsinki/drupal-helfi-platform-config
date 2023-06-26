@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_platform_config\Routing;
 
-use Drupal\Core\Routing\RoutingEvents;
 use Drupal\Core\Routing\RouteSubscriberBase;
+use Drupal\Core\Routing\RoutingEvents;
 use Symfony\Component\Routing\RouteCollection;
 
 /**

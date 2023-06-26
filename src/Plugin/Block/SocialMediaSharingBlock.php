@@ -7,8 +7,8 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Template\Attribute;
-use Drupal\social_media\Plugin\Block\SocialSharingBlock;
 use Drupal\social_media\Event\SocialMediaEvent;
+use Drupal\social_media\Plugin\Block\SocialSharingBlock;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
