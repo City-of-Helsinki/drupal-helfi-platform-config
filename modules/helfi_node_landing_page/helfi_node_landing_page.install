@@ -95,3 +95,12 @@ function helfi_node_landing_page_install($is_syncing) : void {
     helfi_node_landing_page_install_metatag_settings();
   }
 }
+
+/**
+ * Set node as unpublished on default.
+ */
+function helfi_node_landing_page_update_9001() : void {
+  // Re-import configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_node_landing_page');
+}

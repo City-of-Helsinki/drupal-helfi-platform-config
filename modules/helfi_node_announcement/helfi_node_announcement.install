@@ -86,3 +86,12 @@ function _helfi_global_announcement_enable() {
 function helfi_node_announcement_update_9001() : void {
   _helfi_global_announcement_enable();
 }
+
+/**
+ * Set node as unpublished on default.
+ */
+function helfi_node_announcement_update_9002() : void {
+  // Re-import configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_node_announcement');
+}
