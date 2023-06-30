@@ -263,6 +263,13 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
     $entity = Drupal::service('helfi_platform_config.entity_version_matcher')
       ->getType()['entity'];
 
+    if (
+      !$entity instanceof ContentEntityInterface ||
+      !$entity->hasField('field_has_hero')
+    ) {
+      return AccessResult::neutral();
+    }
+
     // Hide the hero block if the "has hero" checkbox is checked (=true).
     return AccessResult::forbiddenIf(!$entity->get('field_has_hero')->value);
   }
