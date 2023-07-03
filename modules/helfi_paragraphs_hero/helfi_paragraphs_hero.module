@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for helfi_paragraphs_hero module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+
+/**
+ * Hero design values
+ *
+ * @return int[]
+ *   Values to select.
+ */
+function helfi_paragraphs_hero_design_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL) : array {
+  $designs = [
+    'without-image-left' => t('Without image, align left'),
+    'with-image-right' => t('Image on the right'),
+    'with-image-left' => t('Image on the left'),
+    'with-image-bottom' => t('Image on the bottom'),
+    'diagonal' => t('Diagonal'),
+  ];
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = Drupal::service('module_handler');
+
+  // Let other modules alter the CKEditor link dialog form validation.
+  $moduleHandler->alter('helfi_hero_design', $designs);
+  return $designs;
+}
