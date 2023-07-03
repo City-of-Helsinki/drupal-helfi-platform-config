@@ -11,7 +11,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
- * Hero design values
+ * Hero design values.
  *
  * @return int[]
  *   Values to select.
