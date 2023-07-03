@@ -6,11 +6,6 @@
  */
 
 /**
- * @file
- * Hooks provided by the helfi_paragraphs_hero module.
- */
-
-/**
  * Alter the Hero design selection array.
  *
  * @param array $designs
