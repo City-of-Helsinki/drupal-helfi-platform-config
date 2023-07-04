@@ -17,6 +17,7 @@
 
       document.body.appendChild(scriptElement);
 
+      $('.js-react-and-share__container .js-react-and-share-cookie-compliance').hide();
       $('.js-react-and-share__container .rns').show();
     }
     else {
