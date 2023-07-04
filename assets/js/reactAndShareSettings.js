@@ -12,6 +12,7 @@
       }
 
       var scriptElement = document.createElement('script');
+      scriptElement.async = true;
       scriptElement.src = 'https://cdn.reactandshare.com/plugin/rns.js';
 
       document.body.appendChild(scriptElement);
