@@ -12,10 +12,12 @@
       }
 
       var scriptElement = document.createElement('script');
+      scriptElement.async = true;
       scriptElement.src = 'https://cdn.reactandshare.com/plugin/rns.js';
 
       document.body.appendChild(scriptElement);
 
+      $('.js-react-and-share__container .js-react-and-share-cookie-compliance').hide();
       $('.js-react-and-share__container .rns').show();
     }
     else {
