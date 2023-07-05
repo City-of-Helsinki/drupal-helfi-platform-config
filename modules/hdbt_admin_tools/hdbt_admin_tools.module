@@ -1036,7 +1036,7 @@ function hdbt_admin_tools_editor_js_settings_alter(array &$settings) {
   $theme_path = '/' . Drupal::service('extension.list.theme')->getPath('hdbt_admin');
 
   foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
-    $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] = 
+    $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
       $theme_path . '/dist/js/ckeditor-config.min.js';
   }
 }
