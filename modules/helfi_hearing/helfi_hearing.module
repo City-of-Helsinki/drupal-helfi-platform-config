@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_hearing' module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Gets the block configurations.
+ *
+ * Example block:
+ *
+ * @code
+ * [
+ *   'breadcrumbs' => [
+ *     'block' => [
+ *       ...
+ *     ],
+ *     'variations' => [
+ *       ...
+ *     ],
+ *   ],
+ * ];
+ * @endcode
+ *
+ * @return array[]
+ *   The block configurations.
+ */
+function helfi_hearing_get_block_configurations(string $theme) : array {
+  return [
+    'hearing' => [
+      'block' => [
+        'id' => 'helfihearing',
+        'plugin' => 'helfi_hearing',
+        'settings' => [
+          'id' => 'helfi_hearing',
+          'label' => 'Hearings',
+          'provider' => 'helfi_hearing',
+        ],
+        'provider' => 'helfi_hearing',
+        'weight' => -14,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_cron().
+ */
+function helfi_hearing_cron(): void {
+}
