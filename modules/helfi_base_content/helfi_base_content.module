@@ -53,36 +53,6 @@ function helfi_base_content_themes_installed($theme_list) {
  */
 function helfi_base_content_get_block_configurations(string $theme) : array {
   return [
-    'brandingnavigation' => [
-      'block' => [
-        'id' => 'brandingnavigation',
-        'plugin' => 'menu_block_current_language:branding-navigation',
-        'provider' => 'helfi_base_content',
-        'settings' => [
-          'id' => 'menu_block_current_language:branding-navigation',
-          'label' => 'Branding - Navigation',
-          'depth' => 1,
-          'level' => 1,
-          'expand_all_items' => FALSE,
-          'translation_providers' => [
-            'views' => 'views',
-            'menu_link_content' => 'menu_link_content',
-            'default' => '0',
-          ],
-          'provider' => 'helfi_base_content',
-        ],
-      ],
-      'variations' => [
-        [
-          'theme' => $theme,
-          'region' => 'header_branding',
-        ],
-        [
-          'theme' => 'stark',
-          'region' => 'content',
-        ],
-      ],
-    ],
     'breadcrumbs' => [
       'block' => [
         'id' => 'breadcrumbs',

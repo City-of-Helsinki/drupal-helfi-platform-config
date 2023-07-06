@@ -254,3 +254,13 @@ function helfi_base_content_update_9003() : void {
     ->set('selected_langcode', 'site_default')
     ->save();
 }
+
+/**
+ * Implements hook_install().
+ */
+function helfi_base_content_update_9004() : void {
+  $config_factory = Drupal::configFactory();
+
+  // Remove the default frontpage view.
+  $config_factory->getEditable('system.menu.branding-navigation')->delete();
+}

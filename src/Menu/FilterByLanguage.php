@@ -21,7 +21,6 @@ final class FilterByLanguage implements EventSubscriberInterface {
    * @var string[]
    */
   protected array $menuNames = [
-    'branding-navigation',
     'footer-bottom-navigation',
     'footer-top-navigation',
     'footer-top-navigation-2',
