@@ -1,0 +1,22 @@
+uuid: 0d41e3f8-a3c8-4aaf-89b7-d2ea48d5f075
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.hearing
+id: node.hearing.promote
+field_name: promote
+entity_type: node
+bundle: hearing
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

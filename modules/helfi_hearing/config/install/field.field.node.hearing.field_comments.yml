@@ -1,0 +1,25 @@
+uuid: 83e8d2ac-a30e-45ff-9b5c-ce84983e2c47
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_comments
+    - node.type.hearing
+id: node.hearing.field_comments
+field_name: field_comments
+entity_type: node
+bundle: hearing
+label: Comments
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,23 @@
+uuid: 2ea89a20-80ab-432f-8a48-d30bd83319c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.hearing
+  module:
+    - text
+id: node.hearing.body
+field_name: body
+entity_type: node
+bundle: hearing
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

@@ -1,0 +1,19 @@
+uuid: c1b9d0b1-b98e-4401-828c-e962f7c44f57
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tags
+    - node.type.hearing
+id: node.hearing.field_tags
+field_name: field_tags
+entity_type: node
+bundle: hearing
+label: Tags
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

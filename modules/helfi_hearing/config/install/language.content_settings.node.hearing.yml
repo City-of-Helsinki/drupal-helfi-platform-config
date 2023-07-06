@@ -1,0 +1,16 @@
+uuid: 03a22c48-5a41-4041-a5e4-855c3bd39686
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.hearing
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: node.hearing
+target_entity_type_id: node
+target_bundle: hearing
+default_langcode: fi
+language_alterable: false
