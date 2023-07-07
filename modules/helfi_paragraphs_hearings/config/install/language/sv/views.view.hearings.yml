@@ -1,0 +1,8 @@
+display:
+  default:
+    display_options:
+      empty:
+        area:
+          content:
+            value: "<p>För närvarande finns det <strong>inga öppna planer</strong> för kommentarer.</p>\r\n"
+            format: full_html
