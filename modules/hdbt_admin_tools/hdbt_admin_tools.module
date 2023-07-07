@@ -1033,11 +1033,15 @@ function hdbt_admin_tools_ckeditor_css_alter(array &$css): void {
  * Implements hook_editor_js_settings_alter().
  */
 function hdbt_admin_tools_editor_js_settings_alter(array &$settings) {
-  $theme_path = '/' . Drupal::service('extension.list.theme')->getPath('hdbt_admin');
+  /** @var \Drupal\Core\File\FileUrlGeneratorInterface $service */
+  $service = \Drupal::service('file_url_generator');
+  $module = \Drupal::service('module_handler')->getModule('hdbt_admin_tools');
+  $module_path = $service->generate($module->getPath())
+    ->toString(TRUE)->getGeneratedUrl();
+  $js_path = $module_path . '/assets/js/ckeditor-config.js';
 
   foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
-    $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-      $theme_path . '/dist/js/ckeditor-config.min.js';
+    $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] = $js_path;
   }
 }
 
