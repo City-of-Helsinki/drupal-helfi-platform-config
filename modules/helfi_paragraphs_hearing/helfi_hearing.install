@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains installation tasks for helfi_paragraph_hearing module.
+ * Contains installation tasks for helfi_paragraphs_hearing module.
  */
 
 declare(strict_types = 1);
@@ -10,7 +10,7 @@ declare(strict_types = 1);
 /**
  * Implements hook_install().
  */
-function helfi_paragraph_hearing_install($is_syncing) : void {
+function helfi_paragraphs_hearing_install($is_syncing) : void {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
@@ -18,14 +18,14 @@ function helfi_paragraph_hearing_install($is_syncing) : void {
   }
 
   // TODO: do.
-  // helfi_paragraph_hearing_grant_permissions();
-  // _helfi_paragraph_hearing_create_block();
+  // helfi_paragraphs_hearing_grant_permissions();
+  // _helfi_paragraphs_hearing_create_block();
 }
 
 /**
  * Grants required permissions.
  */
-function helfi_paragraph_hearing_grant_permissions() : void {
+function helfi_paragraphs_hearing_grant_permissions() : void {
   $permissions = [
   ];
 
@@ -38,7 +38,7 @@ function helfi_paragraph_hearing_grant_permissions() : void {
 /**
  * Create block for hearing.
  */
-function _helfi_paragraph_hearing_create_block() : void {
+function _helfi_paragraphs_hearing_create_block() : void {
   /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
 
@@ -50,7 +50,7 @@ function _helfi_paragraph_hearing_create_block() : void {
   }
 
   $theme = $theme_handler->getDefault();
-  $block_config = helfi_paragraph_hearing_get_block_configurations($theme)['hearing'];
+  $block_config = helfi_paragraphs_hearing_get_block_configurations($theme)['hearing'];
   ['block' => $block, 'variations' => $variations] = $block_config;
   $block_installer->install($block, $variations);
 }
