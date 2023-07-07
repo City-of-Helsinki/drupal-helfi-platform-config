@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.hearing.body
     - field.field.node.hearing.field_areas
     - field.field.node.hearing.field_comments
-    - field.field.node.hearing.field_main_image
+    - field.field.node.hearing.field_hearing_main_image
     - field.field.node.hearing.field_tags
     - field.field.node.hearing.field_url
     - node.type.hearing
@@ -54,7 +54,7 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
-  field_main_image:
+  field_hearing_main_image:
     type: media_library_widget
     weight: 124
     region: content

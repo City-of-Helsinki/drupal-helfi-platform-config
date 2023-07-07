@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_main_image
+    - field.storage.node.field_hearing_main_image
     - media.type.image
     - node.type.hearing
-id: node.hearing.field_main_image
-field_name: field_main_image
+id: node.hearing.field_hearing_main_image
+field_name: field_hearing_main_image
 entity_type: node
 bundle: hearing
 label: 'Main image'

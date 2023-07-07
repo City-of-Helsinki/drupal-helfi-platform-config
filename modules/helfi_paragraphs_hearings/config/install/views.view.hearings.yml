@@ -6,7 +6,7 @@ dependencies:
     - field.storage.node.body
     - field.storage.node.field_areas
     - field.storage.node.field_comments
-    - field.storage.node.field_main_image
+    - field.storage.node.field_hearing_main_image
     - field.storage.node.field_tags
     - field.storage.node.field_url
     - node.type.hearing
@@ -350,10 +350,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_main_image:
-          id: field_main_image
-          table: node__field_main_image
-          field: field_main_image
+        field_hearing_main_image:
+          id: field_hearing_main_image
+          table: node__field_hearing_main_image
+          field: field_hearing_main_image
           relationship: none
           group_type: group
           admin_label: ''
@@ -1020,7 +1020,7 @@ display:
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_areas'
         - 'config:field.storage.node.field_comments'
-        - 'config:field.storage.node.field_main_image'
+        - 'config:field.storage.node.field_hearing_main_image'
         - 'config:field.storage.node.field_tags'
         - 'config:field.storage.node.field_url'
   block_1:
@@ -1044,6 +1044,6 @@ display:
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_areas'
         - 'config:field.storage.node.field_comments'
-        - 'config:field.storage.node.field_main_image'
+        - 'config:field.storage.node.field_hearing_main_image'
         - 'config:field.storage.node.field_tags'
         - 'config:field.storage.node.field_url'
