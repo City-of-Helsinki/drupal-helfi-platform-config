@@ -1033,9 +1033,15 @@ function hdbt_admin_tools_ckeditor_css_alter(array &$css): void {
  * Implements hook_editor_js_settings_alter().
  */
 function hdbt_admin_tools_editor_js_settings_alter(array &$settings) {
-  $asset_path = Drupal::config('helfi_proxy.settings')->get('asset_path');
-  $theme_path = Drupal::service('extension.list.theme')->getPath('hdbt_admin');
-  $js_path = '/' . $asset_path . '/' . $theme_path . '/dist/js/ckeditor-config.min.js';
+  /** @var \Drupal\Core\File\FileUrlGeneratorInterface $service */
+  $service = \Drupal::service('file_url_generator');
+
+  // Add theme path to as variable.
+  $theme = \Drupal::service('theme_handler')->getTheme('hdbt_admin');
+  $theme_path = $service->generate($theme->getPath())
+    ->toString(TRUE)->getGeneratedUrl();
+
+  $js_path = $theme_path . '/dist/js/ckeditor-config.min.js';
 
   foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
     $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] = $js_path;
