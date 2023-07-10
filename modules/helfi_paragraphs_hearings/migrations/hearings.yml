@@ -12,8 +12,8 @@ source:
   plugin: url
   data_fetch_plugin: http
   data_parser_plugin: json
-  #data_parser_plugin: helfi_paragraphs_hearings_parser
-  #
+  defaults:
+    importer_language: 'fi'
   ids:
     id:
       type: string
@@ -29,34 +29,36 @@ source:
       selector: 'title/fi'
     -
       name: 'title_en'
-      label: 'Title'
+      label: 'Title en'
       selector: 'title/en'
     -
       name: 'title_sv'
-      label: 'Title'
+      label: 'Title sv'
       selector: 'title/sv'
     -
       name: 'comments'
       label: 'Comments'
       selector: 'n_comments'
     -
-      name: 'published_at'
+      name: 'publish_on'
       label: 'Open at'
       selector: 'open_at'
     -
-      name: 'unpublish_at'
+      name: 'unpublish_on'
       label: 'Close at'
       selector: 'close_at'
-    - name: 'slug'
+    -
+      name: 'slug'
       label: 'Slug'
-      selector: Slug
+      selector: 'slug'
 process:
-  #uuid: id
   title: title
   langcode:
     plugin: default_value
     default_value: fi
   comments: n_comments
+  publish_on: publish_on
+  unpublish_on: unpublish_on
   url:
     plugin: concat
     source:
