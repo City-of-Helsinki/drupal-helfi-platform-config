@@ -35,8 +35,8 @@ class HearingMigrationSubscriber implements EventSubscriberInterface {
         continue;
       }
 
-      if ($node->hasTranslation($langcode)) {
-        $translation = $node->getTranslation($langcode);
+      if (!$node->hasTranslation($langcode)) {
+        // $translation = $node->addTranslation();
       }
     }
   }
