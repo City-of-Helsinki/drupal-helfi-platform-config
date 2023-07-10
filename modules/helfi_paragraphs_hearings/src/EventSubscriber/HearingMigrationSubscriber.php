@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\helfi_paragraph_hearings\EventSubscriber;
+namespace Drupal\helfi_paragraphs_hearings\EventSubscriber;
 
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
@@ -30,7 +30,6 @@ class HearingMigrationSubscriber implements EventSubscriberInterface {
     $node = Node::create([]);
 
     foreach (['en', 'sv'] as $langcode) {
-
       if (!in_array("title_$langcode", $data)) {
         continue;
       }

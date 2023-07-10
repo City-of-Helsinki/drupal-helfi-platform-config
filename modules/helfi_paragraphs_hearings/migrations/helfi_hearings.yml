@@ -1,56 +1,56 @@
 langcode: en
 status: true
-dependencies:
-  - helfi_paragraphs_hearings
 id: helfi_hearings
 label: 'Helfi hearings'
 source:
   constants:
     HEARINGS_BASE_URL: 'https://kuulemiset.hel.fi/'
-  url: 'https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&langcode=fi'
+  url: 'https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&langcode=fi&open=true'
   track_changes: true
   plugin: url
   data_fetch_plugin: http
   data_parser_plugin: json
-  defaults:
-    importer_language: 'fi'
+  item_selector: '/results'
   ids:
     id:
       type: string
-  item_selector: results
   fields:
     -
-      name: 'id'
-      label: 'Id'
-      selector: 'id'
+      name: id
+      label: Id
+      selector: id
     -
-      name: 'title'
+      name: title
       label: 'Title'
-      selector: 'title/fi'
+      selector: title/fi
     -
-      name: 'title_en'
+      name: title_en
       label: 'Title en'
-      selector: 'title/en'
+      selector: title/en
     -
-      name: 'title_sv'
+      name: title_sv
       label: 'Title sv'
-      selector: 'title/sv'
+      selector: title/sv
     -
-      name: 'comments'
+      name: comments
       label: 'Comments'
-      selector: 'n_comments'
+      selector: n_comments
     -
-      name: 'publish_on'
+      name: publish_on
       label: 'Open at'
-      selector: 'open_at'
+      selector: open_at
     -
-      name: 'unpublish_on'
+      name: unpublish_on
       label: 'Close at'
-      selector: 'close_at'
+      selector: close_at
     -
-      name: 'slug'
+      name: slug
       label: 'Slug'
-      selector: 'slug'
+      selector: slug
+    -
+      name: img_url
+      label: 'Image url'
+      selector: main_image/url
 process:
   title: title
   langcode:
@@ -65,16 +65,15 @@ process:
       - constants/HEARINGS_BASE_URL
       - slug
       - '?lang=fi'
-      - '&open=true'
       - '&headless=false'
-  field_image:
-    plugin: image_import
-    source: file
-    destination: 'constants/file_destination'
-    title: file_title
-    alt: !title
+  #field_image:
+    #plugin: image_import
+    #source: file
+    #destination: 'constants/file_destination'
+    #title: file_title
+    #alt: ''
   type:
     plugin: default_value
     default_value: hearing
 destination:
-  plugin: 'entity:node'
+  plugin: entity:node
