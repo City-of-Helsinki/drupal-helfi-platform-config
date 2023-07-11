@@ -1,16 +1,23 @@
 langcode: en
 status: true
+dependencies:
+  enforced:
+    module:
+      - helfi_paragraphs_hearings
 id: helfi_hearings
+migration_tags:
+  - helfi_hearings
+migration_group: helfi_hearings
 label: 'Helfi hearings'
 source:
   constants:
-    HEARINGS_BASE_URL: 'https://kuulemiset.hel.fi/'
+    HEARING_BASE_URL: 'https://kuulemiset.hel.fi/'
+  plugin: url
   url: 'https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&langcode=fi&open=true'
   track_changes: true
-  plugin: url
   data_fetch_plugin: http
   data_parser_plugin: json
-  item_selector: '/results'
+  item_selector: results
   ids:
     id:
       type: string
@@ -62,16 +69,10 @@ process:
   url:
     plugin: concat
     source:
-      - constants/HEARINGS_BASE_URL
+      - constants/HEARING_BASE_URL
       - slug
       - '?lang=fi'
       - '&headless=false'
-  #field_image:
-    #plugin: image_import
-    #source: file
-    #destination: 'constants/file_destination'
-    #title: file_title
-    #alt: ''
   type:
     plugin: default_value
     default_value: hearing
