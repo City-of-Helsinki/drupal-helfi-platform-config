@@ -2,5 +2,6 @@ name: 'HELfi Hearings'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - scheduler:scheduler
   - drupal:migrate
+  - migrate_plus:migrate_plus
+  - scheduler:scheduler

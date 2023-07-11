@@ -16,7 +16,7 @@ source:
     id:
       type: string
   plugin: url
-  url: 'https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&langcode=fi&open=true'
+  url: https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&langcode=fi&open=true
   track_changes: true
   data_fetch_plugin: http
   data_parser_plugin: json

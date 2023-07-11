@@ -34,6 +34,7 @@
         "drupal/menu_block_current_language": "^2.0",
         "drupal/menu_link_attributes": "^1.2",
         "drupal/metatag": "^1.16",
+        "drupal/migrate_plus": "^6.0",
         "drupal/oembed_providers": "^2.0",
         "drupal/paragraphs": "^1.12",
         "drupal/paragraphs_asymmetric_translation_widgets": "^1.0",
@@ -82,6 +83,9 @@
             },
             "drupal/eu_cookie_compliance": {
                 "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/923b35f699820b544397a35b7696570e101cd02c/patches/eu_cookie_compliance_block_8.x-1.24.patch"
+            },
+            "drupal/migrate_plus": {
+                "https://www.drupal.org/files/issues/2022-04-28/3277645-incompatible-migrateplus-json-2022-04-28-001.patch": "https://www.drupal.org/files/issues/2022-04-28/3277645-incompatible-migrateplus-json-2022-04-28-001.patch"
             },
             "drupal/paragraphs": {
                 "https://www.drupal.org/project/paragraphs/issues/2904705#comment-13836790": "https://www.drupal.org/files/issues/2020-09-25/2904705-115.patch",
