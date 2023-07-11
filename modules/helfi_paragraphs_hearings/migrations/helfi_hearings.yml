@@ -12,15 +12,15 @@ label: 'Helfi hearings'
 source:
   constants:
     HEARING_BASE_URL: 'https://kuulemiset.hel.fi/'
+  ids:
+    id:
+      type: string
   plugin: url
   url: 'https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&langcode=fi&open=true'
   track_changes: true
   data_fetch_plugin: http
   data_parser_plugin: json
   item_selector: results
-  ids:
-    id:
-      type: string
   fields:
     -
       name: id
