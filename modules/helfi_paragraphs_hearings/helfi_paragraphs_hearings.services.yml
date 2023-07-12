@@ -1,0 +1,5 @@
+services:
+  Drupal\helfi_paragraphs_hearings\EventSubscriber\HearingMigrationSubscriber:
+    arguments: []
+    tags:
+      - { name: 'event_subscriber' }

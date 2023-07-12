@@ -26,17 +26,25 @@ class HearingMigrationSubscriber implements EventSubscriberInterface {
    */
   public function handleTranslations(MigratePostRowSaveEvent $event): void {
     $row = $event->getRow();
+    $source = $row->getSource();
     $data = $event->getDestinationIdValues();
-    $node = Node::create([]);
+
+    $node = Node::load($data[0]);
+    $url = $node->get('field_url')->getValue()[0]['uri'];
+    $url .= '?lang=fi';
 
     foreach (['en', 'sv'] as $langcode) {
-      if (!in_array("title_$langcode", $data)) {
+      if (!in_array("title_$langcode", $source) || !$source["title_$langcode"]) {
         continue;
       }
 
-      if (!$node->hasTranslation($langcode)) {
-        // $translation = $node->addTranslation();
-      }
+      $translatedUrl = str_replace('lang=fi', "lang=$langcode", $url);
+
+      $translation = !$node->hasTranslation($langcode) ? $node->addTranslation($langcode) : $node->getTranslation($langcode);
+      $translation->set('title', $source["title_$langcode"]);
+      $translation->set('field_url', $translatedUrl);
+
+      $translation->save();
     }
   }
 

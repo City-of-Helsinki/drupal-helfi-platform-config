@@ -11,14 +11,15 @@ migration_group: helfi_hearings
 label: 'Helfi hearings'
 source:
   constants:
-    HEARING_BASE_URL: 'https://kuulemiset.hel.fi/'
+    HEARING_BASE_URL: 'https://kerrokantasi.hel.fi/'
+    HEARING_FILE_DIR: 'public://hearing_images/'
   ids:
     id:
       type: string
   plugin: url
-  url: https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&langcode=fi&open=true
+  urls: 'https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&langcode=fi&open=true'
   track_changes: true
-  data_fetch_plugin: http
+  data_fetcher_plugin: http
   data_parser_plugin: json
   item_selector: results
   fields:
@@ -59,20 +60,49 @@ source:
       label: 'Image url'
       selector: main_image/url
 process:
+  field_external_id: id
   title: title
   langcode:
     plugin: default_value
     default_value: fi
-  comments: n_comments
-  publish_on: publish_on
-  unpublish_on: unpublish_on
-  url:
+  field_comments: comments
+  field_url:
     plugin: concat
     source:
       - constants/HEARING_BASE_URL
       - slug
-      - '?lang=fi'
-      - '&headless=false'
+  publish_on:
+      plugin: format_date
+      source: publish_on
+      from_format: 'Y-m-d\TH:i:s\Z'
+      to_format: 'U'
+      from_timezone: 'Europe/Helsinki'
+      to_timezone: 'UTC'
+  unpublish_on:
+    plugin: format_date
+    source: unpublish_on
+    from_format: 'Y-m-d\TH:i:s\Z'
+    to_format: 'U'
+    from_timezone: 'Europe/Helsinki'
+    to_timezone: 'UTC'
+  filename:
+    plugin: filename
+    source: img_url
+  destination_path:
+    plugin: concat
+    source:
+      - constants/HEARING_FILE_DIR
+      - '@filename'
+  _file_copy:
+    plugin: file_copy
+    source:
+      - img_url
+      - '@destination_path'
+    file_exists: rename
+    move: false
+  #field_hearing_main_image:
+    #plugin: media_handler
+    #source: field_hearing_main_image
   type:
     plugin: default_value
     default_value: hearing
