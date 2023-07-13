@@ -31,10 +31,10 @@ class MediaHandler extends ProcessPluginBase {
    * @param array $destination
    *   Destination array.
    *
-   * @return int
+   * @return string
    *   Media id.
    */
-  private function handleMedia(array $destination): int {
+  private function handleMedia(array $destination): string {
     $filename = $destination['_filename'];
     $file_path = $destination['_file_copy'];
 

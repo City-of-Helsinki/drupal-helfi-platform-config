@@ -44,7 +44,7 @@ source:
       label: 'Comments'
       selector: n_comments
     -
-      name: publish_on
+      name: published_at
       label: 'Open at'
       selector: open_at
     -
@@ -75,9 +75,9 @@ process:
     source:
       - constants/HEARING_BASE_URL
       - slug
-  publish_on:
+  published_at:
       plugin: format_date
-      source: publish_on
+      source: published_at
       from_format: 'Y-m-d\TH:i:s\Z'
       to_format: 'U'
       from_timezone: 'Europe/Helsinki'
