@@ -1,0 +1,43 @@
+# If using yml to configure plugins, rename this to {module_name}.ckeditor5.yml.
+# If using annotations, this file can be removed.
+# @see https://www.drupal.org/docs/drupal-apis/plugin-api/annotations-based-plugins
+#   For information on using annotations to define plugins.
+# @see the CKEditor 5 module's README.md for more details regarding plugin
+#   configuration options.
+# cSpell:ignore simplebox demobox
+
+hdbt_admin_tools_helfi_link:
+  # Use the provider: property for this plugin to depend on another module.
+
+  # Configuration that will be sent to CKEditor 5 JavaScript plugins.
+  ckeditor5:
+    plugins:
+      - helfiLink.HelfiLink
+    # *Additional configuration properties*
+    # config: data sent to the constructor of any CKEditor 5 plugin
+    #   editorPluginName:
+    #     editorPluginProperty: editorPluginValue
+
+  # Configuration that will be used directly by Drupal.
+  drupal:
+    label: Helfi Link
+    # The library loaded while using the editor.
+    library: hdbt_admin_tools/helfi_link
+#    toolbar_items:
+      # This should match the name of the corresponding plugin exported in the
+      # plugin's index.js.
+#      simpleBox:
+#        label: Simple box demo
+    # If the plugin does not provide elements, set this as
+    # `elements: false`
+    elements:
+      # Note that it necessary for elements to separately provide both the tag
+      # (f.e. `<h2>`) and the attribute being added to the tag
+      # (f.e. `<h2 class="simple-box-title">`).
+      - <a aria-label title class id target="_blank" rel>
+    # *Additional configuration properties*
+    conditions:
+      plugins:
+        - ckeditor5_link
+    # class: Optional PHP class that makes it possible for the plugin to provide
+    #   dynamic values, or a configuration UI.
