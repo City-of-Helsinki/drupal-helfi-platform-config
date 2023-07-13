@@ -1,5 +1,5 @@
 services:
   Drupal\helfi_paragraphs_hearings\EventSubscriber\HearingMigrationSubscriber:
-    arguments: []
+    arguments: ['@file_system', '@config.factory']
     tags:
       - { name: 'event_subscriber' }

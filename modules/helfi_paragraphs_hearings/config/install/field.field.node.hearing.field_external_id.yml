@@ -1,0 +1,19 @@
+uuid: 8fa67f33-8026-49ed-8e3b-9da6d18502a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_external_id
+    - node.type.hearing
+id: node.hearing.field_external_id
+field_name: field_external_id
+entity_type: node
+bundle: hearing
+label: 'External id'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

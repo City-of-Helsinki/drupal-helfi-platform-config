@@ -2,7 +2,10 @@
 
 namespace Drupal\helfi_paragraphs_hearings\EventSubscriber;
 
+use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\File\FileSystem;
 use Drupal\migrate\Event\MigrateEvents;
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
 use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -10,11 +13,28 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class HearingMigrationSubscriber implements EventSubscriberInterface {
 
   /**
+   *
+   */
+  const HEARING_MIGRATION = 'helfi_hearings';
+
+  /**
+   * Constructs a new instance.
+   *
+   * @param \Drupal\Core\File\FileSystem $fileSystem
+   *   The file system service.
+   * @param Drupal\Core\Config\ConfigFactory $config
+   *   The settings service.
+   */
+  public function __construct(private FileSystem $fileSystem, private ConfigFactory $config) {
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
     return [
       MigrateEvents::POST_ROW_SAVE => 'handleTranslations',
+      MigrateEvents::PRE_IMPORT => 'preImport',
     ];
   }
 
@@ -46,6 +66,32 @@ class HearingMigrationSubscriber implements EventSubscriberInterface {
 
       $translation->save();
     }
+  }
+
+  /**
+   * Ensure that the directory for job listing images exists.
+   *
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
+   *   The event object.
+   */
+  public function preImport(MigrateImportEvent $event): void {
+    if (
+      $event->getMigration()->id() == self::HEARING_MIGRATION &&
+      !file_exists($this->fileSystem->realpath($this->getImagesDir()))
+    ) {
+      $this->fileSystem->mkdir($this->getImagesDir());
+    }
+  }
+
+  /**
+   * Return the uri for images folder.
+   *
+   * @return string
+   *   The uri.
+   */
+  protected function getImagesDir(): string {
+    $defaultScheme = $this->config->get('system.file')->get('default_scheme');
+    return "$defaultScheme://hearing_images/";
   }
 
 }

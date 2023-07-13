@@ -55,10 +55,14 @@ source:
       name: slug
       label: 'Slug'
       selector: slug
+    #-
+      #name: img_url
+      #label: 'Image url'
+      #selector: main_image/url
     -
-      name: img_url
-      label: 'Image url'
-      selector: main_image/url
+      name: image
+      label: 'Image'
+      selector: main_image
 process:
   field_external_id: id
   title: title
@@ -85,24 +89,23 @@ process:
     to_format: 'U'
     from_timezone: 'Europe/Helsinki'
     to_timezone: 'UTC'
-  filename:
+  _filename:
     plugin: filename
-    source: img_url
-  destination_path:
+    source: image/url
+  _destination_path:
     plugin: concat
     source:
       - constants/HEARING_FILE_DIR
-      - '@filename'
+      - '@_filename'
   _file_copy:
     plugin: file_copy
     source:
-      - img_url
-      - '@destination_path'
-    file_exists: rename
+      - image/url
+      - '@_destination_path'
+    file_exists: replace
     move: false
-  #field_hearing_main_image:
-    #plugin: media_handler
-    #source: field_hearing_main_image
+  field_hearing_main_image:
+    plugin: media_handler
   type:
     plugin: default_value
     default_value: hearing
