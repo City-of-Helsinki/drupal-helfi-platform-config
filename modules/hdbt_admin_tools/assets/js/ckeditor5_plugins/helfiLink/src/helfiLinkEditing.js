@@ -48,10 +48,13 @@ export default class HelfiLinkEditing extends Plugin {
    * Convert models and attributes between model <-> view.
    *
    * @param {string} modelName The model name.
-   * @param {string} viewAttribute The view attribute name.
+   * @param {string|object} viewAttribute The view attribute name.
    */
   _convertAttribute(modelName, viewAttribute) {
     const { editor } = this;
+
+    // Nothing to be done if there are no viewAttribute.
+    if (!viewAttribute) { return; }
 
     // Add current model as an allowed attribute for '$text' nodes.
     editor.model.schema.extend( '$text', { allowAttributes: modelName } );
