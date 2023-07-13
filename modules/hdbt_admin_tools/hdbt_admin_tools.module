@@ -17,7 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\hdbt_admin_tools\Form\SiteSettings;
-use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\Select2Icon;
+use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\helfi_tpr\Entity\Unit;
@@ -104,14 +104,21 @@ function hdbt_admin_tools_modules_installed(array $modules) : void {
  */
 function hdbt_admin_tools_theme(): array {
   return [
-    'select2_icon_widget' => [
+    'selection_widget' => [
       'render element' => 'element',
       'preprocess functions' => [
-        'template_preprocess_select2_icon',
+        'template_preprocess_selection_widget',
         'template_preprocess_select',
       ],
     ],
-    'select2_icon' => [
+    'select_icon_widget' => [
+      'render element' => 'element',
+      'preprocess functions' => [
+        'template_preprocess_select_icon',
+        'template_preprocess_select',
+      ],
+    ],
+    'select_icon' => [
       'variables' => [
         'icon_id' => NULL,
         'icon_label' => NULL,
@@ -714,10 +721,16 @@ function hdbt_admin_tools_form_editor_link_dialog_alter(&$form, FormStateInterfa
 
   $form['attributes']['data-selected-icon'] = [
     '#title' => t('Icon'),
-    '#type' => 'select2_icon_element',
+    '#theme' => 'select_icon_widget',
+    '#type' => 'select_icon_element',
     '#default_value' => $get_default_value('data-selected-icon', NULL),
-    '#options' => Select2Icon::loadIcons(),
+    '#options' => SelectIcon::loadIcons(),
     '#weight' => 2,
+    '#attributes' => [
+      'class' => [
+        'link-plugin-select-design',
+      ],
+    ],
   ];
 
   $form['attributes']['target'] = [
@@ -865,7 +878,7 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
   if ($buttons && is_array($buttons)) {
 
     // Attach paragraph selection library.
-    $variables['attributes']['class'][] = 'paragraph-selection';
+    $variables['attributes']['class'][] = 'select-paragraph';
 
     // Get paragraph types.
     $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraphs_type');
@@ -882,8 +895,8 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
 
     // Set images for the paragraph preview tool.
     $design_selection_manager = \Drupal::service('hdbt_admin_tools.design_selection_manager');
-    $variables['#attached']['drupalSettings']['paragraphSelect']['images'] = $design_selection_manager->getImages('paragraph', $paragraph_images);
-    $variables['#attached']['library'][] = 'hdbt_admin_tools/paragraph_selection';
+    $variables['#attached']['drupalSettings']['selectParagraph']['images'] = $design_selection_manager->getImages('paragraph', $paragraph_images);
+    $variables['#attached']['library'][] = 'hdbt_admin_tools/select_paragraph';
 
     // Go through buttons and set the necessary data-attributes.
     foreach ($buttons as &$button) {
@@ -909,12 +922,6 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
   if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
     return;
   }
-
-  // Attach design selection library and path to images to current form.
-  // If design selection field widget is in use in f.e. a paragraph and it is
-  // loaded via ajax, there might be situation where the select2 library is
-  // loaded before the design selection library.
-  $form['#attached']['library'][] = 'hdbt_admin_tools/design_selection';
 
   // Perform alterations for Drupal core and contrib module field titles,
   // descriptions and field visibility based on customer needs.

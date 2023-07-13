@@ -9,24 +9,24 @@ use Drupal\Core\Field\FormatterBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Plugin implementation of the 'select2_icon' field formatter.
+ * Plugin implementation of the 'select_icon' field formatter.
  *
  * @FieldFormatter(
- *   id = "select2_icon_formatter",
- *   label = @Translation("Select2 Icon"),
+ *   id = "select_icon_formatter",
+ *   label = @Translation("Select Icon"),
  *   field_types = {
- *     "select2_icon",
+ *     "select_icon",
  *   }
  * )
  */
-class Select2IconFormatter extends FormatterBase {
+class SelectIconFormatter extends FormatterBase {
 
   /**
    * Contains the hdbt_admin_tools.site_settings configuration object.
    *
    * @var \Drupal\Core\Config\Config
    */
-  protected Config $select2IconConfig;
+  protected Config $selectIconConfig;
 
   /**
    * Constructs a FormatterBase object.
@@ -45,12 +45,12 @@ class Select2IconFormatter extends FormatterBase {
    *   The view mode.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param \Drupal\Core\Config\Config $select2_icon_config
-   *   Select2 icon configuration.
+   * @param \Drupal\Core\Config\Config $select_icon_config
+   *   Select icon configuration.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, Config $select2_icon_config) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, Config $select_icon_config) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-    $this->select2IconConfig = $select2_icon_config;
+    $this->selectIconConfig = $select_icon_config;
   }
 
   /**
@@ -85,7 +85,7 @@ class Select2IconFormatter extends FormatterBase {
 
     foreach ($items as $delta => $item) {
       $elements[$delta] = [
-        '#theme' => 'select2_icon',
+        '#theme' => 'select_icon',
         '#icon_id' => $item->icon,
       ];
     }

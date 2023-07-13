@@ -27,7 +27,7 @@ class LinkTargetIconFieldWidget extends LinkTargetFieldWidget {
     $options = $item->get('options')->getValue();
 
     $element['options']['icon'] = [
-      '#type' => 'select2_icon_element',
+      '#type' => 'select_icon_element',
       '#title' => $this->t('Icon'),
       '#default_value' => $options['icon'] ?? NULL,
       '#weight' => 99,

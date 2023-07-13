@@ -9,28 +9,28 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
-use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\Select2Icon;
+use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Plugin implementation of the 'select2_icon_widget' widget.
+ * Plugin implementation of the 'select_icon_widget' widget.
  *
  * @FieldWidget(
- *   id = "select2_icon_widget",
- *   label = @Translation("Select2 Icon"),
+ *   id = "select_icon_widget",
+ *   label = @Translation("Select icon"),
  *   field_types = {
- *     "select2_icon"
+ *     "select_icon"
  *   }
  * )
  */
-class Select2IconWidget extends WidgetBase {
+class SelectIconWidget extends WidgetBase {
 
   /**
    * Contains the hdbt_admin_tools.site_settings configuration object.
    *
    * @var \Drupal\Core\Config\Config
    */
-  protected Config $select2IconConfig;
+  protected Config $selectIconConfig;
 
   /**
    * Constructs a WidgetBase object.
@@ -45,12 +45,12 @@ class Select2IconWidget extends WidgetBase {
    *   The widget settings.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param \Drupal\Core\Config\Config $select2_icon_config
-   *   Select2 icon configuration.
+   * @param \Drupal\Core\Config\Config $select_icon_config
+   *   TomSelect icon configuration.
    */
-  public function __construct(string $plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, Config $select2_icon_config) {
+  public function __construct(string $plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, Config $select_icon_config) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-    $this->select2IconConfig = $select2_icon_config;
+    $this->selectIconConfig = $select_icon_config;
   }
 
   /**
@@ -71,16 +71,19 @@ class Select2IconWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
+    $options = ['' => t('- None -')] + SelectIcon::loadIcons();
     $element['icon'] = [
-      '#type' => 'select2',
+      '#type' => 'select',
       '#title' => $this->t('Icon'),
       '#cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
-      '#select2' => [
-        'width' => $this->getSetting('width') ?? '400px',
-      ],
-      '#theme' => 'select2_icon_widget',
-      '#options' => Select2Icon::loadIcons(),
+      '#theme' => 'select_icon_widget',
+      '#options' => $options,
       '#default_value' => $this->getSelectedOptions($items),
+      '#attached' => [
+        'library' => [
+          'hdbt_admin_tools/select_icon',
+        ],
+      ],
     ];
 
     return $element;
@@ -97,7 +100,7 @@ class Select2IconWidget extends WidgetBase {
    */
   protected function getOptions(FieldableEntityInterface $entity): array {
     if (!isset($this->options)) {
-      $this->options = Select2Icon::loadIcons();
+      $this->options = SelectIcon::loadIcons();
     }
     return $this->options;
   }
