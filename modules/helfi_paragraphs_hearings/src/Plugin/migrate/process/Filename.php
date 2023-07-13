@@ -44,12 +44,7 @@ class Filename extends ProcessPluginBase implements ContainerFactoryPluginInterf
    * @throws \Drupal\migrate\MigrateSkipProcessException
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) : string {
-    $name = '';
-    if ($value) {
-      $name = basename($value);
-      //$name = pathinfo($file, PATHINFO_FILENAME);
-    }
-    return $name;
+    return $value ? basename($value) : '';
   }
 
 }
