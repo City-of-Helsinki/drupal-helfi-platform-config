@@ -1,0 +1,179 @@
+.ck.ck-balloon-panel.helfi-contextual-balloon {
+  position: fixed;
+  top: 50vh !important;
+  left: 50vw !important;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  border-radius: 10px !important;
+}
+
+.ck.ck-balloon-panel.helfi-contextual-balloon .ck-labeled-field-view {
+  max-width: 600px;
+  margin: 1rem 0.7rem;
+}
+
+/* Hide panel arrows. */
+.ck.ck-balloon-panel.helfi-contextual-balloon.ck-balloon-panel_with-arrow::before,
+.ck.ck-balloon-panel.helfi-contextual-balloon.ck-balloon-panel_with-arrow::after {
+  display: none;
+}
+
+/* Helfi link form */
+.ck.ck-responsive-form.helfi-link-form {
+  padding: 0;
+}
+
+/* Dropdown */
+.ck.helfi-link--protocol {
+  max-width: 160px !important;
+}
+
+.ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper {
+  background-color: #fff;
+  border-radius: .5rem;
+  border: 1px solid #8e929c;
+  box-sizing: border-box;
+  color: #222330;
+  min-height: 3rem; /* iOS. */
+  padding: 0;
+  transition: .15s cubic-bezier(.19, 1, .22, 1);
+}
+
+.ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper .ck.ck-label {
+  transform: unset !important;
+  max-width: unset !important;
+  position: absolute;
+  font-size: 15px;
+  left: 10px !important;
+  top: 14px !important;
+}
+
+.ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown {
+  height: 100%;
+  width: 100%;
+}
+
+.ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown .ck-dropdown__button {
+  min-height: 45px;
+  justify-content: flex-end;
+}
+
+.ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper .ck.ck-dropdown .ck-dropdown__arrow {
+  right: 10px;
+  width: 15px;
+  position: absolute;
+}
+
+.ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown .ck-dropdown__button.ck-on .ck-dropdown__arrow {
+  transform: rotate(180deg);
+}
+
+/* Advanced settings - Details */
+/* Mimic the .claro-details styles. */
+.ck-helfi-link-details {
+  background-color: #fff;
+  border-radius: .5rem;
+  border: 1px solid #d4d4d8;
+  box-shadow: none;
+  color: #232429;
+  display: block;
+  margin: 1rem 0.7rem;
+  padding: 0.5rem 0.5rem 1rem;
+  position: relative;
+}
+
+/* Mimic the .claro-details__summary styles. */
+.ck-helfi-link-details__summary {
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
+  background-color: transparent;
+  box-sizing: border-box;
+  color: #222330;
+  cursor: pointer;
+  font-size: var(--gin-font-size);
+  font-weight: var(--gin-font-weight-bold);
+  hyphens: auto;
+  line-height: 1rem;
+  list-style: none;
+  padding: .8rem 1rem .8rem 2.75rem;
+  position: relative;
+  transition: background-color 0.12s ease-in-out;
+  word-wrap: break-word;
+}
+
+/* Mimic the .claro-details__summary styles. */
+.ck-helfi-link-details__summary::before {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem; /* LTR */
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.5rem;
+  content: "";
+  transition: transform 0.12s ease-in 0s;
+  transform: rotate(90deg); /* LTR */
+  text-align: center;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3e%3cpath d='M5.21 1.314L3.79 2.723l5.302 5.353-5.303 5.354 1.422 1.408 6.697-6.762z' fill='%23545560'/%3e%3c/svg%3e");
+  background-size: contain;
+}
+
+/* Mimic the .claro-details__summary styles. */
+.ck-helfi-link-details__summary[aria-expanded=true]::before {
+  transform: rotate(-90deg); /* LTR */
+}
+
+/* Mimic styles from Claro .form-element with Gin variables */
+.ck.helfi-link-form .ck-labeled-field-view input.ck-input {
+  appearance: none;
+  background-color: #fff;
+  border-radius: .5rem;
+  border: 1px solid #8e929c;
+  box-sizing: border-box;
+  color: #222330;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  max-width: 100%;
+  min-height: 3rem; /* iOS. */
+  padding: calc(0.75rem - 1px) calc(1rem - 1px);
+  transition: .15s cubic-bezier(.19, 1, .22, 1);;
+}
+
+/* Input field description help text */
+.ck .helfi-link-form__field_description {
+  margin-top: 0.375rem !important;
+  color: #55565b !important;
+  white-space: normal !important;
+  font-size: 0.75rem !important;
+}
+
+.ck .helfi-link-form__field_description a {
+  cursor: pointer;
+  color: #0a6eb4;
+}
+
+/* Input checkboxes. */
+.ck .helfi-link-checkbox {
+  margin-left: 0.8rem !important;
+  margin-top: 1rem;
+}
+
+.ck .helfi-link-checkbox label {
+  line-height: 1.5rem;
+  padding-left: 0.4rem !important;
+}
+
+.ck .helfi-link-checkbox:last-child {
+  margin-bottom: 1rem;
+}
+
+/* Save and cancel buttons */
+.ck.ck-responsive-form.helfi-link-form .ck.ck-button {
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Links inside the ckeditor. */
+.ck-content .link {
+  cursor: text;
+}
