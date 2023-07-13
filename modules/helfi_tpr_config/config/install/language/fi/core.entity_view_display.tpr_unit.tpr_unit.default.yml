@@ -2,4 +2,4 @@ content:
   service_map_embed:
     settings:
       iframe_title: 'Sijainti kartalla'
-      link_title: 'Avaa kartta uuteen ikkunaan'
+      link_title: 'Avaa kartta suurempana'

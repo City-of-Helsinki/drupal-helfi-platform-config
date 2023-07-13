@@ -31,9 +31,6 @@
     if (chatSelection.indexOf('smartti') != -1) {
       return new SmarttiAdapter;
     }
-    if (chatSelection.indexOf('kuura') != -1) {
-      return new KuuraAdapter;
-    }
     console.warn(`No adapter found for ${chatSelection}!`);
   }
 
@@ -137,76 +134,6 @@
       });
 
     }
-  }
-
-  class KuuraAdapter {
-
-    constructor() {
-      this.requiredCookies = ['chat'];
-      this.bot = false;
-      this.persist = false;
-    }
-
-    async getChatExtension() {
-      return await new Promise(resolve => {
-        let findKuura = setInterval(()=> {
-          const kuuracontainer = document.getElementsByClassName('kuura-widget-container')[0];
-          if (typeof kuuracontainer != 'undefined') {
-            console.log('kuura extension found');
-            resolve(kuuracontainer);
-            clearInterval(findKuura);
-          }
-        }, 100);
-      });
-    }
-
-    open(callback) {
-      // send open command
-      this.getChatExtension().then((ext) => {
-        let findButton = setInterval(()=> {
-          const kuurabutton = ext.getElementsByClassName('kuura-chat-toggle')[0];
-          if (typeof kuurabutton != 'undefined') {
-              kuurabutton.click();
-              console.log('kuura open command');
-              callback();
-              clearInterval(findButton);
-          }
-        }, 100);
-      });
-    }
-
-    onClosed(callback) {
-      // subscribe to closed event
-      this.getChatExtension().then((ext) => {
-        console.log('kuura on closed event setup');
-        let findButton = setInterval(()=> {
-          const kuurabutton = ext.getElementsByClassName('kuura-chat-toggle')[0];
-          if (typeof kuurabutton != 'undefined') {
-            if (kuurabutton.classList.contains('closed-chat')) {
-              console.log('kuura on closed event triggered');
-              callback();
-              clearInterval(findButton);
-            }
-          }
-        }, 1000);
-      });
-    }
-
-    onLoaded(callback) {
-      // subscribe to ready event
-      this.getChatExtension().then((ext) => {
-        console.log('setting up on loaded interval');
-        let findbutton = setInterval(() => {
-          const kuurabutton = ext.getElementsByClassName('kuura-chat-toggle')[0];
-          if (typeof kuurabutton != 'undefined') {
-            console.log('kuura on loaded event');
-            callback();
-            clearInterval(findbutton);
-          }
-        }, 100);
-      });
-    }
-
   }
 
   class Leijuke {
