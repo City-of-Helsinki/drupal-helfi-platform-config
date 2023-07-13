@@ -95,3 +95,13 @@ site_settings:
     assets/js/siteSettingsDefaultColor.js: {}
   dependencies:
     - hdbt/hdbt-icons
+
+# This adds the CKEditor plugin JavaScript and the specific CSS to the page.
+helfi_link:
+  js:
+    assets/js/build/helfiLink.js: { preprocess: false, minified: true }
+  css:
+    theme:
+      assets/css/ckeditor5/helfi_link_plugin.css: { }
+  dependencies:
+    - core/ckeditor5
