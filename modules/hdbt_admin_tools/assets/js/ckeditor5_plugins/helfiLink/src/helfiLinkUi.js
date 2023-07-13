@@ -12,11 +12,11 @@ import {
   Model,
 } from 'ckeditor5/src/ui';
 
-import HelfiCheckBoxView from "./ui/helfiCheckBoxView";
-import HelfiLinkProtocolView from "./ui/helfiLinkProtocolView";
 import { Collection } from 'ckeditor5/src/utils';
-import { formElements } from "./formElements";
-import HelfiDetailsView from "./ui/helfiDetailsView";
+import HelfiCheckBoxView from './ui/helfiCheckBoxView';
+import HelfiLinkProtocolView from './ui/helfiLinkProtocolView';
+import { formElements } from './formElements';
+import HelfiDetailsView from './ui/helfiDetailsView';
 
 export default class HelfiLinkUi extends Plugin {
 
@@ -77,7 +77,7 @@ export default class HelfiLinkUi extends Plugin {
    * this plugin customization was being developed.
    */
   _addContextualBalloonClass() {
-    const editor = this.editor;
+    const { editor } = this;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const contextualBalloon = editor.plugins.get(ContextualBalloon);
 
@@ -136,7 +136,7 @@ export default class HelfiLinkUi extends Plugin {
    * Add a descriptive help text to URL input field.
    */
   _manipulateUrlInputField() {
-    const editor = this.editor;
+    const { editor } = this;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const urlDescription = document.createElement('span');
     urlDescription.textContent = Drupal.t('Start typing to find content.');
@@ -146,12 +146,16 @@ export default class HelfiLinkUi extends Plugin {
 
   /**
    * Create select list for protocol selection field.
+   *
+   * @param {string} modelName The model name.
+   * @param {object} options The select list options.
+   * @return {HelfiLinkProtocolView} Return the protocol view.
    */
   _createSelectList(modelName, options) {
-    const editor = this.editor;
+    const { editor } = this;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const linkProtocolView = new HelfiLinkProtocolView( this.editor.locale, createLabeledDropdown );
-    const urlInputView = linkFormView.urlInputView;
+    const { urlInputView } = linkFormView;
 
     // Hide the Protocol field view by setting isVisible to false
     linkFormView.urlInputView.on('change:isEmpty', ( evt, name, value ) => {
@@ -198,9 +202,11 @@ export default class HelfiLinkUi extends Plugin {
   /**
    * Create advanced settings (details/summary) view and handle the initial
    * state for it.
+   *
+   * @return {HelfiDetailsView} Returns the details view.
    */
   _createAndHandleAdvancedSettings() {
-    const editor = this.editor;
+    const { editor } = this;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const advancedSettings = new HelfiDetailsView(editor.locale, this.advancedChildren);
 
@@ -229,14 +235,17 @@ export default class HelfiLinkUi extends Plugin {
       }
     } );
 
-    return linkFormView['advancedSettings'] = advancedSettings;
+    return linkFormView.advancedSettings = advancedSettings;
   }
 
   /**
    * Create checkboxes.
+   *
+   * @param {string} modelName The model name.
+   * @return {HelfiCheckBoxView} Returns the checkbox view.
    */
   _createCheckbox(modelName) {
-    const checkboxView = new HelfiCheckBoxView(this.editor.locale)
+    const checkboxView = new HelfiCheckBoxView(this.editor.locale);
     const options = this.formElements[modelName];
 
     // Define the dropdown items
@@ -253,9 +262,12 @@ export default class HelfiLinkUi extends Plugin {
 
   /**
    * Create form fields based on form elements.
+   *
+   * @param {string} modelName The model name.
+   * @return {*} Returns current field view.
    */
   _createFormField(modelName) {
-    const editor = this.editor;
+    const { editor } = this;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const options = this.formElements[modelName];
     let fieldView = {};
@@ -283,7 +295,7 @@ export default class HelfiLinkUi extends Plugin {
 
     // Add basic information for the field.
     fieldView.machineName = modelName;
-    fieldView.class = 'helfi-link--' + options.machineName;
+    fieldView.class = `helfi-link--${  options.machineName}`;
     fieldView.label = options.label;
 
     // Add help texts for the field.
@@ -307,9 +319,11 @@ export default class HelfiLinkUi extends Plugin {
 
   /**
    * Handle form field submit.
+   *
+   * @param {object} models The models.
    */
   _handleFormFieldSubmit(models) {
-    const editor = this.editor;
+    const { editor } = this;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const linkCommand = editor.commands.get( 'link' );
 
@@ -317,7 +331,7 @@ export default class HelfiLinkUi extends Plugin {
     // linkCommand arguments.
     this.listenTo( linkFormView, 'submit', () => {
       const values = models.reduce((state, model) => {
-        state[model] = this.formElements[model]['type'] === 'checkbox'
+        state[model] = this.formElements[model].type === 'checkbox'
           ? linkFormView?.[model]?.checkboxInputView?.element?.checked
           : linkFormView?.[model]?.fieldView?.element?.value ?? '';
         return state;
@@ -347,7 +361,7 @@ export default class HelfiLinkUi extends Plugin {
         } else if (args.length === 3) {
           Object.assign(args[2], values);
         } else {
-          throw Error('The link command has more than 3 arguments.')
+          throw Error('The link command has more than 3 arguments.');
         }
       }, { priority: 'highest' } );
     }, { priority: 'high' } );
@@ -355,9 +369,11 @@ export default class HelfiLinkUi extends Plugin {
 
   /**
    * Handle data loading into form field.
+   *
+   * @param {string} modelName The model name.
    */
   _handleDataLoadingIntoFormField(modelName) {
-    const editor = this.editor;
+    const { editor } = this;
     const linkCommand = editor.commands.get( 'link' );
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const options = this.formElements[modelName];
@@ -411,7 +427,7 @@ export default class HelfiLinkUi extends Plugin {
   _handleCheckboxes() {
     if (!this.formElements.linkNewWindowConfirm || !this.formElements.linkNewWindow) { return; }
 
-    const editor = this.editor;
+    const { editor } = this;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
 
     // Handle linkNewWindowConfirm checkbox description.
