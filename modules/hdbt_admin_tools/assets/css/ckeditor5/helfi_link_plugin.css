@@ -3,8 +3,11 @@
   top: 50vh !important;
   left: 50vw !important;
   transform: translate(-50%, -50%);
-  width: 50vw;
+  min-width: 50vw;
+  height: auto;
+  width: auto;
   border-radius: 10px !important;
+  z-index: 10001;
 }
 
 .ck.ck-balloon-panel.helfi-contextual-balloon .ck-labeled-field-view {
@@ -78,8 +81,12 @@
   color: #232429;
   display: block;
   margin: 1rem 0.7rem;
-  padding: 0.5rem 0.5rem 1rem;
+  padding: 0.5rem;
   position: relative;
+}
+
+.ck-helfi-link-details[open] {
+  padding-bottom: 1rem;
 }
 
 /* Mimic the .claro-details__summary styles. */
@@ -88,10 +95,10 @@
   -webkit-hyphens: auto;
   background-color: transparent;
   box-sizing: border-box;
-  color: #222330;
+  color: #434343;
   cursor: pointer;
-  font-size: var(--gin-font-size);
-  font-weight: var(--gin-font-weight-bold);
+  font-size: 1rem;
+  font-weight: 500;
   hyphens: auto;
   line-height: 1rem;
   list-style: none;
@@ -136,7 +143,7 @@
   max-width: 100%;
   min-height: 3rem; /* iOS. */
   padding: calc(0.75rem - 1px) calc(1rem - 1px);
-  transition: .15s cubic-bezier(.19, 1, .22, 1);;
+  transition: .15s cubic-bezier(.19, 1, .22, 1);
 }
 
 /* Input field description help text */
@@ -161,10 +168,6 @@
 .ck .helfi-link-checkbox label {
   line-height: 1.5rem;
   padding-left: 0.4rem !important;
-}
-
-.ck .helfi-link-checkbox:last-child {
-  margin-bottom: 1rem;
 }
 
 /* Save and cancel buttons */

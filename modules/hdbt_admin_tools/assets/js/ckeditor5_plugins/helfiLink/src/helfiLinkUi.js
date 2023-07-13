@@ -408,9 +408,11 @@ export default class HelfiLinkUi extends Plugin {
           );
         }
 
-        // Note: Copy & pasted from LinkUI.
-        // https://github.com/ckeditor/ckeditor5/blob/f0a093339631b774b2d3422e2a579e27be79bbeb/packages/ckeditor5-link/src/linkui.js#L333-L333
-        linkFormView[modelName].checkboxInputView.element.checked = linkCommand[modelName] || '';
+        // If the checkbox is initially set to true, trigger the click event
+        // for the linkFormView checkbox.
+        if (linkCommand[modelName] && !linkFormView[modelName].checkboxInputView.element.checked) {
+          linkFormView[modelName].checkboxInputView.element.click();
+        }
       }
       else {
         // Note: Copy & pasted from LinkUI.

@@ -4,7 +4,7 @@
   "description": "Helfi specific enhancements to CKEditor5 plugins.",
   "scripts": {
     "watch": "webpack --mode development --watch",
-    "build": "webpack",
+    "build": "webpack && $npm_execpath run lint:js",
     "lint:js": "eslint assets/js/ckeditor5_plugins/",
     "format:js": "eslint --fix assets/js/ckeditor5_plugins/"
   },
