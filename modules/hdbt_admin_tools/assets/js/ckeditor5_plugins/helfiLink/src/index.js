@@ -9,5 +9,5 @@
 import HelfiLink from './helfiLink';
 
 export default {
-  HelfiLink: HelfiLink,
+  HelfiLink,
 };
