@@ -39,6 +39,7 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
 
       // Create announcement nodes for the block based on external entity data.
       $announcementNodes[] = Node::create([
+        'uuid' => $announcement->get('uuid')->value,
         'type' => 'announcement',
         'field_announcement_type' => $announcement->get('announcement_type')->value,
         'field_announcement_link' => ['uri' => $linkUrl, 'title' => $linkText],

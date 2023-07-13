@@ -114,9 +114,6 @@ default:
           revision_translation_affected:
             -
               value: true
-          field_hero_bg_color:
-            -
-              value: coat-of-arms
           field_hero_desc:
             -
               value: "<p>Nulla porttitor accumsan tincidunt. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</p>\r\n"

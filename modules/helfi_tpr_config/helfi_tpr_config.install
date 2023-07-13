@@ -218,3 +218,21 @@ function helfi_tpr_config_update_9038(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }
+
+/**
+ * UHF-8532 Update the "Open larger map" text on maps.
+ */
+function helfi_tpr_config_update_9039(): void {
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_tpr_config');
+}
+
+/**
+ * UHF-8595 Update after reverting unit display configs.
+ */
+function helfi_tpr_config_update_9040(): void {
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_tpr_config');
+}

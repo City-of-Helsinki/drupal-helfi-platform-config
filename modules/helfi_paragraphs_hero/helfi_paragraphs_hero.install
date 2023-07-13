@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_paragraphs_hero module.
+ */
+
+use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * UHF-1781 Remove hero_bg_color field from hero paragraph.
+ */
+function helfi_paragraphs_hero_update_9002(): void {
+  $field_hero_bg_color = FieldConfig::loadByName('paragraph', 'hero', 'field_hero_bg_color');
+  if (!empty($field_hero_bg_color)) {
+    $field_hero_bg_color->delete();
+  }
+}
+
+/**
+ * UHF-1781 Change the hero design field to use allowed_values_function.
+ */
+function helfi_paragraphs_hero_update_9003(): void {
+  try {
+    $field_hero_design = FieldStorageConfig::loadByName('paragraph', 'field_hero_design');
+    $field_hero_design->setSetting('allowed_values_function', 'helfi_paragraphs_hero_design_allowed_values');
+    $field_hero_design->save();
+  }
+  catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
+    // We know the database values are different what we are trying
+    // to write there, but we are only replacing the
+    // values with allowed_values_function.
+  }
+}
