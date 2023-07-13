@@ -54,8 +54,8 @@ const formElements = {
     },
     type: 'static',
   }
-}
+};
 
 export {
   formElements,
-}
+};

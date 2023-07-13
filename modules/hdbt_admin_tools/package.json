@@ -13,16 +13,17 @@
     "babel-loader": "^9.1.2",
     "ckeditor5": "~35.1.0",
     "css-loader": "^6.8.1",
-    "raw-loader": "^4.0.2",
-    "terser-webpack-plugin": "^5.3.3",
-    "webpack": "^5.51.1",
-    "webpack-cli": "^4.4.0",
-    "prettier": "^2.7.1",
     "eslint": "^8.31.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-webpack": "0.13.2",
     "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-prettier": "^4.2.1"
+    "eslint-plugin-jsdoc": "^46.4.3",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "raw-loader": "^4.0.2",
+    "terser-webpack-plugin": "^5.3.3",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.4.0"
   }
 }

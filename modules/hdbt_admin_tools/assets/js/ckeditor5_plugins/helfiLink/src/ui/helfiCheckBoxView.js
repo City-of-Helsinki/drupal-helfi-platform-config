@@ -151,8 +151,7 @@ export default class HelfiCheckBoxView extends View {
   /**
    * Creates a checkbox input view instance and binds it with checkbox attributes.
    *
-   * @private
-   * @returns {module:ui/view~View}
+   * @return {module:ui/view~View} Returns checkbox input view.
    */
   _createCheckboxInputView() {
     const checkboxInputView = new View();
@@ -178,8 +177,7 @@ export default class HelfiCheckBoxView extends View {
   /**
    * Creates a checkbox toggle span.
    *
-   * @private
-   * @returns {module:ui/view~View}
+   * @return {module:ui/view~View} Returns checkbox span toggle view.
    */
   _createCheckboxSpanToggleView() {
     const checkboxSpanToggleView = new View();
@@ -216,8 +214,7 @@ export default class HelfiCheckBoxView extends View {
   /**
    * Creates a label view instance and binds it with checkbox attributes.
    *
-   * @private
-   * @returns {module:ui/view~View}
+   * @return {module:ui/view~View} Returns checkbox label view.
    */
   _createLabelView() {
     const labelView = new View();
@@ -239,7 +236,11 @@ export default class HelfiCheckBoxView extends View {
     return labelView;
   }
 
-  // Method to update the visibility of the view based on the isVisible property
+  /**
+   * Update the visibility of the view based on the isVisible property
+   *
+   * @param {boolean} value The boolean value to be set to isVisible property.
+   */
   _updateVisibility(value) {
     if (value) {
       this.element.classList.remove('is-hidden');

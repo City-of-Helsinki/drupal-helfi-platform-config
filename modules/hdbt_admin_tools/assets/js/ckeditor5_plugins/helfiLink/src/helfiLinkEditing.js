@@ -46,9 +46,12 @@ export default class HelfiLinkEditing extends Plugin {
 
   /**
    * Convert models and attributes between model <-> view.
+   *
+   * @param {string} modelName The model name.
+   * @param {string} viewAttribute The view attribute name.
    */
   _convertAttribute(modelName, viewAttribute) {
-    const editor = this.editor;
+    const { editor } = this;
 
     // Add current model as an allowed attribute for '$text' nodes.
     editor.model.schema.extend( '$text', { allowAttributes: modelName } );
@@ -58,7 +61,7 @@ export default class HelfiLinkEditing extends Plugin {
     editor.conversion.for( 'downcast' ).attributeToElement( {
       model: modelName,
       view: ( modelAttributeValue, { writer }) => {
-        let attributeValues = {};
+        const attributeValues = {};
 
         // Create attribute values based on the type of view attributes types.
         if (modelAttributeValue && typeof viewAttribute === 'object') {
@@ -93,10 +96,8 @@ export default class HelfiLinkEditing extends Plugin {
         },
         model: {
           key: modelName,
-          value: ( viewElement ) => {
-            return !!(viewElement.hasAttribute(viewAttributeKey) &&
-              viewElement.getAttribute(viewAttributeKey) === viewAttributeValue);
-          }
+          value: ( viewElement ) => !!(viewElement.hasAttribute(viewAttributeKey) &&
+              viewElement.getAttribute(viewAttributeKey) === viewAttributeValue)
         },
       });
     }
@@ -111,9 +112,7 @@ export default class HelfiLinkEditing extends Plugin {
         },
         model: {
           key: modelName,
-          value: viewElement => {
-            return viewElement.getAttribute(viewAttribute)
-          }
+          value: viewElement => viewElement.getAttribute(viewAttribute)
         }
       });
     }
@@ -121,9 +120,11 @@ export default class HelfiLinkEditing extends Plugin {
 
   /**
    * Add attributes to linkCommand during its execution.
+   *
+   * @param {object} modelNames All model names.
    */
   _addAttributeOnLinkCommandExecute(modelNames) {
-    const editor = this.editor;
+    const { editor } = this;
     const linkCommand = editor.commands.get('link');
     let linkCommandExecuting = false;
 
@@ -147,8 +148,8 @@ export default class HelfiLinkEditing extends Plugin {
       // is being executed by this function.
       linkCommandExecuting = true;
       const attributeValues = args[args.length - 1];
-      const model = editor.model;
-      const selection = model.document.selection;
+      const { model } = editor;
+      const { selection } = model.document;
 
       // Wrapping the original command execution in a model.change() to make
       // sure there's a single undo step when the attribute is added.
@@ -186,12 +187,14 @@ export default class HelfiLinkEditing extends Plugin {
 
   /**
    * Remove attributes on unlink command execution.
+   *
+   * @param {string} modelName The model name.
    */
   _removeAttributeOnUnlinkCommandExecute(modelName) {
-    const editor = this.editor;
+    const { editor } = this;
+    const { model } = this.editor;
+    const { selection } = model.document;
     const unlinkCommand = editor.commands.get( 'unlink' );
-    const model = this.editor.model;
-    const selection = model.document.selection;
 
     let isUnlinkingInProgress = false;
 
@@ -244,12 +247,14 @@ export default class HelfiLinkEditing extends Plugin {
 
   /**
    * Keep the attributes updated whenever editor model changes.
+   *
+   * @param {string} modelName The model name.
    */
   _refreshAttributeValue(modelName) {
-    const editor = this.editor;
+    const { editor } = this;
+    const { model } = this.editor;
+    const { selection } = model.document;
     const linkCommand = editor.commands.get( 'link' );
-    const model = this.editor.model;
-    const selection = model.document.selection;
 
     linkCommand.set( modelName, null );
 
