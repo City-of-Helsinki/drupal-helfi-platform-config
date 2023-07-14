@@ -278,7 +278,7 @@ export default class HelfiLinkUi extends Plugin {
         fieldView = this._createSelectList(modelName, options.selectListOptions);
         break;
       case 'checkbox':
-        fieldView = this._createCheckbox(modelName, options);
+        fieldView = this._createCheckbox(modelName);
         break;
       case 'static':
         // Do nothing for static group.
@@ -331,9 +331,16 @@ export default class HelfiLinkUi extends Plugin {
     // linkCommand arguments.
     this.listenTo( linkFormView, 'submit', () => {
       const values = models.reduce((state, model) => {
-        state[model] = this.formElements[model].type === 'checkbox'
-          ? linkFormView?.[model]?.checkboxInputView?.element?.checked
-          : linkFormView?.[model]?.fieldView?.element?.value ?? '';
+        if (this.formElements[model].type === 'checkbox') {
+          state[model] = linkFormView?.[model]?.checkboxInputView?.element?.checked;
+        }
+        else if (model === 'linkClass') {
+          const options = this.formElements[model];
+          state[model] = options.viewAttribute.class;
+        }
+        else {
+          state[model] = linkFormView?.[model]?.fieldView?.element?.value ?? '';
+        }
         return state;
       }, {});
 
