@@ -45,20 +45,20 @@ class HearingMigrationSubscriber implements EventSubscriberInterface {
    * Migration configuration event subscriber callback.
    *
    * @param MigrationConfigurationEvent $event
-   * @return void
+   *   Migrate post row event.
    */
   public function onMigration(MigrationConfigurationEvent $event) {
     if ($event->migration->id() !== 'helfi_hearings') {
       return;
     }
-    // @todo: Handle migration.
+    // @todo Handle migration.
   }
 
   /**
    * Handle hearing translations.
    *
    * @param MigratePostRowSaveEvent $event
-   * @return void
+   *   Migrate post row event.
    */
   public function handleTranslations(MigratePostRowSaveEvent $event): void {
     $row = $event->getRow();
