@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\helfi_paragraphs_hearings\Plugin\migrate\process;
 
 use Drupal\file\Entity\File;
+use Drupal\media\Entity\Media;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
-use Drupal\media\Entity\Media;
 
 /**
  * Handle media entity.

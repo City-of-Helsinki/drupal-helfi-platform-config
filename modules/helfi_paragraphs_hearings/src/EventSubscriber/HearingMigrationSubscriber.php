@@ -57,7 +57,7 @@ class HearingMigrationSubscriber implements EventSubscriberInterface {
   /**
    * Handle hearing translations.
    *
-   * @param MigratePostRowSaveEvent $event
+   * @param Drupal\migrate\Event\MigratePostRowSaveEvent $event
    *   Migrate post row event.
    */
   public function handleTranslations(MigratePostRowSaveEvent $event): void {
