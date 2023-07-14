@@ -19,7 +19,7 @@ filters:
     status: true
     weight: 0
     settings:
-      filter_url_length: 72
+      filter_url_length: 120
   filter_autop:
     id: filter_autop
     provider: filter

@@ -4,35 +4,34 @@ dependencies:
   config:
     - filter.format.minimal
   module:
-    - ckeditor
+    - ckeditor5
 format: minimal
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
-        -
-          name: Tools
-          items:
-            - language_selector
-            - Source
+    items:
+      - bold
+      - italic
+      - '|'
+      - link
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - sourceEditing
   plugins:
-    drupallink:
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<span role aria-* class>'
+        - '<ul type>'
+        - '<ol type>'
+        - '<a hreflang accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol>'
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
+    ckeditor_link_styles_linkStyles:
+      styles: {  }
+    linkit_extension:
       linkit_enabled: true
       linkit_profile: helfi
 image_upload:
