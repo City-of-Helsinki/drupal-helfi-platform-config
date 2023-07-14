@@ -4,18 +4,18 @@ namespace Drupal\helfi_paragraphs_hearings\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\File\FileSystem;
+use Drupal\helfi_api_base\Event\MigrationConfigurationEvent;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
 use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Hearing migration subscriber.
+ */
 class HearingMigrationSubscriber implements EventSubscriberInterface {
-
-  /**
-   *
-   */
-  const HEARING_MIGRATION = 'helfi_hearings';
+  protected const HEARING_MIGRATION = 'helfi_hearings';
 
   /**
    * Constructs a new instance.
@@ -35,7 +35,23 @@ class HearingMigrationSubscriber implements EventSubscriberInterface {
     return [
       MigrateEvents::POST_ROW_SAVE => 'handleTranslations',
       MigrateEvents::PRE_IMPORT => 'preImport',
+      'Drupal\helfi_api_base\Event\MigrationConfigurationEvent' => [
+        ['onMigration'],
+      ],
     ];
+  }
+
+  /**
+   * Migration configuration event subscriber callback.
+   *
+   * @param MigrationConfigurationEvent $event
+   * @return void
+   */
+  public function onMigration(MigrationConfigurationEvent $event) {
+    if ($event->migration->id() !== 'helfi_hearings') {
+      return;
+    }
+    // @todo: Handle migration.
   }
 
   /**

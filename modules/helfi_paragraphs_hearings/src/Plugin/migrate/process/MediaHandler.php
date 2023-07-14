@@ -4,13 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_paragraphs_hearings\Plugin\migrate\process;
 
+use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
 use Drupal\media\Entity\Media;
-use Drupal\file\Entity\File;
-use Drupal\Core\File\FileSystemInterface;
+
 /**
+ * Handle media entity.
+ *
  * @MigrateProcessPlugin(
  *   id = "media_handler",
  * )
@@ -50,7 +52,8 @@ class MediaHandler extends ProcessPluginBase {
       $file_image = File::create(['uri' => $file_path]);
       $file_image->save();
       $file_id = $file_image->id();
-    } else {
+    }
+    else {
       $result = reset($result);
       $file_id = $result->fid;
     }
@@ -63,14 +66,15 @@ class MediaHandler extends ProcessPluginBase {
 
     if (!empty($ids)) {
       return reset($ids);
-    } else {
+    }
+    else {
       $media_image = Media::create([
         'bundle' => 'image',
         'uid' => 0,
         'name' => pathinfo($filename, PATHINFO_FILENAME),
         'field_media_image' => [
           'target_id' => $file_id,
-        ]
+        ],
       ]);
 
       $media_image->save();
@@ -79,4 +83,5 @@ class MediaHandler extends ProcessPluginBase {
       return $new_media_id;
     }
   }
+
 }
