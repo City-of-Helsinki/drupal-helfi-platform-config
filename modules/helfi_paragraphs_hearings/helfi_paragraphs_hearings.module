@@ -10,7 +10,7 @@ declare(strict_types = 1);
 /**
  * Implements hook_helfi_paragraph_types().
  */
-function helfi_hearings_helfi_paragraph_types() : array {
+function helfi_paragraphs_hearings_helfi_paragraph_types() : array {
   $types = [
     'field_content' => [
       'hearings',
@@ -24,10 +24,4 @@ function helfi_hearings_helfi_paragraph_types() : array {
     }
   }
   return $enabled;
-}
-
-/**
- * Implements hook_cron().
- */
-function helfi_paragraphs_hearings_cron(): void {
 }
