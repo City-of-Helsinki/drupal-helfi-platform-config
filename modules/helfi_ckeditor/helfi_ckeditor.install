@@ -117,3 +117,19 @@ function helfi_ckeditor_update_9003(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_ckeditor');
 }
+
+/**
+ * Install ckeditor5.
+ */
+function helfi_ckeditor_update_9004(): void {
+  $moduleHandler = Drupal::service('module_handler');
+
+  if (!$moduleHandler->moduleExists('ckeditor5')) {
+    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
+    $moduleInstaller = Drupal::service('module_installer');
+    $moduleInstaller->install(['ckeditor5']);
+
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update('helfi_ckeditor');
+  }
+}

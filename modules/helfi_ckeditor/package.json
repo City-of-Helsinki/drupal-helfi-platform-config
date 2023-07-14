@@ -1,5 +1,5 @@
 {
-  "name": "hdbt-admin-tools",
+  "name": "helfi-ckeditor",
   "version": "1.0.0",
   "description": "Helfi specific enhancements to CKEditor5 plugins.",
   "scripts": {
