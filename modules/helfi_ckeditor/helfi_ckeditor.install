@@ -119,7 +119,7 @@ function helfi_ckeditor_update_9003(): void {
 }
 
 /**
- * Install ckeditor5.
+ * Install ckeditor5 and uninstall ckeditor4.
  */
 function helfi_ckeditor_update_9004(): void {
   $moduleHandler = Drupal::service('module_handler');
@@ -128,6 +128,10 @@ function helfi_ckeditor_update_9004(): void {
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
     $moduleInstaller = Drupal::service('module_installer');
     $moduleInstaller->install(['ckeditor5']);
+
+    if ($moduleHandler->moduleExists('ckeditor')) {
+      $moduleInstaller->uninstall(['ckeditor']);
+    }
 
     \Drupal::service('helfi_platform_config.config_update_helper')
       ->update('helfi_ckeditor');

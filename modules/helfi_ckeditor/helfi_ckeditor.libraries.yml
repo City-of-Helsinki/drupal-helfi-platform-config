@@ -5,6 +5,6 @@ helfi_link:
     assets/js/build/helfiLink.js: { preprocess: false, minified: true }
   css:
     theme:
-      assets/css/ckeditor5/helfi_link_plugin.css: { }
+      assets/css/helfi_link_plugin.css: { }
   dependencies:
     - core/ckeditor5
