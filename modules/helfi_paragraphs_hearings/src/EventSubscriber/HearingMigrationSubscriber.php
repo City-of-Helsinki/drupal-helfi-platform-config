@@ -44,7 +44,7 @@ class HearingMigrationSubscriber implements EventSubscriberInterface {
   /**
    * Migration configuration event subscriber callback.
    *
-   * @param MigrationConfigurationEvent $event
+   * @param Drupal\helfi_api_base\Event\MigrationConfigurationEvent $event
    *   Migrate post row event.
    */
   public function onMigration(MigrationConfigurationEvent $event) {
