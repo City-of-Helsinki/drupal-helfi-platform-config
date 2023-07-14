@@ -39,7 +39,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <span role aria-* lang dir class="">'
+      allowed_html: '<br> <p> <span role aria-* class> <ul type> <ol type start> <a hreflang accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol href aria-label class data-entity-type data-entity-uuid data-entity-substitution> <strong> <em> <li>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -66,7 +66,7 @@ filters:
     status: true
     weight: -46
     settings:
-      filter_url_length: 72
+      filter_url_length: 120
   linkit:
     id: linkit
     provider: linkit
