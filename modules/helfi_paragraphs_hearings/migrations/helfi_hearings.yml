@@ -55,10 +55,6 @@ source:
       name: slug
       label: 'Slug'
       selector: slug
-    #-
-      #name: img_url
-      #label: 'Image url'
-      #selector: main_image/url
     -
       name: image
       label: 'Image'

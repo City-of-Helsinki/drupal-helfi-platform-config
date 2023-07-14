@@ -8,52 +8,22 @@
 declare(strict_types = 1);
 
 /**
- * Gets the block configurations.
- *
- * Example block:
- *
- * @code
- * [
- *   'breadcrumbs' => [
- *     'block' => [
- *       ...
- *     ],
- *     'variations' => [
- *       ...
- *     ],
- *   ],
- * ];
- * @endcode
- *
- * @return array[]
- *   The block configurations.
+ * Implements hook_helfi_paragraph_types().
  */
-function helfi_paragraphs_hearings_get_block_configurations(string $theme) : array {
-  return [
-    'hearing' => [
-      'block' => [
-        'id' => 'helfihearing',
-        'plugin' => 'helfi_paragraphs_hearings',
-        'settings' => [
-          'id' => 'helfi_paragraphs_hearings',
-          'label' => 'Hearings',
-          'provider' => 'helfi_paragraphs_hearings',
-        ],
-        'provider' => 'helfi_paragraphs_hearings',
-        'weight' => -14,
-      ],
-      'variations' => [
-        [
-          'theme' => $theme,
-          'region' => 'before_content',
-        ],
-        [
-          'theme' => 'stark',
-          'region' => 'content',
-        ],
-      ],
+function helfi_hearings_helfi_paragraph_types() : array {
+  $types = [
+    'field_content' => [
+      'hearings',
     ],
   ];
+
+  $enabled = [];
+  foreach ($types as $field => $paragraphTypes) {
+    foreach ($paragraphTypes as $paragraphType) {
+      $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType);
+    }
+  }
+  return $enabled;
 }
 
 /**
