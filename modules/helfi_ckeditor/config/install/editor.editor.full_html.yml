@@ -27,6 +27,8 @@ settings:
       - redo
       - specialCharacters
       - insertTable
+      - helfiLanguageSelector
+      - '|'
       - sourceEditing
   plugins:
     ckeditor5_heading:
