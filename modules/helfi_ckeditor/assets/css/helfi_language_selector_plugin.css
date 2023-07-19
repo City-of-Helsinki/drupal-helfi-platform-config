@@ -2,7 +2,12 @@
 .ck.ck-dropdown__panel .ts-control input {
   width: 100%;
   border: 0 none;
-  padding: 10px;
+  padding: 8px;
+  margin-left: 16px;
+}
+
+.ck.ck-dropdown__panel .ts-control input:only-child {
+  margin-left: 0;
 }
 
 /* The language span indicators in ckeditor */
