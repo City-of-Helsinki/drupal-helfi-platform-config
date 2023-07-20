@@ -7,6 +7,7 @@ import { Collection } from 'ckeditor5/src/utils';
 import icon from '../../../../icons/helfiLanguageSelector.svg';
 import LanguageSelectListView from './ui/languageSelectListView';
 import { parseLanguageAttribute } from './utils/utils';
+import { translationWarmer } from './utils/translationWarmer';
 
 export default class HelfiLanguageSelectorUi extends Plugin {
 
@@ -17,12 +18,14 @@ export default class HelfiLanguageSelectorUi extends Plugin {
     this.helfiLanguageSelectorConfig = this.editor.config.get('helfiLanguageSelector');
     this.languageList = this.helfiLanguageSelectorConfig?.language_list;
     this.updateSelection = false;
+    translationWarmer(editor.locale);
   }
 
   init() {
-    const editor = this.editor;
-    const removeTitle = Drupal.t('Remove language');
-    const defaultTitle = Drupal.t( 'Select language');
+    const { editor } = this;
+    const { t } = editor.locale;
+    const removeTitle = t( 'Remove language from text' );
+    const defaultTitle = t( 'Select language');
 
     // Register the helfiLanguageSelector toolbar button.
     editor.ui.componentFactory.add('helfiLanguageSelector', (locale) => {
@@ -105,9 +108,15 @@ export default class HelfiLanguageSelectorUi extends Plugin {
           },
           valueField: 'languageCode',
           labelField: 'title',
-          searchField: ['title'],
+          searchField: 'title',
+          sortField: 'title',
+          maxOptions: null,
           items: [ this._getCommandValue(languageCommand.value) ],
-          options: [ this.languageList ],
+          options: [
+            this.languageList.map((language) => {
+              return { ...language, title: t(language.title) };
+            }),
+          ],
           create: false,
           // Custom rendering functions for options and items
           render: {

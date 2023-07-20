@@ -17,6 +17,7 @@ helfi_language_selector:
       assets/css/helfi_language_selector_plugin.css: { }
   dependencies:
     - core/ckeditor5
+    - core/ckeditor5.translations
     - hdbt_admin_tools/tom_select
 
 # Helfi Language selector CKEditor5 plugin toolbar styles.

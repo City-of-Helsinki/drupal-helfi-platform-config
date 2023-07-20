@@ -12,6 +12,7 @@ export default class LanguageSelectListView extends View {
   constructor( locale, editor ) {
     super( locale, editor );
     const bind = this.bindTemplate;
+    const t = locale.t;
 
     this.editor = editor;
 
@@ -28,7 +29,7 @@ export default class LanguageSelectListView extends View {
           bind.if( 'isOpen', 'ck-is-open', isOpen => isOpen )
         ],
         open: bind.if('isOpen'),
-        placeholder: Drupal.t( 'Select language' ),
+        placeholder: t( 'Select language' ),
       },
       on: {
         keydown: bind.to( evt => {
