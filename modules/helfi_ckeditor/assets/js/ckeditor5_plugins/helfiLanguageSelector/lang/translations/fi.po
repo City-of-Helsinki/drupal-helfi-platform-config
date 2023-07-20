@@ -1,0 +1,377 @@
+msgid ""
+msgstr ""
+
+msgid "Select language"
+msgstr "Valitse kieli"
+
+msgid "Remove language from text"
+msgstr "Poista kieli tekstistä"
+
+msgid "Afrikaans"
+msgstr "afrikaans"
+
+msgid "Amharic"
+msgstr "amhara"
+
+msgid "Asturian"
+msgstr "asturia"
+
+msgid "Arabic"
+msgstr "arabia"
+
+msgid "Azerbaijani"
+msgstr "azeri"
+
+msgid "Bahasa Malaysia"
+msgstr "malaiji"
+
+msgid "Belarusian"
+msgstr "valkovenäjä"
+
+msgid "Bulgarian"
+msgstr "bulgaria"
+
+msgid "Burmese"
+msgstr "burma"
+
+msgid "Bengali"
+msgstr "bengali"
+
+msgid "Bosnian"
+msgstr "bosnia"
+
+msgid "Catalan"
+msgstr "katalaani"
+
+msgid "Chinese, Simplified"
+msgstr "kiina, yksinkertainen"
+
+msgid "Chinese, Traditional"
+msgstr "kiina, perinteinen"
+
+msgid "Corsican"
+msgstr "korsika"
+
+msgid "Czech"
+msgstr "tsekki"
+
+msgid "Dzongkha"
+msgstr "dzongkha"
+
+msgid "Welsh"
+msgstr "kymri"
+
+msgid "Danish"
+msgstr "tanska"
+
+msgid "German"
+msgstr "saksa"
+
+msgid "Greek"
+msgstr "kreikka"
+
+msgid "English"
+msgstr "englanti"
+
+msgid "Esperanto"
+msgstr "esperanto"
+
+msgid "Spanish"
+msgstr "espanja"
+
+msgid "Estonian"
+msgstr "viro"
+
+msgid "Basque"
+msgstr "baski"
+
+msgid "Persian"
+msgstr "persia"
+
+msgid "Finnish"
+msgstr "suomi"
+
+msgid "Faeroese"
+msgstr "fäärin kieli"
+
+msgid "French"
+msgstr "ranska"
+
+msgid "Frisian"
+msgstr "friisi"
+
+msgid "Frisian, Western"
+msgstr "friisi, länsimainen"
+
+msgid "Irish"
+msgstr "iiri"
+
+msgid "Gaelic"
+msgstr "gaeli"
+
+msgid "Galician"
+msgstr "galicia"
+
+msgid "Gujarati"
+msgstr "gujarati"
+
+msgid "Hausa"
+msgstr "hausa"
+
+msgid "Hindi"
+msgstr "hindi"
+
+msgid "Croatian"
+msgstr "kroatia"
+
+msgid "Haitian Creole"
+msgstr "haitinkreoli"
+
+msgid "Hungarian"
+msgstr "unkari"
+
+msgid "Armenian"
+msgstr "armenia"
+
+msgid "Indonesian"
+msgstr "indonesia"
+
+msgid "Igbo"
+msgstr "igbo"
+
+msgid "Icelandic"
+msgstr "islanti"
+
+msgid "Italian"
+msgstr "italia"
+
+msgid "Hebrew"
+msgstr "heprea"
+
+msgid "Japanese"
+msgstr "japani"
+
+msgid "Javanese"
+msgstr "jaava"
+
+msgid "Georgian"
+msgstr "gruusia"
+
+msgid "Kazakh"
+msgstr "kazakki"
+
+msgid "Khmer"
+msgstr "khmer"
+
+msgid "Kannada"
+msgstr "kannada"
+
+msgid "Korean"
+msgstr "korea"
+
+msgid "Kurdish"
+msgstr "kurdi"
+
+msgid "Kurdish (Kurmanji)"
+msgstr "kurdi"
+
+msgid "Kyrgyz"
+msgstr "kyrgyz"
+
+msgid "Latin"
+msgstr "latina"
+
+msgid "Luxembourgish"
+msgstr "luxemburg"
+
+msgid "Lao"
+msgstr "lao"
+
+msgid "Lithuanian"
+msgstr "liettua"
+
+msgid "Latvian"
+msgstr "latvia"
+
+msgid "Malagasy"
+msgstr "malagasy"
+
+msgid "Maori"
+msgstr "maori"
+
+msgid "Macedonian"
+msgstr "makedonia"
+
+msgid "Malayalam"
+msgstr "malayalam"
+
+msgid "Mongolian"
+msgstr "mongolia"
+
+msgid "Marathi"
+msgstr "marathi"
+
+msgid "Malay"
+msgstr "malaiji"
+
+msgid "Maltese"
+msgstr "malta"
+
+msgid "Myanmar (Burmese)"
+msgstr "burma"
+
+msgid "Nepali"
+msgstr "nepali"
+
+msgid "Dutch"
+msgstr "hollanti"
+
+msgid "Norwegian"
+msgstr "norja"
+
+msgid "Norwegian Bokmål"
+msgstr "kirjanorja"
+
+msgid "Norwegian Nynorsk"
+msgstr "uusnorja"
+
+msgid "Occitan"
+msgstr "oksitaani"
+
+msgid "Persian, Farsi"
+msgstr "persia, farsi"
+
+msgid "Chichewa"
+msgstr "njandža"
+
+msgid "Odia (Oriya)"
+msgstr "odia (orija"
+
+msgid "Punjabi"
+msgstr "punjabi"
+
+msgid "Polish"
+msgstr "puola"
+
+msgid "Pashto"
+msgstr "pashto"
+
+msgid "Portuguese"
+msgstr "portugali"
+
+msgid "Romanian"
+msgstr "romania"
+
+msgid "Russian"
+msgstr "venäjä"
+
+msgid "Kinyarwanda"
+msgstr "kinyarwanda"
+
+msgid "Sindhi"
+msgstr "sindhi"
+
+msgid "Sami"
+msgstr "saami"
+
+msgid "Sinhala"
+msgstr "sinhali"
+
+msgid "Slovak"
+msgstr "slovakia"
+
+msgid "Slovenian"
+msgstr "slovenia"
+
+msgid "Samoan"
+msgstr "samoa"
+
+msgid "Shona"
+msgstr "shona"
+
+msgid "Somali"
+msgstr "somali"
+
+msgid "Albanian"
+msgstr "albania"
+
+msgid "Serbian"
+msgstr "serbia"
+
+msgid "Sesotho"
+msgstr "sesotho"
+
+msgid "Sundanese"
+msgstr "sundaneesi"
+
+msgid "Swedish"
+msgstr "ruotsi"
+
+msgid "Swahili"
+msgstr "swahili"
+
+msgid "Swiss German"
+msgstr "sveitsin saksa"
+
+msgid "Tamil"
+msgstr "tamili"
+
+msgid "Tamil, Sri Lanka"
+msgstr "tamili, Sri Lanka"
+
+msgid "Telugu"
+msgstr "telugu"
+
+msgid "Tajik"
+msgstr "tadžikki"
+
+msgid "Thai"
+msgstr "thai"
+
+msgid "Turkmen"
+msgstr "turkmeeni"
+
+msgid "Filipino"
+msgstr "tagalog"
+
+msgid "Tatar"
+msgstr "tataari"
+
+msgid "Tibetan"
+msgstr "tiibetin kieli"
+
+msgid "Turkish"
+msgstr "turkki"
+
+msgid "Tuvan"
+msgstr "tuva"
+
+msgid "Uyghur"
+msgstr "uiguuri"
+
+msgid "Ukrainian"
+msgstr "ukraina"
+
+msgid "Urdu"
+msgstr "urdu"
+
+msgid "Uzbek"
+msgstr "uzbekki"
+
+msgid "Vietnamese"
+msgstr "vietnam"
+
+msgid "Xhosa"
+msgstr "xhosa"
+
+msgid "Yiddish"
+msgstr "jiddiš"
+
+msgid "Yoruba"
+msgstr "joruba"
+
+msgid "Chinese"
+msgstr "kiina"
+
+msgid "Zulu"
+msgstr "zulu"

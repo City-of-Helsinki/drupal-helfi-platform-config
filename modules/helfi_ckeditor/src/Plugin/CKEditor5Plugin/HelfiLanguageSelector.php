@@ -10,7 +10,7 @@ use Drupal\Core\Language\LanguageManager;
 use Drupal\editor\EditorInterface;
 
 /**
- * CKEditor 5 Image plugin.
+ * CKEditor 5 HelfiLanguageSelector plugin.
  *
  * @internal
  *   Plugin classes are internal.
@@ -42,7 +42,6 @@ class HelfiLanguageSelector extends CKEditor5PluginDefault {
     // Manually added missing languages what are not listed
     // in LanguageManager::getStandardLanguageList().
     $missing = [
-      'zh' => ['Chinese'],
       'co' => ['Corsican'],
       'dz' => ['Dzongkha'],
       'fo' => ['Faeroese'],
@@ -54,7 +53,19 @@ class HelfiLanguageSelector extends CKEditor5PluginDefault {
       'xh' => ['Xhosa'],
       'yi' => ['Yiddish'],
       'yo' => ['Yoruba'],
+      'zh' => ['Chinese'],
       'zu' => ['Zulu'],
+    ];
+
+    // Skip the following languages.
+    $skip = [
+      'en-x-simple',
+      'gsw-berne',
+      'pt-br',
+      'pt-pt',
+      'sco',
+      'ta-lk',
+      'xx-lolspeak',
     ];
 
     // Generate the language_list setting as expected by the CKEditor Language
@@ -64,8 +75,8 @@ class HelfiLanguageSelector extends CKEditor5PluginDefault {
       $direction = empty($name[2]) ? NULL : $name[2];
       $rtl = ($direction === LanguageInterface::DIRECTION_RTL) ? 'rtl' : 'ltr';
 
-      // Skip the "lolspeak" language.
-      if ($code === 'xx-lolspeak') {
+      // Skip the languages listed in "skip" array.
+      if (in_array($code, $skip)) {
         continue;
       }
 

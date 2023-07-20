@@ -3,6 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const { styles, builds } = require('@ckeditor/ckeditor5-dev-utils');
 const TerserPlugin = require('terser-webpack-plugin');
+const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
 
 function getDirectories(srcpath) {
   return fs
@@ -64,6 +65,18 @@ getDirectories('./assets/js/ckeditor5_plugins').forEach((dir) => {
         scope: 'ckeditor5/src',
         name: 'CKEditor5.dll',
       }),
+      new CKEditorTranslationsPlugin( {
+        // The main language that will be built into the main bundle.
+        language: 'en',
+
+        // Additional languages that will be emitted to the `outputDirectory`.
+        additionalLanguages: 'all',
+
+        // Patterns for custom plugins.
+        packageNamesPattern: /assets[/\\]js[/\\]ckeditor5_plugins[/\\][^/\\]+[/\\]/i,
+        sourceFilesPattern: /assets[/\\]js[/\\]ckeditor5_plugins[/\\][^/\\]+[/\\]/i,
+        // For more advanced options see https://github.com/ckeditor/ckeditor5-dev/tree/master/packages/ckeditor5-dev-translations.
+      } ),
     ],
     module: {
       rules: [
