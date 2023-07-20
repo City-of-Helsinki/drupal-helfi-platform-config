@@ -63,7 +63,7 @@ export default class HelfiLanguageSelectorUi extends Plugin {
 
       dropdownView.on( 'change:isOpen', () => {
 
-        if (tomSelect && tomSelect.options) {
+        if (tomSelect?.options) {
           // Set current language as the selected language in tomSelect.
           if (
             languageCommand.value &&
