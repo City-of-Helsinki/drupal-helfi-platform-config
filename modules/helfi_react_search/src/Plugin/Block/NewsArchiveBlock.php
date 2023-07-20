@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_news_archive\Plugin\Block;
+namespace Drupal\helfi_react_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
