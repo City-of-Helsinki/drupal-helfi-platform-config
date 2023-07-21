@@ -23,7 +23,7 @@ final class NewsTags extends HelfiExternalEntityBase {
    * @var array|string[]
    */
   protected array $query = [
-    'fields[taxonomy_term--news_tags]' => 'id,name,changed,langcode,status',
+    'fields[taxonomy_term--news_tags]' => 'id,name,changed,langcode,status,drupal_internal__tid',
   ];
 
   /**
