@@ -109,3 +109,12 @@ function helfi_paragraphs_news_list_update_9003(&$sandbox) : void {
 function helfi_paragraphs_news_list_update_9004() : void {
   helfi_paragraphs_news_list_grant_permissions();
 }
+
+/**
+ * Adds field for frontpage tid of news list terms.
+ * Enables linking to correct results in news archive.
+ */
+function helfi_paragraphs_news_list_update_9005() : void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_news_list');
+}

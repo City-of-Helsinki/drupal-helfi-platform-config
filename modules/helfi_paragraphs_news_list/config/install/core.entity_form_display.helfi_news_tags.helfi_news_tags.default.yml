@@ -1,0 +1,30 @@
+uuid: 972acdae-8e71-4d12-a335-bc91828f4851
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.helfi_news_tags.helfi_news_tags.field_frontpage_term_id
+  module:
+    - external_entities
+id: helfi_news_tags.helfi_news_tags.default
+targetEntityType: helfi_news_tags
+bundle: helfi_news_tags
+mode: default
+content:
+  field_frontpage_term_id:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
