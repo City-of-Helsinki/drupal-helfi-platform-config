@@ -7,10 +7,6 @@ dependencies:
   module:
     - disable_field
     - external_entities
-third_party_settings:
-  disable_field:
-    add_disable: none
-    edit_disable: none
 id: helfi_news_groups.helfi_news_groups.field_frontpage_term_id
 field_name: field_frontpage_term_id
 entity_type: helfi_news_groups
