@@ -98,36 +98,12 @@ export default class HelfiLinkUi extends Plugin {
         balloonClassName: 'helfi-contextual-balloon',
         withArrow: false,
       });
-
-      // The CKEditor ck-reset_all class resets too much CSS attributes, so we
-      // want to remove it when linkFormView is being viewed.
-      const parentElement = contextualBalloon.view.element.closest('.ck-body-wrapper > .ck-body');
-      if (parentElement.classList.contains('ck-reset_all')) {
-        parentElement.classList.remove('ck-reset_all');
-      }
-    });
-
-    // Act on when contextualBalloon (popup) and linkFormView is removed.
-    contextualBalloon._rotatorView.content.on( 'remove', ( evt, view ) => {
-      if (
-        view !== linkFormView ||
-        !contextualBalloon.hasView(linkFormView)
-      ) {
-        return;
-      }
-
-      // Return the CKEditor class what was removed when linkViewForm was added
-      // to contextualBalloon.
-      const parentElement = contextualBalloon.view.element.closest('.ck-body-wrapper > .ck-body');
-      if (!parentElement.classList.contains('ck-reset_all')) {
-        parentElement.classList.add('ck-reset_all');
-      }
     });
 
     // Add custom classes for the LinkUI from view.
     linkFormView.extendTemplate({
       attributes: {
-        class: [ 'helfi-link-form' ]
+        class: [ 'helfi-link-form', 'ck-reset_all-excluded' ]
       }
     });
   }

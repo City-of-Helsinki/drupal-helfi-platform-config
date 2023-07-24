@@ -17,6 +17,7 @@ settings:
       - '|'
       - bulletedList
       - numberedList
+      - helfiLanguageSelector
       - '|'
       - sourceEditing
   plugins:

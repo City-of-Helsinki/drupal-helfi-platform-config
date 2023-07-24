@@ -9,7 +9,9 @@
     "format:js": "eslint --fix assets/js/ckeditor5_plugins/"
   },
   "devDependencies": {
+    "@ckeditor/ckeditor5-core": "^30.0.0",
     "@ckeditor/ckeditor5-dev-utils": "^30.0.0",
+    "@ckeditor/ckeditor5-dev-translations": "^38.1.2",
     "babel-loader": "^9.1.2",
     "ckeditor5": "~35.1.0",
     "css-loader": "^6.8.1",
