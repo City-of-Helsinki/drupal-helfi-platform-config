@@ -1,0 +1,25 @@
+uuid: 42a81125-44b7-45d8-b676-46a27a7dbc07
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.helfi_news_groups.field_frontpage_term_id
+  module:
+    - disable_field
+    - external_entities
+third_party_settings:
+  disable_field:
+    add_disable: none
+    edit_disable: none
+id: helfi_news_groups.helfi_news_groups.field_frontpage_term_id
+field_name: field_frontpage_term_id
+entity_type: helfi_news_groups
+bundle: helfi_news_groups
+label: 'Frontpage term id'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
