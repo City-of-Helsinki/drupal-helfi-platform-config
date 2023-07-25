@@ -75,12 +75,12 @@ process:
       - constants/HEARING_BASE_URL
       - slug
   published_at:
-      plugin: format_date
-      source: published_at
-      from_format: 'Y-m-d\TH:i:s\Z'
-      to_format: 'U'
-      from_timezone: 'Europe/Helsinki'
-      to_timezone: 'UTC'
+    plugin: format_date
+    source: published_at
+    from_format: 'Y-m-d\TH:i:s\Z'
+    to_format: 'U'
+    from_timezone: 'Europe/Helsinki'
+    to_timezone: 'UTC'
   unpublish_on:
     plugin: format_date
     source: unpublish_on
