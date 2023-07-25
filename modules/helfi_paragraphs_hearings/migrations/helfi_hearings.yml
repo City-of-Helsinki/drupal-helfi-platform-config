@@ -65,6 +65,9 @@ process:
   langcode:
     plugin: default_value
     default_value: fi
+  uid:
+    plugin: default_value
+    default_value: 1
   field_comments: comments
   field_url:
     plugin: concat
