@@ -1,14 +1,18 @@
 msgid ""
 msgstr ""
 
+msgctxt "CKEditor5 Helfi Quote plugin"
 msgid "Add a quote"
 msgstr "Lägg till en citat"
 
+msgctxt "CKEditor5 Helfi Quote plugin"
 msgid "Quotation"
 msgstr "Citat"
 
+msgctxt "CKEditor5 Helfi Quote plugin"
 msgid "Source / author"
 msgstr "Upprinnelse / författare"
 
+msgctxt "CKEditor5 Helfi Quote plugin"
 msgid "The quote cannot be empty"
 msgstr "Citatet får inte vara tomt"

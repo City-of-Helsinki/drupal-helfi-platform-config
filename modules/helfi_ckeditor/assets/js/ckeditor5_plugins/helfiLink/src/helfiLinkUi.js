@@ -115,7 +115,7 @@ export default class HelfiLinkUi extends Plugin {
     const { editor } = this;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const urlDescription = document.createElement('span');
-    urlDescription.textContent = Drupal.t('Start typing to find content.');
+    urlDescription.textContent = Drupal.t('Start typing to find content.', {}, { context: 'CKEditor5 Helfi Link plugin' });
     urlDescription.classList.add('helfi-link-form__field_description');
     linkFormView.urlInputView.element.appendChild(urlDescription);
   }
@@ -187,7 +187,7 @@ export default class HelfiLinkUi extends Plugin {
     const advancedSettings = new HelfiDetailsView(editor.locale, this.advancedChildren);
 
     advancedSettings.set({
-      label: Drupal.t('Advanced settings'),
+      label: Drupal.t('Advanced settings', {}, { context: 'CKEditor5 Helfi Link plugin' }),
       id: 'advanced-settings',
       isOpen: false,
     });
