@@ -24,12 +24,21 @@ export default class HelfiQuoteForm extends View {
     this.textAreaView = new TextareaView(locale, editor);
 
     this.authorInputView = new LabeledFieldView(editor.locale, createLabeledInputText);
-    this.authorInputView.label = Drupal.t( 'Source / author' );
+    this.authorInputView.label = Drupal.t( 'Source / author', {}, { context: 'CKEditor5 Helfi Quote plugin' });
 
-    this.saveButtonView = this._createButton( Drupal.t( 'Save' ), icons.check, 'ck-button-save' );
+    this.saveButtonView = this._createButton(
+      Drupal.t( 'Save', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
+      icons.check,
+      'ck-button-save'
+    );
     this.saveButtonView.type = 'submit';
 
-    this.cancelButtonView = this._createButton( Drupal.t( 'Cancel' ), icons.cancel, 'ck-button-cancel', 'cancel' );
+    this.cancelButtonView = this._createButton(
+      Drupal.t( 'Cancel', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
+      icons.cancel,
+      'ck-button-cancel',
+      'cancel'
+    );
 
     this.keystrokes = new KeystrokeHandler();
     this.children = this.createCollection();

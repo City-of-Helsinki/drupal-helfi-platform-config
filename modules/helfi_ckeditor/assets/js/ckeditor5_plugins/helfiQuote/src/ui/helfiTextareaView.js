@@ -4,7 +4,7 @@ import { FocusTracker } from 'ckeditor5/src/utils';
 /**
  * The textareaView class.
  */
-export default class textareaView extends View {
+export default class TextareaView extends View {
 
   /**
    * @inheritDoc
@@ -12,7 +12,7 @@ export default class textareaView extends View {
   constructor( locale, editor ) {
     super( locale, editor );
 
-    this.textAreaLabel = Drupal.t('Quotation');
+    this.textAreaLabel = Drupal.t('Quotation', {}, { context: 'CKEditor5 Helfi Quote plugin' });
 
     this.set( 'value', undefined);
     this.set( 'id', undefined );

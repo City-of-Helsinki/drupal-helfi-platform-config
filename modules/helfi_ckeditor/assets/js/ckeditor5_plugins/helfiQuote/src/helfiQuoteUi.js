@@ -20,7 +20,7 @@ export default class HelfiQuoteUi extends Plugin {
 
   init() {
     const { editor } = this;
-    const defaultTitle = Drupal.t( 'Add a quote' );
+    const defaultTitle = Drupal.t( 'Add a quote', {}, { context: 'CKEditor5 Helfi Quote plugin' });
 
     // Register the helfiQuote toolbar button.
     editor.ui.componentFactory.add('helfiQuote', (locale) => {
