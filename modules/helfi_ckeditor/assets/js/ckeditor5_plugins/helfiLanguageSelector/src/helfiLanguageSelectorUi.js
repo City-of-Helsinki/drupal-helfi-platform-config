@@ -162,7 +162,7 @@ export default class HelfiLanguageSelectorUi extends Plugin {
    */
   _getCommandValue(languageAttribute) {
     if (!languageAttribute) { return; }
-    const {languageCode} = parseLanguageAttribute(languageAttribute);
+    const { languageCode } = parseLanguageAttribute(languageAttribute);
     if (languageCode) {
       return languageCode;
     }
