@@ -12,7 +12,7 @@
 
 .ck.ck-balloon-panel.helfi-contextual-balloon .ck-labeled-field-view {
   max-width: 600px;
-  margin: 1rem 0.7rem;
+  margin: 1rem !important;
 }
 
 /* Hide panel arrows. */
@@ -71,6 +71,10 @@
   transform: rotate(180deg);
 }
 
+.ck.helfi-link--protocol .ck-list {
+  margin: 0 !important;
+}
+
 /* Advanced settings - Details */
 /* Mimic the .claro-details styles. */
 .ck-helfi-link-details {
@@ -80,8 +84,8 @@
   box-shadow: none;
   color: #232429;
   display: block;
-  margin: 1rem 0.7rem;
-  padding: 0.5rem;
+  margin: 1rem !important;
+  padding: 0.5rem 0;
   position: relative;
 }
 
@@ -102,7 +106,7 @@
   hyphens: auto;
   line-height: 1rem;
   list-style: none;
-  padding: .8rem 1rem .8rem 2.75rem;
+  padding: .8rem 1rem .8rem 3rem;
   position: relative;
   transition: background-color 0.12s ease-in-out;
   word-wrap: break-word;
@@ -112,7 +116,7 @@
 .ck-helfi-link-details__summary::before {
   position: absolute;
   top: 50%;
-  left: 0.75rem; /* LTR */
+  left: 1rem; /* LTR */
   display: inline-block;
   width: 1rem;
   height: 1rem;
@@ -147,11 +151,15 @@
 }
 
 /* Input field description help text */
+.ck .helfi-link-form .ck-labeled-field-view__status,
 .ck .helfi-link-form__field_description {
-  margin-top: 0.375rem !important;
   color: #55565b !important;
-  white-space: normal !important;
+  display: block !important;
   font-size: 0.75rem !important;
+  line-height: 1.5;
+  margin-top: 0.2rem;
+  max-width: fit-content;
+  white-space: normal !important;
 }
 
 .ck .helfi-link-form__field_description a {

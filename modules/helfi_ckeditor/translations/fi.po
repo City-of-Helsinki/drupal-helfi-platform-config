@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+
+msgid "Add a quote"
+msgstr "Lisää lainaus"
+
+msgid "Quotation"
+msgstr "Lainaus"
+
+msgid "Source / author"
+msgstr "Lähde / tekijä"
+
+msgid "The quote cannot be empty"
+msgstr "Lainaus ei voi olla tyhjä"
