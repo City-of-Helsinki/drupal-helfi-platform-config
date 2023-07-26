@@ -13,10 +13,10 @@ settings:
       - bold
       - italic
       - '|'
-      - link
-      - '|'
       - bulletedList
       - numberedList
+      - '|'
+      - link
       - helfiLanguageSelector
       - '|'
       - sourceEditing
