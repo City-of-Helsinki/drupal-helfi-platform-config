@@ -117,7 +117,7 @@ export default class textareaView extends View {
   /**
    * Sets the `value` property of the element on demand.
    *
-   * @param {string} value The value to be added to the textarea element.
+   * @param {any} value The value to be added to the textarea element.
    */
   _setDomElementValue( value ) {
     this.element.value = ( !value && value !== 0 ) ? '' : value;

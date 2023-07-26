@@ -76,29 +76,4 @@ export default class HelfiQuoteCommand extends Command {
     return helfiQuote;
   }
 
-  /**
-   * Returns the attribute value of the first node in the selection that allows the attribute.
-   * For a collapsed selection it returns the selection attribute.
-   *
-   * @return {string|false} The attribute value or false.
-   */
-  _getValueFromFirstAllowedNode() {
-    const model = this.editor.model;
-    const schema = model.schema;
-    const selection = model.document.selection;
-
-    if ( selection.isCollapsed ) {
-      return selection.getAttribute( 'helfiLanguageSelector' ) || false;
-    }
-
-    for ( const range of selection.getRanges() ) {
-      for ( const item of range.getItems() ) {
-        if ( schema.checkAttribute( item, 'helfiLanguageSelector' ) ) {
-          return item.getAttribute( 'helfiLanguageSelector' ) || false;
-        }
-      }
-    }
-
-    return false;
-  }
 }
