@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+
+msgid "Add a quote"
+msgstr "Lägg till en citat"
+
+msgid "Quotation"
+msgstr "Citat"
+
+msgid "Source / author"
+msgstr "Upprinnelse / författare"
+
+msgid "The quote cannot be empty"
+msgstr "Citatet får inte vara tomt"

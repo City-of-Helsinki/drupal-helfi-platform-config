@@ -25,3 +25,19 @@ helfi_language_selector.admin:
   css:
     theme:
       assets/css/helfi_language_selector_plugin.admin.css: { }
+
+# Helfi Quote CKEditor5 plugin JavaScript and CSS.
+helfi_quote:
+  js:
+    assets/js/build/helfiQuote.js: { preprocess: false, minified: true }
+  css:
+    theme:
+      assets/css/helfi_quote_plugin.css: { }
+  dependencies:
+    - core/ckeditor5
+
+# Helfi Quote CKEditor5 plugin toolbar styles.
+helfi_quote.admin:
+  css:
+    theme:
+      assets/css/helfi_quote_plugin.admin.css: { }
