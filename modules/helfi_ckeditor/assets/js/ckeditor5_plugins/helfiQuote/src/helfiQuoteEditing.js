@@ -118,96 +118,55 @@ export default class HelfiQuoteEditing extends Plugin {
     // Converters are registered via the central editor object.
     const { conversion } = this.editor;
 
-    // Upcast Converters: determine how existing HTML is interpreted by the
-    // editor. These trigger when an editor instance loads.
-    //
+    // Define a function for element conversion
+    const addElementConversion = (modelName, viewName, classes = null) => {
+      const conversionConfig = {
+        model: modelName,
+        view: {
+          name: viewName,
+          ...(classes ? { classes } : {}),
+        },
+      };
+
+      // Upcast Converters: determine how existing HTML is interpreted by the
+      // editor. These trigger when an editor instance loads.
+      conversion.for('upcast').elementToElement(conversionConfig);
+
+      // Data Downcast Converters: converts stored model data into HTML.
+      // These trigger when content is saved.
+      conversion.for('dataDowncast').elementToElement(conversionConfig);
+    };
+
     // If <blockquote class="quote"> is present in the existing markup
     // processed by CKEditor, then CKEditor recognizes and loads it as a
     // <helfiQuote> model.
-    conversion.for('upcast').elementToElement({
-      model: 'helfiQuote',
-      view: {
-        name: 'blockquote',
-        classes: 'quote',
-      },
-    });
+    // Instances of <helfiQuote> are saved as
+    // <blockquote class="quote">{{inner content}}</blockquote>.
+    addElementConversion('helfiQuote', 'blockquote', 'quote');
 
     // If <p class="quote__text"> is present in the existing markup
     // processed by CKEditor, then CKEditor recognizes and loads it as a
     // <helfiQuoteText> model, provided it is a child element of <helfiQuote>,
     // as required by the schema.
-    conversion.for('upcast').elementToElement({
-      model: 'helfiQuoteText',
-      view: {
-        name: 'p',
-        classes: 'quote__text',
-      },
-    });
+    // Instances of <helfiQuoteText> are saved as
+    // <p class="quote__text">{{inner content}}</p>.
+    addElementConversion('helfiQuoteText', 'p', 'quote__text');
 
     // If <footer class="quote__author"> is present in the existing markup
     // processed by CKEditor, then CKEditor recognizes and loads it as a
     // <helfiQuoteFooter> model, provided it is a child element of
     // <helfiQuote>, as required by the schema.
-    conversion.for('upcast').elementToElement({
-      model: 'helfiQuoteFooter',
-      view: {
-        name: 'footer',
-        classes: 'quote__author',
-      },
-    });
+    // Instances of <helfiQuoteFooter> are saved as
+    // <footer class="quote__author">{{inner content}}</cite>.
+    addElementConversion('helfiQuoteFooter', 'footer', 'quote__author');
 
     // If <cite> is present in the existing markup
     // processed by CKEditor, then CKEditor recognizes and loads it as a
     // <helfiQuoteFooterCite> model, provided it is a child element of
     // <helfiQuoteFooter>, as required by the schema.
-    conversion.for('upcast').elementToElement({
-      model: 'helfiQuoteFooterCite',
-      view: {
-        name: 'cite',
-      },
-    });
-
-    // Data Downcast Converters: converts stored model data into HTML.
-    // These trigger when content is saved.
-    //
-    // Instances of <helfiQuote> are saved as
-    // <blockquote class="quote">{{inner content}}</blockquote>.
-    conversion.for('dataDowncast').elementToElement({
-      model: 'helfiQuote',
-      view: {
-        name: 'blockquote',
-        classes: 'quote',
-      },
-    });
-
-    // Instances of <helfiQuoteText> are saved as
-    // <p class="quote__text">{{inner content}}</p>.
-    conversion.for('dataDowncast').elementToElement({
-      model: 'helfiQuoteText',
-      view: {
-        name: 'p',
-        classes: 'quote__text',
-      },
-    });
-
-    // Instances of <helfiQuoteFooter> are saved as
-    // <footer class="quote__author">{{inner content}}</cite>.
-    conversion.for('dataDowncast').elementToElement({
-      model: 'helfiQuoteFooter',
-      view: {
-        name: 'footer',
-        classes: 'quote__author',
-      },
-    });
-
     // Instances of <helfiQuoteFooterCite> are saved as
     // <cite>{{inner content}}</cite>.
-    conversion.for('dataDowncast').elementToElement({
-      model: 'helfiQuoteFooterCite',
-      view: {
-        name: 'cite',
-      },
-    });
+    addElementConversion('helfiQuoteFooterCite', 'cite');
 
     // Editing Downcast Converters. These render the content to the user for
     // editing, i.e. this determines what gets seen in the editor. These trigger
