@@ -153,13 +153,16 @@
 /* Input field description help text */
 .ck .helfi-link-form .ck-labeled-field-view__status,
 .ck .helfi-link-form__field_description {
-  color: #55565b !important;
   display: block !important;
   font-size: 0.75rem !important;
   line-height: 1.5;
   margin-top: 0.2rem;
   max-width: fit-content;
   white-space: normal !important;
+}
+
+.ck .helfi-link-form .ck-labeled-field-view__status:not(.ck-labeled-field-view__status_error) {
+  color: #55565b !important;
 }
 
 .ck .helfi-link-form__field_description a {
