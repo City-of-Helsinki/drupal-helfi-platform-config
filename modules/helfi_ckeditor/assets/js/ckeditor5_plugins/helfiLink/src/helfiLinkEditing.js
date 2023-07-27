@@ -158,18 +158,29 @@ export default class HelfiLinkEditing extends Plugin {
       // sure there's a single undo step when the attribute is added.
       model.change(writer => {
         editor.execute('link', ...args);
-        const firstPosition = selection.getFirstPosition();
 
         // Determine the selection range and add/remove the attributes to the
         // node or range.
         modelNames.forEach(modelName => {
           if (selection.isCollapsed) {
-            const node = firstPosition.textNode || firstPosition.nodeBefore;
 
+            // Get the current selection textNode or the nodeBefore the selection.
+            // If neither are available, create a range from root position.
+            const writtenRange = (position) => {
+              const node = position.textNode || position.nodeBefore;
+              if (!node) {
+                const range = writer.createRange(position);
+                writer.setSelection(range);
+                return range;
+              }
+              return writer.createRangeOn(node);
+            };
+
+            // Set or remove attributes.
             if (attributeValues[modelName]) {
-              writer.setAttribute(modelName, attributeValues[modelName], writer.createRangeOn(node));
+              writer.setAttribute(modelName, attributeValues[modelName], writtenRange(selection.getFirstPosition()));
             } else {
-              writer.removeAttribute(modelName, writer.createRangeOn(node));
+              writer.removeAttribute(modelName, writtenRange(selection.getFirstPosition()));
             }
             writer.removeSelectionAttribute(modelName);
           } else {

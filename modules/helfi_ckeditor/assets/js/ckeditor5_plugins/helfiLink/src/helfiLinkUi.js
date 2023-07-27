@@ -209,6 +209,11 @@ export default class HelfiLinkUi extends Plugin {
         linkFormView.advancedSettings.detailsSummary.element.ariaExpanded = false;
         linkFormView.advancedSettings.detailsSummary.element.ariaPressed = false;
       }
+
+      // Remove the error text if user has managed to make an error on last go.
+      if (linkFormView.urlInputView.errorText) {
+        linkFormView.urlInputView.errorText = '';
+      }
     } );
 
     return linkFormView.advancedSettings = advancedSettings;
@@ -300,12 +305,13 @@ export default class HelfiLinkUi extends Plugin {
    */
   _handleFormFieldSubmit(models) {
     const { editor } = this;
+    const { selection } = editor.model.document;
     const linkFormView = editor.plugins.get( 'LinkUI' ).formView;
     const linkCommand = editor.commands.get( 'link' );
 
     // Listen to linkFormView submit and inject form field values to
     // linkCommand arguments.
-    this.listenTo( linkFormView, 'submit', () => {
+    this.listenTo( linkFormView, 'submit', (evt) => {
       const values = models.reduce((state, model) => {
         if (this.formElements[model].type === 'checkbox') {
           state[model] = linkFormView?.[model]?.checkboxInputView?.element?.checked;
@@ -319,6 +325,17 @@ export default class HelfiLinkUi extends Plugin {
         }
         return state;
       }, {});
+
+      // Explain the link logic to user if they are trying to add link id to
+      // a collapsed selection.
+      if (
+        selection.isCollapsed &&
+        !linkFormView.urlInputView?.fieldView?.element?.value &&
+        values.linkId
+      ) {
+        linkFormView.urlInputView.errorText = Drupal.t('When there is no selection, the link URL must be provided. To add a link without a URL, first select text in the editor and then proceed with adding the link.', {}, { context: 'CKEditor5 Helfi Link plugin' });
+        evt.stop();
+      }
 
       // Double-check if either of the checkbox values are checked and set both
       // to false accordingly.
