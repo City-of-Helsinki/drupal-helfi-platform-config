@@ -84,7 +84,7 @@ msgid "Advanced settings"
 msgstr "Edistyneet asetukset"
 
 msgctxt "CKEditor5 Helfi Link plugin"
-msgid "When there is no selection, the link URL must be provided."
+msgid "When there is no selection, the link URL must be provided. "
 "To add a link without a URL, first select text in the editor and "
 "then proceed with adding the link."
 msgstr "Jos et ole maalannut tekstiä, linkin URL-osoite on annettava. "
