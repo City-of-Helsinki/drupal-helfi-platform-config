@@ -14,7 +14,7 @@ bundle: social_media_link
 mode: default
 content:
   field_icon:
-    type: select2_icon_widget
+    type: select_icon_widget
     weight: 0
     region: content
     settings: {  }

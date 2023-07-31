@@ -61,7 +61,7 @@ content:
     weight: 0
     region: content
   field_icon:
-    type: select2_icon_formatter
+    type: select_icon_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }

@@ -23,7 +23,7 @@ function setDefaultColor(newColor = defaultColor) {
     style.remove();
   }
 
-  let styles = document.createElement('style');
+  const styles = document.createElement('style');
   styles.setAttribute('id', 'helfi-admin-tools-default-color');
   styles.innerHTML = `:root {\n\
       --hdbt-admin-theme-color: var(--hdbt-color-${newColor}--primary);\n\

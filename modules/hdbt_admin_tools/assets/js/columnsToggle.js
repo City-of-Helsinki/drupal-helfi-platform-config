@@ -12,7 +12,7 @@
    */
   function toggleFields(design, leftColumn, rightColumn) {
     // Get the selected design.
-    let selectedDesign = design.val();
+    const selectedDesign = design.val();
     let left = '';
     let right = '';
 
@@ -38,14 +38,14 @@
    */
   function loopThroughParagraphs() {
     // Find all the Columns paragraphs.
-    let paragraphs = $('.paragraph-type--columns');
+    const paragraphs = $('.paragraph-type--columns');
 
     // Go through each paragraph.
     paragraphs.each(function () {
       // Find the design for the paragraph in question.
-      let design = $(this).find('.field--name-field-columns-design select');
-      let leftColumn = $(this).find('.field--name-field-columns-left-column');
-      let rightColumn = $(this).find('.field--name-field-columns-right-column');
+      const design = $(this).find('.field--name-field-columns-design select');
+      const leftColumn = $(this).find('.field--name-field-columns-left-column');
+      const rightColumn = $(this).find('.field--name-field-columns-right-column');
 
       // Find the column paragraphs and add columns_size element if necessary.
       if (leftColumn.find('.columns_size').length === 0) {

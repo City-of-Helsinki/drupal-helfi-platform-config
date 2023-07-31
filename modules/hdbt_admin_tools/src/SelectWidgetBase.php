@@ -1,51 +1,76 @@
 <?php
 
-namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
+namespace Drupal\hdbt_admin_tools;
 
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\hdbt_admin_tools\Form\SiteSettings;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Plugin implementation of the 'color_palette_field_widget' widget.
- *
- * @FieldWidget(
- *   id = "color_palette_field_widget",
- *   module = "hdbt_admin_tools",
- *   label = @Translation("Color palette field widget"),
- *   field_types = {
- *     "list_string"
- *   },
- *   multiple_values = FALSE
- * )
+ * Base class for select widgets.
  */
-class ColorPaletteFieldWidget extends OptionsSelectWidget {
+abstract class SelectWidgetBase extends OptionsSelectWidget {
+
+  /**
+   * The design selection manager service.
+   *
+   * @var \Drupal\hdbt_admin_tools\DesignSelectionManager
+   */
+  protected DesignSelectionManager $designSelectionManager;
+
+  /**
+   * {@inheritDoc}
+   */
+  public function __construct(
+    $plugin_id,
+    $plugin_definition,
+    FieldDefinitionInterface $field_definition,
+    array $settings,
+    array $third_party_settings,
+    DesignSelectionManager $design_selection_manager
+  ) {
+    parent::__construct(
+      $plugin_id,
+      $plugin_definition,
+      $field_definition,
+      $settings,
+      $third_party_settings
+    );
+    $this->designSelectionManager = $design_selection_manager;
+  }
 
   /**
    * {@inheritdoc}
    */
-  public function formElement(
-    FieldItemListInterface $items,
-    $delta,
-    array $element,
-    array &$form,
-    FormStateInterface $form_state
-  ): array {
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition
+  ): static {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('hdbt_admin_tools.design_selection_manager'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    $element['#type'] = 'select2';
+    $element['#type'] = 'select';
     $element['#cardinality'] = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
-    $element['#select2'] = [
-      'width' => $this->getSetting('width') ?? '100%',
-    ];
     $element['#options'] = $this->getOptions($items->getEntity());
-    $element['#default_value'] = !empty($this->getSelectedOptions($items))
-      ? $this->getSelectedOptions($items)
-      : SiteSettings::getColorPaletteDefaultValue();
-    $element['#attached']['library'][] = 'hdbt_admin_tools/color_palette_selection';
-    $element['#attributes']['class'][] = 'color-palette-selection';
-    $element['#attributes']['data-color-palette-select'] = $this->getFieldName();
+    $element['#default_value'] = $this->getSelectedOptions($items);
+    $element['#theme'] = 'selection_widget';
 
     return $element;
   }
@@ -96,6 +121,7 @@ class ColorPaletteFieldWidget extends OptionsSelectWidget {
     $field_name = $this->fieldDefinition->getName();
     if ($field_name) {
       $name = str_replace('field_', '', $field_name);
+      $name = str_contains($name, 'link_design') ? 'link_design' : $name;
       return str_replace('_', '-', $name);
     }
     return $this->fieldDefinition->getName();

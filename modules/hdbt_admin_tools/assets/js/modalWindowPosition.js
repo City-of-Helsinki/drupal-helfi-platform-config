@@ -17,7 +17,7 @@
       if (modalWindowPosition.length > 0) {
         $(modalWindowPosition)
           .on('toggle', function () {
-            $("#drupal-modal").dialog({
+            $('#drupal-modal').dialog({
               position: {
                 of: window
               }

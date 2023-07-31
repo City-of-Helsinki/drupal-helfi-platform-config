@@ -14,7 +14,7 @@ bundle: social_media_link
 mode: default
 content:
   field_icon:
-    type: select2_icon_formatter
+    type: select_icon_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }

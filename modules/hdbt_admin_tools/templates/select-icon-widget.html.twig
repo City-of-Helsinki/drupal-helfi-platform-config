@@ -1,0 +1,9 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a Select icon element.
+ */
+#}
+{% embed "@hdbt_admin_tools/selection-base-widget.twig" with {
+  attributes: attributes.addClass('select-icon').setAttribute('placeholder', '- None -'|t ),
+} %}{% endembed %}
