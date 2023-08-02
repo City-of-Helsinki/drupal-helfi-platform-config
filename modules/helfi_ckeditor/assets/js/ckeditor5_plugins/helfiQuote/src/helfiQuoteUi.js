@@ -9,8 +9,8 @@ import HelfiQuoteForm from './ui/helfiQuoteForm';
 
 export default class HelfiQuoteUi extends Plugin {
 
-  constructor( editor ) {
-    super( editor );
+  constructor(editor) {
+    super(editor);
     this.editor = editor;
     this.advancedChildren = new Collection();
     this.updateSelection = false;
@@ -20,14 +20,14 @@ export default class HelfiQuoteUi extends Plugin {
 
   init() {
     const { editor } = this;
-    const defaultTitle = Drupal.t( 'Add a quote', {}, { context: 'CKEditor5 Helfi Quote plugin' });
+    const defaultTitle = Drupal.t('Add a quote', {}, { context: 'CKEditor5 Helfi Quote plugin' });
 
     // Register the helfiQuote toolbar button.
     editor.ui.componentFactory.add('helfiQuote', (locale) => {
       const quoteCommand = this.editor.commands.get( 'helfiQuoteCommand' );
 
       // Create the dropdown view.
-      this.dropdownView = createDropdown( locale );
+      this.dropdownView = createDropdown(locale);
 
       // Create the toolbar button.
       this.dropdownView.buttonView.set({
@@ -58,7 +58,7 @@ export default class HelfiQuoteUi extends Plugin {
       });
 
       // Act on when dropdownView is opened.
-      this.dropdownView.on( 'change:isOpen', () => {
+      this.dropdownView.on('change:isOpen', () => {
 
         // No need to reinitialize the select list view.
         if (this.quoteFormView) { return; }
@@ -80,7 +80,7 @@ export default class HelfiQuoteUi extends Plugin {
         } );
 
         // Close the panel on esc key press when the **form has focus**.
-        this.quoteFormView.keystrokes.set( 'Esc', ( data, cancel ) => {
+        this.quoteFormView.keystrokes.set('Esc', (data, cancel) => {
           this._closeFormView();
           cancel();
         } );
@@ -95,9 +95,10 @@ export default class HelfiQuoteUi extends Plugin {
         this.quoteFormView.focus();
       });
 
-      // Add selected text to textareaView if there is a selection.
-      this.dropdownView.on( 'change:isOpen', () => {
-        this._updateTextareaViewDefaultValue();
+      // Add selected text to QuoteView or if there is a selection
+      // or edit existing Quote.
+      this.dropdownView.on('change:isOpen', () => {
+        this._updateQuoteDefaultValues();
       });
 
       return this.dropdownView;
@@ -106,9 +107,9 @@ export default class HelfiQuoteUi extends Plugin {
   }
 
   /**
-   * Add the selected text to textareaView as a default value.
+   * Add the selected text to Quote as a default value or edit existing Quote.
    */
-  _updateTextareaViewDefaultValue() {
+  _updateQuoteDefaultValues() {
     const model = this.editor.model;
     const selection = model.document.selection;
 
@@ -116,10 +117,15 @@ export default class HelfiQuoteUi extends Plugin {
     // the default value for the textarea (quote text).
     if (this.quoteFormView) {
       if (!selection.isCollapsed) {
-        for ( const range of selection.getRanges() ) {
-          for ( const item of range.getItems() ) {
-            if ( item.data ) {
-              this.quoteFormView.textAreaView.updateValueBasedOnSelection(item.data);
+        for (const range of selection.getRanges()) {
+          for (const item of range.getItems()) {
+            if (item.data) {
+              if (item.textNode?.parent?.name === 'helfiQuoteText' || item.textNode?.parent?.name === 'paragraph') {
+                this.quoteFormView.textAreaView.updateValueBasedOnSelection(item.data);
+              }
+              this.quoteFormView.authorInputView.isEmpty = item.textNode?.parent?.name === 'helfiQuoteFooterCite' ? false : true;
+              this.quoteFormView.authorInputView.fieldView.element.value = item.textNode?.parent?.name === 'helfiQuoteFooterCite' ? item.data : '';
+
               this.quoteFormView.focus();
             }
           }
@@ -127,6 +133,8 @@ export default class HelfiQuoteUi extends Plugin {
       }
       else {
         this.quoteFormView.textAreaView.updateValueBasedOnSelection();
+        this.quoteFormView.authorInputView.isEmpty = true;
+        this.quoteFormView.authorInputView.fieldView.element.value = '';
       }
     }
   }
