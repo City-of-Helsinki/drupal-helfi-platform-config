@@ -261,6 +261,8 @@ function helfi_base_content_update_9003() : void {
 function helfi_base_content_update_9004() : void {
   $config_factory = Drupal::configFactory();
 
-  // Remove the default frontpage view.
+  // Remove the branding navigation and blocks related to it.
   $config_factory->getEditable('system.menu.branding-navigation')->delete();
+  $config_factory->getEditable('block.block.brandingnavigation')->delete();
+  $config_factory->getEditable('block.block.hdbt_subtheme_brandingnavigation')->delete();
 }
