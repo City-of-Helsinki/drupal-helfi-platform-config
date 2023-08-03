@@ -65,19 +65,26 @@ getDirectories('./assets/js/ckeditor5_plugins').forEach((dir) => {
         scope: 'ckeditor5/src',
         name: 'CKEditor5.dll',
       }),
-      new CKEditorTranslationsPlugin( {
-        // The main language that will be built into the main bundle.
-        language: 'en',
+      () => {
+        // Use CKEditor translations only for the helfiLanguageSelector plugin.
+        // See README.md why we're only handling helfiLanguageSelector
+        return dir === 'helfiLanguageSelector'
+          ? new CKEditorTranslationsPlugin( {
+            // The main language that will be built into the main bundle.
+            language: 'en',
 
-        // Additional languages that will be emitted to the `outputDirectory`.
-        additionalLanguages: 'all',
+            // Additional languages that will be emitted to the `outputDirectory`.
+            additionalLanguages: 'all',
 
-        // Patterns for custom plugins.
-        packageNamesPattern: /assets[/\\]js[/\\]ckeditor5_plugins[/\\][^/\\]+[/\\]/i,
-        sourceFilesPattern: /assets[/\\]js[/\\]ckeditor5_plugins[/\\][^/\\]+[/\\]/i,
-        // For more advanced options see https://github.com/ckeditor/ckeditor5-dev/tree/master/packages/ckeditor5-dev-translations.
-      } ),
-    ],
+            // Pattern for helfiLanguageSelector plugin.
+            packageNamesPattern: /assets[/\\]js[/\\]ckeditor5_plugins[/\\][^/\\]+[/\\]/i,
+            sourceFilesPattern: /assets[/\\]js[/\\]ckeditor5_plugins[/\\][^/\\]+[/\\]/i,
+            // For more advanced options see
+            // https://github.com/ckeditor/ckeditor5-dev/tree/master/packages/ckeditor5-dev-translations.
+          } )
+          : '';
+      },
+     ],
     module: {
       rules: [
         { test: /\.svg$/, use: 'raw-loader' }

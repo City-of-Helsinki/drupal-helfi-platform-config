@@ -183,11 +183,10 @@ export default class HelfiCheckBoxView extends View {
     const checkboxSpanToggleView = new View();
 
     /**
-     *   <input{{ attributes }}/>{{ children }}
-     *   <span class="checkbox-toggle">
-     *     <span class="checkbox-toggle__inner"></span>
-     *   </span>
-     *
+     * Markup:
+     * <span class="checkbox-toggle">
+     *   <span class="checkbox-toggle__inner"></span>
+     * </span>
      */
     checkboxSpanToggleView.setTemplate( {
       tag: 'span',

@@ -8,3 +8,5 @@ dependencies:
   - helfi_platform_config:helfi_platform_config
   - helfi_user_roles:helfi_user_roles
   - linkit:linkit
+'interface translation project': helfi_ckeditor
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_ckeditor/translations/%language.po
