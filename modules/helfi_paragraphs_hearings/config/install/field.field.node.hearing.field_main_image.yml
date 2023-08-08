@@ -2,16 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_tags
+    - field.storage.node.field_main_image
     - node.type.hearing
-id: node.hearing.field_tags
-field_name: field_tags
+id: node.hearing.field_main_image
+field_name: field_main_image
 entity_type: node
 bundle: hearing
-label: Tags
+label: 'Main image'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

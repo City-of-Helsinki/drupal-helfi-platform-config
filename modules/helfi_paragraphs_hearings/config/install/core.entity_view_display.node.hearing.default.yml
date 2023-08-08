@@ -1,4 +1,3 @@
-uuid: c1a067d5-39f4-4658-913a-be41ee087174
 langcode: en
 status: true
 dependencies:
@@ -6,7 +5,9 @@ dependencies:
     - field.field.node.hearing.body
     - field.field.node.hearing.field_areas
     - field.field.node.hearing.field_comments
-    - field.field.node.hearing.field_hearing_main_image
+    - field.field.node.hearing.field_external_id
+    - field.field.node.hearing.field_main_image
+    - field.field.node.hearing.field_main_image_caption
     - field.field.node.hearing.field_tags
     - field.field.node.hearing.field_url
     - node.type.hearing
@@ -43,14 +44,20 @@ content:
     third_party_settings: {  }
     weight: 102
     region: content
-  field_hearing_main_image:
-    type: entity_reference_entity_view
+  field_main_image:
+    type: string
     label: above
     settings:
-      view_mode: default
-      link: false
+      link_to_entity: false
     third_party_settings: {  }
-    weight: 104
+    weight: 107
+    region: content
+  field_main_image_caption:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 108
     region: content
   field_tags:
     type: string
@@ -78,6 +85,8 @@ content:
     weight: 100
     region: content
 hidden:
+  field_external_id: true
   langcode: true
   published_at: true
+  search_api_excerpt: true
   toc_enabled: true

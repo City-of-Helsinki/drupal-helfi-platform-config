@@ -1,4 +1,3 @@
-uuid: 3fc7d9a3-6340-4ac3-af76-16f7c3d5252e
 langcode: en
 status: true
 dependencies:
@@ -16,8 +15,6 @@ dependencies:
     - node
     - text
     - user
-_core:
-  default_config_hash: 9nIIFnDGWjcPzj8_cbrsgaAwCnCaM-XDB9-ClKBFFRo
 id: hearings
 label: Hearings
 module: views

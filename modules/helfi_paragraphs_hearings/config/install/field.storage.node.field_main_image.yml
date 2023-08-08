@@ -1,16 +1,16 @@
-uuid: 289badf0-8aa7-4962-9798-d0ff41598667
 langcode: en
 status: true
 dependencies:
   module:
-    - media
     - node
-id: node.field_hearing_main_image
-field_name: field_hearing_main_image
+id: node.field_main_image
+field_name: field_main_image
 entity_type: node
-type: entity_reference
+type: string
 settings:
-  target_type: media
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
 cardinality: 1

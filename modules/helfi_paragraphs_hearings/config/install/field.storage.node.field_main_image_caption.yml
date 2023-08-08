@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
-    - link
     - node
-id: node.field_url
-field_name: field_url
+    - text
+id: node.field_main_image_caption
+field_name: field_main_image_caption
 entity_type: node
-type: link
+type: text_long
 settings: {  }
-module: link
+module: text
 locked: false
 cardinality: 1
 translatable: true
