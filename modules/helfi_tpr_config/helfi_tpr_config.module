@@ -63,7 +63,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'phasing',
           'contact_card_listing',
           'map',
-          'event_list'
+          'event_list',
         ],
         'field_sidebar_content' => [
           'sidebar_text',
