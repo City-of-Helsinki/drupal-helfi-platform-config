@@ -237,7 +237,6 @@ function helfi_tpr_config_update_9040(): void {
     ->update('helfi_tpr_config');
 }
 
-
 /**
  * UHF-8676 Update tpr_service to include multiple new paragraphs.
  */
