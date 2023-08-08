@@ -12,7 +12,6 @@ label: 'Helfi hearings'
 source:
   constants:
     HEARING_BASE_URL: 'https://kerrokantasi.hel.fi/'
-    HEARING_FILE_DIR: 'public://hearing_images/'
   plugin: helfi_hearings
   url: 'https://api.hel.fi/kerrokantasi/v1/hearing/?format=json&open=true'
   track_changes: true

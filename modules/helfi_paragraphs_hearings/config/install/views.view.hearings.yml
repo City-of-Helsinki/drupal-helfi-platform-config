@@ -3,18 +3,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.storage.node.body
-    - field.storage.node.field_areas
-    - field.storage.node.field_comments
-    - field.storage.node.field_hearing_main_image
-    - field.storage.node.field_tags
-    - field.storage.node.field_url
     - node.type.hearing
   module:
-    - link
     - node
-    - text
     - user
+_core:
+  default_config_hash: bNafVbRmVs3PPS0V_bAMLXvgAl2Z85ZUd5LzTjU91Xs
 id: hearings
 label: Hearings
 module: views
