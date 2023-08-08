@@ -61,12 +61,16 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'from_library',
           'remote_video',
           'phasing',
+          'contact_card_listing',
+          'map',
+          'event_list'
         ],
         'field_sidebar_content' => [
           'sidebar_text',
           'from_library',
         ],
         'field_lower_content' => [
+          'text',
           'columns',
           'accordion',
           'image',
@@ -79,6 +83,8 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'news_list',
           'event_list',
           'phasing',
+          'contact_card_listing',
+          'map',
         ],
       ],
     ],
