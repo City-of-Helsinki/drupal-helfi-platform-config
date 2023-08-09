@@ -37,3 +37,19 @@ function helfi_react_search_preprocess_paragraph(array &$variables) : void {
     $variables['#attached']['drupalSettings']['helfi_react_search']['elastic_proxy_url'] = $proxyUrl;
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_react_search_theme() : array {
+  return [
+    'debug_item__search_api' => [
+      'variables' => [
+        'id' => NULL,
+        'label' => NULL,
+        'data' => [],
+      ],
+      'template' => 'debug-item--search-api',
+    ],
+  ];
+}
