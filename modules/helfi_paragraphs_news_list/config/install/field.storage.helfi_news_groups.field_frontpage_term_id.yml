@@ -1,0 +1,21 @@
+uuid: c62ebe15-2cb6-4553-b00d-3c21a0c1033b
+langcode: en
+status: true
+dependencies:
+  module:
+    - external_entities
+id: helfi_news_groups.field_frontpage_term_id
+field_name: field_frontpage_term_id
+entity_type: helfi_news_groups
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

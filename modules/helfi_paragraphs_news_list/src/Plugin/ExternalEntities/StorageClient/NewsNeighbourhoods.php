@@ -23,7 +23,7 @@ final class NewsNeighbourhoods extends HelfiExternalEntityBase {
    * @var array|string[]
    */
   protected array $query = [
-    'fields[taxonomy_term--news_neighbourhoods]' => 'id,name,changed,langcode,status',
+    'fields[taxonomy_term--news_neighbourhoods]' => 'id,name,changed,langcode,status,drupal_internal__tid',
   ];
 
   /**
