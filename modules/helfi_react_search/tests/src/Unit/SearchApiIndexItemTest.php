@@ -29,10 +29,25 @@ class SearchApiIndexItemTest extends UnitTestCase {
    * @covers ::create
    * @covers ::collect
    */
+  public function testNoSearchApiStorage() : void {
+    $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
+    $entityTypeManager->hasDefinition('search_api_index')->willReturn(FALSE);
+    $container = new ContainerBuilder();
+    $container->set('entity_type.manager', $entityTypeManager->reveal());
+    $sut = SearchApiIndex::create($container, [], '', []);
+    $this->assertEmpty($sut->collect());
+  }
+
+  /**
+   * @covers ::create
+   * @covers ::collect
+   */
   public function testNoIndex() : void {
     $indexStorage = $this->prophesize(SearchApiConfigEntityStorage::class);
     $indexStorage->loadMultiple()->willReturn([]);
     $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
+    $entityTypeManager->hasDefinition('search_api_index')
+      ->willReturn(TRUE);
     $entityTypeManager->getStorage('search_api_index')
       ->willReturn($indexStorage->reveal());
     $container = new ContainerBuilder();
@@ -91,6 +106,8 @@ class SearchApiIndexItemTest extends UnitTestCase {
     $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $entityTypeManager->getStorage('search_api_index')
       ->willReturn($indexStorage->reveal());
+    $entityTypeManager->hasDefinition('search_api_index')
+      ->willReturn(TRUE);
     $container = new ContainerBuilder();
     $container->set('entity_type.manager', $entityTypeManager->reveal());
 

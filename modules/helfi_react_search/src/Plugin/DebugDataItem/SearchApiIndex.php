@@ -31,7 +31,7 @@ final class SearchApiIndex extends DebugDataItemPluginBase implements ContainerF
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->entityTypeManager = $container->get('entity_type.manager');
 
@@ -44,6 +44,9 @@ final class SearchApiIndex extends DebugDataItemPluginBase implements ContainerF
   public function collect(): array {
     $data = [];
 
+    if (!$this->entityTypeManager->hasDefinition('search_api_index')) {
+      return [];
+    }
     $indexes = $this->entityTypeManager
       ->getStorage('search_api_index')
       ->loadMultiple();

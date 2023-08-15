@@ -11,7 +11,6 @@ dependencies:
   - 'drupal:text'
   - 'helfi_platform_config:helfi_platform_config'
   - 'paragraphs:paragraphs'
-  - 'search_api:search_api'
 package: HELfi
 'interface translation project': helfi_react_search
 'interface translation server pattern': modules/contrib/helfi_platform_config/helfi_features/helfi_react_search/translations/%language.po
