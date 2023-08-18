@@ -128,7 +128,7 @@ var gcReturnSessionId = '';
       /* CHAT START BUTTON ICONS */
       var helFiChat_button = "";
       var helFiChat_localization =
-        "https://www.hel.fi/gms/sote/testpages/chat-suunte-fi.json";
+        "https://chat-proxy.hel.fi/gms/sote/testpages/chat-suunte-fi.json";
       var helFiChat_service = "SUUNTE"; //SUUNTE
       var helFiChat_language = "fi";
       var helfiChat_GUI_lang = helFiChat_language;
@@ -145,10 +145,10 @@ var gcReturnSessionId = '';
         );
         var currentPage = window.location;
         var shibbolethString =
-          "https://www.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
+          "https://chat-proxy.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
         shibbolethString += "target=";
         shibbolethString +=
-          "https://www.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
+          "https://chat-proxy.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
         /*
               shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
               */
