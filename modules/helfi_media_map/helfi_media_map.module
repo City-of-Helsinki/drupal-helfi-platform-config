@@ -37,5 +37,3 @@ function helfi_media_map_theme($existing, $type, $theme, $path) : array {
 function helfi_media_map_entity_bundle_info_alter(array &$bundles): void {
   $bundles['media']['hel_map']['class'] = HelMap::class;
 }
-
-
