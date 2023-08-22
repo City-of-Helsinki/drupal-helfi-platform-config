@@ -9,7 +9,7 @@ use Drupal\paragraphs\ParagraphInterface;
 /**
  * Bundle class for remote_video paragraph.
  */
-class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface  {
+class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
   use StringTranslationTrait;
 
   /**
