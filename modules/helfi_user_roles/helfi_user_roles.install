@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\user\Entity\Role;
+
 /**
  * Grants required permissions.
  */
@@ -46,4 +48,25 @@ function helfi_user_roles_install($is_syncing) : void {
   }
 
   helfi_user_roles_grant_permissions();
+}
+
+/**
+ * Install 'super_administrator' role.
+ */
+function helfi_user_roles_update_9001() : void {
+  if (Role::load('super_administrator')) {
+    return;
+  }
+  // We can't use 'update_helper' service to re-install configuration because
+  // it will re-install previously installed roles (from this module) and wipe out
+  // the permissions because 'user.role.*.yml' configuration files define no permissions.
+  // Permissions are granted by individual modules in hook_install().
+  Role::create([
+    'id' => 'super_administrator',
+    'label' => 'Super administrator',
+    'status' => TRUE,
+    'is_admin' => TRUE,
+    'weight' => 7,
+  ])
+    ->save();
 }
