@@ -7,29 +7,6 @@
 
   Drupal.behaviors.genesys_neuvonta = {
     attach: function (context, settings) {
-      // Replace the link with a button.
-      var openChatButton = `<button
-        class="hds-button hds-button--primary"
-        data-design="hds-button hds-button--primary"
-        data-link-text="` + Drupal.t('Start a chat') + `"
-        data-selected-icon="speechbubble-text"
-        id="openChat"
-      >
-        <span
-          class="hel-icon hel-icon--speechbubble-text "
-          aria-hidden="true"
-        ></span>
-        <span class="hds-button__label">` + Drupal.t('Start a chat') + `</span>
-      </button>`;
-
-      $("#openChat").replaceWith(openChatButton);
-
-      // Open chat when clicking the button.
-      $('#openChat').click(function(e) {
-        e.preventDefault();
-        $("#chatButtonStart").click();
-      });
-
       var helFiChatPageUrl = document.location.href;
       helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
       var helfiChat_lang = document.documentElement.lang;
@@ -276,6 +253,34 @@
       }
       if (!window._gt) { window._gt = [];
       }
+
+      // Replace the link with a button.
+      var openChatButton = `<button
+        class="hds-button hds-button--primary"
+        data-design="hds-button hds-button--primary"
+        data-link-text="` + Drupal.t('Start a chat') + `"
+        data-selected-icon="speechbubble-text"
+        id="openChat"
+      >
+        <span
+          class="hel-icon hel-icon--speechbubble-text "
+          aria-hidden="true"
+        ></span>
+        <span class="hds-button__label">` + Drupal.t('Start a chat') + `</span>
+      </button>`;
+
+      const chatButtonOpen = $("#openChat");
+      const fallbackOpen = $("#genesys-disabled-message");
+
+      const openChatElement = chatButtonOpen.length ? chatButtonOpen : fallbackOpen;
+
+      openChatElement.replaceWith(openChatButton);
+
+      // Open chat when clicking the button.
+      $('#openChat').click(function(e) {
+        e.preventDefault();
+        $("#chatButtonStart").click();
+      });
 
       window._genesys.widgets = {
         main: {
