@@ -1,3 +1,4 @@
+uuid: cfae52ad-ad00-421b-94b7-feb86c98028e
 langcode: fi
 status: true
 dependencies:
@@ -8,39 +9,7 @@ targetEntityType: helfi_hearings
 bundle: helfi_hearings
 mode: default
 content:
-  title:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 0
-    region: content
   close_at:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  created_at:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  open_at:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  slug:
     type: string
     label: hidden
     settings:
@@ -56,7 +25,7 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  organization:
+  count:
     type: string
     label: hidden
     settings:
@@ -64,7 +33,7 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  main_image_url:
+  created_at:
     type: string
     label: hidden
     settings:
@@ -80,20 +49,54 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  main_image:
+    type: imagecache_external_responsive_image
+    label: hidden
+    settings:
+      imagecache_external_link: ''
+      imagecache_external_responsive_style: gallery_thumbnail
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  open_at:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  organization:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  slug:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
   url:
     type: string
     label: hidden
     settings:
       link_to_entity: false
-    third_party_settings: { }
+    third_party_settings: {  }
     weight: 0
     region: content
-  count:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: { }
-    weight: 0
-    region: content
-hidden: {  }
+hidden:
+  abstract: true

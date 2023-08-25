@@ -7,10 +7,12 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -34,8 +36,8 @@ function helfi_paragraphs_hearings_entity_extra_field_info() : array {
  */
 function helfi_paragraphs_hearings_paragraph_view(
   array &$build,
-  \Drupal\paragraphs\ParagraphInterface $entity,
-  \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display,
+  ParagraphInterface $entity,
+  EntityViewDisplayInterface $display,
   string $view_mode
 ) : void {
   if ($entity->bundle() !== 'hearings') {
@@ -61,17 +63,6 @@ function helfi_paragraphs_hearings_paragraph_view(
 
     foreach ($entities as $item) {
       $item->addCacheableDependency($entity);
-
-      #$url = $item->get('main_image_url')->value;
-
-      /*
-      $item->set('main_image_url', [
-        '#theme' => 'imagecache_external',
-        '#uri' => $url,
-        '#style_name' => 'thumbnail',
-        '#alt' => '',
-      ]);
-      */
 
       $build['list'][] = Drupal::entityTypeManager()
         ->getViewBuilder('helfi_hearings')
@@ -153,7 +144,8 @@ function helfi_paragraphs_hearings_helfi_paragraph_types() : array {
  */
 function helfi_paragraphs_hearings_entity_bundle_field_info_alter(
   &$fields,
-  EntityTypeInterface $entity_type
+  EntityTypeInterface $entity_type,
+  $bundle
 ) : void {
   if ($entity_type->id() === 'helfi_hearings') {
 
@@ -166,11 +158,20 @@ function helfi_paragraphs_hearings_entity_bundle_field_info_alter(
       'comments' => new TranslatableMarkup('comments'),
       'organization' => new TranslatableMarkup('organization'),
       'abstract' => new TranslatableMarkup('abstract'),
-      'main_image_url' => new TranslatableMarkup('Main image url'),
       'main_image_title' => new TranslatableMarkup('Main image title'),
       'url' => new TranslatableMarkup('Url'),
       'count' => new TranslatableMarkup('count'),
     ];
+
+    $fields['main_image'] = BundleFieldDefinition::create('link')
+      ->setName('main_image')
+      ->setLabel(new TranslatableMarkup('Main image'))
+      ->setTargetEntityTypeId($entity_type->id())
+      ->setTargetBundle($bundle)
+      ->setSettings([
+        'max_length' => 1024,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     foreach ($entity_info_fields as $field_name => $field_label) {
       $fields[$field_name] = BundleFieldDefinition::create('string')

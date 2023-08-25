@@ -16,4 +16,15 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  abstract: true
+  close_at: true
+  comments: true
+  count: true
+  created_at: true
+  main_image_title: true
+  main_image_url: true
+  open_at: true
+  organization: true
+  slug: true
+  url: true
