@@ -1,0 +1,19 @@
+langcode: fi
+status: true
+dependencies:
+  module:
+    - external_entities
+id: helfi_hearings.helfi_hearings.default
+targetEntityType: helfi_hearings
+bundle: helfi_hearings
+mode: default
+content:
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

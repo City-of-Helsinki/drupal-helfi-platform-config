@@ -1,0 +1,183 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_hearings' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function helfi_paragraphs_hearings_entity_extra_field_info() : array {
+  $extra = [];
+  $extra['paragraph']['hearings']['display']['list'] = [
+    'label' => new TranslatableMarkup('List of hearings'),
+    'description' => new TranslatableMarkup('The value for this field is defined in %hook hook.', [
+      '%hook' => 'helfi_paragraphs_hearings_paragraph_view()',
+    ]),
+    'weight' => 100,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function helfi_paragraphs_hearings_paragraph_view(
+  array &$build,
+  \Drupal\paragraphs\ParagraphInterface $entity,
+  \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display,
+  string $view_mode
+) : void {
+  if ($entity->bundle() !== 'hearings') {
+    return;
+  }
+
+  if ($display->getComponent('list')) {
+    $storage = Drupal::entityTypeManager()
+      ->getStorage('helfi_hearings');
+
+    $query = $storage
+      ->getQuery();
+
+    $query
+      ->condition('langcode', $entity->language()->getId())
+      ->range(0, 3);
+
+    // $query->sort('published_at', 'DESC');
+    $query->accessCheck(FALSE);
+
+    $ids = $query->execute();
+    $entities = $storage->loadMultiple(array_keys($ids));
+
+    foreach ($entities as $item) {
+      $item->addCacheableDependency($entity);
+
+      #$url = $item->get('main_image_url')->value;
+
+      /*
+      $item->set('main_image_url', [
+        '#theme' => 'imagecache_external',
+        '#uri' => $url,
+        '#style_name' => 'thumbnail',
+        '#alt' => '',
+      ]);
+      */
+
+      $build['list'][] = Drupal::entityTypeManager()
+        ->getViewBuilder('helfi_hearings')
+        ->view($item);
+    }
+  }
+}
+
+/**
+ * Gets the block configurations.
+ *
+ * Example block:
+ *
+ * @code
+ * [
+ *   'breadcrumbs' => [
+ *     'block' => [
+ *       ...
+ *     ],
+ *     'variations' => [
+ *       ...
+ *     ],
+ *   ],
+ * ];
+ * @endcode
+ *
+ * @return array[]
+ *   The block configurations.
+ */
+function helfi_paragraphs_hearings_get_block_configurations(string $theme) : array {
+  return [
+    'hearings' => [
+      'block' => [
+        'id' => 'hearings',
+        'plugin' => 'hearings',
+        'settings' => [
+          'id' => 'hearings',
+          'label' => 'Hearings',
+          'provider' => 'helfi_paragraphs_hearings',
+        ],
+        'provider' => 'helfi_paragraphs_hearings',
+        'weight' => -14,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_hearings_helfi_paragraph_types() : array {
+  $types = [
+    'field_content' => [
+      'hearings',
+    ],
+  ];
+
+  $enabled = [];
+  foreach ($types as $field => $paragraphTypes) {
+    foreach ($paragraphTypes as $paragraphType) {
+      $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType);
+    }
+  }
+  return $enabled;
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_paragraphs_hearings_entity_bundle_field_info_alter(
+  &$fields,
+  EntityTypeInterface $entity_type
+) : void {
+  if ($entity_type->id() === 'helfi_hearings') {
+
+    // Additional entity info fields.
+    $entity_info_fields = [
+      'close_at' => new TranslatableMarkup('close at'),
+      'created_at' => new TranslatableMarkup('created at'),
+      'open_at' => new TranslatableMarkup('open at'),
+      'slug' => new TranslatableMarkup('slug'),
+      'comments' => new TranslatableMarkup('comments'),
+      'organization' => new TranslatableMarkup('organization'),
+      'abstract' => new TranslatableMarkup('abstract'),
+      'main_image_url' => new TranslatableMarkup('Main image url'),
+      'main_image_title' => new TranslatableMarkup('Main image title'),
+      'url' => new TranslatableMarkup('Url'),
+      'count' => new TranslatableMarkup('count'),
+    ];
+
+    foreach ($entity_info_fields as $field_name => $field_label) {
+      $fields[$field_name] = BundleFieldDefinition::create('string')
+        ->setName($field_name)
+        ->setLabel($field_label)
+        ->setDisplayConfigurable('view', TRUE)
+        ->setDisplayConfigurable('form', TRUE);
+    }
+  }
+}

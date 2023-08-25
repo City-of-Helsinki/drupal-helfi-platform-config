@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.hearings.field_hearings_description
+    - field.field.paragraph.hearings.field_hearings_title
+    - paragraphs.paragraphs_type.hearings
+  module:
+    - text
+id: paragraph.hearings.default
+targetEntityType: paragraph
+bundle: hearings
+mode: default
+content:
+  field_hearings_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_hearings_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true
