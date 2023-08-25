@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_unit_accessibility_unit
+    - paragraphs.paragraphs_type.unit_accessibility_information
+id: paragraph.unit_accessibility_information.field_unit_accessibility_unit
+field_name: field_unit_accessibility_unit
+entity_type: paragraph
+bundle: unit_accessibility_information
+label: Unit
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:tpr_unit'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: name
+      direction: DESC
+    auto_create: false
+field_type: entity_reference

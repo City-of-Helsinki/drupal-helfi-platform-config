@@ -64,6 +64,8 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'contact_card_listing',
           'map',
           'event_list',
+          'unit_accessibility_information',
+          'unit_contact_card',
         ],
         'field_sidebar_content' => [
           'sidebar_text',
@@ -85,6 +87,8 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'phasing',
           'contact_card_listing',
           'map',
+          'unit_accessibility_information',
+          'unit_contact_card',
         ],
       ],
     ],
