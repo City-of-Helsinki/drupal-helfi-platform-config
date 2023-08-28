@@ -33,8 +33,18 @@ final class Hearings extends ExternalEntityStorageClientBase {
    */
   public static string $customCacheTag = 'helfi_hearings';
 
+  /**
+   * Api base url.
+   *
+   * @var string
+   */
   public static string $apiUrl = 'https://api.hel.fi/kerrokantasi/v1/hearing?';
 
+  /**
+   * Hearing base url.
+   *
+   * @var string
+   */
   public static string $hearingUrl = 'https://kerrokantasi.hel.fi/';
 
   /**
@@ -109,7 +119,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
     $query = http_build_query([
       'format' => 'json',
       'langcode' => 'fi',
-      'open' => 'true'
+      'open' => 'true',
     ]);
 
     $uri = sprintf('%s%s', self::$apiUrl, $query);
@@ -128,7 +138,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
     $results = $json['results'];
     $count = $json['count'];
     if ($parameters['ids']) {
-      $items = array_filter($json['results'], function($item) use ($parameters) {
+      $items = array_filter($json['results'], function ($item) use ($parameters) {
         return $item['id'] === $parameters['ids'][0];
       });
 
@@ -137,7 +147,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
 
     $data = [];
 
-    foreach($results as $hearing) {
+    foreach ($results as $hearing) {
       $item = [
         'id' => $hearing['id'],
         'open_at' => $hearing['open_at'],
@@ -147,27 +157,13 @@ final class Hearings extends ExternalEntityStorageClientBase {
         'slug' => $hearing['slug'],
         'organization' => $hearing['organization'],
         'main_image_url' => $hearing['main_image']['url'],
-        #'main_image_url' => [
-          #'#theme' => 'imagecache_external',
-          #'#uri' => $hearing['main_image']['url'],
-          #'#style_name' => 'thumbnail',
-          #'#alt' => '',
-        #],
         'count' => $count,
         'url' => sprintf('%s%s', self::$hearingUrl, $hearing['slug']),
       ];
 
-      $item['title'] = isset($hearing['title'][$langcode])
-        ? $hearing['title'][$langcode]
-        : $hearing['title']['fi'];
-
-      $item['abstract'] = isset($hearing['abstract'][$langcode])
-        ? $hearing['abstract'][$langcode]
-        : $hearing['abstract']['fi'];
-
-      $item['main_image_caption'] = isset($hearing['main_image']['caption'][$langcode])
-        ? $hearing['main_image']['caption'][$langcode]
-        : $hearing['main_image']['caption']['fi'];
+      $item['title'] = $hearing['title'][$langcode] ?? $hearing['title']['fi'];
+      $item['abstract'] = $hearing['abstract'][$langcode] ?? $hearing['abstract']['fi'];
+      $item['main_image_caption'] = $hearing['main_image']['caption'][$langcode] ?? $hearing['main_image']['caption']['fi'];
 
       $data[] = $item;
     }
