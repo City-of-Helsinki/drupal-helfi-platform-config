@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\helfi_media_remote_video\Entity\RemoteVideo;
 use Drupal\media\OEmbed\Resource;
 use Drupal\media\OEmbed\ResourceException;
 
@@ -226,5 +227,14 @@ function helfi_media_remote_video_theme_suggestions_media_oembed_iframe_alter(ar
   ) {
     $provider = Html::getClass($variables['resource']->getProvider()->getName());
     $suggestions[] = 'media_oembed_iframe__' . str_replace('-', '_', $provider);
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_media_remote_video_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['media']['remote_video'])) {
+    $bundles['media']['remote_video']['class'] = RemoteVideo::class;
   }
 }
