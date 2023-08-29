@@ -7,6 +7,7 @@ namespace Drupal\helfi_paragraphs_hearings\Plugin\ExternalEntities\StorageClient
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Url;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use GuzzleHttp\ClientInterface;
@@ -156,7 +157,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
         'n_comments' => $hearing['n_comments'],
         'slug' => $hearing['slug'],
         'organization' => $hearing['organization'],
-        'main_image_url' => $hearing['main_image']['url'],
+        'main_image' => Url::fromUri($hearing['main_image']['url']),
         'count' => $count,
         'url' => sprintf('%s%s', self::$hearingUrl, $hearing['slug']),
       ];

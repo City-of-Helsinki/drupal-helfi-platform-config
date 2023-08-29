@@ -3,3 +3,4 @@ type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
   - external_entities:external_entities
+  - imagecache_external:imagecache_external
