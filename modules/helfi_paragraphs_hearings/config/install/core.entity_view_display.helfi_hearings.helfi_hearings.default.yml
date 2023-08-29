@@ -1,6 +1,8 @@
-langcode: fi
+langcode: en
 status: true
 dependencies:
+  config:
+    - responsive_image.styles.gallery_thumbnail
   module:
     - external_entities
     - imagecache_external
@@ -46,7 +48,7 @@ content:
     label: hidden
     settings:
       imagecache_external_link: ''
-      imagecache_external_responsive_style: gallery_thumbnail
+      imagecache_external_responsive_style: image__3_2
     third_party_settings: {  }
     weight: 1
     region: content
@@ -96,6 +98,22 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
+  langcode:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: { }
+    weight: 0
+    region: content
+  existing_translations:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: { }
     weight: 0
     region: content
 hidden:

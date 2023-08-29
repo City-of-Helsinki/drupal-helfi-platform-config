@@ -38,6 +38,10 @@ field_mapper_config:
       value: $.count
     url:
       value: $.url
+    langcode:
+      value: $.langcode
+    existing_translations:
+      value: $.existing_translations
 storage_client_id: helfi_hearings
 storage_client_config: null
 persistent_cache_max_age: 3600
