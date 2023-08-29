@@ -8,6 +8,7 @@
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\media\OEmbed\Resource;
+use Drupal\media\OEmbed\ResourceException;
 
 const HELFI_MEDIA_REMOTE_VIDEO_HELSINKI_KANAVA_URL_PATTERN = 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*';
 
@@ -77,7 +78,14 @@ function _helfi_media_remote_video_remote_video_provider_validation(array $form,
     $user_input = $form_state->getUserInput();
     $allowed_providers = $config_data['source_configuration']['providers'];
     $url_resolver = Drupal::service('media.oembed.url_resolver');
-    $provider = $url_resolver->getProviderByUrl($user_input['url']);
+
+    try {
+      $provider = $url_resolver->getProviderByUrl($user_input['url']);
+    }
+    catch (ResourceException $e) {
+      return $form;
+    }
+
     $provider_name = $provider->getName();
 
     if (!in_array($provider_name, $allowed_providers)) {
@@ -130,7 +138,12 @@ function _helfi_media_remote_video_remote_video_validate(array $form, FormStateI
 
   // Convert the video url if needed.
   if ($video_url) {
-    $converted_url = _helfi_media_remote_video_remote_video_url_handler($video_url);
+    try {
+      $converted_url = _helfi_media_remote_video_remote_video_url_handler($video_url);
+    }
+    catch (ResourceException $e) {
+      return $form;
+    }
 
     if ($converted_url) {
       $video_url = $converted_url;
