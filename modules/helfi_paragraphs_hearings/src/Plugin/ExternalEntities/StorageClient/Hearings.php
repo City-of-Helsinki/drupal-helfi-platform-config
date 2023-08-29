@@ -157,6 +157,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
         'n_comments' => $hearing['n_comments'],
         'slug' => $hearing['slug'],
         'organization' => $hearing['organization'],
+        'main_image_url' => $hearing['main_image']['url'],
         'main_image' => Url::fromUri($hearing['main_image']['url']),
         'count' => $count,
         'url' => sprintf('%s%s', self::$hearingUrl, $hearing['slug']),
