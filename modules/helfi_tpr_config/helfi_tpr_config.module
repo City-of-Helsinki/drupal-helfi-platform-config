@@ -20,9 +20,15 @@ use Drupal\paragraphs\Entity\Paragraph;
  * Implements hook_entity_bundle_info_alter().
  */
 function helfi_tpr_config_entity_bundle_info_alter(array &$bundles): void {
-  $bundles['paragraph']['service_list']['class'] = ServiceList::class;
-  $bundles['paragraph']['service_list_search']['class'] = ServiceListSearch::class;
-  $bundles['paragraph']['unit_search']['class'] = UnitSearch::class;
+  if (isset($bundles['paragraph']['service_list'])) {
+    $bundles['paragraph']['service_list']['class'] = ServiceList::class;
+  }
+  if (isset($bundles['paragraph']['service_list_search'])) {
+    $bundles['paragraph']['service_list_search']['class'] = ServiceListSearch::class;
+  }
+  if (isset($bundles['paragraph']['unit_search'])) {
+    $bundles['paragraph']['unit_search']['class'] = UnitSearch::class;
+  }
 }
 
 /**

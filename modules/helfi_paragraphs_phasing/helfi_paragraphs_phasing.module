@@ -24,6 +24,10 @@ function helfi_paragraphs_phasing_helfi_paragraph_types() : array {
  * Implements hook_entity_bundle_info_alter().
  */
 function helfi_paragraphs_phasing_entity_bundle_info_alter(array &$bundles): void {
-  $bundles['paragraph']['phasing']['class'] = Phasing::class;
-  $bundles['paragraph']['phasing_item']['class'] = PhasingItem::class;
+  if (isset($bundles['paragraph']['phasing'])) {
+    $bundles['paragraph']['phasing']['class'] = Phasing::class;
+  }
+  if (isset($bundles['paragraph']['phasing_item'])) {
+    $bundles['paragraph']['phasing_item']['class'] = PhasingItem::class;
+  }
 }

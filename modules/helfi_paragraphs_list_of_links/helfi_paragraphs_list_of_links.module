@@ -24,5 +24,7 @@ function helfi_paragraphs_list_of_links_helfi_paragraph_types() : array {
  * Implements hook_entity_bundle_info_alter().
  */
 function helfi_paragraphs_list_of_links_entity_bundle_info_alter(array &$bundles): void {
-  $bundles['paragraph']['list_of_links_item']['class'] = ListOfLinksItem::class;
+  if (isset($bundles['paragraph']['list_of_links_item'])) {
+    $bundles['paragraph']['list_of_links_item']['class'] = ListOfLinksItem::class;
+  }
 }

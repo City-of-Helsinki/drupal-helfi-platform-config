@@ -13,5 +13,7 @@ use Drupal\helfi_media_remote_video\Entity\RemoteVideo;
  * Implements hook_entity_bundle_info_alter().
  */
 function helfi_paragraphs_remote_video_entity_bundle_info_alter(array &$bundles): void {
-  $bundles['media']['remote_video']['class'] = RemoteVideo::class;
+  if (isset($bundles['media']['remote_video'])) {
+    $bundles['media']['remote_video']['class'] = RemoteVideo::class;
+  }
 }

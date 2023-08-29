@@ -26,6 +26,10 @@ function helfi_paragraphs_contact_card_listing_helfi_paragraph_types() : array {
  * Implements hook_entity_bundle_info_alter().
  */
 function helfi_paragraphs_contact_card_listing_entity_bundle_info_alter(array &$bundles): void {
-  $bundles['paragraph']['contact_card']['class'] = ContactCard::class;
-  $bundles['paragraph']['social_media_link']['class'] = SocialMediaLink::class;
+  if (isset($bundles['paragraph']['contact_card'])) {
+    $bundles['paragraph']['contact_card']['class'] = ContactCard::class;
+  }
+  if (isset($bundles['paragraph']['social_media_link'])) {
+    $bundles['paragraph']['social_media_link']['class'] = SocialMediaLink::class;
+  }
 }
