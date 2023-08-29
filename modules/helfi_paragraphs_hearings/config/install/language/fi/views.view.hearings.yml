@@ -1,8 +1,0 @@
-display:
-  default:
-    display_options:
-      empty:
-        area:
-          content:
-            value: "<p>Tällä hetkellä <strong>ei ole avoimia suunnitelmia</strong> kommentoitavaksi</p>\r\n"
-            format: full_html
