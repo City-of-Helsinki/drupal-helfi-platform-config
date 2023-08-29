@@ -196,7 +196,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
     }
 
     $possibleLanguages = ['fi', 'en', 'sv'];
-    foreach ($possibleLanguages as $langcode){
+    foreach ($possibleLanguages as $langcode) {
       if (in_array($langcode, $existingTranslations)) {
         return $langcode;
       }
@@ -207,9 +207,10 @@ final class Hearings extends ExternalEntityStorageClientBase {
    * Get all translations for hearing.
    *
    * @param array $hearing
-   *   The hearing
+   *   The hearing.
    *
    * @return string[]
+   *   Translation language codes.
    */
   private static function getTranslationLanguages(array $hearing): array {
     return array_keys($hearing['title']);

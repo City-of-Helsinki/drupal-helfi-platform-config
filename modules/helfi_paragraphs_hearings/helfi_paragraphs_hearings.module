@@ -54,7 +54,6 @@ function helfi_paragraphs_hearings_paragraph_view(
       ->range(0, 3)
       ->accessCheck(FALSE)
       ->execute();
-    // $query->sort('published_at', 'DESC');
 
     $entities = $storage->loadMultiple(array_keys($ids));
 
