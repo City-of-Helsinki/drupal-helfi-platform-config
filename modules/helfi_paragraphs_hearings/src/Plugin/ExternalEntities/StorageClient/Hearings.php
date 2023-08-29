@@ -136,14 +136,13 @@ final class Hearings extends ExternalEntityStorageClientBase {
       watchdog_exception('helfi_paragraphs_hearings', $e);
     }
 
-    $results = $json['results'];
     $count = $json['count'];
-    if ($parameters['ids']) {
-      $items = array_filter($json['results'], function ($item) use ($parameters) {
-        return $item['id'] === $parameters['ids'][0];
-      });
+    $results = $count > 3 ? array_slice($json['results'], 0, 3) : $json['results'];
 
-      $results = [reset($items)];
+    if ($parameters['ids']) {
+      $results = array_filter($results, function ($item) use ($parameters) {
+        return in_array($item['id'], $parameters['ids']);
+      });
     }
 
     $data = [];
