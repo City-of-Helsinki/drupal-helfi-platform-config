@@ -27,26 +27,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class Hearings extends ExternalEntityStorageClientBase {
 
-  /**
-   * Custom cache tag for hearings.
-   *
-   * @var string
-   */
-  public static string $customCacheTag = 'helfi_hearings';
+  public const API_URL = 'https://api.hel.fi/kerrokantasi/v1/hearing?';
 
-  /**
-   * Api base url.
-   *
-   * @var string
-   */
-  public static string $apiUrl = 'https://api.hel.fi/kerrokantasi/v1/hearing?';
-
-  /**
-   * Hearing base url.
-   *
-   * @var string
-   */
-  public static string $hearingUrl = 'https://kerrokantasi.hel.fi/';
+  public const HEARING_URL = 'https://kerrokantasi.hel.fi/';
 
   /**
    * The current language service.
@@ -124,7 +107,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
       'limit' => 3,
     ]);
 
-    $uri = sprintf('%s%s', self::$apiUrl, $query);
+    $uri = sprintf('%s%s', self::API_URL, $query);
 
     try {
       $content = $this->client->request('GET', $uri);
@@ -158,7 +141,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
         'main_image_url' => $hearing['main_image']['url'],
         'main_image' => Url::fromUri($hearing['main_image']['url']),
         'count' => $count,
-        'url' => sprintf('%s%s', self::$hearingUrl, $hearing['slug']),
+        'url' => sprintf('%s%s', self::HEARING_URL, $hearing['slug']),
         'langcode' => $selectedLangcode,
         'existing_translations' => implode(',', $existingTranslations),
       ];
