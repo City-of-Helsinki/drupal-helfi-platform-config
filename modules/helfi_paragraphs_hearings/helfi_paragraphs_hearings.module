@@ -47,15 +47,8 @@ function helfi_paragraphs_hearings_paragraph_view(
   if ($display->getComponent('list')) {
     $storage = Drupal::entityTypeManager()
       ->getStorage('helfi_hearings');
-
-    $ids = $storage
-      ->getQuery()
-      ->condition('langcode', $entity->language()->getId())
-      ->range(0, 3)
-      ->accessCheck(FALSE)
-      ->execute();
-
-    $entities = $storage->loadMultiple(array_keys($ids));
+    
+    $entities = $storage->loadMultiple();
 
     foreach ($entities as $item) {
       $item->addCacheableDependency($entity);

@@ -16,7 +16,6 @@ use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use WebDriver\Exception\InvalidArgument;
 
 /**
  * External entity storage client for hearings.
@@ -67,11 +66,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
    * {@inheritdoc}
    */
   public function loadMultiple(array $ids = NULL) : array {
-    $ids = $ids ?: [];
-
-    $data = $this->query(['ids' => $ids]);
-
-    return $data;
+    return $this->query(['ids' => $ids]);
   }
 
   /**
