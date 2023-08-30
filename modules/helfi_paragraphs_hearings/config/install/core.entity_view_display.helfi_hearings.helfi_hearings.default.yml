@@ -1,0 +1,120 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - responsive_image.styles.gallery_thumbnail
+  module:
+    - external_entities
+    - imagecache_external
+id: helfi_hearings.helfi_hearings.default
+targetEntityType: helfi_hearings
+bundle: helfi_hearings
+mode: default
+content:
+  close_at:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  comments:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  count:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  created_at:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  main_image:
+    type: imagecache_external_responsive_image
+    label: hidden
+    settings:
+      imagecache_external_link: ''
+      imagecache_external_responsive_style: image__3_2
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  main_image_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  open_at:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  organization:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  slug:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  url:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  langcode:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: { }
+    weight: 0
+    region: content
+  existing_translations:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: { }
+    weight: 0
+    region: content
+hidden:
+  abstract: true
