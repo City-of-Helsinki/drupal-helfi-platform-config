@@ -47,7 +47,7 @@ function helfi_paragraphs_hearings_paragraph_view(
   if ($display->getComponent('list')) {
     $storage = Drupal::entityTypeManager()
       ->getStorage('helfi_hearings');
-    
+
     $entities = $storage->loadMultiple();
 
     foreach ($entities as $item) {
