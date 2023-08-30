@@ -12,9 +12,11 @@ use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use WebDriver\Exception\InvalidArgument;
 
 /**
  * External entity storage client for hearings.
@@ -116,7 +118,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
         return [];
       }
     }
-    catch (RequestException | GuzzleException $e) {
+    catch (RequestException | GuzzleException | InvalidArgumentException $e) {
       watchdog_exception('helfi_paragraphs_hearings', $e);
       return [];
     }
