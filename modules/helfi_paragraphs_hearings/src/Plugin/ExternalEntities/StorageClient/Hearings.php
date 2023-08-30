@@ -118,6 +118,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
     }
     catch (RequestException | GuzzleException $e) {
       watchdog_exception('helfi_paragraphs_hearings', $e);
+      return [];
     }
 
     $count = $json['count'];
