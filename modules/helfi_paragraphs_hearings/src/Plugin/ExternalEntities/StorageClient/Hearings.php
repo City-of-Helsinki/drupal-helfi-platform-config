@@ -121,8 +121,6 @@ final class Hearings extends ExternalEntityStorageClientBase {
       return [];
     }
 
-    $count = $json['count'];
-
     $results = isset($parameters['ids']) ?
       array_filter($json['results'], fn ($item) => in_array($item['id'], $parameters['ids'])) :
       $json['results'];
@@ -137,7 +135,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
       $item += [
         'main_image_url' => $hearing['main_image']['url'],
         'main_image' => Url::fromUri($hearing['main_image']['url']),
-        'count' => $count,
+        'count' => $json['count'],
         'url' => sprintf('%s%s', self::HEARING_URL, $hearing['slug']),
         'langcode' => $selectedLangcode,
         'existing_translations' => implode(',', $existingTranslations),
