@@ -123,14 +123,9 @@ final class Hearings extends ExternalEntityStorageClientBase {
 
     $count = $json['count'];
 
-    if (isset($parameters['ids']) && $parameters['ids']) {
-      $results = array_filter($json['results'], function ($item) use ($parameters) {
-        return in_array($item['id'], $parameters['ids']);
-      });
-    }
-    else {
-      $results = $json['results'];
-    }
+    $results = isset($parameters['ids']) ?
+      array_filter($json['results'], fn ($item) => in_array($item['id'], $parameters['ids'])) :
+      $json['results'];
 
     $data = [];
 
