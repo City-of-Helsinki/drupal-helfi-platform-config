@@ -153,14 +153,8 @@ final class Hearings extends ExternalEntityStorageClientBase {
       $existingTranslations = $this->getTranslationLanguages($hearing);
       $selectedLangcode = $this->resolveLanguage($hearing, $langcode);
 
-      $item = [
-        'id' => $hearing['id'],
-        'open_at' => $hearing['open_at'],
-        'created_at' => $hearing['created_at'],
-        'close_at' => $hearing['close_at'],
-        'n_comments' => $hearing['n_comments'],
-        'slug' => $hearing['slug'],
-        'organization' => $hearing['organization'],
+      $item = $hearing;
+      $item += [
         'main_image_url' => $hearing['main_image']['url'],
         'main_image' => Url::fromUri($hearing['main_image']['url']),
         'count' => $count,
