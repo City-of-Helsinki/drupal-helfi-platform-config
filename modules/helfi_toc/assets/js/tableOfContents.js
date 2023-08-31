@@ -30,7 +30,8 @@
         reserved.push(elem.id);
       });
 
-      // Do not include sidebar H2, Table of contents H2 or cookie compliance warnings.
+      // Exclude elements from TOC that are not content:
+      // e.g. TOC, sidebar, cookie compliency-banner etc.
       const exclusions = '' +
         ':not(.layout-sidebar-first *)' +
         ':not(.layout-sidebar-second *)' +
@@ -38,8 +39,7 @@
         ':not(.breadcrumb__container *)' +
         ':not(#helfi-toc-table-of-contents *)' +
         ':not(.embedded-content-cookie-compliance *)' +
-        ':not(.react-and-share-cookie-compliance *)' +
-        ':not(.handorgel__header)';
+        ':not(.react-and-share-cookie-compliance *)'
 
       const titleComponents = [
         'h2'+exclusions,
@@ -47,7 +47,6 @@
         'h4'+exclusions,
         'h5'+exclusions,
         'h6'+exclusions,
-        '.handorgel__header > button',
       ];
 
       // Craft table of contents.

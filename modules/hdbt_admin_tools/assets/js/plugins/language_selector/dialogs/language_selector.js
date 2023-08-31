@@ -32,7 +32,7 @@
 
         // Empty option required for select2 placeholder text.
         let output = [
-          '<select class="js-language-selector" name="language-selector">' +
+          '<select class="js-language-selector" name="language-selector" placeholder="'+ lang.list_title +'">' +
           '<option></option>'
         ];
 
@@ -82,14 +82,36 @@
                     .trigger('change');
                 }
 
-                // Init select2.
-                if (!select.hasClass('select2-hidden-accessible')) {
-                  select.select2({
-                    width: '300px',
-                    placeholder: lang.list_title,
-                    allowClear: true
-                  });
+                function renderTemplate(item, escape) {
+                  return `
+                    <span style="align-items: center; display: flex; height: 100%;">
+                      <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.name)}</span>
+                    </span>
+                  `;
                 }
+
+                const settings = {
+                  plugins: {
+                    dropdown_input: {},
+                    remove_button: {
+                      title: 'Remove this item',
+                    }
+                  },
+                  valueField: 'icon',
+                  labelField: 'name',
+                  searchField: ['name'],
+                  create: false,
+                  // Custom rendering functions for options and items
+                  render: {
+                    option: function(item, escape) {
+                      return renderTemplate(item, escape);
+                    },
+                    item: function(item, escape) {
+                      return renderTemplate(item, escape);
+                    }
+                  }
+                };
+                const tomSelect = new TomSelect(select, settings);
               },
             },
             {

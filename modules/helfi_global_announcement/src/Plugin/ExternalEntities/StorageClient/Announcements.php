@@ -14,6 +14,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -171,9 +172,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
         \GuzzleHttp\http_build_query($parameters),
       ]);
       $content = $this->client->request('GET', $uri);
-
-      $json = \GuzzleHttp\json_decode($content->getBody()->getContents(), TRUE);
-
+      $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
       return $json['data'];
     }
     catch (RequestException | GuzzleException $e) {

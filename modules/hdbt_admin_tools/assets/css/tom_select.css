@@ -1,0 +1,224 @@
+/**
+ * Tom Select v2.2.2 altered to suit City of Helsinki needs.
+ */
+
+/* Select element styles */
+.ts-hidden-accessible {
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+  white-space: nowrap !important;
+}
+
+/* TS wrapper styles */
+.ts-wrapper {
+  color: #222330;
+  background-color: #fff;
+  font-size: 1rem;
+  position: relative;
+  width: fit-content;
+  min-width: 300px;
+}
+
+/* TS control div styles */
+.ts-control {
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid #8e929c;
+  box-shadow: 0 1px 2px rgba(18,18,18,.25);
+  cursor: pointer;
+  display: flex;
+  min-height: 38px;
+  overflow: hidden;
+  padding: calc(0.75rem - 1px) calc(1rem - 1px);
+  z-index: 1;
+}
+
+/* Deselect button */
+.ts-control .remove {
+  cursor: pointer;
+  float: right;
+  color: #222330;
+  font-weight: bold;
+  padding: 7px 10px 7px 7px;
+}
+
+/* Items placeholder styles */
+.plugin-dropdown_input input.items-placeholder {
+  border: 0 none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  width: 100%;
+}
+
+.plugin-dropdown_input.has-items input.items-placeholder,
+.plugin-dropdown_input.dropdown-active input.items-placeholder {
+  display: none !important;
+}
+
+/* Dropdown styles*/
+.ts-dropdown {
+  background: #fff;
+  border-bottom: 1px solid #8e929c;
+  border-left: 1px solid #8e929c;
+  border-radius: 0 0 3px 3px;
+  border-right: 1px solid #8e929c;
+  border-top: 0 none;
+  box-shadow: 0 1px 2px rgba(18,18,18,.25);
+  box-sizing: border-box;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 10;
+}
+
+.ts-dropdown [data-selectable] {
+  cursor: pointer;
+  overflow: hidden;
+}
+.ts-dropdown [data-selectable] .highlight {
+  background: rgba(125, 168, 208, 0.2);
+  border-radius: 1px;
+}
+.ts-dropdown .option,
+.ts-dropdown .optgroup-header,
+.ts-dropdown .no-results,
+.ts-dropdown .create {
+  padding: 7px;
+}
+.ts-dropdown .option, .ts-dropdown [data-disabled], .ts-dropdown [data-disabled] [data-selectable].option {
+  cursor: inherit;
+  opacity: 0.5;
+}
+.ts-dropdown [data-selectable].option {
+  opacity: 1;
+  cursor: pointer;
+}
+.ts-dropdown .optgroup:first-child .optgroup-header {
+  border-top: 0 none;
+}
+.ts-dropdown .optgroup-header {
+  color: #303030;
+  background: #fff;
+  cursor: default;
+}
+.ts-dropdown .active {
+  background-color: #5897fb;
+  color: white;
+}
+.ts-dropdown .active.create {
+  color: #495c68;
+}
+.ts-dropdown .create {
+  color: rgba(48, 48, 48, 0.5);
+}
+
+.ts-dropdown-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 200px;
+  scroll-behavior: smooth;
+}
+
+/* Dropdown input styles */
+.plugin-dropdown_input .dropdown-input {
+  display: block;
+  padding: 8px 8px;
+  box-shadow: none;
+  width: calc(100% - 16px);
+  background: transparent;
+}
+
+/* Icon styles */
+.ts-control .hel-icon,
+.ts-dropdown .hel-icon {
+  --icon-proportions: 36px;
+  background-color: #000;
+  content:"";
+  order: 2;
+  display:inline-block;
+  height:var(--icon-proportions);
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-size:var(--icon-proportions);
+  mask-size:var(--icon-proportions);
+  min-height:var(--icon-proportions);
+  min-width:var(--icon-proportions);
+  position:static;
+  width:var(--icon-proportions);
+}
+
+.ts-control .hel-icon--name,
+.ts-dropdown .hel-icon--name {
+  order: 3;
+}
+
+.ts-dropdown .active .hel-icon {
+  background-color: #fff;
+}
+
+/* Miscellaneous styles */
+.input-hidden .ts-control > input {
+  opacity: 0;
+  position: absolute;
+  left: -10000px;
+}
+
+/* CKE reset overrides */
+.cke_reset_all .ts-control .item,
+.cke_reset_all .ts-control .items-placeholder,
+.cke_reset_all .ts-dropdown-content .option,
+.cke_reset_all .ts-dropdown .dropdown-input-wrap,
+.cke_reset_all .ts-dropdown .highlight {
+  font-size: 1rem;
+}
+
+.cke_reset_all .ts-wrapper {
+  color: #222330;
+  font-size: 1rem !important;
+}
+
+.cke_reset_all .ts-control {
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid #8e929c;
+  box-shadow: 0 1px 2px rgba(18,18,18,.25);
+  min-height: 38px;
+  overflow: hidden;
+  padding: calc(0.75rem - 1px) calc(1rem - 1px);
+  z-index: 1;
+}
+
+.cke_reset_all .ts-dropdown {
+  background: #fff;
+  border: 1px solid #8e929c;
+  box-shadow: 0 1px 2px rgba(18,18,18,.25);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.cke_reset_all .ts-control[aria-expanded=true] {
+  display: none;
+}
+.cke_reset_all .ts-control[aria-expanded=false] {
+  display: flex;
+}
+
+.cke_reset_all .dropdown-input,
+.cke_reset_all .hel-icon--name,
+.cke_reset_all .ts-control .items-placeholder {
+  font-size: 1rem !important;
+}
+
+.cke_reset_all .ts-control .remove {
+  cursor: pointer;
+  float: right;
+  color: #222330;
+  font-weight: bold;
+  padding: 7px 10px 7px 7px;
+}

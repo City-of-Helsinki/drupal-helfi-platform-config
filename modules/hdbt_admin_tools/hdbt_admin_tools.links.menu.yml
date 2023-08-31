@@ -36,13 +36,6 @@ hdbt_admin_tools.header_top_menu:
   route_parameters: { menu: 'header-top-navigation' }
   weight: 0
 
-hdbt_admin_tools.header_branding_menu:
-  title: 'Header branding navigation menu links'
-  parent: hdbt_admin_tools.menus
-  route_name: entity.menu.edit_form
-  route_parameters: { menu: 'branding-navigation' }
-  weight: 1
-
 hdbt_admin_tools.main_menu:
   title: 'Main menu'
   parent: hdbt_admin_tools.menus

@@ -21,7 +21,6 @@ final class FilterByLanguage implements EventSubscriberInterface {
    * @var string[]
    */
   protected array $menuNames = [
-    'branding-navigation',
     'footer-bottom-navigation',
     'footer-top-navigation',
     'footer-top-navigation-2',
@@ -48,7 +47,11 @@ final class FilterByLanguage implements EventSubscriberInterface {
   public function filter(MenuLinkTreeManipulatorsAlterEvent $event) : void {
     // Drush defaults to site's default language. In our case, finnish.
     // This causes '::filterLanguages' manipulator to set AccessResultForbidden
-    // to all non-finnish links when run via Drush.
+    // to all non-finnish links when we build 'helfi_navigation' links via
+    // Drush.
+    // All normal menus are displayed using blocks provided by Menu block
+    // current language module, so this only needs to be run against menu UI
+    // links.
     // @see UHF-7615.
     if (!$this->adminContext->isAdminRoute()) {
       return;

@@ -109,7 +109,6 @@ class LanguageSelector extends CKEditorPluginBase implements ContainerFactoryPlu
   public function getLibraries(Editor $editor): array {
     return [
       'hdbt_admin_tools/language_selector',
-      'hdbt_admin_tools/select2_icon',
     ];
   }
 

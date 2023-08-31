@@ -17,7 +17,22 @@ function helfi_global_announcement_install($is_syncing) : void {
     return;
   }
 
+  helfi_global_announcement_grant_permissions();
   _helfi_global_announcement_create_block();
+}
+
+/**
+ * Grants required permissions.
+ */
+function helfi_global_announcement_grant_permissions() : void {
+  $permissions = [
+    'view helfi_announcements external entity',
+  ];
+
+  helfi_platform_config_grant_permissions([
+    'anonymous' => $permissions,
+    'authenticated' => $permissions,
+  ]);
 }
 
 /**
@@ -41,9 +56,8 @@ function _helfi_global_announcement_create_block() : void {
 }
 
 /**
- * Re-install configuration to update cache lifetime.
+ * Grant required permissions.
  */
 function helfi_global_announcement_update_9001() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_global_announcement');
+  helfi_global_announcement_grant_permissions();
 }

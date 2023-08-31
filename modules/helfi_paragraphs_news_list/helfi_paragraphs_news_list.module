@@ -7,13 +7,13 @@
 
 declare(strict_types = 1);
 
-use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -65,6 +65,7 @@ function helfi_paragraphs_news_list_paragraph_view(
     }
 
     $query->sort('published_at', 'DESC');
+    $query->accessCheck(FALSE);
 
     $ids = $query->execute();
     $entities = $storage->loadMultiple(array_keys($ids));
@@ -193,8 +194,13 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
 
     $terms = $field->referencedEntities();
     foreach ($terms as $term) {
-      // Format name to match app query param format.
-      $params[$paramKey][] = str_replace(' ', '+', strtolower($term->get('title')->value));
+      if (
+        $term->hasField('field_frontpage_term_id') &&
+        $external_tid = $term->get('field_frontpage_term_id')->value
+      ) {
+        // Format name to match app query param format.
+        $params[$paramKey][] = str_replace(' ', '+', strtolower($external_tid));
+      }
     }
   }
 

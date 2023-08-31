@@ -15,6 +15,8 @@ field_mapper_config:
       value: $.id
     title:
       value: '$.attributes["name"]'
+    field_frontpage_term_id:
+      value: '$.attributes["drupal_internal__tid"]'
 storage_client_id: helfi_news_groups
 storage_client_config: {  }
 persistent_cache_max_age: 86400

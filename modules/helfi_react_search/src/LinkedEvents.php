@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_react_search;
 
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Cache\CacheBackendInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
@@ -128,6 +128,13 @@ class LinkedEvents extends EventsApiBase {
 
   /**
    * Return places from cache or generate list of them.
+   *
+   * This function causes slow page load if it fetches places from Linked Events
+   * API with thousands of events without cache. Function is used in preprocess
+   * function. It's a known issue but is it possible to get rid of the slowness
+   * without cache and thousands of events? If this causes problems in the
+   * future, the function can be re-thinked. More info from old ticket:
+   * https://helsinkisolutionoffice.atlassian.net/browse/UHF-8163
    *
    * @param string $url
    *   The Api url for events.

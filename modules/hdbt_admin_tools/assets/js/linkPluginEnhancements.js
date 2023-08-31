@@ -5,9 +5,9 @@
   'use strict';
 
   // Simple show / hide functionality.
-  const handleVisibilty = function (element, show = true) {
-    return (show) ? element.show(): element.hide();
-  }
+  const handleVisibility = (element, show = true) => (
+    (show) ? element.show(): element.hide()
+  );
 
   Drupal.behaviors.linkProtocolSelection = {
     attach: function () {
@@ -18,24 +18,22 @@
       if (hrefInput && protocol) {
 
         // Get list of options to be used later.
-        let options = $.map(protocol.children('option'), (option) => {
-          return option.value;
-        });
+        const options = $.map(protocol.children('option'), (option) => option.value);
 
         // Reset protocol select.
         if (hrefInput.val()) {
-          handleVisibilty(protocolSelect, false)
+          handleVisibility(protocolSelect, false);
         }
 
         // Handle protocol select visibility based on user input.
         hrefInput.on('input', (event) => {
-          let input = $(event.target);
-          handleVisibilty(protocolSelect,input.val() === '');
+          const input = $(event.target);
+          handleVisibility(protocolSelect,input.val() === '');
         });
 
         // Change input value based on protocol selection.
         protocol.change((event) => {
-          let chosenProtocol = $(event.target).val();
+          const chosenProtocol = $(event.target).val();
           if (
             chosenProtocol &&
             chosenProtocol !== 'false' &&
@@ -57,13 +55,13 @@
   };
 
   Drupal.behaviors.linkIconSelection = {
-    attach: function () {
+    attach () {
       const design = $('form.editor-link-dialog select[data-drupal-selector="edit-attributes-data-design"]');
 
       if (design) {
         design.change((event) => {
-          let chosenDesign = $(event.target).val();
-          handleVisibilty($('form.editor-link-dialog .form-item--attributes-data-selected-icon'), chosenDesign !== 'link');
+          const chosenDesign = $(event.target).val();
+          handleVisibility($('form.editor-link-dialog .form-item--attributes-data-selected-icon'), chosenDesign !== 'link');
         }).change();
       }
     }

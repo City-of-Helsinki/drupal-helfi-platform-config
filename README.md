@@ -8,7 +8,7 @@ This repository holds configuration for the Hel.fi platform.
 
 - [Development](documentation/development.md)
 - [Translations in Helfi Platform](documentation/translations.md)
-- [Update instructions](documentation/update.md)
+- [Update instructions (2.x to 3.x)](documentation/update.md)
 
 ## Contact
 

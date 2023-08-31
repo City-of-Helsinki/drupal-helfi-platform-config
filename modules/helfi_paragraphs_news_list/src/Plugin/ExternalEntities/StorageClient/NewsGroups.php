@@ -23,7 +23,7 @@ final class NewsGroups extends HelfiExternalEntityBase {
    * @var array|string[]
    */
   protected array $query = [
-    'fields[taxonomy_term--news_groups]' => 'id,name,changed,langcode,status',
+    'fields[taxonomy_term--news_groups]' => 'id,name,changed,langcode,status,drupal_internal__tid',
   ];
 
   /**

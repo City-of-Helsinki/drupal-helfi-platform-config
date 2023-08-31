@@ -7,10 +7,113 @@
 
 declare(strict_types = 1);
 
+use Drupal\paragraphs\Entity\Paragraph;
+
+/**
+ * Grants required permissions.
+ */
+function helfi_paragraphs_news_list_grant_permissions() : void {
+  $permissions = [
+    'view helfi_news external entity',
+    'view helfi_news_groups external entity',
+    'view helfi_news_neighbourhoods external entity',
+    'view helfi_news_tags external entity',
+  ];
+
+  helfi_platform_config_grant_permissions([
+    'anonymous' => $permissions,
+    'authenticated' => $permissions,
+  ]);
+}
+
+/**
+ * Implements hook_install().
+ */
+function helfi_paragraphs_news_list_install(bool $is_syncing) : void {
+  if ($is_syncing) {
+    return;
+  }
+  helfi_paragraphs_news_list_grant_permissions();
+}
+
 /**
  * UHF-8135 Update news list paragraph translations.
  */
 function helfi_paragraphs_news_list_update_9002(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_news_list');
+}
+
+/**
+ * Suffix all external entity IDs with langcode.
+ */
+function helfi_paragraphs_news_list_update_9003(&$sandbox) : void {
+  $query = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'news_list')
+    ->accessCheck(FALSE);
+
+  if (!isset($sandbox['total'])) {
+    $ids = $query->execute();
+
+    $sandbox['total'] = count($ids);
+    $sandbox['current'] = 0;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  $ids = $query
+    ->range($sandbox['current'], 25)
+    ->execute();
+
+  if (empty($ids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  $fields = [
+    'field_helfi_news_neighbourhoods',
+    'field_helfi_news_groups',
+    'field_helfi_news_tags',
+  ];
+
+  foreach ($ids as $id) {
+    $entity = Paragraph::load($id);
+
+    foreach ($fields as $field) {
+      $value = $entity->get($field);
+
+      if ($value->isEmpty()) {
+        continue;
+      }
+      // Suffix all existing target ids with langcode.
+      foreach ($value as $item) {
+        // Make sure already updated items are not affected.
+        [$id] = explode(':', $item->target_id);
+
+        $item->target_id = sprintf('%s:%s', $id, $value->getLangcode());
+      }
+    }
+    $entity->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = $sandbox['current'] >= $sandbox['total'] ? 1 : ($sandbox['current'] / $sandbox['total']);
+}
+
+/**
+ * Grant required permissions to view external entities.
+ */
+function helfi_paragraphs_news_list_update_9004() : void {
+  helfi_paragraphs_news_list_grant_permissions();
+}
+
+/**
+ * Adds field for frontpage tid of news list terms - fixes news archive link.
+ */
+function helfi_paragraphs_news_list_update_9005() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_news_list');
 }
