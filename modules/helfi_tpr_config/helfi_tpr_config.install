@@ -245,8 +245,7 @@ function helfi_tpr_config_update_9041(): void {
 }
 
 /**
- * UHF-8770 Add unit_accessibility_information and unit_contact_card
- * paragraphs.
+ * UHF-8770 tpr_service to include two new paragraphs.
  */
 function helfi_tpr_config_update_9042(): void {
   // Re-import 'helfi_tpr_config' configuration.
@@ -255,10 +254,8 @@ function helfi_tpr_config_update_9042(): void {
 }
 
 /**
- * UHF-8770 Make unit_accessibility_information and unit_contact_card
- * paragraphs usable in TPR Service.
+ * UHF-8770 Make the new paragraphs usable on tpr_service.
  */
 function helfi_tpr_config_update_9043(): void {
   helfi_platform_config_update_paragraph_target_types();
 }
-
