@@ -7,29 +7,6 @@
 
   Drupal.behaviors.genesys_neuvonta = {
     attach: function (context, settings) {
-      // Replace the link with a button.
-      var openChatButton = `<button
-        class="hds-button hds-button--primary"
-        data-design="hds-button hds-button--primary"
-        data-link-text="` + Drupal.t('Start a chat') + `"
-        data-selected-icon="speechbubble-text"
-        id="openChat"
-      >
-        <span
-          class="hel-icon hel-icon--speechbubble-text "
-          aria-hidden="true"
-        ></span>
-        <span class="hds-button__label">` + Drupal.t('Start a chat') + `</span>
-      </button>`;
-
-      $("#openChat").replaceWith(openChatButton);
-
-      // Open chat when clicking the button.
-      $('#openChat').click(function(e) {
-        e.preventDefault();
-        $("#chatButtonStart").click();
-      });
-
       var helFiChatPageUrl = document.location.href;
       helFiChatPageUrl = helFiChatPageUrl.toLowerCase();
       var helfiChat_lang = document.documentElement.lang;
@@ -109,15 +86,15 @@
         case 'fi':
         default:
           var helFiChat_localization =
-            "https://www.hel.fi/gms/sote/testpages/chat-virkainfo-fi.json";
+            "https://chat-proxy.hel.fi/gms/sote/testpages/chat-virkainfo-fi.json";
           break;
         case 'sv':
           var helFiChat_localization =
-            "https://www.hel.fi/gms/sote/testpages/chat-virkainfo-se.json";
+            "https://chat-proxy.hel.fi/gms/sote/testpages/chat-virkainfo-se.json";
           break;
         case 'en':
           var helFiChat_localization =
-            "https://www.hel.fi/gms/sote/testpages/chat-virkainfo-en.json";
+            "https://chat-proxy.hel.fi/gms/sote/testpages/chat-virkainfo-en.json";
           break;
       }
 
@@ -135,10 +112,10 @@
         );
         var currentPage = window.location;
         var shibbolethString =
-          "https://www.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
+          "https://chat-proxy.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
         shibbolethString += "target=";
         shibbolethString +=
-          "https://www.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
+          "https://chat-proxy.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
         /*
               shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
               */
@@ -276,6 +253,34 @@
       }
       if (!window._gt) { window._gt = [];
       }
+
+      // Replace the link with a button.
+      var openChatButton = `<button
+        class="hds-button hds-button--primary"
+        data-design="hds-button hds-button--primary"
+        data-link-text="` + Drupal.t('Start a chat') + `"
+        data-selected-icon="speechbubble-text"
+        id="openChat"
+      >
+        <span
+          class="hel-icon hel-icon--speechbubble-text "
+          aria-hidden="true"
+        ></span>
+        <span class="hds-button__label">` + Drupal.t('Start a chat') + `</span>
+      </button>`;
+
+      const chatButtonOpen = $("#openChat");
+      const fallbackOpen = $("#genesys-disabled-message");
+
+      const openChatElement = chatButtonOpen.length ? chatButtonOpen : fallbackOpen;
+
+      openChatElement.replaceWith(openChatButton);
+
+      // Open chat when clicking the button.
+      $('#openChat').click(function(e) {
+        e.preventDefault();
+        $("#chatButtonStart").click();
+      });
 
       window._genesys.widgets = {
         main: {

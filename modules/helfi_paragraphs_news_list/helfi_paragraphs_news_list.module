@@ -194,8 +194,13 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
 
     $terms = $field->referencedEntities();
     foreach ($terms as $term) {
-      // Format name to match app query param format.
-      $params[$paramKey][] = str_replace(' ', '+', strtolower($term->get('title')->value));
+      if (
+        $term->hasField('field_frontpage_term_id') &&
+        $external_tid = $term->get('field_frontpage_term_id')->value
+      ) {
+        // Format name to match app query param format.
+        $params[$paramKey][] = str_replace(' ', '+', strtolower($external_tid));
+      }
     }
   }
 

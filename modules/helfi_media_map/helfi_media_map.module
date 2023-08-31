@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\helfi_media_map\Entity\HelMap;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -28,4 +29,13 @@ function helfi_media_map_theme($existing, $type, $theme, $path) : array {
       'template' => 'helfi-media-map',
     ],
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_media_map_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['media']['hel_map'])) {
+    $bundles['media']['hel_map']['class'] = HelMap::class;
+  }
 }
