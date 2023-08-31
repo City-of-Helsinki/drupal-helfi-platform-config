@@ -1,0 +1,49 @@
+uuid: 14ea4a83-fa7a-4b27-b56e-2fcb78baff66
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.tpr_service.listing
+    - field.field.tpr_service.tpr_service.field_content
+    - field.field.tpr_service.tpr_service.field_lower_content
+    - field.field.tpr_service.tpr_service.field_metatags
+    - field.field.tpr_service.tpr_service.field_sidebar_content
+  module:
+    - helfi_tpr
+_core:
+  default_config_hash: 26lfekZ94e-EhgSzEv_7KLsDbUr7VnPlFuJk0GdpVtc
+id: tpr_service.tpr_service.listing
+targetEntityType: tpr_service
+bundle: tpr_service
+mode: listing
+content:
+  name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  name_override:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  created: true
+  description: true
+  errand_services: true
+  field_content: true
+  field_lower_content: true
+  field_metatags: true
+  field_sidebar_content: true
+  has_unit: true
+  langcode: true
+  links: true
+  name_synonyms: true
+  service_id: true
+  toc_enabled: true

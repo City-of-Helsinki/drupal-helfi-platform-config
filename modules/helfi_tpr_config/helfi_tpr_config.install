@@ -243,3 +243,12 @@ function helfi_tpr_config_update_9040(): void {
 function helfi_tpr_config_update_9041(): void {
   helfi_platform_config_update_paragraph_target_types();
 }
+
+/**
+ * UHF-8838 Update services list to bulletins listing.
+ */
+function helfi_tpr_config_update_9042(): void {
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_tpr_config');
+}
