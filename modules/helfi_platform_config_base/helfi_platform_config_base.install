@@ -64,3 +64,13 @@ function helfi_platform_config_base_grant_permissions() : void {
   ];
   helfi_platform_config_grant_permissions($permissions);
 }
+
+
+/**
+ * Enable hearings paragraph.
+ */
+function helfi_platform_config_base_update_9001() : void {
+    Drupal::service('module_installer')->install([
+      'helfi_paragraphs_hearings',
+    ]);
+}
