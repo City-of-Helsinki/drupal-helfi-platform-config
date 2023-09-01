@@ -1,4 +1,3 @@
-uuid: 14ea4a83-fa7a-4b27-b56e-2fcb78baff66
 langcode: en
 status: true
 dependencies:
@@ -10,8 +9,6 @@ dependencies:
     - field.field.tpr_service.tpr_service.field_sidebar_content
   module:
     - helfi_tpr
-_core:
-  default_config_hash: 26lfekZ94e-EhgSzEv_7KLsDbUr7VnPlFuJk0GdpVtc
 id: tpr_service.tpr_service.listing
 targetEntityType: tpr_service
 bundle: tpr_service

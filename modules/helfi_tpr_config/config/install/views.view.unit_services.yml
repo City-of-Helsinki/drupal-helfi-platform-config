@@ -1,4 +1,3 @@
-uuid: d0dbc328-589b-4a1b-9826-17cf68487558
 langcode: en
 status: true
 dependencies:
@@ -8,8 +7,6 @@ dependencies:
   module:
     - helfi_tpr
     - user
-_core:
-  default_config_hash: GYMoCqFGp9UJCDJroJyIx4UVbaoO32pYdkm6p6oP2f8
 id: unit_services
 label: 'Unit services'
 module: views
