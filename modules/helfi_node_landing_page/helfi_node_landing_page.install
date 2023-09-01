@@ -94,21 +94,6 @@ function helfi_node_landing_page_install($is_syncing) : void {
   if (Drupal::moduleHandler()->moduleExists('metatag')) {
     helfi_node_landing_page_install_metatag_settings();
   }
-  _helfi_paragraphs_hearings_enable();
-}
-
-/**
- * Enable hearings paragraph.
- */
-function _helfi_paragraphs_hearings_enable() {
-  if (
-    Drupal::moduleHandler()->moduleExists('external_entities') &&
-    Drupal::moduleHandler()->moduleExists('helfi_paragraphs_hearings')
-  ) {
-    Drupal::service('module_installer')->install([
-      'helfi_paragraphs_hearings',
-    ]);
-  }
 }
 
 /**
@@ -124,5 +109,12 @@ function helfi_node_landing_page_update_9001() : void {
  * Enable hearings paragraph.
  */
 function helfi_node_landing_page_update_9002() : void {
-  _helfi_paragraphs_hearings_enable();
+  if (
+    Drupal::moduleHandler()->moduleExists('external_entities') &&
+    Drupal::moduleHandler()->moduleExists('helfi_paragraphs_hearings')
+  ) {
+    Drupal::service('module_installer')->install([
+      'helfi_paragraphs_hearings',
+    ]);
+  }
 }
