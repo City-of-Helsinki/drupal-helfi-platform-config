@@ -403,9 +403,7 @@ display:
         fields: false
       rendering_language: '***LANGUAGE_entity_translation***'
       display_extenders:
-        metatag_display_extender:
-          metatags: {  }
-          tokenize: false
+        metatag_display_extender: {  }
     cache_metadata:
       max-age: -1
       contexts:
