@@ -98,7 +98,7 @@ function helfi_node_landing_page_install($is_syncing) : void {
 }
 
 /**
- * Enable global announcement.
+ * Enable hearings paragraph.
  */
 function _helfi_paragraphs_hearings_enable() {
   if (
