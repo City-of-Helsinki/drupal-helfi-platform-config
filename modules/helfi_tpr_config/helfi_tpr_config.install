@@ -252,10 +252,3 @@ function helfi_tpr_config_update_9042(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }
-
-/**
- * UHF-8770 Make the new paragraphs usable on tpr_service.
- */
-function helfi_tpr_config_update_9043(): void {
-  helfi_platform_config_update_paragraph_target_types();
-}

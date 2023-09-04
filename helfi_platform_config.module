@@ -72,26 +72,22 @@ function helfi_platform_config_rebuild_handler_settings(
   if ($field->isSyncing() || $field->getType() !== 'entity_reference_revisions') {
     return;
   }
-  static $collection = [];
+  $collection = [];
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = Drupal::service('module_handler');
+  $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
 
-  if (!$collection) {
-    /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-    $moduleHandler = Drupal::service('module_handler');
-    $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
-
-    $collection = [];
-    foreach ($paragraphTypes as $type) {
-      if (!$type instanceof ParagraphTypeCollection) {
-        throw new LogicException(
-          sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
-        );
-      }
-
-      if (!ParagraphsType::load($type->paragraph)) {
-        continue;
-      }
-      $collection[$type->entityType][$type->bundle][$type->field][] = $type;
+  foreach ($paragraphTypes as $type) {
+    if (!$type instanceof ParagraphTypeCollection) {
+      throw new LogicException(
+        sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
+      );
     }
+
+    if (!ParagraphsType::load($type->paragraph)) {
+      continue;
+    }
+    $collection[$type->entityType][$type->bundle][$type->field][] = $type;
   }
   if (!isset($collection[$field->getTargetEntityTypeId()][$field->getTargetBundle()][$field->getName()])) {
     return;
