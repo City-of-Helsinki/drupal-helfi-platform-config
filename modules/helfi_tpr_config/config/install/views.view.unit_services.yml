@@ -402,8 +402,7 @@ display:
         pager: false
         fields: false
       rendering_language: '***LANGUAGE_entity_translation***'
-      display_extenders:
-        metatag_display_extender: {  }
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
