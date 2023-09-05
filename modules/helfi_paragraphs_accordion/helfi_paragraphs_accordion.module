@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\helfi_paragraphs_accordion\Entity\Accordion;
+use Drupal\helfi_paragraphs_accordion\Entity\AccordionItem;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -21,4 +23,16 @@ function helfi_paragraphs_accordion_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('paragraph', 'accordion', 'field_accordion_items', 'accordion_item'),
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'accordion'),
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_accordion_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['accordion'])) {
+    $bundles['paragraph']['accordion']['class'] = Accordion::class;
+  }
+  if (isset($bundles['paragraph']['accordion_item'])) {
+    $bundles['paragraph']['accordion_item']['class'] = AccordionItem::class;
+  }
 }

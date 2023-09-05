@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\helfi_paragraphs_contact_card_listing\Entity\ContactCard;
+use Drupal\helfi_paragraphs_contact_card_listing\Entity\SocialMediaLink;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -18,4 +20,16 @@ function helfi_paragraphs_contact_card_listing_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('paragraph', 'contact_card', 'field_contact_social_media', 'social_media_link'),
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'contact_card_listing'),
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_contact_card_listing_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['contact_card'])) {
+    $bundles['paragraph']['contact_card']['class'] = ContactCard::class;
+  }
+  if (isset($bundles['paragraph']['social_media_link'])) {
+    $bundles['paragraph']['social_media_link']['class'] = SocialMediaLink::class;
+  }
 }

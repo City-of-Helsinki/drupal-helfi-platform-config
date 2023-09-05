@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\helfi_paragraphs_list_of_links\Entity\ListOfLinksItem;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -17,4 +18,13 @@ function helfi_paragraphs_list_of_links_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('paragraph', 'list_of_links', 'field_list_of_links_links', 'list_of_links_item'),
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'list_of_links'),
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_list_of_links_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['list_of_links_item'])) {
+    $bundles['paragraph']['list_of_links_item']['class'] = ListOfLinksItem::class;
+  }
 }
