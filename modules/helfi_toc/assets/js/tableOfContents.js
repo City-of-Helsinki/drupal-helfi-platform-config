@@ -7,15 +7,17 @@
       function findAvailableId(name, reserved, anchors, count) {
         let newName = name;
         if (count > 0) { // Only when headings are not unique on page we want to add counter
-          newName += '-' + count;
+          newName += `-${count}`;
         }
         if (reserved.includes(newName)) {
-          return findAvailableId(name, reserved, anchors, ++count);
-        } else if (anchors.includes(newName)) {
+          return findAvailableId(name, reserved, anchors, count + 1);
+        }
+
+        if (anchors.includes(newName)) {
           if (count === 0) {
-            count++; // When reserved heading is visible on page, lets start counting from 2 instead of 1
+            count += 1; // When reserved heading is visible on page, lets start counting from 2 instead of 1
           }
-          return findAvailableId(name, reserved, anchors, ++count);
+          return findAvailableId(name, reserved, anchors, count + 1);
         }
         return newName;
       }
@@ -32,21 +34,22 @@
 
       // Exclude elements from TOC that are not content:
       // e.g. TOC, sidebar, cookie compliency-banner etc.
-      const exclusions = '' +
+      const exclusions =
+        '' +
         ':not(.layout-sidebar-first *)' +
         ':not(.layout-sidebar-second *)' +
         ':not(.tools__container *)' +
         ':not(.breadcrumb__container *)' +
         ':not(#helfi-toc-table-of-contents *)' +
         ':not(.embedded-content-cookie-compliance *)' +
-        ':not(.react-and-share-cookie-compliance *)'
+        ':not(.react-and-share-cookie-compliance *)';
 
       const titleComponents = [
-        'h2'+exclusions,
-        'h3'+exclusions,
-        'h4'+exclusions,
-        'h5'+exclusions,
-        'h6'+exclusions,
+        `h2${exclusions}`,
+        `h3${exclusions}`,
+        `h4${exclusions}`,
+        `h5${exclusions}`,
+        `h6${exclusions}`,
       ];
 
       const mainLanguages = [
@@ -132,48 +135,48 @@
             .toLowerCase()
             .trim();
 
-          // To ensure backwards compatibility, this is done only to "other" languages.
-          if (!mainLanguages.includes(drupalSettings.path.currentLanguage)) {
-            Object.keys(swaps).forEach((swap) => {
-              name = name.replace(new RegExp(swaps[swap], 'g'), swap);
-            });
+        // To ensure backwards compatibility, this is done only to "other" languages.
+        if (!mainLanguages.includes(drupalSettings.path.currentLanguage)) {
+          Object.keys(swaps).forEach((swap) => {
+            name = name.replace(new RegExp(swaps[swap], 'g'), swap);
+          });
           }
           else {
             name = name
               .replace(/ä/gi, 'a')
               .replace(/ö/gi, 'o')
               .replace(/å/gi, 'a');
-          }
+        }
 
           name = name.replace(/\W/g, '-').replace(/\s/g, '-').replace(/-(\d+)$/g, '_$1');
 
-          let nodeName = content.nodeName.toLowerCase();
-          if (nodeName === 'button') {
-            nodeName = content.parentElement.nodeName.toLowerCase();
-          }
+        let nodeName = content.nodeName.toLowerCase();
+        if (nodeName === 'button') {
+          nodeName = content.parentElement.nodeName.toLowerCase();
+        }
 
           const anchorName = content.id
             ? content.id
             : findAvailableId(name, reserved, anchors, 0);
 
-          anchors.push(anchorName);
+        anchors.push(anchorName);
 
-          // Create table of contents if component is enabled.
-          if (tableOfContentsList && nodeName === "h2") {
-            let listItem = document.createElement('li');
-            listItem.classList.add('table-of-contents__item');
+        // Create table of contents if component is enabled.
+        if (tableOfContentsList && nodeName === 'h2') {
+          let listItem = document.createElement('li');
+          listItem.classList.add('table-of-contents__item');
 
-            let link = document.createElement('a');
-            link.classList.add('table-of-contents__link');
-            link.href = '#' + anchorName;
-            link.textContent = content.textContent.trim();
+          let link = document.createElement('a');
+          link.classList.add('table-of-contents__link');
+          link.href = `#${anchorName}`;
+          link.textContent = content.textContent.trim();
 
-            listItem.appendChild(link);
-            tableOfContentsList.appendChild(listItem);
-          }
-          // Create anchor links.
-          content.setAttribute('id', anchorName);
-        });
+          listItem.appendChild(link);
+          tableOfContentsList.appendChild(listItem);
+        }
+        // Create anchor links.
+        content.setAttribute('id', anchorName);
+      });
 
       // Remove loading text.
       if (tableOfContents) {
