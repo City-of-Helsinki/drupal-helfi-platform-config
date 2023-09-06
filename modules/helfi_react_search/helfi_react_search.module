@@ -26,15 +26,25 @@ function helfi_react_search_event_list_allowed_values_function() : array {
 function helfi_react_search_preprocess_paragraph(array &$variables) : void {
   $reactParagraphs = [
     'school_search',
+    'job_search',
+    'district_and_project_search',
+    'event_list',
   ];
 
   $config = \Drupal::config('elastic_proxy.settings');
+  $react_search_config = \Drupal::config('react_search.settings');
+
   if (
     isset($variables['paragraph']) &&
-    in_array($variables['paragraph']->getType(), $reactParagraphs) &&
-    $proxyUrl = $config->get('elastic_proxy_url')
+    in_array($variables['paragraph']->getType(), $reactParagraphs)
   ) {
-    $variables['#attached']['drupalSettings']['helfi_react_search']['elastic_proxy_url'] = $proxyUrl;
+    if ($proxyUrl = $config->get('elastic_proxy_url')) {
+      $variables['#attached']['drupalSettings']['helfi_react_search']['elastic_proxy_url'] = $proxyUrl;
+    }
+    if ($sentry_dsn_react = $react_search_config->get('sentry_dsn_react')) {
+      $variables['#attached']['drupalSettings']['helfi_react_search']['sentry_dsn_react'] = $sentry_dsn_react;
+    }
+
   }
 }
 
