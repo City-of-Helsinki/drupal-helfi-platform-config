@@ -28,7 +28,6 @@ function helfi_react_search_preprocess_paragraph(array &$variables) : void {
     'school_search',
     'job_search',
     'district_and_project_search',
-    'event_list',
   ];
 
   $config = \Drupal::config('elastic_proxy.settings');
