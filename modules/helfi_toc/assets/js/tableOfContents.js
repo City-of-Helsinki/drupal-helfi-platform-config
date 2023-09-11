@@ -135,18 +135,18 @@
             .toLowerCase()
             .trim();
 
-        // To ensure backwards compatibility, this is done only to "other" languages.
-        if (!mainLanguages.includes(drupalSettings.path.currentLanguage)) {
-          Object.keys(swaps).forEach((swap) => {
-            name = name.replace(new RegExp(swaps[swap], 'g'), swap);
-          });
+          // To ensure backwards compatibility, this is done only to "other" languages.
+          if (!mainLanguages.includes(drupalSettings.path.currentLanguage)) {
+            Object.keys(swaps).forEach((swap) => {
+              name = name.replace(new RegExp(swaps[swap], 'g'), swap);
+            });
           }
           else {
             name = name
               .replace(/ä/gi, 'a')
               .replace(/ö/gi, 'o')
               .replace(/å/gi, 'a');
-        }
+          }
 
           name = name
             // Replace any remaining non-word character including whitespace with '-'.
@@ -155,33 +155,33 @@
             // Use underscore at the end of the string: 'example-1' -> 'example_1'.
             .replace(/-(\d+)$/g, '_$1');
 
-        let nodeName = content.nodeName.toLowerCase();
-        if (nodeName === 'button') {
-          nodeName = content.parentElement.nodeName.toLowerCase();
-        }
+          let nodeName = content.nodeName.toLowerCase();
+          if (nodeName === 'button') {
+            nodeName = content.parentElement.nodeName.toLowerCase();
+          }
 
           const anchorName = content.id
             ? content.id
             : findAvailableId(name, reserved, anchors, 0);
 
-        anchors.push(anchorName);
+          anchors.push(anchorName);
 
-        // Create table of contents if component is enabled.
-        if (tableOfContentsList && nodeName === 'h2') {
-          let listItem = document.createElement('li');
-          listItem.classList.add('table-of-contents__item');
+          // Create table of contents if component is enabled.
+          if (tableOfContentsList && nodeName === 'h2') {
+            let listItem = document.createElement('li');
+            listItem.classList.add('table-of-contents__item');
 
-          let link = document.createElement('a');
-          link.classList.add('table-of-contents__link');
-          link.href = `#${anchorName}`;
-          link.textContent = content.textContent.trim();
+            let link = document.createElement('a');
+            link.classList.add('table-of-contents__link');
+            link.href = `#${anchorName}`;
+            link.textContent = content.textContent.trim();
 
-          listItem.appendChild(link);
-          tableOfContentsList.appendChild(listItem);
-        }
-        // Create anchor links.
-        content.setAttribute('id', anchorName);
-      });
+            listItem.appendChild(link);
+            tableOfContentsList.appendChild(listItem);
+          }
+          // Create anchor links.
+          content.setAttribute('id', anchorName);
+        });
 
       // Remove loading text.
       if (tableOfContents) {
