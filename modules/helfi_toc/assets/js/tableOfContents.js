@@ -148,7 +148,12 @@
               .replace(/å/gi, 'a');
         }
 
-          name = name.replace(/\W/g, '-').replace(/\s/g, '-').replace(/-(\d+)$/g, '_$1');
+          name = name
+            // Replace any remaining non-word character including whitespace with '-'.
+            // This leaves only characters matching [A-Za-z0-9-_] to the name.
+            .replace(/\W/g, '-')
+            // Use underscore at the end of the string: 'example-1' -> 'example_1'.
+            .replace(/-(\d+)$/g, '_$1');
 
         let nodeName = content.nodeName.toLowerCase();
         if (nodeName === 'button') {
