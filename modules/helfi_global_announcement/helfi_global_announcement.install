@@ -62,7 +62,7 @@ function helfi_global_announcement_update_9001() : void {
   helfi_global_announcement_grant_permissions();
 }
 
-/*
+/**
  * Re-install configuration to update cache lifetime.
  */
 function helfi_global_announcement_update_9002() : void {
