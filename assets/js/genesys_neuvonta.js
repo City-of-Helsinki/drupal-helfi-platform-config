@@ -80,7 +80,7 @@
       /* CHAT START BUTTON ICONS */
       var helFiChat_button = "";
 
-      // https://asiointi.hel.fi/chat/kanslia/custom/chat-virkainfo-fi.json
+      // https://chat-proxy.hel.fi/chat/kanslia/custom/chat-virkainfo-fi.json
 
       switch (helfiChat_lang) {
         case 'fi':
@@ -296,7 +296,7 @@
           preload: ["webchat"],
         },
         webchat: {
-          dataURL: "https://asiointi.hel.fi/gms/kanslia/genesys/2/chat/prod",
+          dataURL: "https://chat-proxy.hel.fi/gms/kanslia/genesys/2/chat/prod",
           confirmFormCloseEnabled: false,
           userData: {
             service: helFiChat_service,
