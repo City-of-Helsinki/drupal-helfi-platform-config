@@ -20,6 +20,10 @@ class ContactCard extends Paragraph implements ParagraphInterface {
    *   The contact image.
    */
   public function getContactImage(): array {
+    if ($this->get('field_contact_image')->isEmpty()) {
+      return [];
+    }
+
     $image = $this->get('field_contact_image')[0];
     if (
       $image &&
