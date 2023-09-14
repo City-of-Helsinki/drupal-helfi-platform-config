@@ -358,6 +358,12 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
+      pager:
+        type: none
+        options:
+          offset: 0
+      defaults:
+        pager: false
     cache_metadata:
       max-age: -1
       contexts:
