@@ -1,4 +1,27 @@
 const formElements = {
+  linkIcon: {
+    label: Drupal.t('Icon', {}, { context: 'CKEditor5 Helfi Link plugin' }),
+    machineName: 'icon',
+    selectListOptions: {},
+    type: 'select',
+    group: 'advanced',
+    isVisible: false,
+    viewAttribute: 'data-icon-start',
+  },
+  linkVariant: {
+    label: Drupal.t('Design'),
+    machineName: 'variant',
+    selectListOptions: {
+      link: Drupal.t('Normal link', {}, { context: 'CKEditor5 Helfi Link plugin' }),
+      primary: Drupal.t('Button primary'),
+      secondary: Drupal.t('Button secondary'),
+      supplementary: Drupal.t('Button supplementary'),
+    },
+    type: 'select',
+    group: 'advanced',
+    isVisible: true,
+    viewAttribute: 'data-variant',
+  },
   linkProtocol: {
     label: Drupal.t('Protocol', {}, { context: 'CKEditor5 Helfi Link plugin' }),
     machineName: 'protocol',
@@ -9,6 +32,8 @@ const formElements = {
     },
     type: 'select',
     group: 'helper',
+    viewAttribute: 'data-protocol',
+    isVisible: true,
   },
   linkNewWindowConfirm: {
     label: Drupal.t('The link meets the accessibility requirements', {}, { context: 'CKEditor5 Helfi Link plugin' }),
@@ -47,13 +72,6 @@ const formElements = {
     type: 'input',
     group: 'advanced',
   },
-  linkClass: {
-    machineName: 'link-class',
-    viewAttribute: {
-      'class': 'link',
-    },
-    type: 'static',
-  }
 };
 
 export {
