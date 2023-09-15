@@ -3,7 +3,6 @@
  */
 import { Plugin } from 'ckeditor5/src/core';
 import { createDropdown } from 'ckeditor5/src/ui';
-import { Collection } from 'ckeditor5/src/utils';
 import icon from '../../../../icons/helfiQuote.svg';
 import HelfiQuoteForm from './ui/helfiQuoteForm';
 
@@ -12,7 +11,6 @@ export default class HelfiQuoteUi extends Plugin {
   constructor(editor) {
     super(editor);
     this.editor = editor;
-    this.advancedChildren = new Collection();
     this.updateSelection = false;
     this.quoteFormView = false;
     this.dropdownView = false;
