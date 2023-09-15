@@ -90,3 +90,11 @@ msgid "When there is no selection, the link URL must be provided. "
 msgstr "Jos et ole maalannut tekstiä, linkin URL-osoite on annettava. "
 "Voit lisätä linkin ilman URL-osoitetta maalaamalla tekstin "
 "editorissa ja jatkamalla sitten linkin lisäämistä."
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Normal link"
+msgstr "Tavallinen linkki"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Icon"
+msgstr "Ikoni"
