@@ -112,4 +112,19 @@ export default class HelfiLinkBaseView extends View {
     this.element.focus();
   }
 
+  /**
+   * Default options for the Tom Select.
+   *
+   * @return {object} Default options as an object.
+   */
+  selectListDefaultOptions() {
+    return {
+      valueField: 'option',
+      labelField: 'name',
+      searchField: 'title',
+      maxItems: 1,
+      placeholder: this.options.label,
+      create: false,
+    };
+  }
 }
