@@ -31,9 +31,9 @@ function callShibboleth()
     interactionId = getCookieChat("gcReturnSessionId");
 	//Current url without querystring:
 	var currentPage = location.toString().replace(location.search, "");
-	var shibbolethString = "https://chat-proxy.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
+	var shibbolethString = "https://asiointi.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
 	shibbolethString += "target=";
-    shibbolethString += "https://chat-proxy.hel.fi/chat/tunnistus/MagicPagePlain/ReturnProcessor";
+    shibbolethString += "https://asiointi.hel.fi/chat/tunnistus/MagicPagePlain/ReturnProcessor";
 	console.log('currentPage:'+currentPage);
     shibbolethString += "%3ForigPage%3D" + currentPage + "?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
 	shibbolethString += "%26" + "interactionId" + "%3D" + interactionId;
@@ -44,7 +44,7 @@ var _genesys = {
     onReady: [],
     chat: {
         registration: false,
-        localization : 'https://chat-proxy.hel.fi/chat/sote/custom/chat-suunte-fi.json',
+        localization : 'https://asiointi.hel.fi/chat/sote/custom/chat-suunte-fi.json',
         onReady: [],
         ui: {
             onBeforeChat: function (chat) {
