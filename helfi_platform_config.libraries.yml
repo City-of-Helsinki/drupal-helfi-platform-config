@@ -75,7 +75,7 @@ genesys_suunte:
     - core/drupalSettings
 
 genesys_auth_redirect:
-  version: 1.0.x
+  version: 1.0.1
   header: true
   js:
     'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
