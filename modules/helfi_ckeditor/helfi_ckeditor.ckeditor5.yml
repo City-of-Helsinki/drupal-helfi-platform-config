@@ -12,10 +12,12 @@ helfi_ckeditor_helfi_link:
     label: Helfi Link
     library: helfi_ckeditor/helfi_link
     elements:
-      - <a aria-label title class id target="_blank" rel>
+      - <a aria-label class data-design data-icon-start data-is-external data-link-text data-protocol data-selected-icon data-variant id rel role target="_blank" title>
+      - <span aria-hidden class role>
     conditions:
       plugins:
         - ckeditor5_link
+    class: Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin\HelfiLink
 
 helfi_ckeditor_helfi_language_selector:
   # Configuration that will be sent to CKEditor 5 JavaScript plugins.
