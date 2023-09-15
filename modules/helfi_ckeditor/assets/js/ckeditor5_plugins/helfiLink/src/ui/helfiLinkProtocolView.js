@@ -1,28 +1,49 @@
-import { LabeledFieldView } from 'ckeditor5/src/ui';
+import HelfiLinkBaseView from './helfiLinkBaseView';
 
 /**
  * The HelfiLink details view class.
  */
-export default class HelfiLinkProtocolView extends LabeledFieldView {
+export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
+
   /**
-   * @inheritDoc
+   * Render function for the Tom Select library.
+   *
+   * @param {string} element The <select> element to which attach the
+   * Tom Select functionality.
+   * @param {object} options The selectListOptions from Form elements config.
    */
-  constructor(locale, fieldView) {
-    super(locale, fieldView);
+  renderTomSelect(element, options) {
+    // Render the <select> element.
+    if (!this.tomSelect && element) {
+      // The template for the Tom Select options and selected items.
+      const renderTemplate = (item, escape) => {
+        return `
+          <span style="align-items: center; display: flex; height: 100%;">
+            <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.title)}</span>
+          </span>
+        `;
+      };
 
-    // Initialize the isVisible property
-    this.set('isVisible', true);
+      // Settings for the Tom Select.
+      const settings = {
+        valueField: 'option',
+        labelField: 'name',
+        searchField: 'title',
+        maxItems: 1,
+        placeholder: this.options.label,
+        options: Object.keys(options).map(option => ({
+          option,
+          title: options[option]
+        })),
+        create: false,
+        // Custom rendering functions for options and items
+        render: {
+          option: (item, escape) => renderTemplate(item, escape),
+          item: (item, escape) => renderTemplate(item, escape),
+        },
+      };
 
-    // Add a CSS class to the view when isVisible is false
-    this.bind('isVisible').to(this, 'updateVisibility');
-  }
-
-  // Method to update the visibility of the view based on the isVisible property
-  updateVisibility(value) {
-    if (value) {
-      this.element.classList.remove('is-hidden');
-    } else {
-      this.element.classList.add('is-hidden');
+      this.tomSelect = new TomSelect(this.element, settings);
     }
   }
 
