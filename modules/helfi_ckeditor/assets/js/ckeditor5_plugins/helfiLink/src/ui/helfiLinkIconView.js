@@ -14,6 +14,9 @@ export default class HelfiLinkIconView extends HelfiLinkBaseView {
   renderTomSelect(element) {
     // Render the <select> element.
     if (!this.tomSelect && element) {
+
+      const defaultConfig = super.selectListDefaultOptions();
+
       // The template for the Tom Select options and selected items.
       const renderTemplate = (item, escape) => {
         return `
@@ -26,6 +29,7 @@ export default class HelfiLinkIconView extends HelfiLinkBaseView {
 
       // Settings for the Tom Select.
       const settings = {
+        ...defaultConfig,
         plugins: {
           dropdown_input: {},
           remove_button: {
@@ -33,14 +37,11 @@ export default class HelfiLinkIconView extends HelfiLinkBaseView {
           }
         },
         valueField: 'icon',
-        labelField: 'name',
         searchField: ['name'],
         options: Object.keys(this.loadedIcons).map(icon => ({
           icon,
           name: this.loadedIcons[icon]
         })),
-        maxItems: 1,
-        create: false,
         // Custom rendering functions for options and items
         render: {
           option: (item, escape) => renderTemplate(item, escape),
