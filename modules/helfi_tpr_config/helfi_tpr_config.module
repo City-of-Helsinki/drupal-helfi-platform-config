@@ -424,6 +424,9 @@ function template_preprocess_tpr_service_lower_content(array &$variables) : void
   }
   if (isset($variables['elements']['#tpr_service'])) {
     $variables['entity'] = $variables['elements']['#tpr_service'];
+    // Get 'hide_service_points' field value and pass it to the template.
+    $hide_service_points = $variables['entity']->get('hide_service_points')->value;
+    $variables['hide_service_points'] = boolval($hide_service_points);
   }
 }
 
