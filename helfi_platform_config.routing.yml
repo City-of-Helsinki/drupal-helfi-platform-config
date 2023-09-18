@@ -5,3 +5,10 @@ helfi_platform_config.genesys_auth_redirect:
     _title: 'Genesys auth redirect'
   requirements:
     _permission: 'access content'
+helfi_platform_config.genesys_auth_redirect_test:
+  path: '/genesys-auth-redirect-test'
+  defaults:
+    _controller: '\Drupal\helfi_platform_config\Controller\GenesysAuthRedirectControllerTesting::content'
+    _title: 'Genesys auth redirect'
+  requirements:
+    _permission: 'access content'

@@ -34,6 +34,7 @@ class ChatLeijuke extends BlockBase {
         'genesys_kymp' => 'Genesys KYMP',
         'genesys_suunte' => 'Genesys SUUNTE',
         'genesys_neuvonta' => 'Genesys Neuvonta',
+        'genesys_suunte_test' => 'Genesys SUUNTE TEST',
       ],
     ];
 
