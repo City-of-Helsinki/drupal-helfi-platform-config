@@ -58,7 +58,7 @@ class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElement
    */
   public function defaultConfiguration(): array {
     return [
-      'helfi_link_attributes' => $this->getPluginDefinition()->getElements(),
+      'helfi_link_attributes' => [],
     ];
   }
 
