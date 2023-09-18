@@ -53,7 +53,7 @@ var _genesys = {
                         serverUrl: "https://chat-proxy.hel.fi/chat/sote/cobrowse",
                         registration: function (done) {
                             done({
-                                 service: 'SUUNTETESTISIVU_TESTI'
+                                 service: 'TESTISIVU_TESTI'
                             });
                         }
                     }).done(function (session) {
