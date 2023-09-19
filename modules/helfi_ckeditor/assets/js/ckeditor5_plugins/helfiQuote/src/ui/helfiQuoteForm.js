@@ -17,24 +17,24 @@ export default class HelfiQuoteForm extends View {
   /**
    * @inheritDoc
    */
-  constructor( locale, editor ) {
-    super( locale, editor );
+  constructor(locale, editor) {
+    super(locale, editor);
 
     this.editor = editor;
     this.textAreaView = new TextareaView(locale, editor);
 
     this.authorInputView = new LabeledFieldView(editor.locale, createLabeledInputText);
-    this.authorInputView.label = Drupal.t( 'Source / author', {}, { context: 'CKEditor5 Helfi Quote plugin' });
+    this.authorInputView.label = Drupal.t('Source / author', {}, { context: 'CKEditor5 Helfi Quote plugin' });
 
     this.saveButtonView = this._createButton(
-      Drupal.t( 'Save', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
+      Drupal.t('Save', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
       icons.check,
       'ck-button-save'
     );
     this.saveButtonView.type = 'submit';
 
     this.cancelButtonView = this._createButton(
-      Drupal.t( 'Cancel', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
+      Drupal.t('Cancel', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
       icons.cancel,
       'ck-button-cancel',
       'cancel'
@@ -43,7 +43,7 @@ export default class HelfiQuoteForm extends View {
     this.keystrokes = new KeystrokeHandler();
     this.children = this.createCollection();
 
-    this.setTemplate( {
+    this.setTemplate({
       tag: 'form',
 
       attributes: {
@@ -54,7 +54,7 @@ export default class HelfiQuoteForm extends View {
       },
 
       children: this.children
-    } );
+    });
   }
 
   /**
@@ -63,16 +63,16 @@ export default class HelfiQuoteForm extends View {
   render() {
     super.render();
 
-    submitHandler( {
+    submitHandler({
       view: this
-    } );
+    });
 
-    this.children.add( this.textAreaView );
-    this.children.add( this.authorInputView );
-    this.children.add( this.saveButtonView );
-    this.children.add( this.cancelButtonView );
+    this.children.add(this.textAreaView);
+    this.children.add(this.authorInputView);
+    this.children.add(this.saveButtonView);
+    this.children.add(this.cancelButtonView);
 
-    this.keystrokes.listenTo( this.element );
+    this.keystrokes.listenTo(this.element);
   }
 
   /**
@@ -111,22 +111,22 @@ export default class HelfiQuoteForm extends View {
    * @return {ButtonView} The button view instance.
    */
   _createButton(label, icon, className, eventName = false) {
-    const button = new ButtonView( this.locale );
+    const button = new ButtonView(this.locale);
 
-    button.set( {
+    button.set({
       label,
       icon,
       tooltip: true
-    } );
+    });
 
-    button.extendTemplate( {
+    button.extendTemplate({
       attributes: {
         class: className
       }
-    } );
+    });
 
-    if ( eventName ) {
-      button.delegate( 'execute' ).to( this, eventName );
+    if (eventName) {
+      button.delegate('execute').to(this, eventName);
     }
 
     return button;
