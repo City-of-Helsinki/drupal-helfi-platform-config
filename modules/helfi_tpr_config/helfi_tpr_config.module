@@ -487,11 +487,11 @@ function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_typ
 
   if ($entity_type->id() === 'tpr_service') {
     $fields['hide_service_points'] = BaseFieldDefinition::create('boolean')
-    ->setLabel(new TranslatableMarkup('Hide service points'))
-    ->setDescription(new TranslatableMarkup('Hide automatic service units listing'))
-    ->setTranslatable(TRUE)
-    ->setDisplayConfigurable('form', TRUE)
-    ->setDisplayConfigurable('view', TRUE);
+      ->setLabel(new TranslatableMarkup('Hide service points'))
+      ->setDescription(new TranslatableMarkup('Hide automatic service units listing'))
+      ->setTranslatable(TRUE)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
   }
   return $fields;
 }
