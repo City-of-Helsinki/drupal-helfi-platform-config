@@ -1,5 +1,5 @@
-import {View} from 'ckeditor5/src/ui';
-import {getCode} from 'ckeditor5/src/utils';
+import { View } from 'ckeditor5/src/ui';
+import { getCode } from 'ckeditor5/src/utils';
 
 /**
  * The HelfiLink base view class.
@@ -9,8 +9,8 @@ export default class HelfiLinkBaseView extends View {
   /**
    * @inheritDoc
    */
-  constructor( editor, options ) {
-    super( editor.locale );
+  constructor(editor, options) {
+    super(editor.locale);
 
     this.options = options;
     this.tomSelect = false;
@@ -33,7 +33,7 @@ export default class HelfiLinkBaseView extends View {
      * @default true
      * @member {Boolean} #isEnabled
      */
-    this.set( 'isOpen', false );
+    this.set('isOpen', false);
 
     /**
      * The text of the label associated with the details view.
@@ -41,7 +41,7 @@ export default class HelfiLinkBaseView extends View {
      * @observable
      * @member {String} #label
      */
-    this.set( 'label' );
+    this.set('label');
 
     /**
      * The HTML `id` attribute to be assigned to the details.
@@ -50,7 +50,7 @@ export default class HelfiLinkBaseView extends View {
      * @default null
      * @member {String|null} #id
      */
-    this.set( 'id', null );
+    this.set('id', null);
 
     /**
      * The collection of the child views inside the details {@link #element}.
@@ -58,11 +58,11 @@ export default class HelfiLinkBaseView extends View {
      * @readonly
      * @member {module:ui/viewcollection~ViewCollection}
      */
-    this.setTemplate( {
+    this.setTemplate({
       tag: 'select',
 
       attributes: {
-        id: bind.to( 'id' ),
+        id: bind.to('id'),
         class: [
           'ck-helfi-link-select-list',
         ],
@@ -70,16 +70,16 @@ export default class HelfiLinkBaseView extends View {
         autocomplete: 'off',
       },
       on: {
-        keydown: bind.to( evt => {
+        keydown: bind.to(evt => {
           // Need to check target. Otherwise, we would handle space press on
           // input[type=text] and it would change checked property
           // twice due to default browser handling kicking in too.
-          if ( evt.target === this.element && evt.keyCode === getCode( 'space' ) ) {
+          if (evt.target === this.element && evt.keyCode === getCode('space')) {
             this.isOpen = !this.isOpen;
           }
-        } ),
+        }),
       },
-    } );
+    });
 
   }
 
