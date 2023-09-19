@@ -1,10 +1,10 @@
 /**
  * @file A view to model and model to view converters for HelfiLink.
  */
-import {Plugin} from 'ckeditor5/src/core';
-import {toWidgetEditable, Widget} from 'ckeditor5/src/widget';
-import {findAttributeRange} from 'ckeditor5/src/typing';
-import {formElements} from './formElements';
+import { Plugin } from 'ckeditor5/src/core';
+import { toWidgetEditable, Widget } from 'ckeditor5/src/widget';
+import { findAttributeRange } from 'ckeditor5/src/typing';
+import formElements from './formElements';
 
 /**
  * CKEditor 5 plugins do not work directly with the DOM. They are defined as
@@ -57,10 +57,10 @@ export default class HelfiLinkEditing extends Plugin {
    * </blockquote>
    */
   _defineHelfiButtonConverters() {
-    const {editor} = this;
+    const { editor } = this;
 
     // Allow link attributes in table cells.
-    editor.model.schema.extend( 'tableCell', { allowContentOf: '$block' } );
+    editor.model.schema.extend('tableCell', { allowContentOf: '$block' });
 
     // The variants for different scenarios where a link has a following markup:
     // <a><span class="hds-button__label>{text}</span></a>
@@ -100,7 +100,24 @@ export default class HelfiLinkEditing extends Plugin {
               child.hasClass('hds-button__label')
           );
 
+          // Before returning, check if there are obsolete <span> elements
+          // inside the anchor and clear them as well.
           if (!helfiButtonLabel) {
+            const orphanedSpan = Array.from(viewElement.getChildren()).find(
+              element => (
+                element.name === 'span' &&
+                Array.from(element.getAttributes()).length === 0 &&
+                Array.from(element.getClassNames()).length === 0
+              )
+            );
+
+            // Remove the orphaned <span> and insert its children to the <a>.
+            if (orphanedSpan) {
+              viewElement._removeChildren(orphanedSpan.index, 1);
+              Array.from(orphanedSpan.getChildren()).forEach(child => {
+                viewElement._appendChild(child);
+              });
+            }
             return;
           }
 
@@ -126,6 +143,28 @@ export default class HelfiLinkEditing extends Plugin {
       'data-is-external': 'data-is-external'
     };
 
+    /**
+     * Convert the variant from button classes to a usable string.
+     *
+     * @param {string} classes Button classes as a string
+     * @return {string|null} Return the variant as a string or null.
+     */
+    const convertVariants = (classes) => {
+      const parts = classes.split(' '); // Split the string by spaces
+      const variantFound = parts.find(part => part.startsWith('hds-button--'));
+      const hdsButtonFound = parts.find(part => part.endsWith('hds-button'));
+
+      if (variantFound) {
+        return variantFound.replace('hds-button--', '');
+      }
+
+      if (hdsButtonFound) {
+        return 'primary';
+      }
+
+      return null;
+    };
+
     // Go through each attribute and convert the attribute to a simplified
     // anchor element.
     Object.keys(mapDataAttributes).forEach(cke4Attr => {
@@ -133,18 +172,18 @@ export default class HelfiLinkEditing extends Plugin {
 
       const cke5Attr = mapDataAttributes[cke4Attr];
 
-      model.schema.extend( '$text', { allowAttributes: cke4Attr } );
-      model.schema.extend( '$text', { allowAttributes: cke5Attr } );
+      model.schema.extend('$text', { allowAttributes: cke4Attr });
+      model.schema.extend('$text', { allowAttributes: cke5Attr });
 
       // Convert old data-attribute anchor attribute to matching model.
-      editor.conversion.for( 'upcast' ).attributeToAttribute( {
+      editor.conversion.for('upcast').attributeToAttribute({
         view: {
           name: 'a',
           key: cke4Attr
         },
         model: {
           key: cke5Attr,
-          value: ( viewElement ) => {
+          value: (viewElement) => {
             let match;
 
             if (viewElement.getAttribute(cke4Attr)) {
@@ -154,7 +193,7 @@ export default class HelfiLinkEditing extends Plugin {
               match = viewElement.getAttribute(cke5Attr);
             }
             if (cke4Attr === 'data-design') {
-              match = this._convertVariants(match);
+              match = convertVariants(match);
             }
             // We don't need this data-attribute here as it will be generated
             // by the helfi_link_converter filter plugin.
@@ -164,17 +203,17 @@ export default class HelfiLinkEditing extends Plugin {
             return match;
           }
         }
-      } );
+      });
 
       // Convert new data-attribute anchor attribute to matching model.
-      editor.conversion.for( 'upcast' ).attributeToAttribute( {
+      editor.conversion.for('upcast').attributeToAttribute({
         view: {
           name: 'a',
           key: cke5Attr
         },
         model: {
           key: cke5Attr,
-          value: ( viewElement ) => {
+          value: (viewElement) => {
             let match;
             if (viewElement.getAttribute(cke5Attr)) {
               match = viewElement.getAttribute(cke5Attr);
@@ -182,17 +221,17 @@ export default class HelfiLinkEditing extends Plugin {
             return match;
           }
         }
-      } );
+      });
 
       // Convert old data-attribute model to an anchor "attribute" element
       // in dataDowncast.
       conversion.for('dataDowncast').attributeToElement({
         model: cke4Attr,
-        view: ( attributeValue, { writer } ) => {
+        view: (attributeValue, { writer }) => {
           if (!attributeValue) {
             return undefined;
           }
-          return writer.createAttributeElement( 'a', { [cke5Attr]: attributeValue }, { priority: 5 } );
+          return writer.createAttributeElement('a', { [cke5Attr]: attributeValue }, { priority: 5 });
         },
       });
 
@@ -200,48 +239,44 @@ export default class HelfiLinkEditing extends Plugin {
       // in data downcast.
       conversion.for('dataDowncast').attributeToElement({
         model: cke5Attr,
-        view: ( attributeValue, { writer } ) => {
+        view: (attributeValue, { writer }) => {
           if (!attributeValue) {
             return undefined;
           }
-          return writer.createAttributeElement( 'a', { [cke5Attr]: attributeValue }, { priority: 5 } );
+          return writer.createAttributeElement('a', { [cke5Attr]: attributeValue }, { priority: 5 });
         },
       });
+
+      /**
+       * Helper function for the data-attribute conversion.
+       *
+       * @param {string} attributeKey New data-attribute name.
+       * @param {string} attributeValue New data-attribute value.
+       * @param {writer} writer The downcast writer.
+       * @return {editableElement} Returns an editableElement.
+       */
+      const editingDowncast = (attributeKey, attributeValue, writer) => {
+        if (!attributeValue) {
+          return undefined;
+        }
+        const attributeElement = writer.createAttributeElement('a', { [attributeKey]: attributeValue }, { priority: 5 });
+        return toWidgetEditable(attributeElement, writer, { label: Drupal.t('Edit link') });
+      };
 
       // Convert old data-attribute model to an anchor "attribute" element
       // in editing downcast.
       conversion.for('editingDowncast').attributeToElement({
         model: cke4Attr,
-        view: ( attributeValue, { writer } ) => {
-          return this._editingDowncast(cke5Attr, attributeValue, writer);
-        },
+        view: (attributeValue, { writer }) => editingDowncast(cke5Attr, attributeValue, writer),
       });
 
       // Convert new data-attribute model to an anchor "attribute" element
       // in editing downcast.
       conversion.for('editingDowncast').attributeToElement({
         model: cke5Attr,
-        view: ( attributeValue, { writer } ) => {
-          return this._editingDowncast(cke5Attr, attributeValue, writer);
-        },
+        view: (attributeValue, { writer }) => editingDowncast(cke5Attr, attributeValue, writer),
       });
     });
-  }
-
-  /**
-   * Helper function for the data-attribute conversion.
-   *
-   * @param {string} attributeKey New data-attribute name.
-   * @param {string} attributeValue New data-attribute value.
-   * @param {writer} writer The downcast writer.
-   * @return {editableElement} Returns an editableElement.
-   */
-  _editingDowncast(attributeKey, attributeValue, writer) {
-    if (!attributeValue) {
-      return undefined;
-    }
-    const attributeElement = writer.createAttributeElement( 'a', { [attributeKey]: attributeValue }, { priority: 5 } );
-    return toWidgetEditable( attributeElement, writer, { label: Drupal.t('Edit link') } );
   }
 
   /**
@@ -257,13 +292,13 @@ export default class HelfiLinkEditing extends Plugin {
     if (!viewAttribute) { return; }
 
     // Add current model as an allowed attribute for '$text' nodes.
-    editor.model.schema.extend( '$text', { allowAttributes: modelName } );
+    editor.model.schema.extend('$text', { allowAttributes: modelName });
 
     // Convert attributes for downcast.
     // Model --> View (DOM / Data).
-    editor.conversion.for( 'downcast' ).attributeToElement( {
+    editor.conversion.for('downcast').attributeToElement({
       model: modelName,
-      view: ( modelAttributeValue, { writer }) => {
+      view: (modelAttributeValue, { writer }) => {
         const attributeValues = {};
 
         // Create attribute values based on the type of view attributes types.
@@ -274,15 +309,15 @@ export default class HelfiLinkEditing extends Plugin {
         }
 
         // Create the anchor element with the current attributes.
-        const linkViewElement = writer.createAttributeElement('a', attributeValues,{ priority: 5 });
+        const linkViewElement = writer.createAttributeElement('a', attributeValues, { priority: 5 });
 
         // Without it the isLinkElement() will not recognize the link
         // and the UI will not show up when the user clicks a link.
-        writer.setCustomProperty( 'link', true, linkViewElement );
+        writer.setCustomProperty('link', true, linkViewElement);
 
         return linkViewElement;
       },
-    } );
+    });
 
     // Handle upcast separately for attributes with object as their definitions.
     if (typeof viewAttribute === 'object') {
@@ -299,7 +334,7 @@ export default class HelfiLinkEditing extends Plugin {
         },
         model: {
           key: modelName,
-          value: ( viewElement ) => !!(viewElement.hasAttribute(viewAttributeKey) &&
+          value: (viewElement) => !!(viewElement.hasAttribute(viewAttributeKey) &&
             viewElement.getAttribute(viewAttributeKey) === viewAttributeValue)
         },
       });
@@ -385,6 +420,7 @@ export default class HelfiLinkEditing extends Plugin {
           } else {
             const ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
 
+            // eslint-disable-next-line no-restricted-syntax
             for (const range of ranges) {
               if (attributeValues[modelName]) {
                 writer.setAttribute(modelName, attributeValues[modelName], range);
@@ -394,8 +430,8 @@ export default class HelfiLinkEditing extends Plugin {
             }
           }
         });
-      } );
-    }, { priority: 'high' } );
+      });
+    }, { priority: 'high' });
   }
 
   /**
@@ -407,77 +443,56 @@ export default class HelfiLinkEditing extends Plugin {
     const { editor } = this;
     const { model } = this.editor;
     const { selection } = model.document;
-    const unlinkCommand = editor.commands.get( 'unlink' );
+    const unlinkCommand = editor.commands.get('unlink');
 
     let isUnlinkingInProgress = false;
 
     // Make sure all changes are in a single undo step.
     // Cancel the original unlink first in the high priority.
-    unlinkCommand.on( 'execute', evt => {
-      if ( isUnlinkingInProgress ) {
+    unlinkCommand.on('execute', evt => {
+      if (isUnlinkingInProgress) {
         return;
       }
 
       evt.stop();
 
       // This single block wraps all changes that should be in a single undo step.
-      model.change( () => {
+      model.change(() => {
         // Now, in this single "undo block" let the unlink command flow naturally.
         isUnlinkingInProgress = true;
 
         // Do the unlinking within a single undo step.
-        editor.execute( 'unlink' );
+        editor.execute('unlink');
 
         // Let's make sure the next unlinking will also be handled.
         isUnlinkingInProgress = false;
 
         // The actual integration that removes the attribute.
-        model.change( writer => {
+        model.change(writer => {
           let ranges;
 
           // Get ranges from collapsed selection.
-          if ( selection.isCollapsed ) {
+          if (selection.isCollapsed) {
             ranges = [ findAttributeRange(
               selection.getFirstPosition(),
               modelName,
-              selection.getAttribute( modelName ),
+              selection.getAttribute(modelName),
               model
             ) ];
           }
           // Get ranges from selected elements.
           else {
-            ranges = model.schema.getValidRanges( selection.getRanges(), modelName );
+            ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
           }
 
           // Remove the attribute from specified ranges.
-          for ( const range of ranges ) {
-            writer.removeAttribute( modelName, range );
+          // eslint-disable-next-line no-restricted-syntax
+          for (const range of ranges) {
+            writer.removeAttribute(modelName, range);
           }
-        } );
-      } );
-    }, { priority: 'high' } );
-  }
-
-  /**
-   * Convert the variant from button classes to a usable string.
-   *
-   * @param {string} classes Button classes as a string
-   * @return {string|null} Return the variant as a string or null.
-   */
-  _convertVariants(classes) {
-    const parts = classes.split(' '); // Split the string by spaces
-    const variantFound = parts.find(part => part.startsWith('hds-button--'));
-    const hdsButtonFound = parts.find(part => part.endsWith('hds-button'));
-
-    if (variantFound) {
-      return variantFound.replace('hds-button--', '');
-    }
-
-    if (hdsButtonFound) {
-      return 'primary';
-    }
-
-    return null;
+        });
+      });
+    }, { priority: 'high' });
   }
 
   /**
@@ -489,13 +504,13 @@ export default class HelfiLinkEditing extends Plugin {
     const { editor } = this;
     const { model } = this.editor;
     const { selection } = model.document;
-    const linkCommand = editor.commands.get( 'link' );
+    const linkCommand = editor.commands.get('link');
 
-    linkCommand.set( modelName, null );
+    linkCommand.set(modelName, null);
 
-    model.document.on( 'change', () => {
-      linkCommand[ modelName ] = selection.getAttribute( modelName );
-    } );
+    model.document.on('change', () => {
+      linkCommand[modelName] = selection.getAttribute(modelName);
+    });
   }
 
 }

@@ -18,14 +18,12 @@ export default class HelfiLinkIconView extends HelfiLinkBaseView {
       const defaultConfig = super.selectListDefaultOptions();
 
       // The template for the Tom Select options and selected items.
-      const renderTemplate = (item, escape) => {
-        return `
+      const renderTemplate = (item, escape) => `
           <span style="align-items: center; display: flex; height: 100%;">
             <span class="hel-icon hel-icon--${item.icon}" aria-hidden="true"></span>
             <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.name)}</span>
           </span>
         `;
-      };
 
       // Settings for the Tom Select.
       const settings = {
@@ -49,6 +47,7 @@ export default class HelfiLinkIconView extends HelfiLinkBaseView {
         },
       };
 
+      /* global TomSelect */
       this.tomSelect = new TomSelect(this.element, settings);
     }
   }
