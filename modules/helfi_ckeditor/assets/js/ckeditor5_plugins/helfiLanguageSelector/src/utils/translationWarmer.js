@@ -11,7 +11,7 @@
  *
  * @param {Object} locale The localization services instance.
  */
-export function translationWarmer(locale) {
+export default function translationWarmer(locale) {
   const { t } = locale;
   // Run all the languages through t() to trigger the ckeditor5-dev-utils
   // during build.
