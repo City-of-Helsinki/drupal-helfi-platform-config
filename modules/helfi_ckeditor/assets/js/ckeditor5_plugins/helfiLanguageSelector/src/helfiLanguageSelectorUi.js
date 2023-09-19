@@ -7,12 +7,26 @@ import { Collection } from 'ckeditor5/src/utils';
 import icon from '../../../../icons/helfiLanguageSelector.svg';
 import LanguageSelectListView from './ui/languageSelectListView';
 import { parseLanguageAttribute } from './utils/utils';
-import { translationWarmer } from './utils/translationWarmer';
+import translationWarmer from './utils/translationWarmer';
+
+/**
+ * Helper function for getting the current active language code.
+ *
+ * @param {string} languageAttribute The language attribute.
+ * @return {*} Returns the language code if found.
+ */
+function getCommandValue(languageAttribute) {
+  if (!languageAttribute) { return; }
+  const { languageCode } = parseLanguageAttribute(languageAttribute);
+  if (languageCode) {
+    return languageCode;
+  }
+}
 
 export default class HelfiLanguageSelectorUi extends Plugin {
 
-  constructor( editor ) {
-    super( editor );
+  constructor(editor) {
+    super(editor);
     this.editor = editor;
     this.advancedChildren = new Collection();
     this.helfiLanguageSelectorConfig = this.editor.config.get('helfiLanguageSelector');
@@ -24,14 +38,14 @@ export default class HelfiLanguageSelectorUi extends Plugin {
   init() {
     const { editor } = this;
     const { t } = editor.locale;
-    const removeTitle = t( 'Remove language from text' );
-    const defaultTitle = t( 'Select language');
+    const removeTitle = t('Remove language from text');
+    const defaultTitle = t('Select language');
 
     // Register the helfiLanguageSelector toolbar button.
     editor.ui.componentFactory.add('helfiLanguageSelector', (locale) => {
 
       // Create the dropdown view.
-      const dropdownView = createDropdown( locale );
+      const dropdownView = createDropdown(locale);
 
       // Create the toolbar button.
       dropdownView.buttonView.set({
@@ -59,17 +73,17 @@ export default class HelfiLanguageSelectorUi extends Plugin {
 
       let selectListView;
       let tomSelect;
-      const languageCommand = this.editor.commands.get( 'helfiLanguageSelectorCommand' );
+      const languageCommand = this.editor.commands.get('helfiLanguageSelectorCommand');
 
-      dropdownView.on( 'change:isOpen', () => {
+      dropdownView.on('change:isOpen', () => {
 
         if (tomSelect?.options) {
           // Set current language as the selected language in tomSelect.
           if (
             languageCommand.value &&
-            !tomSelect.items.includes(this._getCommandValue(languageCommand.value))
+            !tomSelect.items.includes(getCommandValue(languageCommand.value))
           ) {
-            tomSelect.setValue([ this._getCommandValue(languageCommand.value) ], true);
+            tomSelect.setValue([ getCommandValue(languageCommand.value) ], true);
           }
           // Clear the selections in case there is no current language.
           else if (!languageCommand.value && tomSelect.items.length > 0) {
@@ -91,13 +105,11 @@ export default class HelfiLanguageSelectorUi extends Plugin {
         selectListView.delegate('execute').to(dropdownView);
 
         // The template for the Tom Select options and selected items.
-        const renderTemplate = (item, escape) => {
-          return `
-            <span style="align-items: center; display: flex; height: 100%;">
-              <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.title)}</span>
-            </span>
-          `;
-        };
+        const renderTemplate = (item, escape) => `
+          <span style="align-items: center; display: flex; height: 100%;">
+            <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.title)}</span>
+          </span>
+        `;
 
         // Settings for the Tom Select.
         const settings = {
@@ -111,11 +123,9 @@ export default class HelfiLanguageSelectorUi extends Plugin {
           searchField: 'title',
           sortField: 'title',
           maxOptions: null,
-          items: [ this._getCommandValue(languageCommand.value) ],
+          items: [ getCommandValue(languageCommand.value) ],
           options: [
-            this.languageList.map((language) => {
-              return { ...language, title: t(language.title) };
-            }),
+            this.languageList.map((language) => ({ ...language, title: t(language.title) })),
           ],
           create: false,
           // Custom rendering functions for options and items
@@ -126,12 +136,12 @@ export default class HelfiLanguageSelectorUi extends Plugin {
           // If the language selection has changed, execute the language command.
           onItemAdd: (languageCode) => {
             if (languageCommand.value !== languageCode) {
-              languageCommand.execute( {
-                languageCode: languageCode,
+              languageCommand.execute({
+                languageCode,
                 textDirection: this.languageList.find(
                   (language) => language.languageCode === languageCode
                 ).textDirection,
-              } );
+              });
               editor.editing.view.focus();
             }
           },
@@ -139,33 +149,20 @@ export default class HelfiLanguageSelectorUi extends Plugin {
           // execute the language command.
           onItemRemove: () =>  {
             if (languageCommand.value) {
-              languageCommand.execute( {
+              languageCommand.execute({
                 languageCode: false,
-              } );
+              });
               editor.editing.view.focus();
             }
           },
         };
+
+        /* global TomSelect */
         tomSelect = new TomSelect(selectListView.element, settings);
       });
 
       return dropdownView;
     });
-
-  }
-
-  /**
-   * Helper function for getting the current active language code.
-   *
-   * @param {string} languageAttribute The language attribute.
-   * @return {*} Returns the language code if found.
-   */
-  _getCommandValue(languageAttribute) {
-    if (!languageAttribute) { return; }
-    const { languageCode } = parseLanguageAttribute(languageAttribute);
-    if (languageCode) {
-      return languageCode;
-    }
   }
 
 }

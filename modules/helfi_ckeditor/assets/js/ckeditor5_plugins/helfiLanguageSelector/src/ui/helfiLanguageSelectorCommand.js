@@ -16,21 +16,21 @@ export default class HelfiLanguageSelectorCommand extends Command {
    * @param {string} languageCode The language code to be applied to the model.
    * @param {string} textDirection The language text direction.
    */
-  execute({ languageCode, textDirection}) {
+  execute({ languageCode, textDirection }) {
     const { model } = this.editor;
     const doc = model.document;
-    const selection = doc.selection;
-    const value = languageCode ? stringifyLanguageAttribute( languageCode, textDirection ) : false;
+    const { selection } = doc;
+    const value = languageCode ? stringifyLanguageAttribute(languageCode, textDirection) : false;
 
-    model.change( writer => {
+    model.change(writer => {
       const firstPosition = selection.getFirstPosition();
       const node = firstPosition.textNode || firstPosition.nodeBefore;
 
       // If only the cursor is selected.
-      if ( selection.isCollapsed ) {
-        if ( value ) {
+      if (selection.isCollapsed) {
+        if (value) {
           // Write the value to selection.
-          writer.setSelectionAttribute( 'helfiLanguageSelector', value );
+          writer.setSelectionAttribute('helfiLanguageSelector', value);
         } else if (node) {
           // If there is no value, we should remove the helfiLanguageSelector
           // attributes. If there is node found, remove the attributes from the
@@ -38,24 +38,25 @@ export default class HelfiLanguageSelectorCommand extends Command {
           writer.removeAttribute('helfiLanguageSelector', writer.createRangeOn(node));
         } else {
           // Remove the helfiLanguageSelector attributes from current selection.
-          writer.removeSelectionAttribute( 'helfiLanguageSelector' );
+          writer.removeSelectionAttribute('helfiLanguageSelector');
         }
       // When there is a selection range selected.
       } else {
-        const ranges = model.schema.getValidRanges( selection.getRanges(), 'helfiLanguageSelector' );
+        const ranges = model.schema.getValidRanges(selection.getRanges(), 'helfiLanguageSelector');
 
-        for ( const range of ranges ) {
-          if ( value ) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const range of ranges) {
+          if (value) {
             // Write the value to selection.
-            writer.setAttribute( 'helfiLanguageSelector', value, range );
+            writer.setAttribute('helfiLanguageSelector', value, range);
           } else {
             // Remove the helfiLanguageSelector attributes from current
             // selection range.
-            writer.removeAttribute( 'helfiLanguageSelector', range );
+            writer.removeAttribute('helfiLanguageSelector', range);
           }
         }
       }
-    } );
+    });
   }
 
   /**
@@ -66,7 +67,7 @@ export default class HelfiLanguageSelectorCommand extends Command {
     const { selection } = model.document;
 
     this.value = this._getValueFromFirstAllowedNode();
-    this.isEnabled = model.schema.checkAttributeInSelection( selection, 'helfiLanguageSelector' );
+    this.isEnabled = model.schema.checkAttributeInSelection(selection, 'helfiLanguageSelector');
   }
 
   /**
@@ -76,18 +77,20 @@ export default class HelfiLanguageSelectorCommand extends Command {
    * @return {string|false} The attribute value or false.
    */
   _getValueFromFirstAllowedNode() {
-    const model = this.editor.model;
-    const schema = model.schema;
-    const selection = model.document.selection;
+    const { model } = this.editor;
+    const { schema } = model;
+    const { selection } = model.document;
 
-    if ( selection.isCollapsed ) {
-      return selection.getAttribute( 'helfiLanguageSelector' ) || false;
+    if (selection.isCollapsed) {
+      return selection.getAttribute('helfiLanguageSelector') || false;
     }
 
-    for ( const range of selection.getRanges() ) {
-      for ( const item of range.getItems() ) {
-        if ( schema.checkAttribute( item, 'helfiLanguageSelector' ) ) {
-          return item.getAttribute( 'helfiLanguageSelector' ) || false;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const range of selection.getRanges()) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of range.getItems()) {
+        if (schema.checkAttribute(item, 'helfiLanguageSelector')) {
+          return item.getAttribute('helfiLanguageSelector') || false;
         }
       }
     }

@@ -11,8 +11,8 @@ import { getLanguageDirection } from 'ckeditor5/src/utils';
  * @param {string} textDirection The language text direction.
  * @return {string} Returns the human-readable text of lang and dir.
  */
-export function stringifyLanguageAttribute( languageCode, textDirection ) {
-  textDirection = textDirection || getLanguageDirection( languageCode );
+export function stringifyLanguageAttribute(languageCode, textDirection) {
+  textDirection = textDirection || getLanguageDirection(languageCode);
   return `${ languageCode }:${ textDirection }`;
 }
 
@@ -25,7 +25,7 @@ export function stringifyLanguageAttribute( languageCode, textDirection ) {
  * * languageCode - The language code in the ISO 639 format.
  * * textDirection - The language text direction.
  */
-export function parseLanguageAttribute( str ) {
-  const [ languageCode, textDirection ] = str.split( ':' );
+export function parseLanguageAttribute(str) {
+  const [ languageCode, textDirection ] = str.split(':');
   return { languageCode, textDirection };
 }

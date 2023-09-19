@@ -30,53 +30,52 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
    * @inheritDoc
    */
   init() {
-    const editor = this.editor;
+    const { editor } = this;
+    const { conversion } = this.editor;
 
     // Add helfiLanguageSelector model as an allowed attribute for '$text' nodes.
-    editor.model.schema.extend( '$text', { allowAttributes: 'helfiLanguageSelector' } );
-    editor.model.schema.setAttributeProperties( 'helfiLanguageSelector', {
+    editor.model.schema.extend('$text', { allowAttributes: 'helfiLanguageSelector' });
+    editor.model.schema.setAttributeProperties('helfiLanguageSelector', {
       copyOnEnter: true
-    } );
-
-    const conversion = this.editor.conversion;
+    });
 
     // Define 'upcast' converter for helfiLanguageSelector.
-    conversion.for( 'upcast' ).elementToAttribute( {
+    conversion.for('upcast').elementToAttribute({
       model: {
         key: 'helfiLanguageSelector',
-        value: ( viewElement ) => {
-          const languageCode = viewElement.getAttribute( 'lang' );
-          const textDirection = viewElement.getAttribute( 'dir' );
-          return stringifyLanguageAttribute( languageCode, textDirection );
+        value: (viewElement) => {
+          const languageCode = viewElement.getAttribute('lang');
+          const textDirection = viewElement.getAttribute('dir');
+          return stringifyLanguageAttribute(languageCode, textDirection);
         }
       },
       view: {
         name: 'span',
         attributes: { lang: /[\s\S]+/ }
       }
-    } );
+    });
 
     // Define 'downcast' converter for helfiLanguageSelector.
-    conversion.for( 'downcast' ).attributeToElement( {
+    conversion.for('downcast').attributeToElement({
       model: 'helfiLanguageSelector',
-      view: ( attributeValue, { writer }, data ) => {
+      view: (attributeValue, { writer }, data) => {
 
-        if ( !attributeValue ) {
+        if (!attributeValue) {
           return;
         }
 
-        if ( !data.item.is( '$textProxy' ) && !data.item.is( 'documentSelection' ) ) {
+        if (!data.item.is('$textProxy') && !data.item.is('documentSelection')) {
           return;
         }
 
-        const { languageCode, textDirection } = parseLanguageAttribute( attributeValue );
+        const { languageCode, textDirection } = parseLanguageAttribute(attributeValue);
 
-        return writer.createAttributeElement( 'span', {
+        return writer.createAttributeElement('span', {
           lang: languageCode,
           dir: textDirection
-        } );
+        });
       }
-    } );
+    });
 
     // Add helfiLanguageSelectorCommand.
     editor.commands.add(
