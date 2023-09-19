@@ -6,6 +6,7 @@
     "es6": true
   },
   "extends": [
+    "airbnb-base",
     "prettier",
     "plugin:import/recommended"
   ],
@@ -33,12 +34,11 @@
     "tabbable": true
   },
   "rules": {
-    "prefer-arrow-callback":["off"],
-    "quotes": ["warn", "single"],
-    "semi": ["error", "always"],
+    "arrow-spacing": ["warn", { "before": true, "after": true }],
+    "comma-spacing": ["warn", { "before": false, "after": true }],
     "consistent-return": ["off"],
-    "no-underscore-dangle": ["off"],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
     "max-nested-callbacks": ["warn", 5],
     "no-plusplus": [
       "warn",
@@ -48,6 +48,20 @@
     ],
     "no-param-reassign": ["off"],
     "no-prototype-builtins": ["off"],
+    "no-unused-vars": ["warn"],
+    "no-underscore-dangle": ["off"],
+    "no-whitespace-before-property": "warn",
+    "object-curly-spacing": ["error", "always"],
+    "operator-linebreak": [
+      "error",
+      "after",
+      { "overrides": { "?": "ignore", ":": "ignore" } }
+    ],
+    "prefer-arrow-callback":["off"],
+    "quotes": ["warn", "single"],
+    "semi": ["error", "always"],
+    "space-in-parens": ["warn", "never"],
+    "space-before-function-paren": ["error", "never"],
     "valid-jsdoc": [
       "warn",
       {
@@ -57,12 +71,6 @@
         },
         "requireReturn": false
       }
-    ],
-    "no-unused-vars": ["warn"],
-    "operator-linebreak": [
-      "error",
-      "after",
-      { "overrides": { "?": "ignore", ":": "ignore" } }
     ]
   }
 }
