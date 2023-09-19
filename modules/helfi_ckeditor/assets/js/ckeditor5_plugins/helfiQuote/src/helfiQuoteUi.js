@@ -22,7 +22,7 @@ export default class HelfiQuoteUi extends Plugin {
 
     // Register the helfiQuote toolbar button.
     editor.ui.componentFactory.add('helfiQuote', (locale) => {
-      const quoteCommand = this.editor.commands.get( 'helfiQuoteCommand' );
+      const quoteCommand = this.editor.commands.get('helfiQuoteCommand');
 
       // Create the dropdown view.
       this.dropdownView = createDropdown(locale);
@@ -65,23 +65,23 @@ export default class HelfiQuoteUi extends Plugin {
         this.quoteFormView = new HelfiQuoteForm(locale, this.editor);
 
         // Execute link command after clicking the "Save" button.
-        this.listenTo( this.quoteFormView, 'submit', () => {
+        this.listenTo(this.quoteFormView, 'submit', () => {
           const quoteText = this.quoteFormView.textAreaView.textArea.fieldView.element.value || false;
           const author = this.quoteFormView.authorInputView.fieldView.element.value || false;
-          quoteCommand.execute( { quoteText: quoteText, author: author } );
+          quoteCommand.execute({ quoteText, author });
           this._closeFormView();
-        } );
+        });
 
         // Hide the panel after clicking the "Cancel" button.
-        this.listenTo( this.quoteFormView, 'cancel', () => {
+        this.listenTo(this.quoteFormView, 'cancel', () => {
           this._closeFormView();
-        } );
+        });
 
         // Close the panel on esc key press when the **form has focus**.
         this.quoteFormView.keystrokes.set('Esc', (data, cancel) => {
           this._closeFormView();
           cancel();
-        } );
+        });
 
         // Add the quoteFormView to dropdown panelView and set it to south-west.
         this.dropdownView.panelView.children.add(this.quoteFormView);
@@ -108,20 +108,22 @@ export default class HelfiQuoteUi extends Plugin {
    * Add the selected text to Quote as a default value or edit existing Quote.
    */
   _updateQuoteDefaultValues() {
-    const model = this.editor.model;
-    const selection = model.document.selection;
+    const { model } = this.editor;
+    const { selection } = model.document;
 
     // If there is a non collapsed selection, use the selection data as
     // the default value for the textarea (quote text).
     if (this.quoteFormView) {
       if (!selection.isCollapsed) {
+        // eslint-disable-next-line no-restricted-syntax
         for (const range of selection.getRanges()) {
+          // eslint-disable-next-line no-restricted-syntax
           for (const item of range.getItems()) {
             if (item.data) {
               if (item.textNode?.parent?.name === 'helfiQuoteText' || item.textNode?.parent?.name === 'paragraph') {
                 this.quoteFormView.textAreaView.updateValueBasedOnSelection(item.data);
               }
-              this.quoteFormView.authorInputView.isEmpty = item.textNode?.parent?.name === 'helfiQuoteFooterCite' ? false : true;
+              this.quoteFormView.authorInputView.isEmpty = item.textNode?.parent?.name !== 'helfiQuoteFooterCite';
               this.quoteFormView.authorInputView.fieldView.element.value = item.textNode?.parent?.name === 'helfiQuoteFooterCite' ? item.data : '';
 
               this.quoteFormView.focus();
