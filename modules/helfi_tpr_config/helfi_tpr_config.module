@@ -7,7 +7,10 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_tpr_config\Entity\ServiceList;
@@ -474,4 +477,21 @@ function helfi_tpr_config_form_views_exposed_form_alter(&$form, $form_state) : v
       ->get('field_unit_search_meta_placehold')
       ->value;
   }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_type) : array {
+  $fields = [];
+
+  if ($entity_type->id() === 'tpr_service') {
+    $fields['hide_service_points'] = BaseFieldDefinition::create('boolean')
+    ->setLabel(new TranslatableMarkup('Hide service points'))
+    ->setDescription(new TranslatableMarkup('Hide automatic service units listing'))
+    ->setTranslatable(TRUE)
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
+  }
+  return $fields;
 }

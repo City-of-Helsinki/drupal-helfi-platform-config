@@ -7,6 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\linkit\Entity\Profile;
 
 /**
@@ -251,4 +254,26 @@ function helfi_tpr_config_update_9042(): void {
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
+}
+
+/**
+ * UHF-8717: Add a field to tpr_service and re-import configs.
+ */
+function helfi_tpr_config_update_9043() : void {
+  $fields = [];
+  $fields['hide_service_points'] = BaseFieldDefinition::create('boolean')
+    ->setLabel(new TranslatableMarkup('Hide service points'))
+    ->setDescription(new TranslatableMarkup('Hide automatic service units listing'))
+    ->setTranslatable(TRUE)
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
+
+  foreach ($fields as $name => $field) {
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($name, 'tpr_service', 'helfi_tpr_config', $field);
+  }
+
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+  ->update('helfi_tpr_config');
 }
