@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+
+msgid "Hide service units listing"
+msgstr "Piilota palvelupaikkojen listaus"
+
+msgid "Select this if you link from the page to a filter search or another listing."
+msgstr "Valitse tämä, jos linkität sivulta palvelupaikkojen suodatushakuun tai muuhun listaukseen."
