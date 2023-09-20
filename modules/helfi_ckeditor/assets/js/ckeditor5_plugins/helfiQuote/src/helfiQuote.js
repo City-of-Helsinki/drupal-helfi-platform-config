@@ -24,5 +24,4 @@ export default class HelfiQuote extends Plugin {
       HelfiQuoteUi
     ];
   }
-
 }

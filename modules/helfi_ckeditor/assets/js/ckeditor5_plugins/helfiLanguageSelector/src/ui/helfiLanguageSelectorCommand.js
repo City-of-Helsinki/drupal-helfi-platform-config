@@ -16,21 +16,21 @@ export default class HelfiLanguageSelectorCommand extends Command {
    * @param {string} languageCode The language code to be applied to the model.
    * @param {string} textDirection The language text direction.
    */
-  execute({ languageCode, textDirection}) {
+  execute({ languageCode, textDirection }) {
     const { model } = this.editor;
     const doc = model.document;
-    const selection = doc.selection;
-    const value = languageCode ? stringifyLanguageAttribute( languageCode, textDirection ) : false;
+    const { selection } = doc;
+    const value = languageCode ? stringifyLanguageAttribute(languageCode, textDirection) : false;
 
-    model.change( writer => {
+    model.change(writer => {
       const firstPosition = selection.getFirstPosition();
       const node = firstPosition.textNode || firstPosition.nodeBefore;
 
       // If only the cursor is selected.
-      if ( selection.isCollapsed ) {
-        if ( value ) {
+      if (selection.isCollapsed) {
+        if (value) {
           // Write the value to selection.
-          writer.setSelectionAttribute( 'helfiLanguageSelector', value );
+          writer.setSelectionAttribute('helfiLanguageSelector', value);
         } else if (node) {
           // If there is no value, we should remove the helfiLanguageSelector
           // attributes. If there is node found, remove the attributes from the
@@ -38,24 +38,28 @@ export default class HelfiLanguageSelectorCommand extends Command {
           writer.removeAttribute('helfiLanguageSelector', writer.createRangeOn(node));
         } else {
           // Remove the helfiLanguageSelector attributes from current selection.
-          writer.removeSelectionAttribute( 'helfiLanguageSelector' );
+          writer.removeSelectionAttribute('helfiLanguageSelector');
         }
       // When there is a selection range selected.
       } else {
-        const ranges = model.schema.getValidRanges( selection.getRanges(), 'helfiLanguageSelector' );
+        const ranges = model.schema.getValidRanges(selection.getRanges(), 'helfiLanguageSelector');
+        let range = ranges.next();
 
-        for ( const range of ranges ) {
-          if ( value ) {
+        while (!range.done) {
+          const currentRange = range.value;
+
+          if (value) {
             // Write the value to selection.
-            writer.setAttribute( 'helfiLanguageSelector', value, range );
+            writer.setAttribute('helfiLanguageSelector', value, currentRange);
           } else {
-            // Remove the helfiLanguageSelector attributes from current
-            // selection range.
-            writer.removeAttribute( 'helfiLanguageSelector', range );
+            // Remove the helfiLanguageSelector attributes from the current selection range.
+            writer.removeAttribute('helfiLanguageSelector', currentRange);
           }
+          // Move to the next value.
+          range = ranges.next();
         }
       }
-    } );
+    });
   }
 
   /**
@@ -66,7 +70,7 @@ export default class HelfiLanguageSelectorCommand extends Command {
     const { selection } = model.document;
 
     this.value = this._getValueFromFirstAllowedNode();
-    this.isEnabled = model.schema.checkAttributeInSelection( selection, 'helfiLanguageSelector' );
+    this.isEnabled = model.schema.checkAttributeInSelection(selection, 'helfiLanguageSelector');
   }
 
   /**
@@ -76,22 +80,31 @@ export default class HelfiLanguageSelectorCommand extends Command {
    * @return {string|false} The attribute value or false.
    */
   _getValueFromFirstAllowedNode() {
-    const model = this.editor.model;
-    const schema = model.schema;
-    const selection = model.document.selection;
+    const { model } = this.editor;
+    const { schema } = model;
+    const { selection } = model.document;
 
-    if ( selection.isCollapsed ) {
-      return selection.getAttribute( 'helfiLanguageSelector' ) || false;
+    if (selection.isCollapsed) {
+      return selection.getAttribute('helfiLanguageSelector') || false;
     }
 
-    for ( const range of selection.getRanges() ) {
-      for ( const item of range.getItems() ) {
-        if ( schema.checkAttribute( item, 'helfiLanguageSelector' ) ) {
-          return item.getAttribute( 'helfiLanguageSelector' ) || false;
+    const ranges = selection.getRanges();
+    let range = ranges.next();
+
+    while (!range.done) {
+      const currentRange = range.value;
+      const items = currentRange.getItems();
+      let currentItem = items.next();
+
+      while (!currentItem.done) {
+        const item = currentItem.value;
+        if (schema.checkAttribute(item, 'helfiLanguageSelector')) {
+          return item.getAttribute('helfiLanguageSelector') || false;
         }
+        currentItem = items.next();
       }
+      range = ranges.next();
     }
-
     return false;
   }
 }

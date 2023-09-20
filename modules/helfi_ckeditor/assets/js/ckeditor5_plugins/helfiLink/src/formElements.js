@@ -73,7 +73,4 @@ const formElements = {
     group: 'advanced',
   },
 };
-
-export {
-  formElements,
-};
+export default formElements;

@@ -8,8 +8,8 @@ export default class HelfiDetailsView extends View {
   /**
    * @inheritDoc
    */
-  constructor( locale, children ) {
-    super( locale );
+  constructor(locale, children) {
+    super(locale);
     this.advancedChildren = children;
     const bind = this.bindTemplate;
 
@@ -20,7 +20,7 @@ export default class HelfiDetailsView extends View {
      * @default true
      * @member {Boolean} #isEnabled
      */
-    this.set( 'isOpen', false );
+    this.set('isOpen', false);
 
     /**
      * The text of the label associated with the details view.
@@ -28,7 +28,7 @@ export default class HelfiDetailsView extends View {
      * @observable
      * @member {String} #label
      */
-    this.set( 'label' );
+    this.set('label');
 
     /**
      * The HTML `id` attribute to be assigned to the details.
@@ -37,7 +37,7 @@ export default class HelfiDetailsView extends View {
      * @default null
      * @member {String|null} #id
      */
-    this.set( 'id', null );
+    this.set('id', null);
 
     /**
      * The collection of the child views inside of the details {@link #element}.
@@ -55,30 +55,30 @@ export default class HelfiDetailsView extends View {
      */
     this.detailsSummary = this._createDetailsSummary();
 
-    this.setTemplate( {
+    this.setTemplate({
       tag: 'details',
 
       attributes: {
-        id: bind.to( 'id' ),
+        id: bind.to('id'),
         class: [
           'ck-helfi-link-details',
-          bind.if( 'isOpen', 'ck-is-open', isOpen => isOpen )
+          bind.if('isOpen', 'ck-is-open', isOpen => isOpen)
         ],
         open: bind.if('isOpen'),
       },
 
       on: {
-        keydown: bind.to( evt => {
+        keydown: bind.to(evt => {
           // Need to check target. Otherwise, we would handle space press on
           // input[type=text] and it would change checked property
           // twice due to default browser handling kicking in too.
-          if ( evt.target === this.element && evt.keyCode === getCode( 'space' ) ) {
+          if (evt.target === this.element && evt.keyCode === getCode('space')) {
             this.isOpen = !this.isOpen;
           }
-        } ),
+        }),
       },
       children: this.children,
-    } );
+    });
   }
 
   /**
@@ -87,8 +87,8 @@ export default class HelfiDetailsView extends View {
   render() {
     super.render();
 
-    this.children.add( this.detailsSummary );
-    this.children.addMany( this.advancedChildren );
+    this.children.add(this.detailsSummary);
+    this.children.addMany(this.advancedChildren);
   }
 
   /**
@@ -101,7 +101,7 @@ export default class HelfiDetailsView extends View {
   _createDetailsSummary() {
     const detailsSummaryView = new View();
 
-    detailsSummaryView.setTemplate( {
+    detailsSummaryView.setTemplate({
       tag: 'summary',
       attributes: {
         role: 'button',
@@ -115,7 +115,7 @@ export default class HelfiDetailsView extends View {
           text: this.bindTemplate.to('label')
         }
       ],
-    } );
+    });
     return detailsSummaryView;
   }
 

@@ -4,6 +4,35 @@
  */
 import { Command } from 'ckeditor5/src/core';
 
+/**
+ * Create the helfiQuote element for the editor.
+ *
+ * @param {object} writer The model writer.
+ * @param {string} quoteText The quote text.
+ * @param {string} author The Source / author.
+ * @return {*} Returns the element to be added to the editor.
+ */
+function createQuote(writer, quoteText, author) {
+  const helfiQuote = writer.createElement('helfiQuote');
+  const helfiQuoteText = writer.createElement('helfiQuoteText');
+  const helfiQuoteFooter = writer.createElement('helfiQuoteFooter');
+  const helfiQuoteFooterCite = writer.createElement('helfiQuoteFooterCite');
+
+  // Append the quote text and author elements to the helfiQuote.
+  writer.append(helfiQuoteText, helfiQuote);
+  writer.insertText(quoteText, helfiQuoteText);
+
+  // Do not add the author if it's not available.
+  if (author) {
+    writer.append(helfiQuoteFooter, helfiQuote);
+    writer.append(helfiQuoteFooterCite, helfiQuoteFooter);
+    writer.insertText(author, helfiQuoteFooterCite);
+  }
+
+  // Return the element to be added to the editor.
+  return helfiQuote;
+}
+
 export default class HelfiQuoteCommand extends Command {
 
   /**
@@ -14,13 +43,13 @@ export default class HelfiQuoteCommand extends Command {
    * @param {string} quoteText The quote text.
    * @param {string} author The Source / author.
    */
-  execute({ quoteText, author}) {
+  execute({ quoteText, author }) {
     const { model } = this.editor;
 
-    model.change( writer => {
-      if ( !quoteText ) { return; }
-      model.insertContent(this._createQuote(writer, quoteText, author));
-    } );
+    model.change(writer => {
+      if (!quoteText) { return; }
+      model.insertContent(createQuote(writer, quoteText, author));
+    });
   }
 
   /**
@@ -45,35 +74,6 @@ export default class HelfiQuoteCommand extends Command {
     // Set value based on selection to set it as default value for the
     // new quote.
     // this.value = this._getValueFromFirstAllowedNode();
-  }
-
-  /**
-   * Create the helfiQuote element for the editor.
-   *
-   * @param {object} writer The model writer.
-   * @param {string} quoteText The quote text.
-   * @param {string} author The Source / author.
-   * @return {*} Returns the element to be added to the editor.
-   */
-  _createQuote(writer, quoteText, author) {
-    const helfiQuote = writer.createElement('helfiQuote');
-    const helfiQuoteText = writer.createElement('helfiQuoteText');
-    const helfiQuoteFooter = writer.createElement('helfiQuoteFooter');
-    const helfiQuoteFooterCite = writer.createElement('helfiQuoteFooterCite');
-
-    // Append the quote text and author elements to the helfiQuote.
-    writer.append(helfiQuoteText, helfiQuote);
-    writer.insertText( quoteText, helfiQuoteText );
-
-    // Do not add the author if it's not available.
-    if (author) {
-      writer.append(helfiQuoteFooter, helfiQuote);
-      writer.append(helfiQuoteFooterCite, helfiQuoteFooter);
-      writer.insertText( author, helfiQuoteFooterCite );
-    }
-
-    // Return the element to be added to the editor.
-    return helfiQuote;
   }
 
 }
