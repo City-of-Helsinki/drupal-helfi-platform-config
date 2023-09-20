@@ -197,12 +197,7 @@ export default class HelfiLinkUi extends Plugin {
       // The advanced settings (details summary element) is not bound to
       // any element. It is needed to close manually initially.
       if (linkFormView.advancedSettings) {
-        linkFormView.advancedSettings.element.open = true;
-        // linkFormView.advancedSettings.element.open = false;
-
-        // TODO: link confirm ei toimi...
-
-
+        linkFormView.advancedSettings.element.open = false;
         linkFormView.advancedSettings.detailsSummary.element.ariaExpanded = false;
         linkFormView.advancedSettings.detailsSummary.element.ariaPressed = false;
       }

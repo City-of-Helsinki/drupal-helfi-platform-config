@@ -43,17 +43,20 @@ export default class HelfiLanguageSelectorCommand extends Command {
       // When there is a selection range selected.
       } else {
         const ranges = model.schema.getValidRanges(selection.getRanges(), 'helfiLanguageSelector');
+        let range = ranges.next();
 
-        // eslint-disable-next-line no-restricted-syntax
-        for (const range of ranges) {
+        while (!range.done) {
+          const currentRange = range.value;
+
           if (value) {
             // Write the value to selection.
-            writer.setAttribute('helfiLanguageSelector', value, range);
+            writer.setAttribute('helfiLanguageSelector', value, currentRange);
           } else {
-            // Remove the helfiLanguageSelector attributes from current
-            // selection range.
-            writer.removeAttribute('helfiLanguageSelector', range);
+            // Remove the helfiLanguageSelector attributes from the current selection range.
+            writer.removeAttribute('helfiLanguageSelector', currentRange);
           }
+          // Move to the next value.
+          range = ranges.next();
         }
       }
     });
@@ -85,16 +88,23 @@ export default class HelfiLanguageSelectorCommand extends Command {
       return selection.getAttribute('helfiLanguageSelector') || false;
     }
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const range of selection.getRanges()) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of range.getItems()) {
+    const ranges = selection.getRanges();
+    let range = ranges.next();
+
+    while (!range.done) {
+      const currentRange = range.value;
+      const items = currentRange.getItems();
+      let currentItem = items.next();
+
+      while (!currentItem.done) {
+        const item = currentItem.value;
         if (schema.checkAttribute(item, 'helfiLanguageSelector')) {
           return item.getAttribute('helfiLanguageSelector') || false;
         }
+        currentItem = items.next();
       }
+      range = ranges.next();
     }
-
     return false;
   }
 }
