@@ -115,12 +115,21 @@ export default class HelfiQuoteUi extends Plugin {
     // the default value for the textarea (quote text).
     if (this.quoteFormView) {
       if (!selection.isCollapsed) {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const range of selection.getRanges()) {
-          // eslint-disable-next-line no-restricted-syntax
-          for (const item of range.getItems()) {
+        const ranges = selection.getRanges();
+        let range = ranges.next();
+
+        while (!range.done) {
+          const currentRange = range.value;
+          const items = currentRange.getItems();
+          let currentItem = items.next();
+
+          while (!currentItem.done) {
+            const item = currentItem.value;
             if (item.data) {
-              if (item.textNode?.parent?.name === 'helfiQuoteText' || item.textNode?.parent?.name === 'paragraph') {
+              if (
+                item.textNode?.parent?.name === 'helfiQuoteText' ||
+                item.textNode?.parent?.name === 'paragraph'
+              ) {
                 this.quoteFormView.textAreaView.updateValueBasedOnSelection(item.data);
               }
               this.quoteFormView.authorInputView.isEmpty = item.textNode?.parent?.name !== 'helfiQuoteFooterCite';
@@ -128,7 +137,9 @@ export default class HelfiQuoteUi extends Plugin {
 
               this.quoteFormView.focus();
             }
+            currentItem = items.next();
           }
+          range = ranges.next();
         }
       }
       else {

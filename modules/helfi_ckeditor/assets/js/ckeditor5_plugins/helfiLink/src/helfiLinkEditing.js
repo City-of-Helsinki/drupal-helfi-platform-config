@@ -419,14 +419,17 @@ export default class HelfiLinkEditing extends Plugin {
             writer.removeSelectionAttribute(modelName);
           } else {
             const ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
+            let range = ranges.next();
 
-            // eslint-disable-next-line no-restricted-syntax
-            for (const range of ranges) {
+            while (!range.done) {
+              const currentRange = range.value;
+
               if (attributeValues[modelName]) {
-                writer.setAttribute(modelName, attributeValues[modelName], range);
+                writer.setAttribute(modelName, attributeValues[modelName], currentRange);
               } else {
-                writer.removeAttribute(modelName, range);
+                writer.removeAttribute(modelName, currentRange);
               }
+              range = ranges.next();
             }
           }
         });
@@ -486,9 +489,8 @@ export default class HelfiLinkEditing extends Plugin {
           }
 
           // Remove the attribute from specified ranges.
-          // eslint-disable-next-line no-restricted-syntax
-          for (const range of ranges) {
-            writer.removeAttribute(modelName, range);
+          if (Array.isArray(ranges)) {
+            ranges.forEach(range => writer.removeAttribute(modelName, range));
           }
         });
       });
