@@ -90,6 +90,7 @@ hidden:
   field_metatags: true
   field_sidebar_content: true
   has_unit: true
+  hide_service_points: true
   langcode: true
   links: true
   name_override: true

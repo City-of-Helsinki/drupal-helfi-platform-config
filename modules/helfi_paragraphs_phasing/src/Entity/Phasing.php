@@ -17,7 +17,7 @@ class Phasing extends Paragraph implements ParagraphInterface {
    *   heading level.
    */
   public function getHeadingLevel() {
-    $headingLevel = $this->get('field_phasing_item_title_level')
+    $headingLevel = $this->get('field_phasing_title_level')
       ->getString();
 
     return "h$headingLevel";
