@@ -7,7 +7,10 @@ dependencies:
     - field.field.node.announcement.field_announcement_all_pages
     - field.field.node.announcement.field_announcement_content_pages
     - field.field.node.announcement.field_announcement_link
+    - field.field.node.announcement.field_announcement_service_pages
+    - field.field.node.announcement.field_announcement_title
     - field.field.node.announcement.field_announcement_type
+    - field.field.node.announcement.field_announcement_unit_pages
     - node.type.announcement
   module:
     - text
@@ -35,7 +38,9 @@ hidden:
   field_announcement_content_pages: true
   field_announcement_link: true
   field_announcement_service_pages: true
+  field_announcement_title: true
   field_announcement_type: true
   field_announcement_unit_pages: true
   langcode: true
+  published_at: true
   toc_enabled: true
