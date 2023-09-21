@@ -15,7 +15,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class FilterDisabledTranslations implements EventSubscriberInterface {
 
-
   /**
    * The constructor.
    *
