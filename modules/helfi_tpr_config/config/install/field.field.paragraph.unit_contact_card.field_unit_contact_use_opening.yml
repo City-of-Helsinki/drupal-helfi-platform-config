@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_unit_contact_use_opening
+    - paragraphs.paragraphs_type.unit_contact_card
+id: paragraph.unit_contact_card.field_unit_contact_use_opening
+field_name: field_unit_contact_use_opening
+entity_type: paragraph
+bundle: unit_contact_card
+label: 'Show opening hours'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

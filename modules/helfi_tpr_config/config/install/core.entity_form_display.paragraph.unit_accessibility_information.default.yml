@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.unit_accessibility_information.field_unit_accessibility_unit
+    - paragraphs.paragraphs_type.unit_accessibility_information
+id: paragraph.unit_accessibility_information.default
+targetEntityType: paragraph
+bundle: unit_accessibility_information
+mode: default
+content:
+  field_unit_accessibility_unit:
+    type: entity_reference_autocomplete
+    weight: 0
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

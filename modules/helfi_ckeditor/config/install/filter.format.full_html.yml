@@ -21,7 +21,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<br> <p class> <h2> <h3> <h4> <h5> <h6> <dl> <dt> <dd> <blockquote role aria-* cite class> <div role aria-* class> <span role aria-* class dir> <ul type> <ol type start> <strong> <em> <s> <sub> <sup> <a href data-entity-type data-entity-uuid data-entity-substitution aria-label title class id target="_blank" rel> <li> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <footer class> <cite>'
+      allowed_html: '<em> <strong> <cite> <blockquote role aria-* cite class> <ul type> <ol type start> <li> <h2> <h3> <h4> <h5> <h6> <p class=""> <footer class=""> <br> <a href hreflang aria-label class data-design data-icon-start data-is-external data-link-text data-protocol data-selected-icon data-variant rel role target="_blank" title data-entity-type data-entity-uuid data-entity-substitution> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th colspan rowspan> <td colspan rowspan> <tr> <hr> <span role aria-* lang dir class="">'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:

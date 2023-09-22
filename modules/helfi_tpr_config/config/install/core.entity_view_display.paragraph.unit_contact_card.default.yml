@@ -1,0 +1,45 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.unit_contact_card.field_unit_contact_title
+    - field.field.paragraph.unit_contact_card.field_unit_contact_unit
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_address
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_details
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_link
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_opening
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_override
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_phone
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_picture
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_postal
+    - paragraphs.paragraphs_type.unit_contact_card
+id: paragraph.unit_contact_card.default
+targetEntityType: paragraph
+bundle: unit_contact_card
+mode: default
+content:
+  field_unit_contact_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_unit_contact_unit:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_unit_contact_use_address: true
+  field_unit_contact_use_details: true
+  field_unit_contact_use_link: true
+  field_unit_contact_use_opening: true
+  field_unit_contact_use_override: true
+  field_unit_contact_use_phone: true
+  field_unit_contact_use_picture: true
+  field_unit_contact_use_postal: true

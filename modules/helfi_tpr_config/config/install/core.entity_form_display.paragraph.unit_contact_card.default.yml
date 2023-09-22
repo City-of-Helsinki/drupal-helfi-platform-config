@@ -1,0 +1,97 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.unit_contact_card.field_unit_contact_title
+    - field.field.paragraph.unit_contact_card.field_unit_contact_unit
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_address
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_details
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_link
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_opening
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_override
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_phone
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_picture
+    - field.field.paragraph.unit_contact_card.field_unit_contact_use_postal
+    - paragraphs.paragraphs_type.unit_contact_card
+id: paragraph.unit_contact_card.default
+targetEntityType: paragraph
+bundle: unit_contact_card
+mode: default
+content:
+  field_unit_contact_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_contact_unit:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_contact_use_address:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_unit_contact_use_details:
+    type: boolean_checkbox
+    weight: 8
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_unit_contact_use_link:
+    type: boolean_checkbox
+    weight: 9
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_unit_contact_use_opening:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_unit_contact_use_override:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_unit_contact_use_phone:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_unit_contact_use_picture:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_unit_contact_use_postal:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
