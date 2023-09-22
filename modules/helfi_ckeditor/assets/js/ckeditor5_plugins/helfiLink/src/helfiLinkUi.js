@@ -343,8 +343,8 @@ export default class HelfiLinkUi extends Plugin {
         evt.stop();
       }
 
-      // Double-check if either of the checkbox values are checked and set both
-      // to false accordingly.
+      // Double-check if either of the checkbox values is not checked and
+      // set both to false accordingly.
       if (!values.linkNewWindowConfirm || !values.linkNewWindow) {
         values.linkNewWindowConfirm = false;
         values.linkNewWindow = false;
@@ -457,30 +457,20 @@ export default class HelfiLinkUi extends Plugin {
           }
           break;
 
-        // Handle checkboxes.
-        case 'checkbox':
-          // Reset the value in case the linkCommand does not have the model.
-          if (
-            !linkCommand[modelName] &&
-            linkFormView[modelName].checkboxInputView.element.checked === true
-          ) {
-            linkFormView[modelName].checkboxInputView.element.click();
-          }
+        // Handle "link new window" checkboxes.
+        case 'checkbox': {
+          // Set the link new window checkbox initial value and the link new
+          // window confirmation checkbox values based on the value
+          // of the element's linkNewWindowConfirm model. The link new window
+          // confirmation gets its value from <a target=_blank> attribute.
+          const isChecked = !!(linkCommand.linkNewWindowConfirm);
 
-          // Show the linkNewWindowConfirm checkbox if the
-          // linkNewWindow checkbox is checked.
-          if (modelName === 'linkNewWindowConfirm') {
-            linkFormView[modelName]._updateVisibility(
-              !!(linkFormView.linkNewWindow.checkboxInputView.isChecked)
-            );
-          }
-
-          // If the checkbox is initially set to true, trigger the click event
-          // for the linkFormView checkbox.
-          if (linkCommand[modelName] && !linkFormView[modelName].checkboxInputView.element.checked) {
-            linkFormView[modelName].checkboxInputView.element.click();
-          }
+          // Set initial value of current "link new window" and
+          // "link new window confirmation" based on isChecked value.
+          linkFormView[modelName].updateChecked(isChecked);
+          linkFormView.linkNewWindowConfirm.updateVisibility(isChecked);
           break;
+        }
 
         default:
           // Note: Copy & pasted from LinkUI.
@@ -510,25 +500,13 @@ export default class HelfiLinkUi extends Plugin {
 
     // Handle link new window and link new window confirmation checkbox linkages.
     linkFormView.linkNewWindow.on('change:isChecked', (evt, name, value) => {
-      // Uncheck the link new window confirmation checkbox if the user unchecks
-      // the link new window checkbox.
-      if (!value) {
-        // Trigger the change event by clicking the element.
-        linkFormView.linkNewWindowConfirm.checkboxInputView.element.click();
-      }
+      // Whenever the link new window checkbox is clicked, we want to ask
+      // confirmation from the user. Uncheck the confirmation checkbox.
+      linkFormView.linkNewWindowConfirm.updateChecked(false);
 
-      // Update the link new window confirmation checkbox visibility based on
-      // user actions on the link new window checkbox.
-      linkFormView.linkNewWindowConfirm._updateVisibility(value);
-    });
-
-    linkFormView.linkNewWindowConfirm.on('change:isChecked', (evt, name, value) => {
-      // Uncheck the link new window checkbox if the use unchecks
-      // the link new window confirmation checkbox.
-      if (!value) {
-        // Trigger the change event by clicking the element.
-        linkFormView.linkNewWindow.checkboxInputView.element.click();
-      }
+      // Update the "link new window confirmation" visibility based on the
+      // value of "link new window" checkbox.
+      linkFormView.linkNewWindowConfirm.updateVisibility(value);
     });
   }
 

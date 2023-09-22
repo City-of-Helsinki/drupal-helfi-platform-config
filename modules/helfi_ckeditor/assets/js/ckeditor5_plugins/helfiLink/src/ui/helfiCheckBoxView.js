@@ -101,7 +101,10 @@ export default class HelfiCheckBoxView extends View {
     this.checkboxSpanToggle = this._createCheckboxSpanToggleView();
 
     // Bind isVisible to updateVisibility method.
-    this.bind('isVisible').to(this, '_updateVisibility');
+    this.bind('isVisible').to(this, 'updateVisibility');
+
+    // Bind isChecked to updateChecked method.
+    this.bind('isChecked').to(this, 'updateChecked');
 
     this.setTemplate({
       tag: 'div',
@@ -241,11 +244,22 @@ export default class HelfiCheckBoxView extends View {
    *
    * @param {boolean} value The boolean value to be set to isVisible property.
    */
-  _updateVisibility(value) {
+  updateVisibility(value) {
     if (value) {
       this.element.classList.remove('is-hidden');
     } else {
       this.element.classList.add('is-hidden');
+    }
+  }
+
+  /**
+   * Update the visibility of the view based on the isVisible property
+   *
+   * @param {boolean} value The boolean value to be set to isVisible property.
+   */
+  updateChecked(value) {
+    if (value !== this.isChecked) {
+      this.checkboxInputView?.element.click();
     }
   }
 }
