@@ -11,16 +11,16 @@ use Drupal\menu_block_current_language\Event\HasTranslationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * #UHF-8910 Filter menu items without enabled translation on current langcode.
+ * UHF-8910 Filter menu items without enabled translation on current langcode.
  */
 final class FilterDisabledTranslations implements EventSubscriberInterface {
 
   /**
    * The constructor.
    *
-   * @param EntityTypeManagerInterface $entityTypeManager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param LanguageManagerInterface $languageManager
+   * @param Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
    */
   public function __construct(
@@ -32,8 +32,7 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents(): array
-  {
+  public static function getSubscribedEvents(): array {
     return [
       Events::HAS_TRANSLATION => [
         ['filter'],
