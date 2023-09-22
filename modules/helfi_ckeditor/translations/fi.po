@@ -32,6 +32,10 @@ msgid "Protocol"
 msgstr "Protokolla"
 
 msgctxt "CKEditor5 Helfi Link plugin"
+msgid "The link URL field cannot be empty."
+msgstr "Linkin osoitekenttä ei voi olla tyhjä."
+
+msgctxt "CKEditor5 Helfi Link plugin"
 msgid "The link meets the accessibility requirements"
 msgstr "Linkki täyttää saavutettavuusvaatimukset"
 

@@ -18,6 +18,10 @@ msgid "The quote cannot be empty"
 msgstr "Citatet får inte vara tomt"
 
 msgctxt "CKEditor5 Helfi Link plugin"
+msgid "The link URL field cannot be empty."
+msgstr "Länkadressfältet får inte vara tomt."
+
+msgctxt "CKEditor5 Helfi Link plugin"
 msgid "When there is no selection, the link URL must be provided. "
 "To add a link without a URL, first select text in the editor and "
 "then proceed with adding the link."
