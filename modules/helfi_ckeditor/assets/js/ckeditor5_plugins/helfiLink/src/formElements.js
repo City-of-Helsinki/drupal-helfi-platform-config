@@ -51,7 +51,6 @@ const formElements = {
   linkNewWindow: {
     label: Drupal.t('Open in new window/tab', {}, { context: 'CKEditor5 Helfi Link plugin' }),
     machineName: 'link-new-window',
-    viewAttribute: 'data-link-new-window',
     type: 'checkbox',
     group: 'advanced',
     isVisible: true,
