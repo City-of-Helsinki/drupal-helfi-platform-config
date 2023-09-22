@@ -306,8 +306,17 @@ export default class HelfiLinkUi extends Plugin {
     // Listen to linkFormView submit and inject form field values to
     // linkCommand arguments.
     this.listenTo(linkFormView, 'submit', (evt) => {
-      const values = models.reduce((state, model) => {
+      // Check for Link URL existence.
+      if (!linkFormView.urlInputView?.fieldView?.element?.value) {
+        linkFormView.urlInputView.errorText = Drupal.t(
+          'The link URL field cannot be empty.',
+          {},
+          { context: 'CKEditor5 Helfi Link plugin' }
+        );
+        evt.stop();
+      }
 
+      const values = models.reduce((state, model) => {
         switch (model) {
           case 'linkVariant': {
             const selectedValue = linkFormView?.[model]?.tomSelect.getValue();
@@ -339,7 +348,11 @@ export default class HelfiLinkUi extends Plugin {
         !linkFormView.urlInputView?.fieldView?.element?.value &&
         values.linkId
       ) {
-        linkFormView.urlInputView.errorText = Drupal.t('When there is no selection, the link URL must be provided. To add a link without a URL, first select text in the editor and then proceed with adding the link.', {}, { context: 'CKEditor5 Helfi Link plugin' });
+        linkFormView.urlInputView.errorText = Drupal.t(
+          'When there is no selection, the link URL must be provided. To add a link without a URL, first select text in the editor and then proceed with adding the link.',
+          {},
+          { context: 'CKEditor5 Helfi Link plugin' }
+        );
         evt.stop();
       }
 
