@@ -47,6 +47,10 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
    *   The event subscribed to.
    */
   public function filter(HasTranslationEvent $event): void {
+    if (!$event->hasTranslation()) {
+      return;
+    }
+
     $link = $event->getLink();
     $metadata = $link->getMetaData();
 
