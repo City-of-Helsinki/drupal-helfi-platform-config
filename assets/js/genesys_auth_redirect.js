@@ -50,7 +50,7 @@ var _genesys = {
             onBeforeChat: function (chat) {
                 _genesys.chat.onReady.push(function (chatWidgetApi) {
                     chatWidgetApi.restoreChat({
-                        serverUrl: "https://asiointi.hel.fi/chat/sote/cobrowse",
+                        serverUrl: "https://chat-proxy.hel.fi/chat/sote/cobrowse",
                         registration: function (done) {
                             done({
                                  service: 'SUUNTE'

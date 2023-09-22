@@ -43,7 +43,7 @@ field_mapper_config:
     existing_translations:
       value: $.existing_translations
 storage_client_id: helfi_hearings
-storage_client_config: null
+storage_client_config: {  }
 persistent_cache_max_age: 3600
 annotation_entity_type_id: null
 annotation_bundle_id: null

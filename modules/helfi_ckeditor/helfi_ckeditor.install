@@ -121,7 +121,7 @@ function helfi_ckeditor_update_9003(): void {
 /**
  * Install ckeditor5 and uninstall ckeditor4.
  */
-function helfi_ckeditor_update_9004(): void {
+function helfi_ckeditor_update_9005(): void {
   $moduleHandler = Drupal::service('module_handler');
 
   if (!$moduleHandler->moduleExists('ckeditor5')) {

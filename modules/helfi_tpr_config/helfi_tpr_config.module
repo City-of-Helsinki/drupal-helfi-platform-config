@@ -7,7 +7,10 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_tpr_config\Entity\ServiceList;
@@ -82,6 +85,8 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'contact_card_listing',
           'map',
           'event_list',
+          'unit_accessibility_information',
+          'unit_contact_card',
         ],
         'field_sidebar_content' => [
           'sidebar_text',
@@ -103,6 +108,8 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'phasing',
           'contact_card_listing',
           'map',
+          'unit_accessibility_information',
+          'unit_contact_card',
         ],
       ],
     ],
@@ -420,6 +427,9 @@ function template_preprocess_tpr_service_lower_content(array &$variables) : void
   }
   if (isset($variables['elements']['#tpr_service'])) {
     $variables['entity'] = $variables['elements']['#tpr_service'];
+    // Get 'hide_service_points' field value and pass it to the template.
+    $hide_service_points = $variables['entity']->get('hide_service_points')->value;
+    $variables['hide_service_points'] = boolval($hide_service_points);
   }
 }
 
@@ -467,4 +477,21 @@ function helfi_tpr_config_form_views_exposed_form_alter(&$form, $form_state) : v
       ->get('field_unit_search_meta_placehold')
       ->value;
   }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_type) : array {
+  $fields = [];
+
+  if ($entity_type->id() === 'tpr_service') {
+    $fields['hide_service_points'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(new TranslatableMarkup('Hide service units listing'))
+      ->setDescription(new TranslatableMarkup('Select this if you link from the page to a filter search or another listing.'))
+      ->setTranslatable(TRUE)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+  }
+  return $fields;
 }
