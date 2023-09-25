@@ -52,8 +52,10 @@ helfi_ckeditor_helfi_quote:
       helfiQuote:
         label: Quote
     elements:
-      - <blockquote class>
-      - <p class>
+      - <blockquote>
+      - <blockquote data-helfi-quote>
+      - <p>
+      - <p data-helfi-quote-text>
       - <footer>
-      - <footer class>
+      - <footer data-helfi-quote-author>
       - <cite>
