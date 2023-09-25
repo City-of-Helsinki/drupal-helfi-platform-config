@@ -30,6 +30,10 @@ Related files.
 
 ## Known issues
 
+### My CKEditor plugin custom elements/attributes do not appear on the "Allowed HTML tags" list
+This is a [known problem](https://www.drupal.org/project/drupal/issues/3271045).
+Just untick and tick the `Limit allowed HTML tags and correct faulty HTML` checkbox in the text format you're adding the plugin to. For example: `/admin/config/content/formats/manage/full_html`
+
 ### Link/Button "external link" icon is missing in CKEditor
 The `data-is-external=true` attribute is not rendered in CKEditor, because the actual rendering of this attribute happens when the markup is being rendered in frontend.
 See: [Helfi link converter](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Plugin/Filter/LinkConverter.php)

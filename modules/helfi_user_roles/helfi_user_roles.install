@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\user\Entity\Role;
+use Drupal\user\Entity\User;
 
 /**
  * Grants required permissions.
@@ -69,5 +70,32 @@ function helfi_user_roles_update_9001() : void {
     'is_admin' => TRUE,
     'weight' => 7,
   ])
+    ->save();
+}
+
+/**
+ * Randomize password for uid 1 user.
+ */
+function helfi_user_roles_update_9002() : void {
+  try {
+    // Attempt to resolve active environment. If this throws an exception, this
+    // is not running in the main instances, and we don't want to change the
+    // password.
+    \Drupal::service('helfi_api_base.environment_resolver')->getActiveEnvironment();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
+  $user = User::load(1);
+  if (empty($user)) {
+    return;
+  }
+
+  // Random password, 192 bits of entropy.
+  $password = base64_encode(random_bytes(24));
+
+  $user
+    ->setPassword($password)
     ->save();
 }
