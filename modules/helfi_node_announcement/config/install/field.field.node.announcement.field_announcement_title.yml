@@ -8,8 +8,8 @@ id: node.announcement.field_announcement_title
 field_name: field_announcement_title
 entity_type: node
 bundle: announcement
-label: 'Assistive technology close button title'
-description: 'Users of assistive technology need a descriptive title to know what announcement they are closing.'
+label: 'Announcement title'
+description: 'This title is only available to users of assistive technology. '
 required: true
 translatable: false
 default_value: {  }
