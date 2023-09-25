@@ -62,76 +62,58 @@ export default class HelfiLinkEditing extends Plugin {
     // Allow link attributes in table cells.
     editor.model.schema.extend('tableCell', { allowContentOf: '$block' });
 
-    // The variants for different scenarios where a link has a following markup:
-    // <a><span class="hds-button__label>{text}</span></a>
-    const helfiButtonLabelSpanVariants = {
-      'data-design': {
-        name: 'a',
-        attributes: {
-          'data-design': true,
-        }
-      },
-      'data-variant': {
-        name: 'a',
-        attributes: {
-          'data-variant': true,
-        }
-      },
-      'class-name': {
-        name: 'a',
-        classes: [
-          'hds-button'
-        ],
-      },
-    };
+    // Remove obsolete <span> element from the link if it exists.
+    editor.conversion.for('upcast').elementToElement({
+      view: { name: 'a' },
+      model: (viewElement) => {
+        const helfiButtonLabel = Array.from(viewElement.getChildren()).find(
+          child =>
+            child.name === 'span' &&
+            child.hasClass('hds-button__label')
+        );
 
-    // Go through each scenario and remove the <span> element from the link.
-    Object.keys(helfiButtonLabelSpanVariants).forEach(variant => {
-      const upcastView = helfiButtonLabelSpanVariants[variant];
+        // Before returning, check if there are obsolete <span> elements
+        // inside the anchor and clear them as well.
+        if (!helfiButtonLabel) {
+          const orphanedSpan = Array.from(viewElement.getChildren()).find(
+            element => {
+              // Check only an existence of span elements.
+              if (element.name && element.name === 'span') {
 
-      // Remove the <span class="hds-button__label"> element from the link
-      // if it exists.
-      editor.conversion.for('upcast').elementToElement({
-        view: upcastView,
-        model: (viewElement) => {
-          const helfiButtonLabel = Array.from(viewElement.getChildren()).find(
-            child =>
-              child.name === 'span' &&
-              child.hasClass('hds-button__label')
+                // Let only language attributes pass,
+                // otherwise return the element.
+                if (
+                  element.getAttribute('dir') ||
+                  element.getAttribute('lang')
+                ) {
+                  return false;
+                }
+                return element;
+              }
+              return false;
+            }
           );
 
-          // Before returning, check if there are obsolete <span> elements
-          // inside the anchor and clear them as well.
-          if (!helfiButtonLabel) {
-            const orphanedSpan = Array.from(viewElement.getChildren()).find(
-              element => (
-                element.name === 'span' &&
-                Array.from(element.getAttributes()).length === 0 &&
-                Array.from(element.getClassNames()).length === 0
-              )
-            );
-
-            // Remove the orphaned <span> and insert its children to the <a>.
-            if (orphanedSpan) {
-              viewElement._removeChildren(orphanedSpan.index, 1);
-              Array.from(orphanedSpan.getChildren()).forEach(child => {
-                viewElement._appendChild(child);
-              });
-            }
-            return;
+          // Remove the orphaned <span> and insert its children to the <a>.
+          if (orphanedSpan) {
+            viewElement._removeChildren(orphanedSpan.index, 1);
+            Array.from(orphanedSpan.getChildren()).forEach(child => {
+              viewElement._appendChild(child);
+            });
           }
+          return;
+        }
 
-          const numOfChildren = Array.from(viewElement.getChildren()).length;
-          if (numOfChildren > 0) {
-            viewElement._removeChildren(0, numOfChildren);
-          }
+        const numOfChildren = Array.from(viewElement.getChildren()).length;
+        if (numOfChildren > 0) {
+          viewElement._removeChildren(0, numOfChildren);
+        }
 
-          Array.from(helfiButtonLabel.getChildren()).forEach(child => {
-            viewElement._appendChild(child);
-          });
-        },
-        converterPriority: 'highest',
-      });
+        Array.from(helfiButtonLabel.getChildren()).forEach(child => {
+          viewElement._appendChild(child);
+        });
+      },
+      converterPriority: 'highest',
     });
 
     // A helper object to map old link button data-attributes and new
@@ -204,6 +186,13 @@ export default class HelfiLinkEditing extends Plugin {
           }
         }
       });
+
+
+      // TODO: Voiko titlen poistaa, mutta säilöö sen markupissa?
+      // TODO: <span visually-hidden> pois
+      // TODO: data-is-external pois
+      //
+
 
       // Convert new data-attribute anchor attribute to matching model.
       editor.conversion.for('upcast').attributeToAttribute({

@@ -55,21 +55,5 @@ const formElements = {
     group: 'advanced',
     isVisible: true,
   },
-  linkTitle: {
-    label: Drupal.t('Title', {}, { context: 'CKEditor5 Helfi Link plugin' }),
-    description: Drupal.t('Populates the title attribute of the link, usually shown as a small tooltip on hover.', {}, { context: 'CKEditor5 Helfi Link plugin' }),
-    machineName: 'link-title',
-    viewAttribute: 'title',
-    type: 'input',
-    group: 'advanced',
-  },
-  linkId: {
-    label: Drupal.t('ID', {}, { context: 'CKEditor5 Helfi Link plugin' }),
-    description: Drupal.t('Allows linking to this content using a URL fragment (#). Must be unique.', {}, { context: 'CKEditor5 Helfi Link plugin' }),
-    machineName: 'link-id',
-    viewAttribute: 'id',
-    type: 'input',
-    group: 'advanced',
-  },
 };
 export default formElements;

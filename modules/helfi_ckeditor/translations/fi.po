@@ -58,22 +58,6 @@ msgid "Title"
 msgstr "Otsikko"
 
 msgctxt "CKEditor5 Helfi Link plugin"
-msgid ""
-"Populates the title attribute of the link, usually shown as a small "
-"tooltip on hover."
-msgstr ""
-"Täyttää linkin otsikko attribuutin, joka näkyy yleensä pienenä "
-"työkaluvihjeenä hiiren osoittimessa."
-
-msgctxt "CKEditor5 Helfi Link plugin"
-msgid ""
-"Allows linking to this content using a URL fragment (#). Must be "
-"unique."
-msgstr ""
-"Sallii linkityksen tähän sisältöön URL-fragmentin (#) avulla. "
-"Täytyy olla uniikki."
-
-msgctxt "CKEditor5 Helfi Link plugin"
 msgid "ID"
 msgstr "ID"
 
