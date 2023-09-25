@@ -30,6 +30,10 @@ Related files.
 
 ## Known issues
 
+### My CKEditor plugin custom elements/attributes do not appear on the "Allowed HTML tags" list
+This is a [known problem](https://www.drupal.org/project/drupal/issues/3271045).
+Just untick and tick the `Limit allowed HTML tags and correct faulty HTML` checkbox in the text format you're adding the plugin to. For example: `/admin/config/content/formats/manage/full_html`
+
 ### Translations
 The CKEditor translations are in use only for the `helfiLanguageSelector` plugin.
 
