@@ -187,13 +187,6 @@ export default class HelfiLinkEditing extends Plugin {
         }
       });
 
-
-      // TODO: Voiko titlen poistaa, mutta säilöö sen markupissa?
-      // TODO: <span visually-hidden> pois
-      // TODO: data-is-external pois
-      //
-
-
       // Convert new data-attribute anchor attribute to matching model.
       editor.conversion.for('upcast').attributeToAttribute({
         view: {
