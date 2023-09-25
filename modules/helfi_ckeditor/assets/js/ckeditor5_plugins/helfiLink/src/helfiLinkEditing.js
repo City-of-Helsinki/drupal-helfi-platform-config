@@ -48,13 +48,162 @@ export default class HelfiLinkEditing extends Plugin {
   }
 
   /**
-   * Converters determine how CKEditor 5 models are converted into markup and
-   * vice-versa.
+   * Convert models and attributes between model <-> view.
    *
-   * <blockquote class="quote">
-   *   <p class="quote__text"></p>
-   *   <footer class="quote__author"><cite></cite></footer>
-   * </blockquote>
+   * @param {string} modelName The model name.
+   * @param {string|object} viewAttribute The view attribute name.
+   */
+  _convertAttribute(modelName, viewAttribute) {
+    const { editor } = this;
+
+    // Nothing to be done if there are no viewAttribute.
+    if (!viewAttribute) { return; }
+
+    // Add current model as an allowed attribute for '$text' nodes.
+    editor.model.schema.extend('$text', { allowAttributes: modelName });
+
+    // Convert attributes for downcast.
+    // Model --> View (DOM / Data).
+    editor.conversion.for('downcast').attributeToElement({
+      model: modelName,
+      view: (modelAttributeValue, { writer }) => {
+        const attributeValues = {};
+
+        // Create attribute values based on the type of view attributes types.
+        if (modelAttributeValue && typeof viewAttribute === 'object') {
+          attributeValues[Object.keys(viewAttribute)] = viewAttribute[Object.keys(viewAttribute)];
+        } else {
+          attributeValues[viewAttribute] = modelAttributeValue;
+        }
+
+        // Create the anchor element with the current attributes.
+        const linkViewElement = writer.createAttributeElement('a', attributeValues, { priority: 5 });
+
+        // Without it the isLinkElement() will not recognize the link
+        // and the UI will not show up when the user clicks a link.
+        writer.setCustomProperty('link', true, linkViewElement);
+
+        return linkViewElement;
+      },
+    });
+
+    // Handle upcast separately for attributes with object as their definitions.
+    if (typeof viewAttribute === 'object') {
+      const viewAttributeKey = Object.keys(viewAttribute)[0];
+      const viewAttributeValue = viewAttribute[Object.keys(viewAttribute)];
+
+      // Convert attributes for upcast.
+      // View (DOM / Data) --> Model.
+      this.editor.conversion.for('upcast').attributeToAttribute({
+        view: {
+          name: 'a',
+          key: viewAttributeKey,
+          value: viewAttributeValue,
+        },
+        model: {
+          key: modelName,
+          value: (viewElement) => !!(viewElement.hasAttribute(viewAttributeKey) &&
+            viewElement.getAttribute(viewAttributeKey) === viewAttributeValue)
+        },
+      });
+    }
+    else {
+      // View (DOM / Data) --> Model.
+      editor.conversion.for('upcast').elementToAttribute({
+        view: {
+          name: 'a',
+          attributes: {
+            [ viewAttribute ]: true
+          }
+        },
+        model: {
+          key: modelName,
+          value: viewElement => viewElement.getAttribute(viewAttribute)
+        }
+      });
+    }
+  }
+
+  /**
+   * Remove attributes on unlink command execution.
+   *
+   * @param {string} modelName The model name.
+   */
+  _removeAttributeOnUnlinkCommandExecute(modelName) {
+    const { editor } = this;
+    const { model } = this.editor;
+    const { selection } = model.document;
+    const unlinkCommand = editor.commands.get('unlink');
+
+    let isUnlinkingInProgress = false;
+
+    // Make sure all changes are in a single undo step.
+    // Cancel the original unlink first in the high priority.
+    unlinkCommand.on('execute', evt => {
+      if (isUnlinkingInProgress) {
+        return;
+      }
+
+      evt.stop();
+
+      // This single block wraps all changes that should be in a single undo step.
+      model.change(() => {
+        // Now, in this single "undo block" let the unlink command flow naturally.
+        isUnlinkingInProgress = true;
+
+        // Do the unlinking within a single undo step.
+        editor.execute('unlink');
+
+        // Let's make sure the next unlinking will also be handled.
+        isUnlinkingInProgress = false;
+
+        // The actual integration that removes the attribute.
+        model.change(writer => {
+          let ranges;
+
+          // Get ranges from collapsed selection.
+          if (selection.isCollapsed) {
+            ranges = [ findAttributeRange(
+              selection.getFirstPosition(),
+              modelName,
+              selection.getAttribute(modelName),
+              model
+            ) ];
+          }
+          // Get ranges from selected elements.
+          else {
+            ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
+          }
+
+          // Remove the attribute from specified ranges.
+          if (Array.isArray(ranges)) {
+            ranges.forEach(range => writer.removeAttribute(modelName, range));
+          }
+        });
+      });
+    }, { priority: 'high' });
+  }
+
+  /**
+   * Keep the attributes updated whenever editor model changes.
+   *
+   * @param {string} modelName The model name.
+   */
+  _refreshAttributeValue(modelName) {
+    const { editor } = this;
+    const { model } = this.editor;
+    const { selection } = model.document;
+    const linkCommand = editor.commands.get('link');
+
+    linkCommand.set(modelName, null);
+
+    model.document.on('change', () => {
+      linkCommand[modelName] = selection.getAttribute(modelName);
+    });
+  }
+
+  /**
+   * Helfi link button aka HDS-button converters.
    */
   _defineHelfiButtonConverters() {
     const { editor } = this;
@@ -262,83 +411,6 @@ export default class HelfiLinkEditing extends Plugin {
   }
 
   /**
-   * Convert models and attributes between model <-> view.
-   *
-   * @param {string} modelName The model name.
-   * @param {string|object} viewAttribute The view attribute name.
-   */
-  _convertAttribute(modelName, viewAttribute) {
-    const { editor } = this;
-
-    // Nothing to be done if there are no viewAttribute.
-    if (!viewAttribute) { return; }
-
-    // Add current model as an allowed attribute for '$text' nodes.
-    editor.model.schema.extend('$text', { allowAttributes: modelName });
-
-    // Convert attributes for downcast.
-    // Model --> View (DOM / Data).
-    editor.conversion.for('downcast').attributeToElement({
-      model: modelName,
-      view: (modelAttributeValue, { writer }) => {
-        const attributeValues = {};
-
-        // Create attribute values based on the type of view attributes types.
-        if (modelAttributeValue && typeof viewAttribute === 'object') {
-          attributeValues[Object.keys(viewAttribute)] = viewAttribute[Object.keys(viewAttribute)];
-        } else {
-          attributeValues[viewAttribute] = modelAttributeValue;
-        }
-
-        // Create the anchor element with the current attributes.
-        const linkViewElement = writer.createAttributeElement('a', attributeValues, { priority: 5 });
-
-        // Without it the isLinkElement() will not recognize the link
-        // and the UI will not show up when the user clicks a link.
-        writer.setCustomProperty('link', true, linkViewElement);
-
-        return linkViewElement;
-      },
-    });
-
-    // Handle upcast separately for attributes with object as their definitions.
-    if (typeof viewAttribute === 'object') {
-      const viewAttributeKey = Object.keys(viewAttribute)[0];
-      const viewAttributeValue = viewAttribute[Object.keys(viewAttribute)];
-
-      // Convert attributes for upcast.
-      // View (DOM / Data) --> Model.
-      this.editor.conversion.for('upcast').attributeToAttribute({
-        view: {
-          name: 'a',
-          key: viewAttributeKey,
-          value: viewAttributeValue,
-        },
-        model: {
-          key: modelName,
-          value: (viewElement) => !!(viewElement.hasAttribute(viewAttributeKey) &&
-            viewElement.getAttribute(viewAttributeKey) === viewAttributeValue)
-        },
-      });
-    }
-    else {
-      // View (DOM / Data) --> Model.
-      editor.conversion.for('upcast').elementToAttribute({
-        view: {
-          name: 'a',
-          attributes: {
-            [ viewAttribute ]: true
-          }
-        },
-        model: {
-          key: modelName,
-          value: viewElement => viewElement.getAttribute(viewAttribute)
-        }
-      });
-    }
-  }
-
-  /**
    * Add attributes to linkCommand during its execution.
    *
    * @param {object} modelNames All model names.
@@ -417,84 +489,6 @@ export default class HelfiLinkEditing extends Plugin {
         });
       });
     }, { priority: 'high' });
-  }
-
-  /**
-   * Remove attributes on unlink command execution.
-   *
-   * @param {string} modelName The model name.
-   */
-  _removeAttributeOnUnlinkCommandExecute(modelName) {
-    const { editor } = this;
-    const { model } = this.editor;
-    const { selection } = model.document;
-    const unlinkCommand = editor.commands.get('unlink');
-
-    let isUnlinkingInProgress = false;
-
-    // Make sure all changes are in a single undo step.
-    // Cancel the original unlink first in the high priority.
-    unlinkCommand.on('execute', evt => {
-      if (isUnlinkingInProgress) {
-        return;
-      }
-
-      evt.stop();
-
-      // This single block wraps all changes that should be in a single undo step.
-      model.change(() => {
-        // Now, in this single "undo block" let the unlink command flow naturally.
-        isUnlinkingInProgress = true;
-
-        // Do the unlinking within a single undo step.
-        editor.execute('unlink');
-
-        // Let's make sure the next unlinking will also be handled.
-        isUnlinkingInProgress = false;
-
-        // The actual integration that removes the attribute.
-        model.change(writer => {
-          let ranges;
-
-          // Get ranges from collapsed selection.
-          if (selection.isCollapsed) {
-            ranges = [ findAttributeRange(
-              selection.getFirstPosition(),
-              modelName,
-              selection.getAttribute(modelName),
-              model
-            ) ];
-          }
-          // Get ranges from selected elements.
-          else {
-            ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
-          }
-
-          // Remove the attribute from specified ranges.
-          if (Array.isArray(ranges)) {
-            ranges.forEach(range => writer.removeAttribute(modelName, range));
-          }
-        });
-      });
-    }, { priority: 'high' });
-  }
-
-  /**
-   * Keep the attributes updated whenever editor model changes.
-   *
-   * @param {string} modelName The model name.
-   */
-  _refreshAttributeValue(modelName) {
-    const { editor } = this;
-    const { model } = this.editor;
-    const { selection } = model.document;
-    const linkCommand = editor.commands.get('link');
-
-    linkCommand.set(modelName, null);
-
-    model.document.on('change', () => {
-      linkCommand[modelName] = selection.getAttribute(modelName);
-    });
   }
 
 }
