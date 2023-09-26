@@ -82,6 +82,7 @@ function helfi_global_announcement_entity_bundle_field_info_alter(
       'announcement_type' => new TranslatableMarkup('Announcement type'),
       'announcement_link_text' => new TranslatableMarkup('Announcement link text'),
       'announcement_link_url' => new TranslatableMarkup('Announcement link url'),
+      'announcement_assistive_technology_close_button_title' => new TranslatableMarkup('Assistive technology close button title'),
     ];
 
     foreach ($entity_info_fields as $field_name => $field_label) {

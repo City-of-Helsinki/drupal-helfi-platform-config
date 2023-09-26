@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.announcement.field_announcement_all_pages
     - field.field.node.announcement.field_announcement_content_pages
     - field.field.node.announcement.field_announcement_link
+    - field.field.node.announcement.field_announcement_title
     - field.field.node.announcement.field_announcement_type
     - node.type.announcement
   module:
@@ -37,6 +38,14 @@ content:
     third_party_settings: {  }
     weight: 3
     region: content
+  field_announcement_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
   field_announcement_type:
     type: list_default
     label: hidden
@@ -55,4 +64,5 @@ hidden:
   field_announcement_service_pages: true
   field_announcement_unit_pages: true
   langcode: true
+  published_at: true
   toc_enabled: true
