@@ -8,8 +8,8 @@ export default class HelfiCheckBoxView extends View {
   /**
    * @inheritDoc
    */
-  constructor( locale ) {
-    super( locale );
+  constructor(locale) {
+    super(locale);
     const bind = this.bindTemplate;
 
     /**
@@ -18,7 +18,7 @@ export default class HelfiCheckBoxView extends View {
      * @observable
      * @member {String} #class
      */
-    this.set( 'class' );
+    this.set('class');
 
     /**
      * Controls whether the checkbox view is visible. Visible by default, the checkboxes are hidden
@@ -28,7 +28,7 @@ export default class HelfiCheckBoxView extends View {
      * @default true
      * @member {Boolean} #isVisible
      */
-    this.set( 'isVisible', true );
+    this.set('isVisible', true);
 
     /**
      * Indicates whether a related checkbox is checked.
@@ -37,7 +37,7 @@ export default class HelfiCheckBoxView extends View {
      * @default false
      * @member {Boolean} #isChecked
      */
-    this.set( 'isChecked', false );
+    this.set('isChecked', false);
 
     /**
      * The text of the label associated with the checkbox view.
@@ -45,7 +45,7 @@ export default class HelfiCheckBoxView extends View {
      * @observable
      * @member {String} #label
      */
-    this.set( 'label' );
+    this.set('label');
 
     /**
      * The text of the label associated with the checkbox view.
@@ -53,7 +53,7 @@ export default class HelfiCheckBoxView extends View {
      * @observable
      * @member {String} #label
      */
-    this.set( 'description' );
+    this.set('description');
 
     /**
      * The HTML `id` attribute to be assigned to the checkbox.
@@ -62,7 +62,7 @@ export default class HelfiCheckBoxView extends View {
      * @default null
      * @member {String|null} #id
      */
-    this.set( 'id', null );
+    this.set('id', null);
 
     /**
      * (Optional) Controls the `tabindex` HTML attribute of the checkbox. By default, the checkbox is focusable
@@ -72,7 +72,7 @@ export default class HelfiCheckBoxView extends View {
      * @default -1
      * @member {String} #tabindex
      */
-    this.set( 'tabindex', -1 );
+    this.set('tabindex', -1);
 
     /**
      * The collection of the child views inside of the checkbox {@link #element}.
@@ -88,7 +88,7 @@ export default class HelfiCheckBoxView extends View {
      * @readonly
      * @member {module:ui/view~View} #labelView
      */
-    this.labelView = this._createLabelView( );
+    this.labelView = this._createLabelView();
 
     /**
      * The input of the checkbox view.
@@ -101,33 +101,35 @@ export default class HelfiCheckBoxView extends View {
     this.checkboxSpanToggle = this._createCheckboxSpanToggleView();
 
     // Bind isVisible to updateVisibility method.
-    this.bind('isVisible').to(this, '_updateVisibility');
+    this.bind('isVisible').to(this, 'updateVisibility');
 
-    this.setTemplate( {
+    // Bind isChecked to updateChecked method.
+    this.bind('isChecked').to(this, 'updateChecked');
+
+    this.setTemplate({
       tag: 'div',
 
       attributes: {
         class: [
           'form-type--checkbox',
           'helfi-link-checkbox',
-          bind.if( 'isVisible', 'is-hidden', value => !value ),
-          bind.to( 'class' ),
+          bind.if('isVisible', 'is-hidden', value => !value),
+          bind.to('class'),
         ],
       },
 
       on: {
-        keydown: bind.to( evt => {
+        keydown: bind.to(evt => {
           // Need to check target. Otherwise, we would handle space press on
           // input[type=text] and it would change checked property twice due
           // to default browser handling kicking in too.
-          if ( evt.target === this.element && evt.keyCode === getCode( 'space' ) ) {
+          if (evt.target === this.element && evt.keyCode === getCode('space')) {
             this.isChecked = !this.isChecked;
           }
-        } ),
+        }),
       },
-
       children: this.children
-    } );
+    });
   }
 
   /**
@@ -136,9 +138,9 @@ export default class HelfiCheckBoxView extends View {
   render() {
     super.render();
 
-    this.children.add( this.checkboxInputView );
-    this.children.add( this.checkboxSpanToggle );
-    this.children.add( this.labelView );
+    this.children.add(this.checkboxInputView);
+    this.children.add(this.checkboxSpanToggle);
+    this.children.add(this.labelView);
   }
 
   /**
@@ -157,19 +159,19 @@ export default class HelfiCheckBoxView extends View {
     const checkboxInputView = new View();
     const bind = this.bindTemplate;
 
-    checkboxInputView.setTemplate( {
+    checkboxInputView.setTemplate({
       tag: 'input',
       attributes: {
         type: 'checkbox',
-        id: bind.to( 'id' ),
+        id: bind.to('id'),
         'checked': bind.if('isChecked'),
       },
       on: {
-        change: bind.to( evt => {
+        change: bind.to(evt => {
           this.isChecked = evt.target.checked;
-        } )
+        })
       }
-    } );
+    });
 
     return checkboxInputView;
   }
@@ -181,6 +183,7 @@ export default class HelfiCheckBoxView extends View {
    */
   _createCheckboxSpanToggleView() {
     const checkboxSpanToggleView = new View();
+    const bind = this.bindTemplate;
 
     /**
      * Markup:
@@ -188,12 +191,13 @@ export default class HelfiCheckBoxView extends View {
      *   <span class="checkbox-toggle__inner"></span>
      * </span>
      */
-    checkboxSpanToggleView.setTemplate( {
+    checkboxSpanToggleView.setTemplate({
       tag: 'span',
       attributes: {
         class: [
           'checkbox-toggle',
         ],
+        id: bind.to('id'),
       },
       children: [
         {
@@ -205,7 +209,7 @@ export default class HelfiCheckBoxView extends View {
           },
         },
       ],
-    } );
+    });
 
     return checkboxSpanToggleView;
   }
@@ -218,19 +222,19 @@ export default class HelfiCheckBoxView extends View {
   _createLabelView() {
     const labelView = new View();
 
-    labelView.setTemplate( {
+    labelView.setTemplate({
       tag: 'label',
 
       attributes: {
-        for: this.bindTemplate.to( 'id' )
+        for: this.bindTemplate.to('id')
       },
 
       children: [
         {
-          text: this.bindTemplate.to( 'label' )
+          text: this.bindTemplate.to('label')
         }
       ]
-    } );
+    });
 
     return labelView;
   }
@@ -240,11 +244,22 @@ export default class HelfiCheckBoxView extends View {
    *
    * @param {boolean} value The boolean value to be set to isVisible property.
    */
-  _updateVisibility(value) {
+  updateVisibility(value) {
     if (value) {
       this.element.classList.remove('is-hidden');
     } else {
       this.element.classList.add('is-hidden');
+    }
+  }
+
+  /**
+   * Update the visibility of the view based on the isVisible property
+   *
+   * @param {boolean} value The boolean value to be set to isVisible property.
+   */
+  updateChecked(value) {
+    if (value !== this.isChecked) {
+      this.checkboxInputView?.element.click();
     }
   }
 }

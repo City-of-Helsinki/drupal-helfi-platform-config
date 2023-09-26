@@ -33,7 +33,7 @@ export default class HelfiQuoteEditing extends Plugin {
   }
 
   init() {
-    const editor = this.editor;
+    const { editor } = this;
 
     this._defineSchema();
     this._defineConverters();
@@ -67,7 +67,7 @@ export default class HelfiQuoteEditing extends Plugin {
    */
   _defineSchema() {
 
-    const schema = this.editor.model.schema;
+    const { schema } = this.editor.model;
 
     schema.register('helfiQuote', {
       // Behaves like a self-contained object.
@@ -213,5 +213,4 @@ export default class HelfiQuoteEditing extends Plugin {
     // Convert the <helfiQuoteFooterCite> model into an editable <cite> element.
     convertDowncast('helfiQuoteFooterCite', 'cite');
   }
-
 }

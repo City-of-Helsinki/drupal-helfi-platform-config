@@ -2,15 +2,28 @@ import { View } from 'ckeditor5/src/ui';
 import { getCode } from 'ckeditor5/src/utils';
 
 /**
- * The HelfiLink details view class.
+ * The HelfiLink base view class.
  */
-export default class HelfiDetailsView extends View {
+export default class HelfiLinkBaseView extends View {
+
   /**
    * @inheritDoc
    */
-  constructor(locale, children) {
-    super(locale);
-    this.advancedChildren = children;
+  constructor(editor, options) {
+    super(editor.locale);
+
+    this.options = options;
+    this.tomSelect = false;
+
+    this.linkCommandConfig = editor.config.get('link');
+    this.loadedIcons = this.linkCommandConfig?.loadedIcons;
+
+    // Initialize the isVisible property
+    this.set('isVisible', false);
+
+    // Add a CSS class to the view when isVisible is false
+    this.bind('isVisible').to(this, 'updateVisibility');
+
     const bind = this.bindTemplate;
 
     /**
@@ -40,33 +53,22 @@ export default class HelfiDetailsView extends View {
     this.set('id', null);
 
     /**
-     * The collection of the child views inside of the details {@link #element}.
+     * The collection of the child views inside the details {@link #element}.
      *
      * @readonly
      * @member {module:ui/viewcollection~ViewCollection}
      */
-    this.children = this.createCollection();
-
-    /**
-     * The input of the details view.
-     *
-     * @readonly
-     * @member {module:ui/view~View} #detailsInputView
-     */
-    this.detailsSummary = this._createDetailsSummary();
-
     this.setTemplate({
-      tag: 'details',
+      tag: 'select',
 
       attributes: {
         id: bind.to('id'),
         class: [
-          'ck-helfi-link-details',
-          bind.if('isOpen', 'ck-is-open', isOpen => isOpen)
+          'ck-helfi-link-select-list',
         ],
-        open: bind.if('isOpen'),
+        'data-placeholder': this.options.label,
+        autocomplete: 'off',
       },
-
       on: {
         keydown: bind.to(evt => {
           // Need to check target. Otherwise, we would handle space press on
@@ -77,8 +79,23 @@ export default class HelfiDetailsView extends View {
           }
         }),
       },
-      children: this.children,
     });
+
+  }
+
+  /**
+   * Update the visibility of the view based on isVisible property.
+   *
+   * @param {boolean} value Truthy value of visibility.
+   */
+  updateVisibility(value) {
+    if (value) {
+      this.tomSelect?.wrapper?.classList.remove('is-hidden');
+      this.element.classList.remove('is-hidden');
+    } else {
+      this.tomSelect?.wrapper?.classList.add('is-hidden');
+      this.element.classList.add('is-hidden');
+    }
   }
 
   /**
@@ -86,9 +103,6 @@ export default class HelfiDetailsView extends View {
    */
   render() {
     super.render();
-
-    this.children.add(this.detailsSummary);
-    this.children.addMany(this.advancedChildren);
   }
 
   /**
@@ -98,25 +112,19 @@ export default class HelfiDetailsView extends View {
     this.element.focus();
   }
 
-  _createDetailsSummary() {
-    const detailsSummaryView = new View();
-
-    detailsSummaryView.setTemplate({
-      tag: 'summary',
-      attributes: {
-        role: 'button',
-        class: [
-          'ck-helfi-link-details__summary',
-        ],
-        'tabindex': 0,
-      },
-      children: [
-        {
-          text: this.bindTemplate.to('label')
-        }
-      ],
-    });
-    return detailsSummaryView;
+  /**
+   * Default options for the Tom Select.
+   *
+   * @return {object} Default options as an object.
+   */
+  selectListDefaultOptions() {
+    return {
+      valueField: 'option',
+      labelField: 'name',
+      searchField: 'title',
+      maxItems: 1,
+      placeholder: this.options.label,
+      create: false,
+    };
   }
-
 }

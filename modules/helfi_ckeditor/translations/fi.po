@@ -32,6 +32,10 @@ msgid "Protocol"
 msgstr "Protokolla"
 
 msgctxt "CKEditor5 Helfi Link plugin"
+msgid "The link URL field cannot be empty."
+msgstr "Linkin osoitekenttä ei voi olla tyhjä."
+
+msgctxt "CKEditor5 Helfi Link plugin"
 msgid "The link meets the accessibility requirements"
 msgstr "Linkki täyttää saavutettavuusvaatimukset"
 
@@ -54,22 +58,6 @@ msgid "Title"
 msgstr "Otsikko"
 
 msgctxt "CKEditor5 Helfi Link plugin"
-msgid ""
-"Populates the title attribute of the link, usually shown as a small "
-"tooltip on hover."
-msgstr ""
-"Täyttää linkin otsikko attribuutin, joka näkyy yleensä pienenä "
-"työkaluvihjeenä hiiren osoittimessa."
-
-msgctxt "CKEditor5 Helfi Link plugin"
-msgid ""
-"Allows linking to this content using a URL fragment (#). Must be "
-"unique."
-msgstr ""
-"Sallii linkityksen tähän sisältöön URL-fragmentin (#) avulla. "
-"Täytyy olla uniikki."
-
-msgctxt "CKEditor5 Helfi Link plugin"
 msgid "ID"
 msgstr "ID"
 
@@ -90,3 +78,11 @@ msgid "When there is no selection, the link URL must be provided. "
 msgstr "Jos et ole maalannut tekstiä, linkin URL-osoite on annettava. "
 "Voit lisätä linkin ilman URL-osoitetta maalaamalla tekstin "
 "editorissa ja jatkamalla sitten linkin lisäämistä."
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Normal link"
+msgstr "Tavallinen linkki"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Icon"
+msgstr "Ikoni"

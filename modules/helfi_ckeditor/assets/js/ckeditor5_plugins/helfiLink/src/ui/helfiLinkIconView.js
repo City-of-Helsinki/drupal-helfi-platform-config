@@ -3,18 +3,15 @@ import HelfiLinkBaseView from './helfiLinkBaseView';
 /**
  * The HelfiLink details view class.
  */
-export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
-
-
+export default class HelfiLinkIconView extends HelfiLinkBaseView {
 
   /**
    * Render function for the Tom Select library.
    *
    * @param {string} element The <select> element to which attach the
    * Tom Select functionality.
-   * @param {object} options The selectListOptions from Form elements config.
    */
-  renderTomSelect(element, options) {
+  renderTomSelect(element) {
     // Render the <select> element.
     if (!this.tomSelect && element) {
 
@@ -23,16 +20,25 @@ export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
       // The template for the Tom Select options and selected items.
       const renderTemplate = (item, escape) => `
           <span style="align-items: center; display: flex; height: 100%;">
-            <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.title)}</span>
+            <span class="hel-icon hel-icon--${item.icon}" aria-hidden="true"></span>
+            <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.name)}</span>
           </span>
         `;
 
       // Settings for the Tom Select.
       const settings = {
         ...defaultConfig,
-        options: Object.keys(options).map(option => ({
-          option,
-          title: options[option]
+        plugins: {
+          dropdown_input: {},
+          remove_button: {
+            title: 'Remove this item',
+          }
+        },
+        valueField: 'icon',
+        searchField: ['name'],
+        options: Object.keys(this.loadedIcons).map(icon => ({
+          icon,
+          name: this.loadedIcons[icon]
         })),
         // Custom rendering functions for options and items
         render: {
@@ -40,6 +46,7 @@ export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
           item: (item, escape) => renderTemplate(item, escape),
         },
       };
+
       /* global TomSelect */
       this.tomSelect = new TomSelect(this.element, settings);
     }

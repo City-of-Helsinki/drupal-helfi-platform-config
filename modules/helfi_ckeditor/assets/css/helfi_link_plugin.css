@@ -3,6 +3,7 @@
   height: auto;
   left: 50vw !important;
   max-width: 700px;
+  min-width: 380px;
   position: fixed;
   top: 50vh !important;
   transform: translate(-50%, -50%);
@@ -27,10 +28,14 @@
 }
 
 /* Dropdown */
+.ck.helfi-link--icon,
+.ck.helfi-link--design,
 .ck.helfi-link--protocol {
   max-width: 160px !important;
 }
 
+.ck.helfi-link--icon .ck-labeled-field-view__input-wrapper,
+.ck.helfi-link--design .ck-labeled-field-view__input-wrapper,
 .ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper {
   background-color: #fff;
   border-radius: .5rem;
@@ -42,6 +47,8 @@
   transition: .15s cubic-bezier(.19, 1, .22, 1);
 }
 
+.ck.helfi-link--icon .ck-labeled-field-view__input-wrapper .ck.ck-label,
+.ck.helfi-link--design .ck-labeled-field-view__input-wrapper .ck.ck-label,
 .ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper .ck.ck-label {
   transform: unset !important;
   max-width: unset !important;
@@ -51,28 +58,58 @@
   top: 14px !important;
 }
 
+.ck.helfi-link--icon .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown,
+.ck.helfi-link--design .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown,
 .ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown {
   height: 100%;
   width: 100%;
 }
 
+.ck.helfi-link--icon .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown .ck-dropdown__button,
+.ck.helfi-link--design .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown .ck-dropdown__button,
 .ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown .ck-dropdown__button {
   min-height: 45px;
   justify-content: flex-end;
 }
 
+.ck.helfi-link--icon .ck-labeled-field-view__input-wrapper .ck.ck-dropdown .ck-dropdown__arrow,
+.ck.helfi-link--design .ck-labeled-field-view__input-wrapper .ck.ck-dropdown .ck-dropdown__arrow,
 .ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper .ck.ck-dropdown .ck-dropdown__arrow {
   right: 10px;
   width: 15px;
   position: absolute;
 }
 
+.ck.helfi-link--icon .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown .ck-dropdown__button.ck-on .ck-dropdown__arrow,
+.ck.helfi-link--design .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown .ck-dropdown__button.ck-on .ck-dropdown__arrow,
 .ck.helfi-link--protocol .ck-labeled-field-view__input-wrapper > .ck.ck-dropdown .ck-dropdown__button.ck-on .ck-dropdown__arrow {
   transform: rotate(180deg);
 }
 
+.ck.helfi-link--icon .ck-list,
+.ck.helfi-link--design .ck-list,
 .ck.helfi-link--protocol .ck-list {
   margin: 0 !important;
+}
+
+/* Link field select list dropdown */
+.ck-helfi-link-select-list.ts-wrapper {
+  margin: 1rem !important;
+}
+
+.ck-helfi-link-select-list .ts-control {
+  padding: calc(0.5rem - 1px) calc(0.75rem - 1px);
+}
+
+/* Link field select list dropdown input */
+.ck-helfi-link-select-list .ts-control input {
+  width: 100%;
+  border: 0 none;
+}
+
+/* Hide TomSelect if original select list is hidden. */
+select.tomselected.is-hidden + .ts-wrapper {
+  display: none;
 }
 
 /* Advanced settings - Details */
@@ -172,7 +209,7 @@
 
 /* Input checkboxes. */
 .ck .helfi-link-checkbox {
-  margin-left: 0.8rem !important;
+  margin-left: 1rem !important;
   margin-top: 1rem;
 }
 
