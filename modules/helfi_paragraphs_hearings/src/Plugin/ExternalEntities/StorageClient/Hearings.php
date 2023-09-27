@@ -140,7 +140,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
 
       $caption = '';
       if (!isset($hearing['main_image']['caption'][$selectedLangcode])) {
-        $caption = isset($hearing['main_image']['caption']['fi']) ?? '';
+        $caption = $hearing['main_image']['caption']['fi'] ?? '';
       }
 
       $item['title'] = $hearing['title'][$selectedLangcode] ?? $hearing['title']['fi'];
