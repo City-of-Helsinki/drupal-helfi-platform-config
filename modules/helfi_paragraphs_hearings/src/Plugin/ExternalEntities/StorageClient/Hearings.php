@@ -146,9 +146,11 @@ final class Hearings extends ExternalEntityStorageClientBase {
         'existing_translations' => implode(',', $existingTranslations),
       ];
 
-      $item['title'] = $hearing['title'][$selectedLangcode] ?? $hearing['title']['fi'];
-      $item['abstract'] = $hearing['abstract'][$selectedLangcode] ?? $hearing['abstract']['fi'];
-      $item['main_image_caption'] = $hearing['main_image']['caption'][$selectedLangcode] ?? $hearing['main_image']['caption']['fi'];
+      $item['title'] = $hearing['title'][$selectedLangcode] ?? $hearing['title']['fi'] ?? '';
+      $item['abstract'] = $hearing['abstract'][$selectedLangcode] ?? $hearing['abstract']['fi'] ?? '';
+      $item['main_image_caption'] = $hearing['main_image']['caption'][$selectedLangcode]
+        ?? $hearing['main_image']['caption']['fi']
+        ?? '';
 
       $data[] = $item;
     }
