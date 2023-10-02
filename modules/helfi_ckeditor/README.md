@@ -34,6 +34,16 @@ Related files.
 This is a [known problem](https://www.drupal.org/project/drupal/issues/3271045).
 Just untick and tick the `Limit allowed HTML tags and correct faulty HTML` checkbox in the text format you're adding the plugin to. For example: `/admin/config/content/formats/manage/full_html`
 
+### Pasting an anchor link to source removes nearly all attributes from anchor
+You need to wrap the anchor to paragraph element to retain the attributes.
+F.e. `<a href="#" data-hds="button">Test</a>` --> `<p><a href="#" data-hds="button">Test</a></p>`
+
+### Link/Button "external link" icon is missing in CKEditor
+The `data-is-external=true` attribute is not rendered in CKEditor, because the actual rendering of this attribute happens when the markup is being rendered in frontend.
+See: [Helfi link converter](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Plugin/Filter/LinkConverter.php)
+#### What if we really, really want to render this icon in CKEditor?
+It can be done by doing an ajax call during each link conversion to a custom endpoint which will ask the [[InternalDomainResolver](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Link/InternalDomainResolver.php)] if the link is external or not. At the time this felt like a big task to do for such a simple indicator.
+
 ### Translations
 The CKEditor translations are in use only for the `helfiLanguageSelector` plugin.
 
