@@ -39,7 +39,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<br> <p> <span role aria-* class lang dir> <ul type> <ol type start> <a hreflang accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol href aria-label class data-icon-start data-variant role data-entity-type data-entity-uuid data-entity-substitution> <strong> <em> <li>'
+      allowed_html: '<br> <p> <span role aria-* class lang dir> <ul type> <ol type start> <a hreflang accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol href aria-label class data-icon-start data-hds data-variant role data-entity-type data-entity-uuid data-entity-substitution> <strong> <em> <li>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
