@@ -320,9 +320,25 @@ export default class HelfiLinkUi extends Plugin {
         switch (model) {
           case 'linkVariant': {
             const selectedValue = linkFormView?.[model]?.tomSelect.getValue();
-            if (selectedValue && selectedValue !== 'link') {
-              state[model] = selectedValue;
+
+            // Return current state if link design has not been selected or
+            // link design is "link".
+            if (!selectedValue || selectedValue === 'link') {
+              return state;
             }
+
+            // Set linkButton model variable if the link design is "primary".
+            // Return the state as we don't want to print out
+            // data-variant="primary" to the anchor tag.
+            if (selectedValue === 'primary') {
+              state.linkButton = 'button';
+              return state;
+            }
+
+            // Set current selection to the state and set "button" as the
+            // linkButton model value.
+            state[model] = selectedValue;
+            state.linkButton = 'button';
             break;
           }
 
@@ -453,6 +469,17 @@ export default class HelfiLinkUi extends Plugin {
 
           // Add the default value for link variant.
           if (modelName === 'linkVariant') {
+
+            // It was decided to remove "primary" variable from anchor tag and
+            // attach "primary" button styles to data-hds variable.
+            // Add the "primary" as default value if data-hds="button" is found.
+            if (
+              linkCommand.linkButton === 'button' &&
+              (!linkCommand[modelName] || linkCommand[modelName] === 'primary')
+            ) {
+              linkFormView[modelName].tomSelect.addItem('primary', true);
+            }
+
             linkFormView[modelName].tomSelect.on('item_add', (selection) => {
               linkFormView?.linkIcon.updateVisibility(selection !== 'link');
 
