@@ -204,75 +204,49 @@ export default class HelfiLinkEditing extends Plugin {
 
   /**
    * Helfi link button aka HDS-button converters.
+   *
+   * With these cast-converters we're able to convert CKEditor 4 markup...
+   *
+   * @code
+   * <a
+   *   href="#"
+   *   class="hds-button hds-button--supplementary"
+   *   data-design="hds-button hds-button--supplementary"
+   *   data-link-text="Link text"
+   *   data-protocol="http"
+   *   data-is-external="true"
+   *   data-selected-icon="download"
+   * >
+   *   <span class="hel-icon hel-icon--download" role="img" aria-hidden="true"></span>
+   *   <span class="hds-button__label">Link text</span>
+   * </a>
+   * @endcode
+   *
+   * ...to this CKEditor5 markup:
+   * @code
+   * <a
+   *   href="#"
+   *   data-icon-start="download"
+   *   data-variant="supplementary"
+   *   data-hds="button"
+   * >Link text</a>
+   * @endcode
+   *
+   * The model will be the following. Check formElements for all defined
+   * custom attribute models.
+   * @code
+   * <paragraph>
+   *   <linkButton><linkHref><linkIcon><linkVariant> Link text
+   * </paragraph>
+   * @endcode
    */
   _defineHelfiButtonConverters() {
     const { editor } = this;
 
     // Allow link attributes in table cells.
-    editor.model.schema.extend('tableCell', { allowContentOf: '$block' });
-
-    // Remove obsolete <span> element from the link if it exists.
-    editor.conversion.for('upcast').elementToElement({
-      view: { name: 'a' },
-      model: (viewElement) => {
-        const helfiButtonLabel = Array.from(viewElement.getChildren()).find(
-          child =>
-            child.name === 'span' &&
-            child.hasClass('hds-button__label')
-        );
-
-        // Before returning, check if there are obsolete <span> elements
-        // inside the anchor and clear them as well.
-        if (!helfiButtonLabel) {
-          const orphanedSpan = Array.from(viewElement.getChildren()).find(
-            element => {
-              // Check only an existence of span elements.
-              if (element.name && element.name === 'span') {
-
-                // Let only language attributes pass,
-                // otherwise return the element.
-                if (
-                  element.getAttribute('dir') ||
-                  element.getAttribute('lang')
-                ) {
-                  return false;
-                }
-                return element;
-              }
-              return false;
-            }
-          );
-
-          // Remove the orphaned <span> and insert its children to the <a>.
-          if (orphanedSpan) {
-            viewElement._removeChildren(orphanedSpan.index, 1);
-            Array.from(orphanedSpan.getChildren()).forEach(child => {
-              viewElement._appendChild(child);
-            });
-          }
-          return;
-        }
-
-        const numOfChildren = Array.from(viewElement.getChildren()).length;
-        if (numOfChildren > 0) {
-          viewElement._removeChildren(0, numOfChildren);
-        }
-
-        Array.from(helfiButtonLabel.getChildren()).forEach(child => {
-          viewElement._appendChild(child);
-        });
-      },
-      converterPriority: 'highest',
-    });
-
-    // A helper object to map old link button data-attributes and new
-    // link button data-attributes.
-    const mapDataAttributes = {
-      'data-design': 'data-variant',
-      'data-protocol': 'data-protocol',
-      'data-selected-icon': 'data-icon-start',
-      'data-is-external': 'data-is-external'
-    };
+    if (editor.model.schema.isRegistered('tableCell')) {
+      editor.model.schema.extend('tableCell', { allowContentOf: '$block' });
+    }
 
     /**
      * Convert the variant from button classes to a usable string.
@@ -296,117 +270,337 @@ export default class HelfiLinkEditing extends Plugin {
       return null;
     };
 
-    // Go through each attribute and convert the attribute to a simplified
-    // anchor element.
-    Object.keys(mapDataAttributes).forEach(cke4Attr => {
-      const { conversion, model } = this.editor;
-
-      const cke5Attr = mapDataAttributes[cke4Attr];
-
-      model.schema.extend('$text', { allowAttributes: cke4Attr });
-      model.schema.extend('$text', { allowAttributes: cke5Attr });
-
-      // Convert old data-attribute anchor attribute to matching model.
-      editor.conversion.for('upcast').attributeToAttribute({
-        view: {
-          name: 'a',
-          key: cke4Attr
-        },
-        model: {
-          key: cke5Attr,
-          value: (viewElement) => {
-            let match;
-
-            if (viewElement.getAttribute(cke4Attr)) {
-              match = viewElement.getAttribute(cke4Attr);
-            }
-            if (viewElement.getAttribute(cke5Attr)) {
-              match = viewElement.getAttribute(cke5Attr);
-            }
-            if (cke4Attr === 'data-design') {
-              match = convertVariants(match);
-            }
-            // We don't need this data-attribute here as it will be generated
-            // by the helfi_link_converter filter plugin.
-            if (cke4Attr === 'data-is-external') {
-              return;
-            }
-            return match;
-          }
+    /**
+     * Convert the icon from icon span classes to a usable string.
+     *
+     * @param {Iterable} items Icon span classes as a string
+     * @return {string|false} Return the icon as a string or null.
+     */
+    const convertIcons = (items) => {
+      let icon = false;
+      let next = items.next();
+      while (!next.done) {
+        const item = next.value;
+        if (item && item.startsWith('hel-icon--')) {
+          icon = item.replace('hel-icon--', '');
+          break;
         }
-      });
+        next = items.next();
+      }
+      return icon;
+    };
 
-      // Convert new data-attribute anchor attribute to matching model.
-      editor.conversion.for('upcast').attributeToAttribute({
-        view: {
-          name: 'a',
-          key: cke5Attr
-        },
-        model: {
-          key: cke5Attr,
-          value: (viewElement) => {
-            let match;
-            if (viewElement.getAttribute(cke5Attr)) {
-              match = viewElement.getAttribute(cke5Attr);
+    // Remove obsolete <span> elements from the anchor tag.
+    editor.conversion.for('upcast').elementToElement({
+      view: { name: 'a' },
+      model: (viewElement) => {
+        const helfiButtonLabel = Array.from(viewElement.getChildren()).find(
+          child =>
+            child.name === 'span' &&
+            child.hasClass('hds-button__label')
+        );
+
+        // Check if current anchor has a hds-button__label span and convert it
+        // to simple text if it exists.
+        if (helfiButtonLabel) {
+          const anchorChildren = Array.from(viewElement.getChildren());
+          const numOfChildren = anchorChildren.length;
+
+          // Remove the span elements from anchor.
+          if (numOfChildren > 0) {
+            viewElement._removeChildren(0, numOfChildren);
+          }
+
+          // Convert possible icon span to data-icon-start.
+          anchorChildren.forEach(child => {
+            if (child.name === 'span' && child.hasClass('hel-icon')) {
+              const icon = convertIcons(child.getClassNames());
+              if (icon) {
+                viewElement._setAttribute('data-icon-start', icon);
+              }
             }
-            return match;
-          }
+          });
+
+          // Add the former span hds-button__label contents to anchor.
+          Array.from(helfiButtonLabel.getChildren()).forEach(child => {
+            viewElement._appendChild(child);
+          });
         }
-      });
 
-      // Convert old data-attribute model to an anchor "attribute" element
-      // in dataDowncast.
-      conversion.for('dataDowncast').attributeToElement({
-        model: cke4Attr,
-        view: (attributeValue, { writer }) => {
-          if (!attributeValue) {
-            return undefined;
+        // Check if there are obsolete <span> elements inside the anchor
+        // and clear them as well.
+        const orphanedSpan = Array.from(viewElement.getChildren()).find(
+          element => {
+            // Check only an existence of span elements.
+            if (element.name && element.name === 'span') {
+
+              // Let only language attributes pass,
+              // otherwise return the element.
+              if (
+                element.getAttribute('dir') ||
+                element.getAttribute('lang')
+              ) {
+                return false;
+              }
+              return element;
+            }
+            return false;
           }
-          return writer.createAttributeElement('a', { [cke5Attr]: attributeValue }, { priority: 5 });
-        },
-      });
+        );
 
-      // Convert new data-attribute model to an anchor "attribute" element
-      // in data downcast.
-      conversion.for('dataDowncast').attributeToElement({
-        model: cke5Attr,
-        view: (attributeValue, { writer }) => {
-          if (!attributeValue) {
-            return undefined;
+        // Remove the orphaned <span> and insert its children to the <a>.
+        if (orphanedSpan) {
+          viewElement._removeChildren(orphanedSpan.index, 1);
+          Array.from(orphanedSpan.getChildren()).forEach(child => {
+            viewElement._appendChild(child);
+          });
+        }
+
+        // Remove obsolete data-protocol attributes.
+        if (
+          viewElement.hasAttribute('data-protocol') &&
+          viewElement.getAttribute('data-protocol').startsWith('http')
+        ) {
+          viewElement._removeAttribute('data-protocol');
+        }
+        return viewElement;
+      },
+      converterPriority: 'highest',
+    });
+
+    // Convert CKE4 data-design attribute to linkVariant model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-design'
+      },
+      model: {
+        key: 'linkVariant',
+        value: (viewElement) => {
+          let match;
+
+          // Trust classes instead of old data-design attribute.
+          if (viewElement.hasClass('hds-button')) {
+            match = convertVariants([...viewElement._classes].join(' '));
+            if (!match) {
+              match = convertVariants(viewElement.getAttribute('data-design'));
+            }
           }
-          return writer.createAttributeElement('a', { [cke5Attr]: attributeValue }, { priority: 5 });
-        },
-      });
 
-      /**
-       * Helper function for the data-attribute conversion.
-       *
-       * @param {string} attributeKey New data-attribute name.
-       * @param {string} attributeValue New data-attribute value.
-       * @param {writer} writer The downcast writer.
-       * @return {editableElement} Returns an editableElement.
-       */
-      const editingDowncast = (attributeKey, attributeValue, writer) => {
+          // We don't need primary variant.
+          if (match && match === 'primary') {
+            match = null;
+          }
+          return match;
+        }
+      }
+    });
+
+    // Convert CKE4 data-design attribute to linkButton model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-design'
+      },
+      model: {
+        key: 'linkButton',
+        value: (viewElement) => {
+          let match;
+
+          // Trust classes instead of old data-design attribute.
+          if (viewElement.hasClass('hds-button')) {
+            match = convertVariants([...viewElement._classes].join(' '));
+            if (!match) {
+              match = convertVariants(viewElement.getAttribute('data-design'));
+            }
+          }
+          return match ? 'button' : false;
+        }
+      }
+    });
+
+    // Convert CKE4 "hds-button" class attribute to linkButton model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'class',
+        value: 'hds-button'
+      },
+      model: {
+        key: 'linkButton',
+        value: 'button',
+      }
+    });
+
+    // Convert "data-hds=button" attribute to linkButton model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-hds',
+        value: 'button'
+      },
+      model: {
+        key: 'linkButton',
+        value: 'button',
+      }
+    });
+
+    // Convert data-variant attribute to linkVariant model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-variant',
+      },
+      model: {
+        key: 'linkVariant',
+      }
+    });
+
+    // Convert data-variant attribute to linkButton model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-variant'
+      },
+      model: {
+        key: 'linkButton',
+        value: (viewElement) => {
+          // Check if current anchor is a button and set data-attributes
+          // accordingly.
+          const variant = convertVariants(
+            Array.from(viewElement.getAttribute('data-variant')).join(' ')
+          );
+          return variant ? 'button' : false;
+        }
+      }
+    });
+
+    // Convert data-protocol attribute to linkProtocol model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-protocol'
+      },
+      model: {
+        key: 'linkProtocol',
+        value: (viewElement) => {
+          // If protocol is http or https, remove it as we don't need them.
+          const handleProtocol = (protocol) => (
+            protocol === 'https' || protocol === 'http'
+          ) ? false : protocol;
+          return handleProtocol(viewElement.getAttribute('data-protocol'));
+        }
+      },
+      converterPriority: 'highest',
+    });
+
+    // Convert data-selected-icon attribute to linkIcon model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-selected-icon',
+      },
+      model: {
+        key: 'linkIcon',
+      }
+    });
+
+    // Convert data-icon-start attribute to linkIcon model.
+    editor.conversion.for('upcast').attributeToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-icon-start',
+      },
+      model: {
+        key: 'linkIcon',
+      }
+    });
+
+    // Convert linkVariant model to data-variant attribute.
+    editor.conversion.for('dataDowncast').attributeToElement({
+      model: 'linkVariant',
+      view: (attributeValue, { writer }) => {
+        if (!attributeValue || attributeValue === 'primary') {
+          return null;
+        }
+        return writer.createAttributeElement('a', { 'data-variant': attributeValue }, { priority: 5 });
+      },
+    });
+
+    // Convert linkIcon model to data-icon-start attribute.
+    editor.conversion.for('dataDowncast').attributeToElement({
+      model: 'linkIcon',
+      view: (attributeValue, { writer }) => {
         if (!attributeValue) {
-          return undefined;
+          return null;
         }
-        const attributeElement = writer.createAttributeElement('a', { [attributeKey]: attributeValue }, { priority: 5 });
-        return toWidgetEditable(attributeElement, writer, { label: Drupal.t('Edit link') });
-      };
+        return writer.createAttributeElement('a', { 'data-icon-start': attributeValue }, { priority: 5 });
+      },
+    });
 
-      // Convert old data-attribute model to an anchor "attribute" element
-      // in editing downcast.
-      conversion.for('editingDowncast').attributeToElement({
-        model: cke4Attr,
-        view: (attributeValue, { writer }) => editingDowncast(cke5Attr, attributeValue, writer),
-      });
+    // Convert linkProtocol model to data-protocol attribute.
+    editor.conversion.for('dataDowncast').attributeToElement({
+      model: 'linkProtocol',
+      view: (attributeValue, { writer }) => {
+        if (!attributeValue) {
+          return null;
+        }
+        return writer.createAttributeElement('a', { 'data-protocol': attributeValue }, { priority: 5 });
+      },
+    });
 
-      // Convert new data-attribute model to an anchor "attribute" element
-      // in editing downcast.
-      conversion.for('editingDowncast').attributeToElement({
-        model: cke5Attr,
-        view: (attributeValue, { writer }) => editingDowncast(cke5Attr, attributeValue, writer),
-      });
+    // Convert linkButton model to data-hds attribute.
+    editor.conversion.for('dataDowncast').attributeToElement({
+      model: 'linkButton',
+      view: (attributeValue, { writer }) => {
+        if (!attributeValue) {
+          return null;
+        }
+        return writer.createAttributeElement('a', { 'data-hds': attributeValue }, { priority: 5 });
+      },
+    });
+
+    /**
+     * Helper function for the data-attribute conversion.
+     *
+     * @param {string} attributeKey New data-attribute name.
+     * @param {string} attributeValue New data-attribute value.
+     * @param {writer} writer The downcast writer.
+     * @return {editableElement} Returns an editableElement.
+     */
+    const editingDowncast = (attributeKey, attributeValue, writer) => {
+      if (!attributeValue) {
+        return null;
+      }
+      const attributeElement = writer.createAttributeElement('a', { [attributeKey]: attributeValue }, { priority: 5 });
+      return toWidgetEditable(attributeElement, writer, { label: Drupal.t('Edit link') });
+    };
+
+    // Convert linkVariant model to data-variant attribute with editable widget.
+    editor.conversion.for('editingDowncast').attributeToElement({
+      model: 'linkVariant',
+      view: (attributeValue, { writer }) => attributeValue !== 'primary'
+          ? editingDowncast('data-variant', attributeValue, writer)
+          : null
+    });
+
+    // Convert linkIcon model to data-icon-start attribute with editable widget.
+    editor.conversion.for('editingDowncast').attributeToElement({
+      model: 'linkIcon',
+      view: (attributeValue, { writer }) => editingDowncast('data-icon-start', attributeValue, writer),
+    });
+
+    // Convert linkProtocol model to data-protocol attribute with editable widget.
+    editor.conversion.for('editingDowncast').attributeToElement({
+      model: 'linkProtocol',
+      view: (attributeValue, { writer }) => editingDowncast('data-protocol', attributeValue, writer),
+      converterPriority: 'highest',
+    });
+
+    // Convert linkButton model to data-hds attribute with editable widget.
+    editor.conversion.for('editingDowncast').attributeToElement({
+      model: 'linkButton',
+      view: (attributeValue, { writer }) => editingDowncast('data-hds', attributeValue, writer),
     });
   }
 
