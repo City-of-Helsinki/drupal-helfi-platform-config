@@ -22,6 +22,11 @@ const formElements = {
     isVisible: true,
     viewAttribute: 'data-variant',
   },
+  linkButton: {
+    machineName: 'data-hds',
+    type: 'static',
+    viewAttribute: 'data-hds',
+  },
   linkProtocol: {
     label: Drupal.t('Protocol', {}, { context: 'CKEditor5 Helfi Link plugin' }),
     machineName: 'protocol',

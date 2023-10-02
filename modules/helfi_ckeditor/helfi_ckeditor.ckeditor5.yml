@@ -12,7 +12,7 @@ helfi_ckeditor_helfi_link:
     label: Helfi Link
     library: helfi_ckeditor/helfi_link
     elements:
-      - <a aria-label class data-design data-icon-start data-is-external data-link-text data-protocol data-selected-icon data-variant id rel role target="_blank" title>
+      - <a aria-label class data-design data-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds data-variant id rel role target="_blank" title>
       - <span aria-hidden class role>
     conditions:
       plugins:
