@@ -62,20 +62,7 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
     $current_language = $this->languageManager
       ->getCurrentLanguage()
       ->getId();
-
-    // Hide links with node translation unpublished
-    if ($link->getRouteName() == 'entity.node.canonical') {
-      $params = $link->getRouteParameters();
-      $nid = $params['node'];
-      $node = Node::load($nid);
-
-      if ($node->hasTranslation($current_language)) {
-          $translated_node = $node->getTranslation($current_language);
-          $event->setHasTranslation($translated_node->isPublished());
-          return;
-      }
-    }
-
+    
     $entity = $this->entityTypeManager->getStorage('menu_link_content')
       ->load($metadata['entity_id']);
 
