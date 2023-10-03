@@ -174,13 +174,6 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
-  picture_url_override_caption:
-    type: basic_string
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
   provided_languages:
     type: string
     label: hidden
@@ -206,6 +199,13 @@ content:
       link: true
     third_party_settings: {  }
     weight: 17
+    region: content
+  unit_picture_caption:
+    type: basic_string
+    label: hidden
+    settings: { }
+    third_party_settings: { }
+    weight: 5
     region: content
   www:
     type: link
