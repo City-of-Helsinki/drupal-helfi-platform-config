@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component sidebar text'
+      value: 'DC: Sidebar text'
   created:
     -
       value: 1654686746
@@ -26,6 +26,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -68,6 +71,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<p>Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Cras ultricies ligula sed magna dictum porta.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Pellentesque in ipsum id orci porta dapibus.</p>\r\n\r\n<p>Nulla porttitor accumsan tincidunt. Proin eget tortor risus. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n\r\n<p>Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta.</p>\r\n"
@@ -94,6 +100,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_sidebar_text_text:
             -
               value: "<p>Nulla quis lorem ut libero malesuada feugiat.</p>\r\n\r\n<p>Quisque velit nisi, pretium ut lacinia in.</p>\r\n\r\n<p>Cras ultricies ligula sed magna dictum porta.</p>\r\n\r\n<p>&nbsp;</p>\r\n"
@@ -119,6 +128,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_sidebar_text_text:
             -
               value: "<p>Nulla quis lorem ut libero malesuada feugiat.Quisque velit nisi, pretium ut lacinia in.</p>\r\n\r\n<p>Cras ultricies ligula sed magna dictum porta.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" data-design=\"hds-button hds-button--primary\" data-is-external=\"true\" data-link-text=\"helsinki.fi\" data-protocol=\"https\" href=\"https://www.helsinki.fi\"><span class=\"hds-button__label\">helsinki.fi</span></a></p>\r\n\r\n<p><a class=\"link\" data-design=\"link\" data-is-external=\"true\" data-link-text=\"helsinki.fi\" data-protocol=\"https\" href=\"https://www.helsinki.fi\">helsinki.fi</a></p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" data-design=\"hds-button hds-button--secondary\" data-is-external=\"true\" data-link-text=\"helsinki.fi\" data-protocol=\"https\" href=\"https://www.helsinki.fi\"><span class=\"hds-button__label\">helsinki.fi</span></a></p>\r\n\r\n<p><a class=\"hds-button hds-button--supplementary\" data-design=\"hds-button hds-button--supplementary\" data-is-external=\"true\" data-link-text=\"helsinki.fi\" data-protocol=\"http\" href=\"http://www.helsinki.fi\"><span class=\"hds-button__label\">helsinki.fi</span></a></p>\r\n"

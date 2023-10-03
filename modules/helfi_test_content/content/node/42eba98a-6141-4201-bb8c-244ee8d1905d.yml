@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layout standard - no-hero - subnav - sidebar'
+      value: 'DC: Standard page - no-hero - subnav - sidebar'
   created:
     -
       value: 1654501169

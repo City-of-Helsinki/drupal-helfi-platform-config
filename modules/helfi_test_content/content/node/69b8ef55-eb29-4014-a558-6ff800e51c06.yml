@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component event list'
+      value: 'DC: Event list'
   created:
     -
       value: 1654685838
@@ -94,9 +94,6 @@ default:
           field_free_events:
             -
               value: false
-          field_load_more:
-            -
-              value: true
           field_remote_events:
             -
               value: true

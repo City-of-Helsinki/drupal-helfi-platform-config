@@ -26,7 +26,7 @@ default:
       value: 'Unit 1'
   name_override:
     -
-      value: 'DC: layout tpr unit - no-subnav - no-sidebar'
+      value: 'DC: TPR Unit - no-subnav - no-sidebar'
   picture_url_override:
     -
       entity: 608c45ab-90c5-466b-bcac-c87649f2ec10

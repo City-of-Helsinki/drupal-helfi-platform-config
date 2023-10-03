@@ -18,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component liftup with image'
+      value: 'DC: Liftup with image'
   created:
     -
       value: 1654687150
@@ -28,6 +28,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -70,6 +73,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_design:
             -
               value: image-on-right
@@ -97,6 +103,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_design:
             -
               value: image-on-left
@@ -124,6 +133,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_desc:
             -
               value: "<p>Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim.&nbsp;</p>\r\n\r\n<p>Pellentesque in ipsum id orci porta dapibus. Nulla porttitor accumsan tincidunt. Cras ultricies ligula sed magna dictum porta.</p>\r\n"
@@ -155,6 +167,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_desc:
             -
               value: "<p>Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim.&nbsp;</p>\r\n\r\n<p>Pellentesque in ipsum id orci porta dapibus. Nulla porttitor accumsan tincidunt. Cras ultricies ligula sed magna dictum porta.</p>\r\n"
@@ -186,6 +201,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_desc:
             -
               value: "<p>Sed ac lectus vitae ex gravida lacinia. Suspendisse blandit quis mauris id malesuada. Nulla commodo nisl semper, tempus lectus in, gravida leo. Nunc sed felis nec lectus mollis accumsan at ac nunc. Fusce suscipit quam sed quam porttitor, id suscipit massa elementum. Phasellus vel arcu mollis, tempus purus sed, tempus felis. Aenean aliquam tortor sed est ultrices feugiat. Nam pharetra lorem non risus molestie pretium. Vivamus eget nibh in purus lobortis malesuada quis id sem. Maecenas suscipit dignissim leo ac congue. Sed vitae urna tristique odio porta vehicula. Integer viverra massa aliquam libero efficitur porttitor. Curabitur eget aliquam nunc. Phasellus sem massa, auctor a nisl et, tempus pulvinar neque. Aliquam at purus ornare, congue dui nec, varius dolor.</p>\r\n\r\n<p>In enim elit, cursus vel dignissim vel, ultricies volutpat nunc. Ut nec posuere ex. Mauris magna augue, facilisis in massa sit amet, blandit sodales urna. Ut bibendum tincidunt venenatis. Nullam mollis dictum lacus, id maximus erat sodales nec. Vestibulum magna quam, dictum quis cursus vitae, convallis ac nulla. Suspendisse vestibulum eget metus nec feugiat. Etiam sit amet ultricies risus. Donec ut metus et ipsum scelerisque venenatis. Maecenas at ex interdum, hendrerit nulla sit amet, tempus enim. Praesent sodales rhoncus auctor. Praesent mattis est non fermentum mollis. Nunc cursus neque ac urna efficitur maximus. Suspendisse non elit venenatis, condimentum eros vel, feugiat ipsum. Praesent ac placerat tortor.</p>\r\n\r\n<p>Etiam in imperdiet ex. Aenean facilisis, ante sed lobortis molestie, orci ex ultrices ipsum, eu fringilla neque nisl vitae nibh. Morbi volutpat nunc eget tempus ultricies. Nulla facilisi. Sed vulputate interdum dapibus. Nunc nec commodo eros. Mauris ut ante nibh. Ut aliquet, orci sit amet vulputate egestas, elit diam pharetra diam, sit amet tincidunt libero est nec turpis. Fusce ultrices sapien tellus, a commodo lorem dapibus vel. Suspendisse et posuere magna. Nam feugiat ipsum risus, eu egestas libero condimentum ac. Nam dictum velit libero, ut tincidunt sem placerat rhoncus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras commodo dolor ut turpis porta ultricies. Praesent sodales risus in congue blandit.</p>\r\n\r\n<p>Morbi porta, nisl at auctor pulvinar, erat libero ultrices sem, a rutrum massa mauris eu erat. Cras faucibus, massa in fermentum faucibus, justo arcu efficitur odio, vitae placerat urna nulla nec augue. Etiam id tempor lorem. Duis in turpis a arcu finibus varius non sit amet urna. Vestibulum ullamcorper eros massa, eget tempor augue dapibus vel. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque odio lorem, placerat eget blandit in, mollis in nisi. In fringilla nisi consectetur pharetra laoreet. Vivamus id nunc vitae metus aliquam finibus malesuada sed orci. Aliquam finibus metus mi, quis elementum tortor blandit sed. Suspendisse in est vitae metus gravida vestibulum et ut lorem.</p>\r\n"
@@ -217,6 +235,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_desc:
             -
               value: "<p>Sed ac lectus vitae ex gravida lacinia. Suspendisse blandit quis mauris id malesuada. Nulla commodo nisl semper, tempus lectus in, gravida leo. Nunc sed felis nec lectus mollis accumsan at ac nunc. Fusce suscipit quam sed quam porttitor, id suscipit massa elementum. Phasellus vel arcu mollis, tempus purus sed, tempus felis. Aenean aliquam tortor sed est ultrices feugiat. Nam pharetra lorem non risus molestie pretium. Vivamus eget nibh in purus lobortis malesuada quis id sem. Maecenas suscipit dignissim leo ac congue. Sed vitae urna tristique odio porta vehicula. Integer viverra massa aliquam libero efficitur porttitor. Curabitur eget aliquam nunc. Phasellus sem massa, auctor a nisl et, tempus pulvinar neque. Aliquam at purus ornare, congue dui nec, varius dolor.</p>\r\n\r\n<p>In enim elit, cursus vel dignissim vel, ultricies volutpat nunc. Ut nec posuere ex. Mauris magna augue, facilisis in massa sit amet, blandit sodales urna. Ut bibendum tincidunt venenatis. Nullam mollis dictum lacus, id maximus erat sodales nec. Vestibulum magna quam, dictum quis cursus vitae, convallis ac nulla. Suspendisse vestibulum eget metus nec feugiat. Etiam sit amet ultricies risus. Donec ut metus et ipsum scelerisque venenatis. Maecenas at ex interdum, hendrerit nulla sit amet, tempus enim. Praesent sodales rhoncus auctor. Praesent mattis est non fermentum mollis. Nunc cursus neque ac urna efficitur maximus. Suspendisse non elit venenatis, condimentum eros vel, feugiat ipsum. Praesent ac placerat tortor.</p>\r\n\r\n<p>Etiam in imperdiet ex. Aenean facilisis, ante sed lobortis molestie, orci ex ultrices ipsum, eu fringilla neque nisl vitae nibh. Morbi volutpat nunc eget tempus ultricies. Nulla facilisi. Sed vulputate interdum dapibus. Nunc nec commodo eros. Mauris ut ante nibh. Ut aliquet, orci sit amet vulputate egestas, elit diam pharetra diam, sit amet tincidunt libero est nec turpis. Fusce ultrices sapien tellus, a commodo lorem dapibus vel. Suspendisse et posuere magna. Nam feugiat ipsum risus, eu egestas libero condimentum ac. Nam dictum velit libero, ut tincidunt sem placerat rhoncus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras commodo dolor ut turpis porta ultricies. Praesent sodales risus in congue blandit.</p>\r\n\r\n<p>Morbi porta, nisl at auctor pulvinar, erat libero ultrices sem, a rutrum massa mauris eu erat. Cras faucibus, massa in fermentum faucibus, justo arcu efficitur odio, vitae placerat urna nulla nec augue. Etiam id tempor lorem. Duis in turpis a arcu finibus varius non sit amet urna. Vestibulum ullamcorper eros massa, eget tempor augue dapibus vel. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque odio lorem, placerat eget blandit in, mollis in nisi. In fringilla nisi consectetur pharetra laoreet. Vivamus id nunc vitae metus aliquam finibus malesuada sed orci. Aliquam finibus metus mi, quis elementum tortor blandit sed. Suspendisse in est vitae metus gravida vestibulum et ut lorem.</p>\r\n"
@@ -248,6 +269,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_desc:
             -
               value: "<p>Pellentesque commodo metus lacus, ut vestibulum sapien viverra id. Morbi porttitor erat eget urna sodales, eu pellentesque magna pellentesque. Suspendisse ligula massa, congue eget eleifend non, convallis et risus. Praesent vitae egestas nisl, non malesuada elit. Donec tempor nisi felis, ac lobortis risus interdum eu. Cras sit amet molestie ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et vulputate odio. Donec malesuada magna cursus condimentum blandit. Aliquam erat volutpat. Sed vitae nisi in nisl lacinia sagittis id non tortor. Aliquam eu purus mi. Donec vitae orci ultricies, interdum augue ut, gravida nunc.</p>\r\n"
@@ -279,6 +303,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_desc:
             -
               value: "<p>Praesent ac gravida lectus. Nullam ac interdum nibh. Pellentesque porta porttitor nunc ut sodales. Cras iaculis in lorem eu faucibus. Mauris elit ligula, volutpat varius diam ut, rutrum tincidunt risus. Aliquam lobortis eu massa sit amet rhoncus. Etiam tincidunt purus ante, nec placerat dolor sodales et. In eu ornare lectus. Fusce condimentum sapien ante, vitae fringilla libero placerat non. Suspendisse potenti. Morbi eget tincidunt turpis.</p>\r\n\r\n<p>Ut auctor eros mi, vitae tincidunt ex maximus sit amet. Fusce felis orci, euismod in metus at, sollicitudin consequat sem. Vestibulum auctor aliquam turpis, sit amet suscipit ligula tristique sit amet. Morbi eu ante auctor, ornare nisi ac, tempor magna. Phasellus dolor nunc, bibendum eu felis sed, tincidunt tristique ex. Etiam sed eros nisi. Mauris gravida hendrerit consequat. Cras mattis pharetra sodales. Phasellus sed mauris quis quam sollicitudin consectetur ut et nisi. Mauris augue felis, iaculis a scelerisque cursus, luctus quis felis. Mauris vestibulum sit amet metus non faucibus. Nulla neque purus, porttitor ac purus quis, blandit varius nibh. Phasellus faucibus orci id diam luctus consectetur. Aenean blandit diam vel dui bibendum consectetur.</p>\r\n"
@@ -310,6 +337,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_desc:
             -
               value: "<p>Sed ac lectus vitae ex gravida lacinia. Suspendisse blandit quis mauris id malesuada. Nulla commodo nisl semper, tempus lectus in, gravida leo. Nunc sed felis nec lectus mollis accumsan at ac nunc. Fusce suscipit quam sed quam porttitor, id suscipit massa elementum. Phasellus vel arcu mollis, tempus purus sed, tempus felis. Aenean aliquam tortor sed est ultrices feugiat. Nam pharetra lorem non risus molestie pretium. Vivamus eget nibh in purus lobortis malesuada quis id sem. Maecenas suscipit dignissim leo ac congue. Sed vitae urna tristique odio porta vehicula. Integer viverra massa aliquam libero efficitur porttitor. Curabitur eget aliquam nunc. Phasellus sem massa, auctor a nisl et, tempus pulvinar neque. Aliquam at purus ornare, congue dui nec, varius dolor.</p>\r\n\r\n<p>In enim elit, cursus vel dignissim vel, ultricies volutpat nunc. Ut nec posuere ex. Mauris magna augue, facilisis in massa sit amet, blandit sodales urna. Ut bibendum tincidunt venenatis. Nullam mollis dictum lacus, id maximus erat sodales nec. Vestibulum magna quam, dictum quis cursus vitae, convallis ac nulla. Suspendisse vestibulum eget metus nec feugiat. Etiam sit amet ultricies risus. Donec ut metus et ipsum scelerisque venenatis. Maecenas at ex interdum, hendrerit nulla sit amet, tempus enim. Praesent sodales rhoncus auctor. Praesent mattis est non fermentum mollis. Nunc cursus neque ac urna efficitur maximus. Suspendisse non elit venenatis, condimentum eros vel, feugiat ipsum. Praesent ac placerat tortor.</p>\r\n\r\n<p>Etiam in imperdiet ex. Aenean facilisis, ante sed lobortis molestie, orci ex ultrices ipsum, eu fringilla neque nisl vitae nibh. Morbi volutpat nunc eget tempus ultricies. Nulla facilisi. Sed vulputate interdum dapibus. Nunc nec commodo eros. Mauris ut ante nibh. Ut aliquet, orci sit amet vulputate egestas, elit diam pharetra diam, sit amet tincidunt libero est nec turpis. Fusce ultrices sapien tellus, a commodo lorem dapibus vel. Suspendisse et posuere magna. Nam feugiat ipsum risus, eu egestas libero condimentum ac. Nam dictum velit libero, ut tincidunt sem placerat rhoncus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras commodo dolor ut turpis porta ultricies. Praesent sodales risus in congue blandit.</p>\r\n"
@@ -341,6 +371,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_liftup_with_image_desc:
             -
               value: "<p>Sed ac lectus vitae ex gravida lacinia. Suspendisse blandit quis mauris id malesuada. Nulla commodo nisl semper, tempus lectus in, gravida leo. Nunc sed felis nec lectus mollis accumsan at ac nunc. Fusce suscipit quam sed quam porttitor, id suscipit massa elementum. Phasellus vel arcu mollis, tempus purus sed, tempus felis. Aenean aliquam tortor sed est ultrices feugiat. Nam pharetra lorem non risus molestie pretium. Vivamus eget nibh in purus lobortis malesuada quis id sem. Maecenas suscipit dignissim leo ac congue. Sed vitae urna tristique odio porta vehicula. Integer viverra massa aliquam libero efficitur porttitor. Curabitur eget aliquam nunc. Phasellus sem massa, auctor a nisl et, tempus pulvinar neque. Aliquam at purus ornare, congue dui nec, varius dolor.</p>\r\n\r\n<p>In enim elit, cursus vel dignissim vel, ultricies volutpat nunc. Ut nec posuere ex. Mauris magna augue, facilisis in massa sit amet, blandit sodales urna. Ut bibendum tincidunt venenatis. Nullam mollis dictum lacus, id maximus erat sodales nec. Vestibulum magna quam, dictum quis cursus vitae, convallis ac nulla. Suspendisse vestibulum eget metus nec feugiat. Etiam sit amet ultricies risus. Donec ut metus et ipsum scelerisque venenatis. Maecenas at ex interdum, hendrerit nulla sit amet, tempus enim. Praesent sodales rhoncus auctor. Praesent mattis est non fermentum mollis. Nunc cursus neque ac urna efficitur maximus. Suspendisse non elit venenatis, condimentum eros vel, feugiat ipsum. Praesent ac placerat tortor.</p>\r\n\r\n<p>Etiam in imperdiet ex. Aenean facilisis, ante sed lobortis molestie, orci ex ultrices ipsum, eu fringilla neque nisl vitae nibh. Morbi volutpat nunc eget tempus ultricies. Nulla facilisi. Sed vulputate interdum dapibus. Nunc nec commodo eros. Mauris ut ante nibh. Ut aliquet, orci sit amet vulputate egestas, elit diam pharetra diam, sit amet tincidunt libero est nec turpis. Fusce ultrices sapien tellus, a commodo lorem dapibus vel. Suspendisse et posuere magna. Nam feugiat ipsum risus, eu egestas libero condimentum ac. Nam dictum velit libero, ut tincidunt sem placerat rhoncus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras commodo dolor ut turpis porta ultricies. Praesent sodales risus in congue blandit.</p>\r\n"

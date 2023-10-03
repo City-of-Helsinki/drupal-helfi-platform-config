@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: navigation'
+      value: 'DC: Navigation'
   created:
     -
       value: 1654499729

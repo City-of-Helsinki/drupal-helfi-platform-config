@@ -1,55 +1,31 @@
 _meta:
   version: '1.0'
-  entity_type: tpr_unit
-  uuid: 269efa2c-3478-40be-a4e3-7436a104f9ae
+  entity_type: node
+  uuid: cdab7557-343c-4307-97c8-717d47b1aacf
+  bundle: landing_page
   default_langcode: en
   depends:
     608c45ab-90c5-466b-bcac-c87649f2ec10: media
 default:
-  id:
-    -
-      value: 1003
-  sync_attempts:
-    -
-      value: 0
-  revision_user:
+  revision_uid:
     -
       target_id: 1
-  content_translation_uid:
-    -
-      target_id: 1
-  content_translation_status:
+  status:
     -
       value: true
-  name:
+  uid:
     -
-      value: 'Unit 3'
-  name_override:
+      target_id: 1
+  title:
     -
-      value: 'DC: TPR Unit - subnav - no-sidebar'
-  picture_url_override:
+      value: 'DC: Landing page - hero - image on the bottom'
+  created:
     -
-      entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
-  www:
+      value: 1696327625
+  promote:
     -
-      uri: 'https://localhost/en/1'
-      title: ''
-      options: {  }
-  call_charge_info:
-    -
-      value: 'pvm en 1'
-      format: plain_text
-  service_map_embed:
-    -
-      value: '1'
-  accessibility_sentences:
-    -
-      group: 'Group en 1'
-      value: 'Sentence en 1'
-    -
-      group: 'Group en 2'
-      value: 'Sentence en 2'
-  show_www:
+      value: false
+  sticky:
     -
       value: false
   revision_translation_affected:
@@ -58,27 +34,33 @@ default:
   hide_sidebar_navigation:
     -
       value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-tpr-unit/dc-layout-tpr-unit-subnav-no-sidebar
+      alias: /dc-layouts/dc-layout-landing/dc-layout-landing-hero-image-on-the-bottom
       langcode: en
-      pathauto: 0
+      pathauto: 1
   content_translation_source:
     -
       value: und
   content_translation_outdated:
     -
       value: false
-  content_translation_created:
+  published_at:
     -
-      value: 1654677647
+      value: 1696328021
   field_content:
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 89a0c03a-27a2-4192-8517-90ebe6f9421e
+          uuid: 41d3eabf-a072-4935-a042-94f9b9a818ef
           bundle: banner
           default_langcode: en
         default:
@@ -87,7 +69,7 @@ default:
               value: true
           created:
             -
-              value: 1654680076
+              value: 1696327836
           behavior_settings:
             -
               value: {  }
@@ -100,21 +82,24 @@ default:
               format: full_html
           field_banner_design:
             -
-              value: align-center
+              value: align-left
           field_banner_link_design:
             -
               value: primary
           field_banner_title:
             -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
-  field_lower_content:
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus'
+  field_has_hero:
+    -
+      value: true
+  field_hero:
     -
       entity:
         _meta:
           version: '1.0'
           entity_type: paragraph
-          uuid: 188d9510-c232-46fb-8c12-7dd5e5bb35d6
-          bundle: banner
+          uuid: c1165026-0fb5-46e1-be26-f3c21094fd82
+          bundle: hero
           default_langcode: en
         default:
           status:
@@ -122,23 +107,26 @@ default:
               value: true
           created:
             -
-              value: 1654680096
+              value: 1696327665
           behavior_settings:
             -
               value: {  }
           revision_translation_affected:
             -
               value: true
-          field_banner_desc:
+          field_hero_desc:
             -
-              value: "<p>Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada.</p>\r\n\r\n<p>Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>\r\n"
+              value: "<p>Nulla porttitor accumsan tincidunt. Nulla porttitor accumsan tincidunt.</p>\r\n\r\n<p>Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</p>\r\n"
               format: full_html
-          field_banner_design:
+          field_hero_design:
             -
-              value: align-center
-          field_banner_link_design:
+              value: with-image-bottom
+          field_hero_image:
+            -
+              entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
+          field_hero_link_design:
             -
               value: primary
-          field_banner_title:
+          field_hero_title:
             -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+              value: 'DC: Landing page - hero - image on the bottom'

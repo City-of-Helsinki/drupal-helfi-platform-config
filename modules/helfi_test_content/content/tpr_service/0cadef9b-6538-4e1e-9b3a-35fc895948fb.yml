@@ -24,7 +24,7 @@ default:
       value: 'Service 2'
   name_override:
     -
-      value: 'DC: layout tpr service - subnav - no-sidebar'
+      value: 'DC: TPR Service - subnav - no-sidebar'
   description:
     -
       value: 'Description long en 1'

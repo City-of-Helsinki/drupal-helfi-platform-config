@@ -18,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component map'
+      value: 'DC: Map'
   created:
     -
       value: 1654685844
@@ -28,6 +28,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -70,6 +73,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_iframe_title:
             -
               value: 'Map - No Description'
@@ -97,6 +103,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_iframe_title:
             -
               value: 'Map - With Description'

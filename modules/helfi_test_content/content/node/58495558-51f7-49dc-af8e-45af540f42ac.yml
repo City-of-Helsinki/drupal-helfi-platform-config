@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layout landing - no-hero'
+      value: 'DC: Landing page - no-hero'
   created:
     -
       value: 1654495567

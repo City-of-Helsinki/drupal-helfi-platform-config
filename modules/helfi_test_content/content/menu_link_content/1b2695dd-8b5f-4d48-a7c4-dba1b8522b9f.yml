@@ -5,7 +5,7 @@ _meta:
   bundle: menu_link_content
   default_langcode: en
   depends:
-    8ffeb5a8-23ed-4bd1-8f25-e92026db504f: menu_link_content
+    94e28224-093e-44f8-af8e-9e8c22122b3c: menu_link_content
     51f5122a-573d-4ed5-b247-3fdbbc5f1f8e: tpr_unit
 default:
   enabled:
@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: layout tpr unit - no-subnav - sidebar'
+      value: 'DC: TPR Unit - no-subnav - sidebar'
   menu_name:
     -
       value: main
@@ -30,13 +30,13 @@ default:
       value: false
   weight:
     -
-      value: -38
+      value: -55
   expanded:
     -
       value: false
   parent:
     -
-      value: 'menu_link_content:8ffeb5a8-23ed-4bd1-8f25-e92026db504f'
+      value: 'menu_link_content:94e28224-093e-44f8-af8e-9e8c22122b3c'
   revision_translation_affected:
     -
       value: true

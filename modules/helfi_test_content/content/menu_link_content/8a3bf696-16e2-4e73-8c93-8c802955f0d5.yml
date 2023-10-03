@@ -1,25 +1,25 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: 1e9220f9-207b-426f-8726-94349fdfaec7
+  uuid: 8a3bf696-16e2-4e73-8c93-8c802955f0d5
   bundle: menu_link_content
   default_langcode: en
   depends:
-    f25609d9-965f-4568-9bae-6e0c1ebe2c9c: menu_link_content
-    a23b06b0-090b-46a1-b761-b86f04e61f7e: node
+    9dc342a5-3d6a-40ef-9570-ed70392744fb: menu_link_content
+    c85e7074-aeb6-4470-92d3-05b8bbe2fcd0: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: 'DC: Standard page - hero - subnav - sidebar'
+      value: 'DC: Landing page - hero - image on the left'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: a23b06b0-090b-46a1-b761-b86f04e61f7e
+      target_uuid: c85e7074-aeb6-4470-92d3-05b8bbe2fcd0
       title: ''
       options: {  }
   external:
@@ -30,13 +30,13 @@ default:
       value: false
   weight:
     -
-      value: 2
+      value: -58
   expanded:
     -
       value: false
   parent:
     -
-      value: 'menu_link_content:f25609d9-965f-4568-9bae-6e0c1ebe2c9c'
+      value: 'menu_link_content:9dc342a5-3d6a-40ef-9570-ed70392744fb'
   revision_translation_affected:
     -
       value: true
@@ -54,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1654684131
+      value: 1696328019

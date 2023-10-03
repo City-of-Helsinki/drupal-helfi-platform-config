@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: components'
+      value: 'DC: Components'
   created:
     -
       value: 1654499602
@@ -76,7 +76,7 @@ default:
               value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>DC: component accordion</li>\r\n\t<li>DC: component banner</li>\r\n\t<li>DC: component chart</li>\r\n\t<li>DC: component columns</li>\r\n\t<li>DC: component contact card listing</li>\r\n\t<li>DC: component content cards</li>\r\n\t<li>DC: component content liftup</li>\r\n\t<li>DC: component events</li>\r\n\t<li>DC: component image</li>\r\n\t<li>DC: component liftup with image</li>\r\n\t<li>DC: component list of links</li>\r\n\t<li>DC: component map</li>\r\n\t<li>DC: component news list</li>\r\n\t<li>DC: component phasing</li>\r\n\t<li>DC: component popular services</li>\r\n\t<li>DC: component remote video</li>\r\n\t<li>DC: component service list</li>\r\n\t<li>DC: component sidebar text</li>\r\n\t<li>\r\n\t<p>DC: component target group links</p>\r\n\t</li>\r\n\t<li>DC: component text</li>\r\n\t<li>DC: component unit search</li>\r\n</ul>\r\n"
+              value: "<ul>\r\n\t<li>DC: Accordion</li>\r\n\t<li>DC: Banner</li>\r\n\t<li>DC: Chart</li>\r\n\t<li>DC: Columns</li>\r\n\t<li>DC: Contact card listing</li>\r\n\t<li>DC: Content cards</li>\r\n\t<li>DC: Content liftup</li>\r\n\t<li>DC: Events</li>\r\n\t<li>DC: Image</li>\r\n\t<li>DC: Liftup with image</li>\r\n\t<li>DC: List of links</li>\r\n\t<li>DC: Map</li>\r\n\t<li>DC: News list</li>\r\n\t<li>DC: Phasing</li>\r\n\t<li>DC: Popular services</li>\r\n\t<li>DC: Remote video</li>\r\n\t<li>DC: Service list</li>\r\n\t<li>DC: Sidebar text</li>\r\n\t<li>\r\n\t<p>DC: Target group links</p>\r\n\t</li>\r\n\t<li>DC: Text</li>\r\n\t<li>DC: Unit search</li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -

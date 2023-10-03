@@ -19,7 +19,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component content liftup'
+      value: 'DC: Content liftup'
   created:
     -
       value: 1654686746
@@ -29,6 +29,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -71,6 +74,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_content_liftup_unit:
             -
               entity: 1cb8c70b-509b-40a5-8a41-2c872cec3e76
@@ -96,6 +102,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_content_liftup_unit:
             -
               entity: 51f5122a-573d-4ed5-b247-3fdbbc5f1f8e

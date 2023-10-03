@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component content cards'
+      value: 'DC: Content cards'
   menu_name:
     -
       value: main

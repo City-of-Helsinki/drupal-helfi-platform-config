@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: Layout landing'
+      value: 'DC: Landing page'
   created:
     -
       value: 1654844519
@@ -76,7 +76,7 @@ default:
               value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>DC: layout landing - hero</li>\r\n\t<li>DC: layout landing - no-hero</li>\r\n</ul>\r\n"
+              value: "<h2>Landing page</h2>\r\n\r\n<p>Landing page demonstrates a landing page layout with all hero variants.</p>\r\n\r\n<ul>\r\n\t<li>Landing page - no-hero</li>\r\n\t<li>Landing page - hero - without image, align left</li>\r\n\t<li>Landing page - hero - image on the left</li>\r\n\t<li>Landing page - hero - image on the right</li>\r\n\t<li>Landing page - hero - image on the bottom</li>\r\n\t<li>Landing page - hero - diagonal</li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -

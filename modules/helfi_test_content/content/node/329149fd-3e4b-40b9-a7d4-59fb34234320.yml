@@ -18,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layout standard - hero - no-subnav - sidebar'
+      value: 'DC: Standard page - hero - no-subnav - sidebar'
   created:
     -
       value: 1654501169
@@ -129,7 +129,7 @@ default:
               value: primary
           field_hero_title:
             -
-              value: 'DC: layout standard - hero - no-subnav - sidebar'
+              value: 'DC: Standard page - hero - no-subnav - sidebar'
   field_lower_content:
     -
       entity:
