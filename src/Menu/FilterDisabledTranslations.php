@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\Menu;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\node\Entity\Node;
 use Drupal\menu_block_current_language\Event\Events;
 use Drupal\menu_block_current_language\Event\HasTranslationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -58,13 +59,27 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
       return;
     }
 
-    $entity = $this->entityTypeManager->getStorage('menu_link_content')
-      ->load($metadata['entity_id']);
     $current_language = $this->languageManager
       ->getCurrentLanguage()
       ->getId();
 
-    // Entity has translation but it is not enabled, hide it.
+    // Hide links with node translation unpublished
+    if ($link->getRouteName() == 'entity.node.canonical') {
+      $params = $link->getRouteParameters();
+      $nid = $params['node'];
+      $node = Node::load($nid);
+
+      if ($node->hasTranslation($current_language)) {
+          $translated_node = $node->getTranslation($current_language);
+          $event->setHasTranslation($translated_node->isPublished());
+          return;
+      }
+    }
+
+    $entity = $this->entityTypeManager->getStorage('menu_link_content')
+      ->load($metadata['entity_id']);
+
+    // MenuLinkContent entity has translation which isn't enabled, hide it.
     if (
       $entity->getMenuName() == 'main' &&
       $entity->hasTranslation($current_language)
