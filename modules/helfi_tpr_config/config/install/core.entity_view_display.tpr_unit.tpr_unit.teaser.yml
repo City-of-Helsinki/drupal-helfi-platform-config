@@ -79,6 +79,7 @@ hidden:
   longitude: true
   opening_hours: true
   phone: true
+  picture_url_override_caption: true
   provided_languages: true
   service_map_embed: true
   services: true

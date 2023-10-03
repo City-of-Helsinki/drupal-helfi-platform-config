@@ -285,3 +285,26 @@ function helfi_tpr_config_update_9044(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }
+
+/**
+ * UHF-8938: Add a field to tpr_unit and re-import configs.
+ */
+function helfi_tpr_config_update_9045() : void {
+  $picture_url_override_caption = BaseFieldDefinition::create('string_long')
+    ->setTranslatable(TRUE)
+    ->setRevisionable(FALSE)
+    ->setLabel(new TranslatableMarkup('Override: Caption'))
+    ->setDisplayOptions('form', [
+      'type' => 'string_long',
+      'weight' => 5,
+    ])
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('picture_url_override_caption', 'tpr_unit', 'helfi_tpr_config', $picture_url_override_caption);
+
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_tpr_config');
+}

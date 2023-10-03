@@ -61,6 +61,7 @@ hidden:
   phone: true
   picture_url: true
   picture_url_override: true
+  picture_url_override_caption: true
   provided_languages: true
   service_map_embed: true
   services: true

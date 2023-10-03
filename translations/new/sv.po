@@ -30,3 +30,6 @@ msgstr "Starta chatten"
 msgctxt "Floating chat title"
 msgid "Chat"
 msgstr "Chatt"
+
+msgid "Override: Caption"
+msgstr "Bildtext för bild som ersätter standardbilden"
