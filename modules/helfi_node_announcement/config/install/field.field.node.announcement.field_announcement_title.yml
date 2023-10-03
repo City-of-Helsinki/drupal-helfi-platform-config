@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_announcement_title
+    - node.type.announcement
+id: node.announcement.field_announcement_title
+field_name: field_announcement_title
+entity_type: node
+bundle: announcement
+label: 'Announcement title'
+description: 'This title is only available to users of assistive technology. '
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

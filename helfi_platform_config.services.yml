@@ -45,3 +45,8 @@ services:
     class: Drupal\helfi_platform_config\Routing\TermRouteSubscriber
     tags:
       - { name: event_subscriber }
+
+  logger.channel.helfi_platform_config:
+    parent: logger.channel_base
+    arguments:
+      - 'helfi_platform_config'

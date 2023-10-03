@@ -13,5 +13,3 @@ This repository holds configuration for the Hel.fi platform.
 ## Contact
 
 Slack: #helfi-drupal (http://helsinkicity.slack.com/)
-
-Mail: `drupal@hel.fi`
