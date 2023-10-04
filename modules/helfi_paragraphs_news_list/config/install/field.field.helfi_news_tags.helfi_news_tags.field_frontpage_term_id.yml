@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.helfi_news_tags.field_frontpage_term_id
   module:
-    - disable_field
     - external_entities
 id: helfi_news_tags.helfi_news_tags.field_frontpage_term_id
 field_name: field_frontpage_term_id
