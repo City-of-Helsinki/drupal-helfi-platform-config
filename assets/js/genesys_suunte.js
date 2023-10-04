@@ -145,10 +145,10 @@ var gcReturnSessionId = '';
         );
         var currentPage = window.location;
         var shibbolethString =
-          "https://chat-proxy.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
+          "https://asiointi.hel.fi/chat/tunnistus/Shibboleth.sso/KAPALogin?";
         shibbolethString += "target=";
         shibbolethString +=
-          "https://chat-proxy.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
+          "https://asiointi.hel.fi/chat/tunnistus/MagicPage/ReturnProcessor";
         /*
               shibbolethString += "%3ForigPage%3D" + "https://www.hel.fi/helsinki/fi/sosiaali-ja-terveyspalvelut/terveyspalvelut/hammashoito/transfer?dir%3Din%26gcLoginButtonState%3D1%26errcode%3d0";
               */

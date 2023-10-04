@@ -53,3 +53,9 @@ services:
       - '@language_manager'
     tags:
       - { name: event_subscriber }
+
+  logger.channel.helfi_platform_config:
+    parent: logger.channel_base
+    arguments:
+      - 'helfi_platform_config'
+

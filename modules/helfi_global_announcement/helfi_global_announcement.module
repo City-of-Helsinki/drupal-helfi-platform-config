@@ -7,9 +7,11 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
 
 /**
  * Gets the block configurations.
@@ -80,6 +82,7 @@ function helfi_global_announcement_entity_bundle_field_info_alter(
       'announcement_type' => new TranslatableMarkup('Announcement type'),
       'announcement_link_text' => new TranslatableMarkup('Announcement link text'),
       'announcement_link_url' => new TranslatableMarkup('Announcement link url'),
+      'announcement_assistive_technology_close_button_title' => new TranslatableMarkup('Assistive technology close button title'),
     ];
 
     foreach ($entity_info_fields as $field_name => $field_label) {
@@ -89,5 +92,24 @@ function helfi_global_announcement_entity_bundle_field_info_alter(
         ->setDisplayConfigurable('view', TRUE)
         ->setDisplayConfigurable('form', TRUE);
     }
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function helfi_global_announcement_cron(): void {
+  $store = \Drupal::service('tempstore.shared')->get('global_announcement');
+  $globalEntityStorage = \Drupal::entityTypeManager()
+    ->getStorage('helfi_announcements');
+
+  $externalAnnouncements = $globalEntityStorage
+    ->loadMultiple();
+
+  $newHash = hash('sha256', serialize($externalAnnouncements));
+  $hash = $store->get('announcements');
+  if ($hash !== $newHash) {
+    $store->set('announcements', $newHash);
+    Cache::invalidateTags([Announcements::$customCacheTag]);
   }
 }

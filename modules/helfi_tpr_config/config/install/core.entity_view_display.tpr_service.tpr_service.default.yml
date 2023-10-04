@@ -108,6 +108,7 @@ content:
 hidden:
   created: true
   has_unit: true
+  hide_service_points: true
   langcode: true
   name_synonyms: true
   service_id: true
