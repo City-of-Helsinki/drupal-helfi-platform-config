@@ -74,6 +74,12 @@ default:
           revision_translation_affected:
             -
               value: true
+          field_limit:
+            -
+              value: 10
+          field_news_list_title:
+            -
+              value: 'Without description'
     -
       entity:
         _meta:
@@ -95,6 +101,16 @@ default:
           revision_translation_affected:
             -
               value: true
+          field_limit:
+            -
+              value: 10
+          field_news_list_description:
+            -
+              value: "<p>Vestibulum massa purus, tempor vitae dignissim at, fringilla ut justo. Ut vestibulum odio enim, a dignissim neque auctor id. Nam maximus lacus sit amet sem pretium, a laoreet nibh scelerisque. Duis lobortis tristique turpis, sed molestie eros hendrerit ac. Suspendisse tempus dui vitae finibus pellentesque. Nunc feugiat erat eget volutpat cursus. Integer ultricies magna id lobortis elementum. Proin pretium iaculis ornare. Ut sed nisi non sem tempor finibus. Aliquam finibus felis non tortor ullamcorper, sed cursus turpis euismod. Mauris elementum posuere felis, quis pharetra ex ultrices eu. Etiam consequat purus non tellus consectetur, in pretium mauris imperdiet. Morbi at felis eget lacus semper efficitur cursus et magna.</p>\r\n"
+              format: minimal
+          field_news_list_title:
+            -
+              value: 'With description'
   field_has_hero:
     -
       value: false
