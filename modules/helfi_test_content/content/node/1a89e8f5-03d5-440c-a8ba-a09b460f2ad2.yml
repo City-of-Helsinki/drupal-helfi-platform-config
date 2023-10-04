@@ -42,7 +42,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-components/dc-component-target-group-links
+      alias: /dc-components/dc-target-group-links
       langcode: en
       pathauto: 1
   content_translation_source:

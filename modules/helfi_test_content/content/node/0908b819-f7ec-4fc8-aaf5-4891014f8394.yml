@@ -71,6 +71,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<p>Curabitur ullamcorper ultricies nisi. Nullam accumsan lorem in dui. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Phasellus magna. Mauris turpis nunc, blandit et, volutpat molestie, porta ut, ligula.</p>\r\n\r\n<h2>Phasellus magna</h2>\r\n\r\n<p>Vestibulum fringilla pede sit amet augue. Fusce pharetra convallis urna. Praesent egestas neque eu enim. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris.</p>\r\n\r\n<p>Aenean imperdiet. In hac habitasse platea dictumst. Sed lectus. Ut non enim eleifend felis pretium feugiat.</p>\r\n\r\n<blockquote class=\"quote\">\r\n<p class=\"quote__text\">Cras risus ipsum, faucibus ut, ullamcorper id, varius ac, leo.</p>\r\n\r\n<footer class=\"quote__author\"><cite>Leo</cite></footer>\r\n</blockquote>\r\n\r\n<p>Nunc interdum lacus sit amet orci. Nam pretium turpis et arcu. Cras dapibus. Quisque id odio. Praesent vestibulum dapibus nibh.</p>\r\n\r\n<p>Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Pellentesque libero tortor, tincidunt et, tincidunt eget, semper nec, quam. Nunc nec neque. Praesent adipiscing. Maecenas egestas arcu quis ligula mattis placerat.</p>\r\n\r\n<p></p>\r\n"
@@ -144,6 +147,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_text:
                     -
                       value: "<p>Nunc sed turpis. Sed fringilla mauris sit amet nibh.</p>\r\n\r\n<p>Nulla porta dolor. Vestibulum turpis sem, aliquet eget, lobortis pellentesque, rutrum eu, nisl. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n\r\n<p>Cras id dui. Donec elit libero, sodales nec, volutpat a, suscipit non, turpis. Ut leo.</p>\r\n\r\n<p>Nulla porta dolor. Nulla sit amet est. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit.</p>\r\n"
@@ -169,6 +175,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Quisque malesuada placerat nisl</h2>\r\n\r\n<p>Vestibulum ullamcorper mauris at ligula. Proin magna. Fusce neque. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>\r\n\r\n<p>Aliquam eu nunc.. Nullam vel sem. Vivamus in erat ut urna cursus vestibulum. Aliquam erat volutpat.</p>\r\n\r\n<h3>Etiam feugiat lorem non metus</h3>\r\n\r\n<p>Curabitur blandit mollis lacus. Praesent blandit laoreet nibh. Fusce ac felis sit amet ligula pharetra condimentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>\r\n\r\n<h2>Phasellus gravida semper nisi</h2>\r\n\r\n<p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc, vitae euismod ligula urna in dolor. Fusce risus nisl, viverra et, tempor et, pretium in, sapien. Donec id justo.</p>\r\n\r\n<p>Praesent egestas neque eu enim. Proin pretium, leo ac pellentesque mollis, felis nunc ultrices eros, sed gravida augue augue mollis justo. Maecenas egestas arcu quis ligula mattis placerat. Curabitur vestibulum aliquam leo. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>\r\n\r\n<p>Vestibulum volutpat pretium libero. Phasellus tempus. Suspendisse pulvinar, augue ac venenatis condimentum, sem libero volutpat nibh, nec pellentesque velit pede quis nunc. Aliquam lobortis. Cras id dui.</p>\r\n\r\n<p>Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent ac sem eget est egestas volutpat. Suspendisse potenti. Praesent ut ligula non mi varius sagittis. Praesent adipiscing.</p>\r\n\r\n<h2>Suspendisse pulvinar</h2>\r\n\r\n<p>Augue ac venenatis condimentum, sem libero volutpat nibh, nec pellentesque velit pede quis nunc. Fusce convallis metus id felis luctus adipiscing. Etiam iaculis nunc ac metus. Ut id nisl quis enim dignissim sagittis. Ut leo.</p>\r\n\r\n<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Morbi mattis ullamcorper velit. Cras non dolor. Suspendisse feugiat.</p>\r\n"

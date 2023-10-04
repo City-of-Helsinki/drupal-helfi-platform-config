@@ -1,7 +1,7 @@
 _meta:
   version: '1.0'
   entity_type: node
-  uuid: 7f832d91-3810-47a9-856c-b90891d9971c
+  uuid: 49433cd6-eb7f-48bd-8af3-27e791421ba6
   bundle: landing_page
   default_langcode: en
 default:
@@ -16,10 +16,10 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: News list'
+      value: 'DC: Announcements'
   created:
     -
-      value: 1658299041
+      value: 1696399952
   promote:
     -
       value: false
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-components/dc-news-list
+      alias: /dc-components/dc-announcements
       langcode: en
       pathauto: 1
   content_translation_source:
@@ -51,50 +51,42 @@ default:
       value: false
   published_at:
     -
-      value: 1696315413
-  field_content:
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: 09603c6a-358e-4e2f-8962-09bc6c93bc1e
-          bundle: news_list
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1658299046
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
-    -
-      entity:
-        _meta:
-          version: '1.0'
-          entity_type: paragraph
-          uuid: f3a30e81-7d38-4fbf-98fa-dfbebf06d6da
-          bundle: news_list
-          default_langcode: en
-        default:
-          status:
-            -
-              value: true
-          created:
-            -
-              value: 1658299046
-          behavior_settings:
-            -
-              value: {  }
-          revision_translation_affected:
-            -
-              value: true
+      value: 1696415670
   field_has_hero:
     -
-      value: false
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 3d212c3a-de2c-49c0-8172-64cc58d352af
+          bundle: hero
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696399978
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_desc:
+            -
+              value: "<p>This page demonstrates announcement variants.</p>\r\n\r\n<ul>\r\n</ul>\r\n"
+              format: full_html
+          field_hero_design:
+            -
+              value: without-image-left
+          field_hero_link_design:
+            -
+              value: primary
+          field_hero_title:
+            -
+              value: 'DC: Announcements'

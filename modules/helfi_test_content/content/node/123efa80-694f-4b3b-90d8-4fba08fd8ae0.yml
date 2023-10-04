@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-components/dc-component-phasing
+      alias: /dc-components/dc-phasing
       langcode: en
       pathauto: 1
   content_translation_source:
