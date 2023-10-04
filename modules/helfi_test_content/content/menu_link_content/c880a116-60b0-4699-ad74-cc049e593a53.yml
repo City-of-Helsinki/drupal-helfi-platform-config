@@ -1,7 +1,7 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: 19dd2e39-77dd-49da-acc2-d2b2933cf2c5
+  uuid: c880a116-60b0-4699-ad74-cc049e593a53
   bundle: menu_link_content
   default_langcode: en
   depends:
@@ -12,17 +12,15 @@ default:
       value: true
   title:
     -
-      value: 'DC: Link with no href'
+      value: 'DC: Link to email address'
   menu_name:
     -
       value: main
   link:
     -
-      uri: 'route:<nolink>'
+      uri: 'mailto:drupal@hel.fi'
       title: ''
-      options:
-        attributes:
-          class: {  }
+      options: {  }
   external:
     -
       value: false
@@ -31,7 +29,7 @@ default:
       value: false
   weight:
     -
-      value: -59
+      value: -61
   expanded:
     -
       value: false
@@ -55,4 +53,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1654500550
+      value: 1696398320

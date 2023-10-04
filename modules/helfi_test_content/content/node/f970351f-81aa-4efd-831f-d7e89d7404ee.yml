@@ -42,7 +42,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-components/dc-component-popular-services
+      alias: /dc-components/dc-popular-services
       langcode: en
       pathauto: 1
   content_translation_source:
