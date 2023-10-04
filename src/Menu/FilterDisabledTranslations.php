@@ -6,7 +6,6 @@ namespace Drupal\helfi_platform_config\Menu;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\node\Entity\Node;
 use Drupal\menu_block_current_language\Event\Events;
 use Drupal\menu_block_current_language\Event\HasTranslationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -62,7 +61,7 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
     $current_language = $this->languageManager
       ->getCurrentLanguage()
       ->getId();
-    
+
     $entity = $this->entityTypeManager->getStorage('menu_link_content')
       ->load($metadata['entity_id']);
 
