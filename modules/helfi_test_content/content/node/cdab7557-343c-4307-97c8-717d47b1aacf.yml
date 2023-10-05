@@ -44,7 +44,7 @@ default:
     -
       alias: /dc-layouts/dc-landing-page/dc-landing-page-hero-image-on-the-bottom
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und

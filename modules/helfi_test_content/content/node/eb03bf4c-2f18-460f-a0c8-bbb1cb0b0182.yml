@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-list-of-links
+      alias: /dc-components/dc-list-of-links
       langcode: en
       pathauto: 0
   content_translation_source:

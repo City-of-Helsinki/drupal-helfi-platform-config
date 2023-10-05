@@ -42,7 +42,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-layouts/dc-layout-landing/dc-layout-landing-hero-image-on-the-right
+      alias: /dc-layouts/dc-landing-page/dc-landing-page-hero-image-on-the-right
       langcode: en
       pathauto: 0
   content_translation_source:

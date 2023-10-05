@@ -45,7 +45,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-unit-search
+      alias: /dc-components/dc-unit-search
       langcode: en
       pathauto: 0
   content_translation_source:

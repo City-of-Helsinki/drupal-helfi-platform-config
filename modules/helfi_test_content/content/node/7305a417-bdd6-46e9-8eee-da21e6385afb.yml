@@ -43,7 +43,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-columns
+      alias: /dc-components/dc-columns
       langcode: en
       pathauto: 0
   content_translation_source:

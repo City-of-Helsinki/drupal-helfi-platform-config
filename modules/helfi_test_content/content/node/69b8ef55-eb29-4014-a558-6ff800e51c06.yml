@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-events
+      alias: /dc-components/dc-event-list
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -76,7 +76,7 @@ default:
               value: true
           field_api_url:
             -
-              uri: 'https://tapahtumat.hel.fi/fi/events'
+              uri: 'https://tapahtumat.hel.fi/fi/events?categories=museum&isFree=true&onlyEveningEvents=true'
               title: ''
               options: {  }
           field_event_count:

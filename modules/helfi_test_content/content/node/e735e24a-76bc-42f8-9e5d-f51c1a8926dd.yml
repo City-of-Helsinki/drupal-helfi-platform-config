@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts
+      alias: /dc-layouts
       langcode: en
       pathauto: 0
   content_translation_source:
