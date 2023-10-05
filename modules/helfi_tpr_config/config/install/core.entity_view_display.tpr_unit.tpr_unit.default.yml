@@ -203,8 +203,8 @@ content:
   unit_picture_caption:
     type: basic_string
     label: hidden
-    settings: { }
-    third_party_settings: { }
+    settings: {  }
+    third_party_settings: {  }
     weight: 5
     region: content
   www:
