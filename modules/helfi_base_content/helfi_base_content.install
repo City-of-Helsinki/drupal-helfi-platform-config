@@ -38,8 +38,6 @@ function helfi_base_content_grant_permissions() : void {
       'translate configuration',
       // @content_lock.
       'break content lock',
-      // @editorially.
-      'view editoria11y checker',
       // @locale.
       'translate interface',
       // @menu_link_attributes.
@@ -95,8 +93,6 @@ function helfi_base_content_grant_permissions() : void {
     'content_producer' => [
       // @content_translation.
       'translate editable entities',
-      // @editorially.
-      'view editoria11y checker',
       // @helfi_api_base.
       'access remote entities overview',
       // @menu_link_content.
@@ -132,8 +128,6 @@ function helfi_base_content_grant_permissions() : void {
       'translate any entity',
       'translate editable entities',
       'update content translations',
-      // @editorially.
-      'view editoria11y checker',
       // @node.
       'access content overview',
       'administer nodes',
