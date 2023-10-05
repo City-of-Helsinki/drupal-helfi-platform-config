@@ -16,7 +16,6 @@ dependencies:
   - drupal:taxonomy
   - drupal:text
   - easy_breadcrumb:easy_breadcrumb
-  - editoria11y:editoria11y
   - entity_reference_revisions:entity_reference_revisions
   - hdbt_admin_tools:hdbt_admin_tools
   - helfi_platform_config:helfi_platform_config
