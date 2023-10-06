@@ -7,6 +7,21 @@ dependencies:
   - helfi_platform_config_base:helfi_platform_config_base
   - helfi_tpr_config:helfi_tpr_config
 default_content:
+  file:
+    - e4073ee5-8925-4072-8783-58faa2cbf0c8
+    - ea829414-e243-4cf5-b94e-fd115626072c
+    - f7b216de-3ba8-41bf-b8cc-099c409a7a5a
+    - f9104415-ad74-4994-b2fe-8d649f4ebc0f
+    - fbd5b487-2f0a-4301-9c18-5d7d68855529
+    - ac8177ed-6485-419e-80da-7c9249307567
+    - 3069fcea-d0fe-432b-965b-eb19beb68379
+    - 55a4d5ec-f3cc-450e-b1d4-9f769215fa39
+    - 166e9452-88c5-48c3-b778-a97f0214ce22
+    - 59b9a7a0-4608-4e0d-8bdc-ac3bba38af77
+    - 5aa93e60-d57f-4d7c-9bb9-be738c2461e5
+    - 72e152cd-10ed-49c3-8f8d-174999a6578e
+    - 29bd12c4-3726-4538-a4b9-3c91fbe510f3
+    - 95e79ea8-af6e-47af-97cd-a16187930ce9
   menu_link_content:
     - 0ff492a2-dbd5-4fee-8b99-107dd475eea8
     - 1b2695dd-8b5f-4d48-a7c4-dba1b8522b9f

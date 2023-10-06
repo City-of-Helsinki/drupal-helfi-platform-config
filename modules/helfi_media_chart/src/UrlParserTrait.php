@@ -21,11 +21,20 @@ trait UrlParserTrait {
    */
   protected function assertMediaLink(UriInterface $uri) : void {
     if (
-      $uri->getHost() === Chart::CHART_POWERBI_URL &&
+      in_array($uri->getHost(), Chart::CHART_POWERBI_URL) &&
       str_contains($uri->getPath(), '/view')
     ) {
       return;
     }
+
+    // Let the test content sample report through as well.
+    if (
+      in_array($uri->getHost(), Chart::CHART_POWERBI_URL) &&
+      str_contains($uri->getPath(), '/sampleReportEmbed')
+    ) {
+      return;
+    }
+
     throw new \InvalidArgumentException('Invalid media URL. Check URL.');
   }
 
@@ -38,7 +47,7 @@ trait UrlParserTrait {
    * @return \Psr\Http\Message\UriInterface
    *   The uri.
    */
-  protected function mediaUrlToUri(string $url) :  UriInterface {
+  protected function mediaUrlToUri(string $url) : UriInterface {
     $uri = Http::createFromString($url);
     $this->assertMediaLink($uri);
 
