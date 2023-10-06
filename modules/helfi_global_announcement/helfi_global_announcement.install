@@ -63,9 +63,9 @@ function helfi_global_announcement_update_9001() : void {
 }
 
 /**
- * Re-install configuration to add new field.
+ * Re-install configuration to update cache lifetime.
  */
-function helfi_global_announcement_update_9003() : void {
+function helfi_global_announcement_update_9004() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_global_announcement');
 }

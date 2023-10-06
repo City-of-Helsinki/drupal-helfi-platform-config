@@ -99,6 +99,7 @@ function helfi_global_announcement_entity_bundle_field_info_alter(
  * Implements hook_cron().
  */
 function helfi_global_announcement_cron(): void {
+  // @todo Remove this once we've confirmed that PubSub cache invalidation works.
   $store = \Drupal::service('tempstore.shared')->get('global_announcement');
   $globalEntityStorage = \Drupal::entityTypeManager()
     ->getStorage('helfi_announcements');
