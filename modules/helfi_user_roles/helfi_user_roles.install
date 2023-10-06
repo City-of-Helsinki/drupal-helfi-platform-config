@@ -15,6 +15,9 @@ use Drupal\user\Entity\User;
  */
 function helfi_user_roles_grant_permissions() : void {
   $permissions = [
+    'anonymous' => [
+      'access content',
+    ],
     'admin' => [
       // @user.
       'access user profiles',

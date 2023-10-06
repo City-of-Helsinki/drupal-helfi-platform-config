@@ -38,8 +38,6 @@ function helfi_base_content_grant_permissions() : void {
       'translate configuration',
       // @content_lock.
       'break content lock',
-      // @editorially.
-      'view editoria11y checker',
       // @locale.
       'translate interface',
       // @menu_link_attributes.
@@ -95,8 +93,6 @@ function helfi_base_content_grant_permissions() : void {
     'content_producer' => [
       // @content_translation.
       'translate editable entities',
-      // @editorially.
-      'view editoria11y checker',
       // @helfi_api_base.
       'access remote entities overview',
       // @menu_link_content.
@@ -132,8 +128,6 @@ function helfi_base_content_grant_permissions() : void {
       'translate any entity',
       'translate editable entities',
       'update content translations',
-      // @editorially.
-      'view editoria11y checker',
       // @node.
       'access content overview',
       'administer nodes',
@@ -265,4 +259,25 @@ function helfi_base_content_update_9004() : void {
   $config_factory->getEditable('system.menu.branding-navigation')->delete();
   $config_factory->getEditable('block.block.brandingnavigation')->delete();
   $config_factory->getEditable('block.block.hdbt_subtheme_brandingnavigation')->delete();
+}
+
+/**
+ * UHF-8955 simple_sitemap - do not process menu_link_content entities.
+ */
+function helfi_base_content_update_9005() : void {
+  $config_factory = Drupal::configFactory();
+
+  // Remove menu_link_content from enabled entity types:
+  $config = $config_factory->getEditable('simple_sitemap.settings');
+  if (!$config->isNew()) {
+    $enabled_entity_types = $config->get('enabled_entity_types');
+    $enabled_entity_types = array_values(array_filter($enabled_entity_types, static fn ($item) => $item !== 'menu_link_content'));
+    $config->set('enabled_entity_types', $enabled_entity_types);
+    $config->save();
+  }
+
+  // Remove remaining menu_link_content related settings.
+  $config_factory->getEditable('simple_sitemap.bundle_settings.default.menu_link_content.main')->delete();
+  $config_factory->getEditable('simple_sitemap.bundle_settings.default.menu_link_content.branding-navigation')->delete();
+  $config_factory->getEditable('simple_sitemap.bundle_settings.default.menu_link_content.account')->delete();
 }

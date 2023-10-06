@@ -27,7 +27,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 14
+    weight: 15
     region: content
   accessibility_phone:
     type: string
@@ -35,14 +35,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 13
+    weight: 14
     region: content
   accessibility_sentences:
     type: tpr_accessibility_sentence
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 19
+    weight: 20
     region: content
   accessibility_www:
     type: link
@@ -54,14 +54,14 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 15
+    weight: 16
     region: content
   address:
     type: address_plain
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   address_postal:
     type: string
@@ -69,14 +69,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 9
+    weight: 10
     region: content
   call_charge_info:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
   description:
     type: text_default
@@ -91,7 +91,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 8
+    weight: 9
     region: content
   field_content:
     type: entity_reference_revisions_entity_view
@@ -100,7 +100,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 18
+    weight: 19
     region: content
   field_lower_content:
     type: entity_reference_revisions_entity_view
@@ -109,21 +109,21 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 20
+    weight: 21
     region: content
   field_metatags:
     type: metatag_empty_formatter
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 17
+    weight: 18
     region: content
   highlights:
     type: tpr_connection
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 22
+    weight: 23
     region: content
   latitude:
     type: string
@@ -162,7 +162,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   phone:
     type: telephone_link
@@ -170,7 +170,7 @@ content:
     settings:
       title: ''
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
   picture_url:
     type: imagecache_external_responsive_image
@@ -196,7 +196,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 21
+    weight: 22
     region: content
   service_map_embed:
     type: service_map_embed
@@ -206,7 +206,7 @@ content:
       link_title: 'Open larger map'
       target: true
     third_party_settings: {  }
-    weight: 10
+    weight: 11
     region: content
   services:
     type: entity_reference_label
@@ -214,7 +214,14 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 16
+    weight: 17
+    region: content
+  unit_picture_caption:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
     region: content
   www:
     type: link
@@ -226,7 +233,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 12
+    weight: 13
     region: content
 hidden:
   created: true
