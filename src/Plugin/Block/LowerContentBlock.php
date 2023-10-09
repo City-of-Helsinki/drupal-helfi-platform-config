@@ -31,13 +31,6 @@ class LowerContentBlock extends ContentBlockBase {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity, 'entity_version' => $entity_version] = $this->getCurrentEntityVersion();
 
-    // Pass the Unit entity render array to templates if one exists.
-    if ($entity instanceof Unit) {
-      $view_builder = $this->entityTypeManager->getViewBuilder('tpr_unit');
-      $build['lower_content']['#computed'] = $view_builder->view($entity);
-      $build['lower_content']['#computed']['#theme'] = 'tpr_unit_lower_content';
-    }
-
     // Pass the Service entity render array to templates if one exists.
     if ($entity instanceof Service) {
       $view_builder = $this->entityTypeManager->getViewBuilder('tpr_service');
