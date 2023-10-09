@@ -80,7 +80,8 @@ final class Announcements extends ExternalEntityStorageClientBase {
 
     if (!$environment) {
       try {
-        $environment = $environmentResolver->getActiveEnvironment();
+        $environment = $environmentResolver->getActiveEnvironment()
+          ->getEnvironmentName();
       }
       catch (\InvalidArgumentException) {
         $environment = 'prod';
