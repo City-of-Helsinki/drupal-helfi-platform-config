@@ -20,7 +20,6 @@ use Drupal\hdbt_admin_tools\Form\SiteSettings;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_tpr\Entity\Service;
-use Drupal\helfi_tpr\Entity\Unit;
 use Drupal\node\NodeInterface;
 use Drupal\user\UserInterface;
 

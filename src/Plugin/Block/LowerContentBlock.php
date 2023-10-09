@@ -7,7 +7,6 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_tpr\Entity\Service;
-use Drupal\helfi_tpr\Entity\Unit;
 
 /**
  * Provides a 'LowerContentBlock' block.
