@@ -386,20 +386,6 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
     $variables['has_sidebar_second'] = TRUE;
   }
 
-  // Enable sidebar second for TPR unit if contact information exists.
-  if ($entity instanceof Unit) {
-    if (
-      !$entity->get('address')->isEmpty() ||
-      !$entity->get('email')->isEmpty() ||
-      !$entity->get('phone')->isEmpty() ||
-      !$entity->get('address_postal')->isEmpty() ||
-      !$entity->get('opening_hours')->isEmpty() ||
-      !$entity->get('www')->isEmpty()
-    ) {
-      $variables['has_sidebar_second'] = TRUE;
-    }
-  }
-
   // Enable sidebar second for TPR service if important links exists.
   if ($entity instanceof Service && !$entity->get('links')->isEmpty()) {
     $variables['has_sidebar_second'] = TRUE;
