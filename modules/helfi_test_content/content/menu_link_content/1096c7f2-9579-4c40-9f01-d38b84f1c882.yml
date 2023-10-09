@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: layout landing - no-hero'
+      value: 'DC: Landing page - no-hero'
   menu_name:
     -
       value: main
@@ -30,7 +30,7 @@ default:
       value: false
   weight:
     -
-      value: 2
+      value: -60
   expanded:
     -
       value: false

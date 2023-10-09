@@ -24,7 +24,10 @@ final class Chart extends MediaSourceBase {
   /**
    * Valid Power BI URL.
    */
-  public const CHART_POWERBI_URL = 'app.powerbi.com';
+  public const CHART_POWERBI_URL = [
+    'app.powerbi.com',
+    'playground.powerbi.com',
+  ];
 
   /**
    * {@inheritdoc}

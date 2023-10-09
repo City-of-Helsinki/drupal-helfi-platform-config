@@ -18,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component target group links'
+      value: 'DC: Target group links'
   created:
     -
       value: 1678270509
@@ -42,15 +42,18 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-target-group-links
+      alias: /dc-components/dc-target-group-links
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1696315413
   field_content:
     -
       entity:
@@ -70,6 +73,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_target_group_item:
             -
               entity:
@@ -89,13 +95,16 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: star
                   field_target_group_item_link:
                     -
                       target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
-                      title: 'DC: components'
+                      title: 'DC: Components'
                       options: {  }
     -
       entity:
@@ -115,6 +124,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_target_group_item:
             -
               entity:
@@ -134,6 +146,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: locate
@@ -163,13 +178,16 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: refresh
                   field_target_group_item_link:
                     -
                       target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
-                      title: 'DC: components'
+                      title: 'DC: Components'
                       options: {  }
             -
               entity:
@@ -189,6 +207,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: speechbubble
@@ -221,6 +242,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_target_group_item:
             -
               entity:
@@ -240,6 +264,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: abstract-3
@@ -273,6 +300,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_target_group_item:
             -
               entity:
@@ -292,6 +322,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: question-circle
@@ -328,6 +361,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_target_group_item:
             -
               entity:
@@ -347,6 +383,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: check-circle
@@ -376,6 +415,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: clock
@@ -405,6 +447,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: cross-circle
@@ -431,13 +476,16 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: alert-circle
                   field_target_group_item_link:
                     -
                       target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
-                      title: 'DC: components'
+                      title: 'DC: Components'
                       options: {  }
             -
               entity:
@@ -457,6 +505,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: face-smile
@@ -486,13 +537,16 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_icon:
                     -
                       icon: info-circle
                   field_target_group_item_link:
                     -
                       target_uuid: cd0c6a07-09e1-41bb-bd84-87e5d9cad62a
-                      title: 'DC: components'
+                      title: 'DC: Components'
                       options: {  }
                   field_target_group_item_subtitle:
                     -

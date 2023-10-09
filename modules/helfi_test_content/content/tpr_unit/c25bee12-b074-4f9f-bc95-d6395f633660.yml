@@ -26,7 +26,7 @@ default:
       value: 'Unit 4'
   name_override:
     -
-      value: 'DC: layout tpr unit - subnav - sidebar'
+      value: 'DC: TPR Unit - subnav - sidebar'
   picture_url_override:
     -
       entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
@@ -71,7 +71,7 @@ default:
       value: false
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-tpr-unit/dc-layout-tpr-unit-subnav-sidebar
+      alias: /dc-layouts/dc-tpr-unit/dc-tpr-unit-subnav-sidebar
       langcode: en
       pathauto: 0
   content_translation_source:

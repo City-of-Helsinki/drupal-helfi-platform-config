@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component remote video'
+      value: 'DC: Remote video'
   menu_name:
     -
       value: main

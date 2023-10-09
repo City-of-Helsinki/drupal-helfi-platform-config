@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component liftup with image'
+      value: 'DC: Liftup with image'
   menu_name:
     -
       value: main

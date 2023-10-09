@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: Layout tpr service'
+      value: 'DC: TPR Service'
   menu_name:
     -
       value: main
@@ -30,7 +30,7 @@ default:
       value: false
   weight:
     -
-      value: 16
+      value: -46
   expanded:
     -
       value: false

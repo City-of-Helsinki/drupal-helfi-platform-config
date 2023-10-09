@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: navigation'
+      value: 'DC: Navigation'
   created:
     -
       value: 1654499729
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-navigation
+      alias: /dc-navigation
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -76,7 +76,7 @@ default:
               value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>Level 1 ... 10</li>\r\n\t<li>Link to non hel.fi address</li>\r\n\t<li>Link to non hel.fi address under another link</li>\r\n\t<li>Link with no href</li>\r\n</ul>\r\n"
+              value: "<h2>Menu links</h2>\r\n\r\n<p>Menu links demonstrates all types of menu links what are available</p>\r\n\r\n<ul>\r\n\t<li>Level 1 ... 10</li>\r\n\t<li>Link to non hel.fi address</li>\r\n\t<li>Link to non hel.fi address under another link</li>\r\n\t<li>Link to tel and e-mail</li>\r\n\t<li>Link with no href</li>\r\n</ul>\r\n\r\n<h2>Table of contents</h2>\r\n\r\n<p>Table of contents demonstrates an automated list of H2 headings on that page</p>\r\n"
               format: full_html
   field_has_hero:
     -

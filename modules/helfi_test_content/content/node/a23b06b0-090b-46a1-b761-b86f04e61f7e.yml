@@ -18,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layout standard - hero - subnav - sidebar'
+      value: 'DC: Standard page - hero - subnav - sidebar'
   created:
     -
       value: 1654501169
@@ -42,7 +42,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-standard/dc-layout-standard-hero-subnav-sidebar
+      alias: /dc-layouts/dc-standard-page/dc-standard-page-hero-subnav-sidebar
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -129,7 +129,7 @@ default:
               value: primary
           field_hero_title:
             -
-              value: 'DC: layout standard - hero - subnav - sidebar'
+              value: 'DC: Standard page - hero - subnav - sidebar'
   field_lower_content:
     -
       entity:

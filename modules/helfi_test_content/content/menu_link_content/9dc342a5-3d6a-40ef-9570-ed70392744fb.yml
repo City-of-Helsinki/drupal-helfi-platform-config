@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: Layout landing'
+      value: 'DC: Landing page'
   menu_name:
     -
       value: main
@@ -30,7 +30,7 @@ default:
       value: false
   weight:
     -
-      value: 0
+      value: -57
   expanded:
     -
       value: false

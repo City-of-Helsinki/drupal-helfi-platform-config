@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component event list'
+      value: 'DC: Event list'
   created:
     -
       value: 1654685838
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-events
+      alias: /dc-components/dc-event-list
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -76,7 +76,7 @@ default:
               value: true
           field_api_url:
             -
-              uri: 'https://tapahtumat.hel.fi/fi/events'
+              uri: 'https://tapahtumat.hel.fi/fi/events?categories=museum&isFree=true&onlyEveningEvents=true'
               title: ''
               options: {  }
           field_event_count:
@@ -94,9 +94,6 @@ default:
           field_free_events:
             -
               value: false
-          field_load_more:
-            -
-              value: true
           field_remote_events:
             -
               value: true

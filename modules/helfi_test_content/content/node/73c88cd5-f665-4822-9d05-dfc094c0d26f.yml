@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-navigation/dc-level-3/dc-level-4/dc-level-5/dc-level-6/dc-level-1
+      alias: /dc-navigation/dc-level-3/dc-level-4/dc-level-5/dc-level-6/dc-level-7/dc-level-8/dc-level-9
       langcode: en
       pathauto: 0
   content_translation_source:

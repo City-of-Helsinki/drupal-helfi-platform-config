@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component accordion'
+      value: 'DC: Accordion'
   menu_name:
     -
       value: main

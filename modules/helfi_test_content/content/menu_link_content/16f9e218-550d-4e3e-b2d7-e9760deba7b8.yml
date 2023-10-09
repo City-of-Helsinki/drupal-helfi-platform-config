@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component service list'
+      value: 'DC: Service list'
   menu_name:
     -
       value: main

@@ -24,7 +24,7 @@ default:
       value: 'Service 1'
   name_override:
     -
-      value: 'DC: layout tpr service - no-subnav - no-sidebar'
+      value: 'DC: TPR Service - no-subnav - no-sidebar'
   description:
     -
       value: 'Description long en 1'
@@ -49,7 +49,7 @@ default:
       value: Sisällysluettelo
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-tpr-service/dc-layout-tpr-service-no-subnav-no-sidebar
+      alias: /dc-layouts/dc-tpr-service/dc-tpr-service-no-subnav-no-sidebar
       langcode: en
       pathauto: 0
   content_translation_source:
