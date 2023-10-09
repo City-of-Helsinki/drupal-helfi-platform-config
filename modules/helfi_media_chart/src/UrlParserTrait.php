@@ -20,21 +20,14 @@ trait UrlParserTrait {
    *   The uri from chart URL.
    */
   protected function assertMediaLink(UriInterface $uri) : void {
-    if (
-      in_array($uri->getHost(), Chart::CHART_POWERBI_URL) &&
-      str_contains($uri->getPath(), '/view')
-    ) {
-      return;
+    if (in_array($uri->getHost(), Chart::CHART_POWERBI_URL)) {
+      // Let the test content sample report through as well.
+      foreach (['/view', '/sampleReportEmbed'] as $needle) {
+        if (str_contains($uri->getPath(), $needle)) {
+          return;
+        }
+      }
     }
-
-    // Let the test content sample report through as well.
-    if (
-      in_array($uri->getHost(), Chart::CHART_POWERBI_URL) &&
-      str_contains($uri->getPath(), '/sampleReportEmbed')
-    ) {
-      return;
-    }
-
     throw new \InvalidArgumentException('Invalid media URL. Check URL.');
   }
 
