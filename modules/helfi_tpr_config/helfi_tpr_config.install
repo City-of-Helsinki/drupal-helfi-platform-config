@@ -316,3 +316,12 @@ function helfi_tpr_config_update_9046(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }
+
+/**
+ * UHF-8939: Make all new TPR unit fields visible in form and display.
+ */
+function helfi_tpr_config_update_9047(): void {
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_tpr_config');
+}
