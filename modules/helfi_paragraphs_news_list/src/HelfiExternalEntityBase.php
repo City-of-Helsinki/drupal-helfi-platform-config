@@ -52,11 +52,11 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   protected string $endpoint;
 
   /**
-   * The environment resolver.
+   * The active endpoint environment.
    *
-   * @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
+   * @var \Drupal\helfi_api_base\Environment\Environment
    */
-  protected EnvironmentResolverInterface $environmentResolver;
+  private Environment $environment;
 
   /**
    * The config factory service.
@@ -77,8 +77,12 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
     $instance->client = $container->get('http_client');
-    $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
     $instance->configFactory = $container->get('config.factory');
+    /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
+    $environmentResolver = $container->get('helfi_api_base.environment_resolver');
+    $instance->environment = $environmentResolver
+      ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+
     return $instance;
   }
 
@@ -192,27 +196,6 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   }
 
   /**
-   * Gets the endpoint environment.
-   *
-   * @return \Drupal\helfi_api_base\Environment\Environment
-   *   The environment.
-   */
-  protected function getEnvironment() : Environment {
-    static $environment = NULL;
-
-    if ($environment === NULL) {
-      $environment = $this->configFactory->get('helfi_paragraphs_news_list.settings')
-        ->get('source_environment') ?: EnvironmentEnum::Prod->value;
-
-      /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
-      $environment = $this->environmentResolver
-        ->getEnvironment(Project::ETUSIVU, $environment);
-    }
-
-    return $environment;
-  }
-
-  /**
    * Formats the JSON response.
    *
    * @param array $json
@@ -318,7 +301,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
         ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
         ->getId();
       $uri = vsprintf('%s%s?%s', [
-        $this->getEnvironment()->getInternalAddress($langcode),
+        $this->environment->getInternalAddress($langcode),
         $this->endpoint,
         \GuzzleHttp\http_build_query($parameters),
       ]);
