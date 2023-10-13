@@ -226,9 +226,9 @@ export default class HelfiLinkEditing extends Plugin {
    * @code
    * <a
    *   href="#"
-   *   data-icon-start="download"
-   *   data-variant="supplementary"
-   *   data-hds="button"
+   *   data-hds-icon-start="download"
+   *   data-hds-variant="supplementary"
+   *   data-hds-component="button"
    * >Link text</a>
    * @endcode
    *
@@ -311,12 +311,12 @@ export default class HelfiLinkEditing extends Plugin {
             viewElement._removeChildren(0, numOfChildren);
           }
 
-          // Convert possible icon span to data-icon-start.
+          // Convert possible icon span to data-hds-icon-start.
           anchorChildren.forEach(child => {
             if (child.name === 'span' && child.hasClass('hel-icon')) {
               const icon = convertIcons(child.getClassNames());
               if (icon) {
-                viewElement._setAttribute('data-icon-start', icon);
+                viewElement._setAttribute('data-hds-icon-start', icon);
               }
             }
           });
@@ -432,49 +432,6 @@ export default class HelfiLinkEditing extends Plugin {
       }
     });
 
-    // Convert "data-hds=button" attribute to linkButton model.
-    editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-hds',
-        value: 'button'
-      },
-      model: {
-        key: 'linkButton',
-        value: 'button',
-      }
-    });
-
-    // Convert data-variant attribute to linkVariant model.
-    editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-variant',
-      },
-      model: {
-        key: 'linkVariant',
-      }
-    });
-
-    // Convert data-variant attribute to linkButton model.
-    editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-variant'
-      },
-      model: {
-        key: 'linkButton',
-        value: (viewElement) => {
-          // Check if current anchor is a button and set data-attributes
-          // accordingly.
-          const variant = convertVariants(
-            Array.from(viewElement.getAttribute('data-variant')).join(' ')
-          );
-          return variant ? 'button' : false;
-        }
-      }
-    });
-
     // Convert data-protocol attribute to linkProtocol model.
     editor.conversion.for('upcast').attributeToAttribute({
       view: {
@@ -505,61 +462,6 @@ export default class HelfiLinkEditing extends Plugin {
       }
     });
 
-    // Convert data-icon-start attribute to linkIcon model.
-    editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-icon-start',
-      },
-      model: {
-        key: 'linkIcon',
-      }
-    });
-
-    // Convert linkVariant model to data-variant attribute.
-    editor.conversion.for('dataDowncast').attributeToElement({
-      model: 'linkVariant',
-      view: (attributeValue, { writer }) => {
-        if (!attributeValue || attributeValue === 'primary') {
-          return null;
-        }
-        return writer.createAttributeElement('a', { 'data-variant': attributeValue }, { priority: 5 });
-      },
-    });
-
-    // Convert linkIcon model to data-icon-start attribute.
-    editor.conversion.for('dataDowncast').attributeToElement({
-      model: 'linkIcon',
-      view: (attributeValue, { writer }) => {
-        if (!attributeValue) {
-          return null;
-        }
-        return writer.createAttributeElement('a', { 'data-icon-start': attributeValue }, { priority: 5 });
-      },
-    });
-
-    // Convert linkProtocol model to data-protocol attribute.
-    editor.conversion.for('dataDowncast').attributeToElement({
-      model: 'linkProtocol',
-      view: (attributeValue, { writer }) => {
-        if (!attributeValue) {
-          return null;
-        }
-        return writer.createAttributeElement('a', { 'data-protocol': attributeValue }, { priority: 5 });
-      },
-    });
-
-    // Convert linkButton model to data-hds attribute.
-    editor.conversion.for('dataDowncast').attributeToElement({
-      model: 'linkButton',
-      view: (attributeValue, { writer }) => {
-        if (!attributeValue) {
-          return null;
-        }
-        return writer.createAttributeElement('a', { 'data-hds': attributeValue }, { priority: 5 });
-      },
-    });
-
     /**
      * Helper function for the data-attribute conversion.
      *
@@ -576,18 +478,18 @@ export default class HelfiLinkEditing extends Plugin {
       return toWidgetEditable(attributeElement, writer, { label: Drupal.t('Edit link') });
     };
 
-    // Convert linkVariant model to data-variant attribute with editable widget.
+    // Convert linkVariant model to data-hds-variant attribute with editable widget.
     editor.conversion.for('editingDowncast').attributeToElement({
       model: 'linkVariant',
       view: (attributeValue, { writer }) => attributeValue !== 'primary'
-          ? editingDowncast('data-variant', attributeValue, writer)
+          ? editingDowncast('data-hds-variant', attributeValue, writer)
           : null
     });
 
-    // Convert linkIcon model to data-icon-start attribute with editable widget.
+    // Convert linkIcon model to data-hds-icon-start attribute with editable widget.
     editor.conversion.for('editingDowncast').attributeToElement({
       model: 'linkIcon',
-      view: (attributeValue, { writer }) => editingDowncast('data-icon-start', attributeValue, writer),
+      view: (attributeValue, { writer }) => editingDowncast('data-hds-icon-start', attributeValue, writer),
     });
 
     // Convert linkProtocol model to data-protocol attribute with editable widget.
@@ -597,10 +499,10 @@ export default class HelfiLinkEditing extends Plugin {
       converterPriority: 'highest',
     });
 
-    // Convert linkButton model to data-hds attribute with editable widget.
+    // Convert linkButton model to data-hds-component attribute with editable widget.
     editor.conversion.for('editingDowncast').attributeToElement({
       model: 'linkButton',
-      view: (attributeValue, { writer }) => editingDowncast('data-hds', attributeValue, writer),
+      view: (attributeValue, { writer }) => editingDowncast('data-hds-component', attributeValue, writer),
     });
   }
 
