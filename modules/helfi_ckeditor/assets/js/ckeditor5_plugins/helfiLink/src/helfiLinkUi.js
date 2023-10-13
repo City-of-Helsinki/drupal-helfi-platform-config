@@ -329,7 +329,7 @@ export default class HelfiLinkUi extends Plugin {
 
             // Set linkButton model variable if the link design is "primary".
             // Return the state as we don't want to print out
-            // data-variant="primary" to the anchor tag.
+            // data-hds-variant="primary" to the anchor tag.
             if (selectedValue === 'primary') {
               state.linkButton = 'button';
               return state;
@@ -471,8 +471,8 @@ export default class HelfiLinkUi extends Plugin {
           if (modelName === 'linkVariant') {
 
             // It was decided to remove "primary" variable from anchor tag and
-            // attach "primary" button styles to data-hds variable.
-            // Add the "primary" as default value if data-hds="button" is found.
+            // attach "primary" button styles to data-hds-component variable.
+            // Add the "primary" as default value if data-hds-component="button" is found.
             if (
               linkCommand.linkButton === 'button' &&
               (!linkCommand[modelName] || linkCommand[modelName] === 'primary')

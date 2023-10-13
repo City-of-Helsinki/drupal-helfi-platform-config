@@ -6,7 +6,7 @@ const formElements = {
     type: 'select',
     group: 'advanced',
     isVisible: false,
-    viewAttribute: 'data-icon-start',
+    viewAttribute: 'data-hds-icon-start',
   },
   linkVariant: {
     label: Drupal.t('Design'),
@@ -20,12 +20,12 @@ const formElements = {
     type: 'select',
     group: 'advanced',
     isVisible: true,
-    viewAttribute: 'data-variant',
+    viewAttribute: 'data-hds-variant',
   },
   linkButton: {
-    machineName: 'data-hds',
+    machineName: 'data-hds-component',
     type: 'static',
-    viewAttribute: 'data-hds',
+    viewAttribute: 'data-hds-component',
   },
   linkProtocol: {
     label: Drupal.t('Protocol', {}, { context: 'CKEditor5 Helfi Link plugin' }),
@@ -59,6 +59,11 @@ const formElements = {
     type: 'checkbox',
     group: 'advanced',
     isVisible: true,
+  },
+  linkIsExternal: {
+    machineName: 'data-is-external',
+    type: 'static',
+    viewAttribute: 'data-is-external',
   },
 };
 export default formElements;
