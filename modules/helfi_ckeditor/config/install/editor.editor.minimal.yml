@@ -32,7 +32,7 @@ settings:
       startIndex: true
     helfi_ckeditor_helfi_link:
       helfi_link_attributes:
-        - '<a aria-label class data-design data-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds data-variant id rel role target="_blank" title>'
+        - '<a aria-label class data-design data-hds-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds-component data-hds-variant id rel role target="_blank" title>'
         - '<span aria-hidden class role>'
     linkit_extension:
       linkit_enabled: true
