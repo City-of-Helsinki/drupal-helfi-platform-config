@@ -36,7 +36,7 @@ Just untick and tick the `Limit allowed HTML tags and correct faulty HTML` check
 
 ### Pasting an anchor link to source removes nearly all attributes from anchor
 You need to wrap the anchor to paragraph element to retain the attributes.
-F.e. `<a href="#" data-hds="button">Test</a>` --> `<p><a href="#" data-hds="button">Test</a></p>`
+F.e. `<a href="#" data-hds-component="button">Test</a>` --> `<p><a href="#" data-hds-component="button">Test</a></p>`
 
 ### Link/Button "external link" icon is missing in CKEditor
 The `data-is-external=true` attribute is not rendered in CKEditor, because the actual rendering of this attribute happens when the markup is being rendered in frontend.
