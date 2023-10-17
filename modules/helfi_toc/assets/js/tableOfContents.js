@@ -183,12 +183,15 @@
           content.setAttribute('id', anchorName);
         });
 
-      // Remove loading text.
       if (tableOfContents) {
-        const removeElements = tableOfContents.querySelectorAll('.js-remove');
+        // Remove loading text and noscript element.
+        const removeElements = tableOfContents.parentElement.querySelectorAll('.js-remove');
         removeElements.forEach(function (element) {
           element.remove();
         });
+
+        // Update toc visible.
+        tableOfContents.setAttribute('data-js', 'true');
       }
     },
   };
