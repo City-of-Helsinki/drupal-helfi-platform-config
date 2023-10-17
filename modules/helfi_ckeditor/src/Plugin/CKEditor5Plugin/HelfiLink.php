@@ -11,7 +11,6 @@ use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginElementsSubsetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Url;
 use Drupal\editor\EditorInterface;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
@@ -27,6 +26,11 @@ class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElement
 
   use CKEditor5PluginConfigurableTrait;
 
+  /**
+   * The internal domain resolver.
+   *
+   * @var \Drupal\helfi_api_base\Link\InternalDomainResolver
+   */
   private InternalDomainResolver $internalDomainResolver;
 
   /**
@@ -40,7 +44,6 @@ class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElement
    *   The plugin implementation definition.
    * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $internal_domain_resolver
    *   The internal domain resolver service.
-   *
    */
   public function __construct(array $configuration, string $plugin_id, CKEditor5PluginDefinition $plugin_definition, InternalDomainResolver $internal_domain_resolver) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
