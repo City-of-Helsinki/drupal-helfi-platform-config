@@ -2,7 +2,7 @@
  * @file A view to model and model to view converters for HelfiLink.
  */
 import { Plugin } from 'ckeditor5/src/core';
-import { toWidgetEditable, Widget } from 'ckeditor5/src/widget';
+import { Widget } from 'ckeditor5/src/widget';
 import { findAttributeRange } from 'ckeditor5/src/typing';
 import formElements from './formElements';
 
@@ -105,6 +105,55 @@ export default class HelfiLinkEditing extends Plugin {
           value: (viewElement) => !!(viewElement.hasAttribute(viewAttributeKey) &&
             viewElement.getAttribute(viewAttributeKey) === viewAttributeValue)
         },
+      });
+    }
+    else if (modelName === 'linkIsExternal' || modelName === 'linkProtocol') {
+      editor.conversion.for('upcast').elementToAttribute({
+        view: 'a',
+        model: {
+          key: modelName,
+          value: viewElement => {
+            // Check if the view element has an 'href' attribute.
+            if (!viewElement.hasAttribute('href')) {
+              return null; // No 'href' attribute, so return null.
+            }
+
+            // Get the 'href' attribute value.
+            const href = viewElement.getAttribute('href');
+            const { whiteListedDomains } = this.editor.config.get('link');
+
+            // Check if 'whiteListedDomains' is not defined or empty.
+            if (!whiteListedDomains) {
+              return null; // No whitelisted domains, so return null.
+            }
+
+            const host = new URL(href).hostname;
+
+            // Check if the URL matches a whitelisted domain.
+            if (whiteListedDomains.some(domain => (
+              (domain.startsWith('*.') && host.endsWith(domain.slice(2))) ||
+              domain === host
+            ))) {
+              return null; // URL matches a whitelisted domain, so return null.
+            }
+
+            const scheme = new URL(href).protocol.replace(':', '');
+
+            // Check the scheme of the URL.
+            // If it's not 'http' or 'https', return the appropriate value based on 'modelName'.
+            if (!['http', 'https'].includes(scheme)) {
+              if (modelName === 'linkProtocol') {
+                return scheme; // Return the scheme as 'linkProtocol'.
+              }
+            }
+            else if (modelName === 'linkIsExternal') {
+              return true; // Return true for 'linkIsExternal'.
+            }
+
+            return null; // Return null for other cases.
+          },
+        },
+        converterPriority: 'high', // Set the converter priority.
       });
     }
     else {
@@ -461,49 +510,6 @@ export default class HelfiLinkEditing extends Plugin {
         key: 'linkIcon',
       }
     });
-
-    /**
-     * Helper function for the data-attribute conversion.
-     *
-     * @param {string} attributeKey New data-attribute name.
-     * @param {string} attributeValue New data-attribute value.
-     * @param {writer} writer The downcast writer.
-     * @return {editableElement} Returns an editableElement.
-     */
-    const editingDowncast = (attributeKey, attributeValue, writer) => {
-      if (!attributeValue) {
-        return null;
-      }
-      const attributeElement = writer.createAttributeElement('a', { [attributeKey]: attributeValue }, { priority: 5 });
-      return toWidgetEditable(attributeElement, writer, { label: Drupal.t('Edit link') });
-    };
-
-    // Convert linkVariant model to data-hds-variant attribute with editable widget.
-    editor.conversion.for('editingDowncast').attributeToElement({
-      model: 'linkVariant',
-      view: (attributeValue, { writer }) => attributeValue !== 'primary'
-          ? editingDowncast('data-hds-variant', attributeValue, writer)
-          : null
-    });
-
-    // Convert linkIcon model to data-hds-icon-start attribute with editable widget.
-    editor.conversion.for('editingDowncast').attributeToElement({
-      model: 'linkIcon',
-      view: (attributeValue, { writer }) => editingDowncast('data-hds-icon-start', attributeValue, writer),
-    });
-
-    // Convert linkProtocol model to data-protocol attribute with editable widget.
-    editor.conversion.for('editingDowncast').attributeToElement({
-      model: 'linkProtocol',
-      view: (attributeValue, { writer }) => editingDowncast('data-protocol', attributeValue, writer),
-      converterPriority: 'highest',
-    });
-
-    // Convert linkButton model to data-hds-component attribute with editable widget.
-    editor.conversion.for('editingDowncast').attributeToElement({
-      model: 'linkButton',
-      view: (attributeValue, { writer }) => editingDowncast('data-hds-component', attributeValue, writer),
-    });
   }
 
   /**
@@ -586,5 +592,4 @@ export default class HelfiLinkEditing extends Plugin {
       });
     }, { priority: 'high' });
   }
-
 }
