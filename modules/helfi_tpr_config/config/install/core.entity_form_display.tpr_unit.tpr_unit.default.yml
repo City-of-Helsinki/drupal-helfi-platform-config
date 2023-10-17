@@ -352,6 +352,21 @@ content:
       formatter_settings: {  }
       show_description: false
     third_party_settings: {  }
+  toc_enabled:
+    settings:
+      display_label: true
+    weight: 1
+    region: content
+    third_party_settings: {  }
+    type: boolean_checkbox
+  toc_title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   topical:
     type: readonly_field_widget
     region: content
