@@ -4,6 +4,7 @@
 import { Plugin } from 'ckeditor5/src/core';
 import { Widget } from 'ckeditor5/src/widget';
 import { findAttributeRange } from 'ckeditor5/src/typing';
+import { isUrlExternal, parseProtocol } from './utils/utils';
 import formElements from './formElements';
 
 /**
@@ -119,34 +120,23 @@ export default class HelfiLinkEditing extends Plugin {
             }
 
             // Get the 'href' attribute value.
-            const href = viewElement.getAttribute('href');
+            const url = viewElement.getAttribute('href');
+
+            // Get whitelisted domains.
             const { whiteListedDomains } = this.editor.config.get('link');
 
             // Check if 'whiteListedDomains' is not defined or empty.
-            if (!whiteListedDomains) {
-              return null; // No whitelisted domains, so return null.
+            if (!whiteListedDomains || !url) {
+              return null;
             }
 
-            const host = new URL(href).hostname;
+            const isExternal = isUrlExternal(url, whiteListedDomains);
+            const protocol = parseProtocol(url);
 
-            // Check if the URL matches a whitelisted domain.
-            if (whiteListedDomains.some(domain => (
-              (domain.startsWith('*.') && host.endsWith(domain.slice(2))) ||
-              domain === host
-            ))) {
-              return null; // URL matches a whitelisted domain, so return null.
+            if (protocol && modelName === 'linkProtocol') {
+              return protocol; // Return the scheme as 'linkProtocol'.
             }
-
-            const scheme = new URL(href).protocol.replace(':', '');
-
-            // Check the scheme of the URL.
-            // If it's not 'http' or 'https', return the appropriate value based on 'modelName'.
-            if (!['http', 'https'].includes(scheme)) {
-              if (modelName === 'linkProtocol') {
-                return scheme; // Return the scheme as 'linkProtocol'.
-              }
-            }
-            else if (modelName === 'linkIsExternal') {
+            if (isExternal && modelName === 'linkIsExternal') {
               return true; // Return true for 'linkIsExternal'.
             }
 
