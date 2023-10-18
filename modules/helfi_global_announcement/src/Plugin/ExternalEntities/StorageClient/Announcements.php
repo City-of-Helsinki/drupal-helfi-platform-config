@@ -71,24 +71,8 @@ final class Announcements extends ExternalEntityStorageClientBase {
 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
-
-    // Attempt to read environment from config override and fallback to
-    // currently active environment.
-    $environment = $container->get('config.factory')
-      ->get('helfi_global_announcement.settings')
-      ->get('source_environment');
-
-    if (!$environment) {
-      try {
-        $environment = $environmentResolver->getActiveEnvironment()
-          ->getEnvironmentName();
-      }
-      catch (\InvalidArgumentException) {
-        $environment = 'prod';
-      }
-    }
     $instance->environment = $environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $environment);
+      ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
 
     return $instance;
   }
