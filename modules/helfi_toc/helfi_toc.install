@@ -15,6 +15,7 @@ function helfi_toc_install($is_syncing) {
   // of a configuration import.
   if (!$is_syncing) {
     helfi_toc_update_9001();
+    helfi_toc_update_9002();
   }
 }
 
@@ -37,7 +38,7 @@ function helfi_toc_update_9001() {
 }
 
 /**
- * Install 'table of contents' field to tpr_unit entity.
+ * UHF-8937: Install 'table of contents' field to tpr_unit entity.
  */
 function helfi_toc_update_9002() {
 
