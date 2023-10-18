@@ -39,8 +39,6 @@ function helfi_tpr_config_grant_permissions() : void {
       'update any tpr_unit',
       'update own tpr_service',
       'update own tpr_unit',
-      'update tpr_service',
-      'update tpr_unit',
       'view all tpr_service revisions',
       'view all tpr_unit revisions',
       'view unpublished tpr_errand_service',
@@ -333,4 +331,14 @@ function helfi_tpr_config_update_9048(): void {
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
+}
+
+/**
+ * UHF-9113: Remove invalid permissions.
+ */
+function helfi_tpr_config_update_9049(): void {
+  helfi_platform_config_remove_permissions_from_all_roles([
+    'update tpr_service',
+    'update tpr_unit',
+  ]);
 }
