@@ -57,8 +57,7 @@ export default class HelfiTable extends Plugin {
         writer.setCustomProperty('table', true, viewElement);
         return toWidget(viewElement, writer, { hasSelectionHandle: true });
       };
-
-      return options.asWidget ? toTableWidget(figureElement, writer) : figureElement;
+      return options.asWidget ? toTableWidget(figureElement) : figureElement;
     };
 
     conversion.for('editingDowncast').elementToStructure({
