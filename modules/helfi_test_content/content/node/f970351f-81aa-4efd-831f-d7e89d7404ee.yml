@@ -18,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component popular services'
+      value: 'DC: Popular services'
   created:
     -
       value: 1678269875
@@ -28,6 +28,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -39,15 +42,18 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-popular-services
+      alias: /dc-components/dc-popular-services
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1696315413
   field_content:
     -
       entity:
@@ -67,6 +73,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_service_items:
             -
               entity:
@@ -86,6 +95,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_service_links:
                     -
                       uri: 'http://example.com'
@@ -120,6 +132,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_service_links:
                     -
                       uri: 'http://example.com'
@@ -154,6 +169,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_service_links:
                     -
                       uri: 'route:<nolink>'
@@ -184,6 +202,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_service_links:
                     -
                       uri: 'http://example.com'
@@ -210,6 +231,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_service_items:
             -
               entity:
@@ -229,6 +253,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_service_links:
                     -
                       uri: 'http://example.com'

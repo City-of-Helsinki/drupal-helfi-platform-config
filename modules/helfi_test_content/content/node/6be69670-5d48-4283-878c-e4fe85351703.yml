@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: Layout standard'
+      value: 'DC: Standard page'
   created:
     -
       value: 1654845947
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-standard
+      alias: /dc-layouts/dc-standard-page
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -76,7 +76,7 @@ default:
               value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>DC: layout standard - hero - subnav - sidebar</li>\r\n\t<li>DC: layout standard - hero - subnav - no-sidebar</li>\r\n\t<li>DC: layout standard - hero - no-subnav - sidebar</li>\r\n\t<li>DC: layout standard - hero - no-subnav - no-sidebar</li>\r\n\t<li>DC: layout standard - no-hero - subnav - sidebar</li>\r\n\t<li>DC: layout standard - no-hero - subnav - no-sidebar</li>\r\n\t<li>DC: layout standard - no-hero - no-subnav - sidebar</li>\r\n\t<li>DC: layout standard - no-hero - no-subnav - no-sidebar</li>\r\n</ul>\r\n"
+              value: "<h2>Standard page</h2>\r\n\r\n<p>Standard page (former basic page) demonstrates all standard page layouts with or without hero, subnav and sidebar.</p>\r\n\r\n<ul>\r\n\t<li>Standard page - hero - subnav - sidebar</li>\r\n\t<li>Standard page - hero - subnav - no-sidebar</li>\r\n\t<li>Standard page - hero - no-subnav - sidebar</li>\r\n\t<li>Standard page - hero - no-subnav - no-sidebar</li>\r\n\t<li>Standard page - no-hero - subnav - sidebar</li>\r\n\t<li>Standard page - no-hero - subnav - no-sidebar</li>\r\n\t<li>Standard page - no-hero - no-subnav - sidebar</li>\r\n\t<li>Standard page - no-hero - no-subnav - no-sidebar</li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -

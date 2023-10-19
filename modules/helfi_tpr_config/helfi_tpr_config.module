@@ -493,5 +493,16 @@ function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_typ
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
   }
+  if ($entity_type->id() === 'tpr_unit') {
+    $fields['unit_picture_caption'] = BaseFieldDefinition::create('string_long')
+      ->setTranslatable(TRUE)
+      ->setRevisionable(FALSE)
+      ->setLabel(new TranslatableMarkup('Caption'))
+      ->setDisplayOptions('form', [
+        'weight' => 5,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+  }
   return $fields;
 }

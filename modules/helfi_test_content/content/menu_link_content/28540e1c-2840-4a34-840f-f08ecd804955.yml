@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component columns'
+      value: 'DC: Columns'
   menu_name:
     -
       value: main

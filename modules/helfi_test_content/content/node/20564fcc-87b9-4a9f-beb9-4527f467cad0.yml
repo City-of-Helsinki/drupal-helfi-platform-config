@@ -5,7 +5,6 @@ _meta:
   bundle: page
   default_langcode: en
   depends:
-    937b62aa-f440-4dbd-9960-cdc3a7613087: media
     b8877864-15c3-48c1-b13e-0e92cf719d41: media
 default:
   revision_uid:
@@ -19,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component chart'
+      value: 'DC: Chart'
   created:
     -
       value: 1654685829
@@ -29,6 +28,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -40,7 +42,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-chart
+      alias: /dc-components/dc-chart
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -71,9 +73,12 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_chart_chart:
             -
-              entity: 937b62aa-f440-4dbd-9960-cdc3a7613087
+              entity: b8877864-15c3-48c1-b13e-0e92cf719d41
           field_chart_title:
             -
               value: 'Chart - Without Description'

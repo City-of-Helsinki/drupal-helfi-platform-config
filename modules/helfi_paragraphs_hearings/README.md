@@ -2,7 +2,7 @@
 
 Get hearings from "Kerrokantasi" service
 Site: https://kerrokantasi.hel.fi/hearings/list?lang=en
-Api: https://api.hel.fi/kerrokantasi/v1/hearing?format=json&langcode=fi&open=true (with query parameters)
+Api: https://kerrokantasi.api.hel.fi/v1/hearing?format=json&langcode=fi&open=true (with query parameters)
 
 ## Helfi_hearings
 - Uses external entity to fetch hearings

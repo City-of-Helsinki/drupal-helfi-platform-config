@@ -6,7 +6,10 @@ namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel;
 
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\external_entities\ExternalEntityStorageInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_api_base\Traits\TestLoggerTrait;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\RequestInterface;
@@ -20,6 +23,7 @@ class NewsExternalEntityTest extends KernelTestBase {
 
   use ApiTestTrait;
   use TestLoggerTrait;
+  use EnvironmentResolverTrait;
 
   /**
    * {@inheritdoc}
@@ -27,6 +31,7 @@ class NewsExternalEntityTest extends KernelTestBase {
   public function setUp(): void {
     parent::setUp();
     $this->setUpMockLogger();
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
   }
 
   /**

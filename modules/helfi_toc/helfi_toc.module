@@ -18,11 +18,12 @@ function helfi_toc_entity_base_field_info(EntityTypeInterface $entity_type) : ar
   $entity_types = [
     'node',
     'tpr_service',
+    'tpr_unit',
   ];
 
   // Add table of contents field to each entity type.
   if (in_array($entity_type->id(), $entity_types)) {
-    $configurable_form = $entity_type->id() === 'tpr_service';
+    $configurable_form = $entity_type->id() === 'tpr_service' || $entity_type->id() === 'tpr_unit';
 
     $fields['toc_enabled'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Table of contents'))
@@ -65,6 +66,13 @@ function helfi_toc_form_tpr_service_form_alter(&$form) : void {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+function helfi_toc_form_tpr_unit_form_alter(&$form) : void {
+  helfi_toc_apply_form_theme($form);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function helfi_toc_form_node_form_alter(&$form) : void {
   helfi_toc_apply_form_theme($form);
 }
@@ -80,6 +88,7 @@ function helfi_toc_apply_form_theme(array &$form) : void {
     'node_page_edit_form',
     'node_page_form',
     'tpr_service_form',
+    'tpr_unit_form',
     'node_district_edit_form',
     'node_district_form',
   ];

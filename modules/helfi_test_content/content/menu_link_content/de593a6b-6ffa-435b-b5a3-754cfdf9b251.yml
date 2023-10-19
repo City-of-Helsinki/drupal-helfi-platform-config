@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: de593a6b-6ffa-435b-b5a3-754cfdf9b251
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3c10d958-fbb4-42d2-83d4-adb7a4830bad: menu_link_content
+    0908b819-f7ec-4fc8-aaf5-4891014f8394: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Table of contents'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 0908b819-f7ec-4fc8-aaf5-4891014f8394
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 10
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3c10d958-fbb4-42d2-83d4-adb7a4830bad'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1696397481

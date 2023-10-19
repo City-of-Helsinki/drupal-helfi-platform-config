@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component target group links'
+      value: 'DC: Target group links'
   menu_name:
     -
       value: main

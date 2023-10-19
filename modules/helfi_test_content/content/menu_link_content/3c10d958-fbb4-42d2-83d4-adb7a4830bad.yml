@@ -5,7 +5,6 @@ _meta:
   bundle: menu_link_content
   default_langcode: en
   depends:
-    d0e23094-7fdf-4141-8ab3-175a79cf688f: menu_link_content
     8c052656-f57d-42d4-8723-021c37c4e40d: node
 default:
   enabled:
@@ -13,7 +12,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: navigation'
+      value: 'DC: Navigation'
   menu_name:
     -
       value: main
@@ -30,13 +29,10 @@ default:
       value: false
   weight:
     -
-      value: -48
+      value: -55
   expanded:
     -
       value: false
-  parent:
-    -
-      value: 'menu_link_content:d0e23094-7fdf-4141-8ab3-175a79cf688f'
   revision_translation_affected:
     -
       value: true

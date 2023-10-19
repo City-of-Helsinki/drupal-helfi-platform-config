@@ -1,24 +1,25 @@
 _meta:
   version: '1.0'
   entity_type: menu_link_content
-  uuid: d0e23094-7fdf-4141-8ab3-175a79cf688f
+  uuid: a7d6db51-3f65-4e66-aa8c-10e77335cfdc
   bundle: menu_link_content
   default_langcode: en
   depends:
-    f2413cec-9944-4c89-9c3d-971d8576b08a: node
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    35a89867-7755-42e2-9eee-59929397d151: node
 default:
   enabled:
     -
       value: true
   title:
     -
-      value: 'DC: Helfi platform test content'
+      value: 'DC: Calculator'
   menu_name:
     -
       value: main
   link:
     -
-      target_uuid: f2413cec-9944-4c89-9c3d-971d8576b08a
+      target_uuid: 35a89867-7755-42e2-9eee-59929397d151
       title: ''
       options: {  }
   external:
@@ -33,6 +34,9 @@ default:
   expanded:
     -
       value: false
+  parent:
+    -
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
   revision_translation_affected:
     -
       value: true
@@ -50,4 +54,4 @@ default:
       value: true
   content_translation_created:
     -
-      value: 1654499375
+      value: 1696498121

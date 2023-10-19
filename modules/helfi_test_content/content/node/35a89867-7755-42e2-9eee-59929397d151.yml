@@ -1,0 +1,314 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 35a89867-7755-42e2-9eee-59929397d151
+  bundle: page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: Calculator'
+  created:
+    -
+      value: 1696505588
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-components/dc-calculator
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1696505663
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: d5e3c9e3-6d1a-4f69-95a0-fb4fe9df117d
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505602
+          behavior_settings:
+            -
+              value: {  }
+          field_calculator:
+            -
+              value: home_care_service_voucher
+          field_calculator_title:
+            -
+              value: 'Home care service voucher'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 8130744a-72fb-4543-9050-386c143999d5
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505602
+          behavior_settings:
+            -
+              value: {  }
+          field_calculator:
+            -
+              value: home_care_client_fee
+          field_calculator_title:
+            -
+              value: 'Home care client fee'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 52224e54-b3d3-46f7-9a36-36a4f3c4ee16
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505602
+          behavior_settings:
+            -
+              value: {  }
+          field_calculator:
+            -
+              value: continuous_housing_service_voucher
+          field_calculator_title:
+            -
+              value: '24-hour housing service voucher'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 1ba3fc05-875c-4635-814e-036b2f45ad64
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505602
+          behavior_settings:
+            -
+              value: {  }
+          field_calculator:
+            -
+              value: families_home_services_client_fee
+          field_calculator_title:
+            -
+              value: 'Families home services client fee'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: b539194e-ad2f-4b38-bff1-43c0dd24e666
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505602
+          behavior_settings:
+            -
+              value: {  }
+          field_calculator:
+            -
+              value: early_childhood_education_fee
+          field_calculator_title:
+            -
+              value: 'Early childhood education fee'
+  field_has_hero:
+    -
+      value: false
+  field_lower_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 1cf3a89c-d93d-42a4-ba18-9eaf4e5c4696
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505617
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_calculator:
+            -
+              value: home_care_service_voucher
+          field_calculator_title:
+            -
+              value: 'Home care service voucher'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 603e148a-9d31-46f6-83ab-8c9e8d2a2735
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505617
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_calculator:
+            -
+              value: home_care_client_fee
+          field_calculator_title:
+            -
+              value: 'Home care client fee'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: dd030683-aed1-45a0-96e5-7f1b547f7e95
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505617
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_calculator:
+            -
+              value: continuous_housing_service_voucher
+          field_calculator_title:
+            -
+              value: '24-hour housing service voucher'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a285dbc2-1d46-49bc-8f25-13e371883621
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505617
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_calculator:
+            -
+              value: families_home_services_client_fee
+          field_calculator_title:
+            -
+              value: 'Families home services client fee'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7826a8d0-d31b-49a0-91d6-c2b1133b03ee
+          bundle: calculator
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696505617
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_calculator:
+            -
+              value: early_childhood_education_fee
+          field_calculator_title:
+            -
+              value: 'Early childhood education fee'

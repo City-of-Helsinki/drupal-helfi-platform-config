@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component news list'
+      value: 'DC: News list'
   created:
     -
       value: 1658299041
@@ -26,6 +26,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -37,15 +40,18 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-news-list
+      alias: /dc-components/dc-news-list
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und
   content_translation_outdated:
     -
       value: false
+  published_at:
+    -
+      value: 1696315413
   field_content:
     -
       entity:
@@ -65,12 +71,15 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_limit:
             -
               value: 10
           field_news_list_title:
             -
-              value: 'Without Description'
+              value: 'Without description'
     -
       entity:
         _meta:
@@ -89,6 +98,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_limit:
             -
               value: 10
@@ -98,7 +110,7 @@ default:
               format: minimal
           field_news_list_title:
             -
-              value: 'With Description'
+              value: 'With description'
   field_has_hero:
     -
       value: false

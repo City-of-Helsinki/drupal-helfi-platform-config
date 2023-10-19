@@ -69,14 +69,11 @@ final class Announcements extends ExternalEntityStorageClientBase {
     $instance->languageManager = $container->get('language_manager');
     $instance->client = $container->get('http_client');
 
-    $environment = $container->get('config.factory')
-      ->get('helfi_global_announcement.settings')
-      ->get('source_environment') ?: 'prod';
-
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
     $instance->environment = $environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $environment);
+      ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+
     return $instance;
   }
 

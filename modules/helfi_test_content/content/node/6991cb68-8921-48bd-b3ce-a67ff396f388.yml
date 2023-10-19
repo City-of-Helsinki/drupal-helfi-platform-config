@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: Layout tpr unit'
+      value: 'DC: TPR Unit'
   created:
     -
       value: 1654846279
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-tpr-unit
+      alias: /dc-layouts/dc-tpr-unit
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -76,7 +76,7 @@ default:
               value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>DC: layout tpr unit - subnav - sidebar</li>\r\n\t<li>DC: layout tpr unit - subnav - no-sidebar</li>\r\n\t<li>DC: layout tpr unit - no-subnav - sidebar</li>\r\n\t<li>DC: layout tpr unit - no-subnav - no-sidebar</li>\r\n</ul>\r\n"
+              value: "<h2>TPR Unit</h2>\r\n\r\n<p>TPR Unit demonstrates all unit layouts with or without subnav and sidebar.</p>\r\n\r\n<ul>\r\n\t<li>TPR Unit - subnav - sidebar</li>\r\n\t<li>TPR Unit - subnav - no-sidebar</li>\r\n\t<li>TPR Unit - no-subnav - sidebar</li>\r\n\t<li>TPR Unit - no-subnav - no-sidebar</li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -

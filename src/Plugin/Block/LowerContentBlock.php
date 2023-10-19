@@ -7,7 +7,6 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_tpr\Entity\Service;
-use Drupal\helfi_tpr\Entity\Unit;
 
 /**
  * Provides a 'LowerContentBlock' block.
@@ -30,13 +29,6 @@ class LowerContentBlock extends ContentBlockBase {
 
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity, 'entity_version' => $entity_version] = $this->getCurrentEntityVersion();
-
-    // Pass the Unit entity render array to templates if one exists.
-    if ($entity instanceof Unit) {
-      $view_builder = $this->entityTypeManager->getViewBuilder('tpr_unit');
-      $build['lower_content']['#computed'] = $view_builder->view($entity);
-      $build['lower_content']['#computed']['#theme'] = 'tpr_unit_lower_content';
-    }
 
     // Pass the Service entity render array to templates if one exists.
     if ($entity instanceof Service) {

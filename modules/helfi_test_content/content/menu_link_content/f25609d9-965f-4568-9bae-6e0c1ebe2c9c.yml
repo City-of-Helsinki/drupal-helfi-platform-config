@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: Layout standard'
+      value: 'DC: Standard page'
   menu_name:
     -
       value: main
@@ -30,7 +30,7 @@ default:
       value: false
   weight:
     -
-      value: 0
+      value: -56
   expanded:
     -
       value: false

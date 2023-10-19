@@ -29,7 +29,7 @@ final class ValidHelfiChartLinkConstraintValidator extends ConstraintValidator {
       catch (\InvalidArgumentException) {
         $this->context->addViolation($constraint->errorMessage, [
           '%value' => $uri,
-          '%domains' => Chart::CHART_POWERBI_URL,
+          '%domains' => implode(', ', Chart::CHART_POWERBI_URL),
         ]);
       }
     }

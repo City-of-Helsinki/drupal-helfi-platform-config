@@ -19,7 +19,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component remote video'
+      value: 'DC: Remote video'
   created:
     -
       value: 1654685846
@@ -29,6 +29,9 @@ default:
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -40,7 +43,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-remote-video
+      alias: /dc-components/dc-remote-video
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -71,6 +74,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_iframe_title:
             -
               value: 'No Descriptions'
@@ -105,6 +111,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_iframe_title:
             -
               value: 'No Descriptions'
@@ -143,6 +152,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h3>Minimum Data</h3>\r\n"
@@ -165,6 +177,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_iframe_title:
             -
               value: 'Minimum Data'
@@ -193,6 +208,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h3>Maximum Data (if possible)</h3>\r\n"
@@ -215,6 +233,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_iframe_title:
             -
               value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur est ipsum, consequat sit amet eleifend eget, accumsan at purus. Fusce fringilla eros faucibus neque tincidunt mattis. Proin elit nunc, facilisis eu dictum ut, sollicitudin vitae urna. Proi'

@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: Layout tpr unit'
+      value: 'DC: TPR Unit'
   menu_name:
     -
       value: main
@@ -30,7 +30,7 @@ default:
       value: false
   weight:
     -
-      value: 10
+      value: -47
   expanded:
     -
       value: false

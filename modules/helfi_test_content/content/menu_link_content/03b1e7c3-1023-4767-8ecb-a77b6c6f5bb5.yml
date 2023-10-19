@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 03b1e7c3-1023-4767-8ecb-a77b6c6f5bb5
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    9dc342a5-3d6a-40ef-9570-ed70392744fb: menu_link_content
+    cfda46c1-2ae8-41cf-b062-a938efdc30b0: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Landing page - hero - without image, align left'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: cfda46c1-2ae8-41cf-b062-a938efdc30b0
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -59
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:9dc342a5-3d6a-40ef-9570-ed70392744fb'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1696328016

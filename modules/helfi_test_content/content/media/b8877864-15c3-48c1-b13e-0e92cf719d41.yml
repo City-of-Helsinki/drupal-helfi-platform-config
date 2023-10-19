@@ -37,9 +37,9 @@ default:
   field_helfi_chart_transcript:
     -
       value: "<p>Nullam congue scelerisque odio, ac condimentum diam semper sed. Nulla vel nibh suscipit, sagittis lorem eget, ullamcorper massa. Pellentesque cursus efficitur ligula id luctus. Maecenas eget volutpat metus, nec vehicula lorem. Maecenas mattis scelerisque augue, vitae imperdiet libero hendrerit vitae. Nunc pulvinar rutrum rhoncus. Cras auctor nec quam id commodo.</p>\r\n"
-      format: full_html
+      format: minimal
   field_helfi_chart_url:
     -
-      uri: 'https://app.powerbi.com/view?r=eyJrIjoiYjE5OTFhMmEtMWYzNC00YjY2LTllODMtMzhhZDRiNTJiMDQ5IiwidCI6IjNmZWI2YmMxLWQ3MjItNDcyNi05NjZjLTViNThiNjRkZjc1MiIsImMiOjh9'
+      uri: 'https://playground.powerbi.com/sampleReportEmbed'
       title: ''
       options: {  }

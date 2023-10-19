@@ -8,15 +8,6 @@ News items are fetched runtime using [external_entities](https://www.drupal.org/
 
 Enable the `helfi_paragraphs_news_list` module.
 
-## Overriding the source environment
-
-The source environment (production by default) can be changed by overriding the  `helfi_paragraphs_news_list.settings.source_environment` configuration.
-
-For example:
-```php
-# public/sites/default/local.settings.php
-$config['helfi_paragraphs_news_list.settings']['source_environment'] = 'dev';
-```
 
 ## How to add new fields to paragraph type
 

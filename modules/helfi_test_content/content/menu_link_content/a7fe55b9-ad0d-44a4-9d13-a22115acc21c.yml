@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component map'
+      value: 'DC: Map'
   menu_name:
     -
       value: main

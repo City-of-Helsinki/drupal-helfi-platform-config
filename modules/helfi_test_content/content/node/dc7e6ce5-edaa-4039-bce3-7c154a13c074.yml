@@ -1,0 +1,78 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: dc7e6ce5-edaa-4039-bce3-7c154a13c074
+  bundle: announcement
+  default_langcode: en
+  depends:
+    49433cd6-eb7f-48bd-8af3-27e791421ba6: node
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: Announcement - notification'
+  created:
+    -
+      value: 1696399661
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1696415986
+  body:
+    -
+      value: "<p>Maecenas egestas arcu quis ligula mattis placerat. Praesent turpis. Praesent ac massa at ligula laoreet iaculis. Aenean commodo ligula eget dolor. Pellentesque auctor neque nec urna!</p>\r\n"
+      format: minimal
+      summary: ''
+  field_announcement_all_pages:
+    -
+      value: false
+  field_announcement_content_pages:
+    -
+      entity: 49433cd6-eb7f-48bd-8af3-27e791421ba6
+  field_announcement_link:
+    -
+      uri: 'internal:/'
+      title: 'Maecenas egestas arcu quis ligula mattis'
+      options: {  }
+  field_announcement_title:
+    -
+      value: 'DC: Announcement - notification'
+  field_announcement_type:
+    -
+      value: notification
