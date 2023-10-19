@@ -38,11 +38,13 @@ Just untick and tick the `Limit allowed HTML tags and correct faulty HTML` check
 You need to wrap the anchor to paragraph element to retain the attributes.
 F.e. `<a href="#" data-hds-component="button">Test</a>` --> `<p><a href="#" data-hds-component="button">Test</a></p>`
 
-### Link/Button "external link" icon is missing in CKEditor
-The `data-is-external=true` attribute is not rendered in CKEditor, because the actual rendering of this attribute happens when the markup is being rendered in frontend.
-See: [Helfi link converter](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Plugin/Filter/LinkConverter.php)
-#### What if we really, really want to render this icon in CKEditor?
-It can be done by doing an ajax call during each link conversion to a custom endpoint which will ask the [[InternalDomainResolver](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Link/InternalDomainResolver.php)] if the link is external or not. At the time this felt like a big task to do for such a simple indicator.
+### The `<figcaption>` and `<table>` source order in `<figure class="table">`
+
+Altering the source order of `<figcaption>` and `<table>` elements within a `<figure class="table">` in CKEditor 5 can be a challenging task. This is mainly because it involves the behavior of the ckeditor5-table component.
+The [table-layout-post-fixer](https://github.com/ckeditor/ckeditor5/blob/331d1e7a04729284efbb55937fd97a452488dc8d/packages/ckeditor5-table/src/converters/table-caption-post-fixer.ts#L59) is responsible for "fixing" the source order by moving the `<figcaption>` after the `<table>` element (or in the end of table model).
+This post-fixer is executed every time there is a change event, even when a custom post-fixer attempting to address the issue has already run. This situation can potentially result in an infinite loop.
+
+If one attempts to remove or prevent the table-layout-post-fixer, it can result in a CKEditorError: "mapping-model-position-view-parent-not-found." and a bunch of other issues. Given that the simple task of rearranging the source order of these elements is rather complex, it has been decided to handle this source order adjustment in the frontend to avoid the issues associated with post-fixers in CKEditor 5.
 
 ### Translations
 The CKEditor translations are in use only for the `helfiLanguageSelector` plugin.
