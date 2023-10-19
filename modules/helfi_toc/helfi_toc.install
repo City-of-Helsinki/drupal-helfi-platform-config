@@ -15,6 +15,7 @@ function helfi_toc_install($is_syncing) {
   // of a configuration import.
   if (!$is_syncing) {
     helfi_toc_update_9001();
+    helfi_toc_update_9002();
   }
 }
 
@@ -26,6 +27,24 @@ function helfi_toc_update_9001() {
   // Fields to be installed and entity type.
   $fields = ['toc_enabled', 'toc_title'];
   $entity_type = 'node';
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
+  foreach ($fields as $field) {
+    if (!empty($field_definitions[$field]) && $field_definitions[$field] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager->installFieldStorageDefinition($field, $entity_type, 'helfi_toc', $field_definitions[$field]);
+    }
+  }
+}
+
+/**
+ * UHF-8937: Install 'table of contents' field to tpr_unit entity.
+ */
+function helfi_toc_update_9002() {
+
+  // Fields to be installed and entity type.
+  $fields = ['toc_enabled', 'toc_title'];
+  $entity_type = 'tpr_unit';
 
   $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
   $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
