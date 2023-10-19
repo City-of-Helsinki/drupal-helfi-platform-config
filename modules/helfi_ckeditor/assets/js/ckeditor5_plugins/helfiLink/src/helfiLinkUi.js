@@ -16,6 +16,7 @@ import formElements from './formElements';
 import HelfiDetailsView from './ui/helfiDetailsView';
 import HelfiLinkVariantView from './ui/helfiLinkVariantView';
 import HelfiLinkIconView from './ui/helfiLinkIconView';
+import { isUrlExternal, parseProtocol } from './utils/utils';
 
 export default class HelfiLinkUi extends Plugin {
 
@@ -316,6 +317,13 @@ export default class HelfiLinkUi extends Plugin {
         evt.stop();
       }
 
+      // Get whitelisted domains.
+      const { whiteListedDomains } = this.editor.config.get('link');
+
+      // Get current href value of the link.
+      const href = linkFormView.urlInputView?.fieldView?.element?.value;
+
+      // Massage values for the link conversions.
       const values = models.reduce((state, model) => {
         switch (model) {
           case 'linkVariant': {
@@ -344,6 +352,23 @@ export default class HelfiLinkUi extends Plugin {
 
           case 'linkIcon':
             state[model] = linkFormView?.[model]?.tomSelect.getValue();
+            break;
+
+          case 'linkProtocol':
+            if (!whiteListedDomains || !href) { break; }
+
+            if (parseProtocol(href)) {
+              state[model] = parseProtocol(href);
+            }
+            break;
+
+          case 'linkIsExternal':
+            if (!whiteListedDomains || !href) { break; }
+
+            if (!parseProtocol(href) && isUrlExternal(href, whiteListedDomains)) {
+              state[model] = isUrlExternal(href, whiteListedDomains);
+              break;
+            }
             break;
 
           default:

@@ -7,10 +7,14 @@ namespace Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin;
 use Drupal\ckeditor5\HTMLRestrictions;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginConfigurableTrait;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginElementsSubsetInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\editor\EditorInterface;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
+use Drupal\helfi_api_base\Link\InternalDomainResolver;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * CKEditor 5 HelfiLink plugin.
@@ -18,9 +22,45 @@ use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
  * @internal
  *   Plugin classes are internal.
  */
-class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElementsSubsetInterface {
+class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElementsSubsetInterface, ContainerFactoryPluginInterface {
 
   use CKEditor5PluginConfigurableTrait;
+
+  /**
+   * The internal domain resolver.
+   *
+   * @var \Drupal\helfi_api_base\Link\InternalDomainResolver
+   */
+  private InternalDomainResolver $internalDomainResolver;
+
+  /**
+   * HelfiLink constructor.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param \Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $internal_domain_resolver
+   *   The internal domain resolver service.
+   */
+  public function __construct(array $configuration, string $plugin_id, CKEditor5PluginDefinition $plugin_definition, InternalDomainResolver $internal_domain_resolver) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->internalDomainResolver = $internal_domain_resolver;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('helfi_api_base.internal_domain_resolver'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -83,7 +123,10 @@ class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElement
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
     $config = $static_plugin_config;
     $config += [
-      'link' => ['loadedIcons' => SelectIcon::loadIcons()],
+      'link' => [
+        'loadedIcons' => SelectIcon::loadIcons(),
+        'whiteListedDomains' => $this->internalDomainResolver->getDomains(),
+      ],
     ];
     return $config;
   }
