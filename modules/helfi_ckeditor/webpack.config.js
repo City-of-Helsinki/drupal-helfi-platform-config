@@ -3,7 +3,9 @@ const fs = require('fs');
 const webpack = require('webpack');
 const { styles, builds } = require('@ckeditor/ckeditor5-dev-utils');
 const TerserPlugin = require('terser-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('@nuxt/friendly-errors-webpack-plugin');
 const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
+const glob = require('glob');
 
 function getDirectories(srcpath) {
   return fs
@@ -93,4 +95,80 @@ getDirectories('./assets/js/ckeditor5_plugins').forEach((dir) => {
   };
 
   module.exports.push(bc);
+
+  // Handle non CKE5 plugin entry points.
+  const NonCKEPluginEntries = () => {
+    let entries = {};
+    glob.sync('./assets/js/*.js', { ignore: ['./assets/**/*.min.*']}).map((item) => {
+      entries[path.parse(item).name] = item }
+    );
+    return entries;
+  };
+
+  // Set the base config
+  const NonCKEPluginConfig = {
+    entry() {
+      return NonCKEPluginEntries();
+    },
+    output: {
+      path: path.resolve(__dirname, 'assets'),
+      chunkFilename: 'js/async/[name].chunk.js',
+      pathinfo: false,
+      filename: 'js/[name].min.js',
+      publicPath: '../',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: ['babel-loader'],
+          type: 'javascript/auto',
+        },
+      ],
+    },
+    resolve: {
+      modules: [
+        path.join(__dirname, 'node_modules'),
+      ],
+      extensions: ['.js', '.json'],
+    },
+    plugins: [
+      new FriendlyErrorsWebpackPlugin(),
+    ],
+    watchOptions: {
+      aggregateTimeout: 300,
+    },
+    // Tell us only about the errors.
+    stats: 'errors-only',
+    // Suppress performance errors.
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
+    },
+    mode: 'production',
+    devtool: false,
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            ecma: 2015,
+            mangle: {
+              reserved:[
+                'Drupal',
+                'drupalSettings'
+              ]
+            },
+            format: {
+              comments: false,
+            },
+          },
+          extractComments: false,
+        }),
+      ],
+    },
+  };
+  module.exports.push(NonCKEPluginConfig);
 });
