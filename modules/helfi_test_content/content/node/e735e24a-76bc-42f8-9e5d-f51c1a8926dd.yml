@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layouts'
+      value: 'DC: Layouts'
   created:
     -
       value: 1654499456
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts
+      alias: /dc-layouts
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -76,7 +76,7 @@ default:
               value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>Layout standard page</li>\r\n\t<li>Layout landing page</li>\r\n\t<li>Layout TPR Unit</li>\r\n\t<li>Layout TPR Service</li>\r\n</ul>\r\n"
+              value: "<h2>Landing page</h2>\r\n\r\n<p>Landing page demonstrates a landing page layout with all hero variants.</p>\r\n\r\n<ul>\r\n\t<li>Landing page - no-hero</li>\r\n\t<li>Landing page - hero - without image, align left</li>\r\n\t<li>Landing page - hero - image on the left</li>\r\n\t<li>Landing page - hero - image on the right</li>\r\n\t<li>Landing page - hero - image on the bottom</li>\r\n\t<li>Landing page - hero - diagonal</li>\r\n</ul>\r\n\r\n<h2>Standard page</h2>\r\n\r\n<p>Standard page (former basic page) demonstrates all standard page layouts with or without hero, subnav and sidebar.</p>\r\n\r\n<ul>\r\n\t<li>Standard page - hero - subnav - sidebar</li>\r\n\t<li>Standard page - hero - subnav - no-sidebar</li>\r\n\t<li>Standard page - hero - no-subnav - sidebar</li>\r\n\t<li>Standard page - hero - no-subnav - no-sidebar</li>\r\n\t<li>Standard page - no-hero - subnav - sidebar</li>\r\n\t<li>Standard page - no-hero - subnav - no-sidebar</li>\r\n\t<li>Standard page - no-hero - no-subnav - sidebar</li>\r\n\t<li>Standard page - no-hero - no-subnav - no-sidebar</li>\r\n</ul>\r\n\r\n<h2>TPR Unit</h2>\r\n\r\n<p>TPR Unit demonstrates all unit layouts with or without subnav and sidebar.</p>\r\n\r\n<ul>\r\n\t<li>TPR Unit - subnav - sidebar</li>\r\n\t<li>TPR Unit - subnav - no-sidebar</li>\r\n\t<li>TPR Unit - no-subnav - sidebar</li>\r\n\t<li>TPR Unit - no-subnav - no-sidebar</li>\r\n</ul>\r\n\r\n<h2>TPR Service</h2>\r\n\r\n<p>TPR Service demonstrates all service layouts with or without subnav and sidebar.</p>\r\n\r\n<ul>\r\n\t<li>TPR Service - subnav - sidebar</li>\r\n\t<li>TPR Service - subnav - no-sidebar</li>\r\n\t<li>TPR Service - no-subnav - sidebar</li>\r\n\t<li>TPR Service - no-subnav - no-sidebar</li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -

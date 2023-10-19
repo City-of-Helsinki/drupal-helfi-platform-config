@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component events'
+      value: 'DC: Events'
   menu_name:
     -
       value: main

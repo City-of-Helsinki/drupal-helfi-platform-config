@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: layout standard - no-hero - no-subnav - no-sidebar'
+      value: 'DC: Standard page - no-hero - no-subnav - no-sidebar'
   menu_name:
     -
       value: main

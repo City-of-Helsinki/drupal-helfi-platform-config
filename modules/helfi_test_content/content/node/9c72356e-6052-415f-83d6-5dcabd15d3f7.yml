@@ -16,7 +16,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: Layout tpr service'
+      value: 'DC: TPR Service'
   created:
     -
       value: 1654846363
@@ -40,7 +40,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-tpr-service
+      alias: /dc-layouts/dc-tpr-service
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -76,7 +76,7 @@ default:
               value: true
           field_text:
             -
-              value: "<ul>\r\n\t<li>DC: layout tpr service - subnav - sidebar</li>\r\n\t<li>DC: layout tpr service - subnav - no-sidebar</li>\r\n\t<li>DC: layout tpr service - no-subnav - sidebar</li>\r\n\t<li>DC: layout tpr service - no-subnav - no-sidebar</li>\r\n</ul>\r\n"
+              value: "<h2>TPR Service</h2>\r\n\r\n<p>TPR Service demonstrates all service layouts with or without subnav and sidebar.</p>\r\n\r\n<ul>\r\n\t<li>TPR Service - subnav - sidebar</li>\r\n\t<li>TPR Service - subnav - no-sidebar</li>\r\n\t<li>TPR Service - no-subnav - sidebar</li>\r\n\t<li>TPR Service - no-subnav - no-sidebar</li>\r\n</ul>\r\n"
               format: full_html
   field_has_hero:
     -

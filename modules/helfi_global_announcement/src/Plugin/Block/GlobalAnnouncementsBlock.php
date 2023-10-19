@@ -47,6 +47,7 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
         'body' => Xss::filter($announcement->get('body')->value),
         'title' => Xss::filter($announcement->get('title')->value),
         'status' => $announcement->get('status')->value,
+        'field_announcement_title' => $announcement->get('announcement_assistive_technology_close_button_title')->value,
       ]);
     }
 

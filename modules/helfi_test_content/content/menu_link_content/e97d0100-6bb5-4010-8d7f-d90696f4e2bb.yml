@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component list of links'
+      value: 'DC: List of links'
   menu_name:
     -
       value: main

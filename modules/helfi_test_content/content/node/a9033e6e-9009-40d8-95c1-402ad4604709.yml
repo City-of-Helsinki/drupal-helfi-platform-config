@@ -18,7 +18,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: layout landing - hero'
+      value: 'DC: Landing page - hero - image on the right'
   created:
     -
       value: 1654498757
@@ -42,7 +42,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-layouts/dc-layout-landing/dc-layout-landing-hero
+      alias: /dc-layouts/dc-landing-page/dc-landing-page-hero-image-on-the-right
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -82,13 +82,13 @@ default:
               format: full_html
           field_banner_design:
             -
-              value: align-center
+              value: align-left
           field_banner_link_design:
             -
               value: primary
           field_banner_title:
             -
-              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus'
   field_has_hero:
     -
       value: true
@@ -129,4 +129,4 @@ default:
               value: primary
           field_hero_title:
             -
-              value: 'DC: layout landing - hero'
+              value: 'DC: Landing page - hero'

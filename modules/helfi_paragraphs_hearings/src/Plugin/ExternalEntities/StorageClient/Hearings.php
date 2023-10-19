@@ -15,6 +15,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Utils;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,7 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class Hearings extends ExternalEntityStorageClientBase {
 
-  public const API_URL = 'https://api.hel.fi/kerrokantasi/v1/hearing?';
+  public const API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
 
   public const HEARING_URL = 'https://kerrokantasi.hel.fi/';
 
@@ -47,6 +48,13 @@ final class Hearings extends ExternalEntityStorageClientBase {
   private ClientInterface $client;
 
   /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  private LoggerInterface $logger;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -58,7 +66,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
     $instance->client = $container->get('http_client');
-
+    $instance->logger = $container->get('logger.channel.helfi_platform_config');
     return $instance;
   }
 
@@ -114,7 +122,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
       }
     }
     catch (RequestException | GuzzleException | InvalidArgumentException $e) {
-      watchdog_exception('helfi_paragraphs_hearings', $e);
+      $this->logger->error('Hearings request failed with error: ' . $e->getMessage());
       return [];
     }
 
@@ -138,9 +146,11 @@ final class Hearings extends ExternalEntityStorageClientBase {
         'existing_translations' => implode(',', $existingTranslations),
       ];
 
-      $item['title'] = $hearing['title'][$selectedLangcode] ?? $hearing['title']['fi'];
-      $item['abstract'] = $hearing['abstract'][$selectedLangcode] ?? $hearing['abstract']['fi'];
-      $item['main_image_caption'] = $hearing['main_image']['caption'][$selectedLangcode] ?? $hearing['main_image']['caption']['fi'];
+      $item['title'] = $hearing['title'][$selectedLangcode] ?? $hearing['title']['fi'] ?? '';
+      $item['abstract'] = $hearing['abstract'][$selectedLangcode] ?? $hearing['abstract']['fi'] ?? '';
+      $item['main_image_caption'] = $hearing['main_image']['caption'][$selectedLangcode]
+        ?? $hearing['main_image']['caption']['fi']
+        ?? '';
 
       $data[] = $item;
     }

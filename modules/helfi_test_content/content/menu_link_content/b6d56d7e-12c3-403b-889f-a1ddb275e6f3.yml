@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: component phasing'
+      value: 'DC: Phasing'
   menu_name:
     -
       value: main

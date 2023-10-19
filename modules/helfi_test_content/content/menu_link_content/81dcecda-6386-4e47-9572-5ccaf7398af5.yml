@@ -1,0 +1,56 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 81dcecda-6386-4e47-9572-5ccaf7398af5
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3c10d958-fbb4-42d2-83d4-adb7a4830bad: menu_link_content
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Link to phone number'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      uri: 'tel:+123456789'
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -60
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3c10d958-fbb4-42d2-83d4-adb7a4830bad'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1696398271

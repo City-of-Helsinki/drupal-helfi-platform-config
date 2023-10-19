@@ -21,7 +21,7 @@ default:
       target_id: 1
   title:
     -
-      value: 'DC: component contact card listing'
+      value: 'DC: Contact card listing'
   created:
     -
       value: 1654685834
@@ -45,7 +45,7 @@ default:
       value: 'Table of contents'
   path:
     -
-      alias: /dc-helfi-platform-test-content/dc-components/dc-component-contact-card-listing
+      alias: /dc-components/dc-contact-card-listing
       langcode: en
       pathauto: 0
   content_translation_source:
@@ -98,6 +98,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: 'In nec enim sed nunc consequat tincidunt ut sed mauris. Donec dignissim quam finibus ex sodales interdum. Suspendisse viverra molestie mauris, non convallis lorem egestas at.'
@@ -133,6 +136,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: email
@@ -199,6 +205,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: 'Maecenas et neque non risus blandit blandit ut a diam. Sed pretium, odio at placerat gravida, lacus arcu viverra leo, in porta ex ante id sem'
@@ -234,6 +243,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                   field_contact_title:
                     -
                       value: 'Job Title 1'
@@ -261,6 +273,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: 'Fusce nec neque velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris faucibus elementum elit, vitae suscipit purus sollicitudin in.'
@@ -296,6 +311,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: email
@@ -322,6 +340,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: face-smile
@@ -361,6 +382,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: 'Morbi vel varius augue, a convallis enim. Proin luctus volutpat consectetur. Nulla euismod libero nec justo ornare varius in id augue. Sed euismod orci purus, eget suscipit leo dignissim vitae. Aenean congue fringilla aliquam. '
@@ -396,6 +420,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                   field_contact_title:
                     -
                       value: 'Job Title 3'
@@ -420,6 +447,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_image:
                     -
                       entity: 3069fcea-d0fe-432b-965b-eb19beb68379
@@ -452,6 +482,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: tiktok
@@ -492,6 +525,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_text:
             -
               value: "<h2>Special Cases</h2>\r\n"
@@ -514,6 +550,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_contact_card:
             -
               entity:
@@ -533,6 +572,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_social_media:
                     -
                       entity:
@@ -552,6 +594,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
           field_title:
             -
               value: 'Minimum Data'
@@ -595,6 +640,9 @@ default:
                   behavior_settings:
                     -
                       value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
                   field_contact_description:
                     -
                       value: "Curabitur fringilla sapien a orci sodales, nec hendrerit lorem fringilla. Mauris euismod ut massa non iaculis. Curabitur aliquet libero ut nulla rhoncus, a pretium nunc imperdiet. Vivamus sed sapien non turpis lacinia ultricies. Integer facilisis vel ipsum ut finibus. Integer urna magna, tincidunt ut leo nec, vestibulum consectetur est. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec pretium ipsum nec tincidunt volutpat. Proin condimentum malesuada sem, non viverra magna ultricies ac. In eget nisl quam. Nullam non placerat felis. Proin quis felis vitae tellus elementum pharetra. Fusce eleifend vitae ante eu imperdiet. Duis cursus quis risus ut volutpat. Fusce a orci a purus faucibus tempus. Donec tempus, mauris at porttitor vehicula, ex augue viverra nulla, euismod hendrerit purus nulla eu ligula.\r\n\r\nCurabitur tincidunt nec eros ut cursus. Etiam sagittis tempus diam, ac rutrum odio posuere cursus. Nulla accumsan eros placerat, dapibus tellus vel, efficitur quam. In pretium vestibulum mollis. Nullam vestibulum ex tristique, euismod sapien sit amet, feugiat dui. Nulla fringilla euismod ante ac dictum. Suspendisse semper tristique velit, nec scelerisque leo euismod non. Aliquam sem mi, fermentum ut pretium in, dictum nec leo. Aenean viverra ultrices dui non consequat. Cras lacinia enim ac velit placerat, quis euismod ante finibus. Fusce tristique vel elit ac pharetra. Nam non bibendum tortor. Vestibulum tincidunt, felis vel iaculis posuere, libero massa eleifend enim, sed volutpat orci turpis eget urna."
@@ -630,6 +678,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: discord
@@ -656,6 +707,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: facebook
@@ -682,6 +736,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: youtube
@@ -708,6 +765,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: whatsapp
@@ -734,6 +794,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: globe
@@ -760,6 +823,9 @@ default:
                           behavior_settings:
                             -
                               value: {  }
+                          revision_translation_affected:
+                            -
+                              value: true
                           field_icon:
                             -
                               icon: star

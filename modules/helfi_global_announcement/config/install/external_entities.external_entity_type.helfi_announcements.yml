@@ -33,9 +33,11 @@ field_mapper_config:
       value: '$.attributes["field_announcement_link"]["title"]'
     announcement_link_url:
       value: '$.attributes["field_announcement_link"]["uri"]'
+    announcement_assistive_technology_close_button_title:
+      value: '$.attributes["field_announcement_title"]'
 storage_client_id: helfi_announcements
 storage_client_config: {  }
-persistent_cache_max_age: 600
+persistent_cache_max_age: -1
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null

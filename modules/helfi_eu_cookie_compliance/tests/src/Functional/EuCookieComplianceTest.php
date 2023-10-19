@@ -20,6 +20,7 @@ class EuCookieComplianceTest extends BrowserTestBase {
   protected static $modules = [
     'block',
     'helfi_api_base',
+    'helfi_user_roles',
     'helfi_eu_cookie_compliance',
   ];
 

@@ -1,0 +1,187 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 0908b819-f7ec-4fc8-aaf5-4891014f8394
+  bundle: page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: Table of contents'
+  created:
+    -
+      value: 1696396814
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: true
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-navigation/dc-table-of-contents
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1696397481
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 9ece5073-f9ef-4519-a910-d627e78b0fee
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696396847
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<p>Curabitur ullamcorper ultricies nisi. Nullam accumsan lorem in dui. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Phasellus magna. Mauris turpis nunc, blandit et, volutpat molestie, porta ut, ligula.</p>\r\n\r\n<h2>Phasellus magna</h2>\r\n\r\n<p>Vestibulum fringilla pede sit amet augue. Fusce pharetra convallis urna. Praesent egestas neque eu enim. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris.</p>\r\n\r\n<p>Aenean imperdiet. In hac habitasse platea dictumst. Sed lectus. Ut non enim eleifend felis pretium feugiat.</p>\r\n\r\n<blockquote class=\"quote\">\r\n<p class=\"quote__text\">Cras risus ipsum, faucibus ut, ullamcorper id, varius ac, leo.</p>\r\n\r\n<footer class=\"quote__author\"><cite>Leo</cite></footer>\r\n</blockquote>\r\n\r\n<p>Nunc interdum lacus sit amet orci. Nam pretium turpis et arcu. Cras dapibus. Quisque id odio. Praesent vestibulum dapibus nibh.</p>\r\n\r\n<p>Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Pellentesque libero tortor, tincidunt et, tincidunt eget, semper nec, quam. Nunc nec neque. Praesent adipiscing. Maecenas egestas arcu quis ligula mattis placerat.</p>\r\n\r\n<p></p>\r\n"
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 9425ebe4-f3a8-4f90-8125-e18a607a20b6
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696397265
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 50-50
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 754d7574-6751-4548-b82f-df88b7956a07
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1696397274
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Praesent congue erat at massa. Integer tincidunt. Cras ultricies mi eu turpis hendrerit fringilla. Praesent nec nisl a purus blandit viverra.</p>\r\n\r\n<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id purus. Sed fringilla mauris sit amet nibh. Aenean ut eros et nisl sagittis vestibulum.</p>\r\n\r\n<p>Suspendisse nisl elit, rhoncus eget, elementum ac, condimentum eget, diam. Nullam vel sem. Morbi vestibulum volutpat enim. Suspendisse eu ligula.</p>\r\n"
+                      format: full_html
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 4978ffd8-00be-40f8-b545-2f83f202a141
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1696397277
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: "<p>Nunc sed turpis. Sed fringilla mauris sit amet nibh.</p>\r\n\r\n<p>Nulla porta dolor. Vestibulum turpis sem, aliquet eget, lobortis pellentesque, rutrum eu, nisl. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>\r\n\r\n<p>Cras id dui. Donec elit libero, sodales nec, volutpat a, suscipit non, turpis. Ut leo.</p>\r\n\r\n<p>Nulla porta dolor. Nulla sit amet est. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit.</p>\r\n"
+                      format: full_html
+          field_columns_title:
+            -
+              value: 'Ullamcorper id'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a4acaeda-6c1b-4535-a04d-ed90eca12f6b
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1696397379
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<h2>Quisque malesuada placerat nisl</h2>\r\n\r\n<p>Vestibulum ullamcorper mauris at ligula. Proin magna. Fusce neque. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>\r\n\r\n<p>Aliquam eu nunc.. Nullam vel sem. Vivamus in erat ut urna cursus vestibulum. Aliquam erat volutpat.</p>\r\n\r\n<h3>Etiam feugiat lorem non metus</h3>\r\n\r\n<p>Curabitur blandit mollis lacus. Praesent blandit laoreet nibh. Fusce ac felis sit amet ligula pharetra condimentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>\r\n\r\n<h2>Phasellus gravida semper nisi</h2>\r\n\r\n<p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc, vitae euismod ligula urna in dolor. Fusce risus nisl, viverra et, tempor et, pretium in, sapien. Donec id justo.</p>\r\n\r\n<p>Praesent egestas neque eu enim. Proin pretium, leo ac pellentesque mollis, felis nunc ultrices eros, sed gravida augue augue mollis justo. Maecenas egestas arcu quis ligula mattis placerat. Curabitur vestibulum aliquam leo. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>\r\n\r\n<p>Vestibulum volutpat pretium libero. Phasellus tempus. Suspendisse pulvinar, augue ac venenatis condimentum, sem libero volutpat nibh, nec pellentesque velit pede quis nunc. Aliquam lobortis. Cras id dui.</p>\r\n\r\n<p>Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent ac sem eget est egestas volutpat. Suspendisse potenti. Praesent ut ligula non mi varius sagittis. Praesent adipiscing.</p>\r\n\r\n<h2>Suspendisse pulvinar</h2>\r\n\r\n<p>Augue ac venenatis condimentum, sem libero volutpat nibh, nec pellentesque velit pede quis nunc. Fusce convallis metus id felis luctus adipiscing. Etiam iaculis nunc ac metus. Ut id nisl quis enim dignissim sagittis. Ut leo.</p>\r\n\r\n<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Morbi mattis ullamcorper velit. Cras non dolor. Suspendisse feugiat.</p>\r\n"
+              format: full_html
+  field_has_hero:
+    -
+      value: false

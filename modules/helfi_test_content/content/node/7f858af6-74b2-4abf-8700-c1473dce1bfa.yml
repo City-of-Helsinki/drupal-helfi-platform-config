@@ -1,0 +1,78 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7f858af6-74b2-4abf-8700-c1473dce1bfa
+  bundle: announcement
+  default_langcode: en
+  depends:
+    49433cd6-eb7f-48bd-8af3-27e791421ba6: node
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: Announcement - alert'
+  created:
+    -
+      value: 1696420676
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1696420756
+  body:
+    -
+      value: "<p>Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Fusce neque. Maecenas ullamcorper, dui et placerat feugiat, eros pede varius nisi, condimentum viverra felis nunc et lorem. Cras risus ipsum, faucibus ut, ullamcorper id, varius ac, leo. Morbi ac felis.</p>\r\n"
+      format: minimal
+      summary: ''
+  field_announcement_all_pages:
+    -
+      value: false
+  field_announcement_content_pages:
+    -
+      entity: 49433cd6-eb7f-48bd-8af3-27e791421ba6
+  field_announcement_link:
+    -
+      uri: 'internal:/'
+      title: 'Integer ante arcu, accumsan a'
+      options: {  }
+  field_announcement_title:
+    -
+      value: 'DC: Announcement - alert'
+  field_announcement_type:
+    -
+      value: alert

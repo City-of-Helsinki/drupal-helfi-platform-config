@@ -5,6 +5,8 @@
  * Calculators.
  */
 
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
 /**
  * Implements template_preprocess_paragraph().
  *
@@ -27,4 +29,26 @@ function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
 
   $selected_calculator = $variables['paragraph']->get('field_calculator')->value;
   $variables['is_active'] = in_array($selected_calculator, $active);
+}
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_calculator_helfi_paragraph_types() : array {
+  $types = [
+    'field_content' => [
+      'calculator',
+    ],
+    'field_lower_content' => [
+      'calculator',
+    ],
+  ];
+
+  $enabled = [];
+  foreach ($types as $field => $paragraphTypes) {
+    foreach ($paragraphTypes as $paragraphType) {
+      $enabled[] = new ParagraphTypeCollection('node', 'page', $field, $paragraphType);
+    }
+  }
+  return $enabled;
 }
