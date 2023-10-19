@@ -41,3 +41,10 @@ helfi_quote.admin:
   css:
     theme:
       assets/css/helfi_quote_plugin.admin.css: { }
+
+# Helfi Table CKEditor5 plugin JavaScript and CSS.
+helfi_table:
+  js:
+    assets/js/build/helfiTable.js: { preprocess: false, minified: true }
+  dependencies:
+    - core/ckeditor5

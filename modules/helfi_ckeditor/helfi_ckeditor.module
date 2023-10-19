@@ -1,0 +1,26 @@
+<?php
+
+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
+
+/**
+ * Modify the list of available CKEditor 5 plugins.
+ *
+ * @param array $plugin_definitions
+ *   An array of all the existing plugin definitions, passed by reference.
+ *
+ * @see \Drupal\ckeditor5\Plugin\CKEditor5PluginManager
+ */
+function helfi_ckeditor_ckeditor5_plugin_info_alter(array &$plugin_definitions): void {
+  /** @var CKEditor5PluginDefinition $table_plugin_definition */
+  $table_plugin_definition = $plugin_definitions['ckeditor5_table'];
+  $original_table_plugin = $table_plugin_definition->toArray();
+
+  // Unset the 'table.PlainTableOutput' CKEditor5 plugin as we want to preserve
+  // the <figure class="table"> > <figcaption> functionality.
+  if (($plugin = array_search('table.PlainTableOutput', $original_table_plugin['ckeditor5']['plugins'])) !== false) {
+    unset($original_table_plugin['ckeditor5']['plugins'][$plugin]);
+  }
+
+  // Save ckeditor5_table plugin definitions.
+  $plugin_definitions['ckeditor5_table'] = new CKEditor5PluginDefinition($original_table_plugin);
+}

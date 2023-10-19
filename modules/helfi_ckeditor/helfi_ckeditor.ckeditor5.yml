@@ -59,3 +59,18 @@ helfi_ckeditor_helfi_quote:
       - <footer>
       - <footer data-helfi-quote-author>
       - <cite>
+
+helfi_ckeditor_helfi_table:
+  # Configuration that will be sent to CKEditor 5 JavaScript plugins.
+  ckeditor5:
+    plugins:
+      - helfiTable.HelfiTable
+
+  # Configuration that will be used directly by Drupal.
+  drupal:
+    label: Helfi Table
+    library: helfi_ckeditor/helfi_table
+    elements: false
+    conditions:
+      plugins:
+        - ckeditor5_table
