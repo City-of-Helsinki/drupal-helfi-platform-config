@@ -1,6 +1,8 @@
 <?php
 
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 
 /**
  * Modify the list of available CKEditor 5 plugins.
@@ -23,4 +25,33 @@ function helfi_ckeditor_ckeditor5_plugin_info_alter(array &$plugin_definitions):
 
   // Save ckeditor5_table plugin definitions.
   $plugin_definitions['ckeditor5_table'] = new CKEditor5PluginDefinition($original_table_plugin);
+}
+
+/**
+ * Add figcaption source order javascript library to each HTML text format.
+ */
+function helfi_ckeditor_preprocess_field(array &$variables): void {
+  // Handle only fields of type "text_long".
+  if (
+    !array_key_exists('field_type', $variables) ||
+    $variables['field_type'] !== 'text_long' ||
+    !array_key_exists('element', $variables) ||
+    !array_key_exists('#items', $variables['element'])
+  ) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItems */
+  $fieldItems = &$variables['element']['#items'];
+
+  // Handle only fields which has full_html as their text format.
+  if (
+    !$fieldItems instanceof FieldItemListInterface ||
+    $fieldItems->first()?->get('format')?->getValue() !== 'full_html'
+  ) {
+    return;
+  }
+
+  // Add the figcaption source order handler JS to current field.
+  $variables['#attached']['library'][] = 'helfi_ckeditor/helfi_table_figcaption';
 }
