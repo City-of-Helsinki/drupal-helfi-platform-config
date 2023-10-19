@@ -1,0 +1,22 @@
+name: v4 sync
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create pull request
+        run: |
+          gh pr create \
+            --base main \
+            --head 4.x \
+            --title "main to 4.x" \
+            --body "Sync changes to 4.x branch" || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
