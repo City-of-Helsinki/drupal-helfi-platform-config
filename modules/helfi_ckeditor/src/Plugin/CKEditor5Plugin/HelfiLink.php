@@ -147,8 +147,7 @@ class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElement
     }
     else {
       $icons = [];
-      $config = \Drupal::getContainer()->get('config.factory')->getEditable('hdbt_admin_tools.site_settings');
-      $json_path = \Drupal::root() . $config->get('path_to_json');
+      $json_path = \Drupal::root() . '/themes/contrib/hdbt/src/icons/editor-selectable-icons.json';
 
       if (!$data = file_get_contents($json_path)) {
         \Drupal::messenger()
