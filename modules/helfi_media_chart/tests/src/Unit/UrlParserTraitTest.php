@@ -37,6 +37,7 @@ class UrlParserTraitTest extends UnitTestCase {
     return [
       [
         'https://app.powerbi.com/view?r=eyJrIjoiYjE5OTFhMmEtMWYzNC00YjY2LTllODMtMzhhZDRiNTJiMDQ5IiwidCI6IjNmZWI2YmMxLWQ3MjItNDcyNi05NjZjLTViNThiNjRkZjc1MiIsImMiOjh9',
+        'https://playground.powerbi.com/sampleReportEmbed',
       ],
     ];
   }
