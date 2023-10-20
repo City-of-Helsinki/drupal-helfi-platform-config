@@ -124,7 +124,7 @@ class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElement
     $config = $static_plugin_config;
     $config += [
       'link' => [
-        'loadedIcons' => SelectIcon::loadIcons(),
+        'loadedIcons' => SelectIcon::loadIcons() ?? [],
         'whiteListedDomains' => $this->internalDomainResolver->getDomains(),
       ],
     ];
