@@ -12,7 +12,6 @@ use Drupal\ckeditor5\Plugin\CKEditor5PluginElementsSubsetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\editor\EditorInterface;
-use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -137,7 +136,7 @@ class HelfiLink extends CKEditor5PluginDefault implements CKEditor5PluginElement
    * Load icons either from cache or load them based on the data received from
    * json-file which is saved in configuration.
    *
-   * TODO: This is duplicated to SelectIcon::loadIcons(), needs refactoring.
+   * @todo This is duplicated to SelectIcon::loadIcons(), needs refactoring.
    *
    * @return array
    *   Returns an array of icons or empty array.
