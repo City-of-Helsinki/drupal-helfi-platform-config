@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Contains installation hooks for HELfi platform config module.
+ */
+
+/**
+ * UHF-9113: Remove obsolete hotjar permission.
+ */
+function helfi_platform_config_update_9301(): void {
+  helfi_platform_config_remove_permissions_from_all_roles([
+    'administer hotjar settings',
+  ]);
+}

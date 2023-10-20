@@ -304,6 +304,24 @@ function helfi_platform_config_grant_permissions(array $map): void {
 }
 
 /**
+ * Removes permissions from all roles.
+ *
+ * This function can be used in update hooks to ensure that deprecated
+ * permissions are removed.
+ *
+ * @param string[] $permissions
+ *   The list of permissions to remove.
+ */
+function helfi_platform_config_remove_permissions_from_all_roles(array $permissions): void {
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('user.role.') as $config_name) {
+    $role = $config_factory->getEditable($config_name);
+    $role->set('permissions', array_values(array_diff($role->get('permissions'), $permissions)));
+    $role->save(TRUE);
+  }
+}
+
+/**
  * Implements hook_tokens().
  */
 function helfi_platform_config_tokens(
