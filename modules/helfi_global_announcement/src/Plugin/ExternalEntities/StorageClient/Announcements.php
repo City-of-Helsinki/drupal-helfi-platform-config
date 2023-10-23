@@ -166,7 +166,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
     try {
       $uri = vsprintf('%s/jsonapi/node/announcement?%s', [
         $this->environment->getInternalAddress($langcode),
-        \GuzzleHttp\http_build_query($parameters),
+        \http_build_query($parameters),
       ]);
       $content = $this->client->request('GET', $uri);
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
