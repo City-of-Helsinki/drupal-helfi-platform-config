@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_media_chart\Functional;
 
 use Drupal\Core\Url;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -18,6 +20,7 @@ class MediaChartTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'filter',
     'media',
     'menu_ui',
     'helfi_media_chart',
@@ -36,6 +39,8 @@ class MediaChartTest extends BrowserTestBase {
     // Setup standalone media urls from the settings.
     $this->config('media.settings')->set('standalone_url', TRUE)
       ->save();
+    // Switch text field formatter for helfi_chart.
+    $this->switchTextFieldFormatter('media', 'helfi_chart', 'field_helfi_chart_transcript');
     $this->refreshVariables();
     // Rebuild routes.
     \Drupal::service('router.builder')->rebuild();
@@ -79,6 +84,34 @@ class MediaChartTest extends BrowserTestBase {
     $media = reset($medias);
     $this->drupalGet(Url::fromRoute('entity.media.canonical', ['media' => $media->id()]));
     $this->assertSession()->statusCodeEquals(200);
+  }
+
+  /**
+   * Switch text field formatter.
+   *
+   * @param string $entity_type
+   *   Entity type.
+   * @param string $entity_bundle
+   *   Entity bundle.
+   * @param string $field_name
+   *   Field name.
+   */
+  private function switchTextFieldFormatter(string $entity_type, string $entity_bundle, string $field_name) : void {
+    // Get the FieldConfig for the specified field.
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+    if ($field_storage) {
+      $field_config = FieldConfig::loadByName($entity_type, $entity_bundle, $field_name);
+
+      // Set the default text format for the field to 'plain_text'.
+      $field_config->set('third_party_settings', [
+        'allowed_formats' => [
+          'allowed_formats' => [
+            'plain_text',
+          ],
+        ],
+      ]);
+      $field_config->save();
+    }
   }
 
 }
