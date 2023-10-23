@@ -41,6 +41,9 @@ function helfi_toc_update_9001() {
  * UHF-8937: Install 'table of contents' field to tpr_unit entity.
  */
 function helfi_toc_update_9002() {
+  if (!Drupal::moduleHandler()->moduleExists('helfi_tpr')) {
+    return;
+  }
 
   // Fields to be installed and entity type.
   $fields = ['toc_enabled', 'toc_title'];
