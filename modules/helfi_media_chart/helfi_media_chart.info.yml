@@ -8,6 +8,7 @@ dependencies:
   - drupal:media
   - drupal:media_library
   - drupal:path
+  - drupal:node
   - drupal:text
   - helfi_media:helfi_media
 'interface translation project': helfi_media_chart
