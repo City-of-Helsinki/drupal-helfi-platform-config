@@ -12,6 +12,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
@@ -129,9 +130,17 @@ function helfi_platform_config_update_paragraph_target_types() : void {
       continue;
     }
     $field = $definitions[$type->field];
-    // Save the field to trigger re-build of target_bundles.
-    // @see helfi_platform_config_field_config_presave().
-    $field->save();
+    // Base fields use BaseFieldDefinition instances while configurable fields
+    // use FieldConfig instances. For BaseFieldDefinition, save the
+    // BaseFieldOverride to trigger re-build of target_bundles.
+    if ($field instanceof BaseFieldDefinition) {
+      $field->getConfig($type->bundle)->save();
+    }
+    else {
+      // Save the field to trigger re-build of target_bundles.
+      // @see helfi_platform_config_field_config_presave().
+      $field->save();
+    }
   }
 }
 
