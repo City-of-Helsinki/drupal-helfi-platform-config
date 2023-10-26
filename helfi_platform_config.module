@@ -24,7 +24,6 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\Entity\Role;
 
-
 /**
  * Implements hook_modules_installed().
  */
@@ -450,12 +449,11 @@ function helfi_platform_config_language_switch_links_alter(array &$links) {
       continue;
     }
 
-    // Replace the original unpublished translation link with another one and set it disabled.
-    // Unpublished link won't pass url access check so it must be replaced with published one.
+    // Unpublished link won't pass url access check
+    // Replace unpublished translation with another one and set it disabled.
     unset($links[$langcode]['url']);
-    $url = new Url('<front>');
     $links[$langcode]['#untranslated'] = TRUE;
-    $links[$langcode]['url'] = $url;
+    $links[$langcode]['url'] = new Url('<nolink>');
     $links[$langcode]['attributes']['class'][] = 'language-link--untranslated';
   }
 }
