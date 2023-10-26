@@ -24,6 +24,7 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\Entity\Role;
 
+
 /**
  * Implements hook_modules_installed().
  */
@@ -419,5 +420,42 @@ function helfi_platform_config_system_breadcrumb_alter(
 function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
   if (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
     $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
+  }
+}
+
+/**
+ * Implements hook_language_switch_links_alter().
+ *
+ * #UHF-9158 main languages must be always visible on language switcher.
+ */
+function helfi_platform_config_language_switch_links_alter(array &$links) {
+  $params = \Drupal::routeMatch()->getParameters()->all();
+
+  $entity = NULL;
+  foreach ($params as $param) {
+    if ($param instanceof ContentEntityInterface) {
+      $entity = $param;
+      break;
+    }
+  }
+  if (!$entity) {
+    return;
+  }
+
+  foreach ($links as $langcode => $link) {
+    if (
+      !$entity->hasTranslation($langcode) ||
+      $entity->getTranslation($langcode)->isPublished()
+    ) {
+      continue;
+    }
+
+    // Replace the original unpublished translation link with another one and set it disabled.
+    // Unpublished link won't pass url access check so it must be replaced with published one.
+    unset($links[$langcode]['url']);
+    $url = new Url('<front>');
+    $links[$langcode]['#untranslated'] = TRUE;
+    $links[$langcode]['url'] = $url;
+    $links[$langcode]['attributes']['class'][] = 'language-link--untranslated';
   }
 }
