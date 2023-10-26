@@ -6,6 +6,7 @@ dependencies:
   - admin_toolbar:admin_toolbar
   - admin_toolbar_tools:admin_toolbar_tools
   - config_ignore:config_ignore
+  - drupal:ckeditor
   - drupal:config_translation
   - drupal:editor
   - drupal:options
