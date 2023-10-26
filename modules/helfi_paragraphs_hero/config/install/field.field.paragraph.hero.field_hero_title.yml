@@ -9,7 +9,7 @@ field_name: field_hero_title
 entity_type: paragraph
 bundle: hero
 label: 'Hero heading'
-description: 'If a hero is used on the page, this heading will be used as the page''s main heading.'
+description: "If a hero is used on the page, this heading will be used as the page's main heading."
 required: true
 translatable: false
 default_value: {  }
