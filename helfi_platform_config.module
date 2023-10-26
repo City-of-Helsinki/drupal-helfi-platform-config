@@ -443,12 +443,12 @@ function helfi_platform_config_language_switch_links_alter(array &$links) {
 
   foreach ($links as $langcode => $link) {
     if (
+      !$entity->isTranslatable() ||
       !$entity->hasTranslation($langcode) ||
       $entity->getTranslation($langcode)->isPublished()
     ) {
       continue;
     }
-
     // Unpublished link won't pass url access check
     // Replace unpublished translation with another one and set it disabled.
     unset($links[$langcode]['url']);
