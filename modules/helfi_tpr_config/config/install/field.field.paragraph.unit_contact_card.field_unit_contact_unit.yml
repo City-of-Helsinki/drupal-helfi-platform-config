@@ -9,7 +9,7 @@ field_name: field_unit_contact_unit
 entity_type: paragraph
 bundle: unit_contact_card
 label: Unit
-description: 'Add here the unit that you want to appear as the contact card. The unit doesn''t have to be published.'
+description: "Add here the unit that you want to appear as the contact card. The unit doesn't have to be published."
 required: true
 translatable: false
 default_value: {  }
