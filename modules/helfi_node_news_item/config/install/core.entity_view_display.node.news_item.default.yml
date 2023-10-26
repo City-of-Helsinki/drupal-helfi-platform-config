@@ -13,6 +13,7 @@ dependencies:
     - node.type.news_item
   module:
     - entity_reference_revisions
+    - helfi_platform_config
     - link
     - user
 id: node.news_item.default
@@ -92,6 +93,15 @@ content:
       date_format: publication_date_format
       custom_date_format: ''
       timezone: ''
+      tooltip:
+        date_format: ''
+        custom_date_format: ''
+      time_diff:
+        enabled: false
+        future_format: '@interval hence'
+        past_format: '@interval ago'
+        granularity: 2
+        refresh: 60
     third_party_settings: {  }
     weight: 3
     region: content
