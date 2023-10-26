@@ -7,6 +7,7 @@ namespace Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
@@ -174,7 +175,8 @@ final class Announcements extends ExternalEntityStorageClientBase {
       return $json['data'];
     }
     catch (RequestException | GuzzleException $e) {
-      watchdog_exception('helfi_announcements', $e);
+      $logger = \Drupal::logger('helfi_announcements');
+      Error::logException($logger, $e);
     }
     return [];
   }
