@@ -1,0 +1,98 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Drupal\Tests\helfi_platform_config\Functional;
+
+use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\Project;
+use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
+use Drupal\node\NodeInterface;
+use Drupal\Tests\BrowserTestBase;
+
+/**
+ * Tests the language switcher alter changes affecting anonymous user.
+ *
+ * @group helfi_platform_config
+ */
+class LanguageSwitcherAlterTest extends BrowserTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'language',
+    'locale',
+    'content_translation',
+    'node',
+    'block',
+    'helfi_platform_config',
+    'user'
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * The node.
+   *
+   * @var \Drupal\node\NodeInterface|null
+   */
+  protected ?NodeInterface $node;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() : void {
+    parent::setUp();
+
+    foreach (['fi', 'sv'] as $langcode) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
+    $this->config('language.negotiation')
+      ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
+      ->save();
+    $this->config('helfi_api_base.environment_resolver.settings')
+      ->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local')
+      ->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN)
+      ->save();
+
+    NodeType::create([
+      'type' => 'page',
+    ])->save();
+
+    $this->drupalPlaceBlock('language_switcher_admin', [
+      'region' => 'header_branding',
+      'theme' => $this->defaultTheme,
+    ]);
+
+    $this->node = Node::create(['type' => 'page', 'title' => 'Title en']);
+    $this->node->save();
+
+    foreach (['fi', 'sv'] as $language) {
+      $this->node->addTranslation($language, [
+        'title' => 'Title ' . $language,
+      ]);
+    }
+    $this->node->save();
+
+    $this->node->getTranslation('sv')
+      ->set('status', 0)
+      ->save();
+  }
+
+  /**
+   * Tests that languages are visible in language switcher.
+   */
+  public function testLanguageSwitcher() : void {
+    $this->drupalLogout();
+    $this->drupalGet('/en/node/' . $this->node->id());
+    $elements = $this->xpath('//span|a[@class="language-link"]');
+    $this->assertCount(3, $elements);
+  }
+
+}
