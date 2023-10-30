@@ -427,7 +427,7 @@ function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
  *
  * #UHF-9158 main languages must be always visible on language switcher.
  */
-function helfi_platform_config_language_switch_links_alter(array &$links) {
+function helfi_platform_config_language_switch_links_alter(array &$links): void {
   $params = \Drupal::routeMatch()->getParameters()->all();
 
   $entity = NULL;
@@ -437,18 +437,18 @@ function helfi_platform_config_language_switch_links_alter(array &$links) {
       break;
     }
   }
-  if (!$entity) {
+  if (!$entity || !$entity->isTranslatable()) {
     return;
   }
 
   foreach ($links as $langcode => $link) {
     if (
-      !$entity->isTranslatable() ||
       !$entity->hasTranslation($langcode) ||
       $entity->getTranslation($langcode)->isPublished()
     ) {
       continue;
     }
+
     // Unpublished link won't pass url access check
     // Replace unpublished translation with another one and set it disabled.
     unset($links[$langcode]['url']);
