@@ -11,6 +11,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
 
 /**
  * Tests the language switcher alter changes affecting anonymous user.
@@ -18,6 +19,8 @@ use Drupal\Tests\BrowserTestBase;
  * @group helfi_platform_config
  */
 class LanguageSwitcherAlterTest extends BrowserTestBase {
+
+  use DefaultConfigurationTrait;
 
   /**
    * {@inheritdoc}
@@ -90,7 +93,7 @@ class LanguageSwitcherAlterTest extends BrowserTestBase {
    */
   public function testLanguageSwitcher() : void {
     foreach (['en', 'fi', 'sv'] as $langcode) {
-      $this->drupalGet("/$langcode/node/{$this->node->id()}");
+      $this->drupalGetWithLanguage("node/{$this->node->id()}", $langcode);
       $elements = $this->xpath('//span|a[@class="language-link"]');
       $this->assertCount(3, $elements);
     }
