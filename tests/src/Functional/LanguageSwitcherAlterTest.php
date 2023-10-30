@@ -32,7 +32,7 @@ class LanguageSwitcherAlterTest extends BrowserTestBase {
     'node',
     'block',
     'helfi_platform_config',
-    'user'
+    'user',
   ];
 
   /**
