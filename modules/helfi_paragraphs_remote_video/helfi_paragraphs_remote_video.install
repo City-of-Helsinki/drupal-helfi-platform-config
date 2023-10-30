@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_paragraphs_remote_video module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * UHF-7841: Update editor guidance.
+ */
+function helfi_paragraphs_remote_video_update_9001() : void {
+  // Re-import 'helfi_paragraphs_remote_video' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_remote_video');
+}
