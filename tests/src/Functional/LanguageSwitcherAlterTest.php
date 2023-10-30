@@ -89,10 +89,11 @@ class LanguageSwitcherAlterTest extends BrowserTestBase {
    * Tests that languages are visible in language switcher.
    */
   public function testLanguageSwitcher() : void {
-    $this->drupalLogout();
-    $this->drupalGet('/en/node/' . $this->node->id());
-    $elements = $this->xpath('//span|a[@class="language-link"]');
-    $this->assertCount(3, $elements);
+    foreach(['en', 'fi', 'sv'] as $langocde) {
+      $this->drupalGet("/$langocde/node/", $this->node->id());
+      $elements = $this->xpath('//span|a[@class="language-link"]');
+      $this->assertCount(3, $elements);
+    }
   }
 
 }
