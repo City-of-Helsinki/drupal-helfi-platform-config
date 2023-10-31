@@ -14,6 +14,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -302,7 +303,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
       $uri = vsprintf('%s%s?%s', [
         $this->environment->getInternalAddress($langcode),
         $this->endpoint,
-        \http_build_query($parameters),
+        Query::build($parameters),
       ]);
 
       $content = $this->client->request('GET', $uri, [

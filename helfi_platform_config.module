@@ -130,17 +130,18 @@ function helfi_platform_config_update_paragraph_target_types() : void {
       continue;
     }
     $field = $definitions[$type->field];
+
     // Base fields use BaseFieldDefinition instances while configurable fields
-    // use FieldConfig instances. For BaseFieldDefinition, save the
-    // BaseFieldOverride to trigger re-build of target_bundles.
+    // use FieldConfig instances. Save the BaseFieldOverride to trigger
+    // re-build of target_bundles.
     if ($field instanceof BaseFieldDefinition) {
-      $field->getConfig($type->bundle)->save();
+      $field = $field->getConfig($type->bundle);
     }
-    else {
-      // Save the field to trigger re-build of target_bundles.
-      // @see helfi_platform_config_field_config_presave().
-      $field->save();
-    }
+
+    // Save the field to trigger re-build of target_bundles.
+    // @see helfi_platform_config_field_config_presave().
+    // @see helfi_platform_config_base_field_override_presave().
+    $field->save();
   }
 }
 
@@ -428,5 +429,41 @@ function helfi_platform_config_system_breadcrumb_alter(
 function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
   if (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
     $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
+  }
+}
+
+/**
+ * Implements hook_language_switch_links_alter().
+ *
+ * #UHF-9158 main languages must be always visible on language switcher.
+ */
+function helfi_platform_config_language_switch_links_alter(array &$links): void {
+  $params = \Drupal::routeMatch()->getParameters()->all();
+
+  $entity = NULL;
+  foreach ($params as $param) {
+    if ($param instanceof ContentEntityInterface) {
+      $entity = $param;
+      break;
+    }
+  }
+  if (!$entity || !$entity->isTranslatable()) {
+    return;
+  }
+
+  foreach ($links as $langcode => $link) {
+    if (
+      !$entity->hasTranslation($langcode) ||
+      $entity->getTranslation($langcode)->isPublished()
+    ) {
+      continue;
+    }
+
+    // Unpublished link won't pass url access check
+    // Replace unpublished translation with another one and set it disabled.
+    unset($links[$langcode]['url']);
+    $links[$langcode]['#untranslated'] = TRUE;
+    $links[$langcode]['url'] = new Url('<nolink>');
+    $links[$langcode]['attributes']['class'][] = 'language-link--untranslated';
   }
 }
