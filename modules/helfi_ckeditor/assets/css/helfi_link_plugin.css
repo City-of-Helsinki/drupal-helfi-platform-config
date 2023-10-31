@@ -228,3 +228,8 @@ select.tomselected.is-hidden + .ts-wrapper {
 .ck-content .link {
   cursor: text;
 }
+
+/* CKEditor introduced "powered by ckeditor" -logo. Hide it. */
+.ck-powered-by {
+  display: none;
+}
