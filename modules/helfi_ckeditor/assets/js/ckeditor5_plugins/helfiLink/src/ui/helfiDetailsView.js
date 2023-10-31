@@ -40,7 +40,7 @@ export default class HelfiDetailsView extends View {
     this.set('id', null);
 
     /**
-     * The collection of the child views inside of the details {@link #element}.
+     * The collection of the child views inside the details {@link #element}.
      *
      * @readonly
      * @member {module:ui/viewcollection~ViewCollection}

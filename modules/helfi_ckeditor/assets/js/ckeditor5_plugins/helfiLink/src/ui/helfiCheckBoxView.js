@@ -259,7 +259,7 @@ export default class HelfiCheckBoxView extends View {
    */
   updateChecked(value) {
     if (value !== this.isChecked) {
-      this.checkboxInputView?.element.click();
+      this.checkboxInputView?.element?.click();
     }
   }
 }

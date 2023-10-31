@@ -4,7 +4,6 @@
 
 import { Plugin } from 'ckeditor5/src/core';
 import {
-  ContextualBalloon,
   createLabeledInputText,
   LabeledFieldView,
 } from 'ckeditor5/src/ui';
@@ -25,47 +24,94 @@ export default class HelfiLinkUi extends Plugin {
     this.editor = editor;
     this.advancedChildren = new Collection();
     this.formElements = formElements;
+    this.helfiContextualBalloonInitialized = false;
   }
 
   init() {
+    // TRICKY: Work-around until the CKEditor team offers a better solution:
+    // Force the ContextualBalloon to get instantiated early.
+    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.
+    if (this.editor.plugins.get('LinkUI')._createViews) {
+      this.editor.plugins.get('LinkUI')._createViews();
+    }
+
     // Add a wrapper classes for the link form view.
     this._addContextualBalloonClass();
 
-    // Add custom fields from formElements.
-    const models = Object.keys(this.formElements).reverse();
+    // Copy the same solution from LinkUI as pointed out on
+    // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and
+    // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.
+    this.editor.plugins
+      .get('ContextualBalloon')
+      .on('change:visibleView', (evt, propertyName, newValue, oldValue) => {
 
-    // Iterate through formElements and create fields accordingly.
-    models.forEach(modelName => {
-      // Skip form elements without machine names.
-      if (!this.formElements[modelName].machineName) { return; }
+        // Get the LinkUI form view.
+        const linkFormView = this.editor.plugins.get('LinkUI').formView;
 
-      // Create form fields.
-      const formField = this._createFormField(modelName);
+        // Check that we're handling the last linkFormView.
+        // The 'set:visibleView' will trigger twice as we need to set
+        // the contextual balloon classes in _addContextualBalloonClass().
+        if (
+          newValue === oldValue ||
+          newValue !== linkFormView ||
+          !this.helfiContextualBalloonInitialized
+        ) {
+          return;
+        }
 
-      // Load existing data into form field.
-      this._handleDataLoadingIntoFormField(modelName);
+        // Add custom fields from formElements.
+        const models = Object.keys(this.formElements).reverse();
 
-      // If form field is marked as part of advanced settings,
-      // add it to advancedChildren object.
-      if (
-        this.formElements[modelName].group &&
-        this.formElements[modelName].group === 'advanced'
-      ) {
-        this.advancedChildren.add(formField);
-      }
+        // Iterate through formElements and create fields accordingly.
+        models.forEach(modelName => {
+          // Skip form elements without machine names.
+          if (!this.formElements[modelName].machineName) { return; }
+
+          // Create form fields.
+          const formField = this._createFormField(modelName, linkFormView);
+
+          // If form field is marked as part of advanced settings,
+          // add it to advancedChildren object.
+          if (
+            this.formElements[modelName].group &&
+            this.formElements[modelName].group === 'advanced' &&
+            typeof formField !== 'undefined'
+          ) {
+            this.advancedChildren.add(formField);
+          }
+        });
+
+        // Move all fields with group:advanced setting to under advanced
+        // settings accordion.
+        this._createAdvancedSettingsAccordion(linkFormView);
+
+        // Iterate through formElements and load data from LinkCommand plugin
+        // to each form field. This needs to be run after the
+        // _createAdvancedSettingsAccordion() as TomSelect library requires
+        // rendered markup to attach itself to.
+        models.forEach(modelName => {
+          // Skip form elements without machine names.
+          if (!this.formElements[modelName].machineName) { return; }
+
+          // Load existing data into form field.
+          this._handleDataLoadingIntoFormField(modelName, linkFormView);
+        });
+
+        // Add a descriptive text to URL input field.
+        if (!linkFormView.urlInputView.infoText) {
+          linkFormView.urlInputView.infoText = Drupal.t(
+            'Start typing to find content.',
+            {},
+            { context: 'CKEditor5 Helfi Link plugin' }
+          );
+        }
+
+        // Add logic to checkboxes.
+        this._handleCheckboxes(linkFormView);
+
+        // Handle form field submit.
+        this._handleFormFieldSubmit(models);
     });
-
-    // Move chosen fields under advanced settings.
-    this._createAndHandleAdvancedSettings();
-
-    // Add a descriptive text to URL input field.
-    this._manipulateUrlInputField();
-
-    // Add logic to checkboxes.
-    this._handleCheckboxes();
-
-    // Handle form field submit.
-    this._handleFormFieldSubmit(models);
   }
 
   /**
@@ -78,46 +124,42 @@ export default class HelfiLinkUi extends Plugin {
    */
   _addContextualBalloonClass() {
     const { editor } = this;
-    const linkFormView = editor.plugins.get('LinkUI').formView;
-    const contextualBalloon = editor.plugins.get(ContextualBalloon);
 
-    // Act on when contextualBalloon (popup) and linkFormView is added.
-    contextualBalloon._rotatorView.content.on('add', (evt, view) => {
-      if (
-        view !== linkFormView ||
-        !contextualBalloon.hasView(linkFormView) ||
-        contextualBalloon.view.element.classList.contains('helfi-contextual-balloon')
-      ) {
-        return;
-      }
+    // Copy the same solution from LinkUI as pointed out on
+    // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and
+    // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.
+    editor.plugins
+      .get('ContextualBalloon')
+      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
+        // Add a wrapper classes for the link form view.
+        const linkFormView = editor.plugins.get('LinkUI').formView;
+        if (newValue === oldValue || newValue !== linkFormView) {
+          return;
+        }
 
-      contextualBalloon.remove(view);
-      contextualBalloon.add({
-        view: linkFormView,
-        position: contextualBalloon._getBalloonPosition(),
-        balloonClassName: 'helfi-contextual-balloon',
-        withArrow: false,
+        const contextualBalloonPlugin = this.editor.plugins.get('ContextualBalloon');
+
+        if (
+          !contextualBalloonPlugin.hasView(linkFormView) ||
+          contextualBalloonPlugin.view.element.classList.contains('helfi-contextual-balloon')
+        ) {
+          return;
+        }
+
+        linkFormView.template.attributes.class.push('helfi-link-form');
+        linkFormView.template.attributes.class.push('ck-reset_all-excluded');
+
+        // There should be an easier way to add classes to contextual balloon
+        // plugin than removing and adding the view with custom settings.
+        contextualBalloonPlugin.remove(newValue);
+        contextualBalloonPlugin.add({
+          view: linkFormView,
+          position: contextualBalloonPlugin._getBalloonPosition(),
+          balloonClassName: 'helfi-contextual-balloon',
+          withArrow: false,
+        });
+        this.helfiContextualBalloonInitialized = true;
       });
-    });
-
-    // Add custom classes for the LinkUI from view.
-    linkFormView.extendTemplate({
-      attributes: {
-        class: [ 'helfi-link-form', 'ck-reset_all-excluded' ]
-      }
-    });
-  }
-
-  /**
-   * Add a descriptive help text to URL input field.
-   */
-  _manipulateUrlInputField() {
-    const { editor } = this;
-    const linkFormView = editor.plugins.get('LinkUI').formView;
-    const urlDescription = document.createElement('span');
-    urlDescription.textContent = Drupal.t('Start typing to find content.', {}, { context: 'CKEditor5 Helfi Link plugin' });
-    urlDescription.classList.add('helfi-link-form__field_description');
-    linkFormView.urlInputView.element.appendChild(urlDescription);
   }
 
   /**
@@ -125,11 +167,11 @@ export default class HelfiLinkUi extends Plugin {
    *
    * @param {string} modelName The model name.
    * @param {object} options The select list options.
+   * @param {formView} linkFormView The link form view.
    * @return {HelfiLinkProtocolView} Return the protocol view.
    */
-  _createSelectList(modelName, options) {
+  _createSelectList(modelName, options, linkFormView) {
     const { editor } = this;
-    const linkFormView = editor.plugins.get('LinkUI').formView;
     let selectListView = {};
 
     switch (modelName) {
@@ -154,6 +196,7 @@ export default class HelfiLinkUi extends Plugin {
           selectListView.updateVisibility(value);
         });
         break;
+
       default:
         break;
     }
@@ -172,11 +215,21 @@ export default class HelfiLinkUi extends Plugin {
    * Create advanced settings (details/summary) view and handle the initial
    * state for it.
    *
+   * @param {formView} linkFormView The link form view.
    * @return {HelfiDetailsView} Returns the details view.
    */
-  _createAndHandleAdvancedSettings() {
+  _createAdvancedSettingsAccordion(linkFormView) {
+    // The advanced settings (details summary element) is not bound to
+    // any element. It is needed to close manually initially.
+    // Also return early if the advanced settings has already been created.
+    if (linkFormView.advancedSettings) {
+      linkFormView.advancedSettings.element.open = false;
+      linkFormView.advancedSettings.detailsSummary.element.ariaExpanded = false;
+      linkFormView.advancedSettings.detailsSummary.element.ariaPressed = false;
+      return linkFormView.advancedSettings;
+    }
+
     const { editor } = this;
-    const linkFormView = editor.plugins.get('LinkUI').formView;
     const advancedSettings = new HelfiDetailsView(editor.locale, this.advancedChildren);
 
     advancedSettings.set({
@@ -189,25 +242,10 @@ export default class HelfiLinkUi extends Plugin {
     // after the linkHref field; 2.
     linkFormView.children.add(advancedSettings, 2);
 
-    // Handle the advanced settings open/close per contextualBalloon.
-    editor.plugins.get('ContextualBalloon')._rotatorView.content.on('add', (evt, view) => {
-      if (view !== linkFormView) {
-        return;
-      }
-
-      // The advanced settings (details summary element) is not bound to
-      // any element. It is needed to close manually initially.
-      if (linkFormView.advancedSettings) {
-        linkFormView.advancedSettings.element.open = false;
-        linkFormView.advancedSettings.detailsSummary.element.ariaExpanded = false;
-        linkFormView.advancedSettings.detailsSummary.element.ariaPressed = false;
-      }
-
-      // Remove the error text if user has managed to make an error on last go.
-      if (linkFormView.urlInputView.errorText) {
-        linkFormView.urlInputView.errorText = '';
-      }
-    });
+    // Remove the error text if user has managed to make an error on last go.
+    if (linkFormView.urlInputView.errorText) {
+      linkFormView.urlInputView.errorText = '';
+    }
 
     linkFormView.advancedSettings = advancedSettings;
     return linkFormView.advancedSettings;
@@ -239,58 +277,223 @@ export default class HelfiLinkUi extends Plugin {
    * Create form fields based on form elements.
    *
    * @param {string} modelName The model name.
+   * @param {formView} linkFormView The link form view.
    * @return {*} Returns current field view.
    */
-  _createFormField(modelName) {
+  _createFormField(modelName, linkFormView) {
     const { editor } = this;
-    const linkFormView = editor.plugins.get('LinkUI').formView;
     const options = this.formElements[modelName];
-    let fieldView = {};
+    const linkCommand = editor.commands.get('link');
 
-    // Create fields based on their types.
-    switch (options.type) {
-      case 'select':
-        fieldView = this._createSelectList(modelName, options);
-        break;
-      case 'checkbox':
-        fieldView = this._createCheckbox(modelName);
-        break;
-      case 'static':
-        // Do nothing for static group.
-        fieldView = false;
-        break;
-      default:
-        fieldView = new LabeledFieldView(editor.locale, createLabeledInputText);
-        break;
+    if (!linkFormView[modelName]) {
+      let fieldView = {};
+
+      // Create fields based on their types.
+      switch (options.type) {
+        case 'select':
+          fieldView = this._createSelectList(modelName, options, linkFormView);
+          break;
+        case 'checkbox':
+          fieldView = this._createCheckbox(modelName);
+          break;
+        case 'static':
+          // Do nothing for static group.
+          fieldView = false;
+          break;
+        default:
+          fieldView = new LabeledFieldView(editor.locale, createLabeledInputText);
+          break;
+      }
+
+      if (!fieldView) {
+        return;
+      }
+
+      // Add basic information for the field.
+      fieldView.machineName = modelName;
+      fieldView.class = `helfi-link--${options.machineName}`;
+      fieldView.label = options.label;
+
+      // Add help texts for the field.
+      if (options.description) {
+        fieldView.infoText = options.description;
+      }
+
+      // Handle advanced settings separately.
+      if (!options.group || options.group !== 'advanced') {
+        linkFormView.children.add(fieldView, options.type === 'select' ? 0 : 1);
+      }
+
+      // Track the focus of the field elements.
+      linkFormView._focusables.add(fieldView, 1);
+      linkFormView.focusTracker.add(fieldView.element);
+      linkFormView[modelName] = fieldView;
+
+      // Bind isChecked values of checkboxInputViews to the linkCommand.
+      if (options.type === 'checkbox') {
+        linkFormView[modelName].checkboxInputView.bind('isChecked').to(linkCommand, modelName);
+      }
+
+      // Bind field values of LabeledFieldViews to the linkCommand.
+      if (options.type === 'input') {
+        linkFormView[modelName].fieldView.bind('value').to(linkCommand, modelName);
+      }
+
+      // Initially hide the linkProtocol field if the URL has been set.
+      if (modelName === 'linkProtocol' && !linkFormView.urlInputView.isEmpty) {
+        linkFormView[modelName].updateVisibility(false);
+      }
+      return linkFormView[modelName];
     }
+  }
 
-    if (!fieldView) {
+  /**
+   * Handle data loading into form field.
+   *
+   * @param {string} modelName The model name.
+   * @param {formView} linkFormView The link form view.
+   */
+  _handleDataLoadingIntoFormField(modelName, linkFormView) {
+    const { editor } = this;
+    const linkCommand = editor.commands.get('link');
+    const options = this.formElements[modelName];
+
+    if (typeof linkFormView[modelName] !== 'undefined') {
+      switch (options.type) {
+        // We don't need to handle data loading for static types.
+        case 'static':
+          return;
+
+        // Bind isChecked values of checkboxInputViews to the linkCommand.
+        case 'checkbox': {
+          // Set the link new window checkbox initial value and the link new
+          // window confirmation checkbox values based on the value
+          // of the element's linkNewWindowConfirm model. The link new window
+          // confirmation gets its value from <a target=_blank> attribute.
+          const isChecked = !!(linkCommand.linkNewWindowConfirm);
+
+          // Set initial value of current "link new window" and
+          // "link new window confirmation" based on isChecked value.
+          linkFormView[modelName].updateChecked(isChecked);
+          if (linkFormView.linkNewWindowConfirm) {
+            linkFormView.linkNewWindowConfirm.updateVisibility(isChecked);
+          }
+          break;
+        }
+
+        case 'select':
+          // Initialize TomSelect for current select list.
+          linkFormView[modelName].renderTomSelect(
+            linkFormView[modelName].element,
+            options?.selectListOptions
+          );
+
+          // Add the default value for link icon.
+          if (modelName === 'linkIcon') {
+            linkFormView[modelName].tomSelect.on('initialize', () => {
+              linkFormView[modelName].updateVisibility(false);
+            });
+          }
+
+          // Clear the selected values from the select list.
+          linkFormView[modelName].tomSelect.clear();
+
+          // Mark the default value as selected item.
+          if (linkCommand[modelName]) {
+            linkFormView[modelName].tomSelect.addItem(linkCommand[modelName], true);
+          }
+
+          // Add the protocol as URL input, if protocol has been selected.
+          if (modelName === 'linkProtocol') {
+            linkFormView[modelName].tomSelect.on('item_add', (selection) => {
+              if (linkFormView.urlInputView.isEmpty) {
+                linkFormView.urlInputView.fieldView.value = options.selectListOptions[selection];
+                linkFormView.urlInputView.focus();
+                linkFormView[modelName].tomSelect.clear();
+              }
+            });
+          }
+
+          // Add the default value for link variant.
+          if (modelName === 'linkVariant') {
+
+            // It was decided to remove "primary" variable from anchor tag and
+            // attach "primary" button styles to data-hds-component variable.
+            // Add the "primary" as default value if
+            // data-hds-component="button" is found.
+            if (
+              linkCommand.linkButton === 'button' &&
+              (!linkCommand[modelName] || linkCommand[modelName] === 'primary')
+            ) {
+              linkFormView[modelName].tomSelect.addItem('primary', true);
+            }
+
+            // Hide the link icon form field if there is no variant selected.
+            if (!linkCommand.linkVariant && linkCommand.linkButton !== 'button') {
+              linkFormView?.linkIcon.updateVisibility(false);
+            }
+
+            // Hide the link icon form field if the variant is removed.
+            linkFormView[modelName].tomSelect.on('item_remove', () => {
+              linkFormView?.linkIcon.tomSelect.clear();
+              linkFormView?.linkIcon.updateVisibility(false);
+            });
+
+            // Show the link icon form field if the variant is selected.
+            linkFormView[modelName].tomSelect.on('item_add', (selection) => {
+              linkFormView?.linkIcon.updateVisibility(selection !== 'link');
+
+              if (selection === 'link') {
+                linkFormView?.linkIcon.tomSelect.clear();
+              }
+            });
+          }
+          break;
+
+        default:
+          // Note: Copy & pasted from LinkUI.
+          // https://github.com/ckeditor/ckeditor5/blob/f0a093339631b774b2d3422e2a579e27be79bbeb/packages/ckeditor5-link/src/linkui.js#L333-L333
+          linkFormView[modelName].fieldView.element.value = linkCommand[modelName] || '';
+      }
+    }
+  }
+
+  /**
+   * Handle link new window and link new window confirmation checkboxes
+   * when user is checking/unchecking them.
+   *
+   * @param {formView} linkFormView The link form view.
+   */
+  _handleCheckboxes(linkFormView) {
+    if (
+      !this.formElements.linkNewWindowConfirm ||
+      !this.formElements.linkNewWindow ||
+      !linkFormView ||
+      !linkFormView.linkNewWindow ||
+      !linkFormView.linkNewWindowConfirm ||
+      !linkFormView.linkNewWindowConfirm.element
+    ) {
       return;
     }
 
-    // Add basic information for the field.
-    fieldView.machineName = modelName;
-    fieldView.class = `helfi-link--${  options.machineName}`;
-    fieldView.label = options.label;
-
-    // Add help texts for the field.
-    if (options.description) {
-      fieldView.infoText = options.description;
+    // Handle linkNewWindowConfirm checkbox description.
+    if (!linkFormView.linkNewWindowConfirm.element.querySelector('.helfi-link-form__field_description')) {
+      const description = document.createElement('div');
+      description.innerHTML = this.formElements.linkNewWindowConfirm.description;
+      description.classList.add('helfi-link-form__field_description');
+      linkFormView.linkNewWindowConfirm.element.appendChild(description);
     }
 
-    // Handle advanced settings separately.
-    if (!options.group || options.group !== 'advanced') {
-      linkFormView.children.add(fieldView, options.type === 'select' ? 0 : 1);
-    }
+    // Handle link new window and link new window confirmation checkbox linkages.
+    linkFormView.linkNewWindow.on('change:isChecked', (evt, name, value) => {
+      // Whenever the link new window checkbox is clicked, we want to ask
+      // confirmation from the user. Uncheck the confirmation checkbox.
+      linkFormView?.linkNewWindowConfirm.updateChecked(false);
 
-    // Track the focus of the field elements.
-    linkFormView.on('render', () => {
-      linkFormView._focusables.add(fieldView, 1);
-      linkFormView.focusTracker.add(fieldView.element);
+      // Update the "link new window confirmation" visibility based on the
+      // value of "link new window" checkbox.
+      linkFormView?.linkNewWindowConfirm.updateVisibility(value);
     });
-
-    linkFormView[modelName] = fieldView;
-    return linkFormView[modelName];
   }
 
   /**
@@ -425,154 +628,6 @@ export default class HelfiLinkUi extends Plugin {
         }
       }, { priority: 'highest' });
     }, { priority: 'high' });
-  }
-
-  /**
-   * Handle data loading into form field.
-   *
-   * @param {string} modelName The model name.
-   */
-  _handleDataLoadingIntoFormField(modelName) {
-    const { editor } = this;
-    const linkCommand = editor.commands.get('link');
-    const linkFormView = editor.plugins.get('LinkUI').formView;
-    const options = this.formElements[modelName];
-
-    switch (options.type) {
-      // We don't need to handle data loading for static types.
-      case 'static':
-        return;
-
-      // Bind isChecked values of checkboxInputViews to the linkCommand.
-      case 'checkbox':
-        linkFormView[modelName].checkboxInputView.bind('isChecked').to(linkCommand, modelName);
-        break;
-
-      // Bind field values of LabeledFieldViews to the linkCommand.
-      case 'input':
-        linkFormView[modelName].fieldView.bind('value').to(linkCommand, modelName);
-        break;
-
-      default:
-        break;
-    }
-
-    // This is a hack. This could be potentially improved by detecting when the
-    // form is added by checking the collection of the ContextualBalloon plugin.
-    editor.plugins.get('ContextualBalloon')._rotatorView.content.on('add', (evt, view) => {
-      if (view !== linkFormView) {
-        return;
-      }
-
-      switch (options.type) {
-        // Handle select lists.
-        case 'select':
-          // Initialize TomSelect for current select list.
-          linkFormView[modelName].renderTomSelect(
-            linkFormView[modelName].element,
-            options?.selectListOptions
-          );
-
-          // Clear the selected values from the select list.
-          linkFormView[modelName].tomSelect.clear();
-
-          // Mark the default value as selected item.
-          if (linkCommand[modelName]) {
-            linkFormView[modelName].tomSelect.addItem(linkCommand[modelName], true);
-          }
-
-          // Add the protocol as URL input, if protocol has been selected.
-          if (modelName === 'linkProtocol') {
-            linkFormView[modelName].tomSelect.on('item_add', (selection) => {
-              if (linkFormView.urlInputView.isEmpty) {
-                linkFormView.urlInputView.fieldView.value = options.selectListOptions[selection];
-                linkFormView.urlInputView.focus();
-                linkFormView[modelName].tomSelect.clear();
-              }
-            });
-          }
-
-          // Add the default value for link variant.
-          if (modelName === 'linkVariant') {
-
-            // It was decided to remove "primary" variable from anchor tag and
-            // attach "primary" button styles to data-hds-component variable.
-            // Add the "primary" as default value if data-hds-component="button" is found.
-            if (
-              linkCommand.linkButton === 'button' &&
-              (!linkCommand[modelName] || linkCommand[modelName] === 'primary')
-            ) {
-              linkFormView[modelName].tomSelect.addItem('primary', true);
-            }
-
-            linkFormView[modelName].tomSelect.on('item_add', (selection) => {
-              linkFormView?.linkIcon.updateVisibility(selection !== 'link');
-
-              if (selection === 'link') {
-                linkFormView?.linkIcon.tomSelect.clear();
-              }
-            });
-          }
-
-          // Add the default value for link icon.
-          if (modelName === 'linkIcon') {
-            linkFormView[modelName].tomSelect.on('init', () => {
-              linkFormView[modelName].updateVisibility(false);
-            });
-          }
-          break;
-
-        // Handle "link new window" checkboxes.
-        case 'checkbox': {
-          // Set the link new window checkbox initial value and the link new
-          // window confirmation checkbox values based on the value
-          // of the element's linkNewWindowConfirm model. The link new window
-          // confirmation gets its value from <a target=_blank> attribute.
-          const isChecked = !!(linkCommand.linkNewWindowConfirm);
-
-          // Set initial value of current "link new window" and
-          // "link new window confirmation" based on isChecked value.
-          linkFormView[modelName].updateChecked(isChecked);
-          linkFormView.linkNewWindowConfirm.updateVisibility(isChecked);
-          break;
-        }
-
-        default:
-          // Note: Copy & pasted from LinkUI.
-          // https://github.com/ckeditor/ckeditor5/blob/f0a093339631b774b2d3422e2a579e27be79bbeb/packages/ckeditor5-link/src/linkui.js#L333-L333
-          linkFormView[modelName].fieldView.element.value = linkCommand[modelName] || '';
-      }
-    });
-  }
-
-  /**
-   * Handle link new window and link new window confirmation checkboxes
-   * when user is checking/unchecking them.
-   */
-  _handleCheckboxes() {
-    if (!this.formElements.linkNewWindowConfirm || !this.formElements.linkNewWindow) { return; }
-
-    const { editor } = this;
-    const linkFormView = editor.plugins.get('LinkUI').formView;
-
-    // Handle linkNewWindowConfirm checkbox description.
-    if (!linkFormView.linkNewWindowConfirm.element.description) {
-      const description = document.createElement('div');
-      description.innerHTML = this.formElements.linkNewWindowConfirm.description;
-      description.classList.add('helfi-link-form__field_description');
-      linkFormView.linkNewWindowConfirm.element.appendChild(description);
-    }
-
-    // Handle link new window and link new window confirmation checkbox linkages.
-    linkFormView.linkNewWindow.on('change:isChecked', (evt, name, value) => {
-      // Whenever the link new window checkbox is clicked, we want to ask
-      // confirmation from the user. Uncheck the confirmation checkbox.
-      linkFormView.linkNewWindowConfirm.updateChecked(false);
-
-      // Update the "link new window confirmation" visibility based on the
-      // value of "link new window" checkbox.
-      linkFormView.linkNewWindowConfirm.updateVisibility(value);
-    });
   }
 
 }
