@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_platform_config\Functional;
 
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
@@ -12,6 +12,7 @@ use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 
 /**
  * Tests the language switcher alter changes affecting anonymous user.
@@ -21,6 +22,7 @@ use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
 class LanguageSwitcherAlterTest extends BrowserTestBase {
 
   use DefaultConfigurationTrait;
+  use EnvironmentResolverTrait;
 
   /**
    * {@inheritdoc}
@@ -52,18 +54,21 @@ class LanguageSwitcherAlterTest extends BrowserTestBase {
    */
   public function setUp() : void {
     parent::setUp();
-
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
     $this->config('language.negotiation')
       ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
       ->save();
-    $this->config('helfi_api_base.environment_resolver.settings')
-      ->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local')
-      ->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN)
-      ->save();
 
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
+    $this->createTestData();
+  }
+
+  /**
+   * Create content required by test.
+   */
+  private function createTestData(): void {
     NodeType::create([
       'type' => 'page',
     ])->save();
