@@ -67,38 +67,32 @@ class LanguageSwitcherAlterTest extends BrowserTestBase {
     ]);
 
     $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
-    $this->createTestData();
-  }
 
-  /**
-   * Create content required by test.
-   */
-  private function createTestData(): void {
     NodeType::create([
       'type' => 'page',
     ])->save();
-
-    $this->node = Node::create(['type' => 'page', 'title' => 'Title en']);
-    $this->node->save();
-
-    foreach (['fi', 'sv'] as $language) {
-      $this->node->addTranslation($language, [
-        'title' => 'Title ' . $language,
-      ]);
-    }
-    $this->node->save();
-
-    $this->node->getTranslation('sv')
-      ->set('status', 0)
-      ->save();
   }
 
   /**
    * Tests that languages are visible in language switcher.
    */
   public function testLanguageSwitcher() : void {
+    $node = Node::create(['type' => 'page', 'title' => 'Title en']);
+    $node->save();
+
+    foreach (['fi', 'sv'] as $language) {
+      $node->addTranslation($language, [
+        'title' => 'Title ' . $language,
+      ]);
+    }
+    $node->save();
+
+    $node->getTranslation('sv')
+      ->set('status', 0)
+      ->save();
+
     foreach (['en', 'fi', 'sv'] as $langcode) {
-      $this->drupalGetWithLanguage("node/{$this->node->id()}", $langcode);
+      $this->drupalGetWithLanguage("node/{$node->id()}", $langcode);
       $elements = $this->xpath('//span|a[@class="language-link"]');
       $this->assertCount(3, $elements);
     }
