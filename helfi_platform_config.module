@@ -431,3 +431,39 @@ function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
     $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
   }
 }
+
+/**
+ * Implements hook_language_switch_links_alter().
+ *
+ * #UHF-9158 main languages must be always visible on language switcher.
+ */
+function helfi_platform_config_language_switch_links_alter(array &$links): void {
+  $params = \Drupal::routeMatch()->getParameters()->all();
+
+  $entity = NULL;
+  foreach ($params as $param) {
+    if ($param instanceof ContentEntityInterface) {
+      $entity = $param;
+      break;
+    }
+  }
+  if (!$entity || !$entity->isTranslatable()) {
+    return;
+  }
+
+  foreach ($links as $langcode => $link) {
+    if (
+      !$entity->hasTranslation($langcode) ||
+      $entity->getTranslation($langcode)->isPublished()
+    ) {
+      continue;
+    }
+
+    // Unpublished link won't pass url access check
+    // Replace unpublished translation with another one and set it disabled.
+    unset($links[$langcode]['url']);
+    $links[$langcode]['#untranslated'] = TRUE;
+    $links[$langcode]['url'] = new Url('<nolink>');
+    $links[$langcode]['attributes']['class'][] = 'language-link--untranslated';
+  }
+}
