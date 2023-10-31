@@ -61,6 +61,11 @@ class LanguageSwitcherAlterTest extends BrowserTestBase {
       ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
       ->save();
 
+    $this->drupalPlaceBlock('language_switcher_admin', [
+      'region' => 'header_branding',
+      'theme' => $this->defaultTheme,
+    ]);
+
     $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
     $this->createTestData();
   }
@@ -72,11 +77,6 @@ class LanguageSwitcherAlterTest extends BrowserTestBase {
     NodeType::create([
       'type' => 'page',
     ])->save();
-
-    $this->drupalPlaceBlock('language_switcher_admin', [
-      'region' => 'header_branding',
-      'theme' => $this->defaultTheme,
-    ]);
 
     $this->node = Node::create(['type' => 'page', 'title' => 'Title en']);
     $this->node->save();
