@@ -3,7 +3,6 @@ type: module
 description: 'Add react search related backend features'
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - 'drupal:ckeditor'
   - 'drupal:content_translation'
   - 'drupal:editor'
   - 'drupal:language'

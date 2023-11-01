@@ -119,9 +119,31 @@ function helfi_ckeditor_update_9003(): void {
 }
 
 /**
- * UHF-8564 Remove unwanted and unused allowed html from text-formats.
+ * Install ckeditor5 and uninstall ckeditor4.
  */
-function helfi_ckeditor_update_9004(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_ckeditor');
+function helfi_ckeditor_update_9005(): void {
+  $moduleHandler = Drupal::service('module_handler');
+
+  if (!$moduleHandler->moduleExists('ckeditor5')) {
+    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
+    $moduleInstaller = Drupal::service('module_installer');
+    $moduleInstaller->install(['ckeditor5']);
+
+    if ($moduleHandler->moduleExists('ckeditor')) {
+      $moduleInstaller->uninstall(['ckeditor']);
+    }
+
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update('helfi_ckeditor');
+
+    // Update translations manually as CKEditor plugin translations might not
+    // get translated due to libraries not being loaded via render arrays.
+    foreach ([
+      'modules/contrib/helfi_platform_config/modules/helfi_ckeditor/assets/js/build/helfiLanguageSelector.js',
+      'modules/contrib/helfi_platform_config/modules/helfi_ckeditor/assets/js/build/helfiLink.js',
+      'modules/contrib/helfi_platform_config/modules/helfi_ckeditor/assets/js/build/helfiQuote.js',
+    ] as $file) {
+      _locale_parse_js_file($file);
+    }
+  }
 }

@@ -1,13 +1,6 @@
 msgid ""
 msgstr ""
 
-msgid ""
-"Allows linking to this content using a URL fragment (#). Must be "
-"unique."
-msgstr ""
-"Sallii linkityksen tähän sisältöön URL-fragmentin (#) avulla. "
-"Täytyy olla uniikki."
-
 msgid "Basic tags"
 msgstr "Perustägit"
 
@@ -100,23 +93,8 @@ msgstr "Miten muutit sivua?"
 msgid "Hide sidebar navigation from this page"
 msgstr "Piilota sivupalkin navigaatio tältä sivulta"
 
-msgid ""
-"I have made sure that the description "
-"of this link clearly states that it will open in a new tab. "
-"<a href=\"@wcag-techniques\" target=\"_blank\">See WCAG 3.2.5 accessibility requirement (the link opens in a new tab).</a>"
-msgstr ""
-"Olen huolehtinut, että tämän linkin kuvauksessa "
-"kerrotaan selkeästi sen aukeavan uuteen välilehteen. "
-"<a href=\"@wcag-techniques\" target=\"_blank\">Katso WCAG 3.2.5 saavutettavuusvaatimukset (linkki avautuu uuteen välilehteen).</a>"
-
 msgid "Light"
 msgstr "Vaalea"
-
-msgid "Open in new window/tab"
-msgstr "Avaa uudessa ikkunassa / välilehdellä"
-
-msgid "The link meets the accessibility requirements"
-msgstr "Linkki täyttää saavutettavuusvaatimukset"
 
 msgctxt "HDBT Admin editorial - One-time login link"
 msgid "One-time login link for %user_name"

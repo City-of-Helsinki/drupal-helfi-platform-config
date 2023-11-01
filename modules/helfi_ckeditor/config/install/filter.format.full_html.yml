@@ -21,7 +21,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote aria-* class=""> <ul> <ol start> <li> <h2> <h3> <h4> <h5> <h6> <p class=""> <footer class=""> <br> <a href hreflang !href rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th colspan rowspan> <td colspan rowspan> <tr> <hr> <span role aria-* lang dir class="">'
+      allowed_html: '<br> <p data-helfi-quote-text> <h2> <h3> <h4> <h5> <h6> <blockquote role aria-* cite class data-helfi-quote> <div role aria-* class> <span role aria-* class dir> <ul type> <ol type start> <figure class tabindex> <figcaption> <strong> <em> <s> <sub> <sup> <a href data-entity-type data-entity-uuid data-entity-substitution aria-label class data-design data-hds-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds-component data-hds-variant rel role target="_blank"> <li> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <footer data-helfi-quote-author> <cite>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -79,4 +79,10 @@ filters:
     provider: helfi_api_base
     status: true
     weight: -10
+    settings: {  }
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: -42
     settings: {  }

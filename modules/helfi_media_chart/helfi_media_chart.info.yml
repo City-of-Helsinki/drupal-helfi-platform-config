@@ -8,8 +8,8 @@ dependencies:
   - drupal:media
   - drupal:media_library
   - drupal:path
+  - drupal:node
   - drupal:text
-  - helfi_ckeditor:helfi_ckeditor
   - helfi_media:helfi_media
 'interface translation project': helfi_media_chart
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_media_chart/translations/%language.po

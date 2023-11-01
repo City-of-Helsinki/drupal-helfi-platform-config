@@ -1,0 +1,74 @@
+/* Helfi Textarea */
+.ck.ck-dropdown__panel .ck-helfi-quote-form {
+  min-width: 400px;
+}
+
+/* Mimic styles from Claro .form-element with Gin variables */
+.ck.ck-helfi-quote-form .ck-helfi-textarea textarea,
+.ck.ck-helfi-quote-form .ck-labeled-field-view input.ck-input {
+  appearance: none;
+  background-color: #fff;
+  border-radius: .5rem;
+  border: 1px solid #8e929c;
+  box-sizing: border-box;
+  color: #222330;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  max-width: 100%;
+  min-height: 3rem; /* iOS. */
+  padding: calc(0.75rem - 1px) calc(1rem - 1px);
+  transition: .15s cubic-bezier(.19, 1, .22, 1);
+}
+
+.ck.ck-dropdown__panel .ck-helfi-quote-form .ck-helfi-textarea label {
+  top: 16px !important;
+  left: 16px !important;
+}
+
+.ck.ck-dropdown__panel .ck-helfi-quote-form .ck-helfi-textarea textarea,
+.ck.ck-dropdown__panel .ck-helfi-quote-form > .ck-labeled-field-view {
+  margin: 16px 16px 0;
+}
+
+.ck.ck-dropdown__panel .ck-helfi-quote-form label.ck-label {
+  font-size: 1rem;
+}
+
+.ck.ck-dropdown__panel .ck-helfi-quote-form textarea.ck-input:not(.ck-input_is-empty) + label.ck-label,
+.ck.ck-dropdown__panel .ck-helfi-quote-form textarea.ck-input_focused + label.ck-label {
+  color: #222330 !important;
+  padding: 0 0.35em !important;
+  background: #fff !important;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: normal;
+  max-width: 100% !important;
+  overflow: hidden;
+  pointer-events: none;
+  text-overflow: ellipsis;
+  transform: translate(calc(0.6em * 0.8),-6px) scale(.75) !important;
+  transform-origin: 0 0;
+  transition: transform var(--ck-labeled-field-view-transition),padding var(--ck-labeled-field-view-transition),background var(--ck-labeled-field-view-transition);
+}
+
+.ck.ck-dropdown__panel .ck-helfi-quote-form .ck-button {
+  border-radius: 0;
+  border-top: 1px solid var(--ck-color-base-border);
+  margin: 16px 0 0;
+  padding: var(--ck-spacing-standard);
+  width: 50%;
+}
+
+.ck.ck-dropdown__panel .ck-helfi-quote-form .ck-button:after {
+  bottom: -1px;
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  width: 0;
+  z-index: 1;
+}
+
+.ck.ck-dropdown__panel .ck-helfi-quote-form .ck-button:nth-last-child(2):after {
+  border-right: 1px solid var(--ck-color-base-border);
+}

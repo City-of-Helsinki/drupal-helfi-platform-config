@@ -4,53 +4,74 @@ dependencies:
   config:
     - filter.format.full_html
   module:
-    - ckeditor
+    - ckeditor5
 format: full_html
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-            - Strike
-            - Superscript
-            - Subscript
-            - '-'
-            - RemoveFormat
-            - '-'
-            - Format
-        -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
-        -
-          name: Media
-          items:
-            - quote
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Tools
-          items:
-            - Undo
-            - Redo
-            - Cut
-            - Copy
-            - Paste
-            - PasteFromWord
-            - SpecialChar
-            - Table
-            - language_selector
-            - Source
+    items:
+      - bold
+      - italic
+      - strikethrough
+      - superscript
+      - subscript
+      - removeFormat
+      - heading
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - link
+      - helfiQuote
+      - insertTable
+      - helfiLanguageSelector
+      - specialCharacters
+      - '|'
+      - undo
+      - redo
+      - '|'
+      - sourceEditing
   plugins:
-    drupallink:
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<dl>'
+        - '<dt>'
+        - '<dd>'
+        - '<blockquote role aria-* cite class>'
+        - '<div role aria-* class>'
+        - '<img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style>'
+        - '<span role aria-* class>'
+        - '<ul type>'
+        - '<ol type>'
+        - '<h2 id>'
+        - '<h3 id>'
+        - '<h4 id>'
+        - '<h5 id>'
+        - '<h6 id>'
+        - '<figure class tabindex>'
+        - '<figcaption>'
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
+    linkit_extension:
       linkit_enabled: true
       linkit_profile: helfi
+    helfi_ckeditor_helfi_link:
+      helfi_link_attributes:
+        - '<a aria-label class data-design data-hds-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds-component data-hds-variant id rel role target="_blank" title>'
+        - '<span aria-hidden class role>'
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: 0
+    height: 0

@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * @file
+ * Contains 'helfi_ckeditor' hooks.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
+use Drupal\Core\Field\FieldItemListInterface;
+
+/**
+ * Modify the list of available CKEditor 5 plugins.
+ *
+ * @param array $plugin_definitions
+ *   An array of all the existing plugin definitions, passed by reference.
+ *
+ * @see \Drupal\ckeditor5\Plugin\CKEditor5PluginManager
+ */
+function helfi_ckeditor_ckeditor5_plugin_info_alter(array &$plugin_definitions): void {
+  /** @var Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition $table_plugin_definition */
+  $table_plugin_definition = $plugin_definitions['ckeditor5_table'];
+  $original_table_plugin = $table_plugin_definition->toArray();
+
+  // Unset the 'table.PlainTableOutput' CKEditor5 plugin as we want to preserve
+  // the <figure class="table"> > <figcaption> functionality.
+  if (($plugin = array_search('table.PlainTableOutput', $original_table_plugin['ckeditor5']['plugins'])) !== FALSE) {
+    unset($original_table_plugin['ckeditor5']['plugins'][$plugin]);
+  }
+
+  // Save ckeditor5_table plugin definitions.
+  $plugin_definitions['ckeditor5_table'] = new CKEditor5PluginDefinition($original_table_plugin);
+}
+
+/**
+ * Add figcaption source order javascript library to each HTML text format.
+ */
+function helfi_ckeditor_preprocess_field(array &$variables): void {
+  // Handle only fields of type "text_long".
+  if (
+    !array_key_exists('field_type', $variables) ||
+    $variables['field_type'] !== 'text_long' ||
+    !array_key_exists('element', $variables) ||
+    !array_key_exists('#items', $variables['element'])
+  ) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItems */
+  $fieldItems = &$variables['element']['#items'];
+
+  // Handle only fields which has full_html as their text format.
+  if (
+    !$fieldItems instanceof FieldItemListInterface ||
+    $fieldItems->first()?->get('format')?->getValue() !== 'full_html'
+  ) {
+    return;
+  }
+
+  // Add the figcaption source order handler JS to current field.
+  $variables['#attached']['library'][] = 'helfi_ckeditor/helfi_table_figcaption';
+}

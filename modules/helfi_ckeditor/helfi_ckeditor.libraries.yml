@@ -1,0 +1,59 @@
+# Helfi Link CKEditor5 plugin JavaScript and CSS.
+helfi_link:
+  js:
+    assets/js/build/helfiLink.js: { preprocess: false, minified: true }
+  css:
+    theme:
+      assets/css/helfi_link_plugin.css: { }
+  dependencies:
+    - core/ckeditor5
+
+# Helfi Language selector CKEditor5 plugin JavaScript and CSS.
+helfi_language_selector:
+  js:
+    assets/js/build/helfiLanguageSelector.js: { preprocess: false, minified: true }
+  css:
+    theme:
+      assets/css/helfi_language_selector_plugin.css: { }
+  dependencies:
+    - core/ckeditor5
+    - core/ckeditor5.translations
+    - hdbt_admin_tools/tom_select
+
+# Helfi Language selector CKEditor5 plugin toolbar styles.
+helfi_language_selector.admin:
+  css:
+    theme:
+      assets/css/helfi_language_selector_plugin.admin.css: { }
+
+# Helfi Quote CKEditor5 plugin JavaScript and CSS.
+helfi_quote:
+  js:
+    assets/js/build/helfiQuote.js: { preprocess: false, minified: true }
+  css:
+    theme:
+      assets/css/helfi_quote_plugin.css: { }
+  dependencies:
+    - core/ckeditor5
+
+# Helfi Quote CKEditor5 plugin toolbar styles.
+helfi_quote.admin:
+  css:
+    theme:
+      assets/css/helfi_quote_plugin.admin.css: { }
+
+# Helfi Table CKEditor5 plugin JavaScript and CSS.
+helfi_table:
+  js:
+    assets/js/build/helfiTable.js: { preprocess: false, minified: true }
+  dependencies:
+    - core/ckeditor5
+
+# Helfi Table CKEditor5 plugin JavaScript and CSS.
+helfi_table_figcaption:
+  version: 1.0.0
+  js:
+    assets/js/handleFigcaptionSourceOrder.min.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
