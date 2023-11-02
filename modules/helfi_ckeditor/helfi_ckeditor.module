@@ -8,7 +8,6 @@
 declare(strict_types = 1);
 
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
-use Drupal\Core\Field\FieldItemListInterface;
 
 /**
  * Modify the list of available CKEditor 5 plugins.

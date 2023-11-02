@@ -11,8 +11,6 @@ use Drupal\helfi_media_remote_video\Entity\RemoteVideo;
 use Drupal\media\OEmbed\Resource;
 use Drupal\media\OEmbed\ResourceException;
 
-const HELFI_MEDIA_REMOTE_VIDEO_HELSINKI_KANAVA_URL_PATTERN = 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*';
-
 /**
  * Implements hook_media_source_info_alter().
  */
@@ -174,6 +172,7 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
   $converted_url = FALSE;
   $url_resolver = \Drupal::service('media.oembed.url_resolver');
   $provider = $url_resolver->getProviderByUrl($video_url);
+  $helsinki_kanava_url_pattern = 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*';
 
   // Handle only Helsinki-kanava videos (Icareus Suite).
   if ($provider->getName() !== 'Icareus Suite') {
@@ -192,7 +191,7 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
     }
 
     $lang_code = empty($lang_code) ? 'fi' : $lang_code;
-    $url_parts = explode('*', HELFI_MEDIA_REMOTE_VIDEO_HELSINKI_KANAVA_URL_PATTERN);
+    $url_parts = explode('*', $helsinki_kanava_url_pattern);
     $converted_url = $url_parts[0] . $lang_code . $url_parts[1] . $asset_id;
   }
 
@@ -207,7 +206,7 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
     }
 
     $lang_code = empty($lang_code) ? 'fi' : $lang_code;
-    $url_parts = explode('*', HELFI_MEDIA_REMOTE_VIDEO_HELSINKI_KANAVA_URL_PATTERN);
+    $url_parts = explode('*', $helsinki_kanava_url_pattern);
     $converted_url = $url_parts[0] . $lang_code . $url_parts[1] . $asset_id;
   }
 

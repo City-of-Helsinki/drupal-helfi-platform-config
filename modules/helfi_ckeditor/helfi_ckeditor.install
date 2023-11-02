@@ -103,7 +103,7 @@ function helfi_ckeditor_update_9002(): void {
             "REGEXP_REPLACE($column, :pattern, :replacement)",
             [':pattern' => $regex, ':replacement' => $replacement]
           );
-          $result = $update->execute();
+          $update->execute();
         }
       }
     }
