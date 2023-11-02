@@ -48,12 +48,3 @@ helfi_table:
     assets/js/build/helfiTable.js: { preprocess: false, minified: true }
   dependencies:
     - core/ckeditor5
-
-# Helfi Table CKEditor5 plugin JavaScript and CSS.
-helfi_table_figcaption:
-  version: 1.0.0
-  js:
-    assets/js/handleFigcaptionSourceOrder.min.js: {}
-  dependencies:
-    - core/drupal
-    - core/once
