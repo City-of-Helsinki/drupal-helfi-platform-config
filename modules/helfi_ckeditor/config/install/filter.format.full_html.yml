@@ -21,7 +21,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<br> <p data-helfi-quote-text> <h2> <h3> <h4> <h5> <h6> <blockquote role aria-* cite class data-helfi-quote> <div role aria-* class> <span role aria-* class dir> <ul type> <ol type start> <figure class tabindex> <figcaption> <strong> <em> <s> <sub> <sup> <a href data-entity-type data-entity-uuid data-entity-substitution aria-label class data-design data-hds-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds-component data-hds-variant rel role target="_blank"> <li> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <footer data-helfi-quote-author> <cite>'
+      allowed_html: '<br> <p data-helfi-quote-text> <h2> <h3> <h4> <h5> <h6> <blockquote role aria-* cite class data-helfi-quote> <div role aria-* class> <span role aria-* class dir> <ul type> <ol type start> <figure tabindex> <figcaption> <strong> <em> <s> <sub> <sup> <a href data-entity-type data-entity-uuid data-entity-substitution aria-label class data-design data-hds-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds-component data-hds-variant rel role target="_blank"> <li> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <footer data-helfi-quote-author> <cite>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
