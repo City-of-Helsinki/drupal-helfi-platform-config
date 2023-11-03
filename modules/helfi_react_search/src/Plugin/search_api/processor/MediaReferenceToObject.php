@@ -58,11 +58,11 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
 
     $datasources = $this->index->getDatasources();
     $fieldDefs = [];
+    $entityFieldManager = \Drupal::service('entity_field.manager');
 
     foreach ($datasources as $datasource) {
       $entityTypeId = $datasource->getEntityTypeId();
       $bundles = $datasource->getBundles();
-      $entityFieldManager = $datasource->getEntityFieldManager();
 
       $fieldDefs = array_map(function ($bundle) use ($entityFieldManager, $entityTypeId) {
         return $entityFieldManager->getFieldDefinitions($entityTypeId, $bundle);
