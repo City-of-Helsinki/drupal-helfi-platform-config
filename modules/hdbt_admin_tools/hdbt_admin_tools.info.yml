@@ -8,6 +8,7 @@ dependencies:
   - config_ignore:config_ignore
   - drupal:config_translation
   - drupal:editor
+  - drupal:node
   - drupal:options
   - drupal:views
   - linkit:linkit
