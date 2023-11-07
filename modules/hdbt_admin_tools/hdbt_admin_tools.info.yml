@@ -8,7 +8,9 @@ dependencies:
   - config_ignore:config_ignore
   - drupal:config_translation
   - drupal:editor
+  - drupal:node
   - drupal:options
+  - drupal:views
   - linkit:linkit
 'interface translation project': hdbt_admin_tools
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/hdbt_admin_tools/translations/%language.po
