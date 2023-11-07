@@ -34,7 +34,7 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
 
   /**
    * The entity field manager.
-   * 
+   *
    * @var \Drupal\Core\Entity\EntityFieldManagerInterface
    */
   private EntityFieldManagerInterface $entityFieldManager;
