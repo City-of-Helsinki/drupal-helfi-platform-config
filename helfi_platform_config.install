@@ -13,3 +13,15 @@ function helfi_platform_config_update_9301(): void {
     'administer hotjar settings',
   ]);
 }
+
+/**
+ * Config_filter becodes obsolete after config_ignore 3.x upgrade.
+ */
+function helfi_platform_config_update_9302(): void {
+  $module_handler = \Drupal::moduleHandler();
+  $module_installer = \Drupal::service('module_installer');
+
+  if ($module_handler->moduleExists('config_filter')) {
+    $module_installer->uninstall(['config_filter']);
+  }
+}
