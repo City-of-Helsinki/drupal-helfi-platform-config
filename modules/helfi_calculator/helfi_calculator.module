@@ -57,12 +57,7 @@ function helfi_calculator_helfi_paragraph_types() : array {
  * Implements hook_config_ignore_settings_alter().
  */
 function helfi_calculator_config_ignore_settings_alter(array &$settings) {
-  $add_ignore = [
-    'helfi_calculator.settings'
-  ];
-
-  foreach($add_ignore as $config) {
-    if (in_array($config, $settings)) { continue; }
-    array_push($settings, $config);
+  if (!in_array('helfi_calculator.settings', $settings)) {
+    array_push($settings, 'helfi_calculator.settings');
   }
 }
