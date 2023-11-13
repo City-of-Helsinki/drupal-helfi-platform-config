@@ -9,7 +9,7 @@
         "drupal/core": "^9.5",
         "drupal/admin_toolbar": "^3.0",
         "drupal/allowed_formats": "^2.0",
-        "drupal/config_ignore": "^2.3",
+        "drupal/config_ignore": "^3.0",
         "drupal/config_rewrite": "^1.4",
         "drupal/content_lock": "^2.2",
         "drupal/crop": "^2.1",
