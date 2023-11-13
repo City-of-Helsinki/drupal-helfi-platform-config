@@ -482,7 +482,9 @@ function helfi_platform_config_config_ignore_settings_alter(array &$settings) {
   ];
 
   foreach ($add_ignore as $config) {
-    if (in_array($config, $settings)) continue;
+    if (in_array($config, $settings)) {
+      continue;
+    }
     array_push($settings, $config);
   }
 }
