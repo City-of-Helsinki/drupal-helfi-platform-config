@@ -473,6 +473,7 @@ function helfi_platform_config_language_switch_links_alter(array &$links): void 
  */
 function helfi_platform_config_config_ignore_settings_alter(array &$settings) {
   $add_ignore = [
+    'block.block.ibmchatapp',
     'block.block.ibmchatapp_*',
     'block.block.chatleijuke',
     'block.block.chatleijuke_*',
