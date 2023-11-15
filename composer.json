@@ -97,6 +97,9 @@
             },
             "drupal/simple_sitemap": {
                 "[#UHF-8514] Fix frontpage URLs in sitemap. (https://www.drupal.org/i/3264573)": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/55722f695264bbaf6062f46e400e905c761fd5b7/patches/simple_sitemap-3264573-respect-frontpage-configuration.patch"
+            },
+            "drupal/view_unpublished": {
+                "[#UHF-9256] Fix missing dynamic permission dependencies.": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/1b710ab948dc968b17fad6d5bbd3e53b8bed1de7/patches/view_unpublished_permissions_missing_dependencies.patch"
             }
         }
     }
