@@ -1,11 +1,11 @@
 diff --git a/src/ViewUnpublishedPermissions.php b/src/ViewUnpublishedPermissions.php
-index 8796269..2cb0593 100644
+index de646f4..9ae30ab 100644
 --- a/src/ViewUnpublishedPermissions.php
 +++ b/src/ViewUnpublishedPermissions.php
-@@ -48,6 +48,11 @@ final class ViewUnpublishedPermissions {
+@@ -46,6 +46,11 @@ class ViewUnpublishedPermissions {
+     return [
        "view any unpublished $type_id content" => [
          'title' => $this->t('%type_name: View any unpublished content', $type_params),
-         'restrict access' => TRUE,
 +        'dependencies' => [
 +          $type->getConfigDependencyKey() => [
 +            $type->getConfigDependencyName()
