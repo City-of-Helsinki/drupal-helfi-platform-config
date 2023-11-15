@@ -406,3 +406,4 @@ hidden:
   hide_description: true
   ontologyword_ids: true
   show_www: true
+  subgroup: true
