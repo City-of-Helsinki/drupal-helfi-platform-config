@@ -52,3 +52,12 @@ function helfi_calculator_helfi_paragraph_types() : array {
   }
   return $enabled;
 }
+
+/**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function helfi_calculator_config_ignore_settings_alter(array &$settings) {
+  if (!in_array('helfi_calculator.settings', $settings)) {
+    array_push($settings, 'helfi_calculator.settings');
+  }
+}
