@@ -43,6 +43,22 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  existing_translations:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  langcode:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
   main_image:
     type: imagecache_external_responsive_image
     label: hidden
@@ -98,22 +114,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 0
-    region: content
-  langcode:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: { }
-    weight: 0
-    region: content
-  existing_translations:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: { }
     weight: 0
     region: content
 hidden:

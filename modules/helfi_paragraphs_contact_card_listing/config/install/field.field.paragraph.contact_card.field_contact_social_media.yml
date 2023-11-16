@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_contact_social_media
+    - paragraphs.paragraphs_type.contact_card
   module:
     - entity_reference_revisions
 id: paragraph.contact_card.field_contact_social_media
