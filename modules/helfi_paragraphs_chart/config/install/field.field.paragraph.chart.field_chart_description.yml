@@ -6,6 +6,7 @@ dependencies:
     - paragraphs.paragraphs_type.chart
   module:
     - text
+    - allowed_formats
 id: paragraph.chart.field_chart_description
 field_name: field_chart_description
 entity_type: paragraph
@@ -16,5 +17,6 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

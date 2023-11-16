@@ -6,6 +6,7 @@ dependencies:
     - paragraphs.paragraphs_type.banner
   module:
     - text
+    - allowed_formats
 id: paragraph.banner.field_banner_desc
 field_name: field_banner_desc
 entity_type: paragraph
@@ -16,5 +17,6 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

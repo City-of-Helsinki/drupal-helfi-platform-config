@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_phasing_item
+    - paragraphs.paragraphs_type.phasing
   module:
     - entity_reference_revisions
 id: paragraph.phasing.field_phasing_item
