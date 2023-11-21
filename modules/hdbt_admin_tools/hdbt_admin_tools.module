@@ -996,8 +996,7 @@ function hdbt_admin_tools_entity_base_field_info(EntityTypeInterface $entity_typ
 function hdbt_admin_tools_entity_presave($entity): void {
   if (
     !method_exists($entity, 'hasField') ||
-    !$entity->hasField('color_palette') ||
-    \Drupal::isConfigSyncing()
+    !$entity->hasField('color_palette')
   ) {
     return;
   }
