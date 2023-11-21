@@ -287,3 +287,4 @@ hidden:
   langcode: true
   show_www: true
   streetview_entrance_url: true
+  subgroup: true

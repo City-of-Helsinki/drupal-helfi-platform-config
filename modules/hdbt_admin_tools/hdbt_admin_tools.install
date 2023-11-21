@@ -10,8 +10,13 @@ declare(strict_types = 1);
 /**
  * Installs Helfi admin tools module.
  */
-function hdbt_admin_tools_install(): void {
-  if (!Drupal::moduleHandler()->moduleExists('config_ignore')) {
+function hdbt_admin_tools_install(bool $is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if (
+    $is_syncing ||
+    !Drupal::moduleHandler()->moduleExists('config_ignore')
+  ) {
     return;
   }
 

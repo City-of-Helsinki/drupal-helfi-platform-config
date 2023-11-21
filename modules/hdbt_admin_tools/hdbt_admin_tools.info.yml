@@ -6,10 +6,11 @@ dependencies:
   - admin_toolbar:admin_toolbar
   - admin_toolbar_tools:admin_toolbar_tools
   - config_ignore:config_ignore
-  - drupal:ckeditor
   - drupal:config_translation
   - drupal:editor
+  - drupal:node
   - drupal:options
+  - drupal:views
   - linkit:linkit
 'interface translation project': hdbt_admin_tools
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/hdbt_admin_tools/translations/%language.po

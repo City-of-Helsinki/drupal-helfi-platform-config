@@ -8,11 +8,17 @@
 /**
  * Installs helfi calculator module.
  */
-function helfi_calculator_install() : void {
-  // Adds paragraph related configs to config ignore.
-  if (!Drupal::moduleHandler()->moduleExists('config_ignore')) {
+function helfi_calculator_install(bool $is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if (
+    $is_syncing ||
+    !Drupal::moduleHandler()->moduleExists('config_ignore')
+  ) {
     return;
   }
+
+  // Adds paragraph related configs to config ignore.
   $config = Drupal::configFactory()->getEditable('config_ignore.settings');
   $ignored = $config->get('ignored_config_entities') ?? [];
 

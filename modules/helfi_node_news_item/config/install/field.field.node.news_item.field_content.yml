@@ -1,11 +1,12 @@
 langcode: en
 status: true
 dependencies:
-  config:
-    - field.storage.node.field_content
-    - node.type.news_item
   module:
     - entity_reference_revisions
+  enforced:
+    config:
+      - field.storage.node.field_content
+      - node.type.news_item
 id: node.news_item.field_content
 field_name: field_content
 entity_type: node

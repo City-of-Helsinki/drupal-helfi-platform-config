@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
@@ -13,6 +14,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -301,7 +303,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
       $uri = vsprintf('%s%s?%s', [
         $this->environment->getInternalAddress($langcode),
         $this->endpoint,
-        \GuzzleHttp\http_build_query($parameters),
+        Query::build($parameters),
       ]);
 
       $content = $this->client->request('GET', $uri, [
@@ -311,7 +313,8 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
       return $this->formatResponse($json, $langcode);
     }
     catch (RequestException | GuzzleException $e) {
-      watchdog_exception('helfi_external_entity', $e);
+      $logger = \Drupal::logger('helfi_external_entity');
+      Error::logException($logger, $e);
     }
     return [];
   }

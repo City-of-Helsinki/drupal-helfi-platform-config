@@ -84,6 +84,7 @@ hidden:
   services: true
   show_www: true
   streetview_entrance_url: true
+  subgroup: true
   toc_enabled: true
   unit_picture_caption: true
   www: true
