@@ -195,12 +195,8 @@ function hdbt_admin_tools_language_switch_links_alter(array &$links): void {
     }
   }
 
-  // @todo UHF-6102 Needs refactoring during "Muut kielet" epic.
-  $primary_languages = [
-    'fi',
-    'sv',
-    'en',
-  ];
+  $language_resolver = \Drupal::service('helfi_api_base.default_language_resolver');
+  $primary_languages = $language_resolver->getDefaultLanguages();
 
   // Compare the links with current entity and check for possible translations.
   foreach ($links as $lang_code => &$link) {
