@@ -1,0 +1,76 @@
+# CKEditor5 configurations for helfi_ckeditor module.
+helfi_ckeditor_helfi_link:
+  # Use the provider: property for this plugin to depend on another module.
+
+  # Configuration that will be sent to CKEditor 5 JavaScript plugins.
+  ckeditor5:
+    plugins:
+      - helfiLink.HelfiLink
+
+  # Configuration that will be used directly by Drupal.
+  drupal:
+    label: Helfi Link
+    library: helfi_ckeditor/helfi_link
+    elements:
+      - <a aria-label class data-design data-hds-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds-component data-hds-variant id rel role target="_blank" title>
+      - <span aria-hidden class role>
+    conditions:
+      plugins:
+        - ckeditor5_link
+    class: Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin\HelfiLink
+
+helfi_ckeditor_helfi_language_selector:
+  # Configuration that will be sent to CKEditor 5 JavaScript plugins.
+  ckeditor5:
+    plugins:
+      - helfiLanguageSelector.HelfiLanguageSelector
+
+  # Configuration that will be used directly by Drupal.
+  drupal:
+    label: Helfi Language selector
+    admin_library: helfi_ckeditor/helfi_language_selector.admin
+    library: helfi_ckeditor/helfi_language_selector
+    toolbar_items:
+      helfiLanguageSelector:
+        label: Select language
+    elements:
+      - <span dir lang>
+    class: Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin\HelfiLanguageSelector
+
+helfi_ckeditor_helfi_quote:
+  # Configuration that will be sent to CKEditor 5 JavaScript plugins.
+  ckeditor5:
+    plugins:
+      - helfiQuote.HelfiQuote
+
+  # Configuration that will be used directly by Drupal.
+  drupal:
+    label: Helfi Quote
+    admin_library: helfi_ckeditor/helfi_quote.admin
+    library: helfi_ckeditor/helfi_quote
+    toolbar_items:
+      helfiQuote:
+        label: Quote
+    elements:
+      - <blockquote>
+      - <blockquote data-helfi-quote>
+      - <p>
+      - <p data-helfi-quote-text>
+      - <footer>
+      - <footer data-helfi-quote-author>
+      - <cite>
+
+helfi_ckeditor_helfi_table:
+  # Configuration that will be sent to CKEditor 5 JavaScript plugins.
+  ckeditor5:
+    plugins:
+      - helfiTable.HelfiTable
+
+  # Configuration that will be used directly by Drupal.
+  drupal:
+    label: Helfi Table
+    library: helfi_ckeditor/helfi_table
+    elements: false
+    conditions:
+      plugins:
+        - ckeditor5_table

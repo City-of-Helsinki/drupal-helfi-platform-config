@@ -1037,7 +1037,7 @@ display:
             replace_spaces: false
             path_case: none
             trim_whitespace: false
-            alt: 'Edit {{ name }}. {{ ''Opens in a new tab''|t }}'
+            alt: "Edit {{ name }}. {{ 'Opens in a new tab'|t }}"
             rel: ''
             link_class: ''
             prefix: ''
@@ -1066,9 +1066,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          absolute: 0
-          output_url_as_text: 0
           text: Edit
+          output_url_as_text: false
+          absolute: false
       pager:
         type: full
         options:
@@ -1372,6 +1372,15 @@ display:
             date_format: long
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
       access:
         type: perm
         options:

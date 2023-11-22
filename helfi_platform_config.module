@@ -70,9 +70,14 @@ function helfi_platform_config_field_config_presave(
 function helfi_platform_config_rebuild_handler_settings(
   FieldConfigBase $field
 ): void {
-  if ($field->isSyncing() || $field->getType() !== 'entity_reference_revisions') {
+  if (
+    \Drupal::isConfigSyncing() ||
+    $field->isSyncing() ||
+    $field->getType() !== 'entity_reference_revisions'
+  ) {
     return;
   }
+
   $collection = [];
   /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
   $moduleHandler = Drupal::service('module_handler');

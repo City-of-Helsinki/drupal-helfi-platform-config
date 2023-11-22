@@ -1,0 +1,377 @@
+msgid ""
+msgstr ""
+
+msgid "Select language"
+msgstr "Välja språk"
+
+msgid "Remove language from text"
+msgstr "Ta bort språk från text"
+
+msgid "Afrikaans"
+msgstr "afrikaans"
+
+msgid "Amharic"
+msgstr "amhariska"
+
+msgid "Arabic"
+msgstr "arabiska"
+
+msgid "Asturian"
+msgstr "asturiska"
+
+msgid "Azerbaijani"
+msgstr "azerbajdzjanska"
+
+msgid "Bahasa Malaysia"
+msgstr "malaysiska"
+
+msgid "Belarusian"
+msgstr "vitryska"
+
+msgid "Bulgarian"
+msgstr "bulgariska"
+
+msgid "Burmese"
+msgstr "burmesiska"
+
+msgid "Bengali"
+msgstr "bengali"
+
+msgid "Bosnian"
+msgstr "bosniska"
+
+msgid "Catalan"
+msgstr "katalanska"
+
+msgid "Chinese, Simplified"
+msgstr "kinesiska, förenklad"
+
+msgid "Chinese, Traditional"
+msgstr "kinesiska, traditionell"
+
+msgid "Corsican"
+msgstr "korsiska"
+
+msgid "Czech"
+msgstr "tjeckiska"
+
+msgid "Welsh"
+msgstr "walesiska"
+
+msgid "Danish"
+msgstr "danska"
+
+msgid "Dzongkha"
+msgstr "dzongkha"
+
+msgid "German"
+msgstr "tyska"
+
+msgid "Greek"
+msgstr "grekiska"
+
+msgid "English"
+msgstr "engelska"
+
+msgid "Esperanto"
+msgstr "esperanto"
+
+msgid "Spanish"
+msgstr "spanska"
+
+msgid "Estonian"
+msgstr "estniska"
+
+msgid "Basque"
+msgstr "baskiska"
+
+msgid "Persian"
+msgstr "persiska"
+
+msgid "Finnish"
+msgstr "finska"
+
+msgid "Faeroese"
+msgstr "faeroese"
+
+msgid "French"
+msgstr "franska"
+
+msgid "Frisian"
+msgstr "frisiska"
+
+msgid "Frisian, Western"
+msgstr "frisiska, västerländska"
+
+msgid "Irish"
+msgstr "irländska"
+
+msgid "Gaelic"
+msgstr "gaeliska"
+
+msgid "Galician"
+msgstr "galiciska"
+
+msgid "Gujarati"
+msgstr "gujarati"
+
+msgid "Hausa"
+msgstr "hausa"
+
+msgid "Hindi"
+msgstr "hindi"
+
+msgid "Croatian"
+msgstr "kroatiska"
+
+msgid "Haitian Creole"
+msgstr "haitiska"
+
+msgid "Hungarian"
+msgstr "ungerska"
+
+msgid "Armenian"
+msgstr "armeniska"
+
+msgid "Indonesian"
+msgstr "indonesiska"
+
+msgid "Igbo"
+msgstr "igbo"
+
+msgid "Icelandic"
+msgstr "isländska"
+
+msgid "Italian"
+msgstr "italienska"
+
+msgid "Hebrew"
+msgstr "hebreiska"
+
+msgid "Japanese"
+msgstr "japanska"
+
+msgid "Javanese"
+msgstr "javanesiska"
+
+msgid "Georgian"
+msgstr "georgiska"
+
+msgid "Kazakh"
+msgstr "kazakiska"
+
+msgid "Khmer"
+msgstr "khmer"
+
+msgid "Kannada"
+msgstr "kanaresiska"
+
+msgid "Korean"
+msgstr "koreanska"
+
+msgid "Kurdish"
+msgstr "kurdiska"
+
+msgid "Kurdish (Kurmanji)"
+msgstr "kurdiska"
+
+msgid "Kyrgyz"
+msgstr "kirgiziska"
+
+msgid "Latin"
+msgstr "latin"
+
+msgid "Luxembourgish"
+msgstr "luxemburgska"
+
+msgid "Lao"
+msgstr "laotiska"
+
+msgid "Lithuanian"
+msgstr "litauiska"
+
+msgid "Latvian"
+msgstr "lettiska"
+
+msgid "Malagasy"
+msgstr "malagassiska"
+
+msgid "Maori"
+msgstr "maori"
+
+msgid "Macedonian"
+msgstr "makedonska"
+
+msgid "Malayalam"
+msgstr "malayalam"
+
+msgid "Mongolian"
+msgstr "mongoliska"
+
+msgid "Marathi"
+msgstr "marathi"
+
+msgid "Malay"
+msgstr "malaysiska"
+
+msgid "Maltese"
+msgstr "maltesiska"
+
+msgid "Myanmar (Burmese)"
+msgstr "burmesiska"
+
+msgid "Nepali"
+msgstr "nepali"
+
+msgid "Dutch"
+msgstr "nederländska"
+
+msgid "Norwegian"
+msgstr "norska"
+
+msgid "Norwegian Bokmål"
+msgstr "norskt bokmål"
+
+msgid "Norwegian Nynorsk"
+msgstr "nynorsk"
+
+msgid "Occitan"
+msgstr "occitanska"
+
+msgid "Persian, Farsi"
+msgstr "persiska, farsi"
+
+msgid "Chichewa"
+msgstr "chichewa"
+
+msgid "Odia (Oriya)"
+msgstr "oriya (odia)"
+
+msgid "Punjabi"
+msgstr "punjabi"
+
+msgid "Polish"
+msgstr "polska"
+
+msgid "Pashto"
+msgstr "pashto"
+
+msgid "Portuguese"
+msgstr "portugisiska"
+
+msgid "Romanian"
+msgstr "rumänska"
+
+msgid "Russian"
+msgstr "ryska"
+
+msgid "Kinyarwanda"
+msgstr "kinyarwanda"
+
+msgid "Sindhi"
+msgstr "sindhi"
+
+msgid "Sami"
+msgstr "sami"
+
+msgid "Sinhala"
+msgstr "singalesiska"
+
+msgid "Slovak"
+msgstr "slovakiska"
+
+msgid "Slovenian"
+msgstr "slovenska"
+
+msgid "Samoan"
+msgstr "samoanska"
+
+msgid "Shona"
+msgstr "shona"
+
+msgid "Somali"
+msgstr "somaliska"
+
+msgid "Albanian"
+msgstr "albanska"
+
+msgid "Serbian"
+msgstr "serbiska"
+
+msgid "Sesotho"
+msgstr "sesotho"
+
+msgid "Sundanese"
+msgstr "sundanesiska"
+
+msgid "Swedish"
+msgstr "svenska"
+
+msgid "Swahili"
+msgstr "swahili"
+
+msgid "Swiss German"
+msgstr "schweizisk tysk"
+
+msgid "Tamil"
+msgstr "tamil"
+
+msgid "Tamil, Sri Lanka"
+msgstr "tamil, Sri Lanka"
+
+msgid "Telugu"
+msgstr "telugu"
+
+msgid "Tajik"
+msgstr "tadzjikiska"
+
+msgid "Thai"
+msgstr "thailändska"
+
+msgid "Turkmen"
+msgstr "turkmeniska"
+
+msgid "Filipino"
+msgstr "filippinska"
+
+msgid "Tatar"
+msgstr "tatariska"
+
+msgid "Tibetan"
+msgstr "tibetanska"
+
+msgid "Turkish"
+msgstr "turkiska"
+
+msgid "Tuvan"
+msgstr "tuvaska"
+
+msgid "Uyghur"
+msgstr "uiguriska"
+
+msgid "Ukrainian"
+msgstr "ukrainska"
+
+msgid "Urdu"
+msgstr "urdu"
+
+msgid "Uzbek"
+msgstr "uzbekiska"
+
+msgid "Vietnamese"
+msgstr "vietnamesiska"
+
+msgid "Xhosa"
+msgstr "xhosa"
+
+msgid "Yiddish"
+msgstr "jiddisch"
+
+msgid "Yoruba"
+msgstr "yoruba"
+
+msgid "Chinese"
+msgstr "kinesiska"
+
+msgid "Zulu"
+msgstr "zul"

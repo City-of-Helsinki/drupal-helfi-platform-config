@@ -33,6 +33,13 @@ class SelectIconWidget extends WidgetBase {
   protected Config $selectIconConfig;
 
   /**
+   * Contains the array of options for the widget.
+   *
+   * @var array
+   */
+  protected array $options;
+
+  /**
    * Constructs a WidgetBase object.
    *
    * @param string $plugin_id

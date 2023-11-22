@@ -1,0 +1,88 @@
+msgid ""
+msgstr ""
+
+# CKEditor5 Helfi Quote plugin
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "Add a quote"
+msgstr "Lisää lainaus"
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "Quotation"
+msgstr "Lainaus"
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "Source / author"
+msgstr "Lähde / tekijä"
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "The quote cannot be empty"
+msgstr "Lainaus ei voi olla tyhjä"
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "Save"
+msgstr "Tallenna"
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "Cancel"
+msgstr "Peruuta"
+
+# CKEditor5 Helfi Link plugin
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Protocol"
+msgstr "Protokolla"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "The link URL field cannot be empty."
+msgstr "Linkin osoitekenttä ei voi olla tyhjä."
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "The link meets the accessibility requirements"
+msgstr "Linkki täyttää saavutettavuusvaatimukset"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid ""
+"I have made sure that the description "
+"of this link clearly states that it will open in a new tab. "
+"<a href=\"@wcag-techniques\" target=\"_blank\">See WCAG 3.2.5 accessibility requirement (the link opens in a new tab).</a>"
+msgstr ""
+"Olen huolehtinut, että tämän linkin kuvauksessa "
+"kerrotaan selkeästi sen aukeavan uuteen välilehteen. "
+"<a href=\"@wcag-techniques\" target=\"_blank\">Katso WCAG 3.2.5 saavutettavuusvaatimukset (linkki avautuu uuteen välilehteen).</a>"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Open in new window/tab"
+msgstr "Avaa uudessa ikkunassa / välilehdellä"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Title"
+msgstr "Otsikko"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Start typing to find content."
+msgstr ""
+"Aloita kirjoittaminen löytääksesi sisältöä. Huomaa, että voit "
+"myös lisätä suoraan ulkoisen osoitteen."
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Advanced settings"
+msgstr "Edistyneet asetukset"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "When there is no selection, the link URL must be provided. "
+"To add a link without a URL, first select text in the editor and "
+"then proceed with adding the link."
+msgstr "Jos et ole maalannut tekstiä, linkin URL-osoite on annettava. "
+"Voit lisätä linkin ilman URL-osoitetta maalaamalla tekstin "
+"editorissa ja jatkamalla sitten linkin lisäämistä."
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Normal link"
+msgstr "Tavallinen linkki"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "Icon"
+msgstr "Ikoni"

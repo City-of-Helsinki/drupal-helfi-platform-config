@@ -1,0 +1,11 @@
+# Plugin \Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin\HelfiLink
+ckeditor5.plugin.helfi_ckeditor_helfi_link:
+  type: mapping
+  label: Helfi Link
+  mapping:
+    helfi_link_attributes:
+      type: sequence
+      label: 'Allowed tags'
+      sequence:
+        type: ckeditor5.element
+        label: 'Allowed Tag'

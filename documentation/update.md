@@ -1,5 +1,29 @@
 # Update instructions
 
+## Updating from 3.x to 4.x
+
+Helfi platform config 4.x brings support to Drupal 10.
+
+### Updating configuration
+
+Get your local environment up and running.
+
+- Update the Drupal packages and helfi packages to latest versions.
+  - `composer require drupal/core:^10.1 drupal/core-composer-scaffold:^10.1 drush/drush:^12 drupal/helfi_platform_config:^4.0 drupal/hdbt:^6.0 drupal/hdbt_admin:^3.0 -W`
+   - If the installation fails due to conflicting problems, like: `drupal/raven is locked to version 4.0.16 and an update of this package was not requested.`, then include the `drupal/raven:^4.0` to the requirements, like so: `composer require drupal/core:^10.1 drupal/core-composer-scaffold:^10.1 drush/drush:^12 drupal/helfi_platform_config:^4.0 drupal/hdbt:^6.0 drupal/hdbt_admin:^3.0 drupal/raven:^4.0 -W`
+  - Update the core-dev package separately, as it's dev-dependency: `composer require drupal/core-dev:^10.1 --dev -W`
+- After the packages have been installed, run the database updates
+  - `make drush-updb` or `drush updb`
+- Export your configuration
+  - `make drush-cex` or `drush cex -y`
+- Go through the changed configurations and manually discard any unwanted changes.
+
+### Updating remote environments (test/stage/prod)
+
+There shouldn't be any problems after deployment, but if any occurs, cache clear  and running an extra drush deploy command should fix the problems.
+- `drush cr; drush deploy`
+
+
 ## Updating from 2.x to 3.x
 
 ### Updating configuration

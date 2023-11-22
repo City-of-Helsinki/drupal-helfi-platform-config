@@ -1,9 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    config:
-      - paragraphs.paragraphs_type.accordion_item
   config:
     - field.field.paragraph.accordion_item.field_accordion_item_content
     - field.field.paragraph.accordion_item.field_accordion_item_heading
@@ -11,6 +8,9 @@ dependencies:
   module:
     - paragraphs
     - hdbt_admin_tools
+  enforced:
+    config:
+      - paragraphs.paragraphs_type.accordion_item
 id: paragraph.accordion_item.default
 targetEntityType: paragraph
 bundle: accordion_item
