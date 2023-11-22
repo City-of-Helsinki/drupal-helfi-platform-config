@@ -6,6 +6,7 @@ namespace Drupal\helfi_media_chart\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Utility\Error;
 use Drupal\helfi_media_chart\UrlParserTrait;
 
 /**
@@ -37,8 +38,8 @@ final class ChartFormatter extends FormatterBase {
         $url = $this->mediaUrlToUri($uri);
       }
       catch (\InvalidArgumentException $e) {
-        watchdog_exception('helfi_chart', $e);
-
+        $logger = \Drupal::logger('helfi_chart');
+        Error::logException($logger, $e);
         continue;
       }
       $element[$delta] = [

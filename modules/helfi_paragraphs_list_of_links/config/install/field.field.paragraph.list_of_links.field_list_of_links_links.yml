@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_list_of_links_links
+    - paragraphs.paragraphs_type.list_of_links
   module:
     - entity_reference_revisions
 id: paragraph.list_of_links.field_list_of_links_links

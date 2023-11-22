@@ -1,0 +1,24 @@
+/* TomSelect input field */
+.ck.ck-dropdown__panel .ts-control input {
+  width: 100%;
+  border: 0 none;
+  padding: 8px;
+  margin-left: 16px;
+}
+
+.ck.ck-dropdown__panel .ts-control input:only-child {
+  margin-left: 0;
+}
+
+/* The language span indicators in ckeditor */
+.ck span[lang] {
+  margin-left: 4px;
+  margin-right: 4px;
+  outline: 2px dotted #005799;
+  outline-offset: 1px;
+}
+.ck span[lang]::after{
+  color:#005799;
+  content:" (" attr(lang) ")";
+  font-size:.75rem
+}

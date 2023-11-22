@@ -1,0 +1,374 @@
+msgid ""
+msgstr ""
+
+msgid "Select language"
+msgstr "Select language"
+
+msgid "Remove language from text"
+msgstr "Remove language from text"
+
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+msgid "Amharic"
+msgstr "Amharic"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Asturian"
+msgstr "Asturian"
+
+msgid "Azerbaijani"
+msgstr "Azerbaijani"
+
+msgid "Bahasa Malaysia"
+msgstr "Bahasa Malaysia"
+
+msgid "Belarusian"
+msgstr "Belarusian"
+
+msgid "Bulgarian"
+msgstr "Bulgarian"
+
+msgid "Burmese"
+msgstr "Bulgarian"
+
+msgid "Bengali"
+msgstr "Bengali"
+
+msgid "Bosnian"
+msgstr "Bosnian"
+
+msgid "Catalan"
+msgstr "Catalan"
+
+msgid "Chinese, Simplified"
+msgstr "Chinese, Simplified"
+
+msgid "Chinese, Traditional"
+msgstr "Chinese, Traditional"
+
+msgid "Corsican"
+msgstr "Corsican"
+
+msgid "Czech"
+msgstr "Czech"
+
+msgid "Welsh"
+msgstr "Welsh"
+
+msgid "Danish"
+msgstr "Danish"
+
+msgid "German"
+msgstr "German"
+
+msgid "Greek"
+msgstr "Greek"
+
+msgid "English"
+msgstr "English"
+
+msgid "Esperanto"
+msgstr "Esperanto"
+
+msgid "Spanish"
+msgstr "Spanish"
+
+msgid "Estonian"
+msgstr "Estonian"
+
+msgid "Basque"
+msgstr "Basque"
+
+msgid "Persian"
+msgstr "Persian"
+
+msgid "Finnish"
+msgstr "Finnish"
+
+msgid "Faeroese"
+msgstr "Faeroese"
+
+msgid "French"
+msgstr "French"
+
+msgid "Frisian"
+msgstr "Frisian"
+
+msgid "Frisian, Western"
+msgstr "Frisian, Western"
+
+msgid "Irish"
+msgstr "Irish"
+
+msgid "Gaelic"
+msgstr "Gaelic"
+
+msgid "Galician"
+msgstr "Galician"
+
+msgid "Gujarati"
+msgstr "Gujarati"
+
+msgid "Hausa"
+msgstr "Hausa"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "Croatian"
+msgstr "Croatian"
+
+msgid "Haitian Creole"
+msgstr "Haitian Creole"
+
+msgid "Hungarian"
+msgstr "Hungarian"
+
+msgid "Armenian"
+msgstr "Armenian"
+
+msgid "Indonesian"
+msgstr "Indonesian"
+
+msgid "Igbo"
+msgstr "Igbo"
+
+msgid "Icelandic"
+msgstr "Icelandic"
+
+msgid "Italian"
+msgstr "Italian"
+
+msgid "Hebrew"
+msgstr "Hebrew"
+
+msgid "Japanese"
+msgstr "Japanese"
+
+msgid "Javanese"
+msgstr "Javanese"
+
+msgid "Georgian"
+msgstr "Georgian"
+
+msgid "Kazakh"
+msgstr "Kazakh"
+
+msgid "Khmer"
+msgstr "Khmer"
+
+msgid "Kannada"
+msgstr "Kannada"
+
+msgid "Korean"
+msgstr "Korean"
+
+msgid "Kurdish"
+msgstr "Kurdish"
+
+msgid "Kurdish (Kurmanji)"
+msgstr "Kurdish (Kurmanji)"
+
+msgid "Kyrgyz"
+msgstr "Kyrgyz"
+
+msgid "Latin"
+msgstr "Latin"
+
+msgid "Luxembourgish"
+msgstr "Luxembourgish"
+
+msgid "Lao"
+msgstr "Lao"
+
+msgid "Lithuanian"
+msgstr "Lithuanian"
+
+msgid "Latvian"
+msgstr "Latvian"
+
+msgid "Malagasy"
+msgstr "Malagasy"
+
+msgid "Maori"
+msgstr "Maori"
+
+msgid "Macedonian"
+msgstr "Macedonian"
+
+msgid "Malayalam"
+msgstr "Malayalam"
+
+msgid "Mongolian"
+msgstr "Mongolian"
+
+msgid "Marathi"
+msgstr "Marathi"
+
+msgid "Malay"
+msgstr "Malay"
+
+msgid "Maltese"
+msgstr "Maltese"
+
+msgid "Myanmar (Burmese)"
+msgstr "Myanmar (Burmese)"
+
+msgid "Nepali"
+msgstr "Nepali"
+
+msgid "Dutch"
+msgstr "Dutch"
+
+msgid "Norwegian"
+msgstr "Norwegian"
+
+msgid "Norwegian Bokmål"
+msgstr "Norwegian Bokmål"
+
+msgid "Norwegian Nynorsk"
+msgstr "Norwegian Nynorsk"
+
+msgid "Occitan"
+msgstr "Occitan"
+
+msgid "Persian, Farsi"
+msgstr "Persian, Farsi"
+
+msgid "Chichewa"
+msgstr "Chichewa"
+
+msgid "Odia (Oriya)"
+msgstr "Odia (Oriya)"
+
+msgid "Punjabi"
+msgstr "Punjabi"
+
+msgid "Polish"
+msgstr "Polish"
+
+msgid "Pashto"
+msgstr "Pashto"
+
+msgid "Portuguese"
+msgstr "Portuguese"
+
+msgid "Romanian"
+msgstr "Romanian"
+
+msgid "Russian"
+msgstr "Russian"
+
+msgid "Kinyarwanda"
+msgstr "Kinyarwanda"
+
+msgid "Sindhi"
+msgstr "Sindhi"
+
+msgid "Sami"
+msgstr "Sami"
+
+msgid "Sinhala"
+msgstr "Sinhala"
+
+msgid "Slovak"
+msgstr "Slovak"
+
+msgid "Slovenian"
+msgstr "Slovenian"
+
+msgid "Samoan"
+msgstr "Samoan"
+
+msgid "Shona"
+msgstr "Shona"
+
+msgid "Somali"
+msgstr "Somali"
+
+msgid "Albanian"
+msgstr "Albanian"
+
+msgid "Serbian"
+msgstr "Serbian"
+
+msgid "Sesotho"
+msgstr "Sesotho"
+
+msgid "Sundanese"
+msgstr "Sundanese"
+
+msgid "Swedish"
+msgstr "Swedish"
+
+msgid "Swahili"
+msgstr "Swahili"
+
+msgid "Swiss German"
+msgstr "Swiss German"
+
+msgid "Tamil"
+msgstr "Tamil"
+
+msgid "Tamil, Sri Lanka"
+msgstr "Tamil, Sri Lanka"
+
+msgid "Telugu"
+msgstr "Telugu"
+
+msgid "Tajik"
+msgstr "Tajik"
+
+msgid "Thai"
+msgstr "Thai"
+
+msgid "Turkmen"
+msgstr "Turkmen"
+
+msgid "Filipino"
+msgstr "Filipino"
+
+msgid "Tibetan"
+msgstr "Tibetan"
+
+msgid "Turkish"
+msgstr "Turkish"
+
+msgid "Tuvan"
+msgstr "Tuvan"
+
+msgid "Tatar"
+msgstr "Tatar"
+
+msgid "Uyghur"
+msgstr "Uyghur"
+
+msgid "Ukrainian"
+msgstr "Ukrainian"
+
+msgid "Urdu"
+msgstr "Urdu"
+
+msgid "Uzbek"
+msgstr "Uzbek"
+
+msgid "Vietnamese"
+msgstr "Vietnamese"
+
+msgid "Xhosa"
+msgstr "Xhosa"
+
+msgid "Yiddish"
+msgstr "Yiddish"
+
+msgid "Yoruba"
+msgstr "Yoruba"
+
+msgid "Chinese"
+msgstr "Chinese"
+
+msgid "Zulu"
+msgstr "Zulu"

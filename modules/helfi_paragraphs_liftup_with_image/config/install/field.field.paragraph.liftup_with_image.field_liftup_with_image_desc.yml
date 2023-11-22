@@ -5,6 +5,7 @@ dependencies:
     - field.storage.paragraph.field_liftup_with_image_desc
     - paragraphs.paragraphs_type.liftup_with_image
   module:
+    - allowed_formats
     - text
 id: paragraph.liftup_with_image.field_liftup_with_image_desc
 field_name: field_liftup_with_image_desc
@@ -16,5 +17,6 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

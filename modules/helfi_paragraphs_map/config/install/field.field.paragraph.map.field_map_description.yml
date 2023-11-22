@@ -5,6 +5,7 @@ dependencies:
     - field.storage.paragraph.field_map_description
     - paragraphs.paragraphs_type.map
   module:
+    - allowed_formats
     - text
 id: paragraph.map.field_map_description
 field_name: field_map_description
@@ -16,5 +17,6 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

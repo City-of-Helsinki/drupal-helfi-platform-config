@@ -75,7 +75,7 @@ class SocialMediaSharingBlock extends SocialSharingBlock {
 
     // Call pre_execute event before doing anything.
     $event = new SocialMediaEvent($social_medias);
-    $this->eventDispatcher->dispatch('social_media.pre_execute', $event);
+    $this->eventDispatcher->dispatch($event, 'social_media.pre_execute');
     $social_medias = $event->getElement();
 
     $social_medias = $this->sortSocialMedias($social_medias);
@@ -122,7 +122,7 @@ class SocialMediaSharingBlock extends SocialSharingBlock {
     }
 
     $event = new SocialMediaEvent($elements);
-    $this->eventDispatcher->dispatch('social_media.pre_render', $event);
+    $this->eventDispatcher->dispatch($event, 'social_media.pre_render');
     $elements = $event->getElement();
 
     $build['social_sharing_block'] = [
