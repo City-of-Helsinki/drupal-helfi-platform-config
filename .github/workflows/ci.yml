@@ -65,7 +65,7 @@ jobs:
 
       - name: Run PHPCS
         working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,info
+        run: vendor/bin/phpcs $MODULE_FOLDER --standard=$MDOULE_FOLDER/phpcs.xml --extensions=php,module,inc,install,test,info
 
       - name: Run phpstan
         working-directory: ${{ env.DRUPAL_ROOT }}
