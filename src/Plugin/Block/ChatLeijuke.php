@@ -104,7 +104,7 @@ class ChatLeijuke extends BlockBase {
           'library' => $library,
           'drupalSettings' => [
             'leijuke_data' => [
-              $config['chat_selection'] => [
+              strtolower($config['chat_selection']) => [
                 'name' => $config['chat_selection'],
                 'libraries' => $chatLibrary,
                 'modulepath' => $assetPath . '/' . $modulePath,
