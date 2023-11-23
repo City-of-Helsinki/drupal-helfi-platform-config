@@ -33,7 +33,8 @@ class ChatLeijuke extends BlockBase {
         'smartti_chatbot' => 'Smartti Chatbot',
         'genesys_kymp' => 'Genesys KYMP',
         'genesys_suunte' => 'Genesys SUUNTE',
-        'UX_inquiry' => 'Käyttäjätutkimus',
+        'user_inquiry' => 'Käyttäjätutkimus',
+        'user_inquiry_2' => 'Käyttäjätutkimus2',
       ],
     ];
 
