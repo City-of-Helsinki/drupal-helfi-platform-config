@@ -61,7 +61,10 @@ class ChatLeijuke extends BlockBase {
     $config = $this->getConfiguration();
     $build = [];
     $chatLibrary = [];
+    // @todo Use dependency injection.
+    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     $modulePath = \Drupal::service('extension.list.module')->getPath('helfi_platform_config');
+    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     $assetPath = \Drupal::config('helfi_proxy.settings')->get('asset_path');
 
     $librariesYml = Yaml::parseFile($modulePath . '/helfi_platform_config.libraries.yml');

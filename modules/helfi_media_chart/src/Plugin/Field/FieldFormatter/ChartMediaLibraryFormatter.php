@@ -37,6 +37,8 @@ final class ChartMediaLibraryFormatter extends FormatterBase {
         $url = $this->mediaUrlToUri($uri);
       }
       catch (\InvalidArgumentException $e) {
+        // @todo Use dependency injection.
+        // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
         $logger = \Drupal::logger('helfi_chart');
         Error::logException($logger, $e);
         continue;

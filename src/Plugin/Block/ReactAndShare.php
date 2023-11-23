@@ -28,6 +28,8 @@ class ReactAndShare extends BlockBase {
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    // @todo Use dependency injection.
+    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     $this->languageManager = \Drupal::languageManager();
   }
 
@@ -50,7 +52,7 @@ class ReactAndShare extends BlockBase {
 
     $build['react_and_share'] = [
       '#theme' => 'react_and_share',
-      '#title' => t('React and Share'),
+      '#title' => $this->t('React and Share'),
       '#attached' => [
         'library' => $library,
         'drupalSettings' => [
