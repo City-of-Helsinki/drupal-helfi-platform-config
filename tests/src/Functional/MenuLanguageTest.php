@@ -71,7 +71,7 @@ class MenuLanguageTest extends ContentTranslationTestBase {
       'language_interface[weight][language-session]' => -12,
     ];
     $this->drupalGet('/admin/config/regional/language/detection');
-    $this->submitForm($edit, t('Save settings'));
+    $this->submitForm($edit, 'Save settings');
     // Make sure we are not logged in.
     $this->drupalLogout();
   }

@@ -113,7 +113,7 @@ class CalculatorSettings extends ConfigFormBase {
     $settings = $this->getCalculatorSettings();
 
     $form['#tree'] = TRUE;
-    $form['#prefix'] = '<div class="layer-wrapper"><h2>' . t('Available calculators') . '</h2>';
+    $form['#prefix'] = '<div class="layer-wrapper"><h2>' . $this->t('Available calculators') . '</h2>';
     $form['#suffix'] = '</div>';
 
     $calculators = $settings->get('calculators');

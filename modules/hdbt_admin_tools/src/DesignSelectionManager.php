@@ -47,6 +47,8 @@ class DesignSelectionManager {
     $asset_path = $this->moduleHandler->getModule('hdbt_admin_tools')->getPath() . '/assets/images';
     $images = [];
     /** @var \Drupal\Core\File\FileUrlGeneratorInterface $service */
+    // @todo Use dependency injection.
+    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     $service = \Drupal::service('file_url_generator');
 
     foreach ($selections as $selection) {
