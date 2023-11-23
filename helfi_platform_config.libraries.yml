@@ -3,6 +3,18 @@ react_and_share:
   js:
     assets/js/reactAndShareSettings.js: {}
 
+ux_inquiry:
+  version: 1.0.0
+  js:
+    'https://aws.norstat.no/js/di/ws-2.3.0.js': {
+      type: external,
+      minifier: true,
+      attributes: {
+        async: true
+      }
+    }
+
+
 smartti_chatbot:
   version: 1.0.x
   js:

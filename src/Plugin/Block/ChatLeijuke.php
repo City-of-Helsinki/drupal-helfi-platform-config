@@ -33,6 +33,7 @@ class ChatLeijuke extends BlockBase {
         'smartti_chatbot' => 'Smartti Chatbot',
         'genesys_kymp' => 'Genesys KYMP',
         'genesys_suunte' => 'Genesys SUUNTE',
+        'UX_inquiry' => 'Käyttäjätutkimus',
       ],
     ];
 
@@ -66,23 +67,24 @@ class ChatLeijuke extends BlockBase {
 
     $librariesYml = Yaml::parseFile($modulePath . '/helfi_platform_config.libraries.yml');
 
-    foreach ($librariesYml as $k => $lib) {
-      if ($k === $config['chat_selection']) {
-        if (array_key_exists('js', $lib)) {
-          foreach ($lib['js'] as $key => $value) {
-            $js = [
-              'url' => $key,
-              'ext' => $value['type'] ?? FALSE,
-              'onload' => $value['attributes']['onload'] ?? FALSE,
-              'async' => $value['attributes']['async'] ?? FALSE,
-              'data_container_id' => $value['attributes']['data-container-id'] ?? FALSE,
-            ];
-
-            $chatLibrary['js'][] = $js;
-          }
+    foreach ($librariesYml as $library_name => $library_configuration) {
+      if (
+        $library_name === strtolower($config['chat_selection']) &&
+        array_key_exists('js', $library_configuration)
+      ) {
+        foreach ($library_configuration['js'] as $key => $value) {
+          $js = [
+            'url' => $key,
+            'ext' => $value['type'] ?? FALSE,
+            'onload' => $value['attributes']['onload'] ?? FALSE,
+            'async' => $value['attributes']['async'] ?? FALSE,
+            'data_container_id' => $value['attributes']['data-container-id'] ?? FALSE,
+          ];
+          $chatLibrary['js'][] = $js;
         }
-        if (array_key_exists('css', $lib)) {
-          foreach ($lib['css']['theme'] as $key => $value) {
+
+        if (array_key_exists('css', $library_configuration)) {
+          foreach ($library_configuration['css']['theme'] as $key => $value) {
             $css = [
               'url' => $key,
               'ext' => $value['type'] ?? FALSE,
