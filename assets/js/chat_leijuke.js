@@ -31,8 +31,11 @@
     if (chatSelection.indexOf('smartti') != -1) {
       return new SmarttiAdapter;
     }
-    if (chatSelection.indexOf('ux_inquiry') != -1) {
-      return new UXIncuiry;
+    if (chatSelection.indexOf('user_inquiry') != -1) {
+      return new UserInquiry;
+    }
+    if (chatSelection.indexOf('user_inquiry_2') != -1) {
+      return new UserInquiry2;
     }
     console.warn(`No adapter found for ${chatSelection}!`);
   }
@@ -139,70 +142,17 @@
     }
   }
 
-  class UXIncuiry {
+  class UserInquiry {
     constructor() {
       // todo: dont know yet what we need.
-      this.requiredCookies = ['chat'];
+      this.requiredCookies = [];
       this.bot = false;
       this.persist = false;
     }
-
-    async getChatExtension() {
-      /*
-      return await new Promise(resolve => {
-        let checkChatExtension = setInterval(()=> {
-          if (typeof Smartti != 'undefined') {
-            resolve(Smartti);
-            clearInterval(checkChatExtension);
-          }
-        }, 100);
-      });
-      */
-    }
-
-    open(callback) {
-
-      // Ei saa avata jos keksit estetty TAI käyttäjä jo kerran sulkenut
-
-      // send open command
-      this.getChatExtension().then((ext) => {
-        ext.open();
-        ext.show();
-        callback();
-      });
-    }
-
-    onClosed(callback) {
-
-      // Suljettua ei saa enää avata tai näyttää käyttäjälle
-
-
-      // subscribe to closed event
-      /*
-      this.getChatExtension().then((ext) => {
-        ext.on('close', ()=> {
-          callback();
-          ext.hide();
-        });
-        ext.on('minimize', ()=> {
-          callback();
-          ext.hide();
-        });
-      });
-     */
-    }
-
-    onLoaded(callback) {
-
-      // Ei saa ladata jos keksit estetty TAI käyttäjä jo sulkenut
-
-      // subscribe to ready event
-      /*
-      this.getChatExtension().then((ext) => {
-        callback();
-      });
-      */
-    }
+    async getChatExtension() {}
+    open(callback) {}
+    onClosed(callback) {}
+    onLoaded(callback) {}
   }
 
   class Leijuke {
