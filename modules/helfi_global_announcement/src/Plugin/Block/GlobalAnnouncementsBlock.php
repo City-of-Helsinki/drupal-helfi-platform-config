@@ -4,6 +4,7 @@ namespace Drupal\helfi_global_announcement\Plugin\Block;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Cache\Cache;
+use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\helfi_node_announcement\Plugin\Block\AnnouncementsBlockBase;
 use Drupal\node\Entity\Node;
@@ -23,12 +24,14 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
    */
   public function build(): array {
     $globalEntityStorage = $this->entityTypeManager->getStorage('helfi_announcements');
+    assert($globalEntityStorage instanceof ExternalEntityStorageInterface);
     $cacheMaxAge = $globalEntityStorage->getExternalEntityType()->get('persistent_cache_max_age');
 
     $externalAnnouncements = $globalEntityStorage
       ->loadMultiple();
 
     $announcementNodes = [];
+    /** @var \Drupal\external_entities\ExternalEntityInterface $announcement */
     foreach ($externalAnnouncements as $announcement) {
       $linkUrl = NULL;
       $linkText = NULL;

@@ -381,7 +381,7 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
   }
 
   // Enable sidebar second for News item.
-  if (isset($content_type) && $content_type === 'news_item') {
+  if ($content_type === 'news_item') {
     $variables['has_sidebar_second'] = TRUE;
   }
 
@@ -999,7 +999,7 @@ function hdbt_admin_tools_entity_base_field_info(EntityTypeInterface $entity_typ
  */
 function hdbt_admin_tools_entity_presave($entity): void {
   if (
-    !method_exists($entity, 'hasField') ||
+    !$entity instanceof ContentEntityInterface ||
     !$entity->hasField('color_palette') ||
     \Drupal::isConfigSyncing()
   ) {
@@ -1009,7 +1009,7 @@ function hdbt_admin_tools_entity_presave($entity): void {
   // Do not save the color palette override value if chosen color palette is
   // same as global color palette value. This will prevent possible false
   // overrides if global color palette is changed.
-  if ($entity->color_palette->value == SiteSettings::getColorPaletteDefaultValue()) {
+  if ($entity->get('color_palette')->value == SiteSettings::getColorPaletteDefaultValue()) {
     $entity->set('color_palette', NULL);
   }
 }

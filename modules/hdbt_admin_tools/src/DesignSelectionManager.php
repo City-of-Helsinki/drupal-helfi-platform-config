@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\hdbt_admin_tools;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 
 /**
  * Service class for design selection related functions.
@@ -12,20 +13,16 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 class DesignSelectionManager {
 
   /**
-   * The module handler service.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected ModuleHandlerInterface $moduleHandler;
-
-  /**
    * Constructs a new DesignSelectionManager object.
    *
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
-   *   The module handler.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
+   *   The module handler service.
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface $fileUrlGenerator
+   *   The file url generator service.
    */
-  public function __construct(ModuleHandlerInterface $module_handler) {
-    $this->moduleHandler = $module_handler;
+  public function __construct(
+    protected ModuleHandlerInterface $moduleHandler,
+    protected FileUrlGeneratorInterface $fileUrlGenerator) {
   }
 
   /**
@@ -46,18 +43,13 @@ class DesignSelectionManager {
 
     $asset_path = $this->moduleHandler->getModule('hdbt_admin_tools')->getPath() . '/assets/images';
     $images = [];
-    /** @var \Drupal\Core\File\FileUrlGeneratorInterface $service */
-    // @todo Use dependency injection.
-    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
-    $service = \Drupal::service('file_url_generator');
-
     foreach ($selections as $selection) {
       $asset = "$asset_path/{$field_name}--$selection.svg";
 
       if (!file_exists(DRUPAL_ROOT . '/' . $asset)) {
         $asset = "$asset_path/custom-style.svg";
       }
-      $images[$selection] = $service->generate($asset)->toString(TRUE)->getGeneratedUrl();
+      $images[$selection] = $this->fileUrlGenerator->generate($asset)->toString(TRUE)->getGeneratedUrl();
     }
 
     // Let modules to alter the image lists.

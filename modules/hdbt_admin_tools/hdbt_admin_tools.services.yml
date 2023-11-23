@@ -1,4 +1,4 @@
 services:
   hdbt_admin_tools.design_selection_manager:
     class: Drupal\hdbt_admin_tools\DesignSelectionManager
-    arguments: [ '@module_handler' ]
+    arguments: [ '@module_handler', '@file_url_generator' ]

@@ -8,7 +8,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\language\ConfigurableLanguageManagerInterface;
 
 /**
  * A helper class to deal with Drupal blocks.
@@ -22,13 +22,13 @@ final class BlockInstaller {
    *   The theme handler.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
+   * @param \Drupal\language\ConfigurableLanguageManagerInterface $languageManager
    *   The language manager.
    */
   public function __construct(
     private ThemeHandlerInterface $themeHandler,
     private EntityTypeManagerInterface $entityTypeManager,
-    private LanguageManagerInterface $languageManager,
+    private ConfigurableLanguageManagerInterface $languageManager,
   ) {
   }
 

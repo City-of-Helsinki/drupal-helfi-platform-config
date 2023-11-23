@@ -86,7 +86,7 @@ class MenuLanguageTest extends ContentTranslationTestBase {
    * @param array $overrides
    *   The overrides.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
+   * @return \Drupal\menu_link_content\Entity\MenuLinkContent
    *   The menu link.
    */
   protected function createTestLink($langcode, $title, array $overrides = []) : MenuLinkContent {

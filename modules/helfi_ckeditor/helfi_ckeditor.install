@@ -65,8 +65,10 @@ function helfi_ckeditor_update_9002(): void {
       $field_storage_definition = $field_config->getFieldStorageDefinition();
       $entity_type = $field_config->getTargetEntityTypeId();
 
+      /** @var \Drupal\Core\Entity\Sql\SqlEntityStorageInterface $storage */
+      $storage = $entity_type_manager->getStorage($entity_type);
       /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
-      $table_mapping = $entity_type_manager->getStorage($entity_type)->getTableMapping();
+      $table_mapping = $storage->getTableMapping();
 
       // Get current field's table name and column.
       $table_name = $table_mapping->getDedicatedDataTableName($field_storage_definition);

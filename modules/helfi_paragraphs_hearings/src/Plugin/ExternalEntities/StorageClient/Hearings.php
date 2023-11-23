@@ -80,7 +80,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
   /**
    * {@inheritdoc}
    */
-  public function save(ExternalEntityInterface $entity) : void {
+  public function save(ExternalEntityInterface $entity) : int {
     throw new EntityStorageException('::save() is not supported.');
   }
 
@@ -166,7 +166,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
    * @param string $currentLangCode
    *   Requested language code.
    *
-   * @return string|void
+   * @return string
    *   Language code that can be used to show the hearing.
    */
   private function resolveLanguage(array $hearing, string $currentLangCode): string {
@@ -181,6 +181,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
         return $langcode;
       }
     }
+    throw new \InvalidArgumentException('Failed to resolve language.');
   }
 
   /**

@@ -17,6 +17,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Utils;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -59,6 +60,13 @@ final class Announcements extends ExternalEntityStorageClientBase {
   private ClientInterface $client;
 
   /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  private LoggerInterface $logger;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -75,6 +83,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
     $instance->environment = $environmentResolver
       ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+    $instance->logger = $container->get('logger.factory')->get('helfi_announcements');
 
     return $instance;
   }
@@ -107,7 +116,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
   /**
    * {@inheritdoc}
    */
-  public function save(ExternalEntityInterface $entity) : void {
+  public function save(ExternalEntityInterface $entity) : int {
     throw new EntityStorageException('::save() is not supported.');
   }
 
@@ -175,8 +184,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
       return $json['data'];
     }
     catch (RequestException | GuzzleException $e) {
-      $logger = \Drupal::logger('helfi_announcements');
-      Error::logException($logger, $e);
+      Error::logException($this->logger, $e);
     }
     return [];
   }

@@ -77,6 +77,7 @@ class LinkTargetFieldWidget extends LinkitWidget {
    *   Returns an array of link items.
    */
   protected function getLinkItem(FieldItemListInterface $items, int $delta): LinkItemInterface {
+    assert($items[$delta] instanceof LinkItemInterface);
     return $items[$delta];
   }
 

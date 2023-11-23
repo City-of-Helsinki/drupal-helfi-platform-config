@@ -33,7 +33,7 @@ trait UrlParserTrait {
    * @param string $uri
    *   The uri from map link.
    *
-   * @return string|null
+   * @return string
    *   The url.
    */
   protected function getEmbedUrl(string $uri) : string {

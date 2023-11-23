@@ -56,7 +56,7 @@ class MediaMapTest extends BrowserTestBase {
   /**
    * Asserts media map formatter.
    *
-   * @var int $media_id$
+   * @param int $media_id
    *   The media id.
    */
   private function assertMapFormatter(int $media_id) : void {
@@ -109,7 +109,6 @@ class MediaMapTest extends BrowserTestBase {
       $medias = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
         'name' => 'Map value ' . $delta,
       ]);
-      /** @var \Drupal\media\MediaInterface */
       $media = reset($medias);
       $this->drupalGet(Url::fromRoute('entity.media.canonical', ['media' => $media->id()])->toString());
       $this->assertSession()->statusCodeEquals(200);

@@ -14,6 +14,7 @@ class HeroImageConstraintValidator extends ConstraintValidator {
    * {@inheritdoc}
    */
   public function validate(mixed $value, Constraint $constraint) {
+    assert($constraint instanceof HeroImageConstraint);
     $parent = $value->getEntity();
 
     if ($parent && $parent->bundle() == 'hero') {

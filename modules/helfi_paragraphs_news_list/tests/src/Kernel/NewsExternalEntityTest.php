@@ -46,8 +46,11 @@ class NewsExternalEntityTest extends KernelTestBase {
   private function getExternalEntityStorage(array $responses = []) : ExternalEntityStorageInterface {
     $client = $this->createMockHttpClient($responses);
     $this->container->set('http_client', $client);
-    return $this->container->get('entity_type.manager')
+    $storage = $this->container->get('entity_type.manager')
       ->getStorage('helfi_news');
+    assert($storage instanceof ExternalEntityStorageInterface);
+
+    return $storage;
   }
 
   /**

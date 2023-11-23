@@ -49,8 +49,8 @@ class CalculatorSettings extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
+  public static function create(ContainerInterface $container) : self {
+    return new self(
       $container->get('config.factory'),
       $container->get('language_manager')
     );
@@ -175,6 +175,7 @@ class CalculatorSettings extends ConfigFormBase {
    *   Returns active calculators list.
    */
   public static function getActiveCalculators(): array {
+    /** @var \Drupal\language\ConfigurableLanguageManagerInterface $language_manager */
     $language_manager = \Drupal::languageManager();
     $calculator_settings = \Drupal::config('helfi_calculator.settings')
       ->get('calculators');
