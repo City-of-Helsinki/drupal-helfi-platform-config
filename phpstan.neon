@@ -62,6 +62,18 @@ parameters:
       path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
       reportUnmatched: false
     -
+      message: '#^Access to an undefined property Drupal\\Core\\Entity\\EntityInterface::\$field_default_image.#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
+      message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::getFileUri\(\).#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
+      message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::getFileUri\(\).#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::hasField\(\).#'
       path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
     -
