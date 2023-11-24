@@ -31,7 +31,26 @@
     if (chatSelection.indexOf('smartti') != -1) {
       return new SmarttiAdapter;
     }
+    if (chatSelection.indexOf('user_inquiry') != -1) {
+      return new UserInquiry;
+    }
+    if (chatSelection.indexOf('user_inquiry_2') != -1) {
+      return new UserInquiry;
+    }
     console.warn(`No adapter found for ${chatSelection}!`);
+  }
+
+  class UserInquiry {
+    constructor() {
+      // todo: dont know yet what we need.
+      this.requiredCookies = ['chat'];
+      this.bot = false;
+      this.persist = false;
+    }
+    async getChatExtension() {}
+    open(callback) {}
+    onClosed(callback) {}
+    onLoaded(callback) {}
   }
 
   class EuCookieManager {
