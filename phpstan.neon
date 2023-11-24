@@ -56,14 +56,16 @@ parameters:
     -
       message: '#^Access to an undefined property Drupal\\media\\MediaInterface::\$field_media_image.#'
       path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
+      message: '#^Access to an undefined property Drupal\\node\\NodeInterface::\$field_organization.#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
     -
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::hasField\(\).#'
       path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
     -
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::get\(\).#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
-    -
-      message: '#^Access to an undefined property Drupal\\node\\NodeInterface::\$field_organization.#'
       path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
     -
       message: '#^Call to an undefined method Drupal\\Core\\Field\\FieldDefinitionInterface::save\(\).#'
