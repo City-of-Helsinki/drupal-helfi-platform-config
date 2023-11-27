@@ -6,11 +6,6 @@ react_and_share:
 user_inquiry:
   version: 1.0.0
   js:
-    assets/js/ws-2.3.0.js: { }
-
-user_inquiry_2:
-  version: 1.0.0
-  js:
     'https://digitalfeedback.euro.confirmit.com/api/digitalfeedback/loader?programKey=2UqP0u': {
       type: external,
       minified: false,

@@ -34,9 +34,6 @@
     if (chatSelection.indexOf('user_inquiry') != -1) {
       return new UserInquiryAdapter;
     }
-    if (chatSelection.indexOf('user_inquiry_2') != -1) {
-      return new UserInquiryAdapter;
-    }
     console.warn(`No adapter found for ${chatSelection}!`);
   }
 
@@ -144,9 +141,11 @@
     }
   }
 
+  /**
+   * User inquiry is a popup and it handles the opening and closing logic.
+   */
   class UserInquiryAdapter {
     constructor() {
-      // todo: dont know yet what we need.
       this.requiredCookies = ['chat'];
       this.bot = false;
       this.persist = false;
