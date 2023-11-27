@@ -68,7 +68,7 @@ class ChatLeijuke extends BlockBase {
     $librariesYml = Yaml::parseFile($modulePath . '/helfi_platform_config.libraries.yml');
 
     foreach ($librariesYml as $library_name => $library_configuration) {
-      if ($library_name !== strtolower($config['chat_selection'])) {
+      if ($library_name !== $config['chat_selection']) {
         continue;
       }
 
@@ -105,7 +105,7 @@ class ChatLeijuke extends BlockBase {
           'library' => $library,
           'drupalSettings' => [
             'leijuke_data' => [
-              strtolower($config['chat_selection']) => [
+              $config['chat_selection'] => [
                 'name' => $config['chat_selection'],
                 'libraries' => $chatLibrary,
                 'modulepath' => $assetPath . '/' . $modulePath,
