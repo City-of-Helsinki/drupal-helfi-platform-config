@@ -32,10 +32,10 @@
       return new SmarttiAdapter;
     }
     if (chatSelection.indexOf('user_inquiry') != -1) {
-      return new UserInquiry;
+      return new UserInquiryAdapter;
     }
     if (chatSelection.indexOf('user_inquiry_2') != -1) {
-      return new UserInquiry;
+      return new UserInquiryAdapter;
     }
     console.warn(`No adapter found for ${chatSelection}!`);
   }
@@ -62,6 +62,7 @@
       this.requiredCookies = ['chat'];
       this.bot = false;
       this.persist = true;
+      this.hasButton = true;
     }
 
     async getChatExtension() {
@@ -97,6 +98,7 @@
       this.requiredCookies = ['chat'];
       this.bot = true;
       this.persist = true;
+      this.hasButton = true;
     }
 
     async getChatExtension() {
@@ -142,12 +144,13 @@
     }
   }
 
-  class UserInquiry {
+  class UserInquiryAdapter {
     constructor() {
       // todo: dont know yet what we need.
       this.requiredCookies = ['chat'];
       this.bot = false;
       this.persist = false;
+      this.hasButton = false;
     }
     async getChatExtension() {}
     open(callback) {}
@@ -182,7 +185,7 @@
       }
 
       this.initWrapper();
-      this.render();
+      chatAdapter.hasButton && this.render();
     }
 
     prepButton(button) {
