@@ -1,0 +1,127 @@
+diff --git a/core/core.services.yml b/core/core.services.yml
+index 72ff560296..e245aa5a95 100644
+--- a/core/core.services.yml
++++ b/core/core.services.yml
+@@ -773,7 +773,7 @@ services:
+   Drupal\Core\Menu\MenuLinkManagerInterface: '@plugin.manager.menu.link'
+   menu.link_tree:
+     class: Drupal\Core\Menu\MenuLinkTree
+-    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver']
++    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver', '@event_dispatcher']
+   Drupal\Core\Menu\MenuLinkTreeInterface: '@menu.link_tree'
+   menu.default_tree_manipulators:
+     class: Drupal\Core\Menu\DefaultMenuLinkTreeManipulators
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTree.php b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+index 15d9c71050..f36dc5da07 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTree.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+@@ -9,6 +9,7 @@
+ use Drupal\Core\Routing\PreloadableRouteProviderInterface;
+ use Drupal\Core\Routing\RouteProviderInterface;
+ use Drupal\Core\Template\Attribute;
++use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
+ use Drupal\Core\Utility\CallableResolver;
+ 
+ /**
+@@ -64,8 +65,10 @@ class MenuLinkTree implements MenuLinkTreeInterface {
+    *   The active menu trail service.
+    * @param \Drupal\Core\Utility\CallableResolver|\Drupal\Core\Controller\ControllerResolverInterface $callable_resolver
+    *   The callable resolver.
++   * @param \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher|null $eventDispatcher
++   *   The event dispatcher.
+    */
+-  public function __construct(MenuTreeStorageInterface $tree_storage, MenuLinkManagerInterface $menu_link_manager, RouteProviderInterface $route_provider, MenuActiveTrailInterface $menu_active_trail, ControllerResolverInterface|CallableResolver $callable_resolver) {
++  public function __construct(MenuTreeStorageInterface $tree_storage, MenuLinkManagerInterface $menu_link_manager, RouteProviderInterface $route_provider, MenuActiveTrailInterface $menu_active_trail, ControllerResolverInterface|CallableResolver $callable_resolver, ContainerAwareEventDispatcher $eventDispatcher = NULL) {
+     $this->treeStorage = $tree_storage;
+     $this->menuLinkManager = $menu_link_manager;
+     $this->routeProvider = $route_provider;
+@@ -75,6 +78,12 @@ public function __construct(MenuTreeStorageInterface $tree_storage, MenuLinkMana
+       $callable_resolver = \Drupal::service('callable_resolver');
+     }
+     $this->callableResolver = $callable_resolver;
++
++    if ($eventDispatcher === NULL) {
++      @trigger_error('The event_dispatcher service must be passed to ' . __NAMESPACE__ . '\MenuLinkTree::__construct(). It was added in drupal:9.2.0 and will be required before drupal:10.0.0.', E_USER_DEPRECATED);
++      $eventDispatcher = \Drupal::service('event_dispatcher');
++    }
++    $this->eventDispatcher = $eventDispatcher;
+   }
+ 
+   /**
+@@ -141,6 +150,7 @@ protected function createInstances(array $data_tree) {
+    * {@inheritdoc}
+    */
+   public function transform(array $tree, array $manipulators) {
++    $this->eventDispatcher->dispatch(new MenuLinkTreeManipulatorsAlterEvent($tree, $manipulators, $this), MenuLinkTreeEvents::ALTER_MANIPULATORS);
+     foreach ($manipulators as $manipulator) {
+       $callable = $this->callableResolver->getCallableFromDefinition($manipulator['callable']);
+       // Prepare the arguments for the menu tree manipulator callable; the first
+diff --git a/core/modules/system/tests/modules/menu_test/menu_test.routing.yml b/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
+index 5b83aeb2af..2f3211a77d 100644
+--- a/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
++++ b/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
+@@ -544,3 +544,27 @@ menu_test.breadcrumb3:
+     _title: 'Normal title'
+   requirements:
+     _access: 'TRUE'
++
++menu_test.manipulator1:
++  path: '/menu-test/manipulators/1'
++  defaults:
++    _controller: '\Drupal\menu_test\Controller\MenuTestController::menuTestCallback'
++    _title: 'Link 1'
++  requirements:
++    _access: 'TRUE'
++
++menu_test.manipulator2:
++  path: '/menu-test/manipulators/2'
++  defaults:
++    _controller: '\Drupal\menu_test\Controller\MenuTestController::menuTestCallback'
++    _title: 'Link 2'
++  requirements:
++    _access: 'TRUE'
++
++menu_test.manipulator3:
++  path: '/menu-test/manipulators/3'
++  defaults:
++    _controller: '\Drupal\menu_test\Controller\MenuTestController::menuTestCallback'
++    _title: 'Link 1'
++  requirements:
++    _access: 'TRUE'
+diff --git a/core/modules/system/tests/modules/menu_test/menu_test.services.yml b/core/modules/system/tests/modules/menu_test/menu_test.services.yml
+index e1a0aa059b..759dd1a5b5 100644
+--- a/core/modules/system/tests/modules/menu_test/menu_test.services.yml
++++ b/core/modules/system/tests/modules/menu_test/menu_test.services.yml
+@@ -9,3 +9,8 @@ services:
+     arguments: ['@request_stack']
+     tags:
+       - { name: access_check, applies_to: _menu_test_session_access }
++
++  menu_test.event_subscriber.menu_link_tree:
++    class: Drupal\menu_test\EventSubscriber\MenuLinkTreeEventSubscriber
++    tags:
++      - { name: event_subscriber }
+diff --git a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php b/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
+index 6032ff399d..7e77e717ef 100644
+--- a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
++++ b/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
+@@ -37,7 +37,8 @@ protected function setUp(): void {
+       $this->createMock('\Drupal\Core\Menu\MenuLinkManagerInterface'),
+       $this->createMock('\Drupal\Core\Routing\RouteProviderInterface'),
+       $this->createMock('\Drupal\Core\Menu\MenuActiveTrailInterface'),
+-      $this->createMock(CallableResolver::class)
++      $this->createMock(CallableResolver::class),
++      $this->createMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface')
+     );
+ 
+     $cache_contexts_manager = $this->getMockBuilder('Drupal\Core\Cache\Context\CacheContextsManager')
+diff --git a/core/modules/toolbar/toolbar.services.yml b/core/modules/toolbar/toolbar.services.yml
+index b70f8b9df9..1cf25ff3e4 100644
+--- a/core/modules/toolbar/toolbar.services.yml
++++ b/core/modules/toolbar/toolbar.services.yml
+@@ -11,4 +11,4 @@ services:
+       - { name: page_cache_request_policy }
+   toolbar.menu_tree:
+     class: Drupal\toolbar\Menu\ToolbarMenuLinkTree
+-    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver']
++    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver', '@event_dispatcher']
