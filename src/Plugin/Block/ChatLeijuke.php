@@ -68,10 +68,11 @@ class ChatLeijuke extends BlockBase {
     $librariesYml = Yaml::parseFile($modulePath . '/helfi_platform_config.libraries.yml');
 
     foreach ($librariesYml as $library_name => $library_configuration) {
-      if (
-        $library_name === strtolower($config['chat_selection']) &&
-        array_key_exists('js', $library_configuration)
-      ) {
+      if ($library_name !== strtolower($config['chat_selection'])) {
+        continue;
+      }
+
+      if (array_key_exists('js', $library_configuration)) {
         foreach ($library_configuration['js'] as $key => $value) {
           $js = [
             'url' => $key,
@@ -82,16 +83,16 @@ class ChatLeijuke extends BlockBase {
           ];
           $chatLibrary['js'][] = $js;
         }
+      }
 
-        if (array_key_exists('css', $library_configuration)) {
-          foreach ($library_configuration['css']['theme'] as $key => $value) {
-            $css = [
-              'url' => $key,
-              'ext' => $value['type'] ?? FALSE,
-            ];
+      if (array_key_exists('css', $library_configuration)) {
+        foreach ($library_configuration['css']['theme'] as $key => $value) {
+          $css = [
+            'url' => $key,
+            'ext' => $value['type'] ?? FALSE,
+          ];
 
-            $chatLibrary['css'][] = $css;
-          }
+          $chatLibrary['css'][] = $css;
         }
       }
     }
