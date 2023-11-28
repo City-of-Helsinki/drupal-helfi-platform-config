@@ -65,7 +65,7 @@ class TeliaAceWidget extends BlockBase {
 
     $build['ibm_chat_app'] = [
       '#title' => $this->t('Telia ACE Widget'),
-      '#markup' => '<a href="' . $chat_id . '"></a>',
+      '#markup' => '<a class="hidden" href="' . $chat_id . '"></a>',
       '#attached' => [
         'library' => $library,
         'html_head' => [
