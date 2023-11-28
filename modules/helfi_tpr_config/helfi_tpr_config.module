@@ -507,7 +507,7 @@ function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_typ
       ->setDisplayConfigurable('view', TRUE)
       ->setSetting('allowed_formats', [0 => 'plain_text']);
 
-    $fields['description_override'] = BaseFieldDefinition::create('text_long')
+    $fields['description_override'] = BaseFieldDefinition::create('text_with_summary')
       ->setTranslatable(TRUE)
       ->setRevisionable(FALSE)
       ->setLabel(new TranslatableMarkup('Description override'))

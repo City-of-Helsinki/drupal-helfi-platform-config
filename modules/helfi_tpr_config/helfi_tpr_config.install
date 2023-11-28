@@ -363,7 +363,7 @@ function helfi_tpr_config_update_9051(): void {
  * UHF-9249: Add an override field for description.
  */
 function helfi_tpr_config_update_9052() : void {
-  $description_override = BaseFieldDefinition::create('text_long')
+  $description_override = BaseFieldDefinition::create('text_with_summary')
     ->setTranslatable(TRUE)
     ->setRevisionable(FALSE)
     ->setLabel(new TranslatableMarkup('Description override'))
