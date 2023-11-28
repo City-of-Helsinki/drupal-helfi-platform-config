@@ -10,6 +10,8 @@ dependencies:
     - image.style.3_2_xs_2x
     - image.style.3_2_xxs
     - image.style.3_2_xxs_2x
+  module:
+    - helfi_image_styles
 id: image__3_2_content_area
 label: 'Image 3:2 (content area)'
 image_style_mappings:
@@ -40,14 +42,14 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 3_2_xs_2x
-    breakpoint_id: helfi_image_styles.xs
-    multiplier: 2x
-  -
-    image_mapping_type: image_style
     image_mapping: 3_2_xxs
     breakpoint_id: helfi_image_styles.xxs
     multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 3_2_xs_2x
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 2x
   -
     image_mapping_type: image_style
     image_mapping: 3_2_xxs_2x

@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "Add a quote"
+msgstr "Lägg till en citat"
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "Quotation"
+msgstr "Citat"
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "Source / author"
+msgstr "Upprinnelse / författare"
+
+msgctxt "CKEditor5 Helfi Quote plugin"
+msgid "The quote cannot be empty"
+msgstr "Citatet får inte vara tomt"
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "The link URL field cannot be empty."
+msgstr "Länkadressfältet får inte vara tomt."
+
+msgctxt "CKEditor5 Helfi Link plugin"
+msgid "When there is no selection, the link URL must be provided. "
+"To add a link without a URL, first select text in the editor and "
+"then proceed with adding the link."
+msgstr "När det inte finns något val måste länkens URL anges. "
+"För att lägga till en länk utan URL, välj först text i editorn "
+"och fortsätt sedan med att lägga till länken."

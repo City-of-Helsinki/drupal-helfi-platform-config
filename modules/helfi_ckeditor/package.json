@@ -1,0 +1,33 @@
+{
+  "name": "helfi-ckeditor",
+  "version": "1.0.0",
+  "description": "Helfi specific enhancements to CKEditor5 plugins.",
+  "scripts": {
+    "watch": "webpack --mode development --watch",
+    "build": "webpack && $npm_execpath run format:js",
+    "lint:js": "eslint assets/js/ckeditor5_plugins/",
+    "format:js": "eslint --fix assets/js/ckeditor5_plugins/"
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-core": "^30.0.0",
+    "@ckeditor/ckeditor5-dev-translations": "^38.1.2",
+    "@ckeditor/ckeditor5-dev-utils": "^30.0.0",
+    "@nuxt/friendly-errors-webpack-plugin": "^2.5.1",
+    "babel-loader": "^9.1.2",
+    "babel-preset-airbnb": "^5.0.0",
+    "ckeditor5": "~35.1.0",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.52.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-webpack": "0.13.8",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsdoc": "^46.4.3",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.1",
+    "raw-loader": "^4.0.2",
+    "terser-webpack-plugin": "^5.3.3",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.4.0"
+  }
+}

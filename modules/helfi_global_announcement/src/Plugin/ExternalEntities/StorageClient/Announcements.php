@@ -7,6 +7,7 @@ namespace Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
@@ -14,6 +15,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -166,14 +168,15 @@ final class Announcements extends ExternalEntityStorageClientBase {
     try {
       $uri = vsprintf('%s/jsonapi/node/announcement?%s', [
         $this->environment->getInternalAddress($langcode),
-        \GuzzleHttp\http_build_query($parameters),
+        Query::build($parameters),
       ]);
       $content = $this->client->request('GET', $uri);
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
       return $json['data'];
     }
     catch (RequestException | GuzzleException $e) {
-      watchdog_exception('helfi_announcements', $e);
+      $logger = \Drupal::logger('helfi_announcements');
+      Error::logException($logger, $e);
     }
     return [];
   }
