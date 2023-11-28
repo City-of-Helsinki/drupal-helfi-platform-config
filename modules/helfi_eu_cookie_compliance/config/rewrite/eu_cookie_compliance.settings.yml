@@ -1,4 +1,7 @@
 langcode: en
+dependencies:
+  config:
+    - filter.format.full_html
 popup_enabled: true
 popup_clicking_confirmation: false
 popup_scrolling_confirmation: false
@@ -20,7 +23,7 @@ popup_agreed_enabled: false
 popup_hide_agreed: false
 disagree_button_label: 'No, thanks'
 popup_agreed:
-  value: "<h2>Thank you for accepting cookies</h2>\r\n\r\n<p>You can now hide this message or find out more about cookies.</p>\r\n"
+  value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
   format: full_html
 popup_find_more_button_message: 'Show cookies'
 popup_hide_button_message: Hide
@@ -56,7 +59,7 @@ automatic_cookies_removal: true
 allowed_cookies: "essential:AWSELBCORS\r\nessential:cookiehub\r\nessential:mtm_cookie_consent\r\nessential:JSESSIONID\r\nessential:COOKIE_SUPPORT\r\nessential:GUEST_LANGUAGE_ID\r\npreference:httpskartta.hel.fi.SWCulture\r\npreference:icareus-device\r\npreference:VISITOR_INFO1_LIVE\r\npreference:CONSENT\r\nstatistics:nmstat\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.141.89f6\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:rnsbid\r\nstatistics:rnsbid_ts\r\nstatistics:rns_reaction_*\r\nstatistics:YSC\r\nchat:_genesys.widgets.*\r\nchat:leijuke.*"
 consent_storage_method: do_not_store
 withdraw_message:
-  value: "<h2>Hel.fi uses cookies</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
+  value: '<h2>Hel.fi uses cookies</h2><p>You have given your consent for us to set cookies.</p>'
   format: full_html
 withdraw_tab_button_label: 'Privacy settings'
 withdraw_action_button_label: 'Withdraw consent'
@@ -77,6 +80,3 @@ close_button_action: close_banner
 reject_button_label: ''
 reject_button_enabled: false
 close_button_enabled: false
-dependencies:
-  config:
-    - filter.format.full_html
