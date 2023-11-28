@@ -403,6 +403,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  description_override: true
   hide_description: true
   ontologyword_ids: true
   show_www: true

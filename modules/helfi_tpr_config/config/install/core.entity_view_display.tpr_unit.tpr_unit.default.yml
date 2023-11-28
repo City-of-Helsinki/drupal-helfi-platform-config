@@ -282,6 +282,7 @@ content:
     region: content
 hidden:
   created: true
+  description_override: true
   field_unit_type: true
   hide_description: true
   langcode: true
