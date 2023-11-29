@@ -1,7 +1,16 @@
 display:
   default:
+    display_title: Förvald
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
       fields:
+        published_at: {  }
+        field_main_image: {  }
         view_node:
           text: visa
       title: 'Senaste nyheterna'
