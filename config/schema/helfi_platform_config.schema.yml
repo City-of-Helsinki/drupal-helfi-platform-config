@@ -5,3 +5,11 @@ block.settings.chat_leijuke:
     chat_title:
       type: text
       label: 'Chat title'
+
+block.settings.telia_ace_widget:
+  type: block_settings
+  label: 'Block config translation for Telia ACE widget'
+  mapping:
+    chat_id:
+      type: text
+      label: 'Chat widget ID'

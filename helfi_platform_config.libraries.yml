@@ -107,3 +107,12 @@ user_consent_functions:
     assets/js/user_consent_functions.js: {}
   dependencies:
     - core/drupal
+
+telia_ace_widget:
+  version: 1.0.x
+  header: true
+  css:
+    theme:
+      assets/css/telia_ace.css: {}
+  dependencies:
+    - helfi_platform_config/user_consent_functions

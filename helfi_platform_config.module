@@ -485,6 +485,8 @@ function helfi_platform_config_config_ignore_settings_alter(array &$settings) {
     'block.block.genesyschat',
     'block.block.genesyschat_*',
     'block.block.smarttichatbot',
+    'block.block.teliaacewidget*',
+    'block.block.hdbt_subtheme_teliaacewidget*',
   ];
 
   foreach ($add_ignore as $config) {
