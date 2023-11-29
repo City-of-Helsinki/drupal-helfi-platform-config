@@ -31,6 +31,9 @@
     if (chatSelection.indexOf('smartti') != -1) {
       return new SmarttiAdapter;
     }
+    if (chatSelection.indexOf('user_inquiry') != -1) {
+      return new UserInquiryAdapter;
+    }
     console.warn(`No adapter found for ${chatSelection}!`);
   }
 
@@ -56,6 +59,7 @@
       this.requiredCookies = ['chat'];
       this.bot = false;
       this.persist = true;
+      this.hasButton = true;
     }
 
     async getChatExtension() {
@@ -91,6 +95,7 @@
       this.requiredCookies = ['chat'];
       this.bot = true;
       this.persist = true;
+      this.hasButton = true;
     }
 
     async getChatExtension() {
@@ -136,8 +141,23 @@
     }
   }
 
-  class Leijuke {
+  /**
+   * User inquiry is a popup and it handles the opening and closing logic.
+   */
+  class UserInquiryAdapter {
+    constructor() {
+      this.requiredCookies = ['chat'];
+      this.bot = false;
+      this.persist = false;
+      this.hasButton = false;
+    }
+    async getChatExtension() {}
+    open(callback) {}
+    onClosed(callback) {}
+    onLoaded(callback) {}
+  }
 
+  class Leijuke {
     constructor(leijukeData, extCookieManager, chatAdapter) {
 
       this.extCookieManager = extCookieManager;
@@ -164,7 +184,7 @@
       }
 
       this.initWrapper();
-      this.render();
+      chatAdapter.hasButton && this.render();
     }
 
     prepButton(button) {

@@ -3,6 +3,17 @@ react_and_share:
   js:
     assets/js/reactAndShareSettings.js: {}
 
+user_inquiry:
+  version: 1.0.0
+  js:
+    'https://digitalfeedback.euro.confirmit.com/api/digitalfeedback/loader?programKey=2UqP0u': {
+      type: external,
+      minified: false,
+      attributes: {
+        async: true
+      }
+    }
+
 smartti_chatbot:
   version: 1.0.x
   js:
