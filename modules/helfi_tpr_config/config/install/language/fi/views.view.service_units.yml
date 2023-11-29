@@ -2,13 +2,8 @@ display:
   default:
     display_title: Oletus
     display_options:
-      exposed_form:
-        options:
-          submit_button: Käytä
-          reset_button_label: Palauta
-          exposed_sorts_label: Järjestä
-          sort_asc_label: Nouseva
-          sort_desc_label: Laskeva
+      fields:
+        name: {  }
       pager:
         options:
           tags:
@@ -17,15 +12,17 @@ display:
             first: Ensimmäinen
             last: Viimeinen
           expose:
-            items_per_page_label: 'Kohteita sivulla'
+            items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
-      fields:
-        name:
-          separator: ', '
+      exposed_form:
+        options:
+          submit_button: Käytä
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       arguments:
         id:
           exception:
             title: Kaikki
-  service_units:
-    display_title: Lohko
+  service_units: {  }

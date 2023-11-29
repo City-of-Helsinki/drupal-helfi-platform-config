@@ -3,8 +3,7 @@ display:
     display_title: Oletus
     display_options:
       fields:
-        name:
-          separator: ', '
+        name: {  }
       pager:
         options:
           tags:
@@ -13,7 +12,6 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
       exposed_form:
         options:
           submit_button: Käytä
@@ -24,7 +22,8 @@ display:
       empty:
         area:
           content:
-            value: "<p>Ei tuloksia</p>\r\n"
+            value: '<p>Ei tuloksia</p>'
+            format: full_html
       arguments:
         id:
           exception:
@@ -33,9 +32,6 @@ display:
     display_title: Entiteettiviittaus
     display_options:
       fields:
-        name_override:
-          separator: ', '
-        id:
-          separator: ', '
-        name:
-          separator: ', '
+        name_override: {  }
+        id: {  }
+        name: {  }

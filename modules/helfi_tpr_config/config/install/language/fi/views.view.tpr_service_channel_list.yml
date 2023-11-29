@@ -20,29 +20,22 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
       fields:
         tpr_service_channel_bulk_form:
           label: Massapäivitys
           action_title: Toiminto
-        id:
-          label: ID
-          separator: ', '
+        id: {  }
         name:
           label: Nimi
-          separator: ', '
         langcode:
           label: Kieli
-          separator: ', '
         content_translation_status:
           label: Tila
           settings:
             format_custom_true: Julkaistu
             format_custom_false: Julkaisematon
-          separator: ', '
         content_translation_changed:
           label: Päivitetty
-          separator: ', '
         operations:
           label: Toimenpiteet
       filters:
@@ -60,5 +53,6 @@ display:
         area:
           content:
             value: 'Ei tuloksia.'
+            format: plain_text
   page_1:
     display_title: Sivu

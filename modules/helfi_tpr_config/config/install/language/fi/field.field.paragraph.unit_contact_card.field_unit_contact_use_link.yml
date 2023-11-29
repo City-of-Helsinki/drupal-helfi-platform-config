@@ -1,1 +1,4 @@
 label: 'Näytä linkki toimipistesivulle'
+settings:
+  on_label: Kyllä
+  off_label: Ei
