@@ -30,8 +30,6 @@ class ChatLeijuke extends BlockBase {
       '#description' => $this->t('Choose the approriate chat/bot provider?'),
       '#default_value' => $config['chat_selection'] ?? '',
       '#options' => [
-        'smartti_chatbot' => 'Smartti Chatbot',
-        'genesys_kymp' => 'Genesys KYMP',
         'genesys_suunte' => 'Genesys SUUNTE',
         'user_inquiry' => 'Käyttäjätutkimus',
       ],
