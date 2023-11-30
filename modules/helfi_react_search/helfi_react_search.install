@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_react_search module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Remove stale event list paragraph load more field configurations.
+ */
+function helfi_react_search_update_9003(): void {
+  $default_language = \Drupal::languageManager()->getDefaultLanguage();
+  $obsolete_configurations = [
+    'field.field.paragraph.event_list.field_load_more',
+    'field.storage.paragraph.field_load_more',
+  ];
+
+  // Remove original language configurations.
+  $config_factory = \Drupal::configFactory();
+  foreach ($obsolete_configurations as $configuration) {
+    $config_factory->getEditable($configuration)->delete();
+
+    // Remove translations.
+    foreach (\Drupal::languageManager()->getLanguages() as $language) {
+      if ($language->getId() === $default_language->getId()) {
+        continue;
+      }
+      \Drupal::languageManager()
+        ->getLanguageConfigOverride($language->getId(), $configuration)
+        ->delete();
+    }
+  }
+
+  // Make sure the configurations are correctly installed.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+}
