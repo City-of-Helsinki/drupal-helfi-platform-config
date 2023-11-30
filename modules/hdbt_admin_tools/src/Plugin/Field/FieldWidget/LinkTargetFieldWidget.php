@@ -41,8 +41,8 @@ class LinkTargetFieldWidget extends LinkitWidget {
     $element_path = $this->getElementStatePath($element, $delta);
 
     $element['options']['target_check'] = [
-      '#title' => t('The link meets the accessibility requirements'),
-      '#description' => t('I have made sure that the description of this link clearly states that it will open in a new tab. <a href="@wcag-techniques" target="_blank">See WCAG 3.2.5 accessibility requirement (the link opens in a new tab).</a>', [
+      '#title' => $this->t('The link meets the accessibility requirements'),
+      '#description' => $this->t('I have made sure that the description of this link clearly states that it will open in a new tab. <a href="@wcag-techniques" target="_blank">See WCAG 3.2.5 accessibility requirement (the link opens in a new tab).</a>', [
         '@wcag-techniques' => 'https://www.w3.org/WAI/WCAG21/Techniques/general/G200.html',
       ]),
       '#type' => 'checkbox',
@@ -77,6 +77,7 @@ class LinkTargetFieldWidget extends LinkitWidget {
    *   Returns an array of link items.
    */
   protected function getLinkItem(FieldItemListInterface $items, int $delta): LinkItemInterface {
+    assert($items[$delta] instanceof LinkItemInterface);
     return $items[$delta];
   }
 

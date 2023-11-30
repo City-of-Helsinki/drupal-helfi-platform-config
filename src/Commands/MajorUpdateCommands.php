@@ -95,6 +95,8 @@ final class MajorUpdateCommands extends DrushCommands {
     $this->forceEnableModules($modules);
 
     $extensions = $this->getExtensions();
+    // @todo Use dependency injection.
+    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     $extensionsConfig = \Drupal::configFactory()->getEditable('core.extension');
 
     foreach ($extensions['module'] as $module => $weight) {
@@ -280,6 +282,8 @@ final class MajorUpdateCommands extends DrushCommands {
    *   The cmi folder.
    */
   private function getConfigExportFolder() : string {
+    // @todo Use dependency injection.
+    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     return \Drupal::root() . '/../conf/cmi';
   }
 

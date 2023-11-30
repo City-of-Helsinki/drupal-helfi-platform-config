@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\Plugin\DataType\EntityReference;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
@@ -94,9 +95,10 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
         continue;
       }
 
-      $targetDef = $def->getPropertyDefinition('entity')->getTargetDefinition()->getEntityTypeId();
+      $targetDef = $def->getPropertyDefinition('entity');
+      assert($targetDef instanceof EntityReference);
 
-      if ($targetDef !== 'media') {
+      if ($targetDef->getTargetDefinition()->getEntityTypeId() !== 'media') {
         continue;
       }
 

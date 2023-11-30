@@ -109,7 +109,9 @@ abstract class SelectWidgetBase extends OptionsSelectWidget {
   /**
    * {@inheritdoc}
    */
-  protected function getEmptyLabel(): void {}
+  protected function getEmptyLabel(): ?string {
+    return '';
+  }
 
   /**
    * Get field name and convert it to a more suitable name for our needs.

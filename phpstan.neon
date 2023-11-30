@@ -1,0 +1,84 @@
+parameters:
+  fileExtensions:
+      - php
+      - module
+      - install
+  paths:
+    - ./
+  excludePaths:
+    - vendor
+  level: 3
+  checkMissingIterableValueType: false
+  treatPhpDocTypesAsCertain: false
+  ignoreErrors:
+    -
+      message: '#^Unsafe usage of new static#'
+      path: src/Plugin/Block/ContentBlockBase.php
+    -
+      message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
+      path: src/Plugin/Block/ChatLeijuke.php
+    -
+      message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
+      path: src/Commands/MajorUpdateCommands.php
+    -
+      message: '#^Undefined variable: \$sandbox#'
+      path: src/Commands/MajorUpdateCommands.php
+    -
+      message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
+      path: modules/helfi_react_search/src/LinkedEvents.php
+    -
+      message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemListInterface<Drupal\\Core\\Field\\FieldItemInterface>::\$alt.#'
+      path: modules/helfi_paragraphs_contact_card_listing/src/Entity/ContactCard.php
+    -
+      message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemInterface::\$alt.#'
+      path: modules/helfi_paragraphs_contact_card_listing/src/Entity/ContactCard.php
+    -
+      message: '#^Unsafe usage of new static#'
+      path: modules/helfi_node_announcement/src/Plugin/Block/AnnouncementsBlockBase.php
+    -
+      message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemListInterface<Drupal\\Core\\Field\\FieldItemInterface>::\$iframe_title.#'
+      path: modules/helfi_media_remote_video/src/Entity/RemoteVideo.php
+    -
+      message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemListInterface::\$uri.#'
+      path: modules/helfi_media_map/src/Entity/HelMap.php
+    -
+      message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemListInterface<Drupal\\Core\\Field\\FieldItemInterface>::\$title.#'
+      path: modules/helfi_media_map/src/Entity/HelMap.php
+    -
+      message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
+      path: modules/helfi_ckeditor/src/Plugin/CKEditor5Plugin/HelfiLink.php
+    -
+      message: '#^Unsafe usage of new static#'
+      path: modules/hdbt_admin_tools/src/SelectWidgetBase.php
+    -
+      message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
+      path: modules/hdbt_admin_tools/src/Controller/ListController.php
+    -
+      message: '#^Access to an undefined property Drupal\\media\\MediaInterface::\$field_media_image.#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
+      message: '#^Access to an undefined property Drupal\\node\\NodeInterface::\$field_organization.#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
+      message: '#^Access to an undefined property Drupal\\Core\\Entity\\EntityInterface::\$field_default_image.#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
+      message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::getFileUri\(\).#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
+      message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::getFileUri\(\).#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      reportUnmatched: false
+    -
+      message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::hasField\(\).#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+    -
+      message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::get\(\).#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+    -
+      message: '#^Call to an undefined method Drupal\\Core\\Field\\FieldDefinitionInterface::save\(\).#'
+      path: helfi_platform_config.module

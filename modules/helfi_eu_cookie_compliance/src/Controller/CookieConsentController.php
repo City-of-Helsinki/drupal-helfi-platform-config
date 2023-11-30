@@ -12,14 +12,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CookieConsentController extends ControllerBase {
 
   /**
-   * The configuration factory.
+   * Constructs a new instance.
    *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
-   * {@inheritdoc}
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory.
    */
   public function __construct(ConfigFactoryInterface $config_factory) {
     $this->configFactory = $config_factory;
@@ -28,8 +24,8 @@ class CookieConsentController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
+  public static function create(ContainerInterface $container) : self {
+    return new self(
       $container->get('config.factory'),
     );
   }

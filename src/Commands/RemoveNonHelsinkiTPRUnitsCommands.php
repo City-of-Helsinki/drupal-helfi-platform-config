@@ -49,6 +49,7 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
 
     // Delete the units.
     foreach ($unit_ids as $unit_id) {
+      /** @var \Drupal\helfi_tpr\Entity\Unit $unit */
       $unit = $this->entityTypeManager->getStorage('tpr_unit')->load($unit_id);
 
       $this->output()->writeln($this->t('Deleting "@unit_label"', ['@unit_label' => $unit->label()]));

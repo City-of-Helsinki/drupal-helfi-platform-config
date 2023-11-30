@@ -6,6 +6,8 @@ namespace Drupal\helfi_platform_config;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\RevisionableStorageInterface;
+use Drupal\Core\Entity\TranslatableRevisionableInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -93,11 +95,15 @@ class EntityVersionMatcher {
         case "entity.$entity_type.revision":
           $entity_version = static::ENTITY_VERSION_REVISION;
           $storage = $this->entityTypeManager->getStorage($entity_type);
+          assert($storage instanceof RevisionableStorageInterface);
+
           $revision_id = $this->routeMatch->getParameter("{$entity_type}_revision");
           if ($revision_id instanceof ContentEntityInterface) {
             $revision_id = $revision_id->getRevisionId();
           }
           $revision = $storage->loadRevision($revision_id);
+          assert($revision instanceof TranslatableRevisionableInterface);
+
           $entity = $revision->getTranslation($language->getId());
           break;
 

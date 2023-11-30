@@ -74,7 +74,7 @@ function hdbt_admin_tools_tokens(
 
     // Custom token for shareable-image.
     if ($name === 'shareable-image' && !empty($data['node'])) {
-      /** @var \Drupal\node\Entity\Node $node */
+      /** @var \Drupal\node\NodeInterface $node */
       $node = $data['node'];
       $image_url = $default_image;
 

@@ -41,7 +41,7 @@ class HeroBlock extends ContentBlockBase {
 
       // Handle only landing page.
       if (
-        $entity->getType() === 'landing_page' &&
+        $entity->bundle() === 'landing_page' &&
         !$entity->get('field_content')->isEmpty()
       ) {
         // Check if the content field first paragraph is Unit search

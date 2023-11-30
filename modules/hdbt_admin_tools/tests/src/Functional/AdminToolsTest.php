@@ -62,9 +62,7 @@ class AdminToolsTest extends BrowserTestBase {
     foreach ($routes as $route => $title) {
       $this->drupalGet(Url::fromRoute($route));
       $this->assertSession()->statusCodeEquals(200);
-      if (!empty($title)) {
-        $this->assertSession()->pageTextContains($title);
-      }
+      $this->assertSession()->pageTextContains($title);
     }
   }
 

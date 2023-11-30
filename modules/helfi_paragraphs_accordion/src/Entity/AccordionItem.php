@@ -25,7 +25,7 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
   /**
    * Set item heading level based on accordion paragraph title.
    *
-   * @return string
+   * @return int
    *   The level of heading.
    */
   public function getTitleHeadingLevel(): int {

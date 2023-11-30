@@ -18,9 +18,9 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
   /**
    * The constructor.
    *
-   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param Drupal\Core\Language\LanguageManagerInterface $languageManager
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
    */
   public function __construct(
@@ -43,7 +43,7 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
   /**
    * Responds to Events::HAS_TRANSLATION event.
    *
-   * @param Drupal\menu_block_current_language\Event\Events $event
+   * @param \Drupal\menu_block_current_language\Event\HasTranslationEvent $event
    *   The event subscribed to.
    */
   public function filter(HasTranslationEvent $event): void {

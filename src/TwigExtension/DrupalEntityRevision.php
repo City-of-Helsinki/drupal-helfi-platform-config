@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_platform_config\TwigExtension;
 
 use Drupal\Component\Uuid\Uuid;
+use Drupal\Core\Entity\RevisionableStorageInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -41,6 +42,7 @@ class DrupalEntityRevision extends AbstractExtension {
    */
   public static function entityRevision(string $entity_type, string $selector): array {
     $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+    assert($storage instanceof RevisionableStorageInterface);
 
     if (Uuid::isValid($selector)) {
       $entities = $storage->loadByProperties(['uuid' => $selector]);

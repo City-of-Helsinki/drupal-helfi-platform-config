@@ -18,7 +18,9 @@ class SocialMediaLink extends Paragraph implements ParagraphInterface {
    */
   public function getIconName(): ?string {
     if (!$this->get('field_icon')->isEmpty()) {
-      return ucfirst($this->get('field_icon')->icon);
+      /** @var \Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon $field */
+      $field = $this->get('field_icon');
+      return ucfirst($field->icon);
     }
     return NULL;
   }

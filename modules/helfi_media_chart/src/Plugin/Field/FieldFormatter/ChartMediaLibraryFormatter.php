@@ -8,6 +8,8 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_media_chart\UrlParserTrait;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'Chart' formatter.
@@ -25,6 +27,28 @@ final class ChartMediaLibraryFormatter extends FormatterBase {
   use UrlParserTrait;
 
   /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  private LoggerInterface $logger;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition
+  ) : self {
+    $instance = parent::create($container, $configuration, $plugin_id,
+      $plugin_definition);
+    $instance->logger = $container->get('logger.factory')->get('helfi_chart');
+    return $instance;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) :array {
@@ -37,8 +61,7 @@ final class ChartMediaLibraryFormatter extends FormatterBase {
         $url = $this->mediaUrlToUri($uri);
       }
       catch (\InvalidArgumentException $e) {
-        $logger = \Drupal::logger('helfi_chart');
-        Error::logException($logger, $e);
+        Error::logException($this->logger, $e);
         continue;
       }
 

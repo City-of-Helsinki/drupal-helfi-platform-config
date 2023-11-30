@@ -110,6 +110,8 @@ class LinkedEvents extends EventsApiBase {
       'sort' => 'end_time',
       'start' => 'now',
       'super_event_type' => 'umbrella,none',
+      // @todo Use dependency injection.
+      // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
       'language' => \Drupal::languageManager()
         ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
         ->getId(),

@@ -26,7 +26,7 @@ function helfi_paragraphs_banner_update_9001() : void {
   $paragraphs = Paragraph::loadMultiple($pids);
 
   // Convert to left aligned design.
-  /** @var \Drupal\paragraphs\Entity\ParagraphInterface $paragraph */
+  /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
   foreach ($paragraphs as $paragraph) {
     if ($paragraph instanceof ParagraphInterface) {
       $field_update_map = [
@@ -35,7 +35,7 @@ function helfi_paragraphs_banner_update_9001() : void {
       ];
 
       $paragraph
-        ->set('field_banner_design', $field_update_map[$paragraph->field_banner_design->value])
+        ->set('field_banner_design', $field_update_map[$paragraph->get('field_banner_design')->value])
         ->save();
     }
   }
