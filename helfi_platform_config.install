@@ -44,7 +44,7 @@ function helfi_platform_config_update_9303(): void {
   foreach($userEntities as $user) {
     if (!$user->getEmail()) {
       $randomString = substr(md5(rand()), 0, 6);
-      $email = "$randomString+placeholder@hel.fi";
+      $email = "$randomString+readonly@hel.fi";
       $user->setEmail($email);
       $user->save();
     }
