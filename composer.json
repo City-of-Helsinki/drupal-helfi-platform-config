@@ -61,6 +61,7 @@
     "conflict": {
         "drupal/core-recommended": "<9.5",
         "drupal/ctools": "<3.11 || ^4.0.1",
+        "drupal/helfi_api_base": "<2.4.8",
         "drupal/helfi_media_map": "*",
         "drush/drush": "<11"
     },
