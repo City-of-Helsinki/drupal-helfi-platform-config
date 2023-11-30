@@ -188,14 +188,6 @@ function helfi_base_content_install($is_syncing) : void {
     return;
   }
 
-  foreach (['fi', 'sv'] as $langcode) {
-    if (ConfigurableLanguage::load($langcode)) {
-      continue;
-    }
-    ConfigurableLanguage::createFromLangcode($langcode)
-      ->save();
-  }
-
   $prefixes = [];
   foreach (Drupal::languageManager()->getLanguages() as $language) {
     $prefixes[$language->getId()] = $language->getId();

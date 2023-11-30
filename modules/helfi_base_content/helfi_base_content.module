@@ -7,6 +7,23 @@
 
 declare(strict_types = 1);
 
+use Drupal\language\Entity\ConfigurableLanguage;
+
+/**
+ * Implements hook_module_preinstall().
+ */
+function helfi_base_content_module_preinstall($module) : void {
+  if ($module === 'helfi_base_content') {
+    foreach (['fi', 'sv'] as $langcode) {
+      if (ConfigurableLanguage::load($langcode)) {
+        continue;
+      }
+      ConfigurableLanguage::createFromLangcode($langcode)
+        ->save();
+    }
+  }
+}
+
 /**
  * Implements hook_themes_installed().
  */
