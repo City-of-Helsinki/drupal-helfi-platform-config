@@ -461,7 +461,7 @@ function helfi_platform_config_language_switch_links_alter(array &$links): void 
     if (!$entity->hasTranslation($langcode)) {
       continue;
     }
-    
+
     $entity = $entity->getTranslation($langcode);
     if (!$entity instanceof EntityPublishedInterface || $entity->isPublished()) {
       continue;
