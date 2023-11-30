@@ -4,26 +4,9 @@ display:
     display_title: Oletus
     display_options:
       title: 'Lukitut palvelut'
-      pager:
-        options:
-          tags: {  }
-          expose: {  }
-      exposed_form:
-        options:
-          submit_button: Käytä
-          exposed_sorts_label: Järjestä
-          sort_asc_label: Nouseva
-          sort_desc_label: Laskeva
-      empty:
-        area_text_custom:
-          content: 'Lukittuja palveluja ei ole.'
-      filters:
-        name:
-          expose:
-            label: Otsikko
       fields:
         tpr_service_bulk_form:
-          label: Bulkkipäivitys
+          label: Massapäivitys
           action_title: Toiminto
         name:
           label: Otsikko
@@ -34,6 +17,26 @@ display:
         langcode:
           label: 'Sisällön kieli'
         operations:
-          label: Toiminnot
-  locked_services_block:
-    display_title: Lohko
+          label: Toimenpiteet
+      pager:
+        options:
+          tags:
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
+          expose: {  }
+      exposed_form:
+        options:
+          submit_button: Suodata
+          exposed_sorts_label: Järjestä
+          sort_asc_label: Nouseva
+          sort_desc_label: Laskeva
+      empty:
+        area_text_custom:
+          content: 'Lukittuja palveluja ei ole.'
+      filters:
+        name:
+          expose:
+            label: Otsikko
+  locked_services_block: {  }

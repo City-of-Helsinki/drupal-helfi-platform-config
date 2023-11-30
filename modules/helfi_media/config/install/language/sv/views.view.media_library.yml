@@ -3,15 +3,12 @@ display:
   default:
     display_title: Förvald
     display_options:
-      title: Media
       fields:
         media_bulk_form:
           action_title: Åtgärd
       pager:
         options:
-          tags:
-            next: ››
-            previous: ‹‹
+          tags: {  }
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
@@ -40,6 +37,7 @@ display:
         status:
           expose:
             label: 'Status för publicering'
+            description: ''
           group_info:
             label: Publicerad
             group_items:
@@ -53,6 +51,7 @@ display:
             label: Mediatyp
           group_info:
             label: Mediatyp
+            description: ''
         langcode:
           expose:
             label: Språk
@@ -62,8 +61,7 @@ display:
       fields:
         media_bulk_form:
           action_title: Åtgärd
-        name:
-          separator: ', '
+        name: {  }
         edit_media:
           alter:
             text: 'Redigera {{ name }}'
@@ -75,7 +73,6 @@ display:
             alt: 'Radera {{ name }}'
           text: Radera
   widget:
-    display_title: Widget
     display_options:
       arguments:
         bundle:

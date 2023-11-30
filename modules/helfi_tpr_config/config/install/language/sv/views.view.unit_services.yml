@@ -1,6 +1,5 @@
 display:
   default:
-    display_title: Förvald
     display_options:
       exposed_form:
         options:
@@ -9,20 +8,9 @@ display:
           exposed_sorts_label: 'Sortera efter'
           sort_asc_label: Stigande
           sort_desc_label: Fallande
-      pager:
-        options:
-          tags:
-            next: Nästa
-            previous: Föregående
-            first: Första
-            last: Sista
-          expose:
-            items_per_page_label: 'Inlägg per sida'
-            items_per_page_options_all_label: '- Alla -'
-            offset_label: Kompensera
       arguments:
         id:
           exception:
             title: Alla
-  unit_services:
-    display_title: Block
+    display_title: Förvald
+  unit_services: {  }

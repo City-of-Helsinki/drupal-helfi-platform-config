@@ -1,6 +1,5 @@
 display:
   default:
-    display_title: Oletus
     display_options:
       exposed_form:
         options:
@@ -9,14 +8,9 @@ display:
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
           sort_desc_label: Laskevasti
-      pager:
-        options:
-          tags:
-            next: Seuraava
-            previous: Edellinen
-            first: Ensimmäinen
-            last: Viimeinen
-          expose:
-            items_per_page_label: 'Kohteita sivulla'
-            items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
+      arguments:
+        id:
+          exception:
+            title: Kaikki
+    display_title: Oletus
+  unit_services: {  }

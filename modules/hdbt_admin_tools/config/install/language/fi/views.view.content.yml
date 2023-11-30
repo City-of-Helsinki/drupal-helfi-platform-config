@@ -1,0 +1,70 @@
+display:
+  default:
+    display_options:
+      fields:
+        langcode:
+          label: Kieli
+        title:
+          label: Otsikko
+        type:
+          label: Sisältötyyppi
+        name:
+          label: Kirjoittaja
+        status:
+          label: Tila
+          settings:
+            format_custom_false: Julkaisematon
+            format_custom_true: Julkaistu
+        changed:
+          label: Päivitetty
+        operations:
+          label: Toimenpiteet
+      title: Sisältö
+      pager:
+        options:
+          tags:
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
+      exposed_form:
+        options:
+          submit_button: Suodata
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      empty:
+        area_text_custom:
+          content: 'Ei sisältöä.'
+      filters:
+        title:
+          expose:
+            label: Otsikko
+        type:
+          expose:
+            label: Sisältötyyppi
+        status:
+          expose:
+            label: Tila
+          group_info:
+            label: Julkaisutila
+            group_items:
+              1:
+                title: Julkaistu
+              2:
+                title: Julkaisematon
+        langcode:
+          expose:
+            label: Kieli
+    display_title: Oletus
+  page_1:
+    display_title: Sivu
+    display_options:
+      menu:
+        title: Sisältö
+      tab_options:
+        title: Sisältö
+        description: 'Etsi ja hallitse sisältöä'
+label: Sisältö
+description: 'Etsi ja ylläpidä sisältöä.'

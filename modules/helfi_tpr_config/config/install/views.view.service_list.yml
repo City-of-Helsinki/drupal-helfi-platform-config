@@ -370,7 +370,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - url.query_args
         - user
         - user.permissions
       tags: {  }

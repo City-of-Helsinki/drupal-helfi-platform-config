@@ -1,2 +1,5 @@
 label: Etätapahtumat
 description: 'Näytä "näytä vain etätapahtumat" -suodatin. Älä käytä yhtä aikaa "Tapahtumapaikka" -suodattimen kanssa.'
+settings:
+  on_label: Kyllä
+  off_label: Ei
