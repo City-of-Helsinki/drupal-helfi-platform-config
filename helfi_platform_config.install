@@ -41,7 +41,7 @@ function helfi_platform_config_update_9303(): void {
   }
 
   $userEntities = User::loadMultiple($usersIds);
-  foreach($userEntities as $user) {
+  foreach ($userEntities as $user) {
     if (!$user->getEmail()) {
       $randomString = substr(md5(rand()), 0, 6);
       $email = "$randomString+readonly@hel.fi";
