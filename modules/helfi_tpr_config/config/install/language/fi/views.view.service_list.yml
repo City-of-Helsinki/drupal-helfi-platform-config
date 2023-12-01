@@ -1,14 +1,10 @@
+label: Palvelulistaus
 display:
   default:
-    display_title: Isäntä
+    display_title: Oletus
     display_options:
-      exposed_form:
-        options:
-          submit_button: Käytä
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+      fields:
+        name: {  }
       pager:
         options:
           tags:
@@ -19,23 +15,61 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Käytä
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      empty:
+        area:
+          content:
+            value: '<p>Ei tuloksia</p>'
+            format: full_html
       arguments:
         id:
           exception:
             title: Kaikki
+  block: {  }
   block_search:
     display_options:
-      exposed_form:
-        options:
-          submit_button: Etsi
+      fields:
+        name: {  }
+        name_synonyms: {  }
+        description__summary: {  }
+        name_override: {  }
       pager:
         options:
           tags:
-            previous: Edellinen
             next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+      exposed_form:
+        options:
+          submit_button: Etsi
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      arguments:
+        id_or_service_id:
+          exception:
+            title: Kaikki
       filters:
         combine:
           expose:
             label: 'Neuvontapalvelun nimi tai hakusana'
             placeholder: 'Esim. Sosiaalineuvonta, terveys tai digi'
+      title: Palveluluettelohaku
+  entity_reference_1:
+    display_title: Entiteettiviittaus
+    display_options:
+      fields:
+        name_override: {  }
+        id: {  }
+        name: {  }

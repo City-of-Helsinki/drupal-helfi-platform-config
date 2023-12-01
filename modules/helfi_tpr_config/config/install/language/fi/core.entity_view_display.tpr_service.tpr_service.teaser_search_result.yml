@@ -2,8 +2,6 @@ content:
   errand_services:
     settings:
       sort_order:
-        ESERVICE:
-          label: E-service
         CHAT:
           label: Chat
         EMAIL:
@@ -12,15 +10,3 @@ content:
           label: Puhelin
         PRINTABLE_FORM:
           label: Lomake
-        LOCAL:
-          label: 'Local service'
-        SMS:
-          label: SMS
-        WEBPAGE:
-          label: Webpage
-        MAIL:
-          label: 'Postal mail'
-        TELEFAX:
-          label: Telefax
-        OFFICE:
-          label: Palvelupiste

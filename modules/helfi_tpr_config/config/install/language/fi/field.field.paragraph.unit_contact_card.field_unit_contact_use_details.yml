@@ -1,1 +1,4 @@
 label: 'Näytä lisätiedot'
+settings:
+  on_label: Kyllä
+  off_label: Ei

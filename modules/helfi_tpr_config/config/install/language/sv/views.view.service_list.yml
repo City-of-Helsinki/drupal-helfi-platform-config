@@ -1,6 +1,9 @@
 display:
   default:
+    display_title: Förvald
     display_options:
+      fields:
+        name: {  }
       pager:
         options:
           tags:
@@ -8,18 +11,65 @@ display:
             previous: Föregående
             first: Första
             last: Sista
-  block_search:
-    display_options:
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
       exposed_form:
         options:
-          submit_button: Sök
+          submit_button: Verkställ
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      empty:
+        area:
+          content:
+            value: '<p>Inget resultat</p>'
+            format: full_html
+      arguments:
+        id:
+          exception:
+            title: Alla
+  block: {  }
+  block_search:
+    display_options:
+      fields:
+        name: {  }
+        name_synonyms: {  }
+        description__summary: {  }
+        name_override: {  }
       pager:
         options:
           tags:
-            previous: Tidigare
             next: Nästa
+            previous: Föregående
+            first: Första
+            last: Sista
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      exposed_form:
+        options:
+          submit_button: Sök
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      arguments:
+        id_or_service_id:
+          exception:
+            title: Alla
       filters:
         combine:
           expose:
             label: 'Rådgivningstjänstens namn eller sökterm'
             placeholder: 't.ex. Socialrådgivning, hälsa eller digitalt Sök'
+  entity_reference_1:
+    display_title: Objektsreferens
+    display_options:
+      fields:
+        name_override: {  }
+        id: {  }
+        name: {  }

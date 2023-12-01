@@ -51,3 +51,30 @@ function hdbt_admin_tools_update_9002(): void {
       ->update($module);
   }
 }
+
+/**
+ * Update views configuration and configuration translations.
+ */
+function hdbt_admin_tools_update_9003(): void {
+  $modules = [
+    'hdbt_admin_tools',
+    'helfi_media',
+    'helfi_node_announcement',
+    'helfi_node_landing_page',
+    'helfi_node_news_item',
+    'helfi_node_page',
+    'helfi_paragraphs_phasing',
+    'helfi_paragraphs_popular_services',
+    'helfi_react_search',
+    'helfi_tpr_config',
+  ];
+
+  foreach ($modules as $module) {
+    if (!Drupal::moduleHandler()->moduleExists($module)) {
+      continue;
+    }
+
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update($module);
+  }
+}

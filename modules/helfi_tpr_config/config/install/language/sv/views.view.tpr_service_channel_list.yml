@@ -12,8 +12,6 @@ display:
       pager:
         options:
           tags:
-            previous: ‹‹
-            next: ››
             first: '« Första'
             last: 'Sista »'
           expose:
@@ -24,24 +22,17 @@ display:
         tpr_service_channel_bulk_form:
           label: Massuppdatera
           action_title: Åtgärd
-        id:
-          label: ID
-          separator: ', '
+        id: {  }
         name:
           label: Namn
-          separator: ', '
         langcode:
           label: Språk
-          separator: ', '
         content_translation_status:
-          label: Status
           settings:
             format_custom_true: Publicerad
             format_custom_false: 'Ej publicerad'
-          separator: ', '
         content_translation_changed:
           label: Uppdaterad
-          separator: ', '
         operations:
           label: Funktioner
       filters:
