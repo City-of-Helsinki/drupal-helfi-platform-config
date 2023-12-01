@@ -478,7 +478,8 @@ function helfi_platform_config_language_switch_links_alter(array &$links): void 
  */
 function helfi_platform_config_config_ignore_settings_alter(array &$settings) {
   // Chatleijuke is used in hammashoito chat in Sote and by user_inquiry.
-  // Genesyschat might be used in palvelukeskus later but is already removed from other instances.
+  // Genesyschat might be used in palvelukeskus later but
+  // the block configs already removed from other instances.
   $add_ignore = [
     'block.block.ibmchatapp',
     'block.block.ibmchatapp_*',
