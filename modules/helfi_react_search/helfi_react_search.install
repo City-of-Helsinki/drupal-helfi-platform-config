@@ -11,7 +11,8 @@ declare(strict_types = 1);
  * Remove stale event list paragraph load more field configurations.
  */
 function helfi_react_search_update_9003(): void {
-  $default_language = \Drupal::languageManager()->getDefaultLanguage();
+  $language_manager = \Drupal::languageManager();
+  $default_language = $language_manager->getDefaultLanguage();
   $obsolete_configurations = [
     'field.field.paragraph.event_list.field_load_more',
     'field.storage.paragraph.field_load_more',
@@ -23,15 +24,15 @@ function helfi_react_search_update_9003(): void {
     $config_factory->getEditable($configuration)->delete();
 
     // Remove translations.
-    foreach (\Drupal::languageManager()->getLanguages() as $language) {
+    foreach ($language_manager->getLanguages() as $language) {
       if ($language->getId() === $default_language->getId()) {
         continue;
       }
-      \Drupal::languageManager()
-        ->getLanguageConfigOverride($language->getId(), $configuration)
-        ->delete();
+      $language_manager->setConfigOverrideLanguage($language);
+      $config_factory->getEditable($configuration)->delete();
     }
   }
+  $language_manager->setConfigOverrideLanguage($default_language);
 
   // Make sure the configurations are correctly installed.
   \Drupal::service('helfi_platform_config.config_update_helper')

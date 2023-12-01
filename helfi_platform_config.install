@@ -5,6 +5,8 @@
  * Contains installation hooks for HELfi platform config module.
  */
 
+use Drupal\user\Entity\User;
+
 /**
  * UHF-9113: Remove obsolete hotjar permission.
  */
@@ -22,5 +24,29 @@ function helfi_platform_config_update_9302(): void {
 
   if (\Drupal::moduleHandler()->moduleExists('config_filter')) {
     $module_installer->uninstall(['config_filter']);
+  }
+}
+
+/**
+ * Create an email address for all read_only users missing the email address.
+ */
+function helfi_platform_config_update_9303(): void {
+  $query = \Drupal::entityQuery('user');
+  $usersIds = $query->accessCheck(FALSE)
+    ->condition('status', 1)
+    ->condition('roles', ['read_only'])
+    ->execute();
+  if (!$usersIds) {
+    return;
+  }
+
+  $userEntities = User::loadMultiple($usersIds);
+  foreach ($userEntities as $user) {
+    if (!$user->getEmail()) {
+      $randomString = substr(md5(rand()), 0, 6);
+      $email = "$randomString+readonly@hel.fi";
+      $user->setEmail($email);
+      $user->save();
+    }
   }
 }

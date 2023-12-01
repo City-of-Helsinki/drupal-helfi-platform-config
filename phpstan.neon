@@ -24,9 +24,6 @@ parameters:
       message: '#^Undefined variable: \$sandbox#'
       path: src/Commands/MajorUpdateCommands.php
     -
-      message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
-      path: modules/helfi_react_search/src/LinkedEvents.php
-    -
       message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemListInterface<Drupal\\Core\\Field\\FieldItemInterface>::\$alt.#'
       path: modules/helfi_paragraphs_contact_card_listing/src/Entity/ContactCard.php
     -
