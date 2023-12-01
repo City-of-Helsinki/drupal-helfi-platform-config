@@ -112,6 +112,7 @@ class LinkedEvents extends EventsApiBase {
       'super_event_type' => 'umbrella,none',
       // @todo Use dependency injection.
       // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
+      // @phpstan-ignore-next-line
       'language' => \Drupal::languageManager()
         ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
         ->getId(),
