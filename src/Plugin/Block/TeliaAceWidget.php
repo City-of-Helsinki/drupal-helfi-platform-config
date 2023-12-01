@@ -66,7 +66,7 @@ class TeliaAceWidget extends BlockBase {
     $build['ibm_chat_app'] = [
       'button' => [
         '#type' => 'html_tag',
-        '#tag' => 'button',
+        '#tag' => 'div',
         '#attributes' => [
           'id' => $chat_id,
           'class' => [
