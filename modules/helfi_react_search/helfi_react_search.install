@@ -7,8 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Language\LanguageManagerInterface;
-
 /**
  * Remove stale event list paragraph load more field configurations.
  */
