@@ -34,8 +34,8 @@ class TeliaAceWidget extends BlockBase {
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => $this->t('Chat Widget ID'),
-      '#description' => $this->t('ID for the chat instance. Example format: //acewebsdk/example-chat-fin'),
-      '#default_value' => $config['chat_id'] ?? '//acewebsdk/',
+      '#description' => $this->t('ID for the chat instance. Example format: example-chat-fin'),
+      '#default_value' => $config['chat_id'] ?? '',
     ];
 
     return $form;
@@ -61,11 +61,19 @@ class TeliaAceWidget extends BlockBase {
     $config = $this->getConfiguration();
     $base_url = 'https://wds.ace.teliacompany.com';
     $script_url = $base_url . $config['script_url'];
-    $chat_id = $config['chat_id'];
+    $chat_id = 'humany_' . $config['chat_id'];
 
     $build['ibm_chat_app'] = [
-      '#title' => $this->t('Telia ACE Widget'),
-      '#markup' => '<a class="hidden" href="' . $chat_id . '"></a>',
+      'button' => [
+        '#type' => 'html_tag',
+        '#tag' => 'button',
+        '#attributes' => [
+          'id' => $chat_id,
+          'class' => [
+            'hidden',
+          ],
+        ],
+      ],
       '#attached' => [
         'library' => $library,
         'html_head' => [
