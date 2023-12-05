@@ -1,6 +1,8 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - external_entities.external_entity_type.helfi_news_groups
   module:
     - external_entities
     - paragraphs

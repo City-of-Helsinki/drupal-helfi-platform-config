@@ -1,6 +1,8 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - external_entities
 id: helfi_news
 label: 'Helfi: News'
 label_plural: 'Helfi: News'

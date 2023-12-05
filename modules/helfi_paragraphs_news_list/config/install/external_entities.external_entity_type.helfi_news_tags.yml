@@ -1,10 +1,12 @@
 langcode: en
 status: true
-dependencies: {  }
-id: helfi_news_groups
-label: 'Helfi: News groups'
-label_plural: 'Helfi: News groups'
-description: 'Retrieves news groups taxonomy terms from Helfi'
+dependencies:
+  module:
+    - external_entities
+id: helfi_news_tags
+label: 'Helfi: News tags'
+label_plural: 'Helfi: News tags'
+description: 'Retrieves news tags taxonomy terms from Helfi'
 read_only: true
 field_mapper_id: jsonpath
 field_mapper_config:
@@ -17,7 +19,7 @@ field_mapper_config:
       value: '$.attributes["name"]'
     field_frontpage_term_id:
       value: '$.attributes["drupal_internal__tid"]'
-storage_client_id: helfi_news_groups
+storage_client_id: helfi_news_tags
 storage_client_config: {  }
 persistent_cache_max_age: 86400
 annotation_entity_type_id: null
