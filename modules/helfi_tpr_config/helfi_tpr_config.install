@@ -366,8 +366,8 @@ function helfi_tpr_config_update_9052() : void {
   $description_override = BaseFieldDefinition::create('text_with_summary')
     ->setTranslatable(TRUE)
     ->setRevisionable(FALSE)
-    ->setLabel(new TranslatableMarkup('Description override'))
-    ->setDescription(new TranslatableMarkup('Overrides the description.'))
+    ->setLabel(new TranslatableMarkup('Override: Description'))
+    ->setDescription(new TranslatableMarkup('Add or overwrite the description text. If a description is provided by TPR, this will overwrite it.'))
     ->setDisplayConfigurable('form', TRUE)
     ->setDisplayConfigurable('view', TRUE)
     ->setSetting('allowed_formats', [0 => 'full_html']);
