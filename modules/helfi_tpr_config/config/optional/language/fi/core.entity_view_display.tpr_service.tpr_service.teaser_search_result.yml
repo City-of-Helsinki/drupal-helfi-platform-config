@@ -1,0 +1,12 @@
+content:
+  errand_services:
+    settings:
+      sort_order:
+        CHAT:
+          label: Chat
+        EMAIL:
+          label: Sähköposti
+        TELEPHONE:
+          label: Puhelin
+        PRINTABLE_FORM:
+          label: Lomake

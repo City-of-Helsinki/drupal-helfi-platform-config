@@ -41,7 +41,7 @@ class RemoteVideo extends Media implements MediaInterface {
   /**
    * Get url.
    *
-   * @return Drupal\Core\Url|string
+   * @return \Drupal\Core\Url|string
    *   The url.
    */
   public function getPrivacyPolicyUrl(): Url|string {

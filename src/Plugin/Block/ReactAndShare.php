@@ -4,7 +4,9 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\language\ConfigurableLanguageManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'ReactAndShare' block.
@@ -14,21 +16,29 @@ use Drupal\Core\Language\LanguageManagerInterface;
  *  admin_label = @Translation("React and Share"),
  * )
  */
-class ReactAndShare extends BlockBase {
+final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * Language manager.
    *
-   * @var Drupal\Core\Language\LanguageManagerInterface
+   * @var \Drupal\language\ConfigurableLanguageManagerInterface
    */
-  private LanguageManagerInterface $languageManager;
+  private ConfigurableLanguageManagerInterface $languageManager;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->languageManager = \Drupal::languageManager();
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition
+  ) : self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
+    assert($container->get('language_manager') instanceof ConfigurableLanguageManagerInterface);
+
+    $instance->languageManager = $container->get('language_manager');
+    return $instance;
   }
 
   /**
@@ -50,7 +60,7 @@ class ReactAndShare extends BlockBase {
 
     $build['react_and_share'] = [
       '#theme' => 'react_and_share',
-      '#title' => t('React and Share'),
+      '#title' => $this->t('React and Share'),
       '#attached' => [
         'library' => $library,
         'drupalSettings' => [

@@ -36,6 +36,7 @@ class BoostStripper implements EventSubscriberInterface {
    *   Event emitted by elasticsearch_connector.
    */
   public function stripBoost(PrepareIndexMappingEvent $event): void {
+    /** @var array $params */
     $params = $event->getIndexMappingParams();
 
     // Bail if nothing to check against.

@@ -19,6 +19,7 @@ use Drupal\Core\TypedData\DataDefinition;
  *   default_widget = "select_icon_widget",
  *   default_formatter = "select_icon_formatter"
  * )
+ * @property string $icon
  */
 class SelectIcon extends FieldItemBase {
 

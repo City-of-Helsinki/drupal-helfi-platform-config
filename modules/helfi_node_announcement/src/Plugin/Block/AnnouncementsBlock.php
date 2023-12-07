@@ -46,7 +46,7 @@ class AnnouncementsBlock extends AnnouncementsBlockBase {
     }
 
     // Get all published announcement nodes.
-    $nids = \Drupal::entityQuery('node')
+    $nids = $this->entityTypeManager->getStorage('node')->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'announcement')
       ->condition('status', NodeInterface::PUBLISHED)

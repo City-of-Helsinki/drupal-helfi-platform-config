@@ -351,3 +351,10 @@ function helfi_tpr_config_update_9050(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }
+
+/**
+ * UHF-8936 Update tpr_unit to include map and text paragraphs in lower content.
+ */
+function helfi_tpr_config_update_9051(): void {
+  helfi_platform_config_update_paragraph_target_types();
+}

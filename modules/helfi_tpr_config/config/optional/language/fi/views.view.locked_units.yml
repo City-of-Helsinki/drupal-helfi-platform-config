@@ -1,0 +1,46 @@
+label: 'Lukitut toimipisteet'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      title: 'Lukitut toimipisteet'
+      fields:
+        tpr_unit_bulk_form:
+          label: Massapäivitys
+          action_title: Toiminto
+        name:
+          label: Otsikko
+        name_1:
+          label: 'Lukituksen tekijä'
+        timestamp:
+          label: 'Lukituksen ajankohta'
+        langcode:
+          label: 'Sisällön kieli'
+        operations:
+          label: Toimenpiteet
+      pager:
+        options:
+          tags:
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+      exposed_form:
+        options:
+          submit_button: Käytä
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      empty:
+        area_text_custom:
+          content: 'Lukittuja toimipisteitä ei ole.'
+      filters:
+        name:
+          expose:
+            label: Otsikko
+  locked_units_block:
+    display_title: Lohko

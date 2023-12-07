@@ -1,0 +1,6 @@
+.region--attachments .humany-rendered {
+  visibility: visible;
+}
+.region--attachments > div > h2 {
+  display: none;
+}

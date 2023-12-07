@@ -1,0 +1,37 @@
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      fields:
+        name: {  }
+      pager:
+        options:
+          tags:
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+      exposed_form:
+        options:
+          submit_button: Käytä
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      empty:
+        area:
+          content:
+            value: '<p>Ei tuloksia</p>'
+            format: full_html
+      arguments:
+        id:
+          exception:
+            title: Kaikki
+  entity_reference:
+    display_title: Entiteettiviittaus
+    display_options:
+      fields:
+        name_override: {  }
+        id: {  }
+        name: {  }

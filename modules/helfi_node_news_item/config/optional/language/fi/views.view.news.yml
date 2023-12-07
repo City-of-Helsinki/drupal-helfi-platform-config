@@ -1,0 +1,23 @@
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Käytä
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      fields:
+        published_at: {  }
+        field_main_image: {  }
+        view_node:
+          text: näkymä
+      title: 'Uusimmat uutiset'
+      arguments:
+        nid:
+          exception:
+            title: Kaikki
+  latest_news:
+    display_title: 'Uusimmat uutiset'

@@ -52,8 +52,8 @@ abstract class EventsApiBase {
 
           case 'dateTypes':
             $dateTypes = explode(',', $param);
-            foreach ($dateTypes as $dataType) {
-              switch ($param) {
+            foreach ($dateTypes as $dateType) {
+              switch ($dateType) {
                 case 'today':
                   $params['end'] = 'today';
                   break;

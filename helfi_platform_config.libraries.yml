@@ -3,44 +3,16 @@ react_and_share:
   js:
     assets/js/reactAndShareSettings.js: {}
 
-smartti_chatbot:
-  version: 1.0.x
+user_inquiry:
+  version: 1.0.0
   js:
-    'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.js': {
+    'https://digitalfeedback.euro.confirmit.com/api/digitalfeedback/loader?programKey=2UqP0u': {
       type: external,
-      minified: true,
+      minified: false,
       attributes: {
         async: true
       }
     }
-  css:
-    theme:
-      'https://cdn.smartifik.com/files/clients/helsingin_kaupunki/smartti_client.css': { type: external, minified: true }
-      assets/css/smartti_chat.css: {}
-
-genesys_kymp:
-  version: 1.0.1
-  header: true
-  js:
-    'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
-      type: external,
-      minified: true,
-      attributes: {
-        onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
-      }
-    }
-    assets/js/genesys_kymp.js: {
-      attributes: {
-        onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_kymp.attach();}}, 100);"
-      }
-    }
-  css:
-    theme:
-      assets/css/genesys_chat.css: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - core/drupalSettings
 
 clear_localstorage:
   version: 1.0.x
@@ -107,3 +79,12 @@ user_consent_functions:
     assets/js/user_consent_functions.js: {}
   dependencies:
     - core/drupal
+
+telia_ace_widget:
+  version: 1.0.x
+  header: true
+  css:
+    theme:
+      assets/css/telia_ace.css: {}
+  dependencies:
+    - helfi_platform_config/user_consent_functions

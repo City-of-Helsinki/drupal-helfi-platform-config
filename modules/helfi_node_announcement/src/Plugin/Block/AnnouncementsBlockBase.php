@@ -3,6 +3,7 @@
 namespace Drupal\helfi_node_announcement\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -85,7 +86,7 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
     return new static($configuration, $plugin_id, $plugin_definition,
       $container->get('current_route_match'),
       $container->get('entity_type.manager'),
@@ -191,13 +192,13 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
   /**
    * Return weight for announcement visibility.
    *
-   * @param Drupal\Core\Entity\EntityInterface $announcement
+   * @param \Drupal\Core\Entity\ContentEntityInterface $announcement
    *   Announcement entity.
    *
    * @return int
    *   Visibility weight.
    */
-  protected function resolveVisibilityWeight(EntityInterface $announcement): int {
+  protected function resolveVisibilityWeight(ContentEntityInterface $announcement): int {
     if ($announcement->get('field_announcement_all_pages')->value == TRUE) {
       return self::VISIBILITY_ALL_WEIGHT;
     }

@@ -91,11 +91,11 @@ class BreadcrumbTest extends BrowserTestBase {
     foreach (['en', 'sv', 'fi'] as $language) {
       $this->drupalGet('/' . $language);
       $parts = $this->getBreadcrumbParts();
-      $this->assertEquals(t('Front page'), $parts[0]['text']);
+      $this->assertEquals('Front page', $parts[0]['text']);
 
       $this->drupalGet('/' . $language . '/node/' . $this->node->id());
       $parts = $this->getBreadcrumbParts();
-      $this->assertEquals(t('Front page'), $parts[0]['text']);
+      $this->assertEquals('Front page', $parts[0]['text']);
     }
   }
 

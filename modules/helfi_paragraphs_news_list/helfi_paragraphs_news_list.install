@@ -89,6 +89,7 @@ function helfi_paragraphs_news_list_update_9003(&$sandbox) : void {
         continue;
       }
       // Suffix all existing target ids with langcode.
+      /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $item */
       foreach ($value as $item) {
         // Make sure already updated items are not affected.
         [$id] = explode(':', $item->target_id);

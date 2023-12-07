@@ -66,6 +66,8 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'contact_card_listing',
           'remote_video',
           'event_list',
+          'map',
+          'text',
         ],
       ],
     ],

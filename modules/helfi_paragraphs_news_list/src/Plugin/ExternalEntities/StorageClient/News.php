@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Core\Entity\EntityStorageException;
-use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\helfi_paragraphs_news_list\HelfiExternalEntityBase;
 
 /**
@@ -47,20 +45,6 @@ final class News extends HelfiExternalEntityBase {
     });
 
     return $data;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function save(ExternalEntityInterface $entity) : void {
-    throw new EntityStorageException('::save() is not supported.');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function delete(ExternalEntityInterface $entity) : void {
-    throw new EntityStorageException('::delete() is not supported.');
   }
 
   /**

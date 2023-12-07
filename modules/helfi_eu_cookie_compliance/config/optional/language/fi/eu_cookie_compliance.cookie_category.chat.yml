@@ -1,0 +1,4 @@
+description:
+  value: '<p>Toiminnallisten chat-evästeiden avulla mahdollistetaan helfi-sivujen chattien toiminta. Jos aloitat chatin, hyväksyt sen käyttöön liittyvät toiminnalliset evästeet automaattisesti.&nbsp; Evästeiden hyväksymiseen ei tällöin tarvita erillistä suostumusta. Toiminnallisia chat-evästeitä ladataan laitteellesi vain, jos käynnistät chatin.</p><figure class="table" tabindex="0"><table><thead><tr><th>Nimi</th><th>Tarjoaja</th><th>Tarkoitus</th><th>Voimassa</th><th>Tyyppi</th></tr></thead><tbody><tr><td>_genesys.widgets.*</td><td>hel.fi</td><td>Käytetään chatin tarvitseman datan tallentamiseen.</td><td>Istunto</td><td>&nbsp;</td></tr><tr><td>leijuke.*</td><td>hel.fi</td><td>Käytetään chatin tarvitseman datan tallentamiseen.</td><td>Istunto</td><td>&nbsp;</td></tr></tbody></table></figure>'
+  format: full_html
+label: 'Toiminnalliset chat-evästeet'

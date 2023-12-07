@@ -6,6 +6,7 @@ namespace Drupal\helfi_react_search;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -27,11 +28,14 @@ class LinkedEvents extends EventsApiBase {
    *   The HTTP client.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
+   *   The language manager.
    */
   public function __construct(
     private CacheBackendInterface $dataCache,
     private ClientInterface $httpClient,
-    private LoggerInterface $logger
+    private LoggerInterface $logger,
+    private LanguageManagerInterface $languageManager
   ) {}
 
   /**
@@ -110,7 +114,7 @@ class LinkedEvents extends EventsApiBase {
       'sort' => 'end_time',
       'start' => 'now',
       'super_event_type' => 'umbrella,none',
-      'language' => \Drupal::languageManager()
+      'language' => $this->languageManager
         ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
         ->getId(),
     ];

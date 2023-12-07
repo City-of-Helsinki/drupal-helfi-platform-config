@@ -1,0 +1,69 @@
+description: 'Etsi ja ylläpidä mediatiedostoja.'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      fields:
+        media_bulk_form:
+          action_title: Toiminto
+        thumbnail__target_id:
+          label: Pienoiskuva
+        name:
+          label: 'Mediatiedoston nimi'
+        bundle:
+          label: Tyyppi
+        uid:
+          label: Kirjoittaja
+        status:
+          label: Tila
+          settings:
+            format_custom_false: Julkaisematon
+            format_custom_true: Julkaistu
+        changed:
+          label: Päivitetty
+        operations:
+          label: Toimenpiteet
+      pager:
+        options:
+          tags:
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+      exposed_form:
+        options:
+          submit_button: Suodata
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      empty:
+        area_text_custom:
+          content: 'Mediatiedostoja ei ole saatavilla.'
+      filters:
+        name:
+          expose:
+            label: 'Mediatiedoston nimi'
+        bundle:
+          expose:
+            label: Tyyppi
+        status:
+          expose:
+            label: Tosi
+            description: ''
+          group_info:
+            label: Julkaisutila
+            group_items:
+              1:
+                title: Julkaistu
+              2:
+                title: Julkaisematon
+        langcode:
+          expose:
+            label: Kieli
+  media_page_list:
+    display_options:
+      menu: {  }

@@ -50,8 +50,8 @@ class QuoteCKEditorButton extends CKEditorPluginBase implements ContainerFactory
     array $configuration,
     $plugin_id,
     $plugin_definition
-  ) : static {
-    return new static(
+  ) : self {
+    return new self(
       $configuration,
       $plugin_id,
       $plugin_definition,
