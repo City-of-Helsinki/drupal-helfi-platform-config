@@ -50,8 +50,6 @@ class Coordinates extends ProcessorPluginBase {
    * {@inheritdoc}
    */
   public function addFieldValues(ItemInterface $item): void {
-    var_dump('EEEEEEE');
-
     $object = $item->getOriginalObject()->getValue();
 
     $indexableValue = [
