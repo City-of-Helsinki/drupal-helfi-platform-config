@@ -188,69 +188,10 @@ function helfi_tpr_config_install($is_syncing) : void {
 }
 
 /**
- * UHF-8099 Update field_group translations for the unit search paragraph.
- */
-function helfi_tpr_config_update_9035(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * Remove SOTE specific configuration. Double-check configuration updates.
- */
-function helfi_tpr_config_update_9036(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8479 Update standard & landing page to include service_list_search.
- */
-function helfi_tpr_config_update_9037(): void {
-  helfi_platform_config_update_paragraph_target_types();
-}
-
-/**
- * UHF-8196 Update unit and service views to show unpublished entities.
- */
-function helfi_tpr_config_update_9038(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8532 Update the "Open larger map" text on maps.
- */
-function helfi_tpr_config_update_9039(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8595 Update after reverting unit display configs.
- */
-function helfi_tpr_config_update_9040(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
  * UHF-8676 Update tpr_service to include multiple new paragraphs.
  */
 function helfi_tpr_config_update_9041(): void {
   helfi_platform_config_update_paragraph_target_types();
-}
-
-/**
- * UHF-8770 tpr_service to include two new paragraphs.
- */
-function helfi_tpr_config_update_9042(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
 }
 
 /**
@@ -276,15 +217,6 @@ function helfi_tpr_config_update_9043() : void {
 }
 
 /**
- * UHF-8838 Update services list views.
- */
-function helfi_tpr_config_update_9044(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
  * UHF-8938: Add a field to tpr_unit and re-import configs.
  */
 function helfi_tpr_config_update_9045() : void {
@@ -301,33 +233,6 @@ function helfi_tpr_config_update_9045() : void {
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('unit_picture_caption', 'tpr_unit', 'helfi_tpr_config', $unit_picture_caption);
 
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8932 Add fields coordinates to display.
- */
-function helfi_tpr_config_update_9046(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8939: Make all new TPR unit fields visible in form and display.
- */
-function helfi_tpr_config_update_9047(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8937: Configs for table of contents field on TPR units.
- */
-function helfi_tpr_config_update_9048(): void {
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');

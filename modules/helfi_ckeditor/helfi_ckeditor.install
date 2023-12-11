@@ -42,14 +42,6 @@ function helfi_ckeditor_install($is_syncing) : void {
 }
 
 /**
- * Allow colspan and rowspan attributes to be used in th and td tags.
- */
-function helfi_ckeditor_update_9001(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_ckeditor');
-}
-
-/**
  * UHF-8404 Reconstruct CKEditor generated blockquote elements.
  */
 function helfi_ckeditor_update_9002(): void {
@@ -111,17 +103,12 @@ function helfi_ckeditor_update_9002(): void {
 }
 
 /**
- * Remove id attributes from header elements.
- */
-function helfi_ckeditor_update_9003(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_ckeditor');
-}
-
-/**
  * UHF-8564 Remove unwanted and unused allowed html from text-formats.
  */
 function helfi_ckeditor_update_9004(): void {
+  if (!\Drupal::hasService('helfi_platform_config.config_update_helper')) {
+    return;
+  }
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_ckeditor');
 }
