@@ -7,6 +7,10 @@
 
 declare(strict_types = 1);
 
+use Drupal\search_api\Entity\Index;
+use Drupal\search_api\Event\ReindexScheduledEvent;
+use Drupal\search_api\Event\SearchApiEvents;
+
 /**
  * Remove stale event list paragraph load more field configurations.
  */
@@ -37,4 +41,31 @@ function helfi_react_search_update_9003(): void {
   // Make sure the configurations are correctly installed.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_react_search');
+}
+
+/**
+ * Mark indexes to require reindexing.
+ */
+function helfi_react_search_update_9004() {
+  $schoolsIndex = Index::load('schools');
+  $healthStationsIndex = Index::load('health_stations');
+
+  if ($healthStationsIndex) {
+    // Ensure tracker works.
+    $healthStationsIndex->rebuildTracker();
+
+    // Mark index to require reindexing.
+    $dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+    $dispatcher->dispatch(new ReindexScheduledEvent($healthStationsIndex, TRUE), SearchApiEvents::REINDEX_SCHEDULED);
+  }
+
+  if ($schoolsIndex) {
+    // Ensure tracker works.
+    $schoolsIndex->rebuildTracker();
+
+    // Mark index to require reindexing.
+    $dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+    $dispatcher->dispatch(new ReindexScheduledEvent($schoolsIndex, TRUE), SearchApiEvents::REINDEX_SCHEDULED);
+  }
+
 }
