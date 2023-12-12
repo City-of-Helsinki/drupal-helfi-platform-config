@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Quote")
  * )
  */
-class QuoteCKEditorButton extends CKEditorPluginBase implements ContainerFactoryPluginInterface {
+final class QuoteCKEditorButton extends CKEditorPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * Extension path resolver.

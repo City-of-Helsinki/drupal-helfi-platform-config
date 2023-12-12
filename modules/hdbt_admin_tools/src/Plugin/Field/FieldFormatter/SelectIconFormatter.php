@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class SelectIconFormatter extends FormatterBase {
+final class SelectIconFormatter extends FormatterBase {
 
   /**
    * Contains the hdbt_admin_tools.site_settings configuration object.
