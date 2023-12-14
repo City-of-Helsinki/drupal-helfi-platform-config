@@ -26,7 +26,7 @@ default:
       value: 'Unit 3'
   name_override:
     -
-      value: 'DC: TPR Unit - subnav - no-sidebar'
+      value: 'DC: TPR Unit - subnav'
   picture_url_override:
     -
       entity: 608c45ab-90c5-466b-bcac-c87649f2ec10

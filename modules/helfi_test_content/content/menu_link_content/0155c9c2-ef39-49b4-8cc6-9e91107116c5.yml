@@ -13,7 +13,7 @@ default:
       value: true
   title:
     -
-      value: 'DC: TPR Unit - subnav - no-sidebar'
+      value: 'DC: TPR Unit - subnav'
   menu_name:
     -
       value: main
