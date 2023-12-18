@@ -408,9 +408,6 @@ index ffc267f3f5..d73b8a6e2b 100644
 +  language.admin_language_render:
 +    class: Drupal\language\AdminLanguageRender
 +    arguments: ['@language_manager', '@string_translation', '@current_user']
-+  language.admin_language_render:
-+    class: Drupal\language\AdminLanguageRender
-+    arguments: ['@language_manager', '@string_translation', '@current_user']
 diff --git a/core/modules/language/src/AdminLanguageRender.php b/core/modules/language/src/AdminLanguageRender.php
 new file mode 100644
 index 0000000000..16d1587479
