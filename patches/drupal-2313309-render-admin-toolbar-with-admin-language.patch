@@ -1,8 +1,8 @@
 diff --git a/core/core.services.yml b/core/core.services.yml
-index e3c1e094a2..fddf15bc5a 100644
+index 72ff560296..9bc32c499f 100644
 --- a/core/core.services.yml
 +++ b/core/core.services.yml
-@@ -155,6 +155,11 @@ services:
+@@ -162,6 +162,11 @@ services:
      arguments: ['@current_user']
      tags:
        - { name: cache.context}
@@ -74,20 +74,20 @@ index 0000000000..c827e14738
 +
 +}
 diff --git a/core/misc/cspell/dictionary.txt b/core/misc/cspell/dictionary.txt
-index 85c72239cf..83a98f5807 100644
+index 8fcbd4fe32..e867034f7a 100644
 --- a/core/misc/cspell/dictionary.txt
 +++ b/core/misc/cspell/dictionary.txt
-@@ -415,6 +415,8 @@ enim
+@@ -287,6 +287,8 @@ endtrans
+ enim
  enoki
- enregistrer
  entit
 +entitynodedelete
 +entitynodeedit
  entitytype
  entityviewedit
- eridani
+ errmode
 diff --git a/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php b/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
-index 985d4c44c3..8a394c45b0 100644
+index 043474f072..40bb2304b3 100644
 --- a/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
 +++ b/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
 @@ -387,9 +387,9 @@ public function testBlockContextualLinks() {
@@ -116,10 +116,10 @@ index 16e147d99c..c2ce954c19 100644
  
  }
 diff --git a/core/modules/contextual/contextual.module b/core/modules/contextual/contextual.module
-index 5e0b67826c..abf90ffb5e 100644
+index 96ab68dd1b..3276e354fe 100644
 --- a/core/modules/contextual/contextual.module
 +++ b/core/modules/contextual/contextual.module
-@@ -174,13 +174,15 @@ function contextual_contextual_links_view_alter(&$element, $items) {
+@@ -174,13 +174,18 @@ function contextual_contextual_links_view_alter(&$element, $items) {
  function _contextual_links_to_id($contextual_links) {
    $ids = [];
    $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_URL)->getId();
@@ -133,15 +133,18 @@ index 5e0b67826c..abf90ffb5e 100644
 -    $args['metadata'] += ['langcode' => $langcode];
 +    // language-aware contextual links on the client side. Add the admin
 +    // language as the link text can vary by that.
-+    $args['metadata'] += ['langcode' => $langcode, 'admin_langcode' => $admin_langcode];
++    $args['metadata'] += [
++      'langcode' => $langcode,
++      'admin_langcode' => $admin_langcode,
++    ];
      $metadata = UrlHelper::buildQuery($args['metadata']);
      $ids[] = "{$group}:{$route_parameters}:{$metadata}";
    }
 diff --git a/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php b/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php
-index f1fb389b0d..62843072e6 100644
+index b1f048d715..04d8215b41 100644
 --- a/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php
 +++ b/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php
-@@ -101,10 +101,10 @@ public function testDifferentPermissions() {
+@@ -100,10 +100,10 @@ public function testDifferentPermissions() {
      // Now, on the front page, all article nodes should have contextual links
      // placeholders, as should the view that contains them.
      $ids = [
@@ -156,7 +159,7 @@ index f1fb389b0d..62843072e6 100644
      ];
  
      // Editor user: can access contextual links and can edit articles.
-@@ -125,7 +125,7 @@ public function testDifferentPermissions() {
+@@ -124,7 +124,7 @@ public function testDifferentPermissions() {
  
      // Verify that link language is properly handled.
      $node3->addTranslation('it')->set('title', $this->randomString())->save();
@@ -165,7 +168,7 @@ index f1fb389b0d..62843072e6 100644
      $this->drupalGet('node', ['language' => ConfigurableLanguage::createFromLangcode('it')]);
      $this->assertContextualLinkPlaceHolder($id);
  
-@@ -174,7 +174,7 @@ public function testTokenProtection() {
+@@ -178,7 +178,7 @@ public function testTokenProtection() {
  
      // Now, on the front page, all article nodes should have contextual links
      // placeholders, as should the view that contains them.
@@ -368,7 +371,7 @@ index dc46bef32a..6050622ff4 100644
  
      return $tests;
 diff --git a/core/modules/language/language.module b/core/modules/language/language.module
-index 91641dec56..ff39b7bba7 100644
+index 88a25d030d..b60c0163cc 100644
 --- a/core/modules/language/language.module
 +++ b/core/modules/language/language.module
 @@ -16,6 +16,7 @@
@@ -395,13 +398,16 @@ index 91641dec56..ff39b7bba7 100644
  
  /**
 diff --git a/core/modules/language/language.services.yml b/core/modules/language/language.services.yml
-index 4fda6484c1..23e3da20cc 100644
+index ffc267f3f5..d73b8a6e2b 100644
 --- a/core/modules/language/language.services.yml
 +++ b/core/modules/language/language.services.yml
-@@ -24,3 +24,6 @@ services:
+@@ -27,3 +27,9 @@ services:
      tags:
        - { name: paramconverter }
      lazy: true
++  language.admin_language_render:
++    class: Drupal\language\AdminLanguageRender
++    arguments: ['@language_manager', '@string_translation', '@current_user']
 +  language.admin_language_render:
 +    class: Drupal\language\AdminLanguageRender
 +    arguments: ['@language_manager', '@string_translation', '@current_user']
@@ -543,10 +549,10 @@ index 0000000000..16d1587479
 +
 +}
 diff --git a/core/modules/language/src/ConfigurableLanguageManager.php b/core/modules/language/src/ConfigurableLanguageManager.php
-index 9dd65ff495..61f6b9bede 100644
+index c4187aaf60..d78a8fc331 100644
 --- a/core/modules/language/src/ConfigurableLanguageManager.php
 +++ b/core/modules/language/src/ConfigurableLanguageManager.php
-@@ -235,6 +235,18 @@ public function getCurrentLanguage($type = LanguageInterface::TYPE_INTERFACE) {
+@@ -235,6 +235,25 @@ public function getCurrentLanguage($type = LanguageInterface::TYPE_INTERFACE) {
      return $this->negotiatedLanguages[$type];
    }
  
@@ -562,14 +568,41 @@ index 9dd65ff495..61f6b9bede 100644
 +    $this->negotiatedLanguages[$type] = $language;
 +  }
 +
++  /**
++   * {@inheritdoc}
++   */
++  public function setCurrentLanguage(LanguageInterface $language, ?string $type = LanguageInterface::TYPE_INTERFACE): void {
++    $this->negotiatedLanguages[$type] = $language;
++  }
++
    /**
     * {@inheritdoc}
     */
+diff --git a/core/modules/language/src/ConfigurableLanguageManagerInterface.php b/core/modules/language/src/ConfigurableLanguageManagerInterface.php
+index 41a1681f3f..2b8984e6c6 100644
+--- a/core/modules/language/src/ConfigurableLanguageManagerInterface.php
++++ b/core/modules/language/src/ConfigurableLanguageManagerInterface.php
+@@ -103,4 +103,15 @@ public function getStandardLanguageListWithoutConfigured();
+    */
+   public function getNegotiatedLanguageMethod($type = LanguageInterface::TYPE_INTERFACE);
+ 
++  /**
++   * Sets the current language.
++   *
++   * @param \Drupal\Core\Language\LanguageInterface $language
++   *   The language to set.
++   * @param string|null $type
++   *   (optional) The language type; e.g., the interface or the content
++   *   language.
++   */
++  public function setCurrentLanguage(LanguageInterface $language, ?string $type = LanguageInterface::TYPE_INTERFACE): void;
++
+ }
 diff --git a/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php b/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php
-index 3079352f8e..7d09fcaf57 100644
+index be99b93902..d7992fd199 100644
 --- a/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php
 +++ b/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php
-@@ -58,9 +58,8 @@ public function testToolbarClasses() {
+@@ -60,9 +60,8 @@ public function testToolbarClasses() {
      $langcode = 'es';
  
      // Add Spanish.
@@ -580,7 +613,7 @@ index 3079352f8e..7d09fcaf57 100644
  
      // The menu item 'Structure' in the toolbar will be translated.
      $menu_item = 'Structure';
-@@ -68,49 +67,108 @@ public function testToolbarClasses() {
+@@ -70,49 +69,108 @@ public function testToolbarClasses() {
      // Visit a page that has the string on it so it can be translated.
      $this->drupalGet($langcode . '/admin/structure');
  
@@ -724,7 +757,7 @@ index 10e6cc3295..80d6d19ff2 100644
 +  options:
 +    _admin_route: TRUE
 diff --git a/core/modules/user/src/ToolbarLinkBuilder.php b/core/modules/user/src/ToolbarLinkBuilder.php
-index b278db6dba..0c48bec2fe 100644
+index 8d989b339e..21761a8403 100644
 --- a/core/modules/user/src/ToolbarLinkBuilder.php
 +++ b/core/modules/user/src/ToolbarLinkBuilder.php
 @@ -2,10 +2,12 @@
@@ -740,17 +773,17 @@ index b278db6dba..0c48bec2fe 100644
  
  /**
   * ToolbarLinkBuilder fills out the placeholders generated in user_toolbar().
-@@ -21,14 +23,24 @@ class ToolbarLinkBuilder implements TrustedCallbackInterface {
-    */
-   protected $account;
+@@ -14,21 +16,18 @@ class ToolbarLinkBuilder implements TrustedCallbackInterface {
  
-+  /**
-+   * The module handler.
-+   *
-+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-+   */
-+  protected $moduleHandler;
-+
+   use StringTranslationTrait;
+ 
+-  /**
+-   * The current user.
+-   *
+-   * @var \Drupal\Core\Session\AccountProxyInterface
+-   */
+-  protected $account;
+-
    /**
     * ToolbarHandler constructor.
     *
@@ -760,13 +793,15 @@ index b278db6dba..0c48bec2fe 100644
 +   *   The module handler.
     */
 -  public function __construct(AccountProxyInterface $account) {
-+  public function __construct(AccountProxyInterface $account, ModuleHandlerInterface $moduleHandler) {
-     $this->account = $account;
-+    $this->moduleHandler = $moduleHandler;
+-    $this->account = $account;
++  public function __construct(
++    protected AccountProxyInterface $account,
++    protected ModuleHandlerInterface $moduleHandler
++  ) {
    }
  
    /**
-@@ -69,6 +81,11 @@ public function renderToolbarLinks() {
+@@ -69,6 +68,11 @@ public function renderToolbarLinks() {
        ],
      ];
  
@@ -779,23 +814,23 @@ index b278db6dba..0c48bec2fe 100644
    }
  
 diff --git a/core/modules/user/user.services.yml b/core/modules/user/user.services.yml
-index f8f7d15f4e..76f15a5e5a 100644
+index d2d2720bd1..3afc508061 100644
 --- a/core/modules/user/user.services.yml
 +++ b/core/modules/user/user.services.yml
-@@ -59,7 +59,7 @@ services:
+@@ -62,7 +62,7 @@ services:
        - { name: 'context_provider' }
    user.toolbar_link_builder:
      class: Drupal\user\ToolbarLinkBuilder
 -    arguments: ['@current_user']
 +    arguments: ['@current_user', '@module_handler']
+   Drupal\user\ToolbarLinkBuilder: '@user.toolbar_link_builder'
    user.flood_control:
      class: Drupal\user\UserFloodControl
-     arguments: ['@flood', '@event_dispatcher', '@request_stack']
 diff --git a/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php b/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php
-index 559acbb481..b3a67aa96b 100644
+index 70fb850e6e..173c4a33ca 100644
 --- a/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php
 +++ b/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php
-@@ -128,7 +128,7 @@ public function testPageContextualLinks() {
+@@ -130,7 +130,7 @@ public function testPageContextualLinks() {
      $element = $this->getSession()->getPage()->find('css', $selector);
      $element->find('css', '.contextual button')->press();
  
