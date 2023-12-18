@@ -16,10 +16,10 @@ index 72ff560296..9bc32c499f 100644
      arguments: ['@current_user', '@user_permissions_hash_generator']
 diff --git a/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php b/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php
 new file mode 100644
-index 0000000000..c827e14738
+index 0000000000..314ac18234
 --- /dev/null
 +++ b/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,47 @@
 +<?php
 +
 +namespace Drupal\Core\Cache\Context;
@@ -35,20 +35,14 @@ index 0000000000..c827e14738
 +class AccountAdminLanguageCacheContext implements CacheContextInterface {
 +
 +  /**
-+   * The current user.
-+   *
-+   * @var \Drupal\Core\Session\AccountProxyInterface
-+   */
-+  protected AccountProxyInterface $currentUser;
-+
-+  /**
 +   * Constructs a new AccountAdminLanguageCacheContext service.
 +   *
-+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
++   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
 +   *   The current user.
 +   */
-+  public function __construct(AccountProxyInterface $current_user) {
-+    $this->currentUser = $current_user;
++  public function __construct(
++    protected AccountProxyInterface $currentUser,
++  ) {
 +  }
 +
 +  /**
@@ -73,19 +67,6 @@ index 0000000000..c827e14738
 +  }
 +
 +}
-diff --git a/core/misc/cspell/dictionary.txt b/core/misc/cspell/dictionary.txt
-index 8fcbd4fe32..e867034f7a 100644
---- a/core/misc/cspell/dictionary.txt
-+++ b/core/misc/cspell/dictionary.txt
-@@ -287,6 +287,8 @@ endtrans
- enim
- enoki
- entit
-+entitynodedelete
-+entitynodeedit
- entitytype
- entityviewedit
- errmode
 diff --git a/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php b/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
 index 043474f072..40bb2304b3 100644
 --- a/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
@@ -301,7 +282,7 @@ index 0000000000..5ad1a1f096
 +
 +}
 diff --git a/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php b/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
-index dc46bef32a..6050622ff4 100644
+index dc46bef32a..02e68eaff5 100644
 --- a/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
 +++ b/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
 @@ -33,10 +33,10 @@ public function contextualLinksDataProvider(): array {
@@ -366,7 +347,7 @@ index dc46bef32a..6050622ff4 100644
          ],
        ],
 -      'node:node=14031991:langcode=en|foo:0=bar&key=baz&1=qux:langcode=en|edge:0=20011988:langcode=en',
-+      'node:node=14031991:langcode=en|foo:0=bar&key=baz&1=qux:langcode=en|edge:0=20011988:langcode=en&admin_langcode=en',
++      'node:node=14031991:langcode=en&admin_langcode=en|foo:0=bar&key=baz&1=qux:langcode=en&admin_langcode=en|edge:0=20011988:langcode=en&admin_langcode=en',
      ];
  
      return $tests;
@@ -410,42 +391,25 @@ index ffc267f3f5..51fc3fd65d 100644
 +    arguments: ['@language_manager', '@string_translation', '@current_user']
 diff --git a/core/modules/language/src/AdminLanguageRender.php b/core/modules/language/src/AdminLanguageRender.php
 new file mode 100644
-index 0000000000..16d1587479
+index 0000000000..eeece9c776
 --- /dev/null
 +++ b/core/modules/language/src/AdminLanguageRender.php
-@@ -0,0 +1,131 @@
+@@ -0,0 +1,115 @@
 +<?php
 +
 +namespace Drupal\language;
 +
++use Drupal\Component\Render\MarkupInterface;
 +use Drupal\Core\Cache\CacheableMetadata;
 +use Drupal\Core\Language\LanguageManagerInterface;
 +use Drupal\Core\Security\TrustedCallbackInterface;
-+use Drupal\Core\Session\AccountInterface;
++use Drupal\Core\Session\AccountProxyInterface;
 +use Drupal\Core\StringTranslation\TranslationManager;
 +
++/**
++ * Provides render callbacks for admin language switching.
++ */
 +class AdminLanguageRender implements TrustedCallbackInterface {
-+
-+  /**
-+   * The language manager.
-+   *
-+   * @var \Drupal\Core\Language\LanguageManagerInterface
-+   */
-+  protected $languageManager;
-+
-+  /**
-+   * The string translation service.
-+   *
-+   * @var \Drupal\Core\StringTranslation\TranslationManager
-+   */
-+  protected $translationManager;
-+
-+  /**
-+   * The current user.
-+   *
-+   * @var \Drupal\Core\Session\AccountInterface
-+   */
-+  protected $currentUser;
 +
 +  /**
 +   * Constructs an AdminLanguageRender object.
@@ -454,13 +418,14 @@ index 0000000000..16d1587479
 +   *   The language manager.
 +   * @param \Drupal\Core\StringTranslation\TranslationManager $translationManager
 +   *   The translation manager.
-+   * @param \Drupal\Core\Session\AccountInterface $currentUser
++   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
 +   *   The current user.
 +   */
-+  public function __construct(LanguageManagerInterface $languageManager, TranslationManager $translationManager, AccountInterface $currentUser) {
-+    $this->languageManager = $languageManager;
-+    $this->translationManager = $translationManager;
-+    $this->currentUser = $currentUser;
++  public function __construct(
++    protected LanguageManagerInterface $languageManager,
++    protected TranslationManager $translationManager,
++    protected AccountProxyInterface $currentUser
++  ) {
 +  }
 +
 +  /**
@@ -496,7 +461,7 @@ index 0000000000..16d1587479
 +   * @return array
 +   *   A renderable array.
 +   */
-+  public function switchToUserAdminLanguage(array $element) {
++  public function switchToUserAdminLanguage(array $element): array {
 +    $userAdminLangcode = $this->currentUser->getPreferredAdminLangcode(FALSE);
 +
 +    if ($userAdminLangcode && ($this->currentUser->hasPermission('access administration pages') || $this->currentUser->hasPermission('view the administration theme'))) {
@@ -517,15 +482,15 @@ index 0000000000..16d1587479
 +  /**
 +   * Restore original language.
 +   *
-+   * @param \Drupal\Core\Render\Markup $content
++   * @param \Drupal\Component\Render\MarkupInterface $content
 +   *   Rendered markup.
 +   * @param array $element
 +   *   A renderable array.
 +   *
-+   * @return \Drupal\Core\Render\Markup
++   * @return \Drupal\Component\Render\MarkupInterface
 +   *   Rendered markup.
 +   */
-+  public function restoreLanguage($content, $element) {
++  public function restoreLanguage(MarkupInterface $content, array $element): MarkupInterface {
 +    if (isset($element['#original_langcode'])) {
 +      $langcode = $element['#original_langcode'];
 +      $language = $this->languageManager->getLanguage($langcode);
@@ -546,25 +511,13 @@ index 0000000000..16d1587479
 +
 +}
 diff --git a/core/modules/language/src/ConfigurableLanguageManager.php b/core/modules/language/src/ConfigurableLanguageManager.php
-index c4187aaf60..d78a8fc331 100644
+index c4187aaf60..16c695de53 100644
 --- a/core/modules/language/src/ConfigurableLanguageManager.php
 +++ b/core/modules/language/src/ConfigurableLanguageManager.php
-@@ -235,6 +235,25 @@ public function getCurrentLanguage($type = LanguageInterface::TYPE_INTERFACE) {
+@@ -235,6 +235,13 @@ public function getCurrentLanguage($type = LanguageInterface::TYPE_INTERFACE) {
      return $this->negotiatedLanguages[$type];
    }
  
-+  /**
-+   * Sets current language.
-+   *
-+   * @param \Drupal\Core\Language\LanguageInterface $language
-+   *   Language interface.
-+   * @param string $type
-+   *   Type interface.
-+   */
-+  public function setCurrentLanguage(LanguageInterface $language, $type = LanguageInterface::TYPE_INTERFACE) {
-+    $this->negotiatedLanguages[$type] = $language;
-+  }
-+
 +  /**
 +   * {@inheritdoc}
 +   */
@@ -743,16 +696,6 @@ index be99b93902..d7992fd199 100644
    }
  
  }
-diff --git a/core/modules/toolbar/toolbar.routing.yml b/core/modules/toolbar/toolbar.routing.yml
-index 10e6cc3295..80d6d19ff2 100644
---- a/core/modules/toolbar/toolbar.routing.yml
-+++ b/core/modules/toolbar/toolbar.routing.yml
-@@ -4,3 +4,5 @@ toolbar.subtrees:
-     _controller: '\Drupal\toolbar\Controller\ToolbarController::subtreesAjax'
-   requirements:
-     _custom_access: '\Drupal\toolbar\Controller\ToolbarController::checkSubTreeAccess'
-+  options:
-+    _admin_route: TRUE
 diff --git a/core/modules/user/src/ToolbarLinkBuilder.php b/core/modules/user/src/ToolbarLinkBuilder.php
 index 8d989b339e..21761a8403 100644
 --- a/core/modules/user/src/ToolbarLinkBuilder.php
