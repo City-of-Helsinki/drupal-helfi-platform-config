@@ -55,6 +55,7 @@
         "drupal/stomp": "^2.0",
         "drupal/token": "^1.9",
         "drupal/translatable_menu_link_uri": "^2.0",
+        "drupal/variationcache": "^1.4",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_edit": "^2.7",
         "drupal/views_bulk_operations": "^4.1",
