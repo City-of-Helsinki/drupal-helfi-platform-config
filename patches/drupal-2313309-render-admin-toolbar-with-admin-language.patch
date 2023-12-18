@@ -398,10 +398,10 @@ index 88a25d030d..b60c0163cc 100644
  
  /**
 diff --git a/core/modules/language/language.services.yml b/core/modules/language/language.services.yml
-index ffc267f3f5..d73b8a6e2b 100644
+index ffc267f3f5..51fc3fd65d 100644
 --- a/core/modules/language/language.services.yml
 +++ b/core/modules/language/language.services.yml
-@@ -27,3 +27,9 @@ services:
+@@ -27,3 +27,6 @@ services:
      tags:
        - { name: paramconverter }
      lazy: true
