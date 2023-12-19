@@ -77,5 +77,8 @@ parameters:
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::get\(\).#'
       path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
     -
+      message: '#^Call to an undefined method Drupal\\Core\\TypedData\\TypedDataInterface::getTarget\(\).#'
+      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+    -
       message: '#^Call to an undefined method Drupal\\Core\\Field\\FieldDefinitionInterface::save\(\).#'
       path: helfi_platform_config.module
