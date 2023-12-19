@@ -10,6 +10,6 @@ services:
       - '@http_client'
       - '@logger.channel.helfi_react_search'
       - '@language_manager'
-  Drupal\helfi_react_search\EventSubscriber\BoostStripper:
+  Drupal\helfi_react_search\EventSubscriber\ElasticIndexSubscriber:
     tags:
       - { name: 'event_subscriber' }

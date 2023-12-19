@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class SelectIconWidget extends WidgetBase {
+final class SelectIconWidget extends WidgetBase {
 
   /**
    * Contains the hdbt_admin_tools.site_settings configuration object.

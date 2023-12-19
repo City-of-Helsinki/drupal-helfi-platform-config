@@ -8,13 +8,9 @@ use Drupal\elasticsearch_connector\Event\PrepareIndexMappingEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Subscribe for stripping boost parameter from Elasticsearch indices.
- *
- * Search API wants to index fields with 'boost' parameter.
- * Index-time boosting has been deprecated in newer Elasticsearch versions.
- * This subscriber strips boost from mapping to prevent errors.
+ * Subscribe to Elastic indexing events for needed changes.
  */
-class BoostStripper implements EventSubscriberInterface {
+class ElasticIndexSubscriber implements EventSubscriberInterface {
 
   /**
    * {@inheritdoc}
@@ -25,12 +21,16 @@ class BoostStripper implements EventSubscriberInterface {
     }
 
     return [
-      PrepareIndexMappingEvent::PREPARE_INDEX_MAPPING => 'stripBoost',
+      PrepareIndexMappingEvent::PREPARE_INDEX_MAPPING => [['stripBoost'], ['addCoordinatesField']],
     ];
   }
 
   /**
    * Iterate over fields and remove any boosts.
+   *
+   * Search API wants to index fields with 'boost' parameter.
+   * Index-time boosting has been deprecated in newer Elasticsearch versions.
+   * This subscriber strips boost from mapping to prevent errors.
    *
    * @param \Drupal\elasticsearch_connector\Event\PrepareIndexMappingEvent $event
    *   Event emitted by elasticsearch_connector.
@@ -49,6 +49,27 @@ class BoostStripper implements EventSubscriberInterface {
         unset($params['body']['properties'][$key]['boost']);
       }
     }
+
+    $event->setIndexMappingParams($params);
+  }
+
+  /**
+   * Set mapping for unit's coordinates as geo_point field.
+   *
+   * @param \Drupal\elasticsearch_connector\Event\PrepareIndexMappingEvent $event
+   *   Event emitted by elasticsearch_connector.
+   */
+  public function addCoordinatesField(PrepareIndexMappingEvent $event): void {
+    /** @var array $params */
+    $params = $event->getIndexMappingParams();
+
+    if ($params['index'] !== 'schools' && $params['index'] !== 'health_stations') {
+      return;
+    }
+
+    $params['body']['properties']['coordinates'] = [
+      'type' => 'geo_point',
+    ];
 
     $event->setIndexMappingParams($params);
   }

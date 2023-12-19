@@ -159,18 +159,7 @@ function helfi_base_content_get_block_configurations(string $theme) : array {
             'default' => '0',
           ],
         ],
-        'visibility' => [
-          'entity_bundle:node' => [
-            'id' => 'entity_bundle:node',
-            'negate' => TRUE,
-            'context_mapping' => [
-              'node' => '@node.node_route_context:node',
-            ],
-            'bundles' => [
-              'landing_page' => 'landing_page',
-            ],
-          ],
-        ],
+        'visibility' => [],
         'weight' => -12,
       ],
       'variations' => [

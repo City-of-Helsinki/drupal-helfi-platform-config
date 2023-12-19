@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   module = "ckeditor"
  * )
  */
-class LanguageSelector extends CKEditorPluginBase implements ContainerFactoryPluginInterface {
+final class LanguageSelector extends CKEditorPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * Extension path resolver.

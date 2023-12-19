@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = @Translation("Profile"),
  * )
  */
-class ProfileBlock extends BlockBase implements ContainerFactoryPluginInterface {
+final class ProfileBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The Current User object.

@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Defines CookieConsentController class.
  */
-class CookieConsentController extends ControllerBase {
+final class CookieConsentController extends ControllerBase {
 
   /**
    * Constructs a new instance.

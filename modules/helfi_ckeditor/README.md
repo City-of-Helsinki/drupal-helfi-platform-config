@@ -56,4 +56,27 @@ Tip: Use `Drupal.t()` when creating new CKEditor5 plugins. If you need the CKEdi
 ### Translations are imported but not working in CKEditor
 The translations for JS are handled by locale.module: `locale_js_translate()`. This function is executed when CKEditor configuration form is saved or when `locale_js_alter()` detects a placeholder file `core/modules/locale/locale.translation.js`. However, CKEditor plugins that are loaded as libraries are not included in this process as they are not associated with any render array. Consequently, the `AssetResolver::getJsAssets()` fails to locate the JS files, resulting in the absence of the `Drupal.t()` functions. This will manifest as missing translations in `window.drupalTranslations`.
 
-To resolve this issue, you can manually invoke the `locale_js_translate()` function with an array containing your built JS files. Refer to `helfi_ckeditor.install` --> `helfi_ckeditor_update_9004()` for an example of how to implement this solution.
+To resolve this issue, you can manually invoke the `locale_js_translate()` function with an array containing your built JS files. Here's an example how to implement this solution: 
+```
+  // Update translations manually as CKEditor plugin translations might not
+  // get translated due to libraries not being loaded via render arrays.
+  foreach ([
+    'modules/contrib/helfi_platform_config/modules/helfi_ckeditor/assets/js/build/helfiLanguageSelector.js',
+    'modules/contrib/helfi_platform_config/modules/helfi_ckeditor/assets/js/build/helfiLink.js',
+    'modules/contrib/helfi_platform_config/modules/helfi_ckeditor/assets/js/build/helfiQuote.js',
+  ] as $file) {
+    _locale_parse_js_file($file);
+  }
+````
+
+As a side note, when `Drupal.t()` function is used with a context, one should not use variable as a context string. The locale scraper won't be able to find the context in this case.
+
+Incorrect: 
+```
+const contextText = 'My custom context';
+const variable = Drupal.t('Example', {}, {context: contextText});
+````
+Correct:
+```
+const variable = Drupal.t('Example', {}, {context: 'My custom context'});
+```
