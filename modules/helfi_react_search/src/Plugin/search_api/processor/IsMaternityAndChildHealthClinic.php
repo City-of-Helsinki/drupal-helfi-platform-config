@@ -31,6 +31,8 @@ class IsMaternityAndChildHealthClinic extends ProcessorPluginBase {
    */
   const CHILD_HEALTH_CLINIC_SERVICE_IDS = [
     '3210',
+    '6440',
+    '6441',
   ];
 
   /**
