@@ -5,5 +5,6 @@ dependencies:
     - media
 id: media.list_of_links
 label: 'List of Links'
+description: ''
 targetEntityType: media
 cache: true

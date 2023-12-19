@@ -5,5 +5,6 @@ dependencies:
     - helfi_tpr
 id: tpr_service.teaser
 label: Teaser
+description: ''
 targetEntityType: tpr_service
 cache: true

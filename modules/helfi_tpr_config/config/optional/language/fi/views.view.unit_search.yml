@@ -5,15 +5,9 @@ display:
         combine:
           group_info:
             label: 'Kentät yhdistävä suodatin'
-            description: ''
           expose:
             label: Etsi
             placeholder: 'Syötä toimipisteen nimi tai osoite'
-      fields:
-        name: {  }
-        address__postal_code: {  }
-        address__address_line1: {  }
-        address__address_line2: {  }
       pager:
         options:
           tags:
@@ -45,9 +39,4 @@ display:
     display_title: Lohko
   entity_reference:
     display_title: Entiteettiviittaus
-    display_options:
-      fields:
-        name_override: {  }
-        id: {  }
-        name: {  }
 label: Toimipistehaku

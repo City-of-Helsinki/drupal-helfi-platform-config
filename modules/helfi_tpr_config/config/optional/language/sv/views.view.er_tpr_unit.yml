@@ -2,11 +2,8 @@ display:
   default:
     display_title: Förvald
     display_options:
-      fields:
-        name: {  }
       pager:
         options:
-          tags: {  }
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
@@ -29,8 +26,3 @@ display:
             title: Alla
   entity_reference:
     display_title: Objektsreferens
-    display_options:
-      fields:
-        name_override: {  }
-        id: {  }
-        name: {  }

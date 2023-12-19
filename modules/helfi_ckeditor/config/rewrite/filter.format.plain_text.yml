@@ -7,6 +7,12 @@ name: 'Plain text'
 format: plain_text
 weight: 10
 filters:
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
   filter_html_escape:
     id: filter_html_escape
     provider: filter
@@ -20,12 +26,6 @@ filters:
     weight: 0
     settings:
       filter_url_length: 120
-  filter_autop:
-    id: filter_autop
-    provider: filter
-    status: true
-    weight: 0
-    settings: {  }
   helfi_link_converter:
     id: helfi_link_converter
     provider: helfi_api_base

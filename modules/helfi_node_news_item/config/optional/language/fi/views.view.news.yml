@@ -10,8 +10,6 @@ display:
           sort_asc_label: Nousevasti
           sort_desc_label: Laskevasti
       fields:
-        published_at: {  }
-        field_main_image: {  }
         view_node:
           text: näkymä
       title: 'Uusimmat uutiset'

@@ -2,8 +2,6 @@ display:
   default:
     display_title: Förvald
     display_options:
-      fields:
-        name: {  }
       pager:
         options:
           tags:
@@ -26,4 +24,3 @@ display:
         id:
           exception:
             title: Alla
-  service_units: {  }

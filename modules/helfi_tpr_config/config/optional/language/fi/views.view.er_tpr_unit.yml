@@ -2,8 +2,6 @@ display:
   default:
     display_title: Oletus
     display_options:
-      fields:
-        name: {  }
       pager:
         options:
           tags:
@@ -30,8 +28,3 @@ display:
             title: Kaikki
   entity_reference:
     display_title: Entiteettiviittaus
-    display_options:
-      fields:
-        name_override: {  }
-        id: {  }
-        name: {  }
