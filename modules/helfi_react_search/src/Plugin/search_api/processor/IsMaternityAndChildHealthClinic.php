@@ -9,7 +9,7 @@ use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 
 /**
- * Checks if given TPR entity is a health station.
+ * Checks if given TPR entity is a maternity and child health clinic.
  *
  * @SearchApiProcessor(
  *   id = "maternity_and_child_health_clinic",
