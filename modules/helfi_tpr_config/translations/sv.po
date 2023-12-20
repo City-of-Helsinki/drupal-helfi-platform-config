@@ -7,8 +7,8 @@ msgstr "Dölj listan om serviceställen"
 msgid "Select this if you link from the page to a filter search or another listing."
 msgstr "Välj detta om du länkar från sidan till en filtersökning eller till en separat lista."
 
-msgid "Override: Description"
+msgid "Long description (replacing missing information)"
 msgstr "Lång beskrivning (ersätter saknad information)"
 
-msgid "Add or overwrite the description text. If a description is provided by TPR, this will overwrite it."
+msgid "Note! The content is displayed on the website only if the long description is missing from the data source."
 msgstr "Observera! Innehållet visas på webbplatsen endast om den långa beskrivningen saknas från datakäll."
