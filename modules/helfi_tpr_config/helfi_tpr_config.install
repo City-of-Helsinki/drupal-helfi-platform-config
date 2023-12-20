@@ -360,7 +360,7 @@ function helfi_tpr_config_update_9051(): void {
 }
 
 /**
- * UHF-9249: Add an override field for description.
+ * UHF-9249: Add an long description field for filling missing data.
  */
 function helfi_tpr_config_update_9052() : void {
   $enrich_description = BaseFieldDefinition::create('text_with_summary')
