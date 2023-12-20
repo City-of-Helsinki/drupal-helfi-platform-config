@@ -363,17 +363,17 @@ function helfi_tpr_config_update_9051(): void {
  * UHF-9249: Add an override field for description.
  */
 function helfi_tpr_config_update_9052() : void {
-  $description_override = BaseFieldDefinition::create('text_with_summary')
+  $enrich_description = BaseFieldDefinition::create('text_with_summary')
     ->setTranslatable(TRUE)
     ->setRevisionable(FALSE)
-    ->setLabel(new TranslatableMarkup('Override: Description'))
-    ->setDescription(new TranslatableMarkup('Add or overwrite the description text. If a description is provided by TPR, this will overwrite it.'))
+    ->setLabel(new TranslatableMarkup('Long description (replacing missing information'))
+    ->setDescription(new TranslatableMarkup('Note! The content is displayed on the website only if the long description is missing from the data source.'))
     ->setDisplayConfigurable('form', TRUE)
     ->setDisplayConfigurable('view', TRUE)
     ->setSetting('allowed_formats', [0 => 'plain_text']);
 
   \Drupal::entityDefinitionUpdateManager()
-    ->installFieldStorageDefinition('description_override', 'tpr_unit', 'helfi_tpr_config', $description_override);
+    ->installFieldStorageDefinition('enrich_description', 'tpr_unit', 'helfi_tpr_config', $enrich_description);
 
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')

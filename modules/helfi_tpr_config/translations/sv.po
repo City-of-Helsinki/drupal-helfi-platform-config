@@ -8,7 +8,7 @@ msgid "Select this if you link from the page to a filter search or another listi
 msgstr "Välj detta om du länkar från sidan till en filtersökning eller till en separat lista."
 
 msgid "Override: Description"
-msgstr "Skriv över: Beskrivning"
+msgstr "Lång beskrivning (ersätter saknad information)"
 
 msgid "Add or overwrite the description text. If a description is provided by TPR, this will overwrite it."
-msgstr "Lägg till eller skriv över beskrivningstexten. Om en beskrivning finns från TPR kommer den att skrivas över av denna."
+msgstr "Observera! Innehållet visas på webbplatsen endast om den långa beskrivningen saknas från datakäll."

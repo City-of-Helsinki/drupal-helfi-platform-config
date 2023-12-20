@@ -7,8 +7,8 @@ msgstr "Piilota palvelupaikkojen listaus"
 msgid "Select this if you link from the page to a filter search or another listing."
 msgstr "Valitse tämä, jos linkität sivulta palvelupaikkojen suodatushakuun tai muuhun listaukseen."
 
-msgid "Override: Description"
-msgstr "Ylikirjoita: Kuvaus"
+msgid "Long description (replacing missing information)"
+msgstr "Pitkä kuvaus (vain puuttuvalle tiedolle)"
 
-msgid "Add or overwrite the description text. If a description is provided by TPR, this will overwrite it."
-msgstr "Lisää tai ylikirjoita kuvausteksti. Jos TPR:stä tulee kuvausteksti, tämä ylikirjoittaa sen."
+msgid "Note! The content is displayed on the website only if the long description is missing from the data source."
+msgstr "Huom! Kentän sisältö näytetään verkkosivulla vain, jos pitkä kuvaus puuttuu kokonaan lähdejärjestelmästä."

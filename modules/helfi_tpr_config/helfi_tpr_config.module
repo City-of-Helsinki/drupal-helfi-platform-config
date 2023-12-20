@@ -507,11 +507,11 @@ function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_typ
       ->setDisplayConfigurable('view', TRUE)
       ->setSetting('allowed_formats', [0 => 'plain_text']);
 
-    $fields['description_override'] = BaseFieldDefinition::create('text_with_summary')
+    $fields['enrich_description'] = BaseFieldDefinition::create('text_with_summary')
       ->setTranslatable(TRUE)
       ->setRevisionable(FALSE)
-      ->setLabel(new TranslatableMarkup('Override: Description'))
-      ->setDescription(new TranslatableMarkup('Add or overwrite the description text. If a description is provided by TPR, this field does not do anything.'))
+      ->setLabel(new TranslatableMarkup('Long description (replacing missing information)'))
+      ->setDescription(new TranslatableMarkup('Note! The content is displayed on the website only if the long description is missing from the data source.'))
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setSetting('allowed_formats', [0 => 'plain_text']);
