@@ -92,6 +92,13 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
+  description_override:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
   email:
     type: string
     label: hidden

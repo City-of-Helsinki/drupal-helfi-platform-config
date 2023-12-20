@@ -370,7 +370,7 @@ function helfi_tpr_config_update_9052() : void {
     ->setDescription(new TranslatableMarkup('Add or overwrite the description text. If a description is provided by TPR, this will overwrite it.'))
     ->setDisplayConfigurable('form', TRUE)
     ->setDisplayConfigurable('view', TRUE)
-    ->setSetting('allowed_formats', [0 => 'full_html']);
+    ->setSetting('allowed_formats', [0 => 'plain_text']);
 
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('description_override', 'tpr_unit', 'helfi_tpr_config', $description_override);

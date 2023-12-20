@@ -511,10 +511,10 @@ function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_typ
       ->setTranslatable(TRUE)
       ->setRevisionable(FALSE)
       ->setLabel(new TranslatableMarkup('Override: Description'))
-      ->setDescription(new TranslatableMarkup('Add or overwrite the description text. If a description is provided by TPR, this will overwrite it.'))
+      ->setDescription(new TranslatableMarkup('Add or overwrite the description text. If a description is provided by TPR, this field does not do anything.'))
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
-      ->setSetting('allowed_formats', [0 => 'full_html']);
+      ->setSetting('allowed_formats', [0 => 'plain_text']);
   }
   return $fields;
 }

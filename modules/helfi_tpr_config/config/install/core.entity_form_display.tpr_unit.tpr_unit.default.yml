@@ -100,6 +100,14 @@ content:
       formatter_settings: {  }
       show_description: false
     third_party_settings: {  }
+  description_override:
+    type: text_textarea
+    weight: 19
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   email:
     type: readonly_field_widget
     weight: 10
