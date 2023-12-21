@@ -11,3 +11,7 @@
 [dir="ltr"] .gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-box > .toolbar-icon:not(.toolbar-handle) {
   padding-right: 1em;
 }
+
+[dir="ltr"] .gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-icon.is-active {
+  background-color: rgba(38,88,168,0.05);
+}
