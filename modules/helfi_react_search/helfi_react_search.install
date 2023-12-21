@@ -47,6 +47,10 @@ function helfi_react_search_update_9003(): void {
  * Mark indexes to require reindexing.
  */
 function helfi_react_search_update_9004() {
+  if (!\Drupal::moduleHandler()->moduleExists('search_api')) {
+    return;
+  }
+
   $schoolsIndex = Index::load('schools');
   $healthStationsIndex = Index::load('health_stations');
 

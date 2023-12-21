@@ -100,6 +100,13 @@ content:
     third_party_settings: {  }
     weight: 8
     region: content
+  enrich_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
   field_content:
     type: entity_reference_revisions_entity_view
     label: hidden

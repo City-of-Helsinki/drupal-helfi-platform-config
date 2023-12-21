@@ -65,6 +65,7 @@
         "drupal/core": "<10.2",
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/helfi_media_map": "*",
+        "drupal/simple_sitemap": ">4.1.7",
         "drush/drush": "<12"
     },
     "extra": {
