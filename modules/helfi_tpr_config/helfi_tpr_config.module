@@ -504,7 +504,17 @@ function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_typ
         'weight' => 5,
       ])
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setSetting('allowed_formats', [0 => 'plain_text']);
+
+    $fields['enrich_description'] = BaseFieldDefinition::create('text_with_summary')
+      ->setTranslatable(TRUE)
+      ->setRevisionable(FALSE)
+      ->setLabel(new TranslatableMarkup('Long description (replacing missing information)'))
+      ->setDescription(new TranslatableMarkup('Note! The content is displayed on the website only if the long description is missing from the data source.'))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setSetting('allowed_formats', [0 => 'plain_text']);
   }
   return $fields;
 }

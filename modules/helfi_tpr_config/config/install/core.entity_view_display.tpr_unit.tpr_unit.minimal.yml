@@ -48,6 +48,7 @@ hidden:
   created: true
   description: true
   email: true
+  enrich_description: true
   field_content: true
   field_lower_content: true
   field_metatags: true
