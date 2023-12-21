@@ -43,7 +43,7 @@ jobs:
 
       - name: Clone platform
         run: |
-          git clone --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
+          git clone -b UHF-9488_drupal-10.2 --depth=1 --single-branch  https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
           rm -rf $DRUPAL_ROOT/.git
 
       - name: Install required composer dependencies
