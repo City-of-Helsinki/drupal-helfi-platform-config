@@ -30,6 +30,7 @@ function helfi_react_search_preprocess_paragraph(array &$variables): void {
     'district_and_project_search',
     'ploughing_schedule',
     'health_station_search',
+    'maternity_and_child_health_clini',
   ];
 
   $config = \Drupal::config('elastic_proxy.settings');
