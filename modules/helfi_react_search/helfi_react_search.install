@@ -73,3 +73,19 @@ function helfi_react_search_update_9004() {
   }
 
 }
+
+/**
+ * Reindex job search.
+ */
+function helfi_react_search_update_9005() {
+  $index = Index::load('job_listings');
+
+  if ($index) {
+    // Ensure tracker works.
+    $index->rebuildTracker();
+
+    // Mark index to require reindexing.
+    $dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+    $dispatcher->dispatch(new ReindexScheduledEvent($index, TRUE), SearchApiEvents::REINDEX_SCHEDULED);
+  }
+}
