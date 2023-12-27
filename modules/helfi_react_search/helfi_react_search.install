@@ -78,6 +78,10 @@ function helfi_react_search_update_9004() {
  * Reindex job search.
  */
 function helfi_react_search_update_9005() {
+  if (!\Drupal::moduleHandler()->moduleExists('search_api')) {
+    return;
+  }
+  
   $index = Index::load('job_listings');
 
   if ($index) {
