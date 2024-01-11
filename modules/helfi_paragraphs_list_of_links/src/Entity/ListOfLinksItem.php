@@ -2,6 +2,7 @@
 
 namespace Drupal\helfi_paragraphs_list_of_links\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -19,7 +20,7 @@ class ListOfLinksItem extends Paragraph implements ParagraphInterface {
   public function getDesign(): string {
     return $this->getParentEntity()
       ->get('field_list_of_links_design')
-      ->getString();
+      ->value;
   }
 
   /**
@@ -32,6 +33,24 @@ class ListOfLinksItem extends Paragraph implements ParagraphInterface {
     return !$this->getParentEntity()
       ->get('field_list_of_links_title')
       ->isEmpty();
+  }
+
+  /**
+   * Pre-save functionality for list of links -paragraph
+   *
+   * @param EntityStorageInterface $storage
+   *   The storage.
+   *
+   * @return void
+   * 
+   * @throws \Exception
+   */
+  public function preSave(EntityStorageInterface $storage) {
+    // #UHF-9534 Remove media entity if the design is not supposed to have media.
+    if ($this->getDesign() != 'with-image') {
+      $this->set('field_list_of_links_image', null);
+    }
+    parent::preSave($storage);
   }
 
 }
