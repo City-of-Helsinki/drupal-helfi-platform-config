@@ -42,7 +42,7 @@ class ListOfLinksItem extends Paragraph implements ParagraphInterface {
    *   The storage.
    *
    * @return void
-   * 
+   *
    * @throws \Exception
    */
   public function preSave(EntityStorageInterface $storage) {
