@@ -2,11 +2,12 @@
 
 namespace Drupal\helfi_paragraphs_hero\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
- * Bundle class for Hero -paragraph
+ * Bundle class for Hero -paragraph.
  */
 class Hero extends Paragraph implements ParagraphInterface {
 
@@ -23,14 +24,12 @@ class Hero extends Paragraph implements ParagraphInterface {
   /**
    * Hero paragraph pre-save.
    *
-   * @param \Drupal\Core\Entity\EntityStorageInterface $storage
+   * @param Drupal\Core\Entity\EntityStorageInterface $storage
    *   The storage.
-   *
-   * @return void
    *
    * @throws \Exception
    */
-  public function preSave(\Drupal\Core\Entity\EntityStorageInterface $storage): void {
+  public function preSave(EntityStorageInterface $storage): void {
     if ($this->getDesign() == 'without-image-left') {
       $this->set('field_hero_image', null);
     }

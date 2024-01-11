@@ -7,7 +7,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
- * Baseclass for list_of_links paragraph.
+ * Bundle class for list_of_links paragraph.
  */
 class ListOfLinksItem extends Paragraph implements ParagraphInterface {
 
@@ -36,19 +36,17 @@ class ListOfLinksItem extends Paragraph implements ParagraphInterface {
   }
 
   /**
-   * Pre-save functionality for list of links -paragraph
+   * Pre-save functionality for list of links -paragraph.
    *
-   * @param EntityStorageInterface $storage
+   * @param Drupal\Core\Entity\EntityStorageInterface $storage
    *   The storage.
-   *
-   * @return void
    *
    * @throws \Exception
    */
   public function preSave(EntityStorageInterface $storage) {
-    // #UHF-9534 Remove media entity if the design is not supposed to have media.
+    // #UHF-9534 Remove media entity when design doesn't support media.
     if ($this->getDesign() != 'with-image') {
-      $this->set('field_list_of_links_image', null);
+      $this->set('field_list_of_links_image', NULL);
     }
     parent::preSave($storage);
   }
