@@ -22,12 +22,7 @@ class Hero extends Paragraph implements ParagraphInterface {
   }
 
   /**
-   * Hero paragraph pre-save.
-   *
-   * @param Drupal\Core\Entity\EntityStorageInterface $storage
-   *   The storage.
-   *
-   * @throws \Exception
+   * {@inheritdoc}
    */
   public function preSave(EntityStorageInterface $storage): void {
     if ($this->getDesign() == 'without-image-left') {

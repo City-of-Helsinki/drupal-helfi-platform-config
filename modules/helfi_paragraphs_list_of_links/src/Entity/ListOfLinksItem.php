@@ -36,12 +36,7 @@ class ListOfLinksItem extends Paragraph implements ParagraphInterface {
   }
 
   /**
-   * Pre-save functionality for list of links -paragraph.
-   *
-   * @param Drupal\Core\Entity\EntityStorageInterface $storage
-   *   The storage.
-   *
-   * @throws \Exception
+   * {@inheritdoc}
    */
   public function preSave(EntityStorageInterface $storage) {
     // #UHF-9534 Remove media entity when design doesn't support media.
