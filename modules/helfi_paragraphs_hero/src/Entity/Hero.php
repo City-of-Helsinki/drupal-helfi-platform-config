@@ -31,9 +31,10 @@ class Hero extends Paragraph implements ParagraphInterface {
    */
   public function preSave(EntityStorageInterface $storage): void {
     if ($this->getDesign() == 'without-image-left') {
-      $this->set('field_hero_image', null);
+      $this->set('field_hero_image', NULL);
     }
 
     parent::preSave($storage);
   }
+  
 }
