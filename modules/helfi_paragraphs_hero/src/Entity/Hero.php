@@ -28,7 +28,6 @@ class Hero extends Paragraph implements ParagraphInterface {
     if ($this->getDesign() == 'without-image-left') {
       $this->set('field_hero_image', NULL);
     }
-
     parent::preSave($storage);
   }
 
