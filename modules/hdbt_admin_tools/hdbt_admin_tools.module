@@ -1057,7 +1057,7 @@ function hdbt_admin_tools_entity_operation(EntityInterface $entity): array {
 /**
  * Implements hook_entity_base_field_info_alter().
  */
-function helfi_platform_config_entity_base_field_info_alter(&$fields, \Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+function hdbt_admin_tools_entity_base_field_info_alter(&$fields) {
   // #UHF-8061 Add description for langcode-field.
   if (isset($fields['langcode'])) {
     $translation = \Drupal::translation()->translate(
