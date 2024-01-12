@@ -36,5 +36,5 @@ class Hero extends Paragraph implements ParagraphInterface {
 
     parent::preSave($storage);
   }
-  
+
 }
