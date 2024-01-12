@@ -2,11 +2,6 @@ display:
   default:
     display_title: Förvald
     display_options:
-      fields:
-        name: {  }
-        address__postal_code: {  }
-        address__address_line1: {  }
-        address__address_line2: {  }
       pager:
         options:
           tags:
@@ -40,12 +35,5 @@ display:
             label: Sök
           group_info:
             label: 'Kombinera filterfält'
-            description: ''
-  block: {  }
   entity_reference:
     display_title: Objektsreferens
-    display_options:
-      fields:
-        name_override: {  }
-        id: {  }
-        name: {  }

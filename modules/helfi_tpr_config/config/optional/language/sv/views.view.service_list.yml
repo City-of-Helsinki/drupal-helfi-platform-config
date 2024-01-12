@@ -2,8 +2,6 @@ display:
   default:
     display_title: Förvald
     display_options:
-      fields:
-        name: {  }
       pager:
         options:
           tags:
@@ -31,14 +29,8 @@ display:
         id:
           exception:
             title: Alla
-  block: {  }
   block_search:
     display_options:
-      fields:
-        name: {  }
-        name_synonyms: {  }
-        description__summary: {  }
-        name_override: {  }
       pager:
         options:
           tags:
@@ -68,8 +60,3 @@ display:
             placeholder: 't.ex. Socialrådgivning, hälsa eller digitalt Sök'
   entity_reference_1:
     display_title: Objektsreferens
-    display_options:
-      fields:
-        name_override: {  }
-        id: {  }
-        name: {  }

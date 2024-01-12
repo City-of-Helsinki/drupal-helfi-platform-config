@@ -21,22 +21,24 @@ settings:
       - '|'
       - sourceEditing
   plugins:
+    ckeditor5_list:
+      properties:
+        reversed: false
+        startIndex: true
+      multiBlock: true
     ckeditor5_sourceEditing:
       allowed_tags:
         - '<span role aria-* class>'
         - '<ul type>'
         - '<ol type>'
         - '<a hreflang accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol>'
-    ckeditor5_list:
-      reversed: false
-      startIndex: true
-    linkit_extension:
-      linkit_enabled: true
-      linkit_profile: helfi
     helfi_ckeditor_helfi_link:
       helfi_link_attributes:
         - '<a aria-label class data-design data-hds-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds-component data-hds-variant id rel role target="_blank" title>'
         - '<span aria-hidden class role>'
+    linkit_extension:
+      linkit_enabled: true
+      linkit_profile: helfi
 image_upload:
   status: false
   scheme: public

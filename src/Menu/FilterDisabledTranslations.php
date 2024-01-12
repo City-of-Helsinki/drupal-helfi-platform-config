@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\Menu;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Routing\AdminContext;
 use Drupal\menu_block_current_language\Event\Events;
 use Drupal\menu_block_current_language\Event\HasTranslationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,10 +23,13 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
    *   The entity type manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
+   * @param \Drupal\Core\Routing\AdminContext $adminContext
+   *   The admin context.
    */
   public function __construct(
     readonly private EntityTypeManagerInterface $entityTypeManager,
-    readonly private LanguageManagerInterface $languageManager
+    readonly private LanguageManagerInterface $languageManager,
+    readonly private AdminContext $adminContext,
   ) {
   }
 
@@ -47,7 +51,9 @@ final class FilterDisabledTranslations implements EventSubscriberInterface {
    *   The event subscribed to.
    */
   public function filter(HasTranslationEvent $event): void {
-    if (!$event->hasTranslation()) {
+    // Disable for admin routes, otherwise the menu UI hides unpublished
+    // links.
+    if (!$event->hasTranslation() || $this->adminContext->isAdminRoute()) {
       return;
     }
 

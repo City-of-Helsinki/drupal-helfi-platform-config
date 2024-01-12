@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Functional;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\Tests\content_translation\Functional\ContentTranslationTestBase;
+use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
 use Drupal\user\UserInterface;
 
 /**
@@ -15,6 +16,8 @@ use Drupal\user\UserInterface;
  * @group helfi_platform_config
  */
 class MenuLanguageTest extends ContentTranslationTestBase {
+
+  use DefaultConfigurationTrait;
 
   /**
    * {@inheritdoc}
@@ -38,6 +41,7 @@ class MenuLanguageTest extends ContentTranslationTestBase {
     'menu_ui',
     'menu_link_content',
     'menu_block_current_language',
+    'system',
     'helfi_platform_config',
   ];
 
@@ -64,20 +68,13 @@ class MenuLanguageTest extends ContentTranslationTestBase {
       'access administration pages',
       'administer menu',
     ]);
-    $this->drupalLogin($this->adminUser);
-
-    $edit = [
-      'language_interface[enabled][language-session]' => TRUE,
-      'language_interface[weight][language-session]' => -12,
-    ];
-    $this->drupalGet('/admin/config/regional/language/detection');
-    $this->submitForm($edit, 'Save settings');
-    // Make sure we are not logged in.
-    $this->drupalLogout();
+    $this->config('language.negotiation')
+      ->set('url.prefixes', ['en' => 'en', 'fr' => 'fr', 'it' => 'it'])
+      ->save();
   }
 
   /**
-   * Create new menu link.
+   * Create a new menu link.
    *
    * @param string $langcode
    *   The language code.
@@ -89,13 +86,13 @@ class MenuLanguageTest extends ContentTranslationTestBase {
    * @return \Drupal\menu_link_content\Entity\MenuLinkContent
    *   The menu link.
    */
-  protected function createTestLink($langcode, $title, array $overrides = []) : MenuLinkContent {
+  protected function createTestLink(string $langcode, $title, array $overrides = []) : MenuLinkContent {
     $defaults = [
       'menu_name' => 'main',
       'title' => $title,
       'langcode' => $langcode,
       'link' => [
-        'uri' => 'internal:/admin/content',
+        'uri' => 'internal:/admin',
       ],
     ];
     $link = MenuLinkContent::create($overrides + $defaults);
@@ -113,25 +110,25 @@ class MenuLanguageTest extends ContentTranslationTestBase {
       'expanded' => 1,
     ]);
 
-    $this->drupalGet('admin/structure/menu/manage/main', ['query' => ['language' => 'en']]);
-    $this->assertSession()->linkExists($link->label());
+    $this->drupalGetWithLanguage('admin/structure/menu/manage/main', 'en');
+    $this->assertSession()->linkExists('First link');
 
-    // Make sure link is not visible when translation doesnt exist.
-    $this->drupalGet('admin/structure/menu/manage/main', ['query' => ['language' => 'fr']]);
+    // Make sure a link is not visible when translation doesn't exist.
+    $this->drupalGetWithLanguage('admin/structure/menu/manage/main', 'fr');
     $this->assertSession()->linkNotExists($link->label());
 
     // Add translation and test that links gets visible.
-    $link->addTranslation('fr', ['title' => 'First french title'])->save();
-    $this->drupalGet('admin/structure/menu/manage/main', ['query' => ['language' => 'fr']]);
-    $this->assertSession()->linkExists('First french title');
+    $link->addTranslation('fr', ['title' => 'First French title'])->save();
+    $this->drupalGetWithLanguage('admin/structure/menu/manage/main', 'fr');
+    $this->assertSession()->linkExists('First French title');
 
     // French link should not be visible to english.
-    $this->drupalGet('admin/structure/menu/manage/main', ['query' => ['language' => 'en']]);
+    $this->drupalGetWithLanguage('admin/structure/menu/manage/main', 'en');
     $this->assertSession()->linkNotExists('First french title');
 
     // Test French only link.
     $link2 = $this->createTestLink('fr', 'French only title');
-    $this->drupalGet('admin/structure/menu/manage/main', ['query' => ['language' => 'en']]);
+    $this->drupalGetWithLanguage('admin/structure/menu/manage/main', 'en');
     $this->assertSession()->linkNotExists($link2->label());
 
     // Test that untranslatable link is visible for both languages.
@@ -144,10 +141,19 @@ class MenuLanguageTest extends ContentTranslationTestBase {
       $link = $this->createTestLink($langcode, 'Untranslated ' . $langcode);
 
       foreach (['fr', 'en'] as $lang) {
-        $this->drupalGet('admin/structure/menu/manage/main', ['query' => ['language' => $lang]]);
+        $this->drupalGetWithLanguage('admin/structure/menu/manage/main', $lang);
         $this->assertSession()->linkExists($link->label());
       }
     }
+  }
+
+  /**
+   * Run same tests with account's 'preferred_admin_langcode' set to French.
+   */
+  public function testMenuLanguageWithAdminUiLanguage() : void {
+    $this->adminUser->set('preferred_admin_langcode', 'fr');
+    $this->adminUser->save();
+    $this->testMenuLanguage();
   }
 
 }
