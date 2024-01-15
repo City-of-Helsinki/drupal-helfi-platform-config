@@ -1053,3 +1053,16 @@ function hdbt_admin_tools_entity_operation(EntityInterface $entity): array {
   }
   return $operations;
 }
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function hdbt_admin_tools_entity_base_field_info_alter(&$fields) {
+  // #UHF-8061 Add description for langcode-field.
+  if (isset($fields['langcode'])) {
+    $translation = \Drupal::translation()->translate(
+      'If you want to translate this page, do not change this value. You can translate this content from the \'Translate\' -tab'
+    );
+    $fields['langcode']->setDescription($translation);
+  }
+}
