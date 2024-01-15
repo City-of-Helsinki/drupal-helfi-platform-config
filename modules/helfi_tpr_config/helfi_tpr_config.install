@@ -360,7 +360,7 @@ function helfi_tpr_config_update_9051(): void {
 }
 
 /**
- * UHF-9249: Add an long description field for filling missing data.
+ * UHF-9249: Add a long description field for filling missing data.
  */
 function helfi_tpr_config_update_9052() : void {
   $enrich_description = BaseFieldDefinition::create('text_with_summary')
@@ -375,6 +375,15 @@ function helfi_tpr_config_update_9052() : void {
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('enrich_description', 'tpr_unit', 'helfi_tpr_config', $enrich_description);
 
+  // Re-import 'helfi_tpr_config' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_tpr_config');
+}
+
+/**
+ * UHF-8975: Update service list and unit contact card translations.
+ */
+function helfi_tpr_config_update_9053(): void {
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
