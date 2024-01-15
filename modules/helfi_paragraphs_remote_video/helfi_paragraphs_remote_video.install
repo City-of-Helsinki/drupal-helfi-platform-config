@@ -8,9 +8,9 @@
 declare(strict_types = 1);
 
 /**
- * UHF-7841: Update editor guidance.
+ * UHF-8975: Updated translations for remote video paragraph type.
  */
-function helfi_paragraphs_remote_video_update_9001() : void {
+function helfi_paragraphs_remote_video_update_9002() : void {
   // Re-import 'helfi_paragraphs_remote_video' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_remote_video');
