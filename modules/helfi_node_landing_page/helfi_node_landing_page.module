@@ -15,7 +15,7 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 function helfi_node_landing_page_helfi_paragraph_types() : array {
   $types = [
     'field_hero' => [
-      'hero',
+      'hero' => 0,
     ],
     'field_content' => [
       'list_of_links' => 0,
@@ -27,12 +27,12 @@ function helfi_node_landing_page_helfi_paragraph_types() : array {
       'columns' => 6,
       'phasing' => 7,
       'map' => 8,
-      'remote_video',
-      'chart' => 9,
-      'content_liftup',
-      'target_group_links' => 10,
-      'event_list' => 11,
-      'news_list' => 13,
+      'remote_video' => 9,
+      'chart' => 10,
+      'content_liftup' => 11,
+      'target_group_links' => 12,
+      'event_list' => 13,
+      'news_list' => 14,
     ],
   ];
 
@@ -42,5 +42,7 @@ function helfi_node_landing_page_helfi_paragraph_types() : array {
       $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType, $weight);
     }
   }
+  // TODO kato mikä tossa rivillä 42 oikee on. xdebug päälle ja
+
   return $enabled;
 }

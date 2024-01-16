@@ -128,9 +128,9 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
       ],
       'landing_page' => [
         'field_content' => [
-          'service_list' => 14,
-          'service_list_search' => 15,
-          'unit_search' => 16,
+          'service_list' => 15,
+          'service_list_search' => 16,
+          'unit_search' => 17,
         ],
       ],
     ],
