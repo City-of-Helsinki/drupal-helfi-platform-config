@@ -118,16 +118,19 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
     'node' => [
       'page' => [
         'field_content' => [
+          'content_liftup' => 12,
           'service_list_search' => 16,
           'unit_search' => 17,
         ],
         'field_lower_content' => [
+          'content_liftup' => 12,
           'service_list_search' => 16,
           'unit_search' => 17,
         ],
       ],
       'landing_page' => [
         'field_content' => [
+          'content_liftup' => 11,
           'service_list' => 15,
           'service_list_search' => 16,
           'unit_search' => 17,

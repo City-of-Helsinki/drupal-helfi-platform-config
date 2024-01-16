@@ -29,7 +29,6 @@ function helfi_node_landing_page_helfi_paragraph_types() : array {
       'map' => 8,
       'remote_video' => 9,
       'chart' => 10,
-      'content_liftup' => 11,
       'target_group_links' => 12,
       'event_list' => 13,
       'news_list' => 14,
