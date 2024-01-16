@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.unit_search.field_search_results_term
+    - field.field.paragraph.unit_search.field_search_results_terms
     - field.field.paragraph.unit_search.field_unit_search_description
     - field.field.paragraph.unit_search.field_unit_search_meta_button
     - field.field.paragraph.unit_search.field_unit_search_meta_label
@@ -16,6 +18,22 @@ targetEntityType: paragraph
 bundle: unit_search
 mode: default
 content:
+  field_search_results_term:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_search_results_terms:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 7
+    region: content
   field_unit_search_description:
     type: text_default
     label: hidden
