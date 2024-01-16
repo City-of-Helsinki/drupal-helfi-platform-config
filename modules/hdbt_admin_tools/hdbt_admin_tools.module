@@ -889,7 +889,7 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
       $button['attributes']->setAttribute('data-paragraph-image', $image);
 
       // Fix the translation when paragraph type names are being rendered.
-      $button['text']['#value'] = t('Add @type', ['@type' => strtolower($bundle->get('label'))]);
+      $button['text']['#value'] = t('@type', ['@type' => $bundle->get('label')]);
     }
   }
 }
