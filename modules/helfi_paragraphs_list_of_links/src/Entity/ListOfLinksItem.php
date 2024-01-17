@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_paragraphs_list_of_links\Entity;
 
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 

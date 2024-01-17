@@ -35,7 +35,7 @@ function helfi_paragraphs_list_of_links_entity_bundle_info_alter(array &$bundles
  * Implements hook_entity_update().
  */
 function helfi_paragraphs_list_of_links_entity_update(EntityInterface $entity) {
-  // #UHF-9534 Prevent paragraph from maintaining unnecessary reference to media.
+  // #UHF-9534 Prevent paragraph from maintaining useless reference to media.
   if (
     !$entity instanceof ParagraphInterface ||
     $entity->getType() != 'list_of_links'
@@ -51,7 +51,7 @@ function helfi_paragraphs_list_of_links_entity_update(EntityInterface $entity) {
   }
 
   $entities = $entity->get('field_list_of_links_links')->referencedEntities();
-  foreach($entities as $list_of_links_item) {
+  foreach ($entities as $list_of_links_item) {
     if (!$list_of_links_item->get('field_list_of_links_image')->target_id) {
       continue;
     }
