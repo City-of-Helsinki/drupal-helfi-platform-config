@@ -9,7 +9,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
- * Bundle class for list_of_links paragraph.
+ * Bundle class for list_of_links_item paragraph.
  */
 class ListOfLinksItem extends Paragraph implements ParagraphInterface {
 
@@ -35,17 +35,6 @@ class ListOfLinksItem extends Paragraph implements ParagraphInterface {
     return !$this->getParentEntity()
       ->get('field_list_of_links_title')
       ->isEmpty();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function preSave(EntityStorageInterface $storage) {
-    // #UHF-9534 Remove media entity when design doesn't support media.
-    if ($this->getDesign() != 'with-image') {
-      $this->set('field_list_of_links_image', NULL);
-    }
-    parent::preSave($storage);
   }
 
 }
