@@ -8,9 +8,9 @@
 declare(strict_types = 1);
 
 /**
- * UHF-8135 Update popular services paragraph translations.
+ * UHF-8975 Update popular services paragraph translations.
  */
-function helfi_paragraphs_popular_services_update_9001(): void {
+function helfi_paragraphs_popular_services_update_9002(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_popular_services');
 }

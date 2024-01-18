@@ -15,54 +15,52 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 function helfi_node_page_helfi_paragraph_types() : array {
   $types = [
     'field_hero' => [
-      'hero',
+      'hero' => 0,
     ],
     'field_content' => [
-      'text',
-      'columns',
-      'image',
-      'accordion',
-      'list_of_links',
-      'contact_card_listing',
-      'content_cards',
-      'content_liftup',
-      'banner',
-      'event_list',
-      'news_list',
-      'from_library',
-      'phasing',
-      'chart',
-      'remote_video',
-      'map',
+      'text' => 0,
+      'accordion' => 1,
+      'banner' => 2,
+      'image' => 3,
+      'list_of_links' => 4,
+      'content_cards' => 5,
+      'columns' => 6,
+      'phasing' => 7,
+      'from_library' => 8,
+      'map' => 9,
+      'remote_video' => 10,
+      'chart' => 11,
+      'event_list' => 13,
+      'contact_card_listing' => 14,
+      'news_list' => 15,
     ],
     'field_lower_content' => [
-      'text',
-      'columns',
-      'image',
-      'accordion',
-      'list_of_links',
-      'contact_card_listing',
-      'content_cards',
-      'content_liftup',
-      'banner',
-      'event_list',
-      'news_list',
-      'from_library',
-      'chart',
-      'phasing',
-      'remote_video',
-      'map',
+      'list_of_links' => 0,
+      'content_cards' => 1,
+      'text' => 2,
+      'accordion' => 3,
+      'banner' => 4,
+      'image' => 5,
+      'columns' => 6,
+      'phasing' => 7,
+      'from_library' => 8,
+      'map' => 9,
+      'remote_video' => 10,
+      'chart' => 11,
+      'event_list' => 13,
+      'contact_card_listing' => 14,
+      'news_list' => 15,
     ],
     'field_sidebar_content' => [
-      'sidebar_text',
-      'from_library',
+      'from_library' => 0,
+      'sidebar_text' => 1,
     ],
   ];
 
   $enabled = [];
   foreach ($types as $field => $paragraphTypes) {
-    foreach ($paragraphTypes as $paragraphType) {
-      $enabled[] = new ParagraphTypeCollection('node', 'page', $field, $paragraphType);
+    foreach ($paragraphTypes as $paragraphType => $weight) {
+      $enabled[] = new ParagraphTypeCollection('node', 'page', $field, $paragraphType, $weight);
     }
   }
   return $enabled;

@@ -15,32 +15,32 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 function helfi_node_landing_page_helfi_paragraph_types() : array {
   $types = [
     'field_hero' => [
-      'hero',
+      'hero' => 0,
     ],
     'field_content' => [
-      'columns',
-      'list_of_links',
-      'content_cards',
-      'content_liftup',
-      'banner',
-      'liftup_with_image',
-      'from_library',
-      'chart',
-      'remote_video',
-      'map',
-      'news_list',
-      'event_list',
-      'phasing',
-      'popular_services',
-      'target_group_links',
+      'list_of_links' => 0,
+      'content_cards' => 1,
+      'banner' => 2,
+      'liftup_with_image' => 3,
+      'popular_services' => 4,
+      'from_library' => 5,
+      'columns' => 6,
+      'phasing' => 7,
+      'map' => 8,
+      'remote_video' => 9,
+      'chart' => 10,
+      'target_group_links' => 12,
+      'event_list' => 13,
+      'news_list' => 14,
     ],
   ];
 
   $enabled = [];
   foreach ($types as $field => $paragraphTypes) {
-    foreach ($paragraphTypes as $paragraphType) {
-      $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType);
+    foreach ($paragraphTypes as $paragraphType => $weight) {
+      $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType, $weight);
     }
   }
+
   return $enabled;
 }

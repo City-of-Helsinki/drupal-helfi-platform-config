@@ -37,17 +37,17 @@ function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
 function helfi_calculator_helfi_paragraph_types() : array {
   $types = [
     'field_content' => [
-      'calculator',
+      'calculator' => 19,
     ],
     'field_lower_content' => [
-      'calculator',
+      'calculator' => 20,
     ],
   ];
 
   $enabled = [];
   foreach ($types as $field => $paragraphTypes) {
-    foreach ($paragraphTypes as $paragraphType) {
-      $enabled[] = new ParagraphTypeCollection('node', 'page', $field, $paragraphType);
+    foreach ($paragraphTypes as $paragraphType => $weight) {
+      $enabled[] = new ParagraphTypeCollection('node', 'page', $field, $paragraphType, $weight);
     }
   }
   return $enabled;

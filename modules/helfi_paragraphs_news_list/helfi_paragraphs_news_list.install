@@ -112,9 +112,9 @@ function helfi_paragraphs_news_list_update_9004() : void {
 }
 
 /**
- * Adds field for frontpage tid of news list terms - fixes news archive link.
+ * UHF-8974 Update the translations for the news list paragraph type.
  */
-function helfi_paragraphs_news_list_update_9005() : void {
+function helfi_paragraphs_news_list_update_9006() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_news_list');
 }

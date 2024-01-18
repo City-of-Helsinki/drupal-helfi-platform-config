@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Contains update hooks for 'helfi_paragraphs_content_liftup' module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * UHF-8975 Updated translations for the content liftup paragraph type.
+ */
+function helfi_paragraphs_content_liftup_update_9001() : void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_content_liftup');
+}

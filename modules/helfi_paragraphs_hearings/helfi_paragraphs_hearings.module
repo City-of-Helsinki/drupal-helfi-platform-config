@@ -66,14 +66,14 @@ function helfi_paragraphs_hearings_paragraph_view(
 function helfi_paragraphs_hearings_helfi_paragraph_types() : array {
   $types = [
     'field_content' => [
-      'hearings',
+      'hearings' => 14,
     ],
   ];
 
   $enabled = [];
   foreach ($types as $field => $paragraphTypes) {
-    foreach ($paragraphTypes as $paragraphType) {
-      $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType);
+    foreach ($paragraphTypes as $paragraphType => $weight) {
+      $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType, $weight);
     }
   }
   return $enabled;

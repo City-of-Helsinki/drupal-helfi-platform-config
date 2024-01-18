@@ -15,17 +15,17 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 function helfi_node_news_item_helfi_paragraph_types() : array {
   $types = [
     'field_content' => [
-      'text',
-      'banner',
-      'image',
-      'remote_video',
+      'text' => 0,
+      'image' => 1,
+      'remote_video' => 2,
+      'banner' => 3,
     ],
   ];
 
   $enabled = [];
   foreach ($types as $field => $paragraphTypes) {
-    foreach ($paragraphTypes as $paragraphType) {
-      $enabled[] = new ParagraphTypeCollection('node', 'news_item', $field, $paragraphType);
+    foreach ($paragraphTypes as $paragraphType => $weight) {
+      $enabled[] = new ParagraphTypeCollection('node', 'news_item', $field, $paragraphType, $weight);
     }
   }
   return $enabled;
