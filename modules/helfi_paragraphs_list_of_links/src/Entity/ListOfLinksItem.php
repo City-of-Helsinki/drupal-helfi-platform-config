@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\helfi_paragraphs_list_of_links\Entity;
 
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
- * Baseclass for list_of_links paragraph.
+ * Bundle class for list_of_links_item paragraph.
  */
 class ListOfLinksItem extends Paragraph implements ParagraphInterface {
 
@@ -19,7 +21,7 @@ class ListOfLinksItem extends Paragraph implements ParagraphInterface {
   public function getDesign(): string {
     return $this->getParentEntity()
       ->get('field_list_of_links_design')
-      ->getString();
+      ->value;
   }
 
   /**

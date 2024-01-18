@@ -7,8 +7,10 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\helfi_paragraphs_list_of_links\Entity\ListOfLinksItem;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Implements hook_helfi_paragraph_types().
@@ -27,4 +29,34 @@ function helfi_paragraphs_list_of_links_entity_bundle_info_alter(array &$bundles
   if (isset($bundles['paragraph']['list_of_links_item'])) {
     $bundles['paragraph']['list_of_links_item']['class'] = ListOfLinksItem::class;
   }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function helfi_paragraphs_list_of_links_entity_update(EntityInterface $entity) {
+  // #UHF-9534 Prevent paragraph from maintaining useless reference to media.
+  if (
+    !$entity instanceof ParagraphInterface ||
+    $entity->getType() != 'list_of_links'
+  ) {
+    return;
+  }
+
+  if (
+    $entity->hasField('field_list_of_links_design') &&
+    $entity->get('field_list_of_links_design')->value == 'with-image'
+  ) {
+    return;
+  }
+
+  $entities = $entity->get('field_list_of_links_links')->referencedEntities();
+  foreach ($entities as $list_of_links_item) {
+    if (!$list_of_links_item->get('field_list_of_links_image')->target_id) {
+      continue;
+    }
+    $list_of_links_item->set('field_list_of_links_image', NULL);
+    $list_of_links_item->save();
+  }
+
 }
