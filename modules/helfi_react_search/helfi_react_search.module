@@ -17,6 +17,7 @@ function helfi_react_search_event_list_allowed_values_function(): array {
   return [
     3 => 3,
     5 => 5,
+    10 => 10,
   ];
 }
 
