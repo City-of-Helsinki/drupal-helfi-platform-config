@@ -54,14 +54,35 @@ class TeliaAceWidget extends BlockBase {
    */
   public function build() {
 
-    $library = ['helfi_platform_config/telia_ace_widget'];
-
     $build = [];
 
     $config = $this->getConfiguration();
     $base_url = 'https://wds.ace.teliacompany.com';
     $script_url = $base_url . $config['script_url'];
     $chat_id = 'humany_' . $config['chat_id'];
+
+    if ($script_url === 'https://wds.ace.teliacompany.com/wds/instances/J5XKjqJt/load_ace.js') {
+      $attached = [
+        'library' => ['helfi_platform_config/telia_ace_widget_loadjs'],
+      ];
+    }
+    else {
+      $attached = [
+        'library' => ['helfi_platform_config/telia_ace_widget'],
+        'html_head' => [
+          [
+            [
+              '#tag' => 'script',
+              '#attributes' => [
+                'defer' => TRUE,
+                'type' => 'text/javascript',
+                'src' => $script_url,
+              ],
+            ], 'telia_ace_script',
+          ],
+        ],
+      ];
+    }
 
     $build['ibm_chat_app'] = [
       'button' => [
@@ -74,21 +95,7 @@ class TeliaAceWidget extends BlockBase {
           ],
         ],
       ],
-      '#attached' => [
-        'library' => $library,
-        'html_head' => [
-          [
-            [
-              '#tag' => 'script',
-              '#attributes' => [
-                'async' => TRUE,
-                'type' => 'text/javascript',
-                'src' => $script_url,
-              ],
-            ], 'telia_ace_script',
-          ],
-        ],
-      ],
+      '#attached' => $attached,
     ];
 
     return $build;
