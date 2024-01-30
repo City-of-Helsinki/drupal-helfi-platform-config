@@ -134,7 +134,7 @@ class LinkedEvents extends EventsApiBase {
   /**
    * Return places from cache or generate list of them.
    *
-   * @param string $url
+   * @param string $event_url
    *   The Api url for events.
    *
    * @return array
@@ -204,11 +204,11 @@ class LinkedEvents extends EventsApiBase {
 
   /**
    * Format places API URL with query options from events API URL.
+   *
    * - Currently only 'division' option is useful.
    * - 'has_upcoming_events' option is used to limit results (from 2k to 700).
    * - Places API doesn't accept a list of IDs, so we have to get all results.
    * - This is usually still faster than querying each place individually.
-   *
    *
    * @param string $event_url
    *   Event API URL.
