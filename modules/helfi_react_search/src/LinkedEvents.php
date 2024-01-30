@@ -233,6 +233,11 @@ class LinkedEvents extends EventsApiBase {
       $options['division'] = $parsed_url['query']['division'];
     }
 
+    // Add locations to URL for caching purposes.
+    if (isset($parsed_url['query']['locations'])) {
+      $options['locations'] = $parsed_url['query']['locations'];
+    }
+
     $options = array_merge($defaultOptions, $options);
     $url->setOption('query', $options);
 
