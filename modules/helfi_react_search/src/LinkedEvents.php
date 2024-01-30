@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_react_search;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -133,13 +134,6 @@ class LinkedEvents extends EventsApiBase {
   /**
    * Return places from cache or generate list of them.
    *
-   * This function causes slow page load if it fetches places from Linked Events
-   * API with thousands of events without cache. Function is used in preprocess
-   * function. It's a known issue but is it possible to get rid of the slowness
-   * without cache and thousands of events? If this causes problems in the
-   * future, the function can be re-thinked. More info from old ticket:
-   * https://helsinkisolutionoffice.atlassian.net/browse/UHF-8163
-   *
    * @param string $url
    *   The Api url for events.
    *
@@ -148,9 +142,8 @@ class LinkedEvents extends EventsApiBase {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getPlacesList($url) : array {
-    // Remove keywords from api url not to get detailed keyword data for places.
-    $url = str_replace('keywords%2C', '', $url);
+  public function getPlacesList(string $event_url) : array {
+    $url = $this->formatPlacesUrl($event_url);
 
     if ($data = $this->getFromCache($url)) {
       return $data;
@@ -158,13 +151,15 @@ class LinkedEvents extends EventsApiBase {
 
     $result = [];
 
-    // Set max page size to reduce amount of requests.
-    $transformedUrl = Url::fromUri($url);
-    $transformedUrl->setOption('query', ['page_size' => '100']);
-    $transformedUrl = $transformedUrl->toString();
+    // Get location IDs from event URL.
+    $parsed_url = UrlHelper::parse($event_url);
+    $places = [];
+    if (!empty($parsed_url['query']['location'])) {
+      $places = explode(',', $parsed_url['query']['location']);
+    }
 
     try {
-      $response = $this->httpClient->request('GET', $transformedUrl);
+      $response = $this->httpClient->request('GET', $url);
       $body = json_decode($response->getBody()->getContents());
       $next = $body->meta->next;
       $data = $body->data;
@@ -172,12 +167,18 @@ class LinkedEvents extends EventsApiBase {
       do {
         foreach ($data as $item) {
           // Bail if no location data.
-          if (!isset($item->location) || !isset($item->location->id)) {
+          if (!isset($item->id) || !isset($item->name)) {
             continue;
           }
 
-          if (!array_key_exists($item->location->id, $result)) {
-            $result[$item->location->id] = $item->location;
+          // Trim list of locations based on original IDs.
+          // Has to be done here because places API doesn't accept lists of ids.
+          if (!empty($places) && !in_array($item->id, $places)) {
+            continue;
+          }
+
+          if (!array_key_exists($item->id, $result)) {
+            $result[$item->id] = $item;
           }
         }
 
@@ -199,6 +200,43 @@ class LinkedEvents extends EventsApiBase {
     }
 
     return $result;
+  }
+
+  /**
+   * Format places API URL with query options from events API URL.
+   * - Currently only 'division' option is useful.
+   * - 'has_upcoming_events' option is used to limit results (from 2k to 700).
+   * - Places API doesn't accept a list of IDs, so we have to get all results.
+   * - This is usually still faster than querying each place individually.
+   *
+   *
+   * @param string $event_url
+   *   Event API URL.
+   *
+   * @return string
+   *   Formatted places API URL with query options from event URL.
+   */
+  public function formatPlacesUrl(string $event_url): string {
+    $url = Url::fromUri(self::API_URL . 'place');
+
+    // Add default options to reduce amount of requests.
+    $defaultOptions = [
+      'has_upcoming_events' => 'true',
+      'sort' => 'name',
+      'page_size' => '100',
+    ];
+
+    // Pick up options from event URL.
+    $options = [];
+    $parsed_url = UrlHelper::parse($event_url);
+    if (isset($parsed_url['query']['division'])) {
+      $options['division'] = $parsed_url['query']['division'];
+    }
+
+    $options = array_merge($defaultOptions, $options);
+    $url->setOption('query', $options);
+
+    return $url->toString();
   }
 
 }
