@@ -12,9 +12,7 @@ label: 'Search label'
 description: ''
 required: false
 translatable: false
-default_value:
-  -
-    value: 'Search for a unit'
+default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: string

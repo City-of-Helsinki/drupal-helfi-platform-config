@@ -15,7 +15,7 @@ display:
             offset_label: Kompensera
       exposed_form:
         options:
-          submit_button: Verkställ
+          submit_button: Sök
           reset_button_label: Återställ
           exposed_sorts_label: 'Sortera efter'
           sort_asc_label: Stigande
