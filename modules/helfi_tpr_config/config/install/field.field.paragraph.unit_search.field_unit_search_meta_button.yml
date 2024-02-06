@@ -9,7 +9,7 @@ field_name: field_unit_search_meta_button
 entity_type: paragraph
 bundle: unit_search
 label: 'Search button text'
-description: 'This is by default Search'
+description: "The button's text is set to 'Search' by default. It is not recommended to change the text."
 required: false
 translatable: false
 default_value: {  }
