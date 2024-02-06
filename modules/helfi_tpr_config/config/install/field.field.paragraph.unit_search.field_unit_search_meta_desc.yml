@@ -9,7 +9,7 @@ field_name: field_unit_search_meta_desc
 entity_type: paragraph
 bundle: unit_search
 label: 'Additional description under the search input'
-description: ''
+description: 'For example: Street name and house number'
 required: false
 translatable: false
 default_value: {  }
