@@ -11,7 +11,9 @@ use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Exception\EnvironmentException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -41,9 +43,9 @@ final class Announcements extends ExternalEntityStorageClientBase {
   /**
    * The active endpoint environment.
    *
-   * @var \Drupal\helfi_api_base\Environment\Environment
+   * @var \Drupal\helfi_api_base\Environment\Environment|null
    */
-  private Environment $environment;
+  private ?Environment $environment = NULL;
 
   /**
    * The current language service.
@@ -81,8 +83,13 @@ final class Announcements extends ExternalEntityStorageClientBase {
 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
-    $instance->environment = $environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+
+    try {
+      $instance->environment = $environmentResolver
+        ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+    }
+    catch (\InvalidArgumentException) {
+    }
     $instance->logger = $container->get('logger.factory')->get('helfi_announcements');
 
     return $instance;
@@ -174,6 +181,9 @@ final class Announcements extends ExternalEntityStorageClientBase {
    *   An array of entities.
    */
   private function request(array $parameters, string $langcode) : array {
+    if (!$this->environment) {
+      return [];
+    }
     try {
       $uri = vsprintf('%s/jsonapi/node/announcement?%s', [
         $this->environment->getInternalAddress($langcode),

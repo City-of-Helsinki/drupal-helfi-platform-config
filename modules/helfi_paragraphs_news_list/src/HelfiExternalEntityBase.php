@@ -10,7 +10,9 @@ use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Exception\EnvironmentException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -55,9 +57,9 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   /**
    * The active endpoint environment.
    *
-   * @var \Drupal\helfi_api_base\Environment\Environment
+   * @var \Drupal\helfi_api_base\Environment\Environment|null
    */
-  private Environment $environment;
+  private ?Environment $environment = NULL;
 
   /**
    * The config factory service.
@@ -88,8 +90,13 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     $instance->configFactory = $container->get('config.factory');
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
-    $instance->environment = $environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+
+    try {
+      $instance->environment = $environmentResolver
+        ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+    }
+    catch (\InvalidArgumentException) {
+    }
     $instance->logger = $container->get('logger.factory')->get('helfi_external_entity');
 
     return $instance;
@@ -305,6 +312,9 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   protected function request(
     array $parameters,
   ) : array {
+    if (!$this->environment) {
+      return [];
+    }
     try {
       $langcode = $this->languageManager
         ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
