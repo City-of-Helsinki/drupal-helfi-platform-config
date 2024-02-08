@@ -14,6 +14,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Utils;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,9 +53,9 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   /**
    * The active endpoint environment.
    *
-   * @var \Drupal\helfi_api_base\Environment\Environment
+   * @var \Drupal\helfi_api_base\Environment\Environment|null
    */
-  private Environment $environment;
+  private ?Environment $environment = NULL;
 
   /**
    * The config factory service.
@@ -62,6 +63,13 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected ConfigFactoryInterface $configFactory;
+
+  /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected LoggerInterface $logger;
 
   /**
    * {@inheritdoc}
@@ -78,8 +86,14 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     $instance->configFactory = $container->get('config.factory');
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
-    $instance->environment = $environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+
+    try {
+      $instance->environment = $environmentResolver
+        ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+    }
+    catch (\InvalidArgumentException) {
+    }
+    $instance->logger = $container->get('logger.factory')->get('helfi_external_entity');
 
     return $instance;
   }
@@ -182,7 +196,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   /**
    * {@inheritdoc}
    */
-  public function save(ExternalEntityInterface $entity) : void {
+  public function save(ExternalEntityInterface $entity) : int {
     throw new EntityStorageException('::save() is not supported.');
   }
 
@@ -294,6 +308,9 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
   protected function request(
     array $parameters,
   ) : array {
+    if (!$this->environment) {
+      return [];
+    }
     try {
       $langcode = $this->languageManager
         ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)

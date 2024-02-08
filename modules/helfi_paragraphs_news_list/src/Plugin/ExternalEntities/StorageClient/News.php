@@ -52,7 +52,7 @@ final class News extends HelfiExternalEntityBase {
   /**
    * {@inheritdoc}
    */
-  public function save(ExternalEntityInterface $entity) : void {
+  public function save(ExternalEntityInterface $entity) : int {
     throw new EntityStorageException('::save() is not supported.');
   }
 
