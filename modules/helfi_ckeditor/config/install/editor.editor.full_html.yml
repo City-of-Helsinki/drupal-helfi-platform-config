@@ -45,27 +45,11 @@ settings:
         startIndex: true
       multiBlock: true
     ckeditor5_sourceEditing:
-      allowed_tags:
-        - '<dl>'
-        - '<dt>'
-        - '<dd>'
-        - '<blockquote role aria-* cite class>'
-        - '<div role aria-* class>'
-        - '<img src alt height width data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style>'
-        - '<span role aria-* class>'
-        - '<ul type>'
-        - '<ol type>'
-        - '<h2 id>'
-        - '<h3 id>'
-        - '<h4 id>'
-        - '<h5 id>'
-        - '<h6 id>'
-        - '<figure tabindex>'
-        - '<figcaption>'
+      allowed_tags: {  }
     helfi_ckeditor_helfi_link:
       helfi_link_attributes:
-        - '<a aria-label class data-design data-hds-icon-start data-is-external data-link-text data-protocol data-selected-icon data-hds-component data-hds-variant id rel role target="_blank" title>'
-        - '<span aria-hidden class role>'
+        - '<a class data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank">'
+        - '<span aria-hidden class>'
     linkit_extension:
       linkit_enabled: true
       linkit_profile: helfi
