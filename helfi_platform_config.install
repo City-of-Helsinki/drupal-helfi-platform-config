@@ -50,3 +50,19 @@ function helfi_platform_config_update_9303(): void {
     }
   }
 }
+
+/**
+ * Include front page in custom simple_sitemap links.
+ */
+function helfi_platform_config_update_9304() : void {
+  if (!\Drupal::moduleHandler()->moduleExists('simple_sitemap')) {
+    return;
+  }
+  $config = \Drupal::configFactory()->getEditable('simple_sitemap.custom_links.default');
+  $links = $config->get('links') ?? [];
+
+  $links = array_filter($links, fn (array $link) => $link['path'] !== '/');
+  $links[] = ['path' => '/', 'priority' => '1.0', 'changefreq' => 'daily'];
+  $config->set('links', $links)
+    ->save();
+}
