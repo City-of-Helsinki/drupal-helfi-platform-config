@@ -1,4 +1,2 @@
-label: 'Hakukentän painike'
-default_value:
-  -
-    value: 'Hae toimipisteitä'
+label: 'Suodata painikkeen teksti'
+description: 'Painikkeen tekstiksi tulee oletuksena "Etsi". Suositus on, että tekstiä ei muuteta.'

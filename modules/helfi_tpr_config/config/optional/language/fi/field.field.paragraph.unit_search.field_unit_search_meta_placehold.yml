@@ -1,4 +1,2 @@
-label: 'Hakukentän oletusteksti'
-default_value:
-  -
-    value: 'Syötä nimi, osoite tai postinumero'
+label: 'Esimerkkiteksti hakukenttään (placeholder)'
+description: 'Esim. Kotikatu 1'

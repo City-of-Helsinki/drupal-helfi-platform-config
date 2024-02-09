@@ -9,12 +9,10 @@ field_name: field_unit_search_meta_label
 entity_type: paragraph
 bundle: unit_search
 label: 'Search label'
-description: ''
+description: 'For example: Address'
 required: false
 translatable: false
-default_value:
-  -
-    value: 'Search for a unit'
+default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: string

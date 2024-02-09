@@ -62,6 +62,7 @@ class MenuLanguageTest extends ContentTranslationTestBase {
    */
   protected function setUp() : void {
     parent::setUp();
+    $this->doSetup();
 
     $this->adminUser = $this->drupalCreateUser([
       'administer languages',

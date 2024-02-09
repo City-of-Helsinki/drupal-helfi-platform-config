@@ -1,4 +1,2 @@
-label: 'Hakukentän otsikko'
-default_value:
-  -
-    value: 'Hae toimipisteitä'
+label: 'Hakukentän otsikko (label)'
+description: 'Esim. Osoite'

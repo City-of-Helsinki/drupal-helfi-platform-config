@@ -49,7 +49,7 @@
         "drupal/scheduler": "^1.3",
         "drupal/search_api": "^1.0",
         "drupal/select2": "^1.12",
-        "drupal/simple_sitemap": "4.1.7",
+        "drupal/simple_sitemap": "^4.0",
         "drupal/siteimprove": "^2.0",
         "drupal/social_media": "^2.0",
         "drupal/stomp": "^2.0",
@@ -97,12 +97,6 @@
             "drupal/publication_date": {
                 "[#UHF-7721] Fixed node preview when publication date is not set. (https://www.drupal.org/i/3074373)": "https://www.drupal.org/files/issues/2022-12-20/publication_date_is_required_for_completing_the_form-3074373-11.patch",
                 "[#UHF-9113] Fix PHP 8.2 deprecation issue with PublishedAtOrNowComputed class. (https://www.drupal.org/i/3328575)": "https://www.drupal.org/files/issues/2023-05-31/3328575-5-fix-bux-publicate-date.patch"
-            },
-            "drupal/social_media": {
-                "Add missing schema to social media. (https://www.drupal.org/project/social_media/issues/2986819)": "https://git.drupalcode.org/project/social_media/-/commit/1964f42e5a6fb5d7a97fdf8ec5ca259bc6c5b19a.patch"
-            },
-            "drupal/simple_sitemap": {
-                "[#UHF-8514] Fix frontpage URLs in sitemap. (https://www.drupal.org/i/3264573)": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/55722f695264bbaf6062f46e400e905c761fd5b7/patches/simple_sitemap-3264573-respect-frontpage-configuration.patch"
             },
             "drupal/view_unpublished": {
                 "[#UHF-9256] Fix missing dynamic permission dependencies.": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/cbb944ae79643ba7ed895db3fac7f3b3d90ac850/patches/view_unpublished_permissions_missing_dependencies.patch"
