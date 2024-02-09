@@ -13,7 +13,7 @@ helfi_ckeditor_helfi_link:
     library: helfi_ckeditor/helfi_link
     elements:
       - <a class data-design data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank">
-      - <span aria-hidden class>
+      - <span aria-hidden>
     conditions:
       plugins:
         - ckeditor5_link

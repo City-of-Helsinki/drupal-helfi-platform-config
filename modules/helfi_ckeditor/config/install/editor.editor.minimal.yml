@@ -31,7 +31,7 @@ settings:
     helfi_ckeditor_helfi_link:
       helfi_link_attributes:
         - '<a class data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank">'
-        - '<span aria-hidden class>'
+        - '<span aria-hidden>'
     linkit_extension:
       linkit_enabled: true
       linkit_profile: helfi
