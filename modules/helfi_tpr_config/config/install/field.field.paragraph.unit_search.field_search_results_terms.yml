@@ -8,8 +8,8 @@ id: paragraph.unit_search.field_search_results_terms
 field_name: field_search_results_terms
 entity_type: paragraph
 bundle: unit_search
-label: 'Search results plural term'
-description: 'Term used on the search results title when there is zero or more than one result from the search.'
+label: 'Search results title for multiple results without the number'
+description: 'For example: beaches'
 required: false
 translatable: false
 default_value: {  }

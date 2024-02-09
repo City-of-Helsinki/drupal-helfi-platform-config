@@ -1,2 +1,2 @@
-label: 'Hakutulosten yksikkötermi'
-description: 'Termi jota käytetään hakutulosten otsikossa kun tuloksia on tasan yksi.'
+label: 'Hakutulosten otsikko (H3) yhdelle hakutulokselle ilman numeroa'
+description: 'Esim. uimaranta'

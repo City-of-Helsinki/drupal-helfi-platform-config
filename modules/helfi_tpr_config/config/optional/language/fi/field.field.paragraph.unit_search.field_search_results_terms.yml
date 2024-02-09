@@ -1,2 +1,2 @@
-label: 'Hakutulosten monikkotermi'
-description: 'Termi jota käytetään hakutulosten otsikossa kun tuloksia on nolla tai enemmän kuin yksi.'
+label: 'Hakutulosten otsikko (H3) monelle hakutulokselle ilman numeroa'
+description: 'Esim. uimarantaa'

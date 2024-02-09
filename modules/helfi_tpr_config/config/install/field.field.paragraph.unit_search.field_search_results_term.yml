@@ -8,8 +8,8 @@ id: paragraph.unit_search.field_search_results_term
 field_name: field_search_results_term
 entity_type: paragraph
 bundle: unit_search
-label: 'Search results singular term'
-description: 'Term used on the search results title when there is exactly one result from the search.'
+label: 'Search results title for one result without the number'
+description: 'For example: beach'
 required: false
 translatable: false
 default_value: {  }

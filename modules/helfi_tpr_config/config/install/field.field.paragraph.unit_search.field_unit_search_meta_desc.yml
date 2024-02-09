@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_unit_search_meta_desc
+    - paragraphs.paragraphs_type.unit_search
+id: paragraph.unit_search.field_unit_search_meta_desc
+field_name: field_unit_search_meta_desc
+entity_type: paragraph
+bundle: unit_search
+label: 'Additional description under the search input'
+description: 'For example: Street name and house number'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

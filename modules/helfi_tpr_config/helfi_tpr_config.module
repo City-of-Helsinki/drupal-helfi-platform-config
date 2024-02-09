@@ -465,7 +465,7 @@ function helfi_tpr_config_form_views_exposed_form_alter(&$form, $form_state) : v
     return;
   }
 
-  if ($paragraph->hasField('field_unit_search_meta_button')) {
+  if ($paragraph->hasField('field_unit_search_meta_button') && isset($paragraph->get('field_unit_search_meta_button')->value)) {
     $form['actions']['submit']['#value'] = $paragraph
       ->get('field_unit_search_meta_button')
       ->value;
@@ -480,6 +480,12 @@ function helfi_tpr_config_form_views_exposed_form_alter(&$form, $form_state) : v
   if ($paragraph->hasField('field_unit_search_meta_placehold')) {
     $form['unit_search']['#attributes']['placeholder'] = $paragraph
       ->get('field_unit_search_meta_placehold')
+      ->value;
+  }
+
+  if ($paragraph->hasField('field_unit_search_meta_desc')) {
+    $form['#info']['filter-combine']['description'] = $paragraph
+      ->get('field_unit_search_meta_desc')
       ->value;
   }
 }
