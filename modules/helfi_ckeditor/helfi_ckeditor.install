@@ -179,6 +179,7 @@ function helfi_ckeditor_update_9007(): void {
   ];
 
   $count = 0;
+  $data_link_count = 0;
 
   // Load all field configurations.
   /** @var \Drupal\field\Entity\FieldConfig $field_config */
@@ -212,10 +213,33 @@ function helfi_ckeditor_update_9007(): void {
         );
         $count += $update->execute();
       }
+
+      // Search for <a> elements containing data-link-text.
+      $regex = '<a(.*?)data-link-text="[^"]*"(.*?)>';
+      $query = \Drupal::database()->select($table_name, 'v')
+        ->distinct()
+        ->fields('v', ['entity_id', $column])
+        ->condition($column, $regex, 'REGEXP');
+      $query_result = $query->execute()->fetchAll();
+
+      if (!empty($query_result)) {
+        $data_link_count += count($query_result);
+        $replacement = '<a\1\2>';
+        $update = \Drupal::database()->update($table_name);
+        $update->expression(
+          $column,
+          "REGEXP_REPLACE($column, :pattern, :replacement)",
+          [':pattern' => $regex, ':replacement' => $replacement]
+        );
+        $update->execute();
+      }
     }
   }
   // Set messages if there were changes.
   if ($count > 0) {
     \Drupal::messenger()->addMessage(t('Converted @number old CKE4 anchor data-attributes to new HDS button data-attributes.', ['@number' => $count]));
+  }
+  if ($data_link_count > 0) {
+    \Drupal::messenger()->addMessage(t('Removed data-link-text attribute from @number anchor elements.', ['@number' => $data_link_count]));
   }
 }
