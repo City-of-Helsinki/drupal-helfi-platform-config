@@ -211,6 +211,8 @@ function helfi_ckeditor_update_9007(): void {
             ':new_value' => $new,
           ]
         );
+        // Note! The execution will return every row, even the ones which data
+        // was not affected.
         $count += $update->execute();
       }
 
@@ -237,7 +239,7 @@ function helfi_ckeditor_update_9007(): void {
   }
   // Set messages if there were changes.
   if ($count > 0) {
-    \Drupal::messenger()->addMessage(t('Converted @number old CKE4 anchor data-attributes to new HDS button data-attributes.', ['@number' => $count]));
+    \Drupal::messenger()->addMessage(t('Converted old link button data-attributes to new HDS button data-attributes.'));
   }
   if ($data_link_count > 0) {
     \Drupal::messenger()->addMessage(t('Removed data-link-text attribute from @number anchor elements.', ['@number' => $data_link_count]));
