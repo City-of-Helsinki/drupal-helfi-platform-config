@@ -797,7 +797,7 @@ display:
             operator: combine_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: combine
+            identifier: service-list-search
             required: false
             remember: false
             multiple: false
