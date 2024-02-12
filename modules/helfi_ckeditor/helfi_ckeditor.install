@@ -159,7 +159,7 @@ function helfi_ckeditor_update_9006(): void {
 }
 
 /**
- * UHF-9497 Iterate through long text fields and replace anchor data attributes to new format.
+ * UHF-9497 Replace data attributes to HDS data attributes in long text fields.
  */
 function helfi_ckeditor_update_9007(): void {
   $entity_type_manager = Drupal::entityTypeManager();
@@ -197,7 +197,7 @@ function helfi_ckeditor_update_9007(): void {
 
       // Get current field's table name and column.
       $table_name = $table_mapping->getDedicatedDataTableName($field_storage_definition);
-      $column = $table_mapping->getFieldColumnName($field_storage_definition,'value');
+      $column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
 
       // Go through our data array, treat array key as data to search for
       // and array value as replacement. Use sql replace to replace the data.
