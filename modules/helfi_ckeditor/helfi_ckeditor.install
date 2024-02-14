@@ -216,24 +216,33 @@ function helfi_ckeditor_update_9007(): void {
         $count += $update->execute();
       }
 
-      // Search for <a> elements containing data-link-text.
-      $regex = '<a(.*?)data-link-text="[^"]*"(.*?)>';
+      // Fetch the data for <a> elements containing data-link-text.
+      $pattern = '%<a%data-link-text="%"%';
       $query = \Drupal::database()->select($table_name, 'v')
         ->distinct()
         ->fields('v', ['entity_id', $column])
-        ->condition($column, $regex, 'REGEXP');
+        ->condition($column, $pattern, 'LIKE');
       $query_result = $query->execute()->fetchAll();
 
-      if (!empty($query_result)) {
-        $data_link_count += count($query_result);
-        $replacement = '<a\1\2>';
-        $update = \Drupal::database()->update($table_name);
-        $update->expression(
-          $column,
-          "REGEXP_REPLACE($column, :pattern, :replacement)",
-          [':pattern' => $regex, ':replacement' => $replacement]
+      // Process the data and update the database.
+      // The query result is always an array.
+      foreach ($query_result as $result) {
+        if (!str_contains($result->$column, 'data-link-text=')) {
+          continue;
+        }
+        $data_without_link_text = preg_replace(
+          '/data-link-text="[^"]*"/',
+          '', $result->$column
         );
-        $update->execute();
+
+        if ($result->$column != $data_without_link_text) {
+          $data_link_count++;
+          // Update the database
+          $update = \Drupal::database()->update($table_name)
+            ->fields([$column => $data_without_link_text])
+            ->condition('entity_id', $result->entity_id)
+            ->execute();
+        }
       }
     }
   }
