@@ -64,7 +64,7 @@ genesys_auth_redirect:
     - core/drupalSettings
 
 chat_leijuke:
-  version: 1.0.x
+  version: 1.0.1
   header: true
   js:
     assets/js/chat_leijuke.js: {}
