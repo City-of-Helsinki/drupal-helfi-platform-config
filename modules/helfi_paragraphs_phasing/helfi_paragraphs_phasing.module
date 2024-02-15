@@ -5,7 +5,7 @@
  * Contains hooks for 'helfi_paragraphs_phasing' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\helfi_paragraphs_phasing\Entity\Phasing;
 use Drupal\helfi_paragraphs_phasing\Entity\PhasingItem;

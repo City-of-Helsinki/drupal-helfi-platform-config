@@ -5,7 +5,7 @@
  * Contains hooks for 'helfi_paragraphs_contact_card_listing' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\helfi_paragraphs_contact_card_listing\Entity\ContactCard;
 use Drupal\helfi_paragraphs_contact_card_listing\Entity\SocialMediaLink;

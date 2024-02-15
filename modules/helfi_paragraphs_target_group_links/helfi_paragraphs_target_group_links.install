@@ -5,7 +5,7 @@
  * Contains installation tasks for helfi_paragraphs_target_group_links module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * UHF-8135 Update target group links translations.

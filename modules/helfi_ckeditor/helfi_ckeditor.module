@@ -5,7 +5,7 @@
  * Contains 'helfi_ckeditor' hooks.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 

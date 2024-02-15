@@ -5,7 +5,7 @@
  * Contains hooks for 'helfi_global_announcement' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeInterface;

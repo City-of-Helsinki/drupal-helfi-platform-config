@@ -5,7 +5,7 @@
  * Contains installation tasks for helfi_user_roles module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;

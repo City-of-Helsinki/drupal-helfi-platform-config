@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClient;
 

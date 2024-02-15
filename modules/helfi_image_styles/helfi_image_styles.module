@@ -5,7 +5,7 @@
  * Contains hooks for 'helfi_image_styles' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * Implements hook_modules_installed().
