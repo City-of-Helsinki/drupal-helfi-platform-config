@@ -5,7 +5,7 @@
  * Contains installation tasks for helfi_paragraphs_remote_video module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * UHF-8975: Updated translations for remote video paragraph type.

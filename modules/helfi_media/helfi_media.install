@@ -5,7 +5,7 @@
  * Contains installation tasks for helfi_media module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * Grants required permissions.

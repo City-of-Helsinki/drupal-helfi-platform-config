@@ -5,7 +5,7 @@
  * Contains hooks for 'helfi_node_news_item' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 

@@ -5,7 +5,7 @@
  * Contains hooks for 'helfi_paragraphs_list_of_links' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\helfi_paragraphs_list_of_links\Entity\ListOfLinksItem;

@@ -5,7 +5,7 @@
  * Contains install functions for Helfi admin tools.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * Installs Helfi admin tools module.

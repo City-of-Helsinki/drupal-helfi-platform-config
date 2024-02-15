@@ -5,7 +5,7 @@
  * Contains installation tasks for helfi_paragraphs_popular_services module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * UHF-8975 Update popular services paragraph translations.

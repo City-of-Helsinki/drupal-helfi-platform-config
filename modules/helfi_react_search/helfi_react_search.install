@@ -5,7 +5,7 @@
  * Contains installation tasks for helfi_react_search module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Event\ReindexScheduledEvent;

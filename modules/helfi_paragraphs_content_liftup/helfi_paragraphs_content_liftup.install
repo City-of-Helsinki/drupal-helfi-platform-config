@@ -5,7 +5,7 @@
  * Contains update hooks for 'helfi_paragraphs_content_liftup' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * UHF-8975 Updated translations for the content liftup paragraph type.
