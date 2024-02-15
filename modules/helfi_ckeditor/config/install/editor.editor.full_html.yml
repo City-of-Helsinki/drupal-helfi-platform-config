@@ -85,13 +85,8 @@ settings:
         -
           enabled: true
           weight: -3
-          search: '<span[^>]*>'
-          replace: ''
-        -
-          enabled: true
-          weight: -2
-          search: '<\/span>'
-          replace: ''
+          search: '<span(?![^>]*\b(?:dir|lang)="[^"]*")[^>]*>(.*?)<\/span>'
+          replace: $1
         -
           enabled: true
           weight: -1

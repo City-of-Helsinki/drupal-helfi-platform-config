@@ -251,7 +251,7 @@ function helfi_ckeditor_update_9007(): void {
 
         if ($result->$column != $data_without_link_text) {
           $data_link_count++;
-          // Update the database
+          // Update the database.
           $update = \Drupal::database()->update($table_name)
             ->fields([$column => $data_without_link_text])
             ->condition('entity_id', $result->entity_id)
