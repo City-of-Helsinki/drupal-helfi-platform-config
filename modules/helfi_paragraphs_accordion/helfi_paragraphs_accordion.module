@@ -5,7 +5,7 @@
  * Contains hooks for 'helfi_paragraphs_accordion' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\helfi_paragraphs_accordion\Entity\Accordion;
 use Drupal\helfi_paragraphs_accordion\Entity\AccordionItem;

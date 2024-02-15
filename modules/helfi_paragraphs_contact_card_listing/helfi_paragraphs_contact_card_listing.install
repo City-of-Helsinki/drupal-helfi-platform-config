@@ -5,7 +5,7 @@
  * Contains update hooks for 'helfi_paragraphs_contact_card_listing' module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * UHF-8975 Updated translations for contact card listing paragraph type.
