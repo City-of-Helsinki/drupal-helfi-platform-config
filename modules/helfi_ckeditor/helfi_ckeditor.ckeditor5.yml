@@ -33,7 +33,8 @@ helfi_ckeditor_helfi_language_selector:
       helfiLanguageSelector:
         label: Select language
     elements:
-      - <span dir lang>
+      - <span>
+      - <span lang dir>
     class: Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin\HelfiLanguageSelector
 
 helfi_ckeditor_helfi_quote:
