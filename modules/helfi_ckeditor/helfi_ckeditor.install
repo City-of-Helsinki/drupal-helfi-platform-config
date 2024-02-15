@@ -29,6 +29,17 @@ function helfi_ckeditor_grant_permissions() : void {
 }
 
 /**
+ * Installs CKEditor5 plugins and extensions.
+ */
+function helfi_ckeditor_install_ckeditor5_supportive_plugins() : void {
+  $module_installer = \Drupal::service('module_installer');
+
+  if (!\Drupal::moduleHandler()->moduleExists('ckeditor5_paste_filter')) {
+    $module_installer->install(['ckeditor5_paste_filter']);
+  }
+}
+
+/**
  * Implements hook_install().
  */
 function helfi_ckeditor_install($is_syncing) : void {
@@ -39,6 +50,7 @@ function helfi_ckeditor_install($is_syncing) : void {
   }
 
   helfi_ckeditor_grant_permissions();
+  helfi_ckeditor_install_ckeditor5_supportive_plugins();
 }
 
 /**
@@ -154,11 +166,8 @@ function helfi_ckeditor_update_9005(): void {
  * UHF-9497 Install CKEditor5 paste filter and import revised filter formats.
  */
 function helfi_ckeditor_update_9006(): void {
-  $module_installer = \Drupal::service('module_installer');
+  helfi_ckeditor_install_ckeditor5_supportive_plugins();
 
-  if (!\Drupal::moduleHandler()->moduleExists('ckeditor5_paste_filter')) {
-    $module_installer->install(['ckeditor5_paste_filter']);
-  }
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_ckeditor');
 }
