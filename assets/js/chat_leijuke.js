@@ -114,7 +114,7 @@
 
       // Run the code below in browser to activate the popup for a minute
       // localStorage.setItem('user_inquiry_debug', `{"start": "${new Date((Date.now()-60000)).toString()}", "end": "${new Date((Date.now()+60000))}"}`);
-      let debug = localStorage.getItem('user_inquiry_debug');
+      const debug = localStorage.getItem('user_inquiry_debug');
       if (debug) {
         dates.push(JSON.parse(debug));
       }
