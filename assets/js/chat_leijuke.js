@@ -93,7 +93,7 @@
    */
   class UserInquiryAdapter {
     constructor() {
-      this.requiredCookies = ['chat'];
+      this.requiredCookies = ['statistics'];
       this.bot = false;
       this.persist = false;
       this.hasButton = false;
