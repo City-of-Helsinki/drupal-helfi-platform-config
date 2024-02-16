@@ -7,7 +7,20 @@
 }
 
 .cx-webchat.cx-theme-helsinki-blue .cx-transcript {
-  padding: 0 24px 80px;
+  padding: 0 24px;
+}
+
+.cx-webchat.cx-theme-helsinki-blue.cx-desktop .cx-transcript {
+  height: 500px !important;
+}
+
+.cx-webchat.cx-theme-helsinki-blue .cx-transcript > *:last-child {
+  padding-bottom: 88px;
+}
+
+
+.cx-webchat.cx-theme-helsinki-blue.cx-mobile .cx-transcript > *:last-child {
+  padding-bottom: 80px;
 }
 
 .cx-theme-helsinki-blue .cx-common-container .cx-titlebar {
@@ -32,6 +45,7 @@
 
 .cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message.cx-system {
   margin: 0;
+  width: 100%;
 }
 
 .cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message {
@@ -51,7 +65,6 @@
   margin-top: 5px;
 }
 
-.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message.cx-system .cx-bubble,
 .cx-theme-helsinki-blue .cx-bubble {
   background-color: #0000bf;
   border-bottom-left-radius: 0.4em !important;
@@ -60,6 +73,11 @@
   border-top-right-radius: 0.4em !important;
   display: flex;
   flex-direction: column;
+  padding: 0.5em;
+}
+
+.cx-theme-helsinki-blue .cx-webchat .cx-transcript .cx-message.cx-system .cx-bubble {
+  background-color: #4169e1;
   padding: 0.5em;
 }
 
@@ -139,11 +157,6 @@
   margin-top: 0 !important;
 }
 
-.cx-theme-helsinki-blue .cx-webchat.cx-mobile div.cx-input-container {
-  max-height: 50px;
-  padding: unset;
-}
-
 .cx-theme-helsinki-blue .cx-webchat.cx-mobile .cx-body {
   display: contents;
 }
@@ -159,7 +172,7 @@
 .cx-theme-helsinki-blue .cx-webchat.cx-mobile div.cx-input-container .cx-message-input {
   max-height: unset;
   min-height: 30px;
-  overflow: scroll !important;
+  overflow: auto !important;
   padding: 0 65px 0 0 !important;
 }
 
