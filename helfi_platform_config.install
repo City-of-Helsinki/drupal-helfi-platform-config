@@ -66,3 +66,55 @@ function helfi_platform_config_update_9304() : void {
   $config->set('links', $links)
     ->save();
 }
+
+function helfi_platform_config_update_9305() : void {
+  if (!\Drupal::moduleHandler()->moduleExists('helfi_api_base')) {
+    return;
+  }
+
+  $environment_resolver = \Drupal::service('helfi_api_base.environment_resolver');
+  try {
+    $environment_resolver->getActiveProject();
+  }
+  catch(Exception $exception) {
+    // No active project found, stop execution.
+    return;
+  }
+
+  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
+  $theme_handler = \Drupal::service('theme_handler');
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt_subtheme')) {
+    return;
+  }
+
+  $block = [
+    'id' => 'hdbt_subtheme_user_inquiry',
+    'plugin' => 'chat_leijuke',
+    'provider' => 'helfi_platform_config',
+    'settings' => [
+      'label' => 'User inquiry',
+      'label_display' => FALSE,
+      'chat_title' => '',
+      'chat_selection' => 'user_inquiry',
+    ],
+    'visibility' => [
+      'language' => [
+        'id' => 'language',
+        'langcodes' => ['fi' => 'fi', 'en' => 'en', 'sv' => 'sv']
+      ],
+      'user_role' => [
+        'id' => 'user_role',
+        'roles' => ['anonymous' => 'anonymous']
+      ],
+    ],
+  ];
+
+  $variations = [
+    [
+      'theme' => 'hdbt_subtheme',
+      'region' => 'attachments'
+    ]
+  ];
+
+  $block_installer->install($block, $variations);
+}
