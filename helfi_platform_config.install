@@ -68,7 +68,7 @@ function helfi_platform_config_update_9304() : void {
 }
 
 /**
- * Enable leijuke-block which contains the user inquiry -popup
+ * Enable leijuke-block which contains the user inquiry -popup.
  */
 function helfi_platform_config_update_9305() : void {
 
@@ -106,11 +106,11 @@ function helfi_platform_config_update_9305() : void {
     'visibility' => [
       'language' => [
         'id' => 'language',
-        'langcodes' => ['fi' => 'fi', 'en' => 'en', 'sv' => 'sv']
+        'langcodes' => ['fi' => 'fi', 'en' => 'en', 'sv' => 'sv'],
       ],
       'user_role' => [
         'id' => 'user_role',
-        'roles' => ['anonymous' => 'anonymous']
+        'roles' => ['anonymous' => 'anonymous'],
       ],
     ],
   ];
@@ -118,8 +118,8 @@ function helfi_platform_config_update_9305() : void {
   $variations = [
     [
       'theme' => $theme,
-      'region' => 'attachments'
-    ]
+      'region' => 'attachments',
+    ],
   ];
 
   $block_installer->install($block, $variations);
