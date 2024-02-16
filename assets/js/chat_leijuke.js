@@ -29,7 +29,7 @@
       return new GenesysAdapter;
     }
     if (chatSelection.indexOf('user_inquiry') != -1) {
-      if (UserInquiryAdapter.scheduler()) {
+      if (UserInquiryAdapter.idScheduled()) {
         return new UserInquiryAdapter;
       }
     }
@@ -104,7 +104,7 @@
     onLoaded(callback) {}
 
     // Return true or false based on hardcoded dates or value in localstorage.
-    static scheduler() {
+    static idScheduled() {
       const now = new Date();
 
       const dates = [

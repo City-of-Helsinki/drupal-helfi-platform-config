@@ -67,7 +67,11 @@ function helfi_platform_config_update_9304() : void {
     ->save();
 }
 
+/**
+ * Enable leijuke-block which contains the user inquiry -popup
+ */
 function helfi_platform_config_update_9305() : void {
+
   if (!\Drupal::moduleHandler()->moduleExists('helfi_api_base')) {
     return;
   }
@@ -76,16 +80,18 @@ function helfi_platform_config_update_9305() : void {
   try {
     $environment_resolver->getActiveProject();
   }
-  catch(Exception $exception) {
+  catch (Exception $exception) {
     // No active project found, stop execution.
     return;
   }
 
   $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
   $theme_handler = \Drupal::service('theme_handler');
-  if (!str_starts_with($theme_handler->getDefault(), 'hdbt_subtheme')) {
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
     return;
   }
+
+  $theme = $theme_handler->getDefault() === 'hdbt_subtheme' ? 'hdbt_subtheme' : 'hdbt';
 
   $block = [
     'id' => 'hdbt_subtheme_user_inquiry',
@@ -111,7 +117,7 @@ function helfi_platform_config_update_9305() : void {
 
   $variations = [
     [
-      'theme' => 'hdbt_subtheme',
+      'theme' => $theme,
       'region' => 'attachments'
     ]
   ];
