@@ -5,6 +5,7 @@ dependencies:
     - filter.format.full_html
   module:
     - ckeditor5
+    - ckeditor5_paste_filter
 format: full_html
 editor: ckeditor5
 settings:

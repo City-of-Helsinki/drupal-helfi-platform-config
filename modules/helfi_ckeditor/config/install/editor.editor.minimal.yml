@@ -5,6 +5,7 @@ dependencies:
     - filter.format.minimal
   module:
     - ckeditor5
+    - ckeditor5_paste_filter
 format: minimal
 editor: ckeditor5
 settings:
