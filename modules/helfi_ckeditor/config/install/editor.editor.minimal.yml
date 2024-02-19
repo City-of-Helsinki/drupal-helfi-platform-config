@@ -32,68 +32,83 @@ settings:
       filters:
         -
           enabled: true
-          weight: -10
+          weight: 0
           search: '<o:p><\/o:p>'
           replace: ''
         -
           enabled: true
-          weight: -9
+          weight: 1
           search: '(<[^>]*) (style="[^"]*")'
           replace: $1
         -
           enabled: true
-          weight: -8
+          weight: 2
           search: '(<[^>]*) (face="[^"]*")'
           replace: $1
         -
           enabled: true
-          weight: -7
+          weight: 3
           search: '(<[^>]*) (class="[^"]*")'
           replace: $1
         -
           enabled: true
-          weight: -6
+          weight: 4
           search: '(<[^>]*) (valign="[^"]*")'
           replace: $1
         -
           enabled: true
-          weight: -5
+          weight: 5
           search: '<font[^>]*>'
           replace: ''
         -
           enabled: true
-          weight: -4
+          weight: 6
           search: '<\/font>'
           replace: ''
         -
           enabled: true
-          weight: -3
+          weight: 7
           search: '<span(?![^>]*\b(?:dir|lang)="[^"]*")[^>]*>(.*?)<\/span>'
           replace: $1
         -
           enabled: true
-          weight: -1
+          weight: 8
+          search: '<p><span lang="[^"]*"><\/span><\/p>'
+          replace: ''
+        -
+          enabled: true
+          weight: 9
+          search: '<span lang="[^"]*"><\/span>'
+          replace: ''
+        -
+          enabled: true
+          weight: 10
           search: '<p>&nbsp;<\/p>'
           replace: ''
         -
           enabled: true
-          weight: 0
+          weight: 11
           search: '<p><\/p>'
           replace: ''
         -
           enabled: true
-          weight: 1
+          weight: 12
           search: '<b><\/b>'
           replace: ''
         -
           enabled: true
-          weight: 2
+          weight: 13
           search: '<i><\/i>'
           replace: ''
         -
           enabled: true
-          weight: 3
+          weight: 14
           search: '<a name="OLE_LINK[^"]*">(.*?)<\/a>'
+          replace: $1
+        -
+          enabled: true
+          weight: 15
+          search: '<a name="[^"]*">(.*?)<\/a>'
           replace: $1
     ckeditor5_sourceEditing:
       allowed_tags: {  }
