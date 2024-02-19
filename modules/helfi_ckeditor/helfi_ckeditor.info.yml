@@ -3,6 +3,7 @@ type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
   - drupal:ckeditor5
+  - drupal:ckeditor5_paste_filter
   - drupal:filter
   - helfi_api_base:helfi_api_base
   - helfi_platform_config:helfi_platform_config
