@@ -119,11 +119,11 @@
         dates.push(JSON.parse(debug));
       }
 
-      const date= dates.find((object)=>{
+      const date = dates.find((object)=>{
         return now >= new Date(object.start) && now < new Date(object.end);
       });
 
-      return date ? true : false;
+      return !!date;
     }
   }
 
