@@ -111,6 +111,7 @@ function helfi_platform_config_update_9305() : void {
       'user_role' => [
         'id' => 'user_role',
         'roles' => ['anonymous' => 'anonymous'],
+        'context_mapping' => ['user' => '@user.current_user_context:current_user'],
       ],
     ],
   ];
