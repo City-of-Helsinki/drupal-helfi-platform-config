@@ -29,7 +29,9 @@
       return new GenesysAdapter;
     }
     if (chatSelection.indexOf('user_inquiry') != -1) {
-      return new UserInquiryAdapter;
+      if (UserInquiryAdapter.idScheduled()) {
+        return new UserInquiryAdapter;
+      }
     }
     console.warn(`No adapter found for ${chatSelection}!`);
   }
@@ -91,7 +93,7 @@
    */
   class UserInquiryAdapter {
     constructor() {
-      this.requiredCookies = ['chat'];
+      this.requiredCookies = ['statistics'];
       this.bot = false;
       this.persist = false;
       this.hasButton = false;
@@ -100,6 +102,29 @@
     open(callback) {}
     onClosed(callback) {}
     onLoaded(callback) {}
+
+    // Return true or false based on hardcoded dates or value in localstorage.
+    static idScheduled() {
+      const now = new Date();
+
+      const dates = [
+        {start: '2024-02-26', end: '2024-03-01'},
+        {start: '2024-03-04', end: '2024-03-08'},
+      ]
+
+      // Run the code below in browser to activate the popup for a minute
+      // localStorage.setItem('user_inquiry_debug', `{"start": "${new Date((Date.now()-60000)).toString()}", "end": "${new Date((Date.now()+60000))}"}`);
+      const debug = localStorage.getItem('user_inquiry_debug');
+      if (debug) {
+        dates.push(JSON.parse(debug));
+      }
+
+      const date = dates.find((object)=>{
+        return now >= new Date(object.start) && now < new Date(object.end);
+      });
+
+      return !!date;
+    }
   }
 
   class Leijuke {
