@@ -330,6 +330,7 @@
       let leijukeInstance = document.createElement('button');
       leijukeInstance.id = this.static.selector;
       leijukeInstance.classList.add('chat-leijuke')
+      leijukeInstance.classList.add(this.static.selector);
       leijukeWrapper.append(leijukeInstance);
 
       this.prepButton(leijukeInstance);
