@@ -330,6 +330,11 @@
       let leijukeInstance = document.createElement('button');
       leijukeInstance.id = this.static.selector;
       leijukeInstance.classList.add('chat-leijuke')
+
+      if (this.static.selector === 'chat-leijuke-user_inquiry') {
+        leijukeInstance.classList.add('is-hidden');
+      }
+
       leijukeWrapper.append(leijukeInstance);
 
       this.prepButton(leijukeInstance);
