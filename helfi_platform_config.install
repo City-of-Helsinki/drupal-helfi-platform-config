@@ -97,6 +97,7 @@ function helfi_platform_config_update_9305() : void {
     'id' => 'hdbt_subtheme_user_inquiry',
     'plugin' => 'chat_leijuke',
     'provider' => 'helfi_platform_config',
+    'weight' => -19,
     'settings' => [
       'label' => 'User inquiry',
       'label_display' => FALSE,
