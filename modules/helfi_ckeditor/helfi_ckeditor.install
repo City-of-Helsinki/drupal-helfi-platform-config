@@ -29,6 +29,17 @@ function helfi_ckeditor_grant_permissions() : void {
 }
 
 /**
+ * Installs CKEditor5 plugins and extensions.
+ */
+function helfi_ckeditor_install_ckeditor5_supportive_plugins() : void {
+  $module_installer = \Drupal::service('module_installer');
+
+  if (!\Drupal::moduleHandler()->moduleExists('ckeditor5_paste_filter')) {
+    $module_installer->install(['ckeditor5_paste_filter']);
+  }
+}
+
+/**
  * Implements hook_install().
  */
 function helfi_ckeditor_install($is_syncing) : void {
@@ -39,6 +50,7 @@ function helfi_ckeditor_install($is_syncing) : void {
   }
 
   helfi_ckeditor_grant_permissions();
+  helfi_ckeditor_install_ckeditor5_supportive_plugins();
 }
 
 /**
@@ -147,5 +159,112 @@ function helfi_ckeditor_update_9005(): void {
     ] as $file) {
       _locale_parse_js_file($file);
     }
+  }
+}
+
+/**
+ * UHF-9497 Install CKEditor5 paste filter and import revised filter formats.
+ */
+function helfi_ckeditor_update_9006(): void {
+  helfi_ckeditor_install_ckeditor5_supportive_plugins();
+
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_ckeditor');
+}
+
+/**
+ * UHF-9497 Replace data attributes to HDS data attributes in long text fields.
+ */
+function helfi_ckeditor_update_9007(): void {
+  $entity_type_manager = Drupal::entityTypeManager();
+  $field_storage = $entity_type_manager->getStorage('field_config');
+
+  // Search and replace following data.
+  $data_to_be_converted = [
+    'data-selected-icon=' => 'data-hds-icon-start=',
+    'data-design="hds-button hds-button--primary"' => 'data-hds-component="button"',
+    'data-design="hds-button hds-button--secondary"' => 'data-hds-component="button" data-hds-variant="secondary"',
+    'data-design="hds-button hds-button--supplementary"' => 'data-hds-component="button" data-hds-variant="supplementary"',
+    'data-design="link"' => '',
+    'data-design=' => 'data-hds-component="button" data-hds-variant=',
+    'class="hds-button hds-button--primary" ' => '',
+    'class="hds-button hds-button--secondary" ' => '',
+    'class="hds-button hds-button--supplementary" ' => '',
+  ];
+
+  $count = 0;
+  $data_link_count = 0;
+
+  // Load all field configurations.
+  /** @var \Drupal\field\Entity\FieldConfig $field_config */
+  foreach ($field_storage->loadMultiple() as $field_config) {
+
+    // Go through each field and check for long text fields (html formatted).
+    if ($field_config->getType() === 'text_long') {
+      $field_storage_definition = $field_config->getFieldStorageDefinition();
+      $entity_type = $field_config->getTargetEntityTypeId();
+
+      /** @var \Drupal\Core\Entity\Sql\SqlEntityStorageInterface $storage */
+      $storage = $entity_type_manager->getStorage($entity_type);
+      /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+      $table_mapping = $storage->getTableMapping();
+
+      // Get current field's table name and column.
+      $table_name = $table_mapping->getDedicatedDataTableName($field_storage_definition);
+      $column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+
+      // Go through our data array, treat array key as data to search for
+      // and array value as replacement. Use sql replace to replace the data.
+      foreach ($data_to_be_converted as $old => $new) {
+        $update = Drupal::database()->update($table_name);
+        $update->expression(
+          $column,
+          "REPLACE($column, :old_value, :new_value)",
+          [
+            ':old_value' => $old,
+            ':new_value' => $new,
+          ]
+        );
+        // Note! The execution will return every row, even the ones which data
+        // was not affected.
+        $count += $update->execute();
+      }
+
+      // Fetch the data for <a> elements containing data-link-text.
+      $pattern = '%<a%data-link-text="%"%';
+      $query = \Drupal::database()->select($table_name, 'v')
+        ->distinct()
+        ->fields('v', ['entity_id', $column])
+        ->condition($column, $pattern, 'LIKE');
+      $query_result = $query->execute()->fetchAll();
+
+      // Process the data and update the database.
+      // The query result is always an array.
+      foreach ($query_result as $result) {
+        if (!str_contains($result->$column, 'data-link-text=')) {
+          continue;
+        }
+        $data_without_link_text = preg_replace(
+          '/data-link-text="[^"]*"/',
+          '', $result->$column
+        );
+
+        if ($result->$column != $data_without_link_text) {
+          $data_link_count++;
+          // Update the database.
+          $update = \Drupal::database()->update($table_name)
+            ->fields([$column => $data_without_link_text])
+            ->condition('entity_id', $result->entity_id)
+            ->execute();
+        }
+      }
+    }
+  }
+  // Set messages if there were changes.
+  if ($count > 0) {
+    \Drupal::messenger()->addMessage(t('Converted old link button data-attributes to new HDS button data-attributes.'));
+  }
+  if ($data_link_count > 0) {
+    \Drupal::messenger()->addMessage(t('Removed data-link-text attribute from @number anchor elements.', ['@number' => $data_link_count]));
   }
 }
