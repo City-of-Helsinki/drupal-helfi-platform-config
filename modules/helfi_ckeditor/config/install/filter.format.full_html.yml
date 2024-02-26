@@ -39,7 +39,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<br> <p data-helfi-quote-text> <h2> <h3> <h4> <h5> <h6> <blockquote data-helfi-quote> <span dir> <ul> <ol start> <li> <strong> <em> <s> <sub> <sup> <a href data-entity-type data-entity-uuid data-entity-substitution data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank"> <table> <tr> <td> <th> <thead> <tbody> <footer data-helfi-quote-author> <cite>'
+      allowed_html: '<br> <p data-helfi-quote-text> <h2> <h3> <h4> <h5> <h6> <blockquote data-helfi-quote> <span dir> <ul> <ol start> <li> <strong> <em> <s> <sub> <sup> <a href data-entity-type data-entity-uuid data-entity-substitution data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank"> <table> <tr> <td> <th> <thead> <tbody> <footer data-helfi-quote-author> <cite> <figure tabindex> <figcaption>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
