@@ -21,6 +21,7 @@ use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\UserInterface;
 
 /**
@@ -892,6 +893,38 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
       $button['text']['#value'] = t('@type', ['@type' => $bundle->get('label')]);
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_admin_tools_preprocess_input__submit__paragraph_action(array &$variables): void {
+
+  // According to UX team it's better to show the "Add @type" buttons without
+  // the Add word. Fix the texts from these buttons.
+  $add_paragraph_button = [
+    'field_content_0_subform_field_accordion_items_accordion_item_add_more',
+  ];
+
+  if (
+    !isset($variables['element']['#name']) ||
+    !in_array($variables['element']['#name'], $add_paragraph_button)
+  ) {
+    return;
+  }
+
+  // Get the label from the paragraph type and change the button label to
+  // match the label of the paragraph type.
+  $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraphs_type');
+  $paragraph_type = $paragraph_storage->load($variables['element']['#bundle_machine_name']);
+
+  if (!$paragraph_type instanceof ParagraphsType) {
+    return;
+  }
+
+  $variables['attributes']['value'] = t('@type', [
+    '@type' => $paragraph_type->get('label'),
+  ]);
 }
 
 /**
