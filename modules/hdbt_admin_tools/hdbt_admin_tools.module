@@ -902,29 +902,31 @@ function hdbt_admin_tools_preprocess_input__submit__paragraph_action(array &$var
 
   // According to UX team it's better to show the "Add @type" buttons without
   // the Add word. Fix the texts from these buttons.
-  $add_paragraph_button = [
-    'field_content_0_subform_field_accordion_items_accordion_item_add_more',
+  $paragraph_add_more_buttons = [
+    'accordion_item_add_more',
   ];
 
-  if (
-    !isset($variables['element']['#name']) ||
-    !in_array($variables['element']['#name'], $add_paragraph_button)
-  ) {
-    return;
+  foreach ($paragraph_add_more_buttons as $button) {
+    if (
+      !isset($variables['element']['#name']) ||
+      !str_contains($variables['element']['#name'], $button)
+    ) {
+      return;
+    }
+
+    // Get the label from the paragraph type and change the button label to
+    // match the label of the paragraph type.
+    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraphs_type');
+    $paragraph_type = $paragraph_storage->load($variables['element']['#bundle_machine_name']);
+
+    if (!$paragraph_type instanceof ParagraphsType) {
+      return;
+    }
+
+    $variables['attributes']['value'] = t('@type', [
+      '@type' => $paragraph_type->get('label'),
+    ]);
   }
-
-  // Get the label from the paragraph type and change the button label to
-  // match the label of the paragraph type.
-  $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraphs_type');
-  $paragraph_type = $paragraph_storage->load($variables['element']['#bundle_machine_name']);
-
-  if (!$paragraph_type instanceof ParagraphsType) {
-    return;
-  }
-
-  $variables['attributes']['value'] = t('@type', [
-    '@type' => $paragraph_type->get('label'),
-  ]);
 }
 
 /**
