@@ -1,2 +1,2 @@
-label: 'Sisällön pääotsikoiden taso'
-description: 'Valitse sisällön pääotsikoiden taso siten että ne ovat semanttisesti oikealla tasolla muun sisällön suhteen.'
+label: 'Haitarikohtien otsikkojen taso'
+description: 'Jos haitarilla on otsikko, pitää haitarikohtien otsikkojen tason olla yhtä tasoa alempana. Jos haitarilla ei ole otsikkoa, käyttää Drupal haitarikohtien otsikkotasona haitarin otsikon tasoa.'
