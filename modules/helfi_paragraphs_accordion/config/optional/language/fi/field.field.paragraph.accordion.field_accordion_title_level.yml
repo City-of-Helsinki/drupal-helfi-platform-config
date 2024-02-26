@@ -1,2 +1,2 @@
 label: 'Haitarin otsikon taso'
-description: 'Valitse haitarin otsikon taso niin, että se on semanttisesti oikein muun sisällön kanssa.'
+description: 'Valitse haitarin otsikolle sivun otsikkohierarkiaan sopiva taso. Yleensä haitarin otsikon taso on H2.'
