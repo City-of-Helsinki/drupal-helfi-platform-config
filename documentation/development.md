@@ -119,10 +119,10 @@ function helfi_sote_helfi_paragraph_types() : array {
 ## Blocks
 To install blocks in your module, you should define them in the module's `.module` file and use the `BlockInstaller` service to handle block installations.
 
-Usually, block configurations are installed using YAML files located in `./config/optional/block.block.block_name.yml`, similar to how it is done in install profiles. However, in our case, using this approach would result in unnecessary configuration reverts when the `helfi_platform_config.config_update_helper` service is used. With `BlockInstaller` service, you can install the block configurations for multiple themes without having the unnecessary configuration reverts during module updates and without duplicated configuration files under config folders. 
+Usually, block configurations are installed using YAML files located in `./config/optional/block.block.block_name.yml`, similar to how it is done in install profiles. However, in our case, using this approach would result in unnecessary configuration reverts when the `helfi_platform_config.config_update_helper` service is used. With `BlockInstaller` service, you can install the block configurations for multiple themes without having the unnecessary configuration reverts during module updates and without duplicated configuration files under config folders.
 
 Define the block as follows:
-```
+```php
 /**
  * Gets the block configurations.
  *
@@ -158,7 +158,7 @@ function my_example_get_block_configurations(string $theme) : array {
 ```
 
 And install the blocks in the modules install/update hooks:
-```
+```php
 /**
  * Implements hook_install().
  */
@@ -224,3 +224,16 @@ function helfi_media_update_9001() : void {
 }
 ```
 The update hook above will re-import all configuration from `helfi_media` module's `config/install` and `config/rewrite` folders and run necessary post-update hooks.
+
+#### Rewrite configuration
+
+The `helfi_platform_config.config_update_helper` invokes `hook_rewrite_config_update`, which allows custom modules to react to config re-importing.
+
+```php
+function helfi_kasko_content_rewrite_config_update(string $module, Drupal\config_rewrite\ConfigRewriterInterface $configRewriter): void {
+  if ($module === 'helfi_tpr_config') {
+    // Rewrite helfi_tpr_config configuration.
+    $configRewriter->rewriteModuleConfig('helfi_kasko_content');
+  }
+}
+```

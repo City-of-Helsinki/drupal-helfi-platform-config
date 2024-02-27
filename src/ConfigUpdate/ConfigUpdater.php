@@ -48,6 +48,12 @@ final class ConfigUpdater {
       }
     }
 
+    // Allow modules to rewrite config based on updated modules.
+    $this->moduleHandler->invokeAll('rewrite_config_update', [
+      $module,
+      $this->configRewriter,
+    ]);
+
     // Update all paragraph field handlers.
     helfi_platform_config_update_paragraph_target_types();
   }
