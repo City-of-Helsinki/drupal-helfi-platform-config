@@ -131,9 +131,9 @@ function hdbt_admin_tools_update_9004(): void {
     if (!Drupal::moduleHandler()->moduleExists($module)) {
       continue;
     }
-    \Drupal::messenger()->addMessage('Starting update for ' . $module);
+    var_dump('Starting update for ' . $module);
     \Drupal::service('helfi_platform_config.config_update_helper')
       ->update($module);
-    \Drupal::messenger()->addMessage('Ended update for ' . $module);
+    var_dump('Ended update for ' . $module);
   }
 }
