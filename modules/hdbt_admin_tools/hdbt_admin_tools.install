@@ -78,3 +78,60 @@ function hdbt_admin_tools_update_9003(): void {
       ->update($module);
   }
 }
+
+/**
+ * Testing massive updates.
+ */
+function hdbt_admin_tools_update_9004(): void {
+  $modules = [
+    'hdbt_admin_tools',
+    'helfi_base_content',
+    'helfi_calculator',
+    'helfi_ckeditor',
+    'helfi_eu_cookie_compliance',
+    'helfi_global_announcement',
+    'helfi_image_styles',
+    'helfi_media',
+    'helfi_media_chart',
+    'helfi_media_map',
+    'helfi_media_remote_video',
+    'helfi_node_announcement',
+    'helfi_node_landing_page',
+    'helfi_node_news_item',
+    'helfi_node_page',
+    'helfi_paragraphs_accordion',
+    'helfi_paragraphs_banner',
+    'helfi_paragraphs_chart',
+    'helfi_paragraphs_columns',
+    'helfi_paragraphs_contact_card_listing',
+    'helfi_paragraphs_content_cards',
+    'helfi_paragraphs_content_liftup',
+    'helfi_paragraphs_hearings',
+    'helfi_paragraphs_hero',
+    'helfi_paragraphs_image',
+    'helfi_paragraphs_liftup_with_image',
+    'helfi_paragraphs_list_of_links',
+    'helfi_paragraphs_map',
+    'helfi_paragraphs_news_list',
+    'helfi_paragraphs_phasing',
+    'helfi_paragraphs_popular_services',
+    'helfi_paragraphs_remote_video',
+    'helfi_paragraphs_sidebar_text',
+    'helfi_paragraphs_target_group_links',
+    'helfi_paragraphs_text',
+    'helfi_platform_config_base',
+    'helfi_react_search',
+    'helfi_test_content',
+    'helfi_toc',
+    'helfi_tpr_config',
+    'helfi_user_roles',
+  ];
+
+  foreach ($modules as $module) {
+    if (!Drupal::moduleHandler()->moduleExists($module)) {
+      continue;
+    }
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update($module);
+  }
+}
