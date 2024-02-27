@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
+
 /**
  * Installs Helfi admin tools module.
  */
@@ -130,7 +132,15 @@ function hdbt_admin_tools_update_9004(): void {
     if (!Drupal::moduleHandler()->moduleExists($module)) {
       continue;
     }
-    \Drupal::service('helfi_platform_config.config_update_helper')
-      ->update($module);
+    try {
+      \Drupal::service('helfi_platform_config.config_update_helper')
+        ->update($module);
+    }
+    catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
+      // We know the database values are different what we are trying
+      // to write there, but we are only replacing the
+      // values with allowed_values_function.
+    }
+
   }
 }
