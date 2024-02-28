@@ -229,6 +229,9 @@ The update hook above will re-import all configuration from `helfi_media` module
 
 The `helfi_platform_config.config_update_helper` invokes `hook_rewrite_config_update`, which allows custom modules to react to config re-importing.
 
+##### In this example we would want to override Text paragraph label with a configuration found in my_module. 
+
+To trigger the `hook_rewrite_config_update`, implement the hook to your `my_module.module`:
 ```php
 function my_module_rewrite_config_update(string $module, Drupal\config_rewrite\ConfigRewriterInterface $configRewriter): void {
   if ($module === 'helfi_paragraphs_text') {
@@ -237,7 +240,8 @@ function my_module_rewrite_config_update(string $module, Drupal\config_rewrite\C
   }
 }
 ```
-In this example we would want to override Text paragraph label with a configuration found in my_module. 
+This hook will trigger when `\Drupal::service('helfi_platform_config.config_update_helper')->update('helfi_paragraphs_text');` is run and it will search for configurations in `my_module/config/rewrite/` folder.
+
 To override configurations for your Drupal instance, follow the instructions found in [Rewrite module project page](https://www.drupal.org/project/config_rewrite).
 
 In our example, the label change would be implemented in a configuration file `/public/modules/custom/my_module/config/rewrite/paragraphs.paragraphs_type.text.yml`:
