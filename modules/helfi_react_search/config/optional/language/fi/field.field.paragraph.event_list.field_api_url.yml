@@ -1,1 +1,1 @@
-description: 'Tapahtumat.hel.fi-osoite, jonka perusteella listaus muodostetaan.'
+description: 'Tapahtumat.hel.fi-osoite, jonka perusteella listaus muodostetaan. Esimerkki: https://tapahtumat.hel.fi/fi/events?categories=museum. Jos haluat käyttää tapahtumapaikka-suodatinta, URLissa tulee olla mukana tapahtumapaikkojen ID:t. Esim: &places=tprek:123,tprek:456'
