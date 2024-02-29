@@ -167,7 +167,7 @@ class LinkedEvents extends EventsApiBase {
       do {
         foreach ($data as $item) {
           // Bail if no location data.
-          if (!isset($item->location) || !isset($item->location->id)) {
+          if (!isset($item->id) || !isset($item->name)) {
             continue;
           }
 
