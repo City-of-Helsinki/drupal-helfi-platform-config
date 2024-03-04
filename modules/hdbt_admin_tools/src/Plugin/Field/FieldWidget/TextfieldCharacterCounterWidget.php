@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\StringTextfieldWidget;
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Plugin implementation of the 'textarea_character_counter' widget.

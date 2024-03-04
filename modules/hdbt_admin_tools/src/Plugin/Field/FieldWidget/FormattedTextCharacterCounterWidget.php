@@ -7,7 +7,6 @@ namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\text\Plugin\Field\FieldWidget\TextareaWidget;
-use Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget\CharacterCounterTraitFieldWidget;
 
 /**
  * Plugin implementation of the 'formatted_text_character_counter' widget.
