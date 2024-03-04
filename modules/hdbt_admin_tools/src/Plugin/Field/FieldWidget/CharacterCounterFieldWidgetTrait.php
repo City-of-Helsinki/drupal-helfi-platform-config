@@ -17,8 +17,8 @@ trait CharacterCounterFieldWidgetTrait {
    */
   public static function defaultSettings(): array {
     return [
-      'counter_step' => 0,
-      'counter_total' => 55,
+      'counter_step' => 160,
+      'counter_total' => 200,
     ] + parent::defaultSettings();
   }
 
