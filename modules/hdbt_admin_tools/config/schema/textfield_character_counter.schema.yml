@@ -8,3 +8,9 @@ field.widget.settings.textfield_character_counter:
     counter_total:
       type: integer
       label: 'Counter total'
+    size:
+      type: integer
+      label: 'Size of textfield'
+    placeholder:
+      type: label
+      label: 'Placeholder'

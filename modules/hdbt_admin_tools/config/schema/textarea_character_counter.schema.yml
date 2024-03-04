@@ -8,3 +8,9 @@ field.widget.settings.textarea_character_counter:
     counter_total:
       type: integer
       label: 'Counter total'
+    rows:
+      type: integer
+      label: 'Rows'
+    placeholder:
+      type: label
+      label: 'Placeholder'
