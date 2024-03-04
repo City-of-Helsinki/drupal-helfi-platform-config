@@ -7,6 +7,7 @@ namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\text\Plugin\Field\FieldWidget\TextareaWidget;
+use Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget\CharacterCounterTraitFieldWidget;
 
 /**
  * Plugin implementation of the 'formatted_text_character_counter' widget.
@@ -21,45 +22,8 @@ use Drupal\text\Plugin\Field\FieldWidget\TextareaWidget;
  */
 class FormattedTextCharacterCounterWidget extends TextareaWidget {
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings(): array {
-    return [
-      'counter_step' => 160,
-      'counter_total' => 200,
-    ] + parent::defaultSettings();
-  }
+  use CharacterCounterFieldWidgetTrait;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state): array {
-    $element = parent::settingsForm($form, $form_state);
-    $element['counter_step'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Suggestion text character count'),
-      '#default_value' => $this->getSetting('counter_step'),
-      '#required' => TRUE,
-    ];
-    $element['counter_total'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Warning text character count'),
-      '#default_value' => $this->getSetting('counter_total'),
-      '#required' => TRUE,
-    ];
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary(): array {
-    $summary = parent::settingsSummary();
-    $summary[] = $this->t('Suggestion text character count: @count', ['@count' => $this->getSetting('counter_step')]);
-    $summary[] = $this->t('Warning text character count: @count', ['@count' => $this->getSetting('counter_total')]);
-    return $summary;
-  }
   /**
    * {@inheritdoc}
    */

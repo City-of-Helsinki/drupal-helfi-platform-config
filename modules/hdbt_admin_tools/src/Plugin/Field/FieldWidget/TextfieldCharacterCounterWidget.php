@@ -19,7 +19,9 @@ use Drupal\Core\Form\FormStateInterface;
  *   }
  * )
  */
-class TextFieldCharacterCounterWidget extends StringTextfieldWidget {
+class TextfieldCharacterCounterWidget extends StringTextfieldWidget {
+
+  use CharacterCounterFieldWidgetTrait;
 
   /**
    * {@inheritdoc}
@@ -29,46 +31,6 @@ class TextFieldCharacterCounterWidget extends StringTextfieldWidget {
       'counter_step' => 0,
       'counter_total' => 55,
     ] + parent::defaultSettings();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state): array {
-    $element = parent::settingsForm($form, $form_state);
-    $element['counter_step'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Suggestion text character count'),
-      '#default_value' => $this->getSetting('counter_step'),
-      '#required' => TRUE,
-    ];
-    $element['counter_total'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Warning text character count'),
-      '#default_value' => $this->getSetting('counter_total'),
-      '#required' => TRUE,
-    ];
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary(): array {
-    $summary = parent::settingsSummary();
-    $summary[] = $this->t('Suggestion text character count: @count', ['@count' => $this->getSetting('counter_step')]);
-    $summary[] = $this->t('Warning text character count: @count', ['@count' => $this->getSetting('counter_total')]);
-    return $summary;
-  }
-  /**
-   * {@inheritdoc}
-   */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
-    $element = parent::formElement($items, $delta, $element, $form, $form_state);
-    $element['value']['#character_counter'] = TRUE;
-    $element['value']['#counter_step'] = $this->getSetting('counter_step');
-    $element['value']['#counter_total'] = $this->getSetting('counter_total');
-    return $element;
   }
 
 }
