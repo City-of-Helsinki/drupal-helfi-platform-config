@@ -93,3 +93,12 @@ function helfi_react_search_update_9005() {
     $dispatcher->dispatch(new ReindexScheduledEvent($index, TRUE), SearchApiEvents::REINDEX_SCHEDULED);
   }
 }
+
+/**
+ * UHF-9613: Update events list field descriptions and translation.
+ */
+function helfi_react_search_update_9006() : void {
+  // Make sure the configurations are correctly installed.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+}
