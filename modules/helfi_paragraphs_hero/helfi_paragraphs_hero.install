@@ -39,7 +39,13 @@ function helfi_paragraphs_hero_update_9003(): void {
  * UHF-9690 Added character counter to hero title and hero description.
  */
 function helfi_paragraphs_hero_update_9004() : void {
-  // Re-import configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_paragraphs_hero');
+  try {
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update('helfi_paragraphs_hero');
+  }
+  catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
+    // We know the database values are different what we are trying
+    // to write there, but we are only replacing the
+    // values with allowed_values_function.
+  }
 }

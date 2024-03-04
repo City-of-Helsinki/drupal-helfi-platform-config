@@ -7,8 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
-
 /**
  * Grants required permissions.
  */
@@ -275,13 +273,6 @@ function helfi_ckeditor_update_9007(): void {
  * UHF-9497 Added missing figcaption and figure elements.
  */
 function helfi_ckeditor_update_9008(): void {
-  try {
-    \Drupal::service('helfi_platform_config.config_update_helper')
-      ->update('helfi_ckeditor');
-  }
-  catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
-    // We know the database values are different what we are trying
-    // to write there, but we are only replacing the
-    // values with allowed_values_function.
-  }
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_ckeditor');
 }
