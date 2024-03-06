@@ -104,9 +104,9 @@ function helfi_node_page_update_9001() : void {
 }
 
 /**
- * Set node as unpublished on default.
+ * UHF-9690 Added character counter to title and lead in.
  */
-function helfi_node_page_update_9002() : void {
+function helfi_node_page_update_9003() : void {
   // Re-import configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_node_page');

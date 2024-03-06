@@ -10,22 +10,27 @@ dependencies:
     - field.field.paragraph.hero.field_hero_title
     - paragraphs.paragraphs_type.hero
   module:
+    - allowed_formats
     - hdbt_admin_tools
     - media_library
-    - text
 id: paragraph.hero.default
 targetEntityType: paragraph
 bundle: hero
 mode: default
 content:
   field_hero_desc:
-    type: text_textarea
+    type: formatted_text_character_counter
     weight: 3
     region: content
     settings:
+      counter_step: 160
+      counter_total: 200
       rows: 5
       placeholder: ''
-    third_party_settings: {  }
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '0'
   field_hero_design:
     type: design_field_widget
     weight: 0
@@ -44,6 +49,8 @@ content:
     weight: 6
     region: content
     settings:
+      placeholder_url: ''
+      placeholder_title: ''
       linkit_profile: helfi
       linkit_auto_link_text: false
     third_party_settings: {  }
@@ -54,10 +61,12 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_hero_title:
-    type: string_textfield
+    type: textfield_character_counter
     weight: 2
     region: content
     settings:
+      counter_step: 0
+      counter_total: 55
       size: 60
       placeholder: ''
     third_party_settings: {  }

@@ -1,0 +1,16 @@
+field.widget.settings.textarea_character_counter:
+  type: mapping
+  label: 'Character counter text area widget display format settings'
+  mapping:
+    counter_step:
+      type: integer
+      label: 'Counter step'
+    counter_total:
+      type: integer
+      label: 'Counter total'
+    rows:
+      type: integer
+      label: 'Rows'
+    placeholder:
+      type: label
+      label: 'Placeholder'
