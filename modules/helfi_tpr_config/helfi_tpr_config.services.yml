@@ -1,0 +1,7 @@
+services:
+  helfi_tpr_config.og_image.tpr_entity:
+    class: Drupal\helfi_tpr_config\Token\UnitImageBuilder
+    arguments:
+      - '@entity_type.manager'
+    tags:
+      - { name: helfi_platform_config.og_image_builder }
