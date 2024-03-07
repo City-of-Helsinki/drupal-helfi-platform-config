@@ -1,2 +1,2 @@
 label: 'Lyhyt otsikko'
-description: 'Lyhyt otsikko näytetään uutislistauksissa, nostoissa ja sosiaalisessa mediassa. Kun lyhyt otsikko on syötetty, se yliajaa normaalin otsikkokentän kaikkialla paitsi itse uutisessa.'
+description: 'Lyhyt otsikko näytetään uutislistauksissa, nostoissa ja sosiaalisessa mediassa. Jos käytät lyhyttä otsikkoa, se korvaa uutisen varsinaisen otsikon kaikkialla muualla paitsi itse uutisessa.'

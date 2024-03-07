@@ -5,7 +5,9 @@ msgid "Table of contents"
 msgstr "Sisällysluettelo"
 
 msgid "Enable checkbox to create automatic table of contents for the page."
-msgstr "Valitse tämä jos haluat aktivoida automaattisen sisällysluettelon sivulle."
+msgstr ""
+"Ota käyttöön automaattinen sisällysluettelo. "
+"Sisällysluetteloon haetaan kaikki sivun H2-otsikot."
 
 msgid "Table of contents title"
 msgstr "Sisällysluettelon otsikko"

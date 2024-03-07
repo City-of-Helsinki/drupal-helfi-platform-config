@@ -8,7 +8,7 @@ msgid "Map"
 msgstr "Kartta"
 
 msgid "Open map in new window"
-msgstr "Avaa kartta uudessa ikkunassa"
+msgstr "Avaa kartta uuteen ikkunaan"
 
 msgid "Title"
 msgstr "Otsikko"
