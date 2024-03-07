@@ -16,14 +16,14 @@ The user interface translations could be categorized in four different levels
 Configuration can be translated either in Drupal admin UI or manually in to the configuration translation files.
 
 Export the configuration translations from DB to files with `drush cex` and copy the exported files
-from`/conf/cmi/language/{langcode}/` to `/module/config/install/language/{langcode}/`.
+from`/conf/cmi/language/{langcode}/` to `/module/config/optional/language/{langcode}/`.
 Create and update hook for your module to import the translations.
 
 See [Development](/documents/development.md) for more information.
 
 ## Creating custom/helfi module UI translations
 Make sure the translations are imported during locale import (`drush locale:update`) by checking
-the module/theme has following information in `module_name.info.yml`. For an example, check [helfi_content.info.yml](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/blob/main/helfi_features/helfi_content/helfi_content.info.yml#L46).
+the module/theme has the following information in `module_name.info.yml`. For an example, check [helfi_content.info.yml](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/blob/main/helfi_features/helfi_content/helfi_content.info.yml#L46).
 
 ```
 'interface translation project': module_name
@@ -62,17 +62,15 @@ And then flush all caches from top left drupal admin menu under "Druplicon".
 
 ## Creating UI translation overrides for contrib modules
 
-The translation overrides are imported to Drupal instance with [PO importer](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/documentation/po-importer.md).
-<br>Translation overrides lives in `helfi_platform_config/translations/override/{langcode}.po`.
-<br>Add the original module name of overridden translation as a comment, so that it's easier to locate the original UI text.
+The translation overrides are imported to Drupal instance with [PO importer](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/documentation/po-importer.md) and translation overrides lives in `helfi_platform_config/translations/override/{langcode}.po`.
+
+Add the original module name of overridden translation as a comment, so that it's easier to locate the original UI text.
 
 ## Creating new UI translations for contrib modules
 
-The contrib module translations are not complete, thus we need to have a way to
-add translations for the contrib modules in Hel.fi context.
-<br>It is highly encouraged to contribute back to the Drupal community and add the translations to [localize.drupal.org](https://localize.drupal.org/translate/languages/fi/translate?project=drupal).
+The contrib module translations are not complete, thus we need to have a way to add translations for the contrib modules in Hel.fi context.
+It is highly recommended to contribute back to the Drupal community and add the translations to [localize.drupal.org](https://localize.drupal.org/translate/languages/fi/translate?project=drupal).
 
-However, we do usually have the urgency to add translations right away and cannot wait for the
-processes.<br>
-In these situations we can add translations in to `helfi_platform_config/translations/new/{langcode}.po`.
-<br>Add the module name as a comment, so that it's easier to contribute back to drupal.org.
+We do usually have the urgency to add translations right away and cannot wait for the
+processes. In these situations we can add translations in to `helfi_platform_config/translations/new/{langcode}.po`.
+Add the module name as a comment, so that it's easier to contribute back to drupal.org.
