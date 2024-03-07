@@ -16,7 +16,11 @@ msgstr ""
 
 # Drupal
 msgid "No media available."
-msgstr "Ei mediatiedostoja saatavilla."
+msgstr "Mediatiedostoja ei ole saatavilla."
+
+msgid ""
+"Menu links with lower weights are displayed before links with higher weights."
+msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
 
 msgctxt "PHP date format"
 msgid "D, m/d/Y - H:i"
@@ -36,6 +40,17 @@ msgstr "Etsi ja hallitse sisältöä"
 msgid "Filter"
 msgstr "Suodata"
 
+msgid "Front page"
+msgstr "Etusivu"
+
+msgid ""
+"Short description of the image used by screen readers and "
+"displayed when the image is not loaded. This is important for accessibility."
+msgstr ""
+"Lyhyt kuvaus eli alt-teksti ruudunlukijoille ja niihin tilanteisiin, "
+"jossa kuvaa ei näytetä käyttäjälle. "
+"Koristeellisissa kuvissa voit käyttää merkintää \"\"."
+
 msgid ""
 "Specify an alternative path by which this data can be accessed. For "
 "example, type \"/about\" when writing an about page."
@@ -45,8 +60,47 @@ msgstr ""
 "Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
 "esimerkiksi \"/kaupunkisymposium\"."
 
-msgid "Front page"
-msgstr "Etusivu"
+# Content lock
+msgid "Break Lock for content @label"
+msgstr "Vahvista lukituksen poisto sivulta @label"
+
+msgid "By breaking this lock, any unsaved changes made by @user will be lost."
+msgstr "Poistamalla lukituksen käyttäjän @user tekemät muutokset menetetään."
+
+msgid "Confirm break lock"
+msgstr "Poista lukitus"
+
+msgid "Lock broken. Anyone can now edit this content."
+msgstr "Lukitus poistettu. Kaikki sisällöntuottajat voivat nyt muokata tätä sisältöä."
+
+msgid "Unlock"
+msgstr "Peruuta ja poista lukitus"
+
+# Field group
+msgid "Description of the item"
+msgstr "Kuvaus objektista"
+
+# Infinite scroll
+msgid "Load more"
+msgstr "Lataa lisää"
+
+# Media entity file replace
+msgid "Overwrite original file"
+msgstr "Korvaa alkuperäinen tiedosto"
+
+msgid "Overwrite original file (@originalExtension)"
+msgstr "Korvaa alkuperäinen tiedosto (@originalExtension)"
+
+msgid "Replace file"
+msgstr "Korvaa tiedosto"
+
+# Metatag
+msgid "News Keywords"
+msgstr "Uutisten asiasanat"
+
+# Paragraphs library
+msgid "Promote to library"
+msgstr "Muuta uudelleenkäytettävksi lohkoksi"
 
 # Pathauto
 msgid "Automatic alias"
@@ -56,7 +110,7 @@ msgid "Generate automatic URL alias"
 msgstr "Luo osoitealias"
 
 msgid "Uncheck this to create a custom alias below."
-msgstr "Tätä asetusta ei tarvitse muuttaa. "
+msgstr "Tätä asetusta ei yleensä muuteta. "
 "Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
 
 msgid ""
@@ -64,6 +118,10 @@ msgid ""
 "href=\"@admin_link\">Configure URL alias patterns.</a>"
 msgstr "Tätä asetusta ei tarvitse muuttaa. "
 "Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
+
+# Redirect
+msgid "The redirect language."
+msgstr "Uudelleenohjauksen kieli"
 
 # Scheduler
 msgid "Enter a date and time."
