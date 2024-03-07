@@ -65,7 +65,7 @@ msgid "Break Lock for content @label"
 msgstr "Vahvista lukituksen poisto sivulta @label"
 
 msgid "By breaking this lock, any unsaved changes made by @user will be lost."
-msgstr "Poistamalla lukituksen käyttäjän @user tekemät muutokset menetetään."
+msgstr "Jos poistat lukituksen, käyttäjän @user tekemät muutokset menetetään."
 
 msgid "Confirm break lock"
 msgstr "Poista lukitus"
