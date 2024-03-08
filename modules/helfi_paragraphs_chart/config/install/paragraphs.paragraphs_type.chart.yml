@@ -7,7 +7,7 @@ third_party_settings:
   paragraphs_library:
     allow_library_conversion: true
 id: chart
-label: Chart
+label: 'Chart embed'
 icon_uuid: null
 icon_default: null
 description: 'With Chart paragraph content producer can add an embedded chart from https://app.powerbi.com.'

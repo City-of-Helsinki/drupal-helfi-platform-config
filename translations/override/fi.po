@@ -19,6 +19,12 @@ msgid ""
 "Menu links with lower weights are displayed before links with higher weights."
 msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
 
+msgid "j.n.Y"
+msgstr "j.n.Y"
+
+msgid "Email"
+msgstr "Sähköposti"
+
 msgid "Find and manage content"
 msgstr "Etsi ja hallitse sisältöä"
 
@@ -45,8 +51,14 @@ msgstr ""
 "Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
 "esimerkiksi \"/kaupunkisymposium\"."
 
+msgid "Taxonomy term"
+msgstr "Luokittelutermi"
+
 msgid "Token"
 msgstr "Korvauskuvio"
+
+msgid "User"
+msgstr "Käyttäjä"
 
 # Content lock
 msgid "Break Lock for content @label"
