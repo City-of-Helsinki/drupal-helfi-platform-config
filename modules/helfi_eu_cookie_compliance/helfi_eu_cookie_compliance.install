@@ -70,7 +70,7 @@ function helfi_eu_cookie_compliance_update_9003(): void {
 }
 
 /**
- * UHF-9675: Allow helfi_accordions_open cookie.
+ * UHF-9682: Allow helfi_accordions_open cookie.
  */
 function helfi_eu_cookie_compliance_update_9005(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
