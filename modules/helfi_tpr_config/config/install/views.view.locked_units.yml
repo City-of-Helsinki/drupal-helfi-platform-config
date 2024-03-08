@@ -422,7 +422,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'There is no content currently locked.'
+          content: 'There is no currently locked units.'
           tokenize: false
       sorts: {  }
       arguments: {  }
