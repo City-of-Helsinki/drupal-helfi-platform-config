@@ -1,20 +1,8 @@
 msgid ""
 msgstr ""
 
-msgid "Description"
-msgstr "Kuvaus"
-
-msgid "Map"
-msgstr "Kartta"
-
 msgid "Open map in new window"
 msgstr "Avaa kartta uuteen ikkunaan"
-
-msgid "Title"
-msgstr "Otsikko"
-
-msgid "Url"
-msgstr "URL-osoite"
 
 msgid ""
 "With map paragraph content producer can add an embedded map from "

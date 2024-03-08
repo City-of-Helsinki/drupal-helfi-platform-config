@@ -1,53 +1,11 @@
 msgid ""
 msgstr ""
 
-msgid "Accept"
-msgstr "Accepterar"
-
-msgid "Accept all cookies"
-msgstr "Acceptera alla cookies"
-
-msgid "Accept selected cookies"
-msgstr "Acceptera valda cookies"
-
 msgid "Accept only essential cookies"
 msgstr "Acceptera endast nödvändiga cookies"
 
-msgid "Cookie settings"
-msgstr "Cookie -inställningar"
-
-msgid "Essential cookies"
-msgstr "Nödvändiga funktionella cookies"
-
-msgid "full_html"
-msgstr "full_html"
-
-msgid "Functional chat cookies"
-msgstr "Funktionella chattkakor"
-
-msgid "Hide"
-msgstr "Dölj"
-
 msgid "Marketing cookies"
 msgstr "Marknadsföring"
-
-msgid "No, thanks"
-msgstr "Nej, tack"
-
-msgid "Preference cookies"
-msgstr "Preferens"
-
-msgid "Privacy settings"
-msgstr "Sekretessinställningar"
-
-msgid "Show cookies"
-msgstr "Visa cookies"
-
-msgid "Statistics cookies"
-msgstr "Statistik"
-
-msgid "Withdraw consent"
-msgstr "Återkalla samtycke"
 
 msgid "<p>Your current cookie settings are below. Submit the form to make changes.</p>"
 msgstr "<p>Dina nuvarande cookie -inställningar finns nedan. Skicka in formuläret för att göra ändringar.</p>"

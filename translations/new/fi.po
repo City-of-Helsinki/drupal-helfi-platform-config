@@ -214,9 +214,6 @@ msgid_plural "Add files"
 msgstr[0] "Lisää tiedosto"
 msgstr[1] "Lisää tiedostot"
 
-msgid "Apply filters"
-msgstr "Suodata tuloksia"
-
 msgid "Are you sure you want to delete this @item?"
 msgid_plural "Are you sure you want to delete these @items?"
 msgstr[0] "Haluatko varmasti poistaa tämän @item?"
@@ -241,38 +238,8 @@ msgstr "sisällöt"
 msgid "Delete media"
 msgstr "Poista mediatiedosto"
 
-msgid "Delete {{ name }}"
-msgstr "Poista {{ name }}"
-
-msgid "Displaying @start - @end of @total"
-msgstr "Näytetään @start - @end / @total"
-
-msgid "Edit {{ name }}"
-msgstr "Muokkaa {{ name }}"
-
 msgid "Edit @language translation for %label"
 msgstr "Muokkaa käännöstä %label (kieli: @language)"
-
-msgid "Find and manage media."
-msgstr "Etsi ja ylläpidä mediatiedostoja."
-
-msgid "Large (480×480)"
-msgstr "Suuri (480×480)"
-
-msgid "Media Library thumbnail (220×220)"
-msgstr "Mediakirjaston pikkukuva (220×220)"
-
-msgid "Media name"
-msgstr "Mediatiedoston nimi"
-
-msgid "Medium (220×220)"
-msgstr "Keskikokoinen (220×220)"
-
-msgid "Name (A-Z)"
-msgstr "Nimi (A-Z)"
-
-msgid "Name (Z-A)"
-msgstr "Nimi (Z-A)"
 
 msgid "No media items are selected."
 msgstr "Mediatiedostoja ei ole valittu."
@@ -304,12 +271,6 @@ msgid "There are no menu links yet. <a href=\":url\">Add link</a>."
 msgstr ""
 "Valikkoon ei ole vielä lisätty linkkejä. <a href=\":url\">Lisää "
 "linkki</a>."
-
-msgid "Thumbnail (100×100)"
-msgstr "Pikkukuva (100×100)"
-
-msgid "Widget (table)"
-msgstr "Widget (taulukko)"
 
 # linkit
 msgid "Start typing to find content."
@@ -350,9 +311,6 @@ msgstr ""
 msgid "Default icon"
 msgstr "Oletusikoni"
 
-msgid "From library"
-msgstr "Uudelleenkäytettävä lohko"
-
 msgid "Paragraphs library"
 msgstr "Uudelleenkäytettävät lohkot"
 
@@ -364,9 +322,6 @@ msgstr "Uudelleenkäytettävän lohkon asetukset"
 
 msgid "Paragraphs types"
 msgstr "Lohkotyypit"
-
-msgid "Reusable paragraph"
-msgstr "Uudelleenkäytettävä lohko"
 
 # redirect
 msgid "Add URL redirect"

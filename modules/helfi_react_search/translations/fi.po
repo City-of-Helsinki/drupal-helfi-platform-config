@@ -9,20 +9,8 @@ msgctxt "Indication that events take place in a certain timeframe"
 msgid "at"
 msgstr "klo"
 
-msgid "events"
-msgstr "tapahtumaa"
-
-msgid "This event list is empty."
-msgstr "Tämä tapahtumakalenteri on tyhjä."
-
-msgid "No worries though, this city does not run out of things to do."
-msgstr "Ei hätää, nimittäin tästä kaupungista ei tekeminen lopu."
-
 msgid "Refine search in tapahtumat.hel.fi"
 msgstr "Tarkenna hakua tapahtumat.hel.fi:ssä"
-
-msgid "Event keywords"
-msgstr "Tapahtuman avainsanat"
 
 msgctxt "Event search: search form title"
 msgid "Filter events"
@@ -71,6 +59,3 @@ msgstr "Näytä vain"
 
 msgid "Free-of-charge events"
 msgstr "Maksuttomat tapahtumat"
-
-msgid "Remote events"
-msgstr "Etätapahtumat"

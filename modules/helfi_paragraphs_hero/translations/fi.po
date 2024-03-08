@@ -4,12 +4,6 @@ msgstr ""
 msgid "Without image, align left"
 msgstr "Ilman kuvaa, tasattu vasemmalle"
 
-msgid "Image on the right"
-msgstr "Kuva oikealla"
-
-msgid "Image on the left"
-msgstr "Kuva vasemmalla"
-
 msgid "Image on the bottom"
 msgstr "Kuva alhaalla"
 

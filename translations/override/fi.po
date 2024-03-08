@@ -15,9 +15,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 # Drupal
-msgid "No media available."
-msgstr "Mediatiedostoja ei ole saatavilla."
-
 msgid ""
 "Menu links with lower weights are displayed before links with higher weights."
 msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
@@ -36,9 +33,6 @@ msgstr "j.n.Y - H:i"
 
 msgid "Find and manage content"
 msgstr "Etsi ja hallitse sisältöä"
-
-msgid "Filter"
-msgstr "Suodata"
 
 msgid "Front page"
 msgstr "Etusivu"

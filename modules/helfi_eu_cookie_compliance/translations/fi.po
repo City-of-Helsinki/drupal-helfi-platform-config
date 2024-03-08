@@ -1,50 +1,12 @@
 msgid ""
 msgstr ""
 
-msgid "Accept"
-msgstr "Hyväksy"
-
-msgid "Accept all cookies"
-msgstr "Hyväksy kaikki evästeet"
-
-msgid "Accept selected cookies"
-msgstr "Hyväksy valitut evästeet"
-
 msgid "Accept only essential cookies"
 msgstr "Hyväksy vain välttämättömät evästeet"
 
-msgid "Cookie settings"
-msgstr "Evästeasetukset"
-
-msgid "Essential cookies"
-msgstr "Välttämättömät toiminnalliset evästeet"
-
-msgid "full_html"
-msgstr "full_html"
-
-msgid "Functional chat cookies"
-msgstr "Toiminnalliset chat-evästeet"
-
-msgid "Hide"
-msgstr "Piilossa"
 
 msgid "Marketing cookies"
 msgstr "Markkinointi"
-
-msgid "No, thanks"
-msgstr "Ei kiitos"
-
-msgid "Preference cookies"
-msgstr "Personointi"
-
-msgid "Privacy settings"
-msgstr "Tietosuoja-asetukset"
-
-msgid "Show cookies"
-msgstr "Näytä evästeet"
-
-msgid "Statistics cookies"
-msgstr "Tilastointi"
 
 msgid "<p>Your current cookie settings are below. Submit the form to make changes.</p>"
 msgstr "<p>Nykyiset evästeasetuksesi näkyvät alla. Tallenna lomake, jos teet muutoksia asetuksiin.</p>"
