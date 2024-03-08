@@ -19,23 +19,14 @@ msgid ""
 "Menu links with lower weights are displayed before links with higher weights."
 msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
 
-msgctxt "PHP date format"
-msgid "D, m/d/Y - H:i"
-msgstr "j. F Y"
-
-msgctxt "PHP date format"
-msgid "m/d/Y - H:i"
-msgstr "j.n.Y - H:i"
-
-msgctxt "PHP date format"
-msgid "l, F j, Y - H:i"
-msgstr "j.n.Y - H:i"
-
 msgid "Find and manage content"
 msgstr "Etsi ja hallitse sisältöä"
 
 msgid "Front page"
 msgstr "Etusivu"
+
+msgid "Minimal"
+msgstr "Minimaalinen"
 
 msgid ""
 "Short description of the image used by screen readers and "
@@ -53,6 +44,9 @@ msgstr ""
 "Käytä kenttää vain kun sivulle tarvitaan markkinointiosoite. "
 "Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
 "esimerkiksi \"/kaupunkisymposium\"."
+
+msgid "Token"
+msgstr "Korvauskuvio"
 
 # Content lock
 msgid "Break Lock for content @label"
@@ -91,6 +85,13 @@ msgstr "Korvaa tiedosto"
 # Metatag
 msgid "News Keywords"
 msgstr "Uutisten asiasanat"
+
+# Paragraphs
+msgid "Paragraph"
+msgstr "Lohko"
+
+msgid "Paragraphs"
+msgstr "Lohkot"
 
 # Paragraphs library
 msgid "Promote to library"
