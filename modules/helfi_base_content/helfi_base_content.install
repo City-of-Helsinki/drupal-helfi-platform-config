@@ -289,3 +289,12 @@ function helfi_base_content_update_9006() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_base_content');
 }
+
+/**
+ * UHF-8333 Change the LinkedIn API url to correct.
+ */
+function helfi_base_content_update_9007() : void {
+  Drupal::configFactory()->getEditable('social_media.settings')
+    ->set('social_media.linkedin.api_url', 'https://www.linkedin.com/sharing/share-offsite/?url=[current-page:url]')
+    ->save();
+}
