@@ -15,10 +15,13 @@ class EventList extends Paragraph implements ParagraphInterface {
   /**
    * Get list of enabled filter keywords.
    *
+   * @param string $langcode
+   *   Keyword translation langcode.
+   *
    * @return \Drupal\taxonomy\TermInterface[]
    *   Enabled keyword.
    */
-  public function getFilterKeywords() : array {
+  public function getFilterKeywords(string $langcode) : array {
     $keywords = [];
 
     /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field_keywords */
@@ -26,7 +29,9 @@ class EventList extends Paragraph implements ParagraphInterface {
 
     /** @var \Drupal\taxonomy\TermInterface $term */
     foreach ($field_keywords->referencedEntities() as $term) {
-      $keywords[] = $term;
+      if ($term->hasTranslation($langcode)) {
+        $keywords[] = $term->getTranslation($langcode);
+      }
     }
 
     return $keywords;
