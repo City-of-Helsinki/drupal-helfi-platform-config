@@ -104,7 +104,8 @@ class LinkedEvents extends EventsApiBase {
    *   Resulting api url with params a query string
    */
   public function getEventsRequest(array $options = [], string $pageSize = '3') : string {
-    $url = Url::fromUri(self::API_URL . 'event');
+    // Linked events URLs should end with '/' (URLs without '/' are redirect).
+    $url = Url::fromUri(self::API_URL . 'event/');
 
     $defaultOptions = [
       'event_type' => 'General',
