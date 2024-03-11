@@ -10,12 +10,15 @@ display:
           action_title: Toiminto
         name:
           label: Otsikko
+          separator: ', '
         name_1:
           label: 'Lukituksen tekijä'
+          separator: ', '
         timestamp:
           label: 'Lukituksen ajankohta'
         langcode:
           label: 'Sisällön kieli'
+          separator: ', '
         operations:
           label: Toimenpiteet
       pager:
@@ -28,6 +31,7 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
       exposed_form:
         options:
           submit_button: Käytä

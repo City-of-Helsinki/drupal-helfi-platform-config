@@ -1,1 +1,4 @@
 label: 'Näytä vaiheiden numerot'
+settings:
+  on_label: Kyllä
+  off_label: Ei

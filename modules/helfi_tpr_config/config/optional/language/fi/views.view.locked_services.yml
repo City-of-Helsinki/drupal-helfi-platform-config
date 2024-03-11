@@ -10,12 +10,15 @@ display:
           action_title: Toiminto
         name:
           label: Otsikko
+          separator: ', '
         name_1:
           label: 'Lukituksen tekijä'
+          separator: ', '
         timestamp:
           label: 'Lukituksen ajankohta'
         langcode:
           label: 'Sisällön kieli'
+          separator: ', '
         operations:
           label: Toimenpiteet
       pager:
@@ -25,7 +28,8 @@ display:
             previous: '‹ Edellinen'
             first: '« Ensimmäinen'
             last: 'Viimeinen »'
-          expose: {  }
+          expose:
+            offset_label: Offset
       exposed_form:
         options:
           submit_button: Suodata
@@ -34,9 +38,10 @@ display:
           sort_desc_label: Laskeva
       empty:
         area_text_custom:
-          content: 'Lukittuja palveluja ei ole.'
+          content: 'Lukittua sisältöä ei ole.'
       filters:
         name:
           expose:
             label: Otsikko
-  locked_services_block: {  }
+  locked_services_block:
+    display_title: Lohko
