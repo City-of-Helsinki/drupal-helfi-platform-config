@@ -10,8 +10,8 @@ id: paragraph.event_list.field_filter_keywords
 field_name: field_filter_keywords
 entity_type: paragraph
 bundle: event_list
-label: 'Filter keywords'
-description: 'Allow users to filter events with these keywords.'
+label: Topics
+description: 'Select options for "filter by topic" filter. The filter is hidden if no keywords are selected.'
 required: false
 translatable: false
 default_value: {  }
