@@ -297,4 +297,17 @@ function helfi_base_content_update_9007() : void {
   Drupal::configFactory()->getEditable('social_media.settings')
     ->set('social_media.linkedin.api_url', 'https://www.linkedin.com/sharing/share-offsite/?url=[current-page:url]')
     ->save();
+
+  /** @var \Drupal\language\ConfigurableLanguageManagerInterface $language_manager */
+  $language_manager = \Drupal::languageManager();
+
+  foreach (['fi', 'sv'] as $langcode) {
+    $config_translation = $language_manager->getLanguageConfigOverride($langcode, 'social_media.settings');
+
+    if (!$config_translation->isNew()) {
+      $config_translation
+        ->set('social_media.linkedin.api_url', 'https://www.linkedin.com/sharing/share-offsite/?url=[current-page:url]')
+        ->save();
+    }
+  }
 }
