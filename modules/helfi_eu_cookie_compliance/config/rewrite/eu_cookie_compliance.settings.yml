@@ -56,7 +56,7 @@ better_support_for_screen_readers: false
 method: categories
 disabled_javascripts: ''
 automatic_cookies_removal: true
-allowed_cookies: "essential:AWSELBCORS\r\nessential:cookiehub\r\nessential:mtm_cookie_consent\r\nessential:JSESSIONID\r\nessential:COOKIE_SUPPORT\r\nessential:GUEST_LANGUAGE_ID\r\npreference:httpskartta.hel.fi.SWCulture\r\npreference:icareus-device\r\npreference:VISITOR_INFO1_LIVE\r\npreference:CONSENT\r\nstatistics:nmstat\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.141.89f6\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:rnsbid\r\nstatistics:rnsbid_ts\r\nstatistics:rns_reaction_*\r\nstatistics:YSC\r\nchat:_genesys.widgets.*\r\nchat:leijuke.*"
+allowed_cookies: "helfi_accordions_open\r\nessential:AWSELBCORS\r\nessential:cookiehub\r\nessential:mtm_cookie_consent\r\nessential:JSESSIONID\r\nessential:COOKIE_SUPPORT\r\nessential:GUEST_LANGUAGE_ID\r\npreference:httpskartta.hel.fi.SWCulture\r\npreference:icareus-device\r\npreference:VISITOR_INFO1_LIVE\r\npreference:CONSENT\r\nstatistics:nmstat\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.141.89f6\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:_pk_id.*\r\nstatistics:_pk_ses.*\r\nstatistics:rnsbid\r\nstatistics:rnsbid_ts\r\nstatistics:rns_reaction_*\r\nstatistics:YSC\r\nchat:_genesys.widgets.*\r\nchat:leijuke.*"
 consent_storage_method: do_not_store
 withdraw_message:
   value: '<h2>Hel.fi uses cookies</h2><p>You have given your consent for us to set cookies.</p>'
