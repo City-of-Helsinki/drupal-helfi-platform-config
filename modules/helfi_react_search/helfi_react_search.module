@@ -7,6 +7,17 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_react_search\Entity\EventList;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_react_search_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['event_list'])) {
+    $bundles['paragraph']['event_list']['class'] = EventList::class;
+  }
+}
+
 /**
  * Event count dropdown selectable values.
  *
