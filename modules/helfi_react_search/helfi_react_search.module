@@ -65,3 +65,21 @@ function helfi_react_search_theme(): array {
     ],
   ];
 }
+
+/**
+ * Lookup tid with keyword id.
+ */
+function _helfi_react_search_lookup_term_tid(string $keyword_id) {
+  $ids = \Drupal::entityQuery('taxonomy_term')
+    ->condition('field_keyword_id', $keyword_id)
+    ->range(0, 1)
+    ->latestRevision()
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($ids)) {
+    return reset($ids);
+  }
+
+  return NULL;
+}

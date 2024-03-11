@@ -102,3 +102,12 @@ function helfi_react_search_update_9006() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_react_search');
 }
+
+/**
+ * UHF-9613: Linked events keywords.
+ */
+function helfi_react_search_update_9007() : void {
+  // Make sure the configurations are correctly installed.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+}

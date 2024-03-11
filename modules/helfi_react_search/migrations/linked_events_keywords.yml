@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - helfi_react_search
+id: linked_events_topics
+migration_tags:
+  - linked_events
+label: 'Linked events: topics'
+source:
+  plugin: linked_events_keywords
+  keyword_set: "helsinki:topics"
+  url: "https://api.hel.fi/linkedevents/v1"
+process:
+  tid:
+    - plugin: callback
+      callable: _helfi_react_search_lookup_term_tid
+      source: id
+  name: name
+  field_keyword_id: id
+  language: language
+destination:
+  plugin: translatable_entity:taxonomy_term
+  default_bundle: linked_events_topics
+migration_dependencies: {  }

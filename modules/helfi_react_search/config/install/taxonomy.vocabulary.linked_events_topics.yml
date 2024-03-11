@@ -1,0 +1,8 @@
+uuid: 757cd796-00f7-445a-907d-0977ffe099be
+langcode: en
+status: true
+dependencies: {  }
+name: 'Linked Events Topics'
+vid: linked_events_topics
+description: 'Keywords from helsinki:topics keywords set.'
+weight: 0

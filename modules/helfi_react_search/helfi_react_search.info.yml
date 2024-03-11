@@ -9,6 +9,8 @@ dependencies:
   - 'drupal:language'
   - 'drupal:link'
   - 'drupal:text'
+  - 'drupal:taxonomy'
+  - 'drupal:migrate'
   - 'helfi_platform_config:helfi_platform_config'
   - 'paragraphs:paragraphs'
 package: HELfi
