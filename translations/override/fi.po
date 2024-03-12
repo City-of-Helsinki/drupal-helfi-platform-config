@@ -46,9 +46,9 @@ msgid ""
 "Specify an alternative path by which this data can be accessed. For "
 "example, type \"/about\" when writing an about page."
 msgstr ""
-"Määrittele vaihtoehtoinen url-osoite sisällölle. "
-"Käytä kenttää vain kun sivulle tarvitaan markkinointiosoite. "
-"Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
+"Voit tarvittaessa muokata sivun otsikosta muodostettua URL:n "
+"viimeistä osaa. Tämä ei ole lyhytosoite vaan koko polku "
+"on näkyvissä. Kenttään kirjoitetaan viimeinen osa, "
 "esimerkiksi \"/kaupunkisymposium\"."
 
 msgid "Taxonomy term"
@@ -94,9 +94,17 @@ msgstr "Korvaa alkuperäinen tiedosto (@originalExtension)"
 msgid "Replace file"
 msgstr "Korvaa tiedosto"
 
+# Menu
+msgid "Parent link"
+msgstr "Yläsivu"
+
 # Metatag
 msgid "News Keywords"
 msgstr "Uutisten asiasanat"
+
+# Node
+msgid "The date and time that the content was created."
+msgstr "Päivämäärä jolloin sisältö on luotu."
 
 # Paragraphs
 msgid "Paragraph"
@@ -127,18 +135,21 @@ msgstr "Tätä asetusta ei tarvitse muuttaa. "
 "Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
 
 # Redirect
+msgid "- All languages -"
+msgstr "Kaikki kielet"
+
 msgid "The redirect language."
 msgstr "Uudelleenohjauksen kieli"
 
 # Scheduler
 msgid "Enter a date and time."
-msgstr "Syötä päivämäärä ja aika."
+msgstr "Syötä päivämäärä ja kellonaika."
 
 msgid "Leave the date blank for no scheduled publishing."
-msgstr "Jos haluat julkaista sivun heti, jätä kentät tyhjiksi."
+msgstr "Jätä kenttä tyhjäksi, jos julkaiset sivun heti."
 
 msgid "Leave the date blank for no scheduled unpublishing."
-msgstr "Jos et halua piilottaa sivua julkaisun jälkeen, jätä kentät tyhjiksi"
+msgstr "Jätä kenttä tyhjäksi, jos et halua piilottaa sivua julkaisun jälkeen"
 
 msgid "The date the node will be published."
 msgstr "Päivämäärä jolloin sivu julkaistaan."
