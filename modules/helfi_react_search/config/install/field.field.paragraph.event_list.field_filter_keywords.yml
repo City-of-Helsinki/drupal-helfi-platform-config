@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.paragraph.field_filter_keywords
     - paragraphs.paragraphs_type.event_list
-    - taxonomy.vocabulary.linked_events_topics
+    - taxonomy.vocabulary.linked_events_keywords
 id: paragraph.event_list.field_filter_keywords
 field_name: field_filter_keywords
 entity_type: paragraph
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      linked_events_topics: linked_events_topics
+      linked_events_keywords: linked_events_keywords
     sort:
       field: name
       direction: asc

@@ -4,7 +4,7 @@ dependencies:
   enforced:
     module:
       - helfi_react_search
-id: linked_events_topics
+id: linked_events_keywords
 migration_tags:
   - linked_events
 label: 'Linked events: topics'
@@ -21,5 +21,5 @@ process:
   language: language
 destination:
   plugin: translatable_entity:taxonomy_term
-  default_bundle: linked_events_topics
+  default_bundle: linked_events_keywords
 migration_dependencies: {  }
