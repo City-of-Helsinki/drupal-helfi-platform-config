@@ -16,9 +16,24 @@ use Drupal\paragraphs\ParagraphInterface;
  * Implements hook_token_info().
  */
 function helfi_platform_config_token_info() : array {
+  $info['tokens']['site']['default-og-image'] = [
+    'name' => t('Default OG Image'),
+    'description' => t('Default OG image is used as a default thumbnail in social networks and other services.'),
+  ];
   $info['tokens']['site']['page-title-suffix'] = [
     'name' => t('Page title suffix'),
     'description' => t('Official suffix for page title.'),
+  ];
+  $info['tokens']['node']['shareable-image'] = [
+    'name' => t('Shareable image'),
+    'description' => t('Shareable image is used as a thumbnail in social networks and other services.'),
+  ];
+
+  $info['tokens']['node']['lead-in'] = [
+    'name' => t('Lead in'),
+    'description' => t(
+      'Lead in will try to use the hero paragraph description if it exists. If not, it will use the node lead in field.'
+    ),
   ];
   return $info;
 }
@@ -48,8 +63,12 @@ function helfi_platform_config_tokens(
         $replacements[$original] = $image_manager->buildUrl($entity);
       }
     }
-
-    if ($name === 'page-title-suffix') {
+    // Custom token for default-og-image.
+    elseif ($name === 'default-og-image') {
+      $replacements[$original] = \Drupal::service('helfi_platform_config.og_image.default')
+        ->getDefaultShareableImageUrl();
+    }
+    elseif ($name === 'page-title-suffix') {
       $language = Drupal::languageManager()
         ->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE);
 
@@ -59,6 +78,46 @@ function helfi_platform_config_tokens(
         'ru' => 'Гopoд Xeльcинки',
         default => 'City of Helsinki',
       };
+    }
+    // Custom token for lead in.
+    elseif ($name === 'lead-in' && !empty($data['node'])) {
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $data['node'];
+      $lead_in_text = '';
+
+      // Check if lead in field exists.
+      if (
+        $node->hasField('field_lead_in') &&
+        !$node?->get('field_lead_in')?->isEmpty()
+      ) {
+        // Use lead in field as lead in text.
+        $lead_in_text = $node->get('field_lead_in')->value;
+      }
+
+      // Check if hero paragraph and hero paragraph description exists.
+      if (
+        $node->hasField('field_hero') &&
+        !$node->get('field_hero')?->first()?->isEmpty()
+      ) {
+        // Get hero paragraph.
+        $hero = $node->get('field_hero')
+          ?->first()
+          ?->get('entity')
+          ?->getTarget()
+          ?->getValue();
+
+        if (
+          $hero instanceof ParagraphInterface &&
+          $hero->hasField('field_hero_desc') &&
+          !$hero->get('field_hero_desc')->isEmpty()
+        ) {
+          // Use hero paragraph description as lead in text.
+          $lead_in_text = $hero->get('field_hero_desc')->value;
+        }
+      }
+
+      // Add lead in text to replacements.
+      $replacements[$original] = $lead_in_text;
     }
   }
 
