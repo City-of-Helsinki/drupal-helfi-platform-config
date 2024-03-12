@@ -910,7 +910,7 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
 
     // Alter revision log title based on customer needs.
     if (isset($form['revision_log'])) {
-      $form['revision_log']['widget'][0]['value']['#title'] = t('Version notes', [], ['context' => 'HDBT Admin editorial']);
+      $form['revision_log']['widget'][0]['value']['#title'] = t('Version notes', [], ['context' => 'HDBT Admin tools']);
     }
 
     // Alter metatags based on customer needs.
@@ -921,12 +921,12 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
       unset($form['field_metatags']['widget'][0]['basic']['#description']);
 
       // Alter the preamble and intro text markup.
-      $field_metatags['preamble']['#markup'] = '<p><strong>' . t('Editing metadata', [], ['context' => 'HDBT Admin editorial']) . '</strong></p>';
-      $field_metatags['intro_text']['#markup'] = '<p>' . t('Can be left unchanged. Tokens can be used to set metadata.', [], ['context' => 'HDBT Admin editorial']) . '</p>';
+      $field_metatags['preamble']['#markup'] = '<p><strong>' . t('Editing metadata', [], ['context' => 'HDBT Admin tools']) . '</strong></p>';
+      $field_metatags['intro_text']['#markup'] = '<p>' . t('Can be left unchanged. Tokens can be used to set metadata.', [], ['context' => 'HDBT Admin tools']) . '</p>';
 
       // Alter basic tags title field descriptions.
-      $field_metatags['basic']['title']['#title'] = t('Title', [], ['context' => 'HDBT Admin editorial']);
-      $field_metatags['basic']['title']['#description'] = t('Page title is visible in search results and browser tab heading. The title is set automatically and does not need to be set here. Recommended max. length: 55–65 characters.', [], ['context' => 'HDBT Admin editorial']);
+      $field_metatags['basic']['title']['#title'] = t('Title', [], ['context' => 'HDBT Admin tools']);
+      $field_metatags['basic']['title']['#description'] = t('Page title is visible in search results and browser tab heading. The title is set automatically and does not need to be set here. Recommended max. length: 55–65 characters.', [], ['context' => 'HDBT Admin tools']);
 
       // Alter basic tags description field title and descriptions.
       $field_metatags['basic']['description']['#title'] = t('Description for search engines', [], ['context' => 'HDBT Admin editorial']);
@@ -936,19 +936,19 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
     // Alter liftup image help texts and descriptions based on customer needs.
     if (isset($form['field_liftup_image'])) {
       $field_liftup_image = &$form['field_liftup_image']['widget'];
-      $field_liftup_image['open_button']['#value'] = t('Add image', [], ['context' => 'HDBT Admin editorial']);
+      $field_liftup_image['open_button']['#value'] = t('Add image', [], ['context' => 'HDBT Admin tools']);
 
       if (isset($field_liftup_image['#field_prefix']['empty_selection'])) {
         $field_liftup_image['#field_prefix']['empty_selection'] = [
-          '#markup' => t('Image is not selected.', [], ['context' => 'HDBT Admin editorial']),
+          '#markup' => t('Image is not selected.', [], ['context' => 'HDBT Admin tools']),
         ];
       }
     }
 
     // Alter publish on and unpublish on titles based on customer needs.
     if (isset($form['publish_on']) && isset($form['unpublish_on'])) {
-      $form['publish_on']['widget'][0]['value']['#title'] = t('Release time', [], ['context' => 'HDBT Admin editorial']);
-      $form['unpublish_on']['widget'][0]['value']['#title'] = t('Hiding the page', [], ['context' => 'HDBT Admin editorial']);
+      $form['publish_on']['widget'][0]['value']['#title'] = t('Release time', [], ['context' => 'HDBT Admin tools']);
+      $form['unpublish_on']['widget'][0]['value']['#title'] = t('Hiding the page', [], ['context' => 'HDBT Admin tools']);
     }
   }
 }
@@ -1046,7 +1046,7 @@ function hdbt_admin_tools_entity_operation(EntityInterface $entity): array {
     \Drupal::currentUser()->hasPermission('administer users')
   ) {
     $operations['update_password'] = [
-      'title' => t('Update user password', [], ['context' => 'HDBT Admin editorial - One-time login link']),
+      'title' => t('Update user password', [], ['context' => 'HDBT Admin tools - One-time login link']),
       'url' => Url::fromRoute('hdbt_admin_tools.user_login_link', ['user' => $entity->id()]),
       'weight' => 50,
     ];
