@@ -75,7 +75,17 @@ msgctxt "HDBT Admin tools"
 msgid "Release time"
 msgstr "Julkaisuaika"
 
-msgctxt "HDBT Admin editorial"
+msgctxt "HDBT Admin tools"
+msgid ""
+"Enter the date and time. "
+"Leave the field blank if you publish the page immediately.<br>"
+"Format: %format."
+msgstr ""
+"Syötä päivämäärä ja kellonaika. "
+"Jätä kenttä tyhjäksi, jos julkaiset sivun heti.<br>"
+"Esim. %format."
+
+msgctxt "HDBT Admin tools"
 msgid "Version notes"
 msgstr "Miten muutit sivua?"
 
@@ -85,7 +95,15 @@ msgstr "Piilota sivupalkin navigaatio tältä sivulta"
 msgid "Light"
 msgstr "Vaalea"
 
-msgctxt "HDBT Admin editorial - One-time login link"
+msgctxt "HDBT Admin tools"
+msgid "Paragraphs library"
+msgstr "Uudelleenkäytettävät lohkot"
+
+msgctxt "HDBT Admin tools"
+msgid "Add another link"
+msgstr "Lisää linkki"
+
+msgctxt "HDBT Admin tools - One-time login link"
 msgid "One-time login link for %user_name"
 msgstr "Kertakäyttöinen kirjautumislinkki käyttäjälle %user_name"
 
@@ -114,7 +132,7 @@ msgid "Update user password"
 msgstr "Päivitä käyttäjän salasana"
 
 msgid "Hero paragraph is mandatory if the Hero checkbox has been selected. Either unselect the checkbox or create the hero paragraph by clicking the Add Hero button."
-msgstr "Hero-lohko on pakollinen jos Hero-lohko -valintaruutu on valittuna. Poista valintaruudun valinta tai luo Hero-lohko klikkaamalla \"Lisää hero\" -painiketta."
+msgstr "Hero-kansikuva on pakollinen jos Hero-kansikuva -valintaruutu on valittuna. Poista valintaruudun valinta tai luo Hero-kansikuva klikkaamalla \"Lisää hero\" -painiketta."
 
 msgid "If you want to translate this page, do not change this value. You can translate this content from the 'Translate' -tab"
 msgstr "Jos haluat luoda sivusta käännösversion, tee se <em>Käännä</em>-välilehdellä. Tämä valinta kertoo sivun kielen."

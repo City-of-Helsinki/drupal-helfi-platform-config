@@ -929,8 +929,8 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
       $field_metatags['basic']['title']['#description'] = t('Page title is visible in search results and browser tab heading. The title is set automatically and does not need to be set here. Recommended max. length: 55–65 characters.', [], ['context' => 'HDBT Admin tools']);
 
       // Alter basic tags description field title and descriptions.
-      $field_metatags['basic']['description']['#title'] = t('Description for search engines', [], ['context' => 'HDBT Admin editorial']);
-      $field_metatags['basic']['description']['#description'] = t('A succinct description of the page content. Max. 160 characters. May be visible in search results. The description is fetched from the Lead-field and does not need to be set here.', [], ['context' => 'HDBT Admin editorial']);
+      $field_metatags['basic']['description']['#title'] = t('Description for search engines', [], ['context' => 'HDBT Admin tools']);
+      $field_metatags['basic']['description']['#description'] = t('A succinct description of the page content. Max. 160 characters. May be visible in search results. The description is fetched from the Lead-field and does not need to be set here.', [], ['context' => 'HDBT Admin tools']);
     }
 
     // Alter liftup image help texts and descriptions based on customer needs.
@@ -1088,4 +1088,42 @@ function hdbt_admin_tools_preprocess_form_element(array &$variables): void {
   $variables['counter_step'] = $variables['element']['#counter_step'];
   $variables['counter_total'] = $variables['element']['#counter_total'];
   $variables['counter_input_tag'] = $variables['element']['#type'] === 'textarea' ? 'textarea' : 'input';
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function hdbt_admin_tools_menu_links_discovered_alter(&$links) {
+  if (!isset($links['paragraphs_library.paragraphs_library_item.collection'])) {
+    return;
+  }
+  $links['paragraphs_library.paragraphs_library_item.collection']['title'] = t(
+    'Paragraphs library', [], ['context' => 'HDBT Admin tools']
+  );
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ */
+function hdbt_admin_tools_field_widget_complete_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) {
+  if (!isset($field_widget_complete_form['widget']['#field_name'])) {
+    return;
+  }
+
+  // Set the news item link 'add more' button translation.
+  if ($field_widget_complete_form['widget']['#field_name'] === 'field_news_item_links_link') {
+    $field_widget_complete_form['widget']['add_more']['#value'] = t(
+      'Add another link', [], ['context' => 'HDBT Admin tools']
+    );
+  }
+
+  // Set the published date (published_at) widget description translation.
+  if ($field_widget_complete_form['widget']['#field_name'] === 'published_at') {
+    $date_formatter = \Drupal::service('date.formatter');
+    $field_widget_complete_form['widget'][0]['value']['#description'] = t(
+      'Enter the date and time. Leave the field blank if you publish the page immediately.<br>Format: %format.',
+      ['%format' => $date_formatter->format(time(), 'custom', 'd.m.Y H.i.s')],
+      ['context' => 'HDBT Admin tools']
+    );
+  }
 }
