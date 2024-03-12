@@ -10,8 +10,7 @@ migration_tags:
 label: 'Linked events: topics'
 source:
   plugin: linked_events_keywords
-  keyword_set: "helsinki:topics"
-  url: "https://api.hel.fi/linkedevents/v1"
+  url: "https://api.hel.fi/linkedevents/v1/keyword/?data_source=yso&has_upcoming_events=True&page_size=100"
 process:
   tid:
     - plugin: callback

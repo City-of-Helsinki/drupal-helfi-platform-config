@@ -19,13 +19,7 @@ final class LinkedEventsKeywordsSource extends HttpSourcePluginBase {
    * {@inheritDoc}
    */
   protected function initializeListIterator(): \Iterator {
-    if (!isset($this->configuration['keyword_set'])) {
-      throw new \InvalidArgumentException("Missing `keyword_set` parameter");
-    }
-
-    $keyword_set = $this->configuration['keyword_set'];
-
-    foreach ($this->getKeywords($keyword_set) as $keyword) {
+    foreach ($this->getKeywords() as $keyword) {
       // Generate one row for each language.
       foreach ($keyword['name'] as $langcode => $name) {
         yield array_merge($keyword, [
@@ -69,20 +63,20 @@ final class LinkedEventsKeywordsSource extends HttpSourcePluginBase {
   /**
    * Get keywords from linked events api.
    *
-   * @param string $keyword_set
-   *   Keyword set.
-   *
    * @return \Generator
    *   Parsed responses from keyword endpoint.
    */
-  private function getKeywords(string $keyword_set) : \Generator {
-    $result = $this->getContent($this->buildCanonicalUrl("keyword_set/$keyword_set"));
+  private function getKeywords() : \Generator {
+    $next_url = $this->getCanonicalBaseUrl();
 
-    if (is_array($result['keywords'])) {
-      foreach ($result['keywords'] as $keyword) {
-        yield $this->getContent($keyword['@id']);
+    do {
+      $result = $this->getContent($next_url);
+      $next_url = $result['meta']['next'] ?? NULL;
+
+      if (is_array($result['data'])) {
+        yield from $result['data'];
       }
-    }
+    } while (!is_null($next_url));
   }
 
 }
