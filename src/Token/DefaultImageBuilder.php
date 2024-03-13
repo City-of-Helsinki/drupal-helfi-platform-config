@@ -35,7 +35,7 @@ class DefaultImageBuilder implements OGImageBuilderInterface {
   /**
    * {@inheritDoc}
    */
-  public function buildUrl(EntityInterface $entity): ?string {
+  public function buildUri(EntityInterface $entity): ?string {
     return $this->getDefaultShareableImageUrl();
   }
 

@@ -21,14 +21,14 @@ interface OGImageBuilderInterface {
   public function applies(EntityInterface $entity) : bool;
 
   /**
-   * Generate image URL.
+   * Generate image URI.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   Entity to use for generation.
    *
    * @return string|null
-   *   Image url or NULL on failure.
+   *   Image uri or NULL on failure.
    */
-  public function buildUrl(EntityInterface $entity) : ?string;
+  public function buildUri(EntityInterface $entity) : ?string;
 
 }

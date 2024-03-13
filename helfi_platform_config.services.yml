@@ -62,6 +62,9 @@ services:
 
   helfi_platform_config.og_image_manager:
     class: Drupal\helfi_platform_config\Token\OGImageManager
+    arguments:
+      - '@module_handler'
+      - '@file_url_generator'
     tags:
       - { name: service_collector, call: add, tag: helfi_platform_config.og_image_builder }
 

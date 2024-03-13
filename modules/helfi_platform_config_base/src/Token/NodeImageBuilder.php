@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config_base\Token;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\file\FileInterface;
 use Drupal\helfi_platform_config\Token\OGImageBuilderInterface;
 use Drupal\media\MediaInterface;
@@ -17,14 +16,6 @@ use Drupal\node\NodeInterface;
 class NodeImageBuilder implements OGImageBuilderInterface {
 
   /**
-   * Constructs a new instance.
-   */
-  public function __construct(
-    private readonly EntityTypeManagerInterface $entityTypeManager,
-  ) {
-  }
-
-  /**
    * {@inheritDoc}
    */
   public function applies(EntityInterface $entity): bool {
@@ -34,16 +25,11 @@ class NodeImageBuilder implements OGImageBuilderInterface {
   /**
    * {@inheritDoc}
    */
-  public function buildUrl(EntityInterface $entity): ?string {
+  public function buildUri(EntityInterface $entity): ?string {
     assert($entity instanceof NodeInterface);
 
     if ($image_file = $this->getImage($entity)) {
-      /** @var \Drupal\image\ImageStyleInterface $image_style */
-      $image_style = $this->entityTypeManager
-        ->getStorage('image_style')
-        ->load('og_image');
-
-      return $image_style->buildUrl($image_file->getFileUri());
+      return $image_file->getFileUri();
     }
 
     return NULL;

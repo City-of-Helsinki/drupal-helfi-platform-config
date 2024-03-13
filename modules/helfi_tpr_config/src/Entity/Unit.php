@@ -3,7 +3,6 @@
 namespace Drupal\helfi_tpr_config\Entity;
 
 use Drupal\helfi_tpr\Entity\Unit as BaseUnit;
-use Drupal\image\Entity\ImageStyle;
 
 /**
  * Bundle class for tpr unit.
@@ -11,48 +10,30 @@ use Drupal\image\Entity\ImageStyle;
 class Unit extends BaseUnit {
 
   /**
-   * Gets the picture url with image style.
-   *
-   * @param \Drupal\image\Entity\ImageStyle|null $imageStyle
-   *   URL image style. Original image is returned if style is NULL.
+   * Gets the picture uri.
    *
    * @return string|null
    *   The picture url.
    */
-  public function getPictureUrlWithImageStyle(ImageStyle $imageStyle = NULL) : ? string {
+  public function getPictureUri() : ? string {
     /** @var \Drupal\media\MediaInterface $picture_url */
     $picture_url = $this->get('picture_url_override')->entity;
 
     if (!$picture_url) {
       $url = $this->get('picture_url')->value;
 
-      // Run image url through imagecache_external so that we
-      // can apply image style.
-      if ($imageStyle) {
-        $image_path = imagecache_external_generate_path($url);
-
-        if ($image_path) {
-          return $imageStyle->buildUrl($image_path);
-        }
-
-        return NULL;
-      }
-
-      return $url;
+      // Run url through imagecache_external so that it is possible
+      // to apply image styles later. This method is in a bundle class
+      // so that helfi_tpr does not have to add dependency to
+      // imagecache_external.
+      return $url ? imagecache_external_generate_path($url) : NULL;
     }
 
     if ($file = $picture_url->get('field_media_image')->entity) {
       /** @var \Drupal\file\FileInterface $file */
-      if ($imageStyle) {
-        return $imageStyle->buildUrl($file->getFileUri());
-      }
-
-      try {
-        return $file->createFileUrl(FALSE) ?: NULL;
-      }
-      catch (\Exception) {
-      }
+      return $file->getFileUri();
     }
+
     return NULL;
   }
 
