@@ -16,17 +16,17 @@ use Drupal\paragraphs\ParagraphInterface;
  * Implements hook_token_info().
  */
 function helfi_platform_config_token_info() : array {
-  $info['tokens']['site']['default-og-image'] = [
+  $info['tokens']['site']['shareable-image'] = [
     'name' => t('Default OG Image'),
     'description' => t('Default OG image is used as a default thumbnail in social networks and other services.'),
-  ];
-  $info['tokens']['site']['page-title-suffix'] = [
-    'name' => t('Page title suffix'),
-    'description' => t('Official suffix for page title.'),
   ];
   $info['tokens']['node']['shareable-image'] = [
     'name' => t('Shareable image'),
     'description' => t('Shareable image is used as a thumbnail in social networks and other services.'),
+  ];
+  $info['tokens']['site']['page-title-suffix'] = [
+    'name' => t('Page title suffix'),
+    'description' => t('Official suffix for page title.'),
   ];
 
   $info['tokens']['node']['lead-in'] = [
@@ -53,20 +53,15 @@ function helfi_platform_config_tokens(
   $replacements = [];
 
   foreach ($tokens as $name => $original) {
-    if ($name === 'shareable-image' && isset($data[$type])) {
-      $entity = $data[$type];
+    if ($name === 'shareable-image') {
+      $entity = $data[$type] ?? NULL;
 
-      if ($entity instanceof EntityInterface) {
+      if ($entity === NULL || $entity instanceof EntityInterface) {
         /** @var \Drupal\helfi_platform_config\Token\OGImageManager $image_manager */
         $image_manager = \Drupal::service('helfi_platform_config.og_image_manager');
 
         $replacements[$original] = $image_manager->buildUrl($entity);
       }
-    }
-    // Custom token for default-og-image.
-    elseif ($name === 'default-og-image') {
-      $replacements[$original] = \Drupal::service('helfi_platform_config.og_image.default')
-        ->getDefaultShareableImageUrl();
     }
     elseif ($name === 'page-title-suffix') {
       $language = Drupal::languageManager()

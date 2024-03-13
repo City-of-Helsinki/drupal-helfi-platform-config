@@ -28,26 +28,14 @@ class DefaultImageBuilder implements OGImageBuilderInterface {
   /**
    * {@inheritDoc}
    */
-  public function applies(EntityInterface $entity): bool {
+  public function applies(?EntityInterface $entity): bool {
     return TRUE;
   }
 
   /**
    * {@inheritDoc}
    */
-  public function buildUri(EntityInterface $entity): ?string {
-    return $this->getDefaultShareableImageUrl();
-  }
-
-  /**
-   * Get default og image url.
-   *
-   * This image is used as a thumbnail in social networks and other services.
-   *
-   * @returns string|null
-   *   Url to default og image URL.
-   */
-  public function getDefaultShareableImageUrl() : string {
+  public function buildUri(?EntityInterface $entity): ?string {
     $module = $this->moduleHandler->getModule('helfi_platform_config');
     $current_language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
@@ -55,10 +43,7 @@ class DefaultImageBuilder implements OGImageBuilderInterface {
     $image_file_name = $current_language === 'sv' ? 'og-global-sv.png' : 'og-global.png';
 
     return $this->fileUrlGenerator
-      ->generate("{$module->getPath()}/fixtures/{$image_file_name}")
-      ->setAbsolute(TRUE)
-      ->toString(TRUE)
-      ->getGeneratedUrl();
+      ->generateAbsoluteString("{$module->getPath()}/fixtures/{$image_file_name}");
   }
 
 }

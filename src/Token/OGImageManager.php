@@ -56,13 +56,13 @@ final class OGImageManager {
   /**
    * Builds image url for given entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   The entity.
    *
    * @return string|null
    *   OG image url or NULL on failure.
    */
-  public function buildUrl(EntityInterface $entity) : ?string {
+  public function buildUrl(?EntityInterface $entity) : ?string {
     $image_uri = NULL;
 
     foreach ($this->getBuilders() as $builder) {

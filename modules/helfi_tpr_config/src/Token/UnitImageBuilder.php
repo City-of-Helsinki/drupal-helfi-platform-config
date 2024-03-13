@@ -16,14 +16,14 @@ class UnitImageBuilder implements OGImageBuilderInterface {
   /**
    * {@inheritDoc}
    */
-  public function applies(EntityInterface $entity): bool {
+  public function applies(?EntityInterface $entity): bool {
     return $entity instanceof Unit;
   }
 
   /**
    * {@inheritDoc}
    */
-  public function buildUri(EntityInterface $entity): ?string {
+  public function buildUri(?EntityInterface $entity): ?string {
     assert($entity instanceof Unit);
 
     return $entity->getPictureUri();
