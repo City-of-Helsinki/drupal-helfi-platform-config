@@ -129,3 +129,12 @@ msgstr "Hero-lohko on pakollinen jos Hero-lohko -valintaruutu on valittuna. Pois
 
 msgid "If you want to translate this page, do not change this value. You can translate this content from the 'Translate' -tab"
 msgstr "Jos haluat luoda tästä sivusta uuden käännöksen, älä vaihda tätä arvoa, vaan luo uusi käännös 'Käännä'-välilehdeltä"
+
+msgid "Text area (formatted text, character counter)"
+msgstr "Tekstialue (muotoiltu, merkkimäärälaskuri)"
+
+msgid "Text area (character counter)"
+msgstr "Tekstialue (merkkimäärälaskuri)"
+
+msgid "Textfield (character counter)"
+msgstr "Tekstikenttä (merkkimäärälaskuri)"

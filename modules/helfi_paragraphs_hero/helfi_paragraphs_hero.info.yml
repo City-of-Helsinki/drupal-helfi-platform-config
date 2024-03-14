@@ -12,3 +12,5 @@ dependencies:
   - helfi_base_content:helfi_base_content
   - helfi_image_styles:helfi_image_styles
   - helfi_media:helfi_media
+'interface translation project': helfi_paragraphs_hero
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_paragraphs_hero/translations/%language.po

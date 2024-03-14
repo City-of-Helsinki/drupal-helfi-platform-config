@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+
+msgid "Without image, align left"
+msgstr "Utan bild, justerad vänster"
+
+msgid "Image on the right"
+msgstr "Bild justerad till höger"
+
+msgid "Image on the left"
+msgstr "Bild justerad till vänster"
+
+msgid "Image on the bottom"
+msgstr "Bild justerad ner"
+
+msgid "Diagonal"
+msgstr "Diagonal"

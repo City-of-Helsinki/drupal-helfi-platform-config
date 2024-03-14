@@ -7,6 +7,17 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_react_search\Entity\EventList;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_react_search_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['event_list'])) {
+    $bundles['paragraph']['event_list']['class'] = EventList::class;
+  }
+}
+
 /**
  * Event count dropdown selectable values.
  *
@@ -64,4 +75,22 @@ function helfi_react_search_theme(): array {
       'template' => 'debug-item--search-api',
     ],
   ];
+}
+
+/**
+ * Lookup tid with keyword id.
+ */
+function _helfi_react_search_lookup_term_tid(string $keyword_id) {
+  $ids = \Drupal::entityQuery('taxonomy_term')
+    ->condition('field_keyword_id', $keyword_id)
+    ->range(0, 1)
+    ->latestRevision()
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($ids)) {
+    return reset($ids);
+  }
+
+  return NULL;
 }

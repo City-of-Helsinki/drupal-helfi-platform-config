@@ -76,10 +76,12 @@ content:
         duplicate: '0'
     third_party_settings: {  }
   field_lead_in:
-    type: string_textarea
+    type: textarea_character_counter
     weight: 13
     region: content
     settings:
+      counter_step: 160
+      counter_total: 200
       rows: 3
       placeholder: ''
     third_party_settings: {  }
@@ -200,10 +202,12 @@ content:
       display_label: true
     third_party_settings: {  }
   title:
-    type: string_textfield
+    type: textfield_character_counter
     weight: 1
     region: content
     settings:
+      counter_step: 0
+      counter_total: 55
       size: 60
       placeholder: ''
     third_party_settings: {  }
