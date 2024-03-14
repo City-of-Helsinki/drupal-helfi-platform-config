@@ -98,7 +98,7 @@ final class OGImageManager {
    */
   private function getBuilders() : array {
     if (empty($this->sortedBuilders)) {
-      krsort($this->builders);
+      ksort($this->builders);
       $this->sortedBuilders = array_merge(...$this->builders);
     }
 

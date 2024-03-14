@@ -75,4 +75,4 @@ services:
       - '@language_manager'
       - '@file_url_generator'
     tags:
-      - { name: helfi_platform_config.og_image_builder, priority: 100 }
+      - { name: helfi_platform_config.og_image_builder, priority: -100 }
