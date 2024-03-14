@@ -84,7 +84,7 @@ function hdbt_admin_tools_update_9003(): void {
 /**
  * Testing massive updates.
  */
-function hdbt_admin_tools_update_9004(): void {
+function hdbt_admin_tools_test_massive_update(): void {
   $modules = [
     'hdbt_admin_tools',
     'helfi_base_content',
@@ -132,15 +132,7 @@ function hdbt_admin_tools_update_9004(): void {
     if (!Drupal::moduleHandler()->moduleExists($module)) {
       continue;
     }
-    try {
-      \Drupal::service('helfi_platform_config.config_update_helper')
-        ->update($module);
-    }
-    catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
-      // We know the database values are different what we are trying
-      // to write there, but we are only replacing the
-      // values with allowed_values_function.
-    }
-
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update($module);
   }
 }
