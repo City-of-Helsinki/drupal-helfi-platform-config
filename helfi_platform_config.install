@@ -68,8 +68,11 @@ function helfi_platform_config_update_9304() : void {
 }
 
 /**
- * UHF-9761: This used to enable user inquiry -popup that is now removed.
+ * UHF-9761: Remove the user inquiry -popup that is no longer used.
  */
 function helfi_platform_config_update_9306() : void {
-  return;
+  $config_factory = Drupal::configFactory();
+
+  // Remove the user inquiry block.
+  $config_factory->getEditable('block.block.hdbt_subtheme_user_inquiry')->delete();
 }
