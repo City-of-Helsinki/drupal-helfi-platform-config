@@ -72,7 +72,10 @@ function helfi_platform_config_update_9304() : void {
  */
 function helfi_platform_config_update_9306() : void {
   $config_factory = Drupal::configFactory();
-
-  // Remove the user inquiry block.
-  $config_factory->getEditable('block.block.hdbt_subtheme_user_inquiry')->delete();
+  
+  // Make sure the configuration is present.
+  if(!$config_factory->get('block.block.hdbt_subtheme_user_inquiry')->isNew()) {
+    // Remove the user inquiry block.
+    $config_factory->getEditable('block.block.hdbt_subtheme_user_inquiry')->delete();
+  }
 }
