@@ -1,0 +1,7 @@
+services:
+  helfi_platform_config_base.og_image.node:
+    class: Drupal\helfi_platform_config_base\Token\NodeImageBuilder
+    arguments:
+      - '@entity_type.manager'
+    tags:
+      - { name: helfi_platform_config.og_image_builder }
