@@ -68,64 +68,14 @@ function helfi_platform_config_update_9304() : void {
 }
 
 /**
- * Enable leijuke-block which contains the user inquiry -popup.
+ * UHF-9761: Remove the user inquiry -popup that is no longer used.
  */
-function helfi_platform_config_update_9305() : void {
+function helfi_platform_config_update_9306() : void {
+  $config_factory = Drupal::configFactory();
 
-  if (!\Drupal::moduleHandler()->moduleExists('helfi_api_base')) {
-    return;
+  // Make sure the configuration is present.
+  if (!$config_factory->get('block.block.hdbt_subtheme_user_inquiry')->isNew()) {
+    // Remove the user inquiry block.
+    $config_factory->getEditable('block.block.hdbt_subtheme_user_inquiry')->delete();
   }
-
-  $environment_resolver = \Drupal::service('helfi_api_base.environment_resolver');
-  try {
-    $environment_resolver->getActiveProject();
-  }
-  catch (Exception $exception) {
-    // No active project found, stop execution.
-    return;
-  }
-
-  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
-  $theme_handler = \Drupal::service('theme_handler');
-  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
-    return;
-  }
-
-  $theme = $theme_handler->getDefault() === 'hdbt_subtheme' ? 'hdbt_subtheme' : 'hdbt';
-
-  $block = [
-    'id' => 'hdbt_subtheme_user_inquiry',
-    'plugin' => 'chat_leijuke',
-    'provider' => 'helfi_platform_config',
-    'weight' => -19,
-    'settings' => [
-      'label' => 'User inquiry',
-      'label_display' => FALSE,
-      'chat_title' => '',
-      'chat_selection' => 'user_inquiry',
-    ],
-    'visibility' => [
-      'language' => [
-        'id' => 'language',
-        'context_mapping' => [
-          'language' => '@language.current_language_context:language_interface',
-        ],
-        'langcodes' => ['fi' => 'fi', 'en' => 'en', 'sv' => 'sv'],
-      ],
-      'user_role' => [
-        'id' => 'user_role',
-        'roles' => ['anonymous' => 'anonymous'],
-        'context_mapping' => ['user' => '@user.current_user_context:current_user'],
-      ],
-    ],
-  ];
-
-  $variations = [
-    [
-      'theme' => $theme,
-      'region' => 'attachments',
-    ],
-  ];
-
-  $block_installer->install($block, $variations);
 }
