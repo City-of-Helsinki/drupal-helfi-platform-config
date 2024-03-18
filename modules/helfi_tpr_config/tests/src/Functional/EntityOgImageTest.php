@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_platform_config\Functional;
+namespace Drupal\Tests\helfi_tpr_config\Functional;
 
 use Drupal\file\Entity\File;
 use Drupal\helfi_tpr\Entity\Unit;
