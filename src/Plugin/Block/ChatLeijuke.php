@@ -31,7 +31,6 @@ class ChatLeijuke extends BlockBase {
       '#default_value' => $config['chat_selection'] ?? '',
       '#options' => [
         'genesys_suunte' => 'Genesys SUUNTE',
-        'user_inquiry' => 'Käyttäjätutkimus',
       ],
     ];
 

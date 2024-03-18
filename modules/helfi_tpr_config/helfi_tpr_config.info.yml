@@ -9,6 +9,7 @@ dependencies:
   - 'helfi_base_content:helfi_base_content'
   - 'helfi_media:helfi_media'
   - 'helfi_paragraphs_content_liftup:helfi_paragraphs_content_liftup'
+  - 'helfi_image_styles:helfi_image_styles'
   - 'helfi_tpr:helfi_tpr'
   - 'imagecache_external:imagecache_external'
   - 'views:views'

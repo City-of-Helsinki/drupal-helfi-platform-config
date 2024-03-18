@@ -9,6 +9,6 @@ tags:
   twitter_cards_page_url: '[current-page:url]'
   twitter_cards_title: '[current-page:title] | [site:page-title-suffix]'
   twitter_cards_type: summary_large_image
-  og_image: '[site:default-og-image]'
-  twitter_cards_image: '[site:default-og-image]'
+  og_image: '[site:shareable-image]'
+  twitter_cards_image: '[site:shareable-image]'
   og_site_name: '[site:page-title-suffix]'

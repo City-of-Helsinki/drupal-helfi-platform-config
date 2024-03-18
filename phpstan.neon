@@ -52,33 +52,33 @@ parameters:
       path: modules/hdbt_admin_tools/src/Controller/ListController.php
     -
       message: '#^Access to an undefined property Drupal\\media\\MediaInterface::\$field_media_image.#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
       reportUnmatched: false
     -
       message: '#^Access to an undefined property Drupal\\node\\NodeInterface::\$field_organization.#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
       reportUnmatched: false
     -
       message: '#^Access to an undefined property Drupal\\Core\\Entity\\EntityInterface::\$field_default_image.#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
       reportUnmatched: false
     -
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::getFileUri\(\).#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
       reportUnmatched: false
     -
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::getFileUri\(\).#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
       reportUnmatched: false
     -
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::hasField\(\).#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
     -
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::get\(\).#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
     -
       message: '#^Call to an undefined method Drupal\\Core\\TypedData\\TypedDataInterface::getTarget\(\).#'
-      path: modules/hdbt_admin_tools/hdbt_admin_tools.tokens.inc
+      path: helfi_platform_config.tokens.inc
     -
       message: '#^Call to an undefined method Drupal\\Core\\Field\\FieldDefinitionInterface::save\(\).#'
       path: helfi_platform_config.module

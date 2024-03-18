@@ -229,7 +229,7 @@ The update hook above will re-import all configuration from `helfi_media` module
 
 The `helfi_platform_config.config_update_helper` invokes `hook_rewrite_config_update`, which allows custom modules to react to config re-importing.
 
-##### In this example we would want to override Text paragraph label with a configuration found in my_module. 
+##### In this example we would want to override Text paragraph label with a configuration found in my_module.
 
 To trigger the `hook_rewrite_config_update`, implement the hook to your `my_module.module`:
 ```php
@@ -254,3 +254,54 @@ label: Teksti (ylikirjoitettu)
 ```
 
 
+## Tokens
+
+Helfi platform config implements `hook_tokens()`. With the help of `helfi_platform_config.og_image_manager` service, it provides `[*:shareable-image]` token. Modules may implement services that handle this token for their entity types.
+
+Modules that use this system should still implement `hook_tokens_info` to provide information about the implemented token.
+
+### Defining image builder service
+
+Add a new service:
+
+```yml
+# yourmodule/yourmodule.services.yml
+  yourmodule.og_image.your_entity_type:
+    class: Drupal\yourmodule\Token\YourEntityImageBuilder
+    arguments: []
+    tags:
+      - { name: helfi_platform_config.og_image_builder, priority: 100 }
+```
+
+```php
+# yourmodule/src/Token/YourEntityImageBuilder.php
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\yourmodule\Token;
+
+use Drupal\helfi_platform_config\Token\OGImageBuilderInterface;
+
+/**
+ * Handles token hooks.
+ */
+final class YourEntityImageBuilder implements OGImageBuilderInterface {
+
+  /**
+   * {@inheritDoc}
+   */
+  public function applies(EntityInterface $entity): bool {
+    return $entity instanceof YourEntity;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function buildUrl(EntityInterface $entity): ?string {
+    assert($entity instanceof YourEntity);
+    return $entity->field_image->entity->getFileUri();
+  }
+
+}
+```

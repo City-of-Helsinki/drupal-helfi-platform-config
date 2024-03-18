@@ -12,7 +12,7 @@ tags:
   article_published_time: '[tpr_unit:created:html_datetime]'
   og_description: '[tpr_unit:description:summary]'
   og_email: '[tpr_unit:email]'
-  og_image: '[tpr_unit:picture]'
+  og_image: '[tpr_unit:shareable-image]'
   og_latitude: '[tpr_unit:latitude]'
   og_longitude: '[tpr_unit:longitude]'
   og_phone_number: '[tpr_unit:phone]'
