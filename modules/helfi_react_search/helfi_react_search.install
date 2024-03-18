@@ -95,27 +95,15 @@ function helfi_react_search_update_9005() {
 }
 
 /**
- * UHF-9613: Update events list field descriptions and translation.
+ * UHF-9755: Install readonly_field_widget.
  */
-function helfi_react_search_update_9006() : void {
-  // Make sure the configurations are correctly installed.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_react_search');
-}
+function helfi_react_search_update_9009() : void {
+  $module_installer = \Drupal::service('module_installer');
 
-/**
- * UHF-9613: Linked events keywords.
- */
-function helfi_react_search_update_9007() : void {
-  // Make sure the configurations are correctly installed.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_react_search');
-}
+  if (!\Drupal::moduleHandler()->moduleExists('readonly_field_widget')) {
+    $module_installer->install(['readonly_field_widget']);
+  }
 
-/**
- * UHF-9576: Linked events: change paragraph widget.
- */
-function helfi_react_search_update_9008() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_react_search');
 }
