@@ -9,7 +9,11 @@ dependencies:
   - 'drupal:language'
   - 'drupal:link'
   - 'drupal:text'
+  - 'drupal:taxonomy'
+  - 'drupal:migrate'
+  - 'select2:select2'
   - 'helfi_platform_config:helfi_platform_config'
+  - 'readonly_field_widget:readonly_field_widget'
   - 'paragraphs:paragraphs'
 package: HELfi
 'interface translation project': helfi_react_search
