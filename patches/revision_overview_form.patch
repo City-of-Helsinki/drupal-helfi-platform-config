@@ -1,0 +1,18 @@
+diff --git a/src/Form/RevisionOverviewForm.php b/src/Form/RevisionOverviewForm.php
+index 45c2c66..4ff4f3b 100755
+--- a/src/Form/RevisionOverviewForm.php
++++ b/src/Form/RevisionOverviewForm.php
+@@ -209,7 +209,12 @@ class RevisionOverviewForm extends FormBase {
+       }
+       /** @var \Drupal\Core\Entity\ContentEntityInterface $revision */
+       if ($revision = $node_storage->loadRevision($vid)) {
+-        if ($revision->hasTranslation($langcode) && $revision->getTranslation($langcode)->isRevisionTranslationAffected()) {
++        // Added key-check to always show the current revision on revision list.
++        // Check this issue: https://www.drupal.org/project/drupal/issues/3390329.
++        if (
++          $revision->hasTranslation($langcode) && $revision->getTranslation($langcode)->isRevisionTranslationAffected() ||
++          $key === 0 && $revision->hasTranslation($langcode)
++        ) {
+           $username = array(
+             '#theme' => 'username',
+             '#account' => $revision->getRevisionUser(),
