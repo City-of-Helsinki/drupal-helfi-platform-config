@@ -241,6 +241,9 @@ msgstr "Poista mediatiedosto"
 msgid "Edit @language translation for %label"
 msgstr "Muokkaa käännöstä %label (kieli: @language)"
 
+msgid "media item"
+msgstr "mediatiedosto"
+
 msgid "No media items are selected."
 msgstr "Mediatiedostoja ei ole valittu."
 
@@ -266,6 +269,12 @@ msgstr ""
 
 msgid "Save media"
 msgstr "Tallenna mediatiedosto"
+
+msgid "@size limit."
+msgstr "Suositus alle 2 Mt, enintään @size."
+
+msgid "@size MB"
+msgstr "@size Mt"
 
 msgid "There are no menu links yet. <a href=\":url\">Add link</a>."
 msgstr ""
@@ -450,10 +459,8 @@ msgid ""
 "Enter %front to link to the front page. Enter %nolink to display link text only. "
 "Enter %button to display keyboard-accessible link text only."
 msgstr ""
-"Kirjoita osa sisällön otsikosta valitaksesi haluamasi sisällön. "
-"Voit myös kirjoittaa sisäisen polun, kuten %add-node, tai ulkoisen URL-osoitteen, kuten %url. "
-"Kirjoita %front linkittääksesi etusivulle. Kirjoita %nolink näyttääksesi vain linkin tekstin. "
-"Kirjoita %button näyttääksesi vain näppäimistöllä käytettävän linkkitekstin."
+"Kirjoita osa sivun otsikosta tai liitä URL-osoite, "
+"ja valitse oikea sivu ehdotuksista. "
 
 msgid "This must be an external URL such as %url."
 msgstr "Tämän on oltava ulkoinen URL-osoite, kuten %url."
