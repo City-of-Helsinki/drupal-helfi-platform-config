@@ -107,18 +107,9 @@ function helfi_react_search_update_9006() : void {
 }
 
 /**
- * UHF-9613: Linked events keywords.
+ * UHF-9088: Updated configuration translations for helfi_react_search.
  */
-function helfi_react_search_update_9007() : void {
-  // Make sure the configurations are correctly installed.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_react_search');
-}
-
-/**
- * UHF-9576: Linked events: change paragraph widget.
- */
-function helfi_react_search_update_9008() : void {
+function helfi_react_search_update_9009() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_react_search');
 }

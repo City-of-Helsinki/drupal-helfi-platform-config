@@ -78,6 +78,24 @@ function helfi_react_search_theme(): array {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_react_search_preprocess_form_element(array &$variables): void {
+  if (!isset($variables['name']) || !isset($variables['description'])) {
+    return;
+  }
+
+  // Remove the field_api_url description bullet list item and use
+  // just the first description set in configuration files.
+  if (
+    str_contains($variables['name'], 'field_api_url') &&
+    isset($variables['description']['content']['#items'])
+  ) {
+    $variables['description']['content'] = reset($variables['description']['content']['#items']);
+  }
+}
+
+/**
  * Lookup tid with keyword id.
  */
 function _helfi_react_search_lookup_term_tid(string $keyword_id) {
