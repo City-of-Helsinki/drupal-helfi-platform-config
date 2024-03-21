@@ -954,7 +954,7 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
 function hdbt_admin_tools_form_openid_connect_login_form_alter(&$form, $form_state) {
   // Alter the login form submit button texts for Tunnistamo login.
