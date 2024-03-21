@@ -276,6 +276,11 @@ msgstr "Suositus alle 2 Mt, enintään @size."
 msgid "@size MB"
 msgstr "@size Mt"
 
+msgid "The email address is not made public. "
+"It will only be used if you need to be contacted "
+"about your account or for opted-in notifications."
+msgstr "Sähköpostiosoitetta ei näytetä julkisesti."
+
 msgid "There are no menu links yet. <a href=\":url\">Add link</a>."
 msgstr ""
 "Valikkoon ei ole vielä lisätty linkkejä. <a href=\":url\">Lisää "
@@ -466,4 +471,4 @@ msgid "This must be an external URL such as %url."
 msgstr "Tämän on oltava ulkoinen URL-osoite, kuten %url."
 
 msgid "Start typing to find content or paste a URL and click on the suggestion below."
-msgstr "Liitä URL-osoite tai kirjoita osa sivun otsikosta ja valitse oikea sivu ehdotuksista."
+msgstr "Kirjoita osa sivun otsikosta tai liitä URL-osoite, ja valitse oikea sivu ehdotuksista."
