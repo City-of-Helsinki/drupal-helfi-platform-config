@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_paragraphs_columns module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * UHF-9088: Updated configuration translations for helfi_paragraphs_columns.
+ */
+function helfi_paragraphs_columns_update_9001(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_columns');
+}
