@@ -399,9 +399,9 @@ function helfi_tpr_config_update_9057(): void {
 }
 
 /**
- * UHF-9712: Unify metatags with platform config.
+ * UHF-8908: Change service channel email field to use email widget.
  */
-function helfi_tpr_config_update_9058(): void {
+function helfi_tpr_config_update_9059(): void {
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
