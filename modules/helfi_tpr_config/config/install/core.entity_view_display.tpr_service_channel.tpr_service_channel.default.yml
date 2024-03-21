@@ -69,10 +69,9 @@ content:
     weight: 19
     region: content
   email:
-    type: string
+    type: email_mailto
     label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
     weight: 9
     region: content
