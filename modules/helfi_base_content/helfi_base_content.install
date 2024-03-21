@@ -289,3 +289,33 @@ function helfi_base_content_update_9007() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_base_content');
 }
+
+/**
+ * UHF-8333 Change the LinkedIn API url to correct.
+ */
+function helfi_base_content_update_9007() : void {
+  Drupal::configFactory()->getEditable('social_media.settings')
+    ->set('social_media.linkedin.api_url', 'https://www.linkedin.com/sharing/share-offsite/?url=[current-page:url]')
+    ->save();
+
+  /** @var \Drupal\language\ConfigurableLanguageManagerInterface $language_manager */
+  $language_manager = \Drupal::languageManager();
+
+  foreach (['fi', 'sv'] as $langcode) {
+    $config_translation = $language_manager->getLanguageConfigOverride($langcode, 'social_media.settings');
+
+    if (!$config_translation->isNew()) {
+      $config_translation
+        ->set('social_media.linkedin.api_url', 'https://www.linkedin.com/sharing/share-offsite/?url=[current-page:url]')
+        ->save();
+    }
+  }
+}
+
+/**
+ * UHF-9081 Update og_description and description meta tags.
+ */
+function helfi_base_content_update_9008() : void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_base_content');
+}

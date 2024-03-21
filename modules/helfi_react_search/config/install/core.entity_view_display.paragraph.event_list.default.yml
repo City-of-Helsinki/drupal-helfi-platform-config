@@ -8,6 +8,7 @@ dependencies:
     - field.field.paragraph.event_list.field_event_list_title
     - field.field.paragraph.event_list.field_event_location
     - field.field.paragraph.event_list.field_event_time
+    - field.field.paragraph.event_list.field_filter_keywords
     - field.field.paragraph.event_list.field_free_events
     - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
@@ -61,6 +62,14 @@ content:
     third_party_settings: {  }
     weight: 3
     region: content
+  field_filter_keywords:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
   field_free_events:
     type: boolean
     label: above
@@ -83,3 +92,4 @@ content:
     region: content
 hidden:
   field_api_url: true
+  search_api_excerpt: true

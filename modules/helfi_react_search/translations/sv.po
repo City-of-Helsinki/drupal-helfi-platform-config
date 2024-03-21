@@ -26,6 +26,14 @@ msgstr "Om du vill söka evenemang på distans, välj endast alternativet 'Inter
 msgid "Select a venue"
 msgstr "Välj tidpunkt"
 
+msgctxt "React search: topics filter"
+msgid "Event topic"
+msgstr "Evenemangets ämne"
+
+msgctxt "React search: topics filter"
+msgid "All topics"
+msgstr "Alla ämnen"
+
 msgctxt "React search: remove item aria label"
 msgid "Remove item"
 msgstr "Töm valda"

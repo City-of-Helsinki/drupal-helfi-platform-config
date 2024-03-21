@@ -98,7 +98,27 @@ function helfi_react_search_update_9005() {
  * UHF-9613: Update events list field descriptions and translation.
  */
 function helfi_react_search_update_9006() : void {
+  $module_installer = \Drupal::service('module_installer');
+  $module_installer->install(['readonly_field_widget']);
+
   // Make sure the configurations are correctly installed.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+}
+
+/**
+ * UHF-9613: Linked events keywords.
+ */
+function helfi_react_search_update_9007() : void {
+  // Make sure the configurations are correctly installed.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+}
+
+/**
+ * UHF-9576: Linked events: change paragraph widget.
+ */
+function helfi_react_search_update_9008() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_react_search');
 }

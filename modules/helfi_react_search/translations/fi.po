@@ -26,6 +26,14 @@ msgstr "Jos haluat etsiä etätapahtumia, valitse vaihtoehto 'Internet (etätapa
 msgid "Select a venue"
 msgstr "Valitse tapahtumapaikka"
 
+msgctxt "React search: topics filter"
+msgid "Event topic"
+msgstr "Tapahtuman aihe"
+
+msgctxt "React search: topics filter"
+msgid "All topics"
+msgstr "Kaikki aiheet"
+
 msgctxt "React search: remove item aria label"
 msgid "Remove item"
 msgstr "Poista valinta"
