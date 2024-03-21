@@ -63,6 +63,10 @@ msgid "Image is not selected."
 msgstr "Kuvaa ei ole valittu."
 
 msgctxt "HDBT Admin tools"
+msgid "Login with Tunnistamo"
+msgstr "Kirjaudu sisään kaupungin tunnuksilla"
+
+msgctxt "HDBT Admin tools"
 msgid ""
 "Page title is visible in search results and browser tab heading. "
 "The title is set automatically and does not need to be set here. "

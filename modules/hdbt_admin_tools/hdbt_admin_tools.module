@@ -954,6 +954,15 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
 }
 
 /**
+ * Implements hook_form_alter().
+ */
+function hdbt_admin_tools_form_openid_connect_login_form_alter(&$form, $form_state) {
+  // Alter the login form submit button texts for Tunnistamo login.
+  $text = t('Login with Tunnistamo', [], ['context' => 'HDBT Admin tools']);
+  $form['openid_connect_client_tunnistamo_login']['#value'] = $text;
+}
+
+/**
  * Implements hook_entity_base_field_info().
  */
 function hdbt_admin_tools_entity_base_field_info(EntityTypeInterface $entity_type): array {

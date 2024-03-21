@@ -5,6 +5,10 @@ msgid "Consent management"
 msgstr "Samtyckehantering"
 
 msgctxt "HDBT Admin tools"
+msgid "Login with Tunnistamo"
+msgstr "Logga in med dina stadsuppgifter"
+
+msgctxt "HDBT Admin tools"
 msgid "Version notes"
 msgstr "Hur ändrade du sidan?"
 
