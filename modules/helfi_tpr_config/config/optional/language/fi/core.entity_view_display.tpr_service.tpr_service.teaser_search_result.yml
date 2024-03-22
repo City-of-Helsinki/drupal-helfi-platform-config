@@ -2,6 +2,8 @@ content:
   errand_services:
     settings:
       sort_order:
+        ESERVICE:
+          label: 'Sähköinen palvelu'
         CHAT:
           label: Chat
         EMAIL:
@@ -10,3 +12,15 @@ content:
           label: Puhelin
         PRINTABLE_FORM:
           label: Lomake
+        LOCAL:
+          label: Asiakaspalvelu
+        SMS:
+          label: Tekstiviesti
+        WEBPAGE:
+          label: Nettisivu
+        MAIL:
+          label: Posti
+        TELEFAX:
+          label: Faksi
+        OFFICE:
+          label: Palvelupiste
