@@ -1,4 +1,4 @@
 label: 'Visas på startsidan'
 settings:
-  on_label: På
-  off_label: Av
+  on_label: Ja
+  off_label: Nej
