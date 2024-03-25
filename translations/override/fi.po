@@ -19,6 +19,12 @@ msgid ""
 "Menu links with lower weights are displayed before links with higher weights."
 msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
 
+msgid "Block"
+msgstr "Lohko"
+
+msgid "No media available."
+msgstr "Mediatiedostoja ei ole saatavilla."
+
 msgid "j.n.Y"
 msgstr "j.n.Y"
 
@@ -33,6 +39,9 @@ msgstr "Etusivu"
 
 msgid "Minimal"
 msgstr "Minimaalinen"
+
+msgid "No"
+msgstr "Ei"
 
 msgid ""
 "Short description of the image used by screen readers and "
@@ -59,6 +68,9 @@ msgstr "Korvauskuvio"
 
 msgid "User"
 msgstr "Käyttäjä"
+
+msgid "Yes"
+msgstr "Kyllä"
 
 # Content lock
 msgid "Break Lock for content @label"

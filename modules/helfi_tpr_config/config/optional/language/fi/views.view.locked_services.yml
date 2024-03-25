@@ -38,7 +38,7 @@ display:
           sort_desc_label: Laskeva
       empty:
         area_text_custom:
-          content: 'Lukittua sisältöä ei ole.'
+          content: 'Lukittuja palveluita ei ole.'
       filters:
         name:
           expose:

@@ -383,7 +383,7 @@ function helfi_tpr_config_update_9052() : void {
 /**
  * UHF-9088: Updated configuration translations.
  */
-function helfi_tpr_config_update_9060(): void {
+function helfi_tpr_config_update_9061(): void {
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
