@@ -158,3 +158,10 @@ msgstr "Päivämäärä jolloin sivu julkaistaan."
 
 msgid "The date the node will be unpublished."
 msgstr "Päivämäärä jolloin sivun julkaisu peruutetaan."
+
+# Views bulk edit
+msgid "Edit content"
+msgstr "Muokkaa sisältöä"
+
+msgid "Edit media"
+msgstr "Muokkaa mediaa"
