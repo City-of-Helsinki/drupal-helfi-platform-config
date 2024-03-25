@@ -14,6 +14,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+# Drupal
+msgid "Front page"
+msgstr "Huvudsida"
+
+msgid "No"
+msgstr "Nej"
+
 msgctxt "PHP date format"
 msgid "D, m/d/Y - H:i"
 msgstr "j. F Y"
@@ -26,8 +33,8 @@ msgctxt "PHP date format"
 msgid "l, F j, Y - H:i"
 msgstr "j.n.Y - H:i"
 
-msgid "Front page"
-msgstr "Framsida"
+msgid "Yes"
+msgstr "Ja"
 
 # Content lock
 msgid "Unlock"
