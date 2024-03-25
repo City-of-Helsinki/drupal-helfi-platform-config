@@ -164,4 +164,4 @@ msgid "Edit content"
 msgstr "Muokkaa sisältöä"
 
 msgid "Edit media"
-msgstr "Muokkaa mediaa"
+msgstr "Muokkaa tiedostoa"

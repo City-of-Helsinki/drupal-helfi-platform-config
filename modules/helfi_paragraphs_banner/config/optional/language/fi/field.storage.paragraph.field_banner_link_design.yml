@@ -1,8 +1,8 @@
 settings:
   allowed_values:
     -
-      label: Täysvärinen
+      label: Taustavärillinen
     -
       label: Reunustettu
     -
-      label: 'Ei reunuksia tai taustaväriä'
+      label: 'Korostettu linkki'

@@ -1,2 +1,2 @@
 label: Kuvateksti
-description: 'Voit halutessasi kirjoittaa kuvatekstin kuvalle tähän.'
+description: 'Kirjoita aina kuvateksti. Kuvaajan nimi ja kuvan alt-teksti tulevat kuvan tiedoista, joten niitä ei kirjoiteta tähän.'
