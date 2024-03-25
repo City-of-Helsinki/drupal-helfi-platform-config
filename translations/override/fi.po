@@ -19,6 +19,9 @@ msgid ""
 "Menu links with lower weights are displayed before links with higher weights."
 msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
 
+msgid "No media available."
+msgstr "Mediatiedostoja ei ole saatavilla."
+
 msgid "j.n.Y"
 msgstr "j.n.Y"
 
