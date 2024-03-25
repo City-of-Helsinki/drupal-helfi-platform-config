@@ -28,3 +28,7 @@ msgstr "j.n.Y - H:i"
 
 msgid "Front page"
 msgstr "Framsida"
+
+# Content lock
+msgid "Unlock"
+msgstr "Avbryt och lås upp"

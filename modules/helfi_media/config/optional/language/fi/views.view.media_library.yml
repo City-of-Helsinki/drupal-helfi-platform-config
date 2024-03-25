@@ -15,6 +15,7 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
       exposed_form:
         options:
           submit_button: 'Suodata tuloksia'
@@ -24,7 +25,7 @@ display:
           sort_desc_label: Laskevasti
       empty:
         area_text_custom:
-          content: 'Ei mediatiedostoja saatavilla.'
+          content: 'Mediatiedostoja ei ole saatavilla.'
       sorts:
         created:
           expose:
@@ -39,7 +40,6 @@ display:
         status:
           expose:
             label: 'Julkaisun tila'
-            description: ''
           group_info:
             label: Julkaistu
             group_items:
@@ -53,17 +53,16 @@ display:
             label: 'Median tyyppi'
           group_info:
             label: 'Median tyyppi'
-            description: ''
         langcode:
           expose:
             label: Kieli
+      title: Media
   page:
     display_title: Sivu
     display_options:
       fields:
         media_bulk_form:
           action_title: Toiminto
-        name: {  }
         edit_media:
           alter:
             text: 'Muokkaa {{ name }}'
@@ -74,6 +73,8 @@ display:
             text: 'Poista {{ name }}'
             alt: 'Poista {{ name }}'
           text: Poista
+        name:
+          separator: ', '
   widget:
     display_title: Widgetti
     display_options:

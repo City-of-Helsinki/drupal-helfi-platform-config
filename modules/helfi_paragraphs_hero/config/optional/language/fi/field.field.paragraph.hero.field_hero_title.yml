@@ -1,2 +1,2 @@
 label: 'Heron otsikko'
-description: 'Jos sivulla on hero-elementti, tämä otsikko toimii sivun pääotsikkona.'
+description: 'Heron otsikon ja sivun otsikon pitää olla sama. Herossa käytetään heron otsikkoa mutta metatiedoissa ja URL-osoitteessa sivun otsikkoa.'

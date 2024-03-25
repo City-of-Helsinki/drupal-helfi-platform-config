@@ -7,7 +7,7 @@ third_party_settings:
   paragraphs_library:
     allow_library_conversion: true
 id: map
-label: Map
+label: 'Map embed'
 icon_uuid: null
 icon_default: null
 description: 'With map paragraph content producer can add an embedded map from https://kartta.hel.fi and https://palvelukartta.hel.fi.'

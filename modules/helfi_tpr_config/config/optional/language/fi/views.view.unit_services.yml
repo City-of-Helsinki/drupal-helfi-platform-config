@@ -13,3 +13,5 @@ display:
           exception:
             title: Kaikki
     display_title: Oletus
+  unit_services:
+    display_title: Lohko

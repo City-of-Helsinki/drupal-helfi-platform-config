@@ -1,2 +1,2 @@
-label: Hero-lohko
-description: 'Valitse haluatko näyttää hero-nostoelementin sivulla. Jos valitset heron, sen otsikkoa käytetään sivun pääotsikkona.'
+label: Hero-kansikuva
+description: 'Valitse, jos haluat käyttää hero-kansikuvaa. Heroa ei yleensä suositella perussivulle.'

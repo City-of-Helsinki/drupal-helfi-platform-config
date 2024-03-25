@@ -1,62 +1,11 @@
 msgid ""
 msgstr ""
 
-msgid "Chart"
-msgstr "Diagram"
-
-msgid "Description"
-msgstr "Beskrivning"
-
-msgid ""
-"Enter the Chart URL. Should be in format "
-"<i>https://app.powerbi.com/view?r=eyJrIjo..</i>.\r\n"
-""
-msgstr ""
-"Ange diagrammets URL. Bör vara i format "
-"<i>https://app.powerbi.com/view?r=eyJrIjo..</i>."
-
-msgid ""
-"Media type Chart can be used to present interactive charts. Supports "
-"Microsoft Power BI."
-msgstr ""
-"Medietyp Diagram kan användas för att presentera interaktiva "
-"diagram. Stöder Microsoft Power BI."
-
-msgid ""
-"Provide a descriptive transcript of the visual information what is "
-"presented in the chart."
-msgstr ""
-"Ge en beskrivande utskrift av den visuella informationen som "
-"presenteras i diagrammet."
-
-msgid ""
-"The chart is rendered via inline frame. Iframe needs a label so users "
-"can determine what content is being presented in the iframe."
-msgstr ""
-"Diagrammet renderas via inline frame. Iframe behöver en etikett så "
-"att användare kan avgöra vilket innehåll som presenteras i iframen."
-
-msgid "Title"
-msgstr "Titel"
-
-msgid "Transcript"
-msgstr "Transkript"
-
-msgid "URL"
-msgstr "URL"
-
 msgid "Edit @name. Opens in a new tab."
 msgstr "Redigera @name. Öppnas i en ny flik."
 
 msgid "Edit @name."
 msgstr "Redigera @name."
-
-msgid ""
-"With Chart paragraph content producer can add an embedded chart from "
-"https://app.powerbi.com."
-msgstr ""
-"Med Chart paragraph content producer kan lägga till ett inbäddat "
-"diagram från https://app.powerbi.com."
 
 msgid "Chart embed URL"
 msgstr "Diagram embed URL"

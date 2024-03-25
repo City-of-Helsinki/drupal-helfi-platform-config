@@ -15,38 +15,107 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 # Drupal
-msgid "No media available."
-msgstr "Ei mediatiedostoja saatavilla."
+msgid ""
+"Menu links with lower weights are displayed before links with higher weights."
+msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
 
-msgctxt "PHP date format"
-msgid "D, m/d/Y - H:i"
-msgstr "j. F Y"
+msgid "j.n.Y"
+msgstr "j.n.Y"
 
-msgctxt "PHP date format"
-msgid "m/d/Y - H:i"
-msgstr "j.n.Y - H:i"
-
-msgctxt "PHP date format"
-msgid "l, F j, Y - H:i"
-msgstr "j.n.Y - H:i"
+msgid "Email"
+msgstr "Sähköposti"
 
 msgid "Find and manage content"
 msgstr "Etsi ja hallitse sisältöä"
 
-msgid "Filter"
-msgstr "Suodata"
+msgid "Front page"
+msgstr "Etusivu"
+
+msgid "Minimal"
+msgstr "Minimaalinen"
+
+msgid ""
+"Short description of the image used by screen readers and "
+"displayed when the image is not loaded. This is important for accessibility."
+msgstr ""
+"Alt-teksti eli lyhyt kuvaus ruudunlukijoille ja tilanteisiin, "
+"joissa kuvaa ei näytetä käyttäjälle. Lopeta alt-teksti pisteeseen. "
+"Koristeellisissa kuvissa voit käyttää merkintää \"\"."
 
 msgid ""
 "Specify an alternative path by which this data can be accessed. For "
 "example, type \"/about\" when writing an about page."
 msgstr ""
-"Määrittele vaihtoehtoinen url-osoite sisällölle. "
-"Käytä kenttää vain kun sivulle tarvitaan markkinointiosoite. "
-"Kenttään asetaan sivuston perusosoitteen jälkeinen osa, "
+"Voit tarvittaessa muokata vaihtoehtoisen URL-päätteen. "
+"Instanssin URL tulee osoitteen alkuun. "
+"Kenttään kirjoitetaan viimeinen osa, "
 "esimerkiksi \"/kaupunkisymposium\"."
 
-msgid "Front page"
-msgstr "Etusivu"
+msgid "Taxonomy term"
+msgstr "Luokittelutermi"
+
+msgid "Token"
+msgstr "Korvauskuvio"
+
+msgid "User"
+msgstr "Käyttäjä"
+
+# Content lock
+msgid "Break Lock for content @label"
+msgstr "Vahvista lukituksen poisto sivulta @label"
+
+msgid "By breaking this lock, any unsaved changes made by @user will be lost."
+msgstr "Jos poistat lukituksen, käyttäjän @user tekemät muutokset menetetään."
+
+msgid "Confirm break lock"
+msgstr "Poista lukitus"
+
+msgid "Lock broken. Anyone can now edit this content."
+msgstr "Lukitus poistettu. Kaikki sisällöntuottajat voivat nyt muokata tätä sisältöä."
+
+msgid "Unlock"
+msgstr "Peruuta ja poista lukitus"
+
+# Field group
+msgid "Description of the item"
+msgstr "Kuvaus objektista"
+
+# Infinite scroll
+msgid "Load more"
+msgstr "Lataa lisää"
+
+# Media entity file replace
+msgid "Overwrite original file"
+msgstr "Korvaa alkuperäinen tiedosto"
+
+msgid "Overwrite original file (@originalExtension)"
+msgstr "Korvaa alkuperäinen tiedosto (@originalExtension)"
+
+msgid "Replace file"
+msgstr "Korvaa tiedosto"
+
+# Menu
+msgid "Parent link"
+msgstr "Yläsivu"
+
+# Metatag
+msgid "News Keywords"
+msgstr "Uutisten asiasanat"
+
+# Node
+msgid "The date and time that the content was created."
+msgstr "Päivämäärä jolloin sisältö on luotu."
+
+# Paragraphs
+msgid "Paragraph"
+msgstr "Lohko"
+
+msgid "Paragraphs"
+msgstr "Lohkot"
+
+# Paragraphs library
+msgid "Promote to library"
+msgstr "Muuta uudelleenkäytettävksi lohkoksi"
 
 # Pathauto
 msgid "Automatic alias"
@@ -56,7 +125,7 @@ msgid "Generate automatic URL alias"
 msgstr "Luo osoitealias"
 
 msgid "Uncheck this to create a custom alias below."
-msgstr "Tätä asetusta ei tarvitse muuttaa. "
+msgstr "Tätä asetusta ei yleensä muuteta. "
 "Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
 
 msgid ""
@@ -65,15 +134,22 @@ msgid ""
 msgstr "Tätä asetusta ei tarvitse muuttaa. "
 "Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
 
+# Redirect
+msgid "- All languages -"
+msgstr "Kaikki kielet"
+
+msgid "The redirect language."
+msgstr "Uudelleenohjauksen kieli"
+
 # Scheduler
 msgid "Enter a date and time."
-msgstr "Syötä päivämäärä ja aika."
+msgstr "Syötä päivämäärä ja kellonaika."
 
 msgid "Leave the date blank for no scheduled publishing."
-msgstr "Jos haluat julkaista sivun heti, jätä kentät tyhjiksi."
+msgstr "Jätä kenttä tyhjäksi, jos julkaiset sivun heti."
 
 msgid "Leave the date blank for no scheduled unpublishing."
-msgstr "Jos et halua piilottaa sivua julkaisun jälkeen, jätä kentät tyhjiksi"
+msgstr "Jätä kentät tyhjäksi, jos et ajasta sivua poistumaan."
 
 msgid "The date the node will be published."
 msgstr "Päivämäärä jolloin sivu julkaistaan."

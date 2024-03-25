@@ -31,28 +31,28 @@ class UserLoginLink extends FormBase {
       $values = $form_state->getValues();
 
       $form['title'] = [
-        '#markup' => "<h2>{$this->t('One-time login link for %user_name', ['%user_name' => $user->getAccountName()], ['context' => 'HDBT Admin editorial - One-time login link'])}</h2>",
+        '#markup' => "<h2>{$this->t('One-time login link for %user_name', ['%user_name' => $user->getAccountName()], ['context' => 'HDBT Admin tools - One-time login link'])}</h2>",
       ];
 
       $form['message'] = [
         '#markup' =>
-        "<p>{$this->t('<strong>Do not send the one time link via MS Teams</strong> or any other instant messaging application!<br />Doing so will invalidate the login link, and it will become useless.', [], ['context' => 'HDBT Admin editorial - One-time login link'])}</p>" .
-        "<p>{$this->t('Copy and send the one-time login link to the user via <strong>email</strong>.', [], ['context' => 'HDBT Admin editorial - One-time login link'])}</p>",
+        "<p>{$this->t('<strong>Do not send the one time link via MS Teams</strong> or any other instant messaging application!<br />Doing so will invalidate the login link, and it will become useless.', [], ['context' => 'HDBT Admin tools - One-time login link'])}</p>" .
+        "<p>{$this->t('Copy and send the one-time login link to the user via <strong>email</strong>.', [], ['context' => 'HDBT Admin tools - One-time login link'])}</p>",
       ];
 
       if (empty($values)) {
         $form['submit_instructions'] = [
-          '#markup' => "<p>{$this->t('Click the button below to generate a one-time login link for <strong>%user_name</strong>.', ['%user_name' => $user->getAccountName()], ['context' => 'HDBT Admin editorial - One-time login link'])}</p>",
+          '#markup' => "<p>{$this->t('Click the button below to generate a one-time login link for <strong>%user_name</strong>.', ['%user_name' => $user->getAccountName()], ['context' => 'HDBT Admin tools - One-time login link'])}</p>",
         ];
 
         $form['actions']['submit'] = [
           '#type' => 'submit',
-          '#value' => $this->t('Generate the URL', [], ['context' => 'HDBT Admin editorial - One-time login link']),
+          '#value' => $this->t('Generate the URL', [], ['context' => 'HDBT Admin tools - One-time login link']),
         ];
       }
       else {
         $form['time_limit'] = [
-          '#markup' => "<p>{$this->t("This link is valid for %hr. Do not visit the URL yourself as it will invalidate the login link.", ['%hr' => $this->config('user.settings')->get('password_reset_timeout') / 3600 . 'h'], ['context' => 'HDBT Admin editorial - One-time login link'])}</p>",
+          '#markup' => "<p>{$this->t("This link is valid for %hr. Do not visit the URL yourself as it will invalidate the login link.", ['%hr' => $this->config('user.settings')->get('password_reset_timeout') / 3600 . 'h'], ['context' => 'HDBT Admin tools - One-time login link'])}</p>",
         ];
 
         $form['link'] = [

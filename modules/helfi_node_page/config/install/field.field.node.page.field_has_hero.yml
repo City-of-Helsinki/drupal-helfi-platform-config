@@ -9,7 +9,7 @@ field_name: field_has_hero
 entity_type: node
 bundle: page
 label: Hero
-description: 'Check this box if you want to use hero-block on the page. If you choose this the heros title field will define the heading level 1 title for the page.'
+description: 'Check this box if you want to use hero-block on the standard page. If you choose this the hero title field will define the heading level 1 title for the page.'
 required: false
 translatable: true
 default_value:

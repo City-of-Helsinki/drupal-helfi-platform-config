@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'Dela på Facebook'
+  linkedin:
+    text: 'Dela på Linkedin'
+  twitter:
+    text: 'Dela på X'
+  email:
+    text: 'Skicka via e-post'

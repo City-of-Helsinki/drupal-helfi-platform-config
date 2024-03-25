@@ -283,14 +283,6 @@ function helfi_base_content_update_9005() : void {
 }
 
 /**
- * UHF-9081 Update og_description and description meta tags.
- */
-function helfi_base_content_update_9006() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_base_content');
-}
-
-/**
  * UHF-8333 Change the LinkedIn API url to correct.
  */
 function helfi_base_content_update_9007() : void {
@@ -313,9 +305,9 @@ function helfi_base_content_update_9007() : void {
 }
 
 /**
- * UHF-9081 Update og_description and description meta tags.
+ * UHF-9088: Updated configuration translations for helfi_base_content.
  */
-function helfi_base_content_update_9008() : void {
+function helfi_base_content_update_9009() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_base_content');
 }

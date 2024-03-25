@@ -50,9 +50,9 @@ function helfi_media_map_install($is_syncing) : void {
 }
 
 /**
- * UHF-8532 Update the "Open larger map" text on maps.
+ * UHF-9088 Updated translations for media map.
  */
-function helfi_media_map_update_9002(): void {
+function helfi_media_map_update_9003(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_media_map');
 }

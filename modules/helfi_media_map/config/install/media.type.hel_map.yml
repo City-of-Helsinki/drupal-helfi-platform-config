@@ -5,7 +5,7 @@ dependencies:
     - helfi_media_map
 id: hel_map
 label: 'Map (kartta.hel.fi, palvelukartta.hel.fi)'
-description: null
+description: 'Media type Map can be used to present interactive maps.'
 source: hel_map
 queue_thumbnail_downloads: false
 new_revision: false

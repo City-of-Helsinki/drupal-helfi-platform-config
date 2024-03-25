@@ -2,7 +2,7 @@
 
 /**
  * @file
- * HDBT Admin editorial hooks.
+ * HDBT Admin tools hooks.
  */
 
 /**

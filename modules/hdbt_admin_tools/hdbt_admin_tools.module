@@ -910,7 +910,7 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
 
     // Alter revision log title based on customer needs.
     if (isset($form['revision_log'])) {
-      $form['revision_log']['widget'][0]['value']['#title'] = t('Version notes', [], ['context' => 'HDBT Admin editorial']);
+      $form['revision_log']['widget'][0]['value']['#title'] = t('Version notes', [], ['context' => 'HDBT Admin tools']);
     }
 
     // Alter metatags based on customer needs.
@@ -921,36 +921,45 @@ function hdbt_admin_tools_form_alter(&$form, $form_state) {
       unset($form['field_metatags']['widget'][0]['basic']['#description']);
 
       // Alter the preamble and intro text markup.
-      $field_metatags['preamble']['#markup'] = '<p><strong>' . t('Editing metadata', [], ['context' => 'HDBT Admin editorial']) . '</strong></p>';
-      $field_metatags['intro_text']['#markup'] = '<p>' . t('Can be left unchanged. Tokens can be used to set metadata.', [], ['context' => 'HDBT Admin editorial']) . '</p>';
+      $field_metatags['preamble']['#markup'] = '<p><strong>' . t('Editing metadata', [], ['context' => 'HDBT Admin tools']) . '</strong></p>';
+      $field_metatags['intro_text']['#markup'] = '<p>' . t('Can be left unchanged. Tokens can be used to set metadata.', [], ['context' => 'HDBT Admin tools']) . '</p>';
 
       // Alter basic tags title field descriptions.
-      $field_metatags['basic']['title']['#title'] = t('Title', [], ['context' => 'HDBT Admin editorial']);
-      $field_metatags['basic']['title']['#description'] = t('Page title is visible in search results and browser tab heading. The title is set automatically and does not need to be set here. Recommended max. length: 55–65 characters.', [], ['context' => 'HDBT Admin editorial']);
+      $field_metatags['basic']['title']['#title'] = t('Title', [], ['context' => 'HDBT Admin tools']);
+      $field_metatags['basic']['title']['#description'] = t('Page title is visible in search results and browser tab heading. The title is set automatically and does not need to be set here. Recommended max. length: 55–65 characters.', [], ['context' => 'HDBT Admin tools']);
 
       // Alter basic tags description field title and descriptions.
-      $field_metatags['basic']['description']['#title'] = t('Description for search engines', [], ['context' => 'HDBT Admin editorial']);
-      $field_metatags['basic']['description']['#description'] = t('A succinct description of the page content. Max. 160 characters. May be visible in search results. The description is fetched from the Lead-field and does not need to be set here.', [], ['context' => 'HDBT Admin editorial']);
+      $field_metatags['basic']['description']['#title'] = t('Description for search engines', [], ['context' => 'HDBT Admin tools']);
+      $field_metatags['basic']['description']['#description'] = t('A succinct description of the page content. Max. 160 characters. May be visible in search results. The description is fetched from the Lead-field and does not need to be set here.', [], ['context' => 'HDBT Admin tools']);
     }
 
     // Alter liftup image help texts and descriptions based on customer needs.
     if (isset($form['field_liftup_image'])) {
       $field_liftup_image = &$form['field_liftup_image']['widget'];
-      $field_liftup_image['open_button']['#value'] = t('Add image', [], ['context' => 'HDBT Admin editorial']);
+      $field_liftup_image['open_button']['#value'] = t('Add image', [], ['context' => 'HDBT Admin tools']);
 
       if (isset($field_liftup_image['#field_prefix']['empty_selection'])) {
         $field_liftup_image['#field_prefix']['empty_selection'] = [
-          '#markup' => t('Image is not selected.', [], ['context' => 'HDBT Admin editorial']),
+          '#markup' => t('Image is not selected.', [], ['context' => 'HDBT Admin tools']),
         ];
       }
     }
 
     // Alter publish on and unpublish on titles based on customer needs.
     if (isset($form['publish_on']) && isset($form['unpublish_on'])) {
-      $form['publish_on']['widget'][0]['value']['#title'] = t('Release time', [], ['context' => 'HDBT Admin editorial']);
-      $form['unpublish_on']['widget'][0]['value']['#title'] = t('Hiding the page', [], ['context' => 'HDBT Admin editorial']);
+      $form['publish_on']['widget'][0]['value']['#title'] = t('Release time', [], ['context' => 'HDBT Admin tools']);
+      $form['unpublish_on']['widget'][0]['value']['#title'] = t('Hiding the page', [], ['context' => 'HDBT Admin tools']);
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function hdbt_admin_tools_form_openid_connect_login_form_alter(&$form, $form_state) {
+  // Alter the login form submit button texts for Tunnistamo login.
+  $text = t('Login with Tunnistamo', [], ['context' => 'HDBT Admin tools']);
+  $form['openid_connect_client_tunnistamo_login']['#value'] = $text;
 }
 
 /**
@@ -1046,7 +1055,7 @@ function hdbt_admin_tools_entity_operation(EntityInterface $entity): array {
     \Drupal::currentUser()->hasPermission('administer users')
   ) {
     $operations['update_password'] = [
-      'title' => t('Update user password', [], ['context' => 'HDBT Admin editorial - One-time login link']),
+      'title' => t('Update user password', [], ['context' => 'HDBT Admin tools - One-time login link']),
       'url' => Url::fromRoute('hdbt_admin_tools.user_login_link', ['user' => $entity->id()]),
       'weight' => 50,
     ];
@@ -1088,4 +1097,42 @@ function hdbt_admin_tools_preprocess_form_element(array &$variables): void {
   $variables['counter_step'] = $variables['element']['#counter_step'];
   $variables['counter_total'] = $variables['element']['#counter_total'];
   $variables['counter_input_tag'] = $variables['element']['#type'] === 'textarea' ? 'textarea' : 'input';
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function hdbt_admin_tools_menu_links_discovered_alter(&$links) {
+  if (!isset($links['paragraphs_library.paragraphs_library_item.collection'])) {
+    return;
+  }
+  $links['paragraphs_library.paragraphs_library_item.collection']['title'] = t(
+    'Paragraphs library', [], ['context' => 'HDBT Admin tools']
+  );
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ */
+function hdbt_admin_tools_field_widget_complete_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) {
+  if (!isset($field_widget_complete_form['widget']['#field_name'])) {
+    return;
+  }
+
+  // Set the news item link 'add more' button translation.
+  if ($field_widget_complete_form['widget']['#field_name'] === 'field_news_item_links_link') {
+    $field_widget_complete_form['widget']['add_more']['#value'] = t(
+      'Add another link', [], ['context' => 'HDBT Admin tools']
+    );
+  }
+
+  // Set the published date (published_at) widget description translation.
+  if ($field_widget_complete_form['widget']['#field_name'] === 'published_at') {
+    $date_formatter = \Drupal::service('date.formatter');
+    $field_widget_complete_form['widget'][0]['value']['#description'] = t(
+      'Enter the date and time. Leave the field blank if you publish the page immediately.<br>Format: %format.',
+      ['%format' => $date_formatter->format(time(), 'custom', 'd.m.Y H.i.s')],
+      ['context' => 'HDBT Admin tools']
+    );
+  }
 }

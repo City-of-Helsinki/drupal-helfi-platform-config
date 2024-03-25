@@ -97,9 +97,9 @@ function helfi_node_landing_page_install($is_syncing) : void {
 }
 
 /**
- * Set node as unpublished on default.
+ * UHF-9088: Updated configuration translations for helfi_node_landing_page.
  */
-function helfi_node_landing_page_update_9001() : void {
+function helfi_node_landing_page_update_9002() : void {
   // Re-import configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_node_landing_page');

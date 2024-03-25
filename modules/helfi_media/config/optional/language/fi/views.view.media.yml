@@ -8,19 +8,25 @@ display:
           action_title: Toiminto
         thumbnail__target_id:
           label: Pienoiskuva
+          separator: ', '
         name:
           label: 'Mediatiedoston nimi'
+          separator: ', '
         bundle:
           label: Tyyppi
+          separator: ', '
         uid:
           label: Kirjoittaja
+          separator: ', '
         status:
           label: Tila
           settings:
             format_custom_false: Julkaisematon
             format_custom_true: Julkaistu
+          separator: ', '
         changed:
           label: Päivitetty
+          separator: ', '
         operations:
           label: Toimenpiteet
       pager:
@@ -33,6 +39,7 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
       exposed_form:
         options:
           submit_button: Suodata
@@ -53,7 +60,6 @@ display:
         status:
           expose:
             label: Tosi
-            description: ''
           group_info:
             label: Julkaisutila
             group_items:
@@ -64,6 +70,10 @@ display:
         langcode:
           expose:
             label: Kieli
+      title: Media
   media_page_list:
+    display_title: Media
     display_options:
-      menu: {  }
+      menu:
+        title: Media
+label: Media

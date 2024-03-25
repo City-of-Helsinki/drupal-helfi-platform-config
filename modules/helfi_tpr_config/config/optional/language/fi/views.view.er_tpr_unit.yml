@@ -10,6 +10,7 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
       exposed_form:
         options:
           submit_button: Käytä
@@ -26,5 +27,16 @@ display:
         id:
           exception:
             title: Kaikki
+      fields:
+        name:
+          separator: ', '
   entity_reference:
     display_title: Entiteettiviittaus
+    display_options:
+      fields:
+        name_override:
+          separator: ', '
+        id:
+          separator: ', '
+        name:
+          separator: ', '
