@@ -29,6 +29,9 @@ display:
         id:
           exception:
             title: Alla
+      fields:
+        name:
+          separator: ', '
   block_search:
     display_options:
       pager:
@@ -58,5 +61,25 @@ display:
           expose:
             label: 'Rådgivningstjänstens namn eller sökterm'
             placeholder: 't.ex. Socialrådgivning, hälsa eller digitalt Sök'
+      fields:
+        name:
+          separator: ', '
+        name_synonyms:
+          separator: ', '
+        description__summary:
+          separator: ', '
+        name_override:
+          separator: ', '
+    display_title: Block
   entity_reference_1:
     display_title: Objektsreferens
+    display_options:
+      fields:
+        name_override:
+          separator: ', '
+        id:
+          separator: ', '
+        name:
+          separator: ', '
+  block:
+    display_title: Block

@@ -8,18 +8,25 @@ display:
           action_title: Åtgärd
         thumbnail__target_id:
           label: Miniatyr
+          separator: ', '
         name:
           label: Medianamn
+          separator: ', '
         bundle:
           label: Typ
+          separator: ', '
         uid:
           label: Författare
+          separator: ', '
         status:
           settings:
             format_custom_false: 'Ej publicerad'
             format_custom_true: Publicerad
+          label: Status
+          separator: ', '
         changed:
           label: Uppdaterad
+          separator: ', '
         operations:
           label: Funktioner
       pager:
@@ -53,7 +60,6 @@ display:
         status:
           expose:
             label: Sant
-            description: ''
           group_info:
             label: 'Status för publicering'
             group_items:
@@ -64,6 +70,10 @@ display:
         langcode:
           expose:
             label: Språk
+      title: Media
   media_page_list:
+    display_title: Media
     display_options:
-      menu: {  }
+      menu:
+        title: Media
+label: Media

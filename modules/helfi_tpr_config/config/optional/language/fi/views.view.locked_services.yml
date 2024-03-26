@@ -30,12 +30,15 @@ display:
             last: 'Viimeinen »'
           expose:
             offset_label: Offset
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
       exposed_form:
         options:
           submit_button: Suodata
           exposed_sorts_label: Järjestä
           sort_asc_label: Nouseva
           sort_desc_label: Laskeva
+          reset_button_label: Palauta
       empty:
         area_text_custom:
           content: 'Lukittuja palveluita ei ole.'
