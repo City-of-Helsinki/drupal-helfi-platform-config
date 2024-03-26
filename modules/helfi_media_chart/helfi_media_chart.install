@@ -52,9 +52,7 @@ function helfi_media_chart_install($is_syncing) : void {
 /**
  * UHF-9088 Updated translations for media chart.
  */
-function helfi_media_chart_update_9001(): void {
+function helfi_media_chart_update_9002(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_media_chart');
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_media_map');
 }
