@@ -93,10 +93,9 @@ content:
     weight: 2
     region: content
   email:
-    type: string
+    type: email_mailto
     label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
     weight: 8
     region: content
@@ -147,20 +146,20 @@ content:
     third_party_settings: {  }
     weight: 24
     region: content
-  longitude:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: { }
-    weight: 23
-    region: content
   links:
     type: tpr_connection
     label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 25
+    region: content
+  longitude:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 23
     region: content
   name:
     type: string
