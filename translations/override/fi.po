@@ -133,7 +133,7 @@ msgstr "Tätä asetusta ei yleensä muuteta. "
 msgid ""
 "Uncheck this to create a custom alias below. <a "
 "href=\"@admin_link\">Configure URL alias patterns.</a>"
-msgstr "Tätä asetusta ei tarvitse muuttaa. "
+msgstr "Tätä asetusta ei yleensä muuteta. "
 "Poista valinta, jos haluat itse asettaa sivulle osoitealiaksen."
 
 # Redirect
@@ -151,7 +151,7 @@ msgid "Leave the date blank for no scheduled publishing."
 msgstr "Jätä kenttä tyhjäksi, jos julkaiset sivun heti."
 
 msgid "Leave the date blank for no scheduled unpublishing."
-msgstr "Jätä kentät tyhjäksi, jos et ajasta sivua poistumaan."
+msgstr "Jos et halua ajastaa sivua poistumaan, jätä kentät tyhjäksi."
 
 msgid "The date the node will be published."
 msgstr "Päivämäärä jolloin sivu julkaistaan."

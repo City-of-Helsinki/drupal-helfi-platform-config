@@ -1136,3 +1136,18 @@ function hdbt_admin_tools_field_widget_complete_form_alter(&$field_widget_comple
     );
   }
 }
+
+/**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function hdbt_admin_tools_config_ignore_settings_alter(array &$settings): void {
+  // Exclude the hdbt_admin_tools.settings configuration translations.
+  $configuration = 'language.*|hdbt_admin_tools.settings';
+
+  if (in_array($configuration, $settings)) {
+    return;
+  }
+
+  // Add the configuration for the settings to the list of ignored data.
+  $settings[] = $configuration;
+}

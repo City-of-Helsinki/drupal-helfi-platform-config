@@ -8,6 +8,9 @@ display:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
+          tags:
+            next: ››
+            previous: ‹‹
       exposed_form:
         options:
           submit_button: Verkställ
@@ -24,5 +27,16 @@ display:
         id:
           exception:
             title: Alla
+      fields:
+        name:
+          separator: ', '
   entity_reference:
     display_title: Objektsreferens
+    display_options:
+      fields:
+        name_override:
+          separator: ', '
+        id:
+          separator: ', '
+        name:
+          separator: ', '

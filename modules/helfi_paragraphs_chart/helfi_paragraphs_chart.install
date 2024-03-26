@@ -10,7 +10,7 @@ declare(strict_types=1);
 /**
  * UHF-9088: Updated configuration translations for helfi_paragraphs_chart.
  */
-function helfi_paragraphs_chart_update_9002(): void {
+function helfi_paragraphs_chart_update_9003(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_chart');
 }

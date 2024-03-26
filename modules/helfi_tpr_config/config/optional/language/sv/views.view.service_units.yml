@@ -24,3 +24,8 @@ display:
         id:
           exception:
             title: Alla
+      fields:
+        name:
+          separator: ', '
+  service_units:
+    display_title: Block

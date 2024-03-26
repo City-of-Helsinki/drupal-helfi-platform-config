@@ -9,7 +9,7 @@ id: paragraph.remote_video.field_remote_video
 field_name: field_remote_video
 entity_type: paragraph
 bundle: remote_video
-label: 'Remote video'
+label: 'Remote video embed'
 description: ''
 required: true
 translatable: false

@@ -34,5 +34,6 @@ dependencies:
   - scheduler:scheduler
   - select2:select2
   - simple_sitemap:simple_sitemap
+  - social_media:social_media
   - twig_tweak:twig_tweak
   - view_unpublished:view_unpublished
