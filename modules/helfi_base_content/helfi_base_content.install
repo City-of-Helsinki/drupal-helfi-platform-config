@@ -38,8 +38,6 @@ function helfi_base_content_grant_permissions() : void {
       'translate configuration',
       // @content_lock.
       'break content lock',
-      // @locale.
-      'translate interface',
       // @menu_link_attributes.
       'use menu link attributes',
       // @menu_link_content.
@@ -138,8 +136,6 @@ function helfi_base_content_grant_permissions() : void {
       'create remote entities',
       'delete remote entities',
       'edit remote entities',
-      // @locale.
-      'translate interface',
       // @menu_link_attributes.
       'use menu link attributes',
       // @menu_link_content.

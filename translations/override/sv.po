@@ -32,3 +32,10 @@ msgstr "Användare"
 # Content lock
 msgid "Unlock"
 msgstr "Avbryt och lås upp"
+
+# Views bulk edit
+msgid "Edit content"
+msgstr "Redigera innehåll"
+
+msgid "Edit media"
+msgstr "Redigera media"
