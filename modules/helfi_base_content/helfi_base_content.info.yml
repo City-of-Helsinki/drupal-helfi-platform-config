@@ -13,6 +13,7 @@ dependencies:
   - drupal:menu_link_content
   - drupal:node
   - drupal:path_alias
+  - drupal:system
   - drupal:taxonomy
   - drupal:text
   - easy_breadcrumb:easy_breadcrumb
