@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: tpr_unit.field_phone_with_contacts
+field_name: field_phone_with_contacts
+entity_type: tpr_unit
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

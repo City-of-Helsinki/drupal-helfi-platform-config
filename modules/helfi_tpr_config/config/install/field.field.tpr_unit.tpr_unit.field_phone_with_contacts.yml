@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tpr_unit.field_phone_with_contacts
+  module:
+    - helfi_tpr
+id: tpr_unit.tpr_unit.field_phone_with_contacts
+field_name: field_phone_with_contacts
+entity_type: tpr_unit
+bundle: tpr_unit
+label: 'Move phone to Other contact information accordion'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
