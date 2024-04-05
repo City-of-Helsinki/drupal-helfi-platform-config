@@ -1,1 +1,4 @@
 label: 'Siirrä puhelinnumero Muut yhteystiedot -haitariin'
+settings:
+  on_label: Kyllä
+  off_label: Ei
