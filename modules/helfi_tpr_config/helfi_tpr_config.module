@@ -445,6 +445,24 @@ function template_preprocess_tpr_service_lower_content(array &$variables) : void
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+function helfi_tpr_config_form_tpr_unit_form_alter(&$form, &$form_state, $form_id): void {
+  $form['field_phone_label']['#states'] = [
+    'visible' => [
+      ':input[name="field_phone_with_contacts[value]"]' => ['checked' => TRUE],
+    ],
+  ];
+
+  // Required state must the widget rather than the form element.
+  $form['field_phone_label']['widget'][0]['value']['#states'] = [
+    'required' => [
+      ':input[name="field_phone_with_contacts[value]"]' => ['checked' => TRUE],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function helfi_tpr_config_form_views_exposed_form_alter(&$form, $form_state) : void {
   // Setting high school search form autocompletes to off so that when
   // users returning to the form won't see their previous selections

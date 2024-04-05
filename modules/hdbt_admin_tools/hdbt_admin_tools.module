@@ -148,24 +148,6 @@ function hdbt_admin_tools_form_node_form_alter(&$form, &$form_state, $form_id): 
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function hdbt_admin_tools_form_tpr_unit_form_alter(&$form, &$form_state, $form_id): void {
-  $form['field_phone_label']['#states'] = [
-    'visible' => [
-      ':input[name="field_phone_with_contacts[value]"]' => ['checked' => TRUE],
-    ],
-  ];
-
-  // Required state must the widget rather than the form element.
-  $form['field_phone_label']['widget'][0]['value']['#states'] = [
-    'required' => [
-      ':input[name="field_phone_with_contacts[value]"]' => ['checked' => TRUE],
-    ],
-  ];
-}
-
-/**
  * Form submit callback for node forms.
  *
  * Redirect content editor to correct translation after saving the node.
