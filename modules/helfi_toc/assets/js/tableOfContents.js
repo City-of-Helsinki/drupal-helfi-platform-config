@@ -182,7 +182,6 @@
           // Create anchor links.
           content.setAttribute('id', anchorName);
           content.setAttribute('tabindex', '-1');  // Set tabindex to -1 to avoid issues with screen readers.
-          content.setAttribute('class', 'toc-focusable');
         });
 
       if (tableOfContents) {
