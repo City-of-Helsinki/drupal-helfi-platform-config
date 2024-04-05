@@ -402,27 +402,6 @@ function helfi_tpr_config_update_9062(): void {
  * UHF-9496: Move phone number option.
  */
 function helfi_tpr_config_update_9063(): void {
-  $phone_label = BaseFieldDefinition::create('string')
-    ->setTranslatable(TRUE)
-    ->setRevisionable(FALSE)
-    ->setLabel(new TranslatableMarkup('Phone label'))
-    ->setDescription(new TranslatableMarkup('The label shown above the phone number when displayed in other contact info accordion.'))
-    ->setDisplayConfigurable('form', TRUE)
-    ->setDisplayConfigurable('view', TRUE);
-
-  \Drupal::entityDefinitionUpdateManager()
-    ->installFieldStorageDefinition('field_phone_label', 'tpr_unit', 'helfi_tpr_config', $phone_label);
-
-  $phone_with_contacts = BaseFieldDefinition::create('boolean')
-    ->setTranslatable(TRUE)
-    ->setRevisionable(FALSE)
-    ->setLabel(new TranslatableMarkup('Move phone to Other contact information accordion'))
-    ->setDisplayConfigurable('form', TRUE)
-    ->setDisplayConfigurable('view', TRUE);
-
-  \Drupal::entityDefinitionUpdateManager()
-    ->installFieldStorageDefinition('field_phone_with_contacts', 'tpr_unit', 'helfi_tpr_config', $phone_with_contacts);
-
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
