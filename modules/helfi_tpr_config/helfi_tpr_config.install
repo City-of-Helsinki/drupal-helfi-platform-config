@@ -401,7 +401,7 @@ function helfi_tpr_config_update_9062(): void {
 /**
  * UHF-9496: Move phone number option.
  */
-function helfi_tpr_config_update_9063(): void {
+function helfi_tpr_config_update_9064(): void {
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
