@@ -70,9 +70,9 @@ function helfi_eu_cookie_compliance_update_9003(): void {
 }
 
 /**
- * UHF-9088: Updated configuration translations for helfi_eu_cookie_compliance.
+ * UHF-9903: Updated cookie descriptions for helfi_eu_cookie_compliance.
  */
-function helfi_eu_cookie_compliance_update_9007(): void {
+function helfi_eu_cookie_compliance_update_9008(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_eu_cookie_compliance');
 }
