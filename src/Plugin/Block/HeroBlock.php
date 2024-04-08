@@ -27,16 +27,19 @@ class HeroBlock extends ContentBlockBase {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity, 'entity_version' => $entity_version] = $this->getCurrentEntityVersion();
 
-    // No need to continue if current entity doesn't have has_hero field.
+    // No need to continue if current entity doesn't have hero field.
     if (
       !$entity instanceof ContentEntityInterface ||
-      !$entity->hasField('field_has_hero')
+      !$entity->hasField('field_hero')
     ) {
       return $build;
     }
 
     // @todo Support preview on entity reference fields ie. paragraphs.
-    if (!$entity->get('field_has_hero')->isEmpty()) {
+    if (
+      !$entity->hasField('field_has_hero') ||
+      !$entity->get('field_has_hero')->isEmpty()
+    ) {
       $first_paragraph_grey = '';
 
       // Handle only landing page.
@@ -51,13 +54,12 @@ class HeroBlock extends ContentBlockBase {
           'unit_search',
           'service_list_search',
         ];
-        foreach ($paragraphs_with_grey_bg as $paragraph_with_grey_bg) {
-          if (
-            $paragraph instanceof ParagraphInterface &&
-            $paragraph->getType() === $paragraph_with_grey_bg
-          ) {
-            $first_paragraph_grey = 'has-first-gray-bg-block';
-          }
+
+        if (
+          $paragraph instanceof ParagraphInterface &&
+          in_array($paragraph->getType(), $paragraphs_with_grey_bg)
+        ) {
+          $first_paragraph_grey = 'has-first-gray-bg-block';
         }
       }
 

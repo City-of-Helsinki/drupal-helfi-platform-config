@@ -279,9 +279,11 @@ function hdbt_admin_tools_preprocess_page(&$variables): void {
 
     // Set has_hero variable according to field_has_hero and existence of
     // field_hero reference.
-    if ($entity->hasField('field_has_hero')) {
-      $variables['has_hero'] = $entity->get('field_has_hero')->value &&
-        !$entity->get('field_hero')->isEmpty();
+    if ($entity->hasField('field_hero')) {
+      $variables['has_hero'] = !$entity->get('field_hero')->isEmpty() && (
+        !$entity->hasField('field_has_hero') ||
+        $entity->get('field_has_hero')->value
+      );
     }
 
     // Handle sidebar visibility.
