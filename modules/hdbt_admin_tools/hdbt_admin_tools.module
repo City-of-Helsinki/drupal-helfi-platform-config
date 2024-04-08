@@ -267,21 +267,6 @@ function hdbt_admin_tools_get_page_entity(): ?EntityInterface {
   return NULL;
 }
 
-// @codingStandardsIgnoreStart
-/**
- * Gets the current page main entity.
- *
- * @deprecated in helfi_platform_config:3.0.0 and is removed from helfi_platform_config:3.2.0.
- *   Use hdbt_admin_tools_get_page_entity() instead.
- *
- * @return \Drupal\Core\Entity\EntityInterface
- *   Current page main entity.
- */
-function hdbt_content_get_page_entity(): ?EntityInterface {
-  return hdbt_admin_tools_get_page_entity();
-}
-// @codingStandardsIgnoreEnd
-
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -404,23 +389,6 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
     $variables['has_sidebar_second'] = TRUE;
   }
 }
-
-// @codingStandardsIgnoreStart
-/**
- * Handle sidebar visibility based on current entity menu links.
- *
- * @deprecated in helfi_platform_config:3.0.0 and is removed from helfi_platform_config:3.2.0.
- *   Use hdbt_admin_tools_handle_sidebar_visibility() instead.
- *
- * @param array $variables
- *   Variables array.
- * @param \Drupal\Core\Entity\ContentEntityInterface $entity
- *   Content entity, like tpr_service, tpr_unit or node.
- */
-function _hdbt_content_handle_sidebar_visibility(array &$variables, ContentEntityInterface $entity): void {
-  hdbt_admin_tools_handle_sidebar_visibility($variables, $entity);
-}
-// @codingStandardsIgnoreEnd
 
 /**
  * Implements hook_preprocess_HOOK().
