@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
+use Drupal\Core\Language\LanguageInterface;
 
 /**
  * Modify the list of available CKEditor 5 plugins.
@@ -30,4 +31,23 @@ function helfi_ckeditor_ckeditor5_plugin_info_alter(array &$plugin_definitions):
 
   // Save ckeditor5_table plugin definitions.
   $plugin_definitions['ckeditor5_table'] = new CKEditor5PluginDefinition($original_table_plugin);
+}
+
+/**
+ * Implements hook_js_settings_alter().
+ */
+function helfi_ckeditor_js_settings_alter(array &$settings) {
+  // Ckeditor uses UI language to decide whether to use LTR or RTL direction on editor.
+  // Overwrite the UI langcode with content langcode to instantiate the ckeditor with correct direction.
+  $content_language = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+  $language_id = $content_language->getId();
+  if (isset($settings['editor']['formats']['full_html'])) {
+    $settings['editor']['formats']['full_html']['editorSettings']['language']['ui'] = $language_id;
+  }
+  if (isset($settings['editor']['formats']['simple_html'])) {
+    $settings['editor']['formats']['simple_html']['editorSettings']['language']['ui'] = $language_id;
+  }
+  if (isset($settings['editor']['formats']['minimal'])) {
+    $settings['editor']['formats']['minimal']['editorSettings']['language']['ui'] = $language_id;
+  }
 }
