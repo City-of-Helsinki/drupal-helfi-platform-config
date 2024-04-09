@@ -43,7 +43,7 @@ function helfi_ckeditor_js_settings_alter(array &$settings) {
   $language_manager = \Drupal::languageManager();
   $content_language = $language_manager
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
-  
+
   $ui_language_direction = $language_manager
     ->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)
     ->getDirection();
