@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Tests\BrowserTestBase as CoreBrowserTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Base test class for helfi platform browser tests.
  */
-abstract class BrowserTestBase extends CoreBrowserTestBase {
+abstract class FunctionalTestBase extends BrowserTestBase {
 
   /**
    * Gets the language for given language code.
