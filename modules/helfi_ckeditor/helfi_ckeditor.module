@@ -41,7 +41,6 @@ function helfi_ckeditor_js_settings_alter(array &$settings) {
   // UI language is used to decide the content direction on editor.
   // Therefore, we must override the ui language with content language.
   // Also, header must be turned around to ensure correct alignment.
-
   if (!isset($settings['editor']['formats'])) {
     return;
   }
@@ -56,7 +55,7 @@ function helfi_ckeditor_js_settings_alter(array &$settings) {
 
   $language_id = $content_language->getId();
 
-  foreach($settings['editor']['formats'] as $name => $array) {
+  foreach ($settings['editor']['formats'] as $name => $array) {
     $settings['editor']['formats'][$name]['editorSettings']['language']['ui'] = $language_id;
     if ($ui_language_direction === 'ltr') {
       $settings['editor']['formats'][$name]['editorSettings']['toolbar']['items'] = array_reverse(
