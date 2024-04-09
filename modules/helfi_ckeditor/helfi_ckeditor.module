@@ -37,17 +37,37 @@ function helfi_ckeditor_ckeditor5_plugin_info_alter(array &$plugin_definitions):
  * Implements hook_js_settings_alter().
  */
 function helfi_ckeditor_js_settings_alter(array &$settings) {
-  // Ckeditor uses UI language to decide whether to use LTR or RTL direction on editor.
-  // Overwrite the UI langcode with content langcode to instantiate the ckeditor with correct direction.
-  $content_language = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+  // UI language is used to decide the content direction on editor.
+  // Overwrite the UI langcode to show correct direction.
+  // Turn editor header around to make it render correctly.
+  $language_manager = \Drupal::languageManager();
+  $content_language = $language_manager
+    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+  
+  $ui_language_direction = $language_manager
+    ->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)
+    ->getDirection();
+
   $language_id = $content_language->getId();
   if (isset($settings['editor']['formats']['full_html'])) {
     $settings['editor']['formats']['full_html']['editorSettings']['language']['ui'] = $language_id;
+    if ($ui_language_direction === 'ltr') {
+      $reversed = array_reverse($settings['editor']['formats']['full_html']['editorSettings']['toolbar']['items']);
+      $settings['editor']['formats']['full_html']['editorSettings']['toolbar']['items'] = $reversed;
+    }
   }
   if (isset($settings['editor']['formats']['simple_html'])) {
     $settings['editor']['formats']['simple_html']['editorSettings']['language']['ui'] = $language_id;
+    if ($ui_language_direction === 'ltr') {
+      $reversed = array_reverse($settings['editor']['formats']['simple_html']['editorSettings']['toolbar']['items']);
+      $settings['editor']['formats']['simple_html']['editorSettings']['toolbar']['items'] = $reversed;
+    }
   }
   if (isset($settings['editor']['formats']['minimal'])) {
     $settings['editor']['formats']['minimal']['editorSettings']['language']['ui'] = $language_id;
+    if ($ui_language_direction === 'ltr') {
+      $reversed = array_reverse($settings['editor']['formats']['minimal']['editorSettings']['toolbar']['items']);
+      $settings['editor']['formats']['minimal']['editorSettings']['toolbar']['items'] = $reversed;
+    }
   }
 }
