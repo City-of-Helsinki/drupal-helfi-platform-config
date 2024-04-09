@@ -9,11 +9,11 @@ use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\KernelTests\KernelTestBase;
 
 /**
- * Make sure translated configuration is exported with UUIDs.
+ * Scans bundled configuration.
  *
  * @group helfi_platform_config
  */
-class ConfigurationUuidTest extends KernelTestBase {
+class ConfigurationTest extends KernelTestBase {
 
   /**
    * The extension list.
