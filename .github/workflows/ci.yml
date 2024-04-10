@@ -63,7 +63,7 @@ jobs:
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
           php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-          vendor/bin/drush en $MODULE_NAME -y
+          vendor/bin/drush en $MODULE_NAME helfi_platform_config_base -y
 
       - name: Run PHPCS
         working-directory: ${{ env.DRUPAL_ROOT }}
