@@ -1,3 +1,4 @@
+uuid: 99f821d2-1cf4-48e5-a923-334d74bc8c9e
 langcode: en
 status: true
 dependencies:
@@ -8,7 +9,7 @@ id: paragraph.contact_card_listing.field_title
 field_name: field_title
 entity_type: paragraph
 bundle: contact_card_listing
-label: 'Title'
+label: Title
 description: ''
 required: false
 translatable: false

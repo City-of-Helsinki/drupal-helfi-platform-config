@@ -1,3 +1,4 @@
+uuid: 73a60294-5758-4ab6-804c-8cc3a22da0f6
 langcode: en
 status: true
 dependencies:
@@ -81,7 +82,7 @@ content:
     settings:
       rows: 5
       placeholder: ''
-    third_party_settings: { }
+    third_party_settings: {  }
   field_unit_search_meta_label:
     type: string_textfield
     weight: 4
