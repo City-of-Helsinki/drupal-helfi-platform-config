@@ -109,4 +109,28 @@ class ConfigurationTest extends ExistingSiteTestBase {
     }
   }
 
+  /**
+   * Makes sure configuration does not contain '_core' key.
+   */
+  public function testModuleCoreKey() : void {
+    $folder = $this->extensionList->getPath('helfi_platform_config');
+    $iterator = new \RecursiveIteratorIterator(
+      new \RecursiveDirectoryIterator($folder)
+    );
+    $yamlIterator = new \RegexIterator($iterator, '/.+\.yml$/i', \RegexIterator::GET_MATCH);
+
+    foreach ($yamlIterator as $item) {
+      if (!is_array($item)) {
+        continue;
+      }
+      $file = reset($item);
+
+      if (!str_contains($file, '/config/')) {
+        continue;
+      }
+      $content = Yaml::decode(file_get_contents($file));
+      $this->assertArrayNotHasKey('_core', $content, "[{$file}] has _core key");
+    }
+  }
+
 }
