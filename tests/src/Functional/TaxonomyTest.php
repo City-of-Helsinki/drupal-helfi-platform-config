@@ -13,7 +13,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
  *
  * @group helfi_platform_config
  */
-class TaxonomyTest extends FunctionalTestBase {
+class TaxonomyTest extends BrowserTestBase {
 
   /**
    * {@inheritdoc}

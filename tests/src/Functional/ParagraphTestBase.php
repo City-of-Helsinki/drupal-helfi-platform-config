@@ -7,7 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Functional;
 /**
  * Base test class for helfi platform browser tests.
  */
-abstract class ParagraphTestBase extends FunctionalTestBase {
+abstract class ParagraphTestBase extends BrowserTestBase {
 
   /**
    * The paragraph types to test.
