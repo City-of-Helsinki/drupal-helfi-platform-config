@@ -111,7 +111,8 @@ settings:
           search: '<a name="[^"]*">(.*?)<\/a>'
           replace: $1
     ckeditor5_sourceEditing:
-      allowed_tags: {  }
+      allowed_tags:
+        - '<chat-trigger data-chat-trigger>'
     helfi_ckeditor_helfi_link:
       helfi_link_attributes:
         - '<a data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank">'

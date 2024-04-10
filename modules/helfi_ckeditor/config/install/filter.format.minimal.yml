@@ -39,7 +39,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<br> <p> <span dir> <ul> <ol start> <li> <a href data-entity-type data-entity-uuid data-entity-substitution data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank"> <strong> <em>'
+      allowed_html: '<br> <chat-trigger data-chat-trigger> <p> <span dir> <ul> <ol start> <li> <a href data-entity-type data-entity-uuid data-entity-substitution data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank"> <strong> <em>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
