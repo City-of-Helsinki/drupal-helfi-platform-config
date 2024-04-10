@@ -39,7 +39,7 @@ class ConfigurationTest extends ExistingSiteTestBase {
     $this->extensionList = $this->container->get('extension.list.module');
     $this->typedConfigManager = $this->container->get('config.typed');
 
-    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleHandler */
+    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
     $moduleInstaller = $this->container->get('module_installer');
     // Make sure all submodules are enabled.
     $moduleInstaller->install($this->getSubModules());
