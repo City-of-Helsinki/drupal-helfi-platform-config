@@ -270,9 +270,9 @@ function helfi_ckeditor_update_9007(): void {
 }
 
 /**
- * UHF-9497 Added missing figcaption and figure elements.
+ * UHF-9497 Added chat-trigger element to ckeditor configurations.
  */
-function helfi_ckeditor_update_9008(): void {
+function helfi_ckeditor_update_9009(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_ckeditor');
 }
