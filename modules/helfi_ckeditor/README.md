@@ -31,7 +31,8 @@ Related files.
 ## Features
 
 ### Chat trigger
-Hel.fi CKEditor supports data-attribute for opening a chat from a button/link in content. To use this feature add  `<p data-chat-trigger="#trigger-listener">Open chat</p>` to CKEditor source.
+The Hel.fi CKEditor supports a data attribute for opening a chat from a button or link within content. To utilize this feature, add `<p data-chat-trigger="#trigger-listener">Open chat</p>` to the CKEditor source.
+
 
 ## Known issues
 
