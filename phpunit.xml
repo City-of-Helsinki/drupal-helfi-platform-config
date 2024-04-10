@@ -34,6 +34,9 @@
     <testsuite name="functional-javascript">
       <directory>./tests/src/FunctionalJavascript</directory>
     </testsuite>
+    <testsuite name="existing-site">
+      <directory>./tests/src/ExistingSite</directory>
+    </testsuite>
   </testsuites>
   <listeners>
     <listener class="\Drupal\Tests\Listeners\DrupalListener">
