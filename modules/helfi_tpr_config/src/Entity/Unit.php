@@ -28,7 +28,11 @@ class Unit extends BaseUnit {
       // to apply image styles later. This method is in a bundle class
       // so that helfi_tpr does not have to add dependency to
       // imagecache_external.
-      return $url ? imagecache_external_generate_path($url) : NULL;
+      if ($url) {
+        return imagecache_external_generate_path($url) ?: NULL;
+      }
+
+      return NULL;
     }
 
     if ($file = $picture_url->get('field_media_image')->entity) {
