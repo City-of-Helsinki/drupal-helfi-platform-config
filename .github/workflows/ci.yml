@@ -6,6 +6,7 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
+  SIMPLETEST_BASE_URL: http://app:8888
 jobs:
   tests:
     runs-on: ubuntu-latest
