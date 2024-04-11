@@ -249,21 +249,6 @@ function hdbt_admin_tools_get_page_entity(): ?EntityInterface {
   return NULL;
 }
 
-// @codingStandardsIgnoreStart
-/**
- * Gets the current page main entity.
- *
- * @deprecated in helfi_platform_config:3.0.0 and is removed from helfi_platform_config:3.2.0.
- *   Use hdbt_admin_tools_get_page_entity() instead.
- *
- * @return \Drupal\Core\Entity\EntityInterface
- *   Current page main entity.
- */
-function hdbt_content_get_page_entity(): ?EntityInterface {
-  return hdbt_admin_tools_get_page_entity();
-}
-// @codingStandardsIgnoreEnd
-
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -276,9 +261,11 @@ function hdbt_admin_tools_preprocess_page(&$variables): void {
 
     // Set has_hero variable according to field_has_hero and existence of
     // field_hero reference.
-    if ($entity->hasField('field_has_hero')) {
-      $variables['has_hero'] = $entity->get('field_has_hero')->value &&
-        !$entity->get('field_hero')->isEmpty();
+    if ($entity->hasField('field_hero')) {
+      $variables['has_hero'] = !$entity->get('field_hero')->isEmpty() && (
+        !$entity->hasField('field_has_hero') ||
+        $entity->get('field_has_hero')->value
+      );
     }
 
     // Handle sidebar visibility.
@@ -295,7 +282,6 @@ function hdbt_admin_tools_preprocess_page(&$variables): void {
  *   Content entity, like tpr_service, tpr_unit or node.
  */
 function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEntityInterface $entity): void {
-
   // The entities that need to be handled listed as content type => entity type.
   $allowed_entities = [
     'page' => 'node',
@@ -304,10 +290,12 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
     'tpr_service' => 'tpr_service',
   ];
 
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = Drupal::service('module_handler');
+
   // Trigger hook_sidebar_visibility_allowed_entities_alter().
   // Allow modules to alter the list of allowed entities.
-  \Drupal::service('module_handler')
-    ->alter('sidebar_visibility_allowed_entities', $allowed_entities);
+  $moduleHandler->alter('sidebar_visibility_allowed_entities', $allowed_entities);
 
   // Get possible (node) content type.
   $content_type = $entity instanceof NodeInterface ? $entity->getType() : FALSE;
@@ -322,6 +310,9 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
     return;
   }
 
+  $variables['has_sidebar_first'] = FALSE;
+  $variables['has_sidebar_second'] = FALSE;
+
   // Load menu links for the current page entity.
   $menu_link_manager = Drupal::service('plugin.manager.menu.link');
   $menu_links = $menu_link_manager->loadLinksByRoute(
@@ -329,9 +320,6 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
     [$entity->getEntityTypeId() => $entity->id()],
     'main'
   );
-
-  $variables['has_sidebar_first'] = FALSE;
-  $variables['has_sidebar_second'] = FALSE;
 
   // If there are links in current language, apply "has_sidebar_first" variable
   // to indicate twig templates how to render the sidebar.
@@ -385,24 +373,10 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
   if ($entity instanceof Service && !$entity->get('links')->isEmpty()) {
     $variables['has_sidebar_second'] = TRUE;
   }
-}
 
-// @codingStandardsIgnoreStart
-/**
- * Handle sidebar visibility based on current entity menu links.
- *
- * @deprecated in helfi_platform_config:3.0.0 and is removed from helfi_platform_config:3.2.0.
- *   Use hdbt_admin_tools_handle_sidebar_visibility() instead.
- *
- * @param array $variables
- *   Variables array.
- * @param \Drupal\Core\Entity\ContentEntityInterface $entity
- *   Content entity, like tpr_service, tpr_unit or node.
- */
-function _hdbt_content_handle_sidebar_visibility(array &$variables, ContentEntityInterface $entity): void {
-  hdbt_admin_tools_handle_sidebar_visibility($variables, $entity);
+  // Allow modules to override sidebar visibility.
+  $moduleHandler->alter('sidebar_visibility', $variables, $entity);
 }
-// @codingStandardsIgnoreEnd
 
 /**
  * Implements hook_preprocess_HOOK().
