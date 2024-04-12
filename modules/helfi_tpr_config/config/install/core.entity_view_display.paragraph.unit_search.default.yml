@@ -1,3 +1,4 @@
+uuid: d7872412-f067-47cd-ab33-60ccdaeb837d
 langcode: en
 status: true
 dependencies:
@@ -53,8 +54,8 @@ content:
   field_unit_search_meta_desc:
     type: basic_string
     label: above
-    settings: { }
-    third_party_settings: { }
+    settings: {  }
+    third_party_settings: {  }
     weight: 8
     region: content
   field_unit_search_meta_label:

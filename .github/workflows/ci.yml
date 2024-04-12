@@ -6,6 +6,7 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
+  SIMPLETEST_BASE_URL: http://app:8888
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -14,7 +15,7 @@ jobs:
         php-versions: ['8.1', '8.2', '8.3']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
-
+      options: --hostname app
     services:
       db:
         image: mysql:8
@@ -62,7 +63,7 @@ jobs:
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
           php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-          vendor/bin/drush en $MODULE_NAME -y
+          vendor/bin/drush en $MODULE_NAME helfi_platform_config_base -y
 
       - name: Run PHPCS
         working-directory: ${{ env.DRUPAL_ROOT }}
