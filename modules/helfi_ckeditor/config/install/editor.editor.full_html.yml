@@ -133,6 +133,7 @@ settings:
       allowed_tags:
         - '<figure tabindex>'
         - '<figcaption>'
+        - '<p data-chat-trigger>'
     helfi_ckeditor_helfi_link:
       helfi_link_attributes:
         - '<a data-hds-icon-start data-is-external data-protocol data-hds-component data-hds-variant rel target="_blank">'

@@ -28,6 +28,12 @@ Related files.
 - `package.json and package-lock.json` : Defines the node modules and scripts for compiling the theme.
 - `webpack.config.js` : Configuration file for the webpack-tool
 
+## Features
+
+### Chat trigger
+The Hel.fi CKEditor supports a data attribute for opening a chat from a button or link within content. To utilize this feature, add `<p data-chat-trigger="#trigger-listener">Open chat</p>` to the CKEditor source.
+
+
 ## Known issues
 
 ### My CKEditor plugin custom elements/attributes do not appear on the "Allowed HTML tags" list
