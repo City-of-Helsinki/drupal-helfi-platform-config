@@ -1,8 +1,8 @@
 diff --git a/src/Form/RevisionOverviewForm.php b/src/Form/RevisionOverviewForm.php
-index 45c2c66..4ff4f3b 100755
+index be03826..c62cd25 100755
 --- a/src/Form/RevisionOverviewForm.php
 +++ b/src/Form/RevisionOverviewForm.php
-@@ -209,7 +209,12 @@ class RevisionOverviewForm extends FormBase {
+@@ -217,7 +217,12 @@ class RevisionOverviewForm extends FormBase {
        }
        /** @var \Drupal\Core\Entity\ContentEntityInterface $revision */
        if ($revision = $node_storage->loadRevision($vid)) {
@@ -13,6 +13,6 @@ index 45c2c66..4ff4f3b 100755
 +          $revision->hasTranslation($langcode) && $revision->getTranslation($langcode)->isRevisionTranslationAffected() ||
 +          $key === 0 && $revision->hasTranslation($langcode)
 +        ) {
-           $username = array(
+           $username = [
              '#theme' => 'username',
              '#account' => $revision->getRevisionUser(),
