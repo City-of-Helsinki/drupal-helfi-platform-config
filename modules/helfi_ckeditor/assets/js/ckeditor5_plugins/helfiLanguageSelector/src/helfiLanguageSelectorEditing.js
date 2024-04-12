@@ -44,9 +44,9 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
       model: {
         key: 'helfiLanguageSelector',
         value: (viewElement) => {
-          const languageCode = viewElement.getAttribute('lang');
-          const textDirection = viewElement.getAttribute('dir');
-          return stringifyLanguageAttribute(languageCode, textDirection);
+          const languageCode = viewElement.getAttribute('lang') ?? '';
+          const textDirection = viewElement.getAttribute('dir') ?? '';
+          return stringifyLanguageAttribute(languageCode.toLowerCase(), textDirection.toLowerCase());
         }
       },
       view: {
