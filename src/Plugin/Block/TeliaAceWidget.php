@@ -26,15 +26,15 @@ class TeliaAceWidget extends BlockBase {
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => $this->t('Script URL'),
-      '#description' => $this->t('URL to the chat JS library without the domain, for example: /wds/instances/J5XKjqJt/ACEWebSDK.min.js'),
-      '#default_value' => $config['script_url'] ?? '/wds/instances/J5XKjqJt/ACEWebSDK.min.js',
+      '#description' => $this->t('URL to the chat JS library without the domain, for example: /wds/instances/J5XKjqJt/load_ace.js'),
+      '#default_value' => $config['script_url'] ?? '/wds/instances/J5XKjqJt/load_ace.js',
     ];
 
     $form['chat_id'] = [
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => $this->t('Chat Widget ID'),
-      '#description' => $this->t('ID for the chat instance. Example format: example-chat-fin'),
+      '#description' => $this->t('ID for the chat instance, without the humany_ prefix. This value can be translated. Example format: example-chat-fin'),
       '#default_value' => $config['chat_id'] ?? '',
     ];
 
@@ -89,6 +89,8 @@ class TeliaAceWidget extends BlockBase {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#attributes' => [
+          'role' => 'region',
+          'aria-label' => 'chat',
           'id' => $chat_id,
           'class' => [
             'hidden',
