@@ -6,6 +6,9 @@ dependencies:
   - default_content:default_content
   - helfi_platform_config_base:helfi_platform_config_base
   - helfi_tpr_config:helfi_tpr_config
+  - helfi_calculator:helfi_calculator
+  - helfi_toc:helfi_toc
+
 default_content:
   file:
     - e4073ee5-8925-4072-8783-58faa2cbf0c8
@@ -44,7 +47,6 @@ default_content:
     - ed3c3be5-c469-4eba-b6c1-f03d1643d9f2
   menu_link_content:
     - 0ff492a2-dbd5-4fee-8b99-107dd475eea8
-    - 1b2695dd-8b5f-4d48-a7c4-dba1b8522b9f
     - 1d7dcb8f-92a2-42e9-ab91-b531512a5481
     - 1e9220f9-207b-426f-8726-94349fdfaec7
     - 1eba96aa-0228-4e2a-a24f-a7b2d211401d
@@ -63,7 +65,6 @@ default_content:
     - 16d5a65e-6ab6-479b-b1ea-3e49d7b5a265
     - 16f9e218-550d-4e3e-b2d7-e9760deba7b8
     - 19dd2e39-77dd-49da-acc2-d2b2933cf2c5
-    - 24d1eb93-1aa4-4402-9970-609a25b61077
     - 28aae00c-3cdb-4088-b405-ea1353935d83
     - 33d12e8c-0f73-4b81-b395-65f72debc91b
     - 47d2419d-d4fa-405a-9e67-3e2ef6117913
