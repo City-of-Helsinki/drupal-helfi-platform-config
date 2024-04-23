@@ -83,8 +83,8 @@ final class News extends HelfiExternalEntityBase {
   public function query(
     array $parameters = [],
     array $sorts = [],
-          $start = NULL,
-          $length = NULL
+    $start = NULL,
+    $length = NULL,
   ) : array {
     $query = [
       // We only care about basic entity data here.

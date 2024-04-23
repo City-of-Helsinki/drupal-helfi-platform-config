@@ -74,7 +74,7 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
     RouteMatchInterface $route_match,
     EntityTypeManagerInterface $entity_type_manager,
     LanguageManagerInterface $language_manager,
-    DefaultLanguageResolver $default_language_resolver
+    DefaultLanguageResolver $default_language_resolver,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
@@ -149,7 +149,7 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
     // Sort by type/severity.
     usort($announcements, function (
       EntityInterface $a,
-      EntityInterface $b
+      EntityInterface $b,
     ) use ($announcementTypeWeights) {
       $weightA = $announcementTypeWeights[$a->get('field_announcement_type')->value];
       $weightB = $announcementTypeWeights[$b->get('field_announcement_type')->value];

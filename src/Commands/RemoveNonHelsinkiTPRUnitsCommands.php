@@ -26,7 +26,7 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
    */
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
-    protected ContentLock $contentLock
+    protected ContentLock $contentLock,
   ) {}
 
   /**

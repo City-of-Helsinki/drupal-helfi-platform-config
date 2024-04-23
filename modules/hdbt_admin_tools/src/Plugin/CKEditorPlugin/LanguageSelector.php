@@ -54,7 +54,7 @@ final class LanguageSelector extends CKEditorPluginBase implements ContainerFact
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : self {
     return new self(
       $configuration,

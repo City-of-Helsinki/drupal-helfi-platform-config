@@ -44,7 +44,7 @@ function helfi_platform_config_modules_installed(array $modules, bool $is_syncin
  * Implements hook_ENTITY_TYPE_presave().
  */
 function helfi_platform_config_base_field_override_presave(
- FieldConfigBase $field
+  FieldConfigBase $field,
 ) : void {
   if ($field->get('entity_type') !== 'paragraphs_library_item') {
     return;
@@ -56,7 +56,7 @@ function helfi_platform_config_base_field_override_presave(
  * Implements hook_ENTITY_TYPE_presave().
  */
 function helfi_platform_config_field_config_presave(
-  FieldConfigBase $field
+  FieldConfigBase $field,
 ) : void {
   helfi_platform_config_rebuild_handler_settings($field);
 }
@@ -68,7 +68,7 @@ function helfi_platform_config_field_config_presave(
  *   Base field override or field config.
  */
 function helfi_platform_config_rebuild_handler_settings(
-  FieldConfigBase $field
+  FieldConfigBase $field,
 ): void {
   if (
     \Drupal::isConfigSyncing() ||
@@ -333,7 +333,7 @@ function helfi_platform_config_remove_permissions_from_all_roles(array $permissi
 function helfi_platform_config_system_breadcrumb_alter(
   Breadcrumb &$breadcrumb,
   RouteMatchInterface $route_match,
-  array $context
+  array $context,
 ) : void {
   // Skip admin routes.
   if ($route_match->getRouteObject()?->getOption('_admin_route')) {

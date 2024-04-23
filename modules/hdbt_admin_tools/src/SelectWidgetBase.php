@@ -29,7 +29,7 @@ abstract class SelectWidgetBase extends OptionsSelectWidget {
     FieldDefinitionInterface $field_definition,
     array $settings,
     array $third_party_settings,
-    DesignSelectionManager $design_selection_manager
+    DesignSelectionManager $design_selection_manager,
   ) {
     parent::__construct(
       $plugin_id,
@@ -48,7 +48,7 @@ abstract class SelectWidgetBase extends OptionsSelectWidget {
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ): static {
     return new static(
       $plugin_id,
@@ -80,7 +80,7 @@ abstract class SelectWidgetBase extends OptionsSelectWidget {
    */
   public static function validateElement(
     array $element,
-    FormStateInterface $form_state
+    FormStateInterface $form_state,
   ): void {
 
     // Massage submitted form values.

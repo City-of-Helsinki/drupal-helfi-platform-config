@@ -73,7 +73,7 @@ final class Announcements extends ExternalEntityStorageClientBase {
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
@@ -138,8 +138,8 @@ final class Announcements extends ExternalEntityStorageClientBase {
   public function query(
     array $parameters = [],
     array $sorts = [],
-          $start = NULL,
-          $length = NULL
+    $start = NULL,
+    $length = NULL,
   ) : array {
     $query = [
       'fields[node--announcements]' => 'id',

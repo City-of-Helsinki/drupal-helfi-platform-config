@@ -36,7 +36,7 @@ class LinkedEvents extends EventsApiBase {
     private CacheBackendInterface $dataCache,
     private ClientInterface $httpClient,
     private LoggerInterface $logger,
-    private LanguageManagerInterface $languageManager
+    private LanguageManagerInterface $languageManager,
   ) {}
 
   /**

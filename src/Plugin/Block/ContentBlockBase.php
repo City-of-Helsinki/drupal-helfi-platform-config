@@ -38,7 +38,7 @@ class ContentBlockBase extends BlockBase implements ContainerFactoryPluginInterf
     $plugin_id,
     $plugin_definition,
     EntityTypeManagerInterface $entity_type_manager,
-    EntityVersionMatcher $entity_version_matcher
+    EntityVersionMatcher $entity_version_matcher,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
@@ -52,7 +52,7 @@ class ContentBlockBase extends BlockBase implements ContainerFactoryPluginInterf
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : static {
     return new static(
       $configuration,
