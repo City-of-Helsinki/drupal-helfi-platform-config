@@ -1,0 +1,256 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 71f2f450-3978-4cc5-9cee-040a02aa7e0b
+  bundle: landing_page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: Gold'
+  created:
+    -
+      value: 1713850595
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  color_palette:
+    -
+      value: gold
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-colors/dc-gold
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1713851585
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 0ef16c8a-98d4-48ba-839d-a17dbb23891d
+          bundle: banner
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1713851268
+          behavior_settings:
+            -
+              value: {  }
+          field_banner_desc:
+            -
+              value: '<p>Ut leo. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Praesent adipiscing. Fusce egestas elit eget lorem. In ut quam vitae odio lacinia tincidunt.</p>'
+              format: full_html
+          field_banner_design:
+            -
+              value: align-left
+          field_banner_link:
+            -
+              uri: 'https://hel.fi'
+              title: 'Phasellus volutpat metus eget'
+              options:
+                target_new: 0
+                target_check: 0
+                icon: eye
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus'
+          field_icon:
+            -
+              icon: check-circle
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 98db50db-471d-4a0e-aeca-bbb85064a4f4
+          bundle: banner
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1713851268
+          behavior_settings:
+            -
+              value: {  }
+          field_banner_desc:
+            -
+              value: '<p>Ut leo. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Praesent adipiscing. Fusce egestas elit eget lorem. In ut quam vitae odio lacinia tincidunt.</p>'
+              format: full_html
+          field_banner_design:
+            -
+              value: align-left-secondary
+          field_banner_link:
+            -
+              uri: 'https://hel.fi'
+              title: 'Phasellus volutpat metus eget'
+              options:
+                target_new: 0
+                target_check: 0
+                icon: eye
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus'
+          field_icon:
+            -
+              icon: check-circle
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7c13150a-29fe-4023-b3d5-e6f32f5b2ee3
+          bundle: columns
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1713852475
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_columns_design:
+            -
+              value: 50-50
+          field_columns_left_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: b65c52c1-63df-4ae7-9690-13db2c945f0d
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1713852515
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: '<blockquote data-helfi-quote=""><p data-helfi-quote-text="">Nunc nec neque. Praesent nec nisl a purus blandit viverra. Pellentesque habitant morbi tristique senectus.</p><footer data-helfi-quote-author=""><cite>Mauris sollicitudin</cite></footer></blockquote>'
+                      format: full_html
+          field_columns_right_column:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 4d5403f9-3cf1-4743-a69a-35130ef6799f
+                  bundle: text
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1713852517
+                  behavior_settings:
+                    -
+                      value: {  }
+                  revision_translation_affected:
+                    -
+                      value: true
+                  field_text:
+                    -
+                      value: '<p><a href="https://www.hel.fi" data-hds-icon-start="eye" data-hds-component="button">https://www.hel.fi</a></p><p><a href="https://www.hel.fi" data-hds-icon-start="eye" data-hds-variant="secondary" data-hds-component="button">https://www.hel.fi</a></p>'
+                      format: full_html
+          field_columns_title:
+            -
+              value: 'Lorem ipsum dolor sit'
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 4f9b3e0e-1398-44ec-9618-e3c5b35142c2
+          bundle: hero
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1713850763
+          behavior_settings:
+            -
+              value: {  }
+          field_hero_desc:
+            -
+              value: '<p>Nulla porttitor accumsan tincidunt. Nulla porttitor accumsan tincidunt.</p><p>Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</p>'
+              format: full_html
+          field_hero_design:
+            -
+              value: without-image-left
+          field_hero_link_design:
+            -
+              value: primary
+          field_hero_title:
+            -
+              value: 'DC: Gold'
