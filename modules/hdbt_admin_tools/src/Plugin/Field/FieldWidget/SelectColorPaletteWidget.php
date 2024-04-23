@@ -30,7 +30,7 @@ class SelectColorPaletteWidget extends SelectWidgetBase {
     $delta,
     array $element,
     array &$form,
-    FormStateInterface $form_state
+    FormStateInterface $form_state,
   ): array {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 

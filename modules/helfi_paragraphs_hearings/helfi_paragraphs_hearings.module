@@ -38,7 +38,7 @@ function helfi_paragraphs_hearings_paragraph_view(
   array &$build,
   ParagraphInterface $entity,
   EntityViewDisplayInterface $display,
-  string $view_mode
+  string $view_mode,
 ) : void {
   if ($entity->bundle() !== 'hearings') {
     return;
@@ -85,7 +85,7 @@ function helfi_paragraphs_hearings_helfi_paragraph_types() : array {
 function helfi_paragraphs_hearings_entity_bundle_field_info_alter(
   &$fields,
   EntityTypeInterface $entity_type,
-  $bundle
+  $bundle,
 ) : void {
   if ($entity_type->id() === 'helfi_hearings') {
 

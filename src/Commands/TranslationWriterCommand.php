@@ -36,7 +36,7 @@ class TranslationWriterCommand extends DrushCommands {
     protected LanguageManager $languageManager,
     protected TranslationManager $translationManager,
     protected FileSystemInterface $fileSystem,
-    protected ExtensionPathResolver $extensionPathResolver
+    protected ExtensionPathResolver $extensionPathResolver,
   ) {
   }
 

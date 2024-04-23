@@ -22,7 +22,8 @@ class DesignSelectionManager {
    */
   public function __construct(
     protected ModuleHandlerInterface $moduleHandler,
-    protected FileUrlGeneratorInterface $fileUrlGenerator) {
+    protected FileUrlGeneratorInterface $fileUrlGenerator,
+  ) {
   }
 
   /**

@@ -265,7 +265,7 @@ class SiteSettings extends ConfigFormBase {
   protected function saveConfiguration(
     string $setting,
     FormStateInterface $form_state,
-    LanguageInterface $language
+    LanguageInterface $language,
   ): void {
 
     // Check whether the handled language is site default language and

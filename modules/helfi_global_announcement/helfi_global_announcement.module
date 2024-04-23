@@ -67,7 +67,7 @@ function helfi_global_announcement_get_block_configurations(string $theme) : arr
  */
 function helfi_global_announcement_entity_bundle_field_info_alter(
   &$fields,
-  EntityTypeInterface $entity_type
+  EntityTypeInterface $entity_type,
 ) : void {
   if ($entity_type->id() === 'helfi_announcements') {
 

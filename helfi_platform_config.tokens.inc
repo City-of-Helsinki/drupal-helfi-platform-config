@@ -48,7 +48,7 @@ function helfi_platform_config_tokens(
   $tokens,
   array $data,
   array $options,
-  BubbleableMetadata $bubbleable_metadata
+  BubbleableMetadata $bubbleable_metadata,
 ) : array {
   $replacements = [];
 

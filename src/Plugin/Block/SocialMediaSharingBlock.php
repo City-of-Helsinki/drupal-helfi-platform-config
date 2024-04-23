@@ -44,7 +44,7 @@ class SocialMediaSharingBlock extends SocialSharingBlock {
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ): static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->fileUrlGenerator = $container->get('file_url_generator');
