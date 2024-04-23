@@ -26,18 +26,23 @@
   <testsuites>
     <testsuite name="unit">
       <directory>./tests/src/Unit</directory>
+      <directory>./modules/*/tests/src/Unit</directory>
     </testsuite>
     <testsuite name="existing-site">
       <directory>./tests/src/ExistingSite</directory>
+      <directory>./modules/*/tests/src/ExistingSite</directory>
     </testsuite>
     <testsuite name="kernel">
       <directory>./tests/src/Kernel</directory>
+      <directory>./modules/*/tests/src/Kernel</directory>
     </testsuite>
     <testsuite name="functional">
       <directory>./tests/src/Functional</directory>
+      <directory>./modules/*/tests/src/Functional</directory>
     </testsuite>
     <testsuite name="functional-javascript">
       <directory>./tests/src/FunctionalJavascript</directory>
+      <directory>./modules/*/tests/src/FunctionalJavascript</directory>
     </testsuite>
   </testsuites>
   <listeners>
