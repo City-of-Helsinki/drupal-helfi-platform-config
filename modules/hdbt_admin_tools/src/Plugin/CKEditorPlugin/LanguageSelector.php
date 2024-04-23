@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Drupal\hdbt_admin_tools\Plugin\CKEditorPlugin;
 
 use Drupal\ckeditor\CKEditorPluginBase;
-use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\editor\Entity\Editor;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines the "language_selector" plugin.
@@ -27,42 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class LanguageSelector extends CKEditorPluginBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * Extension path resolver.
-   *
-   * @var \Drupal\Core\Extension\ExtensionPathResolver
-   */
-  protected ExtensionPathResolver $extensionPathResolver;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    ExtensionPathResolver $extension_path_resolver,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->extensionPathResolver = $extension_path_resolver;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(
-    ContainerInterface $container,
-    array $configuration,
-    $plugin_id,
-    $plugin_definition
-  ) : self {
-    return new self(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('extension.path.resolver'),
-    );
-  }
+  use CKEditorPluginTrait;
 
   /**
    * {@inheritdoc}
@@ -87,20 +50,6 @@ final class LanguageSelector extends CKEditorPluginBase implements ContainerFact
     return $this->extensionPathResolver
       ->getPath('module', 'hdbt_admin_tools') .
       '/assets/js/plugins/language_selector/plugin.js';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isInternal(): bool {
-    return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDependencies(Editor $editor): array {
-    return [];
   }
 
   /**

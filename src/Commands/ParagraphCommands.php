@@ -57,11 +57,13 @@ final class ParagraphCommands extends DrushCommands {
    *
    * @command helfi:scan-paragraph-fields
    */
-  public function scan($options = [
-    'format' => 'table',
-    'fix' => FALSE,
-    'ids' => '',
-  ]) : RowsOfFields {
+  public function scan(
+    $options = [
+      'format' => 'table',
+      'fix' => FALSE,
+      'ids' => '',
+    ],
+  ) : RowsOfFields {
     $values = $this->connection->select('paragraphs_item_field_data', 'p')
       ->fields('p')
       ->execute();

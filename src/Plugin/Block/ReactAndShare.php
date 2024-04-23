@@ -32,7 +32,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     assert($container->get('language_manager') instanceof ConfigurableLanguageManagerInterface);

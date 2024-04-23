@@ -41,7 +41,7 @@ function helfi_paragraphs_news_list_paragraph_view(
   array &$build,
   ParagraphInterface $entity,
   EntityViewDisplayInterface $display,
-  string $view_mode
+  string $view_mode,
 ) : void {
   if (!$entity instanceof NewsFeedParagraph) {
     return;
@@ -86,7 +86,7 @@ function helfi_paragraphs_news_list_paragraph_view(
 function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
   &$fields,
   EntityTypeInterface $entity_type,
-  $bundle
+  $bundle,
 ) : void {
   if ($entity_type->id() === 'helfi_news') {
     $fields['main_image'] = BundleFieldDefinition::create('link')

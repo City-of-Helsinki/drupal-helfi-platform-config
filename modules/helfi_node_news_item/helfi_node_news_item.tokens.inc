@@ -27,7 +27,7 @@ function helfi_node_news_item_tokens(
   $tokens,
   array $data,
   array $options,
-  BubbleableMetadata $bubbleable_metadata
+  BubbleableMetadata $bubbleable_metadata,
 ): array {
   $replacements = [];
 

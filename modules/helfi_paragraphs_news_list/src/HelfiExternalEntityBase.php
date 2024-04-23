@@ -80,7 +80,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
@@ -166,7 +166,7 @@ abstract class HelfiExternalEntityBase extends ExternalEntityStorageClientBase {
     array $parameters = [],
     array $sorts = [],
     $start = NULL,
-    $length = NULL
+    $length = NULL,
   ) : array {
     $prepared = [];
 

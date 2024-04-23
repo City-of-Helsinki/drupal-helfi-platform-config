@@ -18,7 +18,7 @@ final class ConfigRewriter extends ConfigRewriterBase {
     $original_config,
     $rewrite,
     $config_name,
-    $extensionName
+    $extensionName,
   ) : array {
     $rewritten_config = parent::rewriteConfig($original_config, $rewrite, $config_name, $extensionName);
 
