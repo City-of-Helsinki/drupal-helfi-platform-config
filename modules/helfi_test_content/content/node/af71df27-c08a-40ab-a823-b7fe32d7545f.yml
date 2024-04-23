@@ -45,7 +45,7 @@ default:
     -
       alias: /dc-colors/dc-metro
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und
