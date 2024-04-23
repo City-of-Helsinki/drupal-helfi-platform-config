@@ -31,7 +31,7 @@ default:
       value: true
   color_palette:
     -
-      value: engel
+      value: coat-of-arms
   hide_sidebar_navigation:
     -
       value: false
