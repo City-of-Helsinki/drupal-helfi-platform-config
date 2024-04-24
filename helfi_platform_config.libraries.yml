@@ -70,14 +70,14 @@ user_consent_functions:
     - core/drupal
 
 telia_ace_widget_loadjs:
-  version: 1.0.x
+  version: 1.0.1
   css:
     theme:
       assets/css/telia_ace.css: {}
   js:
     'https://wds.ace.teliacompany.com/wds/instances/J5XKjqJt/load_ace.js': {
       type: external,
-      minified: true,
+      minified: false,
       attributes: {
         defer: true
       }

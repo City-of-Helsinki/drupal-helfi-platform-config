@@ -53,7 +53,7 @@ class TeliaAceWidget extends BlockBase {
       'library' => ['helfi_platform_config/telia_ace_widget_loadjs'],
     ];
 
-    $build['ibm_chat_app'] = [
+    $build['telia_chat_widget'] = [
       'button' => [
         '#type' => 'html_tag',
         '#tag' => 'div',
