@@ -69,15 +69,6 @@ user_consent_functions:
   dependencies:
     - core/drupal
 
-telia_ace_widget:
-  version: 1.0.x
-  header: true
-  css:
-    theme:
-      assets/css/telia_ace.css: {}
-  dependencies:
-    - helfi_platform_config/user_consent_functions
-
 telia_ace_widget_loadjs:
   version: 1.0.x
   css:
@@ -87,7 +78,9 @@ telia_ace_widget_loadjs:
     'https://wds.ace.teliacompany.com/wds/instances/J5XKjqJt/load_ace.js': {
       type: external,
       minified: true,
-      attributes: { defer: true }
+      attributes: {
+        defer: true
+      }
     }
   dependencies:
     - helfi_platform_config/user_consent_functions
