@@ -4,28 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list\Entity;
 
-use Drupal\Core\Field\Plugin\Field\FieldType\StringItem;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Bundle class for 'news_list' paragraph.
  */
 final class NewsFeedParagraph extends Paragraph {
-
-  /**
-   * A helper function to get multifield values.
-   *
-   * @param string $field
-   *   The field name.
-   *
-   * @return array
-   *   The term field values.
-   */
-  private function getUnlimitedStringFieldValue(string $field) : array {
-    return array_map(function (StringItem $value) {
-      return $value->value;
-    }, iterator_to_array($this->get($field)));
-  }
 
   /**
    * Gets the defined tags.
