@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: a6f41eef-c991-4678-a090-fe3336adca2f
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3c56ca29-3aae-481d-9649-91e4150c889a: menu_link_content
+    5d225b0a-9175-4a0f-8613-fd2b62bf8041: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Engel'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 5d225b0a-9175-4a0f-8613-fd2b62bf8041
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3c56ca29-3aae-481d-9649-91e4150c889a'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1713851586

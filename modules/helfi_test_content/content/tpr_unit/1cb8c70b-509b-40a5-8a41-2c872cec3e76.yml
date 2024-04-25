@@ -58,6 +58,12 @@ default:
   hide_sidebar_navigation:
     -
       value: true
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
   path:
     -
       alias: /dc-layouts/dc-tpr-unit/dc-tpr-unit-no-subnav

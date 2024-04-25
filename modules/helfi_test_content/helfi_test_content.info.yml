@@ -4,8 +4,11 @@ core_version_requirement: ^9 || ^10
 package: HELfi
 dependencies:
   - default_content:default_content
-  - helfi_platform_config_base:helfi_platform_config_base
-  - helfi_tpr_config:helfi_tpr_config
+  - helfi_platform_config:helfi_calculator
+  - helfi_platform_config:helfi_paragraphs_news_list
+  - helfi_platform_config:helfi_platform_config_base
+  - helfi_platform_config:helfi_toc
+  - helfi_platform_config:helfi_tpr_config
 default_content:
   file:
     - e4073ee5-8925-4072-8783-58faa2cbf0c8
@@ -44,7 +47,6 @@ default_content:
     - ed3c3be5-c469-4eba-b6c1-f03d1643d9f2
   menu_link_content:
     - 0ff492a2-dbd5-4fee-8b99-107dd475eea8
-    - 1b2695dd-8b5f-4d48-a7c4-dba1b8522b9f
     - 1d7dcb8f-92a2-42e9-ab91-b531512a5481
     - 1e9220f9-207b-426f-8726-94349fdfaec7
     - 1eba96aa-0228-4e2a-a24f-a7b2d211401d
@@ -63,7 +65,6 @@ default_content:
     - 16d5a65e-6ab6-479b-b1ea-3e49d7b5a265
     - 16f9e218-550d-4e3e-b2d7-e9760deba7b8
     - 19dd2e39-77dd-49da-acc2-d2b2933cf2c5
-    - 24d1eb93-1aa4-4402-9970-609a25b61077
     - 28aae00c-3cdb-4088-b405-ea1353935d83
     - 33d12e8c-0f73-4b81-b395-65f72debc91b
     - 47d2419d-d4fa-405a-9e67-3e2ef6117913
@@ -109,6 +110,17 @@ default_content:
     - f25609d9-965f-4568-9bae-6e0c1ebe2c9c
     - a7d6db51-3f65-4e66-aa8c-10e77335cfdc
     - 294f1646-abbf-40ed-902e-cd4bd2f3d942
+    - 1fe79d58-d1cb-4360-9223-525aa3aee1bd
+    - 2cdbd1a0-2024-4b2c-96ba-a1e63465fa75
+    - 3c56ca29-3aae-481d-9649-91e4150c889a
+    - 7a293fcd-f3e1-4572-8dcf-0a33873293d8
+    - 39a2de83-4f63-442f-8ec5-7ab5ff914c65
+    - 316c043e-dc05-4788-9285-ad61761e4010
+    - a6f41eef-c991-4678-a090-fe3336adca2f
+    - a07b9e99-47d0-4283-82fd-e7c74a8ed711
+    - bab5cf97-5e6a-440b-899d-7b8f8e9e33b6
+    - d71f793a-23e0-42d9-aca6-2b49d675a88e
+    - ee9d7380-b0d1-4851-9fa6-878a78c15eba
   node:
     - 1a89e8f5-03d5-440c-a8ba-a09b460f2ad2
     - 3a8dd5fc-a5aa-4976-9ec0-3432d9984c6e
@@ -166,6 +178,18 @@ default_content:
     - 7f858af6-74b2-4abf-8700-c1473dce1bfa
     - 35a89867-7755-42e2-9eee-59929397d151
     - 5d3c9090-e6f8-499e-a156-c224e8138fe9
+    - 7f832d91-3810-47a9-856c-b90891d9971c
+    - 50c4a5e0-ae03-4e77-9a0c-e44c4d5e54bc
+    - 137b80ce-a399-46b4-a51e-d1dd4aa18d41
+    - da52e669-322f-4f90-97c1-dfb942a6907c
+    - 5d225b0a-9175-4a0f-8613-fd2b62bf8041
+    - 67fd12d4-b9b4-4112-aa9a-ebf4d83bad44
+    - 71f2f450-3978-4cc5-9cee-040a02aa7e0b
+    - 827c99e2-f2f8-4e05-985f-6d49018fe4a0
+    - 6161d9c4-1c5b-4183-bf29-a47c1b84b7d3
+    - 7855fef6-03cf-4264-991b-e2a89bac14d2
+    - af71df27-c08a-40ab-a823-b7fe32d7545f
+    - f65e4772-0571-4f6b-87cb-db1f83594dd6
   tpr_service:
     - 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c
     - 0cadef9b-6538-4e1e-9b3a-35fc895948fb

@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: d71f793a-23e0-42d9-aca6-2b49d675a88e
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3c56ca29-3aae-481d-9649-91e4150c889a: menu_link_content
+    da52e669-322f-4f90-97c1-dfb942a6907c: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Bus'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: da52e669-322f-4f90-97c1-dfb942a6907c
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3c56ca29-3aae-481d-9649-91e4150c889a'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1713851579
