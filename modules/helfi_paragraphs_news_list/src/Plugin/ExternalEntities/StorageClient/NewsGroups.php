@@ -14,4 +14,10 @@ namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClien
  * )
  */
 final class NewsGroups extends TermBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected string $vid = 'news_group';
+
 }

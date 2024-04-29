@@ -32,21 +32,21 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
    *
    * @var \Elasticsearch\Client
    */
-  protected Client $client;
+  protected readonly Client $client;
 
   /**
    * The config factory service.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected ConfigFactoryInterface $configFactory;
+  protected readonly ConfigFactoryInterface $configFactory;
 
   /**
    * The logger.
    *
    * @var \Psr\Log\LoggerInterface
    */
-  protected LoggerInterface $logger;
+  protected readonly LoggerInterface $logger;
 
   /**
    * {@inheritdoc}
@@ -124,7 +124,7 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
         'query' => [
           'bool' => [
             'filter' => [
-              'terms' => ['uuid_langcode' => $ids],
+              'terms' => ['uuid_langcode' => array_values($ids)],
             ],
           ],
         ],
@@ -182,16 +182,17 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
       if (strtolower($op) === 'contains') {
         assert(is_string($value));
 
-        $query['regexp'][$fieldName] = [
+        $query['bool']['must'][]['regexp'][$fieldName] = [
           'value' => $value . '.*',
           'case_insensitive' => TRUE,
         ];
       }
       else {
-        if (!is_array($value)) {
-          $value = [$value];
+        $value = is_array($value) ? $value : [$value];
+
+        foreach ($value as $v) {
+          $query['bool']['must'][]['term'][$fieldName] = $v;
         }
-        $query['bool']['filter']['terms'][$fieldName] = $value;
       }
     }
 

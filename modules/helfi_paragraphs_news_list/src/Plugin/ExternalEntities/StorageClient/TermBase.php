@@ -19,6 +19,23 @@ abstract class TermBase extends ElasticExternalEntityBase {
   protected string $index = 'news_terms';
 
   /**
+   * The term vocabulary.
+   *
+   * @var string
+   */
+  protected string $vid;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildQuery(array $parameters, array $sorts) : array {
+    $query = parent::buildQuery($parameters, $sorts);
+    $query['body']['query']['bool']['must'][]['term']['vid'] = $this->vid;
+
+    return $query;
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function getFieldMapping(string $field) : string {

@@ -204,13 +204,12 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
  * Implements hook_preprocess_HOOK().
  */
 function helfi_paragraphs_news_list_preprocess_external_entity__helfi_news__medium_teaser(&$variables) : void {
-  /** @var \Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News $entity */
-  $entity = $variables['external_entity'];
-  if ($entity->getEntityType()->id() !== 'helfi_news') {
+  if (!$variables['external_entity'] instanceof News) {
     return;
   }
+  $entity = $variables['external_entity'];
 
   $variables['node_url'] = $entity->getNodeUrl();
   $variables['published_at'] = $entity->getPublishedAt();
-  $variables['short_title'] = $entity->short_title->value ?: $entity->title->value;
+  $variables['short_title'] = $entity->getShortTitle() ?: $entity->label();
 }

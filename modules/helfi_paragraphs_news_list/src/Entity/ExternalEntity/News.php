@@ -16,7 +16,7 @@ final class News extends ExternalEntity {
     return $this->get('node_url')->value;
   }
 
-  public function getShortTitle() : string {
+  public function getShortTitle() : ?string {
     return $this->get('short_title')->value;
   }
 
