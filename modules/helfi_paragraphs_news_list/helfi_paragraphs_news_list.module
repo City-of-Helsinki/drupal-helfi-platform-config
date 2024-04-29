@@ -54,23 +54,23 @@ function helfi_paragraphs_news_list_paragraph_view(
     $query = $storage
       ->getQuery();
     $query
-      ->condition('langcode', $entity->language()->getId())
+      ->condition('_language', $entity->language()->getId())
       ->range(0, $entity->getLimit());
 
     $termFilters = [
-      'tags' => $entity->getTags(),
+      'news_tags' => $entity->getTags(),
       'groups' => $entity->getGroups(),
       'neighbourhoods' => $entity->getNeighbourhoods(),
     ];
     foreach ($termFilters as $name => $value) {
-      $query->condition($name, $value, 'IN');
+      $query->condition($name, $value);
     }
-
     $query->sort('published_at', 'DESC');
+
     $query->accessCheck(FALSE);
 
     $ids = $query->execute();
-    $entities = $storage->loadMultiple(array_keys($ids));
+    $entities = $storage->loadMultiple($ids);
 
     foreach ($entities as $item) {
       $item->addCacheableDependency($entity);
@@ -91,16 +91,6 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
   $bundle,
 ) : void {
   if ($entity_type->id() === 'helfi_news') {
-    $fields['main_image'] = BundleFieldDefinition::create('link')
-      ->setName('main_image')
-      ->setLabel(new TranslatableMarkup('Main image'))
-      ->setTargetEntityTypeId($entity_type->id())
-      ->setTargetBundle($bundle)
-      ->setSettings([
-        'max_length' => 1024,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
     $termFields = [
       'tags' => new TranslatableMarkup('Tags'),
       'groups' => new TranslatableMarkup('Groups'),

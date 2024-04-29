@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\helfi_paragraphs_news_list\HelfiExternalEntityBase;
+use Drupal\helfi_paragraphs_news_list\ElasticExternalEntityBase;
 
 /**
  * External entity storage client for News groups taxonomy terms.
@@ -15,7 +15,7 @@ use Drupal\helfi_paragraphs_news_list\HelfiExternalEntityBase;
  *   description = @Translation("Retrieves news groups taxonomy terms from Helfi")
  * )
  */
-final class NewsGroups extends HelfiExternalEntityBase {
+final class NewsGroups extends ElasticExternalEntityBase {
 
   /**
    * Query parameters.
@@ -31,6 +31,6 @@ final class NewsGroups extends HelfiExternalEntityBase {
    *
    * @var string
    */
-  protected string $endpoint = '/jsonapi/taxonomy_term/news_group';
+  protected string $index = '/jsonapi/taxonomy_term/news_group';
 
 }
