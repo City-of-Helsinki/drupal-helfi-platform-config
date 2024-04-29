@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -90,6 +91,7 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
   EntityTypeInterface $entity_type,
   $bundle,
 ) : void {
+
   if ($entity_type->id() === 'helfi_news') {
     $termFields = [
       'tags' => new TranslatableMarkup('Tags'),
@@ -134,6 +136,10 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
 function helfi_paragraphs_news_list_entity_bundle_info_alter(array &$bundles) : void {
   if (isset($bundles['paragraph']['news_list'])) {
     $bundles['paragraph']['news_list']['class'] = NewsFeedParagraph::class;
+  }
+
+  if (isset($bundles['helfi_news']['helfi_news'])) {
+    $bundles['helfi_news']['helfi_news']['class'] = News::class;
   }
 }
 
@@ -198,29 +204,13 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
  * Implements hook_preprocess_HOOK().
  */
 function helfi_paragraphs_news_list_preprocess_external_entity__helfi_news__medium_teaser(&$variables) : void {
+  /** @var \Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News $entity */
   $entity = $variables['external_entity'];
   if ($entity->getEntityType()->id() !== 'helfi_news') {
     return;
   }
 
-  $language = \Drupal::languageManager()
-    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-    ->getId();
-
-  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $resolver */
-  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
-
-  try {
-      $environment = $resolver->getActiveEnvironmentName();
-  }
-  catch (\InvalidArgumentException) {
-    $environment = EnvironmentEnum::Prod->value;
-  }
-  $environment_url = $resolver
-    ->getEnvironment(Project::ETUSIVU, $environment)
-    ->getUrl($language);
-
-  $variables['node_url'] = $environment_url . $entity->node_url->value;
-  $variables['published_at'] = strtotime($entity->published_at->value);
+  $variables['node_url'] = $entity->getNodeUrl();
+  $variables['published_at'] = $entity->getPublishedAt();
   $variables['short_title'] = $entity->short_title->value ?: $entity->title->value;
 }

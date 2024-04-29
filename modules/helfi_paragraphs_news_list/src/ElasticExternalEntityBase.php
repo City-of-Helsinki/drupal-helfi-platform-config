@@ -5,12 +5,13 @@ namespace Drupal\helfi_paragraphs_news_list;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Utility\Error;
-use Drupal\elasticsearch_connector\Exception\ElasticSearchConnectorException;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
-use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ServiceEnum;
+use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
+use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -27,11 +28,11 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   protected string $index;
 
   /**
-   * The active endpoint environment.
+   * The elastic client.
    *
-   * @var \Drupal\helfi_api_base\Environment\Environment|null
+   * @var \Elasticsearch\Client
    */
-  private ?Environment $environment = NULL;
+  protected Client $client;
 
   /**
    * The config factory service.
@@ -62,8 +63,14 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
 
     try {
-      $instance->environment = $environmentResolver
-        ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+      $service = $environmentResolver
+        ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName())
+        ->getService(ServiceEnum::ElasticProxy)
+        ->address
+        ->getAddress();
+      $instance->client = ClientBuilder::create()
+        ->setHosts([$service])
+        ->build();
     }
     catch (\InvalidArgumentException) {
     }
@@ -98,17 +105,10 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   protected function request(
     array $parameters,
   ) : array {
-    if (!$this->environment) {
-      return [];
-    }
     try {
-      $client = ClientBuilder::create()
-        ->setHosts([$this->environment->getService('elastic-proxy')->address->getAddress()])
-        ->build();
-
-      return $client->search($parameters);
+      return $this->client->search($parameters);
     }
-    catch (ElasticSearchConnectorException $e) {
+    catch (ElasticsearchException $e) {
       Error::logException($this->logger, $e);
     }
     return [];
@@ -120,22 +120,96 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   public function loadMultiple(array $ids = NULL) : array {
     $data = $this->request([
       'index' => $this->index,
-      'from' => $start ?? 0,
-      'size' => $length ?? 10,
       'body' => [
         'query' => [
           'bool' => [
             'filter' => [
-              'terms' => ['_id' => $ids],
+              'terms' => ['uuid_langcode' => $ids],
             ],
           ],
         ],
       ],
     ]);
+
     if (empty($data['hits']['hits'])) {
       return [];
     }
-    return $data['hits']['hits'];
+
+    $prepared = [];
+    foreach ($data['hits']['hits'] as $hit) {
+      $id = $this->externalEntityType->getFieldMapper()
+        ->extractIdFromRawData($hit);
+
+      $prepared[$id] = $hit;
+    }
+    return $prepared;
+  }
+
+  /**
+   * Maps the given field to something else.
+   *
+   * @param string $field
+   *   The field name to map.
+   *
+   * @return string
+   *   The mapped field.
+   */
+  protected function getFieldMapping(string $field) : string {
+    return $field;
+  }
+
+  /**
+   * Builds the elastic query for given parameters.
+   *
+   * @param array $parameters
+   *   The parameters.
+   * @param array $sorts
+   *   The sorts.
+   *
+   * @return array
+   *   The query.
+   */
+  protected function buildQuery(array $parameters, array $sorts) : array {
+    $query = [];
+
+    foreach ($parameters as $parameter) {
+      ['field' => $field, 'value' => $value, 'operator' => $op] = $parameter;
+      $fieldName = $this->getFieldMapping($field);
+
+      if (!$value) {
+        continue;
+      }
+      if (strtolower($op) === 'contains') {
+        assert(is_string($value));
+
+        $query['regexp'][$fieldName] = [
+          'value' => $value . '.*',
+          'case_insensitive' => TRUE,
+        ];
+      }
+      else {
+        if (!is_array($value)) {
+          $value = [$value];
+        }
+        $query['bool']['filter']['terms'][$fieldName] = $value;
+      }
+    }
+
+    $sortQuery = [];
+    foreach ($sorts as $sort) {
+      ['field' => $field, 'direction' => $direction] = $sort;
+      $fieldName = $this->getFieldMapping($field);
+
+      $sortQuery[$fieldName] = ['order' => strtolower($direction)];
+    }
+
+    return [
+      'index' => $this->index,
+      'body' => [
+        'sort' => $sortQuery,
+        'query' => $query,
+      ],
+    ];
   }
 
   /**
@@ -147,35 +221,15 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
     $start = NULL,
     $length = NULL,
   ) : array {
-    $query = [];
+    $query = $this->buildQuery($parameters, $sorts);
 
-    foreach ($parameters as $parameter) {
-      ['field' => $field, 'value' => $value] = $parameter;
-
-      if (!$value) {
-        continue;
-      }
-      $query[$field] = ['value' => $value];
+    if (!is_null($start)) {
+      $query['from'] = $start;
     }
 
-    $sortQuery = [];
-    foreach ($sorts as $sort) {
-      ['field' => $field, 'direction' => $direction] = $sort;
-
-      $sortQuery[$field] = ['order' => strtolower($direction)];
+    if (!is_null($length)) {
+      $query['size'] = $length;
     }
-
-    $query = [
-      'index' => $this->index,
-      'from' => $start ?? 0,
-      'size' => $length ?? 10,
-      'body' => [
-        'sort' => $sortQuery,
-        'query' => [
-          'constant_score' => ['filter' => ['term' => $query]],
-        ],
-      ],
-    ];
     $data = $this->request($query);
 
     if (empty($data['hits']['hits'])) {
