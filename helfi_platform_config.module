@@ -252,21 +252,22 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
 
     if (
       !$entity instanceof ContentEntityInterface ||
-      !$entity->hasField('field_hero')
+      !$entity->hasField('field_has_hero')
     ) {
       return AccessResult::neutral();
     }
 
-    // Show title block if the "has hero" checkbox is not checked (=false).
+    // Hide title block if the "has hero" checkbox is checked and
+    // the Hero paragraph is found.
     if (
-      $entity->hasField('field_has_hero') &&
-      $entity->get('field_has_hero')->value
+      $entity->get('field_has_hero')->value &&
+      $entity->get('field_hero')->entity
     ) {
-      return AccessResult::allowed()->addCacheableDependency($block);
+      return AccessResult::forbidden()
+        ->addCacheableDependency($block);
     }
 
-    // Show title block if the Hero paragraph is not found.
-    return AccessResult::forbiddenIf($entity->get('field_hero')->entity)
+    return AccessResult::neutral()
       ->addCacheableDependency($block);
   }
 
@@ -280,11 +281,19 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
       !$entity instanceof ContentEntityInterface ||
       !$entity->hasField('field_has_hero')
     ) {
-      return AccessResult::neutral();
+      return AccessResult::forbidden();
     }
 
-    // Hide the hero block if the "has hero" checkbox is checked (=true).
-    return AccessResult::forbiddenIf(!$entity->get('field_has_hero')->value);
+    // Hide the hero block if the "has hero" checkbox is checked (=true)
+    // or the field_hero field is missing.
+    if (
+      !$entity->get('field_has_hero')->value ||
+      !$entity->get('field_hero')->entity
+    ) {
+      return AccessResult::forbidden();
+    }
+
+    return AccessResult::neutral();
   }
 
   return AccessResult::neutral();
