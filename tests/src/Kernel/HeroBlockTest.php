@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
 use Drupal\block\Entity\Block;
@@ -72,8 +74,8 @@ class HeroBlockTest extends EntityKernelTestBase {
     $titleAccess = $title->access('view', NULL, TRUE);
     $heroAccess = $hero->access('view', NULL, TRUE);
 
-    $this->assertTrue($showHero ? $titleAccess->isForbidden() : $titleAccess->isAllowed());
-    $this->assertTrue($showHero ? $heroAccess->isAllowed() : $heroAccess->isForbidden());
+    $this->assertEquals($showHero, $titleAccess->isForbidden());
+    $this->assertEquals(!$showHero, $heroAccess->isForbidden());
   }
 
   /**
