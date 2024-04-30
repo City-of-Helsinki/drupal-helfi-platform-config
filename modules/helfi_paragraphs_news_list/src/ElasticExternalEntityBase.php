@@ -2,15 +2,11 @@
 
 namespace Drupal\helfi_paragraphs_news_list;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
-use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_api_base\Environment\ServiceEnum;
 use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,13 +31,6 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   protected Client $client;
 
   /**
-   * The config factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected ConfigFactoryInterface $configFactory;
-
-  /**
    * The logger.
    *
    * @var \Psr\Log\LoggerInterface
@@ -58,22 +47,7 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
     $plugin_definition,
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->configFactory = $container->get('config.factory');
-    /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
-    $environmentResolver = $container->get('helfi_api_base.environment_resolver');
-
-    try {
-      $service = $environmentResolver
-        ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName())
-        ->getService(ServiceEnum::ElasticProxy)
-        ->address
-        ->getAddress();
-      $instance->client = ClientBuilder::create()
-        ->setHosts([$service])
-        ->build();
-    }
-    catch (\InvalidArgumentException) {
-    }
+    $instance->client = $container->get('helfi_paragraphs_news_list.elastic_client');
     $instance->logger = $container->get('logger.factory')->get('helfi_external_entity');
 
     return $instance;
