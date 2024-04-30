@@ -22,6 +22,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\Entity\Role;
 
@@ -247,8 +248,7 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
   // Handle page title block access based on field_has_hero value.
   if ($operation === 'view' && $block->getPluginId() === 'page_title_block') {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = Drupal::service('helfi_platform_config.entity_version_matcher')
-      ->getType()['entity'];
+    $entity = Drupal::service(EntityVersionMatcher::class)->getType()['entity'];
 
     if (
       !$entity instanceof ContentEntityInterface ||
@@ -274,8 +274,7 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
   // Handle hero block access based on field_has_hero value.
   if ($operation === 'view' && $block->getPluginId() === 'hero_block') {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = Drupal::service('helfi_platform_config.entity_version_matcher')
-      ->getType()['entity'];
+    $entity = Drupal::service(EntityVersionMatcher::class)->getType()['entity'];
 
     if (
       !$entity instanceof ContentEntityInterface ||
