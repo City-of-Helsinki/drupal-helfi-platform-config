@@ -17,6 +17,7 @@ use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
+use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -59,9 +60,9 @@ function helfi_paragraphs_news_list_paragraph_view(
       ->range(0, $entity->getLimit());
 
     $termFilters = [
-      'news_tags' => $entity->getTags(),
-      'groups' => $entity->getGroups(),
-      'neighbourhoods' => $entity->getNeighbourhoods(),
+      'news_tags_uuid' => $entity->getTagsUuid(),
+      'groups_uuid' => $entity->getGroupsUuid(),
+      'neighbourhoods_uuid' => $entity->getNeighbourhoodsUuids(),
     ];
     foreach ($termFilters as $name => $value) {
       $query->condition($name, $value);
@@ -95,8 +96,11 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
   if ($entity_type->id() === 'helfi_news') {
     $termFields = [
       'tags' => new TranslatableMarkup('Tags'),
+      'tags_uuid' => new TranslatableMarkup('Tags (uuid)'),
       'groups' => new TranslatableMarkup('Groups'),
+      'groups_uuid' => new TranslatableMarkup('Groups (uuid)'),
       'neighbourhoods' => new TranslatableMarkup('Neighbourhoods'),
+      'neighbourhoods_uuid' => new TranslatableMarkup('Neighbourhoods (uuid)'),
     ];
 
     // These are taxonomy term fields in 'Etusivu' instance.
@@ -128,6 +132,14 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
         ->setDisplayConfigurable('form', TRUE);
     }
   }
+
+  if (in_array($entity_type->id(), ['helfi_news_groups', 'helfi_news_neighbourhoods', 'helfi_news_tags'])) {
+    $fields['tid'] = BundleFieldDefinition::create('string')
+      ->setName('tid')
+      ->setLabel(new TranslatableMarkup('Term ID'))
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+  }
 }
 
 /**
@@ -140,6 +152,15 @@ function helfi_paragraphs_news_list_entity_bundle_info_alter(array &$bundles) : 
 
   if (isset($bundles['helfi_news']['helfi_news'])) {
     $bundles['helfi_news']['helfi_news']['class'] = News::class;
+  }
+
+  $termEntityTypes = ['helfi_news_groups', 'helfi_news_neighbourhoods', 'helfi_news_tags'];
+
+  foreach ($termEntityTypes as $entityType) {
+    if (!isset($bundles[$entityType][$entityType])) {
+      continue;
+    }
+    $bundles[$entityType][$entityType]['class'] = Term::class;
   }
 }
 
@@ -158,6 +179,7 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
     'field_helfi_news_neighbourhoods' => 'neighbourhoods',
   ];
 
+  // Include terms in 'View all news' link.
   $params = [];
   foreach ($refFields as $fieldName => $paramKey) {
     $field = $paragraph->get($fieldName);
@@ -165,16 +187,12 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
     if ($field->isEmpty()) {
       continue;
     }
-
     $terms = $field->referencedEntities();
+
     foreach ($terms as $term) {
-      if (
-        $term->hasField('field_frontpage_term_id') &&
-        $external_tid = $term->get('field_frontpage_term_id')->value
-      ) {
-        // Format name to match app query param format.
-        $params[$paramKey][] = str_replace(' ', '+', strtolower($external_tid));
-      }
+      assert($term instanceof Term);
+
+      $params[$paramKey][] = $term->getTid();
     }
   }
   /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $resolver */

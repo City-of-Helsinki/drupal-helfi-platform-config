@@ -22,5 +22,4 @@ final class News extends ElasticExternalEntityBase {
    */
   protected string $index = 'news';
 
-
 }

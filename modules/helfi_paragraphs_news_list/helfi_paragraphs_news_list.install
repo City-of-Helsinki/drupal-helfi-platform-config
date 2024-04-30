@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
@@ -115,6 +116,22 @@ function helfi_paragraphs_news_list_update_9004() : void {
  * UHF-8974 Update the translations for the news list paragraph type.
  */
 function helfi_paragraphs_news_list_update_9006() : void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_news_list');
+}
+
+/**
+ * Delete old field frontpage tid field.
+ */
+function helfi_paragraphs_news_list_update_9007() : void {
+  $types = [
+    'helfi_news_tags',
+    'helfi_news_neighbourhoods',
+    'helfi_news_groups',
+  ];
+  foreach ($types as $type) {
+    FieldStorageConfig::loadByName($type, 'field_frontpage_term_id')?->delete();
+  }
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_news_list');
 }
