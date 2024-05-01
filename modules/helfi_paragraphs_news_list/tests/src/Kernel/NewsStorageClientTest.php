@@ -18,6 +18,15 @@ use Prophecy\Argument;
  */
 class NewsStorageClientTest extends KernelTestBase {
 
+  /**
+   * Gets the SUT.
+   *
+   * @param \Elasticsearch\Client $client
+   *  The client mock.
+   *
+   * @return \Drupal\external_entities\ExternalEntityStorage
+   *   The storage.
+   */
   public function getSut(Client $client) : ExternalEntityStorage {
     $this->container->set('helfi_paragraphs_news_list.elastic_client', $client);
     return $this->container->get(EntityTypeManagerInterface::class)
