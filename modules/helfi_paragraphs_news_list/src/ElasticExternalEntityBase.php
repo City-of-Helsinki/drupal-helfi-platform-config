@@ -2,7 +2,6 @@
 
 namespace Drupal\helfi_paragraphs_news_list;
 
-use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
@@ -57,14 +56,13 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
    * {@inheritdoc}
    */
   public function save(ExternalEntityInterface $entity) : int {
-    throw new EntityStorageException('::save() is not supported.');
+    return 1;
   }
 
   /**
    * {@inheritdoc}
    */
   public function delete(ExternalEntityInterface $entity) : void {
-    throw new EntityStorageException('::delete() is not supported.');
   }
 
   /**
@@ -113,7 +111,9 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
     foreach ($data['hits']['hits'] as $hit) {
       $id = $this->externalEntityType->getFieldMapper()
         ->extractIdFromRawData($hit);
-
+      if (!$id) {
+        continue;
+      }
       $prepared[$id] = $hit;
     }
     return $prepared;
