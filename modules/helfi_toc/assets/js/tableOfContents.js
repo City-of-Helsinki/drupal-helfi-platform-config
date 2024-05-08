@@ -24,6 +24,7 @@
 
       const anchors = [];
       const tableOfContents = document.getElementById('helfi-toc-table-of-contents');
+      const tableOfContentsNewsUpdates = document.getElementById('helfi-toc-table-of-contents-news-updates');
       const tableOfContentsList = document.querySelector('#helfi-toc-table-of-contents-list > ul');
       const mainContent = document.querySelector('main.layout-main-wrapper');
       const reservedElems = document.querySelectorAll('[id]');
@@ -34,7 +35,7 @@
 
       // Exclude elements from TOC that are not content:
       // e.g. TOC, sidebar, cookie compliency-banner etc.
-      const exclusions =
+      let exclusions =
         '' +
         ':not(.layout-sidebar-first *)' +
         ':not(.layout-sidebar-second *)' +
@@ -43,6 +44,14 @@
         ':not(#helfi-toc-table-of-contents *)' +
         ':not(.embedded-content-cookie-compliance *)' +
         ':not(.react-and-share-cookie-compliance *)';
+
+      // On a news page we need to concentrate on the news update container.
+      if (tableOfContentsNewsUpdates) {
+        exclusions +=
+          ':not(.components--upper *)' +
+          ':not(.block--news-of-interest *)' +
+          ':not(#helfi-toc-table-of-contents-news-updates *)';
+      }
 
       const titleComponents = [
         `h2${exclusions}`,
@@ -166,6 +175,15 @@
 
           anchors.push(anchorName);
 
+          // On updating news there is published date under the title that we want to display in the
+          // table of contents news update version. For normal table of contents this remains empty.
+          let contentPublishDate = '';
+
+          if (tableOfContentsNewsUpdates && content.nextSibling && content.nextElementSibling.nodeName === 'TIME') {
+            let contentPublishDateStamp = new Date(content.nextElementSibling.dateTime);
+            contentPublishDate = `${contentPublishDateStamp.getDate()}.${contentPublishDateStamp.getMonth() + 1}.${contentPublishDateStamp.getFullYear()}`;
+          }
+
           // Create table of contents if component is enabled.
           if (tableOfContentsList && nodeName === 'h2') {
             let listItem = document.createElement('li');
@@ -176,6 +194,15 @@
             link.href = `#${anchorName}`;
             link.textContent = content.textContent.trim();
 
+            // Add content publish date and its wrapper to list items only if they exist.
+            if (contentPublishDate) {
+              let publishDate = document.createElement('time');
+              publishDate.dateTime = content.nextElementSibling.dateTime;
+              publishDate.textContent = contentPublishDate;
+
+              listItem.appendChild(publishDate);
+            }
+
             listItem.appendChild(link);
             tableOfContentsList.appendChild(listItem);
           }
@@ -184,16 +211,24 @@
           content.setAttribute('tabindex', '-1');  // Set tabindex to -1 to avoid issues with screen readers.
         });
 
-      if (tableOfContents) {
+      function updateTOC(tocElement) {
         // Remove loading text and noscript element.
-        const removeElements = tableOfContents.parentElement.querySelectorAll('.js-remove');
+        const removeElements = tocElement.parentElement.querySelectorAll('.js-remove');
         removeElements.forEach(function (element) {
           element.remove();
         });
 
         // Update toc visible.
-        tableOfContents.setAttribute('data-js', 'true');
+        tocElement.setAttribute('data-js', 'true');
       }
+
+      // Select which type of TOC should be displayed.
+      if (tableOfContentsNewsUpdates) {
+        updateTOC(tableOfContentsNewsUpdates);
+      } else {
+        updateTOC(tableOfContents);
+      }
+
     },
   };
 })(Drupal, once, drupalSettings);
