@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\Entity;
 
+use Drupal\external_entities\ExternalEntityStorage;
+use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use Drupal\Tests\helfi_api_base\Traits\TestLoggerTrait;
 use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 
 /**
@@ -17,34 +17,33 @@ use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
  */
 class NewsFeedParagraphTest extends KernelTestBase {
 
-  use ApiTestTrait;
-  use TestLoggerTrait;
+  private function getStorage(string $entityType) : ExternalEntityStorage {
+    $storage = $this->container->get('entity_type.manager')
+      ->getStorage($entityType);
+    assert($storage instanceof ExternalEntityStorage);
+
+    return $storage;
+  }
 
   /**
    * Tests that paragraph uses proper bundle class.
    */
   public function testBundleClass() : void {
-    $storage = $this->container->get('entity_type.manager')
-      ->getStorage('helfi_news_neighbourhoods');
-
     $neighbourhood_uuid = 'ff10dbf0-6b00-400b-a8a9-4fae102ea92c';
     $neighbourhood_id = $neighbourhood_uuid . ':fi';
-    $neighbourhood = $storage->create([
-      'type' => 'helfi_news_neighbourhoods',
+    $neighbourhood = $this->getStorage('helfi_news_neighbourhoods')->create([
       'id' => $neighbourhood_id,
       'title' => 'Neighbourhood',
     ]);
     $tags_uuid = 'ca9a7c2e-acbb-4f03-938b-9cd86fd606ac';
     $tags_id = $tags_uuid . ':fi';
-    $tags = $storage->create([
-      'type' => 'helfi_news_tags',
+    $tags = $this->getStorage('helfi_news_tags')->create([
       'id' => $tags_id,
       'title' => 'Tags',
     ]);
     $groups_uuid = 'e30fa7be-4d13-4216-8658-103fb9a26c8c';
     $groups_id = $groups_uuid . ':fi';
-    $groups = $storage->create([
-      'type' => 'helfi_news_tags',
+    $groups = $this->getStorage('helfi_news_groups')->create([
       'id' => $groups_id,
       'title' => 'Tags',
     ]);

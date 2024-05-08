@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - external_entities
-    - imagecache_external
   enforced:
     config:
       - core.entity_view_mode.helfi_news.medium_teaser
@@ -13,15 +12,6 @@ targetEntityType: helfi_news
 bundle: helfi_news
 mode: medium_teaser
 content:
-  main_image:
-    type: imagecache_external_responsive_image
-    label: hidden
-    settings:
-      imagecache_external_link: ''
-      imagecache_external_responsive_style: gallery_thumbnail
-    third_party_settings: {  }
-    weight: 1
-    region: content
   title:
     type: string
     label: hidden

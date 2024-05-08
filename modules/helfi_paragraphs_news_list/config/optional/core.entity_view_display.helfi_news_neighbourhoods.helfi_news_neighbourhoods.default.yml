@@ -1,12 +1,14 @@
-uuid: 7060dc64-5f95-4fa5-8046-bf0ad5e265c4
+uuid: f8d0f0da-4aff-436c-a4b8-4df8c6ee82f8
 langcode: en
 status: true
 dependencies:
+  config:
+    - external_entities.external_entity_type.helfi_news_neighbourhoods
   module:
     - external_entities
-id: helfi_news_tags.helfi_news_tags.default
-targetEntityType: helfi_news_tags
-bundle: helfi_news_tags
+id: helfi_news_neighbourhoods.helfi_news_neighbourhoods.default
+targetEntityType: helfi_news_neighbourhoods
+bundle: helfi_news_neighbourhoods
 mode: default
 content:
   title:
@@ -18,6 +20,5 @@ content:
     weight: 0
     region: content
 hidden:
-  field_frontpage_term_id: true
   search_api_excerpt: true
   tid: true

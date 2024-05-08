@@ -1,7 +1,9 @@
-uuid: 972acdae-8e71-4d12-a335-bc91828f4851
+uuid: 7060dc64-5f95-4fa5-8046-bf0ad5e265c4
 langcode: en
 status: true
 dependencies:
+  config:
+    - external_entities.external_entity_type.helfi_news_tags
   module:
     - external_entities
 id: helfi_news_tags.helfi_news_tags.default
@@ -10,12 +12,13 @@ bundle: helfi_news_tags
 mode: default
 content:
   title:
-    type: string_textfield
-    weight: -5
-    region: content
+    type: string
+    label: hidden
     settings:
-      size: 60
-      placeholder: ''
+      link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
+  search_api_excerpt: true
   tid: true

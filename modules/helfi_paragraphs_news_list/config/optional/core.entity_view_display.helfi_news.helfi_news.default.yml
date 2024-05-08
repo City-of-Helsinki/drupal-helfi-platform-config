@@ -2,23 +2,15 @@ uuid: 8cdbdb79-0afd-4c2a-9eac-286984c02eff
 langcode: en
 status: true
 dependencies:
+  config:
+    - external_entities.external_entity_type.helfi_news
   module:
     - external_entities
-    - imagecache_external
 id: helfi_news.helfi_news.default
 targetEntityType: helfi_news
 bundle: helfi_news
 mode: default
 content:
-  main_image:
-    type: imagecache_external_responsive_image
-    label: hidden
-    settings:
-      imagecache_external_responsive_style: gallery_thumbnail
-      imagecache_external_link: ''
-    third_party_settings: {  }
-    weight: 1
-    region: content
   title:
     type: string
     label: hidden

@@ -10,6 +10,7 @@ dependencies:
     - field.field.paragraph.news_list.field_news_list_description
     - field.field.paragraph.news_list.field_news_list_title
     - paragraphs.paragraphs_type.news_list
+    - external_entities.external_entity_type.helfi_news
   module:
     - text
 id: paragraph.news_list.default
