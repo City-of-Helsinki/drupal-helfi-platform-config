@@ -462,3 +462,28 @@ function helfi_platform_config_config_ignore_settings_alter(array &$settings) {
     array_push($settings, $config);
   }
 }
+
+/**
+ * Implements hook_user_cancel_methods_alter().
+ */
+function helfi_platform_config_user_cancel_methods_alter(array &$methods): void {
+  /** @var \Drupal\Core\Session\AccountInterface $account */
+  $account = \Drupal::currentUser();
+
+  // Only allow user to disable user accounts if the user doesn't have
+  // a permission to delete user accounts.
+  $white_listed_methods = [
+    'user_cancel_block',
+    'user_cancel_block_unpublish',
+  ];
+
+  // Deny access to all non-whitelisted methods if user doesn't have
+  // the 'delete user accounts' permission.
+  if (!$account->hasPermission('delete user accounts')) {
+    foreach ($methods as $name => &$method) {
+      if (!in_array($name, $white_listed_methods)) {
+        $method['access'] = FALSE;
+      }
+    }
+  }
+}
