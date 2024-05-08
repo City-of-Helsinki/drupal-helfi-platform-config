@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\Entity;
 
 use Drupal\external_entities\ExternalEntityStorage;
-use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
@@ -17,6 +16,15 @@ use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
  */
 class NewsFeedParagraphTest extends KernelTestBase {
 
+  /**
+   * Gets the storage for given entity type.
+   *
+   * @param string $entityType
+   *   The entity type.
+   *
+   * @return \Drupal\external_entities\ExternalEntityStorage
+   *   The storage.
+   */
   private function getStorage(string $entityType) : ExternalEntityStorage {
     $storage = $this->container->get('entity_type.manager')
       ->getStorage($entityType);
