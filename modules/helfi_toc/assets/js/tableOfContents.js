@@ -23,7 +23,10 @@
       }
 
       const anchors = [];
+      // This is the normal TOC that is used on pages that have the option to enable TOC.
       const tableOfContents = document.getElementById('helfi-toc-table-of-contents');
+      // This is the special container for updating news that displays an alternative version of the TOC.
+      // It is automatically on and only used on front page instance.
       const tableOfContentsNewsUpdates = document.getElementById('helfi-toc-table-of-contents-news-updates');
       const tableOfContentsList = document.querySelector('#helfi-toc-table-of-contents-list > ul');
       const mainContent = document.querySelector('main.layout-main-wrapper');
@@ -45,7 +48,7 @@
         ':not(.embedded-content-cookie-compliance *)' +
         ':not(.react-and-share-cookie-compliance *)';
 
-      // On a news page we need to concentrate on the news update container.
+      // On a updating news page we need to ignore everything else other than the news update container.
       if (tableOfContentsNewsUpdates) {
         exclusions +=
           ':not(.components--upper *)' +
