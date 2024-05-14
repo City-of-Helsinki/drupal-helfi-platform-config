@@ -1,0 +1,43 @@
+diff --git a/core/modules/filter/filter.module b/core/modules/filter/filter.module
+index c6cae99e5a..124668de0d 100644
+--- a/core/modules/filter/filter.module
++++ b/core/modules/filter/filter.module
+@@ -755,9 +755,15 @@ function _filter_autop($text) {
+       $chunk = preg_replace('!<p>\s*(</?' . $block . '[^>]*>)!', "$1", $chunk);
+       $chunk = preg_replace('!(</?' . $block . '[^>]*>)\s*</p>!', "$1", $chunk);
+       // make line breaks
+-      $chunk = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $chunk);
+-      $chunk = preg_replace('!(</?' . $block . '[^>]*>)\s*<br />!', "$1", $chunk);
+-      $chunk = preg_replace('!<br />(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)!', '$1', $chunk);
++      $chunk = preg_replace_callback('|(<br[^>]*>)?\s*\n|', function ($matches) {
++        if (isset($matches[1])) {
++          return $matches[1] . "\n";
++        }
++
++        return "<br />\n";
++      }, $chunk);
++      $chunk = preg_replace('!(</?' . $block . '[^>]*>)\s*<br[^>]*/>!', "$1", $chunk);
++      $chunk = preg_replace('!<br[^>]*>(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)!', '$1', $chunk);
+       $chunk = preg_replace('/&([^#])(?![A-Za-z0-9]{1,8};)/', '&amp;$1', $chunk);
+     }
+     $output .= $chunk;
+diff --git a/core/modules/filter/tests/src/Kernel/FilterKernelTest.php b/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
+index cfc8cdb503..0cdef41699 100644
+--- a/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
++++ b/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
+@@ -469,6 +469,15 @@ class FilterKernelTest extends KernelTestBase {
+       '<drupal-media data-caption=" " data-entity-type="media" data-entity-uuid="dbb16f97-cd11-4357-acde-cd09e19e312b"></drupal-media>' => [
+         '<p><drupal-media data-caption=" " data-entity-type="media" data-entity-uuid="dbb16f97-cd11-4357-acde-cd09e19e312b"></drupal-media></p>' => FALSE,
+       ],
++      // Bug 3083786, duplicate br tags after a line ending in a break tag that
++      // doesn't exactly match <br />
++      'aaa<br>
++      bbb<br class="ccc" />
++      ddd<br/>' => [
++        "<p>aaa<br>\n" => TRUE,
++        "bbb<br class=\"ccc\" />\n" => TRUE,
++        "ddd</p>" => TRUE,
++      ],
+     ];
+     // cSpell:enable
+     $this->assertFilteredString($filter, $tests);
