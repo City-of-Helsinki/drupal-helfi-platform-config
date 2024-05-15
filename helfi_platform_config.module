@@ -22,6 +22,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\Entity\Role;
 
@@ -247,34 +248,7 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
   // Handle page title block access based on field_has_hero value.
   if ($operation === 'view' && $block->getPluginId() === 'page_title_block') {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = Drupal::service('helfi_platform_config.entity_version_matcher')
-      ->getType()['entity'];
-
-    if (
-      !$entity instanceof ContentEntityInterface ||
-      !$entity->hasField('field_hero')
-    ) {
-      return AccessResult::neutral();
-    }
-
-    // Show title block if the "has hero" checkbox is not checked (=false).
-    if (
-      $entity->hasField('field_has_hero') &&
-      $entity->get('field_has_hero')->value
-    ) {
-      return AccessResult::allowed()->addCacheableDependency($block);
-    }
-
-    // Show title block if the Hero paragraph is not found.
-    return AccessResult::forbiddenIf($entity->get('field_hero')->entity)
-      ->addCacheableDependency($block);
-  }
-
-  // Handle hero block access based on field_has_hero value.
-  if ($operation === 'view' && $block->getPluginId() === 'hero_block') {
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = Drupal::service('helfi_platform_config.entity_version_matcher')
-      ->getType()['entity'];
+    $entity = Drupal::service(EntityVersionMatcher::class)->getType()['entity'];
 
     if (
       !$entity instanceof ContentEntityInterface ||
@@ -283,8 +257,42 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
       return AccessResult::neutral();
     }
 
-    // Hide the hero block if the "has hero" checkbox is checked (=true).
-    return AccessResult::forbiddenIf(!$entity->get('field_has_hero')->value);
+    // Hide title block if the "has hero" checkbox is checked and
+    // the Hero paragraph is found.
+    if (
+      $entity->get('field_has_hero')->value &&
+      $entity->get('field_hero')->entity
+    ) {
+      return AccessResult::forbidden()
+        ->addCacheableDependency($block);
+    }
+
+    return AccessResult::neutral()
+      ->addCacheableDependency($block);
+  }
+
+  // Handle hero block access based on field_has_hero value.
+  if ($operation === 'view' && $block->getPluginId() === 'hero_block') {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    $entity = Drupal::service(EntityVersionMatcher::class)->getType()['entity'];
+
+    if (
+      !$entity instanceof ContentEntityInterface ||
+      !$entity->hasField('field_has_hero')
+    ) {
+      return AccessResult::forbidden();
+    }
+
+    // Hide the hero block if the "has hero" checkbox is checked (=true)
+    // or the field_hero field is missing.
+    if (
+      !$entity->get('field_has_hero')->value ||
+      !$entity->get('field_hero')->entity
+    ) {
+      return AccessResult::forbidden();
+    }
+
+    return AccessResult::neutral();
   }
 
   return AccessResult::neutral();
