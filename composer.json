@@ -11,7 +11,6 @@
         "drupal/allowed_formats": "^2.0",
         "drupal/ckeditor": "^1.0",
         "drupal/ckeditor5_paste_filter": "^1.0",
-        "drupal/config_filter": "^2.6",
         "drupal/config_ignore": "^3.0",
         "drupal/config_rewrite": "^1.4",
         "drupal/content_lock": "^2.2",
