@@ -103,7 +103,6 @@
                 "[#UHF-2059] Enhancements for the Admin UI": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/fdccb32397cc6fa19b4d0077b21a2b18aa6be297/patches/helfi_customizations_for_paragraphs_widget_8.x-1.12.patch"
             },
             "drupal/publication_date": {
-                "[#UHF-7721] Fixed node preview when publication date is not set. (https://www.drupal.org/i/3074373)": "https://www.drupal.org/files/issues/2022-12-20/publication_date_is_required_for_completing_the_form-3074373-11.patch",
                 "[#UHF-9113] Fix PHP 8.2 deprecation issue with PublishedAtOrNowComputed class. (https://www.drupal.org/i/3328575)": "https://www.drupal.org/files/issues/2023-05-31/3328575-5-fix-bux-publicate-date.patch"
             },
             "drupal/view_unpublished": {
