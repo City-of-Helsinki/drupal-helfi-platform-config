@@ -5,7 +5,6 @@
  * Contains installation hooks for HELfi platform config module.
  */
 
-use Drupal\helfi_api_base\Environment\Project;
 use Drupal\user\Entity\User;
 
 /**
@@ -95,7 +94,7 @@ function helfi_platform_config_update_9307() : void {
     return;
   }
 
-  foreach(['hal', 'rdf'] as $module_name) {
+  foreach (['hal', 'rdf'] as $module_name) {
     if (\Drupal::moduleHandler()->moduleExists($module_name)) {
       $module_installer->uninstall([$module_name]);
     }
