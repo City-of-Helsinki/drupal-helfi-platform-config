@@ -5,6 +5,7 @@
  * Contains installation hooks for HELfi platform config module.
  */
 
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\user\Entity\User;
 
 /**
@@ -78,4 +79,27 @@ function helfi_platform_config_update_9306() : void {
     // Remove the user inquiry block.
     $config_factory->getEditable('block.block.hdbt_subtheme_user_inquiry')->delete();
   }
+}
+
+/**
+ * UHF-9312: Remove config filter, prepare hal and rdf removal.
+ */
+function helfi_platform_config_update_9307() : void {
+  $module_installer = \Drupal::service('module_installer');
+  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
+  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+
+  try {
+    $environmentResolver->getActiveEnvironment();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
+  foreach(['hal', 'rdf'] as $module_name) {
+    if (\Drupal::moduleHandler()->moduleExists($module_name)) {
+      $module_installer->uninstall([$module_name]);
+    }
+  }
+
 }
