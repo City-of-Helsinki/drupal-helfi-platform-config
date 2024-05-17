@@ -11,7 +11,6 @@
         "drupal/allowed_formats": "^2.0",
         "drupal/ckeditor": "^1.0",
         "drupal/ckeditor5_paste_filter": "^1.0",
-        "drupal/config_filter": "^2.6",
         "drupal/config_ignore": "^3.0",
         "drupal/config_rewrite": "^1.4",
         "drupal/content_lock": "^2.2",
@@ -75,8 +74,7 @@
     "extra": {
         "patches": {
             "drupal/content_lock": {
-                "[#UHF-4553] Fix unlock content button redirect": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/82081691e4a6d05b3716052d5fff46a04027bdc3/patches/content-lock-uhf-4553.patch",
-                "https://www.drupal.org/project/content_lock/issues/3343964": "https://www.drupal.org/files/issues/2023-05-22/3343964-5.patch"
+                "[#UHF-4553] Fix unlock content button redirect": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/82081691e4a6d05b3716052d5fff46a04027bdc3/patches/content-lock-uhf-4553.patch"
             },
             "drupal/core": {
                 "[#UHF-181] Hide untranslated menu links (https://www.drupal.org/project/drupal/issues/3091246)": "https://www.drupal.org/files/issues/2023-12-18/3091246--allow-menu-tree-manipulators-alter--24.patch",
@@ -102,10 +100,6 @@
             "drupal/paragraphs": {
                 "https://www.drupal.org/project/paragraphs/issues/2904705#comment-13836790": "https://www.drupal.org/files/issues/2020-09-25/2904705-115.patch",
                 "[#UHF-2059] Enhancements for the Admin UI": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/fdccb32397cc6fa19b4d0077b21a2b18aa6be297/patches/helfi_customizations_for_paragraphs_widget_8.x-1.12.patch"
-            },
-            "drupal/publication_date": {
-                "[#UHF-7721] Fixed node preview when publication date is not set. (https://www.drupal.org/i/3074373)": "https://www.drupal.org/files/issues/2022-12-20/publication_date_is_required_for_completing_the_form-3074373-11.patch",
-                "[#UHF-9113] Fix PHP 8.2 deprecation issue with PublishedAtOrNowComputed class. (https://www.drupal.org/i/3328575)": "https://www.drupal.org/files/issues/2023-05-31/3328575-5-fix-bux-publicate-date.patch"
             },
             "drupal/view_unpublished": {
                 "[#UHF-9256] Fix missing dynamic permission dependencies.": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/cbb944ae79643ba7ed895db3fac7f3b3d90ac850/patches/view_unpublished_permissions_missing_dependencies.patch"
