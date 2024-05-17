@@ -1,4 +1,8 @@
 services:
+  _defaults:
+    autoconfigure: true
+
+  Drupal\helfi_platform_config\Helper\BlockInstaller: '@helfi_platform_config.helper.block_installer'
   helfi_platform_config.helper.block_installer:
     class: Drupal\helfi_platform_config\Helper\BlockInstaller
     arguments:
@@ -10,8 +14,6 @@ services:
     class: Drupal\helfi_platform_config\Menu\FilterByLanguage
     arguments:
       - '@router.admin_context'
-    tags:
-      - { name: event_subscriber }
 
   helfi_platform_config.translation_writer_command:
     class: Drupal\helfi_platform_config\Commands\TranslationWriterCommand
@@ -22,9 +24,8 @@ services:
   helfi_platform_config.route_subscriber:
     class: Drupal\helfi_platform_config\EventSubscriber\RouteSubscriber
     arguments: ['@current_route_match']
-    tags:
-      - { name: event_subscriber }
 
+  Drupal\helfi_platform_config\EntityVersionMatcher: '@helfi_platform_config.entity_version_matcher'
   helfi_platform_config.entity_version_matcher:
     class: Drupal\helfi_platform_config\EntityVersionMatcher
     arguments: ['@entity_type.manager', '@current_route_match', '@language_manager']
@@ -34,6 +35,7 @@ services:
     tags:
       - { name: twig.extension }
 
+  Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater: '@helfi_platform_config.config_update_helper'
   helfi_platform_config.config_update_helper:
     class: Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater
     arguments:
@@ -43,8 +45,6 @@ services:
 
   helfi_platform_config.term_route_subscriber:
     class: Drupal\helfi_platform_config\Routing\TermRouteSubscriber
-    tags:
-      - { name: event_subscriber }
 
   helfi_platform_config.filter_disabled_translations:
     class: Drupal\helfi_platform_config\Menu\FilterDisabledTranslations
@@ -52,14 +52,13 @@ services:
       - '@entity_type.manager'
       - '@language_manager'
       - '@router.admin_context'
-    tags:
-      - { name: event_subscriber }
 
   logger.channel.helfi_platform_config:
     parent: logger.channel_base
     arguments:
       - 'helfi_platform_config'
 
+  Drupal\helfi_platform_config\Token\OGImageManager: '@helfi_platform_config.og_image_manager'
   helfi_platform_config.og_image_manager:
     class: Drupal\helfi_platform_config\Token\OGImageManager
     arguments:
@@ -79,5 +78,3 @@ services:
 
   helfi_platform_config.user_create_route_subscriber:
     class: Drupal\helfi_platform_config\Routing\UserCreateRouteSubscriber
-    tags:
-      - { name: event_subscriber }
