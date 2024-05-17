@@ -95,7 +95,7 @@ function helfi_platform_config_update_9307() : void {
   }
 
   // If config filter would be enabled for some reason.
-  // Prevents 'Currently using Missing or invalid module'
+  // Prevents 'Currently using Missing or invalid module'.
   $config = \Drupal::configFactory()->getEditable('core.extension');
   $enabled_modules = $config->get('module') ?? [];
   if (isset($enabled_modules['config_filter'])) {
