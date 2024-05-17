@@ -94,7 +94,8 @@ function helfi_platform_config_update_9307() : void {
     return;
   }
 
-  foreach (['hal', 'rdf'] as $module_name) {
+  // Disable hal & rdf modules.
+  foreach (['config_filter', 'hal', 'rdf'] as $module_name) {
     if (\Drupal::moduleHandler()->moduleExists($module_name)) {
       $module_installer->uninstall([$module_name]);
     }
