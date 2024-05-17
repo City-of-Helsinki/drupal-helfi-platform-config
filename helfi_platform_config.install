@@ -94,8 +94,25 @@ function helfi_platform_config_update_9307() : void {
     return;
   }
 
+  if (\Drupal::moduleHandler()->moduleExists('config_filter')) {
+    $module_installer = \Drupal::service('module_installer');
+
+    $config = \Drupal::configFactory()->getEditable('core.extension');
+    $enabled_modules = $config->get('module') ?? [];
+    if (isset($enabled_modules['config_filter'])) {
+      unset($enabled_modules['config_filter']);
+    }
+    $config->set('module', $enabled_modules);
+    $config->save();
+
+    \Drupal::service('extension.list.module')->reset();
+    \Drupal::moduleHandler()->invokeAll('rebuild');
+
+    $module_installer->uninstall(['config_filter']);
+  }
+
   // Disable hal & rdf modules.
-  foreach (['config_filter', 'hal', 'rdf'] as $module_name) {
+  foreach (['hal', 'rdf'] as $module_name) {
     if (\Drupal::moduleHandler()->moduleExists($module_name)) {
       $module_installer->uninstall([$module_name]);
     }
