@@ -1,4 +1,4 @@
-uuid: 2fe0ed06-7ad5-4448-9fdb-44561d6d3ffe
+uuid: 191a9a9d-7a09-4e4d-847f-8fd93b3fa315
 langcode: en
 status: true
 dependencies: {  }
@@ -7,31 +7,34 @@ label: 'Helfi: News'
 label_plural: 'Helfi: News'
 description: ''
 read_only: true
-generate_aliases: null
+generate_aliases: false
 field_mapper_id: jsonpath
 field_mapper_config:
   field_mappings:
     id:
-      value: $.id
+      value: $._source.uuid_langcode[0]
     uuid:
-      value: $.id
+      value: '$._source.uuid[0]'
     title:
-      value: "$.attributes['title']"
-    main_image:
-      uri: "$.relationships['main_image']['data']['relationships']['media_image']['data']['attributes']['uri']['url']"
-      title: "$.relationships['main_image']['data']['relationships']['media_image']['data']['meta']['alt']"
+      value: '$._source.title[0]'
+    tags_uuid:
+      value: '$._source.news_tags_uuid[*]'
     tags:
-      value: "$.relationships['tags']['data'][*]['attributes']['name']"
+      value: '$._source.field_news_item_tags[*]'
     groups:
-      value: "$.relationships['groups']['data'][*]['attributes']['name']"
+      value: '$._source.field_news_groups[*]'
+    groups_uuid:
+      value: '$._source.news_groups_uuid[*]'
     neighbourhoods:
-      value: "$.relationships['neighbourhoods']['data'][*]['attributes']['name']"
+      value: '$._source.field_news_neighbourhoods[*]'
+    neighbourhoods_uuid:
+      value: '$._source.neighbourhoods_uuid[*]'
     node_url:
-      value: "$.attributes['path']['alias']"
+      value: '$._source.url[0]'
     published_at:
-      value: "$.attributes['published_at']"
+      value: '$._source.published_at[0]'
     short_title:
-      value: "$.attributes['short_title']"
+      value: '$._source.short_title[0]'
 storage_client_id: helfi_news
 storage_client_config: {  }
 persistent_cache_max_age: 1800

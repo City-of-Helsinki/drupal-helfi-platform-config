@@ -2,6 +2,8 @@ uuid: c25c811b-7ba3-4831-9568-dc986e7e064f
 langcode: en
 status: true
 dependencies:
+  config:
+    - external_entities.external_entity_type.helfi_news_neighbourhoods
   module:
     - external_entities
     - paragraphs

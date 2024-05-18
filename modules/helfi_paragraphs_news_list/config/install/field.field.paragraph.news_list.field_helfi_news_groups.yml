@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - external_entities.external_entity_type.helfi_news_groups
     - field.storage.paragraph.field_helfi_news_groups
     - paragraphs.paragraphs_type.news_list
 id: paragraph.news_list.field_helfi_news_groups

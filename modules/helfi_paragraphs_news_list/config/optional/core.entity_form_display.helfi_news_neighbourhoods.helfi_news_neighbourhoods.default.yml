@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.helfi_news_neighbourhoods.helfi_news_neighbourhoods.field_frontpage_term_id
+    - external_entities.external_entity_type.helfi_news_neighbourhoods
   module:
     - external_entities
 id: helfi_news_neighbourhoods.helfi_news_neighbourhoods.default
@@ -11,14 +11,6 @@ targetEntityType: helfi_news_neighbourhoods
 bundle: helfi_news_neighbourhoods
 mode: default
 content:
-  field_frontpage_term_id:
-    type: string_textfield
-    weight: -4
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   title:
     type: string_textfield
     weight: -5

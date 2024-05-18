@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.helfi_news_tags.helfi_news_tags.field_frontpage_term_id
+    - external_entities.external_entity_type.helfi_news_tags
   module:
     - external_entities
 id: helfi_news_tags.helfi_news_tags.default
@@ -20,5 +20,5 @@ content:
     weight: 0
     region: content
 hidden:
-  field_frontpage_term_id: true
   search_api_excerpt: true
+  tid: true

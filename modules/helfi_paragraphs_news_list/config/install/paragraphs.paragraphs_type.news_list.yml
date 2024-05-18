@@ -1,7 +1,12 @@
 uuid: 8ebbf225-e710-49e4-9490-8d69114b58d1
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - external_entities.external_entity_type.helfi_news
+  module:
+    - external_entities
+    - paragraphs
 id: news_list
 label: 'News list'
 icon_uuid: null

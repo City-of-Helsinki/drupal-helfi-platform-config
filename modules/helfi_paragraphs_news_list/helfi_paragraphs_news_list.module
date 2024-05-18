@@ -12,8 +12,12 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
+use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -52,23 +56,23 @@ function helfi_paragraphs_news_list_paragraph_view(
     $query = $storage
       ->getQuery();
     $query
-      ->condition('langcode', $entity->language()->getId())
+      ->condition('_language', $entity->language()->getId())
       ->range(0, $entity->getLimit());
 
     $termFilters = [
-      'tags' => $entity->getTags(),
-      'groups' => $entity->getGroups(),
-      'neighbourhoods' => $entity->getNeighbourhoods(),
+      'news_tags_uuid' => $entity->getTagsUuid(),
+      'groups_uuid' => $entity->getGroupsUuid(),
+      'neighbourhoods_uuid' => $entity->getNeighbourhoodsUuids(),
     ];
     foreach ($termFilters as $name => $value) {
-      $query->condition($name, $value, 'IN');
+      $query->condition($name, $value);
     }
-
     $query->sort('published_at', 'DESC');
+
     $query->accessCheck(FALSE);
 
     $ids = $query->execute();
-    $entities = $storage->loadMultiple(array_keys($ids));
+    $entities = $storage->loadMultiple($ids);
 
     foreach ($entities as $item) {
       $item->addCacheableDependency($entity);
@@ -88,21 +92,15 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
   EntityTypeInterface $entity_type,
   $bundle,
 ) : void {
-  if ($entity_type->id() === 'helfi_news') {
-    $fields['main_image'] = BundleFieldDefinition::create('link')
-      ->setName('main_image')
-      ->setLabel(new TranslatableMarkup('Main image'))
-      ->setTargetEntityTypeId($entity_type->id())
-      ->setTargetBundle($bundle)
-      ->setSettings([
-        'max_length' => 1024,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
 
+  if ($entity_type->id() === 'helfi_news') {
     $termFields = [
       'tags' => new TranslatableMarkup('Tags'),
+      'tags_uuid' => new TranslatableMarkup('Tags (uuid)'),
       'groups' => new TranslatableMarkup('Groups'),
+      'groups_uuid' => new TranslatableMarkup('Groups (uuid)'),
       'neighbourhoods' => new TranslatableMarkup('Neighbourhoods'),
+      'neighbourhoods_uuid' => new TranslatableMarkup('Neighbourhoods (uuid)'),
     ];
 
     // These are taxonomy term fields in 'Etusivu' instance.
@@ -134,6 +132,14 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
         ->setDisplayConfigurable('form', TRUE);
     }
   }
+
+  if (in_array($entity_type->id(), ['helfi_news_groups', 'helfi_news_neighbourhoods', 'helfi_news_tags'])) {
+    $fields['tid'] = BundleFieldDefinition::create('string')
+      ->setName('tid')
+      ->setLabel(new TranslatableMarkup('Term ID'))
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+  }
 }
 
 /**
@@ -143,96 +149,84 @@ function helfi_paragraphs_news_list_entity_bundle_info_alter(array &$bundles) : 
   if (isset($bundles['paragraph']['news_list'])) {
     $bundles['paragraph']['news_list']['class'] = NewsFeedParagraph::class;
   }
+
+  if (isset($bundles['helfi_news']['helfi_news'])) {
+    $bundles['helfi_news']['helfi_news']['class'] = News::class;
+  }
+
+  $termEntityTypes = ['helfi_news_groups', 'helfi_news_neighbourhoods', 'helfi_news_tags'];
+
+  foreach ($termEntityTypes as $entityType) {
+    if (!isset($bundles[$entityType][$entityType])) {
+      continue;
+    }
+    $bundles[$entityType][$entityType]['class'] = Term::class;
+  }
 }
 
 /**
  * Implements hook_preprocess_paragraph().
  */
-function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables) {
+function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables) : void {
   $paragraph = $variables['paragraph'];
-  $language_id = \Drupal::languageManager()
+  $langcode = \Drupal::languageManager()
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
     ->getId();
-  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
-  $environment = \Drupal::configFactory()
-    ->get('helfi_paragraphs_news_list.settings')
-    ->get('source_environment') ?: 'prod';
-  $environment = $resolver->getEnvironment(Project::ETUSIVU, $environment);
 
-  $environment_url = $environment->getUrl($language_id);
-
-  // Set the news archive path based on language.
-  switch ($language_id) {
-    case 'fi':
-    default:
-      $news_path = '/uutiset';
-      break;
-
-    case 'sv':
-      $news_path = '/nyheter';
-      break;
-
-    case 'en':
-      $news_path = '/news';
-      break;
-  }
-
-  $archiveUrl = $environment_url . $news_path;
-  $params = [];
   $refFields = [
     'field_helfi_news_groups' => 'groups',
     'field_helfi_news_tags' => 'topic',
     'field_helfi_news_neighbourhoods' => 'neighbourhoods',
   ];
 
+  // Include terms in 'View all news' link.
+  $params = [];
   foreach ($refFields as $fieldName => $paramKey) {
     $field = $paragraph->get($fieldName);
 
     if ($field->isEmpty()) {
       continue;
     }
-
     $terms = $field->referencedEntities();
+
     foreach ($terms as $term) {
-      if (
-        $term->hasField('field_frontpage_term_id') &&
-        $external_tid = $term->get('field_frontpage_term_id')->value
-      ) {
-        // Format name to match app query param format.
-        $params[$paramKey][] = str_replace(' ', '+', strtolower($external_tid));
-      }
+      assert($term instanceof Term);
+
+      $params[$paramKey][] = $term->getTid();
     }
   }
+  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $resolver */
+  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
 
-  if (count($params)) {
-    $archiveUrl .= '?' . urldecode(http_build_query($params));
+  try {
+    $environment = $resolver->getActiveEnvironmentName();
   }
+  catch (\InvalidArgumentException) {
+    $environment = EnvironmentEnum::Prod->value;
+  }
+  $instanceUrl = $resolver->getEnvironment(Project::ETUSIVU, $environment)
+    ->getUrl($langcode);
+
+  $instanceUrl = $instanceUrl . match ($langcode) {
+    'fi' => '/uutiset',
+    'sv' => '/nyheter',
+    default => '/news',
+  };
+  $archiveUrl = Url::fromUri($instanceUrl, ['query' => $params]);
 
   // Assign the URL variable to the template.
-  $variables['news_archive_url'] = $archiveUrl;
+  $variables['news_archive_url'] = $archiveUrl->toString();
 }
 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function helfi_paragraphs_news_list_preprocess_external_entity__helfi_news__medium_teaser(&$variables) {
+function helfi_paragraphs_news_list_preprocess_external_entity__helfi_news__medium_teaser(&$variables) : void {
+  assert($variables['external_entity'] instanceof News);
+
   $entity = $variables['external_entity'];
-  if ($entity->getEntityType()->id() !== 'helfi_news') {
-    return;
-  }
 
-  $language_id = \Drupal::languageManager()
-    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-    ->getId();
-  $resolver = \Drupal::service('helfi_api_base.environment_resolver');
-  $environment = \Drupal::configFactory()
-    ->get('helfi_paragraphs_news_list.settings')
-    ->get('source_environment') ?: 'prod';
-
-  $environment_url = $resolver->getEnvironment(Project::ETUSIVU, $environment)
-    ->getUrl($language_id);
-
-  $variables['node_url'] = $environment_url . $entity->node_url->value;
-  $variables['published_at'] = strtotime($entity->published_at->value);
-  $variables['short_title'] = $entity->short_title->value ?: $entity->title->value;
+  $variables['node_url'] = $entity->getNodeUrl();
+  $variables['published_at'] = $entity->getPublishedAt();
+  $variables['short_title'] = $entity->getShortTitle() ?: $entity->label();
 }

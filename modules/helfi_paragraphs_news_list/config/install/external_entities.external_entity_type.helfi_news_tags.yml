@@ -7,17 +7,18 @@ label: 'Helfi: News tags'
 label_plural: 'Helfi: News tags'
 description: 'Retrieves news tags taxonomy terms from Helfi'
 read_only: true
+generate_aliases: null
 field_mapper_id: jsonpath
 field_mapper_config:
   field_mappings:
     id:
-      value: $.id
+      value: '$._source.uuid_langcode[0]'
     uuid:
-      value: $.id
+      value: '$._source.uuid[0]'
     title:
-      value: '$.attributes["name"]'
-    field_frontpage_term_id:
-      value: '$.attributes["drupal_internal__tid"]'
+      value: '$._source.name[0]'
+    tid:
+      value: '$._source.tid[0]'
 storage_client_id: helfi_news_tags
 storage_client_config: {  }
 persistent_cache_max_age: 86400

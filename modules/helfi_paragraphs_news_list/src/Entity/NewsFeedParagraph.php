@@ -4,28 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list\Entity;
 
-use Drupal\Core\Field\Plugin\Field\FieldType\StringItem;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Bundle class for 'news_list' paragraph.
  */
 final class NewsFeedParagraph extends Paragraph {
-
-  /**
-   * A helper function to get multifield values.
-   *
-   * @param string $field
-   *   The field name.
-   *
-   * @return array
-   *   The term field values.
-   */
-  private function getUnlimitedStringFieldValue(string $field) : array {
-    return array_map(function (StringItem $value) {
-      return $value->value;
-    }, iterator_to_array($this->get($field)));
-  }
 
   /**
    * Gets the defined tags.
@@ -38,13 +22,49 @@ final class NewsFeedParagraph extends Paragraph {
   }
 
   /**
+   * Gets the UUIDs for given external entity term.
+   *
+   * The terms id contain uuid and langcode, but we only care about
+   * the UUID when filtering by term.
+   *
+   * @param array $values
+   *   The values to parse.
+   *
+   * @return array
+   *   An array of UUIDs.
+   */
+  private function getTermUuid(array $values) : array {
+    return array_map(fn (array $item) => explode(':', $item['target_id'])[0], $values);
+  }
+
+  /**
+   * Gets the UUIDs for given tags.
+   *
+   * @return array
+   *   An array of tags UUIDs.
+   */
+  public function getTagsUuid() : array {
+    return $this->getTermUuid($this->getTags());
+  }
+
+  /**
    * Gets the defined groups.
    *
    * @return string[]
-   *   Anb array of groups.
+   *   An array of groups.
    */
   public function getGroups() : array {
     return $this->get('field_helfi_news_groups')->getValue() ?? [];
+  }
+
+  /**
+   * Gets the UUIDs for given groups.
+   *
+   * @return array
+   *   An array of group UUIDs.
+   */
+  public function getGroupsUuid() : array {
+    return $this->getTermUuid($this->getGroups());
   }
 
   /**
@@ -58,9 +78,19 @@ final class NewsFeedParagraph extends Paragraph {
   }
 
   /**
+   * Gets the UUIDs for given neighbourhoods.
+   *
+   * @return array
+   *   An array of neighbourhood UUIDs.
+   */
+  public function getNeighbourhoodsUuids() : array {
+    return $this->getTermUuid($this->getNeighbourhoods());
+  }
+
+  /**
    * Gets the limit.
    *
-   * Defines how many items is shown.
+   * Defines how many items are shown.
    *
    * @return int
    *   The limit.

@@ -1,4 +1,4 @@
-uuid: fdee0e5a-637b-4dc1-896e-04b22138eba2
+uuid: 0b395847-e895-4706-a7f0-13ae0b35179f
 langcode: en
 status: true
 dependencies:
@@ -10,6 +10,7 @@ dependencies:
     - field.field.paragraph.news_list.field_news_list_description
     - field.field.paragraph.news_list.field_news_list_title
     - paragraphs.paragraphs_type.news_list
+    - external_entities.external_entity_type.helfi_news
   module:
     - text
 id: paragraph.news_list.default
@@ -66,3 +67,4 @@ content:
     region: content
 hidden:
   field_limit: true
+  search_api_excerpt: true
