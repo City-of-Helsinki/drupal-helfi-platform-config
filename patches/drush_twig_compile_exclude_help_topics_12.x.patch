@@ -1,0 +1,13 @@
+diff --git a/src/Commands/core/TwigCommands.php b/src/Commands/core/TwigCommands.php
+index bbb52e722..632d4c04a 100644
+--- a/src/Commands/core/TwigCommands.php
++++ b/src/Commands/core/TwigCommands.php
+@@ -113,7 +113,7 @@ final class TwigCommands extends DrushCommands
+         $files = Finder::create()
+         ->files()
+         ->name('*.html.twig')
+-        ->exclude('tests')
++        ->exclude(['tests', 'help_topics'])
+         ->in($searchpaths);
+         foreach ($files as $file) {
+             $relative = Path::makeRelative($file->getRealPath(), Drush::bootstrapManager()->getRoot());
