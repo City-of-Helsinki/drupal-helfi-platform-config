@@ -114,3 +114,14 @@ function helfi_platform_config_update_9307() : void {
     }
   }
 }
+
+/**
+ * Enable help_topics module to prevent missing help_route_link function -error.
+ */
+function helfi_platform_config_update_9308() : void {
+  $module_installer = \Drupal::service('module_installer');
+
+  if (!\Drupal::moduleHandler()->moduleExists('help_topics')) {
+    $module_installer->install(['help_topics']);
+  }
+}
