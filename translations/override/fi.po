@@ -62,6 +62,12 @@ msgstr "Käyttäjä"
 msgid "Yes"
 msgstr "Kyllä"
 
+msgid "Add @type via URL"
+msgstr "Lisää @type"
+
+msgid "No matching provider found."
+msgstr "Tarkista URL-osoite. Osoitteen perusteella ei voitu määrittää palveluntarjoajaa."
+
 # Content lock
 msgid "Break Lock for content @label"
 msgstr "Vahvista lukituksen poisto sivulta @label"
@@ -95,6 +101,10 @@ msgstr "Korvaa alkuperäinen tiedosto (@originalExtension)"
 
 msgid "Replace file"
 msgstr "Korvaa tiedosto"
+
+# Media library
+msgid "The media item has been created but has not yet been saved. Fill in any required fields and save to add it to the media library."
+msgstr "Media on luotu, mutta sitä ei ole vielä tallennettu. Täytä kaikki pakolliset kentät ja tallenna lisätäksesi se mediakirjastoon."
 
 # Menu
 msgid "Parent link"
