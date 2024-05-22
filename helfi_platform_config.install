@@ -114,3 +114,15 @@ function helfi_platform_config_update_9307() : void {
     }
   }
 }
+
+/**
+ * UHF-10063: Enable help module to prevent errors during twig:compile.
+ */
+function helfi_platform_config_update_9308() : void {
+  $module_installer = \Drupal::service('module_installer');
+
+  // Enable help module.
+  if (!\Drupal::moduleHandler()->moduleExists('help')) {
+    $module_installer->install(['help']);
+  }
+}
