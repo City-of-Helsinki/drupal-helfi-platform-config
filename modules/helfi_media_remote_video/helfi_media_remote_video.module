@@ -118,6 +118,7 @@ function _helfi_media_remote_video_remote_video_validate(array $form, FormStateI
 
   $user_input = $form_state->getUserInput();
   $video_url = FALSE;
+  $skip_url_validation = FALSE;
 
   // Helsinki-kanava video can be added via media library or as a new media
   // entity. Handle the URL in both cases.
@@ -133,6 +134,7 @@ function _helfi_media_remote_video_remote_video_validate(array $form, FormStateI
   ) {
     $oembed_video_field = 'url';
     $video_url = &$user_input[$oembed_video_field];
+    $skip_url_validation = TRUE;
   }
 
   // Convert the video url if needed.
@@ -140,7 +142,8 @@ function _helfi_media_remote_video_remote_video_validate(array $form, FormStateI
     try {
       $converted_url = _helfi_media_remote_video_remote_video_url_handler($video_url);
     }
-    catch (ResourceException $e) {
+    catch (Exception $e) {
+      $form_state->setErrorByName('url', $e->getMessage());
       return $form;
     }
 
@@ -148,6 +151,14 @@ function _helfi_media_remote_video_remote_video_validate(array $form, FormStateI
       $video_url = $converted_url;
       $form_state->setUserInput($user_input);
       $form_state->setValue($oembed_video_field, $user_input[$oembed_video_field]);
+
+      // Do not validate the media library form from this point forward.
+      // The user inserted URL is cached by media library form and the Oembed
+      // provider would try to validate the unconverted URL. Set the form
+      // validation complete to avoid this.
+      if ($skip_url_validation) {
+        $form_state->setValidationComplete();
+      }
     }
   }
 
@@ -167,6 +178,9 @@ function _helfi_media_remote_video_remote_video_validate(array $form, FormStateI
  *
  * @return false|string
  *   Returns FALSE or converted video URL.
+ *
+ * @throws \Exception
+ *   If the URL is missing asset ID.
  */
 function _helfi_media_remote_video_remote_video_url_handler(string $video_url): false|string {
   $converted_url = FALSE;
@@ -197,18 +211,15 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
 
   // Try to convert the URL if it's of form 'web/helsinkikanava/player/webcast'.
   if (str_contains($video_url, '/web/helsinkikanava/player/webcast')) {
-    $lang_code = '';
     preg_match('/assetId=(\d+)/', $video_url, $asset_id_matches);
     $asset_id = $asset_id_matches[1];
 
     if (empty($asset_id)) {
-      return $converted_url;
+      throw new Exception('URL is missing asset ID parameter.');
     }
 
-    // @todo figure out if this is needed.
-    // $lang_code = empty($lang_code) ? 'fi' : $lang_code;
     $url_parts = explode('*', $helsinki_kanava_url_pattern);
-    $converted_url = $url_parts[0] . $lang_code . $url_parts[1] . $asset_id;
+    $converted_url = $url_parts[0] . 'fi' . $url_parts[1] . $asset_id;
   }
 
   // Return the converted URL.
