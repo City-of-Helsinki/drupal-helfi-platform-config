@@ -110,6 +110,15 @@ class NewsStorageClientTest extends StorageClientTestBase {
             'must' => [
               ['term' => ['name' => 'value']],
               [
+                'bool' => [
+                  'should' => [
+                    ['term' => ['tags' => 1]],
+                    ['term' => ['tags' => 2]],
+                    ['term' => ['tags' => 3]],
+                  ],
+                ],
+              ],
+              [
                 'regexp' => [
                   'name' => ['value' => 'test.*', 'case_insensitive' => TRUE],
                 ],
@@ -131,6 +140,7 @@ class NewsStorageClientTest extends StorageClientTestBase {
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('name', 'value')
+      ->condition('tags', [1, 2, 3], 'IN')
       ->condition('name', 'test', 'CONTAINS')
       ->execute();
   }
