@@ -153,23 +153,29 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
       if (!$value) {
         continue;
       }
-      $value = is_array($value) ? $value : [$value];
-
-      foreach ($value as $v) {
-        $term = ['term' => [$fieldName => $v]];
-
-        if ($op === 'CONTAINS') {
-          $term = [
+      $callback = match($op) {
+        'IN' => function (array $value, string $fieldName) : array {
+          $inGroup = [];
+          foreach ($value as $v) {
+            $inGroup[] = ['term' => [$fieldName => $v]];
+          }
+          return ['bool' => ['should' => $inGroup]];
+        },
+        'CONTAINS' => function (string $value, string $fieldName) : array {
+          return [
             'regexp' => [
               $fieldName => [
-                'value' => $v . '.*',
+                'value' => $value . '.*',
                 'case_insensitive' => TRUE,
               ],
             ],
           ];
-        }
-        $query['bool']['must'][] = $term;
-      }
+        },
+        default => function (string|int|null $value, string $fieldName) : array {
+          return ['term' => [$fieldName => $value]];
+        },
+      };
+      $query['bool']['must'][] = $callback($value, $fieldName);
     }
 
     $sortQuery = [];
