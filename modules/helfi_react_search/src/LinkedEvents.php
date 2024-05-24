@@ -5,91 +5,71 @@ declare(strict_types=1);
 namespace Drupal\helfi_react_search;
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
-use GuzzleHttp\ClientInterface;
+use Drupal\helfi_api_base\ApiClient\ApiClient;
+use Drupal\helfi_api_base\ApiClient\ApiResponse;
+use Drupal\helfi_api_base\ApiClient\CacheValue;
+use Drupal\helfi_api_base\Cache\CacheKeyTrait;
+use Drupal\helfi_react_search\Enum\CategoryKeywords;
 use GuzzleHttp\Exception\GuzzleException;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Class for retrieving data from LinkedEvents Api.
  */
-class LinkedEvents extends EventsApiBase {
+class LinkedEvents {
   public const BASE_URL = 'https://tapahtumat.hel.fi';
   protected const API_URL = 'https://api.hel.fi/linkedevents/v1/';
 
   /**
+   * Cache events data for eight hours.
+   *
+   * The response cache is flushed by 'helfi_navigation_menu_queue'
+   * queue worker.
+   */
+  public const TTL = 28800;
+
+  /**
+   * Should the fixture data be used.
+   *
+   * @var bool|string
+   */
+  protected bool|string $useFixtures = FALSE;
+
+  /**
+   * The previous exception.
+   *
+   * @var \Exception|null
+   */
+  private ?\Exception $previousException = NULL;
+
+  use CacheKeyTrait;
+
+  /**
    * Class constructor.
    *
-   * @param \Drupal\Core\Cache\CacheBackendInterface $dataCache
-   *   The cache service.
-   * @param \GuzzleHttp\ClientInterface $httpClient
-   *   The HTTP client.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   Logger channel.
+   * @param \Drupal\helfi_api_base\ApiClient\ApiClient $client
+   *   The helfi api base api client.
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
    */
   public function __construct(
-    private CacheBackendInterface $dataCache,
-    private ClientInterface $httpClient,
-    private LoggerInterface $logger,
-    private LanguageManagerInterface $languageManager,
+    #[Autowire(service: 'helfi_react_search.api_client')] private ApiClient $client,
+    private readonly LanguageManagerInterface $languageManager,
   ) {}
 
   /**
-   * Max age for cache.
+   * Allow cache to be bypassed.
+   *
+   * @return $this
+   *   The self.
    */
-  public function getCacheMaxAge() : int {
-    return time() + 60 * 60 * 8;
-  }
-
-  /**
-   * Gets the cache key for given id.
-   *
-   * @param string $id
-   *   The id.
-   *
-   * @return string
-   *   The cache key.
-   */
-  protected function getCacheKey(string $id) : string {
-    $id = preg_replace('/[^a-z0-9_]+/s', '_', $id);
-
-    return sprintf('linked-events-%s', $id);
-  }
-
-  /**
-   * Gets cached data for given id.
-   *
-   * @param string $id
-   *   The id.
-   *
-   * @return array|null
-   *   The cached data or null.
-   */
-  protected function getFromCache(string $id) : ? array {
-    $key = $this->getCacheKey($id);
-
-    if ($data = $this->dataCache->get($key)) {
-      return $data->data;
-    }
-    return NULL;
-  }
-
-  /**
-   * Sets the cache.
-   *
-   * @param string $id
-   *   The id.
-   * @param mixed $data
-   *   The data.
-   */
-  protected function setCache(string $id, $data) : void {
-    $key = $this->getCacheKey($id);
-    $this->dataCache->set($key, $data, $this->getCacheMaxAge(), []);
+  public function withBypassCache() : self {
+    $instance = clone $this;
+    $instance->client = $this->client->withBypassCache();
+    return $instance;
   }
 
   /**
@@ -104,6 +84,10 @@ class LinkedEvents extends EventsApiBase {
    *   Resulting api url with params a query string
    */
   public function getEventsRequest(array $options = [], string $pageSize = '3') : string {
+    if ($this->useFixtures) {
+      return $this->useFixtures;
+    }
+
     // Linked events URLs should end with '/' (URLs without '/' are redirect).
     $url = Url::fromUri(self::API_URL . 'event/');
 
@@ -133,37 +117,53 @@ class LinkedEvents extends EventsApiBase {
   }
 
   /**
-   * Return places from cache or generate list of them.
+   * Use cache to fetch an external menu from Etusivu instance.
    *
    * @param string $event_url
-   *   The Api url for events.
+   *   The event url.
    *
-   * @return array
-   *   Array of all possible places.
+   * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
+   *   The JSON object representing the linked events
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getPlacesList(string $event_url) : array {
-    $url = $this->formatPlacesUrl($event_url);
+  public function get(string $event_url) : ApiResponse {
 
-    if ($data = $this->getFromCache($url)) {
-      return $data;
-    }
+    $url = !$this->useFixtures
+      ? $this->formatPlacesUrl($event_url)
+      : $this->useFixtures;
 
+    $key = $this->getCacheKey(sprintf('linked-events:%s', $url));
+
+    return $this->client->cache(
+      $key,
+      function () use ($url) {
+        // Fixture is used in tests.
+        $fixture = vsprintf('%s/../fixtures/%s.json', [
+          __DIR__,
+          str_replace('/', '-', ltrim($url, '/')),
+        ]);
+
+        $response = $this->client->makeRequestWithFixture($fixture, 'GET', $url, ['force_fixture' => TRUE]);
+
+        return new CacheValue(
+          $response,
+          $this->client->cacheMaxAge(self::TTL),
+          [sprintf('linked-events:%s', $url)],
+        );
+      }
+    )->response;
+  }
+
+  /**
+   * Parse.
+   */
+  protected function parseResponse(ApiResponse $response, array $places) : array {
     $result = [];
 
-    // Get location IDs from event URL.
-    $parsed_url = UrlHelper::parse($event_url);
-    $places = [];
-    if (!empty($parsed_url['query']['location'])) {
-      $places = explode(',', $parsed_url['query']['location']);
-    }
-
     try {
-      $response = $this->httpClient->request('GET', $url);
-      $body = json_decode($response->getBody()->getContents());
-      $next = $body->meta->next;
-      $data = $body->data;
+      $next = $response->meta->next;
+      $data = $response->data->data;
 
       do {
         foreach ($data as $item) {
@@ -184,17 +184,53 @@ class LinkedEvents extends EventsApiBase {
         }
 
         if ($next) {
-          $response = $this->httpClient->request('GET', $next);
-          $body = json_decode($response->getBody()->getContents());
-          $next = $body->meta->next;
-          $data = $body->data;
+          $next_response = $this->get($next);
+          $next = $next_response->meta->next;
+          $data = $next_response->data;
         }
         else {
           $data = NULL;
         }
       } while ($data && count($data) > 0);
+    }
+    catch (\Exception $e) {
+      $this->logger->error('Request failed with error: ' . $e->getMessage());
+    }
+    return $result;
+  }
 
-      $this->setCache($url, $result);
+  /**
+   * Return places from cache or generate list of them.
+   *
+   * @param string $event_url
+   *   The Api url for events.
+   *
+   * @return array
+   *   Array of all possible places.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  public function getPlacesList(string $event_url) : array {
+    $result = [];
+
+    try {
+      $places = [];
+
+      if ($this->useFixtures) {
+        $response = $this->get($this->useFixtures);
+      }
+      else {
+        $response = $this->get($this->formatPlacesUrl($event_url));
+
+        // Get location IDs from event URL.
+        $parsed_url = UrlHelper::parse($event_url);
+        if (!empty($parsed_url['query']['location'])) {
+          $places = explode(',', $parsed_url['query']['location']);
+        }
+      }
+
+      // Parse response.
+      $result = $this->parseResponse($response, $places);
     }
     catch (GuzzleException $e) {
       $this->logger->error('Request failed with error: ' . $e->getMessage());
@@ -243,6 +279,144 @@ class LinkedEvents extends EventsApiBase {
     $url->setOption('query', $options);
 
     return $url->toString();
+  }
+
+  /**
+   * Parse query params from request url.
+   *
+   * @param string $url
+   *   Tapahtumat.hel.fi url.
+   *
+   * @return array
+   *   Array of params.
+   */
+  public function parseParams(string $url) : array {
+    if (str_contains($url, 'api-linkedevents')) {
+      $url = str_replace('https://', '', $url);
+      $this->useFixtures = $url;
+      return [];
+    }
+
+    $parsed = UrlHelper::parse($url);
+    $params = [];
+
+    if (!empty($parsed) && isset($parsed['query'])) {
+      foreach ($parsed['query'] as $key => $param) {
+        switch ($key) {
+          case 'categories':
+            $params['keyword'] = $this->categoriesToKeywords($param);
+            break;
+
+          case 'start':
+            $now = strtotime('now');
+            if (strtotime($param) < $now) {
+              $params[$key] = 'now';
+            }
+            else {
+              $params[$key] = $param;
+            }
+            break;
+
+          case 'divisions':
+            $params['division'] = $param;
+            break;
+
+          case 'places':
+            $params['location'] = $param;
+            break;
+
+          case 'dateTypes':
+            $dateTypes = explode(',', $param);
+            foreach ($dateTypes as $dateType) {
+              switch ($dateType) {
+                case 'today':
+                  $params['end'] = 'today';
+                  break;
+
+                case 'tomorrow';
+                  $params['start'] = date('Y-m-d', strtotime('tomorrow'));
+                  $params['end'] = date('Y-m-d', strtotime('tomorrow'));
+                  break;
+
+                case 'this_week':
+                  $params['end'] = date('Y-m-d', strtotime('next Sunday'));
+                  break;
+
+                case 'weekend':
+                  $params['start'] = date('Y-m-d', strtotime('next Saturday'));
+                  $params['end'] = date('Y-m-d', strtotime('next Sunday'));
+                  break;
+
+                default:
+                  break;
+              }
+            }
+            break;
+
+          case 'text':
+            $params['all_ongoing_AND'] = $param;
+            break;
+
+          case 'isFree':
+            $params['is_free'] = $param;
+            break;
+
+          case 'onlyEveningEvents':
+            if ($param === 'true') {
+              $params['starts_after'] = 16;
+            }
+            break;
+
+          case 'onlyChildrenEvents':
+            if ($param === 'true') {
+              $params['keyword_AND'] = CategoryKeywords::CHILDREN;
+            }
+            break;
+
+          case 'onlyRemoteEvents':
+            $params['internet_based'] = 'true';
+            break;
+
+          default:
+            $params[$key] = $param;
+            break;
+        }
+      }
+    }
+
+    return $params;
+  }
+
+  /**
+   * Transform categories to an array of keywords for the API.
+   *
+   * @param string $categories
+   *   Event categories.
+   *
+   * @return string
+   *   Resulting json-encoded string of keywords
+   */
+  protected function categoriesToKeywords(string $categories) : string {
+    $keywords = [];
+
+    foreach (explode(',', $categories) as $category) {
+      $map = match ($category) {
+        'culture' => CategoryKeywords::CULTURE,
+        'movie' => CategoryKeywords::MOVIE,
+        'sport' => CategoryKeywords::SPORT,
+        'nature' => CategoryKeywords::NATURE,
+        'museum' => CategoryKeywords::MUSEUM,
+        'music' => CategoryKeywords::MUSIC,
+        'influence' => CategoryKeywords::INFLUENCE,
+        'food' => CategoryKeywords::FOOD,
+        'dance' => CategoryKeywords::DANCE,
+        'theatre' => CategoryKeywords::THEATRE,
+      };
+
+      $keywords = array_merge($map, $keywords);
+    };
+
+    return implode(',', $keywords);
   }
 
 }

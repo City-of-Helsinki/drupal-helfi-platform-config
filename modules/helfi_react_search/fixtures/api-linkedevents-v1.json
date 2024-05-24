@@ -1,0 +1,897 @@
+{
+  "meta": {
+    "count": 14,
+    "next": null,
+    "previous": null
+  },
+  "data": [
+    {
+      "id": "hkm:6234",
+      "location": {
+        "id": "tprek:8645",
+        "data_source": "tprek",
+        "publisher": "ahjo:u021800",
+        "divisions": [
+          {
+            "type": "muni",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki",
+            "municipality": null,
+            "name": {
+              "fi": "Helsinki",
+              "sv": "Helsingfors"
+            }
+          },
+          {
+            "type": "district",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/peruspiiri:kampinmalmi",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Kampinmalmi",
+              "sv": "Kampmalmen"
+            }
+          },
+          {
+            "type": "sub_district",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/osa-alue:etu-töölö",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Etu-Töölö",
+              "sv": "Främre Tölö"
+            }
+          },
+          {
+            "type": "neighborhood",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/kaupunginosa:etu-töölö",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Etu-Töölö",
+              "sv": "Främre Tölö"
+            }
+          }
+        ],
+        "created_time": null,
+        "last_modified_time": "2024-03-28T08:09:32.870029Z",
+        "custom_data": null,
+        "email": "kaupunginmuseo@hel.fi",
+        "contact_type": null,
+        "address_region": null,
+        "postal_code": "00100",
+        "post_office_box_num": null,
+        "address_country": null,
+        "deleted": false,
+        "has_upcoming_events": true,
+        "n_events": 223,
+        "image": null,
+        "parent": null,
+        "replaced_by": null,
+        "position": {
+          "type": "Point",
+          "coordinates": [24.934093, 60.174664]
+        },
+        "telephone": {
+          "fi": "+358 9 310 78519"
+        },
+        "name": {
+          "fi": "Hakasalmen huvila",
+          "sv": "Villa Hagasund",
+          "en": "Villa Hakasalmi"
+        },
+        "info_url": {
+          "fi": "http://www.hakasalmenhuvila.fi",
+          "sv": "http://www.villahagasund.fi/",
+          "en": "https://www.hakasalmivilla.fi/"
+        },
+        "street_address": {
+          "fi": "Mannerheimintie 13b",
+          "sv": "Mannerheimvägen 13b",
+          "en": "Mannerheimintie 13b"
+        },
+        "description": {
+          "fi": "Hakasalmen huvilassa on esillä vuosittain vaihtuvia näyttelyitä Helsingin historiasta. Näyttelyiden aiheet vaihtelevat kaupungin musiikkielämästä elokuvien Helsinkiin, sotavuosien mielialoista kartanoelämään. Erityisen suosittuja ovat 1900-luvun kaupunkimaisemia ja helsinkiläistä arkielämää esittelevät valokuvanäyttelyt. Helsinki-nostalgian rinnalla näyttelyt tarjoavat uusinta tutkimustietoa ja uusia näkökulmia menneisyyteen. Museon yhteydessä on museokauppa ja huvilan pihapiirissä kahvila Rakastan. Hakasalmen huvila on Helsingin kaupunginmuseon vanhin toimipiste. Museon toiminta alkoi rakennuksessa vuonna 1912. Hakasalmen huvila sijaitsee Töölönlahden alueella, keskustakirjasto Oodin, Musiikkitalon ja Finlandia-talon naapurina. Päärakennuksessa voi tavoittaa muiston empire-ajan huvila-arkkitehtuurista, josta on säilynyt Helsingissä vain harvoja esimerkkejä. Hakasalmen huvilan tunnetuin asukas oli Aurora Karamzin, joka asui siellä kuolemaansa 1902 asti. Moni helsinkiläinen kutsuu rakennusta yhä edelleen Karamzinin huvilaksi.",
+          "sv": "På Villa Hagasund visas utställningar om Helsingfors historia som byts ut årligen. Temat på utställningarna varierar mellan allt från stadens musikliv till filmernas Helsingfors, och från stämningen under krigsåren till herrgårdsliv. Särskilt populära är fotoutställningar som föreställer stadslandskapet och vardagen för en helsingforsare under 1900-talet. Förutom Helsingforsnostalgi bjuder utställningarna på de nyaste forskningsrönen och nya synvinklar på det förflutna. I förbindelse med museet finns en museibutik och på villans gårdsplan finns kaféet Rakastan. Villa Hagasund är det äldsta verksamhetsstället inom Helsingfors stadsmuseum. År 1912 inleddes museiverksamheten i byggnaden. Villa Hagasund ligger invid Tölöviken och är granne med centrumbiblioteket Ode, Musikhuset och Finlandiahuset. I huvudbyggnaden kan du se minnen från empirtidens villaarkitektur. I Helsingfors finns endast få sådana exemplar bevarade. Den mest kända invånaren i Villa Hagasund var Aurora Karamzin som bodde där fram till sin död år 1902. Många helsingforsare kallar fortfarande byggnaden för Karamzins villa.",
+          "en": "Hakasalmi Villa has temporary exhibitions about the history of Helsinki, with a new theme each year. The exhibitions range from the city's musical life to the Helsinki of the movies, and from wartime moods to manor life. Photo exhibitions presenting 20th-century urban landscapes and everyday life in Helsinki are particularly popular. Alongside Helsinki nostalgia, the exhibitions offer access to the latest research data and new perspectives on the past. There is a museum shop and café Rakastan in the yard of the villa. Hakasalmi Villa is the oldest part of the Helsinki City Museum. The museum was opened in the building in 1912. Hakasalmi Villa is located in the Töölönlahti area, next to Helsinki Central Library Oodi, Musiikkitalo and Finlandia Hall. The main building is a reminder of the villa architecture of the Empire period, of which there are only a few examples left in Helsinki. The most famous resident of Hakasalmi Villa was Aurora Karamzin, who lived there until her death in 1902. Many Helsinki residents still call the building Karamzin's villa."
+        },
+        "address_locality": {
+          "fi": "Helsinki",
+          "sv": "Helsingfors",
+          "en": "Helsinki"
+        },
+        "@id": "https://api.hel.fi/linkedevents/v1/place/tprek:8645/?format=json",
+        "@context": "http://schema.org",
+        "@type": "Place"
+      },
+      "keywords": [
+        {
+          "id": "helfi:12",
+          "alt_labels": [],
+          "created_time": "2015-01-13T12:00:00Z",
+          "last_modified_time": "2015-01-13T12:00:00Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 22816,
+          "image": null,
+          "data_source": "helfi",
+          "publisher": null,
+          "replaced_by": null,
+          "name": {
+            "fi": "Kulttuuri ja vapaa-aika",
+            "sv": "Kultur och fritid",
+            "en": "Culture and leisure"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/helfi:12/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p22039",
+          "alt_labels": [
+            "arkielämä",
+            "vardagsliv"
+          ],
+          "created_time": "2014-06-23T11:37:28.851000Z",
+          "last_modified_time": "2017-09-06T05:21:10.161607Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1004,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "arki",
+            "sv": "vardag",
+            "en": "everyday"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p22039/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p4679",
+          "alt_labels": [
+            "Helsingforsbor"
+          ],
+          "created_time": "2014-06-23T11:37:23.854000Z",
+          "last_modified_time": "2017-09-06T05:20:31.149963Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1129,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p4679/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p4934",
+          "alt_labels": [
+            "muséer"
+          ],
+          "created_time": "2014-06-23T11:37:25.526000Z",
+          "last_modified_time": "2017-09-06T05:19:58.766408Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 6582,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p4934/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p8107",
+          "alt_labels": [],
+          "created_time": "2014-06-23T11:37:29.492000Z",
+          "last_modified_time": "2017-09-06T05:20:24.029420Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1250,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p8107/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        }
+      ],
+      "registration": null,
+      "super_event": null,
+      "event_status": "EventScheduled",
+      "type_id": "General",
+      "external_links": [],
+      "offers": [
+        {
+          "is_free": true,
+          "price": null,
+          "info_url": null,
+          "description": {
+            "fi": "Vapaa pääsy",
+            "sv": "Fritt inträde",
+            "en": "Free entry"
+          }
+        }
+      ],
+      "data_source": "hkm",
+      "publisher": "ahjo:u4804001020",
+      "sub_events": [],
+      "images": [
+        {
+          "id": 101857,
+          "license": "cc_by",
+          "created_time": "2024-01-26T11:11:56.438456Z",
+          "last_modified_time": "2024-01-26T11:11:56.438477Z",
+          "name": "hkm-image",
+          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/01/artikkelikuva_825x513px_VonBonin_Slangiopastus_Hakasalmi_kevat24.jpg",
+          "cropping": "",
+          "photographer_name": null,
+          "alt_text": null,
+          "data_source": "hkm",
+          "publisher": "ahjo:u4804001020",
+          "@id": "https://api.hel.fi/linkedevents/v1/image/101857/?format=json",
+          "@context": "http://schema.org",
+          "@type": "ImageObject"
+        }
+      ],
+      "videos": [],
+      "in_language": [],
+      "audience": [],
+      "created_time": "2024-01-26T11:13:17.320043Z",
+      "last_modified_time": "2024-02-07T08:59:16.211757Z",
+      "date_published": null,
+      "start_time": "2024-06-01T11:00:00Z",
+      "end_time": "2024-06-01T12:00:00Z",
+      "custom_data": null,
+      "environmental_certificate": null,
+      "environment": null,
+      "audience_min_age": null,
+      "audience_max_age": null,
+      "super_event_type": null,
+      "deleted": false,
+      "maximum_attendee_capacity": null,
+      "minimum_attendee_capacity": null,
+      "enrolment_start_time": null,
+      "enrolment_end_time": null,
+      "local": false,
+      "replaced_by": null,
+      "location_extra_info": null,
+      "short_description": {
+        "fi": "Katse Helsinkiin – Volker von Boninin valokuvia -näyttelyyn tutustutaan slangiksi Esko Vepsän op…",
+        "en": "A guided tour of the A Glimpse of Helsinki – Volker von Bonin’s photos exhibition by Esko Vepsä…"
+      },
+      "provider_contact_info": null,
+      "name": {
+        "fi": "Slangiopastus Katse Helsinkiin -näyttelyssä",
+        "en": "A Glimpse of Helsinki, a guided tour of the exhibition in Helsinki slang"
+      },
+      "info_url": {
+        "fi": "https://hakasalmenhuvila.fi/tapahtumat/slangiopastus-katse-helsinkiin-nayttelyssa-4/",
+        "en": "https://hakasalmivilla.fi/events/a-glimpse-of-helsinki-a-guided-tour-of-the-exhibition-in-helsinki-slang-4/"
+      },
+      "provider": null,
+      "description": {
+        "fi": "\u003Cp\u003E\u003Ca href=\"https://hakasalmenhuvila.fi/nayttelyt/katse-helsinkiin-volker-von-boninin-valokuvia/\"\u003E\u003Cem\u003EKatse Helsinkiin – Volker von Boninin valokuvia\u003C/em\u003E\u003C/a\u003E -näyttelyyn tutustutaan slangiksi \u003Cstrong\u003EEsko Vepsän\u003C/strong\u003E opastuksella.\u003C/p\u003E\u003Cp\u003ESuomenkielinen opastus sisältyy sisäänpääsymaksun hintaan, ei erillisveloitusta. Tervetuloa!\u003C/p\u003E\u003Cp\u003E\u003Cem\u003EKuva: Volker von Bonin, 1963 / Helsingin kaupunginmuseo\u003C/em\u003E\u003C/p\u003E",
+        "en": "\u003Cp\u003EA guided tour of the \u003Cem\u003EA Glimpse of Helsinki – Volker von Bonin’s photos\u003C/em\u003E exhibition by Esko Vepsä, in Helsinki slang.\u003C/p\u003E\u003Cp\u003EThe Finnish-language tour is included in the entrance fee, no separate charge. Welcome!\u003C/p\u003E\u003Cp\u003E\u003Cem\u003EPhoto: Volker von Bonin / Helsinki City Museum\u003C/em\u003E\u003C/p\u003E"
+      },
+      "@id": "https://api.hel.fi/linkedevents/v1/event/hkm:6234/?format=json",
+      "@context": "http://schema.org",
+      "@type": "Event/LinkedEvent"
+    },
+    {
+      "id": "hkm:6483",
+      "location": {
+        "id": "tprek:8645",
+        "data_source": "tprek",
+        "publisher": "ahjo:u021800",
+        "divisions": [
+          {
+            "type": "muni",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki",
+            "municipality": null,
+            "name": {
+              "fi": "Helsinki",
+              "sv": "Helsingfors"
+            }
+          },
+          {
+            "type": "district",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/peruspiiri:kampinmalmi",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Kampinmalmi",
+              "sv": "Kampmalmen"
+            }
+          },
+          {
+            "type": "sub_district",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/osa-alue:etu-töölö",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Etu-Töölö",
+              "sv": "Främre Tölö"
+            }
+          },
+          {
+            "type": "neighborhood",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/kaupunginosa:etu-töölö",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Etu-Töölö",
+              "sv": "Främre Tölö"
+            }
+          }
+        ],
+        "created_time": null,
+        "last_modified_time": "2024-03-28T08:09:32.870029Z",
+        "custom_data": null,
+        "email": "kaupunginmuseo@hel.fi",
+        "contact_type": null,
+        "address_region": null,
+        "postal_code": "00100",
+        "post_office_box_num": null,
+        "address_country": null,
+        "deleted": false,
+        "has_upcoming_events": true,
+        "n_events": 223,
+        "image": null,
+        "parent": null,
+        "replaced_by": null,
+        "position": {
+          "type": "Point",
+          "coordinates": [24.934093, 60.174664]
+        },
+        "telephone": {
+          "fi": "+358 9 310 78519"
+        },
+        "name": {
+          "fi": "Hakasalmen huvila",
+          "sv": "Villa Hagasund",
+          "en": "Villa Hakasalmi"
+        },
+        "info_url": {
+          "fi": "http://www.hakasalmenhuvila.fi",
+          "sv": "http://www.villahagasund.fi/",
+          "en": "https://www.hakasalmivilla.fi/"
+        },
+        "street_address": {
+          "fi": "Mannerheimintie 13b",
+          "sv": "Mannerheimvägen 13b",
+          "en": "Mannerheimintie 13b"
+        },
+        "description": {
+          "fi": "Hakasalmen huvilassa on esillä vuosittain vaihtuvia näyttelyitä Helsingin historiasta. Näyttelyiden aiheet vaihtelevat kaupungin musiikkielämästä elokuvien Helsinkiin, sotavuosien mielialoista kartanoelämään. Erityisen suosittuja ovat 1900-luvun kaupunkimaisemia ja helsinkiläistä arkielämää esittelevät valokuvanäyttelyt. Helsinki-nostalgian rinnalla näyttelyt tarjoavat uusinta tutkimustietoa ja uusia näkökulmia menneisyyteen. Museon yhteydessä on museokauppa ja huvilan pihapiirissä kahvila Rakastan. Hakasalmen huvila on Helsingin kaupunginmuseon vanhin toimipiste. Museon toiminta alkoi rakennuksessa vuonna 1912. Hakasalmen huvila sijaitsee Töölönlahden alueella, keskustakirjasto Oodin, Musiikkitalon ja Finlandia-talon naapurina. Päärakennuksessa voi tavoittaa muiston empire-ajan huvila-arkkitehtuurista, josta on säilynyt Helsingissä vain harvoja esimerkkejä. Hakasalmen huvilan tunnetuin asukas oli Aurora Karamzin, joka asui siellä kuolemaansa 1902 asti. Moni helsinkiläinen kutsuu rakennusta yhä edelleen Karamzinin huvilaksi.",
+          "sv": "På Villa Hagasund visas utställningar om Helsingfors historia som byts ut årligen. Temat på utställningarna varierar mellan allt från stadens musikliv till filmernas Helsingfors, och från stämningen under krigsåren till herrgårdsliv. Särskilt populära är fotoutställningar som föreställer stadslandskapet och vardagen för en helsingforsare under 1900-talet. Förutom Helsingforsnostalgi bjuder utställningarna på de nyaste forskningsrönen och nya synvinklar på det förflutna. I förbindelse med museet finns en museibutik och på villans gårdsplan finns kaféet Rakastan. Villa Hagasund är det äldsta verksamhetsstället inom Helsingfors stadsmuseum. År 1912 inleddes museiverksamheten i byggnaden. Villa Hagasund ligger invid Tölöviken och är granne med centrumbiblioteket Ode, Musikhuset och Finlandiahuset. I huvudbyggnaden kan du se minnen från empirtidens villaarkitektur. I Helsingfors finns endast få sådana exemplar bevarade. Den mest kända invånaren i Villa Hagasund var Aurora Karamzin som bodde där fram till sin död år 1902. Många helsingforsare kallar fortfarande byggnaden för Karamzins villa.",
+          "en": "Hakasalmi Villa has temporary exhibitions about the history of Helsinki, with a new theme each year. The exhibitions range from the city's musical life to the Helsinki of the movies, and from wartime moods to manor life. Photo exhibitions presenting 20th-century urban landscapes and everyday life in Helsinki are particularly popular. Alongside Helsinki nostalgia, the exhibitions offer access to the latest research data and new perspectives on the past. There is a museum shop and café Rakastan in the yard of the villa. Hakasalmi Villa is the oldest part of the Helsinki City Museum. The museum was opened in the building in 1912. Hakasalmi Villa is located in the Töölönlahti area, next to Helsinki Central Library Oodi, Musiikkitalo and Finlandia Hall. The main building is a reminder of the villa architecture of the Empire period, of which there are only a few examples left in Helsinki. The most famous resident of Hakasalmi Villa was Aurora Karamzin, who lived there until her death in 1902. Many Helsinki residents still call the building Karamzin's villa."
+        },
+        "address_locality": {
+          "fi": "Helsinki",
+          "sv": "Helsingfors",
+          "en": "Helsinki"
+        },
+        "@id": "https://api.hel.fi/linkedevents/v1/place/tprek:8645/?format=json",
+        "@context": "http://schema.org",
+        "@type": "Place"
+      },
+      "keywords": [
+        {
+          "id": "helfi:12",
+          "alt_labels": [],
+          "created_time": "2015-01-13T12:00:00Z",
+          "last_modified_time": "2015-01-13T12:00:00Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 22816,
+          "image": null,
+          "data_source": "helfi",
+          "publisher": null,
+          "replaced_by": null,
+          "name": {
+            "fi": "Kulttuuri ja vapaa-aika",
+            "sv": "Kultur och fritid",
+            "en": "Culture and leisure"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/helfi:12/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p22039",
+          "alt_labels": [
+            "arkielämä",
+            "vardagsliv"
+          ],
+          "created_time": "2014-06-23T11:37:28.851000Z",
+          "last_modified_time": "2017-09-06T05:21:10.161607Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1004,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "arki",
+            "sv": "vardag",
+            "en": "everyday"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p22039/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p4679",
+          "alt_labels": [
+            "Helsingforsbor"
+          ],
+          "created_time": "2014-06-23T11:37:23.854000Z",
+          "last_modified_time": "2017-09-06T05:20:31.149963Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1129,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p4679/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p4934",
+          "alt_labels": [
+            "muséer"
+          ],
+          "created_time": "2014-06-23T11:37:25.526000Z",
+          "last_modified_time": "2017-09-06T05:19:58.766408Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 6582,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p4934/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p8107",
+          "alt_labels": [],
+          "created_time": "2014-06-23T11:37:29.492000Z",
+          "last_modified_time": "2017-09-06T05:20:24.029420Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1250,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p8107/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        }
+      ],
+      "registration": null,
+      "super_event": null,
+      "event_status": "EventScheduled",
+      "type_id": "General",
+      "external_links": [],
+      "offers": [
+        {
+          "is_free": true,
+          "price": null,
+          "info_url": null,
+          "description": {
+            "fi": "Vapaa pääsy",
+            "sv": "Fritt inträde",
+            "en": "Free entry"
+          }
+        }
+      ],
+      "data_source": "hkm",
+      "publisher": "ahjo:u4804001020",
+      "sub_events": [],
+      "images": [
+        {
+          "id": 138923,
+          "license": "cc_by",
+          "created_time": "2024-05-07T10:20:55.781088Z",
+          "last_modified_time": "2024-05-07T10:20:55.781108Z",
+          "name": "hkm-image",
+          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/05/artikkelikuva_825x513px_Musiikkia_naamioiden_takaa_Hakasalmi_kevat24.jpg",
+          "cropping": "",
+          "photographer_name": null,
+          "alt_text": null,
+          "data_source": "hkm",
+          "publisher": "ahjo:u4804001020",
+          "@id": "https://api.hel.fi/linkedevents/v1/image/138923/?format=json",
+          "@context": "http://schema.org",
+          "@type": "ImageObject"
+        }
+      ],
+      "videos": [],
+      "in_language": [],
+      "audience": [],
+      "created_time": "2024-05-07T10:20:56.305880Z",
+      "last_modified_time": "2024-05-21T07:28:27.672421Z",
+      "date_published": null,
+      "start_time": "2024-06-02T11:00:00Z",
+      "end_time": "2024-06-02T12:00:00Z",
+      "custom_data": null,
+      "environmental_certificate": null,
+      "environment": null,
+      "audience_min_age": null,
+      "audience_max_age": null,
+      "super_event_type": null,
+      "deleted": false,
+      "maximum_attendee_capacity": null,
+      "minimum_attendee_capacity": null,
+      "enrolment_start_time": null,
+      "enrolment_end_time": null,
+      "local": false,
+      "replaced_by": null,
+      "location_extra_info": null,
+      "short_description": {
+        "fi": "Pianisti Maija Parkon soolokonsertissa kuullaan musiikkia, joka on saanut inspiraationsa naamioista …",
+        "en": "In her solo concert, pianist Maija Parkko will treat the audience to music inspired by masks and mas…"
+      },
+      "provider_contact_info": null,
+      "name": {
+        "fi": "Musiikkia naamioiden takaa",
+        "en": "Music from Behind Masks"
+      },
+      "info_url": {
+        "fi": "https://hakasalmenhuvila.fi/tapahtumat/musiikkia_naamioiden_takaa/",
+        "en": "https://hakasalmivilla.fi/events/music-from-behind-masks/"
+      },
+      "provider": null,
+      "description": {
+        "fi": "\u003Cp\u003EPianisti \u003Cstrong\u003EMaija Parkon\u003C/strong\u003E soolokonsertissa kuullaan musiikkia, joka on saanut inspiraationsa naamioista ja naamiohuveista. Ohjelmassa ovat muun muassa Schumannin \u003Cem\u003EPapillons\u003C/em\u003E ja Debussyn \u003Cem\u003ESuite\u003C/em\u003E \u003Cem\u003Ebergamasque\u003C/em\u003E.\u003C/p\u003E\u003Cp\u003ESisältyy sisäänpääsymaksun hintaan, ei erillisveloitusta.\u003C/p\u003E",
+        "en": "\u003Cp\u003EIn her solo concert, pianist \u003Cstrong\u003EMaija\u003C/strong\u003E \u003Cstrong\u003EParkko\u003C/strong\u003E will treat the audience to music inspired by masks and masquerades. The programme features pieces such as Schumann’s \u003Cem\u003EPapillons\u003C/em\u003E and Debussy’s \u003Cem\u003ESuite\u003C/em\u003E \u003Cem\u003Ebergamasque\u003C/em\u003E.\u003C/p\u003E\u003Cp\u003EIncluded in the price of the entrance fee, no separate charge.\u003C/p\u003E"
+      },
+      "@id": "https://api.hel.fi/linkedevents/v1/event/hkm:6483/?format=json",
+      "@context": "http://schema.org",
+      "@type": "Event/LinkedEvent"
+    },
+    {
+      "id": "hkm:6488",
+      "location": {
+        "id": "tprek:8645",
+        "data_source": "tprek",
+        "publisher": "ahjo:u021800",
+        "divisions": [
+          {
+            "type": "muni",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki",
+            "municipality": null,
+            "name": {
+              "fi": "Helsinki",
+              "sv": "Helsingfors"
+            }
+          },
+          {
+            "type": "district",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/peruspiiri:kampinmalmi",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Kampinmalmi",
+              "sv": "Kampmalmen"
+            }
+          },
+          {
+            "type": "sub_district",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/osa-alue:etu-töölö",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Etu-Töölö",
+              "sv": "Främre Tölö"
+            }
+          },
+          {
+            "type": "neighborhood",
+            "ocd_id": "ocd-division/country:fi/kunta:helsinki/kaupunginosa:etu-töölö",
+            "municipality": "Helsinki",
+            "name": {
+              "fi": "Etu-Töölö",
+              "sv": "Främre Tölö"
+            }
+          }
+        ],
+        "created_time": null,
+        "last_modified_time": "2024-03-28T08:09:32.870029Z",
+        "custom_data": null,
+        "email": "kaupunginmuseo@hel.fi",
+        "contact_type": null,
+        "address_region": null,
+        "postal_code": "00100",
+        "post_office_box_num": null,
+        "address_country": null,
+        "deleted": false,
+        "has_upcoming_events": true,
+        "n_events": 223,
+        "image": null,
+        "parent": null,
+        "replaced_by": null,
+        "position": {
+          "type": "Point",
+          "coordinates": [24.934093, 60.174664]
+        },
+        "telephone": {
+          "fi": "+358 9 310 78519"
+        },
+        "name": {
+          "fi": "Hakasalmen huvila",
+          "sv": "Villa Hagasund",
+          "en": "Villa Hakasalmi"
+        },
+        "info_url": {
+          "fi": "http://www.hakasalmenhuvila.fi",
+          "sv": "http://www.villahagasund.fi/",
+          "en": "https://www.hakasalmivilla.fi/"
+        },
+        "street_address": {
+          "fi": "Mannerheimintie 13b",
+          "sv": "Mannerheimvägen 13b",
+          "en": "Mannerheimintie 13b"
+        },
+        "description": {
+          "fi": "Hakasalmen huvilassa on esillä vuosittain vaihtuvia näyttelyitä Helsingin historiasta. Näyttelyiden aiheet vaihtelevat kaupungin musiikkielämästä elokuvien Helsinkiin, sotavuosien mielialoista kartanoelämään. Erityisen suosittuja ovat 1900-luvun kaupunkimaisemia ja helsinkiläistä arkielämää esittelevät valokuvanäyttelyt. Helsinki-nostalgian rinnalla näyttelyt tarjoavat uusinta tutkimustietoa ja uusia näkökulmia menneisyyteen. Museon yhteydessä on museokauppa ja huvilan pihapiirissä kahvila Rakastan. Hakasalmen huvila on Helsingin kaupunginmuseon vanhin toimipiste. Museon toiminta alkoi rakennuksessa vuonna 1912. Hakasalmen huvila sijaitsee Töölönlahden alueella, keskustakirjasto Oodin, Musiikkitalon ja Finlandia-talon naapurina. Päärakennuksessa voi tavoittaa muiston empire-ajan huvila-arkkitehtuurista, josta on säilynyt Helsingissä vain harvoja esimerkkejä. Hakasalmen huvilan tunnetuin asukas oli Aurora Karamzin, joka asui siellä kuolemaansa 1902 asti. Moni helsinkiläinen kutsuu rakennusta yhä edelleen Karamzinin huvilaksi.",
+          "sv": "På Villa Hagasund visas utställningar om Helsingfors historia som byts ut årligen. Temat på utställningarna varierar mellan allt från stadens musikliv till filmernas Helsingfors, och från stämningen under krigsåren till herrgårdsliv. Särskilt populära är fotoutställningar som föreställer stadslandskapet och vardagen för en helsingforsare under 1900-talet. Förutom Helsingforsnostalgi bjuder utställningarna på de nyaste forskningsrönen och nya synvinklar på det förflutna. I förbindelse med museet finns en museibutik och på villans gårdsplan finns kaféet Rakastan. Villa Hagasund är det äldsta verksamhetsstället inom Helsingfors stadsmuseum. År 1912 inleddes museiverksamheten i byggnaden. Villa Hagasund ligger invid Tölöviken och är granne med centrumbiblioteket Ode, Musikhuset och Finlandiahuset. I huvudbyggnaden kan du se minnen från empirtidens villaarkitektur. I Helsingfors finns endast få sådana exemplar bevarade. Den mest kända invånaren i Villa Hagasund var Aurora Karamzin som bodde där fram till sin död år 1902. Många helsingforsare kallar fortfarande byggnaden för Karamzins villa.",
+          "en": "Hakasalmi Villa has temporary exhibitions about the history of Helsinki, with a new theme each year. The exhibitions range from the city's musical life to the Helsinki of the movies, and from wartime moods to manor life. Photo exhibitions presenting 20th-century urban landscapes and everyday life in Helsinki are particularly popular. Alongside Helsinki nostalgia, the exhibitions offer access to the latest research data and new perspectives on the past. There is a museum shop and café Rakastan in the yard of the villa. Hakasalmi Villa is the oldest part of the Helsinki City Museum. The museum was opened in the building in 1912. Hakasalmi Villa is located in the Töölönlahti area, next to Helsinki Central Library Oodi, Musiikkitalo and Finlandia Hall. The main building is a reminder of the villa architecture of the Empire period, of which there are only a few examples left in Helsinki. The most famous resident of Hakasalmi Villa was Aurora Karamzin, who lived there until her death in 1902. Many Helsinki residents still call the building Karamzin's villa."
+        },
+        "address_locality": {
+          "fi": "Helsinki",
+          "sv": "Helsingfors",
+          "en": "Helsinki"
+        },
+        "@id": "https://api.hel.fi/linkedevents/v1/place/tprek:8645/?format=json",
+        "@context": "http://schema.org",
+        "@type": "Place"
+      },
+      "keywords": [
+        {
+          "id": "helfi:12",
+          "alt_labels": [],
+          "created_time": "2015-01-13T12:00:00Z",
+          "last_modified_time": "2015-01-13T12:00:00Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 22816,
+          "image": null,
+          "data_source": "helfi",
+          "publisher": null,
+          "replaced_by": null,
+          "name": {
+            "fi": "Kulttuuri ja vapaa-aika",
+            "sv": "Kultur och fritid",
+            "en": "Culture and leisure"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/helfi:12/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p22039",
+          "alt_labels": [
+            "arkielämä",
+            "vardagsliv"
+          ],
+          "created_time": "2014-06-23T11:37:28.851000Z",
+          "last_modified_time": "2017-09-06T05:21:10.161607Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1004,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "arki",
+            "sv": "vardag",
+            "en": "everyday"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p22039/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p4679",
+          "alt_labels": [
+            "Helsingforsbor"
+          ],
+          "created_time": "2014-06-23T11:37:23.854000Z",
+          "last_modified_time": "2017-09-06T05:20:31.149963Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1129,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p4679/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p4934",
+          "alt_labels": [
+            "muséer"
+          ],
+          "created_time": "2014-06-23T11:37:25.526000Z",
+          "last_modified_time": "2017-09-06T05:19:58.766408Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 6582,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p4934/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        },
+        {
+          "id": "yso:p8107",
+          "alt_labels": [],
+          "created_time": "2014-06-23T11:37:29.492000Z",
+          "last_modified_time": "2017-09-06T05:20:24.029420Z",
+          "aggregate": false,
+          "deprecated": false,
+          "has_upcoming_events": true,
+          "n_events": 1250,
+          "image": null,
+          "data_source": "yso",
+          "publisher": "hy:kansalliskirjasto",
+          "replaced_by": null,
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          },
+          "@id": "https://api.hel.fi/linkedevents/v1/keyword/yso:p8107/?format=json",
+          "@context": "http://schema.org",
+          "@type": "Keyword"
+        }
+      ],
+      "registration": null,
+      "super_event": null,
+      "event_status": "EventScheduled",
+      "type_id": "General",
+      "external_links": [],
+      "offers": [
+        {
+          "is_free": true,
+          "price": null,
+          "info_url": null,
+          "description": {
+            "fi": "Vapaa pääsy",
+            "sv": "Fritt inträde",
+            "en": "Free entry"
+          }
+        }
+      ],
+      "data_source": "hkm",
+      "publisher": "ahjo:u4804001020",
+      "sub_events": [],
+      "images": [
+        {
+          "id": 138925,
+          "license": "cc_by",
+          "created_time": "2024-05-07T10:25:32.333225Z",
+          "last_modified_time": "2024-05-07T10:25:32.333250Z",
+          "name": "hkm-image",
+          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/05/artikkelikuva_825x513px_Puhu_tuuli_purteheni__Hakasalmi_kevat24.jpg",
+          "cropping": "",
+          "photographer_name": null,
+          "alt_text": null,
+          "data_source": "hkm",
+          "publisher": "ahjo:u4804001020",
+          "@id": "https://api.hel.fi/linkedevents/v1/image/138925/?format=json",
+          "@context": "http://schema.org",
+          "@type": "ImageObject"
+        }
+      ],
+      "videos": [],
+      "in_language": [],
+      "audience": [],
+      "created_time": "2024-05-07T10:25:32.868749Z",
+      "last_modified_time": "2024-05-21T07:29:49.225246Z",
+      "date_published": null,
+      "start_time": "2024-06-09T11:00:00Z",
+      "end_time": "2024-06-09T12:00:00Z",
+      "custom_data": null,
+      "environmental_certificate": null,
+      "environment": null,
+      "audience_min_age": null,
+      "audience_max_age": null,
+      "super_event_type": null,
+      "deleted": false,
+      "maximum_attendee_capacity": null,
+      "minimum_attendee_capacity": null,
+      "enrolment_start_time": null,
+      "enrolment_end_time": null,
+      "local": false,
+      "replaced_by": null,
+      "location_extra_info": null,
+      "short_description": {
+        "fi": "Vuonna 2004 perustetun Laurus Kamarikuoron konsertissa kuullaan erityylisiä lauluja eri aikakausilt…",
+        "en": "The concert by the Laurus Chamber Choir, founded in 2004, will feature songs of different styles fro…"
+      },
+      "provider_contact_info": null,
+      "name": {
+        "fi": "Puhu tuuli purteheni",
+        "en": "Blow, o Wind, on My Barque"
+      },
+      "info_url": {
+        "fi": "https://hakasalmenhuvila.fi/tapahtumat/puhu_tuuli_purteheni/",
+        "en": "https://hakasalmivilla.fi/events/blow-o-wind-on-my-barque/"
+      },
+      "provider": null,
+      "description": {
+        "fi": "\u003Cp\u003EVuonna 2004 perustetun \u003Cstrong\u003ELaurus\u003C/strong\u003E \u003Cstrong\u003EKamarikuoron\u003C/strong\u003E konsertissa kuullaan erityylisiä lauluja eri aikakausilta. Kuoro konsertoi ja esiintyy aktiivisesti ja on osallistunut festivaaleille Suomessa ja ulkomailla. Vuoden 2023 Tampereen Sävel -kuorotapahtumassa Laurus sai kolme hopealeimaa. Kuoroa johtaa \u003Cstrong\u003EHeidi Harinen\u003C/strong\u003E.\u003C/p\u003E\u003Cp\u003ESisältyy sisäänpääsymaksun hintaan, ei erillisveloitusta.\u003C/p\u003E\u003Cp\u003E\u003Cem\u003EKuva: Laurus Kamarikuoro / Niko Salminen\u003C/em\u003E\u003C/p\u003E",
+        "en": "\u003Cp\u003EThe concert by the \u003Cstrong\u003ELaurus Chamber\u003C/strong\u003E \u003Cstrong\u003EChoir\u003C/strong\u003E, founded in 2004, will feature songs of different styles from different eras. The choir performs actively and has appeared at festivals in Finland and abroad. At the 2023 Tampere Vocal Music Festival, Laurus was awarded three silver stamps. The choir is conducted by \u003Cstrong\u003EHeidi Harinen\u003C/strong\u003E.\u003C/p\u003E\u003Cp\u003EIncluded in the price of the entrance fee, no separate charge.\u003C/p\u003E\u003Cp\u003E\u003Cem\u003EPhoto: Laurus Kamarikuoro / Niko Salminen\u003C/em\u003E\u003C/p\u003E"
+      },
+      "@id": "https://api.hel.fi/linkedevents/v1/event/hkm:6488/?format=json",
+      "@context": "http://schema.org",
+      "@type": "Event/LinkedEvent"
+    }
+  ]
+}
