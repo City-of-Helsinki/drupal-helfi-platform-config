@@ -21,6 +21,21 @@ Create and update hook for your module to import the translations.
 
 See [Development](/documents/development.md) for more information.
 
+### Translation context for configuration
+
+We might want to customize some strings from contrib modules without overriding the string globally. Contrib modules can specify translation context for translatable strings in [configuration schema](https://www.drupal.org/docs/drupal-apis/configuration-api/configuration-schemametadata). However, not all contrib modules use translation contexts. To customize the context, use `hook_config_schema_info_alter()`:
+
+```
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function my_module_config_schema_info_alter(array &$definitions) : void {
+  if (isset($definitions['social_media.item.email'])) {
+    $definitions['social_media.item.email']['mapping']['text']['translation context'] = 'Social media: email';
+  }
+}
+```
+
 ## Creating custom/helfi module UI translations
 Make sure the translations are imported during locale import (`drush locale:update`) by checking
 the module/theme has the following information in `module_name.info.yml`. For an example, check [helfi_content.info.yml](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/blob/main/helfi_features/helfi_content/helfi_content.info.yml#L46).
