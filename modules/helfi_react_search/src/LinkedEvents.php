@@ -9,6 +9,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\ApiClient\ApiClient;
+use Drupal\helfi_api_base\ApiClient\ApiFixture;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
@@ -20,7 +21,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * Class for retrieving data from LinkedEvents Api.
  */
 class LinkedEvents {
+
   public const BASE_URL = 'https://tapahtumat.hel.fi';
+  public const FIXTURE_NAME = 'fixture-linked-events';
   protected const API_URL = 'https://api.hel.fi/linkedevents/v1/';
 
   /**
@@ -85,7 +88,7 @@ class LinkedEvents {
    */
   public function getEventsRequest(array $options = [], string $pageSize = '3') : string {
     if ($this->useFixtures) {
-      return $this->useFixtures;
+      return $this->getFixturePath($this->useFixtures);
     }
 
     // Linked events URLs should end with '/' (URLs without '/' are redirect).
@@ -129,22 +132,25 @@ class LinkedEvents {
    */
   public function get(string $event_url) : ApiResponse {
 
-    $url = !$this->useFixtures
-      ? $this->formatPlacesUrl($event_url)
-      : $this->useFixtures;
+    // Format places API URL with query options from events API URL.
+    $url = $this->formatPlacesUrl($event_url);
 
+    // Create cache key for linked events.
     $key = $this->getCacheKey(sprintf('linked-events:%s', $url));
 
     return $this->client->cache(
       $key,
       function () use ($url) {
-        // Fixture is used in tests.
-        $fixture = vsprintf('%s/../fixtures/%s.json', [
-          __DIR__,
-          str_replace('/', '-', ltrim($url, '/')),
-        ]);
+        // Fixture is used in tests and in local if the API connection fails.
+        $fixture = $this->getFixturePath(self::FIXTURE_NAME);
 
-        $response = $this->client->makeRequestWithFixture($fixture, 'GET', $url, ['force_fixture' => TRUE]);
+        // Return the mock data if fixture is set via URL field.
+        if ($this->useFixtures) {
+          $response = ApiFixture::requestFromFile($fixture);
+        }
+        else {
+          $response = $this->client->makeRequestWithFixture($fixture, 'GET', $url);
+        }
 
         return new CacheValue(
           $response,
@@ -156,14 +162,24 @@ class LinkedEvents {
   }
 
   /**
-   * Parse.
+   * Parse response.
+   *
+   * @param \Drupal\helfi_api_base\ApiClient\ApiResponse $response
+   *   The JSON object representing the linked events.
+   * @param array $places
+   *   List of places.
+   *
+   * @return array
+   *   Array of linked events
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   protected function parseResponse(ApiResponse $response, array $places) : array {
     $result = [];
 
     try {
-      $next = $response->meta->next;
-      $data = $response->data->data;
+      $next = $response->meta->next ?? NULL;
+      $data = $response->data->data ?? NULL;
 
       do {
         foreach ($data as $item) {
@@ -291,9 +307,8 @@ class LinkedEvents {
    *   Array of params.
    */
   public function parseParams(string $url) : array {
-    if (str_contains($url, 'api-linkedevents')) {
-      $url = str_replace('https://', '', $url);
-      $this->useFixtures = $url;
+    if (str_contains($url, 'fixture')) {
+      $this->useFixtures = self::FIXTURE_NAME;
       return [];
     }
 
@@ -417,6 +432,38 @@ class LinkedEvents {
     };
 
     return implode(',', $keywords);
+  }
+
+  /**
+   * Get fixture for javascript.
+   *
+   * @return mixed
+   *   Returns FALSE if useFixtures is FALSE, otherwise returns the JSON object.
+   */
+  public function getFixture() : mixed {
+    if ($this->useFixtures) {
+      $json = file_get_contents($this->getFixturePath($this->useFixtures));
+      if ($json) {
+        return json_decode($json);
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Get path to fixture.
+   *
+   * @param string $url
+   *   URL to parse.
+   *
+   * @return string
+   *   Returns path to fixture.
+   */
+  protected function getFixturePath(string $url) : string {
+    return vsprintf('%s/../fixtures/%s.json', [
+      __DIR__,
+      str_replace('/', '-', ltrim($url, '/')),
+    ]);
   }
 
 }
