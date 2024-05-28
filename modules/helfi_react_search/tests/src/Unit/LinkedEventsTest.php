@@ -141,6 +141,8 @@ class LinkedEventsTest extends UnitTestCase {
    *   The http client.
    * @param \Drupal\Core\Language\LanguageManagerInterface|null $languageManager
    *   The language manager.
+   * @param \Psr\Log\LoggerInterface|null $logger
+   *   The logger channel.
    *
    * @return \Drupal\helfi_react_search\LinkedEvents
    *   The api manager instance.
@@ -148,15 +150,21 @@ class LinkedEventsTest extends UnitTestCase {
   private function getSut(
     ApiClient $client,
     LanguageManagerInterface $languageManager = NULL,
+    LoggerInterface $logger = NULL,
   ) : LinkedEvents {
 
     if (!$languageManager) {
       $languageManager = $this->createMock(LanguageManagerInterface::class);
     }
 
+    if (!$logger) {
+      $logger = $this->prophesize(LoggerInterface::class)->reveal();
+    }
+
     return new LinkedEvents(
       $client,
       $languageManager,
+      $logger,
     );
   }
 

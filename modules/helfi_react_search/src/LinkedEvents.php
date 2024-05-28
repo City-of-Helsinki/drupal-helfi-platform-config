@@ -15,6 +15,7 @@ use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_react_search\Enum\CategoryKeywords;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
@@ -57,10 +58,13 @@ class LinkedEvents {
    *   The helfi api base api client.
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger channel.
    */
   public function __construct(
     #[Autowire(service: 'helfi_react_search.api_client')] private ApiClient $client,
     private readonly LanguageManagerInterface $languageManager,
+    private readonly LoggerInterface $logger,
   ) {}
 
   /**
@@ -164,7 +168,7 @@ class LinkedEvents {
   /**
    * Parse response.
    *
-   * @param \Drupal\helfi_api_base\ApiClient\ApiResponse $response
+   * @param \Drupal\helfi_api_base\ApiClient\ApiResponse $apiResponse
    *   The JSON object representing the linked events.
    * @param array $places
    *   List of places.
@@ -174,12 +178,13 @@ class LinkedEvents {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  protected function parseResponse(ApiResponse $response, array $places) : array {
+  protected function parseResponse(ApiResponse $apiResponse, array $places) : array {
     $result = [];
 
     try {
+      $response = $this->getDataFromResponse($apiResponse);
       $next = $response->meta->next ?? NULL;
-      $data = $response->data->data ?? NULL;
+      $data = $response->data ?? NULL;
 
       do {
         foreach ($data as $item) {
@@ -200,7 +205,7 @@ class LinkedEvents {
         }
 
         if ($next) {
-          $next_response = $this->get($next);
+          $next_response = $this->getDataFromResponse($this->get($next));
           $next = $next_response->meta->next;
           $data = $next_response->data;
         }
@@ -464,6 +469,19 @@ class LinkedEvents {
       __DIR__,
       str_replace('/', '-', ltrim($url, '/')),
     ]);
+  }
+
+  /**
+   * Get data from response.
+   *
+   * @param \Drupal\helfi_api_base\ApiClient\ApiResponse $response
+   *   The API response object.
+   *
+   * @return object
+   *   Returns data from response.
+   */
+  protected function getDataFromResponse(ApiResponse $response) : object {
+    return $response->data;
   }
 
 }
