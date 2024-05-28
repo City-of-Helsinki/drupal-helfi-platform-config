@@ -64,8 +64,9 @@ class LinkedEvents {
   public function __construct(
     #[Autowire(service: 'helfi_react_search.api_client')] private ApiClient $client,
     private readonly LanguageManagerInterface $languageManager,
-    private readonly LoggerInterface $logger,
-  ) {}
+    #[Autowire(service: 'logger.channel.helfi_react_search')] private readonly LoggerInterface $logger,
+  ) {
+  }
 
   /**
    * Allow cache to be bypassed.

@@ -6,18 +6,18 @@
   },
   "data": [
     {
-      "id": "hkm:6234",
+      "id": "prefix:1",
       "location": {
-        "id": "tprek:8645",
+        "id": "prefix:1",
         "name": {
-          "fi": "Hakasalmen huvila",
-          "sv": "Villa Hagasund",
-          "en": "Villa Hakasalmi"
+          "fi": "Testipaikka",
+          "sv": "Testplats",
+          "en": "Test place"
         },
         "street_address": {
-          "fi": "Mannerheimintie 13b",
-          "sv": "Mannerheimvägen 13b",
-          "en": "Mannerheimintie 13b"
+          "fi": "Testitie 1",
+          "sv": "Testvägen 1",
+          "en": "Test road 1"
         }
       },
       "keywords": [
@@ -70,10 +70,10 @@
       "images": [
         {
           "alt_text": null,
-          "id": 101857,
-          "name": "hkm-image",
+          "id": 1,
+          "name": "prefix-image",
           "photographer_name": null,
-          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/01/artikkelikuva_825x513px_VonBonin_Slangiopastus_Hakasalmi_kevat24.jpg"
+          "url": "/modules/contrib/helfi_platform_config/fixtures/og-global.png"
         }
       ],
       "start_time": "2024-06-01T11:00:00Z",
@@ -84,18 +84,18 @@
       }
     },
     {
-      "id": "hkm:6483",
+      "id": "prefix:2",
       "location": {
-        "id": "tprek:8645",
+        "id": "prefix:2",
         "name": {
-          "fi": "Hakasalmen huvila",
-          "sv": "Villa Hagasund",
-          "en": "Villa Hakasalmi"
+          "fi": "Testipaikka 2",
+          "sv": "Testplats 2",
+          "en": "Test place 2"
         },
         "street_address": {
-          "fi": "Mannerheimintie 13b",
-          "sv": "Mannerheimvägen 13b",
-          "en": "Mannerheimintie 13b"
+          "fi": "Testitie 2",
+          "sv": "Testvägen 2",
+          "en": "Test road 2"
         }
       },
       "keywords": [
@@ -105,14 +105,6 @@
             "fi": "Kulttuuri ja vapaa-aika",
             "sv": "Kultur och fritid",
             "en": "Culture and leisure"
-          }
-        },
-        {
-          "id": "yso:p22039",
-          "name": {
-            "fi": "arki",
-            "sv": "vardag",
-            "en": "everyday"
           }
         },
         {
@@ -147,9 +139,9 @@
       ],
       "images": [
         {
-          "id": 138923,
-          "name": "hkm-image",
-          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/05/artikkelikuva_825x513px_Musiikkia_naamioiden_takaa_Hakasalmi_kevat24.jpg",
+          "id": 2,
+          "name": "prefix-image",
+          "url": "/modules/contrib/helfi_platform_config/fixtures/og-global.png",
           "photographer_name": null,
           "alt_text": null
         }
@@ -162,29 +154,21 @@
       }
     },
     {
-      "id": "hkm:6488",
+      "id": "prefix:3",
       "location": {
-        "id": "tprek:8645",
+        "id": "prefix:1",
         "name": {
-          "fi": "Hakasalmen huvila",
-          "sv": "Villa Hagasund",
-          "en": "Villa Hakasalmi"
+          "fi": "Testipaikka",
+          "sv": "Testplats",
+          "en": "Test place"
         },
         "street_address": {
-          "fi": "Mannerheimintie 13b",
-          "sv": "Mannerheimvägen 13b",
-          "en": "Mannerheimintie 13b"
+          "fi": "Testitie 1",
+          "sv": "Testvägen 1",
+          "en": "Test road 1"
         }
       },
       "keywords": [
-        {
-          "id": "helfi:12",
-          "name": {
-            "fi": "Kulttuuri ja vapaa-aika",
-            "sv": "Kultur och fritid",
-            "en": "Culture and leisure"
-          }
-        },
         {
           "id": "yso:p22039",
           "name": {
@@ -225,11 +209,11 @@
       ],
       "images": [
         {
-          "id": 138925,
-          "name": "hkm-image",
-          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/05/artikkelikuva_825x513px_Puhu_tuuli_purteheni__Hakasalmi_kevat24.jpg",
+          "id": 3,
+          "name": "prefix-image",
           "photographer_name": null,
-          "alt_text": null
+          "alt_text": null,
+          "url": "/modules/contrib/helfi_platform_config/fixtures/og-global.png"
         }
       ],
       "start_time": "2024-06-09T11:00:00Z",
