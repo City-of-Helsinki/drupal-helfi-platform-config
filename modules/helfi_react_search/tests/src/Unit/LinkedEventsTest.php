@@ -224,8 +224,8 @@ class LinkedEventsTest extends UnitTestCase {
     // Test that the getPlacesList method returns the fixture.
     $response = $sut->getPlacesList($event_url);
     $this->assertIsArray($response);
-    $this->assertIsObject($response['hkm:6234']);
-    $this->assertObjectHasProperty('id', $response['hkm:6234']);
+    $this->assertIsObject($response['prefix:1']);
+    $this->assertObjectHasProperty('id', $response['prefix:1']);
   }
 
   /**
