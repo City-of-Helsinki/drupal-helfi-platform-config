@@ -65,7 +65,7 @@ function helfi_paragraphs_news_list_paragraph_view(
       'neighbourhoods_uuid' => $entity->getNeighbourhoodsUuids(),
     ];
     foreach ($termFilters as $name => $value) {
-      $query->condition($name, $value);
+      $query->condition($name, $value, 'IN');
     }
     $query->sort('published_at', 'DESC');
 

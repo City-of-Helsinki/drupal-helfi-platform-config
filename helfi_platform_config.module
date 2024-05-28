@@ -495,3 +495,13 @@ function helfi_platform_config_user_cancel_methods_alter(array &$methods): void 
     }
   }
 }
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function helfi_platform_config_config_schema_info_alter(array &$definitions) : void {
+  // Add translation contexts to contrib modules.
+  if (isset($definitions['social_media.item.email'])) {
+    $definitions['social_media.item.email']['mapping']['text']['translation context'] = 'Social media: email';
+  }
+}
