@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "count": 3,
+    "next": null,
+    "previous": null
+  },
+  "data": [
+    {
+      "id": "hkm:6234",
+      "location": {
+        "id": "tprek:8645",
+        "name": {
+          "fi": "Hakasalmen huvila",
+          "sv": "Villa Hagasund",
+          "en": "Villa Hakasalmi"
+        },
+        "street_address": {
+          "fi": "Mannerheimintie 13b",
+          "sv": "Mannerheimvägen 13b",
+          "en": "Mannerheimintie 13b"
+        }
+      },
+      "keywords": [
+        {
+          "id": "helfi:12",
+          "name": {
+            "fi": "Kulttuuri ja vapaa-aika",
+            "sv": "Kultur och fritid",
+            "en": "Culture and leisure"
+          }
+        },
+        {
+          "id": "yso:p22039",
+          "name": {
+            "fi": "arki",
+            "sv": "vardag",
+            "en": "everyday"
+          }
+        },
+        {
+          "id": "yso:p4679",
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          }
+        },
+        {
+          "id": "yso:p4934",
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          }
+        },
+        {
+          "id": "yso:p8107",
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          }
+        }
+      ],
+      "offers": [
+        {
+          "info_url": null
+        }
+      ],
+      "images": [
+        {
+          "alt_text": null,
+          "id": 101857,
+          "name": "hkm-image",
+          "photographer_name": null,
+          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/01/artikkelikuva_825x513px_VonBonin_Slangiopastus_Hakasalmi_kevat24.jpg"
+        }
+      ],
+      "start_time": "2024-06-01T11:00:00Z",
+      "end_time": "2024-06-01T12:00:00Z",
+      "name": {
+        "fi": "Slangiopastus Katse Helsinkiin -näyttelyssä",
+        "en": "A Glimpse of Helsinki, a guided tour of the exhibition in Helsinki slang"
+      }
+    },
+    {
+      "id": "hkm:6483",
+      "location": {
+        "id": "tprek:8645",
+        "name": {
+          "fi": "Hakasalmen huvila",
+          "sv": "Villa Hagasund",
+          "en": "Villa Hakasalmi"
+        },
+        "street_address": {
+          "fi": "Mannerheimintie 13b",
+          "sv": "Mannerheimvägen 13b",
+          "en": "Mannerheimintie 13b"
+        }
+      },
+      "keywords": [
+        {
+          "id": "helfi:12",
+          "name": {
+            "fi": "Kulttuuri ja vapaa-aika",
+            "sv": "Kultur och fritid",
+            "en": "Culture and leisure"
+          }
+        },
+        {
+          "id": "yso:p22039",
+          "name": {
+            "fi": "arki",
+            "sv": "vardag",
+            "en": "everyday"
+          }
+        },
+        {
+          "id": "yso:p4679",
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          }
+        },
+        {
+          "id": "yso:p4934",
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          }
+        },
+        {
+          "id": "yso:p8107",
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          }
+        }
+      ],
+      "offers": [
+        {
+          "info_url": null
+        }
+      ],
+      "images": [
+        {
+          "id": 138923,
+          "name": "hkm-image",
+          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/05/artikkelikuva_825x513px_Musiikkia_naamioiden_takaa_Hakasalmi_kevat24.jpg",
+          "photographer_name": null,
+          "alt_text": null
+        }
+      ],
+      "start_time": "2024-06-02T11:00:00Z",
+      "end_time": "2024-06-02T12:00:00Z",
+      "name": {
+        "fi": "Musiikkia naamioiden takaa",
+        "en": "Music from Behind Masks"
+      }
+    },
+    {
+      "id": "hkm:6488",
+      "location": {
+        "id": "tprek:8645",
+        "name": {
+          "fi": "Hakasalmen huvila",
+          "sv": "Villa Hagasund",
+          "en": "Villa Hakasalmi"
+        },
+        "street_address": {
+          "fi": "Mannerheimintie 13b",
+          "sv": "Mannerheimvägen 13b",
+          "en": "Mannerheimintie 13b"
+        }
+      },
+      "keywords": [
+        {
+          "id": "helfi:12",
+          "name": {
+            "fi": "Kulttuuri ja vapaa-aika",
+            "sv": "Kultur och fritid",
+            "en": "Culture and leisure"
+          }
+        },
+        {
+          "id": "yso:p22039",
+          "name": {
+            "fi": "arki",
+            "sv": "vardag",
+            "en": "everyday"
+          }
+        },
+        {
+          "id": "yso:p4679",
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          }
+        },
+        {
+          "id": "yso:p4934",
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          }
+        },
+        {
+          "id": "yso:p8107",
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          }
+        }
+      ],
+      "offers": [
+        {
+          "info_url": null
+        }
+      ],
+      "images": [
+        {
+          "id": 138925,
+          "name": "hkm-image",
+          "url": "https://www.helsinginkaupunginmuseo.fi/app/uploads/sites/2/2024/05/artikkelikuva_825x513px_Puhu_tuuli_purteheni__Hakasalmi_kevat24.jpg",
+          "photographer_name": null,
+          "alt_text": null
+        }
+      ],
+      "start_time": "2024-06-09T11:00:00Z",
+      "end_time": "2024-06-09T12:00:00Z",
+      "name": {
+        "fi": "Puhu tuuli purteheni",
+        "en": "Blow, o Wind, on My Barque"
+      }
+    }
+  ]
+}
