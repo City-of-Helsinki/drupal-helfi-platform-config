@@ -12,7 +12,7 @@ bundle: announcement
 label: 'Announcement title'
 description: 'This title is only available to users of assistive technology. '
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

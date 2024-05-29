@@ -381,44 +381,9 @@ function helfi_tpr_config_update_9052() : void {
 }
 
 /**
- * UHF-9088: Updated configuration translations.
+ * UHF-10159 Convert the phone label field to a translatable field.
  */
-function helfi_tpr_config_update_9061(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-9562: Updated email field formatter.
- */
-function helfi_tpr_config_update_9062(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-9496: Move phone number option.
- */
-function helfi_tpr_config_update_9064(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-9704 Fix article_modified_time metatag.
- */
-function helfi_tpr_config_update_9065(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * Fix email translations.
- */
-function helfi_tpr_config_update_9066(): void {
+function helfi_tpr_config_update_9067(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }

@@ -88,18 +88,9 @@ function helfi_node_announcement_update_9001() : void {
 }
 
 /**
- * Set node as unpublished on default.
+ * UHF-10159 Convert the announcement title field to a translatable field.
  */
-function helfi_node_announcement_update_9002() : void {
-  // Re-import configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_node_announcement');
-}
-
-/**
- * Add new field announcement_title for screenreaders.
- */
-function helfi_node_announcement_update_9003() : void {
+function helfi_node_announcement_update_9004() : void {
   // Re-import configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_node_announcement');
