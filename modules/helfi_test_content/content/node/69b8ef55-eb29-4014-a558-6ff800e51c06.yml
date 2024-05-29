@@ -76,7 +76,7 @@ default:
               value: true
           field_api_url:
             -
-              uri: 'https://tapahtumat.hel.fi/fi/events?categories=museum&isFree=true&onlyEveningEvents=true'
+              uri: 'https://fixture'
               title: ''
               options: {  }
           field_event_count:

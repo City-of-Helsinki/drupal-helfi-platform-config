@@ -1,0 +1,227 @@
+{
+  "meta": {
+    "count": 3,
+    "next": null,
+    "previous": null
+  },
+  "data": [
+    {
+      "id": "prefix:1",
+      "location": {
+        "id": "prefix:1",
+        "name": {
+          "fi": "Testipaikka",
+          "sv": "Testplats",
+          "en": "Test place"
+        },
+        "street_address": {
+          "fi": "Testitie 1",
+          "sv": "Testvägen 1",
+          "en": "Test road 1"
+        }
+      },
+      "keywords": [
+        {
+          "id": "helfi:12",
+          "name": {
+            "fi": "Kulttuuri ja vapaa-aika",
+            "sv": "Kultur och fritid",
+            "en": "Culture and leisure"
+          }
+        },
+        {
+          "id": "yso:p22039",
+          "name": {
+            "fi": "arki",
+            "sv": "vardag",
+            "en": "everyday"
+          }
+        },
+        {
+          "id": "yso:p4679",
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          }
+        },
+        {
+          "id": "yso:p4934",
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          }
+        },
+        {
+          "id": "yso:p8107",
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          }
+        }
+      ],
+      "offers": [
+        {
+          "info_url": null
+        }
+      ],
+      "images": [
+        {
+          "alt_text": null,
+          "id": 1,
+          "name": "prefix-image",
+          "photographer_name": null,
+          "url": "/modules/contrib/helfi_platform_config/fixtures/og-global.png"
+        }
+      ],
+      "start_time": "2024-06-01T11:00:00Z",
+      "end_time": "2024-06-01T12:00:00Z",
+      "name": {
+        "fi": "Slangiopastus Katse Helsinkiin -näyttelyssä",
+        "en": "A Glimpse of Helsinki, a guided tour of the exhibition in Helsinki slang"
+      }
+    },
+    {
+      "id": "prefix:2",
+      "location": {
+        "id": "prefix:2",
+        "name": {
+          "fi": "Testipaikka 2",
+          "sv": "Testplats 2",
+          "en": "Test place 2"
+        },
+        "street_address": {
+          "fi": "Testitie 2",
+          "sv": "Testvägen 2",
+          "en": "Test road 2"
+        }
+      },
+      "keywords": [
+        {
+          "id": "helfi:12",
+          "name": {
+            "fi": "Kulttuuri ja vapaa-aika",
+            "sv": "Kultur och fritid",
+            "en": "Culture and leisure"
+          }
+        },
+        {
+          "id": "yso:p4679",
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          }
+        },
+        {
+          "id": "yso:p4934",
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          }
+        },
+        {
+          "id": "yso:p8107",
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          }
+        }
+      ],
+      "offers": [
+        {
+          "info_url": null
+        }
+      ],
+      "images": [
+        {
+          "id": 2,
+          "name": "prefix-image",
+          "url": "/modules/contrib/helfi_platform_config/fixtures/og-global.png",
+          "photographer_name": null,
+          "alt_text": null
+        }
+      ],
+      "start_time": "2024-06-02T11:00:00Z",
+      "end_time": "2024-06-02T12:00:00Z",
+      "name": {
+        "fi": "Musiikkia naamioiden takaa",
+        "en": "Music from Behind Masks"
+      }
+    },
+    {
+      "id": "prefix:3",
+      "location": {
+        "id": "prefix:1",
+        "name": {
+          "fi": "Testipaikka",
+          "sv": "Testplats",
+          "en": "Test place"
+        },
+        "street_address": {
+          "fi": "Testitie 1",
+          "sv": "Testvägen 1",
+          "en": "Test road 1"
+        }
+      },
+      "keywords": [
+        {
+          "id": "yso:p22039",
+          "name": {
+            "fi": "arki",
+            "sv": "vardag",
+            "en": "everyday"
+          }
+        },
+        {
+          "id": "yso:p4679",
+          "name": {
+            "fi": "helsinkiläiset",
+            "sv": "helsingforsare",
+            "en": "Helsinki residents"
+          }
+        },
+        {
+          "id": "yso:p4934",
+          "name": {
+            "fi": "museot",
+            "sv": "museer",
+            "en": "museums"
+          }
+        },
+        {
+          "id": "yso:p8107",
+          "name": {
+            "fi": "kaupunkihistoria",
+            "sv": "stadshistoria",
+            "en": "urban history"
+          }
+        }
+      ],
+      "offers": [
+        {
+          "info_url": null
+        }
+      ],
+      "images": [
+        {
+          "id": 3,
+          "name": "prefix-image",
+          "photographer_name": null,
+          "alt_text": null,
+          "url": "/modules/contrib/helfi_platform_config/fixtures/og-global.png"
+        }
+      ],
+      "start_time": "2024-06-09T11:00:00Z",
+      "end_time": "2024-06-09T12:00:00Z",
+      "name": {
+        "fi": "Puhu tuuli purteheni",
+        "en": "Blow, o Wind, on My Barque"
+      }
+    }
+  ]
+}
