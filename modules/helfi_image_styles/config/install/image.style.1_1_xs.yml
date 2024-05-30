@@ -5,7 +5,7 @@ dependencies:
   module:
     - focal_point
 name: 1_1_xs
-label: '1:1 XS'
+label: 'DEPRECATED 1:1 XS'
 effects:
   e7da735e-aa35-463b-b99a-b61aba89a53f:
     uuid: e7da735e-aa35-463b-b99a-b61aba89a53f

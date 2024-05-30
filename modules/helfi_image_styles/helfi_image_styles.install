@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_image_styles module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * UHF-10022: Update image styles.
+ */
+function helfi_image_styles_update_9010(): void {
+  // Re-import 'helfi_image_styles' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_image_styles');
+}
