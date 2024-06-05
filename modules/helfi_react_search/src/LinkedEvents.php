@@ -297,6 +297,11 @@ class LinkedEvents {
       $options['locations'] = $parsed_url['query']['locations'];
     }
 
+    // Add page to the parsed URL.
+    if (isset($parsed_url['query']['page'])) {
+      $options['page'] = $parsed_url['query']['page'];
+    }
+
     $options = array_merge($defaultOptions, $options);
     $url->setOption('query', $options);
 
