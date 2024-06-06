@@ -147,7 +147,7 @@ function helfi_platform_config_update_paragraph_target_types() : void {
     // Save the field to trigger re-build of target_bundles.
     // @see helfi_platform_config_field_config_presave().
     // @see helfi_platform_config_base_field_override_presave().
-    /** @var \Drupal\Core\Field\FieldConfigInterface $field */
+    /** @var \Drupal\Core\Field\FieldConfigBase $field */
     $field->save();
   }
 }
