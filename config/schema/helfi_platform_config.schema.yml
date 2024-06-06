@@ -13,3 +13,6 @@ block.settings.telia_ace_widget:
     chat_id:
       type: text
       label: 'Chat widget ID'
+    chat_title:
+      type: text
+      label: 'Chat button label'
