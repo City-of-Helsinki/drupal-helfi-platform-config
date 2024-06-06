@@ -1,3 +1,13 @@
+#telia-ace-leijuke {
+  bottom: 20px;
+  color: #ffffff;
+  position: fixed;
+  right: 20px;
+  z-index: 1;
+}
+.telia-chat-leijuke {
+  min-width: 212px;
+}
 .region--attachments .humany-rendered {
   visibility: visible;
 }
