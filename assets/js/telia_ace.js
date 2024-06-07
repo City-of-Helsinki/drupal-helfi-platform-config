@@ -34,15 +34,15 @@
       this.static = {
         chat_id: teliaAceData.chat_id,
         selector: `leijuke_${teliaAceData.chat_id}`,
-        cookieName: `leijuke.${teliaAceData.chat_id}.isOpen`,
         chat_title: teliaAceData.chat_title,
         script_url: teliaAceData.script_url,
         script_sri: teliaAceData.script_sri
       }
       this.state = {
         cookies: extCookieManager.cookieCheck(),
+        chatLoading: false,
         chatLoaded: false,
-        isChatOpen: this.isChatOpen(),
+        chatOpened: false,
         busy: false
       };
 
@@ -55,34 +55,9 @@
       this.render();
     }
 
-    isChatOpen() {
-      if (this.getLeijukeCookie(this.static.cookieName) == "true") {
-        return true;
-      }
-      return false;
-    }
-
-    setLeijukeCookie(cname, cvalue) {
-      document.cookie = `${cname}=${cvalue}; path=/; SameSite=Strict; `;
-    }
-
-    getLeijukeCookie(cname) {
-      var name = cname + "=";
-      var ca = document.cookie.split(";");
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") {
-          c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-        }
-      }
-      return "";
-    }
-
     loadChat() {
       const { script_url, script_sri } = this.static;
+      const leijuke = this;
       let chatScript = document.createElement('script');
       chatScript.src = script_url;
       chatScript.type = "text/javascript";
@@ -94,7 +69,7 @@
       }
 
       chatScript.onload = function() {
-        console.log('SCRIPT LOADED!!!');
+        leijuke.loaded();
       }
       chatScript.onerror = function() {
         console.error('Failed to load script ' + script_url);
@@ -103,15 +78,15 @@
       // Insert chatScript into head
       let head = document.querySelector('head');
       head.appendChild(chatScript);
-
-      this.loaded();
+      this.state.chatLoading = true;
     }
 
     loaded() {
       this.state = {
         ...this.state,
-        chatLoaded: true
+        chatLoaded: true,
       };
+      this.openChat();
       this.render();
     }
 
@@ -177,19 +152,18 @@
     openChat(open_widget) {
       const leijuke = this;
 
-      //leijuke.setLeijukeCookie(leijuke.static.cookieName, true);
-
       let teliaAceWidgetInitialized = setInterval(() => {
-        if(typeof humany !== "undefined" && typeof humany.widgets !== "undefined"){
-          let myWidget = humany.widgets.find(leijuke.static.chat_id);
+        if(typeof humany !== "undefined" && typeof humany.widgets !== "undefined" && humany.widgets.find(leijuke.static.chat_id)){
           if (open_widget) {
+            let myWidget = humany.widgets.find(leijuke.static.chat_id);
             myWidget.activate();
             myWidget.invoke('show');
           }
           clearInterval(teliaAceWidgetInitialized);
           leijuke.state = {
             ...leijuke.state,
-            isChatOpen: true,
+            chatLoading: false,
+            chatOpened: true,
             busy: false,
           };
           leijuke.render();
@@ -198,24 +172,24 @@
     }
 
     render() {
-      const { chatLoaded } = this.state;
+      const { chatOpened, chatLoading } = this.state;
       const icon = 'speechbubble-text';
+      const label = chatLoading ? Drupal.t('Loading chat...', {}, {context: 'Telia ACE chat'}) : this.static.chat_title;
       const element = document.getElementById(this.static.selector);
       if (!element) {
-        console.log('Element not found');
         return;
       }
-      const innerHTML = `
+      let innerHTML = `
         <span class="hel-icon hel-icon--${icon}"></span>
-        <span>${this.static.chat_title}</span>
+        <span>${label}</span>
         <span class="hel-icon hel-icon--angle-up"></span>
       `;
 
       if (element.innerHTML != innerHTML) {
         element.innerHTML = innerHTML;
       }
-
-      element.classList.toggle('hidden', chatLoaded);
+      element.classList.toggle('loading', chatLoading);
+      element.classList.toggle('hidden', chatOpened);
     }
 
   }

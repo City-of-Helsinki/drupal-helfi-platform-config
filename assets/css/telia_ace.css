@@ -8,6 +8,9 @@
 .telia-chat-leijuke {
   min-width: 212px;
 }
+.telia-chat-leijuke.loading {
+  cursor: wait;
+}
 .region--attachments .humany-rendered {
   visibility: visible;
 }
