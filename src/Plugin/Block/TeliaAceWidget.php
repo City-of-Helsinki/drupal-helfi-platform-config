@@ -3,8 +3,8 @@
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Block\Attribute\Block;
+use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
