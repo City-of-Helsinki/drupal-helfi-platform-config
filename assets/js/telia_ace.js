@@ -12,7 +12,8 @@
           return;
         }
 
-        new TeliaAceLeijuke(teliaAceData, new EuCookieManager);
+        const teliaAce = new TeliaAceLeijuke(teliaAceData, new EuCookieManager);
+        teliaAce.init();
         drupalSettings.telia_ace_data.initialized = true;
       });
     }
@@ -45,7 +46,9 @@
         chatOpened: false,
         busy: false
       };
+    }
 
+    init() {
       if (this.state.cookies) {
         console.log('Cookies already set, loading chat.')
         this.loadChat();
