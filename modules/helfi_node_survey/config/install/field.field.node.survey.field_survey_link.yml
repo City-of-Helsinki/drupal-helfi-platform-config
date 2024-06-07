@@ -1,0 +1,23 @@
+uuid: 82845c69-4bcf-460a-8294-17fe126218a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_survey_link
+    - node.type.survey
+  module:
+    - link
+id: node.survey.field_survey_link
+field_name: field_survey_link
+entity_type: node
+bundle: survey
+label: Link
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 2
+  link_type: 17
+field_type: link

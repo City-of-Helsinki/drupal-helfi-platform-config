@@ -1,0 +1,18 @@
+uuid: e9b04e11-3c4e-46a4-95c8-e0933f93769c
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.survey
+id: node.survey.title
+field_name: title
+entity_type: node
+bundle: survey
+label: 'Survey title'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
