@@ -24,30 +24,6 @@ function helfi_node_survey_grant_permissions() : void {
       'translate survey node',
       'view survey revisions',
     ],
-    'content_producer' => [
-      'create survey content',
-      'delete own survey content',
-      'edit any survey content',
-      'edit own survey content',
-      'revert survey revisions',
-      'set survey published on date',
-      'view survey revisions',
-    ],
-    'editor' => [
-      'create survey content',
-      'delete survey revisions',
-      'delete any survey content',
-      'delete own survey content',
-      'edit any survey content',
-      'edit own survey content',
-      'revert survey revisions',
-      'set survey published on date',
-      'translate survey node',
-      'view survey revisions',
-    ],
-    'read_only' => [
-      'view any unpublished survey content',
-    ],
   ];
   helfi_platform_config_grant_permissions($permissions);
 }
@@ -63,5 +39,4 @@ function helfi_node_survey_install($is_syncing) : void {
   }
 
   helfi_node_survey_grant_permissions();
-//  _helfi_global_survey_enable();
 }
