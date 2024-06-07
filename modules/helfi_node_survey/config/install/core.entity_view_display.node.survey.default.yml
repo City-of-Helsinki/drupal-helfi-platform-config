@@ -1,0 +1,52 @@
+uuid: 4e0a02f2-f3ff-402b-9bc9-1cb66811b0b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.survey.body
+    - field.field.node.survey.field_survey_all_pages
+    - field.field.node.survey.field_survey_content_pages
+    - field.field.node.survey.field_survey_link
+    - node.type.survey
+  module:
+    - link
+    - options
+    - text
+    - user
+id: node.survey.default
+targetEntityType: node
+bundle: survey
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_survey_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_survey_all_pages: true
+  field_survey_content_pages: true
+  field_survey_service_pages: true
+  field_survey_unit_pages: true
+  langcode: true
+  published_at: true
+  toc_enabled: true
