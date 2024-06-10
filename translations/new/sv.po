@@ -30,3 +30,7 @@ msgstr "Starta chatten"
 msgctxt "Floating chat title"
 msgid "Chat"
 msgstr "Chatt"
+
+msgctxt "Telia ACE chat"
+msgid "Loading chat..."
+msgstr "Laddar..."
