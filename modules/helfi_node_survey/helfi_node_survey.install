@@ -12,7 +12,7 @@ declare(strict_types=1);
  */
 function helfi_node_survey_grant_permissions() : void {
   $permissions = [
-    'admin' => [
+    'survey_creator' => [
       'create survey content',
       'delete survey revisions',
       'delete any survey content',
