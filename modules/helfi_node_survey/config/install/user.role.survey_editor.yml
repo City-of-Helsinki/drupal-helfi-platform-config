@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: survey_editor
+label: 'Survey editor'
+weight: 5
+is_admin: null
+permissions: {  }
