@@ -1,8 +1,9 @@
+uuid: 9ec2282e-0675-4746-9892-cd37d2b6fc8a
 langcode: en
 status: true
 dependencies: {  }
 id: survey_editor
 label: 'Survey editor'
-weight: 5
+weight: 8
 is_admin: null
 permissions: {  }
