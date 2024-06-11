@@ -413,7 +413,8 @@ function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
  * #UHF-9158 main languages must be always visible on language switcher.
  */
 function helfi_platform_config_language_switch_links_alter(array &$links): void {
-  $params = \Drupal::routeMatch()->getParameters()->all();
+  $route_match = \Drupal::routeMatch();
+  $params = $route_match->getParameters()->all();
 
   $entity = NULL;
   foreach ($params as $param) {
@@ -422,11 +423,25 @@ function helfi_platform_config_language_switch_links_alter(array &$links): void 
       break;
     }
   }
+
   if (!$entity || !$entity->isTranslatable()) {
+    // UHF-10060: Disable the language links on 404-pages so that /system/404
+    // route is not accessible for crawlers etc.
+    if (in_array($route_match->getRouteName(), ['system.401', 'system.403', 'system.404'])) {
+      $language = Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+
+      foreach ($links as $langcode => &$link) {
+        helfi_platform_config_set_language_link_disabled($link);
+        if ($language->getId() === $langcode) {
+          $link['#nolink'] = TRUE;
+        }
+      }
+    }
+
     return;
   }
 
-  foreach ($links as $langcode => $link) {
+  foreach ($links as $langcode => &$link) {
     if (!$entity->hasTranslation($langcode)) {
       continue;
     }
@@ -436,13 +451,23 @@ function helfi_platform_config_language_switch_links_alter(array &$links): void 
       continue;
     }
 
-    // Unpublished link won't pass url access check
-    // Replace unpublished translation with another one and set it disabled.
-    unset($links[$langcode]['url']);
-    $links[$langcode]['#untranslated'] = TRUE;
-    $links[$langcode]['url'] = new Url('<nolink>');
-    $links[$langcode]['attributes']['class'][] = 'language-link--untranslated';
+    helfi_platform_config_set_language_link_disabled($link);
   }
+}
+
+/**
+ * Set language link disabled.
+ *
+ * @param array $link
+ *   Language link for language switcher.
+ */
+function helfi_platform_config_set_language_link_disabled(array &$link): void {
+  // Unpublished link won't pass url access check
+  // Replace unpublished translation with another one and set it disabled.
+  unset($link['url']);
+  $link['#untranslated'] = TRUE;
+  $link['url'] = new Url('<nolink>');
+  $link['attributes']['class'][] = 'language-link--untranslated';
 }
 
 /**
