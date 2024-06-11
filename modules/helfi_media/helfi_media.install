@@ -114,5 +114,5 @@ function helfi_media_install($is_syncing) : void {
  * automatically.
  */
 function helfi_media_update_9013() : void {
-  \Drupal::service('module_installer')->install(['jquery_ui_draggable']);
+  //  \Drupal::service('module_installer')->install(['jquery_ui_draggable']);
 }
