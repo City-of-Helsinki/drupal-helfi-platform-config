@@ -6,11 +6,22 @@
  */
 
 declare(strict_types = 1);
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * UHF-8135 Update accordion paragraph translations.
  */
 function helfi_paragraphs_accordion_update_9001(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_paragraphs_accordion');
+  try {
+    $accordion_title_level = FieldStorageConfig::loadByName('paragraph', 'field_accordion_title_level');
+    $accordion_title_level->set('type', 'list_string');
+    $accordion_title_level->save();
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update('helfi_paragraphs_accordion');
+  }
+  catch (\Exception $exception) {
+    // We know the database values are different what we are trying
+    // to write there, but we are only replacing the
+    // values with allowed_values_function.
+  }
 }
