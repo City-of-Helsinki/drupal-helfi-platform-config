@@ -1,5 +1,5 @@
 table_of_contents:
-  version: 1.0.2
+  version: 1.0.3
   js:
     assets/js/tableOfContents.js: {}
   dependencies:

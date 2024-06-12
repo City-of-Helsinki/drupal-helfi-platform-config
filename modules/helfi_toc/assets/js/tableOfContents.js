@@ -202,11 +202,6 @@
     attach: function attach() {
       const tableOfContents = document.getElementById('helfi-toc-table-of-contents');
 
-      // Bail if table of contents is not enabled.
-      if (!tableOfContents) {
-        return;
-      }
-
       const tableOfContentsList = document.querySelector('#helfi-toc-table-of-contents-list > ul');
       const mainContent = document.querySelector('main.layout-main-wrapper');
       const reservedElems = document.querySelectorAll('[id]');
@@ -219,6 +214,12 @@
         .forEach((content) => {
 
           const { nodeName, anchorName} = Drupal.tableOfContents.createTableOfContentElements(content, []);
+
+          // Bail if table of contents is not enabled,
+          // but retain the heading element id.
+          if (!tableOfContents) {
+            return;
+          }
 
           // Create table of contents if component is enabled.
           if (tableOfContentsList && nodeName === 'h2') {
