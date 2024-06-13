@@ -2,18 +2,19 @@
 
 namespace Drupal\helfi_node_announcement\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
 
 /**
  * Provides an 'Announcements' block.
- *
- * @Block(
- *   id = "announcements",
- *   admin_label = @Translation("Announcements"),
- * )
  */
+#[Block(
+  id: "announcements",
+  admin_label: new TranslatableMarkup("Announcements"),
+)]
 class AnnouncementsBlock extends AnnouncementsBlockBase {
 
   /**
