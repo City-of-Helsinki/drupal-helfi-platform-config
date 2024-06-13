@@ -1,0 +1,6 @@
+services:
+  logger.channel.helfi_etusivu_entities:
+    parent: logger.channel_base
+    arguments: [ 'helfi_etusivu_entities' ]
+
+

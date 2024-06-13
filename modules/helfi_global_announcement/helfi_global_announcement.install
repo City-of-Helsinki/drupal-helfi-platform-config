@@ -69,3 +69,17 @@ function helfi_global_announcement_update_9004() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_global_announcement');
 }
+
+/**
+ * UHF-9708: Enable helfi_node_survey module.
+ */
+function helfi_global_announcement_update_9309() : void {
+  \Drupal::configFactory()->getEditable('external_entities.external_entity_type.helfi_announcements')->delete();
+
+  $module_installer = \Drupal::service('module_installer');
+
+  // Enable helfi_node_survey module.
+  if (!\Drupal::moduleHandler()->moduleExists('helfi_etusivu_entities')) {
+    $module_installer->install(['helfi_etusivu_entities']);
+  }
+}
