@@ -1,0 +1,5 @@
+name: 'HELfi Remote Entities'
+type: module
+core_version_requirement: ^10
+dependencies:
+  - external_entities:external_entities

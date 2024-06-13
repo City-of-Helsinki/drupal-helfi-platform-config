@@ -7,7 +7,7 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\external_entities\ExternalEntityStorageInterface;
-use Drupal\helfi_global_announcement\Plugin\ExternalEntities\StorageClient\Announcements;
+use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\helfi_node_announcement\Plugin\Block\AnnouncementsBlockBase;
 use Drupal\node\Entity\Node;
 
