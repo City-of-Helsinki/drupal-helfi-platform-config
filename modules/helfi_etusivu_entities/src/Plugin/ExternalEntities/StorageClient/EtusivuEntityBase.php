@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
@@ -152,6 +153,41 @@ abstract class EtusivuEntityBase extends ExternalEntityStorageClientBase impleme
       Error::logException($this->logger, $e);
     }
     return [];
+  }
+
+  /**
+   * Get limits query.
+   *
+   * @param int|null $start
+   *   The first item to return.
+   * @param int|null $length
+    *  The number of items to return.
+   */
+  protected function queryLimits(?int $start, ?int $length): array {
+    $query = [];
+
+    if ($start) {
+      $query['page[offset]'] = $start;
+    }
+
+    if ($length) {
+      $query['page[limit]'] = $length;
+    }
+
+    return $query;
+  }
+
+  /**
+   * Get default langcode query.
+   */
+  protected function queryDefaultLangcode(): array {
+    $language = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
+
+    return [
+      'filter[langcode]' => $language,
+    ];
   }
 
 }
