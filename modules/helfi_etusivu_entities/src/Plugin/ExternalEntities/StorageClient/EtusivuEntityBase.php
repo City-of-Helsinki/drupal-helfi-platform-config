@@ -161,7 +161,7 @@ abstract class EtusivuEntityBase extends ExternalEntityStorageClientBase impleme
    * @param int|null $start
    *   The first item to return.
    * @param int|null $length
-    *  The number of items to return.
+   *   The number of items to return.
    */
   protected function queryLimits(?int $start, ?int $length): array {
     $query = [];
