@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Core\Language\LanguageInterface;
-
 /**
  * External entity storage client for News feed entities.
  *
@@ -40,21 +38,8 @@ final class Surveys extends EtusivuEntityBase {
       'filter[field_survey_all_pages][value]' => 1,
     ];
 
-    if ($start) {
-      $query['page[offset]'] = $start;
-    }
-
-    if ($length) {
-      $query['page[limit]'] = $length;
-    }
-
-    // If filter is missing language set it manually.
-    if (!isset($query['filter[langcode]'])) {
-      $language = $this->languageManager
-        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-        ->getId();
-      $query['filter[langcode]'] = $language;
-    }
+    $query += $this->queryLimits($start, $length);
+    $query += $this->queryDefaultLangcode();
 
     return $this->request("/node/survey", $query, $query['filter[langcode]']);
   }
