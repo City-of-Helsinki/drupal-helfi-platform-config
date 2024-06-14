@@ -75,11 +75,4 @@ class GlobalAnnouncementsBlock extends EtusivuEntityBlockBase {
     ]);
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheTags(): array {
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list:announcement']);
-  }
-
 }
