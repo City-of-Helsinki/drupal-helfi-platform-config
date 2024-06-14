@@ -22,34 +22,6 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
   public const VISIBILITY_PAGE_WEIGHT = 2;
 
   /**
-   * The current route match.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
-   */
-  protected RouteMatchInterface $routeMatch;
-
-  /**
-   * The node storage.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected LanguageManagerInterface $languageManager;
-
-  /**
-   * Default language resolver.
-   *
-   * @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver
-   */
-  protected DefaultLanguageResolver $defaultLanguageResolver;
-
-  /**
    * Constructs a new AnnouncementsBlock instance.
    *
    * @param array $configuration
@@ -58,29 +30,25 @@ abstract class AnnouncementsBlockBase extends BlockBase implements ContainerFact
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   The current route match.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
-   * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver $default_language_resolver
+   * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver $defaultLanguageResolver
    *   Default language resolver.
    */
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    RouteMatchInterface $route_match,
-    EntityTypeManagerInterface $entity_type_manager,
-    LanguageManagerInterface $language_manager,
-    DefaultLanguageResolver $default_language_resolver,
+    protected RouteMatchInterface $routeMatch,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected LanguageManagerInterface $languageManager,
+    protected DefaultLanguageResolver $defaultLanguageResolver,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->routeMatch = $route_match;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->languageManager = $language_manager;
-    $this->defaultLanguageResolver = $default_language_resolver;
   }
 
   /**
