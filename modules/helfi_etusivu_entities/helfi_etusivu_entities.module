@@ -145,7 +145,7 @@ function helfi_etusivu_entities_node_delete(EntityInterface $entity): void {
 /**
  * Invalidate cache tags using pubsub.
  *
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity.
  */
 function _helfi_etusivu_entities_invalidate_cache(EntityInterface $entity): void {
@@ -159,20 +159,18 @@ function _helfi_etusivu_entities_invalidate_cache(EntityInterface $entity): void
   }
 
   try {
-    /** @var EnvironmentResolverInterface $environmentResolver */
+    /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver */
     $environmentResolver = \Drupal::service(EnvironmentResolverInterface::class);
 
     // Only run on etusivu.
     if ($environmentResolver->getActiveProject()->getName() == Project::ETUSIVU) {
       $cacheTag = $cacheTags[$entity->bundle()];
 
-      /** @var CacheTagInvalidatorInterface $cacheTagInvalidator */
+      /** @var \Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface $cacheTagInvalidator */
       $cacheTagInvalidator = \Drupal::service(CacheTagInvalidatorInterface::class);
 
       // Invalidate external entities from all instances.
-      $cacheTagInvalidator->invalidateTags([
-        $cacheTag
-      ]);
+      $cacheTagInvalidator->invalidateTags([$cacheTag]);
     }
   }
   catch (\InvalidArgumentException) {
