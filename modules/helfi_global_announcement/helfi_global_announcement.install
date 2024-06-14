@@ -8,70 +8,7 @@
 declare(strict_types=1);
 
 /**
- * Implements hook_install().
- */
-function helfi_global_announcement_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  helfi_global_announcement_grant_permissions();
-  _helfi_global_announcement_create_block();
-}
-
-/**
- * Grants required permissions.
- */
-function helfi_global_announcement_grant_permissions() : void {
-  $permissions = [
-    'view helfi_announcements external entity',
-  ];
-
-  helfi_platform_config_grant_permissions([
-    'anonymous' => $permissions,
-    'authenticated' => $permissions,
-  ]);
-}
-
-/**
- * Added external entity for announcements and enable block.
- */
-function _helfi_global_announcement_create_block() : void {
-  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
-  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
-
-  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
-  $theme_handler = \Drupal::service('theme_handler');
-
-  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
-    return;
-  }
-
-  $theme = $theme_handler->getDefault();
-  $block_config = helfi_global_announcement_get_block_configurations($theme)['global_announcement'];
-  ['block' => $block, 'variations' => $variations] = $block_config;
-  $block_installer->install($block, $variations);
-}
-
-/**
- * Grant required permissions.
- */
-function helfi_global_announcement_update_9001() : void {
-  helfi_global_announcement_grant_permissions();
-}
-
-/**
- * Re-install configuration to update cache lifetime.
- */
-function helfi_global_announcement_update_9004() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_global_announcement');
-}
-
-/**
- * UHF-9708: Enable helfi_node_survey module.
+ * UHF-9708: Enable helfi_etusivu_entities module.
  */
 function helfi_global_announcement_update_9309() : void {
   \Drupal::configFactory()->getEditable('external_entities.external_entity_type.helfi_announcements')->delete();

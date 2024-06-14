@@ -1,5 +1,7 @@
-name: 'HELfi Remote Entities'
+name: 'HELfi Etusivu Entities'
 type: module
 core_version_requirement: ^10
 dependencies:
   - external_entities:external_entities
+  - helfi_api_base:helfi_api_base
+  - helfi_platform_config:helfi_platform_config
