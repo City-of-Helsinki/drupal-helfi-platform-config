@@ -7,10 +7,13 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Surveys;
 
@@ -119,46 +122,60 @@ function helfi_etusivu_entities_entity_bundle_field_info_alter(
 }
 
 /**
- * Implements hook_cron().
+ * Implements hook_node_insert().
  */
-function helfi_etusivu_entities_cron(): void {
-  // @todo Remove this once we've confirmed that PubSub cache invalidation works.
-  $store = \Drupal::service('tempstore.shared')->get('etusivu_entities');
-  $externalEntityTypes = [
-    "helfi_announcements" => Announcements::$customCacheTag,
-    "helfi_surveys" => Surveys::$customCacheTag,
-  ];
-
-  foreach ($externalEntityTypes as $entityTypeId => $cacheTag) {
-    $newHash = _helfi_etusivu_entities_hash($entityTypeId);
-    $oldHash = $store->get($entityTypeId);
-
-    // External entities have changed if hashes do not match.
-    if ($oldHash !== $newHash) {
-      $store->set($entityTypeId, $newHash);
-      Cache::invalidateTags([Announcements::$customCacheTag]);
-    }
-  }
+function helfi_etusivu_entities_node_insert(EntityInterface $entity): void {
+  _helfi_etusivu_entities_invalidate_cache($entity);
 }
 
 /**
- * Gets hash of remote entities.
- *
- * @param string $entityTypeId
- *   Entity type id.
- *
- * @return string
- *   Sha256 of serialized remote entities.
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * Implements hook_node_update().
  */
-function _helfi_etusivu_entities_hash(string $entityTypeId): string {
-  $globalEntityStorage = \Drupal::entityTypeManager()
-    ->getStorage($entityTypeId);
+function helfi_etusivu_entities_node_update(EntityInterface $entity): void {
+  _helfi_etusivu_entities_invalidate_cache($entity);
+}
 
-  $externalAnnouncements = $globalEntityStorage
-    ->loadMultiple();
+/**
+ * Implements hook_node_delete().
+ */
+function helfi_etusivu_entities_node_delete(EntityInterface $entity): void {
+  _helfi_etusivu_entities_invalidate_cache($entity);
+}
 
-  return hash('sha256', serialize($externalAnnouncements));
+/**
+ * Invalidate cache tags using pubsub.
+ *
+ * @param EntityInterface $entity
+ *   The entity.
+ */
+function _helfi_etusivu_entities_invalidate_cache(EntityInterface $entity): void {
+  $cacheTags = [
+    'survey' => Surveys::$customCacheTag,
+    'announcement' => Announcements::$customCacheTag,
+  ];
+
+  if ($entity->getEntityTypeId() !== 'node' || !array_key_exists($entity->bundle(), $cacheTags)) {
+    return;
+  }
+
+  try {
+    /** @var EnvironmentResolverInterface $environmentResolver */
+    $environmentResolver = \Drupal::service(EnvironmentResolverInterface::class);
+
+    // Only run on etusivu.
+    if ($environmentResolver->getActiveProject()->getName() == Project::ETUSIVU) {
+      $cacheTag = $cacheTags[$entity->bundle()];
+
+      /** @var CacheTagInvalidatorInterface $cacheTagInvalidator */
+      $cacheTagInvalidator = \Drupal::service(CacheTagInvalidatorInterface::class);
+
+      // Invalidate external entities from all instances.
+      $cacheTagInvalidator->invalidateTags([
+        $cacheTag
+      ]);
+    }
+  }
+  catch (\InvalidArgumentException) {
+  }
+
 }
