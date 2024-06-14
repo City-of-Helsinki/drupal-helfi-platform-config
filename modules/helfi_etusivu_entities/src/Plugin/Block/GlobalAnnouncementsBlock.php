@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\helfi_global_announcement\Plugin\Block;
+declare(strict_types=1);
+
+namespace Drupal\helfi_etusivu_entities\Plugin\Block;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
-use Drupal\helfi_node_announcement\Plugin\Block\AnnouncementsBlockBase;
 use Drupal\node\Entity\Node;
 
 /**
@@ -18,22 +18,17 @@ use Drupal\node\Entity\Node;
   id: "global_announcements",
   admin_label: new TranslatableMarkup("Global announcements"),
 )]
-class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
+class GlobalAnnouncementsBlock extends EtusivuEntityBlockBase {
 
   /**
    * {@inheritdoc}
    */
   public function build(): array {
-    $globalEntityStorage = $this->entityTypeManager->getStorage('helfi_announcements');
-    assert($globalEntityStorage instanceof ExternalEntityStorageInterface);
-    $cacheMaxAge = $globalEntityStorage->getExternalEntityType()->get('persistent_cache_max_age');
-
-    $externalAnnouncements = $globalEntityStorage
-      ->loadMultiple();
-
+    $entityStorage = $this->getGlobalEntityStorage('helfi_announcements');
     $announcementNodes = [];
+
     /** @var \Drupal\external_entities\ExternalEntityInterface $announcement */
-    foreach ($externalAnnouncements as $announcement) {
+    foreach ($entityStorage->loadMultiple() as $announcement) {
       $linkUrl = NULL;
       $linkText = NULL;
       if ($announcement->hasField('announcement_link_text')) {
@@ -45,21 +40,23 @@ class GlobalAnnouncementsBlock extends AnnouncementsBlockBase {
       $announcementNodes[] = Node::create([
         'uuid' => $announcement->get('uuid')->value,
         'type' => 'announcement',
-        'field_announcement_type' => $announcement->get('announcement_type')->value,
-        'field_announcement_link' => ['uri' => $linkUrl, 'title' => $linkText],
         'langcode' => $announcement->get('langcode')->value,
         'body' => Xss::filter($announcement->get('body')->value),
         'title' => Xss::filter($announcement->get('title')->value),
         'status' => $announcement->get('status')->value,
         'field_announcement_title' => $announcement->get('announcement_assistive_technology_close_button_title')->value,
+        'field_announcement_type' => $announcement->get('announcement_type')->value,
+        'field_announcement_link' => ['uri' => $linkUrl, 'title' => $linkText],
       ]);
     }
 
     $viewMode = 'default';
-    $renderArray = $this->entityTypeManager->getViewBuilder('node')->viewMultiple($announcementNodes, $viewMode);
+    $renderArray = $this->entityTypeManager
+      ->getViewBuilder('node')
+      ->viewMultiple($announcementNodes, $viewMode);
 
     $renderArray['#cache'] = [
-      'max-age' => $cacheMaxAge,
+      'max-age' => $entityStorage->getExternalEntityType()->get('persistent_cache_max_age'),
       'tags' => [
         Announcements::$customCacheTag,
       ],

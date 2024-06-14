@@ -7,9 +7,69 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
+use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Surveys;
+
+/**
+ * Gets the block configurations.
+ *
+ * @return array[]
+ *   The block configurations.
+ */
+function helfi_etusivu_entities_get_block_configurations(string $theme) : array {
+  return [
+    'global_announcement' => [
+      'block' => [
+        'id' => 'globalannouncement',
+        'plugin' => 'global_announcements',
+        'settings' => [
+          'id' => 'global_announcements',
+          'label' => 'Global announcement',
+          'provider' => 'helfi_etusivu_entities',
+        ],
+        'provider' => 'helfi_etusivu_entities',
+        'weight' => -14,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'global_survey' => [
+      'block' => [
+        'id' => 'globalsurvey',
+        'plugin' => 'global_surveys',
+        'settings' => [
+          'id' => 'global_surveys',
+          'label' => 'Global surveys',
+          'provider' => 'helfi_etusivu_entities',
+        ],
+        'provider' => 'helfi_etusivu_entities',
+        'weight' => -14,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+  ];
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -56,4 +116,49 @@ function helfi_etusivu_entities_entity_bundle_field_info_alter(
         ->setDisplayConfigurable('form', TRUE);
     }
   }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function helfi_etusivu_entities_cron(): void {
+  // @todo Remove this once we've confirmed that PubSub cache invalidation works.
+  $store = \Drupal::service('tempstore.shared')->get('etusivu_entities');
+  $externalEntityTypes = [
+    "helfi_announcements" => Announcements::$customCacheTag,
+    "helfi_surveys" => Surveys::$customCacheTag,
+  ];
+
+  foreach ($externalEntityTypes as $entityTypeId => $cacheTag) {
+    $newHash = _helfi_etusivu_entities_hash($entityTypeId);
+    $oldHash = $store->get($entityTypeId);
+
+    // External entities have changed if hashes do not match.
+    if ($oldHash !== $newHash) {
+      $store->set($entityTypeId, $newHash);
+      Cache::invalidateTags([Announcements::$customCacheTag]);
+    }
+  }
+}
+
+/**
+ * Gets hash of remote entities.
+ *
+ * @param string $entityTypeId
+ *   Entity type id.
+ *
+ * @return string
+ *   Sha256 of serialized remote entities.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+function _helfi_etusivu_entities_hash(string $entityTypeId): string {
+  $globalEntityStorage = \Drupal::entityTypeManager()
+    ->getStorage($entityTypeId);
+
+  $externalAnnouncements = $globalEntityStorage
+    ->loadMultiple();
+
+  return hash('sha256', serialize($externalAnnouncements));
 }
