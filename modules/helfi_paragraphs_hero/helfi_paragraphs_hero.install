@@ -10,16 +10,6 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 
 /**
- * UHF-1781 Remove hero_bg_color field from hero paragraph.
- */
-function helfi_paragraphs_hero_update_9002(): void {
-  $field_hero_bg_color = FieldConfig::loadByName('paragraph', 'hero', 'field_hero_bg_color');
-  if (!empty($field_hero_bg_color)) {
-    $field_hero_bg_color->delete();
-  }
-}
-
-/**
  * UHF-1781 Change the hero design field to use allowed_values_function.
  */
 function helfi_paragraphs_hero_update_9003(): void {
