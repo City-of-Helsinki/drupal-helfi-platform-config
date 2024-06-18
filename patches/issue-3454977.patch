@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/search_api/backend/SearchApiElasticsearchBackend.php b/src/Plugin/search_api/backend/SearchApiElasticsearchBackend.php
+index 50732ba..30fdb79 100644
+--- a/src/Plugin/search_api/backend/SearchApiElasticsearchBackend.php
++++ b/src/Plugin/search_api/backend/SearchApiElasticsearchBackend.php
+@@ -1233,7 +1233,7 @@ class SearchApiElasticsearchBackend extends BackendPluginBase implements PluginF
+    *
+    * Prevents closure serialization error on search_api server add form.
+    */
+-  public function __sleep() {
++  public function __sleep(): array {
+     return [];
+   }
+ 
