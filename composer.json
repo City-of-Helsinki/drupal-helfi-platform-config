@@ -69,7 +69,8 @@
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/helfi_media_map": "*",
         "drupal/simple_sitemap": ">4.1.7",
-        "drush/drush": "<12"
+        "drush/drush": "<12",
+        "drupal/search_api": "1.35"
     },
     "extra": {
         "patches": {
