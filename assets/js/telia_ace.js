@@ -169,19 +169,20 @@
           };
           leijuke.render();
         }
+        // Interval is set to 50 milliseconds here.
+        // This doesn't poll the variables too often but should seem quick to users.
       }, 50);
     }
 
     render() {
       const { chatOpened, chatLoading } = this.state;
-      const icon = 'speechbubble-text';
       const label = chatLoading ? Drupal.t('Loading chat...', {}, {context: 'Telia ACE chat'}) : this.static.chat_title;
       const element = document.getElementById(this.static.selector);
       if (!element) {
         return;
       }
       let innerHTML = `
-        <span class="hel-icon hel-icon--${icon}"></span>
+        <span class="hel-icon hel-icon--speechbubble-text"></span>
         <span>${label}</span>
         <span class="hel-icon hel-icon--angle-up"></span>
       `;
