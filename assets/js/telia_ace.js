@@ -50,7 +50,7 @@
 
     init() {
       if (this.state.cookies) {
-        console.log('Cookies already set, loading chat.')
+        // Cookies already set so chat assets can be loaded.
         this.loadChat();
       }
 
@@ -132,8 +132,6 @@
 
         if (!this.state.cookies) {
           // Implicitly allow chat cookies if clicking Leijuke.
-          console.log('Chat cookies allowed implicitly and chat being loaded.');
-
           this.extCookieManager.cookieSet();
         }
 
