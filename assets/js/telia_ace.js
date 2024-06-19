@@ -57,11 +57,6 @@
         leijuke.loaded();
       };
 
-      // eslint-disable-next-line func-names
-      chatScript.onerror = function() {
-        // console.error('Failed to load script ' + scriptUrl);
-      };
-
       // Insert chatScript into head
       const head = document.querySelector('head');
       head.appendChild(chatScript);
@@ -124,11 +119,11 @@
           cookies: this.cookieCheck()
         };
 
+        // If the cookieCheck returns false, it means they could not be set
+        // implicitly, which means something is wrong in the config.
         if (this.state.cookies) {
           this.loadChat();
           this.openChat(true);
-        } else {
-          // console.warn('Missing the required cookies to open chat. Missing cookie not allowed to be set implicitly.')
         }
 
       });
@@ -187,7 +182,6 @@
       setTimeout(() => {
         // Only load any leijuke once, in case of ajax triggers.
         if (teliaAceData.initialized) {
-          // console.warn(`Already initialized Telia ACE script!`);
           return;
         }
 
