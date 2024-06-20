@@ -4,13 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.survey.body
-    - field.field.node.survey.field_survey_all_pages
     - field.field.node.survey.field_survey_content_pages
     - field.field.node.survey.field_survey_link
     - node.type.survey
   module:
     - link
-    - options
     - text
     - user
 id: node.survey.default
@@ -43,7 +41,6 @@ content:
     weight: 0
     region: content
 hidden:
-  field_survey_all_pages: true
   field_survey_content_pages: true
   field_survey_service_pages: true
   field_survey_unit_pages: true

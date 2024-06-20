@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.survey.body
-    - field.field.node.survey.field_survey_all_pages
     - field.field.node.survey.field_survey_content_pages
     - field.field.node.survey.field_survey_link
     - node.type.survey
@@ -31,7 +30,6 @@ content:
     weight: 100
     region: content
 hidden:
-  field_survey_all_pages: true
   field_survey_content_pages: true
   field_survey_link: true
   field_survey_service_pages: true
