@@ -1,0 +1,4 @@
+label: 'Julkaise ulkoisella sivustolla '
+settings:
+  on_label: Päällä
+  off_label: 'Pois päältä'

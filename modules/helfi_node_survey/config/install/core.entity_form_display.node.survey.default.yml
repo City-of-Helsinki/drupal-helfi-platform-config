@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.survey.body
-    - field.field.node.survey.field_survey_all_pages
     - field.field.node.survey.field_survey_content_pages
     - field.field.node.survey.field_survey_link
     - node.type.survey
@@ -36,13 +35,6 @@ content:
     weight: 3
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_survey_all_pages:
-    type: boolean_checkbox
-    weight: 13
-    region: content
-    settings:
-      display_label: true
     third_party_settings: {  }
   field_survey_content_pages:
     type: select2_entity_reference

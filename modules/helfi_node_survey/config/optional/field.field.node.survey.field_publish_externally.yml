@@ -1,21 +1,21 @@
-uuid: b7008a02-dd8e-42b1-b6fb-2cb4f642d9e5
+uuid: fd052f25-5c1d-400d-b22c-53960606800e
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_survey_all_pages
+    - field.storage.node.field_publish_externally
     - node.type.survey
-id: node.survey.field_survey_all_pages
-field_name: field_survey_all_pages
+id: node.survey.field_publish_externally
+field_name: field_publish_externally
 entity_type: node
 bundle: survey
-label: 'Show on all pages'
+label: 'Publish on external site'
 description: ''
 required: false
 translatable: false
 default_value:
   -
-    value: 1
+    value: 0
 default_value_callback: ''
 settings:
   on_label: 'On'
