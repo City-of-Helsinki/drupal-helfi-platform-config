@@ -35,10 +35,12 @@ final class Surveys extends EtusivuEntityBase {
       'fields[node--survey]' => 'id,langcode,status,published_at,unpublish_on,title,body,field_survey_link',
       'fields[status]' => 1,
       'filter[status][value]' => 1,
-      'filter[field_survey_all_pages][value]' => 1,
+      'filter[field_publish_externally][value]' => 1,
+      'sort' => '-published_at',
     ];
 
-    $query += $this->queryLimits($start, $length);
+    // This only ever returns the latest survey.
+    $query += $this->queryLimits($start, 1);
     $query += $this->queryDefaultLangcode();
 
     return $this->request("/node/survey", $query, $query['filter[langcode]']);

@@ -5,3 +5,5 @@ dependencies:
   - external_entities:external_entities
   - helfi_api_base:helfi_api_base
   - helfi_platform_config:helfi_platform_config
+  - helfi_platform_config:helfi_node_announcement
+  - helfi_platform_config:helfi_node_survey
