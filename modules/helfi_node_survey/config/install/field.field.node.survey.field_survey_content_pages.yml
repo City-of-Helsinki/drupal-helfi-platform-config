@@ -12,7 +12,7 @@ field_name: field_survey_content_pages
 entity_type: node
 bundle: survey
 label: 'Show on content pages'
-description: ''
+description: 'Shown on all pages if left empty.'
 required: false
 translatable: false
 default_value: {  }

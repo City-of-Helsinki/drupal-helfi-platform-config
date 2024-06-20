@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\block\Entity\Block;
+
 /**
  * UHF-9708: Enable helfi_etusivu_entities module.
  */
@@ -19,4 +21,16 @@ function helfi_global_announcement_update_9309() : void {
   if (!\Drupal::moduleHandler()->moduleExists('helfi_etusivu_entities')) {
     $module_installer->install(['helfi_etusivu_entities']);
   }
+}
+
+/**
+ * UHF-9708: Uninstall helfi_global_announcements module.
+ */
+function helfi_global_announcement_update_9310() : void {
+  if ($block = Block::load('globalannouncement')) {
+    $block->delete();
+  }
+
+  // Functionality moved to helfi_etusivu_entities.
+  \Drupal::service('module_installer')->uninstall(['helfi_global_announcement']);
 }

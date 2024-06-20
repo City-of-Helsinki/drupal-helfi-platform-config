@@ -8,6 +8,19 @@
 declare(strict_types=1);
 
 /**
+ * Implements hook_install().
+ */
+function helfi_node_survey_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  helfi_node_survey_grant_permissions();
+}
+
+/**
  * Grants required permissions.
  */
 function helfi_node_survey_grant_permissions() : void {
@@ -26,17 +39,4 @@ function helfi_node_survey_grant_permissions() : void {
     ],
   ];
   helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function helfi_node_survey_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  helfi_node_survey_grant_permissions();
 }

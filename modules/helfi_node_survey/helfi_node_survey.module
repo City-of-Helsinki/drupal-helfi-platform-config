@@ -14,11 +14,27 @@ function helfi_node_survey_form_node_form_alter(&$form, &$form_state, $form_id) 
   switch ($form_id) {
     case 'node_survey_edit_form':
     case 'node_survey_form':
-      $form['field_survey_content_pages']['#states'] = [
-        'visible' => [
-          ':input[name="field_survey_all_pages[value]"]' => ['checked' => FALSE],
-        ],
-      ];
+      // Don't show "menu link translation" published checkbox, as
+      // surveys cannot be added to any menu.
+      if (isset($form['menu']['content_translation_status'])) {
+        $form['menu']['content_translation_status']['#access'] = FALSE;
+      }
+
+      if (isset($form['field_publish_externally'])) {
+        $form['field_survey_content_pages']['#states'] = [
+          'visible' => [
+            ':input[name="field_publish_externally[value]"]' => ['checked' => FALSE],
+          ],
+        ];
+      }
+
       break;
   }
+}
+
+/**
+ * Implements hook_content_translation_status_access().
+ */
+function helfi_node_survey_content_translation_status_access($form_id) : bool {
+  return !in_array($form_id, ['node_survey_edit_form', 'node_survey_form']);
 }
