@@ -25,7 +25,7 @@ index 9b9855737e..6f482df009 100644
 +        $this->installOptionalConfig($storage, $dependency, $collection);
 +      }
      }
- 
+
      // Reset all the static caches and list caches.
 @@ -177,22 +183,26 @@ public function installDefaultConfig($type, $name) {
    /**
@@ -36,7 +36,7 @@ index 9b9855737e..6f482df009 100644
      $profile = $this->drupalGetProfile();
      $enabled_extensions = $this->getEnabledExtensions();
      $existing_config = $this->getActiveStorages()->listAll();
- 
+
 +    if (!empty($storage) && $storage->getCollectionName() != $collection) {
 +      $storage = $storage->createCollection($collection);
 +    }
@@ -58,7 +58,7 @@ index 9b9855737e..6f482df009 100644
      else {
        // Profile has not been set yet. For example during the first steps of the
 @@ -211,7 +221,10 @@ public function installOptionalConfig(?StorageInterface $storage = NULL, $depend
- 
+
      // Filter the list of configuration to only include configuration that
      // should be created.
 -    $list = array_filter($list, function ($config_name) use ($existing_config) {
@@ -70,14 +70,14 @@ index 9b9855737e..6f482df009 100644
        // - does not already exist
        // - is a configuration entity (this also excludes config that has an
 @@ -257,7 +270,7 @@ public function installOptionalConfig(?StorageInterface $storage = NULL, $depend
- 
+
      // Create the optional configuration if there is any left after filtering.
      if (!empty($config_to_create)) {
 -      $this->createConfiguration(StorageInterface::DEFAULT_COLLECTION, $config_to_create);
 +      $this->createConfiguration($collection, $config_to_create);
      }
    }
- 
+
 diff --git a/core/lib/Drupal/Core/Config/ConfigInstallerInterface.php b/core/lib/Drupal/Core/Config/ConfigInstallerInterface.php
 index d6ac429ce3..032510c95d 100644
 --- a/core/lib/Drupal/Core/Config/ConfigInstallerInterface.php
@@ -91,7 +91,7 @@ index d6ac429ce3..032510c95d 100644
     */
 -  public function installOptionalConfig(?StorageInterface $storage = NULL, $dependency = []);
 +  public function installOptionalConfig(?StorageInterface $storage = NULL, $dependency = [], $collection = StorageInterface::DEFAULT_COLLECTION);
- 
+
    /**
     * Installs all default configuration in the specified collection.
 diff --git a/core/lib/Drupal/Core/ProxyClass/Config/ConfigInstaller.php b/core/lib/Drupal/Core/ProxyClass/Config/ConfigInstaller.php
@@ -108,7 +108,7 @@ index 76ce0ecb12..eb31633592 100644
 -            return $this->lazyLoadItself()->installOptionalConfig($storage, $dependency);
 +            return $this->lazyLoadItself()->installOptionalConfig($storage, $dependency, $collection);
          }
- 
+
          /**
 diff --git a/core/modules/config_translation/tests/modules/config_install_optional_test/config/install/config_install_optional_test.settings.yml b/core/modules/config_translation/tests/modules/config_install_optional_test/config/install/config_install_optional_test.settings.yml
 new file mode 100644
@@ -317,7 +317,7 @@ index fc518b12f1..acc87f4e62 100644
 +++ b/core/modules/locale/tests/src/Functional/LocaleConfigTranslationImportTest.php
 @@ -195,7 +195,7 @@ public function testConfigTranslationModuleInstall(): void {
    }
- 
+
    /**
 -   * Tests removing a string from Locale deletes configuration translations.
 +   * Tests removing a string from Locale shouldn't delete config translations.
@@ -326,20 +326,20 @@ index fc518b12f1..acc87f4e62 100644
      // Enable the locale module.
 @@ -224,7 +224,10 @@ public function testLocaleRemovalAndConfigOverrideDelete(): void {
      $this->submitForm(['predefined_langcode' => 'af'], 'Add language');
- 
+
      $override = \Drupal::languageManager()->getLanguageConfigOverride('af', 'locale_test_translate.settings');
 -    $this->assertEquals(['translatable_default_with_translation' => 'Locale can translate Afrikaans'], $override->get());
 +    $expected = [
 +      'translatable_default_with_translation' => 'Locale can translate Afrikaans',
 +    ];
 +    $this->assertEquals($expected, $override->get());
- 
+
      // Remove the string from translation to simulate a Locale removal. Note
      // that is no current way of doing this in the UI.
 @@ -235,13 +238,15 @@ public function testLocaleRemovalAndConfigOverrideDelete(): void {
      $count = \Drupal::service('locale.config_manager')->updateConfigTranslations(['locale_test_translate.settings'], ['af']);
      $this->assertEquals(1, $count, 'Correct count of updated translations');
- 
+
 +    // Deleting the locale translation should not delete configuration
 +    // translations.
      $override = \Drupal::languageManager()->getLanguageConfigOverride('af', 'locale_test_translate.settings');
@@ -348,7 +348,7 @@ index fc518b12f1..acc87f4e62 100644
 +    $this->assertEquals($expected, $override->get());
 +    $this->assertFalse($override->isNew(), 'The configuration override was not deleted when the Locale string was deleted.');
    }
- 
+
    /**
 -   * Tests removing a string from Locale changes configuration translations.
 +   * Tests removing a string from Locale shouldn't change config translations.
@@ -358,7 +358,7 @@ index fc518b12f1..acc87f4e62 100644
 @@ -298,11 +303,9 @@ public function testLocaleRemovalAndConfigOverridePreserve(): void {
      $this->drupalGet('admin/config/regional/translate');
      $this->submitForm($edit, 'Save translations');
- 
+
 +    // Deleting the locale translation should not change configuration
 +    // translations.
      $override = \Drupal::languageManager()->getLanguageConfigOverride('af', 'locale_test_translate.settings');
@@ -368,17 +368,17 @@ index fc518b12f1..acc87f4e62 100644
 -    ];
      $this->assertEquals($expected, $override->get());
    }
- 
+
 diff --git a/core/modules/locale/tests/src/Kernel/LocaleConfigSubscriberForeignTest.php b/core/modules/locale/tests/src/Kernel/LocaleConfigSubscriberForeignTest.php
 index 8648ca59f7..d588657b5a 100644
 --- a/core/modules/locale/tests/src/Kernel/LocaleConfigSubscriberForeignTest.php
 +++ b/core/modules/locale/tests/src/Kernel/LocaleConfigSubscriberForeignTest.php
 @@ -137,7 +137,7 @@ public function testEnglish(): void {
      $this->assertTranslation($config_name, 'Updated English', 'en');
- 
+
      $this->deleteLocaleTranslationData($config_name, 'test', 'English test', 'en');
 -    $this->assertNoConfigOverride($config_name, 'en');
 +    $this->assertNoTranslation($config_name, 'en');
    }
- 
+
    /**
