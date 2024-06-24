@@ -1,5 +1,5 @@
 diff --git a/core/lib/Drupal/Core/Config/ConfigInstaller.php b/core/lib/Drupal/Core/Config/ConfigInstaller.php
-index 9b9855737e..358a77e6a9 100644
+index 9b9855737e..6f482df009 100644
 --- a/core/lib/Drupal/Core/Config/ConfigInstaller.php
 +++ b/core/lib/Drupal/Core/Config/ConfigInstaller.php
 @@ -158,16 +158,22 @@ public function installDefaultConfig($type, $name) {
@@ -12,7 +12,7 @@ index 9b9855737e..358a77e6a9 100644
          $storage = new FileStorage($optional_install_path, StorageInterface::DEFAULT_COLLECTION);
 -        $this->installOptionalConfig($storage, '');
 +        foreach ($collection_info->getCollectionNames() as $collection) {
-+          $this->installOptionalConfig($storage, '', $collection);
++          $this->installOptionalConfig($storage, [], $collection);
 +        }
        }
        // Install any optional configuration entities whose dependencies can now
@@ -32,7 +32,7 @@ index 9b9855737e..358a77e6a9 100644
     * {@inheritdoc}
     */
 -  public function installOptionalConfig(?StorageInterface $storage = NULL, $dependency = []) {
-+  public function installOptionalConfig(?StorageInterface $storage = NULL, array $dependency = [], string $collection = StorageInterface::DEFAULT_COLLECTION) {
++  public function installOptionalConfig(?StorageInterface $storage = NULL, $dependency = [], $collection = StorageInterface::DEFAULT_COLLECTION) {
      $profile = $this->drupalGetProfile();
      $enabled_extensions = $this->getEnabledExtensions();
      $existing_config = $this->getActiveStorages()->listAll();
@@ -79,19 +79,10 @@ index 9b9855737e..358a77e6a9 100644
    }
  
 diff --git a/core/lib/Drupal/Core/Config/ConfigInstallerInterface.php b/core/lib/Drupal/Core/Config/ConfigInstallerInterface.php
-index d6ac429ce3..02fd8e5594 100644
+index d6ac429ce3..032510c95d 100644
 --- a/core/lib/Drupal/Core/Config/ConfigInstallerInterface.php
 +++ b/core/lib/Drupal/Core/Config/ConfigInstallerInterface.php
-@@ -40,7 +40,7 @@ public function installDefaultConfig($type, $name);
-    * - it's a configuration entity.
-    * - its dependencies can be met.
-    *
--   * @param \Drupal\Core\Config\StorageInterface $storage
-+   * @param \Drupal\Core\Config\StorageInterface|null $storage
-    *   (optional) The configuration storage to search for optional
-    *   configuration. If not provided, all enabled extension's optional
-    *   configuration directories including the install profile's will be
-@@ -50,9 +50,10 @@ public function installDefaultConfig($type, $name);
+@@ -50,8 +50,10 @@ public function installDefaultConfig($type, $name);
     *   this dependency. The format is dependency type as the key ('module',
     *   'theme', or 'config') and the dependency name as the value
     *   ('node', 'olivero', 'views.view.frontpage').
@@ -99,22 +90,19 @@ index d6ac429ce3..02fd8e5594 100644
 +   *   (optional) The configuration collection.
     */
 -  public function installOptionalConfig(?StorageInterface $storage = NULL, $dependency = []);
--
-+  public function installOptionalConfig(?StorageInterface $storage = NULL, array $dependency = [], string $collection = StorageInterface::DEFAULT_COLLECTION);
++  public function installOptionalConfig(?StorageInterface $storage = NULL, $dependency = [], $collection = StorageInterface::DEFAULT_COLLECTION);
+ 
    /**
     * Installs all default configuration in the specified collection.
-    *
 diff --git a/core/lib/Drupal/Core/ProxyClass/Config/ConfigInstaller.php b/core/lib/Drupal/Core/ProxyClass/Config/ConfigInstaller.php
-index 76ce0ecb12..7e7541ba11 100644
+index 76ce0ecb12..eb31633592 100644
 --- a/core/lib/Drupal/Core/ProxyClass/Config/ConfigInstaller.php
 +++ b/core/lib/Drupal/Core/ProxyClass/Config/ConfigInstaller.php
-@@ -78,10 +78,10 @@ public function installDefaultConfig($type, $name)
-         /**
+@@ -79,9 +79,9 @@ public function installDefaultConfig($type, $name)
           * {@inheritdoc}
           */
--        public function installOptionalConfig(?\Drupal\Core\Config\StorageInterface $storage = NULL, $dependency = array (
+         public function installOptionalConfig(?\Drupal\Core\Config\StorageInterface $storage = NULL, $dependency = array (
 -        ))
-+        public function installOptionalConfig(?\Drupal\Core\Config\StorageInterface $storage = NULL, array $dependency = array (
 +        ), $collection = '')
          {
 -            return $this->lazyLoadItself()->installOptionalConfig($storage, $dependency);
@@ -124,10 +112,11 @@ index 76ce0ecb12..7e7541ba11 100644
          /**
 diff --git a/core/modules/config_translation/tests/modules/config_install_optional_test/config/install/config_install_optional_test.settings.yml b/core/modules/config_translation/tests/modules/config_install_optional_test/config/install/config_install_optional_test.settings.yml
 new file mode 100644
-index 0000000000..b12d5bd968
+index 0000000000..0a694c1799
 --- /dev/null
 +++ b/core/modules/config_translation/tests/modules/config_install_optional_test/config/install/config_install_optional_test.settings.yml
-@@ -0,0 +1,4 @@
+@@ -0,0 +1,5 @@
++langcode: en
 +data:
 +  item: 'Item (en)'
 +label: 'Label (en)'
@@ -212,11 +201,13 @@ index 0000000000..181d93d34a
 +hidden: true
 diff --git a/core/modules/config_translation/tests/src/Kernel/ConfigTranslationTest.php b/core/modules/config_translation/tests/src/Kernel/ConfigTranslationTest.php
 new file mode 100644
-index 0000000000..8056372cc4
+index 0000000000..ac36f873d1
 --- /dev/null
 +++ b/core/modules/config_translation/tests/src/Kernel/ConfigTranslationTest.php
-@@ -0,0 +1,70 @@
+@@ -0,0 +1,72 @@
 +<?php
++
++declare(strict_types=1);
 +
 +namespace Drupal\Tests\config_translation\Kernel;
 +
@@ -245,7 +236,7 @@ index 0000000000..8056372cc4
 +  /**
 +   * Tests optional configuration translation.
 +   */
-+  public function testInstallConfigTranslate() {
++  public function testInstallConfigTranslate(): void {
 +    $this->installConfig(['language']);
 +    $locale_tables = [
 +      'locales_source',
@@ -267,7 +258,7 @@ index 0000000000..8056372cc4
 +  /**
 +   * Tests optional configuration translation.
 +   */
-+  public function testOptionalConfigTranslate() {
++  public function testOptionalConfigTranslate(): void {
 +    $this->installConfig(['language']);
 +    $locale_tables = [
 +      'locales_source',
