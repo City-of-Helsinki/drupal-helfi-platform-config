@@ -66,8 +66,8 @@
         "php": "^8.1"
     },
     "conflict": {
-        "drupal/core": "<10.2 || >=10.3",
-        "drupal/core-composer-scaffold": "<10.2 || >=10.3",
+        "drupal/core": "<10.3",
+        "drupal/core-composer-scaffold": "<10.3",
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/gin_toolbar": ">1.0.0-rc5",
         "drupal/helfi_media_map": "*",
