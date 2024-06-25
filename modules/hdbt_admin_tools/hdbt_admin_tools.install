@@ -87,3 +87,19 @@ function hdbt_admin_tools_update_9004(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('hdbt_admin_tools');
 }
+
+/**
+ * UHF-10252: Update admin pages language switcher block visibility settings.
+ */
+function hdbt_admin_tools_update_9005(): void {
+  // Alter admin pages language switcher block visibility settings.
+  $language_switcher_block = Drupal::configFactory()
+    ->getEditable('block.block.language_switcher_admin');
+  $raw_data = $language_switcher_block->getRawData();
+
+  if (isset($raw_data['visibility']['request_path']['pages'])) {
+    $raw_data['visibility']['request_path']['pages'] = '/node/*\r\n/admin/content/integrations/*/edit\r\n/group/*/content/create/*';
+    $language_switcher_block->setData($raw_data);
+    $language_switcher_block->save();
+  }
+}
