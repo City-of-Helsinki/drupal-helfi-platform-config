@@ -126,3 +126,10 @@ function helfi_platform_config_update_9308() : void {
     $module_installer->install(['help']);
   }
 }
+
+/**
+ * Rerun hal/rdf module disabling since the first one did not run.
+ */
+function helfi_platform_config_update_9309() {
+  helfi_platform_config_update_9307();
+}
