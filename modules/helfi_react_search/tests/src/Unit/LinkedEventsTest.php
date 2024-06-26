@@ -54,14 +54,19 @@ class LinkedEventsTest extends UnitTestCase {
   protected function setUp() : void {
     parent::setUp();
 
-    $this->cache = new MemoryBackend();
+    // Create a mock container.
+    $container = new ContainerBuilder();
+
+    // Register the TimeInterface service.
+    $time = $this->createMock(TimeInterface::class);
+    $container->set('datetime.time', $time);
+
+    // MemoryBackend needs a time object, so create one.
+    $this->cache = new MemoryBackend($time);
     $this->environmentResolverConfiguration = [
       EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
       EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'local',
     ];
-
-    // Create a mock container.
-    $container = new ContainerBuilder();
 
     // Register services what LinkedEvents uses.
     $urlAssembler = $this->createMock('Drupal\Core\Utility\UnroutedUrlAssemblerInterface');
