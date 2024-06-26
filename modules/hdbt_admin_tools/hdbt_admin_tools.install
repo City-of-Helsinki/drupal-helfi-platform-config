@@ -98,7 +98,7 @@ function hdbt_admin_tools_update_9005(): void {
   $raw_data = $language_switcher_block->getRawData();
 
   if (isset($raw_data['visibility']['request_path']['pages'])) {
-    $raw_data['visibility']['request_path']['pages'] = '/node/*\r\n/admin/content/integrations/*/edit\r\n/group/*/content/create/*';
+    $raw_data['visibility']['request_path']['pages'] = "/node/*\r\n/admin/content/integrations/*/edit\r\n/group/*/content/create/*";
     $language_switcher_block->setData($raw_data);
     $language_switcher_block->save();
   }
