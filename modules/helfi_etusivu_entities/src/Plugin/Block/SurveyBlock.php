@@ -93,14 +93,13 @@ final class SurveyBlock extends EtusivuEntityBlockBase {
       if ($weightA === $weightB) {
         return 0;
       }
-      // More urgent announcements render first.
       return $weightA < $weightB ? 1 : -1;
     });
 
     $referenceField = self::ENTITY_TYPE_FIELDS[$currentEntity?->getEntityTypeId()] ?? NULL;
 
     foreach ($surveys as $node) {
-      // Check if the announcement should be shown at all pages.
+      // Check if the node should be shown at all pages.
       if ($node->get('field_survey_content_pages')->isEmpty()) {
         return $node;
       }
@@ -137,7 +136,7 @@ final class SurveyBlock extends EtusivuEntityBlockBase {
         $linkUrl = $entity->get('survey_link_url')->value;
       }
 
-      // Create announcement nodes for the block based on external entity data.
+      // Create nodes for the block based on external entity data.
       $nodes[] = Node::create([
         'uuid' => $entity->get('uuid')->value,
         'type' => 'survey',
