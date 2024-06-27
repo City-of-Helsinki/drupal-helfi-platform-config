@@ -42,8 +42,6 @@ content:
     region: content
 hidden:
   field_survey_content_pages: true
-  field_survey_service_pages: true
-  field_survey_unit_pages: true
   langcode: true
   published_at: true
   toc_enabled: true
