@@ -54,26 +54,6 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-  field_survey_service_pages:
-    type: select2_entity_reference
-    weight: 16
-    region: content
-    settings:
-      width: 100%
-      autocomplete: true
-      match_operator: CONTAINS
-      match_limit: 20
-    third_party_settings: {  }
-  field_survey_unit_pages:
-    type: select2_entity_reference
-    weight: 15
-    region: content
-    settings:
-      width: 100%
-      autocomplete: true
-      match_operator: CONTAINS
-      match_limit: 20
-    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 1
