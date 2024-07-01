@@ -472,3 +472,7 @@ msgstr "Tämän on oltava ulkoinen URL-osoite, kuten %url."
 
 msgid "Start typing to find content or paste a URL and click on the suggestion below."
 msgstr "Kirjoita osa sivun otsikosta tai liitä URL-osoite, ja valitse oikea sivu ehdotuksista."
+
+msgctxt "Telia ACE chat"
+msgid "Loading chat..."
+msgstr "Ladataan..."
