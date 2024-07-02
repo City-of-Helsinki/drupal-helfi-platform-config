@@ -1,0 +1,22 @@
+uuid: 66c7c3ae-fd35-4cd8-a4c2-54bc24cf5895
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.survey
+id: node.survey.status
+field_name: status
+entity_type: node
+bundle: survey
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

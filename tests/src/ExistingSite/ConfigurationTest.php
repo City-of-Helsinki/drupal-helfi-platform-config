@@ -86,9 +86,21 @@ class ConfigurationTest extends ExistingSiteTestBase {
         if ($file->getExtension() !== 'yml') {
           continue;
         }
-        $configFileName = str_replace('.yml', '', $file->getFilename());
-        $definition = $this->typedConfigManager->get($configFileName)
-          ->getDataDefinition();
+
+        try {
+          $configFileName = str_replace('.yml', '', $file->getFilename());
+          $definition = $this->typedConfigManager->get($configFileName)
+            ->getDataDefinition();
+        }
+        catch (\InvalidArgumentException $e) {
+          // Support optional configuration that are not installed on every
+          // instance. This test does not catch missing uuids on these configs.
+          if ($type === 'optional') {
+            continue;
+          }
+
+          throw $e;
+        }
 
         // Skip configuration that doesn't require UUID.
         if (!isset($definition['mapping']['uuid'])) {

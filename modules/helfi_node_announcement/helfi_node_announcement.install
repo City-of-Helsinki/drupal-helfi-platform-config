@@ -63,13 +63,12 @@ function helfi_node_announcement_install($is_syncing) : void {
   }
 
   helfi_node_announcement_grant_permissions();
-  _helfi_global_announcement_enable();
 }
 
 /**
- * Enable global announcement.
+ * Implements hook_update().
  */
-function _helfi_global_announcement_enable() {
+function helfi_node_announcement_update_9001() : void {
   if (
     Drupal::moduleHandler()->moduleExists('external_entities') &&
     Drupal::moduleHandler()->moduleExists('helfi_node_announcement')
@@ -78,13 +77,6 @@ function _helfi_global_announcement_enable() {
       'helfi_global_announcement',
     ]);
   }
-}
-
-/**
- * Implements hook_update().
- */
-function helfi_node_announcement_update_9001() : void {
-  _helfi_global_announcement_enable();
 }
 
 /**

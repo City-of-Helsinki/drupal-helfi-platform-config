@@ -1,0 +1,19 @@
+uuid: e9b298a6-f958-41b6-9c26-5fd7868e4120
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+id: node.field_survey_link
+field_name: field_survey_link
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
