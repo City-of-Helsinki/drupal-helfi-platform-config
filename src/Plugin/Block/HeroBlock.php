@@ -56,6 +56,9 @@ class HeroBlock extends ContentBlockBase {
           'service_list_search',
         ];
 
+        // Let modules alter the array of paragraphs with grey background.
+        $this->moduleHandler->alter('first_paragraph_grey', $paragraphs_with_grey_bg);
+
         if (
           $paragraph instanceof ParagraphInterface &&
           in_array($paragraph->getType(), $paragraphs_with_grey_bg)
