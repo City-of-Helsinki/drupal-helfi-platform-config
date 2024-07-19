@@ -305,3 +305,25 @@ final class YourEntityImageBuilder implements OGImageBuilderInterface {
 
 }
 ```
+
+
+## First paragraph grey alter
+
+There are some paragraphs that we want to "blend" with the hero-block if they are directly after the hero such as
+searches. Good example of this kind of search is `unit_search`. The grey background should continue from hero to the
+paragraph seamlessly and for paragraphs that are usable on all instances this is done in the `helfi_platform_config`.
+These paragraphs can be found listed in the `$paragraphs_with_grey_bg` variable in `HeroBlock.php`.
+
+There can be paragraphs that we want to function this way, but they are instance specific. For them to be able to
+function the same way you need to use the `first_paragraph_grey_alter` on that instance that uses the paragraph.
+
+Here is an example on how this is done in front page instance (helfi_etusivu custom module, helfi_etusivu.module file):
+
+```php
+/**
+* Implements hook_first_paragraph_grey_alter().
+*/
+function helfi_etusivu_first_paragraph_grey_alter(array &$paragraphs): void {
+  $paragraphs[] = 'news_archive';
+}
+```

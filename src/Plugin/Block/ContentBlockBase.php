@@ -7,6 +7,7 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -31,6 +32,13 @@ class ContentBlockBase extends BlockBase implements ContainerFactoryPluginInterf
   protected EntityVersionMatcher $entityVersionMatcher;
 
   /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected ModuleHandlerInterface $moduleHandler;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(
@@ -39,10 +47,12 @@ class ContentBlockBase extends BlockBase implements ContainerFactoryPluginInterf
     $plugin_definition,
     EntityTypeManagerInterface $entity_type_manager,
     EntityVersionMatcher $entity_version_matcher,
+    ModuleHandlerInterface $module_handler,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityVersionMatcher = $entity_version_matcher;
+    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -60,6 +70,7 @@ class ContentBlockBase extends BlockBase implements ContainerFactoryPluginInterf
       $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('helfi_platform_config.entity_version_matcher'),
+      $container->get('module_handler'),
     );
   }
 
