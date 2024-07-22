@@ -10,8 +10,8 @@ dependencies:
     - image.style.3.1_2494w_800h_LQ
     - image.style.3.3_1982w_600h_LQ
     - image.style.3.3_991w_300h
-    - image.style.4.8_1920w_400h
-    - image.style.4.8_3840w_800h_LQ
+    - image.style.2.4_1920w_800h
+    - image.style.2.4_3840w_1600h_LQ
   module:
     - helfi_image_styles
 id: hero__bottom
@@ -19,12 +19,12 @@ label: 'Hero Bottom'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: 4.8_1920w_400h
+    image_mapping: 2.4_1920w_800h
     breakpoint_id: helfi_image_styles.xl
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 4.8_3840w_800h_LQ
+    image_mapping: 2.4_3840w_1600h_LQ
     breakpoint_id: helfi_image_styles.xl
     multiplier: 2x
   -
