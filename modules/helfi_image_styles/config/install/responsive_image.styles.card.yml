@@ -2,70 +2,70 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.1.9_1150w_600h_LQ
-    - image.style.1.9_575w_300h
-    - image.style.2.3_1247w_540h
-    - image.style.2.3_2494w_1080h_LQ
-    - image.style.2.6_1534w_600h_LQ
-    - image.style.2.6_767w_300h
-    - image.style.3.3_1982w_600h_LQ
-    - image.style.3.3_991w_300h
-    - image.style.4_1920w_480h
-    - image.style.4_3840w_960h_LQ
+    - image.style.1.5_1022w_682h_LQ
+    - image.style.1.5_217w_145h
+    - image.style.1.5_264w_176h
+    - image.style.1.5_341w_227h
+    - image.style.1.5_378w_252h
+    - image.style.1.5_434w_290h_LQ
+    - image.style.1.5_511w_341h
+    - image.style.1.5_528w_352h_LQ
+    - image.style.1.5_682w_454h_LQ
+    - image.style.1.5_756w_504h_LQ
   module:
     - helfi_image_styles
-id: hero__diagonal
-label: 'Hero Diagonal'
+id: card
+label: 'Card'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: 4_1920w_480h
+    image_mapping: 1.5_378w_252h
     breakpoint_id: helfi_image_styles.xxl
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 4_3840w_960h_LQ
+    image_mapping: 1.5_756w_504h_LQ
     breakpoint_id: helfi_image_styles.xxl
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 2.3_1247w_540h
+    image_mapping: 1.5_341w_227h
     breakpoint_id: helfi_image_styles.xl
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 2.3_2494w_1080h_LQ
+    image_mapping: 1.5_682w_454h_LQ
     breakpoint_id: helfi_image_styles.xl
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 3.3_991w_300h
+    image_mapping: 1.5_264w_176h
     breakpoint_id: helfi_image_styles.l
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 3.3_1982w_600h_LQ
+    image_mapping: 1.5_528w_352h_LQ
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 2.6_767w_300h
+    image_mapping: 1.5_217w_145h
     breakpoint_id: helfi_image_styles.m
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 2.6_1534w_600h_LQ
+    image_mapping: 1.5_434w_290h_LQ
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 1.9_575w_300h
+    image_mapping: 1.5_511w_341h
     breakpoint_id: helfi_image_styles.s
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1.9_1150w_600h_LQ
+    image_mapping: 1.5_1022w_682h_LQ
     breakpoint_id: helfi_image_styles.s
     multiplier: 2x
 breakpoint_group: helfi_image_styles
-fallback_image_style: 3.3_991w_300h
+fallback_image_style: 1.5_378w_252h

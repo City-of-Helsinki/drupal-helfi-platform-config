@@ -1,20 +1,17 @@
-uuid: c39d4cdf-d1e1-4494-b434-68213a6eae1f
 langcode: en
 status: true
 dependencies:
   config:
-    - image.style.23_10_l
-    - image.style.23_10_l_2x
-    - image.style.23_10_m
-    - image.style.23_10_m_2x
-    - image.style.23_10_s
-    - image.style.23_10_s_2x
-    - image.style.23_10_xl
-    - image.style.23_10_xl_2x
-    - image.style.23_10_xs
-    - image.style.23_10_xs_2x
-    - image.style.23_10_xxs
-    - image.style.23_10_xxs_2x
+    - image.style.1.9_1150w_600h_LQ
+    - image.style.1.9_575w_300h
+    - image.style.2.6_1534w_600h_LQ
+    - image.style.2.6_767w_300h
+    - image.style.3.1_1247w_400h
+    - image.style.3.1_2494w_800h_LQ
+    - image.style.3.3_1982w_600h_LQ
+    - image.style.3.3_991w_300h
+    - image.style.4.8_1920w_400h
+    - image.style.4.8_3840w_800h_LQ
   module:
     - helfi_image_styles
 id: hero__bottom
@@ -22,63 +19,53 @@ label: 'Hero Bottom'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: 23_10_xl
+    image_mapping: 4.8_1920w_400h
+    breakpoint_id: helfi_image_styles.xxl
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 4.8_3840w_800h_LQ
+    breakpoint_id: helfi_image_styles.xxl
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 3.1_1247w_400h
     breakpoint_id: helfi_image_styles.xl
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 23_10_xl_2x
+    image_mapping: 3.1_2494w_800h_LQ
     breakpoint_id: helfi_image_styles.xl
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 23_10_l
+    image_mapping: 3.3_991w_300h
     breakpoint_id: helfi_image_styles.l
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 23_10_l_2x
+    image_mapping: 3.3_1982w_600h_LQ
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 23_10_m
+    image_mapping: 2.6_767w_300h
     breakpoint_id: helfi_image_styles.m
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 23_10_m_2x
+    image_mapping: 2.6_1534w_600h_LQ
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 23_10_s
+    image_mapping: 1.9_575w_300h
     breakpoint_id: helfi_image_styles.s
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 23_10_s_2x
+    image_mapping: 1.9_1150w_600h_LQ
     breakpoint_id: helfi_image_styles.s
-    multiplier: 2x
-  -
-    image_mapping_type: image_style
-    image_mapping: 23_10_xs
-    breakpoint_id: helfi_image_styles.xs
-    multiplier: 1x
-  -
-    image_mapping_type: image_style
-    image_mapping: 23_10_xxs
-    breakpoint_id: helfi_image_styles.xxs
-    multiplier: 1x
-  -
-    image_mapping_type: image_style
-    image_mapping: 23_10_xs_2x
-    breakpoint_id: helfi_image_styles.xs
-    multiplier: 2x
-  -
-    image_mapping_type: image_style
-    image_mapping: 23_10_xxs_2x
-    breakpoint_id: helfi_image_styles.xxs
     multiplier: 2x
 breakpoint_group: helfi_image_styles
-fallback_image_style: 23_10_m
+fallback_image_style: 3.1_1247w_400h

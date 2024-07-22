@@ -2,18 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.1.5_1120w_746h_LQ
+    - image.style.1.5_217w_145h
+    - image.style.1.5_294w_196h
     - image.style.1.5_378w_252h
     - image.style.1.5_405w_270h
-    - image.style.1.5_452w_301h
-    - image.style.1.5_560w_373h
+    - image.style.1.5_434w_290h_LQ
+    - image.style.1.5_588w_392h_LQ
     - image.style.1.5_756w_504h_LQ
     - image.style.1.5_810w_540h_LQ
-    - image.style.1.5_904w_602h_LQ
   module:
     - helfi_image_styles
-id: content_cards
-label: 'Content Cards'
+id: card_teaser
+label: 'Card Teaser'
 image_style_mappings:
   -
     image_mapping_type: image_style
@@ -37,32 +37,22 @@ image_style_mappings:
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 1.5_452w_301h
-    breakpoint_id: helfi_image_styles.l
-    multiplier: 1x
-  -
-    image_mapping_type: image_style
-    image_mapping: 1.5_904w_602h_LQ
-    breakpoint_id: helfi_image_styles.l
-    multiplier: 2x
-  -
-    image_mapping_type: image_style
-    image_mapping: 1.5_378w_252h
+    image_mapping: 1.5_294w_196h
     breakpoint_id: helfi_image_styles.m
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1.5_756w_504h_LQ
+    image_mapping: 1.5_588w_392h_LQ
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 1.5_560w_373h
+    image_mapping: 1.5_217w_145h
     breakpoint_id: helfi_image_styles.s
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1.5_1120w_746h_LQ
+    image_mapping: 1.5_434w_290h_LQ
     breakpoint_id: helfi_image_styles.s
     multiplier: 2x
 breakpoint_group: helfi_image_styles

@@ -2,70 +2,70 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.1.9_1150w_600h_LQ
-    - image.style.1.9_575w_300h
-    - image.style.2.3_1247w_540h
-    - image.style.2.3_2494w_1080h_LQ
-    - image.style.2.6_1534w_600h_LQ
-    - image.style.2.6_767w_300h
-    - image.style.3.3_1982w_600h_LQ
-    - image.style.3.3_991w_300h
-    - image.style.4_1920w_480h
-    - image.style.4_3840w_960h_LQ
+    - image.style.orig_1086w_free_LQ
+    - image.style.orig_1183w_free
+    - image.style.orig_1264w_free
+    - image.style.orig_1470w_free_LQ
+    - image.style.orig_1854w_free_LQ
+    - image.style.orig_2366w_free_LQ
+    - image.style.orig_2528w_free_LQ
+    - image.style.orig_543w_free
+    - image.style.orig_735w_free
+    - image.style.orig_927w_free
   module:
     - helfi_image_styles
-id: hero__diagonal
-label: 'Hero Diagonal'
+id: image_orig
+label: 'Image Original'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: 4_1920w_480h
+    image_mapping: orig_1264w_free
     breakpoint_id: helfi_image_styles.xxl
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 4_3840w_960h_LQ
+    image_mapping: orig_2528w_free_LQ
     breakpoint_id: helfi_image_styles.xxl
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 2.3_1247w_540h
+    image_mapping: orig_1183w_free
     breakpoint_id: helfi_image_styles.xl
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 2.3_2494w_1080h_LQ
+    image_mapping: orig_2366w_free_LQ
     breakpoint_id: helfi_image_styles.xl
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 3.3_991w_300h
+    image_mapping: orig_927w_free
     breakpoint_id: helfi_image_styles.l
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 3.3_1982w_600h_LQ
+    image_mapping: orig_1854w_free_LQ
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 2.6_767w_300h
+    image_mapping: orig_735w_free
     breakpoint_id: helfi_image_styles.m
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 2.6_1534w_600h_LQ
+    image_mapping: orig_1470w_free_LQ
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 1.9_575w_300h
+    image_mapping: orig_543w_free
     breakpoint_id: helfi_image_styles.s
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1.9_1150w_600h_LQ
+    image_mapping: orig_1086w_free_LQ
     breakpoint_id: helfi_image_styles.s
     multiplier: 2x
 breakpoint_group: helfi_image_styles
-fallback_image_style: 3.3_991w_300h
+fallback_image_style: orig_735w_free

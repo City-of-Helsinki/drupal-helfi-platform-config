@@ -2,29 +2,29 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.1.9_1150w_600h_LQ
-    - image.style.1.9_575w_300h
+    - image.style.2.3_1150w_500h_LQ
     - image.style.2.3_1247w_540h
+    - image.style.2.3_1534w_668h_LQ
+    - image.style.2.3_1982w_862h_LQ
     - image.style.2.3_2494w_1080h_LQ
-    - image.style.2.6_1534w_600h_LQ
-    - image.style.2.6_767w_300h
-    - image.style.3.3_1982w_600h_LQ
-    - image.style.3.3_991w_300h
-    - image.style.4_1920w_480h
-    - image.style.4_3840w_960h_LQ
+    - image.style.2.3_575w_250h
+    - image.style.2.3_767w_334h
+    - image.style.2.3_991w_431h
+    - image.style.3.6_1920w_540h
+    - image.style.3.6_3840w_1080h_LQ
   module:
     - helfi_image_styles
-id: hero__diagonal
-label: 'Hero Diagonal'
+id: liftup_bg
+label: 'Liftup BG'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: 4_1920w_480h
+    image_mapping: 3.6_1920w_540h
     breakpoint_id: helfi_image_styles.xxl
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 4_3840w_960h_LQ
+    image_mapping: 3.6_3840w_1080h_LQ
     breakpoint_id: helfi_image_styles.xxl
     multiplier: 2x
   -
@@ -39,33 +39,33 @@ image_style_mappings:
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 3.3_991w_300h
+    image_mapping: 2.3_991w_431h
     breakpoint_id: helfi_image_styles.l
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 3.3_1982w_600h_LQ
+    image_mapping: 2.3_1982w_862h_LQ
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 2.6_767w_300h
+    image_mapping: 2.3_767w_334h
     breakpoint_id: helfi_image_styles.m
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 2.6_1534w_600h_LQ
+    image_mapping: 2.3_1534w_668h_LQ
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 1.9_575w_300h
+    image_mapping: 2.3_575w_250h
     breakpoint_id: helfi_image_styles.s
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1.9_1150w_600h_LQ
+    image_mapping: 2.3_1150w_500h_LQ
     breakpoint_id: helfi_image_styles.s
     multiplier: 2x
 breakpoint_group: helfi_image_styles
-fallback_image_style: 3.3_991w_300h
+fallback_image_style: 2.3_991w_431h
