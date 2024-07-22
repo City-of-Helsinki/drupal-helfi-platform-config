@@ -20,52 +20,52 @@ image_style_mappings:
   -
     image_mapping_type: image_style
     image_mapping: orig_1264w_free
-    breakpoint_id: helfi_image_styles.xxl
+    breakpoint_id: helfi_image_styles.xl
     multiplier: 1x
   -
     image_mapping_type: image_style
     image_mapping: orig_2528w_free_LQ
-    breakpoint_id: helfi_image_styles.xxl
+    breakpoint_id: helfi_image_styles.xl
     multiplier: 2x
   -
     image_mapping_type: image_style
     image_mapping: orig_1183w_free
-    breakpoint_id: helfi_image_styles.xl
+    breakpoint_id: helfi_image_styles.l
     multiplier: 1x
   -
     image_mapping_type: image_style
     image_mapping: orig_2366w_free_LQ
-    breakpoint_id: helfi_image_styles.xl
+    breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
     image_mapping_type: image_style
     image_mapping: orig_927w_free
-    breakpoint_id: helfi_image_styles.l
+    breakpoint_id: helfi_image_styles.m
     multiplier: 1x
   -
     image_mapping_type: image_style
     image_mapping: orig_1854w_free_LQ
-    breakpoint_id: helfi_image_styles.l
+    breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
     image_mapping_type: image_style
     image_mapping: orig_735w_free
-    breakpoint_id: helfi_image_styles.m
+    breakpoint_id: helfi_image_styles.s
     multiplier: 1x
   -
     image_mapping_type: image_style
     image_mapping: orig_1470w_free_LQ
-    breakpoint_id: helfi_image_styles.m
+    breakpoint_id: helfi_image_styles.s
     multiplier: 2x
   -
     image_mapping_type: image_style
     image_mapping: orig_543w_free
-    breakpoint_id: helfi_image_styles.s
+    breakpoint_id: helfi_image_styles.xs
     multiplier: 1x
   -
     image_mapping_type: image_style
     image_mapping: orig_1086w_free_LQ
-    breakpoint_id: helfi_image_styles.s
+    breakpoint_id: helfi_image_styles.xs
     multiplier: 2x
 breakpoint_group: helfi_image_styles
 fallback_image_style: orig_735w_free
