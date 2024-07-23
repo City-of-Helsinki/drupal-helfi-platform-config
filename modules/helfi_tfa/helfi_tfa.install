@@ -1,10 +1,33 @@
 <?php
+
 /**
  * @file
  * Contains installation logic for Hel.fi TFA module.
  */
 
 declare(strict_types=1);
+
+/**
+ * Implements hook_requirements().
+ */
+function helfi_tfa_requirements($phase) : array {
+  if ($phase !== 'runtime') {
+    return [];
+  }
+
+  $requirements = [];
+
+  $key = \Drupal::config('key.key.tfa')->get('key_provider_settings');
+
+  if (empty($key['key_value']) || $key['key_value'] === 'thisvaluewillbeoverridden1234567') {
+    $requirements['helfi_tfa'] = [
+      'title' => t('Hel.fi: TFA'),
+      'severity' => REQUIREMENT_ERROR,
+      'value' => t('The TFA key is not set or is using the default value.'),
+    ];
+  }
+  return $requirements;
+}
 
 /**
  * Grants required permissions.
