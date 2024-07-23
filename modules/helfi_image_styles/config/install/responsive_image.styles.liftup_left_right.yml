@@ -14,8 +14,8 @@ dependencies:
     - image.style.1.5_863w_576h
   module:
     - helfi_image_styles
-id: lifup_left_right
-label: 'Lifup Left/Right'
+id: liftup_left_right
+label: 'Liftup Left/Right'
 image_style_mappings:
   -
     image_mapping_type: image_style
