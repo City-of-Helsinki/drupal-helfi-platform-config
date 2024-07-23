@@ -1,25 +1,25 @@
-uuid: 9ed96918-7367-49a5-9e82-5632d0d501f2
+uuid: 1f59d70b-8be2-4731-8ec9-a9df51559f09
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.card
+    - core.entity_view_mode.media.main_image
     - field.field.media.image.field_media_image
     - field.field.media.image.field_photographer
     - media.type.image
-    - responsive_image.styles.card
+    - responsive_image.styles.main_image
   module:
     - responsive_image
-id: media.image.card
+id: media.image.main_image
 targetEntityType: media
 bundle: image
-mode: card
+mode: main_image
 content:
   field_media_image:
     type: responsive_image
     label: hidden
     settings:
-      responsive_image_style: card
+      responsive_image_style: main_image
       image_link: ''
       image_loading:
         attribute: eager
