@@ -1,25 +1,27 @@
-uuid: 01e5cdc8-1228-4919-8fd2-3bc34596edb1
+uuid: 9ed96918-7367-49a5-9e82-5632d0d501f2
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.list_of_links
+    - core.entity_view_mode.media.card
     - field.field.media.image.field_media_image
     - field.field.media.image.field_photographer
     - media.type.image
-    - responsive_image.styles.list_of_links
+    - responsive_image.styles.card
   module:
     - responsive_image
-id: media.image.list_of_links
+_core:
+  default_config_hash: KH58kRvqbHk5S2FzcEOu1SXfBx587AEtktvTDOEp17k
+id: media.image.card
 targetEntityType: media
 bundle: image
-mode: list_of_links
+mode: card
 content:
   field_media_image:
     type: responsive_image
     label: hidden
     settings:
-      responsive_image_style: list_of_links
+      responsive_image_style: card
       image_link: ''
       image_loading:
         attribute: eager
@@ -31,5 +33,6 @@ hidden:
   field_photographer: true
   langcode: true
   name: true
+  search_api_excerpt: true
   thumbnail: true
   uid: true
