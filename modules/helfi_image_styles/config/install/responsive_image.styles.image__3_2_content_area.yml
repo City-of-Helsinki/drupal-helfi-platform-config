@@ -14,7 +14,7 @@ dependencies:
   module:
     - helfi_image_styles
 id: image__3_2_content_area
-label: 'Image 3:2 (content area)'
+label: 'DEPRECATED Image 3:2 (content area)'
 image_style_mappings:
   -
     image_mapping_type: image_style

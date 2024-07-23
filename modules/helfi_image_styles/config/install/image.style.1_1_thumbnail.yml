@@ -5,7 +5,7 @@ dependencies:
   module:
     - focal_point
 name: 1_1_thumbnail
-label: '1:1 thumbnail'
+label: 'DEPRECATED 1:1 thumbnail'
 effects:
   281cebc2-0471-44f8-a46c-4111298d4398:
     uuid: 281cebc2-0471-44f8-a46c-4111298d4398

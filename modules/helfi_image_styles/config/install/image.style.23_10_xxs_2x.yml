@@ -6,7 +6,7 @@ dependencies:
     - focal_point
     - image_style_quality
 name: 23_10_xxs_2x
-label: '2.3:1 XXS (2X)'
+label: 'DEPRECATED 2.3:1 XXS (2X)'
 effects:
   a9f4372f-0393-406a-b2e9-c388fd1374f1:
     uuid: a9f4372f-0393-406a-b2e9-c388fd1374f1

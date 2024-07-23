@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: original_s
-label: 'Original S'
+label: 'DEPRECATED Original S'
 effects:
   409c7a0a-40f8-4f01-a20d-28fce5e24ed1:
     uuid: 409c7a0a-40f8-4f01-a20d-28fce5e24ed1
