@@ -65,7 +65,7 @@ content:
     label: hidden
     settings:
       imagecache_external_link: ''
-      imagecache_external_responsive_style: image__3_2
+      imagecache_external_responsive_style: card
     third_party_settings: {  }
     weight: 1
     region: content
