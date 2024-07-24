@@ -40,9 +40,9 @@ final class ClientBuilder {
         ->getEnvironment(Project::ETUSIVU, $this->environmentResolver->getActiveEnvironmentName());
     }
     catch (\InvalidArgumentException) {
-      // Use testing in case matching environment does not exist.
+      // Use prod in case matching environment does not exist.
       $environment = $this->environmentResolver
-        ->getEnvironment(Project::ETUSIVU, EnvironmentEnum::Test->value);
+        ->getEnvironment(Project::ETUSIVU, EnvironmentEnum::Prod->value);
     }
     $service = $environment
       ->getService(ServiceEnum::ElasticProxy)
