@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list;
 
-use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
