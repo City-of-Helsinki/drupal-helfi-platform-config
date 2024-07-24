@@ -8,7 +8,7 @@
 /**
  * UHF-10191: Change the responsive image style used to new one.
  */
-function helfi_paragraphs_list_of_links_update_9002(): void {
+function helfi_paragraphs_list_of_links_update_9005(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_list_of_links');
 }
