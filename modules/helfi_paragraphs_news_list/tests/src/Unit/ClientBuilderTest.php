@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_\Unit;
 
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
-use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_paragraphs_news_list\ClientBuilder;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
@@ -28,7 +27,6 @@ class ClientBuilderTest extends UnitTestCase {
     $configFactory = $this->getConfigFactoryStub([
       'helfi_api_base.environment_resolver.settings' => [
         EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'nonexistent',
-        EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
       ],
     ]);
     $envResolver = new EnvironmentResolver($configFactory);
