@@ -18,7 +18,7 @@ function helfi_paragraphs_contact_card_listing_update_9003() : void {
 /**
  * UHF-10191 Update image to use responsive image style.
  */
-function helfi_paragraphs_contact_card_listing_update_9008() : void {
+function helfi_paragraphs_contact_card_listing_update_9005() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_contact_card_listing');
 }
