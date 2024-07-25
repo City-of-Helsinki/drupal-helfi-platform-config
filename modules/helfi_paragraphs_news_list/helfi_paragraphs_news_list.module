@@ -199,12 +199,12 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
   $resolver = \Drupal::service('helfi_api_base.environment_resolver');
 
   try {
-    $environment = $resolver->getActiveEnvironmentName();
+    $environment = $resolver->getEnvironment(Project::ETUSIVU, $resolver->getActiveEnvironmentName());
   }
   catch (\InvalidArgumentException) {
-    $environment = EnvironmentEnum::Prod->value;
+    $environment = $resolver->getEnvironment(Project::ETUSIVU, EnvironmentEnum::Prod->value);
   }
-  $instanceUrl = $resolver->getEnvironment(Project::ETUSIVU, $environment)
+  $instanceUrl = $environment
     ->getUrl($langcode);
 
   $instanceUrl = $instanceUrl . match ($langcode) {
