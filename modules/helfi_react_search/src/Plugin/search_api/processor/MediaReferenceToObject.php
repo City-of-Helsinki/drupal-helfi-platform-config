@@ -131,7 +131,7 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
       '1.5_682w_454h_LQ' => '992_2x',
       '1.5_528w_352h_LQ' => '768_2x',
       '1.5_434w_290h_LQ' => '575_2x',
-      '1.5_1022w_682h_LQ' => '320_2x'
+      '1.5_1022w_682h_LQ' => '320_2x',
     ];
 
     foreach ($fields as $key => $field) {
@@ -165,7 +165,7 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
         'photographer' => $media->get('field_photographer')->value,
         'title' => $image->title,
         'url' => $variants['1248'],
-        'variants' => $variants
+        'variants' => $variants,
       ];
 
       $itemFields = $item->getFields();
