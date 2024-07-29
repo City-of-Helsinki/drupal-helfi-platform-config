@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
 use Drupal\image\Entity\ImageStyle;
-use Drupal\node\NodeInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -50,35 +51,48 @@ class ProjectImageAbsoluteUrl extends ProcessorPluginBase {
   public function addFieldValues(ItemInterface $item) {
     $datasourceId = $item->getDataSourceId();
 
-    if ($datasourceId !== 'entity:node') {
+    if ($datasourceId !== 'entity:node' || !$node = $item->getOriginalObject()->getValue()) {
       return;
     }
 
-    $node = $item->getOriginalObject()->getValue();
+    $type = $node->getType();
 
-    if ($node instanceof NodeInterface && $node->getType() !== 'project') {
+    if ($type !== 'project') {
       return;
     }
 
-    if ($node->get('field_project_image')->isEmpty()) {
+    $image = $node->get('field_project_image')->entity;
+
+    if (!$image || !$image->hasField('field_media_image') || !$file = $image->get('field_media_image')->entity) {
       return;
+    }
+
+    $imagePath = $file->getFileUri();
+    $imageStyles = [
+      '1.5_378w_252h' => '1248',
+      '1.5_341w_227h' => '992',
+      '1.5_264w_176h' => '768',
+      '1.5_217w_145h' => '576',
+      '1.5_511w_341h' => '320',
+      '1.5_756w_504h_LQ' => '1248_2x',
+      '1.5_682w_454h_LQ' => '992_2x',
+      '1.5_528w_352h_LQ' => '768_2x',
+      '1.5_434w_290h_LQ' => '575_2x',
+      '1.5_1022w_682h_LQ' => '320_2x',
+    ];
+
+    $urls = [];
+    foreach ($imageStyles as $styleName => $breakpoint) {
+      $imageStyle = ImageStyle::load($styleName);
+      if ($imageStyle) {
+        $urls[$breakpoint] = $imageStyle->buildUrl($imagePath);
+      }
     }
 
     $fields = $this->getFieldsHelper()
       ->filterForPropertyPath($item->getFields(), 'entity:node', 'project_image_absolute_url');
-
-    if (!isset($fields['project_image_absolute_url'])) {
-      return;
-    }
-
-    if (!$node->get('field_project_image')->entity) {
-      return;
-    }
-
-    if ($file = $node->get('field_project_image')->entity->get('field_media_image')->entity) {
-      $imageStyle = ImageStyle::load('3_2_s');
-
-      $fields['project_image_absolute_url']->addValue($imageStyle->buildUrl($file->getFileUri()));
+    foreach ($fields as $field) {
+      $field->addValue(json_encode($urls));
     }
   }
 
