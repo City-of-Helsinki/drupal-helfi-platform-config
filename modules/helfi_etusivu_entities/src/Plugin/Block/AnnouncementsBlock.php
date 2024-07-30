@@ -11,7 +11,6 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Utility\Error;
 use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -41,82 +40,31 @@ final class AnnouncementsBlock extends EtusivuEntityBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function build(): array {
-    try {
-      $announcementNodes = $this->getLocalAnnouncements();
-      $globalAnnouncements = $this->getExternalAnnouncements();
-      $localAnnouncements = [];
-    }
-    catch (\Exception $e) {
-      Error::logException($this->logger, $e);
-      return [];
-    }
+  protected function getLocalEntities(): array {
+    $langcodes = $this->getContentLangcodes();
+    $storage = $this->entityTypeManager->getStorage('node');
 
-    $currentEntity = $this->getCurrentPageEntity(array_keys(self::ENTITY_TYPE_FIELDS));
-    $referenceField = self::ENTITY_TYPE_FIELDS[$currentEntity?->getEntityTypeId()] ?? NULL;
+    // Get all published announcement nodes.
+    $query = $storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'announcement')
+      ->condition('status', NodeInterface::PUBLISHED)
+      ->condition('langcode', $langcodes, 'IN');
 
-    foreach ($announcementNodes as $announcementNode) {
-      assert($announcementNode instanceof FieldableEntityInterface);
+    $fields = $this->entityFieldManager->getFieldDefinitions('node', 'survey');
 
-      // Check if the announcement should be shown at all pages.
-      // Global announcements should be shown on top of all pages.
-      if (
-        $announcementNode->hasField('field_publish_externally') &&
-        $announcementNode->get('field_publish_externally')->value
-      ) {
-        $globalAnnouncements[] = $announcementNode;
-        continue;
-      }
-
-      if ($announcementNode->get('field_announcement_all_pages')->value === "1") {
-        $localAnnouncements[] = $announcementNode;
-        continue;
-      }
-
-      if (!empty($referenceField) && $this->hasReference($referenceField, $announcementNode, $currentEntity)) {
-        // Add announcement to showed announcements if current page's entity
-        // is found from the list of referenced entities.
-        $localAnnouncements[] = $announcementNode;
-      }
+    // Query only local nodes.
+    if (isset($fields['field_publish_externally'])) {
+      $query->condition('field_publish_externally', FALSE);
     }
 
-    $this->sortAnnouncements($localAnnouncements);
-
-    return $this
-      ->entityTypeManager
-      ->getViewBuilder('node')
-      ->viewMultiple(array_merge($globalAnnouncements, $localAnnouncements), 'default');
+    return $storage->loadMultiple($query->execute());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts(): array {
-    return Cache::mergeContexts(parent::getCacheContexts(), [
-      'url.path',
-      'languages:language_content',
-    ]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheTags(): array {
-    return Cache::mergeTags(parent::getCacheTags(), [
-      'node_list:announcement',
-      Announcements::$customCacheTag,
-    ]);
-  }
-
-  /**
-   * Loads external announcement nodes.
-   *
-   * @return array<int, \Drupal\node\NodeInterface>
-   *   External surveys.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
-  private function getExternalAnnouncements(): array {
+  protected function getRemoteEntities(): array {
     $entityStorage = $this->getExternalEntityStorage('helfi_announcements');
     $nodes = [];
 
@@ -147,33 +95,43 @@ final class AnnouncementsBlock extends EtusivuEntityBlockBase {
   }
 
   /**
-   * Loads local announcement nodes.
-   *
-   * @return array<int, \Drupal\node\NodeInterface>
-   *   Local surveys.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * {@inheritdoc}
    */
-  private function getLocalAnnouncements(): array {
-    $langcodes = $this->getContentLangcodes();
-    $storage = $this->entityTypeManager->getStorage('node');
+  protected function sortEntities(array $local, array $remote): array {
+    $currentEntity = $this->getCurrentPageEntity(array_keys(self::ENTITY_TYPE_FIELDS));
+    $referenceField = self::ENTITY_TYPE_FIELDS[$currentEntity?->getEntityTypeId()] ?? NULL;
 
-    // Get all published announcement nodes.
-    $query = $storage->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('type', 'announcement')
-      ->condition('status', NodeInterface::PUBLISHED)
-      ->condition('langcode', $langcodes, 'IN');
+    $localAnnouncements = [];
+    $globalAnnouncements = $remote;
 
-    $fields = $this->entityFieldManager->getFieldDefinitions('node', 'survey');
+    foreach ($local as $announcementNode) {
+      assert($announcementNode instanceof FieldableEntityInterface);
 
-    // Query only local nodes.
-    if (isset($fields['field_publish_externally'])) {
-      $query->condition('field_publish_externally', FALSE);
+      // Check if the announcement should be shown at all pages.
+      // Global announcements should be shown on top of all pages.
+      if (
+        $announcementNode->hasField('field_publish_externally') &&
+        $announcementNode->get('field_publish_externally')->value
+      ) {
+        $globalAnnouncements[] = $announcementNode;
+        continue;
+      }
+
+      if ($announcementNode->get('field_announcement_all_pages')->value === "1") {
+        $localAnnouncements[] = $announcementNode;
+        continue;
+      }
+
+      if (!empty($referenceField) && $this->hasReference($referenceField, $announcementNode, $currentEntity)) {
+        // Add announcement to showed announcements if current page's entity
+        // is found from the list of referenced entities.
+        $localAnnouncements[] = $announcementNode;
+      }
     }
 
-    return $storage->loadMultiple($query->execute());
+    $this->sortAnnouncements($localAnnouncements);
+
+    return array_merge($globalAnnouncements, $localAnnouncements);
   }
 
   /**
@@ -282,6 +240,26 @@ final class AnnouncementsBlock extends EtusivuEntityBlockBase {
     }
 
     return self::VISIBILITY_ALL_WEIGHT;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts(): array {
+    return Cache::mergeContexts(parent::getCacheContexts(), [
+      'url.path',
+      'languages:language_content',
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags(): array {
+    return Cache::mergeTags(parent::getCacheTags(), [
+      'node_list:announcement',
+      Announcements::$customCacheTag,
+    ]);
   }
 
 }

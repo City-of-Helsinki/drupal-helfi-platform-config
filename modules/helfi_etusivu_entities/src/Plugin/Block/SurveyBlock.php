@@ -7,9 +7,7 @@ namespace Drupal\helfi_etusivu_entities\Plugin\Block;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Utility\Error;
 use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Surveys;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -31,60 +29,12 @@ final class SurveyBlock extends EtusivuEntityBlockBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    */
-  public function build(): array {
+  protected function sortEntities($local, $remote) : array {
     $currentEntity = $this->getCurrentPageEntity(array_keys(self::ENTITY_TYPE_FIELDS));
 
-    if ($survey = $this->getSurvey($currentEntity)) {
-      return $this
-        ->entityTypeManager
-        ->getViewBuilder('node')
-        ->view($survey, 'default');
-    }
-
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheContexts(): array {
-    return Cache::mergeContexts(parent::getCacheContexts(), [
-      'url.path',
-      'languages:language_content',
-    ]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheTags(): array {
-    return Cache::mergeTags(parent::getCacheTags(), [
-      Surveys::$customCacheTag,
-      'node_list:survey',
-    ]);
-  }
-
-  /**
-   * Loads most resent survey node that is valid for this page.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface|null $currentEntity
-   *   Entity on current page.
-   *
-   * @returns NodeInterface|null
-   *   Most recent survey for this page or NULL if none exists.
-   */
-  public function getSurvey(?EntityInterface $currentEntity) : ?NodeInterface {
-    try {
-      // Since the arrays contain numeric keys, the
-      // later values will be appended.
-      $surveys = array_merge($this->getExternalSurveys(), $this->getLocalSurveys());
-    }
-    catch (\Exception $e) {
-      Error::logException($this->logger, $e);
-      return NULL;
-    }
+    $surveys = array_merge($remote, $local);
 
     // Sort by publised_at time.
     usort($surveys, static function (NodeInterface $a, NodeInterface $b) {
@@ -98,32 +48,53 @@ final class SurveyBlock extends EtusivuEntityBlockBase {
 
     $referenceField = self::ENTITY_TYPE_FIELDS[$currentEntity?->getEntityTypeId()] ?? NULL;
 
+    // Pick which survey to show.
     foreach ($surveys as $node) {
       // Check if the node should be shown at all pages.
       if ($node->get('field_survey_content_pages')->isEmpty()) {
-        return $node;
+        return [$node];
       }
 
       // Show survey if current page's entity is found
       // from the list of referenced entities.
       if (!empty($referenceField) && $this->hasReference($referenceField, $node, $currentEntity)) {
-        return $node;
+        return [$node];
       }
     }
 
-    return NULL;
+    return [];
   }
 
   /**
-   * Loads external survey nodes.
-   *
-   * @return array<int, \Drupal\node\NodeInterface>
-   *   External surveys.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * {@inheritDoc}
    */
-  private function getExternalSurveys(): array {
+  protected function getLocalEntities() : array {
+    $langcodes = $this->getContentLangcodes();
+
+    $storage = $this->entityTypeManager->getStorage('node');
+
+    // Get all published survey nodes.
+    $query = $storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'survey')
+      ->condition('status', NodeInterface::PUBLISHED)
+      ->condition('langcode', $langcodes, 'IN')
+      ->sort('published_at', 'DESC');
+
+    $fields = $this->entityFieldManager->getFieldDefinitions('node', 'survey');
+
+    // Query only local nodes.
+    if (isset($fields['field_publish_externally'])) {
+      $query->condition('field_publish_externally', FALSE);
+    }
+
+    return array_values($storage->loadMultiple($query->execute()));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected function getRemoteEntities(): array {
     $entityStorage = $this->getExternalEntityStorage('helfi_surveys');
     $nodes = [];
 
@@ -152,35 +123,23 @@ final class SurveyBlock extends EtusivuEntityBlockBase {
   }
 
   /**
-   * Loads local surveys.
-   *
-   * @return array<int, \Drupal\node\NodeInterface>
-   *   Local surveys.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * {@inheritdoc}
    */
-  private function getLocalSurveys() : array {
-    $langcodes = $this->getContentLangcodes();
+  public function getCacheContexts(): array {
+    return Cache::mergeContexts(parent::getCacheContexts(), [
+      'url.path',
+      'languages:language_content',
+    ]);
+  }
 
-    $storage = $this->entityTypeManager->getStorage('node');
-
-    // Get all published survey nodes.
-    $query = $storage->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('type', 'survey')
-      ->condition('status', NodeInterface::PUBLISHED)
-      ->condition('langcode', $langcodes, 'IN')
-      ->sort('published_at', 'DESC');
-
-    $fields = $this->entityFieldManager->getFieldDefinitions('node', 'survey');
-
-    // Query only local nodes.
-    if (isset($fields['field_publish_externally'])) {
-      $query->condition('field_publish_externally', FALSE);
-    }
-
-    return array_values($storage->loadMultiple($query->execute()));
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags(): array {
+    return Cache::mergeTags(parent::getCacheTags(), [
+      Surveys::$customCacheTag,
+      'node_list:survey',
+    ]);
   }
 
 }

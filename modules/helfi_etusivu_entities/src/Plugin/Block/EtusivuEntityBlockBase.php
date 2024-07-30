@@ -10,10 +10,12 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Psr\Log\LoggerInterface;
@@ -72,6 +74,99 @@ abstract class EtusivuEntityBlockBase extends BlockBase implements ContainerFact
       $container->get(LanguageManagerInterface::class),
       $container->get(DefaultLanguageResolver::class),
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration(): array {
+    return [
+      'use_remote_entities' => TRUE,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockForm($form, FormStateInterface $form_state): array {
+    $form['use_remote_entities'] = [
+      '#type' => 'boolean',
+      '#title' => $this->t('Fetch remote entities'),
+      '#description' => $this->t('This options should be disabled for non-core sites that do not want to pull remote content.'),
+      '#default_value' => $this->configuration['use_remote_entities'],
+    ];
+
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockSubmit($form, FormStateInterface $form_state): void {
+    $this->configuration['use_remote_entities'] = $form_state->getValues()['use_remote_entities'] ?: FALSE;
+  }
+
+  /**
+   * Checks if this block is configured to pull content from Etusivu.
+   *
+   * @return bool
+   *   If content should be pulled from Etusivu.
+   *   The block only shows local items when FALSE.
+   */
+  public function useRemoteEntities(): bool {
+    return $this->configuration['use_remote_entities'];
+  }
+
+  /**
+   * Gets a list of local entities the block should render.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   Items the block should render.
+   *
+   * @throws \Exception
+   */
+  abstract protected function getLocalEntities(): array;
+
+  /**
+   * Gets a list of remote entities the block should render.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   Items the block should render.
+   *
+   * @throws \Exception
+   */
+  abstract protected function getRemoteEntities(): array;
+
+  /**
+   * Sorts items the block should render.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   Sorted entity list.
+   */
+  abstract protected function sortEntities(array $local, array $remote): array;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build(): array {
+    try {
+      $local = $this->getLocalEntities();
+
+      // Some non-core instances might want to only show local entities.
+      // The provided configuration allows disabling the remote fetch.
+      $remote = $this->useRemoteEntities() ? $this->getRemoteEntities() : [];
+    }
+    catch (\Exception $e) {
+      Error::logException($this->logger, $e);
+      return [];
+    }
+
+    $sorted = $this->sortEntities($local, $remote);
+
+    return $this
+      ->entityTypeManager
+      ->getViewBuilder('node')
+      ->viewMultiple($sorted, 'default');
   }
 
   /**
