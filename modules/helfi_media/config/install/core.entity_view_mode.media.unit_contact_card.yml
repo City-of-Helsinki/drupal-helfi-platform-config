@@ -1,0 +1,11 @@
+uuid: ff8bc91b-dd1d-490d-8c90-2ec22302e912
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.unit_contact_card
+label: 'Unit Contact Card'
+description: ''
+targetEntityType: media
+cache: true

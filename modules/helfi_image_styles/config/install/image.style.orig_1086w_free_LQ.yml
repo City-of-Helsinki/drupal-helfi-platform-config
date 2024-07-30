@@ -1,0 +1,23 @@
+uuid: 904b6e77-fcd9-4c44-9fcc-1f3ef728fd2d
+langcode: en
+status: true
+dependencies:
+  module:
+    - image_style_quality
+name: orig_1086w_free_LQ
+label: 'orig_1086w_free_LQ'
+effects:
+  0c465a35-1ef2-4e25-b6a9-30b461a5f89d:
+    uuid: 0c465a35-1ef2-4e25-b6a9-30b461a5f89d
+    id: image_scale
+    weight: 1
+    data:
+      width: 1086
+      height: null
+      upscale: true
+  4b95d242-03d3-43e7-b80b-80d660ed0a26:
+    uuid: 4b95d242-03d3-43e7-b80b-80d660ed0a26
+    id: image_style_quality
+    weight: 2
+    data:
+      quality: 65

@@ -10,7 +10,7 @@ dependencies:
   module:
     - helfi_image_styles
 id: list_of_links__thumbnail
-label: 'List of Links Thumbnail'
+label: 'DEPRECATED List of Links Thumbnail'
 image_style_mappings:
   -
     image_mapping_type: image_style

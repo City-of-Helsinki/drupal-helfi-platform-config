@@ -5,7 +5,7 @@ dependencies:
   module:
     - image_style_quality
 name: original_s_2x
-label: 'Original S (2x)'
+label: 'DEPRECATED Original S (2x)'
 effects:
   4a8a2af8-c602-444e-9d0d-9ae25bdc428a:
     uuid: 4a8a2af8-c602-444e-9d0d-9ae25bdc428a

@@ -1,0 +1,15 @@
+uuid: fd019d29-134f-4fa1-9947-f12a635c7c98
+langcode: en
+status: true
+dependencies: {  }
+name: orig_1183w_free
+label: 'orig_1183w_free'
+effects:
+  0c465a35-1ef2-4e25-b6a9-30b461a5f89d:
+    uuid: 0c465a35-1ef2-4e25-b6a9-30b461a5f89d
+    id: image_scale
+    weight: 1
+    data:
+      width: 1183
+      height: null
+      upscale: true

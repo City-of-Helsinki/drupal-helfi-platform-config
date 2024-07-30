@@ -5,7 +5,7 @@ dependencies:
   module:
     - focal_point
 name: tiny_square_image
-label: 'Tiny Square Image (200x200)'
+label: 'DEPRECATED Tiny Square Image (200x200)'
 effects:
   c3a0bc95-5d64-4f1e-a46e-dd25f6787fd7:
     uuid: c3a0bc95-5d64-4f1e-a46e-dd25f6787fd7

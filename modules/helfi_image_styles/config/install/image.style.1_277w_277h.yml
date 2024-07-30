@@ -1,0 +1,17 @@
+uuid: 7210edb7-0a95-4d43-ab3b-27b18cf1979b
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 1_277w_277h
+label: '1_277w_277h'
+effects:
+  e7da735e-aa35-463b-b99a-b61aba89a53f:
+    uuid: e7da735e-aa35-463b-b99a-b61aba89a53f
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 277
+      height: 277
+      crop_type: focal_point

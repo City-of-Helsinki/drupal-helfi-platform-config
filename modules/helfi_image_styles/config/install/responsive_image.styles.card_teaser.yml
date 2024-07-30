@@ -1,0 +1,60 @@
+uuid: 3adbff82-1c3d-42e0-9f98-c4cc7c50ee95
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.1.5_217w_145h
+    - image.style.1.5_294w_196h
+    - image.style.1.5_378w_252h
+    - image.style.1.5_405w_270h
+    - image.style.1.5_434w_290h_LQ
+    - image.style.1.5_588w_392h_LQ
+    - image.style.1.5_756w_504h_LQ
+    - image.style.1.5_810w_540h_LQ
+  module:
+    - helfi_image_styles
+id: card_teaser
+label: 'Card Teaser'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: 1.5_405w_270h
+    breakpoint_id: helfi_image_styles.xl
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1.5_810w_540h_LQ
+    breakpoint_id: helfi_image_styles.xl
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1.5_378w_252h
+    breakpoint_id: helfi_image_styles.l
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1.5_756w_504h_LQ
+    breakpoint_id: helfi_image_styles.l
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1.5_294w_196h
+    breakpoint_id: helfi_image_styles.s
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1.5_588w_392h_LQ
+    breakpoint_id: helfi_image_styles.s
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1.5_217w_145h
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1.5_434w_290h_LQ
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 2x
+breakpoint_group: helfi_image_styles
+fallback_image_style: 1.5_378w_252h

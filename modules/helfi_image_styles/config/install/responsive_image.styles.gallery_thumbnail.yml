@@ -8,7 +8,7 @@ dependencies:
   module:
     - helfi_image_styles
 id: gallery_thumbnail
-label: 'Gallery thumbnail'
+label: 'DEPRECATED Gallery thumbnail'
 image_style_mappings:
   -
     image_mapping_type: image_style

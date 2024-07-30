@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_paragraphs_hearings module.
+ */
+
+/**
+ * UHF-10191: Change the responsive image style used to new one.
+ */
+function helfi_paragraphs_hearings_update_9001(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_hearings');
+}

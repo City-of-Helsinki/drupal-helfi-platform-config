@@ -16,7 +16,7 @@ dependencies:
   module:
     - helfi_image_styles
 id: original
-label: Original
+label: "DEPRECATED Original"
 image_style_mappings:
   -
     image_mapping_type: image_style

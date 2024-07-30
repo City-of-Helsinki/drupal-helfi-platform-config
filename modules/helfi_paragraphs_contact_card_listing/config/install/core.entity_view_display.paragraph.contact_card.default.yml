@@ -11,11 +11,11 @@ dependencies:
     - field.field.paragraph.contact_card.field_contact_title
     - field.field.paragraph.contact_card.field_email
     - field.field.paragraph.contact_card.field_phone_number
-    - image.style.1_1_l
     - paragraphs.paragraphs_type.contact_card
+    - responsive_image.styles.contact_card
   module:
     - entity_reference_revisions
-    - image
+    - responsive_image
     - telephone
 id: paragraph.contact_card.default
 targetEntityType: paragraph
@@ -30,11 +30,13 @@ content:
     weight: 5
     region: content
   field_contact_image:
-    type: image
+    type: responsive_image
     label: hidden
     settings:
+      responsive_image_style: contact_card
       image_link: ''
-      image_style: 1_1_l
+      image_loading:
+        attribute: eager
     third_party_settings: {  }
     weight: 0
     region: content
@@ -86,4 +88,5 @@ content:
     third_party_settings: {  }
     weight: 3
     region: content
-hidden: {  }
+hidden:
+  search_api_excerpt: true

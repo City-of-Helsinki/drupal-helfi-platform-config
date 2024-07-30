@@ -6,7 +6,7 @@ dependencies:
     - focal_point
     - image_style_quality
 name: 1_1_thumbnail_2x
-label: '1:1 thumbnail (2x)'
+label: 'DEPRECATED 1:1 thumbnail (2x)'
 effects:
   bbeb2baa-6c3e-4865-a1e4-c7e35f9fa4eb:
     uuid: bbeb2baa-6c3e-4865-a1e4-c7e35f9fa4eb
