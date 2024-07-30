@@ -3,22 +3,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.tpr_unit.unit_contact_card
-    - field.field.tpr_unit.tpr_unit.field_categories
+    - core.entity_view_mode.tpr_unit.teaser_with_image
     - field.field.tpr_unit.tpr_unit.field_content
-    - field.field.tpr_unit.tpr_unit.field_districts
-    - field.field.tpr_unit.tpr_unit.field_hs_front_page
     - field.field.tpr_unit.tpr_unit.field_lower_content
     - field.field.tpr_unit.tpr_unit.field_metatags
-    - field.field.tpr_unit.tpr_unit.field_ontologyword_details
     - field.field.tpr_unit.tpr_unit.field_phone_label
     - field.field.tpr_unit.tpr_unit.field_phone_with_contacts
-    - field.field.tpr_unit.tpr_unit.field_study_field
     - field.field.tpr_unit.tpr_unit.field_unit_type
     - responsive_image.styles.unit_contact_card
   module:
     - address
-    - helfi_address_search
     - helfi_tpr
     - imagecache_external
     - telephone
@@ -109,13 +103,9 @@ hidden:
   description: true
   email: true
   enrich_description: true
-  field_categories: true
   field_content: true
-  field_districts: true
-  field_hs_front_page: true
   field_lower_content: true
   field_metatags: true
-  field_ontologyword_details: true
   field_phone_label: true
   field_phone_with_contacts: true
   field_study_field: true
@@ -128,7 +118,6 @@ hidden:
   other_info: true
   price_info: true
   provided_languages: true
-  search_api_excerpt: true
   service_map_embed: true
   services: true
   show_www: true
