@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_paragraphs_contact_card_listing\Entity;
 
 use Drupal\paragraphs\Entity\Paragraph;
@@ -20,6 +22,7 @@ class ContactCard extends Paragraph implements ParagraphInterface {
    *   Level of heading.
    */
   public function getHeadingLevel(): ?string {
+    /** @var \Drupal\paragraphs\Entity\ParagraphInterface $parent */
     $parent = $this->getParentEntity();
     if (
       $parent->hasField('field_title') &&
