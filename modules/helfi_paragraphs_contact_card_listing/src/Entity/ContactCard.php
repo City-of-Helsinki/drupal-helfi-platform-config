@@ -22,7 +22,7 @@ class ContactCard extends Paragraph implements ParagraphInterface {
    *   Level of heading.
    */
   public function getHeadingLevel(): ?string {
-    /** @var \Drupal\paragraphs\Entity\ParagraphInterface $parent */
+    /** @var \Drupal\paragraphs\ParagraphInterface $parent */
     $parent = $this->getParentEntity();
     if (
       $parent->hasField('field_title') &&
