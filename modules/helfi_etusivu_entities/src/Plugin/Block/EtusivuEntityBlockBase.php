@@ -152,8 +152,8 @@ abstract class EtusivuEntityBlockBase extends BlockBase implements ContainerFact
     try {
       $local = $this->getLocalEntities();
 
-      // Some non-core instances might want to only show local entities.
-      // The provided configuration allows disabling the remote fetch.
+      // Some non-core instances might want to show only local entities.
+      // Block configuration allows disabling the remote entities.
       $remote = $this->useRemoteEntities() ? $this->getRemoteEntities() : [];
     }
     catch (\Exception $e) {

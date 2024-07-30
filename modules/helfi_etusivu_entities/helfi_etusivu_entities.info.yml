@@ -3,6 +3,7 @@ type: module
 core_version_requirement: ^10
 dependencies:
   - external_entities:external_entities
+  - publication_date:publication_date
   - helfi_api_base:helfi_api_base
   - helfi_platform_config:helfi_platform_config
   - helfi_platform_config:helfi_node_announcement
