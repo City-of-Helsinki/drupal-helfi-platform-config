@@ -1,7 +1,7 @@
 langcode: en
 enabled: true
 required_roles:
-  authenticated: authenticated
+  authenticated: '0'
   content_producer: content_producer
   editor: editor
   admin: admin

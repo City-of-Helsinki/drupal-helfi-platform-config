@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\user\Entity\Role;
+
 /**
  * Implements hook_requirements().
  */
@@ -33,32 +35,16 @@ function helfi_tfa_requirements($phase) : array {
  * Grants required permissions.
  */
 function helfi_tfa_grant_permissions() : void {
-  $permissions = [
-    'authenticated' => [
+  $roles = Role::loadMultiple();
+  $permissions = [];
+
+  // Allow all roles to setup TFA.
+  foreach ($roles as $role) {
+    $permissions[$role->id()] = [
       'setup own tfa',
       'disable own tfa',
-    ],
-    'admin' => [
-      'setup own tfa',
-      'disable own tfa',
-    ],
-    'editor' => [
-      'setup own tfa',
-      'disable own tfa',
-    ],
-    'content_producer' => [
-      'setup own tfa',
-      'disable own tfa',
-    ],
-    'super_administrator' => [
-      'setup own tfa',
-      'disable own tfa',
-    ],
-    'read_only' => [
-      'setup own tfa',
-      'disable own tfa',
-    ],
-  ];
+    ];
+  }
   helfi_platform_config_grant_permissions($permissions);
 }
 
