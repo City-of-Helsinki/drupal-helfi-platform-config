@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\Role;
 
 /**
@@ -36,16 +37,37 @@ function helfi_tfa_requirements($phase) : array {
  */
 function helfi_tfa_grant_permissions() : void {
   $roles = Role::loadMultiple();
-  $permissions = [];
+  $permissions = $requiredRoles = [];
 
-  // Allow all roles to setup TFA.
+  // Require all roles to setup TFA.
   foreach ($roles as $role) {
+    if ($role->id() === AccountInterface::ANONYMOUS_ROLE) {
+      continue;
+    }
     $permissions[$role->id()] = [
       'setup own tfa',
       'disable own tfa',
     ];
+    $requiredRoles[$role->id()] = $role->id();
+  }
+
+  $bypassRoles = [
+    AccountInterface::AUTHENTICATED_ROLE,
+    'read_only',
+  ];
+
+  // Allow read only and authenticated roles to bypass TFA.
+  foreach ($bypassRoles as $rid) {
+    if (!isset($requiredRoles[$rid])) {
+      continue;
+    }
+    $requiredRoles[$rid] = '0';
   }
   helfi_platform_config_grant_permissions($permissions);
+
+  $config = \Drupal::configFactory()->getEditable('tfa.settings');
+  $config->set('required_roles', $requiredRoles)
+    ->save();
 }
 
 /**
