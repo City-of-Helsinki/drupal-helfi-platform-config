@@ -1,12 +1,5 @@
 langcode: en
 enabled: true
-required_roles:
-  authenticated: '0'
-  content_producer: content_producer
-  editor: editor
-  admin: admin
-  super_administrator: super_administrator
-  read_only: '0'
 send_plugins: {  }
 login_plugins: {  }
 login_plugin_settings:
