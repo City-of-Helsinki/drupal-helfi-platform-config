@@ -37,7 +37,7 @@ function helfi_tfa_requirements($phase) : array {
  */
 function helfi_tfa_grant_permissions() : void {
   $roles = Role::loadMultiple();
-  $permissions = $requiredRoles = [];
+  $permissions = [];
 
   // Require all roles to setup TFA.
   foreach ($roles as $role) {
@@ -48,26 +48,9 @@ function helfi_tfa_grant_permissions() : void {
       'setup own tfa',
       'disable own tfa',
     ];
-    $requiredRoles[$role->id()] = $role->id();
   }
 
-  $bypassRoles = [
-    AccountInterface::AUTHENTICATED_ROLE,
-    'read_only',
-  ];
-
-  // Allow read only and authenticated roles to bypass TFA.
-  foreach ($bypassRoles as $rid) {
-    if (!isset($requiredRoles[$rid])) {
-      continue;
-    }
-    $requiredRoles[$rid] = '0';
-  }
   helfi_platform_config_grant_permissions($permissions);
-
-  $config = \Drupal::configFactory()->getEditable('tfa.settings');
-  $config->set('required_roles', $requiredRoles)
-    ->save();
 }
 
 /**
@@ -79,6 +62,24 @@ function helfi_tfa_install($is_syncing) : void {
   if ($is_syncing) {
     return;
   }
+  $roles = Role::loadMultiple();
+  $requiredRoles = [];
+
+  $bypassRoles = [
+    AccountInterface::ANONYMOUS_ROLE,
+    AccountInterface::AUTHENTICATED_ROLE,
+    'read_only',
+  ];
+  // Require all roles except 'read_only' to setup TFA.
+  foreach ($roles as $role) {
+    if (in_array($role->id(), $bypassRoles)) {
+      continue;
+    }
+    $requiredRoles[$role->id()] = $role->id();
+  }
+  $config = \Drupal::configFactory()->getEditable('tfa.settings');
+  $config->set('required_roles', $requiredRoles)
+    ->save();
 
   helfi_tfa_grant_permissions();
 }
