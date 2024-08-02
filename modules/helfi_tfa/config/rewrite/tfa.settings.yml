@@ -25,7 +25,7 @@ validation_plugin_settings:
     issuer: Hel.fi
 validation_skip: 3
 users_without_tfa_redirect: false
-reset_pass_skip_enabled: false
+reset_pass_skip_enabled: true
 encryption: real_aes
 tfa_flood_uid_only: 1
 tfa_flood_window: 300
