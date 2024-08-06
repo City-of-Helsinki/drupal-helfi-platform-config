@@ -1,0 +1,9 @@
+name: Hel.fi TFA
+type: module
+description: 'Integrates Hel.fi user roles module with TFA'
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - helfi_user_roles:helfi_user_roles
+  - real_aes:real_aes
+  - tfa:tfa

@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Contains installation logic for Hel.fi TFA module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_requirements().
+ */
+function helfi_tfa_requirements($phase) : array {
+  if ($phase !== 'runtime') {
+    return [];
+  }
+
+  $requirements = [];
+
+  $key = \Drupal::config('key.key.tfa')->get('key_provider_settings');
+
+  if (empty($key['key_value']) || $key['key_value'] === 'thisvaluewillbeoverridden1234567') {
+    $requirements['helfi_tfa'] = [
+      'title' => t('Hel.fi: TFA'),
+      'severity' => REQUIREMENT_ERROR,
+      'value' => t('The TFA key is not set or is using the default value.'),
+    ];
+  }
+  return $requirements;
+}
+
+/**
+ * Grants required permissions.
+ */
+function helfi_tfa_grant_permissions() : void {
+  $roles = Role::loadMultiple();
+  $permissions = [];
+
+  // Require all roles to setup TFA.
+  foreach ($roles as $role) {
+    if ($role->id() === AccountInterface::ANONYMOUS_ROLE) {
+      continue;
+    }
+    $permissions[$role->id()] = [
+      'setup own tfa',
+      'disable own tfa',
+    ];
+  }
+
+  helfi_platform_config_grant_permissions($permissions);
+}
+
+/**
+ * Implements hook_install().
+ */
+function helfi_tfa_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+  $roles = Role::loadMultiple();
+  $requiredRoles = [];
+
+  $bypassRoles = [
+    AccountInterface::ANONYMOUS_ROLE,
+    AccountInterface::AUTHENTICATED_ROLE,
+    'read_only',
+  ];
+  // Require all roles except 'read_only' to setup TFA.
+  foreach ($roles as $role) {
+    if (in_array($role->id(), $bypassRoles)) {
+      continue;
+    }
+    $requiredRoles[$role->id()] = $role->id();
+  }
+  $config = \Drupal::configFactory()->getEditable('tfa.settings');
+  $config->set('required_roles', $requiredRoles)
+    ->save();
+
+  helfi_tfa_grant_permissions();
+}
