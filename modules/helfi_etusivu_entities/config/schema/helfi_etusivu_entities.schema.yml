@@ -1,0 +1,13 @@
+block.settings.surveys:
+  type: block_settings
+  label: 'Survey block settings'
+  mapping:
+    use_remote_entities:
+      type: boolean
+
+block.settings.announcements:
+  type: block_settings
+  label: 'Announcement block settings'
+  mapping:
+    use_remote_entities:
+      type: boolean

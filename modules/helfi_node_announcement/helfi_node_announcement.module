@@ -14,78 +14,37 @@ function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $for
   switch ($form_id) {
     case 'node_announcement_edit_form':
     case 'node_announcement_form':
-      $form['field_announcement_content_pages']['#states'] = [
+      // Don't show "menu link translation" published checkbox, as
+      // announcements cannot be added to any menu.
+      if (isset($form['menu']['content_translation_status'])) {
+        $form['menu']['content_translation_status']['#access'] = FALSE;
+      }
+
+      $contentPageStates = [
         'visible' => [
           ':input[name="field_announcement_all_pages[value]"]' => ['checked' => FALSE],
         ],
       ];
+
+      if (isset($form['field_publish_externally'])) {
+        $contentPageStates['visible'][':input[name="field_publish_externally[value]"]'] =
+           ['checked' => FALSE];
+
+        $form['field_announcement_all_pages']['#states'] = [
+          'visible' => [
+            ':input[name="field_publish_externally[value]"]' => ['checked' => FALSE],
+          ],
+        ];
+      }
+
+      $form['field_announcement_content_pages']['#states'] = $contentPageStates;
       break;
   }
 }
 
 /**
- * Implements hook_themes_installed().
+ * Implements hook_content_translation_status_access().
  */
-function helfi_node_announcement_themes_installed($theme_list) : void {
-
-  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
-  $block_installer = Drupal::service('helfi_platform_config.helper.block_installer');
-
-  foreach ($theme_list as $theme) {
-    if (in_array($theme, ['stark', 'hdbt', 'hdbt_subtheme'])) {
-      foreach (helfi_node_announcement_get_block_configurations($theme) as $block_config) {
-        ['block' => $block, 'variations' => $variations] = $block_config;
-        $block_installer->install($block, $variations);
-      }
-    }
-  }
-}
-
-/**
- * Gets the block configurations.
- *
- * Example block:
- *
- * @code
- * [
- *   'breadbrumbs' => [
- *     'block' => [
- *       ...
- *     ],
- *     'variations' => [
- *       ...
- *     ],
- *   ],
- * ];
- * @endcode
- *
- * @return array[]
- *   The block configurations.
- */
-function helfi_node_announcement_get_block_configurations(string $theme) : array {
-  return [
-    'announcements' => [
-      'block' => [
-        'id' => 'announcements',
-        'plugin' => 'announcements',
-        'settings' => [
-          'id' => 'announcements',
-          'label' => 'Announcements',
-          'provider' => 'helfi_node_announcement',
-        ],
-        'provider' => 'helfi_node_announcement',
-        'weight' => -12,
-      ],
-      'variations' => [
-        [
-          'theme' => $theme,
-          'region' => 'before_content',
-        ],
-        [
-          'theme' => 'stark',
-          'region' => 'content',
-        ],
-      ],
-    ],
-  ];
+function helfi_node_announcement_content_translation_status_access($form_id) : bool {
+  return !in_array($form_id, ['node_announcement_edit_form', 'node_announcement_form']);
 }

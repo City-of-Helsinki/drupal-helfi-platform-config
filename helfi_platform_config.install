@@ -133,3 +133,38 @@ function helfi_platform_config_update_9308() : void {
 function helfi_platform_config_update_9309() {
   helfi_platform_config_update_9307();
 }
+
+/**
+ * UHF-9708: Enable helfi_node_survey module.
+ */
+function helfi_platform_config_update_9310() : void {
+  $module_installer = \Drupal::service('module_installer');
+
+  // Enable helfi_node_survey module.
+  if (!\Drupal::moduleHandler()->moduleExists('helfi_node_survey')) {
+    $module_installer->install(['helfi_node_survey']);
+  }
+}
+
+/**
+ * UHF-9708: Fix "Mismatched entity and/or field definitions" for published_at.
+ */
+function helfi_platform_config_update_9311(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('publication_date')) {
+    return;
+  }
+
+  $changeList = \Drupal::entityDefinitionUpdateManager()->getChangeList();
+
+  // Check if field storage definition for published_at is missing.
+  if (isset($changeList['node']['field_storage_definitions']['published_at'])) {
+    $entity_type = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->getEntityType();
+
+    if ($field = publication_date_entity_base_field_info($entity_type)['published_at'] ?? NULL) {
+      \Drupal::entityDefinitionUpdateManager()
+        ->installFieldStorageDefinition('published_at', 'node', 'publication_date', $field);
+    }
+  }
+}

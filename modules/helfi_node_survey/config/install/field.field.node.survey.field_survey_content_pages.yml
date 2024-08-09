@@ -1,0 +1,31 @@
+uuid: 9cb9a071-2d67-43d0-a8e3-6e2b7142ee17
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_survey_content_pages
+    - node.type.survey
+    - node.type.landing_page
+    - node.type.page
+id: node.survey.field_survey_content_pages
+field_name: field_survey_content_pages
+entity_type: node
+bundle: survey
+label: 'Show on content pages'
+description: 'Shown on all pages if left empty.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      page: page
+      landing_page: landing_page
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: page
+field_type: entity_reference
