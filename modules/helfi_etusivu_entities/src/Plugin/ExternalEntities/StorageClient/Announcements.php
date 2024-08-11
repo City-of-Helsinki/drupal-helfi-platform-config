@@ -13,7 +13,7 @@ namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
  *   description = @Translation("Retrieves announcements from helfi")
  * )
  */
-final class Announcements extends EtusivuEntityBase {
+final class Announcements extends EtusivuJsonApiEntityBase {
 
   /**
    * {@inheritdoc}

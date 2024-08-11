@@ -13,7 +13,7 @@ namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
  *   description = @Translation("Retrieves surveys from helfi")
  * )
  */
-final class Surveys extends EtusivuEntityBase {
+final class Surveys extends EtusivuJsonApiEntityBase {
 
   /**
    * Custom cache tag for announcements.

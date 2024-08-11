@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Base class for etusivu external entity storage client.
  */
-abstract class EtusivuEntityBase extends ExternalEntityStorageClientBase implements LoggerAwareInterface {
+abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase implements LoggerAwareInterface {
 
   use LoggerAwareTrait;
 
