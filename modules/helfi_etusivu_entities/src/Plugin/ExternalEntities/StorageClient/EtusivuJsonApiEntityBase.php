@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -57,6 +58,11 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
   protected LanguageManagerInterface $languageManager;
 
   /**
+   * Cache service.
+   */
+  protected CacheBackendInterface $cache;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -68,6 +74,7 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->client = $container->get('http_client');
     $instance->languageManager = $container->get('language_manager');
+    $instance->cache = $container->get('cache.default');
 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
@@ -125,6 +132,10 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
   /**
    * Creates a request against JSON:API.
    *
+   * JSON:API responses are cached with custom cache tags to increase main
+   * request performance. These caches are invalidated with pubsub service
+   * whenever remote entities in etusivu instance are changed.
+   *
    * @param string $endpoint
    *   The jsonapi endpoint.
    * @param array $parameters
@@ -134,24 +145,37 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
    *
    * @return array
    *   An array of entities.
+   *
+   * @see \helfi_etusivu_invalidate_external_caches()
    */
   protected function request(string $endpoint, array $parameters, string $langcode) : array {
     if (!$this->environment) {
       return [];
     }
+
+    $uri = vsprintf('%s/jsonapi%s?%s', [
+      $this->environment->getInternalAddress($langcode),
+      $endpoint,
+      Query::build($parameters),
+    ]);
+
+    if ($cache = $this->cache->get($uri)) {
+      return $cache->data;
+    }
+
     try {
-      $uri = vsprintf('%s/jsonapi%s?%s', [
-        $this->environment->getInternalAddress($langcode),
-        $endpoint,
-        Query::build($parameters),
-      ]);
       $content = $this->client->request('GET', $uri);
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
-      return $json['data'];
+      $data = $json['data'];
+
+      $this->cache->set($uri, $data, tags: [static::$customCacheTag]);
+
+      return $data;
     }
     catch (RequestException | GuzzleException $e) {
       Error::logException($this->logger, $e);
     }
+
     return [];
   }
 
