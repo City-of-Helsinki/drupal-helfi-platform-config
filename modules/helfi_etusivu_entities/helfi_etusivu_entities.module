@@ -34,8 +34,6 @@ use Drupal\entity\BundleFieldDefinition;
  */
 function helfi_etusivu_entities_get_block_configurations(string $theme) : array {
   return [
-    // External entity version of this block is
-    // enabled by helfi_etusivu_entities module.
     'announcements' => [
       'block' => [
         'id' => 'announcements',
@@ -59,8 +57,6 @@ function helfi_etusivu_entities_get_block_configurations(string $theme) : array 
         ],
       ],
     ],
-    // External entity version of this block is
-    // enabled by helfi_etusivu_entities module.
     'surveys' => [
       'block' => [
         'id' => 'surveys',
