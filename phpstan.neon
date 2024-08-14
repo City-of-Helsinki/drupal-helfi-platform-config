@@ -23,9 +23,6 @@ parameters:
       message: '#^Undefined variable: \$sandbox#'
       path: src/Commands/MajorUpdateCommands.php
     -
-      message: '#^Unsafe usage of new static#'
-      path: modules/helfi_node_announcement/src/Plugin/Block/AnnouncementsBlockBase.php
-    -
       message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemListInterface<Drupal\\Core\\Field\\FieldItemInterface>::\$iframe_title.#'
       path: modules/helfi_media_remote_video/src/Entity/RemoteVideo.php
     -

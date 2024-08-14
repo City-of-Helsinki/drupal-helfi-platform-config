@@ -1,0 +1,131 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_etusivu_entities module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity\BundleFieldDefinition;
+
+/**
+ * Gets the block configurations.
+ *
+ * Example block:
+ *
+ * @code
+ * [
+ *   'breadbrumbs' => [
+ *     'block' => [
+ *       ...
+ *     ],
+ *     'variations' => [
+ *       ...
+ *     ],
+ *   ],
+ * ];
+ * @endcode
+ *
+ * @return array[]
+ *   The block configurations.
+ */
+function helfi_etusivu_entities_get_block_configurations(string $theme) : array {
+  return [
+    'announcements' => [
+      'block' => [
+        'id' => 'announcements',
+        'plugin' => 'announcements',
+        'settings' => [
+          'id' => 'announcements',
+          'label' => 'Announcements',
+          'provider' => 'helfi_node_announcement',
+        ],
+        'provider' => 'helfi_node_announcement',
+        'weight' => -15,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+    'surveys' => [
+      'block' => [
+        'id' => 'surveys',
+        'plugin' => 'surveys',
+        'settings' => [
+          'id' => 'surveys',
+          'label' => 'Surveys',
+          'provider' => 'helfi_node_survey',
+        ],
+        'provider' => 'helfi_node_survey',
+        'weight' => -15,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+        [
+          'theme' => 'stark',
+          'region' => 'content',
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_etusivu_entities_entity_bundle_field_info_alter(
+  &$fields,
+  EntityTypeInterface $entity_type,
+) : void {
+  $remote_entities = [
+    'helfi_announcements',
+    'helfi_surveys',
+  ];
+
+  if (in_array($entity_type->id(), $remote_entities)) {
+    // Common fields.
+    $entity_info_fields = [
+      'published_at' => new TranslatableMarkup('Published at'),
+      'unpublish_on' => new TranslatableMarkup('Unpublish on'),
+      'langcode' => new TranslatableMarkup('Langcode'),
+      'body' => new TranslatableMarkup('Body'),
+      'status' => new TranslatableMarkup('Status'),
+    ];
+
+    // Additional entity info fields.
+    $entity_info_fields += match ($entity_type->id()) {
+      'helfi_announcements' => [
+        'notification' => new TranslatableMarkup('Notification'),
+        'announcement_type' => new TranslatableMarkup('Announcement type'),
+        'announcement_link_text' => new TranslatableMarkup('Announcement link text'),
+        'announcement_link_url' => new TranslatableMarkup('Announcement link url'),
+        'announcement_assistive_technology_close_button_title' => new TranslatableMarkup('Assistive technology close button title'),
+      ],
+      'helfi_surveys' => [
+        'survey_link_text' => new TranslatableMarkup('Survey link text'),
+        'survey_link_url' => new TranslatableMarkup('Survey link url'),
+      ],
+    };
+
+    foreach ($entity_info_fields as $field_name => $field_label) {
+      $fields[$field_name] = BundleFieldDefinition::create('string')
+        ->setName($field_name)
+        ->setLabel($field_label)
+        ->setDisplayConfigurable('view', TRUE)
+        ->setDisplayConfigurable('form', TRUE);
+    }
+  }
+}

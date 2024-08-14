@@ -1,0 +1,39 @@
+uuid: be631905-d77b-418a-890e-b04fa3ed3e22
+langcode: en
+status: true
+dependencies: {  }
+id: helfi_surveys
+label: 'Helfi: Survey'
+label_plural: 'Helfi: Surveys'
+description: ''
+read_only: true
+field_mapper_id: jsonpath
+field_mapper_config:
+  field_mappings:
+    id:
+      value: $.id
+    uuid:
+      value: $.id
+    title:
+      value: '$.attributes["title"]'
+    published_at:
+      value: '$.attributes["published_at"]'
+    unpublish_on:
+      value: '$.attributes["unpublish_on"]'
+    langcode:
+      value: '$.attributes["langcode"]'
+    body:
+      value: '$.attributes["body"]["value"]'
+    status:
+      value: '$.attributes["status"]'
+    survey_link_text:
+      value: '$.attributes["field_survey_link"]["title"]'
+    survey_link_url:
+      value: '$.attributes["field_survey_link"]["uri"]'
+storage_client_id: helfi_surveys
+storage_client_config: {  }
+persistent_cache_max_age: -1
+annotation_entity_type_id: null
+annotation_bundle_id: null
+annotation_field_name: null
+inherits_annotation_fields: false

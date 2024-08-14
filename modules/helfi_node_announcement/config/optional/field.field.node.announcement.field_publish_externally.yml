@@ -1,0 +1,23 @@
+uuid: 80cab237-aac0-4195-bd3c-d86ee2ef6aeb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_publish_externally
+    - node.type.announcement
+id: node.announcement.field_publish_externally
+field_name: field_publish_externally
+entity_type: node
+bundle: announcement
+label: 'Publish on external site'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

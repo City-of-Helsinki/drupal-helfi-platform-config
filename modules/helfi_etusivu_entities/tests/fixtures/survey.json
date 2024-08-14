@@ -1,0 +1,55 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [
+    {
+      "type": "node--survey",
+      "id": "f218e9a7-3ae1-4858-afb4-bf7e773d9ab6",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/fi/jsonapi/node/survey/f218e9a7-3ae1-4858-afb4-bf7e773d9ab6?resourceVersion=id%3A27797"
+        }
+      },
+      "attributes": {
+        "langcode": "en",
+        "status": true,
+        "title": "Test survey",
+        "unpublish_on": null,
+        "published_at": "2024-07-30T11:58:29+00:00",
+        "field_survey_link": {
+          "uri": "https://example.com",
+          "title": "",
+          "options": []
+        },
+        "body": {
+          "value": "<p>Survey content</p>",
+          "format": "minimal",
+          "processed": "<p>Survey content</p>\n",
+          "summary": ""
+        }
+      }
+    }
+  ],
+  "meta": {
+    "count": 2
+  },
+  "links": {
+    "last": {
+      "href": "https://helfi-etusivu.docker.so/fi/jsonapi/node/survey?fields%5Bnode--survey%5D=id%2Clangcode%2Cstatus%2Cpublished_at%2Cunpublish_on%2Ctitle%2Cbody%2Cfield_survey_link&fields%5Bstatus%5D=1&filter%5Bstatus%5D%5Bvalue%5D=1&filter%5Bfield_publish_externally%5D%5Bvalue%5D=1&filter%5Blangcode%5D=fi&sort=-published_at&page%5Boffset%5D=1&page%5Blimit%5D=1"
+    },
+    "next": {
+      "href": "https://helfi-etusivu.docker.so/fi/jsonapi/node/survey?fields%5Bnode--survey%5D=id%2Clangcode%2Cstatus%2Cpublished_at%2Cunpublish_on%2Ctitle%2Cbody%2Cfield_survey_link&fields%5Bstatus%5D=1&filter%5Bstatus%5D%5Bvalue%5D=1&filter%5Bfield_publish_externally%5D%5Bvalue%5D=1&filter%5Blangcode%5D=fi&sort=-published_at&page%5Boffset%5D=1&page%5Blimit%5D=1"
+    },
+    "self": {
+      "href": "https://helfi-etusivu.docker.so/fi/jsonapi/node/survey?fields%5Bnode--survey%5D=id%2Clangcode%2Cstatus%2Cpublished_at%2Cunpublish_on%2Ctitle%2Cbody%2Cfield_survey_link&fields%5Bstatus%5D=1&filter%5Bstatus%5D%5Bvalue%5D=1&filter%5Bfield_publish_externally%5D%5Bvalue%5D=1&filter%5Blangcode%5D=fi&page%5Blimit%5D=1&sort=-published_at"
+    }
+  }
+}
