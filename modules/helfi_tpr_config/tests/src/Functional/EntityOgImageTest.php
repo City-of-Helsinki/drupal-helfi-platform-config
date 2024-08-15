@@ -89,7 +89,7 @@ class EntityOgImageTest extends BrowserTestBase {
    * Assert that og_image image style was used.
    */
   private function assertImageStyle() : void {
-    $this->assertSession()->elementAttributeContains('css', 'meta[property="og:image"]', 'content', 'styles/og_image');
+    $this->assertSession()->elementAttributeContains('css', 'meta[property="og:image"]', 'content', 'styles/1.9_1200w_630h');
   }
 
   /**
@@ -105,7 +105,7 @@ class EntityOgImageTest extends BrowserTestBase {
     };
 
     $this->assertSession()->elementAttributeContains('css', 'meta[property="og:image"]', 'content', $og_image_file);
-    $this->assertSession()->elementAttributeNotContains('css', 'meta[property="og:image"]', 'content', 'styles/og_image');
+    $this->assertSession()->elementAttributeNotContains('css', 'meta[property="og:image"]', 'content', 'styles/1.9_1200w_630h');
   }
 
 }

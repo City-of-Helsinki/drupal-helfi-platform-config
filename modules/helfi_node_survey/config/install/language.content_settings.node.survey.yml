@@ -1,0 +1,16 @@
+uuid: c10c6c36-eccd-4664-bf08-bc58654eac6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.survey
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: node.survey
+target_entity_type_id: node
+target_bundle: survey
+default_langcode: fi
+language_alterable: true

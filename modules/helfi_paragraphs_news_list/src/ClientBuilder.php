@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list;
 
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ServiceEnum;
@@ -34,8 +35,16 @@ final class ClientBuilder {
    *   The client.
    */
   public function create() : Client {
-    $service = $this->environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $this->environmentResolver->getActiveEnvironmentName())
+    try {
+      $environment = $this->environmentResolver
+        ->getEnvironment(Project::ETUSIVU, $this->environmentResolver->getActiveEnvironmentName());
+    }
+    catch (\InvalidArgumentException) {
+      // Use prod in case matching environment does not exist.
+      $environment = $this->environmentResolver
+        ->getEnvironment(Project::ETUSIVU, EnvironmentEnum::Prod->value);
+    }
+    $service = $environment
       ->getService(ServiceEnum::ElasticProxy)
       ->address;
 
