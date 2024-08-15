@@ -1,0 +1,11 @@
+uuid: 06dd2c5f-338d-4cf2-b57f-e1b7c72aea0b
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.job_listing_organization
+label: 'Job Listing Organization'
+description: ''
+targetEntityType: media
+cache: true

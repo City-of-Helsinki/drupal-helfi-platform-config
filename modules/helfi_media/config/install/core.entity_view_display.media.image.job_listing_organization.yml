@@ -1,0 +1,36 @@
+uuid: a6712112-da77-40e9-b62a-53293fdd00c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.job_listing_organization
+    - field.field.media.image.field_media_image
+    - field.field.media.image.field_photographer
+    - media.type.image
+    - responsive_image.styles.job_listing_org
+  module:
+    - responsive_image
+id: media.image.job_listing_organization
+targetEntityType: media
+bundle: image
+mode: job_listing_organization
+content:
+  field_media_image:
+    type: responsive_image
+    label: hidden
+    settings:
+      responsive_image_style: job_listing_org
+      image_link: ''
+      image_loading:
+        attribute: eager
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_photographer: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true
