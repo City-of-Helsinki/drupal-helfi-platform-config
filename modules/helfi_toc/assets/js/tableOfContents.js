@@ -21,7 +21,8 @@
       ':not(.breadcrumb__container *)' +
       ':not(#helfi-toc-table-of-contents *)' +
       ':not(.embedded-content-cookie-compliance *)' +
-      ':not(.react-and-share-cookie-compliance *)'
+      ':not(.react-and-share-cookie-compliance *)' +
+      ':not(.survey__container *)'
     },
 
     // List of heading tags with exclusions.
