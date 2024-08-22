@@ -57,7 +57,11 @@ chat_leijuke:
   version: 1.0.2
   header: true
   js:
-    assets/js/chat_leijuke.js: {}
+    assets/js/chat_leijuke.js: {
+      attributes: {
+        preprocess: false
+      }
+    }
   dependencies:
     - core/drupal
     - core/drupalSettings
