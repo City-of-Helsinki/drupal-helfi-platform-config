@@ -208,9 +208,9 @@ function helfi_paragraphs_news_list_preprocess_paragraph__news_list(&$variables)
     ->getUrl($langcode);
 
   $instanceUrl = $instanceUrl . match ($langcode) {
-    'fi' => '/uutiset',
-    'sv' => '/nyheter',
-    default => '/news',
+    'fi' => '/uutiset/arkisto',
+    'sv' => '/nyheter/arkiv',
+    default => '/news/archive',
   };
   $archiveUrl = Url::fromUri($instanceUrl, ['query' => $params]);
 
