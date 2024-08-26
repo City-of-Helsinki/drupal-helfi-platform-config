@@ -1,2 +1,2 @@
-delete user accounts:
-  title: Delete user accounts
+allow all user cancel methods:
+  title: All access to all user cancel methods
