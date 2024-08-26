@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @file
  * Helper functions related to deleting user accounts.
@@ -9,6 +7,8 @@ declare(strict_types=1);
  * This is in a separate module, so it can be turned off easier,
  * and we can reassign module weights / run order if necessary.
  */
+
+declare(strict_types=1);
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -92,9 +92,9 @@ function helfi_users_user_cancel($edit, UserInterface $account, $method): void {
  *
  * Prevents crashes and timeouts when revisions are handled by node_mass_update.
  *
- * @param AccountInterface $source
+ * @param \Drupal\Core\Session\AccountInterface $source
  *   Source user.
- * @param AccountInterface $target
+ * @param \Drupal\Core\Session\AccountInterface $target
  *   Target user.
  */
 function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface $target): void {
