@@ -168,3 +168,16 @@ function helfi_platform_config_update_9311(): void {
     }
   }
 }
+
+/**
+ * UHF-9708: Enable helfi_users module.
+ */
+function helfi_platform_config_update_9312() : void {
+  helfi_platform_config_remove_permissions_from_all_roles([
+    'delete user accounts',
+  ]);
+
+  if (!\Drupal::moduleHandler()->moduleExists('helfi_users')) {
+    \Drupal::service('module_installer')->install(['helfi_users']);
+  }
+}
