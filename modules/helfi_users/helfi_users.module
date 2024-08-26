@@ -1,0 +1,92 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Helper functions related to deleting user accounts.
+ *
+ * This is in a separate module, so it can be turned off easier,
+ * and we can reassign module weights / run order if necessary.
+ */
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function helfi_users_module_implements_alter(&$implementations, $hook) : void {
+  // Move helfi_users_user_cancel() implementation to the top of the
+  // list, so this is always run first before any other alter hooks, more
+  // specifically before 'node_user_cancel()' which causes issues when mass
+  // reassigning node revisions.
+  if ($hook === 'user_cancel') {
+    $group = $implementations['helfi_users'];
+    $implementations = ['helfi_users' => $group] + $implementations;
+  }
+}
+
+/**
+ * Implements hook_user_cancel().
+ *
+ * We have encountered crashes/timeout issues with reassign batch api
+ * implementation from node module. This Optimizes hook_user_cancel by
+ * reassigning nodes with direct database query.
+ *
+ * This has to run before node module's user_cancel hook.
+ */
+function helfi_users_user_cancel($edit, UserInterface $account, $method): void {
+  switch ($method) {
+    case 'user_cancel_reassign':
+      // Anonymize all the nodes for this old account.
+      _helfi_users_reassign_nodes($account, User::load(1));
+      break;
+  }
+}
+
+/**
+ * Reassigns all node revisions from $source to $target.
+ *
+ * Prevents crashes and timeouts when revisions are handled by node_mass_update.
+ *
+ * @param AccountInterface $source
+ *   Source user.
+ * @param AccountInterface $target
+ *   Target user.
+ */
+function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface $target): void {
+  $database = \Drupal::database();
+  $tables = [
+    'node_field_data' => 'uid',
+    'node_field_revision' => 'uid',
+    'node_revision' => 'revision_uid',
+  ];
+
+  foreach ($tables as $table => $uid_field) {
+    $matches = $database->select($table)
+      ->condition($uid_field, $source->id())
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+
+    if ((int) $matches < 1) {
+      continue;
+    }
+
+    // Notice: this does not invalidate any caches. This should be fine for
+    // HELfi, where user information is not rendered on public pages.
+    $database->update($table)
+      ->fields([$uid_field => $target->id()])
+      ->condition($uid_field, $source->id())
+      ->execute();
+
+    \Drupal::logger('helfi_users')->notice(t('Set @count rows from @table to @target from @source', [
+      '@count' => $matches,
+      '@table' => $table,
+      '@target' => $target->id(),
+      '@source' => $source->id(),
+    ]));
+  }
+}

@@ -1,0 +1,5 @@
+name: HELfi users
+description: 'Fixes related to deleting or canceling users.'
+package: HELfi
+type: module
+core_version_requirement: ^10 || ^11
