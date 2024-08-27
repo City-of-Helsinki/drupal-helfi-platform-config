@@ -12,6 +12,13 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 
 /**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function hdbt_cookie_banner_config_ignore_settings_alter(array &$settings): void {
+  $settings[] = HdbtCookieBannerForm::SETTINGS;
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
