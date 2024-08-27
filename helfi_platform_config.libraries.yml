@@ -12,7 +12,7 @@ clear_localstorage:
     - core/drupal
 
 genesys_suunte:
-  version: 1.0.1
+  version: 1.0.2
   header: true
   js:
     'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
@@ -24,6 +24,7 @@ genesys_suunte:
     }
     assets/js/genesys_suunte.js: {
       attributes: {
+        preprocess: false,
         onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_suunte.attach();console.log('suunte attaching');}}, 100);"
       }
     }
