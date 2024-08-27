@@ -1,0 +1,14 @@
+hdbt_cookie_banner.form:
+  path: '/admin/structure/hdbt-cookie-banner'
+  defaults:
+    _form: '\Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm'
+    _title: 'Administer hdbt cookie banner'
+  requirements:
+    _permission: 'administer hdbt_cookie_banner'
+
+hdbt_cookie_banner.site_settings:
+  path: '/api/cookie-banner'
+  defaults:
+    _controller: '\Drupal\hdbt_cookie_banner\Controller\HdbtCookieBannerController::siteSettings'
+  requirements:
+    _access: 'TRUE'

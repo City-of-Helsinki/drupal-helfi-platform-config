@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Contains module hooks for hdbt cookie banner.
+ */
+
+declare(strict_types=1);
+use Drupal\Core\Url;
+use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\Project;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
+  $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hdbt_cookie_banner';
+  $attachments['#attached']['drupalSettings']['hdbt_cookie_banner'] = [
+    'apiUrl' => _hdbt_cookie_banner_get_api_url()
+  ];
+
+  $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
+  $attachments['#cache']['tags'] = $config->getCacheTags();
+}
+
+/**
+ * Gets HDBT cookie banner api url
+ */
+function _hdbt_cookie_banner_get_api_url(): string {
+  $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
+  $language = \Drupal::languageManager()->getDefaultLanguage();
+
+  // Default to etusivu api url.
+  if (empty($config->get('site_settings'))) {
+    /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $resolver */
+    $resolver = \Drupal::service(EnvironmentResolverInterface::class);
+    try {
+      $environment = $resolver
+        ->getEnvironment(Project::ETUSIVU, $resolver->getActiveEnvironmentName());
+
+      return vsprintf("%s/api/cookie-banner", [
+        $environment->getUrl($language->getId())
+      ]);
+    }
+    catch (InvalidArgumentException) {
+    }
+  }
+
+  return Url::fromRoute('hdbt_cookie_banner.site_settings', options: [
+    'language' => $language,
+  ])->toString();
+}
