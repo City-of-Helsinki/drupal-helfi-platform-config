@@ -6,6 +6,7 @@
  */
 
 declare(strict_types=1);
+
 use Drupal\Core\Url;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
@@ -24,7 +25,7 @@ function hdbt_cookie_banner_config_ignore_settings_alter(array &$settings): void
 function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
   $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hdbt_cookie_banner';
   $attachments['#attached']['drupalSettings']['hdbt_cookie_banner'] = [
-    'apiUrl' => _hdbt_cookie_banner_get_api_url()
+    'apiUrl' => _hdbt_cookie_banner_get_api_url(),
   ];
 
   $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
@@ -32,7 +33,7 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
 }
 
 /**
- * Gets HDBT cookie banner api url
+ * Gets HDBT cookie banner api url.
  */
 function _hdbt_cookie_banner_get_api_url(): string {
   $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
@@ -47,7 +48,7 @@ function _hdbt_cookie_banner_get_api_url(): string {
         ->getEnvironment(Project::ETUSIVU, $resolver->getActiveEnvironmentName());
 
       return vsprintf("%s/api/cookie-banner", [
-        $environment->getUrl($language->getId())
+        $environment->getUrl($language->getId()),
       ]);
     }
     catch (InvalidArgumentException) {

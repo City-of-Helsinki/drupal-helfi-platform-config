@@ -29,7 +29,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames(): array {
     return [
-     self::SETTINGS,
+      self::SETTINGS,
     ];
   }
 
