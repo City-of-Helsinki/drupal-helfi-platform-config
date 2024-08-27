@@ -75,6 +75,7 @@
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/gin_toolbar": ">1.0.0-rc6",
         "drupal/helfi_media_map": "*",
+        "drupal/default_content": ">2.0.0-alpha2",
         "drush/drush": "<12"
     },
     "extra": {

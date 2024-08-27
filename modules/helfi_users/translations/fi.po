@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+
+msgid "Ban the account and keep their content."
+msgstr "Estä käyttäjä ja säilytä luotu sisältö."
+
+msgid "Ban the account and unpublish their content."
+msgstr "Estä käyttäjä ja piilota luotu sisältö."
+
+msgid "Delete the account and make their content belong to %uid1. This action cannot be undone."
+msgstr "Poista käyttäjä ja siirrä luotu sisältö käyttäjälle %uid1. Tätä toimintoa ei voi peruuttaa."
+
+msgid "Banning accounts prevents them from logging in. If the account is no longer needed, it should be deleted."
+msgstr "Käyttäjän estäminen estää kirjautumisen käyttäjällä. Käyttäjä tulisi poistaa jos sitä ei enää tarvita."
