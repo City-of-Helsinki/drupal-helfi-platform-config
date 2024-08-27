@@ -18,7 +18,7 @@ class UserCancelFormTest extends BrowserTestBase {
    */
   protected static $modules = [
     'user',
-    'helfi_platform_config',
+    'helfi_users',
   ];
 
   /**
@@ -60,7 +60,7 @@ class UserCancelFormTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->elementExists('xpath', '//input[@value="user_cancel_block"]');
     $this->assertSession()->elementExists('xpath', '//input[@value="user_cancel_block_unpublish"]');
-    $this->assertSession()->elementNotExists('xpath', '//input[@value="user_cancel_reassign"]');
+    $this->assertSession()->elementExists('xpath', '//input[@value="user_cancel_reassign"]');
     $this->assertSession()->elementNotExists('xpath', '//input[@value="user_cancel_delete"]');
 
     // Test that the editorUser cannot access the cancel page.

@@ -1,0 +1,133 @@
+<?php
+
+/**
+ * @file
+ * Helper functions related to deleting user accounts.
+ *
+ * This is in a separate module, so it can be turned off easier,
+ * and we can reassign module weights / run order if necessary.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function helfi_users_module_implements_alter(&$implementations, $hook) : void {
+  // Move helfi_users_user_cancel() implementation to the top of the
+  // list, so this is always run first before any other alter hooks, more
+  // specifically before 'node_user_cancel()' which causes issues when mass
+  // reassigning node revisions.
+  if ($hook === 'user_cancel') {
+    $group = $implementations['helfi_users'];
+    $implementations = ['helfi_users' => $group] + $implementations;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function helfi_users_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  if (!in_array($form_id, ["user_multiple_cancel_confirm", "user_cancel_form"])) {
+    return;
+  }
+
+  // Hide email confirmation checkbox.
+  $form['user_cancel_confirm']['#access'] = FALSE;
+  $form['user_cancel_method']['#description'] = new TranslatableMarkup(
+    "Banning accounts prevents them from logging in. If the account is no longer needed, it should be deleted."
+  );
+}
+
+/**
+ * Implements hook_user_cancel_methods_alter().
+ */
+function helfi_users_user_cancel_methods_alter(array &$methods): void {
+  // User can only access allowed methods. User must also have
+  // 'administer users' permission from core to be able to cancel users.
+  $allowed_methods = [
+    'user_cancel_block' => new TranslatableMarkup("Ban the account and keep their content."),
+    'user_cancel_block_unpublish' => new TranslatableMarkup("Ban the account and unpublish their content."),
+    'user_cancel_reassign' => new TranslatableMarkup("Delete the account and make their content belong to %uid1. This action cannot be undone.", [
+      '%uid1' => User::load(1)->getAccountName(),
+    ]),
+  ];
+
+  foreach ($allowed_methods as $name => $title) {
+    $methods[$name]['title'] = $title;
+  }
+
+  // Without special permission, user is not allowed to access all methods.
+  if (!\Drupal::currentUser()->hasPermission('allow all user cancel methods')) {
+    foreach ($methods as $name => &$method) {
+      $method['access'] = array_key_exists($name, $allowed_methods);
+    }
+  }
+}
+
+/**
+ * Implements hook_user_cancel().
+ *
+ * We have encountered crashes/timeout issues with reassign batch api
+ * implementation from node module. This Optimizes hook_user_cancel by
+ * reassigning nodes with direct database query.
+ *
+ * This has to run before node module's user_cancel hook.
+ */
+function helfi_users_user_cancel($edit, UserInterface $account, $method): void {
+  // Reassign nodes for the old account.
+  if ($method === 'user_cancel_reassign') {
+    _helfi_users_reassign_nodes($account, User::load(1));
+  }
+}
+
+/**
+ * Reassigns all node revisions from $source to $target.
+ *
+ * Prevents crashes and timeouts when revisions are handled by node_mass_update.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $source
+ *   Source user.
+ * @param \Drupal\Core\Session\AccountInterface $target
+ *   Target user.
+ */
+function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface $target): void {
+  $database = \Drupal::database();
+  $tables = [
+    'node_field_data' => 'uid',
+    'node_field_revision' => 'uid',
+    'node_revision' => 'revision_uid',
+  ];
+
+  foreach ($tables as $table => $uid_field) {
+    $matches = $database->select($table)
+      ->condition($uid_field, $source->id())
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+
+    if ((int) $matches < 1) {
+      continue;
+    }
+
+    // Notice: this does not invalidate any caches. This should be fine for
+    // HELfi, where user information is not rendered on public pages.
+    $database->update($table)
+      ->fields([$uid_field => $target->id()])
+      ->condition($uid_field, $source->id())
+      ->execute();
+
+    \Drupal::logger('helfi_users')->notice(t('Set @count rows from @table to @target from @source', [
+      '@count' => $matches,
+      '@table' => $table,
+      '@target' => $target->id(),
+      '@source' => $source->id(),
+    ]));
+  }
+}
