@@ -28,7 +28,7 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
   ];
 
   $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
-  $attachments['#cache']['tags'] = $config->getCacheTags();
+  $attachments['#cache']['tags'] = array_merge($attachments['#cache']['tags'] ?? [], $config->getCacheTags());
 }
 
 /**
