@@ -1,0 +1,6 @@
+hdbt_cookie_banner.form:
+  title: 'HDBT Cookie Banner'
+  route_name: hdbt_cookie_banner.form
+  parent: system.admin_config_system
+  description: 'Configure HDBT Cookie Banner'
+  weight: -10

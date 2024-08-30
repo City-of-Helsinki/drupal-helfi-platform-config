@@ -1,0 +1,6 @@
+name: 'HDBT cookie banner'
+type: module
+description: 'Drupal module for hdbt cookie banner.'
+core_version_requirement: ^10 || ^11
+dependencies:
+  - helfi_api_base:helfi_api_base
