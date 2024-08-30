@@ -6,7 +6,7 @@ dependencies:
     - focal_point
     - image_style_quality
 name: 3_2_m_2x
-label: '3:2 M (2x)'
+label: 'DEPRECATED 3:2 M (2x)'
 effects:
   e7da735e-aa35-463b-b99a-b61aba89a53f:
     uuid: e7da735e-aa35-463b-b99a-b61aba89a53f

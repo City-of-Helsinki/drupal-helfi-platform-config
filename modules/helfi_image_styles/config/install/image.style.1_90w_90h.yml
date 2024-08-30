@@ -1,0 +1,17 @@
+uuid: 47c58af9-ea44-4f83-9f02-9d06facad04a
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 1_90w_90h
+label: '1_90w_90h'
+effects:
+  e7da735e-aa35-463b-b99a-b61aba89a53f:
+    uuid: e7da735e-aa35-463b-b99a-b61aba89a53f
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 90
+      height: 90
+      crop_type: focal_point

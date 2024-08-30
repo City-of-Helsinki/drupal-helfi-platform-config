@@ -16,7 +16,7 @@ dependencies:
   module:
     - helfi_image_styles
 id: hero__background
-label: 'Hero Background'
+label: 'DEPRECATED Hero Background'
 image_style_mappings:
   -
     image_mapping_type: image_style

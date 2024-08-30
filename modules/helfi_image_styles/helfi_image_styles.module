@@ -42,7 +42,7 @@ function helfi_image_styles_og_image_uri_alter(&$image_uri) : void {
     /** @var \Drupal\image\Entity\ImageStyle $image_style */
     $image_style = \Drupal::entityTypeManager()
       ->getStorage('image_style')
-      ->load('og_image');
+      ->load('1.9_1200w_630h');
 
     $image_uri = $image_style->buildUrl($image_uri);
   }

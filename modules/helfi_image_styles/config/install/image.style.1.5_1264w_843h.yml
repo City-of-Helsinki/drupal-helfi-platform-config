@@ -1,0 +1,17 @@
+uuid: 46021e85-9cd2-4ef0-9a8d-ff9bd4c965a2
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 1.5_1264w_843h
+label: '1.5_1264w_843h'
+effects:
+  e7da735e-aa35-463b-b99a-b61aba89a53f:
+    uuid: e7da735e-aa35-463b-b99a-b61aba89a53f
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 1264
+      height: 843
+      crop_type: focal_point

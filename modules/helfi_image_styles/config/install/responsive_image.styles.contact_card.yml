@@ -1,0 +1,24 @@
+uuid: e756e7d0-c3ad-418c-a5de-408a7cdf5d63
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.1_200w_200h
+    - image.style.1_400w_400h_LQ
+  module:
+    - helfi_image_styles
+id: contact_card
+label: 'Contact Card'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_200w_200h
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_400w_400h_LQ
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 2x
+breakpoint_group: helfi_image_styles
+fallback_image_style: 1_200w_200h

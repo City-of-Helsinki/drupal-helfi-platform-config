@@ -1,0 +1,11 @@
+uuid: 9f438831-b82a-41d1-af41-0a9a8f883aa2
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.card_teaser
+label: 'Card Teaser'
+description: ''
+targetEntityType: media
+cache: true

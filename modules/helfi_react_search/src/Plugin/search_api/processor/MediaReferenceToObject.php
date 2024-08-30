@@ -120,6 +120,20 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
     $fields = $this->getEnabledFields();
     $object = $item->getOriginalObject()->getValue();
 
+    // Define an array of image styles to generate.
+    $imageStyles = [
+      '1.5_378w_252h' => '1248',
+      '1.5_341w_227h' => '992',
+      '1.5_264w_176h' => '768',
+      '1.5_217w_145h' => '576',
+      '1.5_511w_341h' => '320',
+      '1.5_756w_504h_LQ' => '1248_2x',
+      '1.5_682w_454h_LQ' => '992_2x',
+      '1.5_528w_352h_LQ' => '768_2x',
+      '1.5_434w_290h_LQ' => '576_2x',
+      '1.5_1022w_682h_LQ' => '320_2x',
+    ];
+
     foreach ($fields as $key => $field) {
       $media = $object->get($key)->entity;
 
@@ -131,21 +145,27 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
         continue;
       }
 
-      $imageStyle = ImageStyle::load('3_2_l');
       $imagePath = $file->getFileUri();
-      $imageUri = $imageStyle->buildUri($imagePath);
+      $variants = [];
 
-      if (!file_exists($imageUri)) {
-        $imageStyle->createDerivative($imagePath, $imageUri);
+      foreach ($imageStyles as $styleName => $breakpoint) {
+        $imageStyle = ImageStyle::load($styleName);
+        $imageUri = $imageStyle->buildUri($imagePath);
+
+        if (!file_exists($imageUri)) {
+          $imageStyle->createDerivative($imagePath, $imageUri);
+        }
+
+        $url = $imageStyle->buildUrl($imagePath);
+        $variants[$breakpoint] = $url;
       }
-
-      $url = $imageStyle->buildUrl($imagePath);
 
       $values = [
         'alt' => $image->alt,
         'photographer' => $media->get('field_photographer')->value,
         'title' => $image->title,
-        'url' => $url,
+        'url' => $variants['1248'],
+        'variants' => $variants,
       ];
 
       $itemFields = $item->getFields();

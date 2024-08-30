@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: original_xxs
-label: 'Original XXS'
+label: 'DEPRECATED Original XXS'
 effects:
   414ab756-ad1e-443d-9818-065d764efefc:
     uuid: 414ab756-ad1e-443d-9818-065d764efefc

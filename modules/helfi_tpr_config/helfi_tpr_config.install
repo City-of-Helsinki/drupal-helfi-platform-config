@@ -381,9 +381,9 @@ function helfi_tpr_config_update_9052() : void {
 }
 
 /**
- * UHF-10159 Convert the phone label field to a translatable field.
+ * UHF-10191 Change the unit default displays to use new image styles.
  */
-function helfi_tpr_config_update_9067(): void {
+function helfi_tpr_config_update_9068(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }

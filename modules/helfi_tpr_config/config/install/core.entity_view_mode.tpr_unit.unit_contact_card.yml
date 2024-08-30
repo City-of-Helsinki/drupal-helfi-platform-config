@@ -1,0 +1,11 @@
+uuid: 32be6611-39f6-47f0-87bb-f0d79e52a3a9
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: tpr_unit.unit_contact_card
+label: 'Unit Contact Card'
+description: ''
+targetEntityType: tpr_unit
+cache: true

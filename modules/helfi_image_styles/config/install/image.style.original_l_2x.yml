@@ -5,7 +5,7 @@ dependencies:
   module:
     - image_style_quality
 name: original_l_2x
-label: 'Original L (2x)'
+label: 'DEPRECATED Original L (2x)'
 effects:
   0249bded-7547-49ab-b241-4d6f8b6973f6:
     uuid: 0249bded-7547-49ab-b241-4d6f8b6973f6

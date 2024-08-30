@@ -42,7 +42,7 @@ content:
     type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: image_content_area
+      view_mode: main_image
       link: false
     third_party_settings: {  }
     weight: 4
