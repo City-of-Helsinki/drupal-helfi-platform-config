@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_cookie_banner\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * HDBT cookie banner form.
@@ -16,6 +19,44 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
    * Config settings.
    */
   public const SETTINGS = 'hdbt_cookie_banner.settings';
+
+  /**
+   * The app root.
+   *
+   * @var string
+   */
+  protected string $appRoot;
+
+  /**
+   * Extension path resolver.
+   *
+   * @var \Drupal\Core\Extension\ExtensionPathResolver
+   */
+  protected ExtensionPathResolver $extensionPathResolver;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(
+    ConfigFactoryInterface $config_factory,
+    ExtensionPathResolver $extension_path_resolver,
+    string $app_root,
+  ) {
+    parent::__construct($config_factory);
+    $this->extensionPathResolver = $extension_path_resolver;
+    $this->appRoot = $app_root;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('extension.path.resolver'),
+      $container->getParameter('app.root'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -37,6 +78,21 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
+    $form['json_editor'] = [
+      '#type' => 'markup',
+      '#markup' => '<div id="editor_holder"></div>',
+      '#attached' => [
+        'library' => [
+          'hdbt_cookie_banner/cookie_banner_admin_ui',
+        ],
+        'drupalSettings' => [
+          'cookieBannerAdminUi' => [
+            'siteSettingsSchema' => $this->getSchemaJson(),
+          ],
+        ],
+      ],
+    ];
+
     $form['site_settings'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Site settings', options: ['context' => 'hdbt cookie banner']),
@@ -75,6 +131,20 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
     // https://www.php.net/releases/8.3/en.php#json_validate.
     json_decode($value);
     return json_last_error() === JSON_ERROR_NONE;
+  }
+
+  /**
+   * Get schema json for the site settings.
+   *
+   * @return string
+   *   Schema json.
+   */
+  private function getSchemaJson(): string {
+    $site_settings_schema = $this->appRoot . '/' . $this->extensionPathResolver->getPath('module', 'hdbt_cookie_banner') . '/assets/json/siteSettings.schema.json';
+    if ($json = file_get_contents($site_settings_schema)) {
+      return json_encode(json_decode($json));
+    }
+    return '';
   }
 
 }
