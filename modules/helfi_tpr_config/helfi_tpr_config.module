@@ -125,11 +125,13 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'content_liftup' => 12,
           'service_list_search' => 16,
           'unit_search' => 17,
+          'unit_contact_card' => 18,
         ],
         'field_lower_content' => [
           'content_liftup' => 12,
           'service_list_search' => 16,
           'unit_search' => 17,
+          'unit_contact_card' => 18,
         ],
       ],
       'landing_page' => [
@@ -138,6 +140,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'service_list' => 15,
           'service_list_search' => 16,
           'unit_search' => 17,
+          'unit_contact_card' => 18,
         ],
       ],
     ],
