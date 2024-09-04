@@ -107,7 +107,7 @@
         "expiration": {
           "$ref": "#/$defs/LocalisedUniversalText",
           "title": "Expiration",
-          "description": "Describe to end user when the cookie or item expires. (eg. \"100 days\") If it does not expire (like localStorage), enter dash \"-\". If it's a session cookie, enter fi:\"Istunto\", sv,en:\"Session\".",
+          "description": "Describe to end user when the cookie or item expires. (eg. \"100 days\") If it does not expire (like localStorage), enter dash \"-\". If it's a session cookie, enter fi:\"Istunto\", sv:\"Session\", en:\"Session\".",
           "options": {
             "disable_collapse": true
           }
@@ -155,7 +155,7 @@
         },
         "cookies": {
           "title": "Cookies",
-          "headerTemplate": "Cookies for {{groupId}} {{groupI}} {{self.groupI}} {{parent.groupId}} {{self.groupId}} {{parent.parent.groupId}} {{self.parent.groupId}}",
+          "headerTemplate": "Cookies",
           "description": "Cookies or or items toggled together in this group",
           "type": "array",
           "items": {
@@ -180,6 +180,11 @@
       ]
     }
   },
+  "title": "Site settings",
+  "description": "Configure HDS cookie banner settings.json to adjust allowed cookies, translations and other features.",
+  "options": {
+    "disable_collapse": true
+  },
   "type": "object",
   "properties": {
     "siteName": {
@@ -193,7 +198,10 @@
           "$ref": "#/$defs/UniversalLocalisedText"
         },
         {
-          "default": ""
+          "default": "",
+          "options": {
+            "disable_collapse": true
+          }
         }
       ]
     },
@@ -210,7 +218,7 @@
     "monitorInterval": {
       "type": "integer",
       "title": "Monitor interval (ms)",
-      "description": "How often banner checks for rogue cookies in milliseconds. Disabled by default. 500 ms could be a good default.",
+      "description": "How often banner checks for unallowed cookies in milliseconds. Disabled by default. 500 ms is a good default.",
       "options": {
         "input_width": "calc(5ch + 28px)"
       },
@@ -233,9 +241,9 @@
       ],
       "options": {
         "enum_titles": [
-          "fi = Finnish",
-          "sv = Swedish",
-          "en = English"
+          "fi (Finnish)",
+          "sv (Swedish)",
+          "en (English)"
         ]
       },
       "default": "en"
@@ -817,10 +825,5 @@
     "requiredGroups",
     "optionalGroups",
     "translations"
-  ],
-  "title": "HDS cookie banner",
-  "description": "Configure HDS cookie banner settings.json to adjust allowed cookies, translations and other features.",
-  "options": {
-    "disable_collapse": true
-  }
+  ]
 }

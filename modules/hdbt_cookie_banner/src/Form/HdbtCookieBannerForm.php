@@ -80,7 +80,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $form['json_editor'] = [
       '#type' => 'markup',
-      '#markup' => '<div id="editor_holder"></div>',
+      '#markup' => '<h1>HDS Cookie Consent Settings</h1><div id="language_holder"></div><div id="editor_holder"></div>',
       '#attached' => [
         'library' => [
           'hdbt_cookie_banner/cookie_banner_admin_ui',

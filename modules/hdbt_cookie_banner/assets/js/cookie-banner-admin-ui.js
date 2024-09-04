@@ -1,34 +1,119 @@
 (function (Drupal, drupalSettings) {
   Drupal.behaviors.cookieBannerAdminUi = {
     attach: function attach() {
-      const element = document.getElementById('editor_holder');
-      const textarea = document.getElementById('edit-site-settings');
-      let isUpdatingFromEditor = false; // Flag to prevent loop
 
-      try {
-        const schema = JSON.parse(drupalSettings.cookieBannerAdminUi.siteSettingsSchema);
-        const startval = JSON.parse(textarea.value);
+      // Small schema to handle languages
+      const languageSchema = {
+        "title": "Supported languages",
+        "description": "List all languages you wish banner to support.",
+        "type": "array",
+        "format": "table",
+        "options": {
+          "disable_collapse": true
+        },
+        "items": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "minLength": 2,
+              "title": "Code (eg. \"fi\")"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "title": "Name (ex. \"Finnish\")"
+            }
+          },
+          "required": [
+            "code",
+            "name"
+          ],
+          "title": "Language"
+        },
+        "uniqueItems": true,
+        "minItems": 1
+      }
+      const defaultLanguages = [
+        { "code": "fi", "name": "Finnish" },
+        { "code": "sv", "name": "Swedish" },
+        { "code": "en", "name": "English" }
+      ];
 
-        const options = {
-          theme: 'bootstrap3',
-          iconlib: 'bootstrap',
-          show_opt_in: true,
-          disable_edit_json: true,
-          disable_properties: true,
-          disable_array_delete_all_rows: true,
-          disable_array_delete_last_row: true,
-          prompt_before_delete: true,
-          schema: schema,
-          startval: startval,
+      // JSON editor options for both forms
+      const editorOptions = {
+        theme: 'bootstrap3',
+        iconlib: 'bootstrap',
+        show_opt_in: true,
+        disable_edit_json: true,
+        disable_properties: true,
+        disable_array_delete_all_rows: true,
+        disable_array_delete_last_row: true,
+        keep_oneof_values: false,
+        prompt_before_delete: true,
+      }
+
+      /**
+       * Gets the schema object for site settings
+       * @returns {Promise} A promise that resolves with the schema object
+       */
+      function getSchema(){
+        try {
+          const schema = JSON.parse(drupalSettings.cookieBannerAdminUi.siteSettingsSchema);
+          return schema;
+        } catch (error) {
+          console.error('Error fetching the schema:', error);
+        }
+        return {};
+      }
+
+      /**
+       * Initializes the language editor and returns a reference to it
+       * @param {object} defaultLanguages that contains code and name for each language
+       * @param {object} languageSchema JSON schema for the language editor
+       * @param {object} editorOptions for the JSON editor
+       * @returns reference to the language editor
+       */
+      function initializeLanguageEditor(defaultLanguages, languageSchema, editorOptions){
+        const langOptions = {
+          ...editorOptions,
+          schema: languageSchema,
+          startval: defaultLanguages
         };
 
-        // Initialize the JSON Editor
-        const editor = new JSONEditor(element, options);
+        const languageElement = document.getElementById('language_holder');
+        const languageEditor = new JSONEditor(languageElement, langOptions);
+        return languageEditor;
+      }
+
+      /**
+       * Initializes the banner editor and returns a reference to it
+       * @param {object} schema JSON schema of siteSettings.json for the banner editor
+       * @param {object} editorOptions for the JSON editor
+       * @returns reference to the banner editor
+       */
+      function initializeBannerEditor(schema, editorOptions){
+        let isUpdatingFromEditor = false; // Flag to prevent loop
+        let startval = {};
+        let textarea = null;
+        try {
+          textarea = document.getElementById('edit-site-settings');
+          startval = JSON.parse(textarea.value);
+        } catch (error) {
+          console.error('Error parsing the textarea value:', error);
+        }
+
+        const bannerElement = document.getElementById('editor_holder');
+        const bannerEditor = new JSONEditor(bannerElement, {
+          ...editorOptions,
+          schema,
+          startval
+        });
 
         // Listen for changes in the JSON editor
-        editor.on('change', function() {
+        bannerEditor.on('change', function() {
           if (!isUpdatingFromEditor) {
-            const updatedData = editor.getValue();
+            const updatedData = bannerEditor.getValue();
             textarea.value = JSON.stringify(updatedData, null, 2);
           }
         });
@@ -40,16 +125,83 @@
 
             // Prevent triggering the editor change event
             isUpdatingFromEditor = true;
-            editor.setValue(updatedTextareaData);
+            bannerEditor.setValue(updatedTextareaData);
             isUpdatingFromEditor = false;
           } catch (e) {
             console.error('Invalid JSON in textarea:', e);
           }
         });
 
-      } catch (error) {
-        console.error('Error fetching the schema:', error);
+        return bannerEditor;
       }
+
+      /**
+       * Updates the schema with the new languages
+       * @param {object} languages JSON generated by the language editor
+       * @param {object} schema JSON schema of siteSettings.json
+       * @returns {object} updated schema with the new languages
+       */
+      function updateSchema(languages, schema){
+        const newSchema = schema;
+
+        const localisedText = {
+          "type": "object",
+          "title": "Localised text",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        };
+
+        const fallbackLanguageEnum = languages.map(lang => lang.code);
+        const fallbackLanguageEnumTitles = languages.map(lang => lang.code + " (" + lang.name + ")");
+
+        languages.forEach(lang => {
+          localisedText.properties[lang.code] = {
+            "type": "string",
+            "title": lang.code + " (" + lang.name + ")"
+          };
+          localisedText.required.push(lang.code);
+        });
+
+        newSchema["$defs"].LocalisedText = localisedText;
+        newSchema.properties.fallbackLanguage.enum = fallbackLanguageEnum;
+        newSchema.properties.fallbackLanguage.options.enum_titles = fallbackLanguageEnumTitles;
+
+        return newSchema;
+      }
+
+      /**
+       * Initializes the language and banner editors
+       */
+      async function initializeEditor(){
+        const languageEditor = initializeLanguageEditor(defaultLanguages, languageSchema, editorOptions);
+        let schema = getSchema();
+        let bannerEditor = initializeBannerEditor(schema, editorOptions);
+
+        const debounce = (func, delay) => {
+          let timeoutId;
+          return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+              func.apply(null, args);
+            }, delay);
+          };
+        };
+
+        languageEditor.on('change', debounce(function() {
+          const errors = languageEditor.validate();
+          if (!errors.length) {
+            const languages = languageEditor.getValue();
+            schema = updateSchema(languages, schema);
+            bannerEditor.destroy();
+            bannerEditor = initializeBannerEditor(schema, editorOptions);
+          }
+        }, 300));
+      }
+
+      // Initialize the editor once the page has loaded
+      window.onload = initializeEditor;
+
     }
   };
 })(Drupal, drupalSettings);
