@@ -61,7 +61,7 @@ function helfi_paragraphs_news_list_paragraph_view(
 
     $termFilters = [
       'news_tags_uuid' => $entity->getTagsUuid(),
-      'groups_uuid' => $entity->getGroupsUuid(),
+      'news_groups_uuid' => $entity->getGroupsUuid(),
       'neighbourhoods_uuid' => $entity->getNeighbourhoodsUuids(),
     ];
     foreach ($termFilters as $name => $value) {
