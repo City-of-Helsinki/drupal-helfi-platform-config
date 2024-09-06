@@ -11,6 +11,9 @@ clear_localstorage:
     - core/jquery
     - core/drupal
 
+# This library is loaded via chat_leijuke.js.
+# Setting the preprocess to false will not affect this library.
+# See: ChatLeijuke.php::build().
 genesys_suunte:
   version: 1.0.2
   header: true
@@ -24,7 +27,6 @@ genesys_suunte:
     }
     assets/js/genesys_suunte.js: {
       attributes: {
-        preprocess: false,
         onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_suunte.attach();console.log('suunte attaching');}}, 100);"
       }
     }
