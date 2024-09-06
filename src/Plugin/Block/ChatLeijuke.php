@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
   id: "chat_leijuke",
   admin_label: new TranslatableMarkup('Chat Leijuke'),
 )]
-class ChatLeijuke extends BlockBase implements ContainerFactoryPluginInterface {
+final class ChatLeijuke extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * Constructs a Chat Leijuke Block object.
@@ -50,7 +50,7 @@ class ChatLeijuke extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
+    return new self(
       $configuration,
       $plugin_id,
       $plugin_definition,
