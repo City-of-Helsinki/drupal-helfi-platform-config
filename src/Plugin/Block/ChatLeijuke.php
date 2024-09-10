@@ -3,24 +3,66 @@
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Provides a Chat Leijuke block.
- *
- * @Block(
- *  id = "chat_leijuke",
- *  admin_label = @Translation("Chat Leijuke"),
- * )
  */
-class ChatLeijuke extends BlockBase {
+#[Block(
+  id: "chat_leijuke",
+  admin_label: new TranslatableMarkup('Chat Leijuke'),
+)]
+final class ChatLeijuke extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * Constructs a Chat Leijuke Block object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleList
+   *   The module extension list.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
+   */
+  public function __construct(
+    array $configuration,
+    string $plugin_id,
+    mixed $plugin_definition,
+    protected ModuleExtensionList $moduleList,
+    protected ConfigFactoryInterface $configFactory,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
 
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new self(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('extension.list.module'),
+      $container->get('config.factory'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
 
@@ -30,7 +72,7 @@ class ChatLeijuke extends BlockBase {
       '#description' => $this->t('Choose the approriate chat/bot provider?'),
       '#default_value' => $config['chat_selection'] ?? '',
       '#options' => [
-        'genesys_suunte' => 'Genesys SUUNTE',
+        'genesys_suunte' => $this->t('Genesys SUUNTE'),
       ],
     ];
 
@@ -46,28 +88,24 @@ class ChatLeijuke extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $formState) {
-    $this->configuration['chat_selection'] = $formState->getValue('chat_selection');
-    $this->configuration['chat_title'] = $formState->getValue('chat_title');
+  public function blockSubmit($form, FormStateInterface $form_state): void {
+    $this->configuration['chat_selection'] = $form_state->getValue('chat_selection');
+    $this->configuration['chat_title'] = $form_state->getValue('chat_title');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $library = ['helfi_platform_config/chat_leijuke'];
     $config = $this->getConfiguration();
     $build = [];
-    $chatLibrary = [];
-    // @todo Use dependency injection.
-    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
-    $modulePath = \Drupal::service('extension.list.module')->getPath('helfi_platform_config');
-    // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
-    $assetPath = \Drupal::config('helfi_proxy.settings')->get('asset_path');
+    $chat_library = [];
+    $module_path = $this->moduleList->getPath('helfi_platform_config');
+    $asset_path = $this->configFactory->get('helfi_proxy.settings')->get('asset_path');
+    $libraries_yaml = Yaml::parseFile($module_path . '/helfi_platform_config.libraries.yml');
 
-    $librariesYml = Yaml::parseFile($modulePath . '/helfi_platform_config.libraries.yml');
-
-    foreach ($librariesYml as $library_name => $library_configuration) {
+    foreach ($libraries_yaml as $library_name => $library_configuration) {
       if ($library_name !== $config['chat_selection']) {
         continue;
       }
@@ -81,7 +119,7 @@ class ChatLeijuke extends BlockBase {
             'async' => $value['attributes']['async'] ?? FALSE,
             'data_container_id' => $value['attributes']['data-container-id'] ?? FALSE,
           ];
-          $chatLibrary['js'][] = $js;
+          $chat_library['js'][] = $js;
         }
       }
 
@@ -92,7 +130,7 @@ class ChatLeijuke extends BlockBase {
             'ext' => $value['type'] ?? FALSE,
           ];
 
-          $chatLibrary['css'][] = $css;
+          $chat_library['css'][] = $css;
         }
       }
     }
@@ -107,8 +145,8 @@ class ChatLeijuke extends BlockBase {
             'leijuke_data' => [
               $config['chat_selection'] => [
                 'name' => $config['chat_selection'],
-                'libraries' => $chatLibrary,
-                'modulepath' => $assetPath . '/' . $modulePath,
+                'libraries' => $chat_library,
+                'modulepath' => $asset_path . '/' . $module_path,
                 'title' => $config['chat_title'] ? Xss::filter($config['chat_title']) : 'Chat',
               ],
             ],
