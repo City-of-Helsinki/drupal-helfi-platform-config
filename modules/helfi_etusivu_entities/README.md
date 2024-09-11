@@ -3,6 +3,10 @@
 Remote entities module allows fetching announcements from `Etusivu`-instance.
 It utilizes `json-api` and `external_entities`-module to transfer the data between instances.
 
+## Language support
+
+If current language is not in [default languages](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/documentation/default-languages.md), remote entities use fallback language. Alt languages show local announcements in current language (if translated) and in English.
+
 ## How to set up locally
 
 Local setup requires Etusivu-instance to be up and running with some relevant data created to it.
