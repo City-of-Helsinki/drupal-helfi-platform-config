@@ -75,6 +75,3 @@ services:
       - '@file_url_generator'
     tags:
       - { name: helfi_platform_config.og_image_builder, priority: -100 }
-
-  helfi_platform_config.user_create_route_subscriber:
-    class: Drupal\helfi_platform_config\Routing\UserCreateRouteSubscriber
