@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Functional;
 
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\block\Traits\BlockCreationTrait;
 use Drupal\Tests\BrowserTestBase;
@@ -44,6 +45,8 @@ final class LocalEntitiesTest extends BrowserTestBase {
    */
   public function setUp(): void {
     parent::setUp();
+
+    ConfigurableLanguage::createFromLangcode('uk')->save();
 
     $this->testNode = $this->createNode([
       'status' => NodeInterface::PUBLISHED,
@@ -99,17 +102,32 @@ final class LocalEntitiesTest extends BrowserTestBase {
       'type' => 'announcement',
       'title' => 'Test announcement',
       'body' => 'Announcement content',
+      'field_announcement_type' => 'notification',
       'langcode' => 'en',
     ]);
 
-    $this->drupalGet('/');
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'announcement',
+      'title' => 'UK announcement (uk)',
+      'body' => 'Announcement content',
+      'field_announcement_type' => 'notification',
+      'langcode' => 'uk',
+    ]);
 
+    $this->drupalGet('/');
     $this->assertSession()->pageTextContains('Old test survey');
     $this->assertSession()->pageTextNotContains('New test survey');
     $this->assertSession()->pageTextContains('Test announcement');
 
-    $this->drupalGet($this->testNode->toUrl());
+    // Local announcements can be translated.pages
+    // English announcements are shown on alt language pages.
+    $this->drupalGet('/', ['language' => \Drupal::languageManager()->getLanguage('uk')]);
+    $this->assertSession()->pageTextContains('UK announcement');
+    $this->assertSession()->pageTextContains('Test announcement');
 
+    // Tests page filtering.
+    $this->drupalGet($this->testNode->toUrl());
     $this->assertSession()->pageTextContains('New test survey');
     $this->assertSession()->pageTextNotContains('Old test survey');
     $this->assertSession()->pageTextContains('Test announcement');
