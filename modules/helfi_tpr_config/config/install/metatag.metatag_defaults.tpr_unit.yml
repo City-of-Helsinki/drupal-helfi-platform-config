@@ -6,7 +6,6 @@ id: tpr_unit
 label: 'TPR - Unit'
 tags:
   canonical_url: '[tpr_unit:url]'
-  content_language: '[tpr_unit:langcode]'
   description: '[tpr_unit:description:summary]'
   title: '[tpr_unit:label] | [site:page-title-suffix]'
   article_modified_time: '[tpr_unit:changed:html_datetime]'
