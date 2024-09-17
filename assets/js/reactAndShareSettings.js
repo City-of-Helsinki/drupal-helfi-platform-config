@@ -4,7 +4,9 @@
   var loadReactAndShare = function () {
     if (Drupal.eu_cookie_compliance.hasAgreed('statistics')) {
       window.rnsData = {
-        apiKey: drupalSettings.reactAndShareApiKey
+        apiKey: drupalSettings.reactAndShareApiKey,
+        disableFa: true,
+        disableFonts: true,
       };
 
       if (drupalSettings.siteName !== undefined) {
