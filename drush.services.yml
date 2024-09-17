@@ -4,11 +4,6 @@ services:
     arguments: ['@entity_type.manager', '@database']
     tags:
       - { name: drush.command }
-  helfi_platform_config.remove_non_helsinki_tpr_units_commands:
-    class: \Drupal\helfi_platform_config\Commands\RemoveNonHelsinkiTPRUnitsCommands
-    arguments: ['@entity_type.manager', '@content_lock']
-    tags:
-      - { name: drush.command }
 
   helfi_platform_config.major_update_command:
     class: Drupal\helfi_platform_config\Commands\MajorUpdateCommands
