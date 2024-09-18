@@ -56,7 +56,7 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
       /** @var \Drupal\helfi_tpr\Entity\Unit $unit */
       $unit = $this->entityTypeManager->getStorage('tpr_unit')->load($unit_id);
 
-      $this->output()->writeln($this->t('Deleting "@unit_label"', ['@unit_label' => $unit->label()]));
+      $this->output()->writeln((string) $this->t('Deleting "@unit_label"', ['@unit_label' => $unit->label()]));
 
       // Release content lock if needed.
       if ($this->contentLock->fetchLock($unit->id(), $unit->language()->getId(), entity_type: 'tpr_unit')) {
