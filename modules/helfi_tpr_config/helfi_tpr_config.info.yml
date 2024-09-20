@@ -15,5 +15,6 @@ dependencies:
   - 'views:views'
   - 'views_bulk_edit:views_bulk_edit'
   - 'views_bulk_operations:views_bulk_operations'
+  - 'content_lock:content_lock'
 'interface translation project': helfi_tpr_config
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_tpr_config/translations/%language.po
