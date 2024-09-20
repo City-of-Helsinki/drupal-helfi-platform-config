@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace Drupal\helfi_paragraphs_hero\Entity;
 
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\TypedData\Exception\MissingDataException;
+use Drupal\media\Entity\Media;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -12,6 +17,8 @@ use Drupal\paragraphs\ParagraphInterface;
  * Bundle class for Hero -paragraph.
  */
 class Hero extends Paragraph implements ParagraphInterface {
+
+  use StringTranslationTrait;
 
   /**
    * Get paragraph design.
@@ -21,6 +28,79 @@ class Hero extends Paragraph implements ParagraphInterface {
    */
   public function getDesign(): string {
     return $this->get('field_hero_design')->value;
+  }
+
+  /**
+   * Get the Hero image.
+   *
+   * @return \Drupal\media\Entity\Media|false
+   *   Returns the media entity or false if not found.
+   */
+  public function getImage(): Media|false {
+    if ($this->get('field_hero_image')->isEmpty()) {
+      return FALSE;
+    }
+
+    try {
+      $media = FALSE;
+      /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItemInterface $hero_image */
+      $hero_image = $this->get('field_hero_image')->first();
+      if ($hero_image instanceof EntityReferenceItem) {
+        /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $media */
+        $entity_reference = $hero_image->get('entity');
+        /** @var \Drupal\media\Entity\Media $media */
+        $media = $entity_reference->getValue();
+      }
+      return $media;
+    }
+    catch (MissingDataException $e) {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Get the image author if any.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|false
+   *   The image author as a translatable markup or false.
+   */
+  public function getImageAuthor(): TranslatableMarkup|FALSE {
+    $image = $this->getImage();
+    if (!$image || $image->get('field_photographer')->isEmpty()) {
+      return FALSE;
+    }
+
+    try {
+      $image_author = $image->get('field_photographer')->first()->getString();
+      return $this->t(
+        'Image: @image_author',
+        ['@image_author' => $image_author],
+        ['context' => 'Helfi Paragraphs Hero']
+      );
+    }
+    catch (MissingDataException $e) {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Gets the paragraph title.
+   *
+   * @return string
+   *   The title.
+   */
+  public function getTitle() : string {
+    return $this->get('field_hero_title')->value;
+  }
+
+  /**
+   * Gets the paragraph description.
+   *
+   * @return string
+   *   The description.
+   */
+  public function getDescription() : string {
+    return $this->get('field_hero_desc')->value;
   }
 
   /**
