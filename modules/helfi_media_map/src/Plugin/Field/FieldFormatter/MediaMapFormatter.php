@@ -8,7 +8,10 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\helfi_media_map\UrlParserTrait;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'Map' formatter.
@@ -24,6 +27,28 @@ use Drupal\helfi_media_map\UrlParserTrait;
 final class MediaMapFormatter extends FormatterBase {
 
   use UrlParserTrait;
+
+  /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  private LoggerInterface $logger;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+  ) : self {
+    $instance = parent::create($container, $configuration, $plugin_id,
+      $plugin_definition);
+    $instance->logger = $container->get('logger.factory')->get('hel_map');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -57,7 +82,15 @@ final class MediaMapFormatter extends FormatterBase {
 
     foreach ($items as $delta => $item) {
       ['uri' => $uri, 'title' => $title] = $item->getValue();
-      $link = $this->getMapUrl($uri);
+
+      // Don't throw errors that would break media library views.
+      try {
+        $link = $this->getMapUrl($uri);
+      }
+      catch (\InvalidArgumentException $e) {
+        Error::logException($this->logger, $e);
+        continue;
+      }
 
       $element[$delta] = [
         '#theme' => 'helfi_media_map',
