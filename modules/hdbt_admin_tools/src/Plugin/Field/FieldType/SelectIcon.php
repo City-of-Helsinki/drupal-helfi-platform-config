@@ -15,7 +15,7 @@ use Drupal\Core\TypedData\DataDefinition;
  * @FieldType(
  *   id = "select2_icon",
  *   label = @Translation("Select Icon"),
- *   category = @Translation("Helfi"),
+ *   category = "Helfi",
  *   default_widget = "select_icon_widget",
  *   default_formatter = "select_icon_formatter"
  * )
