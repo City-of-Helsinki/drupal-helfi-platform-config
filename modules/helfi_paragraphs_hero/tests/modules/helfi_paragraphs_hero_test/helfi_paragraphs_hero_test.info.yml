@@ -1,0 +1,3 @@
+name: 'Helfi Paragraphs Hero Test'
+core_version_requirement: '^10 || ^11'
+type: module
