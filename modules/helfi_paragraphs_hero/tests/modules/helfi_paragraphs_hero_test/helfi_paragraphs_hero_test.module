@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Contains test alter for helfi_paragraphs_hero.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_helfi_hero_design_alter().
+ */
+function helfi_paragraphs_hero_test_helfi_hero_design_alter(array &$designs) {
+  $designs['test-design'] = t('Test design');
+}

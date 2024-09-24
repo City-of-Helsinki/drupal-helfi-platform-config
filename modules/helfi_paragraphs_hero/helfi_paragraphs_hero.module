@@ -41,3 +41,12 @@ function helfi_paragraphs_hero_design_allowed_values(FieldStorageDefinitionInter
   $moduleHandler->alter('helfi_hero_design', $designs, $definition, $entity);
   return $designs;
 }
+
+/**
+ * Implements hook_preprocess().
+ */
+function helfi_paragraphs_hero_preprocess_paragraph__hero(array &$variables): void {
+  $paragraph = $variables['paragraph'];
+  assert($paragraph instanceof Hero);
+  $variables['image_author'] = $paragraph->getImageAuthor();
+}
