@@ -50,6 +50,11 @@ class Hero extends Paragraph implements ParagraphInterface {
         $entity_reference = $hero_image->get('entity');
         /** @var \Drupal\media\Entity\Media $media */
         $media = $entity_reference->getValue();
+
+        // If the media has a translation, use it.
+        if ($media->hasTranslation($this->language()->getId())) {
+          $media = $media->getTranslation($this->language()->getId());
+        }
       }
       return $media;
     }
