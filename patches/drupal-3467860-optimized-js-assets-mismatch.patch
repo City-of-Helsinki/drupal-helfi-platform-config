@@ -1,8 +1,8 @@
 diff --git a/core/core.libraries.yml b/core/core.libraries.yml
-index 9e34b6c95bd1fe2e2581c987be2dbfa53dace052..aefb2db971777c71bfa1e03a728bea0dc504622a 100644
+index d6136b22aa..8151d7e33e 100644
 --- a/core/core.libraries.yml
 +++ b/core/core.libraries.yml
-@@ -725,8 +725,7 @@ drupal.touchevents-test:
+@@ -823,8 +823,7 @@ drupal.touchevents-test:
  drupal.vertical-tabs:
    version: VERSION
    js:
@@ -13,10 +13,10 @@ index 9e34b6c95bd1fe2e2581c987be2dbfa53dace052..aefb2db971777c71bfa1e03a728bea0d
      component:
        misc/vertical-tabs.css: {}
 diff --git a/core/lib/Drupal/Core/Asset/AssetResolver.php b/core/lib/Drupal/Core/Asset/AssetResolver.php
-index 4d42f4235984e499e92a765f4cf8301415c69cad..e853f63b78c864210dd78c004b8a2b651f01b081 100644
+index fcd294a649..8182f2cc59 100644
 --- a/core/lib/Drupal/Core/Asset/AssetResolver.php
 +++ b/core/lib/Drupal/Core/Asset/AssetResolver.php
-@@ -107,31 +107,77 @@ public function __construct(LibraryDiscoveryInterface $library_discovery, Librar
+@@ -91,31 +91,77 @@ public function __construct(LibraryDiscoveryInterface $library_discovery, Librar
     * $assets = new AttachedAssets();
     * $assets->setLibraries(['core/a', 'core/b', 'core/c']);
     * $assets->setAlreadyLoadedLibraries(['core/c']);
@@ -103,9 +103,9 @@ index 4d42f4235984e499e92a765f4cf8301415c69cad..e853f63b78c864210dd78c004b8a2b65
 +    }
 +    return $libraries;
    }
-
+ 
    /**
-@@ -141,15 +187,9 @@ public function getCssAssets(AttachedAssetsInterface $assets, $optimize, ?Langua
+@@ -125,15 +171,9 @@ public function getCssAssets(AttachedAssetsInterface $assets, $optimize, ?Langua
      if (!$assets->getLibraries()) {
        return [];
      }
@@ -124,25 +124,25 @@ index 4d42f4235984e499e92a765f4cf8301415c69cad..e853f63b78c864210dd78c004b8a2b65
      if (!$libraries_to_load) {
        return [];
      }
-@@ -177,7 +217,7 @@ public function getCssAssets(AttachedAssetsInterface $assets, $optimize, ?Langua
+@@ -157,7 +197,7 @@ public function getCssAssets(AttachedAssetsInterface $assets, $optimize, ?Langua
        'preprocess' => TRUE,
      ];
-
+ 
 -    foreach ($libraries_to_load as $key => $library) {
 +    foreach ($libraries_to_load as $library) {
        [$extension, $name] = explode('/', $library, 2);
        $definition = $this->libraryDiscovery->getLibraryByName($extension, $name);
        foreach ($definition['css'] as $options) {
-@@ -231,7 +271,7 @@ public function getCssAssets(AttachedAssetsInterface $assets, $optimize, ?Langua
+@@ -211,7 +251,7 @@ public function getCssAssets(AttachedAssetsInterface $assets, $optimize, ?Langua
    protected function getJsSettingsAssets(AttachedAssetsInterface $assets) {
      $settings = [];
-
+ 
 -    foreach ($this->getLibrariesToLoad($assets) as $library) {
 +    foreach ($this->getLibrariesToLoad($assets, 'js') as $library) {
        [$extension, $name] = explode('/', $library, 2);
        $definition = $this->libraryDiscovery->getLibraryByName($extension, $name);
        if (isset($definition['drupalSettings'])) {
-@@ -253,24 +293,19 @@ public function getJsAssets(AttachedAssetsInterface $assets, $optimize, ?Languag
+@@ -233,24 +273,19 @@ public function getJsAssets(AttachedAssetsInterface $assets, $optimize, ?Languag
        $language = $this->languageManager->getCurrentLanguage();
      }
      $theme_info = $this->themeManager->getActiveTheme();
@@ -150,7 +150,7 @@ index 4d42f4235984e499e92a765f4cf8301415c69cad..e853f63b78c864210dd78c004b8a2b65
 +
 +    // Get the complete list of libraries to load including dependencies.
 +    $libraries_to_load = $this->getLibrariesToLoad($assets, 'js');
-
+ 
      // Collect all libraries that contain JS assets and are in the header.
 -    // Also remove any libraries with no JavaScript from the libraries to
 -    // load.
@@ -167,11 +167,11 @@ index 4d42f4235984e499e92a765f4cf8301415c69cad..e853f63b78c864210dd78c004b8a2b65
        }
      }
 -    $libraries_to_load = array_values($libraries_to_load);
-
+ 
      // If all the libraries to load contained only CSS, there is nothing further
      // to do here, so return early.
 diff --git a/core/modules/ckeditor5/ckeditor5.libraries.yml b/core/modules/ckeditor5/ckeditor5.libraries.yml
-index 70ebcf51704a2e7562eead3e69925b5148cc5246..73d3e7ea00af1483e4b41e73793096410b3c08bc 100644
+index 70ebcf5170..73d3e7ea00 100644
 --- a/core/modules/ckeditor5/ckeditor5.libraries.yml
 +++ b/core/modules/ckeditor5/ckeditor5.libraries.yml
 @@ -99,6 +99,7 @@ internal.drupal.ckeditor5.filter.admin:
@@ -179,11 +179,11 @@ index 70ebcf51704a2e7562eead3e69925b5148cc5246..73d3e7ea00af1483e4b41e7379309641
      - core/drupal.ajax
      - core/drupalSettings
 +    - core/drupal.vertical-tabs
-
+ 
  internal.drupal.ckeditor5.table:
    css:
 diff --git a/core/tests/Drupal/Tests/Core/Asset/AssetResolverTest.php b/core/tests/Drupal/Tests/Core/Asset/AssetResolverTest.php
-index faf3dcd3c8b31b556e1653ed8f471a1629adf0de..3ea3dc87c0c3e2a178e88256a414610e4f0e4291 100644
+index 31340bf472..a7cec55b3e 100644
 --- a/core/tests/Drupal/Tests/Core/Asset/AssetResolverTest.php
 +++ b/core/tests/Drupal/Tests/Core/Asset/AssetResolverTest.php
 @@ -8,6 +8,8 @@
@@ -195,7 +195,7 @@ index faf3dcd3c8b31b556e1653ed8f471a1629adf0de..3ea3dc87c0c3e2a178e88256a414610e
  use Drupal\Core\Cache\MemoryBackend;
  use Drupal\Core\Language\LanguageInterface;
  use Drupal\Tests\UnitTestCase;
-@@ -97,51 +99,74 @@ protected function setUp(): void {
+@@ -90,51 +92,74 @@ protected function setUp(): void {
      $this->libraryDiscovery = $this->getMockBuilder('Drupal\Core\Asset\LibraryDiscovery')
        ->disableOriginalConstructor()
        ->getMock();
@@ -292,7 +292,7 @@ index faf3dcd3c8b31b556e1653ed8f471a1629adf0de..3ea3dc87c0c3e2a178e88256a414610e
      $this->moduleHandler = $this->createMock('\Drupal\Core\Extension\ModuleHandlerInterface');
      $this->themeManager = $this->createMock('\Drupal\Core\Theme\ThemeManagerInterface');
      $active_theme = $this->getMockBuilder('\Drupal\Core\Theme\ActiveTheme')
-@@ -178,22 +203,17 @@ protected function setUp(): void {
+@@ -169,22 +194,17 @@ protected function setUp(): void {
     * @dataProvider providerAttachedCssAssets
     */
    public function testGetCssAssets(AttachedAssetsInterface $assets_a, AttachedAssetsInterface $assets_b, $expected_css_cache_item_count): void {
@@ -314,13 +314,13 @@ index faf3dcd3c8b31b556e1653ed8f471a1629adf0de..3ea3dc87c0c3e2a178e88256a414610e
      $this->assetResolver->getCssAssets($assets_b, FALSE, $this->english);
      $this->assertCount($expected_css_cache_item_count, $this->cache->getAllCids());
    }
-
+ 
    public static function providerAttachedCssAssets() {
 -    $time = time();
      return [
        'one js only library and one css only library' => [
          (new AttachedAssets())->setAlreadyLoadedLibraries([])->setLibraries(['core/drupal']),
-@@ -213,13 +233,11 @@ public static function providerAttachedCssAssets() {
+@@ -204,13 +224,11 @@ public static function providerAttachedCssAssets() {
     * @dataProvider providerAttachedJsAssets
     */
    public function testGetJsAssets(AttachedAssetsInterface $assets_a, AttachedAssetsInterface $assets_b, $expected_js_cache_item_count, $expected_multilingual_js_cache_item_count): void {
@@ -339,10 +339,10 @@ index faf3dcd3c8b31b556e1653ed8f471a1629adf0de..3ea3dc87c0c3e2a178e88256a414610e
      $this->assetResolver->getJsAssets($assets_a, FALSE, $this->english);
      $this->assetResolver->getJsAssets($assets_b, FALSE, $this->english);
      $this->assertCount($expected_js_cache_item_count, $this->cache->getAllCids());
-@@ -247,6 +265,32 @@ public static function providerAttachedJsAssets() {
+@@ -238,6 +256,32 @@ public static function providerAttachedJsAssets() {
      ];
    }
-
+ 
 +  /**
 +   * Test that order of scripts are correct.
 +   */
@@ -370,5 +370,5 @@ index faf3dcd3c8b31b556e1653ed8f471a1629adf0de..3ea3dc87c0c3e2a178e88256a414610e
 +  }
 +
  }
-
+ 
  if (!defined('CSS_AGGREGATE_DEFAULT')) {
