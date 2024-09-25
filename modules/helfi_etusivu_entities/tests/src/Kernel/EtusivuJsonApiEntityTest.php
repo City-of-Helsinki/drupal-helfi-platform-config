@@ -6,12 +6,12 @@ namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
 use GuzzleHttp\Psr7\Response;
 
 /**

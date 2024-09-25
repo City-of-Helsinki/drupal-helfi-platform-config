@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_\Unit;
 
+use Drupal\Tests\UnitTestCase;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_paragraphs_news_list\ClientBuilder;
-use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
-use Drupal\Tests\UnitTestCase;
 use Elasticsearch\Client;
 
 /**

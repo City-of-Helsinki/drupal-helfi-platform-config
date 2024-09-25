@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
-use Drupal\block\Entity\Block;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\block\Entity\Block;
+use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Prophecy\PhpUnit\ProphecyTrait;

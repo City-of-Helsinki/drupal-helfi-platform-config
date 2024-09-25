@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\ExternalEntityStorage;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\external_entities\ExternalEntityStorage;
 use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
+use Drupal\external_entities\ExternalEntityStorage;
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Prophecy\Argument;

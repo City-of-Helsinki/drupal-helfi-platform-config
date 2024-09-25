@@ -52,7 +52,7 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DataSourceInterface $datasource = NULL): array {
+  public function getPropertyDefinitions(?DataSourceInterface $datasource = NULL): array {
     $properties = [];
 
     if (!$datasource) {

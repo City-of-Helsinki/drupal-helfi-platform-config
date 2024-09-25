@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\CKEditorPlugin;
 
-use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\editor\Entity\Editor;
 
 /**

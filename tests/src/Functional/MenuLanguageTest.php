@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\Tests\content_translation\Functional\ContentTranslationTestBase;
 use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\user\UserInterface;
 
 /**

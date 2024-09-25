@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\ConfigUpdate;
 
-use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\config_rewrite\ConfigRewriterInterface;
 
 /**
  * A helper class to deal with config updates.

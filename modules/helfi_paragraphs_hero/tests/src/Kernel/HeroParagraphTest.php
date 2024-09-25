@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_hero\Kernel\Entity;
 
+use Drupal\Tests\helfi_paragraphs_hero\Kernel\KernelTestBase;
 use Drupal\file\Entity\File;
 use Drupal\helfi_paragraphs_hero\Entity\Hero;
 use Drupal\media\Entity\Media;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\Tests\helfi_paragraphs_hero\Kernel\KernelTestBase;
 
 /**
  * Tests Hero installation.

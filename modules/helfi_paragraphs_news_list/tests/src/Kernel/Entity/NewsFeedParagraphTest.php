@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\Entity;
 
+use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 use Drupal\external_entities\ExternalEntityStorage;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 
 /**
  * Tests NewsFeedParagraph installation.

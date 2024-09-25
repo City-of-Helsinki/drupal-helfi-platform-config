@@ -23,7 +23,7 @@ class UserLoginLink extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, AccountInterface $user = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?AccountInterface $user = NULL): array {
     if ($user) {
       $form_state->set('account', $user);
       $form['#title'] = $this->t('Reset password');

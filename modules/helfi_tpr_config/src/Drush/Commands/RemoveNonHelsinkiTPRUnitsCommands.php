@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_tpr_config\Drush\Commands;
 
-use Drupal\content_lock\ContentLock\ContentLock;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\content_lock\ContentLock\ContentLock;
 use Drush\Attributes\Command;
 use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
