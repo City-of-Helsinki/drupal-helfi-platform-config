@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_media_map\Unit;
 
-use Drupal\helfi_media_map\UrlParserTrait;
 use Drupal\Tests\UnitTestCase;
+use Drupal\helfi_media_map\UrlParserTrait;
 
 /**
  * Tests UrlParserTrait.

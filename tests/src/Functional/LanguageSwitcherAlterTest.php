@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Functional;
 
+use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
-use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
-use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 
 /**
  * Tests the language switcher alter changes affecting anonymous user.

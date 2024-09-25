@@ -100,7 +100,7 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
   /**
    * {@inheritdoc}
    */
-  public function loadMultiple(array $ids = NULL) : array {
+  public function loadMultiple(?array $ids = NULL) : array {
     $ids = $ids ?: [];
 
     $query = [

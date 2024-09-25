@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 
 /**
  * Modify the list of available CKEditor 5 plugins.

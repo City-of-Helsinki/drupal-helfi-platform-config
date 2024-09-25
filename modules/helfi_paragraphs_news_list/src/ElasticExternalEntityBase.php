@@ -89,7 +89,7 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   /**
    * {@inheritdoc}
    */
-  public function loadMultiple(array $ids = NULL) : array {
+  public function loadMultiple(?array $ids = NULL) : array {
     $data = $this->request([
       'index' => $this->index,
       'body' => [

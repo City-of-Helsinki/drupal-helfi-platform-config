@@ -73,7 +73,7 @@ final class Hearings extends ExternalEntityStorageClientBase {
   /**
    * {@inheritdoc}
    */
-  public function loadMultiple(array $ids = NULL) : array {
+  public function loadMultiple(?array $ids = NULL) : array {
     return $this->query(['ids' => $ids]);
   }
 

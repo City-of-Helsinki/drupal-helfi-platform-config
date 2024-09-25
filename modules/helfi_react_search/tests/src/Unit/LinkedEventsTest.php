@@ -11,14 +11,14 @@ use Drupal\Core\Cache\MemoryBackend;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Tests\UnitTestCase;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_react_search\LinkedEvents;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -115,8 +115,8 @@ class LinkedEventsTest extends UnitTestCase {
    */
   private function getApiClientMock(
     ClientInterface $httpClient,
-    TimeInterface $time = NULL,
-    EnvironmentResolverInterface $environmentResolver = NULL,
+    ?TimeInterface $time = NULL,
+    ?EnvironmentResolverInterface $environmentResolver = NULL,
   ): ApiClient {
     if (!$time) {
       $time = $this->getTimeMock(time())->reveal();
@@ -154,8 +154,8 @@ class LinkedEventsTest extends UnitTestCase {
    */
   private function getSut(
     ApiClient $client,
-    LanguageManagerInterface $languageManager = NULL,
-    LoggerInterface $logger = NULL,
+    ?LanguageManagerInterface $languageManager = NULL,
+    ?LoggerInterface $logger = NULL,
   ) : LinkedEvents {
 
     if (!$languageManager) {

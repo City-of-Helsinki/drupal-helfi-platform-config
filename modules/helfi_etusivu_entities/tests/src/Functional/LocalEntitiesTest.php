@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Functional;
 
+use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\block\Traits\BlockCreationTrait;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\NodeInterface;
-use Drupal\Tests\block\Traits\BlockCreationTrait;
-use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\user\Entity\Role;
 
 /**

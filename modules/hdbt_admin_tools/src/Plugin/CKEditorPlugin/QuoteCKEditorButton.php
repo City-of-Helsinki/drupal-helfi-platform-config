@@ -2,8 +2,8 @@
 
 namespace Drupal\hdbt_admin_tools\Plugin\CKEditorPlugin;
 
-use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\ckeditor\CKEditorPluginBase;
 
 /**
  * Defines the "quote" plugin.
