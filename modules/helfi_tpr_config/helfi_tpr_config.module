@@ -149,6 +149,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
         'paragraphs' => [
           'unit_search' => 0,
           'service_list' => 0,
+          'unit_contact_card' => 0,
         ],
       ],
     ],
