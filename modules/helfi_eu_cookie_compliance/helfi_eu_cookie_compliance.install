@@ -76,3 +76,12 @@ function helfi_eu_cookie_compliance_update_9013(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_eu_cookie_compliance');
 }
+
+/**
+ * UHF-10738: Install hdbt_cookie_banner module.
+ */
+function helfi_eu_cookie_compliance_update_9014(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('hdbt_cookie_banner')) {
+    \Drupal::service('module_installer')->install(['hdbt_cookie_banner']);
+  }
+}
