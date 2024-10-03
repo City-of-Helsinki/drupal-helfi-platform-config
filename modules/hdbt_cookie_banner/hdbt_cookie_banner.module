@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
@@ -37,13 +38,16 @@ function hdbt_cookie_banner_theme() : array {
  * Implements hook_page_attachments().
  */
 function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
+  $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
+  $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+  $attachments['#cache']['tags'] = array_merge($attachments['#cache']['tags'] ?? [], $config->getCacheTags());
   $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hdbt_cookie_banner';
   $attachments['#attached']['drupalSettings']['hdbt_cookie_banner'] = [
     'apiUrl' => _hdbt_cookie_banner_get_api_url(),
+    'language' => $langcode,
+    'theme' => $config->get('theme') ?: 'black',
+    'settingsPageSelector' => $config->get('settings_page_selector') ?: '.cookie-policy-settings',
   ];
-
-  $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
-  $attachments['#cache']['tags'] = array_merge($attachments['#cache']['tags'] ?? [], $config->getCacheTags());
 }
 
 /**
