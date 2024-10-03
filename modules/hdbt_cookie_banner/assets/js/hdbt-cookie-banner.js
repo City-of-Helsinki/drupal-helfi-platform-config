@@ -1,12 +1,19 @@
 (function (Drupal, drupalSettings) {
   Drupal.behaviors.hdbt_cookie_banner = {
-    attach: function (context, settings) {
+    attach: function () {
+      if (
+        typeof window.hds !== 'undefined' &&
+        typeof window.hds.CookieConsentCore !== 'undefined'
+      ) {
+        const apiUrl = drupalSettings.hdbt_cookie_banner.apiUrl;
+        const options = {
+          language: drupalSettings.hdbt_cookie_banner.langcode,
+          theme: drupalSettings.hdbt_cookie_banner.theme,
+          settingsPageSelector: drupalSettings.hdbt_cookie_banner.settingsPageSelector,
+        };
 
-      // Todo initialize hdbt cookie banner.
-      fetch(drupalSettings.hdbt_cookie_banner.apiUrl)
-        .then(response => response.json())
-        .then(console.log)
-        .catch(console.error)
+        window.hds.CookieConsentCore.create(apiUrl, options);
+      }
     }
   }
 })(Drupal, drupalSettings);
