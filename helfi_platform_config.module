@@ -193,6 +193,7 @@ function helfi_platform_config_page_attachments_alter(array &$attachments): void
  */
 function helfi_platform_config_theme() : array {
   return [
+    // @todo Deprecated. Remove when the EU cookie compliance module is removed.
     'cookie_consent_intro' => [
       'variables' => [
         'title' => NULL,
