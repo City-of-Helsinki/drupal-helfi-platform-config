@@ -4,5 +4,28 @@ hdbt_cookie_banner.settings:
   mapping:
     site_settings:
       type: string
+      translatable: false
       label: Site settings
       nullable: true
+    theme:
+      type: string
+      translatable: false
+      label: Theme
+      nullable: true
+    settings_page_selector:
+      type: string
+      translatable: false
+      label: Settings page selector
+      nullable: true
+    cookie_information:
+      label: Cookie information
+      type: mapping
+      mapping:
+        title:
+          label: Cookie information title
+          translatable: true
+          type: label
+        content:
+          label: Cookie information content
+          translatable: true
+          type: text
