@@ -90,9 +90,46 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#group' => 'settings',
     ];
 
+    $form['json_editor_container']['use_custom_settings'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use custom cookie settings'),
+      '#description' => $this->t('By default, cookie settings and HDS cookie consent JavaScript file are loaded from Hel.fi Etusivu instance. By selecting this override option, you can use your own settings and override HDS cookie consent JS file.'),
+      '#config_target' => self::SETTINGS . ':use_custom_settings',
+    ];
+
+    $form['json_editor_container']['use_external_hds_cookie_js'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use external HDS cookie consent JavaScript file'),
+      '#description' => $this->t('When the <em>Use custom cookie settings</em> option is selected, the local HDS cookie consent JavaScript file is loaded instead of Etusivu HDS cookie consent. Select this option to use another HDS cookie consent JavaScript file.'),
+      '#config_target' => self::SETTINGS . ':use_external_hds_cookie_js',
+      '#states' => [
+        'invisible' => [
+          ':input[name="use_custom_settings"]' => ['checked' => FALSE],
+        ],
+      ],
+    ];
+
+    $form['json_editor_container']['hds_cookie_js_override'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('HDS cookie consent JavaScript URL', options: ['context' => 'hdbt cookie banner']),
+      '#config_target' => self::SETTINGS . ':hds_cookie_js_override',
+      '#description' => $this->t('The URL of the JavaScript file that should be used instead of Etusivu HDS cookie consent. ', options: ['context' => 'hdbt cookie banner']),
+      '#states' => [
+        'invisible' => [
+          ':input[name="use_custom_settings"]' => ['checked' => FALSE],
+        ],
+        'disabled' => [
+          ':input[name="use_external_hds_cookie_js"]' => ['checked' => FALSE],
+        ],
+        'required' => [
+          ':input[name="use_external_hds_cookie_js"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     $form['json_editor_container']['json_editor'] = [
       '#type' => 'markup',
-      '#markup' => '<h1>HDS Cookie Consent Settings</h1><div id="language_holder"></div><div id="editor_holder"></div>',
+      '#markup' => '<div class="json_editor"><h1>HDS Cookie Consent Settings</h1><div id="language_holder"></div><div id="editor_holder"></div></div>',
       '#attached' => [
         'library' => [
           'hdbt_cookie_banner/cookie_banner_admin_ui',
@@ -103,28 +140,45 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
           ],
         ],
       ],
+      '#states' => [
+        'invisible' => [
+          ':input[name="use_custom_settings"]' => ['checked' => FALSE],
+        ],
+      ],
     ];
 
     $form['json_editor_container']['site_settings'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Site settings', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':site_settings',
+      '#states' => [
+        'invisible' => [
+          ':input[name="use_custom_settings"]' => ['checked' => FALSE],
+        ],
+      ],
     ];
 
-    $form['cookie_information_container'] = [
-      '#title' => $this->t('Cookie policy page settings', options: ['context' => 'hdbt cookie banner']),
+    $form['general_settings'] = [
+      '#title' => $this->t('General settings', options: ['context' => 'hdbt cookie banner']),
       '#type' => 'details',
       '#group' => 'settings',
     ];
 
-    $form['cookie_information_container']['settings_page_selector'] = [
+    $form['general_settings']['settings_page_selector'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Settings page selector', options: ['context' => 'hdbt cookie banner']),
-      '#config_target' => self::SETTINGS . ':settings_page_selector.title',
-      '#description' => $this->t('Insert a CSS selector to which the cookie settings should be appended. Defaults to `.cookie-policy-settings`', options: ['context' => 'hdbt cookie banner']),
+      '#config_target' => self::SETTINGS . ':settings_page_selector',
+      '#description' => $this->t('Insert a CSS selector to which the cookie settings should be appended. Defaults to <em>.cookie-policy-settings</em>', options: ['context' => 'hdbt cookie banner']),
     ];
 
-    $form['cookie_information_container']['theme'] = [
+//    $form['general_settings']['hds_cookie_js_override'] = [
+//      '#type' => 'textfield',
+//      '#title' => $this->t('Override HDS cookie consent javascript', options: ['context' => 'hdbt cookie banner']),
+//      '#config_target' => self::SETTINGS . ':settings_page_selector.title',
+//      '#description' => $this->t('Usage: To use a different HDS cookie consent JSInsert an URL to the javascript file.', options: ['context' => 'hdbt cookie banner']),
+//    ];
+
+    $form['general_settings']['theme'] = [
       '#type' => 'select',
       '#title' => $this->t('Cookie banner theme', options: ['context' => 'hdbt cookie banner']),
       '#options' => [
@@ -135,13 +189,13 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#config_target' => self::SETTINGS . ':theme',
     ];
 
-    $form['cookie_information_container']['cookie_information_title'] = [
+    $form['general_settings']['cookie_information_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Cookie policy page title', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':cookie_information.title',
     ];
 
-    $form['cookie_information_container']['cookie_information_content'] = [
+    $form['general_settings']['cookie_information_content'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Cookie policy page content', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':cookie_information.content',

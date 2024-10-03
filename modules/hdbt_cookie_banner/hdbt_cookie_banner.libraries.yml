@@ -49,7 +49,6 @@ hdbt_cookie_banner:
   dependencies:
     - core/drupal
     - core/drupalSettings
-    - hdbt_cookie_banner/hds_cookie_consent
 
 hds_cookie_consent:
   version: 1.0.0

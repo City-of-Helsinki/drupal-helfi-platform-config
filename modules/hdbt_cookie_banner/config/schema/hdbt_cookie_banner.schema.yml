@@ -7,6 +7,21 @@ hdbt_cookie_banner.settings:
       translatable: false
       label: Site settings
       nullable: true
+    use_custom_settings:
+      type: boolean
+      translatable: false
+      label: Use custom settings
+      nullable: true
+    use_external_hds_cookie_js:
+      type: boolean
+      translatable: false
+      label: Use local JS file
+      nullable: true
+    hds_cookie_js_override:
+      type: string
+      translatable: false
+      label: Override HDS cookie JS
+      nullable: true
     theme:
       type: string
       translatable: false
