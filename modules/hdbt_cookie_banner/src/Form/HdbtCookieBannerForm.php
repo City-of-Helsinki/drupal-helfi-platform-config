@@ -78,7 +78,19 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
-    $form['json_editor'] = [
+
+    $form['settings'] = [
+      '#type' => 'vertical_tabs',
+      '#title' => $this->t('Settings'),
+    ];
+
+    $form['json_editor_container'] = [
+      '#title' => $this->t('Cookie consent settings'),
+      '#type' => 'details',
+      '#group' => 'settings',
+    ];
+
+    $form['json_editor_container']['json_editor'] = [
       '#type' => 'markup',
       '#markup' => '<h1>HDS Cookie Consent Settings</h1><div id="language_holder"></div><div id="editor_holder"></div>',
       '#attached' => [
@@ -93,10 +105,47 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       ],
     ];
 
-    $form['site_settings'] = [
+    $form['json_editor_container']['site_settings'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Site settings', options: ['context' => 'hdbt cookie banner']),
-      '#config_target' => self::SETTINGS . ":site_settings",
+      '#config_target' => self::SETTINGS . ':site_settings',
+    ];
+
+    $form['cookie_information_container'] = [
+      '#title' => $this->t('Cookie policy page settings', options: ['context' => 'hdbt cookie banner']),
+      '#type' => 'details',
+      '#group' => 'settings',
+    ];
+
+    $form['cookie_information_container']['settings_page_selector'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Settings page selector', options: ['context' => 'hdbt cookie banner']),
+      '#config_target' => self::SETTINGS . ':settings_page_selector.title',
+      '#description' => $this->t('Insert a CSS selector to which the cookie settings should be appended. Defaults to `.cookie-policy-settings`', options: ['context' => 'hdbt cookie banner']),
+    ];
+
+    $form['cookie_information_container']['theme'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Cookie banner theme', options: ['context' => 'hdbt cookie banner']),
+      '#options' => [
+        'black' => $this->t('Black', options: ['context' => 'hdbt cookie banner']),
+        'white' => $this->t('White', options: ['context' => 'hdbt cookie banner']),
+      ],
+      '#required' => TRUE,
+      '#config_target' => self::SETTINGS . ':theme',
+    ];
+
+    $form['cookie_information_container']['cookie_information_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Cookie policy page title', options: ['context' => 'hdbt cookie banner']),
+      '#config_target' => self::SETTINGS . ':cookie_information.title',
+    ];
+
+    $form['cookie_information_container']['cookie_information_content'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Cookie policy page content', options: ['context' => 'hdbt cookie banner']),
+      '#config_target' => self::SETTINGS . ':cookie_information.content',
+      '#rows' => 5,
     ];
 
     return parent::buildForm($form, $form_state);
