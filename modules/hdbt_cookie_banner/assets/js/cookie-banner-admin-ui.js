@@ -202,6 +202,11 @@
       // Initialize the editor once the page has loaded
       window.onload = initializeEditor;
 
+      // Show / Hide the JSON editor based on the use_custom_settings checkbox.
+      document.getElementsByName('use_custom_settings')[0].addEventListener('change', function() {
+        const jsonEditor = document.querySelector('.json_editor');
+        jsonEditor.style.display = this.checked ? 'block' : 'none';
+      });
     }
   };
 })(Drupal, drupalSettings);
