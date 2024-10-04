@@ -78,8 +78,11 @@ function _hdbt_cookie_banner_get_api_url(): string {
   $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
   $language = \Drupal::languageManager()->getDefaultLanguage();
 
-  // Default to etusivu api url.
-  if (empty($config->get('site_settings'))) {
+  // Default to Etusivu API URL.
+  if (
+    empty($config->get('site_settings')) ||
+    !$config->get('use_custom_settings')
+  ) {
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $resolver */
     $resolver = \Drupal::service(EnvironmentResolverInterface::class);
     try {
