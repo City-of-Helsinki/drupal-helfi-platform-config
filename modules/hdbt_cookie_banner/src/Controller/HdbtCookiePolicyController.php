@@ -9,9 +9,9 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 
 /**
- * Defines HdbtCookieBannerInformationController class.
+ * Defines HdbtCookiePolicyController class.
  */
-final class HdbtCookieBannerInformationController extends ControllerBase {
+final class HdbtCookiePolicyController extends ControllerBase {
 
   /**
    * Constructs a new instance.
