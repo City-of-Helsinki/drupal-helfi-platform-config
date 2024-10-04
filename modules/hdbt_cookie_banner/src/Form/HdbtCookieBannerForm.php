@@ -129,7 +129,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
     ];
 
     $form['json_editor_container']['json_editor'] = [
-      '#type' => 'markup',
+      '#type' => 'item',
       '#markup' => '<div class="json_editor"><h1>HDS Cookie Consent Settings</h1><div id="language_holder"></div><div id="editor_holder"></div></div>',
       '#attached' => [
         'library' => [
@@ -142,8 +142,8 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
         ],
       ],
       '#states' => [
-        'invisible' => [
-          ':input[name="use_custom_settings"]' => ['checked' => FALSE],
+        'visible' => [
+          ':input[name="use_custom_settings"]' => ['checked' => TRUE],
         ],
       ],
     ];
@@ -153,8 +153,8 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#title' => $this->t('Site settings', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':site_settings',
       '#states' => [
-        'invisible' => [
-          ':input[name="use_custom_settings"]' => ['checked' => FALSE],
+        'visible' => [
+          ':input[name="use_custom_settings"]' => ['checked' => TRUE],
         ],
       ],
     ];
