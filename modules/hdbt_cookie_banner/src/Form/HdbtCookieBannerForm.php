@@ -172,13 +172,6 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#description' => $this->t('Insert a CSS selector to which the cookie settings should be appended. Defaults to <em>.cookie-policy-settings</em>', options: ['context' => 'hdbt cookie banner']),
     ];
 
-//    $form['general_settings']['hds_cookie_js_override'] = [
-//      '#type' => 'textfield',
-//      '#title' => $this->t('Override HDS cookie consent javascript', options: ['context' => 'hdbt cookie banner']),
-//      '#config_target' => self::SETTINGS . ':settings_page_selector.title',
-//      '#description' => $this->t('Usage: To use a different HDS cookie consent JSInsert an URL to the javascript file.', options: ['context' => 'hdbt cookie banner']),
-//    ];
-
     $form['general_settings']['theme'] = [
       '#type' => 'select',
       '#title' => $this->t('Cookie banner theme', options: ['context' => 'hdbt cookie banner']),
