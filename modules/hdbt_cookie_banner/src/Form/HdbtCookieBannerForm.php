@@ -114,6 +114,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#title' => $this->t('HDS cookie consent JavaScript URL', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':hds_cookie_js_override',
       '#description' => $this->t('The URL of the JavaScript file that should be used instead of Etusivu HDS cookie consent. ', options: ['context' => 'hdbt cookie banner']),
+      '#maxlength' => 512,
       '#states' => [
         'invisible' => [
           ':input[name="use_custom_settings"]' => ['checked' => FALSE],
