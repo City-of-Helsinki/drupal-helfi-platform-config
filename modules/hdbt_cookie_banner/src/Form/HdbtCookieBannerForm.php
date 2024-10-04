@@ -97,11 +97,11 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#config_target' => self::SETTINGS . ':use_custom_settings',
     ];
 
-    $form['json_editor_container']['use_external_hds_cookie_js'] = [
+    $form['json_editor_container']['use_internal_hds_cookie_js'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use external HDS cookie consent JavaScript file'),
-      '#description' => $this->t('When the <em>Use custom cookie settings</em> option is selected, the local HDS cookie consent JavaScript file is loaded instead of Etusivu HDS cookie consent. Select this option to use another HDS cookie consent JavaScript file.'),
-      '#config_target' => self::SETTINGS . ':use_external_hds_cookie_js',
+      '#description' => $this->t('When the <em>Use custom cookie settings</em> option is selected, the local HDS cookie consent JavaScript file is loaded instead of the version from Etusivu -instance. Select this option when you to use another HDS cookie consent JavaScript file.'),
+      '#config_target' => self::SETTINGS . ':use_internal_hds_cookie_js',
       '#states' => [
         'invisible' => [
           ':input[name="use_custom_settings"]' => ['checked' => FALSE],
@@ -119,10 +119,10 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
           ':input[name="use_custom_settings"]' => ['checked' => FALSE],
         ],
         'disabled' => [
-          ':input[name="use_external_hds_cookie_js"]' => ['checked' => FALSE],
+          ':input[name="use_internal_hds_cookie_js"]' => ['checked' => FALSE],
         ],
         'required' => [
-          ':input[name="use_external_hds_cookie_js"]' => ['checked' => TRUE],
+          ':input[name="use_internal_hds_cookie_js"]' => ['checked' => TRUE],
         ],
       ],
     ];

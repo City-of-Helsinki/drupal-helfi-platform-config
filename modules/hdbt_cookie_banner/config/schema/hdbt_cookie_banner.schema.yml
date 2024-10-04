@@ -12,7 +12,7 @@ hdbt_cookie_banner.settings:
       translatable: false
       label: Use custom settings
       nullable: true
-    use_external_hds_cookie_js:
+    use_internal_hds_cookie_js:
       type: boolean
       translatable: false
       label: Use local JS file

@@ -48,8 +48,8 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
     _hdbt_cookie_banner_attach_hds_cookie_consent($attachments['#attached']);
   }
   // We can also use the current instance HDS cookie consent JS file.
-  elseif (empty($config->get('use_external_hds_cookie_js'))) {
-    $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hdbt_cookie_consent';
+  elseif (empty($config->get('use_internal_hds_cookie_js'))) {
+    $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hds_cookie_consent';
   }
   // Or the custom HDS cookie consent JS file can be used.
   else {
