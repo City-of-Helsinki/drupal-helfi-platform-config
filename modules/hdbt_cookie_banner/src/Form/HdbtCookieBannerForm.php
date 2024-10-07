@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\hdbt_cookie_banner\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -21,30 +22,15 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
   public const SETTINGS = 'hdbt_cookie_banner.settings';
 
   /**
-   * The app root.
-   *
-   * @var string
-   */
-  protected string $appRoot;
-
-  /**
-   * Extension path resolver.
-   *
-   * @var \Drupal\Core\Extension\ExtensionPathResolver
-   */
-  protected ExtensionPathResolver $extensionPathResolver;
-
-  /**
    * {@inheritdoc}
    */
   public function __construct(
     ConfigFactoryInterface $config_factory,
-    ExtensionPathResolver $extension_path_resolver,
-    string $app_root,
+    protected TypedConfigManagerInterface $typedConfig,
+    protected ExtensionPathResolver $extensionPathResolver,
+    protected string $appRoot,
   ) {
-    parent::__construct($config_factory);
-    $this->extensionPathResolver = $extension_path_resolver;
-    $this->appRoot = $app_root;
+    parent::__construct($config_factory, $typedConfig);
   }
 
   /**
@@ -53,6 +39,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('extension.path.resolver'),
       $container->getParameter('app.root'),
     );
@@ -113,7 +100,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('HDS cookie consent JavaScript URL', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':hds_cookie_js_override',
-      '#description' => $this->t('The URL of the JavaScript file that should be used instead of Etusivu HDS cookie consent. ', options: ['context' => 'hdbt cookie banner']),
+      '#description' => $this->t('The URL of the JavaScript file that should be used instead of Etusivu HDS cookie consent.', options: ['context' => 'hdbt cookie banner']),
       '#maxlength' => 512,
       '#states' => [
         'invisible' => [
