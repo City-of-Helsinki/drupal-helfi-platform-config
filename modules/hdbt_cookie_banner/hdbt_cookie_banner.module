@@ -66,8 +66,8 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
   $attachments['#attached']['drupalSettings']['hdbt_cookie_banner'] = [
     'apiUrl' => _hdbt_cookie_banner_get_api_url(),
     'language' => $langcode,
-    'theme' => $config->get('theme') ?: 'black',
-    'settingsPageSelector' => $config->get('settings_page_selector') ?: '.cookie-policy-settings',
+    'theme' => 'black',
+    'settingsPageSelector' => '.cookie-policy-settings',
   ];
 }
 
