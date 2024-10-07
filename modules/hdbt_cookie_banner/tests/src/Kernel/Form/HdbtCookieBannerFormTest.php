@@ -43,7 +43,7 @@ class HdbtCookieBannerFormTest extends KernelTestBase {
     $form_object = HdbtCookieBannerForm::create($this->container);
     $form_state = new FormState();
 
-    // Well?
+    // Build and process the form.
     /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
     $form_builder = $this->container->get('form_builder');
     $form_id = $form_builder->getFormId($form_object, $form_state);
