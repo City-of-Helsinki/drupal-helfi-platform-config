@@ -79,15 +79,15 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
 
     $form['json_editor_container']['use_custom_settings'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Use custom cookie settings'),
-      '#description' => $this->t('By default, cookie settings and HDS cookie consent JavaScript file are loaded from Hel.fi Etusivu instance. By selecting this override option, you can use your own settings and override HDS cookie consent JS file.'),
+      '#title' => $this->t('Use instance specific cookie settings'),
+      '#description' => $this->t('By default, cookie settings and HDS cookie consent JavaScript file are loaded from Hel.fi Etusivu instance. By selecting this override option, you can use your own settings. The HDS cookie consent JavaScript file will be loaded from current instance <em>hdbt_cookie_banner/hds_cookie_consent</>, but it can be overridden with the form field below.'),
       '#config_target' => self::SETTINGS . ':use_custom_settings',
     ];
 
     $form['json_editor_container']['use_internal_hds_cookie_js'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Use external HDS cookie consent JavaScript file'),
-      '#description' => $this->t('When the <em>Use custom cookie settings</em> option is selected, the local HDS cookie consent JavaScript file is loaded instead of the version from Etusivu -instance. Select this option when you to use another HDS cookie consent JavaScript file.'),
+      '#title' => $this->t('Use custom HDS cookie consent JavaScript file'),
+      '#description' => $this->t('When the <em>Use instance specific cookie settings</em> option is selected, the local HDS cookie consent JavaScript file is loaded instead of the version from Etusivu -instance. Select this option when you to use another HDS cookie consent JavaScript file.'),
       '#config_target' => self::SETTINGS . ':use_internal_hds_cookie_js',
       '#states' => [
         'invisible' => [
@@ -147,7 +147,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
     ];
 
     $form['general_settings'] = [
-      '#title' => $this->t('General settings', options: ['context' => 'hdbt cookie banner']),
+      '#title' => $this->t('Cookie settings page', options: ['context' => 'hdbt cookie banner']),
       '#type' => 'details',
       '#group' => 'settings',
     ];
