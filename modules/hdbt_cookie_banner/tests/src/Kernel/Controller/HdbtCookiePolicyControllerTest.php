@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Controller;
 
-use Drupal\hdbt_cookie_banner\Controller\HdbtCookiePolicyController;
 use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
+use Drupal\hdbt_cookie_banner\Controller\HdbtCookiePolicyController;
 
 /**
  * Tests the HdbtCookiePolicyController.

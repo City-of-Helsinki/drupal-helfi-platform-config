@@ -6,9 +6,9 @@ namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Controller;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\CacheableJsonResponse;
+use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
 use Drupal\hdbt_cookie_banner\Controller\HdbtCookieBannerController;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
-use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
