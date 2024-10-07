@@ -28,7 +28,7 @@ final class HdbtCookiePolicyController extends ControllerBase {
    * @return array
    *   Return markup array.
    */
-  public function content() {
+  public function content(): array {
     $config = $this->config->get(HdbtCookieBannerForm::SETTINGS);
     $content = [];
 
