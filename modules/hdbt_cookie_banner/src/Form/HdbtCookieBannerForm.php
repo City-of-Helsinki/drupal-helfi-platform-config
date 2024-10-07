@@ -152,24 +152,6 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#group' => 'settings',
     ];
 
-    $form['general_settings']['settings_page_selector'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Settings page selector', options: ['context' => 'hdbt cookie banner']),
-      '#config_target' => self::SETTINGS . ':settings_page_selector',
-      '#description' => $this->t('Insert a CSS selector to which the cookie settings should be appended. Defaults to <em>.cookie-policy-settings</em>', options: ['context' => 'hdbt cookie banner']),
-    ];
-
-    $form['general_settings']['theme'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Cookie banner theme', options: ['context' => 'hdbt cookie banner']),
-      '#options' => [
-        'black' => $this->t('Black', options: ['context' => 'hdbt cookie banner']),
-        'white' => $this->t('White', options: ['context' => 'hdbt cookie banner']),
-      ],
-      '#required' => TRUE,
-      '#config_target' => self::SETTINGS . ':theme',
-    ];
-
     $form['general_settings']['cookie_information_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Cookie policy page title', options: ['context' => 'hdbt cookie banner']),

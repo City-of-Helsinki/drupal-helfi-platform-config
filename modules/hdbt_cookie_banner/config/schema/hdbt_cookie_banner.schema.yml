@@ -22,16 +22,6 @@ hdbt_cookie_banner.settings:
       translatable: false
       label: Override HDS cookie JS
       nullable: true
-    theme:
-      type: string
-      translatable: false
-      label: Theme
-      nullable: true
-    settings_page_selector:
-      type: string
-      translatable: false
-      label: Settings page selector
-      nullable: true
     cookie_information:
       label: Cookie information
       type: mapping

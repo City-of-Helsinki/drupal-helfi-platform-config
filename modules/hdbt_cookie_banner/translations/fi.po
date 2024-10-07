@@ -5,18 +5,6 @@ msgid "Cookie policy"
 msgstr "Evästekäytännöt"
 
 msgctxt "hdbt cookie banner"
-msgid "Cookie banner theme"
-msgstr "Evästebannerin teema"
-
-msgctxt "hdbt cookie banner"
-msgid "Black"
-msgstr "Musta"
-
-msgctxt "hdbt cookie banner"
-msgid "White"
-msgstr "Valkoinen"
-
-msgctxt "hdbt cookie banner"
 msgid "Site settings"
 msgstr "Sivuston asetukset"
 

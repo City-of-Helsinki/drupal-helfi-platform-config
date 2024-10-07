@@ -56,9 +56,7 @@ class HdbtCookieBannerFormTest extends KernelTestBase {
       'cookie_information_content' => 'Cookie information test content',
       'cookie_information_title' => 'Cookie information test title',
       'hds_cookie_js_override' => 'url_to_file',
-      'settings_page_selector' => '.test-selector',
       'site_settings' => '{"key": "value"}',
-      'theme' => 'black',
       'use_custom_settings' => TRUE,
       'use_internal_hds_cookie_js' => TRUE,
     ]);
@@ -76,7 +74,6 @@ class HdbtCookieBannerFormTest extends KernelTestBase {
     $this->assertEquals($config->get('cookie_information.title'), $user_input['cookie_information_title']);
     $this->assertEquals($config->get('hds_cookie_js_override'), $user_input['hds_cookie_js_override']);
     $this->assertEquals($config->get('site_settings'), $user_input['site_settings']);
-    $this->assertEquals($config->get('theme'), $user_input['theme']);
     $this->assertTrue($config->get('use_custom_settings'));
     $this->assertTrue($config->get('use_internal_hds_cookie_js'));
   }
