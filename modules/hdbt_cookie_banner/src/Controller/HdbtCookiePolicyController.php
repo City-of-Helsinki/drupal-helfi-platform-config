@@ -4,39 +4,78 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_cookie_banner\Controller;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\Project;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines HdbtCookiePolicyController class.
  */
-final class HdbtCookiePolicyController extends ControllerBase {
+final class HdbtCookiePolicyController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * Constructs a new instance.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
-   *   The config factory.
    */
-  public function __construct(private readonly ConfigFactoryInterface $config) {
+  public function __construct(
+    protected readonly EnvironmentResolverInterface $environmentResolver,
+  ) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('helfi_api_base.environment_resolver')
+    );
   }
 
   /**
    * Display the cookie information.
    *
-   * @return array
-   *   Return markup array.
+   * @return \Drupal\Core\Routing\TrustedRedirectResponse|array
+   *   Return redirect response or render array.
    */
-  public function content(): array {
-    $config = $this->config->get(HdbtCookieBannerForm::SETTINGS);
+  public function content(): TrustedRedirectResponse | array {
+    $config = $this->config(HdbtCookieBannerForm::SETTINGS);
     $content = [];
 
-    $content['#theme'] = 'cookie_policy';
-    $content['#title'] = $config->get('cookie_information.title');
-    $content['#content'] = $config->get('cookie_information.content');
+    // If custom settings are used, return the cookie policy content.
+    if ($config->get('use_custom_settings')) {
+      // Get the cookie policy content.
+      $content['#theme'] = 'cookie_policy';
+      $content['#title'] = $config->get('cookie_information.title');
+      $content['#content'] = $config->get('cookie_information.content');
+      return $content;
+    }
 
-    return $content;
+    // Otherwise return a redirect to Etusivu project cookie policy URL.
+    try {
+      $environment = $this
+        ->environmentResolver
+        ->getEnvironment(Project::ETUSIVU, $this->environmentResolver->getActiveEnvironmentName());
+    }
+    catch (\InvalidArgumentException) {
+      $environment = $this
+        ->environmentResolver
+        ->getEnvironment(Project::ETUSIVU, EnvironmentEnum::Prod->value);
+    }
+
+    $language = $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+
+    $cookiePolicyUrl = vsprintf("%s%s/%s", [
+      $environment->getBaseUrl(),
+      $environment->getPath($language->getId()),
+      'cookie-policy',
+    ]);
+
+    return new TrustedRedirectResponse($cookiePolicyUrl);
   }
 
 }
