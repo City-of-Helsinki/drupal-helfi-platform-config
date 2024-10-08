@@ -5,6 +5,7 @@ dependencies:
   - hdbt_admin_tools:hdbt_admin_tools
   - helfi_base_content:helfi_base_content
   - helfi_ckeditor:helfi_ckeditor
+  - helfi_eu_cookie_compliance:helfi_eu_cookie_compliance
   - helfi_image_styles:helfi_image_styles
   - helfi_media:helfi_media
   - helfi_media_chart:helfi_media_chart
