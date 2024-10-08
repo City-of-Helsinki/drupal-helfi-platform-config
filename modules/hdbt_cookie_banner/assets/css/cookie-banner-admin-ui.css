@@ -83,3 +83,7 @@ textarea.error {
 .je-object__container:has(:not([style*="display: none;"])>p[style="color: red;"]) > .je-object__title{
   color: red;
 }
+
+input:not(:disabled) ~ .save-notice {
+  display: none;
+}

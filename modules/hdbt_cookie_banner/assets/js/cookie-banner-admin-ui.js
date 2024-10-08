@@ -8,6 +8,7 @@
         bannerElement: document.getElementById('editor_holder'),
         errorHolderElement: document.getElementById('error_holder'),
         errorHolderElement2: document.getElementById('error_holder2'),
+        errorHolderElement3: document.getElementById('error_holder3'),
         editorOptions: {
           theme: 'bootstrap3',
           iconlib: 'bootstrap',
@@ -24,6 +25,7 @@
           { "code": "sv", "name": "Swedish", "direction": "ltr" },
           { "code": "en", "name": "English", "direction": "ltr" }
         ],
+        saveButton: document.querySelector('#edit-submit'),
       };
 
       // state used in the script
@@ -57,8 +59,15 @@
       function updateErrors() {
         const errors = [...state.textareaErrors, ...state.editorErrors];
         if (errors.length === 0) {
-          config.errorHolderElement.innerHTML = '';
-          config.errorHolderElement2.innerHTML = '';
+          if(config.errorHolderElement){
+            config.errorHolderElement.innerHTML = '';
+          }
+          if(config.errorHolderElement2){
+            config.errorHolderElement2.innerHTML = '';
+          }
+          if(config.errorHolderElement3){
+            config.errorHolderElement3.innerHTML = '';
+          }
           config.textarea.classList.remove('error');
           return;
         }
@@ -74,8 +83,15 @@
           </ul>
         </div>`;
 
-        config.errorHolderElement.innerHTML = errorSummary;
-        config.errorHolderElement2.innerHTML = errorSummary;
+        if(config.errorHolderElement){
+          config.errorHolderElement.innerHTML = errorSummary;
+        }
+        if(config.errorHolderElement2){
+          config.errorHolderElement2.innerHTML = errorSummary;
+        }
+        if(config.errorHolderElement3){
+          config.errorHolderElement3.innerHTML = errorSummary;
+        }
         if (state.textareaErrors.length > 0) {
           config.textarea.classList.add('error');
         } else {
@@ -219,6 +235,20 @@
       }
 
       /**
+       * Function to disable or enable the submit button
+       * @param {boolean} disable Should the submit button be disabled or enabled
+       */
+      function toggleSubmitButton(disable) {
+        if (disable) {
+          config.saveButton.disabled = true;  // Disable the button
+          config.saveButton.style.display = 'none'; // Hide the button
+        } else {
+          config.saveButton.disabled = false; // Enable the button
+          config.saveButton.style.display = ''; // Hide the button
+        }
+      }
+
+      /**
        * Initializes the editor on page load
        */
       function initialize() {
@@ -245,6 +275,24 @@
         initializeBannerEditor(state.jsonValue);
 
         config.textarea.addEventListener('input', debounce(textareaChangeHandler, 100));
+
+        config.bannerElement.addEventListener('focusin', function(event) {
+          // Disable the save button when an input element receives focus
+          if (event.target.matches('input, select, textarea')) {
+            toggleSubmitButton(true);
+          }
+        });
+
+        config.bannerElement.addEventListener('focusout', function(event) {
+          // Enable the save button when an input element loses focus
+          if (event.target.matches('input, select, textarea')) {
+            toggleSubmitButton(false);
+          }
+        });
+
+        const saveNotice = config.saveButton.insertAdjacentElement('afterend', document.createElement('p'));
+        saveNotice.classList.add('save-notice');
+        saveNotice.innerText = 'Click here to unfocus the input and to see Save-button.';
       }
 
       // Initialize the editor once the page has loaded
