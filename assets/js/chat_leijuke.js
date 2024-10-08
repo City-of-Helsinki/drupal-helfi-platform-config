@@ -31,6 +31,8 @@
     console.warn(`No adapter found for ${chatSelection}!`);
   }
 
+  // @todo UHF-8650: EU Cookie Compliance module will be removed.
+  // @todo UHF-8650: Convert the following code to support HDS cookie banner.
   class EuCookieManager {
     cookieCheck(cookieNames) {
       let cookiesOk = true;

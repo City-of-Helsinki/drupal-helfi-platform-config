@@ -18,6 +18,8 @@
       };
     }
 
+    // @todo UHF-8650: EU Cookie Compliance module will be removed.
+    // @todo UHF-8650: Convert the following code to support HDS cookie banner.
     // eslint-disable-next-line class-methods-use-this
     cookieCheck() {
       return Drupal.eu_cookie_compliance.hasAgreedWithCategory('chat');
