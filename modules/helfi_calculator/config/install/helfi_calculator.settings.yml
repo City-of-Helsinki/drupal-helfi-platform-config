@@ -20,3 +20,7 @@ calculators:
     label: 'Early childhood education fee'
     active: false
     json: '{}'
+  helsinki_benefit_amount_estimate:
+    label: 'Helsinki benefit amount estimate'
+    active: false
+    json: '{}'

@@ -9,3 +9,5 @@ calculators:
     label: 'Lapsiperheiden kotipalvelun asiakasmaksulaskuri'
   early_childhood_education_fee:
     label: 'Varhaiskasvatusmaksun laskuri'
+  helsinki_benefit_amount_estimate:
+    label: 'Helsinki-lisän arviolaskuri'
