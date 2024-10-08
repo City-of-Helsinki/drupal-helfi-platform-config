@@ -40,6 +40,9 @@ final class HdbtCookiePolicyController extends ControllerBase implements Contain
    * Display the cookie information.
    *
    * @todo UHF-8650: Check if this cookie policy route is still needed.
+   * EU Cookie compliance module used to have a separate page for the cookie
+   * settings. This controller retains the same functionality.
+   * Assess the necessity of this feature once the HDS cookie banner is in use.
    *
    * @return \Drupal\Core\Routing\TrustedRedirectResponse|array
    *   Return redirect response or render array.

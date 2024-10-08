@@ -72,22 +72,22 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
     ];
 
     $form['json_editor_container'] = [
-      '#title' => $this->t('Cookie consent settings'),
+      '#title' => $this->t('Cookie consent settings', options: ['context' => 'hdbt cookie banner']),
       '#type' => 'details',
       '#group' => 'settings',
     ];
 
     $form['json_editor_container']['use_custom_settings'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Use instance specific cookie settings'),
-      '#description' => $this->t('By default, cookie settings and HDS cookie consent JavaScript file are loaded from Hel.fi Etusivu instance. By selecting this override option, you can use your own settings. The HDS cookie consent JavaScript file will be loaded from current instance <em>hdbt_cookie_banner/hds_cookie_consent</em>, but it can be overridden with the form field below.'),
+      '#title' => $this->t('Use instance specific cookie settings', options: ['context' => 'hdbt cookie banner']),
+      '#description' => $this->t('By default, cookie settings and HDS cookie consent JavaScript file are loaded from Hel.fi Etusivu instance. By selecting this override option, you can use your own settings. The HDS cookie consent JavaScript file will be loaded from current instance <em>hdbt_cookie_banner/hds_cookie_consent</em>, but it can be overridden with the form field below.', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':use_custom_settings',
     ];
 
     $form['json_editor_container']['use_internal_hds_cookie_js'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Use custom HDS cookie consent JavaScript file'),
-      '#description' => $this->t('When the <em>Use instance specific cookie settings</em> option is selected, the local HDS cookie consent JavaScript file is loaded instead of the version from Etusivu -instance. Select this option when you to use another HDS cookie consent JavaScript file.'),
+      '#title' => $this->t('Use custom HDS cookie consent JavaScript file', options: ['context' => 'hdbt cookie banner']),
+      '#description' => $this->t('When the <em>Use instance specific cookie settings</em> option is selected, the local HDS cookie consent JavaScript file is loaded instead of the version from Etusivu -instance. Select this option when you want to use another HDS cookie consent JavaScript file.', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':use_internal_hds_cookie_js',
       '#states' => [
         'invisible' => [
@@ -100,7 +100,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('HDS cookie consent JavaScript URL', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':hds_cookie_js_override',
-      '#description' => $this->t('The URL of the JavaScript file that should be used instead of Etusivu HDS cookie consent.', options: ['context' => 'hdbt cookie banner']),
+      '#description' => $this->t('The URL of the JavaScript file that should be used. Replaces the default library version.', options: ['context' => 'hdbt cookie banner']),
       '#maxlength' => 512,
       '#states' => [
         'invisible' => [
