@@ -71,3 +71,15 @@ textarea {
   width: 100%;
   height: 90dvh;
 }
+
+textarea.error {
+  border-color: #d9534f!important;
+}
+
+.alert-heading {
+  margin: 0;
+}
+
+.je-object__container:has(:not([style*="display: none;"])>p[style="color: red;"]) > .je-object__title{
+  color: red;
+}
