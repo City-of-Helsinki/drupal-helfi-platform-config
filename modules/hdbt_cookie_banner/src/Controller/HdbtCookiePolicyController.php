@@ -39,6 +39,8 @@ final class HdbtCookiePolicyController extends ControllerBase implements Contain
   /**
    * Display the cookie information.
    *
+   * @todo UHF-8650: Check if this cookie policy route is still needed.
+   *
    * @return \Drupal\Core\Routing\TrustedRedirectResponse|array
    *   Return redirect response or render array.
    */
