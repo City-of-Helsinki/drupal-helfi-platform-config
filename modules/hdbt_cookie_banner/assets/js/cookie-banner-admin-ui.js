@@ -60,7 +60,6 @@
           config.errorHolderElement.innerHTML = '';
           config.errorHolderElement2.innerHTML = '';
           config.textarea.classList.remove('error');
-          console.log('No errors found');
           return;
         }
         const errorSummary = `
@@ -75,25 +74,6 @@
           </ul>
         </div>`;
 
-        // const errorSummary = `
-        // <section aria-label="Errors found" class="hds-notification hds-notification--error">
-        //   <div class="hds-notification__content">
-        //     <div class="hds-notification__label" role="heading" aria-level="2" tabindex="-1">
-        //       <span class="hds-icon hds-icon--error-fill" aria-hidden="true"></span>
-        //       <span>Errors found</span>
-        //     </div>
-        //     <div class="hds-notification__body hds-error-summary__body">
-        //       <ul>
-        //         ${ errors.map((error, index) => `<li>Error ${index + 1}: ${
-        //           (error.message) ?
-        //             `<a href="#editor_holder" onclick="window.scrollIntoError(event, '${error.path}', true);">${error.message}</a>` :
-        //             `<a href="#editor_holder" onclick="window.scrollIntoError(event, '#edit-site-settings', false);">${error}</a>`
-        //           }</li>`).join('') }
-        //       </ul>
-        //     </div>
-        //   </div>
-        // </section>
-        // `;
         config.errorHolderElement.innerHTML = errorSummary;
         config.errorHolderElement2.innerHTML = errorSummary;
         if (state.textareaErrors.length > 0) {
@@ -101,7 +81,6 @@
         } else {
           config.textarea.classList.remove('error');
         }
-        console.log('Errors found:', errors);
       }
 
       /**
@@ -193,21 +172,17 @@
        * Handles changes in the banner editor
        */
       function bannerChangeHandler() {
-        // console.log('bannerEditor onChange');
         const errors = state.bannerEditor.validate();
         state.editorErrors = errors;
         updateErrors();
         if (errors.length) {
-          console.error('Not updating textarea due to invalid configuration:', errors);
+          console.error('Not updating textarea due to invalid configuration');
           return;
         }
 
         const updatedVal = state.bannerEditor.getValue();
 
-        // console.log('bannerEditor onChange checking for changes in languages:', state.languages, updatedVal.languages);
-
         if (JSON.stringify(state.languages) !== JSON.stringify(updatedVal.languages)) {
-          // console.log('bannerEditor onChange languages changed:', state.languages, updatedVal.languages);
           state.languages = updatedVal.languages;
           state.schema = updateSchema(state.languages, state.schema);
 
@@ -225,9 +200,7 @@
           const updatedVal = JSON.parse(config.textarea.value);
           state.textareaErrors = [];
 
-          // console.log('textarea input checking for changes in languages:', languages, updatedVal.languages);
           if (JSON.stringify(state.languages) !== JSON.stringify(updatedVal.languages)) {
-            // console.log('bannerEditor onChange languages changed:', state.languages, updatedVal.languages);
             state.languages = updatedVal.languages;
             state.schema = updateSchema(state.languages, state.schema);
 
