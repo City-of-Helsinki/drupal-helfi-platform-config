@@ -80,7 +80,7 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
     $form['json_editor_container']['use_custom_settings'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use instance specific cookie settings'),
-      '#description' => $this->t('By default, cookie settings and HDS cookie consent JavaScript file are loaded from Hel.fi Etusivu instance. By selecting this override option, you can use your own settings. The HDS cookie consent JavaScript file will be loaded from current instance <em>hdbt_cookie_banner/hds_cookie_consent</>, but it can be overridden with the form field below.'),
+      '#description' => $this->t('By default, cookie settings and HDS cookie consent JavaScript file are loaded from Hel.fi Etusivu instance. By selecting this override option, you can use your own settings. The HDS cookie consent JavaScript file will be loaded from current instance <em>hdbt_cookie_banner/hds_cookie_consent</em>, but it can be overridden with the form field below.'),
       '#config_target' => self::SETTINGS . ':use_custom_settings',
     ];
 
