@@ -8,9 +8,33 @@
 declare(strict_types=1);
 
 /**
- * UHF-8975 Updated translations for the content liftup paragraph type.
+ * Implements hook_uninstall().
  */
-function helfi_paragraphs_content_liftup_update_9001() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_paragraphs_content_liftup');
+function helfi_paragraphs_content_liftup_uninstall(): void {
+  $config_factory = Drupal::configFactory();
+
+  // The configurations to remove.
+  $configs = [
+    'core.entity_form_display.paragraph.content_liftup.default',
+    'core.entity_view_display.paragraph.content_liftup.default',
+    'field.field.paragraph.content_liftup.field_content_liftup_unit',
+    'field.storage.paragraph.field_content_liftup_unit',
+    'paragraphs.paragraphs_type.content_liftup',
+  ];
+
+  // Remove each installed configuration.
+  foreach ($configs as $config) {
+    $config_factory->getEditable($config)->delete();
+  }
+
+  // The optional configurations to remove.
+  $optional_configs = [
+    'field.field.paragraph.content_liftup.field_content_liftup_unit',
+    'paragraphs.paragraphs_type.content_liftup',
+  ];
+
+  // Remove any optional configs that are present.
+  foreach ($optional_configs as $config) {
+    $config_factory->getEditable($config)->delete();
+  }
 }
