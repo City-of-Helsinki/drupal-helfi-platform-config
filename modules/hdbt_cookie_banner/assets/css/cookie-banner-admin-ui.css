@@ -72,15 +72,16 @@ textarea {
   height: 90dvh;
 }
 
+/* JSON Textarea error colors */
 textarea.error {
-  border-color: #d9534f!important;
+  border-color: #d9534f !important;
 }
 
 .alert-heading {
   margin: 0;
 }
 
-.je-object__container:has(:not([style*="display: none;"])>p[style="color: red;"]) > .je-object__title{
+.je-object__container:has(:not([style*="display: none;"])>p[style="color: red;"]) > .je-object__title {
   color: red;
 }
 

@@ -21,7 +21,7 @@ msgstr ""
 "ladataan Hel.fi Etusivu-instanssista. Valitsemalla tämän valinnan, "
 "voit käyttää omia asetuksiasi. HDS cookie consent JavaScript-tiedosto "
 "ladataan nykyisestä instanssista <em>hdbt_cookie_banner/hds_cookie_consent</em>, "
-"mutta se voidaan ohittaa alla olevan lomakekentän avulla."
+"mutta se voidaan ohittaa alla olevan kentän avulla."
 
 msgctxt "hdbt cookie banner"
 msgid "Use custom HDS cookie consent JavaScript file"
