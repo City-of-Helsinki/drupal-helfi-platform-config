@@ -88,4 +88,17 @@ function helfi_platform_config_base_update_9002() : void {
 function helfi_platform_config_base_update_9003() : void {
   $module_installer = Drupal::service('module_installer');
   $module_installer->uninstall(['helfi_paragraphs_content_liftup']);
+
+  // Trigger updates for content liftup related modules.
+  $affected_modules = [
+    'helfi_base_content',
+    'helfi_tpr_config',
+    'helfi_node_landing_page',
+    'helfi_node_page',
+  ];
+
+  foreach ($affected_modules as $module) {
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update($module);
+  }
 }
