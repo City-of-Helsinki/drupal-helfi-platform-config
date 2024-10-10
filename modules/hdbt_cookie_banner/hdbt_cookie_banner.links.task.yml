@@ -1,0 +1,4 @@
+hdbt_cookie_banner.form:
+  route_name: hdbt_cookie_banner.form
+  title: 'Cookie settings'
+  base_route: hdbt_cookie_banner.form

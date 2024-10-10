@@ -6,15 +6,18 @@
       "properties": {
         "fi": {
           "type": "string",
-          "title": "fi (Finnish)"
+          "title": "fi (Finnish)",
+          "minLength": 1
         },
         "sv": {
           "type": "string",
-          "title": "sv (Swedish)"
+          "title": "sv (Swedish)",
+          "minLength": 1
         },
         "en": {
           "type": "string",
-          "title": "en (English)"
+          "title": "en (English)",
+          "minLength": 1
         }
       },
       "required": [
@@ -107,7 +110,7 @@
         "expiration": {
           "$ref": "#/$defs/LocalisedUniversalText",
           "title": "Expiration",
-          "description": "Describe to end user when the cookie or item expires. (eg. \"100 days\") If it does not expire (like localStorage), enter dash \"-\". If it's a session cookie, enter fi:\"Istunto\", sv:\"Session\", en:\"Session\".",
+          "description": "Describe to end user when the cookie or item expires. (e.g. \"100 days\") If it does not expire (like localStorage), enter a dash \"-\". If it's a session cookie, enter fi:\"Istunto\", sv:\"Session\", en:\"Session\".",
           "options": {
             "disable_collapse": true
           }
@@ -155,8 +158,7 @@
         },
         "cookies": {
           "title": "Cookies",
-          "headerTemplate": "Cookies",
-          "description": "Cookies or or items toggled together in this group",
+          "description": "Cookies or items toggled together in this group",
           "type": "array",
           "items": {
             "$ref": "#/$defs/Cookie"
@@ -166,9 +168,6 @@
           "options": {
             "disable_collapse": true,
             "array_controls_top": true
-          },
-          "watch":{
-            "groupI": "groupId"
           }
         }
       },
@@ -180,13 +179,61 @@
       ]
     }
   },
-  "title": "Site settings",
-  "description": "Configure HDS cookie banner settings.json to adjust allowed cookies, translations and other features.",
+  "title": "Cookie banner site settings",
+  "description": "Most text fields support \"Universal text\" and \"Localised text\" modes. Use \"Universal text\" for consistent strings across all languages, like \"localStorage.\" Use \"Localised text\" to provide different translations, like \"cookie\" (e.g., \"keksi\" in Finnish). You can copy and edit the raw JSON if you wish to using the textarea.",
   "options": {
     "disable_collapse": true
   },
   "type": "object",
   "properties": {
+    "languages": {
+      "title": "Supported languages",
+      "description": "List all languages you wish banner to support.",
+      "type": "array",
+      "format": "table",
+      "options": {
+        "disable_collapse": true
+      },
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 2,
+            "title": "Code (e.g. \"fi\")"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name (e.g. \"Finnish\")"
+          },
+          "direction": {
+            "type": "string",
+            "title": "(Reading) direction",
+            "enum": [
+              "ltr",
+              "rtl"
+            ],
+            "options": {
+              "enum_titles": [
+                "ltr (Left to right)",
+                "rtl (Right to left)"
+              ]
+            },
+            "default": "ltr",
+            "pattern": "(ltr|rtl)"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "direction"
+        ],
+        "title": "Language"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
     "siteName": {
       "description": "Name of the website the cookie banner is running in.",
       "title": "Website name",
@@ -222,7 +269,7 @@
       "options": {
         "input_width": "calc(5ch + 28px)"
       },
-      "default": "500"
+      "default": 500
     },
     "remove": {
       "type": "boolean",
@@ -233,7 +280,7 @@
     "fallbackLanguage": {
       "type": "string",
       "title": "Fallback language",
-      "description": "Language code to fallback if translation is not found. For example if your site supports \"fi\", \"sv\" and \"en\" languages for the interface, but you may have some content in \"uk\", but wish to show banner in English in these situations.",
+      "description": "Language code to fallback if translation is not found. For example, if your site supports \"fi\", \"sv\", and \"en\" languages for the interface, but you may have some content in \"uk\" and wish to show the banner in English in these situations.",
       "enum": [
         "fi",
         "sv",
@@ -433,7 +480,7 @@
             {
               "default": {
                 "fi": "Piilota yksityiskohdat",
-                "sv": "Stänga detaljer",
+                "sv": "Stäng detaljer",
                 "en": "Hide details"
               }
             }
@@ -533,7 +580,7 @@
             {
               "default": {
                 "fi": "Piilota evästeasetukset",
-                "sv": "Stänga kakinställningarna",
+                "sv": "Stäng kakinställningarna",
                 "en": "Hide cookie settings"
               }
             }
@@ -713,7 +760,7 @@
               "default": {
                 "fi": "Ilmoitus",
                 "sv": "Meddelande",
-                "en": "Annoucement"
+                "en": "Announcement"
               }
             }
           ]
@@ -820,6 +867,7 @@
     }
   },
   "required": [
+    "languages",
     "siteName",
     "cookieName",
     "requiredGroups",

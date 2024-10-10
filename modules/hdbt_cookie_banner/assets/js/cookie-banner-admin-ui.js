@@ -2,137 +2,133 @@
   Drupal.behaviors.cookieBannerAdminUi = {
     attach: function attach() {
 
-      // Small schema to handle languages
-      const languageSchema = {
-        "title": "Supported languages",
-        "description": "List all languages you wish banner to support.",
-        "type": "array",
-        "format": "table",
-        "options": {
-          "disable_collapse": true
+      // Configuration and state used in the script
+      const config = {
+        textarea: document.getElementById('edit-site-settings'),
+        bannerElement: document.getElementById('editor_holder'),
+        errorHolderElement: document.getElementById('error_holder'),
+        errorHolderElement2: document.getElementById('error_holder2'),
+        errorHolderElement3: document.getElementById('error_holder3'),
+        editorOptions: {
+          theme: 'bootstrap3',
+          iconlib: 'bootstrap',
+          show_opt_in: true,
+          disable_edit_json: true,
+          disable_properties: true,
+          disable_array_delete_all_rows: true,
+          disable_array_delete_last_row: true,
+          keep_oneof_values: false,
+          prompt_before_delete: true,
         },
-        "items": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string",
-              "minLength": 2,
-              "title": "Code (eg. \"fi\")"
-            },
-            "name": {
-              "type": "string",
-              "minLength": 1,
-              "title": "Name (ex. \"Finnish\")"
-            }
-          },
-          "required": [
-            "code",
-            "name"
-          ],
-          "title": "Language"
-        },
-        "uniqueItems": true,
-        "minItems": 1
-      }
-      const defaultLanguages = [
-        { "code": "fi", "name": "Finnish" },
-        { "code": "sv", "name": "Swedish" },
-        { "code": "en", "name": "English" }
-      ];
+        defaultLanguages: [
+          { "code": "fi", "name": "Finnish", "direction": "ltr" },
+          { "code": "sv", "name": "Swedish", "direction": "ltr" },
+          { "code": "en", "name": "English", "direction": "ltr" }
+        ],
+        saveButton: document.querySelector('#edit-submit'),
+      };
 
-      // JSON editor options for both forms
-      const editorOptions = {
-        theme: 'bootstrap3',
-        iconlib: 'bootstrap',
-        show_opt_in: true,
-        disable_edit_json: true,
-        disable_properties: true,
-        disable_array_delete_all_rows: true,
-        disable_array_delete_last_row: true,
-        keep_oneof_values: false,
-        prompt_before_delete: true,
+      // state used in the script
+      const state = {
+        jsonValue: {},
+        languages: [],
+        schema: {},
+        bannerEditor: null,
+        textareaErrors: [],
+        editorErrors: [],
+      };
+
+      /**
+       * Utility to debounce a function
+       * @param {function} func Function to be debounced
+       * @param {number} delay Delay in ms for the debounce
+       * @returns {function} The debounced function
+       */
+      function debounce(func, delay) {
+        let timeoutId;
+        return (...args) => {
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => func(...args), delay);
+        };
       }
 
       /**
-       * Gets the schema object for site settings
-       * @returns {Promise} A promise that resolves with the schema object
+       * Updates the error messages and classes
+       * @returns {void}
        */
-      function getSchema(){
+      function updateErrors() {
+        const errors = [...state.textareaErrors, ...state.editorErrors];
+        if (errors.length === 0) {
+          if(config.errorHolderElement){
+            config.errorHolderElement.innerHTML = '';
+          }
+          if(config.errorHolderElement2){
+            config.errorHolderElement2.innerHTML = '';
+          }
+          if(config.errorHolderElement3){
+            config.errorHolderElement3.innerHTML = '';
+          }
+          config.textarea.classList.remove('error');
+          return;
+        }
+        const errorSummary = `
+        <div class="alert alert-danger" role="alert">
+          <h2 class="alert-heading">Errors found</h2>
+          <ul>
+            ${ errors.map((error, index) => `<li>Error ${index + 1}: ${
+              (error.message) ?
+                `<a href="#editor_holder" onclick="window.scrollIntoError(event, '${error.path}', true);">${error.message}</a>` :
+                `<a href="#editor_holder" onclick="window.scrollIntoError(event, '#edit-site-settings', false);">${error}</a>`
+              }</li>`).join('') }
+          </ul>
+        </div>`;
+
+        if(config.errorHolderElement){
+          config.errorHolderElement.innerHTML = errorSummary;
+        }
+        if(config.errorHolderElement2){
+          config.errorHolderElement2.innerHTML = errorSummary;
+        }
+        if(config.errorHolderElement3){
+          config.errorHolderElement3.innerHTML = errorSummary;
+        }
+        if (state.textareaErrors.length > 0) {
+          config.textarea.classList.add('error');
+        } else {
+          config.textarea.classList.remove('error');
+        }
+      }
+
+      /**
+       * Parses and returns the textarea value as JSON
+       * @returns {object} The parsed object or an empty object if parsing fails
+       */
+      function getStartValue() {
+        let startValue = {};
         try {
-          const schema = JSON.parse(drupalSettings.cookieBannerAdminUi.siteSettingsSchema);
-          return schema;
+          startValue = JSON.parse(config.textarea.value);
+          state.textareaErrors = [];
+
+        } catch (error) {
+          state.textareaErrors = [`Error parsing the textarea value: ${error}`];
+          console.error('Error parsing the textarea value:', error);
+        }
+        updateErrors();
+        return startValue;
+      }
+
+      /**
+       * Parses the schema from drupalSettings
+       * @returns {object} The parsed schema or an empty object if parsing fails
+       */
+      function getSchema() {
+        let schema = {};
+        try {
+          schema = JSON.parse(drupalSettings.cookieBannerAdminUi.siteSettingsSchema);
         } catch (error) {
           console.error('Error fetching the schema:', error);
         }
-        return {};
-      }
-
-      /**
-       * Initializes the language editor and returns a reference to it
-       * @param {object} defaultLanguages that contains code and name for each language
-       * @param {object} languageSchema JSON schema for the language editor
-       * @param {object} editorOptions for the JSON editor
-       * @returns reference to the language editor
-       */
-      function initializeLanguageEditor(defaultLanguages, languageSchema, editorOptions){
-        const langOptions = {
-          ...editorOptions,
-          schema: languageSchema,
-          startval: defaultLanguages
-        };
-
-        const languageElement = document.getElementById('language_holder');
-        const languageEditor = new JSONEditor(languageElement, langOptions);
-        return languageEditor;
-      }
-
-      /**
-       * Initializes the banner editor and returns a reference to it
-       * @param {object} schema JSON schema of siteSettings.json for the banner editor
-       * @param {object} editorOptions for the JSON editor
-       * @returns reference to the banner editor
-       */
-      function initializeBannerEditor(schema, editorOptions){
-        let isUpdatingFromEditor = false; // Flag to prevent loop
-        let startval = {};
-        let textarea = null;
-        try {
-          textarea = document.getElementById('edit-site-settings');
-          startval = JSON.parse(textarea.value);
-        } catch (error) {
-          console.error('Error parsing the textarea value:', error);
-        }
-
-        const bannerElement = document.getElementById('editor_holder');
-        const bannerEditor = new JSONEditor(bannerElement, {
-          ...editorOptions,
-          schema,
-          startval
-        });
-
-        // Listen for changes in the JSON editor
-        bannerEditor.on('change', function() {
-          if (!isUpdatingFromEditor) {
-            const updatedData = bannerEditor.getValue();
-            textarea.value = JSON.stringify(updatedData, null, 2);
-          }
-        });
-
-        // Listen for manual changes in the textarea
-        textarea.addEventListener('input', function() {
-          try {
-            const updatedTextareaData = JSON.parse(textarea.value);
-
-            // Prevent triggering the editor change event
-            isUpdatingFromEditor = true;
-            bannerEditor.setValue(updatedTextareaData);
-            isUpdatingFromEditor = false;
-          } catch (e) {
-            console.error('Invalid JSON in textarea:', e);
-          }
-        });
-
-        return bannerEditor;
+        return schema;
       }
 
       /**
@@ -141,28 +137,26 @@
        * @param {object} schema JSON schema of siteSettings.json
        * @returns {object} updated schema with the new languages
        */
-      function updateSchema(languages, schema){
-        const newSchema = schema;
+      function updateSchema(languages, schema) {
 
-        const localisedText = {
-          "type": "object",
-          "title": "Localised text",
-          "properties": {},
-          "required": [],
-          "additionalProperties": false
-        };
-
+        // Update the fallback language enum and titles
         const fallbackLanguageEnum = languages.map(lang => lang.code);
-        const fallbackLanguageEnumTitles = languages.map(lang => lang.code + " (" + lang.name + ")");
+        const fallbackLanguageEnumTitles = languages.map(lang => `${lang.code} (${lang.name})`);
 
+        // Get the LocalisedText, reset and update it with the new languages
+        const localisedText = schema["$defs"].LocalisedText;
+        localisedText.properties = {};
+        localisedText.required = [];
         languages.forEach(lang => {
           localisedText.properties[lang.code] = {
             "type": "string",
-            "title": lang.code + " (" + lang.name + ")"
+            "title": `${lang.code} (${lang.name})`,
+            "minLength": 1
           };
           localisedText.required.push(lang.code);
         });
 
+        const newSchema = schema;
         newSchema["$defs"].LocalisedText = localisedText;
         newSchema.properties.fallbackLanguage.enum = fallbackLanguageEnum;
         newSchema.properties.fallbackLanguage.options.enum_titles = fallbackLanguageEnumTitles;
@@ -171,37 +165,138 @@
       }
 
       /**
-       * Initializes the language and banner editors
+       * Initializes the banner editor
+       * @param {object} startval The startval for the editor
        */
-      async function initializeEditor(){
-        const languageEditor = initializeLanguageEditor(defaultLanguages, languageSchema, editorOptions);
-        let schema = getSchema();
-        let bannerEditor = initializeBannerEditor(schema, editorOptions);
+      function initializeBannerEditor(startval) {
 
-        const debounce = (func, delay) => {
-          let timeoutId;
-          return (...args) => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-              func.apply(null, args);
-            }, delay);
-          };
-        };
+        // Remove event listener and destroy the old editor if it exists on subsequent initializations
+        if (state.bannerEditor) {
+          state.bannerEditor.off('change', bannerChangeHandler);  // Remove the old listener
+          state.bannerEditor.destroy();
+        }
 
-        languageEditor.on('change', debounce(function() {
-          const errors = languageEditor.validate();
-          if (!errors.length) {
-            const languages = languageEditor.getValue();
-            schema = updateSchema(languages, schema);
-            bannerEditor.destroy();
-            bannerEditor = initializeBannerEditor(schema, editorOptions);
+        state.bannerEditor = new JSONEditor(config.bannerElement, {
+          ...config.editorOptions,
+          schema: state.schema,
+          startval,
+        });
+        state.bannerEditor.on('change', debounce(bannerChangeHandler, 100));
+      }
+
+      /**
+       * Handles changes in the banner editor
+       */
+      function bannerChangeHandler() {
+        const errors = state.bannerEditor.validate();
+        state.editorErrors = errors;
+        updateErrors();
+        if (errors.length) {
+          console.error('Not updating textarea due to invalid configuration');
+          return;
+        }
+
+        const updatedVal = state.bannerEditor.getValue();
+
+        if (JSON.stringify(state.languages) !== JSON.stringify(updatedVal.languages)) {
+          state.languages = updatedVal.languages;
+          state.schema = updateSchema(state.languages, state.schema);
+
+          initializeBannerEditor(updatedVal);
+        } else {
+          config.textarea.value = JSON.stringify(updatedVal, null, 2);
+        }
+      }
+
+      /**
+       * Handles input changes in the textarea
+       */
+      function textareaChangeHandler() {
+        try {
+          const updatedVal = JSON.parse(config.textarea.value);
+          state.textareaErrors = [];
+
+          if (JSON.stringify(state.languages) !== JSON.stringify(updatedVal.languages)) {
+            state.languages = updatedVal.languages;
+            state.schema = updateSchema(state.languages, state.schema);
+
+            initializeBannerEditor(updatedVal);
+          } else {
+            if (JSON.stringify(state.jsonValue) != JSON.stringify(updatedVal)) {
+              state.bannerEditor.setValue(updatedVal);
+              state.jsonValue = updatedVal;
+            }
           }
-        }, 300));
+        } catch (error) {
+          state.textareaErrors = [`Invalid JSON in textarea: ${error}`];
+          console.error('Invalid JSON in textarea:', error);
+        }
+        updateErrors();
+      }
+
+      /**
+       * Function to disable or enable the submit button
+       * @param {boolean} disable Should the submit button be disabled or enabled
+       */
+      function toggleSubmitButton(disable) {
+        if (disable) {
+          config.saveButton.disabled = true;  // Disable the button
+          config.saveButton.style.display = 'none'; // Hide the button
+        } else {
+          config.saveButton.disabled = false; // Enable the button
+          config.saveButton.style.display = ''; // Hide the button
+        }
+      }
+
+      /**
+       * Initializes the editor on page load
+       */
+      function initialize() {
+        window.scrollIntoError = (event, path, isSchemapath) => {
+          event.preventDefault();
+          let target;
+          let focusTarget;
+          if(isSchemapath) {
+            target = document.getElementById('editor_holder')?.querySelector(`[data-schemapath="${path.replace(/\.oneOf\[\d+\]/, '')}"]`);
+            focusTarget = target?.querySelector('input, select, textarea');
+          } else {
+            target = document.querySelector(path);
+          }
+          target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          focusTarget?.focus();
+        }
+
+        state.schema = getSchema();
+        state.jsonValue = getStartValue();
+
+        state.languages = state.jsonValue.languages || config.defaultLanguages;
+        state.jsonValue.languages = state.languages;
+
+        initializeBannerEditor(state.jsonValue);
+
+        config.textarea.addEventListener('input', debounce(textareaChangeHandler, 100));
+
+        config.bannerElement.addEventListener('focusin', function(event) {
+          // Disable the save button when an input element receives focus
+          if (event.target.matches('input, select, textarea')) {
+            toggleSubmitButton(true);
+          }
+        });
+
+        config.bannerElement.addEventListener('focusout', function(event) {
+          // Enable the save button when an input element loses focus
+          if (event.target.matches('input, select, textarea')) {
+            toggleSubmitButton(false);
+          }
+        });
+
+        const saveNotice = config.saveButton.insertAdjacentElement('afterend', document.createElement('p'));
+        saveNotice.classList.add('save-notice');
+        saveNotice.innerText = 'Click here to unfocus the input and to see Save-button.';
       }
 
       // Initialize the editor once the page has loaded
-      window.onload = initializeEditor;
-
+      window.onload = initialize;
     }
   };
 })(Drupal, drupalSettings);

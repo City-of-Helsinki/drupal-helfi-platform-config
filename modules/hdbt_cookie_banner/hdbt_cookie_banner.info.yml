@@ -4,3 +4,5 @@ description: 'Drupal module for hdbt cookie banner.'
 core_version_requirement: ^10 || ^11
 dependencies:
   - helfi_api_base:helfi_api_base
+'interface translation project': hdbt_cookie_banner
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/hdbt_cookie_banner/translations/%language.po

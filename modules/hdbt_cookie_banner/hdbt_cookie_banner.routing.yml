@@ -12,3 +12,11 @@ hdbt_cookie_banner.site_settings:
     _controller: '\Drupal\hdbt_cookie_banner\Controller\HdbtCookieBannerController::siteSettings'
   requirements:
     _access: 'TRUE'
+
+hdbt_cookie_banner.cookie_policy:
+  path: '/cookie-policy'
+  defaults:
+    _controller: '\Drupal\hdbt_cookie_banner\Controller\HdbtCookiePolicyController::content'
+    _title: 'Cookie policy'
+  requirements:
+    _access: 'TRUE'

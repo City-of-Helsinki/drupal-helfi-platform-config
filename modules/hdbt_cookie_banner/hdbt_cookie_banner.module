@@ -7,8 +7,10 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 
@@ -20,16 +22,53 @@ function hdbt_cookie_banner_config_ignore_settings_alter(array &$settings): void
 }
 
 /**
+ * Implements hook_theme().
+ */
+function hdbt_cookie_banner_theme() : array {
+  return [
+    'cookie_policy' => [
+      'variables' => [
+        'title' => NULL,
+        'content' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
+  $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
+  $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+  $attachments['#cache']['tags'] = array_merge($attachments['#cache']['tags'] ?? [], $config->getCacheTags());
+
+  // By default, we use the hel.fi etusivu instance HDS cookie consent JS file.
+  if (empty($config->get('use_custom_settings'))) {
+    _hdbt_cookie_banner_attach_hds_cookie_consent($attachments['#attached']);
+  }
+  // We can also use the current instance HDS cookie consent JS file.
+  elseif (empty($config->get('use_internal_hds_cookie_js'))) {
+    $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hds_cookie_consent';
+  }
+  // Or the custom HDS cookie consent JS file can be used.
+  else {
+    _hdbt_cookie_banner_attach_hds_cookie_consent(
+      $attachments['#attached'],
+      $config->get('hds_cookie_js_override')
+    );
+  }
+
+  // Attach HDBT cookie banner initialization JS file.
   $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hdbt_cookie_banner';
+
+  // Attach HDBT cookie banner settings.
   $attachments['#attached']['drupalSettings']['hdbt_cookie_banner'] = [
     'apiUrl' => _hdbt_cookie_banner_get_api_url(),
+    'langcode' => $langcode,
+    'theme' => 'black',
+    'settingsPageSelector' => '.cookie-policy-settings',
   ];
-
-  $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
-  $attachments['#cache']['tags'] = array_merge($attachments['#cache']['tags'] ?? [], $config->getCacheTags());
 }
 
 /**
@@ -39,8 +78,11 @@ function _hdbt_cookie_banner_get_api_url(): string {
   $config = \Drupal::configFactory()->get(HdbtCookieBannerForm::SETTINGS);
   $language = \Drupal::languageManager()->getDefaultLanguage();
 
-  // Default to etusivu api url.
-  if (empty($config->get('site_settings'))) {
+  // Default to Etusivu API URL.
+  if (
+    empty($config->get('site_settings')) ||
+    !$config->get('use_custom_settings')
+  ) {
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $resolver */
     $resolver = \Drupal::service(EnvironmentResolverInterface::class);
     try {
@@ -58,4 +100,41 @@ function _hdbt_cookie_banner_get_api_url(): string {
   return Url::fromRoute('hdbt_cookie_banner.site_settings', options: [
     'language' => $language,
   ])->toString();
+}
+
+/**
+ * Gets HDS cookie consent JavaScript file URL.
+ */
+function _hdbt_cookie_banner_attach_hds_cookie_consent(&$attached, ?string $library = NULL): void {
+  // Load HDS cookie consent JavaScript file from Etusivu instance.
+  if (!$library) {
+    $resolver = \Drupal::service('helfi_api_base.environment_resolver');
+    $module_path = \Drupal::service('extension.list.module')->getPath('hdbt_cookie_banner');
+
+    // Get active Etusivu environment.
+    try {
+      $environment = $resolver->getEnvironment(Project::ETUSIVU, $resolver->getActiveEnvironmentName());
+    }
+    catch (\InvalidArgumentException) {
+      $environment = $resolver->getEnvironment(Project::ETUSIVU, EnvironmentEnum::Prod->value);
+    }
+
+    // Construct the URL to the HDS cookie consent JS file.
+    $library = vsprintf("%s/etusivu-assets/%s/assets/js/hds-cookie-consent.min.js", [
+      $environment->getBaseUrl(),
+      $module_path,
+    ]);
+  }
+
+  // Attach the HDS cookie consent JS file to HTML head.
+  $attached['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'src' => $library,
+        'type' => 'text/javascript',
+      ],
+    ],
+    'external_script',
+  ];
 }
