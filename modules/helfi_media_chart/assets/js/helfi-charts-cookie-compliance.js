@@ -6,6 +6,8 @@
   'use strict';
 
   var loadHelfiCharts = function () {
+    // @todo UHF-8650: EU Cookie Compliance module will be removed.
+    // @todo UHF-8650: Convert the following code to support HDS cookie banner.
     if (Drupal.eu_cookie_compliance.hasAgreed('statistics')) {
       var chartContentElements = document.querySelectorAll('.helfi-charts-content');
 

@@ -1,0 +1,5 @@
+msgid ""
+msgstr ""
+
+msgid "Cookie policy"
+msgstr "Cookiepolicy"
