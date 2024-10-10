@@ -28,7 +28,7 @@ function helfi_test_content_modules_installed(array $modules) : void {
 
     // Set the announcement remote entities setting to false.
     $announcement_config = \Drupal::config('block.block.announcements');
-    assert($announcement_config instanceof ImmutableConfig);;
+    assert($announcement_config instanceof ImmutableConfig);
     $announcement_settings = $announcement_config->get('settings');
     $announcement_settings['use_remote_entities'] = FALSE;
     $announcement_config->set('settings', $announcement_settings)->save();
