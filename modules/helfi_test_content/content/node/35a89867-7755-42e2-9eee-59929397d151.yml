@@ -169,10 +169,10 @@ default:
               value: {  }
           field_calculator:
             -
-              value: early_childhood_education_fee
+              value: helsinki_benefit_amount_estimate
           field_calculator_title:
             -
-              value: 'Early childhood education fee'
+              value: 'Helsinki benefit amount estimate'
   field_has_hero:
     -
       value: false
@@ -308,7 +308,7 @@ default:
               value: true
           field_calculator:
             -
-              value: early_childhood_education_fee
+              value: helsinki_benefit_amount_estimate
           field_calculator_title:
             -
-              value: 'Early childhood education fee'
+              value: 'Helsinki benefit amount estimate'
