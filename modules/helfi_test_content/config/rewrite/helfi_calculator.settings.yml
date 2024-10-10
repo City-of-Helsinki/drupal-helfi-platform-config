@@ -1,0 +1,26 @@
+langcode: en
+calculators:
+  home_care_service_voucher:
+    label: 'Home care service voucher'
+    active: true
+    json: '{"voucher_limits":{"min":7,"max":34},"household_size":{"1":{"limit":588,"percent":35,"payment_class_from_usage_per_month":{"0":4,"5":8,"9":12,"13":16,"17":20,"21":22,"25":24,"29":26,"33":28,"37":30,"41":35}},"2":{"limit":1084,"percent":22,"payment_class_from_usage_per_month":{"0":4,"5":7,"9":10,"13":12,"17":16,"21":18,"25":20,"29":20,"33":20,"37":20,"41":20}},"3":{"limit":1701,"percent":18,"payment_class_from_usage_per_month":{"0":4,"5":6,"9":9,"13":11,"17":14,"21":16,"25":16,"29":16,"33":16,"37":16,"41":16}},"4":{"limit":2103,"percent":15,"payment_class_from_usage_per_month":{"0":4,"5":6,"9":9,"13":11,"17":12,"21":12,"25":12,"29":12,"33":12,"37":12,"41":12}},"5":{"limit":2546,"percent":13,"payment_class_from_usage_per_month":{"0":4,"5":6,"9":9,"13":10,"17":10,"21":10,"25":10,"29":10,"33":10,"37":10,"41":10}},"6":{"limit":2924,"percent":11,"payment_class_from_usage_per_month":{"0":4,"5":6,"9":8,"13":9,"17":9,"21":9,"25":9,"29":9,"33":9,"37":9,"41":9}},"7":{"limit":3274,"percent":10,"payment_class_from_usage_per_month":{"0":4,"5":6,"9":8,"13":9,"17":9,"21":9,"25":9,"29":9,"33":9,"37":9,"41":9}},"8":{"limit":3624,"percent":9,"payment_class_from_usage_per_month":{"0":4,"5":6,"9":8,"13":9,"17":9,"21":9,"25":9,"29":9,"33":9,"37":9,"41":9}}},"beyond_cutoff":{"cutoff":8,"limit":{"multiply_n":342,"add":3483},"percent":{"multiply_n":-1,"add":9},"payment_class_from_usage_per_month":{"multiply_n":-1,"add":0}},"covered_hours_per_month":40,"maximum_payment_from_monthly_usage":{"0":109.78,"6":329.34,"11":603.79,"21":1152.69,"41":2250.49},"voucher_divisor":60}'
+  home_care_client_fee:
+    label: 'Home care client fee'
+    active: true
+    json: '{"household_size":{"1":{"gross_income_limit":598,"monthly_usage_percentage":{"0":4,"5":8,"9":12,"13":16,"17":20,"21":22,"25":24,"29":26,"33":28,"37":30,"41":35}},"2":{"gross_income_limit":1103,"monthly_usage_percentage":{"0":4,"5":7,"9":10,"13":12,"17":16,"21":18,"25":20,"29":20,"33":20,"37":20,"41":20}},"3":{"gross_income_limit":1731,"monthly_usage_percentage":{"0":4,"5":6,"9":9,"13":11,"17":14,"21":16,"25":16,"29":16,"33":16,"37":16,"41":16}},"4":{"gross_income_limit":2140,"monthly_usage_percentage":{"0":4,"5":6,"9":9,"13":11,"17":12,"21":12,"25":12,"29":12,"33":12,"37":12,"41":12}},"5":{"gross_income_limit":2591,"monthly_usage_percentage":{"0":4,"5":6,"9":9,"13":10,"17":10,"21":10,"25":10,"29":10,"33":10,"37":10,"41":10}},"6":{"gross_income_limit":2976,"monthly_usage_percentage":{"0":4,"5":6,"9":8,"13":9,"17":9,"21":9,"25":9,"29":9,"33":9,"37":9,"41":9}}},"monthly_usage_max_payment":{"0":119.66,"5":538.47,"9":1017.12,"13":1495.76,"17":1974.4,"21":2453.05,"25":2931.69,"29":3410.33,"33":3888.98,"37":4367.62,"41":4906.1},"safetyphone_limits":{"1":{"0":0,"1138.01":34.55,"1707.01":54},"2":{"0":0,"1138.01":34.55,"2101.01":54}},"shopping_service_prices":{"first_per_week":9.37,"others_per_week":11.35},"meal_service_prices":{"lunch":3.9,"delivery":7,"max_meals_for_single_delivery_per_week":3,"menumat":{"lunch":6.4,"device_per_day":2.36}}}'
+  continuous_housing_service_voucher:
+    label: '24-hour housing service voucher'
+    active: true
+    json: '{"voucher_from_net_income":{"0":3300,"900.01":3200,"1000.01":3100,"1100.01":3000,"1200.01":2900,"1300.01":2800,"1400.01":2700,"1500.01":2600,"1600.01":2500,"1700.01":2400,"1800.01":2300,"1900.01":2200,"2000.01":2100,"2100.01":2000,"2200.01":1900,"2300.01":1800,"2400.01":1700,"2500.01":1600,"2600.01":1500,"2700.01":1400,"2800.01":1300,"2900.01":1200,"3000.01":1100,"3100.01":1000,"3200.01":900,"3300.01":800,"3400.01":700,"3500.01":600,"3600.01":500}}'
+  families_home_services_client_fee:
+    label: 'Families home services client fee'
+    active: true
+    json: '{"income_limit":{"1":598,"2":1103,"3":1731,"4":2140,"5":2591,"6":2976},"monthly_usage":{"0":{"max":119.66,"percent":1},"5":{"max":538.47,"percent":2},"9":{"max":1017.12,"percent":3},"13":{"max":1495.76,"percent":4},"17":{"max":1974.4,"percent":5},"21":{"max":2453.05,"percent":6},"25":{"max":2931.69,"percent":7},"29":{"max":3410.33,"percent":8},"33":{"max":3888.98,"percent":9},"37":{"max":4367.62,"percent":10},"41":{"max":4906.1,"percent":11}}}'
+  early_childhood_education_fee:
+    label: 'Early childhood education fee'
+    active: false
+    json: '{}'
+  helsinki_benefit_amount_estimate:
+    label: 'Helsinki benefit amount estimate'
+    active: true
+    json: '{"HELSINKI_BENEFIT_MAX_AMOUNT_WITH_PAY_SUBSIDY": 800, "HELSINKI_BENEFIT_MAX_AMOUNT_WITHOUT_PAY_SUBSIDY": 800,"PAY_SUBSIDY_PERCENTAGES": [0, 0.5, 0.7],"PAY_SUBSIDY_AMOUNT_MAX_LIMIT": [999999, 1260, 1770],"STATE_AID_PERCENTAGES": [1, 0.5, 1],"SALARY_OTHER_EXPENSES_PERCENTAGE": 0.22}'
