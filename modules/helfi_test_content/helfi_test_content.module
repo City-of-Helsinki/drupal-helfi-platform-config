@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Config\Config;
 
 /**
  * Implements hook_modules_installed().
@@ -27,9 +27,9 @@ function helfi_test_content_modules_installed(array $modules) : void {
     }
 
     // Set the announcement remote entities setting to false.
-    $announcement_config = \Drupal::config('block.block.announcements');
-    assert($announcement_config instanceof ImmutableConfig);
-    $announcement_settings = $announcement_config->get('settings');
+    $announcement_config = \Drupal::configFactory()->getEditable('block.block.announcements');
+    assert($announcement_config instanceof Config);
+    $announcement_settings = $announcement_config->get('settings') ?? [];
     $announcement_settings['use_remote_entities'] = FALSE;
     $announcement_config->set('settings', $announcement_settings)->save();
   }
