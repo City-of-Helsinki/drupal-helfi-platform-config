@@ -248,7 +248,6 @@ final class MajorUpdateCommands extends DrushCommands {
     // Enable TPR related modules if TPR is enabled.
     if ($this->moduleHandler->moduleExists('helfi_tpr')) {
       $modules[] = 'helfi_tpr_config';
-      $modules[] = 'helfi_paragraphs_content_liftup';
     }
 
     // Enable the Helfi paragraphs news list module if the Helfi news feed was
