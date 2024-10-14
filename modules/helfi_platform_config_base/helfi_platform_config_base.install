@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\paragraphs\Entity\Paragraph;
+
 /**
  * Implements hook_install().
  */
@@ -86,6 +88,24 @@ function helfi_platform_config_base_update_9002() : void {
  * UHF-9511 Uninstall content_liftup paragraph.
  */
 function helfi_platform_config_base_update_9003() : void {
+
+  // Remove stale content liftup paragraph entities.
+  $paragraph_ids = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'content_liftup')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($paragraph_ids)) {
+    // Load the paragraphs.
+    $paragraphs = Paragraph::loadMultiple($paragraph_ids);
+
+    // Delete the paragraphs.
+    foreach ($paragraphs as $paragraph) {
+      $paragraph->delete();
+    }
+  }
+
+  // Uninstall helfi_paragraphs_content_liftup module.
   $module_installer = Drupal::service('module_installer');
   $module_installer->uninstall(['helfi_paragraphs_content_liftup']);
 
