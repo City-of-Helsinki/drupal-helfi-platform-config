@@ -26,7 +26,7 @@ function hdbt_cookie_banner_config_ignore_settings_alter(array &$settings): void
  */
 function hdbt_cookie_banner_theme() : array {
   return [
-    'cookie_policy' => [
+    'cookie_settings_page' => [
       'variables' => [
         'title' => NULL,
         'content' => NULL,
@@ -67,7 +67,7 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
     'apiUrl' => _hdbt_cookie_banner_get_api_url(),
     'langcode' => $langcode,
     'theme' => 'black',
-    'settingsPageSelector' => '.cookie-policy-settings',
+    'settingsPageSelector' => '.cookie-settings',
   ];
 }
 

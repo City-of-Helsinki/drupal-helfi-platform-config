@@ -8,7 +8,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
-use Drupal\hdbt_cookie_banner\Controller\HdbtCookiePolicyController;
+use Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController;
 use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
@@ -18,10 +18,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Tests the HdbtCookiePolicyController.
  *
- * @coversDefaultClass \Drupal\hdbt_cookie_banner\Controller\HdbtCookiePolicyController
+ * @coversDefaultClass \Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController
  * @group hdbt_cookie_banner
  */
-class HdbtCookiePolicyControllerTest extends KernelTestBase {
+class HdbtCookieSettingsPageControllerTest extends KernelTestBase {
 
   /**
    * Environment resolver.
@@ -38,11 +38,11 @@ class HdbtCookiePolicyControllerTest extends KernelTestBase {
   protected LanguageManagerInterface|MockObject $languageManager;
 
   /**
-   * Cookie policy controller.
+   * Cookie settings page controller.
    *
-   * @var \Drupal\hdbt_cookie_banner\Controller\HdbtCookiePolicyController
+   * @var \Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController
    */
-  protected HdbtCookiePolicyController $controller;
+  protected HdbtCookieSettingsPageController $controller;
 
   /**
    * {@inheritdoc}
@@ -71,7 +71,7 @@ class HdbtCookiePolicyControllerTest extends KernelTestBase {
     $this->container->set('language_manager', $this->languageManager);
 
     // Set up the controller with injected services.
-    $this->controller = HdbtCookiePolicyController::create($this->container);
+    $this->controller = HdbtCookieSettingsPageController::create($this->container);
   }
 
   /**
@@ -81,8 +81,8 @@ class HdbtCookiePolicyControllerTest extends KernelTestBase {
     // Set up configuration to use custom settings.
     $this->config('hdbt_cookie_banner.settings')
       ->set('use_custom_settings', TRUE)
-      ->set('cookie_information.title', 'Cookie policy title')
-      ->set('cookie_information.content', 'Cookie policy content')
+      ->set('cookie_information.title', 'Cookie settings title')
+      ->set('cookie_information.content', 'Cookie settings content')
       ->save();
 
     // Call the content method of the controller.
@@ -90,9 +90,9 @@ class HdbtCookiePolicyControllerTest extends KernelTestBase {
 
     // Assert that the result is a render array with the expected content.
     $this->assertIsArray($result);
-    $this->assertEquals('cookie_policy', $result['#theme']);
-    $this->assertEquals('Cookie policy title', $result['#title']);
-    $this->assertEquals('Cookie policy content', $result['#content']);
+    $this->assertEquals('cookie_settings_page', $result['#theme']);
+    $this->assertEquals('Cookie settings title', $result['#title']);
+    $this->assertEquals('Cookie settings content', $result['#content']);
   }
 
   /**
@@ -120,7 +120,7 @@ class HdbtCookiePolicyControllerTest extends KernelTestBase {
 
     // Assert that the returned result is a TrustedRedirectResponse.
     $this->assertInstanceOf(TrustedRedirectResponse::class, $result);
-    $this->assertEquals('https://www.test.hel.ninja/en/cookie-policy', $result->getTargetUrl());
+    $this->assertEquals('https://www.test.hel.ninja/en/cookie-settings', $result->getTargetUrl());
   }
 
 }

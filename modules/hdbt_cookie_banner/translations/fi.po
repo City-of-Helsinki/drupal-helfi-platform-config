@@ -56,11 +56,11 @@ msgid "Cookie settings page"
 msgstr "Evästeasetussivu"
 
 msgctxt "hdbt cookie banner"
-msgid "Cookie policy page title"
+msgid "Cookie settings page title"
 msgstr "Evästeasetussivun otsikko"
 
 msgctxt "hdbt cookie banner"
-msgid "Cookie policy page content"
+msgid "Cookie settings page content"
 msgstr "Evästeasetussivun sisältö"
 
 msgctxt "hdbt cookie banner"
