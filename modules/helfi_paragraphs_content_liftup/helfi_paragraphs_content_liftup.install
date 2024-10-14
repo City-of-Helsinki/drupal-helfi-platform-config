@@ -7,10 +7,28 @@
 
 declare(strict_types=1);
 
+use Drupal\paragraphs\Entity\Paragraph;
+
 /**
  * Implements hook_uninstall().
  */
 function helfi_paragraphs_content_liftup_uninstall(): void {
+  // Remove stale content liftup paragraph entities.
+  $paragraph_ids = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'content_liftup')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($paragraph_ids)) {
+    // Load the paragraphs.
+    $paragraphs = Paragraph::loadMultiple($paragraph_ids);
+
+    // Delete the paragraphs.
+    foreach ($paragraphs as $paragraph) {
+      $paragraph->delete();
+    }
+  }
+
   $config_factory = Drupal::configFactory();
 
   // The configurations to remove.
