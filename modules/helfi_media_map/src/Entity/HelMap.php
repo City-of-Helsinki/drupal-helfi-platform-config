@@ -18,7 +18,7 @@ class HelMap extends Media implements MediaInterface {
    *   Url of the service provider.
    */
   public function getServiceUrl(): ?string {
-    $map_url = $this->field_media_hel_map->uri;
+    $map_url = $this->get('field_media_hel_map')->first()->getString();
     $url_parts = parse_url($map_url);
     return $url_parts['scheme'] . "://" . $url_parts['host'];
   }
@@ -31,7 +31,9 @@ class HelMap extends Media implements MediaInterface {
    */
   public function getMediaTitle(): ?string {
     return $this->get('field_media_hel_map')
-      ->title;
+      ->first()
+      ->get('title')
+      ->getValue();
   }
 
   /**
@@ -41,7 +43,9 @@ class HelMap extends Media implements MediaInterface {
    *   The url.
    */
   public function getPrivacyPolicyUrl(): Url|string {
-    return helfi_eu_cookie_compliance_get_privacy_policy_url();
+    $url = helfi_eu_cookie_compliance_get_privacy_policy_url();
+    assert($url instanceof Url);
+    return $url;
   }
 
   /**

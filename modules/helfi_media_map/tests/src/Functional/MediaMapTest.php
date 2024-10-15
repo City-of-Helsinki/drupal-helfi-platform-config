@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_media_map\Functional;
 
 use Drupal\Core\Url;
-use Drupal\Tests\BrowserTestBase;
 use Drupal\media\Entity\Media;
 use Drupal\media\Entity\MediaType;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests media map functionality.

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_media_map\Unit;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_media_map\UrlParserTrait;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests UrlParserTrait.
@@ -19,8 +19,8 @@ class UrlParserTraitTest extends UnitTestCase {
   /**
    * Tests that we can convert links to canonical map links.
    *
-   * @covers \Drupal\helfi_media_map\UrlParserTrait::getMapUrl
    * @covers \Drupal\helfi_media_map\UrlParserTrait::assertMediaLink
+   * @covers \Drupal\helfi_media_map\UrlParserTrait::getMapUrl
    *
    * @dataProvider getTestMapUrlData
    */
