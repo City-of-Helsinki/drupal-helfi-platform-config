@@ -1,0 +1,162 @@
+uuid: 92a3dc5e-70ee-4f5e-9604-351530d2f800
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_content
+    - node.type.landing_page
+    - paragraphs.paragraphs_type.banner
+    - paragraphs.paragraphs_type.chart
+    - paragraphs.paragraphs_type.columns
+    - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.content_liftup
+    - paragraphs.paragraphs_type.curated_event_list
+    - paragraphs.paragraphs_type.event_list
+    - paragraphs.paragraphs_type.from_library
+    - paragraphs.paragraphs_type.hearings
+    - paragraphs.paragraphs_type.job_search
+    - paragraphs.paragraphs_type.liftup_with_image
+    - paragraphs.paragraphs_type.list_of_links
+    - paragraphs.paragraphs_type.map
+    - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.phasing
+    - paragraphs.paragraphs_type.popular_services
+    - paragraphs.paragraphs_type.remote_video
+    - paragraphs.paragraphs_type.target_group_links
+  module:
+    - disable_field
+    - entity_reference_revisions
+third_party_settings:
+  disable_field:
+    add_disable: none
+    edit_disable: none
+_core:
+  default_config_hash: zEXoDFJnyArUOiL2ZrtDuq4YDWKyn6ung9JndPk_Ntg
+id: node.landing_page.field_content
+field_name: field_content
+entity_type: node
+bundle: landing_page
+label: 'Content region'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      list_of_links: list_of_links
+      content_cards: content_cards
+      banner: banner
+      liftup_with_image: liftup_with_image
+      popular_services: popular_services
+      from_library: from_library
+      columns: columns
+      phasing: phasing
+      map: map
+      remote_video: remote_video
+      chart: chart
+      content_liftup: content_liftup
+      target_group_links: target_group_links
+      event_list: event_list
+      hearings: hearings
+      news_list: news_list
+      job_search: job_search
+      curated_event_list: curated_event_list
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 32
+        enabled: false
+      accordion_item:
+        weight: 33
+        enabled: false
+      banner:
+        weight: 2
+        enabled: true
+      chart:
+        weight: 10
+        enabled: true
+      columns:
+        weight: 6
+        enabled: true
+      contact_card:
+        weight: 37
+        enabled: false
+      contact_card_listing:
+        weight: 38
+        enabled: false
+      content_cards:
+        weight: 1
+        enabled: true
+      content_liftup:
+        weight: 11
+        enabled: true
+      curated_event_list:
+        weight: 41
+        enabled: true
+      event_list:
+        weight: 13
+        enabled: true
+      from_library:
+        weight: 5
+        enabled: true
+      hearings:
+        weight: 14
+        enabled: true
+      hero:
+        weight: 45
+        enabled: false
+      image:
+        weight: 46
+        enabled: false
+      job_search:
+        weight: 15
+        enabled: true
+      liftup_with_image:
+        weight: 3
+        enabled: true
+      list_of_links:
+        weight: 0
+        enabled: true
+      list_of_links_item:
+        weight: 50
+        enabled: false
+      map:
+        weight: 8
+        enabled: true
+      news_list:
+        weight: 14
+        enabled: true
+      phasing:
+        weight: 7
+        enabled: true
+      phasing_item:
+        weight: 54
+        enabled: false
+      popular_service_item:
+        weight: 56
+        enabled: false
+      popular_services:
+        weight: 4
+        enabled: true
+      remote_video:
+        weight: 9
+        enabled: true
+      sidebar_text:
+        weight: 58
+        enabled: false
+      social_media_link:
+        weight: 59
+        enabled: false
+      target_group_link_item:
+        weight: 61
+        enabled: false
+      target_group_links:
+        weight: 12
+        enabled: true
+      text:
+        weight: 62
+        enabled: false
+field_type: entity_reference_revisions

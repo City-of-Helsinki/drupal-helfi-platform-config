@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_node_landing_page' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\entity\BundleFieldDefinition;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_react_search_entity_bundle_field_info_alter(
+  &$fields,
+  EntityTypeInterface $entity_type,
+  $bundle,
+): void {
+  if ($entity_type->id() === 'linkedevents_event') {
+    $fields['main_image'] = BundleFieldDefinition::create('link')
+      ->setName('main_image')
+      ->setLabel('Main image')
+      ->setTargetEntityTypeId($entity_type->id())
+      ->setTargetBundle($bundle)
+      ->setSettings([
+        'max_length' => 1024,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+    $fields['start_time'] = BaseFieldDefinition::create('datetime')
+      ->setName('start_time')
+      ->setLabel('Event start time')
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'datetime_default',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+    $fields['end_time'] = BaseFieldDefinition::create('datetime')
+      ->setName('end_time')
+      ->setLabel('Event end time')
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'datetime_default',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+    $fields['external_link'] = BaseFieldDefinition::create('link')
+      ->setName('external_link')
+      ->setLabel('External link')
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'link_default',
+      ])
+      ->setTranslatable(TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+    $fields['langcode'] = BaseFieldDefinition::create('string')
+      ->setName('langcode')
+      ->setLabel('Langcode')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'string_default',
+      ]);
+  }
+}

@@ -1,0 +1,23 @@
+uuid: 313ec60d-d84a-4e82-9ae3-ee3221c0e631
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.curated_event_list.field_events
+    - paragraphs.paragraphs_type.curated_event_list
+id: paragraph.curated_event_list.default
+targetEntityType: paragraph
+bundle: curated_event_list
+mode: default
+content:
+  field_events:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true
