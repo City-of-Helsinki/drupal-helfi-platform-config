@@ -1,0 +1,42 @@
+uuid: 66fe8cbc-203c-40aa-ac7b-6e0e89470312
+langcode: en
+status: true
+dependencies: {  }
+id: linkedevents_event
+label: 'LinkedEvents: Event'
+label_plural: 'LinkedEvents: Events'
+description: 'Event entities from https://api.hel.fi/linkedevents.'
+read_only: true
+generate_aliases: false
+field_mapper_id: jsonpath
+field_mapper_config:
+  field_mappings:
+    id:
+      value: $.id
+    uuid:
+      value: $.id
+    title:
+      value: $.title
+    main_image:
+      uri: '$.images[0].url'
+      title: '$.images[0].name'
+    start_time:
+      value: $.start_time
+    end_time:
+      value: $.end_time
+    external_link:
+      uri: $.external_link
+      title: $.clean_title
+    main_image_title:
+      value: '$.images[0].name'
+    main_image_alt:
+      value: '$.images[0].alt_text'
+    photographer_name:
+      value: '$.images[0].photographer_name'
+storage_client_id: linkedevents_events
+storage_client_config: null
+persistent_cache_max_age: 10800
+annotation_entity_type_id: null
+annotation_bundle_id: null
+annotation_field_name: null
+inherits_annotation_fields: false

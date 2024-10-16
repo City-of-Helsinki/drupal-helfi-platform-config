@@ -1,0 +1,11 @@
+name: 'HELfi Curated Event List'
+type: module
+core_version_requirement: '^9 || ^10'
+dependencies:
+  - external_entities:external_entities
+  - drupal:link
+  - helfi_api_base:helfi_api_base
+  - helfi_platform_config:helfi_platform_config
+  - paragraphs:paragraphs
+'interface translation project': helfi_paragraphs_curated_event_list
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_paragraphs_curated_event_list/translations/%language.po

@@ -1,0 +1,109 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_node_landing_page' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\entity\BundleFieldDefinition;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_paragraphs_curated_event_list_preprocess_field__paragraph__field_events__curated_event_list(
+  array &$variables,
+): void {
+  $past_events = [];
+  $future_or_ongoing = [];
+  $time = time();
+
+  foreach($variables['items'] as $item) {
+    $event = $item['content']['#linkedevents_event'];
+    $end = $event->end_time->date;
+    if (
+      $end->getTimeStamp() < $time
+    ) {
+      $past_events[] = $item;
+    }
+    else {
+      $future_or_ongoing[] = $item;
+    }
+  }
+
+  $variables['past_events'] = $past_events;
+  // Always show a maximum if 3 events.
+  $variables['future_or_ongoing'] = array_slice($future_or_ongoing, 0, 3);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_paragraphs_curated_event_list_preprocess_external_entity__linkedevents_event(
+  array &$variables
+): void {
+  $event = $variables['external_entity'];
+  $variables['start_timestamp'] = $event->start_time->date->getTimeStamp();
+  $variables['end_timestamp'] = $event->end_time->date->getTimeStamp();
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_paragraphs_curated_event_list_entity_bundle_field_info_alter(
+  &$fields,
+  EntityTypeInterface $entity_type,
+  $bundle,
+): void {
+  if ($entity_type->id() === 'linkedevents_event') {
+    $fields['main_image'] = BundleFieldDefinition::create('link')
+      ->setName('main_image')
+      ->setLabel('Main image')
+      ->setTargetEntityTypeId($entity_type->id())
+      ->setTargetBundle($bundle)
+      ->setSettings([
+        'max_length' => 1024,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+    $fields['start_time'] = BundleFieldDefinition::create('datetime')
+      ->setName('start_time')
+      ->setLabel('Event start time')
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'datetime_default',
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['end_time'] = BundleFieldDefinition::create('datetime')
+      ->setName('end_time')
+      ->setLabel('Event end time')
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'datetime_default',
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['external_link'] = BundleFieldDefinition::create('link')
+      ->setName('external_link')
+      ->setLabel('External link')
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'link_default',
+      ])
+      ->setTranslatable(TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+  }
+
+  if (
+    $entity_type->id() === 'paragraph' &&
+    $bundle === 'curated_event_list' &&
+    array_key_exists('field_events', $fields)
+  ) {
+    $fields['field_events']->addConstraint('CuratedEvent', []);
+  }
+}
