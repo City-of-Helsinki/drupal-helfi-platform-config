@@ -181,3 +181,15 @@ function helfi_platform_config_update_9312() : void {
     \Drupal::service('module_installer')->install(['helfi_users']);
   }
 }
+
+/**
+ * UHF-10259: Enable helfi_paragraphs_curated_event_list module.
+ */
+function helfi_platform_config_update_9313() : void {
+  $module_installer = \Drupal::service('module_installer');
+
+  // Enable helfi_paragraphs_curated_event_list.
+  if (!\Drupal::moduleHandler()->moduleExists('helfi_paragraphs_curated_event_list')) {
+    $module_installer->install(['helfi_paragraphs_curated_event_list']);
+  }
+}

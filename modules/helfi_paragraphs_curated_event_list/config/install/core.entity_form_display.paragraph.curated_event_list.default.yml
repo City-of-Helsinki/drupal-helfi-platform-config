@@ -1,0 +1,36 @@
+uuid: b5c5ed81-d651-4db2-8d72-a67e7b66390e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.curated_event_list.field_all_events_link
+    - field.field.paragraph.curated_event_list.field_events
+    - paragraphs.paragraphs_type.curated_event_list
+  module:
+    - link
+id: paragraph.curated_event_list.default
+targetEntityType: paragraph
+bundle: curated_event_list
+mode: default
+content:
+  field_all_events_link:
+    type: link_default
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_events:
+    type: entity_reference_autocomplete
+    weight: 0
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 5
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

@@ -1,0 +1,5 @@
+label: 'Kaikki tapahtumat -linkki'
+description: "Lisää likki tapahtumat.hel.fi -sivulle. Voit halutessasi tehdä tapahtumakalenterissa haluamasi tapahtumien rajauksen ja kopioida sivun URL-osoitteen.\r\nLisää myös teksti linkille, esimerkiksi. <i>Katso kaikki tapahtumat</i>"
+default_value:
+  -
+    title: 'Katso kaikki tapahtumat'

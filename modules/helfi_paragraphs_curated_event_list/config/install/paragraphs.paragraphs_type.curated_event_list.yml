@@ -1,0 +1,10 @@
+uuid: 5b0c689e-1733-47ff-ba7c-63923e4f2116
+langcode: en
+status: true
+dependencies: {  }
+id: curated_event_list
+label: 'Curated event list'
+icon_uuid: null
+icon_default: null
+description: 'Event list with curated event picks loaded from Linked Events API.'
+behavior_plugins: {  }

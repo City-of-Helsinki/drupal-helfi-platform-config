@@ -1,0 +1,5 @@
+msgid ""
+msgstr ""
+
+msgid "Event %title has ended. Only upcoming or ongoing events are allowed."
+msgstr "Tapahtuma %title on päättynyt. Listaan voi lisätä vain tulevia tai käynnissä olevia tapahtumia."
