@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_curated_event_list\Plugin\ExternalEntities\StorageClient;
 
@@ -97,34 +97,35 @@ class Events extends ExternalEntityStorageClientBase {
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
 
-    // Run when loading a list of entities eg. when creating autocomplete optionlist
+    // Run when loading a list of entities
+    // eg. when creating autocomplete optionlist.
     if (isset($parameters['ids'])) {
       $endpoint = 'event';
       $query = http_build_query([
         'ids' => implode(',', $parameters['ids']),
-        'language' => $langcode
+        'language' => $langcode,
       ]);
     }
-    else if (
+    elseif (
       isset($parameters[0]['field']) &&
       $parameters[0]['field'] === 'id'
     ) {
       $endpoint = 'event';
       $query = http_build_query([
         'ids' => implode(',', $parameters[0]['value']),
-        'language' => $langcode
+        'language' => $langcode,
       ]);
     }
-    else if (preg_match('/.{0,15}:.{0,40}/i', $parameters[0]['value'])) {
+    elseif (preg_match('/.{0,15}:.{0,40}/i', $parameters[0]['value'])) {
       $endpoint = 'event';
       $query = http_build_query(
         [
           'ids' => $parameters[0]['value'],
-          'language' => $langcode
+          'language' => $langcode,
         ]
       );
     }
-    // Run when receiving input from autocomplete field
+    // Run when receiving input from autocomplete field.
     else {
       $endpoint = 'search';
       $query = http_build_query([
@@ -145,7 +146,7 @@ class Events extends ExternalEntityStorageClientBase {
         return [];
       }
     }
-    catch(\Throwable $t) {
+    catch (\Throwable $t) {
       $this->logger->error(
         'Linked Events external entity request failed with error: ' .
         $t->getMessage()
@@ -155,7 +156,7 @@ class Events extends ExternalEntityStorageClientBase {
     }
 
     $prepared = [];
-    foreach($json['data'] as $event) {
+    foreach ($json['data'] as $event) {
       if (!isset($event['name'][$langcode])) {
         $this->logger->error(
           'Event with id: ' . $event['id'] . ' has no name in language: ' . $langcode
@@ -173,4 +174,5 @@ class Events extends ExternalEntityStorageClientBase {
 
     return $prepared;
   }
+
 }

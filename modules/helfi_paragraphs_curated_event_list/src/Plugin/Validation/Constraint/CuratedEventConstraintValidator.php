@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_curated_event_list\Plugin\Validation\Constraint;
 
@@ -11,6 +11,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  * Validates the CuratedEventConstraint constraint.
  */
 class CuratedEventConstraintValidator extends ConstraintValidator {
+
   /**
    * {@inheritdoc}
    */
@@ -24,7 +25,7 @@ class CuratedEventConstraintValidator extends ConstraintValidator {
       return;
     }
 
-    foreach($events as $key => $event) {
+    foreach ($events as $key => $event) {
       if ($event->end_time->date->getTimeStamp() < time()) {
         $this->context->buildViolation($constraint->containsEndedEvents, ['%title' => $event->title->value])
           ->atPath($key)
@@ -32,4 +33,5 @@ class CuratedEventConstraintValidator extends ConstraintValidator {
       }
     }
   }
+
 }
