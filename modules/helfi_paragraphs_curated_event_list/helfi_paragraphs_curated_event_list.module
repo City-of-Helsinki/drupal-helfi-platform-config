@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -106,4 +107,23 @@ function helfi_paragraphs_curated_event_list_entity_bundle_field_info_alter(
   ) {
     $fields['field_events']->addConstraint('CuratedEvent', []);
   }
+}
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_curated_event_list_helfi_paragraph_types() : array {
+  $types = [
+    'field_content' => [
+      'curated_event_list' => 15,
+    ],
+  ];
+
+  $enabled = [];
+  foreach ($types as $field => $paragraphTypes) {
+    foreach ($paragraphTypes as $paragraphType => $weight) {
+      $enabled[] = new ParagraphTypeCollection('node', 'landing_page', $field, $paragraphType, $weight);
+    }
+  }
+  return $enabled;
 }
