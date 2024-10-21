@@ -1,4 +1,4 @@
-name: 'HELfi Curated Event List'
+name: 'HELfi Paragraphs: Curated Event List'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
