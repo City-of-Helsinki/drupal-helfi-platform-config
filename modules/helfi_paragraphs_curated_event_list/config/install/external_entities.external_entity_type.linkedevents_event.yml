@@ -19,7 +19,7 @@ field_mapper_config:
       value: $.title
     main_image:
       uri: '$.images[0].url'
-      title: '$.images[0].name'
+      title: '$.images[0].alt_text'
     start_time:
       value: $.start_time
     end_time:
@@ -27,12 +27,6 @@ field_mapper_config:
     external_link:
       uri: $.external_link
       title: $.clean_title
-    main_image_title:
-      value: '$.images[0].name'
-    main_image_alt:
-      value: '$.images[0].alt_text'
-    photographer_name:
-      value: '$.images[0].photographer_name'
 storage_client_id: linkedevents_events
 storage_client_config: null
 persistent_cache_max_age: 0
