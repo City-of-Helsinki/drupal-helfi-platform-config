@@ -6,9 +6,9 @@ namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Controller;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\CacheableJsonResponse;
-use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
 use Drupal\hdbt_cookie_banner\Controller\HdbtCookieBannerController;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
+use Drupal\KernelTests\KernelTestBase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -18,6 +18,23 @@ use Symfony\Component\HttpFoundation\Response;
  * @group hdbt_cookie_banner
  */
 class HdbtCookieBannerControllerTest extends KernelTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'system',
+    'hdbt_cookie_banner',
+    'helfi_api_base',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    $this->installConfig(['system', 'hdbt_cookie_banner']);
+  }
 
   /**
    * Tests the siteSettings() method.
