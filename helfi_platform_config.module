@@ -403,9 +403,9 @@ function helfi_platform_config_system_breadcrumb_alter(
  * Implements hook_preprocess_HOOK().
  */
 function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
-  if (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
-    $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
-  }
+  /** @var \Drupal\hdbt_cookie_banner\Services\CookieSettings $cookie_settings */
+  $cookie_settings = \Drupal::service('hdbt_cookie_banner.cookie_settings');
+  $variables['privacy_policy_url'] = $cookie_settings->getCookieSettingsPageUrl();
 }
 
 /**
