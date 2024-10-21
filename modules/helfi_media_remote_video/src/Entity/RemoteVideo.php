@@ -53,7 +53,7 @@ class RemoteVideo extends Media implements MediaInterface {
       $url = $cookie_settings->getCookieSettingsPageUrl();
       assert($url instanceof Url);
     }
-    // @todo Remove once the EU Cookie Compliance module is removed.
+    // @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
     elseif (\Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
       $url = helfi_eu_cookie_compliance_get_privacy_policy_url();
       assert($url instanceof Url);

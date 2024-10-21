@@ -193,7 +193,7 @@ function helfi_platform_config_page_attachments_alter(array &$attachments): void
  */
 function helfi_platform_config_theme() : array {
   return [
-    // @todo Deprecated. Remove when the EU cookie compliance module is removed.
+    // @todo UHF-10862 Remove cookie_consent_intro once the HDBT cookie banner module is in use.
     'cookie_consent_intro' => [
       'variables' => [
         'title' => NULL,
@@ -408,7 +408,7 @@ function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
     $cookie_settings = \Drupal::service('hdbt_cookie_banner.cookie_settings');
     $variables['privacy_policy_url'] = $cookie_settings->getCookieSettingsPageUrl();
   }
-  // @todo Remove once the EU Cookie Compliance module is removed.
+  // @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
   elseif (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
     $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
   }
