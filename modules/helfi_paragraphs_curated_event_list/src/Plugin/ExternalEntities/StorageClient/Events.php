@@ -116,6 +116,7 @@ class Events extends ExternalEntityStorageClientBase {
         'language' => $langcode,
       ]);
     }
+    // Enable searching directly with an event id
     elseif (preg_match('/.{0,15}:.{0,40}/i', $parameters[0]['value'])) {
       $endpoint = 'event';
       $query = http_build_query(
