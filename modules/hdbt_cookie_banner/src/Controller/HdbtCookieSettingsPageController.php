@@ -15,7 +15,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines HdbtCookiePolicyController class.
+ * Defines HdbtCookieSettingsPageController class.
  */
 final class HdbtCookieSettingsPageController extends ControllerBase implements ContainerInjectionInterface {
 

@@ -5,18 +5,11 @@ declare(strict_types=1);
 namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Controller;
 
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
-use Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController;
-use Drupal\helfi_api_base\Environment\Address;
-use Drupal\helfi_api_base\Environment\Environment;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Tests the HdbtCookiePolicyController.
+ * Tests the HdbtCookieSettingsPageController.
  *
  * @coversDefaultClass \Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController
  * @group hdbt_cookie_banner
@@ -24,66 +17,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 class HdbtCookieSettingsPageControllerTest extends KernelTestBase {
 
   /**
-   * Environment resolver.
-   *
-   * @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface|\PHPUnit\Framework\MockObject\MockObject
-   */
-  protected EnvironmentResolverInterface|MockObject $environmentResolver;
-
-  /**
-   * Language manager service.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface|\PHPUnit\Framework\MockObject\MockObject
-   */
-  protected LanguageManagerInterface|MockObject $languageManager;
-
-  /**
-   * Cookie settings page controller.
-   *
-   * @var \Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController
-   */
-  protected HdbtCookieSettingsPageController $controller;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-
-    // Mock the environment resolver to return a specific environment.
-    $mockEnvironment = new Environment(
-      new Address('www.test.hel.ninja'),
-      new Address('internal-address.local', 'http', 8080),
-      ['en' => '/en'],
-      EnvironmentEnum::Test,
-      [],
-    );
-
-    // Mock the EnvironmentResolver service.
-    $this->environmentResolver = $this->createMock(EnvironmentResolverInterface::class);
-    $this->environmentResolver->method('getEnvironment')->willReturn($mockEnvironment);
-
-    // Create a mock for the LanguageManagerInterface.
-    $this->languageManager = $this->createMock(LanguageManagerInterface::class);
-
-    // Set up the container with the mocked services.
-    $this->container->set('helfi_api_base.environment_resolver', $this->environmentResolver);
-    $this->container->set('language_manager', $this->languageManager);
-
-    // Set up the controller with injected services.
-    $this->controller = HdbtCookieSettingsPageController::create($this->container);
-  }
-
-  /**
    * Tests the controller returning cookie content.
    */
   public function testContentWithCustomSettings() {
-    // Set up configuration to use custom settings.
-    $this->config('hdbt_cookie_banner.settings')
-      ->set('use_custom_settings', TRUE)
-      ->set('cookie_information.title', 'Cookie settings title')
-      ->set('cookie_information.content', 'Cookie settings content')
-      ->save();
+    // Set up configuration to not use custom settings.
+    $expected = [
+      ['use_custom_settings', TRUE],
+      ['cookie_information.title', 'Cookie settings title'],
+      ['cookie_information.content', 'Cookie settings content'],
+    ];
+    $this->setUpTheConfigurations($expected);
 
     // Call the content method of the controller.
     $result = $this->controller->content();
@@ -100,9 +43,10 @@ class HdbtCookieSettingsPageControllerTest extends KernelTestBase {
    */
   public function testRedirectToCookiePolicyUrl() {
     // Set up configuration to not use custom settings.
-    $this->config('hdbt_cookie_banner.settings')
-      ->set('use_custom_settings', FALSE)
-      ->save();
+    $expected = [
+      ['use_custom_settings', FALSE],
+    ];
+    $this->setUpTheConfigurations($expected);
 
     // Create a mock language object to return from getCurrentLanguage.
     $language = $this->createMock(LanguageInterface::class);

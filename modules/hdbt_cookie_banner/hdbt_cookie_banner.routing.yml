@@ -16,7 +16,7 @@ hdbt_cookie_banner.site_settings:
 hdbt_cookie_banner.cookie_settings_page:
   path: '/cookie-settings'
   defaults:
-    _controller: '\Drupal\hdbt_cookie_banner\Controller\HdbtCookiePolicyController::content'
+    _controller: '\Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController::content'
     _title: 'Cookie settings'
   requirements:
     _access: 'TRUE'
