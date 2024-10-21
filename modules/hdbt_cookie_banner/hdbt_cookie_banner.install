@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for hdbt_cookie_banner module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Grants required permissions.
+ */
+function hdbt_cookie_banner_grant_permissions() : void {
+  $permissions = [
+    'admin' => [
+      'administer hdbt_cookie_banner',
+    ],
+  ];
+  helfi_platform_config_grant_permissions($permissions);
+}
+
+/**
+ * Implements hook_install().
+ */
+function hdbt_cookie_banner_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  // Uninstall the EU Cookie compliance and Helfi EU Cookie compliance
+  // modules if they are installed.
+  $module_handler = \Drupal::moduleHandler();
+  $module_installer = \Drupal::service('module_installer');
+
+  if (
+    $module_handler->moduleExists('eu_cookie_compliance') ||
+    $module_handler->moduleExists('helfi_eu_cookie_compliance')
+  ) {
+    $module_installer->uninstall([
+      'eu_cookie_compliance',
+      'helfi_eu_cookie_compliance',
+    ]);
+  }
+
+  // Grant required permissions.
+  hdbt_cookie_banner_grant_permissions();
+}
