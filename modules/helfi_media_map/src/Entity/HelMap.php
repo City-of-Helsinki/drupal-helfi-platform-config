@@ -39,12 +39,24 @@ class HelMap extends Media implements MediaInterface {
   /**
    * Get url.
    *
-   * @return \Drupal\Core\Url|string
+   * @return \Drupal\Core\Url|NULL
    *   The url.
    */
-  public function getPrivacyPolicyUrl(): Url|string {
-    $url = helfi_eu_cookie_compliance_get_privacy_policy_url();
-    assert($url instanceof Url);
+  public function getPrivacyPolicyUrl(): Url|NULL {
+    $url = NULL;
+
+    if (\Drupal::moduleHandler()->moduleExists('hdbt_cookie_banner')) {
+      /** @var \Drupal\hdbt_cookie_banner\Services\CookieSettings $cookie_settings */
+      $cookie_settings = \Drupal::service('hdbt_cookie_banner.cookie_settings');
+      $url = $cookie_settings->getCookieSettingsPageUrl();
+      assert($url instanceof Url);
+    }
+    // @todo Remove once the EU Cookie Compliance module is removed.
+    elseif (\Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
+      $url = helfi_eu_cookie_compliance_get_privacy_policy_url();
+      assert($url instanceof Url);
+    }
+
     return $url;
   }
 
