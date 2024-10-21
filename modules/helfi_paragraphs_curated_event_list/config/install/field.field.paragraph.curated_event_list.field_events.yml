@@ -10,7 +10,7 @@ field_name: field_events
 entity_type: paragraph
 bundle: curated_event_list
 label: Events
-description: "Pick events to display in the list. You may eihter search event by their name <i>or</i> enter their ID. \r\n <br><br>\r\nYou can find the ID of an event on tapahtumat.hel.fi site from the URL of the page. For example, in the url <a>https://tapahtumat.hel.fi/fi/events/helsinki:agiy4m4ida</a> the <b>helsinki:agiy4m4ida</b> part is the ID of the event.\r\n <br><br>\r\nThe page will display the top three events. You can arrange the events by dragging. Expired events will be automatically removed from the page."
+description: "Pick events to display in the list. You may either search event by their name <i>or</i> enter their ID. \r\n <br><br>\r\nYou can find the ID of an event on tapahtumat.hel.fi site from the URL of the page. For example, in the url <a>https://tapahtumat.hel.fi/fi/events/helsinki:agiy4m4ida</a> the <b>helsinki:agiy4m4ida</b> part is the ID of the event.\r\n <br><br>\r\nThe page will display the top three events. You can arrange the events by dragging. Expired events will be automatically removed from the page."
 required: false
 translatable: false
 default_value: {  }
