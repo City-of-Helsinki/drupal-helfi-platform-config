@@ -46,7 +46,9 @@ function helfi_paragraphs_curated_event_list_paragraph_view(
 
     foreach ($entities as $item) {
       $item->addCacheableDependency($entity);
-      $end_timestamp = $item->end_time->date->getTimeStamp();
+      /** @var \Drupal\datetime\Plugin\Field\FieldType\DateTimeItem */
+      $end_time = $item->get('end_time')->first();
+      $end_timestamp = $end_time->date->getTimeStamp();
       $has_ended = $end_timestamp < $time;
 
       $build[$has_ended ? 'past_events' : 'future_or_ongoing'][] = Drupal::entityTypeManager()

@@ -5,12 +5,6 @@ dependencies:
   config:
     - field.storage.paragraph.field_events
     - paragraphs.paragraphs_type.curated_event_list
-  module:
-    - disable_field
-third_party_settings:
-  disable_field:
-    add_disable: none
-    edit_disable: none
 id: paragraph.curated_event_list.field_events
 field_name: field_events
 entity_type: paragraph
