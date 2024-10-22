@@ -29,7 +29,9 @@
       return hasAgreed;
     },
     setAcceptedCategories: (categories) => {
-      Drupal.eu_cookie_compliance.setAcceptedCategories([ ...Drupal.eu_cookie_compliance.getAcceptedCategories(), categories ]);
+      categories.map((category) => {
+        Drupal.eu_cookie_compliance.setAcceptedCategories([ ...Drupal.eu_cookie_compliance.getAcceptedCategories(), category ]);
+      });
     },
   };
 })(Drupal);
