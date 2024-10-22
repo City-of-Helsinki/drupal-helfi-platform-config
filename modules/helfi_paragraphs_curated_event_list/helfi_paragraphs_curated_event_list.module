@@ -43,7 +43,7 @@ function helfi_paragraphs_curated_event_list_paragraph_view(
     return $event->id();
   }, $selections);
 
-  /** @var LinkedEventsEvent[] */
+  /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent[] */
   $entities = $storage->loadMultiple($ids);
 
   foreach ($entities as $item) {

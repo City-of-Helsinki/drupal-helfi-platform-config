@@ -22,7 +22,7 @@ final class LinkedEventsEvent extends ExternalEntity {
     $end_time = $this->get('end_time')?->value;
 
     if (!$end_time) {
-      return false;
+      return FALSE;
     }
 
     $datetime = new DrupalDateTime($end_time);

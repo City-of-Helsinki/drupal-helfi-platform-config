@@ -26,7 +26,7 @@ class CuratedEventConstraintValidator extends ConstraintValidator {
     }
 
     foreach ($events as $key => $event) {
-      if ($event->end_time->date->getTimeStamp() < time()) {
+      if ($event->hasEnded()) {
         $this->context->buildViolation($constraint->containsEndedEvents, ['%title' => $event->title->value])
           ->atPath($key)
           ->addViolation();
