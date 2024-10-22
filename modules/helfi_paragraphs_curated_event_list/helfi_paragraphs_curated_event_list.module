@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains helfi_paragraphs_curated_event_list' module.
+ * Contains helfi_paragraphs_curated_event_list module.
  */
 
 declare(strict_types=1);
@@ -10,7 +10,7 @@ declare(strict_types=1);
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\entity\BundleFieldDefinition;
-use Drupal\external_entities\Entity\ExternalEntity;
+use Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -27,41 +27,38 @@ function helfi_paragraphs_curated_event_list_paragraph_view(
     return;
   }
 
-  $selections = $entity->field_events->referencedEntities();
+  $selections = $entity->get('field_events')->referencedEntities();
 
   if (
-    $display->getComponent('field_events') &&
-    !empty($selections)
+    !$display->getComponent('field_events') ||
+    empty($selections)
   ) {
-    $storage = Drupal::entityTypeManager()
-      ->getStorage('linkedevents_event');
+    return;
+  }
 
-    $ids = array_map(function (ExternalEntity $event) {
-      return $event->id();
-    }, $selections);
+  $storage = Drupal::entityTypeManager()
+    ->getStorage('linkedevents_event');
 
-    /** @var \Drupal\external_entities\Entity\ExternalEntity[] */
-    $entities = $storage->loadMultiple($ids);
-    $time = time();
+  $ids = array_map(function (LinkedEventsEvent $event) {
+    return $event->id();
+  }, $selections);
 
-    foreach ($entities as $item) {
-      $item->addCacheableDependency($entity);
-      /** @var \Drupal\datetime\Plugin\Field\FieldType\DateTimeItem */
-      $end_time = $item->get('end_time')->first();
-      $end_timestamp = $end_time->date->getTimeStamp();
-      $has_ended = $end_timestamp < $time;
+  /** @var LinkedEventsEvent[] */
+  $entities = $storage->loadMultiple($ids);
 
-      $build[$has_ended ? 'past_events' : 'future_or_ongoing'][] = Drupal::entityTypeManager()
-        ->getViewBuilder('linkedevents_event')
-        ->view($item);
-    }
+  foreach ($entities as $item) {
+    $item->addCacheableDependency($entity);
 
-    if (
-      isset($build['future_or_ongoing']) &&
-      count($build['future_or_ongoing']) > 3
-    ) {
-      $build['future_or_ongoing'] = array_slice($build['future_or_ongoing'], 0, 3);
-    }
+    $build[$item->hasEnded() ? 'past_events' : 'future_or_ongoing'][] = Drupal::entityTypeManager()
+      ->getViewBuilder('linkedevents_event')
+      ->view($item);
+  }
+
+  if (
+    isset($build['future_or_ongoing']) &&
+    count($build['future_or_ongoing']) > 3
+  ) {
+    $build['future_or_ongoing'] = array_slice($build['future_or_ongoing'], 0, 3);
   }
 }
 
@@ -132,6 +129,15 @@ function helfi_paragraphs_curated_event_list_entity_bundle_field_info_alter(
     array_key_exists('field_events', $fields)
   ) {
     $fields['field_events']->addConstraint('CuratedEvent', []);
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_curated_event_list_entity_bundle_info_alter(array &$bundles) : void {
+  if (isset($bundles['linkedevents_event']['linkedevents_event'])) {
+    $bundles['linkedevents_event']['linkedevents_event']['class'] = LinkedEventsEvent::class;
   }
 }
 

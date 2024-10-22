@@ -2,8 +2,9 @@ name: 'HELfi Paragraphs: Curated Event List'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - external_entities:external_entities
   - drupal:link
+  - drupal:field
+  - external_entities:external_entities
   - helfi_api_base:helfi_api_base
   - helfi_platform_config:helfi_platform_config
   - paragraphs:paragraphs
