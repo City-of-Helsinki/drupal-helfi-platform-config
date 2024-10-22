@@ -49,7 +49,7 @@ function helfi_paragraphs_curated_event_list_paragraph_view(
   foreach ($entities as $item) {
     $item->addCacheableDependency($entity);
 
-    $build[$item->hasEnded() ? 'past_events' : 'future_or_ongoing'][] = Drupal::entityTypeManager()
+    $build[$item->getEventType()][] = Drupal::entityTypeManager()
       ->getViewBuilder('linkedevents_event')
       ->view($item);
   }
