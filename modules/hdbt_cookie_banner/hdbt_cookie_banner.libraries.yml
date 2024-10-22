@@ -44,13 +44,15 @@ cookie_banner_admin_ui:
 
 hdbt_cookie_banner:
   version: 1.0.0
+  header: true
   js:
-    assets/js/hdbt-cookie-banner.js: {}
+    assets/js/hdbt-cookie-banner.js: { weight: -19 }
   dependencies:
     - core/drupal
     - core/drupalSettings
 
 hds_cookie_consent:
   version: 1.0.0
+  header: true
   js:
-    assets/js/hds-cookie-consent.min.js: { minified: true, preprocess: false }
+    assets/js/hds-cookie-consent.min.js: { weight: -20, minified: true, preprocess: false }
