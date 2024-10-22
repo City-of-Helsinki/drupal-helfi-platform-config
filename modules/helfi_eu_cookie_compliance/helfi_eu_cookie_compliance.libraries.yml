@@ -1,0 +1,8 @@
+cookie_consent:
+  version: 1.0.0
+  header: true
+  js:
+    assets/js/helfi-eu-cookie-compliance.js: { weight: -19 }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings

@@ -1,4 +1,21 @@
-(function (Drupal, drupalSettings) {
+'use strict';
+
+((Drupal, drupalSettings) => {
+
+  // Global cookie consent status object.
+  Drupal.cookieConsent = {
+    getConsentStatus: (categories) => {
+      return window &&
+        window.hds.cookieConsent &&
+        window.hds.cookieConsent.getConsentStatus(categories);
+    },
+    setAcceptedCategories: (categories) => {
+      if (window && window.hds.cookieConsent) {
+        window.hds.cookieConsent.setGroupsStatusToAccepted(categories);
+      }
+    },
+  };
+
   Drupal.behaviors.hdbt_cookie_banner = {
     attach: function () {
       if (
