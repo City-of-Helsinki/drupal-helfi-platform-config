@@ -2,7 +2,7 @@
   'use strict';
 
   var loadReactAndShare = function () {
-    if (window && window.hds.cookieConsent && window.hds.cookieConsent.getConsentStatus(['statistics'])) {
+    if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
       window.rnsData = {
         apiKey: drupalSettings.reactAndShareApiKey,
         disableFa: true,
@@ -30,9 +30,9 @@
     loadReactAndShare = function () {};
   };
 
-  if (window.hds.cookieConsent) {
+  if (Drupal.cookieConsent.initialized()) {
     loadReactAndShare();
   } else {
-    $(document).on('hds_cookieConsent_ready', loadReactAndShare);
+    Drupal.cookieConsent.loadFunction(loadReactAndShare);
   }
 })(jQuery, Drupal);
