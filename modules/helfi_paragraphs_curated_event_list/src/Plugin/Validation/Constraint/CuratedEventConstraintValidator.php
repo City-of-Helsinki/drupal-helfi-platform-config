@@ -20,7 +20,6 @@ class CuratedEventConstraintValidator extends ConstraintValidator {
 
     $events = $value->referencedEntities();
 
-    // Early return if no events are selected.
     if (empty($events)) {
       return;
     }
