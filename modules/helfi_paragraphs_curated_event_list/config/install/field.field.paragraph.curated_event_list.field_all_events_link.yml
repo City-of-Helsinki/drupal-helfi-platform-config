@@ -1,0 +1,28 @@
+uuid: b144b934-3c5a-4c5b-ae89-b477bfb8367d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_all_events_link
+    - paragraphs.paragraphs_type.curated_event_list
+  module:
+    - link
+id: paragraph.curated_event_list.field_all_events_link
+field_name: field_all_events_link
+entity_type: paragraph
+bundle: curated_event_list
+label: 'All events link'
+description: "Add a link to the tapahtumat.hel.fi website. You may also filter the events in the event calendar as desired and copy the page's URL.\r\n<br><br>\r\nAlso provide a text for the link, eg. <i>View all events.</i>"
+required: false
+translatable: false
+default_value:
+  -
+    attributes: {  }
+    uri: 'https://tapahtumat.hel.fi'
+    title: 'View all events'
+    options: {  }
+default_value_callback: ''
+settings:
+  title: 2
+  link_type: 16
+field_type: link

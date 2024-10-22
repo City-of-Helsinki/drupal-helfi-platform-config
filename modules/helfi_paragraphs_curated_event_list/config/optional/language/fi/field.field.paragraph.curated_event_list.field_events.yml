@@ -1,0 +1,2 @@
+label: Tapahtumat
+description: "Valitse tapahtumat, jotka näytetään listassa. Voit hakea tapahtumaa sen nimellä <i>tai</i> tapahtuman ID:llä.\r\n<br><br>\r\nLöydät tapahtuman ID:n tapahtumat.hel.fi-sivun osoitteesta: esimerkiksi osoitteessa <a>https://tapahtumat.hel.fi/fi/events/helsinki:agiy4m4ida</a> kohta <b>helsinki:agiy4m4ida</b> on tapahtuman ID.\r\n<br><br>\r\nSivulla näytetään kolme ylintä tapahtumaa. Voit järjestää tapahtumia raahaamalla. Vanhentuneet tapahtumat poistuvat sivulta automaattisesti."
