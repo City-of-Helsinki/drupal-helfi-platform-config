@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\hdbt_cookie_banner\Services;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
@@ -25,7 +24,6 @@ class CookieSettings {
     private readonly RouteProviderInterface $routeProvider,
     private readonly ConfigFactoryInterface $configFactory,
     private readonly LanguageManagerInterface $languageManager,
-    private readonly ModuleExtensionList $moduleExtensionList,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly UrlGeneratorInterface $urlGenerator,
   ) {
@@ -111,7 +109,7 @@ class CookieSettings {
       // Construct the URL to the HDS cookie consent JS file.
       $library = vsprintf("%s/etusivu-assets/%s/assets/js/hds-cookie-consent.min.js", [
         $environment->getBaseUrl(),
-        $this->moduleExtensionList->getPath('hdbt_cookie_banner'),
+        'modules/contrib/helfi_platform_config/modules/hdbt_cookie_banner',
       ]);
     }
 

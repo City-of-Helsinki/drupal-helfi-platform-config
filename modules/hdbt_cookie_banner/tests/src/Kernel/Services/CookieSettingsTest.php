@@ -44,7 +44,6 @@ class CookieSettingsTest extends KernelTestBase {
       $this->container->get('router.route_provider'),
       $this->container->get('config.factory'),
       $this->container->get('language_manager'),
-      $this->container->get('extension.list.module'),
       $this->container->get('helfi_api_base.environment_resolver'),
       $this->container->get('url_generator'),
     );
@@ -109,16 +108,11 @@ class CookieSettingsTest extends KernelTestBase {
    * Tests injectBannerJavaScript.
    */
   public function testInjectBannerJavaScript(): void {
-    $this->moduleExtensionList->expects($this->any())
-      ->method('getPath')
-      ->with('hdbt_cookie_banner')
-      ->willReturn('path/to/module');
-
     $attachments = ['#attached' => []];
     $this->cookieSettings->injectBannerJavaScript($attachments);
 
     $this->assertNotEmpty($attachments['#attached']['html_head']);
-    $this->assertEquals('https://www.test.hel.ninja/etusivu-assets/path/to/module/assets/js/hds-cookie-consent.min.js', $attachments['#attached']['html_head'][0][0]['#attributes']['src']);
+    $this->assertEquals('https://www.test.hel.ninja/etusivu-assets/modules/contrib/helfi_platform_config/modules/hdbt_cookie_banner/assets/js/hds-cookie-consent.min.js', $attachments['#attached']['html_head'][0][0]['#attributes']['src']);
   }
 
   /**

@@ -77,19 +77,3 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
     'cookie_privacy_url' => $cookie_settings_service->getCookieSettingsPageUrl()?->setAbsolute()?->toString(),
   ];
 }
-
-/**
- * Helper function to get the privacy policy link URL.
- *
- * @todo UHF-10862 Remove once deprecations have been fixed.
- *
- * @return \Drupal\Core\Url|string
- *   Returns the cookie settings page URL or empty string.
- */
-// phpcs:ignore Drupal.Commenting.FunctionComment.Missing, Drupal.NamingConventions.ValidFunctionName.InvalidPrefix
-function helfi_eu_cookie_compliance_get_privacy_policy_url(): Url|string {
-  // Use the HDBT cookie banner cookie settings service to retrieve the
-  // cookie settings page URL.
-  $cookie_settings = Drupal::service('hdbt_cookie_banner.cookie_settings');
-  return $cookie_settings->getCookieSettingsPageUrl();
-}
