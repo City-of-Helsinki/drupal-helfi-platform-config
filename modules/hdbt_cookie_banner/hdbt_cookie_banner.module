@@ -8,7 +8,6 @@
 declare(strict_types=1);
 
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Url;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 
 /**
