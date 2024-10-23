@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Url;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 
 /**
@@ -67,18 +68,31 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
     'langcode' => $langcode,
     'theme' => 'black',
     'settingsPageSelector' => '.cookie-settings',
-    'settingsPageUrl' => $cookie_settings_service
-      ->getCookieSettingsPageUrl()
-      ?->setAbsolute()
-      ?->toString(),
+    'settingsPageUrl' => $cookie_settings_service->getCookieSettingsPageUrl()?->setAbsolute()?->toString(),
   ];
 
   // Fallback for the old variable used in HDBT theme react search JS.
   // @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
   $attachments['#attached']['drupalSettings']['helfi_react_search'] = [
-    'cookie_privacy_url' => $cookie_settings_service
-      ->getCookieSettingsPageUrl()
-      ?->setAbsolute()
-      ?->toString(),
+    'cookie_privacy_url' => $cookie_settings_service->getCookieSettingsPageUrl()?->setAbsolute()?->toString(),
   ];
+}
+
+/**
+ * Helper function to get the privacy policy link URL.
+ *
+ * @todo UHF-10862 Remove once deprecations have been fixed.
+ *
+ * @return \Drupal\Core\Url|string
+ *   Returns the cookie settings page URL or empty string.
+ */
+// phpcs:ignore Drupal.Commenting.FunctionComment.Missing, Drupal.NamingConventions.ValidFunctionName.InvalidPrefix
+function helfi_eu_cookie_compliance_get_privacy_policy_url(): Url|string {
+  // phpcs:ignore Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutRelaxed
+  @trigger_error("helfi_eu_cookie_compliance_get_privacy_policy_url() is deprecated. Modules and themes should use instead the Drupal::service('hdbt_cookie_banner.cookie_settings')->getCookieSettingsPageUrl();.", E_USER_DEPRECATED);
+
+  // Use the HDBT cookie banner cookie settings service to retrieve the
+  // cookie settings page URL.
+  $cookie_settings = Drupal::service('hdbt_cookie_banner.cookie_settings');
+  return $cookie_settings->getCookieSettingsPageUrl();
 }

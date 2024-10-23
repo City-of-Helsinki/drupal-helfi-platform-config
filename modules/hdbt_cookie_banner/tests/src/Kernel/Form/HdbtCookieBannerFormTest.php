@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Form;
 
 use Drupal\Core\Form\FormState;
-use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 
 /**
  * Tests the HdbtCookieBannerForm form.

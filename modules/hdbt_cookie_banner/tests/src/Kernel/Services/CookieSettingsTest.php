@@ -6,8 +6,8 @@ namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Services;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
-use Drupal\hdbt_cookie_banner\Services\CookieSettings;
 use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
+use Drupal\hdbt_cookie_banner\Services\CookieSettings;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;

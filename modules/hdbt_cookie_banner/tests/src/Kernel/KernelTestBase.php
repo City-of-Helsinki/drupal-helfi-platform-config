@@ -10,13 +10,13 @@ use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
+use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
 use Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
