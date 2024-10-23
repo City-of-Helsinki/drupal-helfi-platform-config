@@ -88,9 +88,6 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
  */
 // phpcs:ignore Drupal.Commenting.FunctionComment.Missing, Drupal.NamingConventions.ValidFunctionName.InvalidPrefix
 function helfi_eu_cookie_compliance_get_privacy_policy_url(): Url|string {
-  // phpcs:ignore Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutRelaxed
-  @trigger_error("helfi_eu_cookie_compliance_get_privacy_policy_url() is deprecated. Modules and themes should use instead the Drupal::service('hdbt_cookie_banner.cookie_settings')->getCookieSettingsPageUrl();.", E_USER_DEPRECATED);
-
   // Use the HDBT cookie banner cookie settings service to retrieve the
   // cookie settings page URL.
   $cookie_settings = Drupal::service('hdbt_cookie_banner.cookie_settings');
