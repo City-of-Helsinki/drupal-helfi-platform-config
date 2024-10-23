@@ -14,7 +14,7 @@ class MediaEntityBundle extends Media implements MediaInterface {
   /**
    * Get url.
    *
-   * @return \Drupal\Core\Url|NULL
+   * @return \Drupal\Core\Url|null
    *   The url.
    */
   public function getPrivacyPolicyUrl(): Url|NULL {
@@ -55,4 +55,5 @@ class MediaEntityBundle extends Media implements MediaInterface {
     return \Drupal::moduleHandler()->moduleExists('oembed_providers') &&
       $this->hasField('field_media_oembed_video');
   }
+
 }
