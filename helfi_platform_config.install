@@ -181,3 +181,39 @@ function helfi_platform_config_update_9312() : void {
     \Drupal::service('module_installer')->install(['helfi_users']);
   }
 }
+
+/**
+ * UHF-8650: Install HDBT Cookie banner module and uninstall EU Cookie compliance and Helfi EU Cookie compliance modules.
+ */
+function helfi_platform_config_update_9313(): void {
+  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
+  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+
+  // Handle only Helfi core sites.
+  try {
+    $environmentResolver->getActiveEnvironment();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
+  $module_handler = \Drupal::moduleHandler();
+  $module_installer = \Drupal::service('module_installer');
+
+  // Install the HDBT cookie banner module.
+  if (!$module_handler->moduleExists('hdbt_cookie_banner')) {
+    $module_installer->install(['hdbt_cookie_banner']);
+  }
+
+  // Uninstall the EU Cookie compliance and Helfi EU Cookie compliance
+  // modules if they are installed.
+  if (
+    $module_handler->moduleExists('eu_cookie_compliance') ||
+    $module_handler->moduleExists('helfi_eu_cookie_compliance')
+  ) {
+    $module_installer->uninstall([
+      'eu_cookie_compliance',
+      'helfi_eu_cookie_compliance',
+    ]);
+  }
+}
