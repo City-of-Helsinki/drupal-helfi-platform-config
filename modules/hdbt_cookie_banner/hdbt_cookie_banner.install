@@ -32,3 +32,23 @@ function hdbt_cookie_banner_install($is_syncing) : void {
   // Grant required permissions.
   hdbt_cookie_banner_grant_permissions();
 }
+
+/**
+ * UHF-8650: Uninstall (Helfi) EU Cookie compliance modules.
+ */
+function hdbt_cookie_banner_update_10001(): void {
+  // Uninstall the EU Cookie compliance and Helfi EU Cookie compliance
+  // modules if they are installed.
+  $module_handler = \Drupal::moduleHandler();
+  $module_installer = \Drupal::service('module_installer');
+
+  if (
+    $module_handler->moduleExists('eu_cookie_compliance') ||
+    $module_handler->moduleExists('helfi_eu_cookie_compliance')
+  ) {
+    $module_installer->uninstall([
+      'eu_cookie_compliance',
+      'helfi_eu_cookie_compliance',
+    ]);
+  }
+}
