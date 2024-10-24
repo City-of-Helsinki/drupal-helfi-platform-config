@@ -558,7 +558,7 @@ export default class HelfiLinkUi extends Plugin {
             break;
 
           case 'linkProtocol':
-            if (!whiteListedDomains || !href) { break; }
+            if (!whiteListedDomains || !href || href.startsWith('#')) { break; }
 
             if (parseProtocol(href)) {
               state[model] = parseProtocol(href);
@@ -566,7 +566,7 @@ export default class HelfiLinkUi extends Plugin {
             break;
 
           case 'linkIsExternal':
-            if (!whiteListedDomains || !href) { break; }
+            if (!whiteListedDomains || !href || href.startsWith('#')) { break; }
 
             if (!parseProtocol(href) && isUrlExternal(href, whiteListedDomains)) {
               state[model] = isUrlExternal(href, whiteListedDomains);

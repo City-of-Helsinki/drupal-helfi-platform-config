@@ -120,18 +120,19 @@ export default class HelfiLinkEditing extends Plugin {
             }
 
             // Get the 'href' attribute value.
-            const url = viewElement.getAttribute('href');
+            const hrefValue = viewElement.getAttribute('href');
 
             // Get whitelisted domains.
             const { whiteListedDomains } = this.editor.config.get('link');
 
-            // Check if 'whiteListedDomains' is not defined or empty.
-            if (!whiteListedDomains || !url) {
+            // Return if 'whiteListedDomains' is not defined, href is empty or
+            // href value starts with '#'.
+            if (!whiteListedDomains || !hrefValue || hrefValue.startsWith('#')) {
               return null;
             }
 
-            const isExternal = isUrlExternal(url, whiteListedDomains);
-            const protocol = parseProtocol(url);
+            const isExternal = isUrlExternal(hrefValue, whiteListedDomains);
+            const protocol = parseProtocol(hrefValue);
 
             if (protocol && modelName === 'linkProtocol') {
               return protocol; // Return the scheme as 'linkProtocol'.
