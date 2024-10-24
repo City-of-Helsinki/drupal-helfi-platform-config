@@ -1,4 +1,7 @@
 helfi_charts:
-  version: 1.0.x
+  version: 1.0.0
   js:
     assets/js/helfi-charts-cookie-compliance.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

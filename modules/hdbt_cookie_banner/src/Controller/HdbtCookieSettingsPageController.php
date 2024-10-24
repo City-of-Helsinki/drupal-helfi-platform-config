@@ -15,9 +15,9 @@ use Drupal\helfi_api_base\Environment\Project;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines HdbtCookiePolicyController class.
+ * Defines HdbtCookieSettingsPageController class.
  */
-final class HdbtCookiePolicyController extends ControllerBase implements ContainerInjectionInterface {
+final class HdbtCookieSettingsPageController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * Constructs a new instance.
@@ -37,12 +37,7 @@ final class HdbtCookiePolicyController extends ControllerBase implements Contain
   }
 
   /**
-   * Display the cookie information.
-   *
-   * @todo UHF-8650: Check if this cookie policy route is still needed.
-   * EU Cookie compliance module used to have a separate page for the cookie
-   * settings. This controller retains the same functionality.
-   * Assess the necessity of this feature once the HDS cookie banner is in use.
+   * Display the cookie information on its own page or redirect to helfi.
    *
    * @return \Drupal\Core\Routing\TrustedRedirectResponse|array
    *   Return redirect response or render array.
@@ -51,16 +46,16 @@ final class HdbtCookiePolicyController extends ControllerBase implements Contain
     $config = $this->config(HdbtCookieBannerForm::SETTINGS);
     $content = [];
 
-    // If custom settings are used, return the cookie policy content.
+    // If custom settings are used, return the cookie settings content.
     if ($config->get('use_custom_settings')) {
-      // Get the cookie policy content.
-      $content['#theme'] = 'cookie_policy';
+      // Get the cookie settings content.
+      $content['#theme'] = 'cookie_settings_page';
       $content['#title'] = $config->get('cookie_information.title');
       $content['#content'] = $config->get('cookie_information.content');
       return $content;
     }
 
-    // Otherwise return a redirect to Etusivu project cookie policy URL.
+    // Otherwise return a redirect to Etusivu project cookie setting page URL.
     try {
       $environment = $this
         ->environmentResolver
@@ -77,7 +72,7 @@ final class HdbtCookiePolicyController extends ControllerBase implements Contain
     $cookiePolicyUrl = vsprintf("%s%s/%s", [
       $environment->getBaseUrl(),
       $environment->getPath($language->getId()),
-      'cookie-policy',
+      'cookie-settings',
     ]);
 
     return new TrustedRedirectResponse($cookiePolicyUrl);

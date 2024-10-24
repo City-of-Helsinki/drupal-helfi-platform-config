@@ -1,4 +1,29 @@
-(function (Drupal, drupalSettings) {
+'use strict';
+
+((Drupal, drupalSettings) => {
+
+  // Global cookie consent status object.
+  Drupal.cookieConsent = {
+    initialized: () => {
+      return window && window.hds.cookieConsent;
+    },
+    loadFunction: (loadFunction) => {
+      if (typeof loadFunction === 'function') {
+        document.addEventListener('hds_cookieConsent_ready', loadFunction);
+      }
+    },
+    getConsentStatus: (categories) => {
+      return window &&
+        window.hds.cookieConsent &&
+        window.hds.cookieConsent.getConsentStatus(categories);
+    },
+    setAcceptedCategories: (categories) => {
+      if (Drupal.cookieConsent.initialized()) {
+        window.hds.cookieConsent.setGroupsStatusToAccepted(categories);
+      }
+    },
+  };
+
   Drupal.behaviors.hdbt_cookie_banner = {
     attach: function () {
       if (
