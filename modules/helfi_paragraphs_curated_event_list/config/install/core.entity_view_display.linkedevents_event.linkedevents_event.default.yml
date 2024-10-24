@@ -1,0 +1,73 @@
+uuid: 22363443-8bc6-4b97-980f-6bfb225edb1b
+langcode: en
+status: true
+dependencies:
+  config:
+    - responsive_image.styles.card_teaser
+  module:
+    - datetime
+    - external_entities
+    - imagecache_external
+    - linkit
+id: linkedevents_event.linkedevents_event.default
+targetEntityType: linkedevents_event
+bundle: linkedevents_event
+mode: default
+content:
+  end_time:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  external_link:
+    type: linkit
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+      linkit_profile: default
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  langcode:
+    type: string_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  main_image:
+    type: imagecache_external_responsive_image
+    label: hidden
+    settings:
+      imagecache_external_link: ''
+      imagecache_external_responsive_style: card_teaser
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  start_time:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

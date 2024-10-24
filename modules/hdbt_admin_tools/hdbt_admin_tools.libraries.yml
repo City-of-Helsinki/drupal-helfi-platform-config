@@ -1,15 +1,3 @@
-tom_select:
-  version: 2.2.2
-  remote: https://github.com/orchidjs/tom-select
-  license:
-    name: Apache license 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0
-  js:
-    assets/js/tomSelectComplete.min.js: { weight: -1, minified: true }
-  css:
-    theme:
-      assets/css/tom_select.css: {}
-
 select_icon:
   version: 1.x
   js:
@@ -17,7 +5,7 @@ select_icon:
   dependencies:
     - core/drupal
     - core/once
-    - hdbt_admin_tools/tom_select
+    - helfi_platform_config/tom_select
     - hdbt/hdbt-icons
 
 select_color_palette:
@@ -28,7 +16,7 @@ select_color_palette:
     - core/drupal
     - core/once
     - hdbt/color-palette
-    - hdbt_admin_tools/tom_select
+    - helfi_platform_config/tom_select
 
 select_design:
   version: 1.x
@@ -38,7 +26,7 @@ select_design:
     - core/drupal
     - core/once
     - hdbt_admin_tools/image_previewer
-    - hdbt_admin_tools/tom_select
+    - helfi_platform_config/tom_select
 
 select_paragraph:
   version: 1.x
@@ -67,7 +55,7 @@ language_selector:
       assets/css/language_selector.css: {}
   dependencies:
     - core/drupal
-    - hdbt_admin_tools/tom_select
+    - helfi_platform_config/tom_select
 
 link_plugin_enhancements:
   version: 1.x

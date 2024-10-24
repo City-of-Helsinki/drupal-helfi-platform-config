@@ -83,3 +83,15 @@ telia_ace_widget_loadjs:
       assets/css/telia_ace.css: {}
   js:
     assets/js/telia_ace.js: {}
+
+tom_select:
+  version: 2.2.2
+  remote: https://github.com/orchidjs/tom-select
+  license:
+    name: Apache license 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  js:
+    assets/js/tomSelectComplete.min.js: { weight: -1, minified: true }
+  css:
+    theme:
+      assets/css/tom_select.css: {}
