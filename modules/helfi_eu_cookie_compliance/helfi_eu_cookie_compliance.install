@@ -40,6 +40,28 @@ function helfi_eu_cookie_compliance_install($is_syncing) : void {
 }
 
 /**
+ * Implements hook_uninstall().
+ */
+function helfi_eu_cookie_compliance_uninstall(): void {
+  $config_factory = Drupal::configFactory();
+
+  // The configurations to remove.
+  $configurations = [
+    'eu_cookie_compliance.settings',
+    'eu_cookie_compliance.cookie_category.chat',
+    'eu_cookie_compliance.cookie_category.essential',
+    'eu_cookie_compliance.cookie_category.preference',
+    'eu_cookie_compliance.cookie_category.statistics',
+    'helfi_eu_cookie_compliance.cookie_consent_intro',
+  ];
+
+  // Remove each installed configuration.
+  foreach ($configurations as $config) {
+    $config_factory->getEditable($config)->delete();
+  }
+}
+
+/**
  * Updates React & Share brand name to Askem.
  */
 function helfi_eu_cookie_compliance_update_9001(): void {

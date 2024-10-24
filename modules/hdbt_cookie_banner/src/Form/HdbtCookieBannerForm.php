@@ -154,13 +154,13 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
 
     $form['general_settings']['cookie_information_title'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Cookie policy page title', options: ['context' => 'hdbt cookie banner']),
+      '#title' => $this->t('Cookie settings page title', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':cookie_information.title',
     ];
 
     $form['general_settings']['cookie_information_content'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Cookie policy page content', options: ['context' => 'hdbt cookie banner']),
+      '#title' => $this->t('Cookie settings page content', options: ['context' => 'hdbt cookie banner']),
       '#config_target' => self::SETTINGS . ':cookie_information.content',
       '#rows' => 5,
     ];

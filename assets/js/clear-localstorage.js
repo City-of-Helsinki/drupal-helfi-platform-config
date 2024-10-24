@@ -8,11 +8,8 @@
   'use strict';
 
   var clearLocalStorage = function () {
-    if (typeof Drupal.eu_cookie_compliance === 'undefined') {
-      return;
-    }
 
-    if (!Drupal.eu_cookie_compliance.hasAgreed('statistics')) {
+    if (!Drupal.cookieConsent.getConsentStatus(['statistics'])) {
       var requireStatistics = [
         'rnsbid',
         'rnsbid_ts',

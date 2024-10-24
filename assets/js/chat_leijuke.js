@@ -31,21 +31,18 @@
     console.warn(`No adapter found for ${chatSelection}!`);
   }
 
-  // @todo UHF-8650: EU Cookie Compliance module will be removed.
-  // @todo UHF-8650: Convert the following code to support HDS cookie banner.
   class EuCookieManager {
     cookieCheck(cookieNames) {
       let cookiesOk = true;
       cookieNames.map((cookieName) => {
-        if (!Drupal.eu_cookie_compliance.hasAgreedWithCategory(cookieName)) cookiesOk = false;
+        if (!Drupal.cookieConsent.getConsentStatus([cookieName])) cookiesOk = false;
       });
       return cookiesOk;
     }
-
     cookieSet() {
-      if (Drupal.eu_cookie_compliance.hasAgreedWithCategory('chat')) return;
+      if (Drupal.cookieConsent.getConsentStatus(['chat'])) return;
 
-      Drupal.eu_cookie_compliance.setAcceptedCategories([ ...Drupal.eu_cookie_compliance.getAcceptedCategories(), 'chat' ]);
+      Drupal.cookieConsent.setAcceptedCategories(['chat']);
     }
   }
 
