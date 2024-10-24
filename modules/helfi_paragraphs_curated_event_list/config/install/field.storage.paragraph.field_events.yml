@@ -1,0 +1,20 @@
+uuid: a381685c-627a-4ba4-8be3-5bb2d2a705bd
+langcode: en
+status: true
+dependencies:
+  module:
+    - external_entities
+    - paragraphs
+id: paragraph.field_events
+field_name: field_events
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: linkedevents_event
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
