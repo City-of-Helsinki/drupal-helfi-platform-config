@@ -52,7 +52,7 @@ function helfi_eu_cookie_compliance_uninstall(): void {
     'eu_cookie_compliance.cookie_category.essential',
     'eu_cookie_compliance.cookie_category.preference',
     'eu_cookie_compliance.cookie_category.statistics',
-    'helfi_eu_cookie_compliance.cookie_consent_intro',
+    // 'helfi_eu_cookie_compliance.cookie_consent_intro',
   ];
 
   // Remove each installed configuration.
