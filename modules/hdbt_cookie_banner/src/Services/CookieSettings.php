@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_cookie_banner\Services;
 
+use Drupal\Core\Asset\LibraryDiscoveryInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
@@ -26,6 +27,7 @@ class CookieSettings {
     private readonly LanguageManagerInterface $languageManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly UrlGeneratorInterface $urlGenerator,
+    private readonly LibraryDiscoveryInterface $libraryDiscovery,
   ) {
   }
 
@@ -107,9 +109,10 @@ class CookieSettings {
       }
 
       // Construct the URL to the HDS cookie consent JS file.
-      $library = vsprintf("%s/etusivu-assets/%s/assets/js/hds-cookie-consent.min.js", [
+      $library = vsprintf("%s/etusivu-assets/%s/assets/js/hds-cookie-consent.min.js%s", [
         $environment->getBaseUrl(),
         'modules/contrib/helfi_platform_config/modules/hdbt_cookie_banner',
+        $this->getCookieLibraryVersion(),
       ]);
     }
 
@@ -124,6 +127,29 @@ class CookieSettings {
       ],
       'external_script',
     ];
+  }
+
+  /**
+   * Get the version of the current cookie consent library.
+   *
+   * As the library is injected into the HTML head manually, it's a good
+   * practice to include the version of the library in the URL as an argument.
+   * The library version is retrieved from the library registry as it should be
+   * the same version as in the etusivu environment.
+   *
+   * @return string
+   *   The library version as a URL argument or an empty string.
+   */
+  protected function getCookieLibraryVersion(): string {
+    $library_info = $this->libraryDiscovery->getLibraryByName(
+      'hdbt_cookie_banner',
+      'hds_cookie_consent',
+    );
+
+    if (isset($library_info['version'])) {
+      return "?v={$library_info['version']}";
+    }
+    return '';
   }
 
 }

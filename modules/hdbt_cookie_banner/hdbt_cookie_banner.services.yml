@@ -7,3 +7,4 @@ services:
       - '@language_manager'
       - '@helfi_api_base.environment_resolver'
       - '@url_generator'
+      - '@library.discovery'
