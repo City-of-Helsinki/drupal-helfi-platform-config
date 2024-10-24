@@ -15,4 +15,3 @@ function helfi_robots_header_update_9001() : void {
   $moduleInstaller = Drupal::service('module_installer');
   $moduleInstaller->uninstall(['helfi_robots_header']);
 }
-
