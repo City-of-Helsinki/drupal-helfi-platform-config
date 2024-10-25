@@ -40,6 +40,20 @@
 
         window.hds.CookieConsentCore.create(apiUrl, options);
       }
+
+      window.hdsCookieConsentClickEvent = function hdsCookieConsentClickEvent(event, element) {
+        const groups = element.getAttribute('data-cookie-consent-groups')
+          .split(',')
+          .map(group => group.trim());
+
+        if (
+          Drupal.cookieConsent.initialized() &&
+          typeof window.hds.cookieConsent.openBanner === 'function')
+        {
+          window.hds.cookieConsent.openBanner(groups);
+          event.preventDefault();
+        }
+      };
     }
   }
 })(Drupal, drupalSettings);

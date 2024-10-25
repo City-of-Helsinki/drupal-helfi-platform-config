@@ -5,7 +5,7 @@
 (function ($, Drupal) {
   'use strict';
 
-  let loadHelfiCharts = function () {
+  let loadHelfiCharts = () => {
     if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
       const chartContentElements = document.querySelectorAll('.helfi-charts-content');
 
