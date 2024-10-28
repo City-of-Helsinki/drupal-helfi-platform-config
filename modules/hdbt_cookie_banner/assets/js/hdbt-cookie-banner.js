@@ -5,7 +5,7 @@
   // Global cookie consent status object.
   Drupal.cookieConsent = {
     initialized: () => {
-      return window && window.hds.cookieConsent;
+      return window && window.hds && window.hds.cookieConsent;
     },
     loadFunction: (loadFunction) => {
       if (typeof loadFunction === 'function') {
@@ -13,8 +13,7 @@
       }
     },
     getConsentStatus: (categories) => {
-      return window &&
-        window.hds.cookieConsent &&
+      return Drupal.cookieConsent.initialized() &&
         window.hds.cookieConsent.getConsentStatus(categories);
     },
     setAcceptedCategories: (categories) => {
@@ -26,6 +25,8 @@
 
   Drupal.behaviors.hdbt_cookie_banner = {
     attach: function () {
+      // The hds-cookie-consent.min.js should be loaded before this script.
+      // Check if the script is loaded.
       if (
         typeof window.hds !== 'undefined' &&
         typeof window.hds.CookieConsentCore !== 'undefined'
@@ -37,10 +38,13 @@
           settingsPageSelector: drupalSettings.hdbt_cookie_banner.settingsPageSelector,
           spacerParentSelector: '.footer',
         };
-
         window.hds.CookieConsentCore.create(apiUrl, options);
       }
+      else {
+        console.warn('The hds-cookie-consent.min.js script is not loaded. Check the HDBT cookie banner configurations.');
+      }
 
+      // A click event for opening the cookie consent banner from correct groups.
       window.hdsCookieConsentClickEvent = function hdsCookieConsentClickEvent(event, element) {
         const groups = element.getAttribute('data-cookie-consent-groups')
           .split(',')
@@ -48,8 +52,8 @@
 
         if (
           Drupal.cookieConsent.initialized() &&
-          typeof window.hds.cookieConsent.openBanner === 'function')
-        {
+          typeof window.hds.cookieConsent.openBanner === 'function'
+        ) {
           window.hds.cookieConsent.openBanner(groups);
           event.preventDefault();
         }
