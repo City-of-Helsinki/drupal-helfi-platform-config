@@ -186,6 +186,15 @@ function helfi_platform_config_update_9312() : void {
  * UHF-10259: Enable helfi_paragraphs_curated_event_list module.
  */
 function helfi_platform_config_update_9313() : void {
+  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+
+  try {
+    $environmentResolver->getActiveEnvironment();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
   $module_installer = \Drupal::service('module_installer');
 
   // Enable helfi_paragraphs_curated_event_list.
