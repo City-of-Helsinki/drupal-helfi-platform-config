@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Tests the HdbtCookieBannerController.
  *
- * @coversDefaultClass \Drupal\hdbt_cookie_banner\Controller\HdbtCookieBannerController
  * @group hdbt_cookie_banner
  */
 class HdbtCookieBannerControllerTest extends KernelTestBase {

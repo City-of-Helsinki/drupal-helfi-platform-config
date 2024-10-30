@@ -11,7 +11,6 @@ use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 /**
  * Tests the HdbtCookieBannerForm form.
  *
- * @coversDefaultClass \Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm
  * @group hdbt_cookie_banner
  */
 class HdbtCookieBannerFormTest extends KernelTestBase {
