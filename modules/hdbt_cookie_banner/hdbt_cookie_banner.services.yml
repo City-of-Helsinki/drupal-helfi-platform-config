@@ -1,0 +1,10 @@
+services:
+  hdbt_cookie_banner.cookie_settings:
+    class: Drupal\hdbt_cookie_banner\Services\CookieSettings
+    arguments:
+      - '@router.route_provider'
+      - '@config.factory'
+      - '@language_manager'
+      - '@helfi_api_base.environment_resolver'
+      - '@url_generator'
+      - '@library.discovery'

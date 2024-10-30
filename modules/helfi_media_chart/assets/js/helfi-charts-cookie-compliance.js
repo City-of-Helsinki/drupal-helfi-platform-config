@@ -5,16 +5,14 @@
 (function ($, Drupal) {
   'use strict';
 
-  var loadHelfiCharts = function () {
-    // @todo UHF-8650: EU Cookie Compliance module will be removed.
-    // @todo UHF-8650: Convert the following code to support HDS cookie banner.
-    if (Drupal.eu_cookie_compliance.hasAgreed('statistics')) {
-      var chartContentElements = document.querySelectorAll('.helfi-charts-content');
+  let loadHelfiCharts = () => {
+    if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
+      const chartContentElements = document.querySelectorAll('.helfi-charts-content');
 
       // Populate all chart content elements with iframes on page
-      for (var i = 0; i < chartContentElements.length; ++i) {
+      for (let i = 0; i < chartContentElements.length; ++i) {
         if (chartContentElements[i].dataset && chartContentElements[i].dataset.src && chartContentElements[i].dataset.title) {
-          var iframeElement = document.createElement('iframe');
+          const iframeElement = document.createElement('iframe');
           iframeElement.src = chartContentElements[i].dataset.src;
           iframeElement.title = chartContentElements[i].dataset.title;
           iframeElement.allow = 'fullscreen';
@@ -29,8 +27,9 @@
     loadHelfiCharts = function () {};
   };
 
-  // Run after page is ready.
-  $(document).ready(function () {
+  if (Drupal.cookieConsent.initialized()) {
     loadHelfiCharts();
-  });
+  } else {
+    Drupal.cookieConsent.loadFunction(loadHelfiCharts);
+  }
 })(jQuery, Drupal);

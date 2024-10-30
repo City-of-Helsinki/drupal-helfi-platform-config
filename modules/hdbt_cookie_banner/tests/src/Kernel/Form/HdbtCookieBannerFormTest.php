@@ -5,16 +5,32 @@ declare(strict_types=1);
 namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Form;
 
 use Drupal\Core\Form\FormState;
-use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 
 /**
  * Tests the HdbtCookieBannerForm form.
  *
- * @coversDefaultClass \Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm
  * @group hdbt_cookie_banner
  */
 class HdbtCookieBannerFormTest extends KernelTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'system',
+    'hdbt_cookie_banner',
+    'helfi_api_base',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    $this->installConfig(['system', 'hdbt_cookie_banner']);
+  }
 
   /**
    * Tests form validation for valid and invalid JSON.

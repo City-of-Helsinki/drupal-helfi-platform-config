@@ -1,10 +1,8 @@
 (function ($, Drupal) {
   'use strict';
 
-  var loadReactAndShare = function () {
-    // @todo UHF-8650: EU Cookie Compliance module will be removed.
-    // @todo UHF-8650: Convert the following code to support HDS cookie banner.
-    if (Drupal.eu_cookie_compliance.hasAgreed('statistics')) {
+  let loadReactAndShare = () => {
+    if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
       window.rnsData = {
         apiKey: drupalSettings.reactAndShareApiKey,
         disableFa: true,
@@ -15,7 +13,7 @@
         window.rnsData.categories = [drupalSettings.siteName]
       }
 
-      var scriptElement = document.createElement('script');
+      const scriptElement = document.createElement('script');
       scriptElement.async = true;
       scriptElement.src = 'https://cdn.reactandshare.com/plugin/rns.js';
 
@@ -32,11 +30,9 @@
     loadReactAndShare = function () {};
   };
 
-  // Run after choosing cookie settings.
-  $(document).on('eu_cookie_compliance.changeStatus', loadReactAndShare);
-
-  // Run after page is ready.
-  $(document).ready(function () {
+  if (Drupal.cookieConsent.initialized()) {
     loadReactAndShare();
-  });
+  } else {
+    Drupal.cookieConsent.loadFunction(loadReactAndShare);
+  }
 })(jQuery, Drupal);
