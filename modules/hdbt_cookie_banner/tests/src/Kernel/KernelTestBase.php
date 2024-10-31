@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\hdbt_cookie_banner\Kernel;
 
+use Drupal\Core\Asset\LibraryDiscoveryInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Extension\ModuleExtensionList;
@@ -67,6 +68,13 @@ class KernelTestBase extends CoreKernelTestBase {
   protected UrlGeneratorInterface|MockObject $urlGenerator;
 
   /**
+   * The mock library discovery.
+   *
+   * @var \Drupal\Core\Asset\LibraryDiscoveryInterface|\PHPUnit\Framework\MockObject\MockObject
+   */
+  protected LibraryDiscoveryInterface|MockObject $libraryDiscovery;
+
+  /**
    * Cookie settings page controller.
    *
    * @var \Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController
@@ -108,6 +116,7 @@ class KernelTestBase extends CoreKernelTestBase {
     $this->configFactory = $this->createMock(ConfigFactoryInterface::class);
     $this->moduleExtensionList = $this->createMock(ModuleExtensionList::class);
     $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+    $this->libraryDiscovery = $this->createMock(LibraryDiscoveryInterface::class);
 
     // Set up the container with the mocked services.
     $this->container->set('router.route_provider', $this->routeProvider);
@@ -116,6 +125,7 @@ class KernelTestBase extends CoreKernelTestBase {
     $this->container->set('extension.list.module', $this->moduleExtensionList);
     $this->container->set('helfi_api_base.environment_resolver', $this->environmentResolver);
     $this->container->set('url_generator', $this->urlGenerator);
+    $this->container->set('library.discovery', $this->libraryDiscovery);
 
     // Set up the controller with injected services.
     $this->controller = HdbtCookieSettingsPageController::create($this->container);

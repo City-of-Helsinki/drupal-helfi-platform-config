@@ -1,7 +1,7 @@
 (function ($, Drupal) {
   'use strict';
 
-  var loadReactAndShare = function () {
+  let loadReactAndShare = () => {
     if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
       window.rnsData = {
         apiKey: drupalSettings.reactAndShareApiKey,
@@ -13,7 +13,7 @@
         window.rnsData.categories = [drupalSettings.siteName]
       }
 
-      var scriptElement = document.createElement('script');
+      const scriptElement = document.createElement('script');
       scriptElement.async = true;
       scriptElement.src = 'https://cdn.reactandshare.com/plugin/rns.js';
 

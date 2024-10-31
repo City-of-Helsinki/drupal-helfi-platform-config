@@ -11,7 +11,6 @@ use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
 /**
  * Tests the HdbtCookieSettingsPageController.
  *
- * @coversDefaultClass \Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController
  * @group hdbt_cookie_banner
  */
 class HdbtCookieSettingsPageControllerTest extends KernelTestBase {

@@ -46,6 +46,7 @@ class CookieSettingsTest extends KernelTestBase {
       $this->container->get('language_manager'),
       $this->container->get('helfi_api_base.environment_resolver'),
       $this->container->get('url_generator'),
+      $this->container->get('library.discovery'),
     );
 
     $this->language = $this->createMock(LanguageInterface::class);
@@ -113,6 +114,17 @@ class CookieSettingsTest extends KernelTestBase {
 
     $this->assertNotEmpty($attachments['#attached']['html_head']);
     $this->assertEquals('https://www.test.hel.ninja/etusivu-assets/modules/contrib/helfi_platform_config/modules/hdbt_cookie_banner/assets/js/hds-cookie-consent.min.js', $attachments['#attached']['html_head'][0][0]['#attributes']['src']);
+
+    // Create a mock library array to return from libraryDiscovery.
+    $this->libraryDiscovery->expects($this->once())
+      ->method('getLibraryByName')
+      ->willReturn([
+        'version' => '1.2.3',
+      ]);
+
+    $attachments_with_version = ['#attached' => []];
+    $this->cookieSettings->injectBannerJavaScript($attachments_with_version);
+    $this->assertEquals('https://www.test.hel.ninja/etusivu-assets/modules/contrib/helfi_platform_config/modules/hdbt_cookie_banner/assets/js/hds-cookie-consent.min.js?v=1.2.3', $attachments_with_version['#attached']['html_head'][0][0]['#attributes']['src']);
   }
 
   /**
