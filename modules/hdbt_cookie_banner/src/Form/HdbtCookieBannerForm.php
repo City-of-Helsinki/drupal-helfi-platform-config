@@ -168,6 +168,11 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
     $form['editor_holder'] = [
       '#type' => 'item',
       '#markup' => '<div id="error_holder3"></div>',
+      '#states' => [
+        'visible' => [
+          ':input[name="use_custom_settings"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);
