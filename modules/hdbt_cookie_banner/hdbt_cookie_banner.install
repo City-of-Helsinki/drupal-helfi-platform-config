@@ -32,3 +32,20 @@ function hdbt_cookie_banner_install($is_syncing) : void {
   // Grant required permissions.
   hdbt_cookie_banner_grant_permissions();
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function hdbt_cookie_banner_uninstall(): void {
+  $config_factory = Drupal::configFactory();
+
+  // The configurations to remove.
+  $configurations = [
+    'hdbt_cookie_banner.settings',
+  ];
+
+  // Remove each installed configuration.
+  foreach ($configurations as $config) {
+    $config_factory->getEditable($config)->delete();
+  }
+}
