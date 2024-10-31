@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 
 /**
