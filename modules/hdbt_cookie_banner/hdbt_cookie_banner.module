@@ -7,14 +7,37 @@
 
 declare(strict_types=1);
 
+use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 
 /**
- * Implements hook_config_ignore_settings_alter().
+ * Implements hook_config_ignore_ignored_alter().
  */
-function hdbt_cookie_banner_config_ignore_settings_alter(array &$settings): void {
-  $settings[] = HdbtCookieBannerForm::SETTINGS;
+function hdbt_cookie_banner_config_ignore_ignored_alter(ConfigIgnoreConfig $ignored): void {
+  $settings_to_ignore = [
+    'site_settings',
+    'use_custom_settings',
+    'use_internal_hds_cookie_js',
+    'hds_cookie_js_override',
+  ];
+
+  $settings_to_ignore = array_map(
+    fn($setting) => HdbtCookieBannerForm::SETTINGS . ':' . $setting,
+    $settings_to_ignore,
+  );
+
+  // Add the configuration objects to the ignore list, but retain the
+  // hdbt_cookie_banner.settings.
+  foreach (['create', 'update', 'delete'] as $operation) {
+    foreach (['import', 'export'] as $direction) {
+      $list = array_merge(
+        $ignored->getList($direction, $operation),
+        $settings_to_ignore,
+      );
+      $ignored->setList($direction, $operation, $list);
+    }
+  }
 }
 
 /**
