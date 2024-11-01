@@ -1,4 +1,44 @@
-# Update instructions
+# Update Instructions
+
+## Switching from the EU Cookie Compliance Module to the HDBT cookie banner Module
+
+The HDBT cookie banner module brings support for the [Helsinki Design System (HDS)](https://github.com/City-of-Helsinki/helsinki-design-system) cookie banner.
+
+### Minimum requirements to use the HDBT cookie banner module
+
+The HDBT cookie banner is included in the following versions of the Helfi packages:
+
+| Module                | Minimum Version                                                                                | Description                                                      |
+|-----------------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| helfi_platform_config | [^4.6.23](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/releases/tag/4.6.23) | Includes the HDBT cookie banner module.                          |
+| hdbt                  | [^6.7.22](https://github.com/City-of-Helsinki/drupal-hdbt/releases/tag/6.7.22)                 | Includes updates to component templates, styles, and JavaScript. |
+| hdbt_admin            | [^3.2.7](https://github.com/City-of-Helsinki/drupal-hdbt-admin/releases/tag/3.2.7)              | Supports the cookie banner in the admin theme.                   |
+
+### How to switch the cookie banner configuration
+
+Ensure your local environment is up and running on the latest development branch.
+
+- Update the Helfi packages to the latest versions:
+  - `composer update drupal/helfi_platform_config drupal/hdbt drupal/hdbt_admin -W`
+- Uninstall the EU Cookie Compliance module. This will also uninstall the Helfi EU Cookie Compliance module:
+  - `drush pmu -y eu_cookie_compliance`
+- Install the HDBT cookie banner module:
+  - `drush en -y hdbt_cookie_banner`
+- Export your configuration:
+  - `drush cex -y`
+- Review the updated configurations and commit the changes to your repository.
+
+### Setting Up the JSON for Cookie Information
+
+- Log in to Drupal and navigate to the `/admin/structure/hdbt-cookie-banner` page.
+- The site settings contain the cookie information in JSON format. This data is saved as a configuration object but is not saved to `conf/cmi/`, so you need to configure the JSON manually:
+  - Enable `Use instance-specific cookie settings` and scroll down to the `Site settings` textarea.
+  - Copy the contents from [Site settings](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/blob/main/modules/hdbt_cookie_banner/assets/json/siteSettingsTemplate.json) to the `Site settings` text area. This JSON provides basic cookie information for Helfi Drupal sites.
+  - Go through each variable in the cookie information and adjust the values to match your needs. Some values are labeled such as `Change me`, `change-me` or `change-me.hel.fi` which you need to modify to avoid cookie conflicts.
+  - Save the changes and verify that the cookie banner is functioning as expected.
+  - Adjust the cookie settings as needed and save the changes. Verify that the updates are applied correctly.
+- When deploying to test, staging, or production environments, manually copy the `Site settings` JSON to the textarea.
+
 
 ## Updating from 3.x to 4.x
 
