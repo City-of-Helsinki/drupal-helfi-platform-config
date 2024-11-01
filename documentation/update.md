@@ -1,4 +1,4 @@
-# Update Instructions
+# Update instructions
 
 ## Switching from the EU Cookie Compliance Module to the HDBT cookie banner Module
 
