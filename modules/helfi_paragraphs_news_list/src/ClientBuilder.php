@@ -8,8 +8,8 @@ use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ServiceEnum;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder as ElasticClientBuilder;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder as ElasticClientBuilder;
 
 /**
  * The client builder factory.
@@ -25,13 +25,12 @@ final class ClientBuilder {
   public function __construct(
     private readonly EnvironmentResolverInterface $environmentResolver,
   ) {
-
   }
 
   /**
    * Creates a new client instance.
    *
-   * @return \Elasticsearch\Client
+   * @return \Elastic\Elasticsearch\Client
    *   The client.
    */
   public function create() : Client {
@@ -51,13 +50,9 @@ final class ClientBuilder {
     return ElasticClientBuilder::create()
       ->setSSLVerification($service->protocol === 'https')
       ->setHosts([
-        [
-          'host' => $service->domain,
-          'port' => $service->port,
-          'scheme' => $service->protocol,
-        ],
+        $service->getAddress(),
       ])
-      ->setConnectionParams([
+      ->setHttpClientOptions([
         'client' => [
           'timeout' => 1,
           'connect_timeout' => 1,

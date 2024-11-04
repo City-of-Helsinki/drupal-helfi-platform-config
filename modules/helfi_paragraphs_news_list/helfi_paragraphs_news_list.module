@@ -56,7 +56,7 @@ function helfi_paragraphs_news_list_paragraph_view(
     $query = $storage
       ->getQuery();
     $query
-      ->condition('_language', $entity->language()->getId())
+      ->condition('search_api_language', $entity->language()->getId())
       ->range(0, $entity->getLimit());
 
     $termFilters = [

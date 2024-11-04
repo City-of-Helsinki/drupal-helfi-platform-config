@@ -7,8 +7,8 @@ namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\ExternalEntityStorage;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 use Drupal\external_entities\ExternalEntityStorage;
-use Elasticsearch\Client;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Prophecy\Argument;
 
 /**
@@ -27,7 +27,7 @@ abstract class StorageClientTestBase extends KernelTestBase {
   /**
    * Gets the SUT.
    *
-   * @param \Elasticsearch\Client $client
+   * @param \Elastic\Elasticsearch\Client $client
    *   The client mock.
    *
    * @return \Drupal\external_entities\ExternalEntityStorage
@@ -47,7 +47,7 @@ abstract class StorageClientTestBase extends KernelTestBase {
   public function testRequestException() : void {
     $client = $this->prophesize(Client::class);
     $client->search(Argument::any())
-      ->willThrow(new BadRequest400Exception('Message'));
+      ->willThrow(new ClientResponseException('Message'));
     $sut = $this->getSut($client->reveal());
     $this->assertEmpty($sut->loadMultiple([123]));
     $this->assertEmpty($sut->getQuery()->accessCheck(FALSE)->execute());

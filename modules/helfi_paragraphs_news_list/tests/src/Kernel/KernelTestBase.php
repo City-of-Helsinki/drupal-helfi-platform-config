@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel;
 
+use DG\BypassFinals;
 use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
+use Elastic\Elasticsearch\Response\Elasticsearch;
 
 /**
  * Kernel test base for news feed list tests.
  */
-class KernelTestBase extends CoreKernelTestBase {
+abstract class KernelTestBase extends CoreKernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -33,6 +35,9 @@ class KernelTestBase extends CoreKernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
+    // https://github.com/elastic/elasticsearch-php/issues/1227.
+    BypassFinals::enable();
+
     parent::setUp();
     $this->installConfig(['system', 'paragraphs', 'external_entities']);
     $this->installEntitySchema('user');
@@ -44,6 +49,18 @@ class KernelTestBase extends CoreKernelTestBase {
     $this->installEntitySchema('helfi_news_groups');
     $this->installEntitySchema('helfi_news_neighbourhoods');
     $this->installConfig('paragraphs');
+  }
+
+  /**
+   * Mocks elasticsearch response.
+   *
+   * @param array $response
+   *   Response as an array.
+   */
+  protected function createElasticsearchResponse(array $response): Elasticsearch {
+    $mock = $this->prophesize(Elasticsearch::class);
+    $mock->asArray()->willReturn($response);
+    return $mock->reveal();
   }
 
 }

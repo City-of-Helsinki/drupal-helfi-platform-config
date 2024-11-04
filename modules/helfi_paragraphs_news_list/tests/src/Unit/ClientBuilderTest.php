@@ -8,12 +8,12 @@ use Drupal\Tests\UnitTestCase;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_paragraphs_news_list\ClientBuilder;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 /**
  * Tests elastic client builder.
  *
- * @group helfi_api_base
+ * @group helfi_paragraphs_news_list
  */
 class ClientBuilderTest extends UnitTestCase {
 
