@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\EventSubscriber;
 
-use Drupal\elasticsearch_connector\Event\PrepareIndexMappingEvent;
+use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -16,50 +16,24 @@ class ElasticIndexSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
-    if (!class_exists('Drupal\elasticsearch_connector\Event\PrepareIndexMappingEvent')) {
+    if (!class_exists(FieldMappingEvent::class)) {
       return [];
     }
 
     return [
-      PrepareIndexMappingEvent::PREPARE_INDEX_MAPPING => [['stripBoost'], ['addCoordinatesField']],
+      FieldMappingEvent::class => [['addCoordinatesField']],
     ];
-  }
-
-  /**
-   * Iterate over fields and remove any boosts.
-   *
-   * Search API wants to index fields with 'boost' parameter.
-   * Index-time boosting has been deprecated in newer Elasticsearch versions.
-   * This subscriber strips boost from mapping to prevent errors.
-   *
-   * @param \Drupal\elasticsearch_connector\Event\PrepareIndexMappingEvent $event
-   *   Event emitted by elasticsearch_connector.
-   */
-  public function stripBoost(PrepareIndexMappingEvent $event): void {
-    /** @var array $params */
-    $params = $event->getIndexMappingParams();
-
-    // Bail if nothing to check against.
-    if (!isset($params['body']['properties'])) {
-      return;
-    }
-
-    foreach ($params['body']['properties'] as $key => $property) {
-      if (isset($property['boost'])) {
-        unset($params['body']['properties'][$key]['boost']);
-      }
-    }
-
-    $event->setIndexMappingParams($params);
   }
 
   /**
    * Set mapping for unit's coordinates as geo_point field.
    *
-   * @param \Drupal\elasticsearch_connector\Event\PrepareIndexMappingEvent $event
+   * @param \Drupal\elasticsearch_connector\Event\FieldMappingEvent $event
    *   Event emitted by elasticsearch_connector.
    */
-  public function addCoordinatesField(PrepareIndexMappingEvent $event): void {
+  public function addCoordinatesField(FieldMappingEvent $event): void {
+    return;
+
     /** @var array $params */
     $params = $event->getIndexMappingParams();
 
