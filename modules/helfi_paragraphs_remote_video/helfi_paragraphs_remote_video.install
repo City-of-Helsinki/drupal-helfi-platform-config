@@ -8,9 +8,9 @@
 declare(strict_types=1);
 
 /**
- * UHF-9088: Updated config translations for helfi_paragraphs_remote_video.
+ * UHF-8340: Updated video title required for helfi_paragraphs_remote_video.
  */
-function helfi_paragraphs_remote_video_update_9004(): void {
+function helfi_paragraphs_remote_video_update_9005(): void {
   // Re-import 'helfi_paragraphs_remote_video' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_remote_video');
