@@ -525,19 +525,22 @@ function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInt
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
- *
- * Hero designs:
- *   background-image     = "Background image"
- *   diagonal             = "Diagonal"
- *   with-image-bottom    = "Image on the bottom"
- *   with-image-left      = "Image on the left"
- *   with-image-right     = "Image on the right"
- *   without-image-center = "Without image, align center"
- *   without-image-left   = "Without image, align left"
- *   with-search          = "With search"
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function hdbt_admin_tools_field_widget_paragraphs_form_alter(&$element, &$form_state, $context): void {
+function hdbt_admin_tools_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context): void {
+  /**
+   * Hero designs:
+   *
+   * background-image       = "Background image"
+   * diagonal               = "Diagonal"
+   * with-image-bottom      = "Image on the bottom"
+   * with-image-left        = "Image on the left"
+   * with-image-right       = "Image on the right"
+   * without-image-center   = "Without image, align center"
+   * without-image-left     = "Without image, align left"
+   * with-search            = "With search"
+   * with-helsinki-near-me  = "With Helsinki near you"
+  */
 
   // Early return if paragraph type is not set.
   if (!isset($element['#paragraph_type'])) {
@@ -565,6 +568,8 @@ function hdbt_admin_tools_field_widget_paragraphs_form_alter(&$element, &$form_s
         [$design_select => ['value' => 'without-image-center']],
         'or',
         [$design_select => ['value' => 'without-image-left']],
+        'or',
+        [$design_select => ['value' => 'with-helsinki-near-you']],
       ],
     ];
 
