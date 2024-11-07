@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_paragraphs_image_gallery module.
+ */
+
+/**
+ * UHF-10239: Updated configurations for helfi_paragraphs_image_gallery.
+ */
+function helfi_paragraphs_image_gallery_update_9001(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_image_gallery');
+}

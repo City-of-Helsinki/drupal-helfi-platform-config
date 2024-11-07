@@ -1,0 +1,10 @@
+uuid: ce98a627-023c-4a79-a9e6-626fa4b46741
+langcode: en
+status: true
+dependencies: {  }
+id: image_gallery
+label: 'Image gallery'
+icon_uuid: null
+icon_default: null
+description: 'An image gallery where you can add 2-12 images with or without descriptions. The image gallery should have a minimum of 2 images.'
+behavior_plugins: {  }

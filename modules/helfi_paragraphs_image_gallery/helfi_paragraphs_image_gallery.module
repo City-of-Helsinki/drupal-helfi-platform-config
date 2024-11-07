@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_image_gallery' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_image_gallery_helfi_paragraph_types() : array {
+  return [
+    new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'image_gallery'),
+  ];
+}

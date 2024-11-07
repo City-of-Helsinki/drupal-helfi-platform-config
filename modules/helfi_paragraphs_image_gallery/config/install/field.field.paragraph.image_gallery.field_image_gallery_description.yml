@@ -1,0 +1,27 @@
+uuid: 144defda-3730-4888-97f9-13cb97a8e107
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image_gallery_description
+    - paragraphs.paragraphs_type.image_gallery
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - minimal
+id: paragraph.image_gallery.field_image_gallery_description
+field_name: field_image_gallery_description
+entity_type: paragraph
+bundle: image_gallery
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

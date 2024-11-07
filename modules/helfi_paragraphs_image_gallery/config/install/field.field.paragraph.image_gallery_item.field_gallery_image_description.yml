@@ -1,0 +1,19 @@
+uuid: fe068813-e7e0-4001-8e8e-83b842c1cff6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_gallery_image_description
+    - paragraphs.paragraphs_type.image_gallery_item
+id: paragraph.image_gallery_item.field_gallery_image_description
+field_name: field_gallery_image_description
+entity_type: paragraph
+bundle: image_gallery_item
+label: Description
+description: 'The description of the selected image. Maximum length is 160 characters.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

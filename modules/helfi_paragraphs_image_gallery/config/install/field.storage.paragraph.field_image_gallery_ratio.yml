@@ -1,0 +1,30 @@
+uuid: b0297b85-5bc6-45cf-83d7-a131f5cbbf6a
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_image_gallery_ratio
+field_name: field_image_gallery_ratio
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: ratio_1_1
+      label: '1:1'
+    -
+      value: ratio_2_3
+      label: '2:3'
+    -
+      value: ratio_3_2
+      label: '3:2'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
