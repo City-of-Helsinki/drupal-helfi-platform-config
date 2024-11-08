@@ -26,7 +26,7 @@ function helfi_paragraphs_image_gallery_helfi_paragraph_types() : array {
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function helfi_paragraphs_accordion_entity_bundle_info_alter(array &$bundles): void {
+function helfi_paragraphs_image_gallery_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['paragraph']['accordion'])) {
     $bundles['paragraph']['accordion']['class'] = ImageGallery::class;
   }
