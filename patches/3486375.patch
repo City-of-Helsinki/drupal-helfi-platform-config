@@ -1,0 +1,84 @@
+diff --git a/src/SearchAPI/BackendClient.php b/src/SearchAPI/BackendClient.php
+index b8fdf78..d2da7af 100644
+--- a/src/SearchAPI/BackendClient.php
++++ b/src/SearchAPI/BackendClient.php
+@@ -18,6 +18,7 @@ use Drupal\search_api\SearchApiException;
+ use Drupal\search_api\Utility\FieldsHelperInterface;
+ use Elastic\Elasticsearch\Client;
+ use Elastic\Elasticsearch\Exception\ElasticsearchException;
++use Elastic\Transport\Exception\TransportException;
+ use Psr\Log\LoggerInterface;
+ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+ 
+@@ -112,7 +113,7 @@ class BackendClient implements BackendClientInterface {
+         throw new SearchApiException('An error occurred indexing items.');
+       }
+     }
+-    catch (ElasticSearchException $e) {
++    catch (ElasticSearchException | TransportException $e) {
+       throw new SearchApiException(sprintf('%s when indexing items in index %s.', $e->getMessage(), $indexId), 0, $e);
+     }
+ 
+@@ -133,7 +134,7 @@ class BackendClient implements BackendClientInterface {
+     try {
+       $this->client->bulk($params);
+     }
+-    catch (ElasticSearchException $e) {
++    catch (ElasticSearchException | TransportException $e) {
+       throw new SearchApiException(sprintf('An error occurred deleting items from the index %s.', $indexId), 0, $e);
+     }
+ 
+@@ -171,7 +172,7 @@ class BackendClient implements BackendClientInterface {
+ 
+       return $resultSet;
+     }
+-    catch (ElasticSearchException $e) {
++    catch (ElasticSearchException | TransportException $e) {
+       throw new SearchApiException(sprintf('Error querying index %s', $indexId), 0, $e);
+     }
+   }
+@@ -189,7 +190,7 @@ class BackendClient implements BackendClientInterface {
+         'index' => [$indexId],
+       ]);
+     }
+-    catch (ElasticSearchException $e) {
++    catch (ElasticSearchException | TransportException $e) {
+       throw new SearchApiException(sprintf('An error occurred removing the index %s.', $indexId), 0, $e);
+     }
+   }
+@@ -212,7 +213,7 @@ class BackendClient implements BackendClientInterface {
+       $event = new IndexCreatedEvent($index);
+       $this->eventDispatcher->dispatch($event);
+     }
+-    catch (ElasticSearchException $e) {
++    catch (ElasticSearchException | TransportException $e) {
+       throw new SearchApiException(sprintf('An error occurred creating the index %s.', $indexId), 0, $e);
+     }
+   }
+@@ -246,7 +247,7 @@ class BackendClient implements BackendClientInterface {
+       $params = $this->fieldParamsBuilder->mapFieldParams($indexId, $index);
+       $this->client->indices()->putMapping($params);
+     }
+-    catch (ElasticSearchException $e) {
++    catch (ElasticSearchException | TransportException $e) {
+       throw new SearchApiException(sprintf('An error occurred updating field mappings for index %s.', $indexId), 0, $e);
+     }
+   }
+@@ -269,7 +270,7 @@ class BackendClient implements BackendClientInterface {
+         'index' => $indexId,
+       ])->asBool();
+     }
+-    catch (ElasticSearchException $e) {
++    catch (ElasticSearchException | TransportException $e) {
+       throw new SearchApiException(sprintf('An error occurred checking if the index %s exists.', $indexId), 0, $e);
+     }
+   }
+@@ -339,7 +340,7 @@ class BackendClient implements BackendClientInterface {
+         'body' => $settings,
+       ]);
+     }
+-    catch (ElasticSearchException $e) {
++    catch (ElasticSearchException | TransportException $e) {
+       throw new SearchApiException(sprintf('An error occurred updating settings for index %s.', $indexId), 0, $e);
+     }
+     finally {
