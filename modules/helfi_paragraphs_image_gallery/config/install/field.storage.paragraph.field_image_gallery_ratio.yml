@@ -10,17 +10,8 @@ field_name: field_image_gallery_ratio
 entity_type: paragraph
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: ratio_1_1
-      label: '1:1'
-    -
-      value: ratio_2_3
-      label: '2:3'
-    -
-      value: ratio_3_2
-      label: '3:2'
-  allowed_values_function: ''
+  allowed_values: {  }
+  allowed_values_function: helfi_paragraphs_image_gallery_allowed_values
 module: options
 locked: false
 cardinality: 1
