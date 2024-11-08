@@ -8,6 +8,6 @@ use Drupal\paragraphs\ParagraphInterface;
 /**
  * Bundle class for image_gallery_item paragraph.
  */
-class ImageGallreyItem extends Paragraph implements ParagraphInterface {
+class ImageGalleryItem extends Paragraph implements ParagraphInterface {
 
 }

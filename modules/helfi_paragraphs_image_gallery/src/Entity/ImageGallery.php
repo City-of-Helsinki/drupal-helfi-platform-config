@@ -6,8 +6,8 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
- * Bundle class for remote_video paragraph.
+ * Bundle class for image_gallery paragraph.
  */
-class ParagraphImageGallery extends Paragraph implements ParagraphInterface {
+class ImageGallery extends Paragraph implements ParagraphInterface {
   
 }

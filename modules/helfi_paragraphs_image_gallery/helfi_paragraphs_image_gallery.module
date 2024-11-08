@@ -27,11 +27,11 @@ function helfi_paragraphs_image_gallery_helfi_paragraph_types() : array {
  * Implements hook_entity_bundle_info_alter().
  */
 function helfi_paragraphs_image_gallery_entity_bundle_info_alter(array &$bundles): void {
-  if (isset($bundles['paragraph']['accordion'])) {
-    $bundles['paragraph']['accordion']['class'] = ImageGallery::class;
+  if (isset($bundles['paragraph']['image_gallery'])) {
+    $bundles['paragraph']['image_gallery']['class'] = ImageGallery::class;
   }
-  if (isset($bundles['paragraph']['accordion_item'])) {
-    $bundles['paragraph']['accordion_item']['class'] = ImageGalleryItem::class;
+  if (isset($bundles['paragraph']['image_gallery_item'])) {
+    $bundles['paragraph']['image_gallery_item']['class'] = ImageGalleryItem::class;
   }
 }
 
