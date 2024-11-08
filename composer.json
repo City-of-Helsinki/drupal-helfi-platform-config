@@ -20,7 +20,7 @@
         "drupal/diff": "^1.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editoria11y": "^2.0",
-        "drupal/elasticsearch_connector": "^7.0@alpha",
+        "drupal/elasticsearch_connector": "^8.0@alpha",
         "drupal/entity_browser": "^2.5",
         "drupal/entity_usage": "^2.0@beta",
         "drupal/eu_cookie_compliance": "1.24",
@@ -65,8 +65,12 @@
         "drupal/views_bulk_edit": "^2.7",
         "drupal/views_bulk_operations": "^4.1",
         "drupal/stage_file_proxy": "^2",
+        "ruflin/elastica": "^8.0",
         "league/uri": "^6.0",
         "php": "^8.1"
+    },
+    "require-dev": {
+        "dg/bypass-finals": "^1.0"
     },
     "conflict": {
         "drupal/core": "<10.3",

@@ -16,4 +16,3 @@ services:
       - { timeout: '%helfi_react_search.request_timeout%' }
 
   Drupal\helfi_react_search\LinkedEvents: ~
-  Drupal\helfi_react_search\EventSubscriber\ElasticIndexSubscriber: ~
