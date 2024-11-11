@@ -186,7 +186,11 @@ final class HdbtCookieBannerForm extends ConfigFormBase {
 
     $values = $form_state->getValues();
 
-    if (!$this->isValidJson($values['site_settings'])) {
+    // Validate site settings if the user has chosen to use custom settings.
+    if (
+      !empty($values['site_settings']) &&
+      !$this->isValidJson($values['site_settings'])
+    ) {
       $form_state->setErrorByName('site_settings',
         $this->t('Site settings must be valid JSON', options: ['context' => 'hdbt cookie banner'])
       );
