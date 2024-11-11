@@ -38,8 +38,8 @@ function helfi_paragraphs_image_gallery_entity_bundle_info_alter(array &$bundles
 /**
  * Image ratio values.
  *
- * @return string[]
- *   Values to select.
+ * @return array
+ *   An array of possible key and value options.
  */
 function helfi_paragraphs_image_gallery_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL) : array {
   $ratio = [
