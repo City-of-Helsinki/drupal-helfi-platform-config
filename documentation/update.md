@@ -18,14 +18,14 @@ The HDBT cookie banner is included in the following versions of the Helfi packag
 
 Ensure your local environment is up and running on the latest development branch.
 
-1. Update the Helfi packages to the latest versions:
-  - `composer update drupal/helfi_platform_config drupal/hdbt drupal/hdbt_admin -W`
-2. Uninstall the EU Cookie Compliance module. This will also uninstall the Helfi EU Cookie Compliance module:
-  - `drush pmu -y eu_cookie_compliance`
-3. Install the HDBT cookie banner module:
-  - `drush en -y hdbt_cookie_banner`
-4. Export your configuration:
-  - `drush cex -y`
+1. Update the Helfi packages to the latest versions:\
+`composer update drupal/helfi_platform_config drupal/hdbt drupal/hdbt_admin -W`
+2. Uninstall the EU Cookie Compliance module. This will also uninstall the Helfi EU Cookie Compliance module:\
+`drush pmu -y eu_cookie_compliance`
+3. Install the HDBT cookie banner module:\
+`drush en -y hdbt_cookie_banner`
+4. Export your configuration:\
+`drush cex -y`
 5. Review the updated configurations and commit the changes to your repository.
 
 ### Setting up the Cookie Banner
@@ -38,15 +38,15 @@ By default, the cookie banner JS library is attached to a HTML tag with `footer`
 
 1. Log in to Drupal and navigate to `/admin/structure/hdbt-cookie-banner`.
 2. The `Site settings` text area contains the cookie information in JSON format. This data is saved as a configuration object but is not saved to `conf/cmi/`, so you need to configure the JSON manually:
-  - Enable `Use instance-specific cookie settings`
-  - Scroll down to the `Site settings` textarea.
-  - Copy the contents from [siteSettingsTemplate.json](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/blob/main/modules/hdbt_cookie_banner/assets/json/siteSettingsTemplate.json) to the text area. The template provides basic cookie information for Helfi Drupal sites.
-  - Go through each variable in the cookie information and adjust the values to match your needs. Some values are labeled such as `Change me`, `change-me` or `change-me.hel.fi` which you need to modify to avoid cookie conflicts.
-    - Please note, that the `Cookie name` field needs to be the same as the Name of the cookie in Essential Groups - Item 1. This is where the cookie banner settings are stored.
-  - Save the changes
+    - Enable `Use instance-specific cookie settings`
+    - Scroll down to the `Site settings` textarea.
+    - Copy the contents from [siteSettingsTemplate.json](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/blob/main/modules/hdbt_cookie_banner/assets/json/siteSettingsTemplate.json) to the text area. The template provides basic cookie information for Helfi Drupal sites.
+    - Go through each variable in the cookie information and adjust the values to match your needs. Some values are labeled such as `Change me`, `change-me` or `change-me.hel.fi` which you need to modify to avoid cookie conflicts.
+        - Please note, that the `Cookie name` field needs to be the same as the Name of the cookie in Essential Groups - Item 1. This is where the cookie banner settings are stored.
+    - Save the changes
 3. Verify that the cookie banner is functioning as expected.
-  - You can use the browser developer tools console to see if there are any errors or missing cookies. The messages would be self-explanatory, like: `Cookie consent: found unapproved localStorage(s): 'storage.name'` or `Error: Cookie consent: The spacerParentSelector element '.footer' was not found'`.
-  - Fix the possible errors, adjust the cookie settings as needed and save the changes. Verify that the updates are applied correctly.
+    - You can use the browser developer tools console to see if there are any errors or missing cookies. The messages would be self-explanatory, like: `Cookie consent: found unapproved localStorage(s): 'storage.name'` or `Error: Cookie consent: The spacerParentSelector element '.footer' was not found'`.
+    - Fix the possible errors, adjust the cookie settings as needed and save the changes. Verify that the updates are applied correctly.
 4. Check if any JavaScript in your Drupal uses the `Drupal.eu_cookie_compliance.hasAgreed()` function. If so, replace the function call with `Drupal.cookieConsent.getConsentStatus()`. It will work the same way as the EU Cookie Compliance hasAgreed function. 
 5. When deploying to test, staging, or production environments, manually copy the `Site settings` JSON to the textarea.
 
