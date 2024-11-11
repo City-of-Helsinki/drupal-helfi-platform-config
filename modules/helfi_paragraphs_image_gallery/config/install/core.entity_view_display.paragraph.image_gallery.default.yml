@@ -10,6 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.image_gallery
   module:
     - entity_reference_revisions
+    - options
     - text
 id: paragraph.image_gallery.default
 targetEntityType: paragraph
@@ -32,6 +33,13 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
+  field_image_gallery_ratio:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
   field_image_gallery_title:
     type: string
     label: hidden
@@ -41,5 +49,4 @@ content:
     weight: 1
     region: content
 hidden:
-  field_image_gallery_ratio: true
   search_api_excerpt: true

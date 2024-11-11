@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.image_gallery_item.field_gallery_image_description
     - paragraphs.paragraphs_type.image_gallery_item
   module:
+    - hdbt_admin_tools
     - media_library
 id: paragraph.image_gallery_item.default
 targetEntityType: paragraph
@@ -21,10 +22,12 @@ content:
       media_types: {  }
     third_party_settings: {  }
   field_gallery_image_description:
-    type: string_textfield
+    type: textfield_character_counter
     weight: 2
     region: content
     settings:
+      counter_step: 0
+      counter_total: 160
       size: 160
       placeholder: ''
     third_party_settings: {  }

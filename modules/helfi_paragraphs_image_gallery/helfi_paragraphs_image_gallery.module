@@ -38,7 +38,7 @@ function helfi_paragraphs_image_gallery_entity_bundle_info_alter(array &$bundles
 /**
  * Image ratio values.
  *
- * @return int[]
+ * @return string[]
  *   Values to select.
  */
 function helfi_paragraphs_image_gallery_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL) : array {
