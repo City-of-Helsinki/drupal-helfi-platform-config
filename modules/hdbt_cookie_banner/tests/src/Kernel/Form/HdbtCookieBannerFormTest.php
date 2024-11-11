@@ -39,6 +39,12 @@ class HdbtCookieBannerFormTest extends KernelTestBase {
     $form = HdbtCookieBannerForm::create($this->container);
     $empty_form = [];
 
+    // Test empty value in site_settings.
+    $valid_empty_form_state = new FormState();
+    $valid_empty_form_state->setValues(['site_settings' => '']);
+    $form->validateForm($empty_form, $valid_empty_form_state);
+    $this->assertFalse($valid_empty_form_state->hasAnyErrors(), 'Form validation should pass with empty value.');
+
     // Test valid JSON in site_settings.
     $valid_form_state = new FormState();
     $valid_form_state->setValues(['site_settings' => '{"key": "value"}']);
@@ -50,12 +56,6 @@ class HdbtCookieBannerFormTest extends KernelTestBase {
     $invalid_form_state->setValues(['site_settings' => 'invalid_json']);
     $form->validateForm($empty_form, $invalid_form_state);
     $this->assertTrue($invalid_form_state->hasAnyErrors(), 'Form validation should fail with invalid JSON.');
-
-    // Test empty value in site_settings.
-    $valid_form_state = new FormState();
-    $valid_form_state->setValues(['site_settings' => '']);
-    $form->validateForm($empty_form, $valid_form_state);
-    $this->assertFalse($valid_form_state->hasAnyErrors(), 'Form validation should pass with empty value.');
   }
 
   /**
