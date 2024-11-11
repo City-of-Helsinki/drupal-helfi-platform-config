@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_paragraphs_image_gallery\Entity\ImageGallery;
 use Drupal\helfi_paragraphs_image_gallery\Entity\ImageGalleryItem;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Implements hook_helfi_paragraph_types().
@@ -34,7 +34,6 @@ function helfi_paragraphs_image_gallery_entity_bundle_info_alter(array &$bundles
     $bundles['paragraph']['image_gallery_item']['class'] = ImageGalleryItem::class;
   }
 }
-
 
 /**
  * Image ratio values.

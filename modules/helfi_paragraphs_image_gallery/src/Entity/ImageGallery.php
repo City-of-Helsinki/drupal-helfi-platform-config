@@ -9,5 +9,5 @@ use Drupal\paragraphs\ParagraphInterface;
  * Bundle class for image_gallery paragraph.
  */
 class ImageGallery extends Paragraph implements ParagraphInterface {
-  
+
 }
