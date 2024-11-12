@@ -5,6 +5,7 @@ dependencies:
   - field_group:field_group
   - drupal:menu_ui
   - drupal:taxonomy
+  - helfi_platform_config:helfi_platform_config
   - helfi_base_content:helfi_base_content
   - helfi_image_styles:helfi_image_styles
   - helfi_media:helfi_media
