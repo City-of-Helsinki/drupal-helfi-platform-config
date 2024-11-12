@@ -1,0 +1,21 @@
+uuid: 77736144-e2d4-4f43-9bf4-d6a5700454e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_location
+    - taxonomy.vocabulary.news_neighbourhoods
+  module:
+    - helfi_platform_config
+id: taxonomy_term.news_neighbourhoods.field_location
+field_name: field_location
+entity_type: taxonomy_term
+bundle: news_neighbourhoods
+label: Location
+description: 'Neighbourhood location. Used to search nearby content.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: location

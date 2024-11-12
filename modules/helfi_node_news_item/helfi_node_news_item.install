@@ -87,3 +87,11 @@ function helfi_node_news_item_update_9003(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_node_news_item');
 }
+
+/**
+ * Add field.field.taxonomy_term.news_neighbourhoods.field_location.
+ */
+function helfi_node_news_item_update_9004(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_node_news_item');
+}
