@@ -1,0 +1,17 @@
+uuid: 789165a5-70d4-40eb-8c5b-4a00e35453b0
+langcode: fi
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 2_3_575w_383h
+label: 2.3_575w_383h
+effects:
+  321a2bcb-e736-4155-ae0e-4b10a73ff95d:
+    uuid: 321a2bcb-e736-4155-ae0e-4b10a73ff95d
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 575
+      height: 383
+      crop_type: focal_point

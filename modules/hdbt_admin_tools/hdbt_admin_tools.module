@@ -522,6 +522,7 @@ function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInt
   ) {
     $fields['field_has_hero']->addConstraint('Hero', []);
   }
+
 }
 
 /**

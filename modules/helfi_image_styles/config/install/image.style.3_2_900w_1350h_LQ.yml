@@ -1,0 +1,24 @@
+uuid: 19aa2c22-c3e9-47cd-b767-9fca520ae4ba
+langcode: fi
+status: true
+dependencies:
+  module:
+    - focal_point
+    - image_style_quality
+name: 3_2_900w_1350h_LQ
+label: 3.2_900w_1350h_LQ
+effects:
+  289822b3-1d38-43a4-a18e-0344b4ef9161:
+    uuid: 289822b3-1d38-43a4-a18e-0344b4ef9161
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 900
+      height: 1350
+      crop_type: focal_point
+  c5118eb7-9ad5-4756-9515-d6358c38bd75:
+    uuid: c5118eb7-9ad5-4756-9515-d6358c38bd75
+    id: image_style_quality
+    weight: 2
+    data:
+      quality: 65

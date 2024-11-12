@@ -1,0 +1,48 @@
+uuid: 0011a33c-b46a-4354-af09-3ea3e656a790
+langcode: fi
+status: true
+dependencies:
+  config:
+    - image.style.3_2_1080w_1620h_LQ
+    - image.style.3_2_400w_600h
+    - image.style.3_2_450w_675h_LQ
+    - image.style.3_2_540w_810h
+    - image.style.3_2_800w_1200h_LQ
+    - image.style.3_2_900w_1350h_LQ
+  module:
+    - helfi_image_styles
+id: image_gallery_3_2
+label: 'Image gallery 3:2'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: 3_2_400w_600h
+    breakpoint_id: helfi_image_styles.l
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 3_2_800w_1200h_LQ
+    breakpoint_id: helfi_image_styles.l
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 3_2_450w_675h_LQ
+    breakpoint_id: helfi_image_styles.m
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 3_2_900w_1350h_LQ
+    breakpoint_id: helfi_image_styles.m
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 3_2_540w_810h
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 3_2_1080w_1620h_LQ
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 2x
+breakpoint_group: helfi_image_styles
+fallback_image_style: 3_2_450w_675h_LQ

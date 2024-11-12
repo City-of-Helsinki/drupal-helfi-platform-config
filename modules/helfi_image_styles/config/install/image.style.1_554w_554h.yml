@@ -1,0 +1,17 @@
+uuid: ca8cb2c4-7e3c-4a4a-ae75-9520f628f369
+langcode: fi
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 1_554w_554h
+label: 1_554w_554h
+effects:
+  ed62a58f-6f7b-47ff-b8c9-3574fb9abeba:
+    uuid: ed62a58f-6f7b-47ff-b8c9-3574fb9abeba
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 554
+      height: 554
+      crop_type: focal_point
