@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraint;
  * @Constraint(
  *   id = "ImageGallery",
  *   label = @Translation("There should be at least two gallery items.", context = "Validation"),
+ *   type = "entity:paragraph"
  * )
  */
 class ImageGalleryConstraint extends Constraint {
