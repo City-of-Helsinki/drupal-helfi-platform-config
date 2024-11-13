@@ -539,7 +539,6 @@ function hdbt_admin_tools_field_widget_single_element_paragraphs_form_alter(&$el
    * without-image-center   = "Without image, align center"
    * without-image-left     = "Without image, align left"
    * with-search            = "With search"
-   * with-helsinki-near-me  = "With Helsinki near you"
   */
 
   // Early return if paragraph type is not set.
