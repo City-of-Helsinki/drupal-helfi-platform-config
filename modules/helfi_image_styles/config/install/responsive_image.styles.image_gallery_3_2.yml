@@ -5,7 +5,7 @@ dependencies:
   config:
     - image.style.3_2_1080w_1620h_LQ
     - image.style.3_2_400w_600h
-    - image.style.3_2_450w_675h_LQ
+    - image.style.3_2_450w_675h
     - image.style.3_2_540w_810h
     - image.style.3_2_800w_1200h_LQ
     - image.style.3_2_900w_1350h_LQ
