@@ -9,7 +9,6 @@ use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
-use Drupal\helfi_platform_config\TypedData\LocationDataDefinition;
 
 /**
  * Defines the 'location' field type.
