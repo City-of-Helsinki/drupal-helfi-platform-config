@@ -567,8 +567,6 @@ function hdbt_admin_tools_field_widget_single_element_paragraphs_form_alter(&$el
         [$design_select => ['value' => 'without-image-center']],
         'or',
         [$design_select => ['value' => 'without-image-left']],
-        'or',
-        [$design_select => ['value' => 'with-helsinki-near-you']],
       ],
     ];
 
