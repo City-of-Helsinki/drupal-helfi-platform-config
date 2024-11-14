@@ -1,0 +1,19 @@
+uuid: 44d5b217-5ef0-4178-8a1a-6190babb12e2
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_platform_config
+    - taxonomy
+id: taxonomy_term.field_location
+field_name: field_location
+entity_type: taxonomy_term
+type: location
+settings: {  }
+module: helfi_platform_config
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

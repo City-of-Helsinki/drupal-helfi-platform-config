@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\ExternalEntityStorage;
 
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Prophecy\Argument;
 
 /**
@@ -28,7 +28,7 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
     $client = $this->prophesize(Client::class);
     $client->search(Argument::any())
       ->shouldBeCalled()
-      ->willReturn([], [
+      ->willReturn($this->createElasticsearchResponse([]), $this->createElasticsearchResponse([
         'hits' => [
           'hits' => [
             // Working item.
@@ -48,7 +48,7 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
             ],
           ],
         ],
-      ]);
+      ]));
     $client->search(Argument::any())
       ->shouldBeCalled();
     $sut = $this->getSut($client->reveal());
@@ -85,7 +85,7 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
       ],
     ])
       ->shouldBeCalled()
-      ->willReturn([]);
+      ->willReturn($this->createElasticsearchResponse([]));
     // Test sort.
     $client->search([
       'index' => 'news_terms',
@@ -103,7 +103,7 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
       ],
     ])
       ->shouldBeCalled()
-      ->willReturn([]);
+      ->willReturn($this->createElasticsearchResponse([]));
     // Test filters.
     $client->search([
       'index' => 'news_terms',
@@ -134,7 +134,7 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
       ],
     ])
       ->shouldBeCalled()
-      ->willReturn([]);
+      ->willReturn($this->createElasticsearchResponse([]));
     $this->getSut($client->reveal())
       ->getQuery()
       ->accessCheck(FALSE)

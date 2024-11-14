@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\ExternalEntityStorage;
 
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Prophecy\Argument;
 
 /**
@@ -29,32 +29,35 @@ class NewsStorageClientTest extends StorageClientTestBase {
     $client = $this->prophesize(Client::class);
     $client->search(Argument::any())
       ->shouldBeCalled()
-      ->willReturn([], [
-        'hits' => [
+      ->willReturn(
+        $this->createElasticsearchResponse([]),
+        $this->createElasticsearchResponse([
           'hits' => [
-            // Working item.
-            [
-              '_source' => [
-                'uuid_langcode' => ['123'],
-                'uuid' => ['uuid-123'],
-                'title' => ['test title'],
-                'field_news_groups' => ['Test groups'],
-                'field_news_item_tags' => ['Test tag'],
-                'field_news_neighbourhoods' => ['Test neighbourhood'],
-                'url' => ['https://localhost'],
-                'published_at' => [1234567],
-                'short_title' => ['test shorttitle'],
+            'hits' => [
+              // Working item.
+              [
+                '_source' => [
+                  'uuid_langcode' => ['123'],
+                  'uuid' => ['uuid-123'],
+                  'title' => ['test title'],
+                  'field_news_groups' => ['Test groups'],
+                  'field_news_item_tags' => ['Test tag'],
+                  'field_news_neighbourhoods' => ['Test neighbourhood'],
+                  'url' => ['https://localhost'],
+                  'published_at' => [1234567],
+                  'short_title' => ['test shorttitle'],
+                ],
               ],
-            ],
-            // Missing uuid_langcode field.
-            [
-              '_source' => [
-                'uuid' => 'uuid-321',
+              // Missing uuid_langcode field.
+              [
+                '_source' => [
+                  'uuid' => 'uuid-321',
+                ],
               ],
             ],
           ],
-        ],
-      ]);
+        ]),
+      );
     $client->search(Argument::any())
       ->shouldBeCalled();
     $sut = $this->getSut($client->reveal());
@@ -87,7 +90,7 @@ class NewsStorageClientTest extends StorageClientTestBase {
       ],
     ])
       ->shouldBeCalled()
-      ->willReturn([]);
+      ->willReturn($this->createElasticsearchResponse([]));
     // Test sort.
     $client->search([
       'index' => 'news',
@@ -99,7 +102,7 @@ class NewsStorageClientTest extends StorageClientTestBase {
       ],
     ])
       ->shouldBeCalled()
-      ->willReturn([]);
+      ->willReturn($this->createElasticsearchResponse([]));
     // Test filters.
     $client->search([
       'index' => 'news',
@@ -129,7 +132,7 @@ class NewsStorageClientTest extends StorageClientTestBase {
       ],
     ])
       ->shouldBeCalled()
-      ->willReturn([]);
+      ->willReturn($this->createElasticsearchResponse([]));
     $this->getSut($client->reveal())->getQuery()->accessCheck(FALSE)->execute();
     $this->getSut($client->reveal())
       ->getQuery()

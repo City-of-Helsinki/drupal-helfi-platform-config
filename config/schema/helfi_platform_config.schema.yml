@@ -16,3 +16,16 @@ block.settings.telia_ace_widget:
     chat_title:
       type: text
       label: 'Chat button label'
+
+
+# Default value.
+field.value.location:
+  type: mapping
+  label: Default value
+  mapping:
+    latitude:
+      type: float
+      label: Latitude
+    longitude:
+      type: float
+      label: longitude

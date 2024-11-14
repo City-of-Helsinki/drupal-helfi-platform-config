@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_paragraphs_news_list;
 
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
-use Elasticsearch\Client;
-use Elasticsearch\Common\Exceptions\ElasticsearchException;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\Exception\ElasticsearchException;
+use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -25,7 +28,7 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   /**
    * The elastic client.
    *
-   * @var \Elasticsearch\Client
+   * @var \Elastic\Elasticsearch\Client
    */
   protected Client $client;
 
@@ -78,9 +81,9 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
     array $parameters,
   ) : array {
     try {
-      return $this->client->search($parameters);
+      return $this->client->search($parameters)->asArray();
     }
-    catch (ElasticsearchException $e) {
+    catch (ElasticsearchException | TransportException $e) {
       Error::logException($this->logger, $e);
     }
     return [];
