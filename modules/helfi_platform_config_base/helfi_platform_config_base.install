@@ -131,9 +131,20 @@ function helfi_platform_config_base_update_9003() : void {
  * Enable image gallery paragraph.
  */
 function helfi_platform_config_base_update_9004() : void {
-  Drupal::service('module_installer')->install([
-    'helfi_paragraphs_image_gallery',
-  ]);
+  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+
+  try {
+    $environmentResolver->getActiveEnvironment();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
+  // Enable helfi_paragraphs_image_gallery.
+  if (!\Drupal::moduleHandler()->moduleExists('helfi_paragraphs_image_gallery')) {
+    Drupal::service('module_installer')->install(['helfi_paragraphs_image_gallery',]);
+  }
+
 
   // Trigger updates for content liftup related modules.
   $affected_modules = [
