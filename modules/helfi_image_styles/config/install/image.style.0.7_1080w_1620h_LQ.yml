@@ -5,8 +5,8 @@ dependencies:
   module:
     - focal_point
     - image_style_quality
-name: 3_2_1080w_1620h_LQ
-label: 3.2_1080w_1620h_LQ
+name: 0.7_1080w_1620h_LQ
+label: 0.7_1080w_1620h_LQ
 effects:
   1c1da0f4-bb6a-4f11-88eb-8cd33a8e0da2:
     uuid: 1c1da0f4-bb6a-4f11-88eb-8cd33a8e0da2

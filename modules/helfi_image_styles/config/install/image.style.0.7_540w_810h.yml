@@ -4,8 +4,8 @@ status: true
 dependencies:
   module:
     - focal_point
-name: 3_2_540w_810h
-label: 3.2_540w_810h
+name: 0.7_540w_810h
+label: 0.7_540w_810h
 effects:
   6535b34f-21c8-4005-8561-d1936245e319:
     uuid: 6535b34f-21c8-4005-8561-d1936245e319

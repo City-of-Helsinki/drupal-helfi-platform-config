@@ -3,12 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.3_2_1080w_1620h_LQ
-    - image.style.3_2_400w_600h
-    - image.style.3_2_450w_675h
-    - image.style.3_2_540w_810h
-    - image.style.3_2_800w_1200h_LQ
-    - image.style.3_2_900w_1350h_LQ
+    - image.style.1.5_1120w_746h_LQ
+    - image.style.1.5_405w_270h
+    - image.style.1.5_560w_373h
+    - image.style.1.5_904w_602h_LQ
   module:
     - helfi_image_styles
 id: image_gallery_3_2
@@ -16,33 +14,23 @@ label: 'Image gallery 3:2'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: 3_2_400w_600h
+    image_mapping: 1.5_405w_270h
     breakpoint_id: helfi_image_styles.l
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 3_2_800w_1200h_LQ
+    image_mapping: 1.5_904w_602h_LQ
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 3_2_450w_675h
-    breakpoint_id: helfi_image_styles.m
-    multiplier: 1x
-  -
-    image_mapping_type: image_style
-    image_mapping: 3_2_900w_1350h_LQ
-    breakpoint_id: helfi_image_styles.m
-    multiplier: 2x
-  -
-    image_mapping_type: image_style
-    image_mapping: 3_2_540w_810h
+    image_mapping: 1.5_560w_373h
     breakpoint_id: helfi_image_styles.xs
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 3_2_1080w_1620h_LQ
+    image_mapping: 1.5_1120w_746h_LQ
     breakpoint_id: helfi_image_styles.xs
     multiplier: 2x
 breakpoint_group: helfi_image_styles
-fallback_image_style: 3_2_450w_675h
+fallback_image_style: 1.5_405w_270h

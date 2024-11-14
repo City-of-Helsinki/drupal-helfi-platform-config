@@ -4,8 +4,8 @@ status: true
 dependencies:
   module:
     - focal_point
-name: 3_2_400w_600h
-label: 3.2_400w_600h
+name: 0.7_400w_600h
+label: 0.7_400w_600h
 effects:
   dc8a6ee8-839c-4972-9eb8-5df5305dc75d:
     uuid: dc8a6ee8-839c-4972-9eb8-5df5305dc75d

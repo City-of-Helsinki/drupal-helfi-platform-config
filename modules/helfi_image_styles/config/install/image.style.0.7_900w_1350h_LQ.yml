@@ -5,8 +5,8 @@ dependencies:
   module:
     - focal_point
     - image_style_quality
-name: 3_2_900w_1350h_LQ
-label: 3.2_900w_1350h_LQ
+name: 0.7_900w_1350h_LQ
+label: 0.7_900w_1350h_LQ
 effects:
   289822b3-1d38-43a4-a18e-0344b4ef9161:
     uuid: 289822b3-1d38-43a4-a18e-0344b4ef9161
