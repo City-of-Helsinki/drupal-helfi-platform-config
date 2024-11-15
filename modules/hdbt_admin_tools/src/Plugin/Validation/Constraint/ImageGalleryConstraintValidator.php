@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\hdbt_admin_tools\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
@@ -13,7 +15,7 @@ class ImageGalleryConstraintValidator extends ConstraintValidator {
   /**
    * {@inheritdoc}
    */
-  public function validate(mixed $value, Constraint $constraint) {
+  public function validate(mixed $value, Constraint $constraint): void {
     assert($constraint instanceof ImageGalleryConstraint);
     $parent = $value->getEntity();
 
