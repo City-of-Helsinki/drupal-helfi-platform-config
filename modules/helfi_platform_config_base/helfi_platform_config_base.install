@@ -149,6 +149,7 @@ function helfi_platform_config_base_update_9004() : void {
   $affected_modules = [
     'helfi_node_landing_page',
     'helfi_node_page',
+    'helfi_tpr_config',
   ];
 
   foreach ($affected_modules as $module) {
