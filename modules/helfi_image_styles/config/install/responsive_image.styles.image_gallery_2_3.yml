@@ -17,22 +17,22 @@ image_style_mappings:
   -
     image_mapping_type: image_style
     image_mapping: 0.7_414w_621h
-    breakpoint_id: helfi_image_styles.l
+    breakpoint_id: helfi_image_styles.m
     multiplier: 1x
   -
     image_mapping_type: image_style
     image_mapping: 0.7_828w_1242h_LQ
-    breakpoint_id: helfi_image_styles.l
+    breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
     image_mapping_type: image_style
     image_mapping: 0.7_352w_572h
-    breakpoint_id: helfi_image_styles.m
+    breakpoint_id: helfi_image_styles.s
     multiplier: 1x
   -
     image_mapping_type: image_style
     image_mapping: 0.7_704w_1144h_LQ
-    breakpoint_id: helfi_image_styles.m
+    breakpoint_id: helfi_image_styles.s
     multiplier: 2x
   -
     image_mapping_type: image_style
