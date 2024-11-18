@@ -4,14 +4,14 @@ status: true
 dependencies:
   module:
     - focal_point
-name: 1_554w_554h
-label: 1_554w_554h
+name: 1_543w_543h
+label: 1_543w_543h
 effects:
   ed62a58f-6f7b-47ff-b8c9-3574fb9abeba:
     uuid: ed62a58f-6f7b-47ff-b8c9-3574fb9abeba
     id: focal_point_scale_and_crop
     weight: 1
     data:
-      width: 554
-      height: 554
+      width: 543
+      height: 543
       crop_type: focal_point

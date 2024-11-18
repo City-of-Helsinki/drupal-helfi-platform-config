@@ -3,14 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.1_1108w_1108h_LQ
-    - image.style.1_277w_277h
-    - image.style.1_406w_406h
-    - image.style.1_440w_440h
-    - image.style.1_554w_554h
-    - image.style.1_554w_554h_LQ
-    - image.style.1_812w_812h_LQ
-    - image.style.1_880w_880h_LQ
+    - image.style.1_1086w_1086h_LQ
+    - image.style.1_414w_414h
+    - image.style.1_543w_543h
+    - image.style.1_828w_828h_LQ
   module:
     - helfi_image_styles
 id: image_gallery_1_1
@@ -18,53 +14,23 @@ label: 'Image gallery 1:1'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: 1_406w_406h
-    breakpoint_id: helfi_image_styles.xl
-    multiplier: 1x
-  -
-    image_mapping_type: image_style
-    image_mapping: 1_812w_812h_LQ
-    breakpoint_id: helfi_image_styles.xl
-    multiplier: 2x
-  -
-    image_mapping_type: image_style
-    image_mapping: 1_406w_406h
-    breakpoint_id: helfi_image_styles.l
-    multiplier: 1x
-  -
-    image_mapping_type: image_style
-    image_mapping: 1_812w_812h_LQ
-    breakpoint_id: helfi_image_styles.l
-    multiplier: 2x
-  -
-    image_mapping_type: image_style
-    image_mapping: 1_440w_440h
+    image_mapping: 1_414w_414h
     breakpoint_id: helfi_image_styles.m
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_880w_880h_LQ
+    image_mapping: 1_828w_828h_LQ
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
     image_mapping_type: image_style
-    image_mapping: 1_277w_277h
-    breakpoint_id: helfi_image_styles.s
-    multiplier: 1x
-  -
-    image_mapping_type: image_style
-    image_mapping: 1_554w_554h_LQ
-    breakpoint_id: helfi_image_styles.s
-    multiplier: 2x
-  -
-    image_mapping_type: image_style
-    image_mapping: 1_554w_554h
+    image_mapping: 1_543w_543h
     breakpoint_id: helfi_image_styles.xs
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_1108w_1108h_LQ
+    image_mapping: 1_1086w_1086h_LQ
     breakpoint_id: helfi_image_styles.xs
     multiplier: 2x
 breakpoint_group: helfi_image_styles
-fallback_image_style: 1_406w_406h
+fallback_image_style: 1_414w_414h

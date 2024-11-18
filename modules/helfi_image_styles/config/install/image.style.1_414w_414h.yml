@@ -4,14 +4,14 @@ status: true
 dependencies:
   module:
     - focal_point
-name: 1_440w_440h
-label: 1_440w_440h
+name: 1_414w_414h
+label: 1_414w_414h
 effects:
   9ef8198f-6739-4a26-b0d7-157e42648cc4:
     uuid: 9ef8198f-6739-4a26-b0d7-157e42648cc4
     id: focal_point_scale_and_crop
     weight: 1
     data:
-      width: 440
-      height: 440
+      width: 414
+      height: 414
       crop_type: focal_point

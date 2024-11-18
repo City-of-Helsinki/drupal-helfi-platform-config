@@ -5,16 +5,16 @@ dependencies:
   module:
     - focal_point
     - image_style_quality
-name: 1_880w_880h_LQ
-label: 1_880w_880h_LQ
+name: 1_828w_828h_LQ
+label: 1_828w_828h_LQ
 effects:
   c4554106-234a-4d04-a6cf-c7ae4f8886dd:
     uuid: c4554106-234a-4d04-a6cf-c7ae4f8886dd
     id: focal_point_scale_and_crop
     weight: 1
     data:
-      width: 880
-      height: 880
+      width: 828
+      height: 828
       crop_type: focal_point
   ee011418-cb33-48a5-af34-10bfac5b3e64:
     uuid: ee011418-cb33-48a5-af34-10bfac5b3e64
