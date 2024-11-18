@@ -522,6 +522,14 @@ function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInt
   ) {
     $fields['field_has_hero']->addConstraint('Hero', []);
   }
+
+  if ($entity_type->id() === 'paragraph' && $bundle == 'image_gallery') {
+    // Add constraint to check if image gallery has two gallery items.
+    if (array_key_exists('field_gallery_item', $fields)) {
+      $fields['field_gallery_item']->addConstraint('ImageGallery', []);
+    }
+  }
+
 }
 
 /**

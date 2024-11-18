@@ -33,6 +33,7 @@ function helfi_node_page_helfi_paragraph_types() : array {
       'event_list' => 13,
       'contact_card_listing' => 14,
       'news_list' => 15,
+      'image_gallery' => 16,
     ],
     'field_lower_content' => [
       'list_of_links' => 0,
@@ -50,6 +51,7 @@ function helfi_node_page_helfi_paragraph_types() : array {
       'event_list' => 13,
       'contact_card_listing' => 14,
       'news_list' => 15,
+      'image_gallery' => 16,
     ],
     'field_sidebar_content' => [
       'from_library' => 0,

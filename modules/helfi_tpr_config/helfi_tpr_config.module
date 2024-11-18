@@ -56,6 +56,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'remote_video' => 7,
           'columns' => 8,
           'contact_card_listing' => 9,
+          'image_gallery' => 10,
         ],
         'field_lower_content' => [
           'list_of_links' => 0,
@@ -72,6 +73,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'liftup_with_image' => 11,
           'map' => 12,
           'remote_video' => 13,
+          'image_gallery' => 14,
         ],
       ],
     ],
@@ -93,6 +95,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'contact_card_listing' => 12,
           'unit_accessibility_information' => 13,
           'unit_contact_card' => 14,
+          'image_gallery' => 15,
         ],
         'field_sidebar_content' => [
           'from_library' => 0,
@@ -116,6 +119,7 @@ function helfi_tpr_config_helfi_paragraph_types() : array {
           'phasing' => 14,
           'unit_accessibility_information' => 15,
           'unit_contact_card' => 16,
+          'image_gallery' => 17,
         ],
       ],
     ],

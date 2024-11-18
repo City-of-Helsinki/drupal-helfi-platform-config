@@ -149,3 +149,9 @@ msgstr "Tekstialue (merkkimäärälaskuri)"
 
 msgid "Textfield (character counter)"
 msgstr "Tekstikenttä (merkkimäärälaskuri)"
+
+msgid "Image gallery paragraph should have at least two items."
+msgstr "Kuvagalleriassa tulisi olla vähintään kaksi kuvaa."
+
+msgid "Image is mandatory with the selected Hero design."
+msgstr "Kuva on pakollinen valitun designin kanssa."

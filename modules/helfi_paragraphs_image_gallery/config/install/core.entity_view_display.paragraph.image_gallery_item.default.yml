@@ -1,0 +1,32 @@
+uuid: fefcfc5a-2130-4993-868c-d7a87b3bc78f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_gallery_item.field_gallery_image
+    - field.field.paragraph.image_gallery_item.field_gallery_image_description
+    - paragraphs.paragraphs_type.image_gallery_item
+id: paragraph.image_gallery_item.default
+targetEntityType: paragraph
+bundle: image_gallery_item
+mode: default
+content:
+  field_gallery_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: image
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_gallery_image_description:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  search_api_excerpt: true

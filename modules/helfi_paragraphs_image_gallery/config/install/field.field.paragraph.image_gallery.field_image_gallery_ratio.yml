@@ -1,0 +1,23 @@
+uuid: b6356bca-1c21-4b1c-b2fe-bb8cd494f7fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image_gallery_ratio
+    - paragraphs.paragraphs_type.image_gallery
+  module:
+    - options
+id: paragraph.image_gallery.field_image_gallery_ratio
+field_name: field_image_gallery_ratio
+entity_type: paragraph
+bundle: image_gallery
+label: 'Image ratio'
+description: 'Select the ratio of the images shown in the image gallery. All images will have the same ratio. By default 1:1 is selected.'
+required: true
+translatable: false
+default_value:
+  -
+    value: ratio_1_1
+default_value_callback: ''
+settings: {  }
+field_type: list_string

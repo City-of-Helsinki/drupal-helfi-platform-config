@@ -45,3 +45,9 @@ msgstr "Uppdatera användarlösenord"
 
 msgid "Hero paragraph is mandatory if the Hero checkbox has been selected. Either unselect the checkbox or create the hero paragraph by clicking the Add Hero button."
 msgstr "Hero paragraph är obligatoriskt om kryssrutan Hero har markerats. Avmarkera antingen kryssrutan eller skapa hero paragraph genom att klicka på knappen Lägg till Hero"
+
+msgid "Image gallery paragraph should have at least two items."
+msgstr "Det bör finnas minst två bilder i bildgalleriet"
+
+msgid "Image is mandatory with the selected Hero design."
+msgstr "Bild är obligatorisk med den valda Hero-designen."
