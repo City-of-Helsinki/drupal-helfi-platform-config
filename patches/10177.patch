@@ -1,0 +1,253 @@
+From 69b3409ec7356d8583b27ffcd54313084e07008c Mon Sep 17 00:00:00 2001
+From: Lee Rowlands <lee.rowlands@previousnext.com.au>
+Date: Thu, 14 Nov 2024 04:54:37 +1000
+Subject: [PATCH 1/3] Possible fix
+
+---
+ .../RemoveCheckToStringNodeVisitor.php        | 61 +++++++++++++++++++
+ .../Drupal/Core/Template/TwigExtension.php    | 11 ++++
+ .../Template/TwigSimpleCheckToStringNode.php  | 33 ++++++++++
+ 3 files changed, 105 insertions(+)
+ create mode 100644 core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
+ create mode 100644 core/lib/Drupal/Core/Template/TwigSimpleCheckToStringNode.php
+
+diff --git a/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php b/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
+new file mode 100644
+index 000000000000..7752eb6d6481
+--- /dev/null
++++ b/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
+@@ -0,0 +1,61 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Core\Template;
++
++use Twig\Environment;
++use Twig\Node\CheckToStringNode;
++use Twig\Node\Node;
++use Twig\NodeVisitor\NodeVisitorInterface;
++
++/**
++ * Defines a TwigNodeVisitor that replaces CheckToStringNodes.
++ *
++ * When Drupal's default SandboxPolicy is active, we set __toString as an
++ * allowed method. In which case, Twig's SandboxExtension need not check if
++ * __toString is allowed on every object.
++ */
++final class RemoveCheckToStringNodeVisitor implements NodeVisitorInterface {
++
++  public function __construct(protected bool $active) {
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function enterNode(Node $node, Environment $env): Node {
++    if (!$this->active) {
++      // __toString isn't an allowed method so we need to leave the existing
++      // CheckToStringNode in place.
++      return $node;
++    }
++    if ($node instanceof CheckToStringNode) {
++      // Replace this with the faster equivalent, __toString is an allowed
++      // methoed so any checking of __toString on a per object basis is
++      // performance overhead.
++      $new = new TwigSimpleCheckToStringNode($node->getNode('exprt'));
++      if ($node->hasAttribute('spread')) {
++        $new->setAttribute('spread', $node->getAttribute('spread'));
++      }
++      return $new;
++    }
++    return $node;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function leaveNode(Node $node, Environment $env): ?Node {
++    return $node;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getPriority() {
++    // Runs after sandbox visitor.
++    return 1;
++  }
++
++}
+diff --git a/core/lib/Drupal/Core/Template/TwigExtension.php b/core/lib/Drupal/Core/Template/TwigExtension.php
+index cd34aec44973..3a792a82854b 100644
+--- a/core/lib/Drupal/Core/Template/TwigExtension.php
++++ b/core/lib/Drupal/Core/Template/TwigExtension.php
+@@ -13,6 +13,7 @@
+ use Drupal\Core\Render\RenderableInterface;
+ use Drupal\Core\Render\RendererInterface;
+ use Drupal\Core\Routing\UrlGeneratorInterface;
++use Drupal\Core\Site\Settings;
+ use Drupal\Core\Theme\ThemeManagerInterface;
+ use Drupal\Core\Url;
+ use Twig\Environment;
+@@ -158,9 +159,19 @@ public function getFilters() {
+   public function getNodeVisitors() {
+     // The node visitor is needed to wrap all variables with
+     // render_var -> TwigExtension->renderVar() function.
++    $methods = Settings::get('twig_sandbox_allowed_methods', [
++      // Only allow idempotent methods.
++      'id',
++      'label',
++      'bundle',
++      'get',
++      '__toString',
++      'toString',
++    ]);
+     return [
+       new TwigNodeVisitor(),
+       new TwigNodeVisitorCheckDeprecations(),
++      new RemoveCheckToStringNodeVisitor(\in_array('__toString', $methods, TRUE)),
+     ];
+   }
+ 
+diff --git a/core/lib/Drupal/Core/Template/TwigSimpleCheckToStringNode.php b/core/lib/Drupal/Core/Template/TwigSimpleCheckToStringNode.php
+new file mode 100644
+index 000000000000..42f32a5d4694
+--- /dev/null
++++ b/core/lib/Drupal/Core/Template/TwigSimpleCheckToStringNode.php
+@@ -0,0 +1,33 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Core\Template;
++
++use Twig\Compiler;
++use Twig\Node\CheckToStringNode;
++
++/**
++ * Defines a twig node for simplifying CheckToStringNode.
++ *
++ * Drupal's sandbox policy is very permissive with checking whether an object
++ * can be converted to a string. We allow any object with a __toString method.
++ * This means that the array traversal in the default SandboxExtension
++ * implementation added by the parent class is a performance overhead we don't
++ * need.
++ *
++ * @see \Drupal\Core\Template\TwigSandboxPolicy
++ * @see \Drupal\Core\Template\RemoveCheckToStringNodeVisitor
++ */
++final class TwigSimpleCheckToStringNode extends CheckToStringNode {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function compile(Compiler $compiler): void {
++    $expr = $this->getNode('expr');
++    $compiler
++      ->subcompile($expr);
++  }
++
++}
+-- 
+GitLab
+
+
+From 34f891288e46226330d853dd358f04e3f5fe0852 Mon Sep 17 00:00:00 2001
+From: Lee Rowlands <lee.rowlands@previousnext.com.au>
+Date: Thu, 14 Nov 2024 05:16:04 +1000
+Subject: [PATCH 2/3] Lint
+
+---
+ .../Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php b/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
+index 7752eb6d6481..762a992fa136 100644
+--- a/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
++++ b/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
+@@ -26,15 +26,15 @@ public function __construct(protected bool $active) {
+    */
+   public function enterNode(Node $node, Environment $env): Node {
+     if (!$this->active) {
+-      // __toString isn't an allowed method so we need to leave the existing
++      // __toString isn't an allowed method, so we need to leave the existing
+       // CheckToStringNode in place.
+       return $node;
+     }
+     if ($node instanceof CheckToStringNode) {
+       // Replace this with the faster equivalent, __toString is an allowed
+-      // methoed so any checking of __toString on a per object basis is
++      // method so any checking of __toString on a per-object basis is
+       // performance overhead.
+-      $new = new TwigSimpleCheckToStringNode($node->getNode('exprt'));
++      $new = new TwigSimpleCheckToStringNode($node->getNode('expr'));
+       if ($node->hasAttribute('spread')) {
+         $new->setAttribute('spread', $node->getAttribute('spread'));
+       }
+-- 
+GitLab
+
+
+From 67bbb31276e5f50411f5b09979d8055791d1fc32 Mon Sep 17 00:00:00 2001
+From: Lee Rowlands <lee.rowlands@previousnext.com.au>
+Date: Thu, 14 Nov 2024 05:36:35 +1000
+Subject: [PATCH 3/3] Cleaner approach
+
+---
+ .../Core/Template/RemoveCheckToStringNodeVisitor.php  |  7 +------
+ core/lib/Drupal/Core/Template/TwigExtension.php       | 11 +++++++++--
+ 2 files changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php b/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
+index 762a992fa136..65076b2f2b0e 100644
+--- a/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
++++ b/core/lib/Drupal/Core/Template/RemoveCheckToStringNodeVisitor.php
+@@ -18,18 +18,13 @@
+  */
+ final class RemoveCheckToStringNodeVisitor implements NodeVisitorInterface {
+ 
+-  public function __construct(protected bool $active) {
++  public function __construct() {
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+   public function enterNode(Node $node, Environment $env): Node {
+-    if (!$this->active) {
+-      // __toString isn't an allowed method, so we need to leave the existing
+-      // CheckToStringNode in place.
+-      return $node;
+-    }
+     if ($node instanceof CheckToStringNode) {
+       // Replace this with the faster equivalent, __toString is an allowed
+       // method so any checking of __toString on a per-object basis is
+diff --git a/core/lib/Drupal/Core/Template/TwigExtension.php b/core/lib/Drupal/Core/Template/TwigExtension.php
+index 3a792a82854b..255da96c4e78 100644
+--- a/core/lib/Drupal/Core/Template/TwigExtension.php
++++ b/core/lib/Drupal/Core/Template/TwigExtension.php
+@@ -168,11 +168,18 @@ public function getNodeVisitors() {
+       '__toString',
+       'toString',
+     ]);
+-    return [
++    $visitors = [
+       new TwigNodeVisitor(),
+       new TwigNodeVisitorCheckDeprecations(),
+-      new RemoveCheckToStringNodeVisitor(\in_array('__toString', $methods, TRUE)),
+     ];
++    if (\in_array('__toString', $methods, TRUE)) {
++      // When __toString is an allowed method, there is no point in running
++      // \Twig\Extension\SandboxExtension::ensureToStringAllowed, so we add a
++      // node visitor to remove any CheckToStringNode nodes added by the
++      // sandbox extension.
++      $visitors[] = new RemoveCheckToStringNodeVisitor();
++    }
++    return $visitors;
+   }
+ 
+   /**
+-- 
+GitLab
+
