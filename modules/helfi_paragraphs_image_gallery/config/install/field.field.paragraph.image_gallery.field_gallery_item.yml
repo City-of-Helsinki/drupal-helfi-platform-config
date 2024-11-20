@@ -1,0 +1,133 @@
+uuid: a36e5aa7-f3be-463e-9e9c-dff68d078701
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_gallery_item
+    - paragraphs.paragraphs_type.image_gallery
+    - paragraphs.paragraphs_type.image_gallery_item
+  module:
+    - entity_reference_revisions
+id: paragraph.image_gallery.field_gallery_item
+field_name: field_gallery_item
+entity_type: paragraph
+bundle: image_gallery
+label: 'Gallery item'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      image_gallery_item: image_gallery_item
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 36
+        enabled: false
+      accordion_item:
+        weight: 37
+        enabled: false
+      banner:
+        weight: 38
+        enabled: false
+      chart:
+        weight: 39
+        enabled: false
+      columns:
+        weight: 40
+        enabled: false
+      contact_card:
+        weight: 41
+        enabled: false
+      contact_card_listing:
+        weight: 42
+        enabled: false
+      content_cards:
+        weight: 43
+        enabled: false
+      curated_event_list:
+        weight: 44
+        enabled: false
+      current:
+        weight: 45
+        enabled: false
+      event_list:
+        weight: 46
+        enabled: false
+      from_library:
+        weight: 47
+        enabled: false
+      front_page_latest_news:
+        weight: 48
+        enabled: false
+      front_page_top_news:
+        weight: 49
+        enabled: false
+      hearings:
+        weight: 50
+        enabled: false
+      hero:
+        weight: 51
+        enabled: false
+      image:
+        weight: 52
+        enabled: false
+      image_gallery:
+        weight: 53
+        enabled: false
+      image_gallery_item:
+        weight: 54
+        enabled: true
+      liftup_with_image:
+        weight: 55
+        enabled: false
+      list_of_links:
+        weight: 56
+        enabled: false
+      list_of_links_item:
+        weight: 57
+        enabled: false
+      map:
+        weight: 58
+        enabled: false
+      news_archive:
+        weight: 59
+        enabled: false
+      news_update:
+        weight: 60
+        enabled: false
+      phasing:
+        weight: 61
+        enabled: false
+      phasing_item:
+        weight: 62
+        enabled: false
+      popular_service_item:
+        weight: 64
+        enabled: false
+      popular_services:
+        weight: 63
+        enabled: false
+      remote_video:
+        weight: 65
+        enabled: false
+      sidebar_text:
+        weight: 66
+        enabled: false
+      social_media_link:
+        weight: 67
+        enabled: false
+      target_group_link_item:
+        weight: 69
+        enabled: false
+      target_group_links:
+        weight: 68
+        enabled: false
+      text:
+        weight: 70
+        enabled: false
+field_type: entity_reference_revisions

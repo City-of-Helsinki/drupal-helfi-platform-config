@@ -1,0 +1,36 @@
+uuid: c0fef26d-9cc5-4756-b247-5a9c3f7b4550
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.1_1086w_1086h_LQ
+    - image.style.1_414w_414h
+    - image.style.1_543w_543h
+    - image.style.1_828w_828h_LQ
+  module:
+    - helfi_image_styles
+id: image_gallery_1_1
+label: 'Image gallery 1:1'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_414w_414h
+    breakpoint_id: helfi_image_styles.m
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_828w_828h_LQ
+    breakpoint_id: helfi_image_styles.m
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_543w_543h
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 1_1086w_1086h_LQ
+    breakpoint_id: helfi_image_styles.xs
+    multiplier: 2x
+breakpoint_group: helfi_image_styles
+fallback_image_style: 1_414w_414h

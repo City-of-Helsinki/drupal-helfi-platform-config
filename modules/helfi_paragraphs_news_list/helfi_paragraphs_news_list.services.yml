@@ -7,5 +7,5 @@ services:
     class: Drupal\helfi_paragraphs_news_list\ClientBuilder
 
   helfi_paragraphs_news_list.elastic_client:
-    class: Elasticsearch\Client
+    class: Elastic\Elasticsearch\Client
     factory: ['@helfi_paragraphs_news_list.elastic_client_factory', 'create']

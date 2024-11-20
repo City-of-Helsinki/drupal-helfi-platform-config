@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_image_gallery' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\helfi_paragraphs_image_gallery\Entity\ImageGallery;
+use Drupal\helfi_paragraphs_image_gallery\Entity\ImageGalleryItem;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_image_gallery_helfi_paragraph_types() : array {
+  return [
+    new ParagraphTypeCollection('paragraph', 'image_gallery', 'field_gallery_item', 'image_gallery_item'),
+    new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'image_gallery'),
+  ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_image_gallery_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['image_gallery'])) {
+    $bundles['paragraph']['image_gallery']['class'] = ImageGallery::class;
+  }
+  if (isset($bundles['paragraph']['image_gallery_item'])) {
+    $bundles['paragraph']['image_gallery_item']['class'] = ImageGalleryItem::class;
+  }
+}
+
+/**
+ * Image ratio values.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ */
+function helfi_paragraphs_image_gallery_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL) : array {
+  $ratio = [
+    'ratio_1_1' => t('1:1'),
+    'ratio_2_3' => t('2:3'),
+    'ratio_3_2' => t('3:2'),
+  ];
+
+  return $ratio;
+}

@@ -118,9 +118,9 @@ function helfi_media_update_9013(): void {
 }
 
 /**
- * UHF-10191: Add new view mode for Image media type.
+ * UHF-10239: Add new view mode for Image media type.
  */
-function helfi_media_update_9015(): void {
+function helfi_media_update_9016(): void {
   // Re-import 'helfi_media' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_media');

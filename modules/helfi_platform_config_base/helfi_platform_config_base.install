@@ -126,3 +126,41 @@ function helfi_platform_config_base_update_9003() : void {
       ->update($module);
   }
 }
+
+/**
+ * UHF-10239 Enable image gallery paragraph.
+ */
+function helfi_platform_config_base_update_9005() : void {
+  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
+  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+
+  try {
+    $environmentResolver->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Extension\ModuleHandler $module_handler */
+  $module_handler = \Drupal::moduleHandler();
+  // Enable helfi_paragraphs_image_gallery.
+  if (!$module_handler->moduleExists('helfi_paragraphs_image_gallery')) {
+    \Drupal::service('module_installer')->install(['helfi_paragraphs_image_gallery']);
+  }
+
+  // Trigger updates for content liftup related modules.
+  $affected_modules = [
+    'helfi_node_landing_page',
+    'helfi_node_page',
+    'helfi_tpr_config',
+  ];
+
+  foreach ($affected_modules as $module) {
+    if (!$module_handler->moduleExists($module)) {
+      continue;
+    }
+    // Trigger updates for content liftup related modules.
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update($module);
+  }
+}
