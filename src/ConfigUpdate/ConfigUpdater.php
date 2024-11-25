@@ -46,7 +46,8 @@ final class ConfigUpdater {
    *   The module.
    */
   public function update(string $module) : void {
-    // These hooks should only be run on CI/local machine.
+    // These hooks should only be run on CI/local machine since the
+    // exported configuration should be up-to-date already.
     if ($this->skipUpdate) {
       return;
     }
