@@ -60,4 +60,41 @@
       };
     }
   }
+
+  Drupal.behaviors.unapprovedCookies = {
+    attach: function attach() {
+      window.addEventListener(
+        'hds-cookie-consent-unapproved-item-found',
+        (e) => {
+          const { type, keys, consentedGroups } = e.detail
+
+          if (window.Sentry) {
+            const name = `Unapproved ${type}`
+            const message = `Found: ${keys.join(', ')}`
+
+            class UnapprovedItemError extends Error {
+              constructor(message) {
+                super(message)
+                this.name = name
+              }
+            }
+
+            window.Sentry.captureException(new UnapprovedItemError(message), {
+              level: 'warning',
+              tags: {
+                approvedCategories: consentedGroups.join(', '),
+              },
+              extra: {
+                type,
+                cookieNames: keys,
+                approvedCategories: consentedGroups,
+              },
+            })
+          } else {
+            throw new Error('Sentry is not defined')
+          }
+        }
+      )
+    },
+  }
 })(Drupal, drupalSettings);
