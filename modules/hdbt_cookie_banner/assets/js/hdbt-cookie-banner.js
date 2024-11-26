@@ -61,6 +61,7 @@
     }
   }
 
+  // Attach a behavior to capture unapproved cookies with Sentry.
   Drupal.behaviors.unapprovedCookies = {
     attach: function attach() {
       window.addEventListener(
@@ -69,6 +70,8 @@
           const { type, keys, consentedGroups } = e.detail
 
           if (window.Sentry) {
+            // Sentry requires a unique name for each error in order to record
+            // each found unapproved item per type.
             const name = `Unapproved ${type}`
             const message = `Found: ${keys.join(', ')}`
 
@@ -79,6 +82,8 @@
               }
             }
 
+            // Capture the error with Sentry and send a message with the
+            // unapproved items so that they can be searched in Sentry.
             window.Sentry.captureException(new UnapprovedItemError(message), {
               level: 'warning',
               tags: {
@@ -91,6 +96,7 @@
               },
             })
           } else {
+            // If Sentry is not defined, throw an error.
             throw new Error('Sentry is not defined')
           }
         }
