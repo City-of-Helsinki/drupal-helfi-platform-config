@@ -507,6 +507,9 @@ export default class HelfiLinkUi extends Plugin {
     const linkFormView = editor.plugins.get('LinkUI').formView;
     const linkCommand = editor.commands.get('link');
 
+    // Remove any existing listeners for the submit event.
+    this.stopListening(linkFormView, 'submit');
+
     // Listen to linkFormView submit and inject form field values to
     // linkCommand arguments.
     this.listenTo(linkFormView, 'submit', (evt) => {
@@ -525,6 +528,14 @@ export default class HelfiLinkUi extends Plugin {
 
       // Get current href value of the link.
       const href = linkFormView.urlInputView?.fieldView?.element?.value;
+
+      // Trim the href value and remove whitespaces.
+      if (href) {
+        linkFormView.urlInputView.fieldView.element.value = href
+          .trim()
+          .replace(/^%20+|%20+$/g, '')
+          .trim();
+      }
 
       // Massage values for the link conversions.
       const values = models.reduce((state, model) => {
@@ -560,8 +571,16 @@ export default class HelfiLinkUi extends Plugin {
           case 'linkProtocol':
             if (!whiteListedDomains || !href || href.startsWith('#')) { break; }
 
-            if (parseProtocol(href)) {
-              state[model] = parseProtocol(href);
+            // eslint-disable-next-line no-case-declarations
+            const linkProtocol = parseProtocol(href);
+
+            if (linkProtocol) {
+              if (linkProtocol === 'tel') {
+                linkFormView.urlInputView.fieldView.element.value = href
+                  .replace(/[\s()-]/g, '')
+                  .trim();
+              }
+              state[model] = linkProtocol;
             }
             break;
 
