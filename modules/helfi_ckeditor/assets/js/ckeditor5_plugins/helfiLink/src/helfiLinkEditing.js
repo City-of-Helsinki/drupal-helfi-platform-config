@@ -121,7 +121,7 @@ export default class HelfiLinkEditing extends Plugin {
 
       // Convert attributes for upcast.
       // View (DOM / Data) --> Model.
-      this.editor.conversion.for('upcast').attributeToAttribute({
+      editor.conversion.for('upcast').attributeToAttribute({
         view: {
           name: 'a',
           key: viewAttributeKey,
@@ -537,16 +537,15 @@ export default class HelfiLinkEditing extends Plugin {
   _addAttributeOnLinkCommandExecute(modelNames) {
     const { editor } = this;
     const linkCommand = editor.commands.get('link');
-    let linkCommandExecuting = false;
+    let helfiLinkCommandExecuting = false;
 
     linkCommand.on('execute', (evt, args) => {
       // Custom handling is only required if an attribute was passed
       // into editor.execute('link', ...).
-      if (args.length < 3) {
-        return;
-      }
-      if (linkCommandExecuting) {
-        linkCommandExecuting = false;
+      if (args.length < 3) return;
+
+      if (helfiLinkCommandExecuting) {
+        helfiLinkCommandExecuting = false;
         return;
       }
 
@@ -557,7 +556,8 @@ export default class HelfiLinkEditing extends Plugin {
 
       // Prevent infinite recursion by keeping records of when link command
       // is being executed by this function.
-      linkCommandExecuting = true;
+      helfiLinkCommandExecuting = true;
+
       const attributeValues = args[args.length - 1];
       const { model } = editor;
       const { selection } = model.document;
@@ -606,7 +606,10 @@ export default class HelfiLinkEditing extends Plugin {
             }
           }
         });
+        helfiLinkCommandExecuting = false;
       });
-    }, { priority: 'high' });
+    // Set the priority to highest to make sure the attribute handling is done
+    // before the linkit plugin handling.
+    }, { priority: 'highest' });
   }
 }
