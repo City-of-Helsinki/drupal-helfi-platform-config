@@ -44,8 +44,34 @@ export default class HelfiLinkEditing extends Plugin {
     // Define conversions from old link button markup to new button markup.
     this._defineHelfiButtonConverters();
 
+    // Trim the href attribute.
+    this._trimHref();
+
     // Add attributes to linkCommand during its execution.
     this._addAttributeOnLinkCommandExecute(Object.keys(formElements));
+  }
+
+  /**
+   * Trims the href attribute during upcast.
+   */
+  _trimHref() {
+    const { editor } = this;
+    editor.conversion.for('upcast').elementToAttribute({
+      view: 'a',
+      model: {
+        key: 'linkHref',
+        value: viewElement => {
+          // Check if the view element has a 'href' attribute.
+          if (!viewElement.hasAttribute('href')) return null;
+
+          // Get the 'href' attribute value.
+          const href = viewElement.getAttribute('href');
+          return href ? href.trim().replace(/^%20+|%20+$/g, '') : null;
+        },
+      },
+      // Handle the href attribute trim before any other converters.
+      converterPriority: 'highest',
+    });
   }
 
   /**
