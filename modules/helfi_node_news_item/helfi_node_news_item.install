@@ -93,6 +93,6 @@ function helfi_node_news_item_update_9005(): void {
  */
 function helfi_node_news_item_update_9006(): void {
   $config_factory = Drupal::configFactory();
-  $config_factory->getEditable('media.image_content_area')->delete();
-  $config_factory->getEditable('media.image.image_content_area')->delete();
+  $config_factory->getEditable('core.entity_view_mode.media.image_content_area')->delete();
+  $config_factory->getEditable('core.entity_view_display.media.image.image_content_area')->delete();
 }
