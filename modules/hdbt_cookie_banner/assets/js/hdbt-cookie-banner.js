@@ -9,7 +9,7 @@
     },
     loadFunction: (loadFunction) => {
       if (typeof loadFunction === 'function') {
-        document.addEventListener('hds_cookieConsent_ready', loadFunction);
+        document.addEventListener('hds-cookie-consent-ready', loadFunction);
       }
     },
     getConsentStatus: (categories) => {
@@ -67,12 +67,12 @@
       window.addEventListener(
         'hds-cookie-consent-unapproved-item-found',
         (e) => {
-          const { type, keys, consentedGroups } = e.detail
+          const { storageType, keys, acceptedGroups } = e.detail
 
           if (window.Sentry) {
             // Sentry requires a unique name for each error in order to record
             // each found unapproved item per type.
-            const name = `Unapproved ${type}`
+            const name = `Unapproved ${storageType}`
             const message = `Found: ${keys.join(', ')}`
 
             class UnapprovedItemError extends Error {
@@ -87,12 +87,12 @@
             window.Sentry.captureException(new UnapprovedItemError(message), {
               level: 'warning',
               tags: {
-                approvedCategories: consentedGroups.join(', '),
+                approvedCategories: acceptedGroups.join(', '),
               },
               extra: {
-                type,
+                storageType,
                 cookieNames: keys,
-                approvedCategories: consentedGroups,
+                approvedCategories: acceptedGroups,
               },
             })
           } else {
