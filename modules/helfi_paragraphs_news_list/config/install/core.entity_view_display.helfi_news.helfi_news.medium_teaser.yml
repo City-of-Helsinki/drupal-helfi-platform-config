@@ -22,5 +22,11 @@ content:
     region: content
 hidden:
   groups: true
+  groups_uuid: true
   neighbourhoods: true
+  neighbourhoods_uuid: true
+  node_url: true
+  published_at: true
+  short_title: true
   tags: true
+  tags_uuid: true
