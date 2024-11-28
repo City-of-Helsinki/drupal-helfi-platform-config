@@ -81,15 +81,18 @@ function helfi_node_news_item_install($is_syncing) : void {
 }
 
 /**
- * UHF-10191: Changed news item view displays to use new image styles.
+ * UHF-10555: Removed references to media display that is no longer used.
  */
-function helfi_node_news_item_update_9003(): void {
+function helfi_node_news_item_update_9005(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_node_news_item');
 }
 
 /**
- * UHF-10774: Removed.
+ * UHF-10555: Removed unused media display.
  */
-function helfi_node_news_item_update_9004(): void {
+function helfi_node_news_item_update_9006(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('media.image_content_area')->delete();
+  $config_factory->getEditable('media.image.image_content_area')->delete();
 }
