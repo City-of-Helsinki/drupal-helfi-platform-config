@@ -22,3 +22,24 @@ function helfi_image_styles_update_9004(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_image_styles');
 }
+
+/**
+ * UHF-10555: Removed deprecated responsive image style and associated image
+ * styles.
+ */
+function helfi_image_styles_update_9005(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('responsive_image.styles.hero__background')->delete();
+  $config_factory->getEditable('image.style.23_10_l')->delete();
+  $config_factory->getEditable('image.style.23_10_l_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_m')->delete();
+  $config_factory->getEditable('image.style.23_10_m_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_s')->delete();
+  $config_factory->getEditable('image.style.23_10_s_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_xl')->delete();
+  $config_factory->getEditable('image.style.23_10_xl_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_xs')->delete();
+  $config_factory->getEditable('image.style.23_10_xs_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_xxs')->delete();
+  $config_factory->getEditable('image.style.23_10_xxs_2x')->delete();
+}
