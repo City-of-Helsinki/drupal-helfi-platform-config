@@ -66,7 +66,12 @@ export default class HelfiLinkEditing extends Plugin {
 
           // Get the 'href' attribute value.
           const href = viewElement.getAttribute('href');
-          return href ? href.trim().replace(/^%20+|%20+$/g, '') : null;
+          return href
+            ? href.trim()
+              .replace(/^%20+/, '') // Remove leading %20
+              .replace(/%20+$/, '') // Remove trailing %20
+              .trim()
+            : null;
         },
       },
       // Handle the href attribute trim before any other converters.
