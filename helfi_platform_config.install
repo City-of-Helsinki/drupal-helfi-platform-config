@@ -214,4 +214,3 @@ function helfi_platform_config_update_9314(): void {
   $config_factory->getEditable('core.entity_view_mode.media.image_content_area')->delete();
   $config_factory->getEditable('core.entity_view_display.media.image.image_content_area')->delete();
 }
-
