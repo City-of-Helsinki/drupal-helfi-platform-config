@@ -389,9 +389,9 @@ function helfi_tpr_config_update_9069(): void {
 }
 
 /**
- * UHF-9509 Add "Unit contact card" to paragraphs library.
+ * UHF-9509 Change unit teaser and wide_teaser image style.
  */
-function helfi_tpr_config_update_9070(): void {
+function helfi_tpr_config_update_9071(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }
