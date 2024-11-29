@@ -507,6 +507,9 @@ export default class HelfiLinkUi extends Plugin {
     const linkFormView = editor.plugins.get('LinkUI').formView;
     const linkCommand = editor.commands.get('link');
 
+    // Remove any existing listeners for the submit event.
+    this.stopListening(linkFormView, 'submit');
+
     // Listen to linkFormView submit and inject form field values to
     // linkCommand arguments.
     this.listenTo(linkFormView, 'submit', (evt) => {

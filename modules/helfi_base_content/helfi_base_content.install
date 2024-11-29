@@ -337,3 +337,11 @@ function helfi_base_content_update_9012(): void {
 function helfi_base_content_update_9013(): void {
   helfi_base_content_grant_permissions();
 }
+
+/**
+ * UHF-9704 Fix article_modified_time metatag.
+ */
+function helfi_base_content_update_9014(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_base_content');
+}
