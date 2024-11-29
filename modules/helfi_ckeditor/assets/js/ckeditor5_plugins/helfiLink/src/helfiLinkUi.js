@@ -529,14 +529,6 @@ export default class HelfiLinkUi extends Plugin {
       // Get current href value of the link.
       const href = linkFormView.urlInputView?.fieldView?.element?.value;
 
-      // Trim the href value and remove whitespaces.
-      if (href) {
-        linkFormView.urlInputView.fieldView.element.value = href
-          .trim()
-          .replace(/^%20+|%20+$/g, '')
-          .trim();
-      }
-
       // Massage values for the link conversions.
       const values = models.reduce((state, model) => {
         switch (model) {
@@ -571,16 +563,8 @@ export default class HelfiLinkUi extends Plugin {
           case 'linkProtocol':
             if (!whiteListedDomains || !href || href.startsWith('#')) { break; }
 
-            // eslint-disable-next-line no-case-declarations
-            const linkProtocol = parseProtocol(href);
-
-            if (linkProtocol) {
-              if (linkProtocol === 'tel') {
-                linkFormView.urlInputView.fieldView.element.value = href
-                  .replace(/[\s()-]/g, '')
-                  .trim();
-              }
-              state[model] = linkProtocol;
+            if (parseProtocol(href)) {
+              state[model] = parseProtocol(href);
             }
             break;
 
