@@ -6,12 +6,20 @@ namespace Drupal\helfi_platform_config\ConfigUpdate;
 
 use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\config_rewrite\ConfigRewriterInterface;
 
 /**
  * A helper class to deal with config updates.
  */
 final class ConfigUpdater {
+
+  /**
+   * Whether to skip update tasks.
+   *
+   * @var bool
+   */
+  private bool $skipUpdate;
 
   /**
    * Constructs a new instance.
@@ -28,6 +36,7 @@ final class ConfigUpdater {
     private ConfigRewriterInterface $configRewriter,
     private ModuleHandlerInterface $moduleHandler,
   ) {
+    $this->skipUpdate = Settings::get('is_azure', FALSE);
   }
 
   /**
@@ -37,6 +46,11 @@ final class ConfigUpdater {
    *   The module.
    */
   public function update(string $module) : void {
+    // These hooks should only be run on CI/local machine since the
+    // exported configuration should be up-to-date already.
+    if ($this->skipUpdate) {
+      return;
+    }
     $this->configInstaller->installDefaultConfig('module', $module);
     $this->configRewriter->rewriteModuleConfig($module);
 

@@ -68,7 +68,7 @@ class IbmChatApp extends BlockBase {
    */
   public function build() {
 
-    $library = ['helfi_platform_config/user_consent_functions'];
+    $library = ['helfi_platform_config/chat_enhancer'];
 
     $build = [];
 

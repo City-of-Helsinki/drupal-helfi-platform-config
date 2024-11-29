@@ -67,11 +67,11 @@ chat_leijuke:
     - core/drupal
     - core/drupalSettings
 
-user_consent_functions:
-  version: 1.0.x
+chat_enhancer:
+  version: 1.0.0
   header: true
   js:
-    assets/js/user_consent_functions.js: {}
+    assets/js/chat_enhancer.js: {}
   dependencies:
     - core/drupal
 

@@ -60,4 +60,47 @@
       };
     }
   }
+
+  // Attach a behavior to capture unapproved cookies with Sentry.
+  Drupal.behaviors.unapprovedCookies = {
+    attach: function attach() {
+      window.addEventListener(
+        'hds-cookie-consent-unapproved-item-found',
+        (e) => {
+          const { type, keys, consentedGroups } = e.detail
+
+          if (window.Sentry) {
+            // Sentry requires a unique name for each error in order to record
+            // each found unapproved item per type.
+            const name = `Unapproved ${type}`
+            const message = `Found: ${keys.join(', ')}`
+
+            class UnapprovedItemError extends Error {
+              constructor(message) {
+                super(message)
+                this.name = name
+              }
+            }
+
+            // Capture the error with Sentry and send a message with the
+            // unapproved items so that they can be searched in Sentry.
+            window.Sentry.captureException(new UnapprovedItemError(message), {
+              level: 'warning',
+              tags: {
+                approvedCategories: consentedGroups.join(', '),
+              },
+              extra: {
+                type,
+                cookieNames: keys,
+                approvedCategories: consentedGroups,
+              },
+            })
+          } else {
+            // If Sentry is not defined, throw an error.
+            throw new Error('Sentry is not defined')
+          }
+        }
+      )
+    },
+  }
 })(Drupal, drupalSettings);
