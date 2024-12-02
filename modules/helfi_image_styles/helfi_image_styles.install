@@ -23,6 +23,7 @@ function helfi_image_styles_update_9005(): void {
   $config_factory->getEditable('responsive_image.styles.hero__background')->delete();
   $config_factory->getEditable('responsive_image.styles.gallery_thumbnail')->delete();
   $config_factory->getEditable('responsive_image.styles.list_of_links__thumbnail')->delete();
+  $config_factory->getEditable('responsive_image.styles.original')->delete();
   $config_factory->getEditable('image.style.23_10_l')->delete();
   $config_factory->getEditable('image.style.23_10_l_2x')->delete();
   $config_factory->getEditable('image.style.23_10_m')->delete();
@@ -47,4 +48,14 @@ function helfi_image_styles_update_9005(): void {
   $config_factory->getEditable('image.style.1_1_xl_2x')->delete();
   $config_factory->getEditable('image.style.1_1_xs')->delete();
   $config_factory->getEditable('image.style.1_1_xs_2x')->delete();
+  $config_factory->getEditable('image.style.original_l')->delete();
+  $config_factory->getEditable('image.style.original_l_2x')->delete();
+  $config_factory->getEditable('image.style.original_m')->delete();
+  $config_factory->getEditable('image.style.original_m_2x')->delete();
+  $config_factory->getEditable('image.style.original_s')->delete();
+  $config_factory->getEditable('image.style.original_s_2x')->delete();
+  $config_factory->getEditable('image.style.original_xs')->delete();
+  $config_factory->getEditable('image.style.original_xs_2x')->delete();
+  $config_factory->getEditable('image.style.original_xxs')->delete();
+  $config_factory->getEditable('image.style.original_xxs_2x')->delete();
 }
