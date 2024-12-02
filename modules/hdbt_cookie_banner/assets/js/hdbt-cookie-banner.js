@@ -9,7 +9,7 @@
     },
     loadFunction: (loadFunction) => {
       if (typeof loadFunction === 'function') {
-        document.addEventListener('hds-cookie-consent-ready', loadFunction);
+        window.addEventListener('hds-cookie-consent-ready', loadFunction);
       }
     },
     getConsentStatus: (categories) => {
