@@ -16,8 +16,7 @@ function helfi_image_styles_update_9004(): void {
 }
 
 /**
- * UHF-10555: Removed deprecated responsive image styles and associated image
- * styles.
+ * UHF-10555: Removed deprecated image styles.
  */
 function helfi_image_styles_update_9005(): void {
   $config_factory = Drupal::configFactory();
