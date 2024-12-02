@@ -58,4 +58,5 @@ function helfi_image_styles_update_9005(): void {
   $config_factory->getEditable('image.style.original_xs_2x')->delete();
   $config_factory->getEditable('image.style.original_xxs')->delete();
   $config_factory->getEditable('image.style.original_xxs_2x')->delete();
+  $config_factory->getEditable('image.style.og_image')->delete();
 }
