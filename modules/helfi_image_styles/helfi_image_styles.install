@@ -8,14 +8,6 @@
 declare(strict_types=1);
 
 /**
- * UHF-10191 Add new image styles.
- */
-function helfi_image_styles_update_9002(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_image_styles');
-}
-
-/**
  * UHF-10239 Adds new image styles used by image gallery.
  */
 function helfi_image_styles_update_9004(): void {
@@ -24,8 +16,7 @@ function helfi_image_styles_update_9004(): void {
 }
 
 /**
- * UHF-10555: Removed deprecated responsive image style and associated image
- * styles.
+ * UHF-10555: Removed deprecated image styles.
  */
 function helfi_image_styles_update_9005(): void {
   $config_factory = Drupal::configFactory();
