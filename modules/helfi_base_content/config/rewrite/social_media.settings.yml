@@ -1,3 +1,5 @@
 social_media:
   email:
     text: 'Send as an email'
+  facebook_share:
+    api_url: "https://www.facebook.com/share.php?u=[current-page:url]&title=[current-page:title]"

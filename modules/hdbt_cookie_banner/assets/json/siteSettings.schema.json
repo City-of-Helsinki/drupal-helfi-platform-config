@@ -77,9 +77,9 @@
             }
           ]
         },
-        "type": {
+        "storageType": {
           "type": "integer",
-          "title": "Type",
+          "title": "Storage type",
           "description": "Type of the stored item, shown to the user and used in code.",
           "default": 1,
           "enum": [
@@ -121,7 +121,7 @@
         "host",
         "description",
         "expiration",
-        "type"
+        "storageType"
       ]
     },
     "Group": {
@@ -340,9 +340,9 @@
             "description": "Machine name for the cookie, used only in code",
             "minLength": 1
           },
-          "type": {
+          "storageType": {
             "type": "integer",
-            "title": "Type",
+            "title": "Storage type",
             "description": "Type of the stored item",
             "enum": [
               1,
@@ -365,14 +365,14 @@
         "title": "Robot cookie or item",
         "required": [
           "name",
-          "type"
+          "storageType"
         ],
         "description": "(Not visible to end user)"
       },
       "default": [
         {
           "name": "exampleCookieName",
-          "type": 1
+          "storageType": 1
         }
       ]
     },
@@ -423,7 +423,7 @@
         },
         "heading": {
           "title": "Banner heading",
-          "description": "Banner heading supports ${siteName} token, it's replaced with the value from siteName setting",
+          "description": "Banner heading supports {{siteName}} token, it's replaced with the value from siteName setting",
           "options": {
             "disable_collapse": true
           },
@@ -431,9 +431,9 @@
             { "$ref": "#/$defs/LocalisedUniversalText" },
             {
               "default": {
-                "fi": "${siteName} käyttää evästeitä",
-                "sv": "${siteName} använder kakor",
-                "en": "${siteName} uses cookies"
+                "fi": "{{siteName}} käyttää evästeitä",
+                "sv": "{{siteName}} använder kakor",
+                "en": "{{siteName}} uses cookies"
               }
             }
           ]
@@ -486,7 +486,7 @@
             }
           ]
         },
-        "form_heading": {
+        "formHeading": {
           "title": "Form heading",
           "description": "Visible when details are opened",
           "options": {
@@ -503,7 +503,7 @@
             }
           ]
         },
-        "form_text": {
+        "formText": {
           "title": "Form text",
           "description": "Visible when details are opened",
           "options": {
@@ -547,9 +547,9 @@
             { "$ref": "#/$defs/LocalisedUniversalText" },
             {
               "default": {
-                "fi": "Hyvä tietää kategorialle: ${title}",
-                "sv": "Bra att veta för kategorin: ${title}",
-                "en": "Good to know for category: ${title}"
+                "fi": "Hyvä tietää kategorialle: {{title}}",
+                "sv": "Bra att veta för kategorin: {{title}}",
+                "en": "Good to know for category: {{title}}"
               }
             }
           ]
@@ -588,7 +588,7 @@
         },
         "acceptedAt": {
           "title": "Accepted at",
-          "description": "Formats the ${date} and ${time} (in Finnish datetime format) to tell the user when this group of cookies has been accepted.",
+          "description": "Formats the {{date}} and {{time}} (in Finnish datetime format) to tell the user when this group of cookies has been accepted.",
           "options": {
             "disable_collapse": true
           },
@@ -596,9 +596,9 @@
             { "$ref": "#/$defs/LocalisedUniversalText" },
             {
               "default": {
-                "fi": "Olet hyväksynyt tämän kategorian: ${date} klo ${time}.",
-                "sv": "Du har accepterat denna kategori: ${date} kl. ${time}.",
-                "en": "You have accepted this category: ${date} at ${time}."
+                "fi": "Olet hyväksynyt tämän kategorian: {{date}} klo {{time}}.",
+                "sv": "Du har accepterat denna kategori: {{date}} kl. {{time}}.",
+                "en": "You have accepted this category: {{date}} at {{time}}."
               }
             }
           ]
@@ -765,7 +765,7 @@
             }
           ]
         },
-        "type_1": {
+        "storageType1": {
           "title": "Type 1 - Cookie",
           "description": "Text for type column to show to users with cookies",
           "options": {
@@ -782,7 +782,7 @@
             }
           ]
         },
-        "type_2": {
+        "storageType2": {
           "title": "Type 2 - localStorage",
           "description": "Text for type column to show to users with localStorage items",
           "options": {
@@ -795,7 +795,7 @@
             }
           ]
         },
-        "type_3": {
+        "storageType3": {
           "title": "Type 3 - sessionStorage",
           "description": "Text for type column to show to users with sessionStorage items",
           "options": {
@@ -808,7 +808,7 @@
             }
           ]
         },
-        "type_4": {
+        "storageType4": {
           "title": "Type 4 - IndexedDB",
           "description": "Text for type column to show to users with indexedDB tables",
           "options": {
@@ -821,7 +821,7 @@
             }
           ]
         },
-        "type_5": {
+        "storageType5": {
           "title": "Type 5 - Cache Storage",
           "description": "Text for type column to show to users with Cache Storage items",
           "options": {
@@ -841,8 +841,8 @@
         "description",
         "showDetails",
         "hideDetails",
-        "form_heading",
-        "form_text",
+        "formHeading",
+        "formText",
         "highlightedGroup",
         "highlightedGroupAria",
         "showCookieSettings",
@@ -858,11 +858,11 @@
         "approveOnlyRequiredConsents",
         "settingsSaved",
         "notificationAriaLabel",
-        "type_1",
-        "type_2",
-        "type_3",
-        "type_4",
-        "type_5"
+        "storageType1",
+        "storageType2",
+        "storageType3",
+        "storageType4",
+        "storageType5"
       ]
     }
   },

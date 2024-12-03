@@ -37,7 +37,7 @@
         {
           "name": "change-me",
           "host": "change-me.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Sivusto käyttää tätä evästettä tietojen tallentamiseen siitä, ovatko kävijät antaneet hyväksyntänsä tai kieltäytyneet evästeiden käytöstä.",
             "sv": "Cookie möjliggör hantering av cookies på webbplatsen.",
@@ -52,7 +52,7 @@
         {
           "name": "SSESS*",
           "host": "change-me.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Sisällönhallintajärjestelmän toimintaan liittyvä eväste.",
             "sv": "En cookie relaterad till driften av innehållshanteringssystemet.",
@@ -67,7 +67,7 @@
         {
           "name": "mtm_cookie_consent",
           "host": "kartta.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Tekninen eväste johon talletetaan tieto valinnastasi evästeiden käytöstä kertovan bannerin kohdalla",
             "sv": "A technical cookie that stores information about how you responded to the notice in the cookie banner about the use of cookies.",
@@ -82,7 +82,7 @@
         {
           "name": "JSESSIONID",
           "host": "helsinkikanava.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Sivuston pakollinen eväste mahdollistaa kävijän vierailun sivustolla.",
             "sv": "Kakan är en obligatorisk kaka som gör det möjligt för besökaren att besöka webbplatsen.",
@@ -97,7 +97,7 @@
         {
           "name": "COOKIE_SUPPORT",
           "host": "helsinkikanava.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Mahdollistaa evästeiden hallinnan sivustolla.",
             "sv": "Kakan möjliggör hanteringen av kakor på webbplatsen.",
@@ -112,7 +112,7 @@
         {
           "name": "GUEST_LANGUAGE_ID",
           "host": "helsinkikanava.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Tämän evästeen on luonut Liferay, se tallentaa kieliasetukset.",
             "sv": "Denna cookie genereras av Liferay, dess funktion är att lagra språkinställningarna.",
@@ -127,7 +127,7 @@
         {
           "name": "helfi-settings",
           "host": "change-me.hel.fi",
-          "type": 2,
+          "storageType": 2,
           "description": {
             "fi": "Sivusto käyttää tätä tietuetta tietojen tallentamiseen siitä, mitä poikkeusilmoituksia on suljettu ja mikä on avattavien sisältöalueiden tila.",
             "sv": "Används av hel.fi Drupal för att lagra information om stängda meddelanden och accordions' tillstånd.",
@@ -153,7 +153,7 @@
         {
           "name": "editoria11yResultCount",
           "host": "change-me.hel.fi",
-          "type": 2,
+          "storageType": 2,
           "description": {
             "fi": "Tallentaa sisällöntuottajan näkemien saavutettavuusongelmien lukumäärän nykyisellä sivulla.",
             "sv": "Spårar tillgänglighetsproblem för den aktuella sidan när du är inloggad som redaktör på hel.fi.",
@@ -164,7 +164,7 @@
         {
           "name": "Drupal.gin.sidebarExpanded.desktop",
           "host": "change-me.hel.fi",
-          "type": 2,
+          "storageType": 2,
           "description": {
             "fi": "Tallentaa tiedon sisällöntuottajan käyttöliittymän sivupalkin näkyvyydestä työpöytänäkymässä.",
             "sv": "Lagrar om admin-sidopanelen är expanderad eller kollapsad på skrivbordet när du är inloggad som redaktör på hel.fi.",
@@ -175,7 +175,7 @@
         {
           "name": "Drupal.gin.sidebarExpanded.mobile",
           "host": "change-me.hel.fi",
-          "type": 2,
+          "storageType": 2,
           "description": {
             "fi": "Tallentaa tiedon sisällöntuottajan käyttöliittymän sivupalkin näkyvyydestä mobiilinäkymässä.",
             "sv": "Lagrar om admin-sidopanelen är expanderad eller kollapsad på mobil när du är inloggad som redaktör på hel.fi.",
@@ -186,7 +186,7 @@
         {
           "name": "Drupal.gin.darkmode",
           "host": "change-me.hel.fi",
-          "type": 2,
+          "storageType": 2,
           "description": {
             "fi": "Tallentaa tiedon sisällöntuottajan valitsemasta \"tumma tila\"-asetuksesta.",
             "sv": "Lagrar användarens mörkt läge-inställning i admin-temat när du är inloggad som redaktör på hel.fi.",
@@ -197,7 +197,7 @@
         {
           "name": "Drupal.toolbar.subtrees.*",
           "host": "change-me.hel.fi",
-          "type": 2,
+          "storageType": 2,
           "description": {
             "fi": "Tallentaa sisällöntuottajan näkymissä alivalikoiden tilan (laajennettu tai kutistettu), jotta se säilyy yhdenmukaisena sivulatausten välillä.",
             "sv": "Lagrar tillståndet för expanderade eller kollapsade undermenyer i Drupals admin-verktygsfält för en inloggad redaktör, vilket säkerställer konsekvens mellan sidladdningar.",
@@ -208,7 +208,7 @@
         {
           "name": "Drupal.off-canvas.css.*",
           "host": "change-me.hel.fi",
-          "type": 2,
+          "storageType": 2,
           "description": {
             "fi": "Tallentaa sisällöntuottajan käyttämän wysiwyg-editorin tyylit välimuistiin varmistaakseen viimeisimpien CSS-tyylien latauksen.",
             "sv": "Lagrar cachelagrad CKEditor CSS i localStorage för en inloggad redaktör, med en nyckel som använder en cache-brytande fråga för att säkerställa att den senaste CSS-filen laddas.",
@@ -219,7 +219,7 @@
         {
           "name": "ed11ySeen",
           "host": "change-me.hel.fi",
-          "type": 2,
+          "storageType": 2,
           "description": {
             "fi": "Tallentaa sisällöntuottajan näkemät saavutettavuusongelmat, jotta vältetään ongelmien kaksoisilmoitukset.",
             "sv": "Spårar vilka tillgänglighetsproblem en inloggad redaktör redan har sett för att undvika dubbla aviseringar.",
@@ -230,7 +230,7 @@
         {
           "name": "Drupal.toolbar.toolbarState",
           "host": "change-me.hel.fi",
-          "type": 3,
+          "storageType": 3,
           "description": {
             "fi": "Tallentaa sisällöntuottajan hallintatyökalupalkin orientaation, aktiivisen välilehden ja laajennustilan.",
             "sv": "Lagrar tillståndet för admin-verktygsfältet för en inloggad redaktör, inklusive dess orientering, aktiva flik och expanderade tillstånd.",
@@ -245,7 +245,7 @@
         {
           "name": "escapeAdminPath",
           "host": "change-me.hel.fi",
-          "type": 3,
+          "storageType": 3,
           "description": {
             "fi": "Tallentaa URL-osoitteen, jota käytetään ohjaamaan kirjautunut sisällöntuottaja hallintaliittymästä takaisin pääsivustolle.",
             "sv": "Lagrar URL för att omdirigera en inloggad redaktör från admin-gränssnittet tillbaka till huvudsidan.",
@@ -277,7 +277,7 @@
         {
           "name": "httpskartta.hel.fi.SWCulture",
           "host": "kartta.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Kaupungin karttapalvelun evästeeseen tallennetaan kieli, jolla palvelua käytetään.",
             "sv": "I kakan på stadens kaktjänst sparas det språk som användaren använder i tjänsten.",
@@ -292,7 +292,7 @@
         {
           "name": "icareus-device",
           "host": "helsinkikanava.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Helsinki-kanavan videopalvelimen eväste.",
             "sv": "Helsinki-kanavas kaka gör det möjligt att göra videor till en del av innehållet på webbplatsen.",
@@ -307,7 +307,7 @@
         {
           "name": "VISITOR_INFO1_LIVE",
           "host": "youtube.com",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "YouTuben eväste valitsee yhteyden nopeuden mukaan, joko vanhan tai uuden videosoittimen.",
             "sv": "YouTubes kaka väljer antingen den nya eller gamla videospelaren enligt förbindelsens hastighet.",
@@ -322,7 +322,7 @@
         {
           "name": "CONSENT",
           "host": "youtube.com",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Googlen eväste tallentaa kävijän evästehyväskynnän.",
             "sv": "Används av Google för att lagra inställningar för användarens samtycke",
@@ -352,7 +352,7 @@
         {
           "name": "_pk_id.*",
           "host": "change-me.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Matomo-tilastointijärjestelmän eväste.",
             "sv": "Matomo-statistiksystemets kaka samlar information om hur webbplatsen används.",
@@ -367,7 +367,7 @@
         {
           "name": "_pk_id.*",
           "host": "kartta.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Matomo-tilastointijärjestelmän eväste.",
             "sv": "Matomo-statistiksystemets kaka samlar information om hur webbplatsen används.",
@@ -382,7 +382,7 @@
         {
           "name": "_pk_ses.*",
           "host": "kartta.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Matomo-tilastointijärjestelmän eväste.",
             "sv": "Matomo-statistiksystemets kaka samlar information om hur webbplatsen används.",
@@ -397,7 +397,7 @@
         {
           "name": "_pk_id.*",
           "host": "palvelukartta.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Matomo-tilastointijärjestelmän eväste.",
             "sv": "Matomo-statistiksystemets kaka samlar information om hur webbplatsen används.",
@@ -412,7 +412,7 @@
         {
           "name": "_pk_ses.*",
           "host": "palvelukartta.hel.fi",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "Matomo-tilastointijärjestelmän eväste.",
             "sv": "Matomo-statistiksystemets kaka samlar information om hur webbplatsen används.",
@@ -427,7 +427,7 @@
         {
           "name": "YSC",
           "host": "youtube.com",
-          "type": 1,
+          "storageType": 1,
           "description": {
             "fi": "YouTuben eväste mahdollistaa videoiden upottamisen sivustolle.",
             "sv": "YouTubes kaka gör det möjligt att göra videor till en del av innehållet på webbplatsen.",
@@ -445,7 +445,7 @@
   "robotCookies": [
     {
       "name": "helfi_accordions_open",
-      "type": 1
+      "storageType": 1
     }
   ],
   "translations": {
@@ -455,9 +455,9 @@
       "en": "Cookie settings"
     },
     "heading": {
-      "fi": "${siteName} käyttää evästeitä",
-      "sv": "${siteName} använder kakor",
-      "en": "${siteName} uses cookies"
+      "fi": "{{siteName}} käyttää evästeitä",
+      "sv": "{{siteName}} använder kakor",
+      "en": "{{siteName}} uses cookies"
     },
     "description": {
       "fi": "Tämä sivusto käyttää välttämättömiä evästeitä sivun perustoimintojen ja suorituskyvyn varmistamiseksi. Lisäksi käytämme kohdennusevästeitä käyttäjäkokemuksen parantamiseksi, analytiikkaan ja yksilöidyn sisällön näyttämiseen.",
@@ -474,12 +474,12 @@
       "sv": "Stänga detaljer",
       "en": "Hide details"
     },
-    "form_heading": {
+    "formHeading": {
       "fi": "Tietoa sivustolla käytetyistä evästeistä",
       "sv": "Information om kakor som används på webbplatsen",
       "en": "About the cookies used on the website"
     },
-    "form_text": {
+    "formText": {
       "fi": "Sivustolla käytetyt evästeet on luokiteltu käyttötarkoituksen mukaan. Alla voit lukea eri luokista ja sallia tai kieltää evästeiden käytön.",
       "sv": "Kakorna som används på webbplatsen har klassificerats enligt användningsändamål. Du kan läsa om de olika klasserna och acceptera eller förbjuda användningen av kakor.",
       "en": "The cookies used on the website have been classified according to their intended use. Below, you can read about the various categories and accept or reject the use of cookies."
@@ -490,9 +490,9 @@
       "en": "You need to accept this category to display the content you have selected."
     },
     "highlightedGroupAria": {
-      "fi": "Hyvä tietää kategorialle: ${title}",
-      "sv": "Bra att veta för kategorin: ${title}",
-      "en": "Good to know for category: ${title}"
+      "fi": "Hyvä tietää kategorialle: {{title}}",
+      "sv": "Bra att veta för kategorin: {{title}}",
+      "en": "Good to know for category: {{title}}"
     },
     "showCookieSettings": {
       "fi": "Näytä evästeasetukset",
@@ -505,9 +505,9 @@
       "en": "Hide cookie settings"
     },
     "acceptedAt": {
-      "fi": "Olet hyväksynyt tämän kategorian: ${date} klo ${time}.",
-      "sv": "Du har accepterat denna kategori: ${date} kl. ${time}.",
-      "en": "You have accepted this category: ${date} at ${time}."
+      "fi": "Olet hyväksynyt tämän kategorian: {{date}} klo {{time}}.",
+      "sv": "Du har accepterat denna kategori: {{date}} kl. {{time}}.",
+      "en": "You have accepted this category: {{date}} at {{time}}."
     },
     "tableHeadingsName": {
       "fi": "Nimi",
@@ -559,14 +559,14 @@
       "sv": "Meddelande",
       "en": "Annoucement"
     },
-    "type_1": {
+    "storageType1": {
       "fi": "Eväste",
       "sv": "Kakan",
       "en": "Cookie"
     },
-    "type_2": "localStorage",
-    "type_3": "sessionStorage",
-    "type_4": "IndexedDB",
-    "type_5": "Cache Storage"
+    "storageType2": "localStorage",
+    "storageType3": "sessionStorage",
+    "storageType4": "IndexedDB",
+    "storageType5": "Cache Storage"
   }
 }

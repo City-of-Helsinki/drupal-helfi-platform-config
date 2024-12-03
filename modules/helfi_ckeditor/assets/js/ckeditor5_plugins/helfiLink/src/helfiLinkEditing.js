@@ -44,8 +44,39 @@ export default class HelfiLinkEditing extends Plugin {
     // Define conversions from old link button markup to new button markup.
     this._defineHelfiButtonConverters();
 
+    // Trim the href attribute.
+    this._trimHref();
+
     // Add attributes to linkCommand during its execution.
     this._addAttributeOnLinkCommandExecute(Object.keys(formElements));
+  }
+
+  /**
+   * Trims the href attribute during upcast.
+   */
+  _trimHref() {
+    const { editor } = this;
+    editor.conversion.for('upcast').elementToAttribute({
+      view: 'a',
+      model: {
+        key: 'linkHref',
+        value: viewElement => {
+          // Check if the view element has a 'href' attribute.
+          if (!viewElement.hasAttribute('href')) return null;
+
+          // Get the 'href' attribute value.
+          const href = viewElement.getAttribute('href');
+          return href
+            ? href.trim()
+              .replace(/^%20+/, '') // Remove leading %20
+              .replace(/%20+$/, '') // Remove trailing %20
+              .trim()
+            : null;
+        },
+      },
+      // Handle the href attribute trim before any other converters.
+      converterPriority: 'highest',
+    });
   }
 
   /**
@@ -95,7 +126,7 @@ export default class HelfiLinkEditing extends Plugin {
 
       // Convert attributes for upcast.
       // View (DOM / Data) --> Model.
-      this.editor.conversion.for('upcast').attributeToAttribute({
+      editor.conversion.for('upcast').attributeToAttribute({
         view: {
           name: 'a',
           key: viewAttributeKey,
@@ -511,16 +542,15 @@ export default class HelfiLinkEditing extends Plugin {
   _addAttributeOnLinkCommandExecute(modelNames) {
     const { editor } = this;
     const linkCommand = editor.commands.get('link');
-    let linkCommandExecuting = false;
+    let helfiLinkCommandExecuting = false;
 
     linkCommand.on('execute', (evt, args) => {
       // Custom handling is only required if an attribute was passed
       // into editor.execute('link', ...).
-      if (args.length < 3) {
-        return;
-      }
-      if (linkCommandExecuting) {
-        linkCommandExecuting = false;
+      if (args.length < 3) return;
+
+      if (helfiLinkCommandExecuting) {
+        helfiLinkCommandExecuting = false;
         return;
       }
 
@@ -531,56 +561,94 @@ export default class HelfiLinkEditing extends Plugin {
 
       // Prevent infinite recursion by keeping records of when link command
       // is being executed by this function.
-      linkCommandExecuting = true;
+      helfiLinkCommandExecuting = true;
+
       const attributeValues = args[args.length - 1];
       const { model } = editor;
       const { selection } = model.document;
 
-      // Wrapping the original command execution in a model.change() to make
-      // sure there's a single undo step when the attribute is added.
-      model.change(writer => {
-        editor.execute('link', ...args);
+      // The arguments on linkCommand.execute() are: href, target, attributes.
+      // We need to trim the href value.
+      const hrefValue = args[0];
+      let trimmedHref = hrefValue;
 
-        // Determine the selection range and add/remove the attributes to the
-        // node or range.
-        modelNames.forEach(modelName => {
-          if (selection.isCollapsed) {
-            // Get the current selection textNode or the nodeBefore the selection.
-            // If neither are available, create a range from root position.
-            const writtenRange = (position) => {
-              const node = position.textNode || position.nodeBefore;
-              if (!node) {
-                const range = writer.createRange(position);
-                writer.setSelection(range);
-                return range;
-              }
-              return writer.createRangeOn(node);
-            };
+      if (hrefValue) {
+        // Trim the href value before and after %20.
+        trimmedHref = hrefValue.trim()
+          .replace(/^%20+/, '') // Remove leading %20
+          .replace(/%20+$/, '') // Remove trailing %20
+          .trim();
 
-            // Set or remove attributes.
-            if (attributeValues[modelName]) {
-              writer.setAttribute(modelName, attributeValues[modelName], writtenRange(selection.getFirstPosition()));
-            } else {
-              writer.removeAttribute(modelName, writtenRange(selection.getFirstPosition()));
-            }
-            writer.removeSelectionAttribute(modelName);
-          } else {
-            const ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
-            let range = ranges.next();
+        // Remove leading and trailing spaces, parentheses and hyphens.
+        // This is used for tel: numbers.
+        const linkProtocol = parseProtocol(trimmedHref);
+        if (linkProtocol && linkProtocol === 'tel') {
+          trimmedHref = trimmedHref.replace(/[\s()-]/g, '');
+        }
 
-            while (!range.done) {
-              const currentRange = range.value;
+        // Replace the href with trimmed href.
+        args[0] = trimmedHref;
+      }
 
+      // The linkCommand.execute() might execute other plugins which will alter
+      // the same anchor element. For example, the linkit plugin.
+      // Wrap the selection writer to a try catch to catch any errors.
+      try {
+        // Wrapping the original command execution in a model.change() to make
+        // sure there's a single undo step when the attribute is added.
+        model.change(writer => {
+          editor.execute('link', ...args);
+
+          // Determine the selection range and add/remove the attributes to the
+          // node or range.
+          modelNames.forEach(modelName => {
+            if (selection.isCollapsed) {
+              // Get the current selection textNode or the nodeBefore the selection.
+              // If neither are available, create a range from root position.
+              const writtenRange = (position) => {
+                const node = position.textNode || position.nodeBefore;
+                if (!node) {
+                  const range = writer.createRange(position);
+                  writer.setSelection(range);
+                  return range;
+                }
+                return writer.createRangeOn(node);
+              };
+
+              // Set or remove attributes.
               if (attributeValues[modelName]) {
-                writer.setAttribute(modelName, attributeValues[modelName], currentRange);
+                writer.setAttribute(modelName, attributeValues[modelName], writtenRange(selection.getFirstPosition()));
               } else {
-                writer.removeAttribute(modelName, currentRange);
+                writer.removeAttribute(modelName, writtenRange(selection.getFirstPosition()));
               }
-              range = ranges.next();
+              writer.removeSelectionAttribute(modelName);
+            } else {
+              const ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
+              let range = ranges.next();
+
+              while (!range.done) {
+                const currentRange = range.value;
+
+                if (attributeValues[modelName]) {
+                  writer.setAttribute(modelName, attributeValues[modelName], currentRange);
+                } else {
+                  writer.removeAttribute(modelName, currentRange);
+                }
+                range = ranges.next();
+              }
             }
-          }
+          });
+          helfiLinkCommandExecuting = false;
         });
-      });
+      }
+      // If an error occurs, stop the execution.       // CKEditorError: Cannot read properties of null (reading 'dataset').
+      catch (error) {
+        evt.stop();
+      }
+      // Set the priority to match the linkit plugin. If it's higher, linkit
+      // plugin will trigger an error because the selection range has changed
+      // in the middle of code execution. If it's lower, helfiLink plugin will
+      // not be executed properly.
     }, { priority: 'high' });
   }
 }
