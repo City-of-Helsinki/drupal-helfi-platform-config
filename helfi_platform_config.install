@@ -202,3 +202,16 @@ function helfi_platform_config_update_9313() : void {
     $module_installer->install(['helfi_paragraphs_curated_event_list']);
   }
 }
+
+/**
+ * UHF-9761: Remove the user inquiry -popup that is no longer used.
+ */
+function helfi_platform_config_update_9314() : void {
+  $config_factory = Drupal::configFactory();
+
+  // Make sure the configuration is present.
+  if (!$config_factory->get('block.block.hdbt_subtheme_user_inquiry')->isNew()) {
+    // Remove the user inquiry block.
+    $config_factory->getEditable('block.block.hdbt_subtheme_user_inquiry')->delete();
+  }
+}
