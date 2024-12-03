@@ -217,7 +217,7 @@ function helfi_platform_config_update_9314() : void {
 }
 
 /**
-* UHF-10555: Removed unused media display.
+ * UHF-10555: Removed unused media display.
  */
 function helfi_platform_config_update_9315(): void {
   // We need to remove some unused configuration that has swum to all instances
