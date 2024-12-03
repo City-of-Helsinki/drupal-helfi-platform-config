@@ -389,17 +389,9 @@ function helfi_tpr_config_update_9069(): void {
 }
 
 /**
- * UHF-9509 Change unit teaser and wide_teaser image style.
- */
-function helfi_tpr_config_update_9071(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-10555: Removed unused TPR-unit display.
+ * UHF-10555: Update TPR Unit wide teaser display.
  */
 function helfi_tpr_config_update_9072(): void {
-  $config_factory = Drupal::configFactory();
-  $config_factory->getEditable('core.entity_view_display.tpr_unit.tpr_unit.wide_teaser')->delete();
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_tpr_config');
 }
