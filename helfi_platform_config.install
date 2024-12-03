@@ -203,7 +203,6 @@ function helfi_platform_config_update_9313() : void {
   }
 }
 
-
 /**
  * UHF-9761: Remove the user inquiry -popup that is no longer used.
  */
