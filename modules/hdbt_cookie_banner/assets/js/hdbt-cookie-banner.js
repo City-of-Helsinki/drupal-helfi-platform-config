@@ -69,11 +69,14 @@
         (e) => {
           const { storageType, keys, acceptedGroups } = e.detail
 
+          // Alphabetize the keys array
+          const sortedKeys = keys.sort();
+
           if (window.Sentry) {
             // Sentry requires a unique name for each error in order to record
             // each found unapproved item per type.
             const name = `Unapproved ${storageType}`
-            const message = `Found: ${keys.join(', ')}`
+            const message = `Found: ${sortedKeys.join(', ')}`
 
             class UnapprovedItemError extends Error {
               constructor(message) {
@@ -91,7 +94,7 @@
               },
               extra: {
                 storageType,
-                cookieNames: keys,
+                cookieNames: sortedKeys,
                 approvedCategories: acceptedGroups,
               },
             })
