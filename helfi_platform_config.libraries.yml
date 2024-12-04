@@ -3,14 +3,6 @@ react_and_share:
   js:
     assets/js/reactAndShareSettings.js: {}
 
-clear_localstorage:
-  version: 1.0.x
-  js:
-    assets/js/clear-localstorage.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-
 # This library is loaded via chat_leijuke.js.
 # Setting the preprocess to false will not affect this library.
 # See: ChatLeijuke.php::build().

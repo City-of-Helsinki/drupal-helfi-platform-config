@@ -171,13 +171,6 @@ function helfi_platform_config_module_implements_alter(&$implementations, $hook)
 }
 
 /**
- * Implements hook_page_attachments().
- */
-function helfi_platform_config_page_attachments(array &$attachments) : void {
-  $attachments['#attached']['library'][] = 'helfi_platform_config/clear_localstorage';
-}
-
-/**
  * Implements hook_page_attachments_alter().
  */
 function helfi_platform_config_page_attachments_alter(array &$attachments): void {
