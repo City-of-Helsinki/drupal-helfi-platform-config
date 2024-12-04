@@ -12,9 +12,7 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 class CookieBannerTest extends WebDriverTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = [
     'hdbt_cookie_banner',
