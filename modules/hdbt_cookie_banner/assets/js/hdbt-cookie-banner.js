@@ -36,7 +36,7 @@
           language: drupalSettings.hdbt_cookie_banner.langcode,
           theme: drupalSettings.hdbt_cookie_banner.theme,
           settingsPageSelector: drupalSettings.hdbt_cookie_banner.settingsPageSelector,
-          spacerParentSelector: '.footer',
+          spacerParentSelector: drupalSettings.hdbt_cookie_banner.spacerParentSelector || '.footer',
         };
         window.hds.CookieConsentCore.create(apiUrl, options);
       }
