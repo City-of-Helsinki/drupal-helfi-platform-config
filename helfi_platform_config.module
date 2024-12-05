@@ -15,6 +15,7 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldConfigBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -37,7 +38,10 @@ use Drupal\user\Entity\Role;
 function helfi_platform_config_entity_type_build(array &$entity_types): void {
   if (isset($entity_types['redirect'])) {
     $entity_types['redirect']->setClass(PublishableRedirect::class);
-    $entity_types['redirect']->set('entity_keys', $entity_types['redirect']->getKeys() + ['published' => 'status']);
+    $entity_types['redirect']->set('entity_keys', $entity_types['redirect']->getKeys() + [
+      'published' => 'status',
+      'custom' => 'is_custom',
+    ]);
   }
 }
 
@@ -519,4 +523,17 @@ function helfi_platform_config_config_schema_info_alter(array &$definitions) : v
   if (isset($definitions['social_media.item.email'])) {
     $definitions['social_media.item.email']['mapping']['text']['translation context'] = 'Social media: email';
   }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function helfi_platform_config_form_redirect_redirect_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  // Set is_custom field to true whenever redirect entity is saved from
+  // entity form. The field defaults to FALSE if it is saved from Drupal API.
+  $form['is_custom'] = [
+    '#type' => 'hidden',
+    '#access' => FALSE,
+    '#default_value' => [TRUE],
+  ];
 }

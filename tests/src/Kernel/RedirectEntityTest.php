@@ -63,6 +63,9 @@ class RedirectEntityTest extends KernelTestBase {
     // Published by default.
     $this->assertTrue($redirect->isPublished());
 
+    // Generated with API => should not be custom.
+    $this->assertFalse($redirect->isCustom());
+
     $repository = $this->container->get('redirect.repository');
     $this->assertInstanceOf(PublishableRedirectRepository::class, $repository);
 

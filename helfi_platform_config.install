@@ -238,29 +238,33 @@ function helfi_platform_config_update_9315() : void {
   /** @var \Drupal\Core\Entity\EntityTypeInterface $entityType */
   $entityType = reset($entityTypes);
 
-  // Alter field definition so that NULL values are allowed.
-  $fields = PublishableRedirect::publishedBaseFieldDefinitions($entityType);
-  $field = reset($fields);
-  $field->setInitialValue(TRUE);
+  $fields = PublishableRedirect::baseFieldDefinitions($entityType);
 
-  // Revert class change:
+  // Revert class change.
   $entityType->setClass($entityType->getOriginalClass());
 
   // Update entity settings without updating the class.
   $updateManager->updateEntityType($entityType);
 
-  $updateManager->installFieldStorageDefinition(
-    $entityType->getKey('published'),
-    $entityType->id(),
-    'helfi_platform_config',
-    $field
-  );
+  foreach (['published', 'custom'] as $key) {
+    $field = $fields[$entityType->getKey($key)];
+
+    // Set published and custom initially to TRUE.
+    $field->setInitialValue(TRUE);
+
+    $updateManager->installFieldStorageDefinition(
+      $entityType->getKey($key),
+      $entityType->id(),
+      'helfi_platform_config',
+      $field
+    );
+  }
 
   helfi_platform_config_entity_type_build($entityTypes);
 
   /** @var \Drupal\Core\Entity\EntityTypeInterface $entityType */
   $entityType = reset($entityTypes);
 
-  // Update entity type again with class change.
+  // Update entity type again with the class change.
   $updateManager->updateEntityType($entityType);
 }
