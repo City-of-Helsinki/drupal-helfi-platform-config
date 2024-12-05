@@ -350,6 +350,7 @@ function helfi_base_content_update_9014(): void {
  * UHF-9704: Configure view for redirect module.
  */
 function helfi_base_content_update_9015(): void {
+  \Drupal::service('config.factory')->getEditable('views.view.redirect')->delete();
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_base_content');
 }
