@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Kernel;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
+use Drupal\helfi_platform_config\PublishableRedirectRepository;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\path_alias\Entity\PathAlias;
 
@@ -54,13 +55,26 @@ class RedirectEntityTest extends KernelTestBase {
 
     $this->assertInstanceOf(PublishableRedirect::class, $redirect);
 
-    $redirect->setSource('internal:/source');
-    $redirect->setRedirect('internal:/destination');
+    $redirect->setSource('/source');
+    $redirect->setRedirect('/destination');
     $redirect->setStatusCode(300);
     $redirect->save();
 
     // Published by default.
     $this->assertTrue($redirect->isPublished());
+
+    $repository = $this->container->get('redirect.repository');
+    $this->assertInstanceOf(PublishableRedirectRepository::class, $repository);
+
+    $match = $repository->findMatchingRedirect('/source', language: $redirect->language()->getId());
+    $this->assertNotEmpty($match);
+
+    // Unpublishing redirect should remove it from findMatchingRedirect.
+    $redirect->setUnpublished();
+    $redirect->save();
+
+    $match = $repository->findMatchingRedirect('/source', language: $redirect->language()->getId());
+    $this->assertEmpty($match);
   }
 
   /**
@@ -88,7 +102,7 @@ class RedirectEntityTest extends KernelTestBase {
       'status' => 1,
     ]);
 
-    // Redirect should be created when path alias is updated.
+    // One redirect should be created when path alias is updated.
     $this->assertNotEmpty($redirects);
   }
 
