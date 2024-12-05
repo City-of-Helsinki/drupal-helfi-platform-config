@@ -5,9 +5,8 @@
  * Contains installation hooks for HELfi platform config module.
  */
 
-use Drupal\Core\Entity\EntityStorageException;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
+declare(strict_types=1);
+
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
 

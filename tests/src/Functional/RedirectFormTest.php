@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace src\Functional;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;

@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\PublishableRedirectRepository;
+use Drupal\helfi_platform_config\RedirectCleaner;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\path_alias\Entity\PathAlias;
 
@@ -107,6 +108,60 @@ class RedirectEntityTest extends KernelTestBase {
 
     // One redirect should be created when path alias is updated.
     $this->assertNotEmpty($redirects);
+  }
+
+  /**
+   * Tests redirect cleaner.
+   */
+  public function testRedirectCleaner(): void {
+    $storage = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('redirect');
+
+    $tests = [
+      [
+        'status' => 1,
+        'is_custom' => 1,
+        'created' => strtotime('-1 year'),
+      ],
+      [
+        'status' => 1,
+        'is_custom' => 0,
+        'created' => strtotime('-1 year'),
+      ],
+      [
+        'status' => 1,
+        'is_custom' => 0,
+        'created' => strtotime('now'),
+      ],
+    ];
+
+    foreach ($tests as $id => $test) {
+      $redirect = $storage->create([
+        'redirect_source' => "source/$id",
+        'redirect_redirect' => '/destination',
+        'status_code' => 301,
+      ] + $test);
+
+      $redirect->save();
+    }
+
+    // Enable the service.
+    $this->config('helfi_platform_config.redirect_cleaner')->set('enable', TRUE)->save();
+
+    $cleaner = $this->container->get(RedirectCleaner::class);
+    $cleaner->unpublishExpiredRedirects();
+
+    foreach ($tests as $id => $test) {
+      $redirects = $storage->loadByProperties(['redirect_source' => "source/$id"]);
+      $redirect = reset($redirects);
+
+      $this->assertInstanceOf(EntityPublishedInterface::class, $redirect);
+
+      $this->assertEquals(
+        $test['is_custom'] || $test['created'] > strtotime('-6 months'),
+        $redirect->isPublished()
+      );
+    }
   }
 
 }

@@ -12,7 +12,6 @@ use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -20,20 +19,19 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
-use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
+use Drupal\helfi_platform_config\Entity\PublishableRedirect;
+use Drupal\helfi_platform_config\RedirectCleaner;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_entity_type_build().
- *
- * @param \Drupal\Core\Entity\EntityTypeInterface[] &$entity_types
- *   Entity types.
  */
 function helfi_platform_config_entity_type_build(array &$entity_types): void {
   if (isset($entity_types['redirect'])) {
@@ -526,14 +524,31 @@ function helfi_platform_config_config_schema_info_alter(array &$definitions) : v
 }
 
 /**
- * Implements hook_form_BASE_FORM_ID_alter().
+ * Implements hook_form_alter().
  */
-function helfi_platform_config_form_redirect_redirect_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  // Set is_custom field to true whenever redirect entity is saved from
-  // entity form. The field defaults to FALSE if it is saved from Drupal API.
-  $form['is_custom'] = [
-    '#type' => 'hidden',
-    '#access' => FALSE,
-    '#default_value' => [TRUE],
-  ];
+function helfi_platform_config_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  if (in_array($form_id, ['redirect_redirect_edit_form', 'redirect_redirect_form'])) {
+    // Set is_custom field to true whenever redirect entity is saved from
+    // entity form. The field defaults to FALSE if it is saved from Drupal API.
+    $form['is_custom'] = [
+      '#type' => 'hidden',
+      '#access' => FALSE,
+      '#default_value' => [TRUE],
+    ];
+
+    $form['status'] = [
+      '#type' => 'checkbox',
+      '#title' => new TranslatableMarkup('Published'),
+      '#default_value' => TRUE,
+    ];
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function helfi_platform_config_cron(): void {
+  /** @var \Drupal\helfi_platform_config\RedirectCleaner $cleaner */
+  $cleaner = \Drupal::service(RedirectCleaner::class);
+  $cleaner->unpublishExpiredRedirects();
 }
