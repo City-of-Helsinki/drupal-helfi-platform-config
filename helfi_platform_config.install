@@ -5,6 +5,10 @@
  * Contains installation hooks for HELfi platform config module.
  */
 
+use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
 
 /**
@@ -214,4 +218,49 @@ function helfi_platform_config_update_9314() : void {
     // Remove the user inquiry block.
     $config_factory->getEditable('block.block.hdbt_subtheme_user_inquiry')->delete();
   }
+}
+
+/**
+ * UHF-10539: Update redirect entity type.
+ */
+function helfi_platform_config_update_9315() : void {
+  if (!\Drupal::moduleHandler()->moduleExists('redirect')) {
+    return;
+  }
+
+  $updateManager = \Drupal::entityDefinitionUpdateManager();
+  $entityTypes = [
+    'redirect' => $updateManager->getEntityType('redirect'),
+  ];
+
+  helfi_platform_config_entity_type_build($entityTypes);
+
+  /** @var \Drupal\Core\Entity\EntityTypeInterface $entityType */
+  $entityType = reset($entityTypes);
+
+  // Alter field definition so that NULL values are allowed.
+  $fields = PublishableRedirect::publishedBaseFieldDefinitions($entityType);
+  $field = reset($fields);
+  $field->setInitialValue(TRUE);
+
+  // Revert class change:
+  $entityType->setClass($entityType->getOriginalClass());
+
+  // Update entity settings without updating the class.
+  $updateManager->updateEntityType($entityType);
+
+  $updateManager->installFieldStorageDefinition(
+    $entityType->getKey('published'),
+    $entityType->id(),
+    'helfi_platform_config',
+    $field
+  );
+
+  helfi_platform_config_entity_type_build($entityTypes);
+
+  /** @var \Drupal\Core\Entity\EntityTypeInterface $entityType */
+  $entityType = reset($entityTypes);
+
+  // Update entity type again with class change.
+  $updateManager->updateEntityType($entityType);
 }

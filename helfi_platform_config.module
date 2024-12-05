@@ -12,6 +12,7 @@ use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Language\LanguageInterface;
@@ -22,9 +23,23 @@ use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_entity_type_build().
+ *
+ * @param \Drupal\Core\Entity\EntityTypeInterface[] &$entity_types
+ *   Entity types.
+ */
+function helfi_platform_config_entity_type_build(array &$entity_types): void {
+  if (isset($entity_types['redirect'])) {
+    $entity_types['redirect']->setClass(PublishableRedirect::class);
+    $entity_types['redirect']->set('entity_keys', $entity_types['redirect']->getKeys() + ['published' => 'status']);
+  }
+}
 
 /**
  * Implements hook_modules_installed().
