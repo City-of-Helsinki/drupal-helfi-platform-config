@@ -61,21 +61,6 @@ class CookieSettings {
     $config = $this->configFactory->get(HdbtCookieBannerForm::SETTINGS);
     $language = $this->languageManager->getDefaultLanguage();
 
-    // Default to Etusivu API URL.
-    if (!$config->get('use_custom_settings')) {
-      try {
-        $environment = $this->environmentResolver->getEnvironment(
-          Project::ETUSIVU,
-          $this->environmentResolver->getActiveEnvironmentName()
-        );
-
-        return vsprintf("%s/api/cookie-banner", [
-          $environment->getUrl($language->getId()),
-        ]);
-      }
-      catch (\InvalidArgumentException) {
-      }
-    }
     return $this->urlGenerator->generateFromRoute(
       'hdbt_cookie_banner.site_settings',
       options: ['language' => $language],

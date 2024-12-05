@@ -42,17 +42,12 @@ class CookieBannerTest extends WebDriverTestBase {
     $json_content = file_get_contents($json_file_path);
     $this->assertNotEmpty($json_content, 'Decoded JSON data is not empty.');
 
-    // Get the public base URL (in a FunctionalJavascript test).
-    // Construct a URL for the hds-cookie-consent.min.js file.
-    $cookie_js_url = "/$module_path/assets/js/hds-cookie-consent.min.js";
-
     // Change configuration value before the test runs.
     $config = $this->config('hdbt_cookie_banner.settings');
     $config
-      ->set('use_custom_settings', TRUE)
       ->set('site_settings', $json_content)
-      ->set('use_internal_hds_cookie_js', FALSE)
-      ->set('hds_cookie_js_override', $cookie_js_url)
+      ->set('use_custom_settings', TRUE)
+      ->set('use_internal_hds_cookie_js', TRUE)
       ->save();
 
     \Drupal::service('cache.default')->deleteAll();
