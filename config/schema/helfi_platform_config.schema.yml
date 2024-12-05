@@ -17,6 +17,12 @@ block.settings.telia_ace_widget:
       type: text
       label: 'Chat button label'
 
+helfi_platform_config.redirect_cleaner:
+  type: config_object
+  label: 'Redirect cleaner'
+  mapping:
+    enable:
+      type: boolean
 
 # Default value.
 field.value.location:
