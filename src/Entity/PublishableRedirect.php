@@ -37,7 +37,7 @@ class PublishableRedirect extends Redirect implements EntityPublishedInterface {
    *   FALSE if this redirect was created automatically by Drupal.
    */
   public function isCustom(): bool {
-    return !!$this->getEntityKey('custom');
+    return (bool)$this->getEntityKey('custom');
   }
 
 }

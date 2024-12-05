@@ -24,10 +24,11 @@ class PublishableRedirectRepository extends RedirectRepository {
     $redirect = parent::findMatchingRedirect($source_path, $query, $language);
 
     // If the redirect is not published, return NULL instead.
-    if ($redirect instanceof EntityPublishedInterface) {
-      if (!$redirect->isPublished()) {
-        return NULL;
-      }
+    if (
+      $redirect instanceof EntityPublishedInterface
+      && !$redirect->isPublished()
+    ) {
+      return NULL;
     }
 
     return $redirect;
