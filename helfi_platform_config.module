@@ -10,6 +10,7 @@ declare(strict_types=1);
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -536,11 +537,16 @@ function helfi_platform_config_form_alter(&$form, FormStateInterface $form_state
       '#default_value' => [TRUE],
     ];
 
-    $form['status'] = [
-      '#type' => 'checkbox',
-      '#title' => new TranslatableMarkup('Published'),
-      '#default_value' => TRUE,
-    ];
+    $formObject = $form_state->getFormObject();
+    assert($formObject instanceof EntityFormInterface);
+    $redirect = $formObject->getEntity();
+    if ($redirect instanceof EntityPublishedInterface) {
+      $form['status'] = [
+        '#type' => 'checkbox',
+        '#title' => new TranslatableMarkup('Published'),
+        '#default_value' => $redirect->isPublished(),
+      ];
+    };
   }
 }
 
