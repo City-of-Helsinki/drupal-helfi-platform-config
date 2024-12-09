@@ -29,9 +29,9 @@
         "en": "Essential cookies"
       },
       "description": {
-        "fi": "Välttämättömät evästeet auttavat tekemään verkkosivustosta käyttökelpoisen sallimalla perustoimintoja, kuten sivulla siirtymisen ja sivuston suojattujen alueiden käytön. Verkkosivusto ei toimi kunnolla ilman näitä evästeitä eikä niihin tarvita suostumusta.",
-        "sv": "Nödvändiga cookies hjälper till att göra webbplatsen användbar genom att tillåta grundläggande funktioner som att navigera på sidan och använda de skyddade områdena på webbplatsen. Webbplatsen fungerar inte korrekt utan dessa cookies och kräver inte samtycke.",
-        "en": "Essential cookies help to make the website usable by allowing basic functions, navigating the page and using the protected areas of the site. The website will not work properly without these cookies and their consent is not required."
+        "fi": "Välttämättömät evästeet varmistavat, että sivusto toimii kunnolla. Välttämättömiin evästeisiin ei tarvita suostumusta. Nämä evästeet mahdollistavat perustoimintoja, kuten sivulla siirtymisen ja sivuston suojattujen alueiden käytön.",
+        "sv": "Nödvändiga kakor säkerställer att webbplatsen fungerar ordentligt. För nödvändiga kakor behövs inte samtycke. Dessa kakor möjliggör grundläggande funktioner såsom sidnavigering och åtkomst till skyddade områden på webbplatsen.",
+        "en": "Essential cookies ensure that the website functions correctly. Essential cookies do not require consent. These cookies enable basic functions, such as site navigation and access to protected areas of the website."
       },
       "cookies": [
         {
@@ -41,14 +41,41 @@
           "description": {
             "fi": "Sivusto käyttää tätä evästettä tietojen tallentamiseen siitä, ovatko kävijät antaneet hyväksyntänsä tai kieltäytyneet evästeiden käytöstä.",
             "sv": "Cookie möjliggör hantering av cookies på webbplatsen.",
-            "en": "Used by www.hel.fi Drupal to store information about whether visitors have given or declined the use of cookie categories used on the www.hel.fi site."
+            "en": "Used by change-me.hel.fi Drupal to store information about whether visitors have given or declined the use of cookie categories used on the change-me.hel.fi site."
           },
           "expiration": {
             "fi": "100 päivää",
             "sv": "100 dagar",
             "en": "100 days"
-          }
+          },
+          "ype": 1
         },
+        {
+          "name": "helfi-settings",
+          "host": "change-me.hel.fi",
+          "storageType": 2,
+          "description": {
+            "fi": "Sivusto käyttää tätä tietuetta tietojen tallentamiseen siitä, mitä poikkeusilmoituksia on suljettu ja mikä on avattavien sisältöalueiden tila.",
+            "sv": "Används av change-me.hel.fi Drupal för att lagra information om stängda meddelanden och accordions' tillstånd.",
+            "en": "Used by change-me.hel.fi Drupal to store information about closed announcements and accordions' state."
+          },
+          "expiration": "-"
+        }
+      ]
+    },
+    {
+      "groupId": "admin",
+      "title": {
+        "fi": "Sisällöntuottajien toiminnalliset evästeet",
+        "sv": "Redaktörernas funktionella cookies",
+        "en": "Editors' functional cookies"
+      },
+      "description": {
+        "fi": "Sisällöntuottajien välttämättömät toiminnalliset evästeet tallennetaan ainoastaan kirjautuneille sisällöntuottajille. Ne mahdollistavat sivuston muokkaustoiminnot.",
+        "sv": "Nödvändiga funktionella kakor för innehållsproducenter sparas endast hos inloggade innehållsproducenter. De möjliggör funktioner för redigering av webbplatsen.",
+        "en": "The essential functional cookies for content providers are only saved for content providers who are signed in. They enable the editing of the website."
+      },
+      "cookies": [
         {
           "name": "SSESS*",
           "host": "change-me.hel.fi",
@@ -65,110 +92,13 @@
           }
         },
         {
-          "name": "mtm_cookie_consent",
-          "host": "kartta.hel.fi",
-          "storageType": 1,
-          "description": {
-            "fi": "Tekninen eväste johon talletetaan tieto valinnastasi evästeiden käytöstä kertovan bannerin kohdalla",
-            "sv": "A technical cookie that stores information about how you responded to the notice in the cookie banner about the use of cookies.",
-            "en": "A technical cookie that stores information about how you responded to the notice in the cookie banner about the use of cookies."
-          },
-          "expiration": {
-            "fi": "10950 päivää",
-            "sv": "10950 dagar",
-            "en": "10950 days"
-          }
-        },
-        {
-          "name": "JSESSIONID",
-          "host": "helsinkikanava.fi",
-          "storageType": 1,
-          "description": {
-            "fi": "Sivuston pakollinen eväste mahdollistaa kävijän vierailun sivustolla.",
-            "sv": "Kakan är en obligatorisk kaka som gör det möjligt för besökaren att besöka webbplatsen.",
-            "en": "The cookie is an obligatory cookie that facilitates visiting the website."
-          },
-          "expiration": {
-            "fi": "Istunto",
-            "sv": "Session",
-            "en": "Session"
-          }
-        },
-        {
-          "name": "COOKIE_SUPPORT",
-          "host": "helsinkikanava.fi",
-          "storageType": 1,
-          "description": {
-            "fi": "Mahdollistaa evästeiden hallinnan sivustolla.",
-            "sv": "Kakan möjliggör hanteringen av kakor på webbplatsen.",
-            "en": "The cookie facilitates managing cookies on the website."
-          },
-          "expiration": {
-            "fi": "365 päivää",
-            "sv": "365 dagar",
-            "en": "365 days"
-          }
-        },
-        {
-          "name": "GUEST_LANGUAGE_ID",
-          "host": "helsinkikanava.fi",
-          "storageType": 1,
-          "description": {
-            "fi": "Tämän evästeen on luonut Liferay, se tallentaa kieliasetukset.",
-            "sv": "Denna cookie genereras av Liferay, dess funktion är att lagra språkinställningarna.",
-            "en": "This cookie is generated by the Liferay, its function is to store the language preferences."
-          },
-          "expiration": {
-            "fi": "365 päivää",
-            "sv": "365 dagar",
-            "en": "365 days"
-          }
-        },
-        {
-          "name": "helfi-settings",
-          "host": "change-me.hel.fi",
-          "storageType": 2,
-          "description": {
-            "fi": "Sivusto käyttää tätä tietuetta tietojen tallentamiseen siitä, mitä poikkeusilmoituksia on suljettu ja mikä on avattavien sisältöalueiden tila.",
-            "sv": "Används av hel.fi Drupal för att lagra information om stängda meddelanden och accordions' tillstånd.",
-            "en": "Used by hel.fi Drupal to store information about closed announcements and accordions' state."
-          },
-          "expiration": "-"
-        }
-      ]
-    },
-    {
-      "groupId": "admin",
-      "title": {
-        "fi": "Sisällöntuottajien toiminnalliset evästeet",
-        "sv": "Redaktörernas funktionella cookies",
-        "en": "Editors' functional cookies"
-      },
-      "description": {
-        "fi": "Sisäänkirjautuneiden sisällöntuottajien välttämättömät toiminnalliset evästeet mahdollistavat editointityökalujen käytön niitä käyttäville. Näitä evästeitä ei aseteta kirjautumattomille käyttäjille.",
-        "sv": "Nödvändiga funktionella cookies för inloggade redaktörer möjliggör användning av redigeringsverktyg för dem som använder dem. Dessa cookies är inte inställda för icke-inloggade användare.",
-        "en": "Necessary functional cookies for logged-in editors enable the use of editing tools for those who use them. These cookies are not set for non-logged in users."
-      },
-      "cookies": [
-        {
-          "name": "editoria11yResultCount",
-          "host": "change-me.hel.fi",
-          "storageType": 2,
-          "description": {
-            "fi": "Tallentaa sisällöntuottajan näkemien saavutettavuusongelmien lukumäärän nykyisellä sivulla.",
-            "sv": "Spårar tillgänglighetsproblem för den aktuella sidan när du är inloggad som redaktör på hel.fi.",
-            "en": "Tracks accessibility issues for the current page when logged in as an editor on hel.fi."
-          },
-          "expiration": "-"
-        },
-        {
           "name": "Drupal.gin.sidebarExpanded.desktop",
           "host": "change-me.hel.fi",
           "storageType": 2,
           "description": {
             "fi": "Tallentaa tiedon sisällöntuottajan käyttöliittymän sivupalkin näkyvyydestä työpöytänäkymässä.",
-            "sv": "Lagrar om admin-sidopanelen är expanderad eller kollapsad på skrivbordet när du är inloggad som redaktör på hel.fi.",
-            "en": "Stores whether the admin sidebar is expanded or collapsed on desktop when logged in as an editor on hel.fi."
+            "sv": "Lagrar om admin-sidopanelen är expanderad eller kollapsad på skrivbordet när du är inloggad som redaktör på change-me.hel.fi.",
+            "en": "Stores whether the admin sidebar is expanded or collapsed on desktop when logged in as an editor on change-me.hel.fi."
           },
           "expiration": "-"
         },
@@ -178,8 +108,8 @@
           "storageType": 2,
           "description": {
             "fi": "Tallentaa tiedon sisällöntuottajan käyttöliittymän sivupalkin näkyvyydestä mobiilinäkymässä.",
-            "sv": "Lagrar om admin-sidopanelen är expanderad eller kollapsad på mobil när du är inloggad som redaktör på hel.fi.",
-            "en": "Stores whether the admin sidebar is expanded or collapsed on mobile when logged in as an editor on hel.fi."
+            "sv": "Lagrar om admin-sidopanelen är expanderad eller kollapsad på mobil när du är inloggad som redaktör på change-me.hel.fi.",
+            "en": "Stores whether the admin sidebar is expanded or collapsed on mobile when logged in as an editor on change-me.hel.fi."
           },
           "expiration": "-"
         },
@@ -189,8 +119,8 @@
           "storageType": 2,
           "description": {
             "fi": "Tallentaa tiedon sisällöntuottajan valitsemasta \"tumma tila\"-asetuksesta.",
-            "sv": "Lagrar användarens mörkt läge-inställning i admin-temat när du är inloggad som redaktör på hel.fi.",
-            "en": "Stores the user's dark mode preference in the admin theme when logged in as an editor on hel.fi."
+            "sv": "Lagrar användarens mörkt läge-inställning i admin-temat när du är inloggad som redaktör på change-me.hel.fi.",
+            "en": "Stores the user's dark mode preference in the admin theme when logged in as an editor on change-me.hel.fi."
           },
           "expiration": "-"
         },
@@ -213,17 +143,6 @@
             "fi": "Tallentaa sisällöntuottajan käyttämän wysiwyg-editorin tyylit välimuistiin varmistaakseen viimeisimpien CSS-tyylien latauksen.",
             "sv": "Lagrar cachelagrad CKEditor CSS i localStorage för en inloggad redaktör, med en nyckel som använder en cache-brytande fråga för att säkerställa att den senaste CSS-filen laddas.",
             "en": "Stores cached CKEditor CSS in localStorage for a logged-in editor, using a key with a cache-busting query to ensure the latest CSS is loaded."
-          },
-          "expiration": "-"
-        },
-        {
-          "name": "ed11ySeen",
-          "host": "change-me.hel.fi",
-          "storageType": 2,
-          "description": {
-            "fi": "Tallentaa sisällöntuottajan näkemät saavutettavuusongelmat, jotta vältetään ongelmien kaksoisilmoitukset.",
-            "sv": "Spårar vilka tillgänglighetsproblem en inloggad redaktör redan har sett för att undvika dubbla aviseringar.",
-            "en": "Tracks which accessibility issues a logged-in editor has already seen to avoid duplicate notifications."
           },
           "expiration": "-"
         },
@@ -256,6 +175,28 @@
             "sv": "Session",
             "en": "Session"
           }
+        },
+        {
+          "name": "editoria11yResultCount",
+          "host": "change-me.hel.fi",
+          "storageType": 2,
+          "description": {
+            "fi": "Tallentaa löydettyjen saavutettavuusongelmien määrän sisällöntuottajalle, auttaen seuraamaan ja korjaamaan ne.",
+            "sv": "Spårar antalet tillgänglighetsproblem som hittats på specifika sidor för en inloggad redaktör, vilket hjälper till att övervaka och åtgärda dem.",
+            "en": "Tracks the number of accessibility issues found on specific pages for a logged-in editor, helping monitor and address them."
+          },
+          "expiration": "-"
+        },
+        {
+          "name": "ed11ySeen",
+          "host": "change-me.hel.fi",
+          "storageType": 2,
+          "description": {
+            "fi": "Tallentaa sisällöntuottajan näkemät saavutettavuusongelmat, jotta vältetään ongelmien kaksoisilmoitukset.",
+            "sv": "Spårar vilka tillgänglighetsproblem en inloggad redaktör redan har sett för att undvika dubbla aviseringar.",
+            "en": "Tracks which accessibility issues a logged-in editor has already seen to avoid duplicate notifications."
+          },
+          "expiration": "-"
         }
       ]
     }
@@ -275,6 +216,62 @@
       },
       "cookies": [
         {
+          "name": "COOKIE_SUPPORT",
+          "host": "helsinkikanava.fi",
+          "storageType": 1,
+          "description": {
+            "fi": "Mahdollistaa evästeiden hallinnan sivustolla.",
+            "sv": "Kakan möjliggör hanteringen av kakor på webbplatsen.",
+            "en": "The cookie facilitates managing cookies on the website."
+          },
+          "expiration": {
+            "fi": "365 päivää",
+            "sv": "365 dagar",
+            "en": "365 days"
+          }
+        },
+        {
+          "name": "JSESSIONID",
+          "host": "helsinkikanava.fi",
+          "storageType": 1,
+          "description": {
+            "fi": "Sivuston pakollinen eväste mahdollistaa kävijän vierailun sivustolla.",
+            "sv": "Kakan är en obligatorisk kaka som gör det möjligt för besökaren att besöka webbplatsen.",
+            "en": "The cookie is an obligatory cookie that facilitates visiting the website."
+          },
+          "expiration": {
+            "fi": "Istunto",
+            "sv": "Session",
+            "en": "Session"
+          }
+        },
+        {
+          "name": "GUEST_LANGUAGE_ID",
+          "host": "helsinkikanava.fi",
+          "storageType": 1,
+          "description": {
+            "fi": "Tämän evästeen on luonut Liferay, se tallentaa kieliasetukset.",
+            "sv": "Denna cookie genereras av Liferay, dess funktion är att lagra språkinställningarna.",
+            "en": "This cookie is generated by the Liferay, its function is to store the language preferences."
+          },
+          "expiration": {
+            "fi": "365 päivää",
+            "sv": "365 dagar",
+            "en": "365 days"
+          }
+        },
+        {
+          "name": "icareusDevice",
+          "host": "helsinkikanava.fi",
+          "storageType": 2,
+          "description": {
+            "fi": "Helsinki-kanavan videopalvelimen eväste.",
+            "sv": "Helsinki-kanavas kaka gör det möjligt att göra videor till en del av innehållet på webbplatsen.",
+            "en": "The Helsinki Channel video server cookie facilitates including videos as part of the website's content."
+          },
+          "expiration": "-"
+        },
+        {
           "name": "httpskartta.hel.fi.SWCulture",
           "host": "kartta.hel.fi",
           "storageType": 1,
@@ -287,21 +284,6 @@
             "fi": "1826 päivää",
             "sv": "1826 dagar",
             "en": "1826 days"
-          }
-        },
-        {
-          "name": "icareus-device",
-          "host": "helsinkikanava.fi",
-          "storageType": 1,
-          "description": {
-            "fi": "Helsinki-kanavan videopalvelimen eväste.",
-            "sv": "Helsinki-kanavas kaka gör det möjligt att göra videor till en del av innehållet på webbplatsen.",
-            "en": "The Helsinki Channel video server cookie facilitates including videos as part of the website's content."
-          },
-          "expiration": {
-            "fi": "365 päivää",
-            "sv": "365 dagar",
-            "en": "365 days"
           }
         },
         {
@@ -325,8 +307,8 @@
           "storageType": 1,
           "description": {
             "fi": "Googlen eväste tallentaa kävijän evästehyväskynnän.",
-            "sv": "Används av Google för att lagra inställningar för användarens samtycke",
-            "en": "Used by Google to store user consent preferences"
+            "sv": "Används av Google för att lagra inställningar för användarens samtycke.",
+            "en": "Used by Google to store user consent preferences."
           },
           "expiration": {
             "fi": "5947 päivää, 15 tuntia",
@@ -386,7 +368,7 @@
           "description": {
             "fi": "Matomo-tilastointijärjestelmän eväste.",
             "sv": "Matomo-statistiksystemets kaka samlar information om hur webbplatsen används.",
-            "en": "Matomo Analytics - used to store a few details about the user such as the unique visitor ID"
+            "en": "Matomo Analytics - short lived cookies used to temporarily store data for the visit"
           },
           "expiration": {
             "fi": "1 tunti",
@@ -416,7 +398,7 @@
           "description": {
             "fi": "Matomo-tilastointijärjestelmän eväste.",
             "sv": "Matomo-statistiksystemets kaka samlar information om hur webbplatsen används.",
-            "en": "Matomo Analytics - used to store a few details about the user such as the unique visitor ID"
+            "en": "Matomo Analytics - short lived cookies used to temporarily store data for the visit"
           },
           "expiration": {
             "fi": "1 tunti",
@@ -446,7 +428,26 @@
     {
       "name": "helfi_accordions_open",
       "storageType": 1
+    },
+    {
+      "name": "cookiehub",
+      "storageType": 1
+    },
+    {
+      "name": "cookie-agreed-version",
+      "storageType": 1
+    },
+    {
+      "name": "cookie-agreed-categories",
+      "storageType": 1
+    },
+    {
+      "name": "cookie-agreed",
+      "storageType": 1
     }
+  ],
+  "groupsWhitelistedForApi": [
+    "chat"
   ],
   "translations": {
     "bannerAriaLabel": {
@@ -455,9 +456,9 @@
       "en": "Cookie settings"
     },
     "heading": {
-      "fi": "{{siteName}} käyttää evästeitä",
-      "sv": "{{siteName}} använder kakor",
-      "en": "{{siteName}} uses cookies"
+      "fi": "Evästeet {{siteName}}-sivustolla",
+      "sv": "Kakor på webbplatsen {{siteName}}",
+      "en": "Cookies on {{siteName}}"
     },
     "description": {
       "fi": "Tämä sivusto käyttää välttämättömiä evästeitä sivun perustoimintojen ja suorituskyvyn varmistamiseksi. Lisäksi käytämme kohdennusevästeitä käyttäjäkokemuksen parantamiseksi, analytiikkaan ja yksilöidyn sisällön näyttämiseen.",
