@@ -18,27 +18,23 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class RedirectCleaner {
 
   /**
-   * Redirect cleaner configuration.
-   */
-  private array $configuration;
-
-  /**
    * Constructs a new instance.
    */
   public function __construct(
-    ConfigFactoryInterface $configFactory,
+    private readonly ConfigFactoryInterface $configFactory,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     #[Autowire(service: 'logger.channel.helfi_platform_config')]
     private readonly LoggerInterface $logger,
   ) {
-    $this->configuration = $configFactory->get('helfi_platform_config.redirect_cleaner')->get();
   }
 
   /**
    * Return TRUE if this feature is enabled.
    */
   public function isEnabled(): bool {
-    return $this->configuration['enable'] ?? FALSE;
+    return $this->configFactory
+      ->get('helfi_platform_config.redirect_cleaner')
+      ->get('enable') ?? FALSE;
   }
 
   /**
