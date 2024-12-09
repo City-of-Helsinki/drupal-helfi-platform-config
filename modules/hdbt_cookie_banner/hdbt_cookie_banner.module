@@ -65,7 +65,22 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
   /** @var \Drupal\hdbt_cookie_banner\Services\CookieSettings $cookie_settings_service */
   $cookie_settings_service = \Drupal::service('hdbt_cookie_banner.cookie_settings');
 
-  $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hds_cookie_consent';
+  // By default, we use the hel.fi etusivu instance HDS cookie consent JS file.
+  if (empty($config->get('use_custom_settings'))) {
+    $cookie_settings_service->injectBannerJavaScript($attachments);
+  }
+  // We can also use the current instance HDS cookie consent JS file.
+  elseif (empty($config->get('use_internal_hds_cookie_js'))) {
+    $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hds_cookie_consent';
+  }
+  // Or the custom HDS cookie consent JS file can be used.
+  else {
+    $cookie_settings_service->injectBannerJavaScript(
+      $attachments,
+      $config->get('hds_cookie_js_override')
+    );
+  }
+
   // Attach HDBT cookie banner initialization JS file.
   $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hdbt_cookie_banner';
 
