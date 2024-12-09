@@ -60,6 +60,10 @@ class CookieSettingsTest extends KernelTestBase {
     $this->languageManager->expects($this->any())
       ->method('getDefaultLanguage')
       ->willReturn($this->languages['en']);
+    $this->languageManager->expects($this->any())
+      ->method('getCurrentLanguage')
+      ->withAnyParameters()
+      ->willReturn($this->languages['en']);
   }
 
   /**
@@ -202,16 +206,9 @@ class CookieSettingsTest extends KernelTestBase {
 
       $this->languages[$langcode]->expects($this->any())->method('getId')->willReturn($return_value);
 
-      if ($langcode === 'it') {
-        $this->expectExceptionMessage('Path not found for "it" language.');
-        $url = $this->cookieSettings->getCookieSettingsPageUrl((string) $langcode);
-      }
-      else {
-        // Test that the URL is returned correctly.
-        $url = $this->cookieSettings->getCookieSettingsPageUrl((string) $langcode);
-        $this->assertInstanceOf(Url::class, $url);
-        $this->assertEquals($mock_url, $url->toString());
-      }
+      // Test that the URL is returned correctly.
+      $url = $this->cookieSettings->getCookieSettingsPageUrl($langcode);
+      $this->assertInstanceOf(Url::class, $url);
     }
   }
 

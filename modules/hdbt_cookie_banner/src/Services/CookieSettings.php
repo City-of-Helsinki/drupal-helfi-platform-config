@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_cookie_banner\Services;
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\Core\Asset\LibraryDiscoveryInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -38,9 +39,11 @@ class CookieSettings {
    * @return \Drupal\Core\Url|null
    *   The URL of the cookie settings page.
    */
-  public function getCookieSettingsPageUrl(?string $langcode = ''): ?Url {
+  public function getCookieSettingsPageUrl(?string $langcode = NULL): ?Url {
     if (!$langcode) {
-      $langcode = $this->languageManager->getDefaultLanguage()->getId();
+      $langcode = $this->languageManager
+        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+        ->getId();
     }
 
     // Default to Etusivu cookie settings page.
@@ -48,17 +51,22 @@ class CookieSettings {
       $environment = $this->getActiveEtusivuEnvironment();
 
       if ($environment instanceof Environment) {
+        try {
+          $url = $environment->getUrl($langcode);
+        }
+        catch (\InvalidArgumentException) {
+          // Fallback to default language.
+          $langcode = $this->languageManager->getDefaultLanguage()->getId();
+          $url = $environment->getUrl($langcode);
+        }
+
         $path = match($langcode) {
-          'fi' => "evasteasetukset",
-          'sv' => "cookie-installningar",
-          default => "cookie-settings",
+          'fi' => 'evasteasetukset',
+          'sv' => 'cookie-installningar',
+          default => 'cookie-settings',
         };
 
-        $url = vsprintf("%s/%s", [
-          $environment->getUrl($langcode),
-          $path,
-        ]);
-        return Url::fromUri($url);
+        return Url::fromUri(vsprintf("%s/%s", [ $url, $path ]));
       }
     }
 
