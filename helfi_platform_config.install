@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
@@ -265,7 +266,9 @@ function helfi_platform_config_update_9316() : void {
     $field = $fields[$entityType->getKey($key)];
 
     // Set published and custom initially to TRUE.
-    $field->setInitialValue(TRUE);
+    if ($field instanceof BaseFieldDefinition) {
+      $field->setInitialValue(TRUE);
+    }
 
     $updateManager->installFieldStorageDefinition(
       $entityType->getKey($key),
