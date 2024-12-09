@@ -129,9 +129,9 @@ function helfi_paragraphs_news_list_update_9007() : void {
 }
 
 /**
- * UHF-8974 Update the translations for the news list paragraph type.
+ * UHF-10555 Update news list entity view modes.
  */
-function helfi_paragraphs_news_list_update_9008() : void {
+function helfi_paragraphs_news_list_update_9009() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_news_list');
 }

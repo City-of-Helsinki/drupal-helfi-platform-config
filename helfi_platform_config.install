@@ -222,9 +222,23 @@ function helfi_platform_config_update_9314() : void {
 }
 
 /**
+ * UHF-10555: Removed unused media display.
+ */
+function helfi_platform_config_update_9315(): void {
+  // We need to remove some unused configuration that has swum to all instances
+  // but is now part of helfi_node_news_item module. The module is not on in
+  // all instances so that is why the configuration is removed here.
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('core.entity_view_mode.media.image_content_area')
+    ->delete();
+  $config_factory->getEditable('core.entity_view_display.media.image.image_content_area')
+    ->delete();
+}
+
+/**
  * UHF-10539: Update redirect entity type.
  */
-function helfi_platform_config_update_9315() : void {
+function helfi_platform_config_update_9316() : void {
   if (!\Drupal::moduleHandler()->moduleExists('redirect')) {
     return;
   }
@@ -273,7 +287,7 @@ function helfi_platform_config_update_9315() : void {
 /**
  * UHF-10539: Update redirect entity type.
  */
-function helfi_platform_config_update_9316() : void {
+function helfi_platform_config_update_9317() : void {
   /** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $projectRoles */
   $projectRoles = \Drupal::service(ActiveProjectRoles::class);
 
