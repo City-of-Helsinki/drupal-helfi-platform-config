@@ -1,4 +1,4 @@
-uuid: 30410398-1ba2-4548-aa8a-4c99cb8b82b4
+uuid: bf25e83d-5e50-4476-a09f-b072a996e778
 langcode: en
 status: true
 dependencies:
@@ -8,7 +8,7 @@ dependencies:
     - link
     - redirect
     - user
-id: redirect
+id: helfi_redirect
 label: Redirect
 module: views
 description: 'List of redirects'

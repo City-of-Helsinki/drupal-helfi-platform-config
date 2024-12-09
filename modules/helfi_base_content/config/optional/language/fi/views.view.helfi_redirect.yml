@@ -56,5 +56,8 @@ display:
     display_title: Oletus
   page_1:
     display_title: Sivu
+    display_options:
+      menu:
+        title: Uudelleenohjaukset
 label: Uudelleenohjaukset
 description: Uudelleenohjaukset
