@@ -66,7 +66,7 @@ class CookieSettings {
           default => 'cookie-settings',
         };
 
-        return Url::fromUri(vsprintf("%s/%s", [ $url, $path ]));
+        return Url::fromUri(vsprintf("%s/%s", [$url, $path]));
       }
     }
 
