@@ -1,5 +1,12 @@
 'use strict';
 
+class UnapprovedItemError extends Error {
+  constructor(message, name) {
+    super(message)
+    this.name = name
+  }
+}
+
 ((Drupal, drupalSettings) => {
 
   // Global cookie consent status object.
@@ -80,16 +87,9 @@
           const name = `Unapproved ${storageType}`
           const message = `Found: ${sortedKeys.join(', ')}`
 
-          class UnapprovedItemError extends Error {
-            constructor(message) {
-              super(message)
-              this.name = name
-            }
-          }
-
           // Capture the error with Sentry and send a message with the
           // unapproved items so that they can be searched in Sentry.
-          window.Sentry.captureException(new UnapprovedItemError(message), {
+          window.Sentry.captureException(new UnapprovedItemError(message, name), {
             level: 'warning',
             tags: {
               approvedCategories: acceptedGroups.join(', '),
