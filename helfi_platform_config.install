@@ -215,3 +215,17 @@ function helfi_platform_config_update_9314() : void {
     $config_factory->getEditable('block.block.hdbt_subtheme_user_inquiry')->delete();
   }
 }
+
+/**
+ * UHF-10555: Removed unused media display.
+ */
+function helfi_platform_config_update_9315(): void {
+  // We need to remove some unused configuration that has swum to all instances
+  // but is now part of helfi_node_news_item module. The module is not on in
+  // all instances so that is why the configuration is removed here.
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('core.entity_view_mode.media.image_content_area')
+    ->delete();
+  $config_factory->getEditable('core.entity_view_display.media.image.image_content_area')
+    ->delete();
+}
