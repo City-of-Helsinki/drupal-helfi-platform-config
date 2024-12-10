@@ -6,15 +6,15 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
-  SIMPLETEST_BASE_URL: http://app:8888
+  SIMPLETEST_BASE_URL: https://app
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: ['8.4']
     container:
-      image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
+      image: ghcr.io/city-of-helsinki/drupal-web:${{ matrix.php-versions }}
       options: --hostname app
     services:
       db:
@@ -26,6 +26,15 @@ jobs:
           MYSQL_ROOT_PASSWORD: drupal
         ports:
           - 3306:3306
+      chromium:
+        image: selenium/standalone-chromium
+        env:
+          SE_NODE_OVERRIDE_MAX_SESSIONS: "true"
+          SE_NODE_MAX_SESSIONS: "16"
+          SE_START_XVFB: "false"
+          SE_START_VNC: "false"
+          SE_SESSION_RETRY_INTERVAL: "1"
+          SE_SESSION_REQUEST_TIMEOUT: "10"
 
     steps:
       - uses: actions/checkout@v4
@@ -45,7 +54,7 @@ jobs:
 
       - name: Clone platform
         run: |
-          git clone --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
+          git clone -b UHF-11031 --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
           rm -rf $DRUPAL_ROOT/.git
 
       - name: Install required composer dependencies
@@ -72,10 +81,6 @@ jobs:
       - name: Run phpstan
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: vendor/bin/phpstan analyze -c $MODULE_FOLDER/phpstan.neon $MODULE_FOLDER
-
-      - name: Start services
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns &
 
       - name: Run PHPUnit tests
         working-directory: ${{ env.DRUPAL_ROOT }}
