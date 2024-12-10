@@ -1,0 +1,7 @@
+hdbt_cookie_banner_test.test_route:
+  path: '/test-page'
+  defaults:
+    _controller: '\Drupal\hdbt_cookie_banner_test\Controller\TestController::content'
+    _title: 'Test Page'
+  requirements:
+    _permission: 'access content'
