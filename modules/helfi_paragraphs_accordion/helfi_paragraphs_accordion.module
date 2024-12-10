@@ -16,10 +16,10 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
  */
 function helfi_paragraphs_accordion_helfi_paragraph_types() : array {
   return [
-    new ParagraphTypeCollection('paragraph', 'accordion_item', 'field_accordion_item_content', 'columns'),
-    new ParagraphTypeCollection('paragraph', 'accordion_item', 'field_accordion_item_content', 'image'),
-    new ParagraphTypeCollection('paragraph', 'accordion_item', 'field_accordion_item_content', 'text'),
-    new ParagraphTypeCollection('paragraph', 'accordion_item', 'field_accordion_item_content', 'phasing'),
+    new ParagraphTypeCollection('paragraph', 'accordion_item', 'field_accordion_item_content', 'text', 0),
+    new ParagraphTypeCollection('paragraph', 'accordion_item', 'field_accordion_item_content', 'image', 1),
+    new ParagraphTypeCollection('paragraph', 'accordion_item', 'field_accordion_item_content', 'phasing', 2),
+    new ParagraphTypeCollection('paragraph', 'accordion_item', 'field_accordion_item_content', 'columns', 3),
     new ParagraphTypeCollection('paragraph', 'accordion', 'field_accordion_items', 'accordion_item'),
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'accordion'),
   ];

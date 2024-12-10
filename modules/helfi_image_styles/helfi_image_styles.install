@@ -8,17 +8,70 @@
 declare(strict_types=1);
 
 /**
- * UHF-10191 Add new image styles.
- */
-function helfi_image_styles_update_9002(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_image_styles');
-}
-
-/**
  * UHF-10239 Adds new image styles used by image gallery.
  */
 function helfi_image_styles_update_9004(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_image_styles');
+}
+
+/**
+ * UHF-10555: Removed deprecated image styles.
+ */
+function helfi_image_styles_update_9005(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('responsive_image.styles.hero__background')->delete();
+  $config_factory->getEditable('responsive_image.styles.gallery_thumbnail')->delete();
+  $config_factory->getEditable('responsive_image.styles.list_of_links__thumbnail')->delete();
+  $config_factory->getEditable('responsive_image.styles.original')->delete();
+  $config_factory->getEditable('responsive_image.styles.image__3_2')->delete();
+  $config_factory->getEditable('responsive_image.styles.image__3_2_content_area')->delete();
+  $config_factory->getEditable('image.style.23_10_l')->delete();
+  $config_factory->getEditable('image.style.23_10_l_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_m')->delete();
+  $config_factory->getEditable('image.style.23_10_m_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_s')->delete();
+  $config_factory->getEditable('image.style.23_10_s_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_xl')->delete();
+  $config_factory->getEditable('image.style.23_10_xl_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_xs')->delete();
+  $config_factory->getEditable('image.style.23_10_xs_2x')->delete();
+  $config_factory->getEditable('image.style.23_10_xxs')->delete();
+  $config_factory->getEditable('image.style.23_10_xxs_2x')->delete();
+  $config_factory->getEditable('image.style.1_1_thumbnail')->delete();
+  $config_factory->getEditable('image.style.1_1_thumbnail_2x')->delete();
+  $config_factory->getEditable('image.style.1_1_l')->delete();
+  $config_factory->getEditable('image.style.1_1_l_2x')->delete();
+  $config_factory->getEditable('image.style.1_1_m')->delete();
+  $config_factory->getEditable('image.style.1_1_m_2x')->delete();
+  $config_factory->getEditable('image.style.1_1_s')->delete();
+  $config_factory->getEditable('image.style.1_1_s_2x')->delete();
+  $config_factory->getEditable('image.style.1_1_xl')->delete();
+  $config_factory->getEditable('image.style.1_1_xl_2x')->delete();
+  $config_factory->getEditable('image.style.1_1_xs')->delete();
+  $config_factory->getEditable('image.style.1_1_xs_2x')->delete();
+  $config_factory->getEditable('image.style.original_l')->delete();
+  $config_factory->getEditable('image.style.original_l_2x')->delete();
+  $config_factory->getEditable('image.style.original_m')->delete();
+  $config_factory->getEditable('image.style.original_m_2x')->delete();
+  $config_factory->getEditable('image.style.original_s')->delete();
+  $config_factory->getEditable('image.style.original_s_2x')->delete();
+  $config_factory->getEditable('image.style.original_xs')->delete();
+  $config_factory->getEditable('image.style.original_xs_2x')->delete();
+  $config_factory->getEditable('image.style.original_xxs')->delete();
+  $config_factory->getEditable('image.style.original_xxs_2x')->delete();
+  $config_factory->getEditable('image.style.og_image')->delete();
+  $config_factory->getEditable('image.style.tiny_square_image')->delete();
+  $config_factory->getEditable('image.style.3_2_l')->delete();
+  $config_factory->getEditable('image.style.3_2_l_2x')->delete();
+  $config_factory->getEditable('image.style.3_2_m')->delete();
+  $config_factory->getEditable('image.style.3_2_m_2x')->delete();
+  $config_factory->getEditable('image.style.3_2_s')->delete();
+  $config_factory->getEditable('image.style.3_2_s_2x')->delete();
+  $config_factory->getEditable('image.style.3_2_xl')->delete();
+  $config_factory->getEditable('image.style.3_2_xl_2x')->delete();
+  $config_factory->getEditable('image.style.3_2_xs')->delete();
+  $config_factory->getEditable('image.style.3_2_xs_2x')->delete();
+  $config_factory->getEditable('image.style.3_2_xxs')->delete();
+  $config_factory->getEditable('image.style.3_2_xxs_2x')->delete();
 }

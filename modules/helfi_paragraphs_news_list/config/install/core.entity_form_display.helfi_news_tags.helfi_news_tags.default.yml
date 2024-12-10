@@ -1,14 +1,14 @@
-uuid: b95230b8-fb95-4373-b877-6117cf4d0f46
+uuid: 972acdae-8e71-4d12-a335-bc91828f4851
 langcode: en
 status: true
 dependencies:
   config:
-    - external_entities.external_entity_type.helfi_news_groups
+    - external_entities.external_entity_type.helfi_news_tags
   module:
     - external_entities
-id: helfi_news_groups.helfi_news_groups.default
-targetEntityType: helfi_news_groups
-bundle: helfi_news_groups
+id: helfi_news_tags.helfi_news_tags.default
+targetEntityType: helfi_news_tags
+bundle: helfi_news_tags
 mode: default
 content:
   title:
@@ -19,4 +19,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  tid: true

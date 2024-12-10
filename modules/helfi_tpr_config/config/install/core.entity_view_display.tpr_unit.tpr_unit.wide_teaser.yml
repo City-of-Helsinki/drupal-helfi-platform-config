@@ -1,9 +1,9 @@
-uuid: 25d58377-e764-4508-a441-c7fd5ff6d939
+uuid: fd9accf5-a552-4c97-baa2-43d66e9dbcea
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.tpr_unit.teaser
+    - core.entity_view_mode.tpr_unit.wide_teaser
     - field.field.tpr_unit.tpr_unit.field_content
     - field.field.tpr_unit.tpr_unit.field_lower_content
     - field.field.tpr_unit.tpr_unit.field_metatags
@@ -15,10 +15,11 @@ dependencies:
     - address
     - helfi_tpr
     - imagecache_external
-id: tpr_unit.tpr_unit.teaser
+    - telephone
+id: tpr_unit.tpr_unit.wide_teaser
 targetEntityType: tpr_unit
 bundle: tpr_unit
-mode: teaser
+mode: wide_teaser
 content:
   address:
     type: address_plain
@@ -42,6 +43,21 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 3
+    region: content
+  opening_hours:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  phone:
+    type: telephone_link
+    label: hidden
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 5
     region: content
   picture_url:
     type: imagecache_external_responsive_image
@@ -85,11 +101,10 @@ hidden:
   latitude: true
   links: true
   longitude: true
-  opening_hours: true
   other_info: true
-  phone: true
   price_info: true
   provided_languages: true
+  search_api_excerpt: true
   service_map_embed: true
   services: true
   show_www: true
