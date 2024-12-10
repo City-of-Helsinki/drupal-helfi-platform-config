@@ -16,7 +16,7 @@ jobs:
         php-versions: ['8.3']
     container:
       image: ghcr.io/city-of-helsinki/drupal-web:${{ matrix.php-versions }}-dev
-      options: --hostname app --user 1001
+      options: --hostname app --user 1001 --entrypoint entrypoint
     services:
       db:
         image: mysql:8
