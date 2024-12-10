@@ -23,6 +23,12 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
       $definition = $container->getDefinition('config_rewrite.config_rewriter');
       $definition->setClass(ConfigRewriter::class);
     }
+
+    // Support publishable redirects.
+    if ($container->hasDefinition('redirect.repository')) {
+      $definition = $container->getDefinition('redirect.repository');
+      $definition->setClass(PublishableRedirectRepository::class);
+    }
   }
 
 }
