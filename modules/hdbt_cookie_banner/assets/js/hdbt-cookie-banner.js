@@ -1,5 +1,12 @@
 'use strict';
 
+class UnapprovedItemError extends Error {
+  constructor(message, name) {
+    super(message)
+    this.name = name
+  }
+}
+
 ((Drupal, drupalSettings) => {
 
   // Global cookie consent status object.
@@ -36,7 +43,7 @@
           language: drupalSettings.hdbt_cookie_banner.langcode,
           theme: drupalSettings.hdbt_cookie_banner.theme,
           settingsPageSelector: drupalSettings.hdbt_cookie_banner.settingsPageSelector,
-          spacerParentSelector: '.footer',
+          spacerParentSelector: drupalSettings.hdbt_cookie_banner.spacerParentSelector || '.footer',
         };
         window.hds.CookieConsentCore.create(apiUrl, options);
       }
@@ -67,41 +74,32 @@
       window.addEventListener(
         'hds-cookie-consent-unapproved-item-found',
         (e) => {
+          if (typeof window.Sentry === 'undefined') {
+            return;
+          }
           const { storageType, keys, acceptedGroups } = e.detail
 
           // Alphabetize the keys array
           const sortedKeys = keys.sort();
 
-          if (window.Sentry) {
-            // Sentry requires a unique name for each error in order to record
-            // each found unapproved item per type.
-            const name = `Unapproved ${storageType}`
-            const message = `Found: ${sortedKeys.join(', ')}`
+          // Sentry requires a unique name for each error in order to record
+          // each found unapproved item per type.
+          const name = `Unapproved ${storageType}`
+          const message = `Found: ${sortedKeys.join(', ')}`
 
-            class UnapprovedItemError extends Error {
-              constructor(message) {
-                super(message)
-                this.name = name
-              }
-            }
-
-            // Capture the error with Sentry and send a message with the
-            // unapproved items so that they can be searched in Sentry.
-            window.Sentry.captureException(new UnapprovedItemError(message), {
-              level: 'warning',
-              tags: {
-                approvedCategories: acceptedGroups.join(', '),
-              },
-              extra: {
-                storageType,
-                cookieNames: sortedKeys,
-                approvedCategories: acceptedGroups,
-              },
-            })
-          } else {
-            // If Sentry is not defined, throw an error.
-            throw new Error('Sentry is not defined')
-          }
+          // Capture the error with Sentry and send a message with the
+          // unapproved items so that they can be searched in Sentry.
+          window.Sentry.captureException(new UnapprovedItemError(message, name), {
+            level: 'warning',
+            tags: {
+              approvedCategories: acceptedGroups.join(', '),
+            },
+            extra: {
+              storageType,
+              cookieNames: sortedKeys,
+              approvedCategories: acceptedGroups,
+            },
+          })
         }
       )
     },

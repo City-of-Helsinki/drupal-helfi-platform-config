@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_cookie_banner\Services;
 
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\Core\Asset\LibraryDiscoveryInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -37,7 +39,37 @@ class CookieSettings {
    * @return \Drupal\Core\Url|null
    *   The URL of the cookie settings page.
    */
-  public function getCookieSettingsPageUrl(): ?Url {
+  public function getCookieSettingsPageUrl(?string $langcode = NULL): ?Url {
+    if (!$langcode) {
+      $langcode = $this->languageManager
+        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+        ->getId();
+    }
+
+    // Default to Etusivu cookie settings page.
+    if (!$this->useCustomSettings()) {
+      $environment = $this->getActiveEtusivuEnvironment();
+
+      if ($environment instanceof Environment) {
+        try {
+          $url = $environment->getUrl($langcode);
+        }
+        catch (\InvalidArgumentException) {
+          // Fallback to default language.
+          $langcode = $this->languageManager->getDefaultLanguage()->getId();
+          $url = $environment->getUrl($langcode);
+        }
+
+        $path = match($langcode) {
+          'fi' => 'evasteasetukset',
+          'sv' => 'cookie-installningar',
+          default => 'cookie-settings',
+        };
+
+        return Url::fromUri(vsprintf("%s/%s", [$url, $path]));
+      }
+    }
+
     $route_name = 'hdbt_cookie_banner.cookie_settings_page';
     try {
       // Check if the cookie settings page route exists.
@@ -58,24 +90,19 @@ class CookieSettings {
    *   Cookie banner API URL as a string.
    */
   public function getCookieBannerApiUrl(): string {
-    $config = $this->configFactory->get(HdbtCookieBannerForm::SETTINGS);
     $language = $this->languageManager->getDefaultLanguage();
 
     // Default to Etusivu API URL.
-    if (!$config->get('use_custom_settings')) {
-      try {
-        $environment = $this->environmentResolver->getEnvironment(
-          Project::ETUSIVU,
-          $this->environmentResolver->getActiveEnvironmentName()
-        );
+    if (!$this->useCustomSettings()) {
+      $environment = $this->getActiveEtusivuEnvironment();
 
+      if ($environment instanceof Environment) {
         return vsprintf("%s/api/cookie-banner", [
           $environment->getUrl($language->getId()),
         ]);
       }
-      catch (\InvalidArgumentException) {
-      }
     }
+
     return $this->urlGenerator->generateFromRoute(
       'hdbt_cookie_banner.site_settings',
       options: ['language' => $language],
@@ -94,19 +121,8 @@ class CookieSettings {
 
     // Load HDS cookie consent JavaScript file from Etusivu instance.
     if (!$library) {
-      // Get active Etusivu environment.
-      try {
-        $environment = $this->environmentResolver->getEnvironment(
-          Project::ETUSIVU,
-          $this->environmentResolver->getActiveEnvironmentName()
-        );
-      }
-      catch (\InvalidArgumentException) {
-        $environment = $this->environmentResolver->getEnvironment(
-          Project::ETUSIVU,
-          EnvironmentEnum::Prod->value
-        );
-      }
+      // Get the active Etusivu environment, default to production.
+      $environment = $this->getActiveEtusivuEnvironment(TRUE);
 
       // Construct the URL to the HDS cookie consent JS file.
       $library = vsprintf("%s/etusivu-assets/%s/assets/js/hds-cookie-consent.min.js%s", [
@@ -150,6 +166,50 @@ class CookieSettings {
       return "?v={$library_info['version']}";
     }
     return '';
+  }
+
+  /**
+   * Checks if current drupal instance uses custom settings.
+   *
+   * If not, the default settings are used and all information is retrieved
+   * from "hel.fi" drupal instance.
+   *
+   * @return bool
+   *   Returns true if custom settings are used.
+   */
+  protected function useCustomSettings(): bool {
+    $config = $this->configFactory->get(HdbtCookieBannerForm::SETTINGS);
+    return (bool) $config->get('use_custom_settings');
+  }
+
+  /**
+   * Get the active Etusivu environment if available.
+   *
+   * @param bool $default_to_production
+   *   Should the Etusivu production be used?
+   *
+   * @return \Drupal\helfi_api_base\Environment\Environment|null
+   *   Returns the active Etusivu environment or NULL.
+   */
+  protected function getActiveEtusivuEnvironment(?bool $default_to_production = FALSE): Environment|NULL {
+    $environment = 'NULL';
+
+    // Get active Etusivu environment.
+    try {
+      $environment = $this->environmentResolver->getEnvironment(
+        Project::ETUSIVU,
+        $this->environmentResolver->getActiveEnvironmentName()
+      );
+    }
+    catch (\InvalidArgumentException) {
+      if ($default_to_production) {
+        $environment = $this->environmentResolver->getEnvironment(
+          Project::ETUSIVU,
+          EnvironmentEnum::Prod->value
+        );
+      }
+    }
+    return $environment;
   }
 
 }
