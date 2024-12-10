@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.4']
+        php-versions: ['8.3']
     container:
-      image: ghcr.io/city-of-helsinki/drupal-web:${{ matrix.php-versions }}
+      image: ghcr.io/city-of-helsinki/drupal-web:${{ matrix.php-versions }}-dev
       options: --hostname app --user 1001
     services:
       db:
