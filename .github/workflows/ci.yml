@@ -14,8 +14,8 @@ jobs:
       matrix:
         php-versions: ['8.4']
     container:
-      image: ghcr.io/city-of-helsinki/drupal-web:${{ matrix.php-versions }}
-      options: --hostname app --user 1001
+      image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
+      options: --hostname app
     services:
       db:
         image: mysql:8
