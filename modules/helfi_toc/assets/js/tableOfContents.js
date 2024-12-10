@@ -15,14 +15,7 @@
     // e.g. TOC, sidebar, cookie compliance banner etc.
     exclusions: () => {
       return '' +
-      ':not(.layout-sidebar-first *)' +
-      ':not(.layout-sidebar-second *)' +
-      ':not(.tools__container *)' +
-      ':not(.breadcrumb__container *)' +
-      ':not(#helfi-toc-table-of-contents *)' +
-      ':not(.embedded-content-cookie-compliance *)' +
-      ':not(.react-and-share-cookie-compliance *)' +
-      ':not(.survey__container *)'
+      ':not(.hide-from-table-of-contents *)'
     },
 
     // List of heading tags with exclusions.
