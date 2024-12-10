@@ -11,6 +11,7 @@ This repository holds configuration for the Hel.fi platform.
 - [Update instructions (2.x to 3.x)](documentation/update.md)
 - [Two-factor authentication/TFA/MFA](/modules/helfi_tfa/README.md)
 - [JSON:API remote entities](/modules/helfi_etusivu_entities/README.md)
+- [Redirects](/documentation/redirects.md)
 - [Users](/modules/helfi_users/README.md)
 
 ## Contact
