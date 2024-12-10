@@ -101,7 +101,7 @@ class KernelTestBase extends CoreKernelTestBase {
     $mockEnvironment = new Environment(
       new Address('www.test.hel.ninja'),
       new Address('internal-address.local', 'http', 8080),
-      ['en' => '/en'],
+      ['en' => '/en', 'fi' => '/fi', 'sv' => '/sv'],
       EnvironmentEnum::Test,
       [],
     );
@@ -142,7 +142,7 @@ class KernelTestBase extends CoreKernelTestBase {
     $immutableConfig->method('get')->willReturnMap($configuration);
 
     // Only mock the 'HdbtCookieBannerForm::SETTINGS' configuration.
-    $this->configFactory->expects($this->once())
+    $this->configFactory->expects($this->atLeastOnce())
       ->method('get')
       ->with(HdbtCookieBannerForm::SETTINGS)
       ->willReturn($immutableConfig);

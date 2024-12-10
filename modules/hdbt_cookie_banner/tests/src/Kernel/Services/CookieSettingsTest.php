@@ -10,7 +10,6 @@ use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
 use Drupal\hdbt_cookie_banner\Services\CookieSettings;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Routing\Route;
 
 /**
  * Tests the CookieSettings service.
@@ -34,6 +33,13 @@ class CookieSettingsTest extends KernelTestBase {
   protected LanguageInterface|MockObject $language;
 
   /**
+   * An array of mock LanguageInterface objects.
+   *
+   * @var array
+   */
+  protected array $languages;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -49,14 +55,46 @@ class CookieSettingsTest extends KernelTestBase {
       $this->container->get('library.discovery'),
     );
 
-    $this->language = $this->createMock(LanguageInterface::class);
-    $this->language->expects($this->any())
-      ->method('getId')
-      ->willReturn('en');
+    $this->languages = $this->setUpLanguages();
 
     $this->languageManager->expects($this->any())
       ->method('getDefaultLanguage')
-      ->willReturn($this->language);
+      ->willReturn($this->languages['en']);
+    $this->languageManager->expects($this->any())
+      ->method('getCurrentLanguage')
+      ->withAnyParameters()
+      ->willReturn($this->languages['en']);
+  }
+
+  /**
+   * Sets up mock LanguageInterface objects.
+   *
+   * @return array
+   *   An array of mock LanguageInterface objects.
+   */
+  protected function setUpLanguages(): array {
+    $language_fi = $this->createMock(LanguageInterface::class);
+    $language_fi->expects($this->any())
+      ->method('getId')
+      ->willReturn('fi');
+    $language_sv = $this->createMock(LanguageInterface::class);
+    $language_sv->expects($this->any())
+      ->method('getId')
+      ->willReturn('sv');
+    $language_en = $this->createMock(LanguageInterface::class);
+    $language_en->expects($this->any())
+      ->method('getId')
+      ->willReturn('en');
+    $language_it = $this->createMock(LanguageInterface::class);
+    $language_it->expects($this->any())
+      ->method('getId')
+      ->willReturn('it');
+    return [
+      'fi' => $language_fi,
+      'sv' => $language_sv,
+      'en' => $language_en,
+      'it' => $language_it,
+    ];
   }
 
   /**
@@ -96,7 +134,7 @@ class CookieSettingsTest extends KernelTestBase {
       ->with(
         'hdbt_cookie_banner.site_settings',
         [],
-        ['language' => $this->language],
+        ['language' => $this->languages['en']],
       )
       ->willReturn('/en/api/cookie-banner');
 
@@ -140,27 +178,52 @@ class CookieSettingsTest extends KernelTestBase {
   }
 
   /**
-   * Tests getCookieSettingsPageUrl when the route exists.
+   * Tests getCookieBannerApiUrl with custom settings.
    */
-  public function testGetCookieSettingsPageUrlRouteExists(): void {
-    $route_name = 'hdbt_cookie_banner.cookie_settings_page';
+  public function testGetCookieSettingsPage(): void {
+    // Expected settings for external (hel.fi) setup.
+    $expected = [
+      ['site_settings', '{"test": "true"}'],
+      ['use_custom_settings', FALSE],
+    ];
 
-    // Simulate that the route exists by not throwing an exception.
-    $this->routeProvider->expects($this->once())
-      ->method('getRouteByName')
-      ->with($route_name)
-      ->willReturn($this->createMock(Route::class));
+    // Set up the configurations with specified settings.
+    $this->setUpTheConfigurations($expected);
 
-    // Test that the URL is returned correctly.
-    $url = $this->cookieSettings->getCookieSettingsPageUrl();
-    $this->assertInstanceOf(Url::class, $url);
-    $this->assertEquals($route_name, $url->getRouteName());
+    $language_map = [
+      'en' => 'https://www.test.hel.ninja/en/cookie-settings',
+      'fi' => 'https://www.test.hel.ninja/fi/evasteasetukset',
+      'sv' => 'https://www.test.hel.ninja/sv/cookie-installningar',
+      'it' => 'https://www.test.hel.ninja/en/cookie-settings',
+    ];
+
+    foreach ($language_map as $langcode => $mock_url) {
+      $return_value = match($langcode) {
+        'fi' => 'fi',
+        'sv' => 'sv',
+        default => 'en',
+      };
+
+      $this->languages[$langcode]->expects($this->any())->method('getId')->willReturn($return_value);
+
+      // Test that the URL is returned correctly.
+      $url = $this->cookieSettings->getCookieSettingsPageUrl($langcode);
+      $this->assertInstanceOf(Url::class, $url);
+    }
   }
 
   /**
    * Tests getCookieSettingsPageUrl when the route does not exist.
    */
   public function testGetCookieSettingsPageUrlRouteNotExists(): void {
+    // Expected settings for external (hel.fi) setup.
+    $expected = [
+      ['use_custom_settings', TRUE],
+    ];
+
+    // Set up the configurations with specified settings.
+    $this->setUpTheConfigurations($expected);
+
     $route_name = 'hdbt_cookie_banner.cookie_settings_page';
 
     // Simulate that the route does not exist by throwing an exception.
