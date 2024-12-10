@@ -6,7 +6,8 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
-  SIMPLETEST_BASE_URL: https://app
+  COMPOSER_DISCARD_CHANGES: true
+  COMPOSER_MIRROR_PATH_REPOS: 1
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -14,8 +15,8 @@ jobs:
       matrix:
         php-versions: ['8.4']
     container:
-      image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
-      options: --hostname app
+      image: ghcr.io/city-of-helsinki/drupal-web:${{ matrix.php-versions }}
+      options: --hostname app --user 1001
     services:
       db:
         image: mysql:8
@@ -91,9 +92,12 @@ jobs:
             --coverage-clover=$MODULE_FOLDER/coverage.xml \
             $MODULE_FOLDER
 
-      - name: Run codecov
-        working-directory: ${{ env.MODULE_FOLDER }}
-        run: codecov
+      - uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: true
+          directory: ${{ env.MODULE_FOLDER }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
 
       - name: Create an artifact from test report
         uses: actions/upload-artifact@v4
