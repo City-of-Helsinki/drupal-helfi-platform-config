@@ -52,7 +52,7 @@ jobs:
         # we have to start services manually.
       - name: Start services
         env:
-          WEBROOT: ${{ DRUPAL_ROOT }}/public
+          WEBROOT: ${{ env.DRUPAL_ROOT }}/public
         run: entrypoint &
 
       - name: Set module folder
