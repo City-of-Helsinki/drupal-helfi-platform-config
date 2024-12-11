@@ -42,11 +42,10 @@ jobs:
         with:
           fetch-depth: 0
 
+        # Actions worker overrides the default entrypoint with "tail -f /dev/null", so
+        # we have to start services manually.
       - name: Start services
         run: entrypoint &
-
-      - name: Debug
-        run: ps aux
 
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
@@ -64,22 +63,16 @@ jobs:
           git clone -b UHF-11031 --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
           rm -rf $DRUPAL_ROOT/.git
 
+        # We use COMPOSER_MIRROR_PATH_REPOS=1 to mirror local repository
+        # instead of symlinking it to prevent code coverage issues with
+        # phpunit. Copy .git folder manually so codecov can generate line by
+        # line coverage.
       - name: Install required composer dependencies
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/$MODULE_NAME -W
-          # We use COMPOSER_MIRROR_PATH_REPOS=1 to mirror local repository
-          # instead of symlinking it to prevent code coverage issues with
-          # phpunit. Copy .git folder manually so codecov can generate line by
-          # line coverage.
           cp -r $GITHUB_WORKSPACE/.git $MODULE_FOLDER/
-
-      - name: Install Drupal
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-          vendor/bin/drush en $MODULE_NAME helfi_platform_config_base -y
 
       - name: Run PHPCS
         working-directory: ${{ env.DRUPAL_ROOT }}
@@ -88,6 +81,12 @@ jobs:
       - name: Run phpstan
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: vendor/bin/phpstan analyze -c $MODULE_FOLDER/phpstan.neon $MODULE_FOLDER
+
+      - name: Install Drupal
+        working-directory: ${{ env.DRUPAL_ROOT }}
+        run: |
+          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
+          vendor/bin/drush en $MODULE_NAME helfi_platform_config_base -y
 
       - name: Run PHPUnit tests
         working-directory: ${{ env.DRUPAL_ROOT }}
