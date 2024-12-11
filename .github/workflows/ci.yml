@@ -42,16 +42,18 @@ jobs:
         with:
           fetch-depth: 0
 
-        # Actions worker overrides the default entrypoint with "tail -f /dev/null", so
-        # we have to start services manually.
-      - name: Start services
-        run: entrypoint &
-
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
 
       - name: Set Drupal root
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+
+        # Actions worker overrides the default entrypoint with "tail -f /dev/null", so
+        # we have to start services manually.
+      - name: Start services
+        env:
+          WEBROOT: ${{ DRUPAL_ROOT }}/public
+        run: entrypoint &
 
       - name: Set module folder
         run: |
