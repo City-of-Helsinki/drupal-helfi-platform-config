@@ -52,7 +52,6 @@ class CookieBannerTest extends WebDriverTestBase {
     $config
       ->set('use_custom_settings', TRUE)
       ->set('site_settings', $json_content)
-      ->set('use_custom_settings', TRUE)
       ->set('use_internal_hds_cookie_js', FALSE)
       ->set('hds_cookie_js_override', $cookie_js_url)
       ->save();
