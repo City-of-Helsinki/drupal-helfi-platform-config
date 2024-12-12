@@ -62,7 +62,7 @@ jobs:
 
       - name: Clone platform
         run: |
-          git clone -b UHF-11031 --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
+          git clone --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
           rm -rf $DRUPAL_ROOT/.git
 
         # We use COMPOSER_MIRROR_PATH_REPOS=1 to mirror local repository
