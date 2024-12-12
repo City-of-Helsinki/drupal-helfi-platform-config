@@ -37,11 +37,7 @@ display:
           sort_desc_label: Laskevasti
       pager:
         options:
-          tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
-            first: '« Ensimmäinen'
-            last: 'Viimeinen »'
+          tags: {  }
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
