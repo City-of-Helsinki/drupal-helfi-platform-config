@@ -136,6 +136,10 @@ final class Hearings extends ExternalEntityStorageClientBase {
       $existingTranslations = $this->getTranslationLanguages($hearing);
       $selectedLangcode = $this->resolveLanguage($hearing, $langcode);
 
+      if (!in_array($langcode, $existingTranslations)) {
+        continue;
+      }
+
       $item = $hearing;
       $item += [
         'main_image_url' => $hearing['main_image']['url'],
