@@ -28,6 +28,9 @@ display:
         is_custom:
           expose:
             label: 'Käyttäjän luoma'
+        status:
+          expose:
+            label: Julkaistu
       exposed_form:
         options:
           submit_button: Suodata
@@ -37,10 +40,10 @@ display:
           sort_desc_label: Laskevasti
       pager:
         options:
-          tags: {  }
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
+          tags: {  }
       fields:
         redirect_bulk_form:
           action_title: Valinnalla
@@ -50,9 +53,12 @@ display:
           label: Luotu
         is_custom:
           label: 'Käyttäjän luoma'
+        status:
+          label: Julkaistu
       empty:
         area_text_custom:
           content: 'Ei ole vielä uudelleenohjaksia.'
+      title: Uudelleenohjaukset
     display_title: Oletus
   page_1:
     display_title: Sivu
