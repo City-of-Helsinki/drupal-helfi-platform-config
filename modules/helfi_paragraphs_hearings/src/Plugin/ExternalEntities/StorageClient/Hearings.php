@@ -134,7 +134,9 @@ final class Hearings extends ExternalEntityStorageClientBase {
 
     foreach ($results as $hearing) {
       $existingTranslations = $this->getTranslationLanguages($hearing);
-      $selectedLangcode = $this->resolveLanguage($hearing, $langcode);
+      if (!in_array($langcode, $existingTranslations)) {
+        continue;
+      }
 
       $item = $hearing;
       $item += [
@@ -142,46 +144,18 @@ final class Hearings extends ExternalEntityStorageClientBase {
         'main_image' => Url::fromUri($hearing['main_image']['url']),
         'count' => $json['count'],
         'url' => sprintf('%s%s', self::HEARING_URL, $hearing['slug']),
-        'langcode' => $selectedLangcode,
+        'langcode' => $langcode,
         'existing_translations' => implode(',', $existingTranslations),
       ];
 
-      $item['title'] = $hearing['title'][$selectedLangcode] ?? $hearing['title']['fi'] ?? '';
-      $item['abstract'] = $hearing['abstract'][$selectedLangcode] ?? $hearing['abstract']['fi'] ?? '';
-      $item['main_image_caption'] = $hearing['main_image']['caption'][$selectedLangcode]
-        ?? $hearing['main_image']['caption']['fi']
-        ?? '';
+      $item['title'] = $hearing['title'][$langcode] ?? '';
+      $item['abstract'] = $hearing['abstract'][$langcode] ?? '';
+      $item['main_image_caption'] = $hearing['main_image']['caption'][$langcode] ?? '';
 
       $data[] = $item;
     }
 
     return $data;
-  }
-
-  /**
-   * Get language that exists on a hearing, preferably current language.
-   *
-   * @param array $hearing
-   *   The hearing.
-   * @param string $currentLangCode
-   *   Requested language code.
-   *
-   * @return string
-   *   Language code that can be used to show the hearing.
-   */
-  private function resolveLanguage(array $hearing, string $currentLangCode): string {
-    $existingTranslations = $this->getTranslationLanguages($hearing);
-    if (in_array($currentLangCode, $existingTranslations)) {
-      return $currentLangCode;
-    }
-
-    $possibleLanguages = ['fi', 'en', 'sv'];
-    foreach ($possibleLanguages as $langcode) {
-      if (in_array($langcode, $existingTranslations)) {
-        return $langcode;
-      }
-    }
-    throw new \InvalidArgumentException('Failed to resolve language.');
   }
 
   /**
