@@ -118,9 +118,10 @@ function _helfi_react_search_lookup_term_tid(string $keyword_id) {
  */
 function helfi_react_search_select2_autocomplete_matches_alter(array &$matches, array $options) {
   // Sort from shortest to longest.
+  $x = 1;
   if (
-    isset($options['target_bundle']) &&
-    $options['target_bundle'] === 'linked_events_keywords'
+    isset($options['target_bundles']) &&
+    in_array('linked_events_keywords', $options['target_bundles'])
   ) {
     usort($matches, fn($a, $b) => strlen($a['text']) > strlen($b['text']));
   }
