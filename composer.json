@@ -75,6 +75,7 @@
     "conflict": {
         "drupal/core": ">=10.4.0",
         "drupal/core-composer-scaffold": ">=10.4.0",
+        "drupal/core-dev": ">=10.4.0",
         "drupal/stage_file_proxy": "<2.1.5",
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/gin_toolbar": ">1.0.0-rc6",
