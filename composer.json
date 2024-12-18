@@ -6,8 +6,8 @@
     "minimum-stability": "dev",
     "require": {
         "ext-curl": "*",
-        "drupal/core": "10.3.10",
-        "drupal/core-composer-scaffold": "10.3.10",
+        "drupal/core": "^10",
+        "drupal/core-composer-scaffold": "^10",
         "drupal/admin_toolbar": "^3.0",
         "drupal/allowed_formats": "^2.0",
         "drupal/ckeditor": "^1.0",
@@ -73,7 +73,7 @@
         "dg/bypass-finals": "^1.0"
     },
     "conflict": {
-        "drupal/core": "<10.3.10",
+        "drupal/core": ">10.4.0",
         "drupal/core-composer-scaffold": "<10.3",
         "drupal/stage_file_proxy": "<2.1.5",
         "drupal/ctools": "<3.11 || ^4.0.1",
