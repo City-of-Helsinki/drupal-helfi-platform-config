@@ -116,7 +116,12 @@ function _helfi_react_search_lookup_term_tid(string $keyword_id) {
 /**
  * Implements hook_select2_autocomplete_matches_alter().
  */
-function helfi_react_search_select2_autocomplete_matches_alter(array &$matches) {
+function helfi_react_search_select2_autocomplete_matches_alter(array &$matches, array $options) {
   // Sort from shortest to longest.
-  usort($matches, fn($a, $b) => strlen($a['text']) > strlen($b['text']));
+  if (
+    isset($options['target_bundle']) &&
+    $options['target_bundle'] === 'linked_events_keywords'
+  ) {
+    usort($matches, fn($a, $b) => strlen($a['text']) > strlen($b['text']));
+  }
 }
