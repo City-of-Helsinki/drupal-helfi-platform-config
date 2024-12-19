@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.unit_contact_card.field_unit_contact_heading
     - field.field.paragraph.unit_contact_card.field_unit_contact_title
     - field.field.paragraph.unit_contact_card.field_unit_contact_unit
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_address
@@ -19,14 +20,12 @@ targetEntityType: paragraph
 bundle: unit_contact_card
 mode: default
 content:
-  field_unit_contact_title:
-    type: string_textfield
+  field_unit_contact_heading:
+    type: options_buttons
     weight: 0
     region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
+    settings: { }
+    third_party_settings: { }
   field_unit_contact_unit:
     type: entity_reference_autocomplete
     weight: 1
@@ -95,4 +94,5 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_unit_contact_title: true
   status: true
