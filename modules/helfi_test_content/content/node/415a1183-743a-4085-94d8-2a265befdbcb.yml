@@ -77,7 +77,7 @@ default:
       tag: meta
       attributes:
         property: 'og:updated_time'
-        content: '2024-12-19T08:54:11+0200'
+        content: '2024-12-19T09:22:38+0200'
     -
       tag: meta
       attributes:
@@ -87,7 +87,7 @@ default:
       tag: meta
       attributes:
         property: 'article:modified_time'
-        content: '2024-12-19T08:54:11+0200'
+        content: '2024-12-19T09:22:38+0200'
     -
       tag: meta
       attributes:
@@ -215,7 +215,7 @@ default:
               format: minimal
           field_image_gallery_ratio:
             -
-              value: ratio_3_2
+              value: ratio_1_1
           field_image_gallery_title:
             -
               value: 'Image gallery 1:1'
