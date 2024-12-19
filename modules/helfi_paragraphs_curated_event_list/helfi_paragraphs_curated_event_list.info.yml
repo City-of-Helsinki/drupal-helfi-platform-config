@@ -7,6 +7,7 @@ dependencies:
   - external_entities:external_entities
   - helfi_api_base:helfi_api_base
   - helfi_platform_config:helfi_platform_config
+  - imagecache_external:imagecache_external
   - paragraphs:paragraphs
 'interface translation project': helfi_paragraphs_curated_event_list
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_paragraphs_curated_event_list/translations/%language.po
