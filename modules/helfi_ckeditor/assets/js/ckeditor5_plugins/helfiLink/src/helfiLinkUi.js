@@ -154,7 +154,7 @@ export default class HelfiLinkUi extends Plugin {
         contextualBalloonPlugin.remove(newValue);
         contextualBalloonPlugin.add({
           view: linkFormView,
-          position: contextualBalloonPlugin._getBalloonPosition(),
+          position: contextualBalloonPlugin.getPositionOptions(),
           balloonClassName: 'helfi-contextual-balloon',
           withArrow: false,
         });
