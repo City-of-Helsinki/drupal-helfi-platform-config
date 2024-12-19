@@ -5,6 +5,8 @@
  * Contains installation tasks for helfi_paragraphs_hearings module.
  */
 
+declare(strict_types=1);
+
 /**
  * UHF-10555: Import fixed configuration again.
  */

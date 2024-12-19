@@ -5,6 +5,8 @@
  * HDBT Admin tools hooks.
  */
 
+declare(strict_types=1);
+
 /**
  * @file
  * Hooks provided by the Helfi admin tools module.

@@ -5,6 +5,8 @@
  * Contains token data for HELfi News item.
  */
 
+declare(strict_types=1);
+
 use Drupal\Core\Render\BubbleableMetadata;
 
 /**

@@ -5,6 +5,8 @@
  * Contains installation tasks for helfi_paragraphs_list_of_links module.
  */
 
+declare(strict_types=1);
+
 /**
  * UHF-10191: Change the responsive image style used to new one.
  */

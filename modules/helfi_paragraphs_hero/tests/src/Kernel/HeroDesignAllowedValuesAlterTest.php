@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\helfi_paragraphs_hero\Kernel;
 
 use Drupal\Core\Entity\FieldableEntityInterface;

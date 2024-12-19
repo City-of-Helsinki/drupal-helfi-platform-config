@@ -5,6 +5,8 @@
  * Calculators.
  */
 
+declare(strict_types=1);
+
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**

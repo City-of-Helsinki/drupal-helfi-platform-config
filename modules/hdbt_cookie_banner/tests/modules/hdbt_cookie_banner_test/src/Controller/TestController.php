@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\hdbt_cookie_banner_test\Controller;
 
 use Drupal\Core\Controller\ControllerBase;

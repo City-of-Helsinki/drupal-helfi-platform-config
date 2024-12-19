@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Config\Config;

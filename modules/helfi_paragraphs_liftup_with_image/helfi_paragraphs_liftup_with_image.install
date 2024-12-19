@@ -5,6 +5,8 @@
  * Contains installation tasks for helfi_paragraphs_liftup_with_image module.
  */
 
+declare(strict_types=1);
+
 /**
  * UHF-9088: Updated config translations for helfi_paragraphs_liftup_with_image.
  */

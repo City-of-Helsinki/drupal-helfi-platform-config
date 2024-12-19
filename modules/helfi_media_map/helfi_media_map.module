@@ -5,6 +5,8 @@
  * Primary module hooks for helfi_media_map module.
  */
 
+declare(strict_types=1);
+
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\helfi_media_map\Entity\HelMap;
 

@@ -5,6 +5,8 @@
  * Contains installation logic for helfi_calculator module.
  */
 
+declare(strict_types=1);
+
 /**
  * Installs helfi calculator module.
  */

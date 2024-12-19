@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;

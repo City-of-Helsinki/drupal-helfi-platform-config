@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\hdbt_admin_tools\Element;
 
 use Drupal\Core\Form\FormStateInterface;
