@@ -381,9 +381,9 @@ function helfi_tpr_config_update_9052() : void {
 }
 
 /**
- * UHF-10555: Update TPR Unit wide teaser display.
+ * UHF-9507: Change unit contact card heading logic.
  */
-function helfi_tpr_config_update_9072(): void {
+function helfi_tpr_config_update_9073(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }

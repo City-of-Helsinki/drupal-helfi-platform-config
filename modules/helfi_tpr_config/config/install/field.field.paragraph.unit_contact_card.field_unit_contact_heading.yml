@@ -1,0 +1,23 @@
+uuid: 6c99f53c-3860-4a4f-adde-0e465d98e131
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_unit_contact_heading
+    - paragraphs.paragraphs_type.unit_contact_card
+  module:
+    - options
+id: paragraph.unit_contact_card.field_unit_contact_heading
+field_name: field_unit_contact_heading
+entity_type: paragraph
+bundle: unit_contact_card
+label: Heading
+description: " The default heading for the component is “Contact information”. Choose the unit name as the heading if it is not clear which unit's contact information is being referred to."
+required: true
+translatable: false
+default_value:
+  -
+    value: default
+default_value_callback: ''
+settings: {  }
+field_type: list_string
