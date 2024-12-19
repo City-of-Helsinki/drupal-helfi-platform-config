@@ -1,0 +1,93 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 7a668853-1932-4bfa-be56-2ddb976d3760
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    415a1183-743a-4085-94d8-2a265befdbcb: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Image gallery'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 415a1183-743a-4085-94d8-2a265befdbcb
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: '| City of Helsinki'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'https://helfi-strategia.docker.so/en/decision-making/decision-making'
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'City of Helsinki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'https://helfi-strategia.docker.so/hallinto-assets/sites/default/files/styles/1.9_1200w_630h/public/hallinto-assets/modules/contrib/helfi_platform_config/fixtures/og-global.png?itok=NgkeU_ri'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary_large_image
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:title'
+        content: '| City of Helsinki'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'https://helfi-strategia.docker.so/hallinto-assets/sites/default/files/styles/1.9_1200w_630h/public/hallinto-assets/modules/contrib/helfi_platform_config/fixtures/og-global.png?itok=NgkeU_ri'
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: false
+  content_translation_created:
+    -
+      value: 1734590795
