@@ -5,6 +5,8 @@
  * Contains installation tasks for helfi_paragraphs_image module.
  */
 
+declare(strict_types=1);
+
 /**
  * UHF-9088: Updated configuration translations for helfi_paragraphs_image.
  */

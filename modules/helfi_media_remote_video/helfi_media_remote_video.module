@@ -5,6 +5,8 @@
  * Contains HELfi media remote video alterations.
  */
 
+declare(strict_types=1);
+
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_media_remote_video\Entity\RemoteVideo;

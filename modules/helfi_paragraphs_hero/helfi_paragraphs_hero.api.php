@@ -5,6 +5,8 @@
  * Module helfi_paragraphs_hero hooks.
  */
 
+declare(strict_types=1);
+
 /**
  * Alter the Hero design selection array.
  *

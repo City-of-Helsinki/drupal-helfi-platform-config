@@ -4,112 +4,13 @@ on:
     branches:
       - main
 name: CI
-env:
-  SYMFONY_DEPRECATIONS_HELPER: disabled
-  COMPOSER_DISCARD_CHANGES: true
-  COMPOSER_MIRROR_PATH_REPOS: 1
 jobs:
   tests:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         php-versions: ['8.3']
-    container:
-      image: ghcr.io/city-of-helsinki/drupal-web:${{ matrix.php-versions }}-dev
-      options: --hostname app --user 1001
-    services:
-      db:
-        image: mysql:8
-        env:
-          MYSQL_USER: drupal
-          MYSQL_PASSWORD: drupal
-          MYSQL_DATABASE: drupal
-          MYSQL_ROOT_PASSWORD: drupal
-        ports:
-          - 3306:3306
-      chromium:
-        image: selenium/standalone-chromium
-        env:
-          SE_NODE_OVERRIDE_MAX_SESSIONS: "true"
-          SE_NODE_MAX_SESSIONS: "16"
-          SE_START_XVFB: "false"
-          SE_START_VNC: "false"
-          SE_SESSION_RETRY_INTERVAL: "1"
-          SE_SESSION_REQUEST_TIMEOUT: "10"
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Parse $MODULE_NAME from composer.json
-        run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
-
-      - name: Set Drupal root
-        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
-
-        # Actions worker overrides the default entrypoint with "tail -f /dev/null", so
-        # we have to start services manually.
-      - name: Start services
-        env:
-          WEBROOT: ${{ env.DRUPAL_ROOT }}/public
-        run: entrypoint &
-
-      - name: Set module folder
-        run: |
-          echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
-          echo "BROWSERTEST_OUTPUT_DIRECTORY=$DRUPAL_ROOT/public/sites/simpletest" >> $GITHUB_ENV
-
-      - name: Clone platform
-        run: |
-          git clone --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
-          rm -rf $DRUPAL_ROOT/.git
-
-        # We use COMPOSER_MIRROR_PATH_REPOS=1 to mirror local repository
-        # instead of symlinking it to prevent code coverage issues with
-        # phpunit. Copy .git folder manually so codecov can generate line by
-        # line coverage.
-      - name: Install required composer dependencies
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/$MODULE_NAME -W
-          cp -r $GITHUB_WORKSPACE/.git $MODULE_FOLDER/
-
-      - name: Run PHPCS
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/phpcs $MODULE_FOLDER --standard=$MODULE_FOLDER/phpcs.xml --extensions=php,module,inc,install,test,info
-
-      - name: Run phpstan
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/phpstan analyze -c $MODULE_FOLDER/phpstan.neon $MODULE_FOLDER
-
-      - name: Install Drupal
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-          vendor/bin/drush en $MODULE_NAME helfi_platform_config_base -y
-
-      - name: Run PHPUnit tests
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          vendor/bin/phpunit \
-            --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
-            -c $MODULE_FOLDER/phpunit.xml \
-            --coverage-clover=$MODULE_FOLDER/coverage.xml \
-            $MODULE_FOLDER
-
-      - uses: codecov/codecov-action@v5
-        with:
-          fail_ci_if_error: true
-          directory: ${{ env.MODULE_FOLDER }}
-          token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
-
-      - name: Create an artifact from test report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: results-${{ matrix.php-versions }}
-          path: ${{ env.BROWSERTEST_OUTPUT_DIRECTORY }}
-          retention-days: 1
+    uses: city-of-helsinki/drupal-gh-actions/.github/workflows/module-tests.yml@main
+    with:
+      php_version: ${{ matrix.php-versions }}
+    secrets:
+      codecov_token: ${{ secrets.CODECOV_TOKEN }}

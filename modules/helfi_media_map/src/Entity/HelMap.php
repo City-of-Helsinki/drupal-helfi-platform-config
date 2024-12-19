@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_media_map\Entity;
 
 use Drupal\helfi_media\Entity\MediaEntityBundle;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\hdbt_cookie_banner\FunctionalJavascript;
 
 use Behat\Mink\Driver\Selenium2Driver;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_paragraphs_remote_video\Entity;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -24,7 +26,7 @@ class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
     }
 
     return $this->get('field_iframe_title')->isEmpty()
-      ? $this->t('Embedded video') : $this->get('field_iframe_title')->value;
+      ? (string) $this->t('Embedded video') : $this->get('field_iframe_title')->value;
   }
 
   /**

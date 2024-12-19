@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_tpr_config\Entity;
 
 use Drupal\paragraphs\Entity\Paragraph;

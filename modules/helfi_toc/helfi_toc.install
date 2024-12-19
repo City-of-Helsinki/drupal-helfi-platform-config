@@ -5,6 +5,8 @@
  * Contains install functions for HDBT Table of contents.
  */
 
+declare(strict_types=1);
+
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**

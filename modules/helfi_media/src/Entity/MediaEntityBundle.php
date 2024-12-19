@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_media\Entity;
 
 use Drupal\Core\Url;

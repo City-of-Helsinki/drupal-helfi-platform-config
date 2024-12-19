@@ -5,6 +5,8 @@
  * Contains helfi_toc module hooks.
  */
 
+declare(strict_types=1);
+
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
