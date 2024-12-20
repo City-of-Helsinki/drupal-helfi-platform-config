@@ -1,0 +1,27 @@
+uuid: 5e3d0bce-6114-40f1-b778-8fece473c972
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_unit_contact_heading
+field_name: field_unit_contact_heading
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: default
+      label: 'Contact information'
+    -
+      value: unit_name
+      label: 'The unit name'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
