@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.unit_contact_card.field_unit_contact_heading
-    - field.field.paragraph.unit_contact_card.field_unit_contact_title
     - field.field.paragraph.unit_contact_card.field_unit_contact_unit
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_address
     - field.field.paragraph.unit_contact_card.field_unit_contact_use_details
@@ -29,7 +28,6 @@ content:
     weight: 1
     region: content
 hidden:
-  field_unit_contact_title: true
   field_unit_contact_heading: true
   field_unit_contact_use_address: true
   field_unit_contact_use_details: true

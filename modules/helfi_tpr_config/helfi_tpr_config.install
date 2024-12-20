@@ -10,6 +10,7 @@ declare(strict_types=1);
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\linkit\Entity\Profile;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Grants required permissions.
@@ -381,9 +382,14 @@ function helfi_tpr_config_update_9052() : void {
 }
 
 /**
- * UHF-9507: Change unit contact card heading logic.
+ * UHF-9507: Replace unit contact title with heading selector.
  */
-function helfi_tpr_config_update_9073(): void {
+function helfi_tpr_config_update_9074(): void {
+  $field = FieldStorageConfig::loadByName('paragraph', 'field_unit_contact_title');
+  if ($field) {
+    $field->delete();
+  }
+
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
 }
