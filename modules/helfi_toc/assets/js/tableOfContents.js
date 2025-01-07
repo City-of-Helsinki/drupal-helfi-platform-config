@@ -203,33 +203,35 @@
         Drupal.tableOfContents.reservedIds.push(elem.id);
       });
 
-      // Craft table of contents.
-      once('table-of-contents', Drupal.tableOfContents.titleComponents().join(','), mainContent)
-        .forEach((content) => {
+      if (Drupal.tableOfContents.titleComponents()) {
+        // Craft table of contents.
+        once('table-of-contents', Drupal.tableOfContents.titleComponents().join(','), mainContent)
+          .forEach((content) => {
 
-          const { nodeName, anchorName} = Drupal.tableOfContents.createTableOfContentElements(content, []);
+            const { nodeName, anchorName} = Drupal.tableOfContents.createTableOfContentElements(content, []);
 
-          // Bail if table of contents is not enabled,
-          // but retain the heading element id.
-          if (!tableOfContents) {
-            return;
+            // Bail if table of contents is not enabled,
+            // but retain the heading element id.
+            if (!tableOfContents) {
+              return;
+            }
+
+            // Create table of contents if component is enabled.
+            if (tableOfContentsList && nodeName === 'h2') {
+              let listItem = document.createElement('li');
+              listItem.classList.add('table-of-contents__item');
+
+              let link = document.createElement('a');
+              link.classList.add('table-of-contents__link');
+              link.href = `#${anchorName}`;
+              link.textContent = content.textContent.trim();
+
+              listItem.appendChild(link);
+              tableOfContentsList.appendChild(listItem);
+            }
           }
-
-          // Create table of contents if component is enabled.
-          if (tableOfContentsList && nodeName === 'h2') {
-            let listItem = document.createElement('li');
-            listItem.classList.add('table-of-contents__item');
-
-            let link = document.createElement('a');
-            link.classList.add('table-of-contents__link');
-            link.href = `#${anchorName}`;
-            link.textContent = content.textContent.trim();
-
-            listItem.appendChild(link);
-            tableOfContentsList.appendChild(listItem);
-          }
-        }
-      );
+        );
+      }
 
       if (tableOfContents) {
         Drupal.tableOfContents.updateTOC(tableOfContents);
