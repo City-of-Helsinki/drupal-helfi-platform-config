@@ -34,9 +34,29 @@
   class EuCookieManager {
     cookieCheck(cookieNames) {
       let cookiesOk = true;
-      cookieNames.map((cookieName) => {
-        if (!Drupal.cookieConsent.getConsentStatus([cookieName])) cookiesOk = false;
-      });
+
+      // If cookies are not available yet, wait for a while.
+      if (Drupal.cookieConsent.getConsentStatus(cookieNames) === undefined) {
+        let i = 0;
+
+        const interval = setInterval(()=> {
+          let found = false;
+          cookieNames.map((cookieName) => {
+            found = Drupal.cookieConsent.getConsentStatus([cookieName]) || false;
+          });
+
+          if (i >= 3 || found) {
+            cookiesOk = found;
+            clearInterval(interval);
+          }
+          i++;
+        }, 1000)
+      } else {
+        cookieNames.map((cookieName) => {
+          if (!Drupal.cookieConsent.getConsentStatus([cookieName])) cookiesOk = false;
+        });
+      }
+
       return cookiesOk;
     }
     cookieSet() {
