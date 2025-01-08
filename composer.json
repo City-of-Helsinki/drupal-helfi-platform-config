@@ -29,7 +29,7 @@
         "drupal/focal_point": "^2.0",
         "drupal/jquery_ui": "^1.6",
         "drupal/jquery_ui_draggable": "^2.0",
-        "drupal/gin_toolbar": "^1.0@rc",
+        "drupal/gin_toolbar": "^2.0",
         "drupal/hal": "^2.0",
         "drupal/helfi_api_base": "*",
         "drupal/helfi_tpr": "*",
@@ -77,7 +77,6 @@
         "drupal/core-composer-scaffold": "<10.4",
         "drupal/stage_file_proxy": "<2.1.5",
         "drupal/ctools": "<3.11 || ^4.0.1",
-        "drupal/gin_toolbar": ">1.0.0-rc6",
         "drupal/helfi_media_map": "*",
         "drupal/default_content": ">2.0.0-alpha2",
         "drush/drush": "<12"
