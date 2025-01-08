@@ -408,7 +408,7 @@ function helfi_tpr_config_update_9072(): void {
 }
 
 /**
- * Update permissions.
+ * UHF-10352 add TPR-delete permissions.
  */
 function helfi_tpr_config_update_9073(): void {
   helfi_tpr_config_grant_permissions();
