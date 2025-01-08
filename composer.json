@@ -29,7 +29,7 @@
         "drupal/focal_point": "^2.0",
         "drupal/jquery_ui": "^1.6",
         "drupal/jquery_ui_draggable": "^2.0",
-        "drupal/gin_toolbar": "^1.0@rc",
+        "drupal/gin_toolbar": "^2.0",
         "drupal/hal": "^2.0",
         "drupal/helfi_api_base": "*",
         "drupal/helfi_tpr": "*",
@@ -77,7 +77,6 @@
         "drupal/core-composer-scaffold": "<10.4",
         "drupal/stage_file_proxy": "<2.1.5",
         "drupal/ctools": "<3.11 || ^4.0.1",
-        "drupal/gin_toolbar": ">1.0.0-rc6",
         "drupal/helfi_media_map": "*",
         "drupal/default_content": ">2.0.0-alpha2",
         "drush/drush": "<12"
@@ -115,9 +114,9 @@
             "drupal/view_unpublished": {
                 "[#UHF-9256] Fix missing dynamic permission dependencies.": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/cbb944ae79643ba7ed895db3fac7f3b3d90ac850/patches/view_unpublished_permissions_missing_dependencies.patch"
             },
-	    "drupal/elasticsearch_connector": {
+	        "drupal/elasticsearch_connector": {
                 "https://drupal.org/i/3486375": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/be8a1fba1a5ea2422154caf4fb7183dfc3917599/patches/3486375.patch"
-	    }
+	        }
         }
     }
 }
