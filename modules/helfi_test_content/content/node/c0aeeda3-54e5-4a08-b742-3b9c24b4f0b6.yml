@@ -1,0 +1,1183 @@
+_meta:
+  entity_type: node
+  uuid: c0aeeda3-54e5-4a08-b742-3b9c24b4f0b6
+  bundle: page
+  default_langcode: en
+  depends:
+    910b8296-bca3-4f42-b184-843888c17cd5: media
+    eb57113a-b852-4ce3-9192-559c4d79f9f0: media
+    bbbc4df2-d64a-4c91-9718-51fef74f9ac4: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: Image gallery'
+  created:
+    -
+      value: 1736430059
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-components/dc-image-gallery
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1736436529
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 8f7fb90d-ac3d-4686-afd3-40d187db28cf
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436192
+          behavior_settings:
+            -
+              value: {  }
+          field_text:
+            -
+              value: '<h3>Image Aspect Ratio 1:1</h3>'
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 0afef67a-a802-40c2-8c0e-a3b499d35b06
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: b97429db-84e9-4e86-a5f7-8372d71a2c06
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_gallery_image_description:
+                    -
+                      value: 'Description for the gallery item.'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 91c65d79-60a6-4c8a-8573-5241563b876a
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: edacbdeb-1bf7-44a1-9eac-8118b846ddae
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_gallery_image_description:
+                    -
+                      value: 'Description for the gallery item'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 189e2f7d-fa01-47e3-bd42-62b8e2baa93e
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+          field_image_gallery_description:
+            -
+              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+              format: minimal
+          field_image_gallery_ratio:
+            -
+              value: ratio_1_1
+          field_image_gallery_title:
+            -
+              value: 'Square Aspect Ratio'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 24ef88f1-bf15-4bc2-8804-a50f6d5f110a
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 935b85cd-d918-40a4-9da2-cb67bfc0db3e
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_gallery_image_description:
+                    -
+                      value: 'Description for the gallery item.'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 1456d0d7-9823-4dc5-a131-9e9abb897c6a
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 9f31325c-eb0b-4987-9e61-9dc826760d4f
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_gallery_image_description:
+                    -
+                      value: 'Description for the gallery item'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 6a7814ab-3ddf-4985-9168-2973997ebe89
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+          field_image_gallery_description:
+            -
+              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+              format: minimal
+          field_image_gallery_ratio:
+            -
+              value: ratio_2_3
+          field_image_gallery_title:
+            -
+              value: 'Tall Aspect Ratio'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7c225315-8244-4928-a9b4-29b7723fc73a
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 67f6c826-8bf9-4bfb-a480-198b8309e47b
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+                  field_gallery_image_description:
+                    -
+                      value: 'Description for the gallery item.'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 10f4ede8-a335-41df-a04a-42073585eba8
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 342007b1-863c-4775-8da1-1361279f15c1
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+                  field_gallery_image_description:
+                    -
+                      value: 'Description for the gallery item'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: f698058c-8dfe-426b-a1c7-f7105b5cc55e
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+          field_image_gallery_description:
+            -
+              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+              format: minimal
+          field_image_gallery_ratio:
+            -
+              value: ratio_3_2
+          field_image_gallery_title:
+            -
+              value: 'Wide Aspect Ratio'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: d38aa816-34a8-431a-8034-cf226519cad9
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436376
+          behavior_settings:
+            -
+              value: {  }
+          field_text:
+            -
+              value: '<h3>Gallery without descriptions</h3>'
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: abba1670-5987-4129-958c-e6fcd2f28017
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 7e71323f-f4b9-49a2-93b8-7b496c8ac5a2
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: c808b14c-43f8-4fa4-ba86-2901f18a6eef
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: bd00eb0a-7f98-4ef6-9909-f10aa127584b
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: a2b0dbbe-0689-4d02-bece-0342616f771a
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+          field_image_gallery_ratio:
+            -
+              value: ratio_1_1
+          field_image_gallery_title:
+            -
+              value: 'Square Aspect Ratio, No Desc'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: f1874128-d18c-48d3-b52e-723cb468853d
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 7e6dbfcd-3f5e-453a-af86-57895cf051ef
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: e95cf996-a691-42d1-bfac-dd301d47d9dc
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 93714e1b-05a3-49a7-bf66-eb4be6bdffbb
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 6fe46d4d-43d5-4b89-a247-98a1893e3a33
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+          field_image_gallery_ratio:
+            -
+              value: ratio_2_3
+          field_image_gallery_title:
+            -
+              value: 'Tall Aspect Ratio, No Desc'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a723a7c7-bb0d-4dcf-93a6-ec32920a1b66
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: c234adce-89b7-4735-a773-e0fb21cf563c
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: f39cb75f-b866-4399-a57c-763c3c26c11f
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: cb1431c5-92e4-4c5d-9d96-b20e0945c7ae
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 10bc93a6-728b-4ef9-bfb2-bf5ee2a3dbe9
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+          field_image_gallery_ratio:
+            -
+              value: ratio_3_2
+          field_image_gallery_title:
+            -
+              value: 'Wide Aspect Ratio, No Desc'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: eb00a33a-e4d5-41af-8a88-4036694d50b4
+          bundle: text
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436727
+          behavior_settings:
+            -
+              value: {  }
+          field_text:
+            -
+              value: '<h3>Gallery with long descriptions</h3>'
+              format: full_html
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 9bb54364-34ab-4c8a-9760-4f26dac16bd4
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 974cf177-eaf5-42c2-a0cb-83e466bb3990
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_gallery_image_description:
+                    -
+                      value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: ce62870f-f4c7-4716-8270-2a2d722ccf69
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_gallery_image_description:
+                    -
+                      value: 'Maecenas viverra ex hendrerit ligula ultricies maximus. Fusce et lacus erat. Morbi vehicula, lorem sed efficitur mattis, tortor velit pharetra diam, ac vestibul'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 86b72af2-f9f3-43f6-9322-db8c9eb418b6
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_gallery_image_description:
+                    -
+                      value: 'Pellentesque ultrices nisl ligula, quis cursus dolor venenatis nec. Phasellus sodales dictum ullamcorper. Nunc pretium efficitur laoreet. Sed finibus enim vel p'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: c639b2f7-ad82-4375-bfaa-3960d1167d56
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: 910b8296-bca3-4f42-b184-843888c17cd5
+                  field_gallery_image_description:
+                    -
+                      value: 'Mauris accumsan mauris vitae ultricies blandit. Morbi maximus et nisi vel dapibus. Donec magna tortor, hendrerit et hendrerit id, placerat sed ante. Donec at ul'
+          field_image_gallery_description:
+            -
+              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+              format: minimal
+          field_image_gallery_ratio:
+            -
+              value: ratio_1_1
+          field_image_gallery_title:
+            -
+              value: 'Square Aspect Ratio, Long Desc'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7d2036c2-8579-43fe-aa75-9e20ceded978
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 1e7f6caa-1e55-4b8c-ae52-9e08965a1f14
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_gallery_image_description:
+                    -
+                      value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: b7d9e97a-6cb5-4ece-999f-7883ae473986
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_gallery_image_description:
+                    -
+                      value: 'Maecenas viverra ex hendrerit ligula ultricies maximus. Fusce et lacus erat. Morbi vehicula, lorem sed efficitur mattis, tortor velit pharetra diam, ac vestibul'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 1e24cd33-1a95-403b-aaed-7b195ae519ce
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_gallery_image_description:
+                    -
+                      value: 'Pellentesque ultrices nisl ligula, quis cursus dolor venenatis nec. Phasellus sodales dictum ullamcorper. Nunc pretium efficitur laoreet. Sed finibus enim vel p'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 2ce97362-d0ef-422d-8c2a-c0bc72ec47bf
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: eb57113a-b852-4ce3-9192-559c4d79f9f0
+                  field_gallery_image_description:
+                    -
+                      value: 'Mauris accumsan mauris vitae ultricies blandit. Morbi maximus et nisi vel dapibus. Donec magna tortor, hendrerit et hendrerit id, placerat sed ante. Donec at ul'
+          field_image_gallery_description:
+            -
+              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+              format: minimal
+          field_image_gallery_ratio:
+            -
+              value: ratio_2_3
+          field_image_gallery_title:
+            -
+              value: 'Tall Aspect Ratio, Long Desc'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 9171aba9-62ec-4698-845e-1baa353c49f4
+          bundle: image_gallery
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1736436134
+          behavior_settings:
+            -
+              value: {  }
+          field_gallery_item:
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 41ef68b1-72b6-43e3-8112-6e14ef80d987
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436134
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+                  field_gallery_image_description:
+                    -
+                      value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: ca9d7895-5840-4d90-9287-7ff9aac29ce5
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436289
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+                  field_gallery_image_description:
+                    -
+                      value: 'Maecenas viverra ex hendrerit ligula ultricies maximus. Fusce et lacus erat. Morbi vehicula, lorem sed efficitur mattis, tortor velit pharetra diam, ac vestibul'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 2604cdc7-d648-4019-98b5-c0032ddd7a9f
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436301
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+                  field_gallery_image_description:
+                    -
+                      value: 'Pellentesque ultrices nisl ligula, quis cursus dolor venenatis nec. Phasellus sodales dictum ullamcorper. Nunc pretium efficitur laoreet. Sed finibus enim vel p'
+            -
+              entity:
+                _meta:
+                  version: '1.0'
+                  entity_type: paragraph
+                  uuid: 132a64cc-4478-4c0b-927a-5cd899a4769e
+                  bundle: image_gallery_item
+                  default_langcode: en
+                default:
+                  status:
+                    -
+                      value: true
+                  created:
+                    -
+                      value: 1736436316
+                  behavior_settings:
+                    -
+                      value: {  }
+                  field_gallery_image:
+                    -
+                      entity: bbbc4df2-d64a-4c91-9718-51fef74f9ac4
+                  field_gallery_image_description:
+                    -
+                      value: 'Mauris accumsan mauris vitae ultricies blandit. Morbi maximus et nisi vel dapibus. Donec magna tortor, hendrerit et hendrerit id, placerat sed ante. Donec at ul'
+          field_image_gallery_description:
+            -
+              value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+              format: minimal
+          field_image_gallery_ratio:
+            -
+              value: ratio_3_2
+          field_image_gallery_title:
+            -
+              value: 'Wide Aspect Ratio, Long Desc'
+  field_has_hero:
+    -
+      value: false
