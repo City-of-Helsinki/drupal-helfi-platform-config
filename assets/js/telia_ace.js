@@ -176,7 +176,7 @@
   }
 
 
-  Drupal.behaviors.chat_leijuke = {
+  Drupal.behaviors.telia_ace = {
     attach: function attach() {
       const teliaAceData = drupalSettings.telia_ace_data;
 
