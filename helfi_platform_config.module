@@ -546,7 +546,7 @@ function helfi_platform_config_form_alter(&$form, FormStateInterface $form_state
         '#title' => new TranslatableMarkup('Published'),
         '#default_value' => $redirect->isPublished(),
       ];
-    };
+    }
   }
 }
 

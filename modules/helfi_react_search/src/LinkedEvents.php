@@ -359,7 +359,7 @@ class LinkedEvents {
                   $params['end'] = 'today';
                   break;
 
-                case 'tomorrow';
+                case 'tomorrow':
                   $params['start'] = date('Y-m-d', strtotime('tomorrow'));
                   $params['end'] = date('Y-m-d', strtotime('tomorrow'));
                   break;
@@ -440,7 +440,7 @@ class LinkedEvents {
       };
 
       $keywords = array_merge($map, $keywords);
-    };
+    }
 
     return implode(',', $keywords);
   }
