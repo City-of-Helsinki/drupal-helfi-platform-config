@@ -1,0 +1,257 @@
+From d6104515b2b146b038e3ec2674bb0f95efd9c458 Mon Sep 17 00:00:00 2001
+From: nlighteneddesign <nic@nlighteneddevelopment.com>
+Date: Mon, 16 Dec 2024 12:51:56 -0500
+Subject: [PATCH 1/2] Patch in 50
+
+---
+ src/EntityAccessControlHandler.php            | 14 +++++------
+ src/EntityPermissionProviderBase.php          |  7 ++++++
+ src/QueryAccess/QueryAccessHandlerBase.php    |  9 ++++++--
+ src/UncacheableEntityAccessControlHandler.php |  8 ++-----
+ .../Unit/EntityAccessControlHandlerTest.php   | 23 +++++++++++--------
+ .../src/Unit/EntityPermissionProviderTest.php |  4 ++--
+ ...ncacheableEntityPermissionProviderTest.php |  3 ++-
+ 7 files changed, 41 insertions(+), 27 deletions(-)
+
+diff --git a/src/EntityAccessControlHandler.php b/src/EntityAccessControlHandler.php
+index 01f8fd6..86fb608 100644
+--- a/src/EntityAccessControlHandler.php
++++ b/src/EntityAccessControlHandler.php
+@@ -33,15 +33,15 @@ class EntityAccessControlHandler extends EntityAccessControlHandlerBase {
+     /** @var \Drupal\user\EntityOwnerInterface $entity */
+     if ($operation === 'view') {
+       if ($entity instanceof EntityPublishedInterface && !$entity->isPublished()) {
+-        if ($account->id() != $entity->getOwnerId()) {
+-          // There's no permission for viewing other user's unpublished entity.
+-          return AccessResult::neutral()->cachePerUser();
+-        }
+-
+         $permissions = [
+-          "view own unpublished {$entity->getEntityTypeId()}",
++          "view any unpublished {$entity->getEntityTypeId()}",
+         ];
+-        $result = AccessResult::allowedIfHasPermissions($account, $permissions)->cachePerUser();
++
++        if ($account->id() == $entity->getOwnerId()) {
++          $permissions[] = "view own unpublished {$entity->getEntityTypeId()}";
++        }
++
++        $result = AccessResult::allowedIfHasPermissions($account, $permissions, 'OR')->cachePerUser();
+       }
+       else {
+         $result = AccessResult::allowedIfHasPermissions($account, [
+diff --git a/src/EntityPermissionProviderBase.php b/src/EntityPermissionProviderBase.php
+index 4ccb9ca..23bd8e5 100644
+--- a/src/EntityPermissionProviderBase.php
++++ b/src/EntityPermissionProviderBase.php
+@@ -70,6 +70,13 @@ class EntityPermissionProviderBase implements EntityPermissionProviderInterface,
+         ]),
+       ];
+     }
++    if ($entity_type->entityClassImplements(EntityPublishedInterface::class)) {
++      $permissions["view any unpublished {$entity_type_id}"] = [
++        'title' => $this->t('View any unpublished @type', [
++          '@type' => $plural_label,
++        ]),
++      ];
++    }
+ 
+     // Generate the other permissions based on granularity.
+     if ($entity_type->getPermissionGranularity() === 'entity_type') {
+diff --git a/src/QueryAccess/QueryAccessHandlerBase.php b/src/QueryAccess/QueryAccessHandlerBase.php
+index 8df9c47..8adbf82 100644
+--- a/src/QueryAccess/QueryAccessHandlerBase.php
++++ b/src/QueryAccess/QueryAccessHandlerBase.php
+@@ -81,7 +81,7 @@ abstract class QueryAccessHandlerBase implements EntityHandlerInterface, QueryAc
+   /**
+    * {@inheritdoc}
+    */
+-  public function getConditions($operation, AccountInterface $account = NULL) {
++  public function getConditions($operation, ?AccountInterface $account = NULL) {
+     $account = $account ?: $this->currentUser;
+     $entity_type_id = $this->entityType->id();
+     $conditions = $this->buildConditions($operation, $account);
+@@ -147,7 +147,12 @@ abstract class QueryAccessHandlerBase implements EntityHandlerInterface, QueryAc
+         $published_conditions->addCondition($entity_conditions);
+         $published_conditions->addCondition($published_key, '1');
+       }
+-      if ($has_owner && $account->hasPermission("view own unpublished $entity_type_id")) {
++      if ($account->hasPermission("view any unpublished $entity_type_id")) {
++        $unpublished_conditions = new ConditionGroup('AND');
++        $unpublished_conditions->addCacheContexts(['user.permissions']);
++        $unpublished_conditions->addCondition($published_key, '0');
++      }
++      elseif ($has_owner && $account->hasPermission("view own unpublished $entity_type_id")) {
+         $unpublished_conditions = new ConditionGroup('AND');
+         $unpublished_conditions->addCacheContexts(['user']);
+         $unpublished_conditions->addCondition($owner_key, $account->id());
+diff --git a/src/UncacheableEntityAccessControlHandler.php b/src/UncacheableEntityAccessControlHandler.php
+index a53724b..87bfcdc 100644
+--- a/src/UncacheableEntityAccessControlHandler.php
++++ b/src/UncacheableEntityAccessControlHandler.php
+@@ -34,15 +34,11 @@ class UncacheableEntityAccessControlHandler extends EntityAccessControlHandlerBa
+   protected function checkEntityOwnerPermissions(EntityInterface $entity, $operation, AccountInterface $account) {
+     /** @var \Drupal\user\EntityOwnerInterface $entity */
+     if ($operation === 'view' && $entity instanceof EntityPublishedInterface && !$entity->isPublished()) {
+-      if ($account->id() != $entity->getOwnerId()) {
+-        // There's no permission for viewing other user's unpublished entity.
+-        return AccessResult::neutral()->cachePerUser();
+-      }
+-
+       $permissions = [
++        "view any unpublished {$entity->getEntityTypeId()}",
+         "view own unpublished {$entity->getEntityTypeId()}",
+       ];
+-      $result = AccessResult::allowedIfHasPermissions($account, $permissions)->cachePerUser();
++      $result = AccessResult::allowedIfHasPermissions($account, $permissions, 'OR')->cachePerUser();
+     }
+     else {
+       $result = parent::checkEntityOwnerPermissions($entity, $operation, $account);
+diff --git a/tests/src/Unit/EntityAccessControlHandlerTest.php b/tests/src/Unit/EntityAccessControlHandlerTest.php
+index 890d622..92b9292 100644
+--- a/tests/src/Unit/EntityAccessControlHandlerTest.php
++++ b/tests/src/Unit/EntityAccessControlHandlerTest.php
+@@ -7,16 +7,15 @@ use Drupal\Core\Cache\Context\CacheContextsManager;
+ use Drupal\Core\DependencyInjection\ContainerBuilder;
+ use Drupal\Core\Entity\ContentEntityInterface;
+ use Drupal\Core\Entity\ContentEntityTypeInterface;
+-use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Entity\EntityPublishedInterface;
+ use Drupal\Core\Entity\EntityTypeInterface;
+ use Drupal\Core\Extension\ModuleHandlerInterface;
+ use Drupal\Core\Language\Language;
+ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Session\AccountInterface;
++use Drupal\Tests\UnitTestCase;
+ use Drupal\entity\EntityAccessControlHandler;
+ use Drupal\entity\EntityPermissionProvider;
+-use Drupal\Tests\UnitTestCase;
+ use Drupal\user\EntityOwnerInterface;
+ use Prophecy\Argument;
+ 
+@@ -134,7 +133,8 @@ class EntityAccessControlHandlerTest extends UnitTestCase {
+     $first_user_mock_args = [9, 'view green_entity'];
+     $second_user_mock_args = [10, 'view first green_entity'];
+     $third_user_mock_args = [14, 'view own unpublished green_entity'];
+-    $fourth_user_mock_args = [14, 'access content'];
++    $fourth_user_mock_args = [15, 'view any unpublished green_entity'];
++    $fifth_user_mock_args = [14, 'access content'];
+ 
+     $first_entity_mock_args = [1, 'first'];
+     $second_entity_mock_args = [1, 'second'];
+@@ -143,22 +143,27 @@ class EntityAccessControlHandlerTest extends UnitTestCase {
+     // The first user can view the two published entities.
+     $data['first user, view, first entity'] = [$first_entity_mock_args, 'view', $first_user_mock_args, TRUE, ['user.permissions']];
+     $data['first user, view, second entity'] = [$second_entity_mock_args, 'view', $first_user_mock_args, TRUE, ['user.permissions']];
+-    $data['first user, view, third entity'] = [$third_entity_mock_args, 'view', $first_user_mock_args, FALSE, ['user']];
++    $data['first user, view, third entity'] = [$third_entity_mock_args, 'view', $first_user_mock_args, FALSE, ['user', 'user.permissions']];
+ 
+     // The second user can only view published entities of bundle "first".
+     $data['second user, view, first entity'] = [$first_entity_mock_args, 'view', $second_user_mock_args, TRUE, ['user.permissions']];
+     $data['second user, view, second entity'] = [$second_entity_mock_args, 'view', $second_user_mock_args, FALSE, ['user.permissions']];
+-    $data['second user, view, third entity'] = [$third_entity_mock_args, 'view', $second_user_mock_args, FALSE, ['user']];
++    $data['second user, view, third entity'] = [$third_entity_mock_args, 'view', $second_user_mock_args, FALSE, ['user', 'user.permissions']];
+ 
+     // The third user can view their own unpublished entity.
+     $data['third user, view, first entity'] = [$first_entity_mock_args, 'view', $third_user_mock_args, FALSE, ['user.permissions']];
+     $data['third user, view, second entity'] = [$second_entity_mock_args, 'view', $third_user_mock_args, FALSE, ['user.permissions']];
+     $data['third user, view, third entity'] = [$third_entity_mock_args, 'view', $third_user_mock_args, TRUE, ['user', 'user.permissions']];
+ 
+-    // The fourth user can't view anything.
+-    $data['fourth user, view, first entity'] = [$first_entity_mock_args, 'view', $fourth_user_mock_args, FALSE, ['user.permissions']];
+-    $data['fourth user, view, second entity'] = [$second_entity_mock_args, 'view', $fourth_user_mock_args, FALSE, ['user.permissions']];
+-    $data['fourth user, view, third entity'] = [$third_entity_mock_args, 'view', $fourth_user_mock_args, FALSE, ['user', 'user.permissions']];
++    // The fourth user can view any unpublished entity of bundle "first".
++    $data['fourth user, view, first entity'] = [$first_entity->reveal(), 'view', $fourth_user_mock_args->reveal(), FALSE, ['user.permissions']];
++    $data['fourth user, view, second entity'] = [$second_entity->reveal(), 'view', $fourth_user_mock_args->reveal(), FALSE, ['user.permissions']];
++    $data['fourth user, view, third entity'] = [$third_entity->reveal(), 'view', $fourth_user_mock_args->reveal(), TRUE, ['user', 'user.permissions']];
++
++    // The fifth user can't view anything.
++    $data['fifth user, view, first entity'] = [$first_entity_mock_args, 'view', $fifth_user_mock_args, FALSE, ['user.permissions']];
++    $data['fifth user, view, second entity'] = [$second_entity_mock_args, 'view', $fifth_user_mock_args, FALSE, ['user.permissions']];
++    $data['fifth user, view, third entity'] = [$third_entity_mock_args, 'view', $fifth_user_mock_args, FALSE, ['user', 'user.permissions']];
+ 
+     return $data;
+   }
+diff --git a/tests/src/Unit/EntityPermissionProviderTest.php b/tests/src/Unit/EntityPermissionProviderTest.php
+index ef11b5c..9b63d0f 100644
+--- a/tests/src/Unit/EntityPermissionProviderTest.php
++++ b/tests/src/Unit/EntityPermissionProviderTest.php
+@@ -2,13 +2,12 @@
+ 
+ namespace Drupal\Tests\entity\Unit;
+ 
+-use Drupal\Core\Entity\ContentEntityType;
+ use Drupal\Core\Entity\ContentEntityTypeInterface;
+ use Drupal\Core\Entity\EntityPublishedInterface;
+ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+ use Drupal\Core\Entity\EntityTypeInterface;
+-use Drupal\entity\EntityPermissionProvider;
+ use Drupal\Tests\UnitTestCase;
++use Drupal\entity\EntityPermissionProvider;
+ use Drupal\user\EntityOwnerInterface;
+ use Prophecy\Prophet;
+ 
+@@ -189,6 +188,7 @@ class EntityPermissionProviderTest extends UnitTestCase {
+       'administer pink_entity' => 'Administer pink entities',
+       'access pink_entity overview' => 'Access the pink entities overview page',
+       'view own unpublished pink_entity' => 'View own unpublished pink entities',
++      'view any unpublished pink_entity' => 'View any unpublished pink entities',
+       'create third pink_entity' => 'Third: Create pink entities',
+       'update any third pink_entity' => 'Third: Update any pink entity',
+       'update own third pink_entity' => 'Third: Update own pink entities',
+diff --git a/tests/src/Unit/UncacheableEntityPermissionProviderTest.php b/tests/src/Unit/UncacheableEntityPermissionProviderTest.php
+index 0f5b17e..14cffd9 100644
+--- a/tests/src/Unit/UncacheableEntityPermissionProviderTest.php
++++ b/tests/src/Unit/UncacheableEntityPermissionProviderTest.php
+@@ -6,8 +6,8 @@ use Drupal\Core\Entity\ContentEntityTypeInterface;
+ use Drupal\Core\Entity\EntityPublishedInterface;
+ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+ use Drupal\Core\Entity\EntityTypeInterface;
+-use Drupal\entity\UncacheableEntityPermissionProvider;
+ use Drupal\Tests\UnitTestCase;
++use Drupal\entity\UncacheableEntityPermissionProvider;
+ use Drupal\user\EntityOwnerInterface;
+ use Prophecy\Prophet;
+ 
+@@ -191,6 +191,7 @@ class UncacheableEntityPermissionProviderTest extends UnitTestCase {
+       'administer pink_entity' => 'Administer pink entities',
+       'access pink_entity overview' => 'Access the pink entities overview page',
+       'view own unpublished pink_entity' => 'View own unpublished pink entities',
++      'view any unpublished pink_entity' => 'View any unpublished pink entities',
+       'create third pink_entity' => 'Third: Create pink entities',
+       'update any third pink_entity' => 'Third: Update any pink entity',
+       'update own third pink_entity' => 'Third: Update own pink entities',
+-- 
+GitLab
+
+
+From 8b966edf0a14026cd2998197b0c8b155ed514fd1 Mon Sep 17 00:00:00 2001
+From: nlighteneddesign <nic@nlighteneddevelopment.com>
+Date: Mon, 16 Dec 2024 19:13:28 -0500
+Subject: [PATCH 2/2] Fix variable names
+
+---
+ tests/src/Unit/EntityAccessControlHandlerTest.php | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tests/src/Unit/EntityAccessControlHandlerTest.php b/tests/src/Unit/EntityAccessControlHandlerTest.php
+index 92b9292..baef5f0 100644
+--- a/tests/src/Unit/EntityAccessControlHandlerTest.php
++++ b/tests/src/Unit/EntityAccessControlHandlerTest.php
+@@ -156,9 +156,9 @@ class EntityAccessControlHandlerTest extends UnitTestCase {
+     $data['third user, view, third entity'] = [$third_entity_mock_args, 'view', $third_user_mock_args, TRUE, ['user', 'user.permissions']];
+ 
+     // The fourth user can view any unpublished entity of bundle "first".
+-    $data['fourth user, view, first entity'] = [$first_entity->reveal(), 'view', $fourth_user_mock_args->reveal(), FALSE, ['user.permissions']];
+-    $data['fourth user, view, second entity'] = [$second_entity->reveal(), 'view', $fourth_user_mock_args->reveal(), FALSE, ['user.permissions']];
+-    $data['fourth user, view, third entity'] = [$third_entity->reveal(), 'view', $fourth_user_mock_args->reveal(), TRUE, ['user', 'user.permissions']];
++    $data['fourth user, view, first entity'] = [$first_entity_mock_args, 'view', $fourth_user_mock_args, FALSE, ['user.permissions']];
++    $data['fourth user, view, second entity'] = [$second_entity_mock_args, 'view', $fourth_user_mock_args, FALSE, ['user.permissions']];
++    $data['fourth user, view, third entity'] = [$third_entity_mock_args, 'view', $fourth_user_mock_args, TRUE, ['user', 'user.permissions']];
+ 
+     // The fifth user can't view anything.
+     $data['fifth user, view, first entity'] = [$first_entity_mock_args, 'view', $fifth_user_mock_args, FALSE, ['user.permissions']];
+-- 
+GitLab
+

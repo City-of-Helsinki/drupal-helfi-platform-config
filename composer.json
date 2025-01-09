@@ -21,6 +21,7 @@
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editoria11y": "^2.0",
         "drupal/elasticsearch_connector": "^8.0@alpha",
+        "drupal/entity": "^1.0",
         "drupal/entity_browser": "^2.5",
         "drupal/entity_usage": "^2.0@beta",
         "drupal/eu_cookie_compliance": "1.24",
@@ -100,6 +101,9 @@
             "drupal/default_content": {
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/main/patches/default_content_2.0.0-alpha2-2640734_manual_imports-e164a354.patch"
             },
+            "drupal/entity": {
+                "[#3023527] Add: View any unpublished [entity_type] permission": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-module-helfi-api-base/df21b7657d700c0c2f888cbdf085b895d56053c7/patches/3023527.patch"
+            },
             "drupal/eu_cookie_compliance": {
                 "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/923b35f699820b544397a35b7696570e101cd02c/patches/eu_cookie_compliance_block_8.x-1.24.patch",
                 "[#UHF-8720] Missing config schema for dependencies (https://www.drupal.org/i/3330024)": "https://www.drupal.org/files/issues/2022-12-28/config_dependencies_schema-3330024-2.patch"
@@ -110,9 +114,6 @@
             "drupal/paragraphs": {
                 "https://www.drupal.org/project/paragraphs/issues/2904705#comment-13836790": "https://www.drupal.org/files/issues/2020-09-25/2904705-115.patch",
                 "[#UHF-2059] Enhancements for the Admin UI": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/fdccb32397cc6fa19b4d0077b21a2b18aa6be297/patches/helfi_customizations_for_paragraphs_widget_8.x-1.12.patch"
-            },
-            "drupal/view_unpublished": {
-                "[#UHF-9256] Fix missing dynamic permission dependencies.": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/cbb944ae79643ba7ed895db3fac7f3b3d90ac850/patches/view_unpublished_permissions_missing_dependencies.patch"
             },
 	        "drupal/elasticsearch_connector": {
                 "https://drupal.org/i/3486375": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/be8a1fba1a5ea2422154caf4fb7183dfc3917599/patches/3486375.patch"
