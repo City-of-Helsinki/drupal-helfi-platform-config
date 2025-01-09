@@ -1,4 +1,5 @@
 _meta:
+  version: '1.0'
   entity_type: node
   uuid: c0aeeda3-54e5-4a08-b742-3b9c24b4f0b6
   bundle: page
