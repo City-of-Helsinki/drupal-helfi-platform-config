@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: d4d64c29-abc2-4e7e-94b2-7fc3bab25159
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    c0aeeda3-54e5-4a08-b742-3b9c24b4f0b6: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Image gallery'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: c0aeeda3-54e5-4a08-b742-3b9c24b4f0b6
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1736437180
