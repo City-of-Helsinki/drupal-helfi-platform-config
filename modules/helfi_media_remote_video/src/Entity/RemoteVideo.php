@@ -6,8 +6,6 @@ namespace Drupal\helfi_media_remote_video\Entity;
 
 use Drupal\helfi_media\Entity\MediaEntityBundle;
 use Drupal\media\MediaInterface;
-use Drupal\media\OEmbed\ProviderException;
-use Drupal\media\OEmbed\ResourceException;
 use Drupal\media\OEmbed\UrlResolverInterface;
 
 /**
