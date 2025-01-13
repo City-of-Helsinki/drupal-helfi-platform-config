@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_media_remote_video\Entity\RemoteVideo;
 use Drupal\media\OEmbed\Resource;
 use Drupal\media\OEmbed\ResourceException;
+use Drupal\media\OEmbed\UrlResolverInterface;
 
 /**
  * Implements hook_media_source_info_alter().
@@ -186,7 +187,8 @@ function _helfi_media_remote_video_remote_video_validate(array $form, FormStateI
  */
 function _helfi_media_remote_video_remote_video_url_handler(string $video_url): false|string {
   $converted_url = FALSE;
-  $url_resolver = \Drupal::service('media.oembed.url_resolver');
+  /** @var \Drupal\media\OEmbed\UrlResolverInterface $url_resolver */
+  $url_resolver = \Drupal::service(UrlResolverInterface::class);
   $provider = $url_resolver->getProviderByUrl($video_url);
   $helsinki_kanava_url_pattern = 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*';
 

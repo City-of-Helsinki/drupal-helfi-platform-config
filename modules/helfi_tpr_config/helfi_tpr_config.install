@@ -48,6 +48,12 @@ function helfi_tpr_config_grant_permissions() : void {
       'view unpublished tpr_unit',
       // @views_bulk_edit.
       'use views bulk edit',
+      'delete any tpr_ontology_word_details',
+      'delete any tpr_service',
+      'delete any tpr_unit',
+      'delete own tpr_ontology_word_details',
+      'delete own tpr_service',
+      'delete own tpr_unit',
     ],
     'content_producer' => [
       'access tpr_service overview',
@@ -66,6 +72,12 @@ function helfi_tpr_config_grant_permissions() : void {
       'view unpublished tpr_service',
       'view unpublished tpr_service_channel',
       'view unpublished tpr_unit',
+      'delete any tpr_ontology_word_details',
+      'delete any tpr_service',
+      'delete any tpr_unit',
+      'delete own tpr_ontology_word_details',
+      'delete own tpr_service',
+      'delete own tpr_unit',
     ],
     'editor' => [
       'access tpr_service overview',
@@ -86,6 +98,12 @@ function helfi_tpr_config_grant_permissions() : void {
       'view unpublished tpr_service',
       'view unpublished tpr_service_channel',
       'view unpublished tpr_unit',
+      'delete any tpr_ontology_word_details',
+      'delete any tpr_service',
+      'delete any tpr_unit',
+      'delete own tpr_ontology_word_details',
+      'delete own tpr_service',
+      'delete own tpr_unit',
     ],
     'read_only' => [
       'view unpublished tpr_errand_service',
@@ -94,6 +112,7 @@ function helfi_tpr_config_grant_permissions() : void {
       'view unpublished tpr_unit',
     ],
   ];
+
   helfi_platform_config_grant_permissions($permissions);
 }
 
@@ -392,4 +411,11 @@ function helfi_tpr_config_update_9074(): void {
 
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');
+}
+
+/**
+ * UHF-10352 add TPR-delete permissions.
+ */
+function helfi_tpr_config_update_9073(): void {
+  helfi_tpr_config_grant_permissions();
 }
