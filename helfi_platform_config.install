@@ -314,5 +314,5 @@ function helfi_platform_config_update_9319() : void {
 
   // Remove the chatleijuke block.
   $config_factory->getEditable('block.block.hdbt_subtheme_chatleijuke')->delete();
-  
+
 }
