@@ -359,7 +359,7 @@ function helfi_base_content_update_9016(): void {
 /**
  * Uninstall 'view_unpublished' module.
  */
-function helfi_base_content_update_9017(): void {
+function helfi_base_content_update_9018(): void {
   $module_installer = \Drupal::service('module_installer');
 
   if (\Drupal::moduleHandler()->moduleExists('view_unpublished')) {
