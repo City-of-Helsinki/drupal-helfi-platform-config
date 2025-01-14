@@ -59,8 +59,6 @@ function helfi_base_content_grant_permissions() : void {
       'create remote entities',
       'delete remote entities',
       'edit remote entities',
-      // @view_unpublished.
-      'view any unpublished content',
       // @paragraphs.
       'administer paragraphs library',
       'create paragraph library item',
@@ -118,8 +116,6 @@ function helfi_base_content_grant_permissions() : void {
       'view the administration theme',
       // @taxonomy.
       'access taxonomy overview',
-      // @view_unpublished.
-      'view any unpublished content',
       // @entity_usage
       'access entity usage statistics',
     ],
@@ -163,8 +159,6 @@ function helfi_base_content_grant_permissions() : void {
       'view the administration theme',
       // @taxonomy.
       'access taxonomy overview',
-      // @view_unpublished.
-      'view any unpublished content',
       // @entity_usage
       'access entity usage statistics',
     ],
@@ -360,4 +354,15 @@ function helfi_base_content_update_9015(): void {
 function helfi_base_content_update_9016(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_base_content');
+}
+
+/**
+ * Uninstall 'view_unpublished' module.
+ */
+function helfi_base_content_update_9017(): void {
+  $module_installer = \Drupal::service('module_installer');
+
+  if (\Drupal::moduleHandler()->moduleExists('view_unpublished')) {
+    $module_installer->uninstall(['view_unpublished']);
+  }
 }
