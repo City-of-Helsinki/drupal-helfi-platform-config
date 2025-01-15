@@ -301,3 +301,18 @@ function helfi_platform_config_update_9317() : void {
       ->save();
   }
 }
+
+/**
+ * UHF-11225: Remove the chatleijuke block.
+ */
+function helfi_platform_config_update_9319() : void {
+  $config_factory = Drupal::configFactory();
+  // Remove the chatleijuke block.
+  $config_factory->getEditable('block.block.chatleijuke')->delete();
+  // Remove the chatleijuke block.
+  $config_factory->getEditable('block.block.chatleijuke_2')->delete();
+
+  // Remove the chatleijuke block.
+  $config_factory->getEditable('block.block.hdbt_subtheme_chatleijuke')->delete();
+
+}

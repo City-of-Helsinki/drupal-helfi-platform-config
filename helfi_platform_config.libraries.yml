@@ -3,62 +3,6 @@ react_and_share:
   js:
     assets/js/reactAndShareSettings.js: {}
 
-# This library is loaded via chat_leijuke.js.
-# Setting the preprocess to false will not affect this library.
-# See: ChatLeijuke.php::build().
-genesys_suunte:
-  version: 1.0.2
-  header: true
-  js:
-    'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
-      type: external,
-      minified: true,
-      attributes: {
-        onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
-      }
-    }
-    assets/js/genesys_suunte.js: {
-      attributes: {
-        onload: "javascript:var checkExist = setInterval(function() {if(typeof CXBus != 'undefined') {clearInterval(checkExist);Drupal.behaviors.genesys_suunte.attach();console.log('suunte attaching');}}, 100);"
-      }
-    }
-  css:
-    theme:
-      assets/css/genesys_chat.css: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - core/drupalSettings
-
-genesys_auth_redirect:
-  version: 1.0.1
-  header: true
-  js:
-    'https://apps.mypurecloud.ie/widgets/9.0/cxbus.min.js' : {
-      type: external,
-      minified: true,
-      attributes: {
-        onload: "javascript:CXBus.configure({pluginsPath:'https://apps.mypurecloud.ie/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"
-      }
-    }
-    assets/js/genesys_auth_redirect.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - core/drupalSettings
-
-chat_leijuke:
-  version: 1.0.2
-  header: true
-  js:
-    assets/js/chat_leijuke.js: {
-      minified: true,
-      preprocess: false
-    }
-  dependencies:
-    - core/drupal
-    - core/drupalSettings
-
 chat_enhancer:
   version: 1.0.0
   header: true
