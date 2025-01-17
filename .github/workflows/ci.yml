@@ -13,4 +13,4 @@ jobs:
     with:
       php_version: ${{ matrix.php-versions }}
     secrets:
-      codecov_token: ${{ secrets.CODECOV_TOKEN }}
+      sonarcloud_token: ${{ secrets.SONAR_TOKEN }}
