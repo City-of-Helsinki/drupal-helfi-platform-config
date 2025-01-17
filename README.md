@@ -1,6 +1,6 @@
 # City-of-Helsinki/drupal-helfi-platform-config
 
-![CI](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/workflows/CI/badge.svg)
+![CI](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/workflows/CI/badge.svg) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=City-of-Helsinki_drupal-helfi-platform-config&metric=coverage)](https://sonarcloud.io/summary/new_code?id=City-of-Helsinki_drupal-helfi-platform-config)
 
 This repository holds configuration for the Hel.fi platform.
 
