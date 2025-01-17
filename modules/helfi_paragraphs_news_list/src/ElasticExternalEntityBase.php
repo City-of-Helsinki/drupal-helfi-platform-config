@@ -136,6 +136,78 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   }
 
   /**
+   * Get callback that builds elasticsearch query fragment for given operator.
+   *
+   * @param ?string $op
+   *   Query operation.
+   *
+   * @return callable
+   *   Handler.
+   */
+  protected function getOperatorCallback(?string $op): callable {
+    return match($op) {
+      'IN' => static function (array $value, string $fieldName) : array {
+        $inGroup = [];
+        foreach ($value as $v) {
+          $inGroup[] = ['term' => [$fieldName => $v]];
+        }
+        return [
+          'query' => [
+            'bool' => [
+              'must' => [
+                ['bool' => ['should' => $inGroup]],
+              ],
+            ],
+          ],
+        ];
+      },
+      'CONTAINS' => static function (string $value, string $fieldName) : array {
+        return [
+          'query' => [
+            'bool' => [
+              'must' => [
+                [
+                  'regexp' => [
+                    $fieldName => [
+                      'value' => $value . '.*',
+                      'case_insensitive' => TRUE,
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ];
+      },
+      'GEO_DISTANCE_SORT' => static function (array $value, string $fieldName) : array {
+        [$coordinates, $options] = $value;
+
+        return [
+          'sort' => [
+            [
+              '_geo_distance' => [
+                $fieldName => $coordinates,
+                ...$options,
+              ],
+            ],
+          ],
+        ];
+      },
+      default => static function (string|int|null $value, string $fieldName) : array {
+        return [
+          'query' => [
+            'bool' => [
+              'must' => [
+                ['term' => [$fieldName => $value]],
+              ],
+            ],
+          ],
+        ];
+      },
+    };
+  }
+
+  /**
    * Builds the elastic query for given parameters.
    *
    * @param array $parameters
@@ -147,7 +219,7 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
    *   The query.
    */
   protected function buildQuery(array $parameters, array $sorts) : array {
-    $query = [];
+    $body = [];
 
     foreach ($parameters as $parameter) {
       ['field' => $field, 'value' => $value, 'operator' => $op] = $parameter;
@@ -156,46 +228,26 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
       if (!$value) {
         continue;
       }
-      $callback = match($op) {
-        'IN' => function (array $value, string $fieldName) : array {
-          $inGroup = [];
-          foreach ($value as $v) {
-            $inGroup[] = ['term' => [$fieldName => $v]];
-          }
-          return ['bool' => ['should' => $inGroup]];
-        },
-        'CONTAINS' => function (string $value, string $fieldName) : array {
-          return [
-            'regexp' => [
-              $fieldName => [
-                'value' => $value . '.*',
-                'case_insensitive' => TRUE,
-              ],
-            ],
-          ];
-        },
-        default => function (string|int|null $value, string $fieldName) : array {
-          return ['term' => [$fieldName => $value]];
-        },
-      };
-      $query['bool']['must'][] = $callback($value, $fieldName);
+
+      $callback = $this->getOperatorCallback($op);
+      $body = array_merge_recursive($body, $callback($value, $fieldName));
     }
 
     $sortQuery = [];
     foreach ($sorts as $sort) {
-      $defaults = ['options' => []];
-      ['field' => $field, 'direction' => $direction, 'options' => $options] = $sort + $defaults;
+      ['field' => $field, 'direction' => $direction] = $sort;
       $fieldName = $this->getFieldMapping($field);
 
-      $sortQuery[$fieldName] = ['order' => strtolower($direction)] + $options;
+      $sortQuery[$fieldName] = ['order' => strtolower($direction)];
     }
+
+    $body = array_merge_recursive($body, [
+      'sort' => $sortQuery,
+    ]);
 
     return [
       'index' => $this->index,
-      'body' => [
-        'sort' => $sortQuery,
-        'query' => $query,
-      ],
+      'body' => $body,
     ];
   }
 
