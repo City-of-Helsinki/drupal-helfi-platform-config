@@ -219,7 +219,10 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
    *   The query.
    */
   protected function buildQuery(array $parameters, array $sorts) : array {
-    $body = [];
+    $body = [
+      'sort' => [],
+      'query' => [],
+    ];
 
     foreach ($parameters as $parameter) {
       ['field' => $field, 'value' => $value, 'operator' => $op] = $parameter;
