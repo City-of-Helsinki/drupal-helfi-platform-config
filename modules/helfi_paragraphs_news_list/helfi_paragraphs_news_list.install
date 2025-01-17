@@ -135,3 +135,11 @@ function helfi_paragraphs_news_list_update_9009() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_news_list');
 }
+
+/**
+ * UHF-11002: Update news list external entities.
+ */
+function helfi_paragraphs_news_list_update_9010() : void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_news_list');
+}

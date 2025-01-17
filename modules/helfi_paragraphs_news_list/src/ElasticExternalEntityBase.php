@@ -183,10 +183,11 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
 
     $sortQuery = [];
     foreach ($sorts as $sort) {
-      ['field' => $field, 'direction' => $direction] = $sort;
+      $defaults = ['options' => []];
+      ['field' => $field, 'direction' => $direction, 'options' => $options] = $sort + $defaults;
       $fieldName = $this->getFieldMapping($field);
 
-      $sortQuery[$fieldName] = ['order' => strtolower($direction)];
+      $sortQuery[$fieldName] = ['order' => strtolower($direction)] + $options;
     }
 
     return [

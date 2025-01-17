@@ -19,6 +19,8 @@ field_mapper_config:
       value: '$._source.name[0]'
     tid:
       value: '$._source.tid[0]'
+    location:
+      value: '$._source.field_location'
 storage_client_id: helfi_news_neighbourhoods
 storage_client_config: {  }
 persistent_cache_max_age: 86400
