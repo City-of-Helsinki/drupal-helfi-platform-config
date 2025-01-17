@@ -81,7 +81,7 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
     array $parameters,
   ) : array {
     try {
-      return $this->client->search($parameters)->asArray();
+      return $this->client->search($parameters)?->asArray() ?? [];
     }
     catch (ElasticsearchException | TransportException $e) {
       Error::logException($this->logger, $e);
