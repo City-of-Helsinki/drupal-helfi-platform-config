@@ -124,7 +124,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_news_item_links_link:
-    type: linkit
+    type: helfi_linkit
     weight: 20
     region: content
     settings:
