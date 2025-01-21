@@ -20,4 +20,14 @@ final class NewsNeighbourhoods extends TermBase {
    */
   protected string $vid = 'news_neighbourhoods';
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function getFieldMapping(string $field) : string {
+    return match($field) {
+      'location' => 'field_location',
+      default => parent::getFieldMapping($field),
+    };
+  }
+
 }
