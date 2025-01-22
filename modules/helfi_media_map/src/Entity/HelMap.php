@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_media_map\Entity;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_media\Entity\MediaEntityBundle;
 use Drupal\media\MediaInterface;
 
@@ -27,10 +28,10 @@ class HelMap extends MediaEntityBundle implements MediaInterface {
   /**
    * Get the title of map.
    *
-   * @return string|null
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|null
    *   The title of the map.
    */
-  public function getMediaTitle(): ?string {
+  public function getMediaTitle(): ?TranslatableMarkup {
     return $this->get('field_media_hel_map')
       ->first()
       ->get('title')
