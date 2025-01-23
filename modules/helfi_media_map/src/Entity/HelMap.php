@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_media_map\Entity;
 
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_media\Entity\MediaEntityBundle;
 use Drupal\media\MediaInterface;
 
@@ -16,10 +15,10 @@ class HelMap extends MediaEntityBundle implements MediaInterface {
   /**
    * Get service provider url.
    *
-   * @return string|null
+   * @return string
    *   Url of the service provider.
    */
-  public function getServiceUrl(): ?string {
+  public function getServiceUrl(): string {
     $map_url = $this->get('field_media_hel_map')->first()->getString();
     $url_parts = parse_url($map_url);
     return $url_parts['scheme'] . "://" . $url_parts['host'];
@@ -32,10 +31,12 @@ class HelMap extends MediaEntityBundle implements MediaInterface {
    *   The title of the map.
    */
   public function getMediaTitle(): ?string {
-    return (string) $this->get('field_media_hel_map')
+    $title = (string) $this->get('field_media_hel_map')
       ->first()
       ->get('title')
-      ->getValue() ?? NULL;
+      ->getValue();
+
+    return empty($title) ? NULL : $title;
   }
 
 }
