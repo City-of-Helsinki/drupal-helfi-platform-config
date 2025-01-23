@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_media_map\Entity;
 
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_media\Entity\MediaEntityBundle;
 use Drupal\media\MediaInterface;
 
