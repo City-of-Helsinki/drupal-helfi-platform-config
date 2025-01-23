@@ -32,7 +32,7 @@ class HelMap extends MediaEntityBundle implements MediaInterface {
    *   The title of the map.
    */
   public function getMediaTitle(): ?string {
-    return (string)$this->get('field_media_hel_map')
+    return (string) $this->get('field_media_hel_map')
       ->first()
       ->get('title')
       ->getValue() ?? NULL;
