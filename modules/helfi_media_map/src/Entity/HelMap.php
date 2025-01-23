@@ -27,7 +27,7 @@ class HelMap extends MediaEntityBundle implements MediaInterface {
   /**
    * Get the title of map.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|null
+   * @return string|null
    *   The title of the map.
    */
   public function getMediaTitle(): ?string {
