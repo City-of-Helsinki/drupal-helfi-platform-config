@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Events extends ExternalEntityStorageClientBase {
   protected const API_URL = 'https://api.hel.fi/linkedevents/v1';
-  protected const EVENTS_BASE_URL = 'https://tapahtumat.hel.fi/events/';
+  protected const EVENTS_BASE_URL = 'https://tapahtumat.hel.fi/';
 
   /**
    * The current language service.
@@ -166,10 +166,18 @@ class Events extends ExternalEntityStorageClientBase {
         continue;
       }
 
+      $event_url = '/events/';
+      if ($langcode === 'fi') {
+        $event_url = '/tapahtumat/';
+      }
+      elseif ($langcode === 'sv') {
+        $event_url = '/kurser/';
+      }
+
       $event['clean_title'] = $event['name'][$langcode];
       $start = new \DateTime($event['start_time']);
       $event['title'] = $event['clean_title'] . ' (' . $start->format('d.m.Y H:i') . ')';
-      $event['external_link'] = self::EVENTS_BASE_URL . $event['id'];
+      $event['external_link'] = self::EVENTS_BASE_URL . $langcode . $event_url . $event['id'];
       $prepared[$event['id']] = $event;
     }
 
