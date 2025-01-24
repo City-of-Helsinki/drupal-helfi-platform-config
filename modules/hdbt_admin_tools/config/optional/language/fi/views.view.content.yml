@@ -4,6 +4,7 @@ display:
       fields:
         langcode:
           label: Kieli
+          separator: ', '
         title:
           label: Otsikko
         type:
@@ -51,9 +52,9 @@ display:
           group_info:
             label: Julkaisutila
             group_items:
-              1:
+              -
                 title: Julkaistu
-              2:
+              -
                 title: Julkaisematon
         langcode:
           expose:

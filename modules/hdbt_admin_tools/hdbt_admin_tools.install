@@ -103,3 +103,12 @@ function hdbt_admin_tools_update_9005(): void {
     $language_switcher_block->save();
   }
 }
+
+/**
+ * UHF-11222: Fix issue with publish state translation on content listing view.
+ */
+function hdbt_admin_tools_update_9006(): void {
+  // Re-import 'hdbt_admin_tools' configuration.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('hdbt_admin_tools');
+}
