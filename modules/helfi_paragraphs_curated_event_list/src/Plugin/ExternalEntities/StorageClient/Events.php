@@ -169,7 +169,8 @@ class Events extends ExternalEntityStorageClientBase {
       $event_url = '/events/';
       if ($langcode === 'fi') {
         $event_url = '/tapahtumat/';
-      } elseif ($langcode === 'sv') {
+      }
+      elseif ($langcode === 'sv') {
         $event_url = '/kurser/';
       }
 
