@@ -14,6 +14,7 @@ display:
           settings:
             format_custom_true: Publicerad
             format_custom_false: 'Ej publicerad'
+          label: Status
         publish_on:
           label: 'Publicera den'
         unpublish_on:
@@ -35,9 +36,29 @@ display:
                 title: Publicerad
               2:
                 title: 'Ej publicerad'
+          expose:
+            label: Status
         langcode:
           expose:
             label: Språk
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          tags:
+            previous: '‹ föregående'
+            next: 'nästa ›'
+            first: '« första'
+            last: 'sista »'
+      title: 'Schemalagt innehåll'
+      empty:
+        area_text_custom:
+          content: 'Inget schemalagt innehåll.'
     display_title: Förvald
   overview:
     display_options:
@@ -45,6 +66,7 @@ display:
         title: Schemalagd
       tab_options:
         title: Innehåll
+    display_title: Innehållsöversikt
   user_page:
     display_options:
       menu:
@@ -55,3 +77,5 @@ display:
         uid:
           exception:
             title: Alla
+label: 'Schemalagt innehåll'
+description: 'Hitta och hantera schemalagt innehåll.'

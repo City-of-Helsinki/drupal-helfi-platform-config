@@ -23,8 +23,10 @@ display:
           action_title: Åtgärd
         title:
           label: Titel
-        type: {  }
-        name: {  }
+        type:
+          label: Innehållstyp
+        name:
+          label: 'Lås ägare'
         operations:
           label: Funktioner
       filters:
@@ -36,14 +38,16 @@ display:
             group_items:
               1:
                 title: Publicerad
-              2:
-                title: 'Ej publicerad'
-        type:
-          expose: {  }
         title:
           expose:
             label: Titel
+        type:
+          expose:
+            label: Innehållstyp
+      title: 'Låst innehåll'
   page_1:
     display_title: Sida
     display_options:
-      menu: {  }
+      menu:
+        title: 'Låst innehåll'
+label: 'Låst innehåll'
