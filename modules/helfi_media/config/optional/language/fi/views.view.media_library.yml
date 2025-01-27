@@ -15,7 +15,6 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
       exposed_form:
         options:
           submit_button: 'Suodata tuloksia'
@@ -40,11 +39,14 @@ display:
         status:
           expose:
             label: 'Julkaisun tila'
+            description: ''
           group_info:
             label: Julkaistu
             group_items:
               1:
                 title: Julkaistu
+              2:
+                title: Julkaisematon
         name:
           expose:
             label: Nimi
@@ -53,10 +55,10 @@ display:
             label: 'Median tyyppi'
           group_info:
             label: 'Median tyyppi'
+            description: ''
         langcode:
           expose:
             label: Kieli
-      title: Media
   page:
     display_title: Sivu
     display_options:
@@ -73,8 +75,7 @@ display:
             text: 'Poista {{ name }}'
             alt: 'Poista {{ name }}'
           text: Poista
-        name:
-          separator: ', '
+        name: {  }
   widget:
     display_title: Widgetti
     display_options:

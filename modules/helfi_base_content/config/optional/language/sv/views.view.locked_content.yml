@@ -19,31 +19,31 @@ display:
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
       fields:
-        tpr_errand_service_bulk_form:
-          label: Massuppdatera
+        node_bulk_form:
           action_title: Åtgärd
-        name:
-          label: Namn
-        langcode:
-          label: Språk
-        content_translation_status:
-          settings:
-            format_custom_true: Publicerad
-            format_custom_false: 'Ej publicerad'
-        content_translation_changed:
-          label: Uppdaterad
+        title:
+          label: Titel
+        type: {  }
+        name: {  }
         operations:
           label: Funktioner
-        id: {  }
       filters:
-        combine:
+        status:
           expose:
-            label: Sök
-        langcode:
+            label: 'Status för publicering'
+          group_info:
+            label: 'Status för publicering'
+            group_items:
+              1:
+                title: Publicerad
+              2:
+                title: 'Ej publicerad'
+        type:
+          expose: {  }
+        title:
           expose:
-            label: Språk
-      header:
-        result:
-          content: 'Visar @start - @end av @total'
+            label: Titel
   page_1:
     display_title: Sida
+    display_options:
+      menu: {  }
