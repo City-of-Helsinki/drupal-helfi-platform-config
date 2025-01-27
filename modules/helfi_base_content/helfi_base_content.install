@@ -355,9 +355,9 @@ function helfi_base_content_update_9015(): void {
 }
 
 /**
- * UHF-10539: Configure view for redirect module.
+ * UHF-11222: Fix issue with publish state translation on listing views.
  */
-function helfi_base_content_update_9016(): void {
+function helfi_base_content_update_9017(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_base_content');
 }

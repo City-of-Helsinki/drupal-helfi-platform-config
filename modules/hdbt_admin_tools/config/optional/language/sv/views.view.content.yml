@@ -1,18 +1,14 @@
-description: 'Hitta och hantera media.'
 display:
   default:
-    display_title: Förvald
     display_options:
       fields:
-        media_bulk_form:
-          action_title: Åtgärd
-        thumbnail__target_id:
-          label: Miniatyr
+        langcode:
+          label: Språk
+        title:
+          label: Titel
+        type:
+          label: Innehållstyp
         name:
-          label: Medianamn
-        bundle:
-          label: Typ
-        uid:
           label: Författare
         status:
           settings:
@@ -22,6 +18,7 @@ display:
           label: Uppdaterad
         operations:
           label: Funktioner
+      title: Innehåll
       pager:
         options:
           tags:
@@ -29,10 +26,6 @@ display:
             previous: '‹ Föregående'
             first: '« Första'
             last: 'Sista »'
-          expose:
-            items_per_page_label: 'Inlägg per sida'
-            items_per_page_options_all_label: '- Alla -'
-            offset_label: Kompensera
       exposed_form:
         options:
           submit_button: Filtrera
@@ -42,18 +35,16 @@ display:
           sort_desc_label: Fallande
       empty:
         area_text_custom:
-          content: 'Ingen media tillgänglig.'
+          content: 'Inget innehåll tillgängligt.'
       filters:
-        name:
+        title:
           expose:
-            label: Medianamn
-        bundle:
+            label: Titel
+        type:
           expose:
-            label: Typ
+            label: Innehållstyp
         status:
-          expose:
-            label: Sant
-            description: ''
+          expose: {  }
           group_info:
             label: 'Status för publicering'
             group_items:
@@ -64,6 +55,14 @@ display:
         langcode:
           expose:
             label: Språk
-  media_page_list:
+    display_title: Förvald
+  page_1:
+    display_title: Sida
     display_options:
-      menu: {  }
+      menu:
+        title: Innehåll
+      tab_options:
+        title: Innehåll
+        description: 'Hitta och hantera innehåll'
+label: Innehåll
+description: 'Hitta och hantera innehåll.'

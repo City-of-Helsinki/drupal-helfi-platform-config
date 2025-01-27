@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Contains alterations for the Hel.fi media module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\config_rewrite\ConfigRewriterInterface;
+
+/**
+ * Implements hook_rewrite_config_update().
+ */
+function helfi_media_config_rewrite_config_update(string $module, ConfigRewriterInterface $configRewriter): void {
+  // Rewrite module configuration.
+  if ($module === 'helfi_media') {
+    $configRewriter->rewriteModuleConfig('helfi_media');
+  }
+}

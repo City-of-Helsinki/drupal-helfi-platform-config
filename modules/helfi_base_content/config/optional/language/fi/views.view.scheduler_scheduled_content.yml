@@ -1,9 +1,11 @@
+label: 'Ajastettu sisältö'
+description: 'Etsi ja ylläpidä ajastettua sisältöä.'
 display:
   default:
     display_options:
       fields:
-        langcode:
-          label: Kieli
+        node_bulk_form:
+          action_title: Toiminto
         title:
           label: Otsikko
         type:
@@ -13,30 +15,14 @@ display:
         status:
           label: Tila
           settings:
-            format_custom_false: Julkaisematon
             format_custom_true: Julkaistu
-        changed:
-          label: Päivitetty
+            format_custom_false: Julkaisematon
+        publish_on:
+          label: Julkaisuaika
+        unpublish_on:
+          label: 'Ajastettu piilottaminen'
         operations:
           label: Toimenpiteet
-      title: Sisältö
-      pager:
-        options:
-          tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
-            first: '« Ensimmäinen'
-            last: 'Viimeinen »'
-      exposed_form:
-        options:
-          submit_button: Suodata
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
-      empty:
-        area_text_custom:
-          content: 'Ei sisältöä.'
       filters:
         title:
           expose:
@@ -57,14 +43,30 @@ display:
         langcode:
           expose:
             label: Kieli
+      title: 'Ajastettu sisältö'
+      empty:
+        area_text_custom:
+          content: 'Ei vielä ajastettua sisältöä.'
     display_title: Oletus
-  page_1:
-    display_title: Sivu
+  overview:
     display_options:
       menu:
-        title: Sisältö
+        title: Ajastettu
       tab_options:
         title: Sisältö
-        description: 'Etsi ja hallitse sisältöä'
-label: Sisältö
-description: 'Etsi ja ylläpidä sisältöä.'
+      display_description: 'Yleiskatsaus koko ajoitetusta sisällöstä.'
+    display_title: Sisältö
+  user_page:
+    display_options:
+      menu:
+        title: Ajastettu
+      tab_options:
+        title: Sisältö
+      arguments:
+        uid:
+          exception:
+            title: Kaikki
+      empty:
+        area_text_custom:
+          content: '{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä.'
+    display_title: Käyttäjäprofiili

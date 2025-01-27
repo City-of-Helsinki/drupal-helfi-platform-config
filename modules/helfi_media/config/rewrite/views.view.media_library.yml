@@ -1,3 +1,4 @@
+config_rewrite: 'replace'
 langcode: en
 status: true
 dependencies:
@@ -136,6 +137,7 @@ display:
         type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 24
           total_pages: null
           id: 0
@@ -267,11 +269,11 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items:
-              -
+              1:
                 title: Published
                 operator: '='
                 value: '1'
-              -
+              2:
                 title: Unpublished
                 operator: '='
                 value: '0'
@@ -473,13 +475,13 @@ display:
     cache_metadata:
       max-age: 0
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
         - 'url.query_args:sort_by'
         - user
         - user.permissions
-        - 'languages:language_content'
       tags: {  }
   page:
     id: page
@@ -1074,6 +1076,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 24
           total_pages: null
           id: 0
