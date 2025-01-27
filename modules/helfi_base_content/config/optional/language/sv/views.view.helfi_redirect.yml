@@ -1,0 +1,74 @@
+display:
+  default:
+    display_options:
+      filters:
+        status_code:
+          group_info:
+            group_items:
+              1:
+                title: '300 Flera val'
+              2:
+                title: '301 Flyttad permanent'
+              3:
+                title: '302 Hittad'
+              4:
+                title: '303 Se annan'
+              5:
+                title: '304 Ej modifierad'
+              6:
+                title: '305 Använd proxy'
+              7:
+                title: '307 Tillfällig omdirigering'
+            label: Statuskod
+          expose:
+            label: Statuskod
+        redirect_source__path:
+          expose:
+            label: Från
+        redirect_redirect__uri:
+          expose:
+            label: Till
+        language:
+          expose:
+            label: 'Originalspråk'
+        is_custom:
+          expose:
+            label: 'Användarskapad'
+        status:
+          expose:
+            label: Publicerad
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: Sortera
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Poster per sida'
+            items_per_page_options_all_label: '- Alla -'
+          tags:
+            previous: '‹ föregående'
+            next: 'nästa ›'
+            first: '« första'
+            last: 'sista »'
+      fields:
+        redirect_bulk_form:
+          action_title: Med valda
+        redirect_source__path:
+          label: Avsändare
+        created:
+          label: Skapad
+        is_custom:
+          label: 'Användarskapad'
+        status:
+          label: Publicerad
+      empty:
+        area_text_custom:
+          content: 'Det finns inga omdirigeringar ännu.'
+      title: Omdirigeringar
+    display_title: Förvald
+  page_1:
+    display_title: Sida
