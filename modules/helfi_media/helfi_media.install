@@ -118,9 +118,9 @@ function helfi_media_update_9013(): void {
 }
 
 /**
- * UHF-10555: Remove references to deprecated responsive image styles.
+ * UHF-11222: Fix issue with publish state translation on listing views.
  */
-function helfi_media_update_9017(): void {
+function helfi_media_update_9018(): void {
   // Re-import 'helfi_media' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_media');
