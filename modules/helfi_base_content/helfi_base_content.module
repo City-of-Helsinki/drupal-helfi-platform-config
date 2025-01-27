@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\config_rewrite\ConfigRewriterInterface;
+
 /**
  * Implements hook_themes_installed().
  */
@@ -462,4 +464,14 @@ function helfi_base_content_get_block_configurations(string $theme) : array {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_rewrite_config_update().
+ */
+function helfi_base_content_config_rewrite_config_update(string $module, ConfigRewriterInterface $configRewriter): void {
+  // Rewrite module configuration.
+  if ($module === 'helfi_base_content') {
+    $configRewriter->rewriteModuleConfig('helfi_base_content');
+  }
 }

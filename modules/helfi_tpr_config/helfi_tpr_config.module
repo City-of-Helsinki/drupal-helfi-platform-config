@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
@@ -35,6 +36,16 @@ function helfi_tpr_config_entity_bundle_info_alter(array &$bundles): void {
   }
   if (isset($bundles['paragraph']['unit_search'])) {
     $bundles['paragraph']['unit_search']['class'] = UnitSearch::class;
+  }
+}
+
+/**
+ * Implements hook_rewrite_config_update().
+ */
+function helfi_tpr_config_config_rewrite_config_update(string $module, ConfigRewriterInterface $configRewriter): void {
+  // Rewrite module configuration.
+  if ($module === 'helfi_tpr_config') {
+    $configRewriter->rewriteModuleConfig('helfi_tpr_config');
   }
 }
 
