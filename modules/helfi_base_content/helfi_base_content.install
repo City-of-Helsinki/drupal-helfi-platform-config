@@ -339,9 +339,9 @@ function helfi_base_content_update_9013(): void {
 }
 
 /**
- * UHF-11222: Fix issue with publish state translation on listing views.
+ * UHF-11363: Updated pager labels in views.
  */
-function helfi_base_content_update_9018(): void {
+function helfi_base_content_update_9019(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_base_content');
 }
