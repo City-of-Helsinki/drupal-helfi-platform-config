@@ -8,11 +8,13 @@ display:
           action_title: Åtgärd
       pager:
         options:
+          tags:
+            next: Nästa
+            previous: Föregående
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
-          tags: {  }
       exposed_form:
         options:
           submit_button: 'Tillämpa filter'
