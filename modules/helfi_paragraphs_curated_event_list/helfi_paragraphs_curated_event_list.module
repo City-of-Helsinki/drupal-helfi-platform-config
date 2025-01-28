@@ -76,7 +76,7 @@ function helfi_paragraphs_curated_event_list_preprocess_external_entity__linkede
       $event->get('start_time')->first()->get('date')->getValue()->getTimestamp() :
       NULL;
   }
-  catch(\Exception) {
+  catch (\Exception) {
   }
 
   $end = NULL;
@@ -85,7 +85,7 @@ function helfi_paragraphs_curated_event_list_preprocess_external_entity__linkede
       $event->get('end_time')->first()->get('date')->getValue()->getTimestamp() :
       NULL;
   }
-  catch(\Exception) {
+  catch (\Exception) {
   }
 
   $variables['start_timestamp'] = $start;
