@@ -531,10 +531,10 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: 'next ›'
-            previous: '‹ previous'
-            first: '« first'
-            last: 'last »'
+            next: Next
+            previous: Previous
+            first: First
+            last: Last
       exposed_form:
         type: basic
         options:

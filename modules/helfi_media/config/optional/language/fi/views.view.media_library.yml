@@ -10,8 +10,8 @@ display:
       pager:
         options:
           tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
+            next: Seuraava
+            previous: Edellinen
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'

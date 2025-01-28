@@ -405,9 +405,9 @@ function helfi_tpr_config_update_9074(): void {
 }
 
 /**
- * UHF-11222: Fix issue with publish state translation on listing views.
+ * UHF-11363: Updated pager labels in views.
  */
-function helfi_tpr_config_update_9075(): void {
+function helfi_tpr_config_update_9076(): void {
   // Re-import 'helfi_tpr_config' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_tpr_config');

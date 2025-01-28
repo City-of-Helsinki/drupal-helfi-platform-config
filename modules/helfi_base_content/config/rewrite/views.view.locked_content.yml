@@ -13,3 +13,10 @@ display:
                 title: Unpublished
                 operator: '='
                 value: '0'
+      pager:
+        options:
+          tags:
+            next: Next
+            previous: Previous
+            first: First
+            last: Last

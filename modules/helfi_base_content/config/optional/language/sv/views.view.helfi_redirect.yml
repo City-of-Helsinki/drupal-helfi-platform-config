@@ -50,10 +50,10 @@ display:
             items_per_page_label: 'Poster per sida'
             items_per_page_options_all_label: '- Alla -'
           tags:
-            previous: '‹ föregående'
-            next: 'nästa ›'
-            first: '« första'
-            last: 'sista »'
+            previous: Föregående
+            next: Nästa
+            first: Första
+            last: Sista
       fields:
         redirect_bulk_form:
           action_title: Med valda

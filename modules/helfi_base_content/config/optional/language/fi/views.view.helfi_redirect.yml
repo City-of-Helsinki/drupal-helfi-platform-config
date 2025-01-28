@@ -50,10 +50,10 @@ display:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
           tags:
-            previous: '‹ edellinen'
-            next: 'seuraava ›'
-            first: '« ensimmäinen'
-            last: 'viimeinen »'
+            previous: Edellinen
+            next: Seuraava
+            first: Ensimmäinen
+            last: Viimeinen
       fields:
         redirect_bulk_form:
           action_title: Valinnalla

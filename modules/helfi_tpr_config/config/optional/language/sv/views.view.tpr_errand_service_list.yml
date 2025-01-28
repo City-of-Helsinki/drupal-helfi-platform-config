@@ -12,8 +12,8 @@ display:
       pager:
         options:
           tags:
-            first: '« Första'
-            last: 'Sista »'
+            first: Första
+            last: Sista
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'

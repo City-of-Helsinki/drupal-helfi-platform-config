@@ -51,10 +51,10 @@ display:
       pager:
         options:
           tags:
-            previous: '‹ föregående'
-            next: 'nästa ›'
-            first: '« första'
-            last: 'sista »'
+            previous: Föregående
+            next: Nästa
+            first: Första
+            last: Sista
       title: 'Schemalagt innehåll'
       empty:
         area_text_custom:
