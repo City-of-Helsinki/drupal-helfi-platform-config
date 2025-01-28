@@ -68,9 +68,14 @@ function helfi_paragraphs_curated_event_list_paragraph_view(
 function helfi_paragraphs_curated_event_list_preprocess_external_entity__linkedevents_event(
   array &$variables,
 ): void {
+  /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent $event */
   $event = $variables['external_entity'];
-  $variables['start_timestamp'] = $event->start_time->date->getTimeStamp();
-  $variables['end_timestamp'] = $event->end_time->date->getTimeStamp();
+
+  $start = $event->get('start_time')->getValue() ? $event->start_time->date->getTimeStamp() : NULL;
+  $end = $event->get('end_time')->getValue() ? $event->end_time->date->getTimeStamp() : NULL;
+
+  $variables['start_timestamp'] = $start;
+  $variables['end_timestamp'] = $end;
 }
 
 /**
