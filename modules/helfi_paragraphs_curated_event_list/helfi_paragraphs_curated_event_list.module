@@ -70,9 +70,23 @@ function helfi_paragraphs_curated_event_list_preprocess_external_entity__linkede
 ): void {
   /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent $event */
   $event = $variables['external_entity'];
+  $start = NULL;
+  try {
+    $start = $event->get('start_time')->getValue() ?
+      $event->get('start_time')->first()->get('date')->getValue()->getTimestamp() :
+      NULL;
+  }
+  catch(\Exception) {
+  }
 
-  $start = $event->get('start_time')->getValue() ? $event->start_time->date->getTimeStamp() : NULL;
-  $end = $event->get('end_time')->getValue() ? $event->end_time->date->getTimeStamp() : NULL;
+  $end = NULL;
+  try {
+    $end = $event->get('end_time')->getValue() ?
+      $event->get('end_time')->first()->get('date')->getValue()->getTimestamp() :
+      NULL;
+  }
+  catch(\Exception) {
+  }
 
   $variables['start_timestamp'] = $start;
   $variables['end_timestamp'] = $end;
