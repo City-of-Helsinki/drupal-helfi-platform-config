@@ -43,6 +43,13 @@ display:
         langcode:
           expose:
             label: Kieli
+      pager:
+        options:
+          tags:
+            previous: Edellinen
+            next: Seuraava
+            first: Ensimmäinen
+            last: Viimeinen
       title: 'Ajastettu sisältö'
       empty:
         area_text_custom:
