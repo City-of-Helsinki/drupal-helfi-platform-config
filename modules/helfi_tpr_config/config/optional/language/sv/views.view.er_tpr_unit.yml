@@ -9,8 +9,8 @@ display:
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
           tags:
-            next: ››
-            previous: ‹‹
+            next: Nästa
+            previous: Föregående
       exposed_form:
         options:
           submit_button: Verkställ

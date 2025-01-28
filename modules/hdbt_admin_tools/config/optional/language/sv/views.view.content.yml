@@ -22,10 +22,10 @@ display:
       pager:
         options:
           tags:
-            next: 'Nästa ›'
-            previous: '‹ Föregående'
-            first: '« Första'
-            last: 'Sista »'
+            next: Nästa
+            previous: Föregående
+            first: Första
+            last: Sista
       exposed_form:
         options:
           submit_button: Filtrera
