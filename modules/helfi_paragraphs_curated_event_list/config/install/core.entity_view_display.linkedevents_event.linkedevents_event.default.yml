@@ -7,7 +7,6 @@ dependencies:
   module:
     - datetime
     - external_entities
-    - hdbt_admin_tools
     - imagecache_external
     - linkit
 id: linkedevents_event.linkedevents_event.default

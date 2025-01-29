@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
+namespace Drupal\helfi_platform_config\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeManagerInterface;

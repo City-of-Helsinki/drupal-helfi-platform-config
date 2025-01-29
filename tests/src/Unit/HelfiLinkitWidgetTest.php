@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\hdbt_admin_tools\Unit;
+namespace Drupal\Tests\helfi_platform_config\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerNotInitializedException;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget\HelfiLinkitWidget;
+use Drupal\helfi_platform_config\Plugin\Field\FieldWidget\HelfiLinkitWidget;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -21,7 +21,7 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
   /**
    * Instance of the field widget.
    *
-   * @var \Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget\HelfiLinkitWidget
+   * @var \Drupal\helfi_platform_config\Plugin\Field\FieldWidget\HelfiLinkitWidget
    */
   protected HelfiLinkitWidget $widget;
 
