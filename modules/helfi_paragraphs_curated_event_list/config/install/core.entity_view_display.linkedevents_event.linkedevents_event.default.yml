@@ -24,7 +24,7 @@ content:
     weight: 3
     region: content
   external_link:
-    type: helfi_linkit
+    type: linkit
     label: hidden
     settings:
       trim_length: 80
