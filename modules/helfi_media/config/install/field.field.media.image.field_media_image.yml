@@ -28,7 +28,7 @@ settings:
   handler: 'default:file'
   handler_settings: {  }
   file_directory: ''
-  file_extensions: 'png gif jpg jpeg'
+  file_extensions: 'png jpg jpeg'
   max_filesize: ''
   max_resolution: ''
   min_resolution: ''
