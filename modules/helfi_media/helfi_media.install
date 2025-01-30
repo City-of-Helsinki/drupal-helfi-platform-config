@@ -118,9 +118,9 @@ function helfi_media_update_9013(): void {
 }
 
 /**
- * UHF-11363: Updated pager labels in views.
+ * UHF-10023: Removed gif as allowed file format in media images.
  */
-function helfi_media_update_9019(): void {
+function helfi_media_update_9020(): void {
   // Re-import 'helfi_media' configuration.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_media');
