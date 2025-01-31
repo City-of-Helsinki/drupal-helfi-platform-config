@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit;
 
-use Drupal\Core\DependencyInjection\ContainerNotInitializedException;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StreamWrapper\LocalStream;
+use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\helfi_platform_config\Plugin\Field\FieldWidget\HelfiLinkitWidget;
+use Drupal\path_alias\AliasManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -37,15 +42,34 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
     $current_request->reveal();
     $request_stack->getCurrentRequest()->willReturn($current_request);
 
-    $this->widget = new HelfiLinkitWidget(
+    $language_manager = $this->prophesize(LanguageManagerInterface::class);
+    $language_manager->getLanguages()->willReturn([]);
+
+    $stream_wrapper_manager = $this->prophesize(StreamWrapperManager::class);
+    $stream_wrapper = $this->prophesize(LocalStream::class);
+    $stream_wrapper->getDirectoryPath()->willReturn('/var/www/html');
+    $stream_wrapper->reveal();
+    $stream_wrapper_manager->getViaScheme('public')->willReturn($stream_wrapper);
+
+    $container = new ContainerBuilder();
+    $container->set('config.factory', $this->createMock(ConfigFactoryInterface::class));
+    $container->set('current_user', $this->createMock(AccountProxyInterface::class));
+    $container->set('entity_type.manager', $this->createMock(EntityTypeManager::class));
+    $container->set('language_manager', $language_manager->reveal());
+    $container->set('path_alias.manager', $this->createMock(AliasManagerInterface::class));
+    $container->set('request_stack', $request_stack->reveal());
+    $container->set('stream_wrapper_manager', $stream_wrapper_manager->reveal());
+    \Drupal::setContainer($container);
+
+    $this->widget = HelfiLinkitWidget::create(
+      $container,
+      [
+        'field_definition' => $this->createMock(FieldDefinitionInterface::class),
+        'settings' => [],
+        'third_party_settings' => [],
+      ],
+      'helfi_linkit',
       [],
-      [],
-      $this->prophesize(FieldDefinitionInterface::class)->reveal(),
-      [],
-      [],
-      $this->prophesize(AccountProxyInterface::class)->reveal(),
-      $this->prophesize(EntityTypeManager::class)->reveal(),
-      $request_stack->reveal(),
     );
   }
 
@@ -82,9 +106,8 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
       );
     }
 
-    // Urls that should be passed forward to \Drupal\linkit\Utility\LinkitHelper
-    // throwing error within test context.
-    $should_throw_error = [
+    // Should be passed forward to \Drupal\linkit\Utility\LinkitHelper.
+    $external_or_internal_urls = [
       [
         'uri' => 'https://google.com?query=string',
         'attributes' => [],
@@ -99,17 +122,23 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
       ],
     ];
 
-    foreach ($should_throw_error as $value) {
-      try {
-        $this->widget->massageFormValues(
-          [$value],
-          [],
-          $this->prophesize(FormStateInterface::class)->reveal(),
-        );
-      }
-      catch (\Throwable $t) {
-        $this->assertInstanceOf(ContainerNotInitializedException::class, $t);
-      }
+    $expected_results = [
+      'https://google.com?query=string',
+      'internal:/helfi-etusivu.docker.so?query=string',
+      'internal:/sv/någon/sida/',
+    ];
+
+    $linkit_massaged_values = $this->widget->massageFormValues(
+      $external_or_internal_urls,
+      [],
+      $this->prophesize(FormStateInterface::class)->reveal(),
+    );
+
+    foreach ($linkit_massaged_values as $key => $value) {
+      $this->assertEquals(
+        $value['uri'],
+        $expected_results[$key]
+      );
     }
   }
 
