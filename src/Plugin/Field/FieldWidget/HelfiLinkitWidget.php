@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\Attribute\FieldWidget;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\linkit\Plugin\Field\FieldWidget\LinkitWidget;
 use Drupal\linkit\Utility\LinkitHelper;
@@ -28,55 +25,24 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class HelfiLinkitWidget extends LinkitWidget {
 
   /**
-   * {@inheritdoc}
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $plugin_id,
-      $plugin_definition,
-      $configuration['field_definition'],
-      $configuration['settings'],
-      $configuration['third_party_settings'],
-      $container->get('current_user'),
-      $container->get('entity_type.manager'),
-      $container->get('request_stack'),
-    );
-  }
+  protected RequestStack $requestStack;
 
   /**
-   * Constructs a new instance.
-   *
-   * @param string $plugin_id
-   *   The plugin_id for the formatter.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
-   *   The definition of the field to which the formatter is associated.
-   * @param array $settings
-   *   The widget settings.
-   * @param array $third_party_settings
-   *   The widget third party settings.
-   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
-   *   The current user.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager service.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-   *   The current request stack.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * {@inheritdoc}
    */
-  public function __construct(
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
     $plugin_id,
     $plugin_definition,
-    FieldDefinitionInterface $field_definition,
-    array $settings,
-    array $third_party_settings,
-    AccountProxyInterface $currentUser,
-    EntityTypeManagerInterface $entityTypeManager,
-    protected RequestStack $requestStack,
-  ) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings, $currentUser, $entityTypeManager);
+  ): self {
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->requestStack = $container->get('request_stack');
+    return $instance;
   }
 
   /**
