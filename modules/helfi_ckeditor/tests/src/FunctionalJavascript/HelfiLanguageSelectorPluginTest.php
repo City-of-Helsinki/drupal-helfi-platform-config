@@ -18,8 +18,6 @@ class HelfiLanguageSelectorPluginTest extends HelfiCKEditor5TestBase {
 
   use CKEditor5TestTrait;
 
-  protected string $plugin_name;
-
   /**
    * Test selecting a language from the Helfi language selector plugin.
    */
