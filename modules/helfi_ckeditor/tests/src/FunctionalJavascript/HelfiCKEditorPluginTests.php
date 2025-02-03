@@ -15,14 +15,20 @@ use Drupal\Tests\helfi_ckeditor\HelfiCKEditor5TestBase;
 class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
 
   /**
-   * Tests Helfi plugins.
+   * Tests CKEditor 5 custom plugins.
    */
-  public function test(): void {
+  public function testHelfiPlugins(): void {
+    $this->assertLinkPlugin();
+    $this->assertLanguageSelection();
+    $this->assertLanguageUnSelection();
+    $this->assertAddingQuote();
+    $this->assertAddingTable();
+  }
 
-    // Test the Helfi link plugin.
-
-    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
-    $assert_session = $this->assertSession();
+  /**
+   * Tests CKEditor 5 Helfi link plugin.
+   */
+  protected function assertLinkPlugin(): void {
     $test_url = 'https://www.hel.fi';
 
     try {
@@ -31,6 +37,9 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
     catch (EntityMalformedException $e) {
       $this->fail($e->getMessage());
     }
+
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
 
     // Open the link dialog.
     $this->pressEditorButton('Link');
@@ -152,16 +161,21 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
     $this->assertSame('#test', $linkit_link->getAttribute('href'));
     $this->assertNotSame('button', $linkit_link->getAttribute('data-hds-component'));
     $this->assertNotSame('_blank', $linkit_link->getAttribute('target'));
+  }
 
-    // Test the Helfi language selector plugin.
-
-    // Reset the ckeditor.
+  /**
+   * Test selecting a language from the Helfi language selector plugin.
+   */
+  protected function assertLanguageSelection(): void {
     try {
       $this->initializeEditor('<p>Test</p><p>Testi</p><p>امتحان</p>');
     }
     catch (EntityMalformedException $e) {
       $this->fail($e->getMessage());
     }
+
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
 
     // Go through the test content and select a language for each paragraph.
     foreach (['en' => 1, 'fi' => 2, 'ar' => 3] as $langcode => $index) {
@@ -177,8 +191,12 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
       $this->assertSame($dir, $translated_paragraph->getAttribute('dir'));
       $this->assertSame($langcode, $translated_paragraph->getAttribute('lang'));
     }
+  }
 
-    // Test the Helfi language unselect.
+  /**
+   * Test unselecting a language from the Helfi language selector plugin.
+   */
+  protected function assertLanguageUnSelection(): void {
     $test_content = '<p><span lang="en" dir="ltr">Test</span></p><p><span lang="fi" dir="ltr">Testi</span></p><p><span lang="ar" dir="rtl">امتحان</span></p>';
 
     try {
@@ -187,6 +205,9 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
     catch (EntityMalformedException $e) {
       $this->fail($e->getMessage());
     }
+
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
 
     // Go through the test content and select a language for each paragraph.
     foreach (['en' => 1, 'fi' => 2, 'ar' => 3] as $index) {
@@ -197,14 +218,21 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
       $this->assertNotNull($non_translated_paragraph);
       $this->assertNull($non_translated_paragraph->find('css', 'span'));
     }
+  }
 
-    // Test the Helfi quote plugin.
+  /**
+   * Test adding a quote via the Helfi quote plugin.
+   */
+  protected function assertAddingQuote(): void {
     try {
       $this->initializeEditor('<p>Test content</p>');
     }
     catch (EntityMalformedException $e) {
       $this->fail($e->getMessage());
     }
+
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
 
     // Select the paragraph.
     $this->selectTextInsideElement('.ck-content p');
@@ -228,9 +256,15 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
     $quote = $assert_session->waitForElementVisible('css', '.ck-editor__main>.ck-content blockquote');
     $this->assertSame('Test content', $quote->find('css', 'p[data-helfi-quote-text]')->getText());
     $this->assertSame('Test author', $quote->find('css', 'footer[data-helfi-quote-author]')->getText());
+  }
 
-    // Test the Helfi table plugin.
-    // The helfiTable plugin adds a tabindex 0 to the <figure> element.
+  /**
+   * Test adding a table via the Helfi table plugin.
+   *
+   * The helfiTable plugin adds a tabindex 0 to the <figure> element.
+   * Test for the tabindex 0 existence.
+   */
+  protected function assertAddingTable(): void {
     $page = $this->getSession()->getPage();
 
     $cell = 'Test content';
@@ -243,6 +277,9 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
     catch (EntityMalformedException $e) {
       $this->fail($e->getMessage());
     }
+
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
 
     // Check that the figure element exists and it has tabindex 0.
     $table_container = $assert_session->waitForElementVisible('css', '.ck-editor__main>.ck-content figure.table');
@@ -265,11 +302,11 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
    *   The language code as a string.
    */
   protected function selectLanguage(string $langcode): void {
-    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
-    $assert_session = $this->assertSession();
-
     // Open the language selector dialog.
     $this->pressEditorButton('Select language');
+
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
 
     // Check that the language selection dialog field is visible and click it.
     $language_selector = $assert_session->waitForElementVisible('css', '.helfi-language-selector .ts-control');
@@ -287,11 +324,11 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
    * Unselect language from language selector.
    */
   protected function unSelectLanguage(): void {
-    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
-    $assert_session = $this->assertSession();
-
     // Open the language selector dialog.
     $this->pressEditorButton('Select language');
+
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
 
     // Check that the language selection dialog field is visible and click it.
     $remove_language = $assert_session->waitForElementVisible('css', '.helfi-language-selector a.remove');
