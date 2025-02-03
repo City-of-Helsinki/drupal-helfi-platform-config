@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_ckeditor\FunctionalJavascript;
 
 use Drupal\Core\Entity\EntityMalformedException;
-use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
 use Drupal\Tests\helfi_ckeditor\HelfiCKEditor5TestBase;
 
 /**
@@ -14,8 +13,6 @@ use Drupal\Tests\helfi_ckeditor\HelfiCKEditor5TestBase;
  * @group helfi_ckeditor
  */
 class HelfiLinkPluginTest extends HelfiCKEditor5TestBase {
-
-  use CKEditor5TestTrait;
 
   /**
    * Tests CKEditor 5 Helfi link plugin.
