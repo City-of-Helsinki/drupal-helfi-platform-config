@@ -8,19 +8,19 @@ use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
 use Drupal\Tests\helfi_ckeditor\HelfiCKEditor5TestBase;
 
 /**
- * Tests for CKEditor 5 to ensure correct focus management in dialogs.
+ * Tests CKEditor 5 Helfi link plugin.
  *
- * @group ckeditor5
- * @internal
+ * @group helfi_ckeditor
  */
 class HelfiLinkPluginTest extends HelfiCKEditor5TestBase {
 
   use CKEditor5TestTrait;
 
   /**
-   * Tests CKEditor 5 helfi link plugin.
+   * Tests CKEditor 5 Helfi link plugin.
    */
   public function test(): void {
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
     $test_url = 'https://www.hel.fi';
 

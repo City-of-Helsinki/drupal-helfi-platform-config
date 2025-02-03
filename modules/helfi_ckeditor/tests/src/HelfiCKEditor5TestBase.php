@@ -8,10 +8,7 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\user\Entity\User;
 
 /**
- * Base class for testing CKEditor 5.
- *
- * @ingroup testing
- * @internal
+ * Base class for testing CKEditor 5 Helfi plugins.
  */
 class HelfiCKEditor5TestBase extends WebDriverTestBase {
 
