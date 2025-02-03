@@ -24,10 +24,9 @@ class HelfiLanguageSelectorPluginTest extends HelfiCKEditor5TestBase {
   public function testLanguageSelection(): void {
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
-    $test_content = '<p>Test</p><p>Testi</p><p>امتحان</p>';
 
     try {
-      $this->initializeEditor($test_content);
+      $this->initializeEditor('<p>Test</p><p>Testi</p><p>امتحان</p>');
     }
     catch (EntityMalformedException $e) {
       $this->fail($e->getMessage());
@@ -73,36 +72,6 @@ class HelfiLanguageSelectorPluginTest extends HelfiCKEditor5TestBase {
       $this->assertNotNull($non_translated_paragraph);
       $this->assertNull($non_translated_paragraph->find('css', 'span'));
     }
-  }
-
-  /**
-   * Initialize CKEditor 5 editor with given content.
-   *
-   * @param string $content
-   *   The content to be edited.
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
-   */
-  protected function initializeEditor(string $content): void {
-    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
-    $assert_session = $this->assertSession();
-
-    // Create page node and edit it.
-    $edit_url = $this->drupalCreateNode([
-      'type' => 'page',
-      'body' => [
-        'value' => $content,
-        'format' => 'full_html',
-      ],
-    ])->toUrl('edit-form');
-    $this->drupalGet($edit_url);
-
-    // Focus the editable area first.
-    $content_area = $assert_session->waitForElementVisible('css', '.ck-editor__editable');
-    $content_area->click();
-
-    // Wait for CKEditor to load.
-    $this->waitForEditor();
   }
 
   /**

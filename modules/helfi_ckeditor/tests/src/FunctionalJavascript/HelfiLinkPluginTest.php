@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ckeditor\FunctionalJavascript;
 
+use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
 use Drupal\Tests\helfi_ckeditor\HelfiCKEditor5TestBase;
 
@@ -24,16 +25,12 @@ class HelfiLinkPluginTest extends HelfiCKEditor5TestBase {
     $assert_session = $this->assertSession();
     $test_url = 'https://www.hel.fi';
 
-    // Create page node and edit it.
-    $edit_url = $this->drupalCreateNode(['type' => 'page', 'body' => ['value' => '', 'format' => 'full_html']])->toUrl('edit-form');
-    $this->drupalGet($edit_url);
-
-    // Focus the editable area first.
-    $content_area = $assert_session->waitForElementVisible('css', '.ck-editor__editable');
-    $content_area->click();
-
-    // Wait for CKEditor to load.
-    $this->waitForEditor();
+    try {
+      $this->initializeEditor('');
+    }
+    catch (EntityMalformedException $e) {
+      $this->fail($e->getMessage());
+    }
 
     // Open the link dialog.
     $this->pressEditorButton('Link');
