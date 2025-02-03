@@ -8,16 +8,19 @@ use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Tests\helfi_ckeditor\HelfiCKEditor5TestBase;
 
 /**
- * Tests CKEditor 5 Helfi link plugin.
+ * Tests CKEditor 5 Helfi plugins.
  *
  * @group helfi_ckeditor
  */
-class HelfiLinkPluginTest extends HelfiCKEditor5TestBase {
+class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
 
   /**
-   * Tests CKEditor 5 Helfi link plugin.
+   * Tests Helfi plugins.
    */
   public function test(): void {
+
+    // Test the Helfi link plugin.
+
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
     $test_url = 'https://www.hel.fi';
@@ -149,6 +152,151 @@ class HelfiLinkPluginTest extends HelfiCKEditor5TestBase {
     $this->assertSame('#test', $linkit_link->getAttribute('href'));
     $this->assertNotSame('button', $linkit_link->getAttribute('data-hds-component'));
     $this->assertNotSame('_blank', $linkit_link->getAttribute('target'));
+
+    // Test the Helfi language selector plugin.
+
+    // Reset the ckeditor.
+    try {
+      $this->initializeEditor('<p>Test</p><p>Testi</p><p>امتحان</p>');
+    }
+    catch (EntityMalformedException $e) {
+      $this->fail($e->getMessage());
+    }
+
+    // Go through the test content and select a language for each paragraph.
+    foreach (['en' => 1, 'fi' => 2, 'ar' => 3] as $langcode => $index) {
+      $dir = $langcode !== 'ar' ? 'ltr' : 'rtl';
+
+      // Select the example text and choose a language for it.
+      $this->selectTextInsideElement('.ck-content p:nth-of-type(' . $index . ')');
+      $this->selectLanguage($langcode);
+
+      // Make sure all attributes are populated correctly.
+      $translated_paragraph = $assert_session->waitForElementVisible('css', '.ck-editor__main>.ck-content p:nth-of-type(' . $index . ') > span');
+      $this->assertNotNull($translated_paragraph);
+      $this->assertSame($dir, $translated_paragraph->getAttribute('dir'));
+      $this->assertSame($langcode, $translated_paragraph->getAttribute('lang'));
+    }
+
+    // Test the Helfi language unselect.
+    $test_content = '<p><span lang="en" dir="ltr">Test</span></p><p><span lang="fi" dir="ltr">Testi</span></p><p><span lang="ar" dir="rtl">امتحان</span></p>';
+
+    try {
+      $this->initializeEditor($test_content);
+    }
+    catch (EntityMalformedException $e) {
+      $this->fail($e->getMessage());
+    }
+
+    // Go through the test content and select a language for each paragraph.
+    foreach (['en' => 1, 'fi' => 2, 'ar' => 3] as $index) {
+      // Select the example text and choose a language for it.
+      $this->selectTextInsideElement('.ck-content p:nth-of-type(' . $index . ')');
+      $this->unSelectLanguage();
+      $non_translated_paragraph = $assert_session->waitForElementVisible('css', '.ck-editor__main>.ck-content p:nth-of-type(' . $index . ')');
+      $this->assertNotNull($non_translated_paragraph);
+      $this->assertNull($non_translated_paragraph->find('css', 'span'));
+    }
+
+    // Test the Helfi quote plugin.
+    try {
+      $this->initializeEditor('<p>Test content</p>');
+    }
+    catch (EntityMalformedException $e) {
+      $this->fail($e->getMessage());
+    }
+
+    // Select the paragraph.
+    $this->selectTextInsideElement('.ck-content p');
+
+    // Open the quote dialog.
+    $this->pressEditorButton('Add a quote');
+
+    // Check that the textarea is prefilled with the selected text.
+    $quote_textarea = $assert_session->waitForElementVisible('css', '.helfi-quote .ck-helfi-textarea');
+    $this->assertSame('Test content', $quote_textarea->getValue());
+
+    // Check that the author field is empty and fill in the author field.
+    $author_field = $assert_session->waitForElementVisible('css', '.helfi-quote .ck-input-text');
+    $this->assertEmpty($author_field->getValue());
+    $author_field->setValue('Test author');
+
+    // Save the quote.
+    $this->pressEditorButton('Save');
+
+    // Check that the quote element structure is correct.
+    $quote = $assert_session->waitForElementVisible('css', '.ck-editor__main>.ck-content blockquote');
+    $this->assertSame('Test content', $quote->find('css', 'p[data-helfi-quote-text]')->getText());
+    $this->assertSame('Test author', $quote->find('css', 'footer[data-helfi-quote-author]')->getText());
+
+    // Test the Helfi table plugin.
+    // The helfiTable plugin adds a tabindex 0 to the <figure> element.
+    $page = $this->getSession()->getPage();
+
+    $cell = 'Test content';
+    $caption = 'Caption';
+    $content = '<figure class="table"><table><tbody><tr><td>' . $cell . '</td></tr></tbody></table> <figcaption>' . $caption . '</figcaption></figure>';
+
+    try {
+      $this->initializeEditor($content);
+    }
+    catch (EntityMalformedException $e) {
+      $this->fail($e->getMessage());
+    }
+
+    // Check that the figure element exists and it has tabindex 0.
+    $table_container = $assert_session->waitForElementVisible('css', '.ck-editor__main>.ck-content figure.table');
+    $this->assertNotNull($table_container);
+    $this->assertSame('0', $table_container->getAttribute('tabindex'));
+
+    // Check that the caption is present.
+    $figcaption = $page->find('css', 'figure.table > figcaption');
+    $this->assertEquals($caption, $figcaption->getText());
+
+    // Check that the table and the cell content is present.
+    $table = $page->find('css', 'figure.table > table');
+    $this->assertEquals($cell, $table->getText());
+  }
+
+  /**
+   * Select language from language selector.
+   *
+   * @param string $langcode
+   *   The language code as a string.
+   */
+  protected function selectLanguage(string $langcode): void {
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
+
+    // Open the language selector dialog.
+    $this->pressEditorButton('Select language');
+
+    // Check that the language selection dialog field is visible and click it.
+    $language_selector = $assert_session->waitForElementVisible('css', '.helfi-language-selector .ts-control');
+    $this->assertTrue($language_selector->isVisible(), 'Language selector is not visible.');
+    $language_selector->click();
+
+    // Choose language for the English text.
+    $language_selections = $assert_session->waitForElementVisible('css', '.helfi-language-selector .ts-dropdown');
+    $language = $language_selections->find('css', 'span[data-value="' . $langcode . '"]');
+    $this->assertTrue($language->isVisible(), strtoupper($langcode) . ' language selection is not visible.');
+    $language->click();
+  }
+
+  /**
+   * Unselect language from language selector.
+   */
+  protected function unSelectLanguage(): void {
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
+
+    // Open the language selector dialog.
+    $this->pressEditorButton('Select language');
+
+    // Check that the language selection dialog field is visible and click it.
+    $remove_language = $assert_session->waitForElementVisible('css', '.helfi-language-selector a.remove');
+    $this->assertTrue($remove_language->isVisible(), 'The language remove button is not visible.');
+    $remove_language->click();
   }
 
 }
