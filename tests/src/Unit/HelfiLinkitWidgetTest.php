@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Tests the HelfiLinkitWidget.
+ *
+ * @coversDefaultClass \Drupal\helfi_platform_config\Plugin\Field\FieldWidget\HelfiLinkitWidget
+ * @group helfi_platform_config
  */
 class HelfiLinkitWidgetTest extends UnitTestCase {
   /**
