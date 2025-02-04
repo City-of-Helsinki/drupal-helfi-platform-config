@@ -82,7 +82,7 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
    * @dataProvider internalAbsoluteUrlsData
    * @covers ::convertToUri
    * @covers ::create
-   * @covers ::massageFieldValues
+   * @covers ::massageFormValues
    */
   public function testInternalAbsoluteUrls(string $uri): void {
     $massagedValues = $this->widget->massageFormValues(
@@ -109,14 +109,14 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
   }
 
   /**
-   * Test the massageFieldValues method.
+   * Test the massageFormValues method.
    *
-   * @dataProvider massageFieldValuesData
+   * @dataProvider massageFormValuesData
    * @covers ::convertToUri
    * @covers ::create
-   * @covers ::massageFieldValues
+   * @covers ::massageFormValues
    */
-  public function testMassageFieldValues(string $uri, string $expected): void {
+  public function testMassageFormValues(string $uri, string $expected): void {
     $massagedValues = $this->widget->massageFormValues(
       [['uri' => $uri, 'attributes' => []]],
       [],
@@ -127,12 +127,12 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
   }
 
   /**
-   * Data provider for ::massageFieldValues().
+   * Data provider for ::massageFormValues().
    *
    * @return array[]
    *   The data.
    */
-  public function massageFieldValuesData(): array {
+  public function massageFormValuesData(): array {
     return [
       ['https://google.com?query=string', 'https://google.com?query=string'],
       ['helfi-etusivu.docker.so?query=string', 'internal:/helfi-etusivu.docker.so?query=string'],
