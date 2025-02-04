@@ -77,38 +77,6 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
   }
 
   /**
-   * Tests internal absolute urls. These should be returned unchanged.
-   *
-   * @dataProvider internalAbsoluteUrlsData
-   * @covers ::convertToUri
-   * @covers ::create
-   * @covers ::massageFormValues
-   */
-  public function testInternalAbsoluteUrls(string $uri): void {
-    $massagedValues = $this->widget->massageFormValues(
-      [['uri' => $uri, 'attributes' => []]],
-      [],
-      $this->prophesize(FormStateInterface::class)->reveal(),
-    );
-
-    $this->assertEquals($uri, $massagedValues[0]['uri']);
-  }
-
-  /**
-   * Data provider for ::testInternalAbsoluteUrls().
-   *
-   * @return array[]
-   *   The data.
-   */
-  public function internalAbsoluteUrlsData(): array {
-    return [
-      ['https://helfi-etusivu.docker.so/fi/node/232'],
-      ['https://helfi-etusivu.docker.so/sv/någon/sida/?fråga=parameter'],
-      ['http://helfi-etusivu.docker.so/en/news/helsinki-city-council-jubilee-decision-free-admission-to-outdoor-swimming-facilities-select-cultural'],
-    ];
-  }
-
-  /**
    * Test the massageFormValues method.
    *
    * @dataProvider massageFormValuesData
@@ -134,6 +102,15 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
    */
   public function massageFormValuesData(): array {
     return [
+      ['https://helfi-etusivu.docker.so/fi/node/232', 'https://helfi-etusivu.docker.so/fi/node/232'],
+      [
+        'https://helfi-etusivu.docker.so/sv/någon/sida/?fråga=parameter',
+        'https://helfi-etusivu.docker.so/sv/någon/sida/?fråga=parameter',
+      ],
+      [
+        'http://helfi-etusivu.docker.so/en/news/helsinki-city-council-jubilee-decision-free-admission-to-outdoor-swimming-facilities-select-cultural',
+        'http://helfi-etusivu.docker.so/en/news/helsinki-city-council-jubilee-decision-free-admission-to-outdoor-swimming-facilities-select-cultural',
+      ],
       ['https://google.com?query=string', 'https://google.com?query=string'],
       ['helfi-etusivu.docker.so?query=string', 'internal:/helfi-etusivu.docker.so?query=string'],
       ['/sv/någon/sida/', 'internal:/sv/någon/sida/'],
