@@ -74,72 +74,67 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
   }
 
   /**
-   * Test the massageFieldValues method.
+   * Tests internal absolute urls. These should be returned unchanged.
+   *
+   * @dataProvider internalAbsoluteUrlsData
+   * @covers ::convertToUri
+   * @covers ::create
+   * @covers ::massageFieldValues
    */
-  public function testMassageFieldValues(): void {
-    // Urls that should be returned unchanged.
-    $internal_absolute_urls = [
-      [
-        'uri' => 'https://helfi-etusivu.docker.so/fi/node/232',
-        'attributes' => [],
-      ],
-      [
-        'uri' => 'https://helfi-etusivu.docker.so/sv/någon/sida/?fråga=parameter',
-        'attributes' => [],
-      ],
-      [
-        'uri' => 'http://helfi-etusivu.docker.so/en/news/helsinki-city-council-jubilee-decision-free-admission-to-outdoor-swimming-facilities-select-cultural',
-        'attributes' => [],
-      ],
-    ];
-
+  public function testInternalAbsoluteUrls(string $uri): void {
     $massagedValues = $this->widget->massageFormValues(
-      $internal_absolute_urls,
+      [['uri' => $uri, 'attributes' => []]],
       [],
       $this->prophesize(FormStateInterface::class)->reveal(),
     );
 
-    foreach ($massagedValues as $key => $value) {
-      $this->assertEquals(
-        $value['uri'],
-        $internal_absolute_urls[$key]['uri']
-      );
-    }
+    $this->assertEquals($uri, $massagedValues[0]['uri']);
+  }
 
-    // Should be passed forward to \Drupal\linkit\Utility\LinkitHelper.
-    $external_or_internal_urls = [
-      [
-        'uri' => 'https://google.com?query=string',
-        'attributes' => [],
-      ],
-      [
-        'uri' => 'helfi-etusivu.docker.so?query=string',
-        'attributes' => [],
-      ],
-      [
-        'uri' => '/sv/någon/sida/',
-        'attributes' => [],
-      ],
+  /**
+   * Data provider for ::testInternalAbsoluteUrls().
+   *
+   * @return array[]
+   *   The data.
+   */
+  public function internalAbsoluteUrlsData(): array {
+    return [
+      ['https://helfi-etusivu.docker.so/fi/node/232'],
+      ['https://helfi-etusivu.docker.so/sv/någon/sida/?fråga=parameter'],
+      ['http://helfi-etusivu.docker.so/en/news/helsinki-city-council-jubilee-decision-free-admission-to-outdoor-swimming-facilities-select-cultural'],
     ];
+  }
 
-    $expected_results = [
-      'https://google.com?query=string',
-      'internal:/helfi-etusivu.docker.so?query=string',
-      'internal:/sv/någon/sida/',
-    ];
-
-    $linkit_massaged_values = $this->widget->massageFormValues(
-      $external_or_internal_urls,
+  /**
+   * Test the massageFieldValues method.
+   *
+   * @dataProvider massageFieldValuesData
+   * @covers ::convertToUri
+   * @covers ::create
+   * @covers ::massageFieldValues
+   */
+  public function testMassageFieldValues(string $uri, string $expected): void {
+    $massagedValues = $this->widget->massageFormValues(
+      [['uri' => $uri, 'attributes' => []]],
       [],
       $this->prophesize(FormStateInterface::class)->reveal(),
     );
 
-    foreach ($linkit_massaged_values as $key => $value) {
-      $this->assertEquals(
-        $value['uri'],
-        $expected_results[$key]
-      );
-    }
+    $this->assertEquals($expected, $massagedValues[0]['uri']);
+  }
+
+  /**
+   * Data provider for ::massageFieldValues().
+   *
+   * @return array[]
+   *   The data.
+   */
+  public function massageFieldValuesData(): array {
+    return [
+      ['https://google.com?query=string', 'https://google.com?query=string'],
+      ['helfi-etusivu.docker.so?query=string', 'internal:/helfi-etusivu.docker.so?query=string'],
+      ['/sv/någon/sida/', 'internal:/sv/någon/sida/'],
+    ];
   }
 
 }
