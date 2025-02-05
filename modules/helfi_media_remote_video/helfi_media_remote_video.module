@@ -10,6 +10,7 @@ declare(strict_types=1);
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_media_remote_video\Entity\RemoteVideo;
+use Drupal\media\OEmbed\Provider;
 use Drupal\media\OEmbed\Resource;
 use Drupal\media\OEmbed\ResourceException;
 use Drupal\media\OEmbed\UrlResolverInterface;
@@ -262,5 +263,23 @@ function helfi_media_remote_video_theme_suggestions_media_oembed_iframe_alter(ar
 function helfi_media_remote_video_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['media']['remote_video'])) {
     $bundles['media']['remote_video']['class'] = RemoteVideo::class;
+  }
+}
+
+/**
+ * Alters an oEmbed resource URL before it is fetched.
+ *
+ * @param array $parsed_url
+ *   A parsed URL, as returned by \Drupal\Component\Utility\UrlHelper::parse().
+ * @param \Drupal\media\OEmbed\Provider $provider
+ *   The oEmbed provider for the resource.
+ *
+ * @see \Drupal\media\OEmbed\UrlResolverInterface::getResourceUrl()
+ */
+function helfi_media_remote_video_oembed_resource_url_alter(array &$parsed_url, Provider $provider) {
+  // Always serve YouTube videos from youtube-nocookie.com.
+  if ($provider->getName() === 'YouTube') {
+    $parsed_url['path'] = str_replace('youtube.com', 'youtube-nocookie.com', $parsed_url['path']);
+    $parsed_url['query']['url'] = str_replace('youtube.com', 'youtube-nocookie.com', $parsed_url['query']['url']);
   }
 }
