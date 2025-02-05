@@ -58,6 +58,14 @@ function helfi_media_chart_entity_bundle_field_info(EntityTypeInterface $entity_
  */
 function helfi_media_chart_theme($existing, $type, $theme, $path) : array {
   return [
+    'chart_iframe' => [
+      'variables' => [
+        'title' => NULL,
+        'url' => NULL,
+        'domain' => NULL,
+      ],
+      'template' => 'chart-iframe',
+    ],
     'chart_iframe__media_library' => [
       'variables' => [
         'title' => NULL,
