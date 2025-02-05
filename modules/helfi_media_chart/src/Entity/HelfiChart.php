@@ -17,6 +17,8 @@ class HelfiChart extends MediaEntityBundle implements MediaInterface {
    *
    * @return string
    *   Url of the service provider.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function getServiceUrl(): string {
     $chart_url = $this->get('field_helfi_chart_url')
@@ -31,6 +33,8 @@ class HelfiChart extends MediaEntityBundle implements MediaInterface {
    *
    * @return string|null
    *   The title of the map.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function getMediaTitle(): ?string {
     $title = (string) $this->get('field_helfi_chart_title')
