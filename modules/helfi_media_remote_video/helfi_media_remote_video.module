@@ -20,6 +20,7 @@ use Drupal\media\OEmbed\UrlResolverInterface;
 function helfi_media_remote_video_media_source_info_alter(array &$sources): void {
   // Add Helsinki-kanava (Icareus Suite) as an available provider.
   $sources['oembed:video']['providers'][] = 'Icareus Suite';
+  $sources['oembed:video']['providers'][] = 'YouTube No-Cookie';
 }
 
 /**
@@ -192,39 +193,47 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
   $provider = $url_resolver->getProviderByUrl($video_url);
   $helsinki_kanava_url_pattern = 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*';
 
-  // Handle only Helsinki-kanava videos (Icareus Suite).
-  if ($provider->getName() !== 'Icareus Suite') {
+  // Handle only Helsinki-kanava videos (Icareus Suite) and Youtube videos.
+  if ($provider->getName() !== 'Icareus Suite' && $provider->getName() !== 'YouTube') {
     return FALSE;
   }
 
-  // Try to convert the URL if it's of form 'player/event/view'.
-  if (str_contains($video_url, 'player/event/view')) {
-    preg_match('/helsinkikanava.fi\/((?i)[a-z]{2})/', $video_url, $language_matches);
-    // Default to 'fi' if no match.
-    $lang_code = $language_matches[1] ?? 'fi';
-    preg_match('/assetId=(\d+)/', $video_url, $asset_id_matches);
-    $asset_id = $asset_id_matches[1] ?? NULL;
-
-    if (empty($asset_id)) {
-      return FALSE;
+  if ($provider->getName() === 'YouTube') {
+    if (str_contains($video_url, 'youtube.com') && !str_contains($video_url, 'no-cookie')) {
+      $converted_url = str_replace('youtube.com', 'youtube-nocookie.com', $video_url);
     }
-
-    // Assemble the converted URL.
-    $url_parts = explode('*', $helsinki_kanava_url_pattern);
-    $converted_url = $url_parts[0] . $lang_code . $url_parts[1] . $asset_id;
   }
 
-  // Try to convert the URL if it's of form 'web/helsinkikanava/player/webcast'.
-  if (str_contains($video_url, '/web/helsinkikanava/player/webcast')) {
-    preg_match('/assetId=(\d+)/', $video_url, $asset_id_matches);
-    $asset_id = $asset_id_matches[1];
+  if ($provider->getName() === 'Icareus Suite') {
+    // Try to convert the URL if it's of form 'player/event/view'.
+    if (str_contains($video_url, 'player/event/view')) {
+      preg_match('/helsinkikanava.fi\/((?i)[a-z]{2})/', $video_url, $language_matches);
+      // Default to 'fi' if no match.
+      $lang_code = $language_matches[1] ?? 'fi';
+      preg_match('/assetId=(\d+)/', $video_url, $asset_id_matches);
+      $asset_id = $asset_id_matches[1] ?? NULL;
 
-    if (empty($asset_id)) {
-      throw new Exception('URL is missing asset ID parameter.');
+      if (empty($asset_id)) {
+        return FALSE;
+      }
+
+      // Assemble the converted URL.
+      $url_parts = explode('*', $helsinki_kanava_url_pattern);
+      $converted_url = $url_parts[0] . $lang_code . $url_parts[1] . $asset_id;
     }
 
-    $url_parts = explode('*', $helsinki_kanava_url_pattern);
-    $converted_url = $url_parts[0] . 'fi' . $url_parts[1] . $asset_id;
+    // Try to convert the URL if it's of form 'web/helsinkikanava/player/webcast'.
+    if (str_contains($video_url, '/web/helsinkikanava/player/webcast')) {
+      preg_match('/assetId=(\d+)/', $video_url, $asset_id_matches);
+      $asset_id = $asset_id_matches[1];
+
+      if (empty($asset_id)) {
+        throw new Exception('URL is missing asset ID parameter.');
+      }
+
+      $url_parts = explode('*', $helsinki_kanava_url_pattern);
+      $converted_url = $url_parts[0] . 'fi' . $url_parts[1] . $asset_id;
+    }
   }
 
   // Return the converted URL.
