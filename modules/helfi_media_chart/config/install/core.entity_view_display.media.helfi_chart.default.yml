@@ -31,9 +31,14 @@ content:
     weight: 2
     region: content
   field_helfi_chart_url:
-    type: helfi_chart
+    type: link
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 80
+      url_only: true
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
     weight: 1
     region: content
