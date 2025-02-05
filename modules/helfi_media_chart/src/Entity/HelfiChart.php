@@ -29,10 +29,10 @@ class HelfiChart extends MediaEntityBundle implements MediaInterface {
   }
 
   /**
-   * Get the title of map.
+   * Get the title of chart.
    *
    * @return string|null
-   *   The title of the map.
+   *   The title of the chart.
    *
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
