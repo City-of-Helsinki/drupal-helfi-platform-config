@@ -4,15 +4,59 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ckeditor\FunctionalJavascript;
 
-use Drupal\Core\Entity\EntityMalformedException;
-use Drupal\Tests\helfi_ckeditor\HelfiCKEditor5TestBase;
+use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
+use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
+use Drupal\user\Entity\User;
 
 /**
  * Tests CKEditor 5 Helfi plugins.
  *
  * @group helfi_ckeditor
  */
-class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
+class HelfiCKEditorPluginTests extends WebDriverTestBase {
+
+  use CKEditor5TestTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'node',
+    'ckeditor5',
+    'filter',
+    'helfi_ckeditor',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * The admin user.
+   *
+   * @var \Drupal\user\Entity\User
+   */
+  protected User $user;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+
+    $this->drupalCreateContentType([
+      'type' => 'page',
+      'name' => 'Page',
+    ]);
+
+    $this->user = $this->drupalCreateUser([
+      'use text format full_html',
+      'edit any page content',
+      'administer site configuration',
+    ]);
+    $this->drupalLogin($this->user);
+  }
 
   /**
    * Tests CKEditor 5 custom plugins.
@@ -31,12 +75,8 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
   protected function assertLinkPlugin(): void {
     $test_url = 'https://www.hel.fi';
 
-    try {
-      $this->initializeEditor('');
-    }
-    catch (EntityMalformedException $e) {
-      $this->fail($e->getMessage());
-    }
+    // Initialize the CKEditor with a suitable markup.
+    $this->initializeEditor('');
 
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
@@ -167,12 +207,8 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
    * Test selecting a language from the Helfi language selector plugin.
    */
   protected function assertLanguageSelection(): void {
-    try {
-      $this->initializeEditor('<p>Test</p><p>Testi</p><p>امتحان</p>');
-    }
-    catch (EntityMalformedException $e) {
-      $this->fail($e->getMessage());
-    }
+    // Initialize the CKEditor with a suitable markup.
+    $this->initializeEditor('<p>Test</p><p>Testi</p><p>امتحان</p>');
 
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
@@ -199,12 +235,8 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
   protected function assertLanguageUnSelection(): void {
     $test_content = '<p><span lang="en" dir="ltr">Test</span></p><p><span lang="fi" dir="ltr">Testi</span></p><p><span lang="ar" dir="rtl">امتحان</span></p>';
 
-    try {
-      $this->initializeEditor($test_content);
-    }
-    catch (EntityMalformedException $e) {
-      $this->fail($e->getMessage());
-    }
+    // Initialize the CKEditor with a suitable markup.
+    $this->initializeEditor($test_content);
 
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
@@ -224,12 +256,8 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
    * Test adding a quote via the Helfi quote plugin.
    */
   protected function assertAddingQuote(): void {
-    try {
-      $this->initializeEditor('<p>Test content</p>');
-    }
-    catch (EntityMalformedException $e) {
-      $this->fail($e->getMessage());
-    }
+    // Initialize the CKEditor with a suitable markup.
+    $this->initializeEditor('<p>Test content</p>');
 
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
@@ -271,12 +299,8 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
     $caption = 'Caption';
     $content = '<figure class="table"><table><tbody><tr><td>' . $cell . '</td></tr></tbody></table> <figcaption>' . $caption . '</figcaption></figure>';
 
-    try {
-      $this->initializeEditor($content);
-    }
-    catch (EntityMalformedException $e) {
-      $this->fail($e->getMessage());
-    }
+    // Initialize the CKEditor with a suitable markup.
+    $this->initializeEditor($content);
 
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
@@ -334,6 +358,36 @@ class HelfiCKEditorPluginTests extends HelfiCKEditor5TestBase {
     $remove_language = $assert_session->waitForElementVisible('css', '.helfi-language-selector a.remove');
     $this->assertTrue($remove_language->isVisible(), 'The language remove button is not visible.');
     $remove_language->click();
+  }
+
+  /**
+   * Initialize CKEditor 5 editor with given content.
+   *
+   * @param string $content
+   *   The content to be edited.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   */
+  protected function initializeEditor(string $content): void {
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
+
+    // Create page node and edit it.
+    $edit_url = $this->drupalCreateNode([
+      'type' => 'page',
+      'body' => [
+        'value' => $content,
+        'format' => 'full_html',
+      ],
+    ])->toUrl('edit-form');
+    $this->drupalGet($edit_url);
+
+    // Focus the editable area first.
+    $content_area = $assert_session->waitForElementVisible('css', '.ck-editor__editable');
+    $content_area->click();
+
+    // Wait for CKEditor to load.
+    $this->waitForEditor();
   }
 
 }
