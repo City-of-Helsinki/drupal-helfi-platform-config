@@ -222,7 +222,8 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
       $converted_url = $url_parts[0] . $lang_code . $url_parts[1] . $asset_id;
     }
 
-    // Try to convert the URL if it's of form 'web/helsinkikanava/player/webcast'.
+    // Try to convert the URL if it's of form
+    // 'web/helsinkikanava/player/webcast'.
     if (str_contains($video_url, '/web/helsinkikanava/player/webcast')) {
       preg_match('/assetId=(\d+)/', $video_url, $asset_id_matches);
       $asset_id = $asset_id_matches[1];
