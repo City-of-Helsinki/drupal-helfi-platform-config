@@ -19,4 +19,5 @@ source_configuration:
   providers:
     - YouTube
     - 'Icareus Suite'
+    - 'YouTube No-Cookie'
 field_map: {  }

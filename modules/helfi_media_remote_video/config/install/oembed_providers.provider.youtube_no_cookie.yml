@@ -1,0 +1,24 @@
+uuid: fe53d3c6-950e-47c9-90f8-728571b5ba2d
+langcode: en
+status: true
+dependencies: {  }
+id: youtube_no_cookie
+label: 'YouTube No-Cookie'
+provider_url: 'https://www.youtube-nocookie.com/'
+endpoints:
+  -
+    schemes:
+      - 'https://*.youtube-nocookie.com/watch*'
+      - 'https://*.youtube-nocookie.com/v/*'
+      - 'https://*.youtube-nocookie.com/playlist?list=*'
+      - 'https://youtube-nocookie.com/playlist?list=*'
+      - 'https://*.youtube-nocookie.com/shorts*'
+      - 'https://youtube-nocookie.com/shorts*'
+      - 'https://*.youtube-nocookie.com/embed/*'
+      - 'https://*.youtube-nocookie.com/live*'
+      - 'https://youtube-nocookie.com/live*'
+    url: 'https://www.youtube-nocookie.com/oembed'
+    discovery: true
+    formats:
+      json: true
+      xml: false
