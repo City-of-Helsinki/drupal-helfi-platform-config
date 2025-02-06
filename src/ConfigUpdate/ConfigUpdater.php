@@ -68,6 +68,12 @@ final class ConfigUpdater {
       $this->configRewriter,
     ]);
 
+    $permissions = $this->moduleHandler->invokeAll('platform_config_grant_permissions');
+
+    // Update permissions.
+    if (!empty($permissions)) {
+      helfi_platform_config_grant_permissions($permissions);
+    }
     // Update all paragraph field handlers.
     helfi_platform_config_update_paragraph_target_types();
   }

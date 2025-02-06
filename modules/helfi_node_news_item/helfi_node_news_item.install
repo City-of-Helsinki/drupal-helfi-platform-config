@@ -8,82 +8,8 @@
 declare(strict_types=1);
 
 /**
- * Gets the permissions.
- */
-function helfi_node_news_item_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'create news_item content',
-      'create terms in news_group',
-      'create terms in news_neighbourhoods',
-      'create terms in news_tags',
-      'delete any news_item content',
-      'delete news_item revisions',
-      'delete own news_item content',
-      'delete terms in news_group',
-      'delete terms in news_neighbourhoods',
-      'delete terms in news_tags',
-      'edit any news_item content',
-      'edit own news_item content',
-      'edit terms in news_group',
-      'edit terms in news_neighbourhoods',
-      'edit terms in news_tags',
-      'revert news_item revisions',
-      'set news_item published on date',
-      'translate news_group taxonomy_term',
-      'translate news_item node',
-      'translate news_neighbourhoods taxonomy_term',
-      'translate news_tags taxonomy_term',
-      'view news_item revisions',
-    ],
-    'content_producer' => [
-      'create news_item content',
-      'delete own news_item content',
-      'edit any news_item content',
-      'edit own news_item content',
-      'revert news_item revisions',
-      'set news_item published on date',
-      'view news_item revisions',
-    ],
-    'editor' => [
-      'create news_item content',
-      'delete any news_item content',
-      'delete news_item revisions',
-      'delete own news_item content',
-      'edit any news_item content',
-      'edit own news_item content',
-      'revert news_item revisions',
-      'set news_item published on date',
-      'translate news_group taxonomy_term',
-      'translate news_item node',
-      'translate news_neighbourhoods taxonomy_term',
-      'translate news_tags taxonomy_term',
-      'view news_item revisions',
-    ],
-    'read_only' => [
-      'view any unpublished news_item content',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function helfi_node_news_item_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  helfi_node_news_item_grant_permissions();
-}
-
-/**
  * UHF-10555: Removed references to media display that is no longer used.
  */
 function helfi_node_news_item_update_9005(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_node_news_item');
+  // This is automated now.
 }

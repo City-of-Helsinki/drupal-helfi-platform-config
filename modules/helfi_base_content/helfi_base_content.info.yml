@@ -16,6 +16,7 @@ dependencies:
   - drupal:system
   - drupal:taxonomy
   - drupal:text
+  - drupal:toolbar
   - easy_breadcrumb:easy_breadcrumb
   - entity_reference_revisions:entity_reference_revisions
   - hdbt_admin_tools:hdbt_admin_tools

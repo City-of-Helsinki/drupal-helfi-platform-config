@@ -8,27 +8,6 @@
 declare(strict_types=1);
 
 /**
- * Grants required permissions.
- */
-function helfi_ckeditor_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'use text format full_html',
-      'use text format minimal',
-    ],
-    'content_producer' => [
-      'use text format full_html',
-      'use text format minimal',
-    ],
-    'editor' => [
-      'use text format full_html',
-      'use text format minimal',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
  * Installs CKEditor5 plugins and extensions.
  */
 function helfi_ckeditor_install_ckeditor5_supportive_plugins() : void {
@@ -49,16 +28,7 @@ function helfi_ckeditor_install($is_syncing) : void {
     return;
   }
 
-  helfi_ckeditor_grant_permissions();
   helfi_ckeditor_install_ckeditor5_supportive_plugins();
-}
-
-/**
- * Allow colspan and rowspan attributes to be used in th and td tags.
- */
-function helfi_ckeditor_update_9001(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_ckeditor');
 }
 
 /**
@@ -125,14 +95,6 @@ function helfi_ckeditor_update_9002(): void {
 }
 
 /**
- * Remove id attributes from header elements.
- */
-function helfi_ckeditor_update_9003(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_ckeditor');
-}
-
-/**
  * Install ckeditor5 and uninstall ckeditor4.
  */
 function helfi_ckeditor_update_9005(): void {
@@ -167,9 +129,6 @@ function helfi_ckeditor_update_9005(): void {
  */
 function helfi_ckeditor_update_9006(): void {
   helfi_ckeditor_install_ckeditor5_supportive_plugins();
-
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_ckeditor');
 }
 
 /**
@@ -273,6 +232,5 @@ function helfi_ckeditor_update_9007(): void {
  * UHF-9497 Added chat-trigger element to ckeditor configurations.
  */
 function helfi_ckeditor_update_9009(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_ckeditor');
+  // This is automated now.
 }

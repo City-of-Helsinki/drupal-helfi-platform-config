@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * Provides module hooks for helfi_user_roles module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_user_roles_platform_config_grant_permissions() : array {
+  return [
+    'anonymous' => [
+      'access content',
+    ],
+    'admin' => [
+      // @user.
+      'access user profiles',
+      'administer users',
+      'cancel account',
+      'change own username',
+    ],
+    'content_producer' => [
+      // @user.
+      'access user profiles',
+      'cancel account',
+      'change own username',
+    ],
+    'editor' => [
+      // @user.
+      'access user profiles',
+      'cancel account',
+      'change own username',
+    ],
+  ];
+}

@@ -8,51 +8,8 @@
 declare(strict_types=1);
 
 /**
- * Grants required permissions.
- */
-function helfi_media_map_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'create hel_map media',
-      'delete any hel_map media',
-      'delete own hel_map media',
-      'edit any hel_map media',
-      'edit own hel_map media',
-    ],
-    'content_producer' => [
-      'create hel_map media',
-      'delete own hel_map media',
-      'edit any hel_map media',
-      'edit own hel_map media',
-    ],
-    'editor' => [
-      'create hel_map media',
-      'delete any hel_map media',
-      'delete own hel_map media',
-      'edit any hel_map media',
-      'edit own hel_map media',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function helfi_media_map_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  helfi_media_map_grant_permissions();
-}
-
-/**
  * UHF-9088 Updated translations for media map.
  */
 function helfi_media_map_update_9003(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_media_map');
+  // This is automated now.
 }

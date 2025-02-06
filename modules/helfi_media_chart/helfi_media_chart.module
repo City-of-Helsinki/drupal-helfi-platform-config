@@ -11,6 +11,34 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\Entity\BaseFieldOverride;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_media_chart_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'create helfi_chart media',
+      'delete any helfi_chart media',
+      'delete own helfi_chart media',
+      'edit any helfi_chart media',
+      'edit own helfi_chart media',
+    ],
+    'content_producer' => [
+      'create helfi_chart media',
+      'delete own helfi_chart media',
+      'edit any helfi_chart media',
+      'edit own helfi_chart media',
+    ],
+    'editor' => [
+      'create helfi_chart media',
+      'delete any helfi_chart media',
+      'delete own helfi_chart media',
+      'edit any helfi_chart media',
+      'edit own helfi_chart media',
+    ],
+  ];
+}
+
+/**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function helfi_media_chart_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) : void {

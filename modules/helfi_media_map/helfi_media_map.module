@@ -11,6 +11,34 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\helfi_media_map\Entity\HelMap;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_media_map_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'create hel_map media',
+      'delete any hel_map media',
+      'delete own hel_map media',
+      'edit any hel_map media',
+      'edit own hel_map media',
+    ],
+    'content_producer' => [
+      'create hel_map media',
+      'delete own hel_map media',
+      'edit any hel_map media',
+      'edit own hel_map media',
+    ],
+    'editor' => [
+      'create hel_map media',
+      'delete any hel_map media',
+      'delete own hel_map media',
+      'edit any hel_map media',
+      'edit own hel_map media',
+    ],
+  ];
+}
+
+/**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function helfi_media_map_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) : void {

@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * Contains module hooks for 'helfi_platform_config_base'.
+ * @file
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_platform_config_base_platform_config_grant_permissions() : array {
+  return [
+    'authenticated' => [
+      'access toolbar',
+    ],
+  ];
+}
