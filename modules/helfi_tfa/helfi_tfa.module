@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Contains module hooks for helfi_tfa module.
  * @file
+ * Contains module hooks for helfi_tfa module.
  */
 
 declare(strict_types=1);

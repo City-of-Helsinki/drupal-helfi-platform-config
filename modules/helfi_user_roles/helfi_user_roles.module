@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @file
  * Provides module hooks for helfi_user_roles module.
  */
 

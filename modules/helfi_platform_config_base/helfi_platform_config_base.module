@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Contains module hooks for 'helfi_platform_config_base'.
  * @file
+ * Contains module hooks for 'helfi_platform_config_base'.
  */
 
 declare(strict_types=1);
