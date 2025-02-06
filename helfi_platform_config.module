@@ -56,6 +56,14 @@ function helfi_platform_config_modules_installed(array $modules, bool $is_syncin
   if ($moduleHandler->moduleExists('locale')) {
     locale_system_set_config_langcodes();
   }
+  // Collect all module permissions.
+  $permissions = $moduleHandler->invokeAll('platform_config_grant_permissions');
+
+  // Update permissions.
+  if (!empty($permissions)) {
+    helfi_platform_config_grant_permissions($permissions);
+  }
+
   helfi_platform_config_update_paragraph_target_types();
 }
 
