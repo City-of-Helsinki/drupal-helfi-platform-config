@@ -31,6 +31,13 @@ final class ConfigUpdaterCommands extends DrushCommands {
    *   An array of module names.
    */
   private function getModules() : array {
+    $ignore = [
+      // Never update helfi_user_roles module because it will mess up
+      // user permissions and dependencies.
+      // This shouldn't be needed anyway since it provides no real
+      // configuration besides the skeleton user roles with no dependencies.
+      'helfi_user_roles',
+    ];
     $iterator = new \DirectoryIterator(__DIR__ . '/../../../modules');
 
     $modules = [];
@@ -45,7 +52,7 @@ final class ConfigUpdaterCommands extends DrushCommands {
       $name = $module->getBasename();
 
       // Skip ignored and not-installed modules.
-      if (!$this->moduleHandler->moduleExists($name)) {
+      if (!$this->moduleHandler->moduleExists($name) || in_array($name, $ignore)) {
         continue;
       }
 
