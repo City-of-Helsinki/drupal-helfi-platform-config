@@ -45,26 +45,21 @@ dependencies:
 
 ## Drupal permissions
 
-Permissions should be defined in module's `.install` file and the function should be called in `hook_install()` hook:
+Permissions should be defined in module's `hook_platform_config_grant_permissions()` hook:
 
 ```php
-function mymodule_grant_permissions() : void {
-  $permissions = [
+/**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_node_news_article_platform_config_grant_permissions() : array {
+  return [
     'admin' => [
-      'access content',
+      'view news_article revisions',
     ],
-    'anonymous' => [
-      'access content',
+    'content_producer' => [
+      'view news_article revisions',
     ],
   ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function mymodule_install() : void {
-  mymodule_grant_permissions();
 }
 ```
 
@@ -202,28 +197,9 @@ The command will:
 
 See https://github.com/City-of-Helsinki/drupal-tools/blob/main/HelperCommands.php for more up-to-date information.
 
-### Update permissions
+### Update module configuration
 
-To update permissions, add the new/changed permission in modules' `mymodule_grant_permission()` and call the function in `hook_update_N()` hook:
-
-```php
-function mymodule_update_9001(): void {
-  mymodule_grant_permissions();
-}
-```
-
-### Update all configuration
-
-Use `helfi_platform_config.config_update_helper` service to replace existing configuration:
-
-```php
-function helfi_media_update_9001() : void {
-  // Re-import 'helfi_media' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_media');
-}
-```
-The update hook above will re-import all configuration from `helfi_media` module's `config/install` and `config/rewrite` folders and run necessary post-update hooks.
+Run: `drush helfi:platform-config:update`. This will re-import all configuration and trigger necessary hooks, such as `hook_platform_config_grant_permissions()` to update user permissions or `hook_helfi_paragraph_types()` to update Paragraph fields.
 
 #### Rewrite configuration
 
@@ -240,7 +216,7 @@ function my_module_rewrite_config_update(string $module, Drupal\config_rewrite\C
   }
 }
 ```
-This hook will trigger when `\Drupal::service('helfi_platform_config.config_update_helper')->update('helfi_paragraphs_text');` is run and it will search for configurations in `my_module/config/rewrite/` folder.
+This hook will trigger when `\Drupal::service('helfi_platform_config.config_update_helper')->update('helfi_paragraphs_text');` is run, and it will search for configurations in `my_module/config/rewrite/` folder.
 
 To override configurations for your Drupal instance, follow the instructions found in [Rewrite module project page](https://www.drupal.org/project/config_rewrite).
 

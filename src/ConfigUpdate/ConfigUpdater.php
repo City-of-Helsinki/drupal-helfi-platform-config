@@ -68,7 +68,7 @@ final class ConfigUpdater {
       $this->configRewriter,
     ]);
 
-    // Collect all module permissions.
+    // Collect all module permissions and update them.
     $permissions = $this->moduleHandler->invokeAll('platform_config_grant_permissions');
 
     // Update permissions.
