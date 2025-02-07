@@ -4,6 +4,7 @@ core_version_requirement: ^9 || ^10
 package: HELfi
 dependencies:
   - default_content:default_content
+  - helfi_platform_config:hdbt_cookie_banner
   - helfi_platform_config:helfi_calculator
   - helfi_platform_config:helfi_etusivu_entities
   - helfi_platform_config:helfi_paragraphs_image_gallery

@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_test_content module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_install().
+ */
+function helfi_test_content_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Extension\ModuleHandler $module_handler */
+  $module_handler = \Drupal::moduleHandler();
+
+  // Return if the hdbt_cookie_banner module is not installed.
+  if (!$module_handler->moduleExists('hdbt_cookie_banner')) {
+    return;
+  }
+
+  // Install the default configuration for the hdbt_cookie_banner module.
+  $config_factory = \Drupal::configFactory();
+  $module_path = \Drupal::service('extension.list.module')
+    ->getPath('hdbt_cookie_banner');
+  $json_file_path = $module_path . '/assets/json/siteSettingsTemplate.json';
+
+  try {
+    $json_content = file_get_contents($json_file_path);
+  }
+  catch (\Throwable $e) {
+    return;
+  }
+
+  $config = $config_factory->getEditable('hdbt_cookie_banner.settings');
+  $config
+    ->set('use_custom_settings', TRUE)
+    ->set('site_settings', $json_content)
+    ->save();
+}
