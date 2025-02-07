@@ -30,7 +30,6 @@ use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\RedirectCleaner;
 use Drupal\paragraphs\Entity\ParagraphsType;
-use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_entity_type_build().
