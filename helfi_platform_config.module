@@ -24,6 +24,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
@@ -56,13 +57,11 @@ function helfi_platform_config_modules_installed(array $modules, bool $is_syncin
   if ($moduleHandler->moduleExists('locale')) {
     locale_system_set_config_langcodes();
   }
-  // Collect all module permissions.
+  // Collect and update all module permissions.
   $permissions = $moduleHandler->invokeAll('platform_config_grant_permissions');
 
-  // Update permissions.
-  if (!empty($permissions)) {
-    helfi_platform_config_grant_permissions($permissions);
-  }
+  \Drupal::service(ConfigUpdater::class)
+    ->updatePermissions($permissions ?? []);
 
   helfi_platform_config_update_paragraph_target_types();
 }
@@ -316,25 +315,6 @@ function helfi_platform_config_block_access(Block $block, $operation, AccountInt
   }
 
   return AccessResult::neutral();
-}
-
-/**
- * Grants permissions for given role.
- *
- * @param array $map
- *   The role => permissions map.
- *
- * @throws \Drupal\Core\Entity\EntityStorageException
- * @throws \InvalidArgumentException
- */
-function helfi_platform_config_grant_permissions(array $map): void {
-  foreach ($map as $rid => $permissions) {
-    if (!$role = Role::load($rid)) {
-      throw new InvalidArgumentException("Role ($rid) not found.");
-    }
-    array_map(fn (string $permission) => $role->grantPermission($permission), $permissions);
-    $role->save();
-  }
 }
 
 /**
