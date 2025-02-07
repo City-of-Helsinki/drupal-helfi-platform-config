@@ -1,0 +1,5 @@
+services:
+  helfi_media_remote_video.url_resolver:
+    class: Drupal\helfi_media_remote_video\Services\UrlResolver
+    arguments:
+      - '@media.oembed.url_resolver'

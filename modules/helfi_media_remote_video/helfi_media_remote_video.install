@@ -52,9 +52,9 @@ function helfi_media_remote_video_install($is_syncing) : void {
 }
 
 /**
- * UHF-9088 Updated translations for media remote video.
+ * UHF-9088 Added new provider for remote_video media.
  */
-function helfi_media_remote_video_update_9001(): void {
+function helfi_media_remote_video_update_9003(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_media_remote_video');
 }

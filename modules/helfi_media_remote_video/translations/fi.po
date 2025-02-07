@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+
+msgctxt "helfi media remote video"
+msgid "The video URL is invalid. Please ensure it is correct and belongs to one of the supported providers: Helsinki Kanava or YouTube. The URL should link directly to the video page (the page where the video can be watched)."
+msgstr "Videon URL-osoite on virheellinen. Varmista, että se on oikein ja kuuluu johonkin tuetuista palveluntarjoajista: Helsinki Kanava tai YouTube. URL-osoitteen tulee johtaa suoraan videon katselusivulle (sivulle, jossa video voidaan katsoa)."

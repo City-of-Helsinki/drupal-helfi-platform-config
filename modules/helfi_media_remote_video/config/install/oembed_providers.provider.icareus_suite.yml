@@ -42,3 +42,14 @@ endpoints:
     formats:
       json: true
       xml: false
+  -
+    schemes:
+      - 'https://www.helsinkikanava.fi/*/event/details/*'
+      - 'https://helsinkikanava.fi/*/event/details/*'
+      - 'https://www.helsinkikanava.fi/*/video/details/*'
+      - 'https://helsinkikanava.fi/*/video/details/*'
+    url: 'https://suite.icareus.com/api/oembed'
+    discovery: false
+    formats:
+      json: true
+      xml: false
