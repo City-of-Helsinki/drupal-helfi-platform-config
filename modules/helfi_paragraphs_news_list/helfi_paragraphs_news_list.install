@@ -11,41 +11,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
- * Grants required permissions.
- */
-function helfi_paragraphs_news_list_grant_permissions() : void {
-  $permissions = [
-    'view helfi_news external entity',
-    'view helfi_news_groups external entity',
-    'view helfi_news_neighbourhoods external entity',
-    'view helfi_news_tags external entity',
-  ];
-
-  helfi_platform_config_grant_permissions([
-    'anonymous' => $permissions,
-    'authenticated' => $permissions,
-  ]);
-}
-
-/**
- * Implements hook_install().
- */
-function helfi_paragraphs_news_list_install(bool $is_syncing) : void {
-  if ($is_syncing) {
-    return;
-  }
-  helfi_paragraphs_news_list_grant_permissions();
-}
-
-/**
- * UHF-8135 Update news list paragraph translations.
- */
-function helfi_paragraphs_news_list_update_9002(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_paragraphs_news_list');
-}
-
-/**
  * Suffix all external entity IDs with langcode.
  */
 function helfi_paragraphs_news_list_update_9003(&$sandbox) : void {
@@ -106,13 +71,6 @@ function helfi_paragraphs_news_list_update_9003(&$sandbox) : void {
 }
 
 /**
- * Grant required permissions to view external entities.
- */
-function helfi_paragraphs_news_list_update_9004() : void {
-  helfi_paragraphs_news_list_grant_permissions();
-}
-
-/**
  * Delete old field frontpage tid field.
  */
 function helfi_paragraphs_news_list_update_9007() : void {
@@ -129,17 +87,8 @@ function helfi_paragraphs_news_list_update_9007() : void {
 }
 
 /**
- * UHF-10555 Update news list entity view modes.
- */
-function helfi_paragraphs_news_list_update_9009() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_paragraphs_news_list');
-}
-
-/**
  * UHF-11002: Update news list external entities.
  */
 function helfi_paragraphs_news_list_update_9010() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_paragraphs_news_list');
+  // This is now automated.
 }

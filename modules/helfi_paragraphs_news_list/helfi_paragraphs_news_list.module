@@ -22,6 +22,23 @@ use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_paragraphs_news_list_platform_config_grant_permissions() : array {
+  $permissions = [
+    'view helfi_news external entity',
+    'view helfi_news_groups external entity',
+    'view helfi_news_neighbourhoods external entity',
+    'view helfi_news_tags external entity',
+  ];
+
+  return [
+    'anonymous' => $permissions,
+    'authenticated' => $permissions,
+  ];
+}
+
+/**
  * Implements hook_entity_extra_field_info().
  */
 function helfi_paragraphs_news_list_entity_extra_field_info() : array {

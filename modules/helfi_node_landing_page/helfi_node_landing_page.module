@@ -10,6 +10,52 @@ declare(strict_types=1);
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_node_landing_page_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'create landing_page content',
+      'delete any landing_page content',
+      'delete landing_page revisions',
+      'delete own landing_page content',
+      'edit any landing_page content',
+      'edit own landing_page content',
+      'revert landing_page revisions',
+      'set landing_page published on date',
+      'translate landing_page node',
+      'view landing_page revisions',
+    ],
+    'content_producer' => [
+      'create landing_page content',
+      'delete own landing_page content',
+      'edit any landing_page content',
+      'edit own landing_page content',
+      'revert landing_page revisions',
+      'set landing_page published on date',
+      'translate landing_page node',
+      'view any unpublished landing_page content',
+      'view landing_page revisions',
+    ],
+    'editor' => [
+      'create landing_page content',
+      'delete any landing_page content',
+      'delete landing_page revisions',
+      'delete own landing_page content',
+      'edit any landing_page content',
+      'edit own landing_page content',
+      'revert landing_page revisions',
+      'set landing_page published on date',
+      'translate landing_page node',
+      'view landing_page revisions',
+    ],
+    'read_only' => [
+      'view any unpublished landing_page content',
+    ],
+  ];
+}
+
+/**
  * Implements hook_helfi_paragraph_types().
  */
 function helfi_node_landing_page_helfi_paragraph_types() : array {

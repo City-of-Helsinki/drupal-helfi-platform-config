@@ -8,6 +8,26 @@
 declare(strict_types=1);
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_node_survey_platform_config_grant_permissions() : array {
+  return [
+    'survey_editor' => [
+      'create survey content',
+      'delete survey revisions',
+      'delete any survey content',
+      'delete own survey content',
+      'edit any survey content',
+      'edit own survey content',
+      'revert survey revisions',
+      'set survey published on date',
+      'translate survey node',
+      'view survey revisions',
+    ],
+  ];
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function helfi_node_survey_form_node_form_alter(&$form, &$form_state, $form_id) : void {

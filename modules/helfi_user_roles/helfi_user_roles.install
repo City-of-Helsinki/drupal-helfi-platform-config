@@ -11,50 +11,6 @@ use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 
 /**
- * Grants required permissions.
- */
-function helfi_user_roles_grant_permissions() : void {
-  $permissions = [
-    'anonymous' => [
-      'access content',
-    ],
-    'admin' => [
-      // @user.
-      'access user profiles',
-      'administer users',
-      'cancel account',
-      'change own username',
-    ],
-    'content_producer' => [
-      // @user.
-      'access user profiles',
-      'cancel account',
-      'change own username',
-    ],
-    'editor' => [
-      // @user.
-      'access user profiles',
-      'cancel account',
-      'change own username',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function helfi_user_roles_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  helfi_user_roles_grant_permissions();
-}
-
-/**
  * Install 'super_administrator' role.
  */
 function helfi_user_roles_update_9001() : void {

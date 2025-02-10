@@ -8,53 +8,8 @@
 declare(strict_types=1);
 
 /**
- * Grants required permissions.
- */
-function helfi_media_remote_video_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'create remote_video media',
-      'delete any remote_video media',
-      'delete own remote_video media',
-      'edit any remote_video media',
-      'edit own remote_video media',
-      'translate remote_video media',
-    ],
-    'content_producer' => [
-      'create remote_video media',
-      'delete own remote_video media',
-      'edit any remote_video media',
-      'edit own remote_video media',
-    ],
-    'editor' => [
-      'create remote_video media',
-      'delete any remote_video media',
-      'delete own remote_video media',
-      'edit any remote_video media',
-      'edit own remote_video media',
-      'translate remote_video media',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function helfi_media_remote_video_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  helfi_media_remote_video_grant_permissions();
-}
-
-/**
  * UHF-9088 Updated translations for media remote video.
  */
 function helfi_media_remote_video_update_9001(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_media_remote_video');
+  // This is automated now.
 }

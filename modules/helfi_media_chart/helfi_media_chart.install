@@ -8,51 +8,8 @@
 declare(strict_types=1);
 
 /**
- * Grants required permissions.
+ * UHF-9088 Updated translations for media chart.
  */
-function helfi_media_chart_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'create helfi_chart media',
-      'delete any helfi_chart media',
-      'delete own helfi_chart media',
-      'edit any helfi_chart media',
-      'edit own helfi_chart media',
-    ],
-    'content_producer' => [
-      'create helfi_chart media',
-      'delete own helfi_chart media',
-      'edit any helfi_chart media',
-      'edit own helfi_chart media',
-    ],
-    'editor' => [
-      'create helfi_chart media',
-      'delete any helfi_chart media',
-      'delete own helfi_chart media',
-      'edit any helfi_chart media',
-      'edit own helfi_chart media',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function helfi_media_chart_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  helfi_media_chart_grant_permissions();
-}
-
-/**
- * UHF-11329 Removed ChartFormatter and use Link formatter instead.
- */
-function helfi_media_chart_update_9003(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_media_chart');
+function helfi_media_chart_update_9002(): void {
+  // This is now automated.
 }

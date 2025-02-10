@@ -8,53 +8,6 @@
 declare(strict_types=1);
 
 /**
- * Gets the permissions.
- */
-function helfi_node_page_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'create page content',
-      'delete any page content',
-      'delete own page content',
-      'delete page revisions',
-      'edit any page content',
-      'edit own page content',
-      'revert page revisions',
-      'set page published on date',
-      'translate page node',
-      'view page revisions',
-    ],
-    'content_producer' => [
-      'create page content',
-      'delete own page content',
-      'edit any page content',
-      'edit own page content',
-      'revert page revisions',
-      'set page published on date',
-      'translate page node',
-      'view any unpublished page content',
-      'view page revisions',
-    ],
-    'editor' => [
-      'create page content',
-      'delete any page content',
-      'delete own page content',
-      'delete page revisions',
-      'edit any page content',
-      'edit own page content',
-      'revert page revisions',
-      'set page published on date',
-      'translate page node',
-      'view page revisions',
-    ],
-    'read_only' => [
-      'view any unpublished page content',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
  * Install metatag configurations manually.
  */
 function helfi_node_page_install_metatag_settings(): void {
@@ -87,8 +40,6 @@ function helfi_node_page_install($is_syncing) : void {
     return;
   }
 
-  helfi_node_page_grant_permissions();
-
   // Install metatag settings manually as customizations will be overridden
   // during default content installation.
   if (Drupal::moduleHandler()->moduleExists('metatag')) {
@@ -107,7 +58,5 @@ function helfi_node_page_update_9001() : void {
  * UHF-9088: Updated configuration translations for helfi_node_page.
  */
 function helfi_node_page_update_9004() : void {
-  // Re-import configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_node_page');
+  // This is now automated.
 }
