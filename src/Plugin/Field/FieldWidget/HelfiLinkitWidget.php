@@ -104,4 +104,5 @@ final class HelfiLinkitWidget extends LinkitWidget {
 
     return $url;
   }
+
 }
