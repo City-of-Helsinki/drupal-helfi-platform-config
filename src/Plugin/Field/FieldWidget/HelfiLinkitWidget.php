@@ -102,7 +102,8 @@ final class HelfiLinkitWidget extends LinkitWidget {
     if (preg_match('/\?url=([^&]*)/', $url, $matches)) {
       $new_url = urldecode($matches[1]);
 
-      // Return the decoded URL if it's valid, otherwise return the original URL.
+      // Return the decoded URL if it's valid,
+      // otherwise return the original URL.
       return (UrlHelper::isValid($new_url)) ? $new_url : $url;
     }
     return $url;

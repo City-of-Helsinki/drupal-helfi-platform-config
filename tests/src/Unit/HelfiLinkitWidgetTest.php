@@ -116,7 +116,7 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
       ['/sv/någon/sida/', 'internal:/sv/någon/sida/'],
       [
         'https://prefix.safelinks.protection.outlook.com/?url=https%3A//www.test.hel.ninja/fi/&data=05%7C02%7Csome.email%40hel.test.ninja%7Ce8a754aca1414b62752%7C1%7C0%7C6%7CUnknown%7CTWFpbGZsn0%3D%7C0%7C%7C%7C&sdata=wk3kH%3D&reserved=0   ',
-        'https://www.test.hel.ninja/fi/'
+        'https://www.test.hel.ninja/fi/',
       ],
     ];
   }
