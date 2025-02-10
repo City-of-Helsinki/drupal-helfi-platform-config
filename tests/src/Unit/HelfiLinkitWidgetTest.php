@@ -83,6 +83,7 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
    * @covers ::convertToUri
    * @covers ::create
    * @covers ::massageFormValues
+   * @covers ::sanitizeSafeLink
    */
   public function testMassageFormValues(string $uri, string $expected): void {
     $massagedValues = $this->widget->massageFormValues(
