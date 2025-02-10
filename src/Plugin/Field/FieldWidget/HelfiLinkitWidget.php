@@ -55,19 +55,19 @@ final class HelfiLinkitWidget extends LinkitWidget {
    * @param string $input
    *   The user input.
    *
-   * @return string
+   * @return string|null
    *   The URI.
    */
-  protected function convertToUri(string $input): string {
+  protected function convertToUri(string $input): ?string {
+    if (UrlHelper::isExternal($input)) {
+      $input = $this->sanitizeSafeLink($input);
+    }
+
     if (
       UrlHelper::isExternal($input) &&
       UrlHelper::externalIsLocal($input, $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost())
     ) {
       return $input;
-    }
-
-    if (UrlHelper::isExternal($input)) {
-      $input = $this->sanitizeSafeLink($input);
     }
 
     return LinkitHelper::uriFromUserInput($input);
@@ -98,10 +98,13 @@ final class HelfiLinkitWidget extends LinkitWidget {
       return $url;
     }
 
+    // Get the URL from the query string.
     if (preg_match('/\?url=([^&]*)/', $url, $matches)) {
-      return urldecode($matches[1]);
-    }
+      $new_url = urldecode($matches[1]);
 
+      // Return the decoded URL if it's valid, otherwise return the original URL.
+      return (UrlHelper::isValid($new_url)) ? $new_url : $url;
+    }
     return $url;
   }
 
