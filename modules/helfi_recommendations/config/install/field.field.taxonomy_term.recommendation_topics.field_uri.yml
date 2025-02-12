@@ -1,0 +1,19 @@
+uuid: a65857b9-001b-42c8-8855-22a4b1699e5b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_uri
+    - taxonomy.vocabulary.recommendation_topics
+id: taxonomy_term.recommendation_topics.field_uri
+field_name: field_uri
+entity_type: taxonomy_term
+bundle: recommendation_topics
+label: uri
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

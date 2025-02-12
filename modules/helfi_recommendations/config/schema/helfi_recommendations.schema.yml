@@ -1,0 +1,36 @@
+field.value.helfi_recommendations_suggestion:
+  type: mapping
+  label: Default value
+  mapping:
+    target_id:
+      type: string
+      label: 'Value'
+    target_uuid:
+      type: uuid
+    score:
+      type: label
+      label: Score
+
+field.value.suggested_topics_reference:
+  type: mapping
+  label: Default value
+  mapping:
+    value:
+      type: label
+      label: Value
+
+field.storage_settings.scored_entity_reference:
+  type: field.storage_settings.entity_reference
+  label: 'Scored reference field storage settings'
+
+field.field_settings.scored_entity_reference:
+  type: field.field_settings.entity_reference
+  label: 'Scored reference settings'
+
+field.storage_settings.suggested_topics_reference:
+  type: field.storage_settings.entity_reference
+  label: 'Suggested topics field storage settings'
+
+field.field_settings.suggested_topics_reference:
+  type: field.field_settings.entity_reference
+  label: 'Suggested topics reference settings'

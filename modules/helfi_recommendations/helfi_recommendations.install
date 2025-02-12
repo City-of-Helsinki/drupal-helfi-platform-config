@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Contains installation hooks.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
+
+/**
+ * Updates entity fields for suggested_topics.
+ */
+function helfi_recommendations_update_9004(): void {
+  $fields['parent_id'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent ID'))
+    ->setDescription(t('The ID of the parent entity of which this entity is referenced.'))
+    ->setSetting('is_ascii', TRUE);
+
+  $fields['parent_type'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent type'))
+    ->setDescription(t('The entity parent type to which this entity is referenced.'))
+    ->setSetting('is_ascii', TRUE)
+    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH);
+
+  $fields['parent_instance'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent instance'))
+    ->setDescription(t('The name of the instance where this entity is located at.'))
+    ->setSetting('is_ascii', TRUE);
+
+  foreach ($fields as $name => $field) {
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($name, 'suggested_topics', 'helfi_recommendations', $field);
+  }
+}
+
+/**
+ * Copy published status to suggested_topics_reference entities.
+ */
+function helfi_recommendations_update_9006(): void {
+  // Publish all suggested topics entities.
+  // The previous default value for the field
+  // was unpublished.
+  \Drupal::database()
+    ->update('suggested_topics')
+    ->fields([
+      'status' => TRUE,
+    ])
+    ->execute();
+
+  $entities = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'in_recommendations' => FALSE,
+    ]);
+
+  // Unpublish all suggested topics entities that were hidden from search.
+  foreach ($entities as $entity) {
+    $topics = $entity->get('annif_suggested_topics')->entity;
+    assert($topics instanceof SuggestedTopicsInterface);
+
+    $topics->setUnpublished();
+    $topics->save();
+  }
+}

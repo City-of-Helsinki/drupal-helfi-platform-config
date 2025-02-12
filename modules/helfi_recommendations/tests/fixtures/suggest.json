@@ -1,0 +1,64 @@
+{
+  "results": [
+    {
+      "label": "koneoppiminen",
+      "notation": null,
+      "score": 0.46088449954986572,
+      "uri": "http://www.yso.fi/onto/yso/p21846"
+    },
+    {
+      "label": "vallankäyttö",
+      "notation": null,
+      "score": 0.3119577467441559,
+      "uri": "http://www.yso.fi/onto/yso/p2552"
+    },
+    {
+      "label": "etiikka",
+      "notation": null,
+      "score": 0.28266093134880066,
+      "uri": "http://www.yso.fi/onto/yso/p3166"
+    },
+    {
+      "label": "alkuperäiskansat",
+      "notation": null,
+      "score": 0.2512991428375244,
+      "uri": "http://www.yso.fi/onto/yso/p5737"
+    },
+    {
+      "label": "kansainvälisyys",
+      "notation": null,
+      "score": 0.14482228457927704,
+      "uri": "http://www.yso.fi/onto/yso/p3868"
+    },
+    {
+      "label": "päätöksenteko",
+      "notation": null,
+      "score": 0.13808822631835938,
+      "uri": "http://www.yso.fi/onto/yso/p8743"
+    },
+    {
+      "label": "yksityisyys",
+      "notation": null,
+      "score": 0.12269054353237152,
+      "uri": "http://www.yso.fi/onto/yso/p10909"
+    },
+    {
+      "label": "tekoäly",
+      "notation": null,
+      "score": 0.10428894311189651,
+      "uri": "http://www.yso.fi/onto/yso/p2616"
+    },
+    {
+      "label": "geenipankit",
+      "notation": null,
+      "score": 0.08280995488166809,
+      "uri": "http://www.yso.fi/onto/yso/p10732"
+    },
+    {
+      "label": "yhteiskunnalliset vaikutukset",
+      "notation": null,
+      "score": 0.06932798027992249,
+      "uri": "http://www.yso.fi/onto/yso/p7128"
+    }
+  ]
+}

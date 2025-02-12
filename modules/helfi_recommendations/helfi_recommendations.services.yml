@@ -1,0 +1,27 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  logger.channel.helfi_recommendations:
+    parent: logger.channel_base
+    arguments: ['helfi_recommendations']
+
+  Drupal\helfi_recommendations\TopicsManager: ~
+  Drupal\helfi_recommendations\TopicsManagerInterface: '@Drupal\helfi_recommendations\TopicsManager'
+
+  Drupal\helfi_recommendations\ReferenceUpdater: ~
+
+  Drupal\helfi_recommendations\RecommendationManager: ~
+
+  Drupal\helfi_recommendations\Client\ApiClient : ~
+
+  Drupal\helfi_recommendations\TextConverter\TextConverterManager:
+    tags:
+      - { name: service_collector, call: add, tag: helfi_recommendations.text_converter }
+
+  Drupal\helfi_recommendations\TextConverter\RenderTextConverter:
+    tags:
+      - { name: helfi_recommendations.text_converter, priority: -1 }
+
+  Drupal\helfi_recommendations\EventSubscriber\SearchApiSubscriber: ~

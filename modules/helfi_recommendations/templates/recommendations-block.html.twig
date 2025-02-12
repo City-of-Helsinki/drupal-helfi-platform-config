@@ -1,0 +1,9 @@
+{% if rows is empty %}
+  <div class="empty-text">
+    {{ no_results_message }}
+  </div>
+{% else %}
+  {% for row in rows %}
+    {{ row }}
+  {% endfor %}
+{% endif %}

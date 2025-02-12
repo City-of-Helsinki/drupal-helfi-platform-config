@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * @file
+ * Contains alterations for config.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\helfi_recommendations\TextConverter\Document;
+use Drupal\helfi_recommendations\TopicsManagerInterface;
+
+/**
+ * Implements hook_entity_insert().
+ */
+function helfi_recommendations_entity_insert(EntityInterface $entity) : void {
+  if ($entity instanceof ContentEntityInterface) {
+    /** @var \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager */
+    $topicsManager = \Drupal::service(TopicsManagerInterface::class);
+    $topicsManager->queueEntity($entity, TRUE);
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function helfi_recommendations_entity_update(EntityInterface $entity) : void {
+  if ($entity instanceof ContentEntityInterface) {
+    /** @var \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager */
+    $topicsManager = \Drupal::service(TopicsManagerInterface::class);
+    $topicsManager->queueEntity($entity, TRUE);
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_recommendations_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entityType, $bundle) : void {
+  if ($entityType->id() === 'taxonomy_term' && $bundle === 'recommendation_topics') {
+    if (isset($fields['field_uri'])) {
+      $fields['field_uri']->addConstraint('UniqueField');
+    }
+  }
+}
+
+/**
+ * Implements hook_text_conversion_alter().
+ */
+function helfi_recommendations_text_conversion_alter(Document &$document, EntityInterface $entity) : void {
+  // Strip nodes that are not displayed.
+  $document
+    ->stripNodes("//*[contains(@class, 'is-hidden')]")
+    ->stripNodes("//*[contains(@class, 'visually-hidden')]");
+}
