@@ -1,0 +1,11 @@
+uuid: a60a532f-5ef1-4546-8b17-b146e0f78370
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.text_converter
+label: 'Text converter'
+description: 'Used to convert pages to text that is fed to recommendation engine.'
+targetEntityType: node
+cache: true
