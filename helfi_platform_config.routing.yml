@@ -1,7 +1,0 @@
-helfi_platform_config.genesys_auth_redirect:
-  path: '/genesys-auth-redirect'
-  defaults:
-    _controller: '\Drupal\helfi_platform_config\Controller\GenesysAuthRedirectController::content'
-    _title: 'Genesys auth redirect'
-  requirements:
-    _permission: 'access content'
