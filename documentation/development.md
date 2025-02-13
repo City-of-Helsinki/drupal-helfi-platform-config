@@ -229,6 +229,23 @@ The label change for the Finnish translation would be implemented in a configura
 label: Teksti (ylikirjoitettu)
 ```
 
+#### How to fix recursive errors during site install?
+
+In some cases there can be recursive errors during site install which will slow down the site installation process.
+Here are two examples and instructions how to fix the issues.
+
+##### Deleted and replaced configuration entity
+```
+ [error]  Deleted and replaced configuration entity "field.field.paragraph.event_list.field_filter_keywords"
+```
+This error occurs when the configuration translation has been added to `config/install/language/[langcode]/` folder. To fix the error, move the translation to `module/config/optional/language/[langcode]/` folder.
+
+##### Unexpected error during import with operation create
+```
+ [error]  Unexpected error during import with operation create for core.entity_form_display.helfi_news_groups.helfi_news_groups.default: The "helfi_news_groups" entity type does not exist.
+```
+This error occurs when the entity type is not installed yet, but the configuration for its form display is being imported. Drupal should import the configuration dependencies before this form display configuration, but in some cases it does not. To fix the error, enforce the dependency on the configuration dependencies. See example: [core.entity_form_display.helfi_news_groups.helfi_news_groups.default](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/blob/893e2ae5981898d409a67f3ddb879e6a771a3217/modules/helfi_paragraphs_news_list/config/install/core.entity_form_display.helfi_news_groups.helfi_news_groups.default.yml#L7).
+The error gets fixed once the configurations have been added to Drupal repository's `conf/cmi/` folder.
 
 ## Tokens
 
