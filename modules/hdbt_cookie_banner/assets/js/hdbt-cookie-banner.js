@@ -71,37 +71,58 @@ class UnapprovedItemError extends Error {
   // Attach a behavior to capture unapproved cookies with Sentry.
   Drupal.behaviors.unapprovedCookies = {
     attach: function attach() {
-      window.addEventListener(
-        'hds-cookie-consent-unapproved-item-found',
-        (e) => {
-          if (typeof window.Sentry === 'undefined') {
-            return;
+      const apiUrl = drupalSettings.hdbt_cookie_banner.apiUrl;
+      fetch(apiUrl)
+      .then(response => response.json())
+      .then(jsonData => {
+       
+        // Function to extract cookie names from each group
+        const extractCookiePatterns = (groups) =>
+          groups?.flatMap(group => group.cookies.map(cookie => cookie.name)) || [];
+
+        // Collect all allowed cookie name patterns
+        const validItems = [
+          ...extractCookiePatterns(jsonData.optionalGroups),
+          ...extractCookiePatterns(jsonData.requiredGroups),
+          ...extractCookiePatterns(jsonData.robotGroups),
+        ];
+
+        window.addEventListener(
+          'hds-cookie-consent-unapproved-item-found',
+          (e) => {
+            if (typeof window.Sentry === 'undefined') {
+              return;
+            }
+
+            const { storageType, keys, acceptedGroups } = e.detail;
+            const sortedKeys = keys.sort();
+
+            // Check which keys do not match any pattern in the valid items list
+            const unapprovedItems = sortedKeys.filter(
+              key => !validItems.some(pattern => key.includes(pattern.replace('*', '')))
+            ).sort();
+
+            // Only log if there are unapproved items that are not found in our list
+            if (unapprovedItems.length > 0) {
+              const name = `Unapproved ${storageType}`;
+              const message = `Found: ${unapprovedItems.join(', ')}`;
+
+              window.Sentry.captureException(new UnapprovedItemError(message, name), {
+                level: 'warning',
+                tags: {
+                  approvedCategories: acceptedGroups.join(', '),
+                },
+                extra: {
+                  storageType,
+                  missingCookies: unapprovedItems,
+                  approvedCategories: acceptedGroups,
+                },
+              });
+            }
           }
-          const { storageType, keys, acceptedGroups } = e.detail
-
-          // Alphabetize the keys array
-          const sortedKeys = keys.sort();
-
-          // Sentry requires a unique name for each error in order to record
-          // each found unapproved item per type.
-          const name = `Unapproved ${storageType}`
-          const message = `Found: ${sortedKeys.join(', ')}`
-
-          // Capture the error with Sentry and send a message with the
-          // unapproved items so that they can be searched in Sentry.
-          window.Sentry.captureException(new UnapprovedItemError(message, name), {
-            level: 'warning',
-            tags: {
-              approvedCategories: acceptedGroups.join(', '),
-            },
-            extra: {
-              storageType,
-              cookieNames: sortedKeys,
-              approvedCategories: acceptedGroups,
-            },
-          })
-        }
-      )
+        );
+      })
+      .catch(error => console.error('Failed to fetch JSON:', error));
     },
   }
 })(Drupal, drupalSettings);
