@@ -107,7 +107,7 @@ function helfi_react_search_update_9006() : void {
 }
 
 /**
- * UHF-1129o9: Updated configuration translations for helfi_react_search.
+ * UHF-11299: Updated configuration translations for helfi_react_search.
  */
 function helfi_react_search_update_9010() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
