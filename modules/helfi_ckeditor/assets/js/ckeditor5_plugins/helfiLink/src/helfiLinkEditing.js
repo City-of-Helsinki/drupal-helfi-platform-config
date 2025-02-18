@@ -4,7 +4,7 @@
 import { Plugin } from 'ckeditor5/src/core';
 import { Widget } from 'ckeditor5/src/widget';
 import { findAttributeRange } from 'ckeditor5/src/typing';
-import { isUrlExternal, parseProtocol } from './utils/utils';
+import { isUrlExternal, parseProtocol, sanitizeSafeLinks } from './utils/utils';
 import formElements from './formElements';
 
 /**
@@ -65,7 +65,11 @@ export default class HelfiLinkEditing extends Plugin {
           if (!viewElement.hasAttribute('href')) return null;
 
           // Get the 'href' attribute value.
-          const href = viewElement.getAttribute('href');
+          let href = viewElement.getAttribute('href');
+
+          // Sanitize the 'href' attribute value for safe links.
+          href = sanitizeSafeLinks(href);
+
           return href
             ? href.trim()
               .replace(/^%20+/, '') // Remove leading %20
@@ -579,6 +583,9 @@ export default class HelfiLinkEditing extends Plugin {
           .replace(/%20+$/, '') // Remove trailing %20
           .trim();
 
+        // Sanitize the href value for safe links.
+        trimmedHref = sanitizeSafeLinks(trimmedHref);
+
         // Remove leading and trailing spaces, parentheses and hyphens.
         // This is used for tel: numbers.
         const linkProtocol = parseProtocol(trimmedHref);
@@ -641,7 +648,8 @@ export default class HelfiLinkEditing extends Plugin {
           helfiLinkCommandExecuting = false;
         });
       }
-      // If an error occurs, stop the execution.       // CKEditorError: Cannot read properties of null (reading 'dataset').
+      // If an error occurs, stop the execution.
+      // CKEditorError: Cannot read properties of null (reading 'dataset').
       catch (error) {
         evt.stop();
       }

@@ -54,3 +54,17 @@ export const parseProtocol = url => {
     return false; // We only need to return tel or mailto protocols.
   }
 };
+
+/**
+ * Sanitizes the safe links as they may contain personal data.
+ *
+ * @param {string} url The URL as string.
+ * @return {string} The sanitized URL as a string or original URL.
+ */
+export const sanitizeSafeLinks = url => {
+  if (!url.includes('safelinks.protection.outlook.com')) {
+    return url;
+  }
+  const matches = url.match(/(?<=\?url=).*?(?=&data=)/);
+  return (matches) ? decodeURIComponent(matches[0]) : url;
+};

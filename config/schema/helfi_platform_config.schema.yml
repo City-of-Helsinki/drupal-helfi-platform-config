@@ -28,3 +28,15 @@ field.value.location:
     longitude:
       type: float
       label: longitude
+
+# Schema for the Helfi Linkit widget.
+field.widget.settings.helfi_linkit:
+  type: field.widget.settings.link_default
+  label: 'Helfi Linkit widget settings'
+  mapping:
+    linkit_profile:
+      type: string
+      label: 'Linkit profile'
+    linkit_auto_link_text:
+      type: boolean
+      label: 'Automatically populate link text from entity label'

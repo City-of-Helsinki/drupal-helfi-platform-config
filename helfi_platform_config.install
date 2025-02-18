@@ -7,6 +7,10 @@
 
 declare(strict_types=1);
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
@@ -49,7 +53,7 @@ function helfi_platform_config_update_9303(): void {
   $userEntities = User::loadMultiple($usersIds);
   foreach ($userEntities as $user) {
     if (!$user->getEmail()) {
-      $randomString = substr(md5(rand()), 0, 6);
+      $randomString = substr(md5((string) rand()), 0, 6);
       $email = "$randomString+readonly@hel.fi";
       $user->setEmail($email);
       $user->save();
@@ -314,5 +318,119 @@ function helfi_platform_config_update_9319() : void {
 
   // Remove the chatleijuke block.
   $config_factory->getEditable('block.block.hdbt_subtheme_chatleijuke')->delete();
+}
 
+/**
+ * UHF-10899 Convert Outlook safe links to direct URLs.
+ */
+function helfi_platform_config_update_9320(): void {
+  helfi_platform_config_convert_safelinks();
+}
+
+/**
+ * Get anchor links from text fields and run them through conversion.
+ */
+function helfi_platform_config_convert_safelinks(): void {
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
+  $entity_field_manager = Drupal::service('entity_field.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  $field_types = [
+    'text_with_summary',
+    'text',
+    'text_long',
+  ];
+
+  $count = 0;
+
+  foreach ($field_types as $field_type) {
+    $field_map = $entity_field_manager->getFieldMapByFieldType($field_type);
+
+    foreach ($field_map as $entity_type => $fields) {
+      foreach ($fields as $name => $field) {
+        $query = $entity_type_manager
+          ->getStorage($entity_type)
+          ->getQuery();
+
+        $ids = $query->exists($name)
+          ->condition($name, '<a href="[^"]*safelinks\.protection\.outlook\.com[^"]*"', 'REGEXP')
+          ->accessCheck(FALSE)
+          ->execute();
+
+        foreach ($ids as $id) {
+          $entity = $entity_type_manager->getStorage($entity_type)->load($id);
+
+          assert($entity instanceof TranslatableInterface);
+          foreach ($entity->getTranslationLanguages() as $language) {
+            try {
+              _helfi_platform_config_process_links(
+                $entity->getTranslation($language->getId()),
+                $name,
+                $count
+              );
+            }
+            catch (\Exception $e) {
+              \Drupal::logger('helfi_platform_config')
+                ->error($e->getMessage());
+            }
+          }
+        }
+      }
+    }
+  }
+  \Drupal::logger('helfi_platform_config')
+    ->notice(sprintf('Converted %s Outlook safelinks to direct URLs.', $count));
+}
+
+/**
+ * Convert Outlooks safelinks to direct URLs.
+ *
+ * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ *   The entity translation to process.
+ * @param string $field_name
+ *   The field name.
+ * @param int $count
+ *   The number of links fixed.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function _helfi_platform_config_process_links(ContentEntityInterface $entity, string $field_name, int &$count = 0) : void {
+  if (!$value = $entity->get($field_name)->value) {
+    return;
+  }
+
+  $hasChanges = FALSE;
+  $dom = Html::load($value);
+  /** @var \DOMElement $node */
+  foreach ($dom->getElementsByTagName('a') as $node) {
+    // Nothing to do if link has no href.
+    if (!$href = $node->getAttribute('href')) {
+      continue;
+    }
+
+    // Skip non-safelinked links.
+    if (!str_contains($href, 'safelinks.protection.outlook.com')) {
+      continue;
+    }
+
+    // Convert the URL.
+    if (preg_match('/\?url=([^&]*)/', $href, $matches)) {
+      $newHref = urldecode($matches[1]);
+      $newHref = trim($newHref);
+
+      // Bail if the URL is not valid.
+      if (!UrlHelper::isValid($newHref)) {
+        continue;
+      }
+
+      $hasChanges = TRUE;
+      $count++;
+      $node->setAttribute('href', $newHref);
+    }
+  }
+
+  if ($hasChanges) {
+    $entity->get($field_name)->value = Html::serialize($dom);
+    $entity->save();
+  }
 }

@@ -55,10 +55,14 @@ final class HelfiLinkitWidget extends LinkitWidget {
    * @param string $input
    *   The user input.
    *
-   * @return string
+   * @return string|null
    *   The URI.
    */
-  protected function convertToUri(string $input) {
+  protected function convertToUri(string $input): ?string {
+    if (UrlHelper::isExternal($input)) {
+      $input = $this->sanitizeSafeLink($input);
+    }
+
     if (
       UrlHelper::isExternal($input) &&
       UrlHelper::externalIsLocal($input, $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost())
@@ -72,12 +76,37 @@ final class HelfiLinkitWidget extends LinkitWidget {
   /**
    * {@inheritdoc}
    */
-  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state): array {
     foreach ($values as &$value) {
       $value['uri'] = $this->convertToUri($value['uri']);
       $value += ['options' => $value['attributes']];
     }
     return $values;
+  }
+
+  /**
+   * Sanitizes the outlook safe links as they may contain personal data.
+   *
+   * @param string $url
+   *   The URL as a string.
+   *
+   * @return string
+   *   Returns the sanitized URL or the original URL.
+   */
+  protected function sanitizeSafeLink(string $url): string {
+    if (!str_contains($url, 'safelinks.protection.outlook.com')) {
+      return $url;
+    }
+
+    // Get the URL from the query string.
+    if (preg_match('/\?url=([^&]*)/', $url, $matches)) {
+      $new_url = urldecode($matches[1]);
+
+      // Return the decoded URL if it's valid,
+      // otherwise return the original URL.
+      return (UrlHelper::isValid($new_url)) ? $new_url : $url;
+    }
+    return $url;
   }
 
 }

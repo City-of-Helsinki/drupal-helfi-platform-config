@@ -73,7 +73,9 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
    * Tests CKEditor 5 Helfi link plugin.
    */
   protected function assertLinkPlugin(): void {
-    $test_url = 'https://www.hel.fi';
+    $test_url_protocol = 'https://';
+    $test_url_address = 'www.test.hel.ninja/fi';
+    $test_url = $test_url_protocol . $test_url_address;
 
     // Initialize the CKEditor with a suitable markup.
     $this->initializeEditor('');
@@ -111,8 +113,10 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     // set by the protocol selection.
     $this->assertNotEmpty($link_field);
 
-    // Override the href field value with a URL with a space at the end.
-    $link_field->setValue($test_url . ' ');
+    // Override the href field value with the test URL.
+    // Test sanitation with Outlook safe links and trailing spaces.
+    $dirty_url = "https://prefix.safelinks.protection.outlook.com/?url=https%3A//{$test_url_address}/&data=05%7C02%7Csome.email%40hel.test.ninja%7Ce8a754aca1414b62752%7C1%7C0%7C6%7CUnknown%7CTWFpbGZsn0%3D%7C0%7C%7C%7C&sdata=wk3kH%3D&reserved=0   ";
+    $link_field->setValue($dirty_url);
 
     // Check that the protocol field is not visible after adding href.
     $this->assertFalse($protocol_field->isVisible(), 'Protocol field is not visible.');
