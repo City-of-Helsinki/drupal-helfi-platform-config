@@ -9,9 +9,9 @@
     "format:js": "eslint --fix assets/js/ckeditor5_plugins/"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-core": "^30.0.0",
-    "@ckeditor/ckeditor5-dev-translations": "^38.1.2",
-    "@ckeditor/ckeditor5-dev-utils": "^30.0.0",
+    "@ckeditor/ckeditor5-core": "^44.0.0",
+    "@ckeditor/ckeditor5-dev-translations": "^44.0.0",
+    "@ckeditor/ckeditor5-dev-utils": "^46.0.0",
     "@nuxt/friendly-errors-webpack-plugin": "^2.5.1",
     "babel-loader": "^9.1.2",
     "babel-preset-airbnb": "^5.0.0",
