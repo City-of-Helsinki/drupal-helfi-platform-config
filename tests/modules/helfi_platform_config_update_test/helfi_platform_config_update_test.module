@@ -5,6 +5,8 @@
  * Contains module hooks for 'helfi_platform_config_update_test' module.
  */
 
+declare(strict_types=1);
+
 /**
  * Implements hook_platform_config_grant_permissions().
  */
