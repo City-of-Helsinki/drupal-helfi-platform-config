@@ -56,11 +56,13 @@ function helfi_platform_config_modules_installed(array $modules, bool $is_syncin
   if ($moduleHandler->moduleExists('locale')) {
     locale_system_set_config_langcodes();
   }
-  // Collect and update all module permissions.
-  $permissions = $moduleHandler->invokeAll('platform_config_grant_permissions');
 
-  \Drupal::service(ConfigUpdater::class)
-    ->updatePermissions($permissions ?? []);
+  foreach ($modules as $module) {
+    $permissions = $moduleHandler->invoke($module, 'platform_config_grant_permissions');
+
+    \Drupal::service(ConfigUpdater::class)
+      ->updatePermissions($permissions ?? []);
+  }
 
   helfi_platform_config_update_paragraph_target_types();
 }

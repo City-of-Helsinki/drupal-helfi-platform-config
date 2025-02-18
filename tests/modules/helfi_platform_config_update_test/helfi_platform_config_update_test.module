@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Contains module hooks for 'helfi_platform_config_update_test' module.
+ */
+
+/**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_platform_config_update_test_platform_config_grant_permissions() : array {
+  return [
+    'authenticated' => [
+      'access content',
+    ],
+  ];
+}
