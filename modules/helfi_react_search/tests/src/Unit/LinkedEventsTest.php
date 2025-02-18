@@ -305,6 +305,43 @@ class LinkedEventsTest extends UnitTestCase {
     // Test the formatPlacesUrl method.
     $url_format_places = $sut->formatPlacesUrl('tprek:1923');
     $this->assertEquals('https://api.hel.fi/linkedevents/v1/place?has_upcoming_events=true&sort=name&page_size=100', $url_format_places);
+
+    // Test the parseParams method; replace search text with a known keyword.
+    $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?text=tyollisyys');
+    $this->assertEquals([
+      'all_ongoing_AND' => ' ',
+      'keyword' => 'yso:p6357',
+    ], $params);
+
+    // Test the parseParams method; replace search text with a known keyword and
+    // add keywords from category selections.
+    $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?text=tyollisyys&categories=movie');
+    $this->assertEquals([
+      'all_ongoing_AND' => ' ',
+      'keyword' => 'yso:p6357,yso:p1235',
+    ], $params);
+
+    // Test the parseParams method with multiple params.
+    $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?text=test_text&categories=movie&start=2025-01-31&divisions=test_division&places=test_place&dateTypes=today&isFree=true&onlyEveningEvents=true&onlyRemoteEvents=true&onlyChildrenEvents=true');
+    $this->assertEquals([
+      'all_ongoing_AND' => 'test_text',
+      'keyword' => 'yso:p1235',
+      'start' => 'now',
+      'division' => 'test_division',
+      'location' => 'test_place',
+      'end' => 'today',
+      'is_free' => 'true',
+      'keyword_AND' => 'yso:p4354',
+      'starts_after' => '16',
+      'internet_based' => 'true',
+    ], $params);
+
+    // Test the parseParams method; params without special handling should pass through untouched.
+    $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?test_param_1=test_value_1&test_param_2=test_value_2');
+    $this->assertEquals([
+      'test_param_1' => 'test_value_1',
+      'test_param_2' => 'test_value_2',
+    ], $params);
   }
 
   /**

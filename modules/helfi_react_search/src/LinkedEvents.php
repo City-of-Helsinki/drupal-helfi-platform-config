@@ -330,7 +330,7 @@ class LinkedEvents {
       foreach ($parsed['query'] as $key => $param) {
         switch ($key) {
           case 'categories':
-            $params['keyword'] = $this->categoriesToKeywords($param);
+            $this->handleKeywords($params, $this->categoriesToKeywords($param));
             break;
 
           case 'start':
@@ -380,7 +380,7 @@ class LinkedEvents {
             break;
 
           case 'text':
-            $params['all_ongoing_AND'] = $param;
+            $this->handleTextSearch($params, $param);
             break;
 
           case 'isFree':
@@ -443,6 +443,47 @@ class LinkedEvents {
     }
 
     return implode(',', $keywords);
+  }
+
+  /**
+   * Handle text search.
+   *
+   * Some search phrases can be replaced with a keyword making the API request
+   * much more performant.
+   *
+   * @param array $params
+   *   The parameters. Passed by reference.
+   * @param string $text
+   *   The search text to handle.
+   */
+  protected function handleTextSearch(&$params, string $text) : void {
+    $keyword = match ($text) {
+      'tyollisyys', 'työllisyys' => CategoryKeywords::WORKLIFE,
+      default => NULL,
+    };
+
+    // Always use the 'all_ongoing_AND'-parameter to filter out events that are not ongoing.
+    if ($keyword) {
+      $params['all_ongoing_AND'] = ' ';
+      $this->handleKeywords($params, $keyword);
+    }
+    else {
+      $params['all_ongoing_AND'] = $text;
+    }
+  }
+
+  /**
+   * Handle keywords.
+   *
+   * @param array $params
+   *   The parameters. Passed by reference.
+   * @param string $new_keywords
+   *   The keywords string to add to the parameters.
+   */
+  protected function handleKeywords(&$params, string $new_keywords) : void {
+    // Keyword parameter is a comma-separated string. If it's empty, set it to
+    // the new keywords. Otherwise, append the new keywords.
+    $params['keyword'] = !empty($params['keyword']) ? $params['keyword'] . ',' . $new_keywords : $new_keywords;
   }
 
   /**
