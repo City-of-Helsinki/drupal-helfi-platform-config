@@ -71,20 +71,6 @@ final class ConfigUpdater {
     $this->configInstaller->installDefaultConfig('module', $module);
     $this->configRewriter->rewriteModuleConfig($module);
 
-    if ($module === 'helfi_base_content') {
-      // Rewrite helfi_tpr_config configuration if the helfi_base_content is
-      // being updated.
-      if ($this->moduleHandler->moduleExists('helfi_tpr_config')) {
-        $this->configRewriter->rewriteModuleConfig('helfi_tpr_config');
-      }
-    }
-
-    // Allow modules to rewrite config based on updated modules.
-    $this->moduleHandler->invokeAll('rewrite_config_update', [
-      $module,
-      $this->configRewriter,
-    ]);
-
     // Collect module permissions and update them.
     $permissions = $this->moduleHandler->invoke($module, 'platform_config_grant_permissions');
     $this->updatePermissions($permissions ?? []);

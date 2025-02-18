@@ -142,16 +142,6 @@ function helfi_tpr_config_entity_bundle_info_alter(array &$bundles): void {
 }
 
 /**
- * Implements hook_rewrite_config_update().
- */
-function helfi_tpr_config_config_rewrite_config_update(string $module, ConfigRewriterInterface $configRewriter): void {
-  // Rewrite module configuration.
-  if ($module === 'helfi_tpr_config') {
-    $configRewriter->rewriteModuleConfig('helfi_tpr_config');
-  }
-}
-
-/**
  * Implements hook_helfi_paragraph_types().
  */
 function helfi_tpr_config_helfi_paragraph_types() : array {
