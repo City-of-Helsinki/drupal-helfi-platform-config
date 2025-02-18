@@ -89,7 +89,7 @@ final class ConfigUpdaterCommands extends DrushCommands {
     }
 
     // Handle custom module rewrites.
-    $path = DRUPAL_ROOT . '/public/modules/custom';
+    $path = DRUPAL_ROOT . '/modules/custom';
     foreach ($this->getModules($path, 'rewrite') as $name) {
       $this->configRewriter->rewriteModuleConfig($name);
     }
