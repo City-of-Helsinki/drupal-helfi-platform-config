@@ -403,6 +403,10 @@ class LinkedEvents {
             $params['internet_based'] = 'true';
             break;
 
+          case 'keyword':
+            $this->handleKeywords($params, $param);
+            break;
+
           default:
             $params[$key] = $param;
             break;
