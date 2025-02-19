@@ -462,10 +462,7 @@ class LinkedEvents {
       default => NULL,
     };
 
-    // Always use the 'all_ongoing_AND'-parameter to filter out events that are
-    // not ongoing.
     if ($keyword) {
-      $params['all_ongoing_AND'] = ' ';
       $this->handleKeywords($params, $keyword);
     }
     else {

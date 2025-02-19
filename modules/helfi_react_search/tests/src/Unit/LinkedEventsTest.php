@@ -309,7 +309,6 @@ class LinkedEventsTest extends UnitTestCase {
     // Test the parseParams method; replace search text with a known keyword.
     $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?text=tyollisyys');
     $this->assertEquals([
-      'all_ongoing_AND' => ' ',
       'keyword' => 'yso:p6357',
     ], $params);
 
@@ -317,7 +316,6 @@ class LinkedEventsTest extends UnitTestCase {
     // add keywords from category selections.
     $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?text=tyollisyys&categories=movie');
     $this->assertEquals([
-      'all_ongoing_AND' => ' ',
       'keyword' => 'yso:p6357,yso:p1235',
     ], $params);
 
