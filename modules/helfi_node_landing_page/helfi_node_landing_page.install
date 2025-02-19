@@ -8,53 +8,6 @@
 declare(strict_types=1);
 
 /**
- * Gets the permissions.
- */
-function helfi_node_landing_page_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'create landing_page content',
-      'delete any landing_page content',
-      'delete landing_page revisions',
-      'delete own landing_page content',
-      'edit any landing_page content',
-      'edit own landing_page content',
-      'revert landing_page revisions',
-      'set landing_page published on date',
-      'translate landing_page node',
-      'view landing_page revisions',
-    ],
-    'content_producer' => [
-      'create landing_page content',
-      'delete own landing_page content',
-      'edit any landing_page content',
-      'edit own landing_page content',
-      'revert landing_page revisions',
-      'set landing_page published on date',
-      'translate landing_page node',
-      'view any unpublished landing_page content',
-      'view landing_page revisions',
-    ],
-    'editor' => [
-      'create landing_page content',
-      'delete any landing_page content',
-      'delete landing_page revisions',
-      'delete own landing_page content',
-      'edit any landing_page content',
-      'edit own landing_page content',
-      'revert landing_page revisions',
-      'set landing_page published on date',
-      'translate landing_page node',
-      'view landing_page revisions',
-    ],
-    'read_only' => [
-      'view any unpublished landing_page content',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
  * Install metatag configurations manually.
  */
 function helfi_node_landing_page_install_metatag_settings(): void {
@@ -87,8 +40,6 @@ function helfi_node_landing_page_install($is_syncing) : void {
     return;
   }
 
-  helfi_node_landing_page_grant_permissions();
-
   // Install metatag settings manually as customizations will be overridden
   // during default content installation.
   if (Drupal::moduleHandler()->moduleExists('metatag')) {
@@ -100,7 +51,5 @@ function helfi_node_landing_page_install($is_syncing) : void {
  * UHF-9088: Updated configuration translations for helfi_node_landing_page.
  */
 function helfi_node_landing_page_update_9002() : void {
-  // Re-import configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_node_landing_page');
+  // This is automated now.
 }

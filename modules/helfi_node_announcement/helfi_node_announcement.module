@@ -8,6 +8,50 @@
 declare(strict_types=1);
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_node_announcement_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'create announcement content',
+      'delete announcement revisions',
+      'delete any announcement content',
+      'delete own announcement content',
+      'edit any announcement content',
+      'edit own announcement content',
+      'revert announcement revisions',
+      'set announcement published on date',
+      'translate announcement node',
+      'view announcement revisions',
+    ],
+    'content_producer' => [
+      'create announcement content',
+      'delete own announcement content',
+      'edit any announcement content',
+      'edit own announcement content',
+      'revert announcement revisions',
+      'set announcement published on date',
+      'view announcement revisions',
+    ],
+    'editor' => [
+      'create announcement content',
+      'delete announcement revisions',
+      'delete any announcement content',
+      'delete own announcement content',
+      'edit any announcement content',
+      'edit own announcement content',
+      'revert announcement revisions',
+      'set announcement published on date',
+      'translate announcement node',
+      'view announcement revisions',
+    ],
+    'read_only' => [
+      'view any unpublished announcement content',
+    ],
+  ];
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $form_id) : void {

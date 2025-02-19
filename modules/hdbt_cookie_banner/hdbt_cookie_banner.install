@@ -8,32 +8,6 @@
 declare(strict_types=1);
 
 /**
- * Grants required permissions.
- */
-function hdbt_cookie_banner_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'administer hdbt_cookie_banner',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function hdbt_cookie_banner_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  // Grant required permissions.
-  hdbt_cookie_banner_grant_permissions();
-}
-
-/**
  * Implements hook_uninstall().
  */
 function hdbt_cookie_banner_uninstall(): void {

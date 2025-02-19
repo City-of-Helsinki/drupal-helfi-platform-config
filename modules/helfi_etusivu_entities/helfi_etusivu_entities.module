@@ -12,6 +12,21 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_etusivu_entities_platform_config_grant_permissions() : array {
+  $permissions = [
+    'view helfi_announcements external entity',
+    'view helfi_surveys external entity',
+  ];
+
+  return [
+    'anonymous' => $permissions,
+    'authenticated' => $permissions,
+  ];
+}
+
+/**
  * Gets the block configurations.
  *
  * Example block:

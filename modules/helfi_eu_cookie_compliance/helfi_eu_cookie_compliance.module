@@ -11,6 +11,24 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Url;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_eu_cookie_compliance_platform_config_grant_permissions() : array {
+  return [
+    'anonymous' => [
+      'display eu cookie compliance popup',
+    ],
+    'authenticated' => [
+      'display eu cookie compliance popup',
+    ],
+    'admin' => [
+      'administer eu cookie compliance categories',
+      'administer eu cookie compliance popup',
+    ],
+  ];
+}
+
+/**
  * Implements hook_themes_installed().
  */
 function helfi_eu_cookie_compliance_themes_installed($theme_list) {

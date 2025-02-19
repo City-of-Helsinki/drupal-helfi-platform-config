@@ -2,10 +2,11 @@ uuid: 045f335b-7059-4d6a-9240-43909f3c1704
 langcode: en
 status: true
 dependencies:
-  config:
-    - external_entities.external_entity_type.helfi_news_groups
   module:
     - external_entities
+  enforced:
+    config:
+      - external_entities.external_entity_type.helfi_news_groups
 id: helfi_news_groups.helfi_news_groups.default
 targetEntityType: helfi_news_groups
 bundle: helfi_news_groups

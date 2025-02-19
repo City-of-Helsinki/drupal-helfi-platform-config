@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Contains module hooks for helfi_tfa module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_tfa_platform_config_grant_permissions() : array {
+  $roles = Role::loadMultiple();
+  $permissions = [];
+
+  // Require all roles to setup TFA.
+  foreach ($roles as $role) {
+    if ($role->id() === AccountInterface::ANONYMOUS_ROLE) {
+      continue;
+    }
+    $permissions[$role->id()] = [
+      'setup own tfa',
+      'disable own tfa',
+    ];
+  }
+
+  return $permissions;
+}

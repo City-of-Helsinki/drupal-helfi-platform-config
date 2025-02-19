@@ -1,0 +1,13 @@
+langcode: en
+uuid: db63928e-e14e-42c2-859a-5ff235b6d5e4
+name: 'City of Helsinki'
+mail: drupal@hel.fi
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /user
+admin_compact_mode: false
+weight_select_max: 100
+default_langcode: en
+mail_notification: null

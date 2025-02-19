@@ -2,6 +2,7 @@ name: 'HELfi Platform config: Base'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
+  - drupal:toolbar
   - hdbt_admin_tools:hdbt_admin_tools
   - helfi_base_content:helfi_base_content
   - helfi_ckeditor:helfi_ckeditor

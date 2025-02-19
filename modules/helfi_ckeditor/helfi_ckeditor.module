@@ -11,6 +11,26 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_ckeditor_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'use text format full_html',
+      'use text format minimal',
+    ],
+    'content_producer' => [
+      'use text format full_html',
+      'use text format minimal',
+    ],
+    'editor' => [
+      'use text format full_html',
+      'use text format minimal',
+    ],
+  ];
+}
+
+/**
  * Modify the list of available CKEditor 5 plugins.
  *
  * @param array $plugin_definitions

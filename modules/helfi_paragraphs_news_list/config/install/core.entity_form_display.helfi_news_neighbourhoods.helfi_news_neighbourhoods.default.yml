@@ -2,10 +2,11 @@ uuid: d13089ef-9704-4770-90a9-fd9fedc50405
 langcode: en
 status: true
 dependencies:
-  config:
-    - external_entities.external_entity_type.helfi_news_neighbourhoods
   module:
     - external_entities
+  enforced:
+    config:
+      - external_entities.external_entity_type.helfi_news_neighbourhoods
 id: helfi_news_neighbourhoods.helfi_news_neighbourhoods.default
 targetEntityType: helfi_news_neighbourhoods
 bundle: helfi_news_neighbourhoods

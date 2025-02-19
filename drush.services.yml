@@ -4,14 +4,3 @@ services:
     arguments: ['@entity_type.manager', '@database']
     tags:
       - { name: drush.command }
-
-  helfi_platform_config.major_update_command:
-    class: Drupal\helfi_platform_config\Commands\MajorUpdateCommands
-    arguments:
-      - '@update.update_hook_registry'
-      - '@database'
-      - '@module_handler'
-      - '@extension.list.module'
-      - '@keyvalue'
-    tags:
-      - { name: drush.command }
