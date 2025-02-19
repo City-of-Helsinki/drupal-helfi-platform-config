@@ -336,7 +336,8 @@ class LinkedEventsTest extends UnitTestCase {
       'internet_based' => 'true',
     ], $params);
 
-    // Test the parseParams method; params without special handling should pass through untouched.
+    // Test the parseParams method; params without special handling should pass
+    // through untouched.
     $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?test_param_1=test_value_1&test_param_2=test_value_2');
     $this->assertEquals([
       'test_param_1' => 'test_value_1',
