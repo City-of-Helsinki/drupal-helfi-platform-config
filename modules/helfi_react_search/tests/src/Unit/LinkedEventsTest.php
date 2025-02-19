@@ -306,17 +306,11 @@ class LinkedEventsTest extends UnitTestCase {
     $url_format_places = $sut->formatPlacesUrl('tprek:1923');
     $this->assertEquals('https://api.hel.fi/linkedevents/v1/place?has_upcoming_events=true&sort=name&page_size=100', $url_format_places);
 
-    // Test the parseParams method; replace search text with a known keyword.
-    $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?text=tyollisyys');
+    // Test the parseParams method; add keywords from category selections as
+    // well as manually.
+    $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?categories=movie&keyword=yso:p6357');
     $this->assertEquals([
-      'keyword' => 'yso:p6357',
-    ], $params);
-
-    // Test the parseParams method; replace search text with a known keyword and
-    // add keywords from category selections.
-    $params = $sut->parseParams('https://tapahtumat.hel.fi/fi/haku?text=tyollisyys&categories=movie');
-    $this->assertEquals([
-      'keyword' => 'yso:p6357,yso:p1235',
+      'keyword' => 'yso:p1235,yso:p6357',
     ], $params);
 
     // Test the parseParams method with multiple params.

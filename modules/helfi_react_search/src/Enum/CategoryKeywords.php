@@ -134,8 +134,6 @@ class CategoryKeywords {
 
   public const CHILDREN = 'yso:p4354';
 
-  public const WORKLIFE = 'yso:p6357';
-
   /**
    * Enum class, prevent instantiating.
    */

@@ -380,7 +380,7 @@ class LinkedEvents {
             break;
 
           case 'text':
-            $this->handleTextSearch($params, $param);
+            $params['all_ongoing_AND'] = $param;
             break;
 
           case 'isFree':
@@ -447,31 +447,6 @@ class LinkedEvents {
     }
 
     return implode(',', $keywords);
-  }
-
-  /**
-   * Handle text search.
-   *
-   * Some search phrases can be replaced with a keyword making the API request
-   * much more performant.
-   *
-   * @param array $params
-   *   The parameters. Passed by reference.
-   * @param string $text
-   *   The search text to handle.
-   */
-  protected function handleTextSearch(&$params, string $text) : void {
-    $keyword = match ($text) {
-      'tyollisyys', 'työllisyys' => CategoryKeywords::WORKLIFE,
-      default => NULL,
-    };
-
-    if ($keyword) {
-      $this->handleKeywords($params, $keyword);
-    }
-    else {
-      $params['all_ongoing_AND'] = $text;
-    }
   }
 
   /**
