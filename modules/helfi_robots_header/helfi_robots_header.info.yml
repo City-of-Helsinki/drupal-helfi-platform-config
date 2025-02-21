@@ -2,4 +2,4 @@ name: 'HELfi Robots headers'
 type: module
 description: Adds noindex and nofollow robots tags to headers.
 package: Custom
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11

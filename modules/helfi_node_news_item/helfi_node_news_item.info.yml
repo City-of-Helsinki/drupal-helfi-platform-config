@@ -1,6 +1,6 @@
 name: 'HELfi Node news item'
 type: module
-core_version_requirement: '^9 || ^10'
+core_version_requirement: '^10 || ^11'
 dependencies:
   - field_group:field_group
   - drupal:menu_ui
