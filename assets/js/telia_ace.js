@@ -41,6 +41,9 @@ class TeliaAceWidget {
     this.init();
   }
 
+  /**
+   * Initialize the chat libraries and elements.
+   */
   init = () => {
     const chatButton = this.createChatWidget();
     this.addEventListener(chatButton);
