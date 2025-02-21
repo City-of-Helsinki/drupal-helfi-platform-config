@@ -51,22 +51,6 @@ class TeliaAceWidget {
   }
 
   /**
-   * Load the chat script.
-   */
-  loadChatScript = () => {
-    const chatScript = document.createElement('script');
-    chatScript.src = this.static.scriptUrl;
-    chatScript.type = 'text/javascript';
-    chatScript.setAttribute('async', '');
-
-    chatScript.onload = this.loaded;
-
-    const head = document.querySelector('head');
-    head.appendChild(chatScript);
-    this.state.chatLoading = true;
-  }
-
-  /**
    * Set up the chat button elements.
    */
   createChatWidget = () => {
@@ -103,6 +87,22 @@ class TeliaAceWidget {
       this.loadChatScript();
       this.openChat(true);
     }, { once: true });
+  }
+
+  /**
+   * Load the chat script.
+   */
+  loadChatScript = () => {
+    const chatScript = document.createElement('script');
+    chatScript.src = this.static.scriptUrl;
+    chatScript.type = 'text/javascript';
+    chatScript.setAttribute('async', '');
+
+    chatScript.onload = this.loaded;
+
+    const head = document.querySelector('head');
+    head.appendChild(chatScript);
+    this.state.chatLoading = true;
   }
 
   /**
