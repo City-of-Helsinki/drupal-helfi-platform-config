@@ -205,20 +205,7 @@ To update individual modules, run: `drush helfi:platform-config:update {module n
 
 #### Rewrite configuration
 
-The `helfi_platform_config.config_update_helper` invokes `hook_rewrite_config_update`, which allows custom modules to react to config re-importing.
-
-##### In this example we would want to override Text paragraph label with a configuration found in my_module.
-
-To trigger the `hook_rewrite_config_update`, implement the hook to your `my_module.module`:
-```php
-function my_module_rewrite_config_update(string $module, Drupal\config_rewrite\ConfigRewriterInterface $configRewriter): void {
-  if ($module === 'helfi_paragraphs_text') {
-    // Rewrite helfi_paragraphs_text configuration.
-    $configRewriter->rewriteModuleConfig('my_module');
-  }
-}
-```
-This hook will trigger when `\Drupal::service('helfi_platform_config.config_update_helper')->update('helfi_paragraphs_text');` is run, and it will search for configurations in `my_module/config/rewrite/` folder.
+The `drush helfi:platform-config:update` command will automatically rewrite all custom module configurations which are added to `config/rewrite` folder.
 
 To override configurations for your Drupal instance, follow the instructions found in [Rewrite module project page](https://www.drupal.org/project/config_rewrite).
 
