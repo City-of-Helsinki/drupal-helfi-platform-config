@@ -201,6 +201,8 @@ See https://github.com/City-of-Helsinki/drupal-tools/blob/main/HelperCommands.ph
 
 Run: `drush helfi:platform-config:update`. This will re-import all configuration and trigger necessary hooks, such as `hook_platform_config_grant_permissions()` to update user permissions or `hook_helfi_paragraph_types()` to update Paragraph fields.
 
+To update individual modules, run: `drush helfi:platform-config:update {module name}`.
+
 #### Rewrite configuration
 
 The `helfi_platform_config.config_update_helper` invokes `hook_rewrite_config_update`, which allows custom modules to react to config re-importing.
