@@ -68,7 +68,7 @@ final class AnnouncementsBlock extends EtusivuEntityBlockBase {
     $entityStorage = $this->getExternalEntityStorage('helfi_announcements');
     $nodes = [];
 
-    /** @var \Drupal\external_entities\ExternalEntityInterface $announcement */
+    /** @var \Drupal\external_entities\Entity\ExternalEntityInterface $announcement */
     foreach ($entityStorage->loadMultiple() as $announcement) {
       $linkUrl = NULL;
       $linkText = NULL;

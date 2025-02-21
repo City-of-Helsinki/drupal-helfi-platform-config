@@ -9,8 +9,8 @@ use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
+use Drupal\external_entities\Entity\ExternalEntityInterface;
+use Drupal\external_entities\StorageClient\StorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
@@ -20,15 +20,12 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Utils;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for etusivu external entity storage client.
  */
-abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase implements LoggerAwareInterface {
-
-  use LoggerAwareTrait;
+abstract class EtusivuJsonApiEntityBase extends StorageClientBase implements LoggerAwareInterface {
 
   /**
    * Custom cache tag.
@@ -92,7 +89,6 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
     }
     catch (\InvalidArgumentException) {
     }
-    $instance->setLogger($container->get('logger.channel.helfi_etusivu_entities'));
 
     return $instance;
   }
@@ -223,6 +219,21 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
     return [
       'filter[langcode]' => $language,
     ];
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function transliterateDrupalFilters(
+    array $parameters,
+    array $context = [],
+  ) :array {
+    // @todo Check performance of this implementation UHF-11477.
+    return $this->transliterateDrupalFiltersAlter(
+      ['source' => [], 'drupal' => $parameters],
+      $parameters,
+      $context
+    );
   }
 
 }

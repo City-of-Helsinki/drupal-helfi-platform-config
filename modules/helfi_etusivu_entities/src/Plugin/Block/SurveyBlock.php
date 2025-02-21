@@ -98,7 +98,7 @@ final class SurveyBlock extends EtusivuEntityBlockBase {
     $entityStorage = $this->getExternalEntityStorage('helfi_surveys');
     $nodes = [];
 
-    /** @var \Drupal\external_entities\ExternalEntityInterface $entity */
+    /** @var \Drupal\external_entities\Entity\ExternalEntityInterface $entity */
     foreach ($entityStorage->loadMultiple() as $entity) {
       $linkUrl = NULL;
       $linkText = NULL;
