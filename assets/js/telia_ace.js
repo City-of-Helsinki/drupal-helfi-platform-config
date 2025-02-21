@@ -99,8 +99,8 @@ class TeliaAceWidget {
     chatButton.addEventListener('click', () => {
       if (!this.cookieCheck()) {
         this.cookieSet();
-        this.loadChatScript();
       }
+      this.loadChatScript();
       this.openChat(true);
     }, { once: true });
   }
