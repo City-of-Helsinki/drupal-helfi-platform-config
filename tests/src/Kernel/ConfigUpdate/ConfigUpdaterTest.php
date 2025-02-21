@@ -38,7 +38,7 @@ class ConfigUpdaterTest extends KernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('user');
-    $this->installConfig(['user']);
+    $this->installConfig(['user', 'helfi_user_roles']);
     // Create a new user to make sure we don't accidentally get all
     // permissions later due to user being uid 1.
     $this->createUser();
@@ -99,6 +99,8 @@ class ConfigUpdaterTest extends KernelTestBase {
     $drush = ConfigUpdaterCommands::create($this->container);
     $this->assertEquals(DrushCommands::EXIT_SUCCESS, $drush->update());
     $this->assertConfig($account);
+    // Update individual module.
+    $this->assertEquals(DrushCommands::EXIT_SUCCESS, $drush->update('helfi_platform_config_update_test'));
   }
 
 }

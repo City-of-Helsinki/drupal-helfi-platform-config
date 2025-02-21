@@ -72,7 +72,7 @@ final class ConfigUpdater {
     $this->configRewriter->rewriteModuleConfig($module);
 
     // Collect module permissions and update them.
-    $permissions = $this->moduleHandler->invoke($module, 'platform_config_grant_permissions');
+    $permissions = $this->moduleHandler->invokeAll('platform_config_grant_permissions');
     $this->updatePermissions($permissions ?? []);
 
     // Update all paragraph field handlers.

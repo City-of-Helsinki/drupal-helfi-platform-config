@@ -71,11 +71,7 @@ final class ConfigUpdaterCommands extends DrushCommands {
    *   The exit code.
    */
   #[Command(name: 'helfi:platform-config:update')]
-  public function update(): int {
-
-    $module = $this->moduleHandler->getModule('helfi_platform_config');
-    $basePath = $module->getPath() . '/modules/';
-
+  public function update(?string $moduleName = NULL): int {
     $ignore = [
       // Never update helfi_user_roles module because it will mess up
       // user permissions and dependencies.
@@ -83,8 +79,14 @@ final class ConfigUpdaterCommands extends DrushCommands {
       // configuration besides the skeleton user roles with no dependencies.
       'helfi_user_roles',
     ];
+    $modules = [$moduleName];
 
-    foreach ($this->getModules($basePath, ignore: $ignore) as $name) {
+    if (!$moduleName) {
+      $module = $this->moduleHandler->getModule('helfi_platform_config');
+
+      $modules = $this->getModules($module->getPath() . '/modules/', ignore: $ignore);
+    }
+    foreach ($modules as $name) {
       $this->configUpdater->update($name);
     }
 
