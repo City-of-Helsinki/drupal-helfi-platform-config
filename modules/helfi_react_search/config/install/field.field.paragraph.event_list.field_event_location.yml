@@ -10,7 +10,7 @@ field_name: field_event_location
 entity_type: paragraph
 bundle: event_list
 label: 'Event location'
-description: 'Show "event location" filter. Do not use at the same time with the "Remote events" filter. The API URL field should include all location IDs, otherwise this list will display all active locations.'
+description: 'Show "event location" filter. The API URL field should include all location IDs, otherwise this list will display all active locations.'
 required: false
 translatable: false
 default_value:

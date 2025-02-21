@@ -8,8 +8,8 @@
 declare(strict_types=1);
 
 /**
- * UHF-9088 Updated translations for media remote video.
+ * UHF-11281: Added a new schema in Icareus Suite eEmbed provider.
  */
-function helfi_media_remote_video_update_9001(): void {
-  // This is automated now.
+function helfi_media_remote_video_update_9002(): void {
+  // This is now automated.
 }

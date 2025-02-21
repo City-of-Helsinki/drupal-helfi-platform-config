@@ -1,5 +1,5 @@
 label: Tapahtumapaikka
-description: 'Näytä "tapahtumapaikka" -suodatin. Älä käytä yhtä aikaa "Etätapahtumat" -suodattimen kanssa. Tapahtumapaikat pitää valita tapahtumakalenterista ennen kuin kopioit linkin.'
+description: 'Näytä "tapahtumapaikka" -suodatin.Tapahtumapaikat pitää valita tapahtumakalenterista ennen kuin kopioit linkin.'
 settings:
   on_label: Kyllä
   off_label: Ei
