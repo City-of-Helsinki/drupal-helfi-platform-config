@@ -13,6 +13,7 @@
 * Update the Helfi Platform config
     * `composer require drupal/helfi_platform_config:dev-UHF-0000_insert_correct_branch`
 * Run `make drush-updb drush-cr`
+* Run `docker compose exec app sh -c "drush helfi:platform-config:update"`
 
 ## How to test
 <!-- Describe steps how to test the features, add as many steps as you want to be tested -->
