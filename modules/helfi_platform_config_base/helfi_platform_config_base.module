@@ -12,7 +12,16 @@ declare(strict_types=1);
  */
 function helfi_platform_config_base_platform_config_grant_permissions() : array {
   return [
-    'authenticated' => [
+    'admin' => [
+      'access toolbar',
+    ],
+    'content_producer' => [
+      'access toolbar',
+    ],
+    'editor' => [
+      'access toolbar',
+    ],
+    'read_only' => [
       'access toolbar',
     ],
   ];
