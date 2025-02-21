@@ -1,6 +1,6 @@
 name: 'HELfi Base Content'
 type: module
-core_version_requirement: '^9 || ^10'
+core_version_requirement: '^10 || ^11'
 dependencies:
   - config_ignore:config_ignore
   - content_lock:content_lock

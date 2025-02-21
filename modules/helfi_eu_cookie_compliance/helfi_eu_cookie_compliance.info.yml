@@ -1,6 +1,6 @@
 name: 'HELfi EU cookie compliance'
 type: module
-core_version_requirement: '^9 || ^10'
+core_version_requirement: '^10 || ^11'
 dependencies:
   - drupal:block
   - eu_cookie_compliance:eu_cookie_compliance
