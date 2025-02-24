@@ -12,7 +12,7 @@
           chatSettings = new ChatSettings(drupalSettings.telia_ace_data ?? {});
         }
         catch (e) {
-          console.log(e);
+          console.error(e);
           return;
         }
 
