@@ -129,7 +129,6 @@ class TeliaAceWidget {
   }
 
   cookieCheck = () => {
-    // return true;
     return Drupal.cookieConsent.getConsentStatus(['chat']);
   }
 
