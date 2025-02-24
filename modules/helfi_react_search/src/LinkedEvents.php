@@ -330,7 +330,7 @@ class LinkedEvents {
       foreach ($parsed['query'] as $key => $param) {
         switch ($key) {
           case 'categories':
-            $params['keyword'] = $this->categoriesToKeywords($param);
+            $this->handleKeywords($params, $this->categoriesToKeywords($param));
             break;
 
           case 'start':
@@ -403,6 +403,10 @@ class LinkedEvents {
             $params['internet_based'] = 'true';
             break;
 
+          case 'keyword':
+            $this->handleKeywords($params, $param);
+            break;
+
           default:
             $params[$key] = $param;
             break;
@@ -443,6 +447,20 @@ class LinkedEvents {
     }
 
     return implode(',', $keywords);
+  }
+
+  /**
+   * Handle keywords.
+   *
+   * @param array $params
+   *   The parameters. Passed by reference.
+   * @param string $new_keywords
+   *   The keywords string to add to the parameters.
+   */
+  protected function handleKeywords(&$params, string $new_keywords) : void {
+    // Keyword parameter is a comma-separated string. If it's empty, set it to
+    // the new keywords. Otherwise, append the new keywords.
+    $params['keyword'] = !empty($params['keyword']) ? $params['keyword'] . ',' . $new_keywords : $new_keywords;
   }
 
   /**

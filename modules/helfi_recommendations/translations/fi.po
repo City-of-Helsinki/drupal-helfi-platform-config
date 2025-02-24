@@ -1,0 +1,70 @@
+msgid ""
+msgstr ""
+
+msgctxt "Recommendations block title"
+msgid "You might be interested in"
+msgstr "Sinua voisi kiinnostaa"
+
+msgctxt "Annif"
+msgid "Automatically recommended content"
+msgstr "Automaattisesti suositellut sisällöt"
+
+msgctxt "Annif"
+msgid "Show this page in recommendations for other pages"
+msgstr "Näytä tämä sivu muiden sivujen suositteluissa"
+
+msgctxt "Annif"
+msgid "Show automatically recommended content on this page"
+msgstr "Näytä automaattisesti suositellut sisällöt tällä sivulla"
+
+msgctxt "Annif"
+msgid "Automatically selected news categories"
+msgstr "Automaattisesti valitut uutisluokat"
+
+msgctxt "Annif"
+msgid "No automatic news categories have been created yet"
+msgstr "Automaattisia uutisluokkia ei ole vielä luotu"
+
+msgctxt "Annif"
+msgid "Update news categories"
+msgstr "Päivitä uutisluokat"
+
+msgctxt "Annif"
+msgid "Remove from automatic recommendations"
+msgstr "Poista automaattisista suosituksista"
+
+msgctxt "Annif"
+msgid "- None -"
+msgstr "- Ei mitään -"
+
+msgctxt "Annif"
+msgid "Recommended content for this page"
+msgstr "Suositellut sisällöt tälle sivulle"
+
+msgctxt "Annif"
+msgid "No recommended content has been created for this page yet."
+msgstr "Tälle sivulle ei ole vielä luotu suositeltuja sisältöjä."
+
+msgctxt "annif"
+msgid "Automatically selected news categories"
+msgstr "Automaattisesti valitut uutisluokat"
+
+msgctxt "annif"
+msgid "Show in recommendations"
+msgstr "Näytä tämä sivu muiden sivujen suositteluissa"
+
+msgctxt "annif"
+msgid "Show recommendations block"
+msgstr "Näytä automaattisesti suositellut sisällöt tällä sivulla"
+
+msgctxt "annif"
+msgid "You may update the news categories if you have edited the page. The news categories are automatically selected based on the page content when the page is saved"
+msgstr "Voit päivittää uutisluokat, jos olet muokannut sivua. Uutisluokat valitaan sivun sisällön perusteella automaattisesti, kun sivu tallennetaan"
+
+msgctxt "annif"
+msgid "- None -"
+msgstr "- Ei mitään -"
+
+msgctxt "annif"
+msgid "Note! Recommended content changes as new pages suitable for the selected categories are added to the site. Content older than one year is not recommended"
+msgstr "Huom! Suositellut sisällöt vaihtuvat, kun sivustolle tulee uusia, valittuihin luokkiin sopivia sivuja. Yli vuoden vanhoja sisältöjä ei suositella"
