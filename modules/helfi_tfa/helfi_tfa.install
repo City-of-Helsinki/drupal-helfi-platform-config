@@ -33,27 +33,6 @@ function helfi_tfa_requirements($phase) : array {
 }
 
 /**
- * Grants required permissions.
- */
-function helfi_tfa_grant_permissions() : void {
-  $roles = Role::loadMultiple();
-  $permissions = [];
-
-  // Require all roles to setup TFA.
-  foreach ($roles as $role) {
-    if ($role->id() === AccountInterface::ANONYMOUS_ROLE) {
-      continue;
-    }
-    $permissions[$role->id()] = [
-      'setup own tfa',
-      'disable own tfa',
-    ];
-  }
-
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
  * Implements hook_install().
  */
 function helfi_tfa_install($is_syncing) : void {
@@ -80,6 +59,4 @@ function helfi_tfa_install($is_syncing) : void {
   $config = \Drupal::configFactory()->getEditable('tfa.settings');
   $config->set('required_roles', $requiredRoles)
     ->save();
-
-  helfi_tfa_grant_permissions();
 }

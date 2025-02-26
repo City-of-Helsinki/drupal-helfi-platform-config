@@ -10,6 +10,173 @@ declare(strict_types=1);
 use Drupal\config_rewrite\ConfigRewriterInterface;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_base_content_platform_config_grant_permissions() : array {
+  return [
+    'anonymous' => [
+      'access content',
+      // @helfi_api_base
+      'view remote entities',
+      // @raven
+      'send javascript errors to sentry',
+    ],
+    'authenticated' => [
+      'access content',
+      'view unpublished paragraphs',
+      // @helfi_api_base.
+      'view remote entities',
+      // @raven
+      'send javascript errors to sentry',
+    ],
+    'admin' => [
+      // @block.
+      'administer blocks',
+      // @content_translation.
+      'create content translations',
+      'delete content translations',
+      'translate any entity',
+      'translate editable entities',
+      'update content translations',
+      // @config_translation.
+      'translate configuration',
+      // @content_lock.
+      'break content lock',
+      // @menu_link_attributes.
+      'use menu link attributes',
+      // @menu_link_content.
+      'translate menu_link_content',
+      // @node.
+      'access content overview',
+      'administer nodes',
+      'delete all revisions',
+      'revert all revisions',
+      'view all revisions',
+      'view own unpublished content',
+      // @helfi_api_base.
+      'access remote entities overview',
+      'create remote entities',
+      'delete remote entities',
+      'edit remote entities',
+      // @view_unpublished.
+      'view any unpublished content',
+      // @paragraphs.
+      'administer paragraphs library',
+      'create paragraph library item',
+      'edit paragraph library item',
+      'view unpublished paragraphs',
+      // @path / path_alias.
+      'create url aliases',
+      'administer url aliases',
+      // @pathauto.
+      'administer pathauto',
+      // @redirect.
+      'administer redirects',
+      // @role_delegation.
+      'assign content_producer role',
+      'assign editor role',
+      'assign read_only role',
+      // @scheduler.
+      'schedule publishing of nodes',
+      'view scheduled content',
+      // @simple_sitemap.
+      'administer sitemap settings',
+      // @system.
+      'administer menu',
+      'access administration pages',
+      'access site in maintenance mode',
+      'view the administration theme',
+      // @taxonomy.
+      'access taxonomy overview',
+      // @entity_usage
+      'access entity usage statistics',
+    ],
+    'content_producer' => [
+      // @content_translation.
+      'translate editable entities',
+      // @helfi_api_base.
+      'access remote entities overview',
+      // @menu_link_content.
+      'translate menu_link_content',
+      // @node.
+      'access content overview',
+      'administer nodes',
+      'view all revisions',
+      'view own unpublished content',
+      // @paragraphs.
+      'administer paragraphs library',
+      'create paragraph library item',
+      'edit paragraph library item',
+      'view unpublished paragraphs',
+      // @path / path_alias.
+      'create url aliases',
+      // @scheduler.
+      'schedule publishing of nodes',
+      'view scheduled content',
+      // @system.
+      'view the administration theme',
+      // @taxonomy.
+      'access taxonomy overview',
+      // @view_unpublished.
+      'view any unpublished content',
+      // @entity_usage
+      'access entity usage statistics',
+    ],
+    'editor' => [
+      // @content_translation.
+      'create content translations',
+      'delete content translations',
+      'translate any entity',
+      'translate editable entities',
+      'update content translations',
+      // @node.
+      'access content overview',
+      'administer nodes',
+      'view all revisions',
+      'view own unpublished content',
+      // @helfi_api_base.
+      'access remote entities overview',
+      'create remote entities',
+      'delete remote entities',
+      'edit remote entities',
+      // @menu_link_attributes.
+      'use menu link attributes',
+      // @menu_link_content.
+      'translate menu_link_content',
+      // @paragraphs.
+      'administer paragraphs library',
+      'create paragraph library item',
+      'edit paragraph library item',
+      'view unpublished paragraphs',
+      // @path / path_alias.
+      'create url aliases',
+      'administer url aliases',
+      // @redirect.
+      'administer redirects',
+      // @scheduler.
+      'schedule publishing of nodes',
+      'view scheduled content',
+      // @system.
+      'administer menu',
+      'access administration pages',
+      'view the administration theme',
+      // @taxonomy.
+      'access taxonomy overview',
+      // @view_unpublished.
+      'view any unpublished content',
+      // @entity_usage
+      'access entity usage statistics',
+    ],
+    'read_only' => [
+      // @node.
+      'view own unpublished content',
+      // @paragraphs.
+      'view unpublished paragraphs',
+    ],
+  ];
+}
+
+/**
  * Implements hook_themes_installed().
  */
 function helfi_base_content_themes_installed($theme_list) {

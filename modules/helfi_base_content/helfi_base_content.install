@@ -11,174 +11,6 @@ use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\user\Entity\Role;
 
 /**
- * Grants required permissions.
- */
-function helfi_base_content_grant_permissions() : void {
-  $permissions = [
-    'anonymous' => [
-      'access content',
-      // @helfi_api_base
-      'view remote entities',
-      // @raven
-      'send javascript errors to sentry',
-    ],
-    'authenticated' => [
-      'access content',
-      'view unpublished paragraphs',
-      // @helfi_api_base.
-      'view remote entities',
-      // @raven
-      'send javascript errors to sentry',
-    ],
-    'admin' => [
-      // @block.
-      'administer blocks',
-      // @content_translation.
-      'create content translations',
-      'delete content translations',
-      'translate any entity',
-      'translate editable entities',
-      'update content translations',
-      // @config_translation.
-      'translate configuration',
-      // @content_lock.
-      'break content lock',
-      // @menu_link_attributes.
-      'use menu link attributes',
-      // @menu_link_content.
-      'translate menu_link_content',
-      // @node.
-      'access content overview',
-      'administer nodes',
-      'delete all revisions',
-      'revert all revisions',
-      'view all revisions',
-      'view own unpublished content',
-      // @helfi_api_base.
-      'access remote entities overview',
-      'create remote entities',
-      'delete remote entities',
-      'edit remote entities',
-      // @view_unpublished.
-      'view any unpublished content',
-      // @paragraphs.
-      'administer paragraphs library',
-      'create paragraph library item',
-      'edit paragraph library item',
-      'view unpublished paragraphs',
-      // @path / path_alias.
-      'create url aliases',
-      'administer url aliases',
-      // @pathauto.
-      'administer pathauto',
-      // @redirect.
-      'administer redirects',
-      // @role_delegation.
-      'assign content_producer role',
-      'assign editor role',
-      'assign read_only role',
-      // @scheduler.
-      'schedule publishing of nodes',
-      'view scheduled content',
-      // @simple_sitemap.
-      'administer sitemap settings',
-      // @system.
-      'administer menu',
-      'access administration pages',
-      'access site in maintenance mode',
-      'view the administration theme',
-      // @taxonomy.
-      'access taxonomy overview',
-      // @entity_usage
-      'access entity usage statistics',
-    ],
-    'content_producer' => [
-      // @content_translation.
-      'translate editable entities',
-      // @helfi_api_base.
-      'access remote entities overview',
-      // @menu_link_content.
-      'translate menu_link_content',
-      // @node.
-      'access content overview',
-      'administer nodes',
-      'view all revisions',
-      'view own unpublished content',
-      // @paragraphs.
-      'administer paragraphs library',
-      'create paragraph library item',
-      'edit paragraph library item',
-      'view unpublished paragraphs',
-      // @path / path_alias.
-      'create url aliases',
-      // @scheduler.
-      'schedule publishing of nodes',
-      'view scheduled content',
-      // @system.
-      'view the administration theme',
-      // @taxonomy.
-      'access taxonomy overview',
-      // @view_unpublished.
-      'view any unpublished content',
-      // @entity_usage
-      'access entity usage statistics',
-    ],
-    'editor' => [
-      // @content_translation.
-      'create content translations',
-      'delete content translations',
-      'translate any entity',
-      'translate editable entities',
-      'update content translations',
-      // @node.
-      'access content overview',
-      'administer nodes',
-      'view all revisions',
-      'view own unpublished content',
-      // @helfi_api_base.
-      'access remote entities overview',
-      'create remote entities',
-      'delete remote entities',
-      'edit remote entities',
-      // @menu_link_attributes.
-      'use menu link attributes',
-      // @menu_link_content.
-      'translate menu_link_content',
-      // @paragraphs.
-      'administer paragraphs library',
-      'create paragraph library item',
-      'edit paragraph library item',
-      'view unpublished paragraphs',
-      // @path / path_alias.
-      'create url aliases',
-      'administer url aliases',
-      // @redirect.
-      'administer redirects',
-      // @scheduler.
-      'schedule publishing of nodes',
-      'view scheduled content',
-      // @system.
-      'administer menu',
-      'access administration pages',
-      'view the administration theme',
-      // @taxonomy.
-      'access taxonomy overview',
-      // @view_unpublished.
-      'view any unpublished content',
-      // @entity_usage
-      'access entity usage statistics',
-    ],
-    'read_only' => [
-      // @node.
-      'view own unpublished content',
-      // @paragraphs.
-      'view unpublished paragraphs',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
  * Implements hook_install().
  */
 function helfi_base_content_install($is_syncing) : void {
@@ -206,8 +38,6 @@ function helfi_base_content_install($is_syncing) : void {
     ->set('url.prefixes', $prefixes)
     ->save();
 
-  helfi_base_content_grant_permissions();
-
   // Add unit and service to pathauto settings.
   if (Drupal::moduleHandler()->moduleExists('content_lock')) {
     $types = [
@@ -222,22 +52,6 @@ function helfi_base_content_install($is_syncing) : void {
     $content_lock_config = array_merge($content_lock_config, $types);
     $content_lock_settings->set('types', $content_lock_config)->save();
   }
-}
-
-/**
- * UHF-8274 pathauto max length from 100 to 255.
- */
-function helfi_base_content_update_9001() : void {
-  // Re-import 'helfi_base_content' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_base_content');
-}
-
-/**
- * UHF-8353 give editors entity usage permission.
- */
-function helfi_base_content_update_9002(): void {
-  helfi_base_content_grant_permissions();
 }
 
 /**
@@ -305,14 +119,6 @@ function helfi_base_content_update_9007() : void {
 }
 
 /**
- * UHF-9088: Moved social_media settings to helfi_base_content.
- */
-function helfi_base_content_update_9010() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_base_content');
-}
-
-/**
  * UHF-9471 revoke the admin user's permission for adding admin role to users.
  */
 function helfi_base_content_update_9011(): void {
@@ -324,24 +130,8 @@ function helfi_base_content_update_9011(): void {
 }
 
 /**
- * UHF-9704 Fix article_modified_time metatag.
- */
-function helfi_base_content_update_9012(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_base_content');
-}
-
-/**
- * UHF-9982 Grant sentry permissions.
- */
-function helfi_base_content_update_9013(): void {
-  helfi_base_content_grant_permissions();
-}
-
-/**
  * UHF-11363: Updated pager labels in views.
  */
 function helfi_base_content_update_9019(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_base_content');
+  // This is now automated.
 }

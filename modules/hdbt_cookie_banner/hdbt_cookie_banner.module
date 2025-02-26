@@ -12,6 +12,17 @@ use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function hdbt_cookie_banner_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'administer hdbt_cookie_banner',
+    ],
+  ];
+}
+
+/**
  * Implements hook_config_ignore_ignored_alter().
  */
 function hdbt_cookie_banner_config_ignore_ignored_alter(ConfigIgnoreConfig $ignored): void {

@@ -8,64 +8,6 @@
 declare(strict_types=1);
 
 /**
- * Grants required permissions.
- */
-function helfi_node_announcement_grant_permissions() : void {
-  $permissions = [
-    'admin' => [
-      'create announcement content',
-      'delete announcement revisions',
-      'delete any announcement content',
-      'delete own announcement content',
-      'edit any announcement content',
-      'edit own announcement content',
-      'revert announcement revisions',
-      'set announcement published on date',
-      'translate announcement node',
-      'view announcement revisions',
-    ],
-    'content_producer' => [
-      'create announcement content',
-      'delete own announcement content',
-      'edit any announcement content',
-      'edit own announcement content',
-      'revert announcement revisions',
-      'set announcement published on date',
-      'view announcement revisions',
-    ],
-    'editor' => [
-      'create announcement content',
-      'delete announcement revisions',
-      'delete any announcement content',
-      'delete own announcement content',
-      'edit any announcement content',
-      'edit own announcement content',
-      'revert announcement revisions',
-      'set announcement published on date',
-      'translate announcement node',
-      'view announcement revisions',
-    ],
-    'read_only' => [
-      'view any unpublished announcement content',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function helfi_node_announcement_install($is_syncing) : void {
-  // Do not perform following steps if the module is being installed as part
-  // of a configuration import.
-  if ($is_syncing) {
-    return;
-  }
-
-  helfi_node_announcement_grant_permissions();
-}
-
-/**
  * Implements hook_update().
  */
 function helfi_node_announcement_update_9001() : void {

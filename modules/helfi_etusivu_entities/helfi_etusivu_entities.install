@@ -17,7 +17,6 @@ function helfi_etusivu_entities_install($is_syncing) : void {
     return;
   }
 
-  helfi_etusivu_entities_grant_permissions();
   helfi_etusivu_entities_create_blocks();
 }
 
@@ -57,19 +56,4 @@ function helfi_etusivu_entities_themes_installed($theme_list) : void {
       }
     }
   }
-}
-
-/**
- * Grants required permissions.
- */
-function helfi_etusivu_entities_grant_permissions() : void {
-  $permissions = [
-    'view helfi_announcements external entity',
-    'view helfi_surveys external entity',
-  ];
-
-  helfi_platform_config_grant_permissions([
-    'anonymous' => $permissions,
-    'authenticated' => $permissions,
-  ]);
 }
