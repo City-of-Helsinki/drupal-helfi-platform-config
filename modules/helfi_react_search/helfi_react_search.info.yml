@@ -1,7 +1,7 @@
 name: 'HELfi react search'
 type: module
 description: 'Add react search related backend features'
-core_version_requirement: '^9 || ^10'
+core_version_requirement: '^10 || ^11'
 dependencies:
   - 'allowed_formats:allowed_formats'
   - 'drupal:content_translation'

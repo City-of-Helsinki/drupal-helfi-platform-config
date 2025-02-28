@@ -9,7 +9,7 @@ use Drupal\helfi_paragraphs_news_list\ElasticExternalEntityBase;
 /**
  * External entity storage client for News feed entities.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "helfi_news",
  *   label = @Translation("Helfi: News"),
  *   description = @Translation("Retrieves 'news' content from Helfi")

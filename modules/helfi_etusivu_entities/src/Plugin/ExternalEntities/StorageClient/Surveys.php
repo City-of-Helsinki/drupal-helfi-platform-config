@@ -7,7 +7,7 @@ namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 /**
  * External entity storage client for News feed entities.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "helfi_surveys",
  *   label = @Translation("Helfi: Surveys"),
  *   description = @Translation("Retrieves surveys from helfi")
