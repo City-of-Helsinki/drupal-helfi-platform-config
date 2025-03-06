@@ -236,7 +236,7 @@ function your_module_update_9001(): void {
   $config_factory->getEditable('your_module.configuration')->delete();
 }
 
-#### Rewrite configuration
+### Rewrite configurations
 
 The `drush helfi:platform-config:update` command will automatically rewrite all custom module configurations which are added to `config/rewrite` folder.
 
