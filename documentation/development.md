@@ -203,6 +203,21 @@ Run: `drush helfi:platform-config:update`. This will re-import all configuration
 
 To update individual modules, run: `drush helfi:platform-config:update {module name}`.
 
+Do **not** place any configuration files inside the `optional` directory as files located in `optional` will **not** be updated.
+However, translation files **will** be updated if they are placed in `/optional/language/{langcode}`. But be careful, these translation files **should not** be added to `/install/language/{langcode}`, as doing so may cause errors such as: `Deleted and replaced configuration entity "your_configuration_file.yml"`.
+
+Proper folder structure is as follows: 
+```
+your_module
+│   your_module.info.yml
+└───config
+│   └───install // Configuration files.
+│   └───optional
+│   └──────language // Configuration translations.
+│   └─────────fi
+│   └─────────sv 
+```
+
 #### Rewrite configuration
 
 The `drush helfi:platform-config:update` command will automatically rewrite all custom module configurations which are added to `config/rewrite` folder.
