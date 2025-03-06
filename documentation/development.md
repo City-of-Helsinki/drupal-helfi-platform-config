@@ -197,13 +197,19 @@ The command will:
 
 See https://github.com/City-of-Helsinki/drupal-tools/blob/main/HelperCommands.php for more up-to-date information.
 
-### Update module configuration
+### Updating module configuration
 
 Run: `drush helfi:platform-config:update`. This will re-import all configuration and trigger necessary hooks, such as `hook_platform_config_grant_permissions()` to update user permissions or `hook_helfi_paragraph_types()` to update Paragraph fields.
 
 To update individual modules, run: `drush helfi:platform-config:update {module name}`.
 
 Do **not** place any configuration files inside the `optional` directory as files located in `optional` will **not** be updated.
+
+### Adding new configurations
+
+Add your configurations to `your_module/config/install` folder and add your configuration translations to `your_module/config/optional/translations/{langcode}` folder.
+
+Do **not** place any configuration files inside the `optional` directory as files located in `optional` will **not** be updated. 
 However, translation files **will** be updated if they are placed in `/optional/language/{langcode}`. But be careful, these translation files **should not** be added to `/install/language/{langcode}`, as doing so may cause errors such as: `Deleted and replaced configuration entity "your_configuration_file.yml"`.
 
 Proper folder structure is as follows: 
@@ -218,17 +224,29 @@ your_module
 │   └─────────sv 
 ```
 
+### Deleting configurations
+
+As running `drush helfi:platform-config:update` will only install and update configurations, you will need to manually delete configurations. To delete a configuration, remove the physical file and create an update hook to delete the configuration. Here's an example:
+```php
+/**
+ * UHF-###: Removed your_module configuration.
+ */
+function your_module_update_9001(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('your_module.configuration')->delete();
+}
+
 #### Rewrite configuration
 
 The `drush helfi:platform-config:update` command will automatically rewrite all custom module configurations which are added to `config/rewrite` folder.
 
 To override configurations for your Drupal instance, follow the instructions found in [Rewrite module project page](https://www.drupal.org/project/config_rewrite).
 
-In our example, the label change would be implemented in a configuration file `/public/modules/custom/my_module/config/rewrite/paragraphs.paragraphs_type.text.yml`:
+In our example, the label change would be implemented in a configuration file `/public/modules/custom/your_module/config/rewrite/paragraphs.paragraphs_type.text.yml`:
 ```yml
 label: Text (override)
 ```
-The label change for the Finnish translation would be implemented in a configuration file `/public/modules/custom/my_module/config/rewrite/language/fi/paragraphs.paragraphs_type.text.yml`
+The label change for the Finnish translation would be implemented in a configuration file `/public/modules/custom/your_module/config/rewrite/language/fi/paragraphs.paragraphs_type.text.yml`
 ```yml
 label: Teksti (ylikirjoitettu)
 ```
@@ -302,7 +320,6 @@ final class YourEntityImageBuilder implements OGImageBuilderInterface {
 
 }
 ```
-
 
 ## First paragraph grey alter
 
