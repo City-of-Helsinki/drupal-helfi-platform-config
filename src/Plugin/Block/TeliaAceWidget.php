@@ -27,7 +27,7 @@ class TeliaAceWidget extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
+  public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
 
@@ -53,15 +53,15 @@ class TeliaAceWidget extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $formState) {
-    $this->configuration['chat_id'] = $formState->getValue('chat_id');
-    $this->configuration['chat_title'] = $formState->getValue('chat_title');
+  public function blockSubmit($form, FormStateInterface $form_state): void {
+    $this->configuration['chat_id'] = $form_state->getValue('chat_id');
+    $this->configuration['chat_title'] = $form_state->getValue('chat_title');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
 
     $build = [];
 

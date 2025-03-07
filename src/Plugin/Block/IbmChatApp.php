@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Provides a Watson chatbot block.
- *
- * @Block(
- *  id = "ibm_chat_app",
- *  admin_label = @Translation("IBM Chat App"),
- * )
  */
+#[Block(
+  id: "ibm_chat_app",
+  admin_label: new TranslatableMarkup("IBM Chat App"),
+)]
 class IbmChatApp extends BlockBase {
 
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
+  public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
 
@@ -58,17 +59,17 @@ class IbmChatApp extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $formState) {
-    $this->configuration['hostname'] = $formState->getValue('hostname');
-    $this->configuration['engagementId'] = $formState->getValue('engagementId');
-    $this->configuration['tenantId'] = $formState->getValue('tenantId');
-    $this->configuration['assistantId'] = $formState->getValue('assistantId');
+  public function blockSubmit($form, FormStateInterface $form_state): void {
+    $this->configuration['hostname'] = $form_state->getValue('hostname');
+    $this->configuration['engagementId'] = $form_state->getValue('engagementId');
+    $this->configuration['tenantId'] = $form_state->getValue('tenantId');
+    $this->configuration['assistantId'] = $form_state->getValue('assistantId');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
 
     $library = ['helfi_platform_config/chat_enhancer'];
 

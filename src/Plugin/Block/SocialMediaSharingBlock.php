@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\social_media\Event\SocialMediaEvent;
 use Drupal\social_media\Plugin\Block\SocialSharingBlock;
@@ -15,12 +17,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a 'SocialMediaSharingBlock' block.
  *
  * @todo Rewrite the block. Get rid of social_media module.
- *
- * @Block(
- *  id = "helfi_platform_config_social_sharing_block",
- *  admin_label = @Translation("Social Media Sharing block"),
- * )
  */
+#[Block(
+  id: "helfi_platform_config_social_sharing_block",
+  admin_label: new TranslatableMarkup("Social Media Sharing block"),
+)]
 class SocialMediaSharingBlock extends SocialSharingBlock {
 
   /**
@@ -55,7 +56,7 @@ class SocialMediaSharingBlock extends SocialSharingBlock {
   /**
    * {@inheritdoc}
    */
-  public function build() : array {
+  public function build(): array {
 
     $build = [];
 
