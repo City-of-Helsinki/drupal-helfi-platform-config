@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a Profile Block.
- *
- * @Block(
- *   id = "profile_block",
- *   admin_label = @Translation("Profile block"),
- *   category = @Translation("Profile"),
- * )
  */
+#[Block(
+  id: "profile_block",
+  admin_label: new TranslatableMarkup("Profile block"),
+  category: new TranslatableMarkup("Profile"),
+)]
 final class ProfileBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**

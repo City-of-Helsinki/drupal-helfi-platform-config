@@ -10,6 +10,65 @@ declare(strict_types=1);
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_node_news_item_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'create news_item content',
+      'create terms in news_group',
+      'create terms in news_neighbourhoods',
+      'create terms in news_tags',
+      'delete any news_item content',
+      'delete news_item revisions',
+      'delete own news_item content',
+      'delete terms in news_group',
+      'delete terms in news_neighbourhoods',
+      'delete terms in news_tags',
+      'edit any news_item content',
+      'edit own news_item content',
+      'edit terms in news_group',
+      'edit terms in news_neighbourhoods',
+      'edit terms in news_tags',
+      'revert news_item revisions',
+      'set news_item published on date',
+      'translate news_group taxonomy_term',
+      'translate news_item node',
+      'translate news_neighbourhoods taxonomy_term',
+      'translate news_tags taxonomy_term',
+      'view news_item revisions',
+    ],
+    'content_producer' => [
+      'create news_item content',
+      'delete own news_item content',
+      'edit any news_item content',
+      'edit own news_item content',
+      'revert news_item revisions',
+      'set news_item published on date',
+      'view news_item revisions',
+    ],
+    'editor' => [
+      'create news_item content',
+      'delete any news_item content',
+      'delete news_item revisions',
+      'delete own news_item content',
+      'edit any news_item content',
+      'edit own news_item content',
+      'revert news_item revisions',
+      'set news_item published on date',
+      'translate news_group taxonomy_term',
+      'translate news_item node',
+      'translate news_neighbourhoods taxonomy_term',
+      'translate news_tags taxonomy_term',
+      'view news_item revisions',
+    ],
+    'read_only' => [
+      'view any unpublished news_item content',
+    ],
+  ];
+}
+
+/**
  * Implements hook_helfi_paragraph_types().
  */
 function helfi_node_news_item_helfi_paragraph_types() : array {

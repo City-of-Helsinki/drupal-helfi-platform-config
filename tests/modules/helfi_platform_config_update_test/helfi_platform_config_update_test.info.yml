@@ -1,0 +1,4 @@
+name: HELfi platform config update test
+type: module
+package: Custom
+core_version_requirement: ^10 || ^11

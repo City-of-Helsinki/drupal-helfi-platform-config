@@ -13,110 +13,6 @@ use Drupal\linkit\Entity\Profile;
 use Drupal\field\Entity\FieldStorageConfig;
 
 /**
- * Grants required permissions.
- */
-function helfi_tpr_config_grant_permissions() : void {
-  $permissions = [
-    'anonymous' => [
-      'view tpr_service',
-      'view tpr_unit',
-    ],
-    'authenticated' => [
-      'view tpr_service',
-      'view tpr_unit',
-    ],
-    'admin' => [
-      'access tpr_service overview',
-      'access tpr_unit overview',
-      'administer tpr_service',
-      'administer tpr_unit',
-      'revert all tpr_service revisions',
-      'revert all tpr_unit revisions',
-      'translate tpr_errand_service',
-      'translate tpr_service',
-      'translate tpr_service_channel',
-      'translate tpr_unit',
-      'update any tpr_service',
-      'update any tpr_unit',
-      'update own tpr_service',
-      'update own tpr_unit',
-      'view all tpr_service revisions',
-      'view all tpr_unit revisions',
-      'view unpublished tpr_errand_service',
-      'view unpublished tpr_service',
-      'view unpublished tpr_service_channel',
-      'view unpublished tpr_unit',
-      // @views_bulk_edit.
-      'use views bulk edit',
-      'delete any tpr_ontology_word_details',
-      'delete any tpr_service',
-      'delete any tpr_unit',
-      'delete own tpr_ontology_word_details',
-      'delete own tpr_service',
-      'delete own tpr_unit',
-    ],
-    'content_producer' => [
-      'access tpr_service overview',
-      'access tpr_unit overview',
-      'translate tpr_errand_service',
-      'translate tpr_service',
-      'translate tpr_service_channel',
-      'translate tpr_unit',
-      'update any tpr_service',
-      'update any tpr_unit',
-      'update own tpr_service',
-      'update own tpr_unit',
-      'view all tpr_service revisions',
-      'view all tpr_unit revisions',
-      'view unpublished tpr_errand_service',
-      'view unpublished tpr_service',
-      'view unpublished tpr_service_channel',
-      'view unpublished tpr_unit',
-      'delete any tpr_ontology_word_details',
-      'delete any tpr_service',
-      'delete any tpr_unit',
-      'delete own tpr_ontology_word_details',
-      'delete own tpr_service',
-      'delete own tpr_unit',
-    ],
-    'editor' => [
-      'access tpr_service overview',
-      'access tpr_unit overview',
-      'revert all tpr_service revisions',
-      'revert all tpr_unit revisions',
-      'translate tpr_errand_service',
-      'translate tpr_service',
-      'translate tpr_service_channel',
-      'translate tpr_unit',
-      'update any tpr_service',
-      'update any tpr_unit',
-      'update own tpr_service',
-      'update own tpr_unit',
-      'view all tpr_service revisions',
-      'view all tpr_unit revisions',
-      'view unpublished tpr_errand_service',
-      'view unpublished tpr_service',
-      'view unpublished tpr_service_channel',
-      'view unpublished tpr_unit',
-      'delete any tpr_ontology_word_details',
-      'delete any tpr_service',
-      'delete any tpr_unit',
-      'delete own tpr_ontology_word_details',
-      'delete own tpr_service',
-      'delete own tpr_unit',
-    ],
-    'read_only' => [
-      'view unpublished tpr_errand_service',
-      'view unpublished tpr_service',
-      'view unpublished tpr_service_channel',
-      'view unpublished tpr_unit',
-    ],
-  ];
-
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
  * Install metatag configurations manually.
  */
 function helfi_tpr_config_install_metatag_settings(): void {
@@ -155,8 +51,6 @@ function helfi_tpr_config_install($is_syncing) : void {
   if ($is_syncing) {
     return;
   }
-
-  helfi_tpr_config_grant_permissions();
 
   // Add unit and service to linkit profile.
   if ($profile = Profile::load('helfi')) {
@@ -208,72 +102,6 @@ function helfi_tpr_config_install($is_syncing) : void {
 }
 
 /**
- * UHF-8099 Update field_group translations for the unit search paragraph.
- */
-function helfi_tpr_config_update_9035(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * Remove SOTE specific configuration. Double-check configuration updates.
- */
-function helfi_tpr_config_update_9036(): void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8479 Update standard & landing page to include service_list_search.
- */
-function helfi_tpr_config_update_9037(): void {
-  helfi_platform_config_update_paragraph_target_types();
-}
-
-/**
- * UHF-8196 Update unit and service views to show unpublished entities.
- */
-function helfi_tpr_config_update_9038(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8532 Update the "Open larger map" text on maps.
- */
-function helfi_tpr_config_update_9039(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8595 Update after reverting unit display configs.
- */
-function helfi_tpr_config_update_9040(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8676 Update tpr_service to include multiple new paragraphs.
- */
-function helfi_tpr_config_update_9041(): void {
-  helfi_platform_config_update_paragraph_target_types();
-}
-
-/**
- * UHF-8770 tpr_service to include two new paragraphs.
- */
-function helfi_tpr_config_update_9042(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
  * UHF-8717: Add a field to tpr_service and re-import configs.
  */
 function helfi_tpr_config_update_9043() : void {
@@ -289,19 +117,6 @@ function helfi_tpr_config_update_9043() : void {
     \Drupal::entityDefinitionUpdateManager()
       ->installFieldStorageDefinition($name, 'tpr_service', 'helfi_tpr_config', $field);
   }
-
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8838 Update services list views.
- */
-function helfi_tpr_config_update_9044(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
 }
 
 /**
@@ -320,37 +135,6 @@ function helfi_tpr_config_update_9045() : void {
 
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('unit_picture_caption', 'tpr_unit', 'helfi_tpr_config', $unit_picture_caption);
-
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8932 Add fields coordinates to display.
- */
-function helfi_tpr_config_update_9046(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8939: Make all new TPR unit fields visible in form and display.
- */
-function helfi_tpr_config_update_9047(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
-}
-
-/**
- * UHF-8937: Configs for table of contents field on TPR units.
- */
-function helfi_tpr_config_update_9048(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
 }
 
 /**
@@ -408,7 +192,5 @@ function helfi_tpr_config_update_9074(): void {
  * UHF-9494: Updated amount of items per page.
  */
 function helfi_tpr_config_update_9077(): void {
-  // Re-import 'helfi_tpr_config' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_tpr_config');
+  // This is automated now.
 }

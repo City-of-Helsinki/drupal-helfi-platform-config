@@ -10,6 +10,92 @@ declare(strict_types=1);
 use Drupal\config_rewrite\ConfigRewriterInterface;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_media_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      // @file.
+      'access files overview',
+      // @media.
+      'access media overview',
+      'create file media',
+      'create image media',
+      'create media',
+      'delete any file media',
+      'delete any image media',
+      'delete any media',
+      'delete media',
+      'delete own file media',
+      'delete own image media',
+      'edit any file media',
+      'edit any image media',
+      'edit own file media',
+      'edit own image media',
+      'translate file media',
+      'translate image media',
+      'update any media',
+      'update media',
+      'view media',
+      'view all media revisions',
+      'view own unpublished media',
+    ],
+    'anonymous' => [
+      'view media',
+    ],
+    'authenticated' => [
+      'view media',
+    ],
+    'content_producer' => [
+      // @file.
+      'access files overview',
+      // @media.
+      'access media overview',
+      'create file media',
+      'create image media',
+      'create media',
+      'delete media',
+      'delete own file media',
+      'delete own image media',
+      'edit any file media',
+      'edit any image media',
+      'edit own file media',
+      'edit own image media',
+      'translate file media',
+      'translate image media',
+      'update media',
+      'view all media revisions',
+      'view own unpublished media',
+    ],
+    'editor' => [
+      // @file.
+      'access files overview',
+      // @media.
+      'access media overview',
+      'create file media',
+      'create image media',
+      'create media',
+      'delete any file media',
+      'delete any image media',
+      'delete any media',
+      'delete media',
+      'delete own file media',
+      'delete own image media',
+      'edit any file media',
+      'edit any image media',
+      'edit own file media',
+      'edit own image media',
+      'translate file media',
+      'translate image media',
+      'update any media',
+      'update media',
+      'view all media revisions',
+      'view own unpublished media',
+    ],
+  ];
+}
+
+/**
  * Implements hook_rewrite_config_update().
  */
 function helfi_media_config_rewrite_config_update(string $module, ConfigRewriterInterface $configRewriter): void {

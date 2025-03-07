@@ -10,6 +10,52 @@ declare(strict_types=1);
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_node_page_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'create page content',
+      'delete any page content',
+      'delete own page content',
+      'delete page revisions',
+      'edit any page content',
+      'edit own page content',
+      'revert page revisions',
+      'set page published on date',
+      'translate page node',
+      'view page revisions',
+    ],
+    'content_producer' => [
+      'create page content',
+      'delete own page content',
+      'edit any page content',
+      'edit own page content',
+      'revert page revisions',
+      'set page published on date',
+      'translate page node',
+      'view any unpublished page content',
+      'view page revisions',
+    ],
+    'editor' => [
+      'create page content',
+      'delete any page content',
+      'delete own page content',
+      'delete page revisions',
+      'edit any page content',
+      'edit own page content',
+      'revert page revisions',
+      'set page published on date',
+      'translate page node',
+      'view page revisions',
+    ],
+    'read_only' => [
+      'view any unpublished page content',
+    ],
+  ];
+}
+
+/**
  * Implements hook_helfi_paragraph_types().
  */
 function helfi_node_page_helfi_paragraph_types() : array {

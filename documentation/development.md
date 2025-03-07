@@ -45,26 +45,21 @@ dependencies:
 
 ## Drupal permissions
 
-Permissions should be defined in module's `.install` file and the function should be called in `hook_install()` hook:
+Permissions should be defined in module's `hook_platform_config_grant_permissions()` hook:
 
 ```php
-function mymodule_grant_permissions() : void {
-  $permissions = [
+/**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_node_news_article_platform_config_grant_permissions() : array {
+  return [
     'admin' => [
-      'access content',
+      'view news_article revisions',
     ],
-    'anonymous' => [
-      'access content',
+    'content_producer' => [
+      'view news_article revisions',
     ],
   ];
-  helfi_platform_config_grant_permissions($permissions);
-}
-
-/**
- * Implements hook_install().
- */
-function mymodule_install() : void {
-  mymodule_grant_permissions();
 }
 ```
 
@@ -202,57 +197,77 @@ The command will:
 
 See https://github.com/City-of-Helsinki/drupal-tools/blob/main/HelperCommands.php for more up-to-date information.
 
-### Update permissions
+### Updating module configuration
 
-To update permissions, add the new/changed permission in modules' `mymodule_grant_permission()` and call the function in `hook_update_N()` hook:
+Run: `drush helfi:platform-config:update`. This will re-import all configuration and trigger necessary hooks, such as `hook_platform_config_grant_permissions()` to update user permissions or `hook_helfi_paragraph_types()` to update Paragraph fields.
 
-```php
-function mymodule_update_9001(): void {
-  mymodule_grant_permissions();
-}
+To update individual modules, run: `drush helfi:platform-config:update {module name}`.
+
+Do **not** place any configuration files inside the `optional` directory as files located in `optional` will **not** be updated.
+
+### Adding new configurations
+
+Add your configurations to `your_module/config/install` folder and add your configuration translations to `your_module/config/optional/translations/{langcode}` folder.
+
+Do **not** place any configuration files inside the `optional` directory as files located in `optional` will **not** be updated. 
+However, translation files **will** be updated if they are placed in `/optional/language/{langcode}`. But be careful, these translation files **should not** be added to `/install/language/{langcode}`, as doing so may cause errors such as: `Deleted and replaced configuration entity "your_configuration_file.yml"`.
+
+Proper folder structure is as follows: 
+```
+your_module
+│   your_module.info.yml
+└───config
+│   └───install // Configuration files.
+│   └───optional
+│   └──────language // Configuration translations.
+│   └─────────fi
+│   └─────────sv 
 ```
 
-### Update all configuration
+### Deleting configurations
 
-Use `helfi_platform_config.config_update_helper` service to replace existing configuration:
-
+As running `drush helfi:platform-config:update` will only install and update configurations, you will need to manually delete configurations. To delete a configuration, remove the physical file and create an update hook to delete the configuration. Here's an example:
 ```php
-function helfi_media_update_9001() : void {
-  // Re-import 'helfi_media' configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_media');
+/**
+ * UHF-###: Removed your_module configuration.
+ */
+function your_module_update_9001(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('your_module.configuration')->delete();
 }
-```
-The update hook above will re-import all configuration from `helfi_media` module's `config/install` and `config/rewrite` folders and run necessary post-update hooks.
 
-#### Rewrite configuration
+### Rewrite configurations
 
-The `helfi_platform_config.config_update_helper` invokes `hook_rewrite_config_update`, which allows custom modules to react to config re-importing.
-
-##### In this example we would want to override Text paragraph label with a configuration found in my_module.
-
-To trigger the `hook_rewrite_config_update`, implement the hook to your `my_module.module`:
-```php
-function my_module_rewrite_config_update(string $module, Drupal\config_rewrite\ConfigRewriterInterface $configRewriter): void {
-  if ($module === 'helfi_paragraphs_text') {
-    // Rewrite helfi_paragraphs_text configuration.
-    $configRewriter->rewriteModuleConfig('my_module');
-  }
-}
-```
-This hook will trigger when `\Drupal::service('helfi_platform_config.config_update_helper')->update('helfi_paragraphs_text');` is run and it will search for configurations in `my_module/config/rewrite/` folder.
+The `drush helfi:platform-config:update` command will automatically rewrite all custom module configurations which are added to `config/rewrite` folder.
 
 To override configurations for your Drupal instance, follow the instructions found in [Rewrite module project page](https://www.drupal.org/project/config_rewrite).
 
-In our example, the label change would be implemented in a configuration file `/public/modules/custom/my_module/config/rewrite/paragraphs.paragraphs_type.text.yml`:
+In our example, the label change would be implemented in a configuration file `/public/modules/custom/your_module/config/rewrite/paragraphs.paragraphs_type.text.yml`:
 ```yml
 label: Text (override)
 ```
-The label change for the Finnish translation would be implemented in a configuration file `/public/modules/custom/my_module/config/rewrite/language/fi/paragraphs.paragraphs_type.text.yml`
+The label change for the Finnish translation would be implemented in a configuration file `/public/modules/custom/your_module/config/rewrite/language/fi/paragraphs.paragraphs_type.text.yml`
 ```yml
 label: Teksti (ylikirjoitettu)
 ```
 
+#### How to fix recursive errors during site install?
+
+In some cases there can be recursive errors during site install which will slow down the site installation process.
+Here are two examples and instructions how to fix the issues.
+
+##### Deleted and replaced configuration entity
+```
+ [error]  Deleted and replaced configuration entity "field.field.paragraph.event_list.field_filter_keywords"
+```
+This error occurs when the configuration translation has been added to `config/install/language/[langcode]/` folder. To fix the error, move the translation to `module/config/optional/language/[langcode]/` folder.
+
+##### Unexpected error during import with operation create
+```
+ [error]  Unexpected error during import with operation create for core.entity_form_display.helfi_news_groups.helfi_news_groups.default: The "helfi_news_groups" entity type does not exist.
+```
+This error occurs when the entity type is not installed yet, but the configuration for its form display is being imported. Drupal should import the configuration dependencies before this form display configuration, but in some cases it does not. To fix the error, enforce the dependency on the configuration dependencies. See example: [core.entity_form_display.helfi_news_groups.helfi_news_groups.default](https://github.com/City-of-Helsinki/drupal-helfi-platform-config/blob/893e2ae5981898d409a67f3ddb879e6a771a3217/modules/helfi_paragraphs_news_list/config/install/core.entity_form_display.helfi_news_groups.helfi_news_groups.default.yml#L7).
+The error gets fixed once the configurations have been added to Drupal repository's `conf/cmi/` folder.
 
 ## Tokens
 
@@ -305,7 +320,6 @@ final class YourEntityImageBuilder implements OGImageBuilderInterface {
 
 }
 ```
-
 
 ## First paragraph grey alter
 

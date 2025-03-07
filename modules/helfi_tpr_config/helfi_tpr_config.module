@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
@@ -20,6 +19,108 @@ use Drupal\helfi_tpr_config\Entity\Unit;
 use Drupal\helfi_tpr_config\Entity\UnitSearch;
 use Drupal\linkit\Entity\Profile;
 use Drupal\paragraphs\Entity\Paragraph;
+
+/**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_tpr_config_platform_config_grant_permissions() : array {
+  return [
+    'anonymous' => [
+      'view tpr_service',
+      'view tpr_unit',
+    ],
+    'authenticated' => [
+      'view tpr_service',
+      'view tpr_unit',
+    ],
+    'admin' => [
+      'access tpr_service overview',
+      'access tpr_unit overview',
+      'administer tpr_service',
+      'administer tpr_unit',
+      'revert all tpr_service revisions',
+      'revert all tpr_unit revisions',
+      'translate tpr_errand_service',
+      'translate tpr_service',
+      'translate tpr_service_channel',
+      'translate tpr_unit',
+      'update any tpr_service',
+      'update any tpr_unit',
+      'update own tpr_service',
+      'update own tpr_unit',
+      'view all tpr_service revisions',
+      'view all tpr_unit revisions',
+      'view unpublished tpr_errand_service',
+      'view unpublished tpr_service',
+      'view unpublished tpr_service_channel',
+      'view unpublished tpr_unit',
+      // @views_bulk_edit.
+      'use views bulk edit',
+      'delete any tpr_ontology_word_details',
+      'delete any tpr_service',
+      'delete any tpr_unit',
+      'delete own tpr_ontology_word_details',
+      'delete own tpr_service',
+      'delete own tpr_unit',
+    ],
+    'content_producer' => [
+      'access tpr_service overview',
+      'access tpr_unit overview',
+      'translate tpr_errand_service',
+      'translate tpr_service',
+      'translate tpr_service_channel',
+      'translate tpr_unit',
+      'update any tpr_service',
+      'update any tpr_unit',
+      'update own tpr_service',
+      'update own tpr_unit',
+      'view all tpr_service revisions',
+      'view all tpr_unit revisions',
+      'view unpublished tpr_errand_service',
+      'view unpublished tpr_service',
+      'view unpublished tpr_service_channel',
+      'view unpublished tpr_unit',
+      'delete any tpr_ontology_word_details',
+      'delete any tpr_service',
+      'delete any tpr_unit',
+      'delete own tpr_ontology_word_details',
+      'delete own tpr_service',
+      'delete own tpr_unit',
+    ],
+    'editor' => [
+      'access tpr_service overview',
+      'access tpr_unit overview',
+      'revert all tpr_service revisions',
+      'revert all tpr_unit revisions',
+      'translate tpr_errand_service',
+      'translate tpr_service',
+      'translate tpr_service_channel',
+      'translate tpr_unit',
+      'update any tpr_service',
+      'update any tpr_unit',
+      'update own tpr_service',
+      'update own tpr_unit',
+      'view all tpr_service revisions',
+      'view all tpr_unit revisions',
+      'view unpublished tpr_errand_service',
+      'view unpublished tpr_service',
+      'view unpublished tpr_service_channel',
+      'view unpublished tpr_unit',
+      'delete any tpr_ontology_word_details',
+      'delete any tpr_service',
+      'delete any tpr_unit',
+      'delete own tpr_ontology_word_details',
+      'delete own tpr_service',
+      'delete own tpr_unit',
+    ],
+    'read_only' => [
+      'view unpublished tpr_errand_service',
+      'view unpublished tpr_service',
+      'view unpublished tpr_service_channel',
+      'view unpublished tpr_unit',
+    ],
+  ];
+}
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -36,16 +137,6 @@ function helfi_tpr_config_entity_bundle_info_alter(array &$bundles): void {
   }
   if (isset($bundles['paragraph']['unit_search'])) {
     $bundles['paragraph']['unit_search']['class'] = UnitSearch::class;
-  }
-}
-
-/**
- * Implements hook_rewrite_config_update().
- */
-function helfi_tpr_config_config_rewrite_config_update(string $module, ConfigRewriterInterface $configRewriter): void {
-  // Rewrite module configuration.
-  if ($module === 'helfi_tpr_config') {
-    $configRewriter->rewriteModuleConfig('helfi_tpr_config');
   }
 }
 

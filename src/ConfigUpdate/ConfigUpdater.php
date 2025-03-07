@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\config_rewrite\ConfigRewriterInterface;
+use Drupal\user\Entity\Role;
 
 /**
  * A helper class to deal with config updates.
@@ -40,6 +41,22 @@ final class ConfigUpdater {
   }
 
   /**
+   * Updates role permissions.
+   *
+   * @param array $permissionMap
+   *   The role => permissions map.
+   */
+  public function updatePermissions(array $permissionMap) : void {
+    foreach ($permissionMap as $rid => $permissions) {
+      if (!$role = Role::load($rid)) {
+        throw new \InvalidArgumentException("Role ($rid) not found.");
+      }
+      array_map(fn (string $permission) => $role->grantPermission($permission), $permissions);
+      $role->save();
+    }
+  }
+
+  /**
    * Re-import all configuration for given module.
    *
    * @param string $module
@@ -54,19 +71,9 @@ final class ConfigUpdater {
     $this->configInstaller->installDefaultConfig('module', $module);
     $this->configRewriter->rewriteModuleConfig($module);
 
-    if ($module === 'helfi_base_content') {
-      // Rewrite helfi_tpr_config configuration if the helfi_base_content is
-      // being updated.
-      if ($this->moduleHandler->moduleExists('helfi_tpr_config')) {
-        $this->configRewriter->rewriteModuleConfig('helfi_tpr_config');
-      }
-    }
-
-    // Allow modules to rewrite config based on updated modules.
-    $this->moduleHandler->invokeAll('rewrite_config_update', [
-      $module,
-      $this->configRewriter,
-    ]);
+    // Collect module permissions and update them.
+    $permissions = $this->moduleHandler->invokeAll('platform_config_grant_permissions');
+    $this->updatePermissions($permissions ?? []);
 
     // Update all paragraph field handlers.
     helfi_platform_config_update_paragraph_target_types();

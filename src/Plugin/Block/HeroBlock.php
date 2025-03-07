@@ -22,7 +22,7 @@ class HeroBlock extends ContentBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function build() : array {
+  public function build(): array {
     $build = [];
 
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */

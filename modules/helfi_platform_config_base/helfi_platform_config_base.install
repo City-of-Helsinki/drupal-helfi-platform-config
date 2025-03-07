@@ -50,21 +50,6 @@ function helfi_platform_config_base_install($is_syncing) : void {
   // HDBT Admin theme at all.
   // See: https://git.drupalcode.org/project/gin/-/blob/8.x-3.x/gin.info.yml#L7
   $module_installer->install(['gin_toolbar']);
-
-  // Apply permission.
-  helfi_platform_config_base_grant_permissions();
-}
-
-/**
- * Grants required permissions.
- */
-function helfi_platform_config_base_grant_permissions() : void {
-  $permissions = [
-    'authenticated' => [
-      'access toolbar',
-    ],
-  ];
-  helfi_platform_config_grant_permissions($permissions);
 }
 
 /**

@@ -15,6 +15,36 @@ use Drupal\media\OEmbed\ResourceException;
 use Drupal\media\OEmbed\UrlResolverInterface;
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function helfi_media_remote_video_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'create remote_video media',
+      'delete any remote_video media',
+      'delete own remote_video media',
+      'edit any remote_video media',
+      'edit own remote_video media',
+      'translate remote_video media',
+    ],
+    'content_producer' => [
+      'create remote_video media',
+      'delete own remote_video media',
+      'edit any remote_video media',
+      'edit own remote_video media',
+    ],
+    'editor' => [
+      'create remote_video media',
+      'delete any remote_video media',
+      'delete own remote_video media',
+      'edit any remote_video media',
+      'edit own remote_video media',
+      'translate remote_video media',
+    ],
+  ];
+}
+
+/**
  * Implements hook_media_source_info_alter().
  */
 function helfi_media_remote_video_media_source_info_alter(array &$sources): void {
