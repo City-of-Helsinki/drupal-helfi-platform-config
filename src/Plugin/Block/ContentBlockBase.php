@@ -63,7 +63,7 @@ class ContentBlockBase extends BlockBase implements ContainerFactoryPluginInterf
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ) : static {
+  ): static {
     return new static(
       $configuration,
       $plugin_id,
@@ -77,7 +77,7 @@ class ContentBlockBase extends BlockBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() : array {
+  public function getCacheTags(): array {
     $matcher = $this->entityVersionMatcher->getType();
 
     if (
@@ -95,21 +95,21 @@ class ContentBlockBase extends BlockBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritDoc}
    */
-  public function getCacheContexts() : array {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build() : array {
+  public function build(): array {
     return [];
   }
 
   /**
    * Return current entity version.
    */
-  protected function getCurrentEntityVersion() : array {
+  protected function getCurrentEntityVersion(): array {
     return $this->entityVersionMatcher->getType();
   }
 

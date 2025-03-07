@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_tpr\Entity\Service;
 
 /**
  * Provides a 'LowerContentBlock' block.
- *
- * @Block(
- *  id = "lower_content_block",
- *  admin_label = @Translation("Lower content block"),
- * )
  */
+#[Block(
+  id: "lower_content_block",
+  admin_label: new TranslatableMarkup("Lower content block"),
+)]
 class LowerContentBlock extends ContentBlockBase {
 
   /**
    * {@inheritdoc}
    */
-  public function build() : array {
+  public function build(): array {
     $build['lower_content'] = [
       '#theme' => 'lower_content_block',
       '#title' => $this->t('Lower content block'),

@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'ReactAndShare' block.
- *
- * @Block(
- *  id = "react_and_share",
- *  admin_label = @Translation("React and Share"),
- * )
  */
+#[Block(
+  id: "react_and_share",
+  admin_label: new TranslatableMarkup("React and Share"),
+)]
 final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -35,10 +36,9 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ) : self {
+  ): self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     assert($container->get('language_manager') instanceof ConfigurableLanguageManagerInterface);
-
     $instance->languageManager = $container->get('language_manager');
     return $instance;
   }
@@ -46,7 +46,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $langcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
