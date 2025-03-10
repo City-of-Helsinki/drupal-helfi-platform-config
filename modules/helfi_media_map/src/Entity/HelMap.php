@@ -39,4 +39,17 @@ class HelMap extends MediaEntityBundle implements MediaInterface {
     return empty($title) ? NULL : $title;
   }
 
+  /**
+   * Check if provider is palvelukartta.
+   *
+   * @return bool
+   *   TRUE if provider is palvelukartta, FALSE otherwise.
+   */
+  public function getCookieConsentBypass(): bool {
+    /** @var \Drupal\link\LinkItemInterface $media */
+    $media = $this->get('field_media_hel_map')->first();
+    $link = $media->getUrl()->getUri();
+    return $link ? str_contains($link, 'palvelukartta.hel.fi') : FALSE;
+  }
+
 }
