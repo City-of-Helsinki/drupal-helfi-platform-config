@@ -73,6 +73,8 @@ trait SocialMediaServiceParserTrait {
       if ($domain === 'x') {
         $service['social_media_icon'] = 'twitter';
       }
+    } else {
+      $service['social_media_icon'] = 'link';
     }
 
     return $service;
