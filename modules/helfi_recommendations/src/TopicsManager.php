@@ -59,6 +59,19 @@ final class TopicsManager implements TopicsManagerInterface {
       return;
     }
 
+    // Update topic languages based on published entity translations.
+    foreach ($topics as $topic) {
+      $languages = [];
+      foreach ($entity->getTranslationLanguages() as $language) {
+        $translation = $entity->getTranslation($language->getId());
+        if ($translation->isPublished()) {
+          $languages[] = $language->getId();
+        }
+      }
+      $topic->set('parent_translations', $languages);
+      $topic->save();
+    }
+
     $this->queueFactory
       ->get('helfi_recommendations_queue')
       ->createItem([

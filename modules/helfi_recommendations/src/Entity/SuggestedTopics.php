@@ -98,6 +98,13 @@ class SuggestedTopics extends ContentEntityBase implements SuggestedTopicsInterf
       ->setSetting('is_ascii', TRUE)
       ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH);
 
+    $fields['parent_translations'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Parent translations'))
+      ->setDescription(t('The entity parent published translation languages to which this entity is referenced.'))
+      ->setSetting('is_ascii', TRUE)
+      ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH)
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+
     $fields['parent_instance'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Parent instance'))
       ->setDescription(t('The name of the instance where this entity is located at.'))
