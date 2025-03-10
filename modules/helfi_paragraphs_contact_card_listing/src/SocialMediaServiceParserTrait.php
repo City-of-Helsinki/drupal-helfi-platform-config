@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_contact_card_listing;
 
-use Drupal\helfi_media_map\Plugin\media\Source\Map;
-use League\Uri\Http;
-use Psr\Http\Message\UriInterface;
-
 /**
  * Social media parser helper.
  */
@@ -23,6 +19,10 @@ trait SocialMediaServiceParserTrait {
    *   Social Media service as an array.
    */
   protected function processSocialMediaDomain(?string $social_media_link_uri): array {
+    if (empty($social_media_link_uri)) {
+      throw new \LogicException('Invalid url.');
+    }
+
     // Parse the URL to get the host.
     $parsed_social_media_url = parse_url($social_media_link_uri);
     $host = $parsed_social_media_url['host'] ?? '';
@@ -43,6 +43,7 @@ trait SocialMediaServiceParserTrait {
       'snapchat',
       'tiktok',
       'twitch',
+      'twitter',
       'x',
       'youtube',
     ];
@@ -73,7 +74,8 @@ trait SocialMediaServiceParserTrait {
       if ($domain === 'x') {
         $service['social_media_icon'] = 'twitter';
       }
-    } else {
+    }
+    else {
       $service['social_media_icon'] = 'link';
     }
 
