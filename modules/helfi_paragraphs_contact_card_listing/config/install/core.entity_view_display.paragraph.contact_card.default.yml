@@ -8,13 +8,15 @@ dependencies:
     - field.field.paragraph.contact_card.field_contact_image_photographer
     - field.field.paragraph.contact_card.field_contact_name
     - field.field.paragraph.contact_card.field_contact_social_media
+    - field.field.paragraph.contact_card.field_contact_social_media_link
     - field.field.paragraph.contact_card.field_contact_title
     - field.field.paragraph.contact_card.field_email
     - field.field.paragraph.contact_card.field_phone_number
     - paragraphs.paragraphs_type.contact_card
     - responsive_image.styles.contact_card
   module:
-    - entity_reference_revisions
+    - helfi_paragraphs_contact_card_listing
+    - helfi_platform_config
     - responsive_image
     - telephone
 id: paragraph.contact_card.default
@@ -56,12 +58,10 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_contact_social_media:
-    type: entity_reference_revisions_entity_view
+  field_contact_social_media_link:
+    type: helfi_social_media_link
     label: hidden
-    settings:
-      view_mode: default
-      link: ''
+    settings: {  }
     third_party_settings: {  }
     weight: 6
     region: content
@@ -89,4 +89,5 @@ content:
     weight: 3
     region: content
 hidden:
+  field_contact_social_media: true
   search_api_excerpt: true
