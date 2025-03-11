@@ -1,0 +1,23 @@
+uuid: b8c80430-0fab-4ac6-8f40-d6ee59523207
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_contact_social_media_link
+    - paragraphs.paragraphs_type.contact_card
+  module:
+    - link
+id: paragraph.contact_card.field_contact_social_media_link
+field_name: field_contact_social_media_link
+entity_type: paragraph
+bundle: contact_card
+label: 'Social media link'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 0
+  link_type: 16
+field_type: link

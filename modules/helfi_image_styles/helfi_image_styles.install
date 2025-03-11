@@ -75,3 +75,12 @@ function helfi_image_styles_update_9005(): void {
   $config_factory->getEditable('image.style.3_2_xxs')->delete();
   $config_factory->getEditable('image.style.3_2_xxs_2x')->delete();
 }
+
+/**
+ * UHF-10909: Removed replaced image stylse.
+ */
+function helfi_image_styles_update_9006(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('image.style.1_200w_200h')->delete();
+  $config_factory->getEditable('image.style.1_400w_400h_LQ')->delete();
+}

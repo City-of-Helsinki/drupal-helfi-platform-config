@@ -8,6 +8,7 @@ dependencies:
     - field.field.paragraph.contact_card.field_contact_image_photographer
     - field.field.paragraph.contact_card.field_contact_name
     - field.field.paragraph.contact_card.field_contact_social_media
+    - field.field.paragraph.contact_card.field_contact_social_media_link
     - field.field.paragraph.contact_card.field_contact_title
     - field.field.paragraph.contact_card.field_email
     - field.field.paragraph.contact_card.field_phone_number
@@ -15,6 +16,7 @@ dependencies:
     - paragraphs.paragraphs_type.contact_card
   module:
     - focal_point
+    - link
     - paragraphs
     - telephone
 id: paragraph.contact_card.default
@@ -73,6 +75,14 @@ content:
       features:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
+    third_party_settings: {  }
+  field_contact_social_media_link:
+    type: link_default
+    weight: 8
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
   field_contact_title:
     type: string_textfield

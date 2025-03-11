@@ -1,0 +1,19 @@
+uuid: 4f267178-b6ce-40dc-9f8f-ca0fb026dc57
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - paragraphs
+id: paragraph.field_contact_social_media_link
+field_name: field_contact_social_media_link
+entity_type: paragraph
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

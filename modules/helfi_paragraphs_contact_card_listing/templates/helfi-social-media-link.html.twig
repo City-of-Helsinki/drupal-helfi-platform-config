@@ -1,0 +1,9 @@
+{% set classes = ['social-media-link'] %}
+
+{% set link_attributes = {
+  'data-selected-icon': social_media_link.social_media_icon
+} %}
+
+<div{{ attributes.addClass(classes) }}>
+  {{ link(social_media_link.social_media_name, social_media_link.social_media_url, link_attributes) }}
+</div>
