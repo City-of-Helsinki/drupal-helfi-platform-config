@@ -97,7 +97,10 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
 
     // @todo: Preprocess recommendations prior to rendering.
     // We can't use the regular entity rendering process because
-    // the recommendations are not nodes in this Drupal instance.
+    // (all of) the recommendations are not nodes in this Drupal
+    // instance. External entities would've been a viable solution
+    // here, but there's already a huge refactoring need for current
+    // usage to get the codebase D11 compatible.
     $response['#rows'] = $recommendations;
 
     return $response;
@@ -122,11 +125,9 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     // Applied contexts can affect the cache max age when this plugin is
     // involved in caching, collect and return them.
     foreach ($this->getContexts() as $context) {
-
-        /** @var \Drupal\Core\Cache\CacheableDependencyInterface $context */
-        if ($context instanceof CacheableDependencyInterface) {
-            $max_age = Cache::mergeMaxAges($max_age, $context->getCacheMaxAge());
-        }
+      if ($context instanceof CacheableDependencyInterface) {
+          $max_age = Cache::mergeMaxAges($max_age, $context->getCacheMaxAge());
+      }
     }
 
     return $max_age;
