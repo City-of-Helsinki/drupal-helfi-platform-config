@@ -1,8 +1,8 @@
-uuid: 2d2cbad7-ff93-46a2-9b86-5ed6769b0d34
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.text_converter
     - field.field.node.landing_page.field_content
     - field.field.node.landing_page.field_has_hero
     - field.field.node.landing_page.field_hero
@@ -12,12 +12,11 @@ dependencies:
     - node.type.landing_page
   module:
     - entity_reference_revisions
-    - metatag
     - user
-id: node.landing_page.default
+id: node.landing_page.text_converter
 targetEntityType: node
 bundle: landing_page
-mode: default
+mode: text_converter
 content:
   field_content:
     type: entity_reference_revisions_entity_view
@@ -26,26 +25,16 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 1
-    region: content
-  field_metatags:
-    type: metatag_empty_formatter
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
     weight: 0
     region: content
 hidden:
   field_has_hero: true
   field_hero: true
   field_liftup_image: true
+  field_metatags: true
   field_recommendation_topics: true
   langcode: true
+  links: true
   published_at: true
   search_api_excerpt: true
   toc_enabled: true
