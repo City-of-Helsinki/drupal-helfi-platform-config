@@ -6,6 +6,7 @@ namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
@@ -62,12 +63,20 @@ final class TopicsManager implements TopicsManagerInterface {
     // Update topic languages based on published entity translations.
     foreach ($topics as $topic) {
       $languages = [];
-      foreach ($entity->getTranslationLanguages() as $language) {
-        $translation = $entity->getTranslation($language->getId());
-        if ($translation->isPublished()) {
-          $languages[] = $language->getId();
+      if ($entity instanceof TranslatableInterface) {
+        foreach ($entity->getTranslationLanguages() as $language) {
+          $translation = $entity->getTranslation($language->getId());
+          if ($translation instanceof EntityPublishedInterface && $translation->isPublished()) {
+            $languages[] = $language->getId();
+          }
         }
       }
+      else {
+        if ($entity instanceof EntityPublishedInterface && $entity->isPublished()) {
+          $languages[] = $entity->language()->getId();
+        }
+      }
+
       $topic->set('parent_translations', $languages);
       $topic->save();
     }

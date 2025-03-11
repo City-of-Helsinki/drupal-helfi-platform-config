@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Utility\Error;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -29,11 +31,14 @@ class RecommendationManager {
    *   The entity type manager.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityManager,
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
     private readonly LoggerInterface $logger,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
@@ -71,6 +76,56 @@ class RecommendationManager {
   }
 
   /**
+   * Get keyword terms for a node.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The node.
+   *
+   * @return array
+   *   Array of keyword data.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  private function getKeywordTerms(ContentEntityInterface $entity) {
+    $keywords_data = [];
+
+    try {
+      if ($entity->hasField('field_recommendation_topics')) {
+        $topics = $entity->get('field_recommendation_topics');
+
+        if ($topics instanceof EntityReferenceFieldItemListInterface) {
+          $topic_entities = $topics->referencedEntities();
+
+          foreach ($topic_entities as $topic) {
+            if ($topic instanceof ContentEntityInterface && $topic->hasField('keywords')) {
+              $keywords_field = $topic->get('keywords');
+              $target_type = $keywords_field->getFieldDefinition()
+                ->getSetting('target_type');
+
+              foreach ($keywords_field->getValue() as $keyword) {
+                $keyword_entity = $this->entityTypeManager->getStorage($target_type)
+                  ->load($keyword['target_id']);
+                if ($keyword_entity && $keyword_entity instanceof EntityInterface) {
+                  $keywords_data[] = [
+                    'label' => $keyword_entity->label(),
+                    'score' => $keyword['score'],
+                  ];
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    catch (\Throwable $e) {
+      Error::logException($this->logger, $e);
+    }
+
+    return $keywords_data;
+  }
+
+  /**
    * Get the Elasticsearch query.
    *
    * This query aims to find results that have similar keywords to current
@@ -105,39 +160,33 @@ class RecommendationManager {
    */
   private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3): array {
     // Build keyword terms and score functions.
+    $keywords = $this->getKeywordTerms($entity);
     $keyword_terms = [];
     $keyword_score_functions = [];
-    try {
-      if ($entity->hasField('field_recommendation_topics')) {
-        foreach ($entity->field_recommendation_topics->entity->keywords as $keyword) {
-          $keyword_terms[] = [
-            'term' => [
-              'keywords.label' => $keyword->entity->label(),
+    foreach ($keywords as $keyword) {
+      $keyword_terms[] = [
+        'term' => [
+          'keywords.label' => $keyword['label'],
+        ],
+      ];
+      $keyword_score_functions[] = [
+        'filter' => [
+          'term' => [
+            'keywords.label' => $keyword['label'],
+          ],
+        ],
+        'script_score' => [
+          'script' => [
+            'source' => "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['keywords.score'].value * 1000)",
+            'params' => [
+              'origin' => $keyword['score'] * 1000,
+              'scale' => 1,
+              'decay' => 0.5,
+              'offset' => 0,
             ],
-          ];
-          $keyword_score_functions[] = [
-            'filter' => [
-              'term' => [
-                'keywords.label' => $keyword->entity->label(),
-              ],
-            ],
-            'script_score' => [
-              'script' => [
-                'source' => "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['keywords.score'].value * 1000)",
-                'params' => [
-                  'origin' => $keyword->score * 1000,
-                  'scale' => 1,
-                  'decay' => 0.5,
-                  'offset' => 0,
-                ],
-              ],
-            ],
-          ];
-        }
-      }
-    }
-    catch (\Throwable $e) {
-      Error::logException($this->logger, $e);
+          ],
+        ],
+      ];
     }
 
     // Build and return query.
@@ -151,13 +200,17 @@ class RecommendationManager {
       'query' => [
         'bool' => [
           'filter' => [
-            'term' => [
+            [
+              'term' => [
               // Only include node results.
               // @todo Maybe TPR-entities as well?
               'parent_type' => 'node',
+              ],
             ],
-            'term' => [
-              'parent_translations' => $target_langcode,
+            [
+              'term' => [
+                'parent_translations' => $target_langcode,
+              ],
             ],
           ],
           'must' => [
@@ -239,6 +292,7 @@ class RecommendationManager {
     /** @var \Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend $backend */
     $client = $backend->getClient();
 
+    $results = [];
     try {
       $results = $client->search([
         'index' => self::INDEX_NAME,
