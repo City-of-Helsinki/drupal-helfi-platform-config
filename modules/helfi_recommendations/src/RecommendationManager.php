@@ -202,9 +202,9 @@ class RecommendationManager {
           'filter' => [
             [
               'term' => [
-              // Only include node results.
-              // @todo Maybe TPR-entities as well?
-              'parent_type' => 'node',
+                // Only include node results.
+                // @todo Maybe TPR-entities as well?
+                'parent_type' => 'node',
               ],
             ],
             [
