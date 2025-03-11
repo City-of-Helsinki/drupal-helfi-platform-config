@@ -69,7 +69,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    */
   public function build() : array {
     try {
-      // @todo: Allow using this on TPR-entities as well.
+      // @todo Allow using this on TPR-entities as well.
       $node = $this->getContextValue('node');
     }
     catch (ContextException $exception) {
@@ -77,9 +77,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       return [];
     }
 
-    // @todo: Check preconditions.
-
-    // @todo: Implement theme layer.
+    // @todo Implement theme layer.
     $response = [
       '#theme' => 'recommendations_block',
       '#title' => $this->t('You might be interested in', [], ['context' => 'Recommendations block title']),
@@ -95,7 +93,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       return $response;
     }
 
-    // @todo: Preprocess recommendations prior to rendering.
+    // @todo Preprocess recommendations prior to rendering.
     // We can't use the regular entity rendering process because
     // (all of) the recommendations are not nodes in this Drupal
     // instance. External entities would've been a viable solution
@@ -126,7 +124,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     // involved in caching, collect and return them.
     foreach ($this->getContexts() as $context) {
       if ($context instanceof CacheableDependencyInterface) {
-          $max_age = Cache::mergeMaxAges($max_age, $context->getCacheMaxAge());
+        $max_age = Cache::mergeMaxAges($max_age, $context->getCacheMaxAge());
       }
     }
 

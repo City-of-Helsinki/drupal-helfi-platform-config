@@ -8,6 +8,7 @@ use Drupal\search_api\Event\MappingFieldTypesEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
+
 /**
  * Search api event subscriber.
  */
@@ -31,7 +32,7 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
     $mapping['scored_item'] = 'scored_item';
   }
 
-    /**
+  /**
    * Map Elasticsearch fields.
    */
   public function mapElasticFields(FieldMappingEvent $event): void {

@@ -27,6 +27,8 @@ class RecommendationManager {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
    *   The entity type manager.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityManager,
@@ -60,13 +62,12 @@ class RecommendationManager {
     }
 
     // Get results from Elasticsearch.
-    $query = $this->getElasticQuery($entity, $limit, $target_langcode);
+    $query = $this->getElasticQuery($entity, $target_langcode, $limit);
     $results = $this->searchElastic($query);
 
     // Fetch node data for each result via a JSON:API request.
-    // @todo: Implement this.
-
-    return [];
+    // @todo Implement this.
+    return $results;
   }
 
   /**
@@ -81,9 +82,12 @@ class RecommendationManager {
    * keywords as a result) would have the highest score.
    *
    * Example:
-   * - Current entity has keywords: [keyword1, keyword2, keyword3] with scores: [1, 0.5, 0.2]
-   * - Search result A has keywords: [keyword1, keyword2, keyword3] with scores: [0.9, 0.6, 0.3]
-   * - Search result B has keywords: [keyword1, keyword2, keyword3] with scores: [0.5, 0.8, 0.1]
+   * - Current entity has keywords: [keyword1, keyword2, keyword3] with scores:
+   *   [1, 0.5, 0.2]
+   * - Search result A has keywords: [keyword1, keyword2, keyword3] with scores:
+   *   [0.9, 0.6, 0.3]
+   * - Search result B has keywords: [keyword1, keyword2, keyword3] with scores:
+   *   [0.5, 0.8, 0.1]
    *
    * Both search results have the same matching keywords, but result A has
    * score values closer to the current entity's score values, so it should
@@ -91,15 +95,15 @@ class RecommendationManager {
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
+   * @param string $target_langcode
+   *   Which translation to use to select the recommendations.
    * @param int $limit
-   *   How many recommendations should be returned.
-   * @param string|null $target_langcode
-   *   Which translation to use to select the recommendations,
+   *   How many recommendations should be returned. Defaults to 3.
    *
    * @return array
    *   The elastic query.
    */
-  private function getElasticQuery(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL): array {
+  private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3): array {
     // Build keyword terms and score functions.
     $keyword_terms = [];
     $keyword_score_functions = [];
@@ -107,26 +111,26 @@ class RecommendationManager {
       if ($entity->hasField('field_recommendation_topics')) {
         foreach ($entity->field_recommendation_topics->entity->keywords as $keyword) {
           $keyword_terms[] = [
-          'term' => [
-            'keywords.label' => $keyword->entity->label(),
-          ],
-        ];
-        $keyword_score_functions[] = [
-          'filter' => [
             'term' => [
               'keywords.label' => $keyword->entity->label(),
             ],
-          ],
-          'script_score' => [
-            'script' => [
-              'source' => "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['keywords.score'].value * 1000)",
-              'params' => [
-                'origin' => $keyword->score * 1000,
-                'scale' => 1,
-                'decay' => 0.5,
-                'offset' => 0,
+          ];
+          $keyword_score_functions[] = [
+            'filter' => [
+              'term' => [
+                'keywords.label' => $keyword->entity->label(),
               ],
             ],
+            'script_score' => [
+              'script' => [
+                'source' => "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['keywords.score'].value * 1000)",
+                'params' => [
+                  'origin' => $keyword->score * 1000,
+                  'scale' => 1,
+                  'decay' => 0.5,
+                  'offset' => 0,
+                ],
+              ],
             ],
           ];
         }
@@ -149,7 +153,7 @@ class RecommendationManager {
           'filter' => [
             'term' => [
               // Only include node results.
-              // @todo: Maybe TPR-entities as well?
+              // @todo Maybe TPR-entities as well?
               'parent_type' => 'node',
             ],
             'term' => [
@@ -219,6 +223,7 @@ class RecommendationManager {
    *   The query.
    *
    * @return array
+   *   The search results.
    */
   private function searchElastic(array $query) : array {
     // Load the index.
@@ -231,7 +236,7 @@ class RecommendationManager {
       return [];
     }
 
-    /** @var ElasticSearchBackend $backend */
+    /** @var \Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend $backend */
     $client = $backend->getClient();
 
     try {
