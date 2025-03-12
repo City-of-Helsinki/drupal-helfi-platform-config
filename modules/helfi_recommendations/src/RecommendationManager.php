@@ -12,6 +12,7 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 use Drupal\search_api\Entity\Index;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
@@ -41,6 +42,7 @@ class RecommendationManager {
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
     private readonly LoggerInterface $logger,
     private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly EnvironmentResolverInterface $environmentResolver,
   ) {
   }
 
@@ -129,6 +131,21 @@ class RecommendationManager {
     }
 
     return $keywords_data;
+  }
+
+  /**
+   * Get the parent instance.
+   *
+   * @return string
+   *   The parent instance.
+   */
+  private function getParentInstance(): string {
+    try {
+      return $this->environmentResolver->getActiveProject()->getName();
+    }
+    catch (\InvalidArgumentException $e) {
+      Error::logException($this->logger, $e);
+    }
   }
 
   /**
@@ -263,7 +280,7 @@ class RecommendationManager {
                   ],
                   [
                     'term' => [
-                      'parent_instance' => 'rekry',
+                      'parent_instance' => $this->getParentInstance(),
                     ],
                   ],
                 ],
