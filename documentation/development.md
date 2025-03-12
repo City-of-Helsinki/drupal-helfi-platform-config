@@ -235,6 +235,7 @@ function your_module_update_9001(): void {
   $config_factory = Drupal::configFactory();
   $config_factory->getEditable('your_module.configuration')->delete();
 }
+```
 
 ### Rewrite configurations
 
