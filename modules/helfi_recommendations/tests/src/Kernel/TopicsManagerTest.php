@@ -124,6 +124,27 @@ class TopicsManagerTest extends AnnifKernelTestBase {
   }
 
   /**
+   * Tests parent translations field is set correctly.
+   */
+  public function testParentTranslationsField(): void {
+    $topic = SuggestedTopics::create();
+    $node = Node::create([
+      'type' => 'test_node_bundle',
+      'title' => $this->randomString(),
+      'test_keywords' => $topic,
+      'langcode' => 'fi',
+    ]);
+    $node->addTranslation('sv', $node->toArray());
+    $node->addTranslation('en', ['status' => [['value' => 0]]] + $node->toArray());
+
+    $sut = $this->getSut();
+    $sut->queueEntity($node, TRUE);
+
+    // Only published translations should be included.
+    $this->assertEquals([['value' => 'fi'], ['value' => 'sv']], $topic->get('parent_translations')->getValue());
+  }
+
+  /**
    * Gets service under test.
    */
   private function getSut(
