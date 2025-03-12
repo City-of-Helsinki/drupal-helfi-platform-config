@@ -36,6 +36,8 @@ class RecommendationManager {
    *   The logger.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
+   *   The environment resolver.
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityManager,
