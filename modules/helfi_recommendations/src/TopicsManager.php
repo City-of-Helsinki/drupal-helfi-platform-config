@@ -111,7 +111,7 @@ final class TopicsManager implements TopicsManagerInterface {
           continue;
         }
 
-        $topics = $this->getSuggestedTopicsEntities($batch[$id], $overwriteExisting);
+        $topics = $this->getSuggestedTopicsEntities($batch[$id], !$overwriteExisting);
         $this->saveKeywords($topics, $keywords, $batch[$id]->language());
 
         // Mark as processed so the same entity is bombarding the
@@ -136,7 +136,7 @@ final class TopicsManager implements TopicsManagerInterface {
     $buckets = [];
 
     foreach ($entities as $key => $entity) {
-      $topics = $this->getSuggestedTopicsEntities($entity, $overwriteExisting);
+      $topics = $this->getSuggestedTopicsEntities($entity, !$overwriteExisting);
 
       // Skip if the entity does not have topics or
       // entity was already processed in this request.
