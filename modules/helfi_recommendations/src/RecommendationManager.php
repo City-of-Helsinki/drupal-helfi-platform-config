@@ -9,11 +9,13 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
+use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
+use Drupal\search_api\Entity\Index;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
-use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
-use Drupal\search_api\Entity\Index;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -83,43 +85,47 @@ class RecommendationManager {
    *
    * @return array
    *   Array of keyword data.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   private function getKeywordTerms(ContentEntityInterface $entity) {
     $keywords_data = [];
 
-    try {
-      if ($entity->hasField('field_recommendation_topics')) {
-        $topics = $entity->get('field_recommendation_topics');
+    // List suggested_topics_reference fields that the entity has.
+    $fields = array_filter(
+      $entity->getFieldDefinitions(),
+      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
+    );
 
-        if ($topics instanceof EntityReferenceFieldItemListInterface) {
-          $topic_entities = $topics->referencedEntities();
+    $topics = [];
+    foreach ($fields as $key => $definition) {
+      $field = $entity->get($key);
+      assert($field instanceof EntityReferenceFieldItemListInterface);
 
-          foreach ($topic_entities as $topic) {
-            if ($topic instanceof ContentEntityInterface && $topic->hasField('keywords')) {
-              $keywords_field = $topic->get('keywords');
-              $target_type = $keywords_field->getFieldDefinition()
-                ->getSetting('target_type');
+      // Get all referenced topic entities from all
+      // suggested_topics_reference fields.
+      foreach ($field->referencedEntities() as $topic) {
+        assert($topic instanceof SuggestedTopicsInterface);
+        $topics[] = $topic;
+      }
+    }
 
-              foreach ($keywords_field->getValue() as $keyword) {
-                $keyword_entity = $this->entityTypeManager->getStorage($target_type)
-                  ->load($keyword['target_id']);
-                if ($keyword_entity && $keyword_entity instanceof EntityInterface) {
-                  $keywords_data[] = [
-                    'label' => $keyword_entity->label(),
-                    'score' => $keyword['score'],
-                  ];
-                }
-              }
-            }
+    // Collect all keywords from all topics.
+    foreach ($topics as $topic) {
+      if ($topic instanceof ContentEntityInterface && $topic->hasField('keywords')) {
+        $keywords_field = $topic->get('keywords');
+        $target_type = $keywords_field->getFieldDefinition()
+          ->getSetting('target_type');
+
+        foreach ($keywords_field->getValue() as $keyword) {
+          $keyword_entity = $this->entityTypeManager->getStorage($target_type)
+            ->load($keyword['target_id']);
+          if ($keyword_entity && $keyword_entity instanceof EntityInterface) {
+            $keywords_data[] = [
+              'label' => $keyword_entity->label(),
+              'score' => $keyword['score'],
+            ];
           }
         }
       }
-    }
-    catch (\Throwable $e) {
-      Error::logException($this->logger, $e);
     }
 
     return $keywords_data;
