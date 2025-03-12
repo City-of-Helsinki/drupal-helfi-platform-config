@@ -30,8 +30,6 @@ class RecommendationManager {
   /**
    * The constructor.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
-   *   The entity type manager.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -40,7 +38,6 @@ class RecommendationManager {
    *   The environment resolver.
    */
   public function __construct(
-    private readonly EntityTypeManagerInterface $entityManager,
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
     private readonly LoggerInterface $logger,
     private readonly EntityTypeManagerInterface $entityTypeManager,
@@ -138,16 +135,19 @@ class RecommendationManager {
   /**
    * Get the parent instance.
    *
-   * @return string
+   * @return string|null
    *   The parent instance.
    */
-  private function getParentInstance(): string {
+  private function getParentInstance(): ?string {
+    $project = NULL;
     try {
-      return $this->environmentResolver->getActiveProject()->getName();
+      $project = $this->environmentResolver->getActiveProject()->getName();
     }
     catch (\InvalidArgumentException $e) {
       Error::logException($this->logger, $e);
     }
+
+    return $project;
   }
 
   /**
