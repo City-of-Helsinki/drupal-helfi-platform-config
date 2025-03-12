@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.landing_page.field_hero
     - field.field.node.landing_page.field_liftup_image
     - field.field.node.landing_page.field_metatags
-    - field.field.node.landing_page.field_recommendation_topics
     - node.type.landing_page
   module:
     - entity_reference_revisions
@@ -44,7 +43,6 @@ hidden:
   field_has_hero: true
   field_hero: true
   field_liftup_image: true
-  field_recommendation_topics: true
   langcode: true
   published_at: true
   search_api_excerpt: true

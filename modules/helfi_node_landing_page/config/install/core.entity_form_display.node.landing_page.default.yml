@@ -8,11 +8,9 @@ dependencies:
     - field.field.node.landing_page.field_hero
     - field.field.node.landing_page.field_liftup_image
     - field.field.node.landing_page.field_metatags
-    - field.field.node.landing_page.field_recommendation_topics
     - node.type.landing_page
   module:
     - hdbt_admin_tools
-    - helfi_recommendations
     - media_library
     - metatag
     - paragraphs
@@ -88,13 +86,6 @@ content:
     region: content
     settings:
       sidebar: false
-      use_details: true
-    third_party_settings: {  }
-  field_recommendation_topics:
-    type: suggested_topics_reference
-    weight: 26
-    region: content
-    settings: {  }
     third_party_settings: {  }
   langcode:
     type: language_select
