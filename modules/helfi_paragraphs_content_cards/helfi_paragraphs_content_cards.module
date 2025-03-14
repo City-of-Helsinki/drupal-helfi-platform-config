@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_paragraphs_content_cards\Entity\ContentCards;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -16,4 +17,13 @@ function helfi_paragraphs_content_cards_helfi_paragraph_types() : array {
   return [
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'content_cards'),
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_content_cards_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['content_cards'])) {
+    $bundles['paragraph']['content_cards']['class'] = ContentCards::class;
+  }
 }
