@@ -8,12 +8,9 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
-use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 use Drupal\search_api\Entity\Index;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -42,6 +39,7 @@ class RecommendationManager {
     private readonly LoggerInterface $logger,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
+    private readonly TopicsManagerInterface $topicsManager,
   ) {
   }
 
@@ -89,25 +87,7 @@ class RecommendationManager {
    */
   private function getKeywordTerms(ContentEntityInterface $entity) {
     $keywords_data = [];
-
-    // List suggested_topics_reference fields that the entity has.
-    $fields = array_filter(
-      $entity->getFieldDefinitions(),
-      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
-    );
-
-    $topics = [];
-    foreach ($fields as $key => $definition) {
-      $field = $entity->get($key);
-      assert($field instanceof EntityReferenceFieldItemListInterface);
-
-      // Get all referenced topic entities from all
-      // suggested_topics_reference fields.
-      foreach ($field->referencedEntities() as $topic) {
-        assert($topic instanceof SuggestedTopicsInterface);
-        $topics[] = $topic;
-      }
-    }
+    $topics = $this->topicsManager->getSuggestedTopicsEntities($entity, FALSE);
 
     // Collect all keywords from all topics.
     foreach ($topics as $topic) {

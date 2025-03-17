@@ -122,6 +122,33 @@ final class TopicsManager implements TopicsManagerInterface {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  public function getSuggestedTopicsEntities(ContentEntityInterface $entity, bool $filterEmpty): array {
+    // List suggested_topics_reference fields that the entity has.
+    $fields = array_filter(
+      $entity->getFieldDefinitions(),
+      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
+    );
+
+    $topics = [];
+
+    foreach ($fields as $key => $definition) {
+      $field = $entity->get($key);
+      assert($field instanceof EntityReferenceFieldItemListInterface);
+
+      // Get all referenced topic entities from all
+      // suggested_topics_reference fields.
+      foreach ($field->referencedEntities() as $topic) {
+        assert($topic instanceof SuggestedTopicsInterface);
+        $topics[] = $topic;
+      }
+    }
+
+    return array_filter($topics, static fn (SuggestedTopicsInterface $topic) => !$filterEmpty || !$topic->hasKeywords());
+  }
+
+  /**
    * Gets entities in batches.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface[] $entities
@@ -262,41 +289,6 @@ final class TopicsManager implements TopicsManagerInterface {
    */
   private function isEntityProcessed(EntityInterface $entity) : bool {
     return isset($this->processedItems[$this->getEntityKey($entity)]);
-  }
-
-  /**
-   * Get SuggestedTopics entities linked to a content entity.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity.
-   * @param bool $filterEmpty
-   *   If TRUE, only return topic entities that have no keywords.
-   *
-   * @return \Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface[]
-   *   Linked topics entities.
-   */
-  private function getSuggestedTopicsEntities(ContentEntityInterface $entity, bool $filterEmpty): array {
-    // List suggested_topics_reference fields that the entity has.
-    $fields = array_filter(
-      $entity->getFieldDefinitions(),
-      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
-    );
-
-    $topics = [];
-
-    foreach ($fields as $key => $definition) {
-      $field = $entity->get($key);
-      assert($field instanceof EntityReferenceFieldItemListInterface);
-
-      // Get all referenced topic entities from all
-      // suggested_topics_reference fields.
-      foreach ($field->referencedEntities() as $topic) {
-        assert($topic instanceof SuggestedTopicsInterface);
-        $topics[] = $topic;
-      }
-    }
-
-    return array_filter($topics, static fn (SuggestedTopicsInterface $topic) => !$filterEmpty || !$topic->hasKeywords());
   }
 
 }

@@ -45,4 +45,17 @@ interface TopicsManagerInterface {
    */
   public function processEntities(array $entities, bool $overwriteExisting = FALSE) : void;
 
+  /**
+   * Get SuggestedTopics entities linked to a content entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   * @param bool $filterEmpty
+   *   If TRUE, only return topic entities that have no keywords.
+   *
+   * @return \Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface[]
+   *   Linked topics entities.
+   */
+  public function getSuggestedTopicsEntities(ContentEntityInterface $entity, bool $filterEmpty): array;
+
 }
