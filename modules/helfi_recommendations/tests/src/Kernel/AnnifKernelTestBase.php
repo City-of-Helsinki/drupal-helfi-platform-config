@@ -9,6 +9,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\NodeType;
+use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
  * Base class for kernel tests.
@@ -50,6 +51,11 @@ abstract class AnnifKernelTestBase extends EntityKernelTestBase {
     NodeType::create([
       'name' => $this->randomMachineName(),
       'type' => 'test_node_bundle',
+    ])->save();
+
+    Vocabulary::create([
+      'name' => $this->randomMachineName(),
+      'vid' => 'test_vocabulary',
     ])->save();
 
     FieldStorageConfig::create([
