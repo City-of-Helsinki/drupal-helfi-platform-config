@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_recommendations\Plugin\Block;
 
-use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
@@ -12,12 +11,12 @@ use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Plugin\Context\EntityContextDefinition;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_recommendations\RecommendationManager;
+use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -27,13 +26,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[Block(
   id: "helfi_recommendations",
   admin_label: new TranslatableMarkup("AI powered recommendations"),
-  context_definitions: [
-    'node' => new EntityContextDefinition(
-      data_type: 'node',
-      label: new TranslatableMarkup('Node'),
-      required: TRUE,
-    ),
-  ]
 )]
 final class RecommendationsBlock extends BlockBase implements ContainerFactoryPluginInterface, ContextAwarePluginInterface {
 
@@ -48,6 +40,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly AccountInterface $currentUser,
     private readonly LoggerInterface $logger,
+    private readonly EntityVersionMatcher $entityVersionMatcher,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -61,6 +54,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       $container->get('entity_type.manager'),
       $container->get('current_user'),
       $container->get('logger.channel.helfi_recommendations'),
+      $container->get('helfi_platform_config.entity_version_matcher'),
     );
   }
 
@@ -68,14 +62,8 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    * {@inheritdoc}
    */
   public function build() : array {
-    try {
-      // @todo Allow using this on TPR-entities as well.
-      $node = $this->getContextValue('node');
-    }
-    catch (ContextException $exception) {
-      Error::logException($this->logger, $exception);
-      return [];
-    }
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    ['entity' => $entity, 'entity_version' => $entity_version] = $this->entityVersionMatcher->getType();
 
     // @todo Implement theme layer.
     $response = [
@@ -83,7 +71,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       '#title' => $this->t('You might be interested in', [], ['context' => 'Recommendations block title']),
     ];
 
-    $recommendations = $this->getRecommendations($node);
+    $recommendations = $this->getRecommendations($entity);
     if (!$recommendations) {
       if ($this->currentUser->isAnonymous()) {
         return [];
@@ -134,16 +122,16 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   /**
    * Get the recommendations for current content entity.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $node
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   Content entity to find recommendations for.
    *
    * @return array
    *   Array of recommendations
    */
-  private function getRecommendations(ContentEntityInterface $node): array {
+  private function getRecommendations(ContentEntityInterface $entity): array {
     try {
       $recommendations = $this->recommendationManager
-        ->getRecommendations($node, 3, $node->language()->getId());
+        ->getRecommendations($entity, 3, $entity->language()->getId());
       return $recommendations;
     }
     catch (\Exception $exception) {
