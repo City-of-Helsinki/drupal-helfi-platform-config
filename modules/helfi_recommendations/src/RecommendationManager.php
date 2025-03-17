@@ -77,42 +77,6 @@ class RecommendationManager {
   }
 
   /**
-   * Get keyword terms for a node.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The node.
-   *
-   * @return array
-   *   Array of keyword data.
-   */
-  private function getKeywordTerms(ContentEntityInterface $entity) {
-    $keywords_data = [];
-    $topics = $this->topicsManager->getSuggestedTopicsEntities($entity, FALSE);
-
-    // Collect all keywords from all topics.
-    foreach ($topics as $topic) {
-      if ($topic instanceof ContentEntityInterface && $topic->hasField('keywords')) {
-        $keywords_field = $topic->get('keywords');
-        $target_type = $keywords_field->getFieldDefinition()
-          ->getSetting('target_type');
-
-        foreach ($keywords_field->getValue() as $keyword) {
-          $keyword_entity = $this->entityTypeManager->getStorage($target_type)
-            ->load($keyword['target_id']);
-          if ($keyword_entity && $keyword_entity instanceof EntityInterface) {
-            $keywords_data[] = [
-              'label' => $keyword_entity->label(),
-              'score' => $keyword['score'],
-            ];
-          }
-        }
-      }
-    }
-
-    return $keywords_data;
-  }
-
-  /**
    * Get the parent instance.
    *
    * @return string|null
@@ -165,7 +129,7 @@ class RecommendationManager {
    */
   private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3): array {
     // Build keyword terms and score functions.
-    $keywords = $this->getKeywordTerms($entity);
+    $keywords = $this->topicsManager->getKeywords($entity);
     $keyword_terms = [];
     $keyword_score_functions = [];
     foreach ($keywords as $keyword) {
