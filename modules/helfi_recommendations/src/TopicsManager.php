@@ -16,7 +16,6 @@ use Drupal\Core\Queue\QueueFactory;
 use Drupal\helfi_recommendations\Client\ApiClient;
 use Drupal\helfi_recommendations\Client\Keyword;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
-use Drupal\taxonomy\TermInterface;
 
 /**
  * The topic manager.
@@ -126,23 +125,12 @@ final class TopicsManager implements TopicsManagerInterface {
    * {@inheritDoc}
    */
   public function getKeywords(ContentEntityInterface $entity): array {
-    $termStorage = $this->entityTypeManager->getStorage('taxonomy_term');
     $keywords = [];
     $topics = $this->getSuggestedTopicsEntities($entity, FALSE);
 
     foreach ($topics as $topic) {
       assert($topic instanceof SuggestedTopicsInterface);
-      $keywords = [];
-
-      foreach ($topic->get('keywords')->getValue() as $keyword) {
-        $term = $termStorage->load($keyword['target_id']);
-        if ($term instanceof TermInterface) {
-          $keywords[] = [
-            'label' => $term->label(),
-            'score' => $keyword['score'],
-          ];
-        }
-      }
+      array_push($keywords, ...$topic->getKeywords());
     }
 
     return $keywords;

@@ -22,6 +22,14 @@ interface SuggestedTopicsInterface extends ContentEntityInterface, EntityPublish
   public function hasKeywords(): bool;
 
   /**
+   * Get the keywords of the entity.
+   *
+   * @return array
+   *   The keywords.
+   */
+  public function getKeywords(): array;
+
+  /**
    * Set the parent entity of the item.
    *
    * @param \Drupal\Core\Entity\EntityInterface $parent
