@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Utility\Error;
@@ -33,6 +32,8 @@ class RecommendationManager {
    *   The entity type manager.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   The environment resolver.
+   * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
+   *   The topics manager.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]

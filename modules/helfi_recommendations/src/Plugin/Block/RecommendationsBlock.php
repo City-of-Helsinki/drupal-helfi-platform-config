@@ -63,7 +63,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    */
   public function build() : array {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    ['entity' => $entity, 'entity_version' => $entity_version] = $this->entityVersionMatcher->getType();
+    ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
     // @todo Implement theme layer.
     $response = [
