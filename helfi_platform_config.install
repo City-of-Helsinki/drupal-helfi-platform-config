@@ -13,6 +13,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
@@ -432,5 +433,29 @@ function _helfi_platform_config_process_links(ContentEntityInterface $entity, st
   if ($hasChanges) {
     $entity->get($field_name)->value = Html::serialize($dom);
     $entity->save();
+  }
+}
+
+/**
+ * UHF-11535: Enable matomo settings.
+ */
+function helfi_platform_config_update_9321(): void {
+  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+
+  try {
+    $environment = $environmentResolver->getActiveEnvironment();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
+  $module_installer = \Drupal::service('module_installer');
+
+  // Enable helfi_matomo module for all sites except Etusivu
+  if (
+      !\Drupal::moduleHandler()->moduleExists('helfi_matomo') &&
+      !$environment->getName() === Project::ETUSIVU
+    ) {
+    $module_installer->install(['helfi_matomo']);
   }
 }

@@ -4,5 +4,6 @@ description: 'Provides admin settings for Matomo.'
 core_version_requirement: ^9 || ^10
 dependencies:
  - hdbt_admin_tools:hdbt_admin_tools
+ - helfi_api_base:helfi_api_base
 'interface translation project': helfi_matomo
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_matomo/translations/%language.po
