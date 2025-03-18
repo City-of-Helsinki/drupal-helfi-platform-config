@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Contains module functions for Helfi Matomo.
+ */
+
+declare(strict_types=1);
+
+function helfi_matomo_preprocess_html(array &$variables) {
+  $matomo_site_id = \Drupal::config('helfi_matomo.settings')->get('helfi_matomo.matomo_site_id');
+  $variables['#attached']['drupalSettings']['matomo_site_id'] = $matomo_site_id;
+};

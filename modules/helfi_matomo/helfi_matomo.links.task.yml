@@ -1,0 +1,4 @@
+helfi_matomo.matomo_settings_form:
+  base_route: helfi_matomo.matomo_settings_form
+  route_name: helfi_matomo.matomo_settings_form
+  title: 'Matomo settings'
