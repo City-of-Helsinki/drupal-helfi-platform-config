@@ -451,7 +451,7 @@ function helfi_platform_config_update_9321(): void {
 
   $module_installer = \Drupal::service('module_installer');
 
-  // Enable helfi_matomo module for all sites except Etusivu
+  // Enable helfi_matomo module for all sites except Etusivu.
   if (
       !\Drupal::moduleHandler()->moduleExists('helfi_matomo') &&
       $project->getName() !== Project::ETUSIVU

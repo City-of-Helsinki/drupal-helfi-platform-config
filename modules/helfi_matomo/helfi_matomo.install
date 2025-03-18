@@ -5,13 +5,13 @@
  * Helfi matomo install hooks.
  */
 
- declare(strict_types=1);
+declare(strict_types=1);
 
 use Drupal\helfi_api_base\Environment\Project;
 
- /**
-  * Implements hook_install().
-  */
+/**
+ * Implements hook_install().
+ */
 function helfi_matomo_install(): void {
   $config = \Drupal::configFactory()->getEditable('helfi_matomo.settings');
   $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
