@@ -79,7 +79,7 @@ final class ScoredReferenceProcessor extends ProcessorPluginBase {
 
         $value = [
           'score' => (float) $scoredReference->score,
-          'label' => $scoredReference->entity->id(),
+          'label' => $scoredReference->entity->label(),
         ];
 
         $field->addValue($objectSupport ? $value : json_encode($value));

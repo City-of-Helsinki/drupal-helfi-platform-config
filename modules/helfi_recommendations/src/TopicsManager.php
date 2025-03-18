@@ -6,6 +6,7 @@ namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
@@ -59,6 +60,27 @@ final class TopicsManager implements TopicsManagerInterface {
       return;
     }
 
+    // Update topic languages based on published entity translations.
+    foreach ($topics as $topic) {
+      $languages = [];
+      if ($entity instanceof TranslatableInterface) {
+        foreach ($entity->getTranslationLanguages() as $language) {
+          $translation = $entity->getTranslation($language->getId());
+          if ($translation instanceof EntityPublishedInterface && $translation->isPublished()) {
+            $languages[] = $language->getId();
+          }
+        }
+      }
+      else {
+        if ($entity instanceof EntityPublishedInterface && $entity->isPublished()) {
+          $languages[] = $entity->language()->getId();
+        }
+      }
+
+      $topic->set('parent_translations', $languages);
+      $topic->save();
+    }
+
     $this->queueFactory
       ->get('helfi_recommendations_queue')
       ->createItem([
@@ -89,7 +111,7 @@ final class TopicsManager implements TopicsManagerInterface {
           continue;
         }
 
-        $topics = $this->getSuggestedTopicsEntities($batch[$id], $overwriteExisting);
+        $topics = $this->getSuggestedTopicsEntities($batch[$id], !$overwriteExisting);
         $this->saveKeywords($topics, $keywords, $batch[$id]->language());
 
         // Mark as processed so the same entity is bombarding the
@@ -97,6 +119,21 @@ final class TopicsManager implements TopicsManagerInterface {
         $this->processedItems[$this->getEntityKey($batch[$id])] = TRUE;
       }
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getKeywords(ContentEntityInterface $entity): array {
+    $keywords = [];
+    $topics = $this->getSuggestedTopicsEntities($entity, FALSE);
+
+    foreach ($topics as $topic) {
+      assert($topic instanceof SuggestedTopicsInterface);
+      array_push($keywords, ...$topic->getKeywords());
+    }
+
+    return $keywords;
   }
 
   /**
@@ -114,7 +151,7 @@ final class TopicsManager implements TopicsManagerInterface {
     $buckets = [];
 
     foreach ($entities as $key => $entity) {
-      $topics = $this->getSuggestedTopicsEntities($entity, $overwriteExisting);
+      $topics = $this->getSuggestedTopicsEntities($entity, !$overwriteExisting);
 
       // Skip if the entity does not have topics or
       // entity was already processed in this request.

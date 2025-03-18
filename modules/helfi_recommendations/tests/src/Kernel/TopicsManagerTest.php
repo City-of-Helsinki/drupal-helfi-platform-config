@@ -14,6 +14,7 @@ use Drupal\helfi_recommendations\TextConverter\TextConverterInterface;
 use Drupal\helfi_recommendations\TopicsManager;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\Tests\helfi_recommendations\Traits\AnnifApiTestTrait;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\Argument;
@@ -121,6 +122,62 @@ class TopicsManagerTest extends AnnifKernelTestBase {
       // Referenced entity should get keywords if it is in supported language.
       $this->assertEquals(in_array($langcodes[$key], $supported), $reference->hasKeywords());
     }
+  }
+
+  /**
+   * Tests parent translations field is set correctly.
+   */
+  public function testParentTranslationsField(): void {
+    $topic = SuggestedTopics::create();
+    $node = Node::create([
+      'type' => 'test_node_bundle',
+      'title' => $this->randomString(),
+      'test_keywords' => $topic,
+      'langcode' => 'fi',
+    ]);
+    $node->addTranslation('sv', $node->toArray());
+    $node->addTranslation('en', ['status' => [['value' => 0]]] + $node->toArray());
+
+    $sut = $this->getSut();
+    $sut->queueEntity($node, TRUE);
+
+    // Only published translations should be included.
+    $this->assertEquals([['value' => 'fi'], ['value' => 'sv']], $topic->get('parent_translations')->getValue());
+  }
+
+  /**
+   * Tests getKeywords method.
+   */
+  public function testGetKeywords(): void {
+    $term1 = Term::create([
+      'name' => 'foo',
+      'vid' => 'test_vocabulary',
+    ]);
+    $term1->save();
+
+    $term2 = Term::create([
+      'name' => 'bar',
+      'vid' => 'test_vocabulary',
+    ]);
+    $term2->save();
+
+    $node = Node::create([
+      'type' => 'test_node_bundle',
+      'title' => $this->randomString(),
+      'test_keywords' => SuggestedTopics::create([
+        'keywords' => [
+          ['entity' => $term1, 'score' => 0.8],
+          ['entity' => $term2, 'score' => 0.2],
+        ],
+      ]),
+    ]);
+
+    $sut = $this->getSut();
+    $keywords = $sut->getKeywords($node);
+    $this->assertEquals([
+      ['label' => 'foo', 'score' => 0.8],
+      ['label' => 'bar', 'score' => 0.2],
+    ], $keywords);
   }
 
   /**

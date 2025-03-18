@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 
 /**
@@ -64,5 +65,22 @@ function helfi_recommendations_update_9006(): void {
 
     $topics->setUnpublished();
     $topics->save();
+  }
+}
+
+/**
+ * Updates entity fields for suggested_topics.
+ */
+function helfi_recommendations_update_9007(): void {
+  $fields['parent_translations'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent translations'))
+    ->setDescription(t('The entity parent published translation languages to which this entity is referenced.'))
+    ->setSetting('is_ascii', TRUE)
+    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH)
+    ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+
+  foreach ($fields as $name => $field) {
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($name, 'suggested_topics', 'helfi_recommendations', $field);
   }
 }

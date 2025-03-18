@@ -45,4 +45,15 @@ interface TopicsManagerInterface {
    */
   public function processEntities(array $entities, bool $overwriteExisting = FALSE) : void;
 
+  /**
+   * Get keyword data for a content entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   *
+   * @return array
+   *   Array of keyword data.
+   */
+  public function getKeywords(ContentEntityInterface $entity): array;
+
 }
