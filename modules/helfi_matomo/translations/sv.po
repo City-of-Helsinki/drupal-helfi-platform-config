@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+
+msgid "Matomo settings"
+msgstr "Matomo-inställningar"
+
+msgid "Matomo site ID that matches the project in Matomo admin. Used to link the analytics of the site to Matomo"
+msgstr "Matomos webbplats-ID som matchar projektet i Matomos administration. Används för att länka webbplatsens analys till Matomo"
+
+msgid "Matomo site ID"
+msgstr "Matomos webbplats-ID"
