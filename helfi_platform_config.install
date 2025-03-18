@@ -443,7 +443,7 @@ function helfi_platform_config_update_9321(): void {
   $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
 
   try {
-    $environment = $environmentResolver->getActiveEnvironment();
+    $project = $environmentResolver->getActiveProject();
   }
   catch (\InvalidArgumentException) {
     return;
@@ -454,7 +454,7 @@ function helfi_platform_config_update_9321(): void {
   // Enable helfi_matomo module for all sites except Etusivu
   if (
       !\Drupal::moduleHandler()->moduleExists('helfi_matomo') &&
-      !$environment->getName() === Project::ETUSIVU
+      $project->getName() !== Project::ETUSIVU
     ) {
     $module_installer->install(['helfi_matomo']);
   }

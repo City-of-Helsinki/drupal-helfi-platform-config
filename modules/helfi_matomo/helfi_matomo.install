@@ -17,13 +17,13 @@ function helfi_matomo_install(): void {
   $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
 
   try {
-    $environment = $environmentResolver->getActiveEnvironment();
+    $project = $environmentResolver->getActiveProject();
   }
   catch (\InvalidArgumentException) {
     return;
   }
 
-  $matomo_site_id = match($environment->getName()) {
+  $matomo_site_id = match($project->getName()) {
     Project::ASUMINEN => '1098',
     Project::KASVATUS_KOULUTUS => '884',
     Project::KUVA => '1104',
