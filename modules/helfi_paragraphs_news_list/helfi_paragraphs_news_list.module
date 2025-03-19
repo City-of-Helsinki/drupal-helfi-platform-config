@@ -91,6 +91,11 @@ function helfi_paragraphs_news_list_paragraph_view(
     $ids = $query->execute();
     $entities = $storage->loadMultiple($ids);
 
+    // Set the cache max-age to 10mins to avoid caching the empty result.
+    if (empty($entities)) {
+      $build['#cache']['max-age'] = 600;
+    }
+
     foreach ($entities as $item) {
       $item->addCacheableDependency($entity);
 
