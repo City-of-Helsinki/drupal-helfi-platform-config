@@ -155,15 +155,16 @@ class RecommendationManager {
         ],
         'script_score' => [
           'script' => [
-            'source' => "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['keywords.score'].value * 1000)",
+            'source' => "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['keywords.score'].value * 100)",
             'params' => [
-              'origin' => $keyword['score'] * 1000,
-              'scale' => 1,
-              'decay' => 0.5,
-              'offset' => 0,
+              'origin' => $keyword['score'] * 100,
+              'scale' => 10,
+              'decay' => 0.9,
+              'offset' => 10,
             ],
           ],
         ],
+        'weight' => $keyword['score'] * 100,
       ];
     }
 
@@ -171,10 +172,6 @@ class RecommendationManager {
     return [
       'from' => 0,
       'size' => $limit,
-      // Any item will get a score of 2, even without any matching keywords.
-      // Let's make sure there's at least some resemblance to the current
-      // entity.
-      'min_score' => 2.01,
       'query' => [
         'bool' => [
           'filter' => [
@@ -192,18 +189,6 @@ class RecommendationManager {
             ],
           ],
           'must' => [
-            [
-              // Parent ID is required.
-              'exists' => [
-                'field' => 'parent_id',
-              ],
-            ],
-            [
-              // Parent instance is required.
-              'exists' => [
-                'field' => 'parent_instance',
-              ],
-            ],
             [
               'nested' => [
                 'path' => 'keywords',
@@ -392,7 +377,7 @@ class RecommendationManager {
    */
   private function buildRemoteNodeData(string $instance, string $type, string $bundle, string $id, string $target_langcode) : array {
     $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
-    $base_url = sprintf('%s/jsonapi/%s/%s', $environment->getUrl($target_langcode), $type, $bundle);
+    $base_url = sprintf('%s/jsonapi/%s/%s', $environment->getInternalAddress($target_langcode), $type, $bundle);
     $url = Url::fromUri($base_url, [
       'query' => [
         'filter[drupal_internal__nid]' => $id,
@@ -404,6 +389,7 @@ class RecommendationManager {
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
+      return [];
     }
 
     $json = $response->data->data ? reset($response->data->data) : NULL;
