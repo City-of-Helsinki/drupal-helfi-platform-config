@@ -1,0 +1,4 @@
+path_prefix: jsonapi
+include_count: true
+default_disabled: true
+validate_configuration_integrity: true
