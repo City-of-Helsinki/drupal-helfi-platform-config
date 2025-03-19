@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\Core\Url;
 use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
+use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\search_api\Entity\Index;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
@@ -34,6 +37,8 @@ class RecommendationManager {
    *   The environment resolver.
    * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
    *   The topics manager.
+   * @param \Drupal\helfi_api_base\ApiClient\ApiClient $instanceApiClient
+   *   The instance API client.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
@@ -41,6 +46,7 @@ class RecommendationManager {
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
+    #[Autowire(service: 'helfi_recommendations.instance_api_client')] private ApiClient $instanceApiClient,
   ) {
   }
 
@@ -62,6 +68,7 @@ class RecommendationManager {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL): array {
+    $data = [];
     $destination_langcode = $entity->language()->getId();
     $target_langcode = $target_langcode ?? $destination_langcode;
     if ($entity instanceof TranslatableInterface && !$entity->hasTranslation($target_langcode)) {
@@ -69,12 +76,13 @@ class RecommendationManager {
     }
 
     // Get results from Elasticsearch.
-    $query = $this->getElasticQuery($entity, $target_langcode, $limit);
+    $query = $this->getElasticQuery($entity, $target_langcode, $limit + 10);
     $results = $this->searchElastic($query);
 
     // Fetch node data for each result via a JSON:API request.
-    // @todo Implement this.
-    return $results;
+    $data = $this->fetchNodeData($results, $target_langcode, $limit);
+
+    return $data;
   }
 
   /**
@@ -289,6 +297,129 @@ class RecommendationManager {
       }
       return ($a->created > $b->created) ? -1 : 1;
     });
+  }
+
+  /**
+   * Fetch node data.
+   *
+   * @param array $results
+   *   The search results.
+   * @param string $target_langcode
+   *   The target language code.
+   * @param int $limit
+   *   The result amount limit.
+   *
+   * @return array
+   *   The node data.
+   */
+  private function fetchNodeData(array $results, string $target_langcode, int $limit) : array {
+    if (empty($results['hits']['hits'])) {
+      return [];
+    }
+
+    $node_data = [];
+
+    foreach ($results['hits']['hits'] as $hit) {
+      $instance = $hit['_source']['parent_instance'] ? reset($hit['_source']['parent_instance']) : NULL;
+      $type = $hit['_source']['parent_type'] ? reset($hit['_source']['parent_type']) : NULL;
+      $bundle = $hit['_source']['parent_bundle'] ? reset($hit['_source']['parent_bundle']) : NULL;
+      $id = $hit['_source']['parent_id'] ? reset($hit['_source']['parent_id']) : NULL;
+
+      // We need all this in order to continue.
+      if (!$instance || !$type || !$bundle || !$id) {
+        continue;
+      }
+
+      $data = $instance === $this->getParentInstance()
+        ? $this->buildLocalNodeData($type, $bundle, $id, $target_langcode)
+        : $this->buildRemoteNodeData($instance, $type, $bundle, $id, $target_langcode);
+
+      if ($data) {
+        $node_data[] = $data;
+      }
+
+      if (count($node_data) >= $limit) {
+        break;
+      }
+    }
+
+    return $node_data;
+  }
+
+  /**
+   * Build local node data.
+   *
+   * @param string $type
+   *   The entity type.
+   * @param string $bundle
+   *   The entity bundle.
+   * @param string $id
+   *   The entity ID.
+   * @param string $target_langcode
+   *   The target language code.
+   *
+   * @return array
+   *   The node data.
+   */
+  private function buildLocalNodeData(string $type, string $bundle, string $id, string $target_langcode) : array {
+    $data = [];
+    $entity = $this->entityTypeManager->getStorage($type)->load($id);
+
+    if ($entity instanceof EntityInterface) {
+      $data['title'] = $entity->label();
+      $data['url'] = $entity->toUrl();
+    }
+
+    return $data;
+  }
+
+  /**
+   * Build remote node data.
+   *
+   * @param string $instance
+   *   The instance name.
+   * @param string $type
+   *   The entity type.
+   * @param string $bundle
+   *   The entity bundle.
+   * @param string $id
+   *   The entity ID.
+   * @param string $target_langcode
+   *   The target language code.
+   *
+   * @return array
+   *   The node data.
+   */
+  private function buildRemoteNodeData(string $instance, string $type, string $bundle, string $id, string $target_langcode) : array {
+    $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
+    $base_url = sprintf('%s/jsonapi/%s/%s', $environment->getUrl($target_langcode), $type, $bundle);
+    $url = Url::fromUri($base_url, [
+      'query' => [
+        'filter[drupal_internal__nid]' => $id,
+      ],
+    ]);
+
+    try {
+      $response = $this->instanceApiClient->makeRequest('GET', $url->toString());
+    }
+    catch (\Exception $e) {
+      Error::logException($this->logger, $e);
+    }
+
+    $json = $response->data->data ? reset($response->data->data) : NULL;
+    if (!$json) {
+      return [];
+    }
+
+    $attributes = $json->attributes ?? NULL;
+    if (!$attributes) {
+      return [];
+    }
+
+    $data['title'] = $attributes->title ?? NULL;
+    $data['url'] = $attributes->path->alias ? sprintf('%s/%s', $environment->getUrl($target_langcode), ltrim($attributes->path->alias, '/')) : NULL;
+
+    return $data;
   }
 
 }

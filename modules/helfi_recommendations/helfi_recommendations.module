@@ -14,6 +14,21 @@ use Drupal\helfi_recommendations\TextConverter\Document;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
 
 /**
+ * Implements hook_theme().
+ */
+function helfi_recommendations_theme() : array {
+  return [
+    'recommendations_block' => [
+      'variables' => [
+        'rows' => NULL,
+        'no_results_message' => NULL,
+      ],
+      'template' => 'recommendations-block',
+    ],
+  ];
+}
+
+/**
  * Implements hook_entity_insert().
  */
 function helfi_recommendations_entity_insert(EntityInterface $entity) : void {

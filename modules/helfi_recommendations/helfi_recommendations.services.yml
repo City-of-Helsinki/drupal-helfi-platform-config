@@ -25,3 +25,8 @@ services:
       - { name: helfi_recommendations.text_converter, priority: -1 }
 
   Drupal\helfi_recommendations\EventSubscriber\SearchApiSubscriber: ~
+
+  helfi_recommendations.instance_api_client:
+    parent: helfi_api_base.api_client_base
+    arguments:
+      - '@logger.channel.helfi_recommendations'
