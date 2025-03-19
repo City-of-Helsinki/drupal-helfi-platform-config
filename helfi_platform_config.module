@@ -540,3 +540,15 @@ function helfi_platform_config_cron(): void {
   $cleaner = \Drupal::service(RedirectCleaner::class);
   $cleaner->unpublishExpiredRedirects();
 }
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function helfi_platform_config_preprocess_html(&$variables): void {
+  $config = \Drupal::config('helfi_platform_config.matomo_settings');
+  $matomo_site_id = $config->get('matomo_site_id');
+
+  if ($matomo_site_id) {
+    $variables['#attached']['drupalSettings']['matomo_site_id'] = $matomo_site_id;
+  }
+}
