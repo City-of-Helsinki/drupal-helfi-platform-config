@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_matomo\Form;
+namespace Drupal\helfi_platform_config\Form;
 
 /**
  * @file
- * Contains Drupal\helfi_matomo\Form\MatomoSettings.
+ * Contains Drupal\helfi_platform_config\Form\MatomoSettings.
  */
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -22,7 +22,7 @@ class MatomoSettings extends ConfigFormBase {
    */
   protected function getEditableConfigNames(): array {
     return [
-      'helfi_matomo.settings',
+      'helfi_platform_config.matomo_settings',
     ];
   }
 
@@ -31,10 +31,10 @@ class MatomoSettings extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $form = parent::buildForm($form, $form_state);
-    $config = $this->config('helfi_matomo.settings');
+    $config = $this->config('helfi_platform_config.matomo_settings');
 
     $form['matomo_site_id'] = [
-      '#default_value' => $config->get('helfi_matomo.matomo_site_id'),
+      '#default_value' => $config->get('matomo_site_id'),
       '#description' => $this->t('Matomo site ID that matches the project in Matomo admin. Used to link the analytics of the site to Matomo'),
       '#title' => $this->t('Matomo site ID'),
       '#type' => 'textfield',
@@ -54,8 +54,8 @@ class MatomoSettings extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $config = $this->config('helfi_matomo.settings');
-    $config->set('helfi_matomo.matomo_site_id', $form_state->getValue('matomo_site_id'));
+    $config = $this->config('helfi_platform_config.matomo_settings');
+    $config->set('matomo_site_id', $form_state->getValue('matomo_site_id'));
     $config->save();
 
     parent::submitForm($form, $form_state);

@@ -440,6 +440,7 @@ function _helfi_platform_config_process_links(ContentEntityInterface $entity, st
  * UHF-11535: Enable matomo settings.
  */
 function helfi_platform_config_update_9321(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_platform_config.matomo_settings');
   $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
 
   try {
@@ -449,13 +450,19 @@ function helfi_platform_config_update_9321(): void {
     return;
   }
 
-  $module_installer = \Drupal::service('module_installer');
+  $matomo_site_id = match($project->getName()) {
+    Project::ASUMINEN => '1098',
+    Project::KASVATUS_KOULUTUS => '884',
+    Project::KUVA => '1104',
+    Project::LIIKENNE => '1101',
+    Project::REKRY => '174',
+    Project::STRATEGIA => '1086',
+    Project::TERVEYS => '900',
+    Project::TYO_YRITTAMINEN => '1107',
+    default => NULL,
+  };
 
-  // Enable helfi_matomo module for all sites except Etusivu.
-  if (
-      !\Drupal::moduleHandler()->moduleExists('helfi_matomo') &&
-      $project->getName() !== Project::ETUSIVU
-    ) {
-    $module_installer->install(['helfi_matomo']);
+  if ($config && $matomo_site_id) {
+    $config->set('matomo_site_id', $matomo_site_id)->save();
   }
 }

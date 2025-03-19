@@ -1,0 +1,5 @@
+matomo_settings_form:
+  title: 'Matomo settings'
+  parent: hdbt_admin_tools.overview
+  route_name: matomo_settings_form
+  weight: 1

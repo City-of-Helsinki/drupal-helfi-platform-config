@@ -1,5 +1,0 @@
-helfi_matomo.helfi_matomo_settings_form:
-  title: 'Matomo settings'
-  parent: hdbt_admin_tools.overview
-  route_name: helfi_matomo.matomo_settings_form
-  weight: 1

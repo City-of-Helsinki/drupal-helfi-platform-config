@@ -1,7 +1,7 @@
-helfi_matomo.matomo_settings_form:
+matomo_settings_form:
   path: '/admin/tools/matomo-settings'
   defaults:
-    _form: '\Drupal\helfi_matomo\Form\MatomoSettings'
+    _form: '\Drupal\helfi_platform_config\Form\MatomoSettings'
     _title: 'Matomo settings'
   requirements:
     _permission: 'access administration pages'
