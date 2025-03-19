@@ -1,4 +1,0 @@
-matomo_settings_form:
-  base_route: matomo_settings_form
-  route_name: matomo_settings_form
-  title: 'Matomo settings'

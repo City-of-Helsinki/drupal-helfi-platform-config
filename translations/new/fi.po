@@ -476,12 +476,3 @@ msgstr "Kirjoita osa sivun otsikosta tai liitä URL-osoite, ja valitse oikea siv
 msgctxt "Telia ACE chat"
 msgid "Loading chat..."
 msgstr "Ladataan..."
-
-msgid "Matomo settings"
-msgstr "Matomon asetukset"
-
-msgid "Matomo site ID that matches the project in Matomo admin. Used to link the analytics of the site to Matomo"
-msgstr "Matomon sivutunniste (site ID), joka on löytyy Matomon hallinnasta. Tunniste linkittää sivuston analytiikan Matomoon"
-
-msgid "Matomo site ID"
-msgstr "Matomon sivutunniste"
