@@ -9,3 +9,5 @@ services:
   helfi_paragraphs_news_list.elastic_client:
     class: Elastic\Elasticsearch\Client
     factory: ['@helfi_paragraphs_news_list.elastic_client_factory', 'create']
+
+  Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber: ~
