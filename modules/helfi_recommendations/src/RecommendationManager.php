@@ -190,6 +190,26 @@ class RecommendationManager {
           ],
           'must' => [
             [
+              'exists' => [
+                'field' => 'parent_id',
+              ],
+            ],
+            [
+              'exists' => [
+                'field' => 'parent_instance',
+              ],
+            ],
+            [
+              'exists' => [
+                'field' => 'parent_type',
+              ],
+            ],
+            [
+              'exists' => [
+                'field' => 'parent_bundle',
+              ],
+            ],
+            [
               'nested' => [
                 'path' => 'keywords',
                 'score_mode' => 'sum',
@@ -305,10 +325,10 @@ class RecommendationManager {
     $node_data = [];
 
     foreach ($results['hits']['hits'] as $hit) {
-      $instance = $hit['_source']['parent_instance'] ? reset($hit['_source']['parent_instance']) : NULL;
-      $type = $hit['_source']['parent_type'] ? reset($hit['_source']['parent_type']) : NULL;
-      $bundle = $hit['_source']['parent_bundle'] ? reset($hit['_source']['parent_bundle']) : NULL;
-      $id = $hit['_source']['parent_id'] ? reset($hit['_source']['parent_id']) : NULL;
+      $instance = !empty($hit['_source']['parent_instance']) ? reset($hit['_source']['parent_instance']) : NULL;
+      $type = !empty($hit['_source']['parent_type']) ? reset($hit['_source']['parent_type']) : NULL;
+      $bundle = !empty($hit['_source']['parent_bundle']) ? reset($hit['_source']['parent_bundle']) : NULL;
+      $id = !empty($hit['_source']['parent_id']) ? reset($hit['_source']['parent_id']) : NULL;
 
       // We need all this in order to continue.
       if (!$instance || !$type || !$bundle || !$id) {
