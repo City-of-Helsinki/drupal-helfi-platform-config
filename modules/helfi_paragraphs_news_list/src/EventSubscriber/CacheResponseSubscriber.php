@@ -18,6 +18,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 final class CacheResponseSubscriber implements EventSubscriberInterface {
 
   /**
+   * The max age to cache empty news list results.
+   */
+  public const EMPTY_LIST_MAX_AGE = 600;
+
+  /**
    * Constructs a new CacheResponseSubscriber object.
    *
    * @param \Drupal\Core\Datetime\TimeInterface $time
@@ -41,9 +46,8 @@ final class CacheResponseSubscriber implements EventSubscriberInterface {
 
     // Set max-age to 10 minutes for pages with empty news list results.
     if (in_array('helfi_news_list_empty_results', $cache_tags)) {
-      $max_age = 600;
-      $response->setMaxAge($max_age);
-      $date = new \DateTime('@' . ($this->time->getRequestTime() + $max_age));
+      $response->setMaxAge(self::EMPTY_LIST_MAX_AGE);
+      $date = new \DateTime('@' . ($this->time->getRequestTime() + self::EMPTY_LIST_MAX_AGE));
       $response->setExpires($date);
     }
   }

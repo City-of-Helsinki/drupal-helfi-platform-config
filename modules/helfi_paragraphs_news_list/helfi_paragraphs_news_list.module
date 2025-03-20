@@ -19,6 +19,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
+use Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
@@ -99,7 +100,7 @@ function helfi_paragraphs_news_list_paragraph_view(
       // @see https://www.drupal.org/node/2352009
       // @see \Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber::handleNewsListCache()
       $build['#cache']['tags'][] = 'helfi_news_list_empty_results';
-      $build['#cache']['max-age'] = 600;
+      $build['#cache']['max-age'] = CacheResponseSubscriber::EMPTY_LIST_MAX_AGE;
     }
 
     foreach ($entities as $item) {
