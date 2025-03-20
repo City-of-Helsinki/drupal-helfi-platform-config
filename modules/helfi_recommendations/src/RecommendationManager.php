@@ -370,6 +370,14 @@ class RecommendationManager {
     $data = [];
     $entity = $this->entityTypeManager->getStorage($type)->load($id);
 
+    if ($entity instanceof TranslatableInterface) {
+      if (!$entity->hasTranslation($target_langcode)) {
+        return $data;
+      }
+
+      $entity = $entity->getTranslation($target_langcode);
+    }
+
     if ($entity instanceof EntityInterface) {
       $data['title'] = $entity->label();
       $data['url'] = $entity->toUrl();
@@ -401,6 +409,7 @@ class RecommendationManager {
     $url = Url::fromUri($base_url, [
       'query' => [
         'filter[drupal_internal__nid]' => $id,
+        'filter[langcode]' => $target_langcode,
       ],
     ]);
 
