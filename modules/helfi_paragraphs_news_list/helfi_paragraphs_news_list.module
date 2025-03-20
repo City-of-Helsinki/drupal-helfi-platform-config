@@ -92,11 +92,12 @@ function helfi_paragraphs_news_list_paragraph_view(
     $ids = $query->execute();
     $entities = $storage->loadMultiple($ids);
 
-    // Don't cache empty results for long periods of time.
+    // Don't cache empty results for longer periods of time.
     if (empty($entities)) {
       // Setting a max-age here is not enough since it would not bubble up to
       // the page cache. Therefore we set a cache tag for empty results and let
-      // CacheResponseSubscriber set the max-age of the response cache.
+      // CacheResponseSubscriber set the max-age of the response cache when
+      // the cache tag is present.
       // @see https://www.drupal.org/node/2352009
       // @see \Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber::handleNewsListCache()
       $build['#cache']['tags'][] = 'helfi_news_list_empty_results';

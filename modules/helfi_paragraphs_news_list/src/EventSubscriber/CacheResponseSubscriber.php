@@ -25,9 +25,9 @@ final class CacheResponseSubscriber implements EventSubscriberInterface {
   /**
    * Constructs a new CacheResponseSubscriber object.
    *
-   * @param \Drupal\Core\Datetime\TimeInterface $time
+   * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
-   * @param \Drupal\Core\Session\UserInterface $currentUser
+   * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current user.
    */
   public function __construct(
@@ -37,6 +37,8 @@ final class CacheResponseSubscriber implements EventSubscriberInterface {
 
   /**
    * Handle news list cache.
+   *
+   * Sets the max-age and expires header for pages with empty news list results.
    *
    * @param \Drupal\Core\Render\HtmlResponse $response
    *   The response.
