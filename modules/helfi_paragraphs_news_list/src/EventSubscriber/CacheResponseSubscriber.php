@@ -6,12 +6,11 @@ namespace Drupal\helfi_paragraphs_news_list\EventSubscriber;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheableResponseInterface;
+use Drupal\Core\Render\HtmlResponse;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-
-use Drupal\Core\Render\HtmlResponse;
 
 /**
  * Cache response subscriber.
@@ -40,7 +39,7 @@ final class CacheResponseSubscriber implements EventSubscriberInterface {
   protected function handleNewsListCache(HtmlResponse $response): void {
     $cache_tags = $response->getCacheableMetadata()->getCacheTags();
 
-    // Set max-age to 10 minutes for empty news list results.
+    // Set max-age to 10 minutes for pages with empty news list results.
     if (in_array('helfi_news_list_empty_results', $cache_tags)) {
       $max_age = 600;
       $response->setMaxAge($max_age);
