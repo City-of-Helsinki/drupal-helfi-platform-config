@@ -13,6 +13,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
@@ -432,5 +433,36 @@ function _helfi_platform_config_process_links(ContentEntityInterface $entity, st
   if ($hasChanges) {
     $entity->get($field_name)->value = Html::serialize($dom);
     $entity->save();
+  }
+}
+
+/**
+ * UHF-11535: Enable matomo settings.
+ */
+function helfi_platform_config_update_9321(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_platform_config.matomo_settings');
+  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+
+  try {
+    $project = $environmentResolver->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
+  $matomo_site_id = match($project->getName()) {
+    Project::ASUMINEN => '1098',
+    Project::KASVATUS_KOULUTUS => '884',
+    Project::KUVA => '1104',
+    Project::LIIKENNE => '1101',
+    Project::REKRY => '174',
+    Project::STRATEGIA => '1086',
+    Project::TERVEYS => '900',
+    Project::TYO_YRITTAMINEN => '1107',
+    default => NULL,
+  };
+
+  if ($config && $matomo_site_id) {
+    $config->set('matomo_site_id', $matomo_site_id)->save();
   }
 }

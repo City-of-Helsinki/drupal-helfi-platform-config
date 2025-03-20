@@ -17,6 +17,14 @@ helfi_platform_config.redirect_cleaner:
     enable:
       type: boolean
 
+helfi_platform_config.matomo_settings:
+  type: config_object
+  label: 'Matomo settings'
+  mapping:
+   matomo_site_id:
+     type: string
+     label: 'Matomo site ID'
+
 # Default value.
 field.value.location:
   type: mapping
