@@ -290,21 +290,6 @@ class RecommendationManager {
   }
 
   /**
-   * Sort query result by created time.
-   *
-   * @param array $results
-   *   Query results to sort.
-   */
-  private function sortByCreatedAt(array &$results) : void {
-    usort($results, function ($a, $b) {
-      if ($a->created == $b->created) {
-        return 0;
-      }
-      return ($a->created > $b->created) ? -1 : 1;
-    });
-  }
-
-  /**
    * Fetch node data.
    *
    * @param array $results
@@ -405,6 +390,9 @@ class RecommendationManager {
    */
   private function buildRemoteNodeData(string $instance, string $type, string $bundle, string $id, string $target_langcode) : array {
     $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
+
+    // Use internal url for json api requests to avoid varnish caching issues.
+    // This is also the only way for this to work in local environments.
     $base_url = sprintf('%s/jsonapi/%s/%s', $environment->getInternalAddress($target_langcode), $type, $bundle);
     $url = Url::fromUri($base_url, [
       'query' => [
