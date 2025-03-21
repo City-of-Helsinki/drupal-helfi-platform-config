@@ -12,6 +12,7 @@ use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
+use Drupal\Core\TypedData\MapDataDefinition;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 use Drupal\helfi_recommendations\TypedData\ComputedReferencePublishedStatus;
 
@@ -69,6 +70,18 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
       'size' => 'tiny',
       'default' => 0,
     ];
+    $schema['columns']['instances'] = [
+      'description' => 'Serialized array of instances to show recommendations from.',
+      'type' => 'blob',
+      'size' => 'big',
+      'serialize' => TRUE,
+    ];
+    $schema['columns']['content_types'] = [
+      'description' => 'Serialized array of content types to show recommendations from.',
+      'type' => 'blob',
+      'size' => 'big',
+      'serialize' => TRUE,
+    ];
 
     return $schema;
   }
@@ -87,8 +100,14 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
 
     $properties['show_block'] = DataDefinition::create('boolean')
       ->setLabel(new TranslatableMarkup('Show automatically recommended content on this page', [], ['context' => 'annif']))
-      ->setClass(ComputedReferencePublishedStatus::class)
-      ->setComputed(TRUE)
+      ->setRequired(FALSE);
+
+    $properties['instances'] = MapDataDefinition::create()
+      ->setLabel(new TranslatableMarkup('Instances to show recommendations from', [], ['context' => 'annif']))
+      ->setRequired(FALSE);
+
+    $properties['content_types'] = MapDataDefinition::create()
+      ->setLabel(new TranslatableMarkup('Allowed content types for recommendations', [], ['context' => 'annif']))
       ->setRequired(FALSE);
 
     return $properties;

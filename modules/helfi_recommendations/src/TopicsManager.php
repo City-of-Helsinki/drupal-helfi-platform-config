@@ -137,6 +137,27 @@ final class TopicsManager implements TopicsManagerInterface {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  public function getTopicsReferenceFields(ContentEntityInterface $entity): array {
+    $fields = [];
+    $field_definitions = array_filter(
+      $entity->getFieldDefinitions(),
+      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
+    );
+
+    foreach ($field_definitions as $key => $definition) {
+      $field = $entity->get($key);
+
+      if ($field instanceof EntityReferenceFieldItemListInterface) {
+        $fields[] = $field;
+      }
+    }
+
+    return $fields;
+  }
+
+  /**
    * Gets entities in batches.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface[] $entities
@@ -291,18 +312,10 @@ final class TopicsManager implements TopicsManagerInterface {
    *   Linked topics entities.
    */
   private function getSuggestedTopicsEntities(ContentEntityInterface $entity, bool $filterEmpty): array {
-    // List suggested_topics_reference fields that the entity has.
-    $fields = array_filter(
-      $entity->getFieldDefinitions(),
-      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
-    );
-
+    $fields = $this->getTopicsReferenceFields($entity);
     $topics = [];
 
-    foreach ($fields as $key => $definition) {
-      $field = $entity->get($key);
-      assert($field instanceof EntityReferenceFieldItemListInterface);
-
+    foreach ($fields as $field) {
       // Get all referenced topic entities from all
       // suggested_topics_reference fields.
       foreach ($field->referencedEntities() as $topic) {

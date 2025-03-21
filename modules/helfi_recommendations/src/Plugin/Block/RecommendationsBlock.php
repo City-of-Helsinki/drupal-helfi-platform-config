@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_recommendations\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
@@ -117,6 +118,20 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     }
 
     return $max_age;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    ['entity' => $entity] = $this->entityVersionMatcher->getType();
+
+    if ($entity instanceof ContentEntityInterface && $this->recommendationManager->showRecommendations($entity)) {
+      return AccessResult::allowed();
+    }
+
+    return AccessResult::forbidden();
   }
 
   /**
