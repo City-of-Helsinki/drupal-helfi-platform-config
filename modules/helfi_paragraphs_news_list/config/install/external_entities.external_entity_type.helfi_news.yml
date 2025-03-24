@@ -12,7 +12,7 @@ field_mapper_id: jsonpath
 field_mapper_config:
   field_mappings:
     id:
-      value: $._source.uuid_langcode[0]
+      value: '$._source.uuid_langcode[0]'
     uuid:
       value: '$._source.uuid[0]'
     title:

@@ -37,8 +37,8 @@ content:
     weight: 1
     region: content
     settings:
-      linkit_auto_link_text: false
       linkit_profile: helfi
+      linkit_auto_link_text: false
     third_party_settings: {  }
 hidden:
   created: true
