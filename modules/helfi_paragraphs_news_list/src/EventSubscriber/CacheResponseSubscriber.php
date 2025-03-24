@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_paragraphs_news_list\EventSubscriber;
 
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Render\HtmlResponse;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -64,7 +63,7 @@ final class CacheResponseSubscriber implements EventSubscriberInterface {
     $response = $event->getResponse();
 
     // Only handle cacheable responses.
-    if (!$response instanceof CacheableResponseInterface) {
+    if (!$response instanceof HtmlResponse) {
       return;
     }
 
