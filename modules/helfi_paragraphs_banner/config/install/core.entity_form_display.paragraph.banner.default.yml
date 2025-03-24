@@ -1,7 +1,10 @@
-uuid: 7a327c24-9ef7-491a-94c0-2cec0fc12036
+uuid: 4cba2ea4-07f7-49c0-817d-eb8c657a9c4e
 langcode: en
 status: true
 dependencies:
+  enforced:
+    module:
+      - hdbt_admin_tools
   config:
     - field.field.paragraph.banner.field_banner_desc
     - field.field.paragraph.banner.field_banner_design
