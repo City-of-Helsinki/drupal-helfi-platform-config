@@ -5,6 +5,11 @@ msgid ""
 msgstr ""
 
 # Drupal
+msgid "1 error has been found: "
+msgid_plural "@count errors have been found: "
+msgstr[0] "1 virhe löytyi: "
+msgstr[1] "@count virhettä löytyi: "
+
 msgid ""
 "Menu links with lower weights are displayed before links with higher weights."
 msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
