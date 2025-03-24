@@ -19,6 +19,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
+use Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
@@ -90,6 +91,18 @@ function helfi_paragraphs_news_list_paragraph_view(
 
     $ids = $query->execute();
     $entities = $storage->loadMultiple($ids);
+
+    // Don't cache empty results for longer periods of time.
+    if (empty($entities)) {
+      // Setting a max-age here is not enough since it would not bubble up to
+      // the page cache. Therefore we set a cache tag for empty results and let
+      // CacheResponseSubscriber set the max-age of the response cache when
+      // the cache tag is present.
+      // @see https://www.drupal.org/node/2352009
+      // @see \Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber::handleNewsListCache()
+      $build['#cache']['tags'][] = 'helfi_news_list_empty_results';
+      $build['#cache']['max-age'] = CacheResponseSubscriber::EMPTY_LIST_MAX_AGE;
+    }
 
     foreach ($entities as $item) {
       $item->addCacheableDependency($entity);
