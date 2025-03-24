@@ -1,8 +1,8 @@
 langcode: en
-path_to_json: /themes/contrib/hdbt/src/icons/editor-selectable-icons.json
 site_settings:
   default_icon: abstract-1
   theme_color: coat-of-arms
   koro: basic
 footer_settings:
   footer_color: dark
+path_to_json: /themes/contrib/hdbt/src/icons/editor-selectable-icons.json

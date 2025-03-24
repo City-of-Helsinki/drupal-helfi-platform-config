@@ -6,8 +6,8 @@ id: helfi_hearings
 label: 'Helfi: Hearing'
 label_plural: 'Helfi: Hearing'
 description: 'Helfi hearings from hearing api.'
-generate_aliases: false
 read_only: true
+generate_aliases: false
 field_mapper_id: jsonpath
 field_mapper_config:
   field_mappings:
