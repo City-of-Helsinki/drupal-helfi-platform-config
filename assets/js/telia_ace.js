@@ -85,7 +85,7 @@ class TeliaAceWidget {
       if (!this.cookieCheck()) {
         this.cookieSet();
       }
-      !this.state.initialized && this.loadChatScript();
+      !this.state.chatInitialized && this.loadChatScript();
 
       this.openChat(true);
       this.addCloseEventlistener();
