@@ -36,6 +36,7 @@ class TeliaAceWidget {
       chatLoading: false,
       chatLoaded: false,
       chatOpened: false,
+      chatInitialized: false,
       busy: false
     };
     this.init();
@@ -45,8 +46,8 @@ class TeliaAceWidget {
    * Initialize the chat libraries and elements.
    */
   init = () => {
-    const chatButton = this.createChatWidget();
-    this.addEventListener(chatButton);
+    this.widgetChatButton = this.createChatWidget();
+    this.addOpenEventlistener();
     this.render();
   }
 
@@ -72,21 +73,51 @@ class TeliaAceWidget {
   }
 
   /**
-   * Adds self-removing event-listener to the chat button.
+   * Adds self-removing eventlistener to the chat button.
    *
    * Automatically accept the chat cookies and load the chat script
    * when user clicks the chat button. Then open the chat on "onloaad".
    *
    * @param chatButton
    */
-  addEventListener = (chatButton) => {
-    chatButton.addEventListener('click', () => {
+  addOpenEventlistener = () => {
+    this.widgetChatButton.addEventListener('click', () => {
       if (!this.cookieCheck()) {
         this.cookieSet();
       }
-      this.loadChatScript();
+      !this.state.chatInitialized && this.loadChatScript();
+
       this.openChat(true);
+      this.addCloseEventlistener();
     }, { once: true });
+  }
+
+  /**
+   * A self-removing close-eventlistener to the chat button.
+   *
+   * There are actually 2 chat buttons. One delivered by the chat
+   * and one created by this script. The one delivered by the chat
+   * is not gdpr-compliant. Therefore we must make sure the correct
+   * button is visible at correct time.
+   */
+  addCloseEventlistener = () => {
+    const interval = setInterval(()=> {
+      // Make sure the chat-implementation has given us the close button.
+      const humany_widget = document.getElementsByClassName('humany-trigger')[0];
+      let close = null;
+      humany_widget && (close = humany_widget.getElementsByClassName('humany-close')[0]);
+
+      if (close) {
+        // Add an eventlistener to the close-button which makes our "open chat" -button visible on click.
+        close.addEventListener('click', ()=> {
+          document.getElementsByClassName('telia-chat-leijuke')[0].classList.remove('hidden');
+        }, { once: true });
+
+        // Readd the eventlistener to the "open chat" -button.
+        this.addOpenEventlistener()
+        clearInterval(interval);
+      }
+    }, 100)
   }
 
   /**
@@ -103,6 +134,7 @@ class TeliaAceWidget {
     const head = document.querySelector('head');
     head.appendChild(chatScript);
     this.state.chatLoading = true;
+    this.state.chatInitialized = true;
   }
 
   /**
@@ -174,6 +206,7 @@ class TeliaAceWidget {
       }
     }, 50);
   }
+
 }
 
 class ChatSettings {
