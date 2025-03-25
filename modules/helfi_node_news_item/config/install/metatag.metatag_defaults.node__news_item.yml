@@ -5,4 +5,5 @@ dependencies: {  }
 id: node__news_item
 label: 'Content: News item'
 tags:
+  article_published_time: '[node:published:html_datetime]'
   title: '[node:short-title] | [site:page-title-suffix]'
