@@ -7,6 +7,8 @@ namespace Drupal\Tests\helfi_recommendations\Kernel;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_recommendations\Client\ApiClient;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
@@ -178,6 +180,37 @@ class TopicsManagerTest extends AnnifKernelTestBase {
       ['label' => 'foo', 'score' => 0.8],
       ['label' => 'bar', 'score' => 0.2],
     ], $keywords);
+  }
+
+  /**
+   * Tests getTopicsReferenceFields returns proper field types.
+   */
+  public function testGetTopicsReferenceFields(): void {
+    FieldStorageConfig::create([
+      'field_name' => 'test_reference',
+      'entity_type' => 'node',
+      'type' => 'entity_reference',
+    ])->save();
+
+    FieldConfig::create([
+      'field_name' => 'test_reference',
+      'entity_type' => 'node',
+      'bundle' => 'test_node_bundle',
+      'label' => 'Another test field',
+    ])->save();
+
+    $node = Node::create([
+      'type' => 'test_node_bundle',
+      'title' => $this->randomString(),
+    ]);
+
+    $sut = $this->getSut();
+    $fields = $sut->getTopicsReferenceFields($node);
+    $this->assertCount(1, $fields);
+    foreach ($fields as $field) {
+      $definition = $field->getFieldDefinition();
+      $this->assertEquals('suggested_topics_reference', $definition->getType());
+    }
   }
 
   /**

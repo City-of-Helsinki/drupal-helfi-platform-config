@@ -26,7 +26,14 @@ services:
 
   Drupal\helfi_recommendations\EventSubscriber\SearchApiSubscriber: ~
 
-  helfi_recommendations.instance_api_client:
+  helfi_recommendations.json_api_client:
     parent: helfi_api_base.api_client_base
     arguments:
       - '@logger.channel.helfi_recommendations'
+
+  helfi_recommendations.elastic_client_factory:
+    class: Drupal\helfi_recommendations\ElasticClientBuilder
+
+  helfi_recommendations.elastic_client:
+    class: Elastic\Elasticsearch\Client
+    factory: ['@helfi_recommendations.elastic_client_factory', 'create']

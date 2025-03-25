@@ -12,14 +12,13 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\Core\Url;
-use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
 use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Drupal\search_api\Entity\Index;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Elastic\Elasticsearch\Client;
 
 /**
  * The recommendation manager.
@@ -40,8 +39,10 @@ final class RecommendationManager implements RecommendationManagerInterface {
    *   The environment resolver.
    * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
    *   The topics manager.
-   * @param \Drupal\helfi_api_base\ApiClient\ApiClient $instanceApiClient
-   *   The instance API client.
+   * @param \Drupal\helfi_api_base\ApiClient\ApiClient $jsonApiClient
+   *   The JSON API client.
+   * @param \Elastic\Elasticsearch\Client $elasticClient
+   *   The Elasticsearch client.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
@@ -49,7 +50,8 @@ final class RecommendationManager implements RecommendationManagerInterface {
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
-    #[Autowire(service: 'helfi_recommendations.instance_api_client')] private ApiClient $instanceApiClient,
+    #[Autowire(service: 'helfi_recommendations.json_api_client')] private ApiClient $jsonApiClient,
+    #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
   ) {
   }
 
@@ -227,8 +229,14 @@ final class RecommendationManager implements RecommendationManagerInterface {
    */
   private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3): array {
     // Build keyword terms and score functions.
-    $keywords = $this->topicsManager->getKeywords($entity);
-    if (!$keywords) {
+    try {
+      $keywords = $this->topicsManager->getKeywords($entity);
+      if (!$keywords) {
+        return [];
+      }
+    }
+    catch (\Exception $e) {
+      Error::logException($this->logger, $e);
       return [];
     }
 
@@ -400,22 +408,9 @@ final class RecommendationManager implements RecommendationManagerInterface {
    *   The search results.
    */
   private function searchElastic(array $query) : array {
-    // Load the index.
-    $index = Index::load(self::INDEX_NAME);
-    $server = $index->getServerInstance();
-    $backend = $server->getBackend();
-
-    // This only works with an Elasticsearch backend.
-    if (!$backend instanceof ElasticSearchBackend) {
-      return [];
-    }
-
-    /** @var \Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend $backend */
-    $client = $backend->getClient();
-
     $results = [];
     try {
-      $results = $client->search([
+      $results = $this->elasticClient->search([
         'index' => self::INDEX_NAME,
         'body' => $query,
       ])?->asArray() ?? [];
@@ -493,17 +488,22 @@ final class RecommendationManager implements RecommendationManagerInterface {
     $data = [];
     $entity = $this->entityTypeManager->getStorage($type)->load($id);
 
+    if (!$entity->access('view')) {
+      return [];
+    }
+
     if ($entity instanceof TranslatableInterface) {
       if (!$entity->hasTranslation($target_langcode)) {
-        return $data;
+        return [];
       }
-
       $entity = $entity->getTranslation($target_langcode);
     }
 
     if ($entity instanceof EntityInterface) {
       $data['title'] = $entity->label();
-      $data['url'] = $entity->toUrl();
+      $data['url'] = $entity->toUrl('canonical', [
+        'language' => $entity->language(),
+      ]);
     }
 
     return $data;
@@ -540,7 +540,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
     ]);
 
     try {
-      $response = $this->instanceApiClient->makeRequest('GET', $url->toString());
+      $response = $this->jsonApiClient->makeRequest('GET', $url->toString());
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
