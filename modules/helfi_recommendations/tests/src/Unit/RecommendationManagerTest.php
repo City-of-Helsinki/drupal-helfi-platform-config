@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_recommendations\Unit;
 
-use DG\BypassFinals;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
@@ -73,9 +72,9 @@ class RecommendationManagerTest extends UnitTestCase {
   protected $jsonApiClient;
 
   /**
-   * The mocked Elasticsearch client.
+   * The Elasticsearch client.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Elastic\Elasticsearch\Client
    */
   protected $elasticClient;
 
