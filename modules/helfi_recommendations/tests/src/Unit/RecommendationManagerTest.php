@@ -17,7 +17,7 @@ use Drupal\helfi_recommendations\RecommendationManager;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Psr\Log\LoggerInterface;
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -83,9 +83,6 @@ class RecommendationManagerTest extends UnitTestCase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
-    // https://github.com/elastic/elasticsearch-php/issues/1227.
-    BypassFinals::enable();
-
     parent::setUp();
 
     $this->logger = $this->prophesize(LoggerInterface::class);
@@ -93,7 +90,7 @@ class RecommendationManagerTest extends UnitTestCase {
     $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
     $this->topicsManager = $this->prophesize(TopicsManagerInterface::class);
     $this->jsonApiClient = $this->prophesize(ApiClient::class);
-    $this->elasticClient = $this->prophesize(Client::class);
+    $this->elasticClient = ClientBuilder::create()->build();
 
     $this->recommendationManager = new RecommendationManager(
       $this->logger->reveal(),
@@ -101,7 +98,7 @@ class RecommendationManagerTest extends UnitTestCase {
       $this->environmentResolver->reveal(),
       $this->topicsManager->reveal(),
       $this->jsonApiClient->reveal(),
-      $this->elasticClient->reveal()
+      $this->elasticClient
     );
   }
 
