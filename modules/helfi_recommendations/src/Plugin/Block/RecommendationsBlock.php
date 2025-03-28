@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_recommendations\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
@@ -15,8 +16,8 @@ use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_recommendations\RecommendationManager;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
+use Drupal\helfi_recommendations\RecommendationManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -32,6 +33,9 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   // Default cache max age is 1 hour.
   const CACHE_MAX_AGE = 3600;
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(
     array $configuration,
     $plugin_id,
@@ -105,6 +109,25 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
+  public function getCacheTags(): array {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    ['entity' => $entity] = $this->entityVersionMatcher->getType();
+
+    $recommendations = $this->getRecommendations($entity);
+
+    $tags = [];
+    foreach ($recommendations as $recommendation) {
+      if (!empty($recommendation['uuid'])) {
+        $tags[] = "suggested_topics_uuid:{$recommendation['uuid']}";
+      }
+    }
+
+    return Cache::mergeTags(parent::getCacheTags(), $tags);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCacheMaxAge(): int {
     $max_age = self::CACHE_MAX_AGE;
 
@@ -120,6 +143,20 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    ['entity' => $entity] = $this->entityVersionMatcher->getType();
+
+    if ($entity instanceof ContentEntityInterface && $this->recommendationManager->showRecommendations($entity)) {
+      return AccessResult::allowed();
+    }
+
+    return AccessResult::forbidden();
+  }
+
+  /**
    * Get the recommendations for current content entity.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
@@ -129,15 +166,18 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    *   Array of recommendations
    */
   private function getRecommendations(ContentEntityInterface $entity): array {
+    $recommendations = [];
+
     try {
       $recommendations = $this->recommendationManager
         ->getRecommendations($entity, 3, $entity->language()->getId());
-      return $recommendations;
     }
     catch (\Exception $exception) {
       Error::logException($this->logger, $exception);
       return [];
     }
+
+    return $recommendations;
   }
 
 }

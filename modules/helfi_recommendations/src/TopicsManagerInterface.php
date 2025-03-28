@@ -56,4 +56,15 @@ interface TopicsManagerInterface {
    */
   public function getKeywords(ContentEntityInterface $entity): array;
 
+  /**
+   * Get the topics reference fields of an entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   *
+   * @return \Drupal\Core\Field\EntityReferenceFieldItemListInterface[]
+   *   Array of topics reference fields.
+   */
+  public function getTopicsReferenceFields(ContentEntityInterface $entity): array;
+
 }

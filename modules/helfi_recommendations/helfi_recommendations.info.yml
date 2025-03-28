@@ -9,5 +9,7 @@ dependencies:
   - helfi_api_base:helfi_api_base
   - readonly_field_widget:readonly_field_widget
   - drupal:field
+  - jsonapi_extras:jsonapi_extras
+  - search_api:search_api
 'interface translation project': helfi_recommendations
 'interface translation server pattern': modules/custom/helfi_recommendations/translations/%language.po

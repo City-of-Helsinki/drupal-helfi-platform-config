@@ -5,23 +5,35 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
+use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Drupal\search_api\Entity\Index;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Elastic\Elasticsearch\Client;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * The recommendation manager.
  */
-class RecommendationManager {
+final class RecommendationManager implements RecommendationManagerInterface {
 
   const INDEX_NAME = 'suggestions';
+  const ELASTICSEARCH_QUERY_BUFFER = 10;
+
+  /**
+   * The recommendations.
+   *
+   * @var array
+   */
+  private $recommendations;
 
   /**
    * The constructor.
@@ -34,6 +46,10 @@ class RecommendationManager {
    *   The environment resolver.
    * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
    *   The topics manager.
+   * @param \GuzzleHttp\Client $guzzleClient
+   *   The Guzzle client.
+   * @param \Elastic\Elasticsearch\Client $elasticClient
+   *   The Elasticsearch client.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
@@ -41,25 +57,43 @@ class RecommendationManager {
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
+    #[Autowire(service: 'http_client')] private GuzzleClient $guzzleClient,
+    #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
   ) {
   }
 
   /**
-   * Get recommendations for a node.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The node.
-   * @param int $limit
-   *   How many recommendations should be returned.
-   * @param string|null $target_langcode
-   *   Which translation to use to select the recommendations,
-   *   null uses the entity's translation.
-   *
-   * @return array
-   *   Array of recommendations.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * {@inheritDoc}
+   */
+  public function showRecommendations(ContentEntityInterface $entity): bool {
+    // List suggested_topics_reference fields that the entity has.
+    $fields = array_filter(
+      $entity->getFieldDefinitions(),
+      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
+    );
+
+    if (!$fields) {
+      return FALSE;
+    }
+
+    // Check if any of the suggested topics reference fields have the show_block
+    // property set to FALSE. If so, do not show recommendations.
+    foreach ($fields as $key => $definition) {
+      $field = $entity->get($key);
+      assert($field instanceof EntityReferenceFieldItemListInterface);
+
+      foreach ($field->getValue() as $value) {
+        if (isset($value['show_block']) && !$value['show_block']) {
+          return FALSE;
+        }
+      }
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * {@inheritDoc}
    */
   public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL): array {
     $destination_langcode = $entity->language()->getId();
@@ -68,13 +102,21 @@ class RecommendationManager {
       $target_langcode = $destination_langcode;
     }
 
-    // Get results from Elasticsearch.
-    $query = $this->getElasticQuery($entity, $target_langcode, $limit);
-    $results = $this->searchElastic($query);
+    if (empty($this->recommendations[$entity->id()][$target_langcode][$limit])) {
+      $data = [];
 
-    // Fetch node data for each result via a JSON:API request.
-    // @todo Implement this.
-    return $results;
+      // Get results from Elasticsearch. Fetch more than needed to account for
+      // the fact that some results may not be available from json api anymore.
+      $query = $this->getElasticQuery($entity, $target_langcode, $limit + self::ELASTICSEARCH_QUERY_BUFFER);
+      $results = $query ? $this->searchElastic($query) : [];
+
+      // Fetch node data for each result via a JSON:API request.
+      $data = $results ? $this->fetchNodeData($results, $target_langcode, $limit) : [];
+
+      $this->recommendations[$entity->id()][$target_langcode][$limit] = $data;
+    }
+
+    return $this->recommendations[$entity->id()][$target_langcode][$limit];
   }
 
   /**
@@ -93,6 +135,75 @@ class RecommendationManager {
     }
 
     return $project;
+  }
+
+  /**
+   * Get options from topics reference fields.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   * @param string $property
+   *   The property to get options from.
+   *
+   * @return array
+   *   Array of enabled options.
+   */
+  private function getOptions(ContentEntityInterface $entity, string $property): array {
+    $fields = $this->topicsManager->getTopicsReferenceFields($entity);
+    $options = [];
+
+    foreach ($fields as $field) {
+      foreach ($field->getValue() as $value) {
+        if (!isset($value[$property]) || !is_array($value[$property])) {
+          continue;
+        }
+
+        $enabled_options = array_values(array_filter($value[$property], static fn (string $option) => !empty($option)));
+        array_push($options, ...$enabled_options);
+      }
+    }
+
+    return $options;
+  }
+
+  /**
+   * Get enabled instances.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   *
+   * @return array
+   *   Array of enabled instances.
+   */
+  private function getEnabledInstances(ContentEntityInterface $entity): array {
+    return $this->getOptions($entity, 'instances');
+  }
+
+  /**
+   * Get enabled content types and bundles.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   *
+   * @return array
+   *   Array of enabled content types and bundles.
+   */
+  private function getEnabledContentTypesAndBundles(ContentEntityInterface $entity): array {
+    $content_types = [];
+    $options = $this->getOptions($entity, 'content_types');
+    foreach ($options as $option) {
+      $option_pair = explode('|', $option);
+      $entity_type = $option_pair[0];
+      $bundle = $option_pair[1];
+
+      if (!isset($content_types[$entity_type])) {
+        $content_types[$entity_type] = [];
+      }
+
+      $content_types[$entity_type][] = $bundle;
+    }
+
+    return $content_types;
   }
 
   /**
@@ -130,7 +241,17 @@ class RecommendationManager {
    */
   private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3): array {
     // Build keyword terms and score functions.
-    $keywords = $this->topicsManager->getKeywords($entity);
+    try {
+      $keywords = $this->topicsManager->getKeywords($entity);
+      if (!$keywords) {
+        return [];
+      }
+    }
+    catch (\Exception $e) {
+      Error::logException($this->logger, $e);
+      return [];
+    }
+
     $keyword_terms = [];
     $keyword_score_functions = [];
     foreach ($keywords as $keyword) {
@@ -147,36 +268,26 @@ class RecommendationManager {
         ],
         'script_score' => [
           'script' => [
-            'source' => "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['keywords.score'].value * 1000)",
+            'source' => "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['keywords.score'].value * 100)",
             'params' => [
-              'origin' => $keyword['score'] * 1000,
-              'scale' => 1,
-              'decay' => 0.5,
-              'offset' => 0,
+              'origin' => $keyword['score'] * 100,
+              'scale' => 10,
+              'decay' => 0.9,
+              'offset' => 10,
             ],
           ],
         ],
+        'weight' => $keyword['score'] * 100,
       ];
     }
 
     // Build and return query.
-    return [
+    $query = [
       'from' => 0,
       'size' => $limit,
-      // Any item will get a score of 2, even without any matching keywords.
-      // Let's make sure there's at least some resemblance to the current
-      // entity.
-      'min_score' => 2.01,
       'query' => [
         'bool' => [
           'filter' => [
-            [
-              'term' => [
-                // Only include node results.
-                // @todo Maybe TPR-entities as well?
-                'parent_type' => 'node',
-              ],
-            ],
             [
               'term' => [
                 'parent_translations' => $target_langcode,
@@ -185,15 +296,28 @@ class RecommendationManager {
           ],
           'must' => [
             [
-              // Parent ID is required.
               'exists' => [
                 'field' => 'parent_id',
               ],
             ],
             [
-              // Parent instance is required.
               'exists' => [
                 'field' => 'parent_instance',
+              ],
+            ],
+            [
+              'exists' => [
+                'field' => 'parent_type',
+              ],
+            ],
+            [
+              'exists' => [
+                'field' => 'parent_bundle',
+              ],
+            ],
+            [
+              'exists' => [
+                'field' => 'uuid',
               ],
             ],
             [
@@ -237,6 +361,58 @@ class RecommendationManager {
         ],
       ],
     ];
+
+    // Filter enabled instances.
+    $allowed_instances = $this->getEnabledInstances($entity);
+    if (!empty($allowed_instances)) {
+      $terms_set = [
+        'terms_set' => [
+          'parent_instance' => [
+            'terms' => $allowed_instances,
+            'minimum_should_match' => 1,
+          ],
+        ],
+      ];
+      $query['query']['bool']['filter'][] = $terms_set;
+    }
+
+    // Filter enabled entity types and bundles.
+    $allowed_content_types = $this->getEnabledContentTypesAndBundles($entity);
+    if (!empty($allowed_content_types)) {
+      $allowed_entity_types = [];
+      $allowed_bundles = [];
+
+      foreach ($allowed_content_types as $content_type => $bundles) {
+        $allowed_entity_types[] = $content_type;
+        array_push($allowed_bundles, ...$bundles);
+      }
+
+      if ($allowed_entity_types) {
+        $terms_set = [
+          'terms_set' => [
+            'parent_type' => [
+              'terms' => $allowed_entity_types,
+              'minimum_should_match' => 1,
+            ],
+          ],
+        ];
+        $query['query']['bool']['filter'][] = $terms_set;
+      }
+
+      if ($allowed_bundles) {
+        $terms_set = [
+          'terms_set' => [
+            'parent_bundle' => [
+              'terms' => $allowed_bundles,
+              'minimum_should_match' => 1,
+            ],
+          ],
+        ];
+        $query['query']['bool']['filter'][] = $terms_set;
+      }
+    }
+
+    return $query;
   }
 
   /**
@@ -249,22 +425,9 @@ class RecommendationManager {
    *   The search results.
    */
   private function searchElastic(array $query) : array {
-    // Load the index.
-    $index = Index::load(self::INDEX_NAME);
-    $server = $index->getServerInstance();
-    $backend = $server->getBackend();
-
-    // This only works with an Elasticsearch backend.
-    if (!$backend instanceof ElasticSearchBackend) {
-      return [];
-    }
-
-    /** @var \Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend $backend */
-    $client = $backend->getClient();
-
     $results = [];
     try {
-      $results = $client->search([
+      $results = $this->elasticClient->search([
         'index' => self::INDEX_NAME,
         'body' => $query,
       ])?->asArray() ?? [];
@@ -277,18 +440,145 @@ class RecommendationManager {
   }
 
   /**
-   * Sort query result by created time.
+   * Fetch node data.
    *
    * @param array $results
-   *   Query results to sort.
+   *   The search results.
+   * @param string $target_langcode
+   *   The target language code.
+   * @param int $limit
+   *   The result amount limit.
+   *
+   * @return array
+   *   The node data.
    */
-  private function sortByCreatedAt(array &$results) : void {
-    usort($results, function ($a, $b) {
-      if ($a->created == $b->created) {
-        return 0;
+  private function fetchNodeData(array $results, string $target_langcode, int $limit) : array {
+    if (empty($results['hits']['hits'])) {
+      return [];
+    }
+
+    $node_data = [];
+
+    foreach ($results['hits']['hits'] as $hit) {
+      $instance = !empty($hit['_source']['parent_instance']) ? reset($hit['_source']['parent_instance']) : NULL;
+      $type = !empty($hit['_source']['parent_type']) ? reset($hit['_source']['parent_type']) : NULL;
+      $bundle = !empty($hit['_source']['parent_bundle']) ? reset($hit['_source']['parent_bundle']) : NULL;
+      $id = !empty($hit['_source']['parent_id']) ? reset($hit['_source']['parent_id']) : NULL;
+      $uuid = !empty($hit['_source']['uuid']) ? reset($hit['_source']['uuid']) : NULL;
+
+      // We need all this in order to continue.
+      if (!$instance || !$type || !$bundle || !$id || !$uuid) {
+        continue;
       }
-      return ($a->created > $b->created) ? -1 : 1;
-    });
+
+      $data = $instance === $this->getParentInstance()
+        ? $this->buildLocalEntityData($type, $bundle, $id, $target_langcode)
+        : $this->buildRemoteEntityData($instance, $type, $bundle, $id, $target_langcode);
+
+      if ($data) {
+        $node_data[] = ['uuid' => $uuid] + $data;
+      }
+
+      if (count($node_data) >= $limit) {
+        break;
+      }
+    }
+
+    return $node_data;
+  }
+
+  /**
+   * Build local entity data.
+   *
+   * @param string $type
+   *   The entity type.
+   * @param string $bundle
+   *   The entity bundle.
+   * @param string $id
+   *   The entity ID.
+   * @param string $target_langcode
+   *   The target language code.
+   *
+   * @return array
+   *   The entity data.
+   */
+  private function buildLocalEntityData(string $type, string $bundle, string $id, string $target_langcode) : array {
+    $data = [];
+    $entity = $this->entityTypeManager->getStorage($type)->load($id);
+
+    if (!$entity->access('view')) {
+      return [];
+    }
+
+    if ($entity instanceof TranslatableInterface) {
+      if (!$entity->hasTranslation($target_langcode)) {
+        return [];
+      }
+      $entity = $entity->getTranslation($target_langcode);
+    }
+
+    if ($entity instanceof EntityInterface) {
+      $data['title'] = $entity->label();
+      $data['url'] = $entity->toUrl('canonical', [
+        'language' => $entity->language(),
+      ]);
+    }
+
+    return $data;
+  }
+
+  /**
+   * Build remote entity data.
+   *
+   * @param string $instance
+   *   The instance name.
+   * @param string $type
+   *   The entity type.
+   * @param string $bundle
+   *   The entity bundle.
+   * @param string $id
+   *   The entity ID.
+   * @param string $target_langcode
+   *   The target language code.
+   *
+   * @return array
+   *   The entity data.
+   */
+  private function buildRemoteEntityData(string $instance, string $type, string $bundle, string $id, string $target_langcode) : array {
+    $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
+
+    // Use internal url for json api requests to avoid varnish caching issues.
+    // This is also the only way for this to work in local environments.
+    $base_url = sprintf('%s/jsonapi/%s/%s', $environment->getInternalAddress($target_langcode), $type, $bundle);
+    $url = Url::fromUri($base_url, [
+      'query' => [
+        'filter[drupal_internal__nid]' => $id,
+        'filter[langcode]' => $target_langcode,
+      ],
+    ]);
+
+    try {
+      $response = json_decode($this->guzzleClient->request('GET', $url->toString())->getBody()->getContents());
+    }
+    catch (\Exception $e) {
+      Error::logException($this->logger, $e);
+      return [];
+    }
+
+    $json = !empty($response->data) && is_array($response->data) ? reset($response->data) : NULL;
+    if (!$json) {
+      return [];
+    }
+
+    $attributes = $json->attributes ?? NULL;
+    if (!$attributes) {
+      return [];
+    }
+
+    $data['title'] = $attributes->title ?? NULL;
+    $data['url'] = $attributes->path->alias ? sprintf('%s/%s', $environment->getUrl($target_langcode), ltrim($attributes->path->alias, '/')) : NULL;
+
+    return $data;
   }
 
 }
