@@ -11,13 +11,15 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_recommendations\RecommendationManager;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
+use Drupal\helfi_recommendations\RecommendationManager;
+use Drupal\helfi_recommendations\TopicsManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -32,6 +34,13 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
 
   // Default cache max age is 1 hour.
   const CACHE_MAX_AGE = 3600;
+
+  /**
+   * Recommendations data.
+   *
+   * @var array
+   */
+  private $recommendationTopics = [];
 
   public function __construct(
     array $configuration,
@@ -106,6 +115,25 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
+  public function getCacheTags(): array {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    ['entity' => $entity] = $this->entityVersionMatcher->getType();
+
+    $recommendations = $this->getRecommendations($entity);
+
+    $tags = [];
+    foreach ($recommendations as $recommendation) {
+      if (!empty($recommendation['uuid'])) {
+        $tags[] = "suggested_topics_uuid:{$recommendation['uuid']}";
+      }
+    }
+
+    return Cache::mergeTags(parent::getCacheTags(), $tags);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCacheMaxAge(): int {
     $max_age = self::CACHE_MAX_AGE;
 
@@ -144,15 +172,19 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    *   Array of recommendations
    */
   private function getRecommendations(ContentEntityInterface $entity): array {
-    try {
-      $recommendations = $this->recommendationManager
-        ->getRecommendations($entity, 3, $entity->language()->getId());
-      return $recommendations;
+    if (empty($this->recommendationTopics)) {
+      try {
+        $recommendations = $this->recommendationManager
+          ->getRecommendations($entity, 3, $entity->language()->getId());
+        $this->recommendationTopics = $recommendations;
+      }
+      catch (\Exception $exception) {
+        Error::logException($this->logger, $exception);
+        return [];
+      }
     }
-    catch (\Exception $exception) {
-      Error::logException($this->logger, $exception);
-      return [];
-    }
+
+    return $this->recommendationTopics;
   }
 
 }

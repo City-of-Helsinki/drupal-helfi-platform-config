@@ -304,6 +304,11 @@ final class RecommendationManager implements RecommendationManagerInterface {
               ],
             ],
             [
+              'exists' => [
+                'field' => 'uuid',
+              ],
+            ],
+            [
               'nested' => [
                 'path' => 'keywords',
                 'score_mode' => 'sum',
@@ -447,9 +452,10 @@ final class RecommendationManager implements RecommendationManagerInterface {
       $type = !empty($hit['_source']['parent_type']) ? reset($hit['_source']['parent_type']) : NULL;
       $bundle = !empty($hit['_source']['parent_bundle']) ? reset($hit['_source']['parent_bundle']) : NULL;
       $id = !empty($hit['_source']['parent_id']) ? reset($hit['_source']['parent_id']) : NULL;
+      $uuid = !empty($hit['_source']['uuid']) ? reset($hit['_source']['uuid']) : NULL;
 
       // We need all this in order to continue.
-      if (!$instance || !$type || !$bundle || !$id) {
+      if (!$instance || !$type || !$bundle || !$id || !$uuid) {
         continue;
       }
 
@@ -458,7 +464,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
         : $this->buildRemoteEntityData($instance, $type, $bundle, $id, $target_langcode);
 
       if ($data) {
-        $node_data[] = $data;
+        $node_data[] = ['uuid' => $uuid] + $data;
       }
 
       if (count($node_data) >= $limit) {

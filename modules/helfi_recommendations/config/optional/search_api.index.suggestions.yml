@@ -56,6 +56,14 @@ field_settings:
     dependencies:
       module:
         - helfi_recommendations
+  uuid:
+    label: UUID
+    datasource_id: 'entity:suggested_topics'
+    property_path: uuid
+    type: string
+    dependencies:
+      module:
+        - helfi_recommendations
 datasource_settings:
   'entity:suggested_topics': {  }
 processor_settings:
