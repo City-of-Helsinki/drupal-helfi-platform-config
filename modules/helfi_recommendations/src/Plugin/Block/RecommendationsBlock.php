@@ -11,7 +11,6 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -19,7 +18,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_recommendations\RecommendationManager;
-use Drupal\helfi_recommendations\TopicsManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -174,9 +172,9 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       $recommendations = $this->recommendationManager
         ->getRecommendations($entity, 3, $entity->language()->getId());
     }
-      catch (\Exception $exception) {
-        Error::logException($this->logger, $exception);
-        return [];
+    catch (\Exception $exception) {
+      Error::logException($this->logger, $exception);
+      return [];
     }
 
     return $recommendations;

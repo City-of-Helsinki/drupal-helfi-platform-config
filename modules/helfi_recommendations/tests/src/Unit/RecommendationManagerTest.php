@@ -10,7 +10,6 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_recommendations\RecommendationManager;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
@@ -19,6 +18,7 @@ use Psr\Log\LoggerInterface;
 use Elastic\Elasticsearch\ClientBuilder;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Unit tests for RecommendationManager.
@@ -88,7 +88,7 @@ class RecommendationManagerTest extends UnitTestCase {
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
     $this->topicsManager = $this->prophesize(TopicsManagerInterface::class);
-    $this->jsonApiClient = $this->prophesize(ApiClient::class);
+    $this->jsonApiClient = $this->prophesize(GuzzleClient::class);
     $this->elasticClient = ClientBuilder::create()->build();
 
     $this->recommendationManager = new RecommendationManager(
@@ -147,6 +147,7 @@ class RecommendationManagerTest extends UnitTestCase {
     $language->getId()->willReturn('en');
     $entity->hasTranslation('en')->willReturn(TRUE);
     $entity->language()->willReturn($language->reveal());
+    $entity->id()->willReturn(1);
 
     $this->topicsManager->getKeywords($entity->reveal())->willReturn([]);
 
@@ -171,7 +172,7 @@ class RecommendationManagerTest extends UnitTestCase {
     $entity->language()->willReturn($language->reveal());
     $entity->hasTranslation('en')->willReturn(TRUE);
     $entity->getTranslation('en')->willReturn($entity->reveal());
-
+    $entity->id()->willReturn(1);
     $this->topicsManager->getKeywords($entity->reveal())->willThrow(new \Exception('Test error'));
     $this->logger->log('error', Argument::any(), Argument::any())->shouldBeCalled();
 

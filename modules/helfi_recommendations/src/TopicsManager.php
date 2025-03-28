@@ -85,12 +85,12 @@ final class TopicsManager implements TopicsManagerInterface {
     if ($entity->language()->getId() === 'fi') {
       $this->queueFactory
         ->get('helfi_recommendations_queue')
-          ->createItem([
+        ->createItem([
           'entity_id' => $entity->id(),
-            'entity_type' => $entity->getEntityTypeId(),
-            'language' => $entity->language()->getId(),
-            'overwrite' => $overwriteExisting,
-          ]);
+          'entity_type' => $entity->getEntityTypeId(),
+          'language' => $entity->language()->getId(),
+          'overwrite' => $overwriteExisting,
+        ]);
     }
   }
 

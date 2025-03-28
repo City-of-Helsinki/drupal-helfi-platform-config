@@ -46,8 +46,8 @@ final class RecommendationManager implements RecommendationManagerInterface {
    *   The environment resolver.
    * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
    *   The topics manager.
-   * @param \Drupal\helfi_api_base\ApiClient\ApiClient $jsonApiClient
-   *   The JSON API client.
+   * @param \GuzzleHttp\Client $guzzleClient
+   *   The Guzzle client.
    * @param \Elastic\Elasticsearch\Client $elasticClient
    *   The Elasticsearch client.
    */

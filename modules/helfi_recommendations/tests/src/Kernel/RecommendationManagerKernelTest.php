@@ -7,8 +7,6 @@ namespace Drupal\Tests\helfi_recommendations\Kernel;
 use DG\BypassFinals;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
-use Drupal\helfi_api_base\ApiClient\ApiClient;
-use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
@@ -22,8 +20,11 @@ use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Response\Elasticsearch;
+use GuzzleHttp\Client as GuzzleClient;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Kernel tests for RecommendationManager.
@@ -167,6 +168,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
     $nodeTitle = $this->randomString();
     $nodeTitleSV = $this->randomString();
+    $suggestionUUID = $this->randomString();
     $nodeResult = Node::create([
       'type' => 'test_node_bundle',
       'title' => $nodeTitle,
@@ -185,6 +187,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
               'parent_type' => ['node'],
               'parent_bundle' => ['test_node_bundle'],
               'parent_id' => [$nodeResult->id()],
+              'uuid' => [$suggestionUUID],
             ],
           ],
         ],
@@ -195,12 +198,14 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $recommendations = $recommendationManager->getRecommendations($nodeSource);
     $this->assertNotEmpty($recommendations);
     $this->assertEquals($nodeTitle, $recommendations[0]['title']);
+    $this->assertEquals($suggestionUUID, $recommendations[0]['uuid']);
     $this->assertArrayHasKey('url', $recommendations[0]);
 
-    // Test recommendations in English.
+    // Test recommendations in Swedish.
     $recommendations = $recommendationManager->getRecommendations($nodeSource, 3, 'sv');
     $this->assertNotEmpty($recommendations);
     $this->assertEquals($nodeTitleSV, $recommendations[0]['title']);
+    $this->assertEquals($suggestionUUID, $recommendations[0]['uuid']);
     $this->assertArrayHasKey('url', $recommendations[0]);
   }
 
@@ -275,6 +280,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     ]);
     $nodeSource->save();
 
+    $resultUUID = $this->randomString();
     $resultTitle = $this->randomString();
     $recommendationManager = $this->getSut(
       [
@@ -285,7 +291,8 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
                 'parent_instance' => [Project::ASUMINEN],
                 'parent_type' => ['node'],
                 'parent_bundle' => ['test_node_bundle'],
-                'parent_id' => ['123'],
+                'parent_id' => [$nodeSource->id()],
+                'uuid' => [$resultUUID],
               ],
             ],
           ],
@@ -308,6 +315,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $recommendations = $recommendationManager->getRecommendations($nodeSource);
     $this->assertNotEmpty($recommendations);
     $this->assertEquals($resultTitle, $recommendations[0]['title']);
+    $this->assertEquals($resultUUID, $recommendations[0]['uuid']);
     $this->assertArrayHasKey('url', $recommendations[0]);
   }
 
@@ -331,9 +339,13 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $environmentResolver = $this->container->get(EnvironmentResolverInterface::class);
     $topicsManager = $this->container->get(TopicsManagerInterface::class);
 
-    $jsonApiResponse = (object) $jsonApiData;
-    $jsonApiClient = $this->prophesize(ApiClient::class);
-    $jsonApiClient->makeRequest(Argument::any(), Argument::any())->willReturn(new ApiResponse($jsonApiResponse));
+    $jsonApiData = (object) $jsonApiData;
+    $jsonApiBody = $this->prophesize(StreamInterface::class);
+    $jsonApiBody->getContents()->willReturn(json_encode($jsonApiData));
+    $jsonApiResponse = $this->prophesize(ResponseInterface::class);
+    $jsonApiResponse->getBody()->willReturn($jsonApiBody->reveal());
+    $jsonApiClient = $this->prophesize(GuzzleClient::class);
+    $jsonApiClient->request(Argument::any(), Argument::any())->willReturn($jsonApiResponse->reveal());
 
     $elasticResponse = $this->prophesize(Elasticsearch::class);
     $elasticResponse->asArray()->willReturn($elasticData);

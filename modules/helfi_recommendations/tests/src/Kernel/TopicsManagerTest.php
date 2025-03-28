@@ -115,7 +115,7 @@ class TopicsManagerTest extends AnnifKernelTestBase {
 
     $sut->processEntities($batch);
 
-    $supported = ['fi', 'sv', 'en'];
+    $supported = ['fi'];
     foreach ($batch as $key => $node) {
       $reference = $node->get('test_keywords')->entity;
 
