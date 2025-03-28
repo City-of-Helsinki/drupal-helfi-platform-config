@@ -81,14 +81,17 @@ final class TopicsManager implements TopicsManagerInterface {
       $topic->save();
     }
 
-    $this->queueFactory
-      ->get('helfi_recommendations_queue')
-      ->createItem([
-        'entity_id' => $entity->id(),
-        'entity_type' => $entity->getEntityTypeId(),
-        'language' => $entity->language()->getId(),
-        'overwrite' => $overwriteExisting,
-      ]);
+    // Only queue if the entity language is Finnish.
+    if ($entity->language()->getId() === 'fi') {
+      $this->queueFactory
+        ->get('helfi_recommendations_queue')
+          ->createItem([
+          'entity_id' => $entity->id(),
+            'entity_type' => $entity->getEntityTypeId(),
+            'language' => $entity->language()->getId(),
+            'overwrite' => $overwriteExisting,
+          ]);
+    }
   }
 
   /**
@@ -180,17 +183,12 @@ final class TopicsManager implements TopicsManagerInterface {
         continue;
       }
 
-      // Keyword generator does not support mixing languages in one request,
-      // so divide translations into buckets that are handled separately.
-      // Each bucket size must be <= KeywordGenerator::MAX_BATCH_SIZE.
-      if ($entity instanceof TranslatableInterface) {
-        foreach ($entity->getTranslationLanguages() as $language) {
-          $buckets[$language->getId()][$key] = $entity->getTranslation($language->getId());
-        }
+      // We only want to process the Finnish translation.
+      if ($entity->language()->getId() !== 'fi') {
+        continue;
       }
-      else {
-        $buckets[$entity->language()->getId()][$key] = $entity;
-      }
+
+      $buckets[$entity->language()->getId()][$key] = $entity;
     }
 
     foreach ($buckets as $bucket) {
