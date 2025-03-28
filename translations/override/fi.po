@@ -86,6 +86,12 @@ msgstr "Poista lukitus"
 msgid "Lock broken. Anyone can now edit this content."
 msgstr "Lukitus poistettu. Kaikki sisällöntuottajat voivat nyt muokata tätä sisältöä."
 
+msgid "Unlocked. Anyone can now edit this content."
+msgstr "Lukitus poistettu. Kaikki sisällöntuottajat voivat nyt muokata tätä sisältöä."
+
+msgid "Unlocked. Anyone can now edit this content translation."
+msgstr "Lukitus poistettu. Kaikki sisällöntuottajat voivat nyt muokata tätä käännöstä."
+
 msgid "Unlock"
 msgstr "Peruuta ja poista lukitus"
 
