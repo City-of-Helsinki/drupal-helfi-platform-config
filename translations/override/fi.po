@@ -83,6 +83,9 @@ msgstr "Jos poistat lukituksen, käyttäjän @user tekemät muutokset menetetä�
 msgid "Confirm break lock"
 msgstr "Poista lukitus"
 
+msgid "Lock broken. Anyone can now edit this content."
+msgstr "Lukitus poistettu. Kaikki sisällöntuottajat voivat nyt muokata tätä sisältöä."
+
 msgid "Unlocked. Anyone can now edit this content."
 msgstr "Lukitus poistettu. Kaikki sisällöntuottajat voivat nyt muokata tätä sisältöä."
 
