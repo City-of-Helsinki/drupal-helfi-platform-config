@@ -36,12 +36,8 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   const CACHE_MAX_AGE = 3600;
 
   /**
-   * Recommendations data.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  private $recommendationTopics = [];
-
   public function __construct(
     array $configuration,
     $plugin_id,
@@ -172,19 +168,18 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    *   Array of recommendations
    */
   private function getRecommendations(ContentEntityInterface $entity): array {
-    if (empty($this->recommendationTopics)) {
-      try {
-        $recommendations = $this->recommendationManager
-          ->getRecommendations($entity, 3, $entity->language()->getId());
-        $this->recommendationTopics = $recommendations;
-      }
+    $recommendations = [];
+
+    try {
+      $recommendations = $this->recommendationManager
+        ->getRecommendations($entity, 3, $entity->language()->getId());
+    }
       catch (\Exception $exception) {
         Error::logException($this->logger, $exception);
         return [];
-      }
     }
 
-    return $this->recommendationTopics;
+    return $recommendations;
   }
 
 }

@@ -12,13 +12,13 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\Core\Url;
-use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Elastic\Elasticsearch\Client;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * The recommendation manager.
@@ -27,6 +27,13 @@ final class RecommendationManager implements RecommendationManagerInterface {
 
   const INDEX_NAME = 'suggestions';
   const ELASTICSEARCH_QUERY_BUFFER = 10;
+
+  /**
+   * The recommendations.
+   *
+   * @var array
+   */
+  private $recommendations;
 
   /**
    * The constructor.
@@ -50,7 +57,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
-    #[Autowire(service: 'helfi_recommendations.json_api_client')] private ApiClient $jsonApiClient,
+    #[Autowire(service: 'http_client')] private GuzzleClient $guzzleClient,
     #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
   ) {
   }
@@ -89,22 +96,27 @@ final class RecommendationManager implements RecommendationManagerInterface {
    * {@inheritDoc}
    */
   public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL): array {
-    $data = [];
     $destination_langcode = $entity->language()->getId();
     $target_langcode = $target_langcode ?? $destination_langcode;
     if ($entity instanceof TranslatableInterface && !$entity->hasTranslation($target_langcode)) {
       $target_langcode = $destination_langcode;
     }
 
-    // Get results from Elasticsearch. Fetch more than needed to account for
-    // the fact that some results may not be available from json api anymore.
-    $query = $this->getElasticQuery($entity, $target_langcode, $limit + self::ELASTICSEARCH_QUERY_BUFFER);
-    $results = $query ? $this->searchElastic($query) : [];
+    if (empty($this->recommendations[$entity->id()][$target_langcode][$limit])) {
+      $data = [];
 
-    // Fetch node data for each result via a JSON:API request.
-    $data = $results ? $this->fetchNodeData($results, $target_langcode, $limit) : [];
+      // Get results from Elasticsearch. Fetch more than needed to account for
+      // the fact that some results may not be available from json api anymore.
+      $query = $this->getElasticQuery($entity, $target_langcode, $limit + self::ELASTICSEARCH_QUERY_BUFFER);
+      $results = $query ? $this->searchElastic($query) : [];
 
-    return $data;
+      // Fetch node data for each result via a JSON:API request.
+      $data = $results ? $this->fetchNodeData($results, $target_langcode, $limit) : [];
+
+      $this->recommendations[$entity->id()][$target_langcode][$limit] = $data;
+    }
+
+    return $this->recommendations[$entity->id()][$target_langcode][$limit];
   }
 
   /**
@@ -546,14 +558,14 @@ final class RecommendationManager implements RecommendationManagerInterface {
     ]);
 
     try {
-      $response = $this->jsonApiClient->makeRequest('GET', $url->toString());
+      $response = json_decode($this->guzzleClient->request('GET', $url->toString())->getBody()->getContents());
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
       return [];
     }
 
-    $json = !empty($response->data->data) && is_array($response->data->data) ? reset($response->data->data) : NULL;
+    $json = !empty($response->data) && is_array($response->data) ? reset($response->data) : NULL;
     if (!$json) {
       return [];
     }
