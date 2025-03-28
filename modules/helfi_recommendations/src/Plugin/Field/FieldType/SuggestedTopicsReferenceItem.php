@@ -142,4 +142,21 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave($update) {
+    parent::postSave($update);
+
+    // If the entity is new, set the parent entity data on the target entity.
+    if (!$update) {
+      $entity = $this->entity;
+      assert($entity instanceof SuggestedTopicsInterface);
+
+      $parent = $this->getEntity();
+      $entity->setParentEntity($parent);
+      $entity->save();
+    }
+  }
+
 }
