@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_media_chart\Functional;
+namespace Drupal\Tests\helfi_media_chart\ExistingSite;
 
 use Drupal\Core\Url;
-use Drupal\Tests\BrowserTestBase;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Tests\helfi_api_base\Functional\ExistingSiteTestBase;
 
 /**
- * Tests media chart functionality.
+ * Tests media chart functionality with DTT.
  *
  * @group helfi_platform_config
  */
-class MediaChartTest extends BrowserTestBase {
+class MediaChartTest extends ExistingSiteTestBase {
 
   /**
    * {@inheritdoc}
@@ -37,25 +37,35 @@ class MediaChartTest extends BrowserTestBase {
   public function setUp() : void {
     parent::setUp();
     // Setup standalone media urls from the settings.
-    $this->config('media.settings')->set('standalone_url', TRUE)
+    $this->container
+      ->get('config.factory')
+      ->getEditable('media.settings')
+      ->set('standalone_url', TRUE)
       ->save();
     // Switch text field formatter for helfi_chart.
     $this->switchTextFieldFormatter('media', 'helfi_chart', 'field_helfi_chart_transcript');
     $this->refreshVariables();
     // Rebuild routes.
     \Drupal::service('router.builder')->rebuild();
-
-    $this->drupalLogin($this->rootUser);
   }
 
   /**
    * Tests 'hel_map' media type.
    */
   public function testMediaType() : void {
+    // Login with a user capable of creating media.
+    $this->drupalLogin($this->createUser([
+      'create media',
+      'create helfi_chart media',
+      'edit own helfi_chart media',
+    ]));
+
+    // Add a 'helfi_chart' media.
     $addRoute = Url::fromRoute('entity.media.add_form', ['media_type' => 'helfi_chart']);
     $this->drupalGet($addRoute);
     $this->assertSession()->statusCodeEquals(200);
 
+    // Submit with invalid domain.
     $this->submitForm([
       'name[0][value]' => 'Test value',
       'field_helfi_chart_title[0][value]' => 'Test value',
@@ -65,20 +75,19 @@ class MediaChartTest extends BrowserTestBase {
 
     // Make sure we only allow valid domains.
     $this->assertSession()->pageTextContainsOnce('Given host (https://google.com) is not valid, must be one of: app.powerbi.com');
-
     $this->drupalGet($addRoute);
     $this->assertSession()->statusCodeEquals(200);
-
     $this->submitForm([
-      'name[0][value]' => 'Chart',
+      'name[0][value]' => 'My test chart',
       'field_helfi_chart_url[0][uri]' => 'https://app.powerbi.com/view?r=123',
       'field_helfi_chart_title[0][value]' => 'Test value',
       'field_helfi_chart_transcript[0][value]' => '123',
     ], 'Save');
-    $this->assertSession()->pageTextContainsOnce('Chart embed Chart has been created.');
+    $this->assertSession()->pageTextContainsOnce('Chart embed My test chart has been created.');
 
+    // Test that we can view the chart.
     $medias = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
-      'name' => 'Chart',
+      'name' => 'My test chart',
     ]);
     /** @var \Drupal\media\MediaInterface $media */
     $media = reset($medias);
