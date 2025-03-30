@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_media_chart\Kernel\Entity;
 
 use Drupal\helfi_media_chart\Entity\HelfiChart;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_media\Kernel\HelfiMediaKernelTestBase;
 
 /**

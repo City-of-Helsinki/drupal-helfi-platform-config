@@ -73,7 +73,7 @@ class HelpMapTest extends HelfiMediaKernelTestBase {
     $entity->save();
 
     $this->assertEquals($data['title'], $entity->getMediaTitle());
-    // Test that the default value of the cookie consent bypass is FALSE
+    // Test that the default value of the cookie consent bypass is FALSE.
     $this->assertEquals($entity->getCookieConsentBypass(), $bypass);
   }
 

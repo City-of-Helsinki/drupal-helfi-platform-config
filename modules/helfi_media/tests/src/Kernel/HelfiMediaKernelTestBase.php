@@ -15,7 +15,11 @@ use Drupal\media\MediaStorage;
  */
 class HelfiMediaKernelTestBase extends KernelTestBase {
 
-  /** @var \Drupal\media\MediaStorage */
+  /**
+   * Media storage.
+   *
+   * @var \Drupal\media\MediaStorage
+   */
   protected MediaStorage $mediaStorage;
 
   /**
@@ -65,8 +69,10 @@ class HelfiMediaKernelTestBase extends KernelTestBase {
       $media = $this->mediaStorage->create($values);
       $media->save();
       return $media;
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->fail($e->getMessage());
     }
   }
+
 }
