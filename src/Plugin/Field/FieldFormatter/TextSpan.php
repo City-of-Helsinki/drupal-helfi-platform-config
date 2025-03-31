@@ -33,6 +33,7 @@ class TextSpan extends FormatterBase {
 
     foreach ($items as $delta => $item) {
 
+      /** @var string $value */
       $value = $item->value;
       if (empty($value)) {
         $value = $item->getValue();
