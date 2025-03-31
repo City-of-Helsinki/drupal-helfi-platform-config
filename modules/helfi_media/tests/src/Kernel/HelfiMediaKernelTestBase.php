@@ -26,18 +26,23 @@ class HelfiMediaKernelTestBase extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'system',
-    'link',
-    'path',
+    'content_translation',
+    'crop',
+    'datetime',
     'field',
     'file',
+    'focal_point',
+    'helfi_media',
     'image',
+    'language',
+    'link',
+    'media',
+    'media_library',
+    'path',
+    'responsive_image',
+    'system',
     'user',
     'views',
-    'media',
-    'datetime',
-    'media_library',
-    'helfi_media',
   ];
 
   /**
@@ -45,11 +50,25 @@ class HelfiMediaKernelTestBase extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->installConfig(['system', 'media', 'media_library']);
+    $this->installConfig([
+      'system',
+      'language',
+    ]);
     $this->installEntitySchema('user');
     $this->installEntitySchema('media');
+    $this->installEntitySchema('media_type');
+    $this->installEntitySchema('crop');
+    $this->installEntitySchema('crop_type');
     $this->installEntitySchema('file');
     $this->installSchema('file', ['file_usage']);
+    $this->installConfig([
+      'media',
+      'media_library',
+      'image',
+      'crop',
+      'focal_point',
+      'helfi_media',
+    ]);
     $this->mediaStorage = $this->container
       ->get('entity_type.manager')
       ->getStorage('media');
