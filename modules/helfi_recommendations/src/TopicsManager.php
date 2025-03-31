@@ -81,14 +81,17 @@ final class TopicsManager implements TopicsManagerInterface {
       $topic->save();
     }
 
-    $this->queueFactory
-      ->get('helfi_recommendations_queue')
-      ->createItem([
-        'entity_id' => $entity->id(),
-        'entity_type' => $entity->getEntityTypeId(),
-        'language' => $entity->language()->getId(),
-        'overwrite' => $overwriteExisting,
-      ]);
+    // Only queue if the entity language is Finnish.
+    if ($entity->language()->getId() === 'fi') {
+      $this->queueFactory
+        ->get('helfi_recommendations_queue')
+        ->createItem([
+          'entity_id' => $entity->id(),
+          'entity_type' => $entity->getEntityTypeId(),
+          'language' => $entity->language()->getId(),
+          'overwrite' => $overwriteExisting,
+        ]);
+    }
   }
 
   /**
@@ -137,6 +140,27 @@ final class TopicsManager implements TopicsManagerInterface {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  public function getTopicsReferenceFields(ContentEntityInterface $entity): array {
+    $fields = [];
+    $field_definitions = array_filter(
+      $entity->getFieldDefinitions(),
+      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
+    );
+
+    foreach ($field_definitions as $key => $definition) {
+      $field = $entity->get($key);
+
+      if ($field instanceof EntityReferenceFieldItemListInterface) {
+        $fields[] = $field;
+      }
+    }
+
+    return $fields;
+  }
+
+  /**
    * Gets entities in batches.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface[] $entities
@@ -159,17 +183,12 @@ final class TopicsManager implements TopicsManagerInterface {
         continue;
       }
 
-      // Keyword generator does not support mixing languages in one request,
-      // so divide translations into buckets that are handled separately.
-      // Each bucket size must be <= KeywordGenerator::MAX_BATCH_SIZE.
-      if ($entity instanceof TranslatableInterface) {
-        foreach ($entity->getTranslationLanguages() as $language) {
-          $buckets[$language->getId()][$key] = $entity->getTranslation($language->getId());
-        }
+      // We only want to process the Finnish translation.
+      if ($entity->language()->getId() !== 'fi') {
+        continue;
       }
-      else {
-        $buckets[$entity->language()->getId()][$key] = $entity;
-      }
+
+      $buckets[$entity->language()->getId()][$key] = $entity;
     }
 
     foreach ($buckets as $bucket) {
@@ -291,18 +310,10 @@ final class TopicsManager implements TopicsManagerInterface {
    *   Linked topics entities.
    */
   private function getSuggestedTopicsEntities(ContentEntityInterface $entity, bool $filterEmpty): array {
-    // List suggested_topics_reference fields that the entity has.
-    $fields = array_filter(
-      $entity->getFieldDefinitions(),
-      static fn (FieldDefinitionInterface $definition) => $definition->getType() === 'suggested_topics_reference'
-    );
-
+    $fields = $this->getTopicsReferenceFields($entity);
     $topics = [];
 
-    foreach ($fields as $key => $definition) {
-      $field = $entity->get($key);
-      assert($field instanceof EntityReferenceFieldItemListInterface);
-
+    foreach ($fields as $field) {
       // Get all referenced topic entities from all
       // suggested_topics_reference fields.
       foreach ($field->referencedEntities() as $topic) {

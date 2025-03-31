@@ -7,6 +7,7 @@ namespace Drupal\helfi_platform_config\Plugin\Field\FieldFormatter;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Field\Plugin\Field\FieldType\StringLongItem;
 
 /**
  * Plugin implementation of the 'Text with span' formatter.
@@ -32,7 +33,7 @@ class TextSpan extends FormatterBase {
     $markup = [];
 
     foreach ($items as $delta => $item) {
-
+      assert($item instanceof StringLongItem);
       $value = $item->value;
       if (empty($value)) {
         $value = $item->getValue();
