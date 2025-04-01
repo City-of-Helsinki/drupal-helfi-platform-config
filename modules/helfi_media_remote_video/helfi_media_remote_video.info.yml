@@ -1,6 +1,6 @@
 name: 'HELfi: Media remote video'
 type: module
-core_version_requirement: '^9 || ^10'
+core_version_requirement: '^10 || ^11'
 dependencies:
   - helfi_media:helfi_media
   - oembed_providers:oembed_providers

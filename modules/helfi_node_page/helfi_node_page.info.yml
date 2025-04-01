@@ -1,6 +1,6 @@
 name: 'HELfi Node page'
 type: module
-core_version_requirement: '^9 || ^10'
+core_version_requirement: '^10 || ^11'
 dependencies:
   - drupal:menu_ui
   - helfi_base_content:helfi_base_content
