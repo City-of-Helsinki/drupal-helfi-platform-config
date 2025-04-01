@@ -4,6 +4,6 @@
   </div>
 {% else %}
   {% for row in rows %}
-    {{ row }}
+    {{ link(row.title, row.url) }}
   {% endfor %}
 {% endif %}
