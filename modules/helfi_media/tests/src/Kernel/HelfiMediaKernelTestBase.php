@@ -31,6 +31,7 @@ class HelfiMediaKernelTestBase extends KernelTestBase {
     'datetime',
     'field',
     'file',
+    'filter',
     'focal_point',
     'helfi_media',
     'image',
@@ -68,6 +69,7 @@ class HelfiMediaKernelTestBase extends KernelTestBase {
       'crop',
       'focal_point',
       'helfi_media',
+      'filter',
     ]);
     $this->mediaStorage = $this->container
       ->get('entity_type.manager')
