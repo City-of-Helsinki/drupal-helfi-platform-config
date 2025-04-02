@@ -52,7 +52,6 @@ class KernelTestBase extends CoreKernelTestBase {
     $this->installEntitySchema('paragraphs_type');
     $this->installEntitySchema('media');
     $this->installEntitySchema('media_type');
-    $this->installEntitySchema('language_content_settings');
     $this->installEntitySchema('file');
     $this->installEntitySchema('crop');
     $this->installEntitySchema('crop_type');
