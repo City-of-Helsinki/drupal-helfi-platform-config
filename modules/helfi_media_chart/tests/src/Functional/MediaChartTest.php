@@ -23,7 +23,6 @@ class MediaChartTest extends BrowserTestBase {
     'filter',
     'media',
     'menu_ui',
-    'media',
     'helfi_media_chart',
   ];
 
