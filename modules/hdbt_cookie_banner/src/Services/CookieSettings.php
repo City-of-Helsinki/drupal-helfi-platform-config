@@ -192,7 +192,7 @@ class CookieSettings {
    *   Returns the active Etusivu environment or NULL.
    */
   protected function getActiveEtusivuEnvironment(?bool $default_to_production = FALSE): Environment|NULL {
-    $environment = 'NULL';
+    $environment = NULL;
 
     // Get active Etusivu environment.
     try {
