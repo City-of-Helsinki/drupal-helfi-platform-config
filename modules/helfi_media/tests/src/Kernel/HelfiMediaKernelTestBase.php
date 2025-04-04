@@ -84,6 +84,8 @@ class HelfiMediaKernelTestBase extends KernelTestBase {
    *
    * @return \Drupal\media\MediaInterface|null
    *   Returns the media entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createMediaEntity(array $values): ?MediaInterface {
     $media = $this->mediaStorage->create($values);
