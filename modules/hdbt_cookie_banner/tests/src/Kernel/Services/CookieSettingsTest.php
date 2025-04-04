@@ -237,4 +237,37 @@ class CookieSettingsTest extends KernelTestBase {
     $this->assertNull($url);
   }
 
+  /**
+   * Tests getActiveEtusivuEnvironment with non-existent environment.
+   */
+  public function testGetActiveEtusivuEnvironment(): void {
+    // Expected settings for external (hel.fi) setup.
+    $expected = [
+      ['use_custom_settings', FALSE],
+    ];
+
+    // Set up the configurations with specified settings.
+    $this->setUpTheConfigurations($expected);
+
+    // Simulate that the environment resolver returns NULL because
+    // the environment has a typo or current environment is f.e. dev.
+    $this->environmentResolver
+      ->method('getEnvironment')
+      ->willThrowException(new \InvalidArgumentException());
+
+    // Test that the URL by route is returned.
+    $url = $this->cookieSettings->getCookieSettingsPageUrl();
+    $this->assertInstanceOf(Url::class, $url);
+
+    // Simulate that the route does not exist by throwing an exception.
+    $this->routeProvider->expects($this->once())
+      ->method('getRouteByName')
+      ->with('hdbt_cookie_banner.cookie_settings_page')
+      ->willThrowException(new RouteNotFoundException());
+
+    // Test that NULL is returned.
+    $url = $this->cookieSettings->getCookieSettingsPageUrl();
+    $this->assertNull($url);
+  }
+
 }
