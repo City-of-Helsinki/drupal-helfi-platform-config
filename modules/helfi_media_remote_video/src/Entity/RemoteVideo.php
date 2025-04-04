@@ -25,7 +25,7 @@ class RemoteVideo extends MediaEntityBundle implements MediaInterface {
     }
     /** @var \Drupal\media\OEmbed\UrlResolverInterface $url_resolver */
     $url_resolver = \Drupal::service(UrlResolverInterface::class);
-    $video_url = $this->get('field_media_oembed_video')->value;
+    $video_url = $this->get('field_media_oembed_video')->value ?? '';
     try {
       $provider = $url_resolver->getProviderByUrl($video_url);
       return rtrim($provider->getUrl(), '/');

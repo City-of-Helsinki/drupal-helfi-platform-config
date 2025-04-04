@@ -10,6 +10,7 @@ declare(strict_types=1);
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_media_remote_video\Entity\RemoteVideo;
+use Drupal\media\IFrameMarkup;
 use Drupal\media\OEmbed\Resource;
 use Drupal\media\OEmbed\ResourceException;
 use Drupal\media\OEmbed\UrlResolverInterface;
@@ -282,5 +283,24 @@ function helfi_media_remote_video_theme_suggestions_media_oembed_iframe_alter(ar
 function helfi_media_remote_video_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['media']['remote_video'])) {
     $bundles['media']['remote_video']['class'] = RemoteVideo::class;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_media_remote_video_preprocess_media_oembed_iframe(array &$variables): void {
+  // Replace the iframe URL with a no-cookie version and rebuild the markup.
+  // This cannot be done via the media entity itself as it only affects
+  // the URL which is sent to YouTube Oembed API.
+  // See: https://www.drupal.org/i/3043821.
+  $iframe = $variables['media']->__toString();
+  if (str_contains($iframe, 'youtube.com')) {
+    $new_iframe = str_replace(
+      'youtube.com/',
+      'youtube-nocookie.com/',
+      $iframe,
+    );
+    $variables['media'] = IFrameMarkup::create($new_iframe);
   }
 }
