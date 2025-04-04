@@ -86,14 +86,9 @@ class HelfiMediaKernelTestBase extends KernelTestBase {
    *   Returns the media entity.
    */
   protected function createMediaEntity(array $values): ?MediaInterface {
-    try {
-      $media = $this->mediaStorage->create($values);
-      $media->save();
-      return $media;
-    }
-    catch (\Exception $e) {
-      $this->fail($e->getMessage());
-    }
+    $media = $this->mediaStorage->create($values);
+    $media->save();
+    return $media;
   }
 
 }
