@@ -6,19 +6,19 @@ namespace Drupal\helfi_react_search\Plugin\DebugDataItem;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Drupal\search_api\SearchApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the debug_data_item.
- *
- * @DebugDataItem(
- *   id = "search_api",
- *   label = @Translation("SearchApi index"),
- *   description = @Translation("SearchApi index")
- * )
  */
+#[DebugDataItem(
+  id: 'search_api',
+  title: new TranslatableMarkup('SearchApi index'),
+)]
 final class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -33,8 +33,7 @@ final class SearchApiIndex extends DebugDataItemPluginBase implements ContainerF
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
-    $instance->entityTypeManager = $container->get('entity_type.manager');
-
+    $instance->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
     return $instance;
   }
 
