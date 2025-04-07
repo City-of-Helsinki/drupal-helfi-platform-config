@@ -33,7 +33,7 @@ class SearchApiIndexItemTest extends UnitTestCase {
     $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $entityTypeManager->hasDefinition('search_api_index')->willReturn(FALSE);
     $container = new ContainerBuilder();
-    $container->set('entity_type.manager', $entityTypeManager->reveal());
+    $container->set(EntityTypeManagerInterface::class, $entityTypeManager->reveal());
     $sut = SearchApiIndex::create($container, [], '', []);
     $this->assertEmpty($sut->collect());
   }
@@ -51,7 +51,7 @@ class SearchApiIndexItemTest extends UnitTestCase {
     $entityTypeManager->getStorage('search_api_index')
       ->willReturn($indexStorage->reveal());
     $container = new ContainerBuilder();
-    $container->set('entity_type.manager', $entityTypeManager->reveal());
+    $container->set(EntityTypeManagerInterface::class, $entityTypeManager->reveal());
 
     $sut = SearchApiIndex::create($container, [], '', []);
     $this->assertEmpty($sut->collect());
@@ -109,7 +109,7 @@ class SearchApiIndexItemTest extends UnitTestCase {
     $entityTypeManager->hasDefinition('search_api_index')
       ->willReturn(TRUE);
     $container = new ContainerBuilder();
-    $container->set('entity_type.manager', $entityTypeManager->reveal());
+    $container->set(EntityTypeManagerInterface::class, $entityTypeManager->reveal());
 
     $sut = SearchApiIndex::create($container, [], '', []);
     $this->assertEquals([
@@ -134,6 +134,29 @@ class SearchApiIndexItemTest extends UnitTestCase {
         'status' => TRUE,
       ],
     ], $sut->collect());
+  }
+
+  /**
+   * Tests check method.
+   */
+  public function testCheck() : void {
+    $server = $this->prophesize(ServerInterface::class);
+    $server->isAvailable()->willReturn(TRUE, FALSE);
+
+    $serverStorage = $this->prophesize(SearchApiConfigEntityStorage::class);
+    $serverStorage->loadMultiple()->willReturn([
+      $server->reveal(),
+    ]);
+    $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
+    $entityTypeManager->getStorage('search_api_server')
+      ->willReturn($serverStorage->reveal());
+
+    $container = new ContainerBuilder();
+    $container->set(EntityTypeManagerInterface::class, $entityTypeManager->reveal());
+
+    $sut = SearchApiIndex::create($container, [], '', []);
+    $this->assertTrue($sut->check());
+    $this->assertFalse($sut->check());
   }
 
 }
