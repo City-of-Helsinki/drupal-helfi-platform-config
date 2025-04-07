@@ -9,6 +9,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
+use Drupal\search_api\Entity\Server;
 use Drupal\search_api\SearchApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -100,6 +101,26 @@ final class SearchApiIndex extends DebugDataItemPluginBase implements ContainerF
     }
 
     return "$indexed/$total";
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function check(): bool {
+    $servers = $this->entityTypeManager
+      ->getStorage('search_api_server')
+      ->loadMultiple();
+
+    foreach ($servers as $server) {
+      assert($server instanceof Server);
+
+      if (!$server->isAvailable()) {
+        return FALSE;
+      }
+    }
+
+    // All servers are available.
+    return TRUE;
   }
 
 }
