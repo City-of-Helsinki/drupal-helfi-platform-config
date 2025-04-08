@@ -11,7 +11,7 @@ id: paragraph.contact_card.field_contact_image
 field_name: field_contact_image
 entity_type: paragraph
 bundle: contact_card
-label: Image
+label: 'DEPRECATED Image'
 description: 'Use a square image for the best result. Portrait and landscape images will be cropped to a square, the focal point can be selected with the image upload.'
 required: false
 translatable: false

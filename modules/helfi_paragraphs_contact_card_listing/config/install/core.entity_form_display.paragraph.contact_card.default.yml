@@ -6,17 +6,17 @@ dependencies:
     - field.field.paragraph.contact_card.field_contact_description
     - field.field.paragraph.contact_card.field_contact_image
     - field.field.paragraph.contact_card.field_contact_image_photographer
+    - field.field.paragraph.contact_card.field_contact_image_reference
     - field.field.paragraph.contact_card.field_contact_name
     - field.field.paragraph.contact_card.field_contact_social_media
     - field.field.paragraph.contact_card.field_contact_social_media_link
     - field.field.paragraph.contact_card.field_contact_title
     - field.field.paragraph.contact_card.field_email
     - field.field.paragraph.contact_card.field_phone_number
-    - image.style.thumbnail
     - paragraphs.paragraphs_type.contact_card
   module:
-    - focal_point
     - link
+    - media_library
     - paragraphs
     - telephone
 id: paragraph.contact_card.default
@@ -26,23 +26,20 @@ mode: default
 content:
   field_contact_description:
     type: string_textarea
-    weight: 6
+    weight: 5
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-  field_contact_image:
-    type: image_focal_point
+  field_contact_image_reference:
+    type: media_library_widget
     weight: 0
     region: content
     settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
-      preview_link: true
-      offsets: '50,50'
+      media_types: {  }
     third_party_settings: {  }
-  field_contact_image_photographer:
+  field_contact_name:
     type: string_textfield
     weight: 1
     region: content
@@ -50,17 +47,9 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_contact_name:
-    type: string_textfield
-    weight: 2
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_contact_social_media:
     type: paragraphs
-    weight: 7
+    weight: 6
     region: content
     settings:
       title: Paragraph
@@ -78,7 +67,7 @@ content:
     third_party_settings: {  }
   field_contact_social_media_link:
     type: link_default
-    weight: 8
+    weight: 7
     region: content
     settings:
       placeholder_url: ''
@@ -86,7 +75,7 @@ content:
     third_party_settings: {  }
   field_contact_title:
     type: string_textfield
-    weight: 3
+    weight: 2
     region: content
     settings:
       size: 60
@@ -94,7 +83,7 @@ content:
     third_party_settings: {  }
   field_email:
     type: email_default
-    weight: 4
+    weight: 3
     region: content
     settings:
       placeholder: ''
@@ -102,11 +91,13 @@ content:
     third_party_settings: {  }
   field_phone_number:
     type: telephone_default
-    weight: 5
+    weight: 4
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
 hidden:
   created: true
+  field_contact_image: true
+  field_contact_image_photographer: true
   status: true

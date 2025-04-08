@@ -7,3 +7,4 @@ dependencies:
   - drupal:telephone
   - helfi_base_content:helfi_base_content
   - helfi_image_styles:helfi_image_styles
+  - helfi_media:helfi_media
