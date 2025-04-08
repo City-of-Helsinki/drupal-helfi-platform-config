@@ -7,8 +7,8 @@ dependencies:
     - image.style.1_500w_500h_LQ
   module:
     - helfi_image_styles
-id: contact_card
-label: 'Contact Card'
+id: square_thumbnail
+label: 'Square thumbnail'
 image_style_mappings:
   -
     image_mapping_type: image_style

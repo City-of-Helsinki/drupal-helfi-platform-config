@@ -37,7 +37,7 @@ content:
     type: responsive_image
     label: hidden
     settings:
-      responsive_image_style: contact_card
+      responsive_image_style: square_thumbnail
       image_link: ''
       image_loading:
         attribute: eager
