@@ -18,6 +18,7 @@ function helfi_base_content_platform_config_grant_permissions() : array {
       'access content',
       // @helfi_api_base
       'view remote entities',
+      'access debug api',
       // @raven
       'send javascript errors to sentry',
     ],
