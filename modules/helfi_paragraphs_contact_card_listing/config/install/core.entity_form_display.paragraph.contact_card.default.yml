@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.contact_card.field_contact_description
     - field.field.paragraph.contact_card.field_contact_image
     - field.field.paragraph.contact_card.field_contact_image_photographer
+    - field.field.paragraph.contact_card.field_contact_image_reference
     - field.field.paragraph.contact_card.field_contact_name
     - field.field.paragraph.contact_card.field_contact_social_media
     - field.field.paragraph.contact_card.field_contact_social_media_link
@@ -17,6 +18,7 @@ dependencies:
   module:
     - focal_point
     - link
+    - media_library
     - paragraphs
     - telephone
 id: paragraph.contact_card.default
@@ -34,7 +36,7 @@ content:
     third_party_settings: {  }
   field_contact_image:
     type: image_focal_point
-    weight: 0
+    weight: 9
     region: content
     settings:
       progress_indicator: throbber
@@ -49,6 +51,13 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_contact_image_reference:
+    type: media_library_widget
+    weight: 0
+    region: content
+    settings:
+      media_types: {  }
     third_party_settings: {  }
   field_contact_name:
     type: string_textfield

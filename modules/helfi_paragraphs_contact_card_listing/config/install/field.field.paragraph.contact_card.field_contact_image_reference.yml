@@ -1,0 +1,29 @@
+uuid: e3388822-df3f-48b3-91ff-22a054752779
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_contact_image_reference
+    - media.type.image
+    - paragraphs.paragraphs_type.contact_card
+id: paragraph.contact_card.field_contact_image_reference
+field_name: field_contact_image_reference
+entity_type: paragraph
+bundle: contact_card
+label: 'Contact image'
+description: 'Use a square image for the best result. Portrait and landscape images will be cropped to a square, the focal point can be selected with the image upload.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
