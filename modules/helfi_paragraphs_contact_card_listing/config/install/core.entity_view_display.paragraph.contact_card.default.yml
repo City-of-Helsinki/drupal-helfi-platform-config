@@ -14,7 +14,7 @@ dependencies:
     - field.field.paragraph.contact_card.field_email
     - field.field.paragraph.contact_card.field_phone_number
     - paragraphs.paragraphs_type.contact_card
-    - responsive_image.styles.contact_card
+    - responsive_image.styles.square_thumbnail
   module:
     - entity_reference_revisions
     - helfi_paragraphs_contact_card_listing
