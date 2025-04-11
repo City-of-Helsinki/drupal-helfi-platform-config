@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Controller;
 
-/**
- * @file
- * Contains \Drupal\hdbt_admin_tools\Controller\ListController.
- */
-
+use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\user\Entity\User;
 
 /**
  * List controller.
  */
-class ListController {
+class ListController extends ControllerBase {
   use StringTranslationTrait;
 
   /**
@@ -26,11 +21,11 @@ class ListController {
    *   Render array.
    */
   public function build(): array {
-    $current_user = User::load(\Drupal::currentUser()->id());
-    $faked_blocks = [];
+    $current_user = $this->currentUser();
+    $blocks = [];
 
     if ($current_user->hasPermission('access administration pages')) {
-      $faked_blocks['site_settings'] = [
+      $blocks['site_settings'] = [
         'title' => $this->t('Site settings'),
         'description' => $this->t('Edit site settings.'),
         'content' => [
@@ -48,7 +43,7 @@ class ListController {
     }
 
     if ($current_user->hasPermission('administer menu')) {
-      $faked_blocks['main_menu'] = [
+      $blocks['main_menu'] = [
         'title' => $this->t('Menus'),
         'description' => '',
         'content' => [
@@ -65,7 +60,7 @@ class ListController {
       ];
     }
 
-    if (!\Drupal::moduleHandler()->moduleExists('helfi_navigation')) {
+    if (!$this->moduleHandler()->moduleExists('helfi_navigation')) {
       $helfi_navigation = [
         'content' => [
           '#content' => [
@@ -84,11 +79,11 @@ class ListController {
           ],
         ],
       ];
-      $faked_blocks = array_merge_recursive($faked_blocks, $helfi_navigation);
+      $blocks = array_merge_recursive($blocks, $helfi_navigation);
     }
 
     if ($current_user->hasPermission('access taxonomy overview')) {
-      $faked_blocks['taxonomy'] = [
+      $blocks['taxonomy'] = [
         'title' => $this->t('Taxonomy'),
         'description' => '',
         'content' => [
@@ -106,7 +101,7 @@ class ListController {
     }
 
     if ($current_user->hasPermission('access administration pages')) {
-      $faked_blocks['user_interface_translations'] = [
+      $blocks['user_interface_translations'] = [
         'title' => $this->t('User interface translations'),
         'description' => '',
         'content' => [
@@ -125,7 +120,7 @@ class ListController {
 
     return [
       '#theme' => 'admin_page',
-      '#blocks' => $faked_blocks,
+      '#blocks' => $blocks,
     ];
   }
 

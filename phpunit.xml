@@ -48,9 +48,10 @@
     <listener class="\Drupal\Tests\Listeners\DrupalListener">
     </listener>
   </listeners>
-  <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
+  <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">./modules/*/src</directory>
+      <file>./modules/*/*.module</file>
       <directory suffix=".php">./src</directory>
       <file>./*.module</file>
     </include>
