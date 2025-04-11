@@ -1,69 +1,59 @@
-uuid: 9e6a18b9-a22e-4e85-8371-e1d7409238e6
+uuid: f79b5c75-749f-4052-a876-fc8ea9d703e0
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.tiny_teaser
+    - core.entity_view_mode.node.text_converter
     - field.field.node.news_item.field_content
     - field.field.node.news_item.field_lead_in
     - field.field.node.news_item.field_main_image
     - field.field.node.news_item.field_main_image_caption
     - field.field.node.news_item.field_news_item_links_link
     - field.field.node.news_item.field_news_item_links_title
-    - field.field.node.news_item.field_news_item_tags
     - field.field.node.news_item.field_recommendation_topics
     - field.field.node.news_item.field_short_title
     - node.type.news_item
   module:
+    - entity_reference_revisions
+    - helfi_platform_config
     - user
-id: node.news_item.tiny_teaser
+id: node.news_item.text_converter
 targetEntityType: node
 bundle: news_item
-mode: tiny_teaser
+mode: text_converter
 content:
-  field_main_image:
-    settings: {  }
+  field_content:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 2
     region: content
-  field_short_title:
+  field_lead_in:
+    type: text_span
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_news_item_links_title:
     type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
-    region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
     weight: 0
     region: content
-  published_at:
-    type: timestamp
-    label: hidden
-    settings:
-      date_format: publication_date_format
-      custom_date_format: ''
-      timezone: ''
-      tooltip:
-        date_format: ''
-        custom_date_format: ''
-      time_diff:
-        enabled: false
-        future_format: '@interval hence'
-        past_format: '@interval ago'
-        granularity: 2
-        refresh: 60
-    third_party_settings: {  }
-    weight: 2
-    region: content
 hidden:
-  field_content: true
-  field_lead_in: true
   field_main_image: true
   field_main_image_caption: true
   field_news_item_links_link: true
-  field_news_item_links_title: true
-  field_news_item_tags: true
   field_recommendation_topics: true
+  field_short_title: true
   langcode: true
+  links: true
+  published_at: true
+  search_api_excerpt: true
   toc_enabled: true

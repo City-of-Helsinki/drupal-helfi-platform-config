@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.news_item.field_news_item_links_link
     - field.field.node.news_item.field_news_item_links_title
     - field.field.node.news_item.field_news_item_tags
+    - field.field.node.news_item.field_recommendation_topics
     - field.field.node.news_item.field_short_title
     - node.type.news_item
   module:
@@ -75,5 +76,6 @@ hidden:
   field_main_image_caption: true
   field_news_item_links_link: true
   field_news_item_tags: true
+  field_recommendation_topics: true
   langcode: true
   toc_enabled: true
