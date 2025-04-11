@@ -92,7 +92,7 @@ final class QueueWorker extends QueueWorkerBase implements ContainerFactoryPlugi
     }
 
     try {
-      $this->topicsManager->processEntity($entity, overwriteExisting: $overwrite);
+      $this->topicsManager->processEntity($entity, overwriteExisting: $overwrite, reset: TRUE);
     }
     catch (ApiClientException $exception) {
       Error::logException($this->logger, $exception);
