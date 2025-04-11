@@ -1,0 +1,26 @@
+uuid: d70a0b24-b005-48cb-b1db-fe34d2158208
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_number_highlights_desc
+    - paragraphs.paragraphs_type.number_highlights
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats: {  }
+id: paragraph.number_highlights.field_number_highlights_desc
+field_name: field_number_highlights_desc
+entity_type: paragraph
+bundle: number_highlights
+label: Description
+description: 'You can add a short description after the title.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

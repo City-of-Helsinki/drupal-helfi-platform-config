@@ -1,0 +1,34 @@
+uuid: a26e6166-ba30-43ab-814e-4b7270bb3345
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.number_highlights.field_number_highlights_desc
+    - field.field.paragraph.number_highlights.field_number_highlights_title
+    - paragraphs.paragraphs_type.number_highlights
+  module:
+    - text
+id: paragraph.number_highlights.default
+targetEntityType: paragraph
+bundle: number_highlights
+mode: default
+content:
+  field_number_highlights_desc:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_number_highlights_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

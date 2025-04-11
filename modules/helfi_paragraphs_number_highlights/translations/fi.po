@@ -1,0 +1,38 @@
+msgid ""
+msgstr ""
+
+msgctxt "Number highlights"
+msgid "Number + Text (Default)"
+msgstr "Luku + Teksti (Oletus)"
+
+msgctxt "Number highlights"
+msgid "Placeholder for Number"
+msgstr "Luku-kentän ohjeteksti"
+
+msgctxt "Number highlights"
+msgid "Placeholder for Text"
+msgstr "Teksti-kentän ohjeteksti"
+
+msgctxt "Number highlights"
+msgid "Number placeholder: @placeholder"
+msgstr "Luvun ohjeteksti: @placeholder"
+
+msgctxt "Number highlights"
+msgid "Text placeholder: @placeholder"
+msgstr "Tekstin ohjeteksti: @placeholder"
+
+msgctxt "Number highlights"
+msgid "Number"
+msgstr "Luku"
+
+msgctxt "Number highlights"
+msgid "Text"
+msgstr "Teksti"
+
+msgctxt "Number highlights"
+msgid "Numbers Item"
+msgstr "Numero ja teksti"
+
+msgctxt "Number highlights"
+msgid "Stores a short number and text pair."
+msgstr "Tallentaa lyhyen numeron ja tekstin parin."
