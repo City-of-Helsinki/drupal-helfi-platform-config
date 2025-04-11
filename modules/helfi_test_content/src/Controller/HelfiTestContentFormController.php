@@ -42,8 +42,8 @@ final class HelfiTestContentFormController extends ControllerBase {
   public function formPage(): array {
     return [
       '#type' => 'container',
-      '#prefix' => '<article><div class="components components--test-content">',
-      '#suffix' => '</div></article>',
+      '#prefix' => '<article><div class="components components--test-content"><div class="component">',
+      '#suffix' => '</div></div></article>',
       '#attached' => [
         'library' => [
           'helfi_test_content/test_focus',
