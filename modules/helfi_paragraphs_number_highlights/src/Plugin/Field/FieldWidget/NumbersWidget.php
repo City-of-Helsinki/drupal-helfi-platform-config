@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_paragraphs_number_highlights\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
-use Drupal\Core\Field\Attribute\FieldWidget;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -12,7 +15,7 @@ use Drupal\Core\Form\FormStateInterface;
  */
 #[FieldWidget(
   id: "numbers_item_widget",
-  label: new TranslatableMarkup("Number + Text (Default)"),
+  label: new TranslatableMarkup("Number + Text (Default)", [], ['context' => 'Number highlights']),
   field_types: ["numbers_item"]
 )]
 class NumbersWidget extends WidgetBase {
@@ -35,12 +38,12 @@ class NumbersWidget extends WidgetBase {
 
     $elements['placeholder_number'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Placeholder for Number'),
+      '#title' => new TranslatableMarkup('Placeholder for Number', [], ['context' => 'Number highlights']),
       '#default_value' => $this->getSetting('placeholder_number'),
     ];
     $elements['placeholder_text'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Placeholder for Text'),
+      '#title' => new TranslatableMarkup('Placeholder for Text', [], ['context' => 'Number highlights']),
       '#default_value' => $this->getSetting('placeholder_text'),
     ];
 
@@ -53,8 +56,17 @@ class NumbersWidget extends WidgetBase {
   public function settingsSummary(): array {
     $summary = [];
 
-    $summary[] = $this->t('Number placeholder: @placeholder', ['@placeholder' => $this->getSetting('placeholder_number')]);
-    $summary[] = $this->t('Text placeholder: @placeholder', ['@placeholder' => $this->getSetting('placeholder_text')]);
+    $summary[] = new TranslatableMarkup(
+      'Number placeholder: @placeholder',
+      ['@placeholder' => $this->getSetting('placeholder_number')],
+      ['context' => 'Number highlights']
+    );
+
+    $summary[] = new TranslatableMarkup(
+      'Text placeholder: @placeholder',
+      ['@placeholder' => $this->getSetting('placeholder_text')],
+      ['context' => 'Number highlights']
+    );
 
     return $summary;
   }
@@ -65,7 +77,7 @@ class NumbersWidget extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     $element['number'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Number'),
+      '#title' => new TranslatableMarkup('Number', [], ['context' => 'Number highlights']),
       '#default_value' => $items[$delta]->number ?? '',
       '#size' => 6,
       '#maxlength' => 6,
@@ -74,7 +86,7 @@ class NumbersWidget extends WidgetBase {
 
     $element['text'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Text'),
+      '#title' => new TranslatableMarkup('Text', [], ['context' => 'Number highlights']),
       '#default_value' => $items[$delta]->text ?? '',
       '#size' => 60,
       '#maxlength' => 60,
