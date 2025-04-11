@@ -77,6 +77,7 @@ final class Commands extends DrushCommands {
   #[Argument(name: 'entityType', description: 'Entity type')]
   #[Argument(name: 'bundle', description: 'Entity bundle')]
   #[Option(name: 'overwrite', description: 'Overwrites existing keywords (use with caution)')]
+  #[Option(name: 'create-empty', description: 'Create empty suggested topics entities if the field is empty')]
   #[Option(name: 'batch-size', description: 'Batch size')]
   #[Usage(name: 'drush helfi:generate-keywords node news_item', description: 'Generate keywords for news items.')]
   public function process(
@@ -84,6 +85,7 @@ final class Commands extends DrushCommands {
     string $bundle,
     array $options = [
       'overwrite' => FALSE,
+      'create-empty' => FALSE,
       'batch-size' => ApiClient::MAX_BATCH_SIZE,
     ],
   ) : int {
@@ -107,6 +109,7 @@ final class Commands extends DrushCommands {
         $entityType,
         $options['batch-size'],
         $options['overwrite'],
+        $options['create-empty'],
         $entityIds,
       ]);
 
@@ -124,6 +127,7 @@ final class Commands extends DrushCommands {
     string $entityType,
     ?int $batchSize,
     bool $overwrite,
+    bool $createEmpty,
     array $entityIds,
     &$context,
   ) : void {
@@ -134,7 +138,7 @@ final class Commands extends DrushCommands {
         ->getStorage($entityType)
         ->loadMultiple($slice);
 
-      $this->topicsManager->processEntities($entities, $overwrite);
+      $this->topicsManager->processEntities($entities, $overwrite, $createEmpty, TRUE);
 
       $this->updateBatchParams($context, $entityIds, $to);
     }
