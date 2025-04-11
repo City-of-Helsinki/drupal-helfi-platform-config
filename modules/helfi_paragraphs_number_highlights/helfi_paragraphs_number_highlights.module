@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_number_highlights' module.
+ */
+
+declare(strict_types=1);
+
