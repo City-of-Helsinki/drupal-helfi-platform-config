@@ -32,6 +32,26 @@ field_settings:
     dependencies:
       module:
         - helfi_recommendations
+  parent_image_alt_en:
+    label: 'Parent image alt in English'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_image_alt_en
+    type: string
+  parent_image_alt_fi:
+    label: 'Parent image alt in Finnish'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_image_alt_fi
+    type: string
+  parent_image_alt_sv:
+    label: 'Parent image alt in Swedish'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_image_alt_sv
+    type: string
+  parent_image_url:
+    label: 'Parent image url'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_image_url
+    type: string
   parent_instance:
     label: 'Parent instance'
     datasource_id: 'entity:suggested_topics'
@@ -40,6 +60,26 @@ field_settings:
     dependencies:
       module:
         - helfi_recommendations
+  parent_published_at:
+    label: 'Parent published date'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_published_at
+    type: date
+  parent_title_en:
+    label: 'Parent title in English'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_title_en
+    type: string
+  parent_title_fi:
+    label: 'Parent title in Finnish'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_title_fi
+    type: string
+  parent_title_sv:
+    label: 'Parent title in Swedish'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_title_sv
+    type: string
   parent_translations:
     label: 'Parent translations'
     datasource_id: 'entity:suggested_topics'
@@ -56,6 +96,11 @@ field_settings:
     dependencies:
       module:
         - helfi_recommendations
+  parent_url:
+    label: 'Parent url'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_url
+    type: string
   uuid:
     label: UUID
     datasource_id: 'entity:suggested_topics'
@@ -80,6 +125,7 @@ processor_settings:
   project_plan_schedule: {  }
   rendered_item: {  }
   scored_reference: {  }
+  scored_reference_parent: {  }
   uuid_langcode: {  }
 tracker_settings:
   default:

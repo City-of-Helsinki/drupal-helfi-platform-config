@@ -37,6 +37,7 @@ final class ScoredReferenceProcessor extends ProcessorPluginBase {
     if ($datasource) {
       $propertyDefinitions = $datasource->getPropertyDefinitions();
       foreach ($propertyDefinitions as $id => $definition) {
+        // Properties for scored entity reference fields.
         if (
           $definition instanceof FieldDefinitionInterface &&
           $definition->getType() === 'scored_entity_reference'

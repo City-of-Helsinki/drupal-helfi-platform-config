@@ -4,6 +4,8 @@
   </div>
 {% else %}
   {% for row in rows %}
+    {{ row.published_at|date('Y-m-d') }}
+    {{ row.image }}
     {{ link(row.title, row.url) }}
   {% endfor %}
 {% endif %}
