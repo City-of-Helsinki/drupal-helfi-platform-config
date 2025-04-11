@@ -6,6 +6,10 @@ third_party_settings:
       label: Linkit
     group_main_image:
       label: Pääkuva
+    group_automatically_recommended:
+      label: 'Automaattisesti suositellut sisällöt'
+      format_settings:
+        description: 'Suositukset perustuvat automaattisesti valittuihin luokkiin. Luokat valitaan sivun sisällön perusteella, kun sivu tallennetaan.'
 content:
   field_content:
     settings:

@@ -21,6 +21,7 @@ dependencies:
   - entity_reference_revisions:entity_reference_revisions
   - hdbt_admin_tools:hdbt_admin_tools
   - helfi_platform_config:helfi_platform_config
+  - helfi_recommendations:helfi_recommendations
   - helfi_user_roles:helfi_user_roles
   - linkit:linkit
   - menu_link_attributes:menu_link_attributes
