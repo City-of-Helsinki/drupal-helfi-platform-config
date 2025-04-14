@@ -149,6 +149,18 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
+    // @todo This is a temporary restriction to allow validating the cross-instance
+    // recommendations in production before allowing the use for all editors.
+    // Remove these once we have validated the cross-instance recommendations work
+    // as intended.
+    if ($entity->bundle() !== 'news_item' && $entity->bundle() !== 'news_article') {
+      if (_helfi_recommendations_can_see_review_mode()) {
+        return AccessResult::allowed();
+      }
+
+      return AccessResult::forbidden();
+    }
+
     if ($entity instanceof ContentEntityInterface && $this->recommendationManager->showRecommendations($entity)) {
       return AccessResult::allowed();
     }
@@ -170,7 +182,18 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
 
     try {
       $recommendations = $this->recommendationManager
-        ->getRecommendations($entity, 3, $entity->language()->getId());
+        ->getRecommendations(
+          $entity,
+          3,
+          $entity->language()->getId(),
+          // @todo This is to preserve the functionality from the previous
+          // implementation. Remove these once we have validated the
+          // cross-instance recommendations work as intended.
+          [
+            'instances' => ['etusivu'],
+            'content_types' => ['node' => ['news_item', 'news_article']],
+          ],
+        );
     }
     catch (\Exception $exception) {
       Error::logException($this->logger, $exception);

@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -95,7 +93,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL): array {
+  public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL, ?array $options = []): array {
     $destination_langcode = $entity->language()->getId();
     $target_langcode = $target_langcode ?? $destination_langcode;
     if ($entity instanceof TranslatableInterface && !$entity->hasTranslation($target_langcode)) {
@@ -107,7 +105,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
 
       // Get results from Elasticsearch. Fetch more than needed to account for
       // the fact that some results may not be available from json api anymore.
-      $query = $this->getElasticQuery($entity, $target_langcode, $limit + self::ELASTICSEARCH_QUERY_BUFFER);
+      $query = $this->getElasticQuery($entity, $target_langcode, $limit + self::ELASTICSEARCH_QUERY_BUFFER, $options);
       $results = $query ? $this->searchElastic($query) : [];
 
       // Fetch node data for each result via a JSON:API request.
@@ -235,11 +233,13 @@ final class RecommendationManager implements RecommendationManagerInterface {
    *   Which translation to use to select the recommendations.
    * @param int $limit
    *   How many recommendations should be returned. Defaults to 3.
+   * @param array $options
+   *   Additional options to limit recommendations.
    *
    * @return array
    *   The elastic query.
    */
-  private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3): array {
+  private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3, ?array $options = []): array {
     // Build keyword terms and score functions.
     try {
       $keywords = $this->topicsManager->getKeywords($entity);
@@ -387,7 +387,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
     ];
 
     // Filter enabled instances.
-    $allowed_instances = $this->getEnabledInstances($entity);
+    $allowed_instances = $options['instances'] ?? $this->getEnabledInstances($entity);
     if (!empty($allowed_instances)) {
       $terms_set = [
         'terms_set' => [
@@ -397,11 +397,11 @@ final class RecommendationManager implements RecommendationManagerInterface {
           ],
         ],
       ];
-      $query['query']['bool']['filter'][] = $terms_set;
+      $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
     }
 
     // Filter enabled entity types and bundles.
-    $allowed_content_types = $this->getEnabledContentTypesAndBundles($entity);
+    $allowed_content_types = $options['content_types'] ?? $this->getEnabledContentTypesAndBundles($entity);
     if (!empty($allowed_content_types)) {
       $allowed_entity_types = [];
       $allowed_bundles = [];
@@ -420,7 +420,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
             ],
           ],
         ];
-        $query['query']['bool']['filter'][] = $terms_set;
+        $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
       }
 
       if ($allowed_bundles) {
@@ -432,7 +432,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
             ],
           ],
         ];
-        $query['query']['bool']['filter'][] = $terms_set;
+        $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
       }
     }
 
@@ -491,6 +491,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
       $image_url = !empty($hit['_source']['parent_image_url']) ? reset($hit['_source']['parent_image_url']) : NULL;
       $image_alt = !empty($hit['_source']['parent_image_alt_' . $target_langcode]) ? reset($hit['_source']['parent_image_alt_' . $target_langcode]) : NULL;
       $published_at = !empty($hit['_source']['parent_published_at']) ? reset($hit['_source']['parent_published_at']) : NULL;
+      $score = $hit['_score'] ?? NULL;
 
       // Check if all required fields are present.
       if (!$instance || !$uuid || !$url || !$title) {
@@ -501,6 +502,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
         'uuid' => $uuid,
         'url' => $url,
         'title' => $title,
+        'score' => $score,
       ];
 
       if ($image_url) {
