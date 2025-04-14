@@ -1,0 +1,4 @@
+test_focus:
+  version: 1.0
+  js:
+    assets/js/focus.js: { }

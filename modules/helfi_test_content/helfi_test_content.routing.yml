@@ -1,0 +1,7 @@
+helfi_test_content.helfi_test_content_form:
+  path: '/helfi-test-content/helfi-test-content-form'
+  defaults:
+    _title: 'Helfi Test Content Form'
+    _controller: '\Drupal\helfi_test_content\Controller\HelfiTestContentFormController::formPage'
+  requirements:
+    _permission: 'access content'
