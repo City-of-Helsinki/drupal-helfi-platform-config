@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Drupal\helfi_paragraphs_news_list;
 
 use Drupal\Core\Utility\Error;
-use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
+use Drupal\external_entities\Entity\ExternalEntityInterface;
+use Drupal\external_entities\StorageClient\StorageClientBase;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class used by taxonomy external entity.
  */
-abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase {
+abstract class ElasticExternalEntityBase extends StorageClientBase {
 
   /**
    * Which endpoint to query.
@@ -33,13 +32,6 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   protected Client $client;
 
   /**
-   * The logger.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected LoggerInterface $logger;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -50,7 +42,6 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->client = $container->get('helfi_paragraphs_news_list.elastic_client');
-    $instance->logger = $container->get('logger.factory')->get('helfi_external_entity');
 
     return $instance;
   }
@@ -278,6 +269,21 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
       return [];
     }
     return $data['hits']['hits'];
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function transliterateDrupalFilters(
+    array $parameters,
+    array $context = [],
+  ) :array {
+    // @todo Check performance of this implementation UHF-11477.
+    return $this->transliterateDrupalFiltersAlter(
+      ['source' => [], 'drupal' => $parameters],
+      $parameters,
+      $context
+    );
   }
 
 }
