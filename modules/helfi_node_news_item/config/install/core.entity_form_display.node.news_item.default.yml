@@ -10,13 +10,11 @@ dependencies:
     - field.field.node.news_item.field_news_item_links_link
     - field.field.node.news_item.field_news_item_links_title
     - field.field.node.news_item.field_news_item_tags
-    - field.field.node.news_item.field_recommendation_topics
     - field.field.node.news_item.field_short_title
     - node.type.news_item
   module:
     - field_group
     - hdbt_admin_tools
-    - helfi_recommendations
     - linkit
     - media_library
     - paragraphs
@@ -69,22 +67,6 @@ third_party_settings:
         classes: ''
         show_empty_fields: false
         id: ''
-        open: false
-        description: ''
-        required_fields: true
-    group_automatically_recommended:
-      children:
-        - field_recommendation_topics
-      label: 'Automatically recommended content'
-      region: content
-      parent_name: ''
-      weight: 26
-      format_type: details
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        label_as_html: false
         open: false
         description: ''
         required_fields: true
@@ -168,12 +150,6 @@ content:
       autocomplete: false
       match_operator: CONTAINS
       match_limit: 10
-    third_party_settings: {  }
-  field_recommendation_topics:
-    type: suggested_topics_reference
-    weight: 23
-    region: content
-    settings: {  }
     third_party_settings: {  }
   field_short_title:
     type: string_textfield
