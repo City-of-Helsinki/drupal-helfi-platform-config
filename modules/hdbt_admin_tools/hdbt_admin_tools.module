@@ -1091,6 +1091,9 @@ function hdbt_admin_tools_preprocess_form_element(array &$variables): void {
   $variables['counter_step'] = $variables['element']['#counter_step'];
   $variables['counter_total'] = $variables['element']['#counter_total'];
   $variables['counter_input_tag'] = $variables['element']['#type'] === 'textarea' ? 'textarea' : 'input';
+  if ( isset($variables['element']['#counter_type']) && $variables['element']['#counter_type'] === 'multifield') {
+    $variables['counter_input_tag'] = 'multifield';
+  }
 }
 
 /**

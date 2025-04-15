@@ -79,9 +79,13 @@ class NumbersWidget extends WidgetBase {
       '#type' => 'textfield',
       '#title' => new TranslatableMarkup('Number', [], ['context' => 'Number highlights']),
       '#default_value' => $items[$delta]->number ?? '',
-      '#size' => 6,
-      '#maxlength' => 6,
+      '#size' => 7,
+      '#maxlength' => 7,
       '#placeholder' => $this->getSetting('placeholder_number'),
+      '#character_counter' => TRUE,
+      '#counter_step' => 0,
+      '#counter_total' => 7,
+      '#counter_type' => 'multifield'
     ];
 
     $element['text'] = [
@@ -91,6 +95,10 @@ class NumbersWidget extends WidgetBase {
       '#size' => 60,
       '#maxlength' => 60,
       '#placeholder' => $this->getSetting('placeholder_text'),
+      '#character_counter' => TRUE,
+      '#counter_step' => 60,
+      '#counter_total' => 60,
+      '#counter_type' => 'multifield'
     ];
 
     return $element;
