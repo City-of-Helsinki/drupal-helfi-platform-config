@@ -85,7 +85,7 @@ class NumbersWidget extends WidgetBase {
       '#character_counter' => TRUE,
       '#counter_step' => 0,
       '#counter_total' => 7,
-      '#counter_type' => 'multifield'
+      '#counter_type' => 'multifield',
     ];
 
     $element['text'] = [
@@ -98,7 +98,7 @@ class NumbersWidget extends WidgetBase {
       '#character_counter' => TRUE,
       '#counter_step' => 60,
       '#counter_total' => 60,
-      '#counter_type' => 'multifield'
+      '#counter_type' => 'multifield',
     ];
 
     return $element;
