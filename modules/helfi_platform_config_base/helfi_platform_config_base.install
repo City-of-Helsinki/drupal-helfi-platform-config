@@ -220,7 +220,7 @@ function helfi_platform_config_base_update_9007() : void {
     if (!$module_handler->moduleExists($module)) {
       continue;
     }
-    // Trigger updates for content liftup related modules.
+    // Trigger updates for related modules.
     \Drupal::service('helfi_platform_config.config_update_helper')
       ->update($module);
   }
