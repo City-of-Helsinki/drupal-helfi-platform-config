@@ -513,7 +513,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
         // instance.
         if ($instance !== $this->getParentInstance()) {
           $theme = 'imagecache_external_responsive';
-          $environment = $this->environmentResolver->getEnvironment($this->getParentInstance(), $this->environmentResolver->getActiveEnvironmentName());
+          $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
           $image_uri = sprintf('%s%s', $environment->getInternalBaseUrl(), $image_url);
         }
 
