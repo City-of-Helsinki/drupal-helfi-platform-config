@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
@@ -193,13 +195,10 @@ function helfi_platform_config_base_update_9006(): void {
  * UHF-11656 Enable number highlight paragraph.
  */
 function helfi_platform_config_base_update_9007() : void {
-  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
-  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+  /** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $projectRoles */
+  $projectRoles = \Drupal::service(ActiveProjectRoles::class);
 
-  try {
-    $environmentResolver->getActiveProject();
-  }
-  catch (\InvalidArgumentException) {
+  if (!$projectRoles->hasRole(ProjectRoleEnum::Core)) {
     return;
   }
 
