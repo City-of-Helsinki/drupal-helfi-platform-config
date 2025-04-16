@@ -38,18 +38,4 @@ class NumbersFormatter extends FormatterBase {
     return $elements;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    return [];
-  }
-
 }
