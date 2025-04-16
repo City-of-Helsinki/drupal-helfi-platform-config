@@ -11,76 +11,89 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
-
+use Drupal\Core\DrupalKernel;
 /**
- * Updates entity fields for suggested_topics.
+ * Implements hook_install().
  */
-function helfi_recommendations_update_9004(): void {
-  $fields['parent_id'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Parent ID'))
-    ->setDescription(t('The ID of the parent entity of which this entity is referenced.'))
-    ->setSetting('is_ascii', TRUE);
-
-  $fields['parent_type'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Parent type'))
-    ->setDescription(t('The entity parent type to which this entity is referenced.'))
-    ->setSetting('is_ascii', TRUE)
-    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH);
-
-  $fields['parent_instance'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Parent instance'))
-    ->setDescription(t('The name of the instance where this entity is located at.'))
-    ->setSetting('is_ascii', TRUE);
-
-  foreach ($fields as $name => $field) {
-    \Drupal::entityDefinitionUpdateManager()
-      ->installFieldStorageDefinition($name, 'suggested_topics', 'helfi_recommendations', $field);
+function helfi_recommendations_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
   }
+
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+  $block_installer = \Drupal::service('helfi_platform_config.helper.block_installer');
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+  $theme_handler = \Drupal::service('theme_handler');
+
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+    return;
+  }
+
+  $theme = $theme_handler->getDefault();
+  $block_config = helfi_recommendations_get_block_configurations($theme);
+  ['block' => $block, 'variations' => $variations] = $block_config;
+  $block_installer->install($block, $variations);
 }
 
 /**
- * Copy published status to suggested_topics_reference entities.
+ * Gets the block configurations.
+ *
+ * @return array[]
+ *   The block configurations.
  */
-function helfi_recommendations_update_9006(): void {
-  // Publish all suggested topics entities.
-  // The previous default value for the field
-  // was unpublished.
-  \Drupal::database()
-    ->update('suggested_topics')
-    ->fields([
-      'status' => TRUE,
-    ])
-    ->execute();
-
-  $entities = \Drupal::entityTypeManager()
-    ->getStorage('node')
-    ->loadByProperties([
-      'in_recommendations' => FALSE,
-    ]);
-
-  // Unpublish all suggested topics entities that were hidden from search.
-  foreach ($entities as $entity) {
-    $topics = $entity->get('annif_suggested_topics')->entity;
-    assert($topics instanceof SuggestedTopicsInterface);
-
-    $topics->setUnpublished();
-    $topics->save();
-  }
-}
-
-/**
- * Updates entity fields for suggested_topics.
- */
-function helfi_recommendations_update_9007(): void {
-  $fields['parent_translations'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Parent translations'))
-    ->setDescription(t('The entity parent published translation languages to which this entity is referenced.'))
-    ->setSetting('is_ascii', TRUE)
-    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH)
-    ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
-
-  foreach ($fields as $name => $field) {
-    \Drupal::entityDefinitionUpdateManager()
-      ->installFieldStorageDefinition($name, 'suggested_topics', 'helfi_recommendations', $field);
-  }
+function helfi_recommendations_get_block_configurations(string $theme) : array {
+  return [
+    'block' => [
+      'id' => 'helfirecommendationsblock',
+      'plugin' => 'helfi_recommendations',
+      'provider' => 'helfi_recommendations',
+      'settings' => [
+        'id' => 'helfi_recommendations',
+        'label' => 'AI powered recommendations',
+        'label_display' => FALSE,
+        'provider' => 'helfi_recommendations',
+      ],
+      'weight' => 1,
+      'visibility' => [
+        'language' => [
+          'id' => 'language',
+          'negate' => FALSE,
+          'context_mapping' => [
+            'language' => '@language.current_language_context:language_interface',
+          ],
+          'langcodes' => [
+            'fi' => 'fi',
+            'sv' => 'sv',
+            'en' => 'en',
+          ],
+        ],
+        'entity_bundle:node' => [
+          'id' => 'entity_bundle:node',
+          'negate' => FALSE,
+          'context_mapping' => [
+            'node' => '@node.node_route_context:node',
+          ],
+          'bundles' => [
+            'landing_page' => 'landing_page',
+            'news_article' => 'news_article',
+            'news_item' => 'news_item',
+            'page' => 'page',
+          ],
+        ],
+      ],
+    ],
+    'variations' => [
+      [
+        'theme' => $theme,
+        'region' => 'content',
+      ],
+      [
+        'theme' => 'stark',
+        'region' => 'content',
+      ],
+    ]
+  ];
 }

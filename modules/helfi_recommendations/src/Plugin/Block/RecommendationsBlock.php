@@ -31,6 +31,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class RecommendationsBlock extends BlockBase implements ContainerFactoryPluginInterface, ContextAwarePluginInterface {
 
   // Default cache max age is 1 hour.
+  // @todo Is this a good default? This max age will be set on
+  // almost all pages when the block is rolled out to all instances
+  // and most content types. We should consider implementing a
+  // pubsub based cache tag purging mechanism instead, and have a
+  // much higher value here (still need to update all of these in
+  // regular basis to keep the recommendations relevant and up to
+  // date).
   const CACHE_MAX_AGE = 3600;
 
   /**
@@ -69,7 +76,6 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
-    // @todo Implement theme layer.
     $response = [
       '#theme' => 'recommendations_block',
       '#title' => $this->t('You might be interested in', [], ['context' => 'Recommendations block title']),
@@ -90,7 +96,8 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     // (all of) the recommendations are not nodes in this Drupal
     // instance. External entities would've been a viable solution
     // here, but there's already a huge refactoring need for current
-    // usage to get the codebase D11 compatible.
+    // usage to get the codebase D11 compatible. Let's revisit this
+    // once we've updated to D11.
     $response['#rows'] = $recommendations;
 
     return $response;
@@ -100,9 +107,14 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    * {@inheritdoc}
    */
   public function getCacheContexts(): array {
+    // @todo "user.roles" context is needed while cross-instance
+    // recommendations are in review mode as part of the content is
+    // displayed to selected roles only. We can remove it once we
+    // have validated the cross-instance recommendations work as
+    // intended.
     return Cache::mergeContexts(
       parent::getCacheContexts(),
-      ['languages:language_content', 'user.roles:anonymous', 'url.path'],
+      ['languages:language_content', 'user.roles', 'url.path'],
     );
   }
 
@@ -180,19 +192,24 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   private function getRecommendations(ContentEntityInterface $entity): array {
     $recommendations = [];
 
+    $options = [];
+    if (in_array($entity->bundle(), ['news_item', 'news_article'])) {
+      // @todo This is to preserve the functionality from the previous
+      // implementation. Remove these once we have validated the
+      // cross-instance recommendations work as intended.
+      $options = [
+        'instances' => ['etusivu'],
+        'content_types' => ['node' => ['news_item', 'news_article']],
+      ];
+    }
+
     try {
       $recommendations = $this->recommendationManager
         ->getRecommendations(
           $entity,
           3,
           $entity->language()->getId(),
-          // @todo This is to preserve the functionality from the previous
-          // implementation. Remove these once we have validated the
-          // cross-instance recommendations work as intended.
-          [
-            'instances' => ['etusivu'],
-            'content_types' => ['node' => ['news_item', 'news_article']],
-          ],
+          $options,
         );
     }
     catch (\Exception $exception) {

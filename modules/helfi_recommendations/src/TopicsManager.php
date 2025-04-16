@@ -328,7 +328,7 @@ final class TopicsManager implements TopicsManagerInterface {
       // allow processing entities that do not have a topic reference yet (ie.
       // existing entities that have not been manually edited after the
       // introduction of the topic field).
-      if ($field->isEmpty() && $createIfEmpty) {
+      if (empty($field->referencedEntities()) && $createIfEmpty) {
         $topic = SuggestedTopics::create();
         $topic->setParentEntity($entity);
         $topic->save();

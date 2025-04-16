@@ -466,3 +466,20 @@ function helfi_platform_config_update_9321(): void {
     $config->set('matomo_site_id', $matomo_site_id)->save();
   }
 }
+
+/**
+ * UHF-10647: Enable cross-instance recommendations block
+ */
+function helfi_platform_config_update_9322(): void {
+  /** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $projectRoles */
+  $projectRoles = \Drupal::service(ActiveProjectRoles::class);
+
+  // Only enable on core instances.
+  if ($projectRoles->hasRole(ProjectRoleEnum::Core)) {
+    $module_installer = \Drupal::service('module_installer');
+
+    if (!\Drupal::moduleHandler()->moduleExists('helfi_recommendations')) {
+      $module_installer->install(['helfi_recommendations']);
+    }
+  }
+}

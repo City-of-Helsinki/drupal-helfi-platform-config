@@ -218,7 +218,7 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
       $shortTitle = $translation->get('field_short_title')->value;
     }
 
-    return $shortTitle ?? $translation->label();
+    return !empty($shortTitle) ? $shortTitle : $translation->label();
   }
 
   /**
@@ -299,8 +299,11 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
    *   The parent published date timestamp or NULL if no published date is found.
    */
   private function getParentPublishedDate(ContentEntityInterface $parentEntity) : ?string {
-    if ($parentEntity->hasField('published_at')) {
-      return $parentEntity->get('published_at')->value;
+    // Only populate this for news items.
+    if (in_array($parentEntity->bundle(), ['news_item', 'news_article'])) {
+      if ($parentEntity->hasField('published_at')) {
+        return $parentEntity->get('published_at')->value;
+      }
     }
 
     return NULL;
