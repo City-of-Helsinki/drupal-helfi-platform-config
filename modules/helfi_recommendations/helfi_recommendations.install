@@ -80,7 +80,7 @@ function helfi_recommendations_set_text_converter_view_display(string $entity_ty
   // Try loading text converter view display, or create it if it doesn't exist.
   $text_converter_view_display = $storage->load($entity_type . '.' . $content_type . '.text_converter');
   if (!$text_converter_view_display) {
-    $storage->create([
+    $text_converter_view_display = $storage->create([
       'targetEntityType' => $entity_type,
       'bundle' => $content_type,
       'mode' => 'text_converter',
