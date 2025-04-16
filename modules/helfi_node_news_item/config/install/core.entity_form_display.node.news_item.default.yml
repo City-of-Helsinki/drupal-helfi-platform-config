@@ -46,7 +46,7 @@ third_party_settings:
       label: Links
       region: content
       parent_name: ''
-      weight: 20
+      weight: 18
       format_type: fieldset
       format_settings:
         classes: ''
@@ -61,7 +61,7 @@ third_party_settings:
       label: 'Main image'
       region: content
       parent_name: ''
-      weight: 17
+      weight: 16
       format_type: details
       format_settings:
         classes: ''
@@ -102,7 +102,7 @@ content:
     third_party_settings: {  }
   field_lead_in:
     type: string_textarea
-    weight: 16
+    weight: 15
     region: content
     settings:
       rows: 5
@@ -143,7 +143,7 @@ content:
     third_party_settings: {  }
   field_news_item_tags:
     type: select2_entity_reference
-    weight: 22
+    weight: 19
     region: content
     settings:
       width: 100%
@@ -181,7 +181,7 @@ content:
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 12
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -197,13 +197,13 @@ content:
     settings: {  }
     third_party_settings: {  }
   simple_sitemap:
-    weight: 11
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 15
+    weight: 14
     region: content
     settings:
       display_label: true
@@ -240,12 +240,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 13
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 14
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
