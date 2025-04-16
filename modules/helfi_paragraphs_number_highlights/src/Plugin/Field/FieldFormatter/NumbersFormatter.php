@@ -7,7 +7,6 @@ namespace Drupal\helfi_paragraphs_number_highlights\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
@@ -36,20 +35,6 @@ class NumbersFormatter extends FormatterBase {
       ];
     }
     return $elements;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    return [];
   }
 
 }
