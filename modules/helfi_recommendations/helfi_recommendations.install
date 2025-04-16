@@ -12,6 +12,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 use Drupal\Core\DrupalKernel;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
 /**
  * Implements hook_install().
  */
@@ -36,6 +38,72 @@ function helfi_recommendations_install($is_syncing) {
   $block_config = helfi_recommendations_get_block_configurations($theme);
   ['block' => $block, 'variations' => $variations] = $block_config;
   $block_installer->install($block, $variations);
+
+  // Set the text converter view display for the given content types.
+  helfi_recommendations_set_text_converter_view_display('node', 'landing_page', ['field_content']);
+  helfi_recommendations_set_text_converter_view_display('node', 'news_article', ['field_content', 'field_lead_in']);
+  helfi_recommendations_set_text_converter_view_display('node', 'news_item', ['field_content', 'field_lead_in']);
+  helfi_recommendations_set_text_converter_view_display('node', 'page', ['field_content', 'field_lead_in', 'field_lower_content', 'field_sidebar_content']);
+}
+
+/**
+ * Sets the text converter view display for the given content type.
+ *
+ * Creates a text_converter view display for the given content type and copies
+ * selected fields from the default view display.
+ *
+ * @param string $entity_type
+ *   The entity type.
+ * @param string $content_type
+ *   The content type.
+ * @param array $fields
+ *   The fields to set the text converter view display for.
+ */
+function helfi_recommendations_set_text_converter_view_display(string $entity_type, string $content_type, array $fields) : void {
+  // First check if entity bundle exists here.
+  $bundle_info = \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type);
+  if (!isset($bundle_info[$content_type])) {
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('entity_view_display');
+
+  // Load default view display to be used as basis for the text converter
+  // view display.
+  $default_view_display = $storage->load('node.' . $content_type . '.default')->toArray();
+  $text_converter_view_display = [
+    'targetEntityType' => 'node',
+    'bundle' => $content_type,
+    'mode' => 'text_converter',
+  ];
+
+  // Try loading text converter view display, or create it if it doesn't exist.
+  $text_converter_view_display = $storage->load($entity_type . '.' . $content_type . '.text_converter');
+  if (!$text_converter_view_display) {
+    $storage->create([
+      'targetEntityType' => $entity_type,
+      'bundle' => $content_type,
+      'mode' => 'text_converter',
+    ]);
+  }
+
+  assert($text_converter_view_display instanceof EntityViewDisplayInterface);
+
+  // Hide all existing components that are not in the list of fields to be shown.
+  foreach ($text_converter_view_display->getComponents() as $field => $component) {
+    if (!in_array($field, $fields)) {
+      $text_converter_view_display->removeComponent($field);
+    }
+  }
+
+  // Set component settings from default view mode.
+  foreach ($fields as $field) {
+    $text_converter_view_display->setComponent($field, $default_view_display['content'][$field] ?? []);
+  }
+
+  // Enable and save.
+  $text_converter_view_display->enable();
+  $text_converter_view_display->save();
 }
 
 /**
