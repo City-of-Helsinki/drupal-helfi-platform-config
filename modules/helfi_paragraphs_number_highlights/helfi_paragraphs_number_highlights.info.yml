@@ -2,6 +2,7 @@ name: 'HELfi Paragraphs: Number highlights'
 type: module
 core_version_requirement: '^9 || ^10'
 dependencies:
-  - helfi_base_content:helfi_base_content
+  - paragraphs:paragraphs
+  - drupal:text
 'interface translation project': helfi_paragraphs_number_highlights
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_paragraphs_number_highlights/translations/%language.po
