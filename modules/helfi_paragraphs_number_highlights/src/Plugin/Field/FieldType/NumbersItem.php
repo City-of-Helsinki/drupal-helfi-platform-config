@@ -12,6 +12,9 @@ use Drupal\Core\TypedData\DataDefinition;
 
 /**
  * Plugin implementation of the 'numbers_item' field type.
+ *
+ * @property string $number
+ * @property string $text
  */
 #[FieldType(
   id: "numbers_item",
