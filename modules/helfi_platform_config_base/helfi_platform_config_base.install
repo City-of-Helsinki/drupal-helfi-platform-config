@@ -195,7 +195,7 @@ function helfi_platform_config_base_update_9006(): void {
 function helfi_platform_config_base_update_9007() : void {
   /** @var \Drupal\Core\Extension\ModuleHandler $module_handler */
   $module_handler = \Drupal::moduleHandler();
-  // Enable helfi_paragraphs_image_gallery.
+  // Enable helfi_paragraphs_number_highlights.
   if (!$module_handler->moduleExists('helfi_paragraphs_number_highlights')) {
     \Drupal::service('module_installer')->install(['helfi_paragraphs_number_highlights']);
   }
