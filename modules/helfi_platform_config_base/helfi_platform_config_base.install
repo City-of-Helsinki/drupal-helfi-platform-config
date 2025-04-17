@@ -195,13 +195,6 @@ function helfi_platform_config_base_update_9006(): void {
  * UHF-11656 Enable number highlight paragraph.
  */
 function helfi_platform_config_base_update_9007() : void {
-  /** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $projectRoles */
-  $projectRoles = \Drupal::service(ActiveProjectRoles::class);
-
-  if (!$projectRoles->hasRole(ProjectRoleEnum::Core)) {
-    return;
-  }
-
   /** @var \Drupal\Core\Extension\ModuleHandler $module_handler */
   $module_handler = \Drupal::moduleHandler();
   // Enable helfi_paragraphs_image_gallery.
