@@ -34,7 +34,7 @@ class QueueWorkerTest extends AnnifKernelTestBase {
   public function testQueueWorker(): void {
     $topicsManager = $this->prophesize(TopicsManagerInterface::class);
     $topicsManager
-      ->processEntity(Argument::any(), TRUE, FALSE, TRUE)
+      ->processEntity(Argument::any(), TRUE, TRUE)
       ->shouldBeCalled();
 
     $node = Node::create([

@@ -16,7 +16,6 @@ use Drupal\Core\Queue\QueueFactory;
 use Drupal\helfi_recommendations\Client\ApiClient;
 use Drupal\helfi_recommendations\Client\Keyword;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
-use Drupal\helfi_recommendations\Entity\SuggestedTopics;
 
 /**
  * The topic manager.
@@ -98,19 +97,19 @@ final class TopicsManager implements TopicsManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function processEntity(ContentEntityInterface $entity, bool $overwriteExisting = FALSE, bool $createIfEmpty = FALSE, bool $reset = FALSE) : void {
-    $this->processEntities([$entity], $overwriteExisting, $createIfEmpty, $reset);
+  public function processEntity(ContentEntityInterface $entity, bool $overwriteExisting = FALSE, bool $reset = FALSE) : void {
+    $this->processEntities([$entity], $overwriteExisting, $reset);
   }
 
   /**
    * {@inheritDoc}
    */
-  public function processEntities(array $entities, bool $overwriteExisting = FALSE, bool $createIfEmpty = FALSE, bool $reset = FALSE) : void {
+  public function processEntities(array $entities, bool $overwriteExisting = FALSE, bool $reset = FALSE) : void {
     if ($reset) {
       $this->processedItems = [];
     }
 
-    foreach ($this->prepareBatches($entities, $overwriteExisting, $createIfEmpty) as $batch) {
+    foreach ($this->prepareBatches($entities, $overwriteExisting) as $batch) {
       $result = $this->keywordGenerator->suggestBatch($batch);
 
       // KeywordGenerator::suggestBatch preserves ids.
@@ -172,17 +171,15 @@ final class TopicsManager implements TopicsManagerInterface {
    *   The entities.
    * @param bool $overwriteExisting
    *   Overwrites existing keywords when set to TRUE.
-   * @param bool $createIfEmpty
-   *   If TRUE, create a new SuggestedTopics entity if the field is empty.
    *
    * @return \Generator
    *   Batch of entities.
    */
-  private function prepareBatches(array $entities, bool $overwriteExisting, bool $createIfEmpty = FALSE) : \Generator {
+  private function prepareBatches(array $entities, bool $overwriteExisting) : \Generator {
     $buckets = [];
 
     foreach ($entities as $key => $entity) {
-      $topics = $this->getSuggestedTopicsEntities($entity, !$overwriteExisting, $createIfEmpty);
+      $topics = $this->getSuggestedTopicsEntities($entity, !$overwriteExisting);
 
       // Skip if the entity does not have topics or
       // entity was already processed in this request.
@@ -312,34 +309,15 @@ final class TopicsManager implements TopicsManagerInterface {
    *   The entity.
    * @param bool $filterEmpty
    *   If TRUE, only return topic entities that have no keywords.
-   * @param bool $createIfEmpty
-   *   If TRUE, create a new SuggestedTopics entity if the field is empty.
    *
    * @return \Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface[]
    *   Linked topics entities.
    */
-  private function getSuggestedTopicsEntities(ContentEntityInterface $entity, bool $filterEmpty, bool $createIfEmpty = FALSE): array {
+  private function getSuggestedTopicsEntities(ContentEntityInterface $entity, bool $filterEmpty): array {
     $fields = $this->getTopicsReferenceFields($entity);
     $topics = [];
 
     foreach ($fields as $field) {
-      // If the field is empty and we are allowed to create a new topic, do so.
-      // This is mainly needed for drush commands that regenerate keywords to
-      // allow processing entities that do not have a topic reference yet (ie.
-      // existing entities that have not been manually edited after the
-      // introduction of the topic field).
-      if (empty($field->referencedEntities()) && $createIfEmpty) {
-        $topic = SuggestedTopics::create();
-        $topic->setParentEntity($entity);
-        $topic->save();
-        $entity->set($field->getName(), [
-          'entity' => $topic,
-        ]);
-        $entity->save();
-
-        $topics[$topic->id()] = $topic;
-      }
-
       // Get all referenced topic entities from all
       // suggested_topics_reference fields.
       foreach ($field->referencedEntities() as $topic) {
