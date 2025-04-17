@@ -20,11 +20,8 @@ use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Response\Elasticsearch;
-use GuzzleHttp\Client as GuzzleClient;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 
 /**
  * Kernel tests for RecommendationManager.
@@ -158,17 +155,10 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $nodeSource->addTranslation('sv', $translationSource);
     $nodeSource->save();
 
-    $nodeTitle = $this->randomString();
-    $nodeTitleSV = $this->randomString();
     $suggestionUUID = $this->randomString();
-    $nodeResult = Node::create([
-      'type' => 'test_node_bundle',
-      'title' => $nodeTitle,
-    ]);
-    $translation = $nodeResult->toArray();
-    $translation['title'] = $nodeTitleSV;
-    $nodeResult->addTranslation('sv', $translation);
-    $nodeResult->save();
+    $parentUrl = $this->randomString();
+    $parentTitleEn = $this->randomString();
+    $parentTitleSv = $this->randomString();
 
     $recommendationManager = $this->getSut([
       'hits' => [
@@ -178,8 +168,10 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
               'parent_instance' => [Project::ETUSIVU],
               'parent_type' => ['node'],
               'parent_bundle' => ['test_node_bundle'],
-              'parent_id' => [$nodeResult->id()],
               'uuid' => [$suggestionUUID],
+              'parent_url' => [$parentUrl],
+              'parent_title_en' => [$parentTitleEn],
+              'parent_title_sv' => [$parentTitleSv],
             ],
           ],
         ],
@@ -188,17 +180,15 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
     // Test recommendations in Finnish.
     $recommendations = $recommendationManager->getRecommendations($nodeSource);
-    $this->assertNotEmpty($recommendations);
-    $this->assertEquals($nodeTitle, $recommendations[0]['title']);
+    $this->assertEquals($parentTitleEn, $recommendations[0]['title']);
     $this->assertEquals($suggestionUUID, $recommendations[0]['uuid']);
-    $this->assertArrayHasKey('url', $recommendations[0]);
+    $this->assertEquals($parentUrl, $recommendations[0]['url']);
 
     // Test recommendations in Swedish.
     $recommendations = $recommendationManager->getRecommendations($nodeSource, 3, 'sv');
-    $this->assertNotEmpty($recommendations);
-    $this->assertEquals($nodeTitleSV, $recommendations[0]['title']);
+    $this->assertEquals($parentTitleSv, $recommendations[0]['title']);
     $this->assertEquals($suggestionUUID, $recommendations[0]['uuid']);
-    $this->assertArrayHasKey('url', $recommendations[0]);
+    $this->assertEquals($parentUrl, $recommendations[0]['url']);
   }
 
   /**
@@ -270,6 +260,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
     $resultUUID = $this->randomString();
     $resultTitle = $this->randomString();
+    $resultUrl = $this->randomString();
     $recommendationManager = $this->getSut(
       [
         'hits' => [
@@ -281,18 +272,8 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
                 'parent_bundle' => ['test_node_bundle'],
                 'parent_id' => [$nodeSource->id()],
                 'uuid' => [$resultUUID],
-              ],
-            ],
-          ],
-        ],
-      ],
-      [
-        'data' => [
-          (object) [
-            'attributes' => (object) [
-              'title' => $resultTitle,
-              'path' => (object) [
-                'alias' => '/test-node',
+                'parent_url' => [$resultUrl],
+                'parent_title_en' => [$resultTitle],
               ],
             ],
           ],
@@ -301,10 +282,9 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     );
 
     $recommendations = $recommendationManager->getRecommendations($nodeSource);
-    $this->assertNotEmpty($recommendations);
     $this->assertEquals($resultTitle, $recommendations[0]['title']);
     $this->assertEquals($resultUUID, $recommendations[0]['uuid']);
-    $this->assertArrayHasKey('url', $recommendations[0]);
+    $this->assertEquals($resultUrl, $recommendations[0]['url']);
   }
 
   /**
@@ -312,28 +292,17 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
    *
    * @param array $elasticData
    *   The elasticsearch mock data.
-   * @param array $jsonApiData
-   *   The json api data.
    *
    * @return \Drupal\helfi_recommendations\RecommendationManager
    *   The service under test.
    */
   private function getSut(
     array $elasticData = [],
-    array $jsonApiData = [],
   ): RecommendationManager {
     $loggerChannel = $this->prophesize(LoggerChannelInterface::class);
     $entityTypeManager = $this->container->get(EntityTypeManagerInterface::class);
     $environmentResolver = $this->container->get(EnvironmentResolverInterface::class);
     $topicsManager = $this->container->get(TopicsManagerInterface::class);
-
-    $jsonApiData = (object) $jsonApiData;
-    $jsonApiBody = $this->prophesize(StreamInterface::class);
-    $jsonApiBody->getContents()->willReturn(json_encode($jsonApiData));
-    $jsonApiResponse = $this->prophesize(ResponseInterface::class);
-    $jsonApiResponse->getBody()->willReturn($jsonApiBody->reveal());
-    $jsonApiClient = $this->prophesize(GuzzleClient::class);
-    $jsonApiClient->request(Argument::any(), Argument::any())->willReturn($jsonApiResponse->reveal());
 
     $elasticResponse = $this->prophesize(Elasticsearch::class);
     $elasticResponse->asArray()->willReturn($elasticData);
@@ -346,7 +315,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
       $entityTypeManager,
       $environmentResolver,
       $topicsManager,
-      $jsonApiClient->reveal(),
       $elasticsearchClient->reveal(),
     );
   }

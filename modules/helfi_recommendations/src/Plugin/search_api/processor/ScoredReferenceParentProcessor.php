@@ -18,7 +18,7 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Field\FieldItemInterface;
 
 /**
- * Indexes scored reference parent data
+ * Indexes scored reference parent data.
  *
  * @SearchApiProcessor(
  *   id = "scored_reference_parent",
@@ -160,30 +160,39 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
         case 'parent_url':
           $indexableValue = $parentEntity->toUrl(NULL, ['absolute' => TRUE])->toString();
           break;
+
         case 'parent_title_fi':
           $indexableValue = $this->getParentTitle($parentEntity, 'fi');
           break;
+
         case 'parent_title_sv':
           $indexableValue = $this->getParentTitle($parentEntity, 'sv');
           break;
+
         case 'parent_title_en':
           $indexableValue = $this->getParentTitle($parentEntity, 'en');
           break;
+
         case 'parent_image_url':
           $indexableValue = $this->getParentImageUrl($parentEntity);
           break;
+
         case 'parent_image_alt_fi':
           $indexableValue = $this->getParentImageAlt($parentEntity, 'fi');
           break;
+
         case 'parent_image_alt_sv':
           $indexableValue = $this->getParentImageAlt($parentEntity, 'sv');
           break;
+
         case 'parent_image_alt_en':
           $indexableValue = $this->getParentImageAlt($parentEntity, 'en');
           break;
+
         case 'parent_published_at':
           $indexableValue = $this->getParentPublishedDate($parentEntity);
           break;
+
       }
 
       if ($indexableValue === NULL) {
@@ -296,7 +305,8 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
    *   The parent entity.
    *
    * @return string|null
-   *   The parent published date timestamp or NULL if no published date is found.
+   *   The parent published date timestamp or NULL if no published date is
+   *   found.
    */
   private function getParentPublishedDate(ContentEntityInterface $parentEntity) : ?string {
     // Only populate this for news items.

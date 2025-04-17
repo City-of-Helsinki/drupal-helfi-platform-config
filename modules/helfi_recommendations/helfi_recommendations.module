@@ -173,8 +173,8 @@ function helfi_recommendations_field_widget_single_element_suggested_topics_refe
 
   if ($entity->bundle() === 'news_item' || $entity->bundle() === 'news_article') {
     // Hide instance and content type selection from news items and articles.
-    // Not allowed even for admin users to preserve the single instance behaviour
-    // from the previous implementation for now.
+    // Not allowed even for admin users to preserve the single instance
+    // behaviour from the previous implementation for now.
     $element['instances']['#access'] = FALSE;
     $element['content_types']['#access'] = FALSE;
   }

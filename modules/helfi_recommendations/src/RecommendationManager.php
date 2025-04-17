@@ -16,7 +16,6 @@ use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Elastic\Elasticsearch\Client;
-use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * The recommendation manager.
@@ -44,8 +43,6 @@ final class RecommendationManager implements RecommendationManagerInterface {
    *   The environment resolver.
    * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
    *   The topics manager.
-   * @param \GuzzleHttp\Client $guzzleClient
-   *   The Guzzle client.
    * @param \Elastic\Elasticsearch\Client $elasticClient
    *   The Elasticsearch client.
    */
@@ -55,7 +52,6 @@ final class RecommendationManager implements RecommendationManagerInterface {
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
-    #[Autowire(service: 'http_client')] private GuzzleClient $guzzleClient,
     #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
   ) {
   }

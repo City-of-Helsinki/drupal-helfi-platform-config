@@ -24,6 +24,8 @@ abstract class AnnifKernelTestBase extends EntityKernelTestBase {
     'language',
     'helfi_api_base',
     'helfi_recommendations',
+    'search_api',
+    'elasticsearch_connector',
   ];
 
   /**
@@ -35,6 +37,7 @@ abstract class AnnifKernelTestBase extends EntityKernelTestBase {
     $entities = [
       'taxonomy_term',
       'suggested_topics',
+      'search_api_task',
     ];
 
     foreach ($entities as $entity) {

@@ -468,7 +468,7 @@ function helfi_platform_config_update_9321(): void {
 }
 
 /**
- * UHF-10647: Enable cross-instance recommendations block
+ * UHF-10647: Enable cross-instance recommendations block.
  */
 function helfi_platform_config_update_9322(): void {
   /** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $projectRoles */

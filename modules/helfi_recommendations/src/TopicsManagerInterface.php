@@ -31,9 +31,9 @@ interface TopicsManagerInterface {
    * @param bool $createIfEmpty
    *   If TRUE, create a new SuggestedTopics entity if the field is empty.
    * @param bool $reset
-   *   If TRUE, reset the processedItems property before processing. This allows 
-   *   batch processing to function properly (like drush commands and queue
-   *   runners).
+   *   If TRUE, reset the processedItems property before processing. This
+   *   allows batch processing to function properly (like drush commands and
+   *   queue runners).
    *
    * @throws \Drupal\helfi_recommendations\RecommendationsException
    */
@@ -49,9 +49,9 @@ interface TopicsManagerInterface {
    * @param bool $createIfEmpty
    *   If TRUE, create a new SuggestedTopics entity if the field is empty.
    * @param bool $reset
-   *   If TRUE, reset the processedItems property before processing. This allows 
-   *   batch processing to function properly (like drush commands and queue
-   *   runners).
+   *   If TRUE, reset the processedItems property before processing. This
+   *   allows batch processing to function properly (like drush commands and
+   *   queue runners).
    *
    * @throws \Drupal\helfi_recommendations\RecommendationsException
    */

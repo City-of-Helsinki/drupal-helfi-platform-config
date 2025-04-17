@@ -7,11 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
-use Drupal\Core\DrupalKernel;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 
 /**
@@ -40,10 +35,23 @@ function helfi_recommendations_install($is_syncing) {
   $block_installer->install($block, $variations);
 
   // Set the text converter view display for the given content types.
-  helfi_recommendations_set_text_converter_view_display('node', 'landing_page', ['field_content']);
-  helfi_recommendations_set_text_converter_view_display('node', 'news_article', ['field_content', 'field_lead_in']);
-  helfi_recommendations_set_text_converter_view_display('node', 'news_item', ['field_content', 'field_lead_in']);
-  helfi_recommendations_set_text_converter_view_display('node', 'page', ['field_content', 'field_lead_in', 'field_lower_content', 'field_sidebar_content']);
+  helfi_recommendations_set_text_converter_view_display('node', 'landing_page', [
+    'field_content',
+  ]);
+  helfi_recommendations_set_text_converter_view_display('node', 'news_article', [
+    'field_content',
+    'field_lead_in',
+  ]);
+  helfi_recommendations_set_text_converter_view_display('node', 'news_item', [
+    'field_content',
+    'field_lead_in',
+  ]);
+  helfi_recommendations_set_text_converter_view_display('node', 'page', [
+    'field_content',
+    'field_lead_in',
+    'field_lower_content',
+    'field_sidebar_content',
+  ]);
 }
 
 /**
@@ -89,7 +97,8 @@ function helfi_recommendations_set_text_converter_view_display(string $entity_ty
 
   assert($text_converter_view_display instanceof EntityViewDisplayInterface);
 
-  // Hide all existing components that are not in the list of fields to be shown.
+  // Hide all existing components that are not in the list of fields to be
+  // shown.
   foreach ($text_converter_view_display->getComponents() as $field => $component) {
     if (!in_array($field, $fields)) {
       $text_converter_view_display->removeComponent($field);
@@ -162,6 +171,6 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
         'theme' => 'stark',
         'region' => 'content',
       ],
-    ]
+    ],
   ];
 }
