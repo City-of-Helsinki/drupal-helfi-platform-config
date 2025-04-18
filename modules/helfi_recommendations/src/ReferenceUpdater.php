@@ -8,7 +8,9 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
+use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 
 /**
  * The reference update manager.
@@ -200,11 +202,14 @@ final class ReferenceUpdater {
 
     foreach ($fieldNames as $fieldName) {
       $referenceField = $entity->get($fieldName);
+      assert($referenceField instanceof EntityReferenceFieldItemListInterface);
       if ($referenceField->isEmpty()) {
         $topicsEntity = $this->entityTypeManager
           ->getStorage('suggested_topics')
           ->create([]);
 
+        assert($topicsEntity instanceof SuggestedTopicsInterface);
+        $topicsEntity->setParentEntity($entity);
         $referenceField->setValue($topicsEntity);
 
         assert($topicsEntity instanceof SuggestedTopics);
