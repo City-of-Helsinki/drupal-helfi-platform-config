@@ -48,7 +48,7 @@ class NumbersItem extends FieldItemBase {
         'number' => [
           'description' => 'A string representing a short number.',
           'type' => 'varchar',
-          'length' => 6,
+          'length' => 7,
         ],
         'text' => [
           'description' => 'A short description or label.',

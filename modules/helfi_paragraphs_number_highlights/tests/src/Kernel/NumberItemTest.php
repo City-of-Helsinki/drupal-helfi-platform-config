@@ -86,20 +86,20 @@ class NumberItemTest extends FieldKernelTestBase {
 
     // Verify changing the field value.
     $entity->set('field_test', [
-      'number' => '75',
-      'text' => 'Three quarters',
+      'number' => '7575757',
+      'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
     ]);
     $this->assertEquals([
-      'number' => '75',
-      'text' => 'Three quarters',
+      'number' => '7575757',
+      'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
     ], $entity->get('field_test')->first()->getValue());
 
     // Read changed entity and assert changed values.
     $entity->save();
     $entity = EntityTest::load($id);
     $this->assertEquals([
-      'number' => '75',
-      'text' => 'Three quarters',
+      'number' => '7575757',
+      'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
     ], $entity->get('field_test')->first()->getValue());
   }
 

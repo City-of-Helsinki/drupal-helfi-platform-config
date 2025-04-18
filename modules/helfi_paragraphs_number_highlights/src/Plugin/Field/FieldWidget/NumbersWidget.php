@@ -27,6 +27,7 @@ class NumbersWidget extends WidgetBase {
     $element['number'] = [
       '#type' => 'textfield',
       '#title' => new TranslatableMarkup('Number', [], ['context' => 'Number highlights']),
+      '#description' => new TranslatableMarkup('You can enter 1–7 characters.', [], ['context' => 'Number highlights']),
       '#default_value' => $items[$delta]->number ?? '',
       '#size' => 7,
       '#maxlength' => 7,
@@ -39,6 +40,7 @@ class NumbersWidget extends WidgetBase {
     $element['text'] = [
       '#type' => 'textfield',
       '#title' => new TranslatableMarkup('Text', [], ['context' => 'Number highlights']),
+      '#description' => new TranslatableMarkup('A maximum of 60 characters below the number. Start with a lowercase letter.', [], ['context' => 'Number highlights']),
       '#default_value' => $items[$delta]->text ?? '',
       '#size' => 60,
       '#maxlength' => 60,

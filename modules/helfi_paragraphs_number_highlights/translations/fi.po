@@ -36,3 +36,11 @@ msgstr "Numero ja teksti"
 msgctxt "Number highlights"
 msgid "Stores a short number and text pair."
 msgstr "Tallentaa lyhyen numeron ja tekstin parin."
+
+msgctxt "Number highlights"
+msgid "A maximum of 60 characters below the number. Start with a lowercase letter."
+msgstr "Maksimissaan 60 merkin teksti luvun alle. Aloita pienellä kirjaimella."
+
+msgctxt "Number highlights"
+msgid "You can enter 1–7 characters."
+msgstr "Voit laittaa 1-7 merkkiä."
