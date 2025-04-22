@@ -21,7 +21,7 @@ use Prophecy\Argument;
  * Tests the scored reference processor.
  *
  * @group helfi_recommendations
- * @coversDefaultClass \Drupal\helfi_recommendations\SearchApi\Processor\ScoredReferenceParentProcessor
+ * @coversDefaultClass \Drupal\helfi_recommendations\Plugin\search_api\processor\ScoredReferenceParentProcessor
  */
 class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
 
