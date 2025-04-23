@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_calculator\Form;
 
-/**
- * @file
- * Contains Drupal\helfi_calculator\Form\CalculatorSettings.
- */
-
 use Drupal\Core\Config\Config;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -43,25 +37,16 @@ class CalculatorSettings extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ConfigurableLanguageManagerInterface $language_manager) {
-    parent::__construct($config_factory);
-    $this->languageManager = $language_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function create(ContainerInterface $container) : self {
-    return new self(
-      $container->get('config.factory'),
-      $container->get('language_manager')
-    );
+    $instance = parent::create($container);
+    $instance->languageManager = $container->get('language_manager');
+    return $instance;
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
+  protected function getEditableConfigNames() : array {
     return [
       'helfi_calculator.settings',
     ];
@@ -70,7 +55,7 @@ class CalculatorSettings extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId() : string {
     return 'helfi_calculator_calculator_settings';
   }
 
@@ -110,7 +95,7 @@ class CalculatorSettings extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state) : array {
     $form = parent::buildForm($form, $form_state);
     $settings = $this->getCalculatorSettings();
 
@@ -118,7 +103,7 @@ class CalculatorSettings extends ConfigFormBase {
     $form['#prefix'] = '<div class="layer-wrapper"><h2>' . $this->t('Available calculators') . '</h2>';
     $form['#suffix'] = '</div>';
 
-    $calculators = $settings->get('calculators');
+    $calculators = $settings->get('calculators') ?? [];
 
     foreach ($calculators as $key => $value) {
       $form['calculators'][$key] = [
@@ -156,7 +141,7 @@ class CalculatorSettings extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state) : void {
     parent::submitForm($form, $form_state);
 
     $calculators = $this->configFactory->getEditable($this->configName)->get('calculators');
