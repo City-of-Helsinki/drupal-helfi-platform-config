@@ -20,12 +20,6 @@ parameters:
       message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
       path: modules/helfi_ckeditor/src/Plugin/CKEditor5Plugin/HelfiLink.php
     -
-      message: '#^Unsafe usage of new static#'
-      path: modules/hdbt_admin_tools/src/SelectWidgetBase.php
-    -
-      message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
-      path: modules/hdbt_admin_tools/src/Controller/ListController.php
-    -
       message: '#^Access to an undefined property Drupal\\media\\MediaInterface::\$field_media_image.#'
       path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
       reportUnmatched: false

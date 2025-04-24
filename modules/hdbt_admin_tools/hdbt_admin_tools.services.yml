@@ -1,4 +1,10 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
   hdbt_admin_tools.design_selection_manager:
     class: Drupal\hdbt_admin_tools\DesignSelectionManager
     arguments: [ '@module_handler', '@file_url_generator' ]
+
+  Drupal\hdbt_admin_tools\DesignSelectionManager: '@hdbt_admin_tools.design_selection_manager'
