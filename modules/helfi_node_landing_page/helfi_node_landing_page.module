@@ -79,6 +79,7 @@ function helfi_node_landing_page_helfi_paragraph_types() : array {
       'event_list' => 13,
       'news_list' => 14,
       'image_gallery' => 15,
+      'number_highlights' => 16,
     ],
   ];
 

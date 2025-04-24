@@ -188,3 +188,29 @@ function helfi_platform_config_base_update_9006(): void {
     ]);
   }
 }
+
+/**
+ * UHF-11656 Enable number highlight paragraph.
+ */
+function helfi_platform_config_base_update_9007() : void {
+  /** @var \Drupal\Core\Extension\ModuleHandler $module_handler */
+  $module_handler = \Drupal::moduleHandler();
+  // Enable helfi_paragraphs_number_highlights.
+  if (!$module_handler->moduleExists('helfi_paragraphs_number_highlights')) {
+    \Drupal::service('module_installer')->install(['helfi_paragraphs_number_highlights']);
+  }
+
+  $affected_modules = [
+    'helfi_node_landing_page',
+    'helfi_node_page',
+  ];
+
+  foreach ($affected_modules as $module) {
+    if (!$module_handler->moduleExists($module)) {
+      continue;
+    }
+    // Trigger updates for related modules.
+    \Drupal::service('helfi_platform_config.config_update_helper')
+      ->update($module);
+  }
+}

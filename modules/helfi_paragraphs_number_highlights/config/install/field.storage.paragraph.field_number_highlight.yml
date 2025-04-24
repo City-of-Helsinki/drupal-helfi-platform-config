@@ -1,0 +1,19 @@
+uuid: b9338a23-ff49-4528-8150-1c308a9276cc
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_paragraphs_number_highlights
+    - paragraphs
+id: paragraph.field_number_highlight
+field_name: field_number_highlight
+entity_type: paragraph
+type: numbers_item
+settings: {  }
+module: helfi_paragraphs_number_highlights
+locked: false
+cardinality: 4
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

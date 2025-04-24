@@ -1,0 +1,21 @@
+uuid: f62709b7-4e42-454d-8427-94e99c863cdf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_number_highlight
+    - paragraphs.paragraphs_type.number_highlights
+  module:
+    - helfi_paragraphs_number_highlights
+id: paragraph.number_highlights.field_number_highlight
+field_name: field_number_highlight
+entity_type: paragraph
+bundle: number_highlights
+label: 'Number Highlight'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: numbers_item

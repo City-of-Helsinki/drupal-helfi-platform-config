@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_number_highlights' module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_paragraphs_number_highlights_theme($existing, $type, $theme, $path) {
+  return [
+    'numbers_item' => [
+      'variables' => [
+        'number' => NULL,
+        'text' => NULL,
+        'attributes' => [],
+      ],
+    ],
+  ];
+}

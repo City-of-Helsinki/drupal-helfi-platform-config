@@ -1,0 +1,41 @@
+uuid: 94a2177c-d24a-448d-a3cb-3c78a42fa4d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.number_highlights.field_number_highlight
+    - field.field.paragraph.number_highlights.field_number_highlights_desc
+    - field.field.paragraph.number_highlights.field_number_highlights_title
+    - paragraphs.paragraphs_type.number_highlights
+  module:
+    - helfi_paragraphs_number_highlights
+    - text
+id: paragraph.number_highlights.default
+targetEntityType: paragraph
+bundle: number_highlights
+mode: default
+content:
+  field_number_highlight:
+    type: numbers_item_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_number_highlights_desc:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_number_highlights_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true
