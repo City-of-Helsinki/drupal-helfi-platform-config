@@ -7,14 +7,14 @@ namespace Drupal\Tests\helfi_platform_config\ExistingSite;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
-use Drupal\Tests\helfi_api_base\Functional\ExistingSiteTestBase;
+use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Scans bundled configuration.
  *
  * @group helfi_platform_config
  */
-class ConfigurationTest extends ExistingSiteTestBase {
+class ConfigurationTest extends ExistingSiteBase {
 
   /**
    * The extension list.

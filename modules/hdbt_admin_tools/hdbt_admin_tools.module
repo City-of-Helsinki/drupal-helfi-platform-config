@@ -17,6 +17,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
+use Drupal\hdbt_admin_tools\DesignSelectionManager;
 use Drupal\hdbt_admin_tools\Form\SiteSettings;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Drupal\helfi_api_base\Link\UrlHelper;
@@ -869,7 +870,7 @@ function hdbt_admin_tools_preprocess_links__dropbutton__operations__paragraphs(&
     }
 
     // Set images for the paragraph preview tool.
-    $design_selection_manager = \Drupal::service('hdbt_admin_tools.design_selection_manager');
+    $design_selection_manager = \Drupal::service(DesignSelectionManager::class);
     $variables['#attached']['drupalSettings']['selectParagraph']['images'] = $design_selection_manager->getImages('paragraph', $paragraph_images);
     $variables['#attached']['library'][] = 'hdbt_admin_tools/select_paragraph';
 

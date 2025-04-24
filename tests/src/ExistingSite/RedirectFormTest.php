@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace src\ExistingSite;
+namespace Drupal\Tests\helfi_platform_config\ExistingSite;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
