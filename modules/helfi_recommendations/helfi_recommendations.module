@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 use Drupal\helfi_recommendations\TextConverter\Document;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
 
@@ -50,6 +51,21 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
     /** @var \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager */
     $topicsManager = \Drupal::service(TopicsManagerInterface::class);
     $topicsManager->queueEntity($entity, TRUE);
+  }
+
+  // Invalidate suggestion topics tags for local recommendation blocks.
+  if ($entity instanceof SuggestedTopicsInterface) {
+    _helfi_recommendations_invalidate_cache_tags($entity);
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function helfi_recommendations_entity_delete(EntityInterface $entity) : void {
+  // Invalidate suggestion topics tags for local recommendation blocks.
+  if ($entity instanceof SuggestedTopicsInterface) {
+    _helfi_recommendations_invalidate_cache_tags($entity);
   }
 }
 
@@ -221,4 +237,12 @@ function _helfi_recommendations_can_see_review_mode() : bool {
   $current_user = \Drupal::currentUser();
   $roles = $current_user->getRoles();
   return in_array('administrator', $roles) || $current_user->hasPermission('administer modules');
+}
+
+/**
+ * Helper function to invalidate cache tags for local recommendation blocks.
+ */
+function _helfi_recommendations_invalidate_cache_tags(SuggestedTopicsInterface $entity) : void {
+  $cache_tag = "suggested_topics_uuid:{$entity->uuid()}";
+  \Drupal::service('cache_tags.invalidator')->invalidateTags([$cache_tag]);
 }
