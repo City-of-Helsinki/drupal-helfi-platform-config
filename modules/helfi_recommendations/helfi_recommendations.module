@@ -10,6 +10,10 @@ declare(strict_types=1);
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 use Drupal\helfi_recommendations\TextConverter\Document;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
 
@@ -48,6 +52,21 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
     $topicsManager = \Drupal::service(TopicsManagerInterface::class);
     $topicsManager->queueEntity($entity, TRUE);
   }
+
+  // Invalidate suggestion topics tags for local recommendation blocks.
+  if ($entity instanceof SuggestedTopicsInterface) {
+    _helfi_recommendations_invalidate_cache_tags($entity);
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function helfi_recommendations_entity_delete(EntityInterface $entity) : void {
+  // Invalidate suggestion topics tags for local recommendation blocks.
+  if ($entity instanceof SuggestedTopicsInterface) {
+    _helfi_recommendations_invalidate_cache_tags($entity);
+  }
 }
 
 /**
@@ -59,6 +78,64 @@ function helfi_recommendations_entity_bundle_field_info_alter(&$fields, EntityTy
       $fields['field_uri']->addConstraint('UniqueField');
     }
   }
+
+  $recommendable_node_bundles = [
+    'landing_page',
+    'news_item',
+    'news_article',
+    'page',
+  ];
+  if ($entityType->id() == 'node' && in_array($bundle, $recommendable_node_bundles)) {
+    foreach (helfi_recommendations_bundle_fields($entityType->id(), $bundle) as $name => $field) {
+      $fields[$name] = $field;
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_field_storage_info().
+ */
+function helfi_recommendations_entity_field_storage_info(EntityTypeInterface $entity_type): array {
+  if ($entity_type->id() === 'node') {
+    return array_merge(
+      helfi_recommendations_bundle_fields($entity_type->id(), 'landing_page'),
+      helfi_recommendations_bundle_fields($entity_type->id(), 'news_item'),
+      helfi_recommendations_bundle_fields($entity_type->id(), 'news_article'),
+      helfi_recommendations_bundle_fields($entity_type->id(), 'page')
+    );
+  }
+
+  return [];
+}
+
+/**
+ * Get helfi_recommendations bundle fields.
+ *
+ * @param string $entity_type_id
+ *   The entity type id.
+ * @param string $bundle
+ *   The bundle.
+ *
+ * @return array
+ *   Array of bundleFieldDefinitions.
+ */
+function helfi_recommendations_bundle_fields(string $entity_type_id, string $bundle): array {
+  $fields['field_recommended_topics'] = BundleFieldDefinition::create('suggested_topics_reference')
+    ->setName('field_recommended_topics')
+    ->setLabel(new TranslatableMarkup('Automatically selected recommendation topics', [], ['context' => 'Recommendations']))
+    ->setTargetEntityTypeId($entity_type_id)
+    ->setTargetBundle($bundle)
+    ->setReadonly(TRUE)
+    ->setTranslatable(FALSE)
+    ->setDisplayOptions('form', [
+      'type' => 'suggested_topics_reference',
+      'weight' => 1000,
+      'module' => 'helfi_recommendations',
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayConfigurable('view', FALSE);
+
+  return $fields;
 }
 
 /**
@@ -69,4 +146,103 @@ function helfi_recommendations_text_conversion_alter(Document &$document, Entity
   $document
     ->stripNodes("//*[contains(@class, 'is-hidden')]")
     ->stripNodes("//*[contains(@class, 'visually-hidden')]");
+}
+
+/**
+ * Implements template_preprocess_recommendations_block().
+ */
+function helfi_recommendations_preprocess_recommendations_block(array &$variables) : void {
+  if (_helfi_recommendations_can_see_review_mode() && !empty($variables['rows'])) {
+    foreach ($variables['rows'] as &$row) {
+      if ($row['score']) {
+        $row['helptext'] = t('Search result score: @score', ['@score' => $row['score']]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ *
+ * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter() for
+ * suggested_topics_reference.
+ */
+function helfi_recommendations_field_widget_complete_suggested_topics_reference_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) : void {
+  // Hide the field from users other than administrators, when on content types
+  // that are not news items or articles.
+  // @todo This is a temporary restriction to allow validating the cross-instance
+  // recommendations in production before allowing the use for all editors.
+  // Remove this once we have validated the cross-instance recommendations works
+  // as intended.
+  $entity = $context['items']->getEntity();
+  assert($entity instanceof ContentEntityInterface);
+  if (
+    $entity->bundle() !== 'news_item' &&
+    $entity->bundle() !== 'news_article' &&
+    !_helfi_recommendations_can_see_review_mode()
+  ) {
+    return;
+  }
+
+  // Wrap the field in a details element to allow users to expand it.
+  $field_widget_complete_form['#prefix'] = '<details><summary>' . t('Automatically recommended content') . '</summary>';
+  $field_widget_complete_form['#suffix'] = '</details>';
+}
+
+/**
+ * Implements hook_field_widget_single_element_form_alter().
+ *
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter() for
+ * suggested_topics_reference.
+ *
+ * @todo This is a temporary restriction to allow validating the cross-instance
+ * recommendations in production before allowing the use for all editors.
+ * Remove this once we have validated the cross-instance recommendations works
+ * as intended.
+ */
+function helfi_recommendations_field_widget_single_element_suggested_topics_reference_form_alter(array &$element, FormStateInterface $formState, array &$context) : void {
+  $entity = $context['items']->getEntity();
+  assert($entity instanceof ContentEntityInterface);
+
+  if ($entity->bundle() === 'news_item' || $entity->bundle() === 'news_article') {
+    // Hide instance and content type selection from news items and articles.
+    // Not allowed even for admin users to preserve the single instance
+    // behaviour from the previous implementation for now.
+    $element['instances']['#access'] = FALSE;
+    $element['content_types']['#access'] = FALSE;
+  }
+  else {
+    // Hide suggestions field in other content types from users other than
+    // administrators.
+    $element['#access'] = FALSE;
+
+    if (_helfi_recommendations_can_see_review_mode()) {
+      $element['#access'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Helper function to check permissions for the review mode.
+ *
+ * @todo This is a temporary restriction to allow validating the cross-instance
+ * recommendations in production before allowing the use for all editors.
+ * Remove this once we have validated the cross-instance recommendations works
+ * as intended. Or if we wish to have some features enabled only for admins
+ * after going public with the cross-instance recommendations, we should
+ * refactor this to use a custom permission, and maybe place this check into
+ * a RecommendationManager service method.
+ */
+function _helfi_recommendations_can_see_review_mode() : bool {
+  $current_user = \Drupal::currentUser();
+  $roles = $current_user->getRoles();
+  return in_array('administrator', $roles) || $current_user->hasPermission('administer modules');
+}
+
+/**
+ * Helper function to invalidate cache tags for local recommendation blocks.
+ */
+function _helfi_recommendations_invalidate_cache_tags(SuggestedTopicsInterface $entity) : void {
+  $cache_tag = "suggested_topics_uuid:{$entity->uuid()}";
+  \Drupal::service('cache_tags.invalidator')->invalidateTags([$cache_tag]);
 }

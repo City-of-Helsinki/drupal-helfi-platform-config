@@ -18,7 +18,6 @@ use Psr\Log\LoggerInterface;
 use Elastic\Elasticsearch\ClientBuilder;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Unit tests for RecommendationManager.
@@ -88,7 +87,6 @@ class RecommendationManagerTest extends UnitTestCase {
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
     $this->topicsManager = $this->prophesize(TopicsManagerInterface::class);
-    $this->jsonApiClient = $this->prophesize(GuzzleClient::class);
     $this->elasticClient = ClientBuilder::create()->build();
 
     $this->recommendationManager = new RecommendationManager(
@@ -96,7 +94,6 @@ class RecommendationManagerTest extends UnitTestCase {
       $this->entityTypeManager->reveal(),
       $this->environmentResolver->reveal(),
       $this->topicsManager->reveal(),
-      $this->jsonApiClient->reveal(),
       $this->elasticClient
     );
   }

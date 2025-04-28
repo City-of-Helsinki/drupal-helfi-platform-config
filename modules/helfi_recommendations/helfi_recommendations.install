@@ -7,80 +7,170 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 
 /**
- * Updates entity fields for suggested_topics.
+ * Implements hook_install().
  */
-function helfi_recommendations_update_9004(): void {
-  $fields['parent_id'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Parent ID'))
-    ->setDescription(t('The ID of the parent entity of which this entity is referenced.'))
-    ->setSetting('is_ascii', TRUE);
-
-  $fields['parent_type'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Parent type'))
-    ->setDescription(t('The entity parent type to which this entity is referenced.'))
-    ->setSetting('is_ascii', TRUE)
-    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH);
-
-  $fields['parent_instance'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Parent instance'))
-    ->setDescription(t('The name of the instance where this entity is located at.'))
-    ->setSetting('is_ascii', TRUE);
-
-  foreach ($fields as $name => $field) {
-    \Drupal::entityDefinitionUpdateManager()
-      ->installFieldStorageDefinition($name, 'suggested_topics', 'helfi_recommendations', $field);
+function helfi_recommendations_install($is_syncing) {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
   }
+
+  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+  $block_installer = \Drupal::service('helfi_platform_config.helper.block_installer');
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+  $theme_handler = \Drupal::service('theme_handler');
+
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+    return;
+  }
+
+  $theme = $theme_handler->getDefault();
+  $block_config = helfi_recommendations_get_block_configurations($theme);
+  ['block' => $block, 'variations' => $variations] = $block_config;
+  $block_installer->install($block, $variations);
+
+  // Set the text converter view display for the given content types.
+  helfi_recommendations_set_text_converter_view_display('node', 'landing_page', [
+    'field_content',
+  ]);
+  helfi_recommendations_set_text_converter_view_display('node', 'news_article', [
+    'field_content',
+    'field_lead_in',
+  ]);
+  helfi_recommendations_set_text_converter_view_display('node', 'news_item', [
+    'field_content',
+    'field_lead_in',
+  ]);
+  helfi_recommendations_set_text_converter_view_display('node', 'page', [
+    'field_content',
+    'field_lead_in',
+    'field_lower_content',
+    'field_sidebar_content',
+  ]);
 }
 
 /**
- * Copy published status to suggested_topics_reference entities.
+ * Sets the text converter view display for the given content type.
+ *
+ * Creates a text_converter view display for the given content type and copies
+ * selected fields from the default view display.
+ *
+ * @param string $entity_type
+ *   The entity type.
+ * @param string $content_type
+ *   The content type.
+ * @param array $fields
+ *   The fields to set the text converter view display for.
  */
-function helfi_recommendations_update_9006(): void {
-  // Publish all suggested topics entities.
-  // The previous default value for the field
-  // was unpublished.
-  \Drupal::database()
-    ->update('suggested_topics')
-    ->fields([
-      'status' => TRUE,
-    ])
-    ->execute();
+function helfi_recommendations_set_text_converter_view_display(string $entity_type, string $content_type, array $fields) : void {
+  // First check if entity bundle exists here.
+  $bundle_info = \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type);
+  if (!isset($bundle_info[$content_type])) {
+    return;
+  }
 
-  $entities = \Drupal::entityTypeManager()
-    ->getStorage('node')
-    ->loadByProperties([
-      'in_recommendations' => FALSE,
+  $storage = \Drupal::entityTypeManager()->getStorage('entity_view_display');
+
+  // Load default view display to be used as basis for the text converter
+  // view display.
+  $default_view_display = $storage->load('node.' . $content_type . '.default')->toArray();
+  $text_converter_view_display = [
+    'targetEntityType' => 'node',
+    'bundle' => $content_type,
+    'mode' => 'text_converter',
+  ];
+
+  // Try loading text converter view display, or create it if it doesn't exist.
+  $text_converter_view_display = $storage->load($entity_type . '.' . $content_type . '.text_converter');
+  if (!$text_converter_view_display) {
+    $text_converter_view_display = $storage->create([
+      'targetEntityType' => $entity_type,
+      'bundle' => $content_type,
+      'mode' => 'text_converter',
     ]);
-
-  // Unpublish all suggested topics entities that were hidden from search.
-  foreach ($entities as $entity) {
-    $topics = $entity->get('annif_suggested_topics')->entity;
-    assert($topics instanceof SuggestedTopicsInterface);
-
-    $topics->setUnpublished();
-    $topics->save();
   }
+
+  assert($text_converter_view_display instanceof EntityViewDisplayInterface);
+
+  // Hide all existing components that are not in the list of fields to be
+  // shown.
+  foreach ($text_converter_view_display->getComponents() as $field => $component) {
+    if (!in_array($field, $fields)) {
+      $text_converter_view_display->removeComponent($field);
+    }
+  }
+
+  // Set component settings from default view mode.
+  foreach ($fields as $field) {
+    $text_converter_view_display->setComponent($field, $default_view_display['content'][$field] ?? []);
+  }
+
+  // Enable and save.
+  $text_converter_view_display->enable();
+  $text_converter_view_display->save();
 }
 
 /**
- * Updates entity fields for suggested_topics.
+ * Gets the block configurations.
+ *
+ * @return array[]
+ *   The block configurations.
  */
-function helfi_recommendations_update_9007(): void {
-  $fields['parent_translations'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Parent translations'))
-    ->setDescription(t('The entity parent published translation languages to which this entity is referenced.'))
-    ->setSetting('is_ascii', TRUE)
-    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH)
-    ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
-
-  foreach ($fields as $name => $field) {
-    \Drupal::entityDefinitionUpdateManager()
-      ->installFieldStorageDefinition($name, 'suggested_topics', 'helfi_recommendations', $field);
-  }
+function helfi_recommendations_get_block_configurations(string $theme) : array {
+  return [
+    'block' => [
+      'id' => 'helfirecommendationsblock',
+      'plugin' => 'helfi_recommendations',
+      'provider' => 'helfi_recommendations',
+      'settings' => [
+        'id' => 'helfi_recommendations',
+        'label' => 'AI powered recommendations',
+        'label_display' => FALSE,
+        'provider' => 'helfi_recommendations',
+      ],
+      'weight' => 1,
+      'visibility' => [
+        'language' => [
+          'id' => 'language',
+          'negate' => FALSE,
+          'context_mapping' => [
+            'language' => '@language.current_language_context:language_interface',
+          ],
+          'langcodes' => [
+            'fi' => 'fi',
+            'sv' => 'sv',
+            'en' => 'en',
+          ],
+        ],
+        'entity_bundle:node' => [
+          'id' => 'entity_bundle:node',
+          'negate' => FALSE,
+          'context_mapping' => [
+            'node' => '@node.node_route_context:node',
+          ],
+          'bundles' => [
+            'landing_page' => 'landing_page',
+            'news_article' => 'news_article',
+            'news_item' => 'news_item',
+            'page' => 'page',
+          ],
+        ],
+      ],
+    ],
+    'variations' => [
+      [
+        'theme' => $theme,
+        'region' => 'content',
+      ],
+      [
+        'theme' => 'stark',
+        'region' => 'content',
+      ],
+    ],
+  ];
 }

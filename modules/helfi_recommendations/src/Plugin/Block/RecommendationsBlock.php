@@ -17,7 +17,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
-use Drupal\helfi_recommendations\RecommendationManager;
+use Drupal\helfi_recommendations\RecommendationManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,6 +31,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class RecommendationsBlock extends BlockBase implements ContainerFactoryPluginInterface, ContextAwarePluginInterface {
 
   // Default cache max age is 1 hour.
+  // @todo Is this a good default? This max age will be set on
+  // almost all pages when the block is rolled out to all instances
+  // and most content types. We should consider implementing a
+  // pubsub based cache tag purging mechanism instead, and have a
+  // much higher value here (still need to update all of these in
+  // regular basis to keep the recommendations relevant and up to
+  // date).
   const CACHE_MAX_AGE = 3600;
 
   /**
@@ -40,7 +47,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private readonly RecommendationManager $recommendationManager,
+    private readonly RecommendationManagerInterface $recommendationManager,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly AccountInterface $currentUser,
     private readonly LoggerInterface $logger,
@@ -54,7 +61,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     return new self($configuration, $plugin_id, $plugin_definition,
-      $container->get(RecommendationManager::class),
+      $container->get(RecommendationManagerInterface::class),
       $container->get('entity_type.manager'),
       $container->get('current_user'),
       $container->get('logger.channel.helfi_recommendations'),
@@ -69,13 +76,12 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
-    // @todo Implement theme layer.
     $response = [
       '#theme' => 'recommendations_block',
       '#title' => $this->t('You might be interested in', [], ['context' => 'Recommendations block title']),
     ];
 
-    $recommendations = $this->getRecommendations($entity);
+    $recommendations = $entity instanceof ContentEntityInterface ? $this->getRecommendations($entity) : [];
     if (!$recommendations) {
       if ($this->currentUser->isAnonymous()) {
         return [];
@@ -90,7 +96,8 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     // (all of) the recommendations are not nodes in this Drupal
     // instance. External entities would've been a viable solution
     // here, but there's already a huge refactoring need for current
-    // usage to get the codebase D11 compatible.
+    // usage to get the codebase D11 compatible. Let's revisit this
+    // once we've updated to D11.
     $response['#rows'] = $recommendations;
 
     return $response;
@@ -100,9 +107,14 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    * {@inheritdoc}
    */
   public function getCacheContexts(): array {
+    // @todo "user.roles" context is needed while cross-instance
+    // recommendations are in review mode as part of the content is
+    // displayed to selected roles only. We can remove it once we
+    // have validated the cross-instance recommendations work as
+    // intended.
     return Cache::mergeContexts(
       parent::getCacheContexts(),
-      ['languages:language_content', 'user.roles:anonymous', 'url.path'],
+      ['languages:language_content', 'user.roles', 'url.path'],
     );
   }
 
@@ -113,7 +125,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
-    $recommendations = $this->getRecommendations($entity);
+    $recommendations = $entity instanceof ContentEntityInterface ? $this->getRecommendations($entity) : [];
 
     $tags = [];
     foreach ($recommendations as $recommendation) {
@@ -149,6 +161,22 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
+    if (!$entity instanceof ContentEntityInterface) {
+      return AccessResult::forbidden();
+    }
+
+    // @todo This is a temporary restriction to allow validating the
+    // cross-instance recommendations in production before allowing the
+    // use for all editors. Remove these once we have validated the
+    // cross-instance recommendations work as intended.
+    if ($entity->bundle() !== 'news_item' && $entity->bundle() !== 'news_article') {
+      if (_helfi_recommendations_can_see_review_mode()) {
+        return AccessResult::allowed();
+      }
+
+      return AccessResult::forbidden();
+    }
+
     if ($entity instanceof ContentEntityInterface && $this->recommendationManager->showRecommendations($entity)) {
       return AccessResult::allowed();
     }
@@ -168,9 +196,25 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   private function getRecommendations(ContentEntityInterface $entity): array {
     $recommendations = [];
 
+    $options = [];
+    if (in_array($entity->bundle(), ['news_item', 'news_article'])) {
+      // @todo This is to preserve the functionality from the previous
+      // implementation. Remove these once we have validated the
+      // cross-instance recommendations work as intended.
+      $options = [
+        'instances' => ['etusivu'],
+        'content_types' => ['node' => ['news_item', 'news_article']],
+      ];
+    }
+
     try {
       $recommendations = $this->recommendationManager
-        ->getRecommendations($entity, 3, $entity->language()->getId());
+        ->getRecommendations(
+          $entity,
+          3,
+          $entity->language()->getId(),
+          $options,
+        );
     }
     catch (\Exception $exception) {
       Error::logException($this->logger, $exception);

@@ -64,7 +64,7 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
     assert($items instanceof EntityReferenceFieldItemListInterface);
 
     $hasTargetEntity = !$items[$delta]->isEmpty();
-    $entity = $hasTargetEntity ? $items[$delta]->entity : SuggestedTopics::create();
+    $entity = $hasTargetEntity && $items[$delta]->entity ? $items[$delta]->entity : SuggestedTopics::create();
     assert($entity instanceof SuggestedTopicsInterface);
 
     // Set the entity this field belongs to as the parent entity.
@@ -113,23 +113,21 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#description' => $this->t('Select the content types that should be used for recommendations. If no content types are selected, recommendations will be shown from all content types.'),
     ];
 
-    // Render suggested topics entity.
-    // @todo this should use entity view builder.
+    // Generated keywords.
+    $keywords = [];
     if ($hasTargetEntity) {
-      $keywords = [];
-      foreach ($entity->referencedEntities() as $keyword) {
-        $keywords[] = $keyword->label();
+      foreach ($entity->getKeywords() as $keyword) {
+        $keywords[] = sprintf('%s (%s)', $keyword['label'], number_format((float) $keyword['score'], 2));
       }
-
-      $element['keywords'] = [
-        '#type' => 'textarea',
-        '#default_value' => implode("\n", $keywords),
-        '#title' => $this->t('Generated keywords'),
-        '#disabled' => TRUE,
-        '#description' => $this->t('Keywords are generated automatically.'),
-        '#placeholder' => $this->t('No keywords generated yet.'),
-      ];
     }
+    $element['keywords'] = [
+      '#type' => 'textarea',
+      '#default_value' => implode("\n", $keywords),
+      '#title' => $this->t('Generated keywords'),
+      '#disabled' => TRUE,
+      '#description' => $this->t('Keywords are generated automatically. Trailing number is a score between 0 and 1, and indicates the relevance of the keyword.'),
+      '#placeholder' => $this->t('No keywords generated yet.'),
+    ];
 
     return $element;
   }

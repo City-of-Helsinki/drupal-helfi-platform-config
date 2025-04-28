@@ -32,6 +32,8 @@ interface RecommendationManagerInterface {
    * @param string|null $target_langcode
    *   Which translation to use to select the recommendations,
    *   null uses the entity's translation.
+   * @param array $options
+   *   Additional options to limit recommendations.
    *
    * @return array
    *   Array of recommendations.
@@ -39,6 +41,6 @@ interface RecommendationManagerInterface {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL): array;
+  public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL, ?array $options = []): array;
 
 }

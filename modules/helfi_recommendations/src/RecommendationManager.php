@@ -5,25 +5,22 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Elastic\Elasticsearch\Client;
-use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * The recommendation manager.
  */
-final class RecommendationManager implements RecommendationManagerInterface {
+class RecommendationManager implements RecommendationManagerInterface {
 
   const INDEX_NAME = 'suggestions';
   const ELASTICSEARCH_QUERY_BUFFER = 10;
@@ -46,8 +43,6 @@ final class RecommendationManager implements RecommendationManagerInterface {
    *   The environment resolver.
    * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
    *   The topics manager.
-   * @param \GuzzleHttp\Client $guzzleClient
-   *   The Guzzle client.
    * @param \Elastic\Elasticsearch\Client $elasticClient
    *   The Elasticsearch client.
    */
@@ -57,7 +52,6 @@ final class RecommendationManager implements RecommendationManagerInterface {
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
-    #[Autowire(service: 'http_client')] private GuzzleClient $guzzleClient,
     #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
   ) {
   }
@@ -95,7 +89,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL): array {
+  public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL, ?array $options = []): array {
     $destination_langcode = $entity->language()->getId();
     $target_langcode = $target_langcode ?? $destination_langcode;
     if ($entity instanceof TranslatableInterface && !$entity->hasTranslation($target_langcode)) {
@@ -107,7 +101,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
 
       // Get results from Elasticsearch. Fetch more than needed to account for
       // the fact that some results may not be available from json api anymore.
-      $query = $this->getElasticQuery($entity, $target_langcode, $limit + self::ELASTICSEARCH_QUERY_BUFFER);
+      $query = $this->getElasticQuery($entity, $target_langcode, $limit + self::ELASTICSEARCH_QUERY_BUFFER, $options);
       $results = $query ? $this->searchElastic($query) : [];
 
       // Fetch node data for each result via a JSON:API request.
@@ -235,11 +229,13 @@ final class RecommendationManager implements RecommendationManagerInterface {
    *   Which translation to use to select the recommendations.
    * @param int $limit
    *   How many recommendations should be returned. Defaults to 3.
+   * @param array $options
+   *   Additional options to limit recommendations.
    *
    * @return array
    *   The elastic query.
    */
-  private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3): array {
+  private function getElasticQuery(ContentEntityInterface $entity, string $target_langcode, int $limit = 3, ?array $options = []): array {
     // Build keyword terms and score functions.
     try {
       $keywords = $this->topicsManager->getKeywords($entity);
@@ -288,18 +284,42 @@ final class RecommendationManager implements RecommendationManagerInterface {
       'query' => [
         'bool' => [
           'filter' => [
-            [
-              'term' => [
-                'parent_translations' => $target_langcode,
+            'bool' => [
+              // Filter out entities that do not have a translation in the
+              // target language.
+              'must' => [
+                [
+                  'term' => [
+                    'parent_translations' => $target_langcode,
+                  ],
+                ],
               ],
+              // Filter out entities that have a published_at field and are
+              // older than 365 days.
+              'should' => [
+                [
+                  'range' => [
+                    'parent_published_at' => [
+                      'gte' => 'now-365d/d',
+                    ],
+                  ],
+                ],
+                [
+                  'bool' => [
+                    'must_not' => [
+                      [
+                        'exists' => [
+                          'field' => 'parent_published_at',
+                        ],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+              'minimum_should_match' => 1,
             ],
           ],
           'must' => [
-            [
-              'exists' => [
-                'field' => 'parent_id',
-              ],
-            ],
             [
               'exists' => [
                 'field' => 'parent_instance',
@@ -307,12 +327,12 @@ final class RecommendationManager implements RecommendationManagerInterface {
             ],
             [
               'exists' => [
-                'field' => 'parent_type',
+                'field' => 'parent_url',
               ],
             ],
             [
               'exists' => [
-                'field' => 'parent_bundle',
+                'field' => "parent_title_$target_langcode",
               ],
             ],
             [
@@ -363,7 +383,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
     ];
 
     // Filter enabled instances.
-    $allowed_instances = $this->getEnabledInstances($entity);
+    $allowed_instances = $options['instances'] ?? $this->getEnabledInstances($entity);
     if (!empty($allowed_instances)) {
       $terms_set = [
         'terms_set' => [
@@ -373,11 +393,11 @@ final class RecommendationManager implements RecommendationManagerInterface {
           ],
         ],
       ];
-      $query['query']['bool']['filter'][] = $terms_set;
+      $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
     }
 
     // Filter enabled entity types and bundles.
-    $allowed_content_types = $this->getEnabledContentTypesAndBundles($entity);
+    $allowed_content_types = $options['content_types'] ?? $this->getEnabledContentTypesAndBundles($entity);
     if (!empty($allowed_content_types)) {
       $allowed_entity_types = [];
       $allowed_bundles = [];
@@ -396,7 +416,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
             ],
           ],
         ];
-        $query['query']['bool']['filter'][] = $terms_set;
+        $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
       }
 
       if ($allowed_bundles) {
@@ -408,7 +428,7 @@ final class RecommendationManager implements RecommendationManagerInterface {
             ],
           ],
         ];
-        $query['query']['bool']['filter'][] = $terms_set;
+        $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
       }
     }
 
@@ -461,23 +481,54 @@ final class RecommendationManager implements RecommendationManagerInterface {
 
     foreach ($results['hits']['hits'] as $hit) {
       $instance = !empty($hit['_source']['parent_instance']) ? reset($hit['_source']['parent_instance']) : NULL;
-      $type = !empty($hit['_source']['parent_type']) ? reset($hit['_source']['parent_type']) : NULL;
-      $bundle = !empty($hit['_source']['parent_bundle']) ? reset($hit['_source']['parent_bundle']) : NULL;
-      $id = !empty($hit['_source']['parent_id']) ? reset($hit['_source']['parent_id']) : NULL;
       $uuid = !empty($hit['_source']['uuid']) ? reset($hit['_source']['uuid']) : NULL;
+      $url = !empty($hit['_source']['parent_url']) ? reset($hit['_source']['parent_url']) : NULL;
+      $title = !empty($hit['_source']['parent_title_' . $target_langcode]) ? reset($hit['_source']['parent_title_' . $target_langcode]) : NULL;
+      $image_url = !empty($hit['_source']['parent_image_url']) ? reset($hit['_source']['parent_image_url']) : NULL;
+      $image_alt = !empty($hit['_source']['parent_image_alt_' . $target_langcode]) ? reset($hit['_source']['parent_image_alt_' . $target_langcode]) : NULL;
+      $published_at = !empty($hit['_source']['parent_published_at']) ? reset($hit['_source']['parent_published_at']) : NULL;
+      $score = $hit['_score'] ?? NULL;
 
-      // We need all this in order to continue.
-      if (!$instance || !$type || !$bundle || !$id || !$uuid) {
+      // Check if all required fields are present.
+      if (!$instance || !$uuid || !$url || !$title) {
         continue;
       }
 
-      $data = $instance === $this->getParentInstance()
-        ? $this->buildLocalEntityData($type, $bundle, $id, $target_langcode)
-        : $this->buildRemoteEntityData($instance, $type, $bundle, $id, $target_langcode);
+      $data = [
+        'uuid' => $uuid,
+        'url' => $url,
+        'title' => $title,
+        'score' => $score,
+      ];
 
-      if ($data) {
-        $node_data[] = ['uuid' => $uuid] + $data;
+      if ($image_url) {
+        $theme = 'responsive_image';
+        $image_uri = $image_url;
+
+        // Use external image when the recommendation item is from a different
+        // instance.
+        if ($instance !== $this->getParentInstance()) {
+          $theme = 'imagecache_external_responsive';
+          $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
+          $image_uri = sprintf('%s%s', $environment->getInternalBaseUrl(), $image_url);
+        }
+
+        $data['image'] = [
+          '#theme' => $theme,
+          '#uri' => $image_uri,
+          '#responsive_image_style_id' => 'card_teaser',
+          '#alt' => $image_alt,
+          '#attributes' => [
+            'alt' => $image_alt,
+          ],
+        ];
       }
+
+      if ($published_at) {
+        $data['published_at'] = $published_at;
+      }
+
+      $node_data[] = $data;
 
       if (count($node_data) >= $limit) {
         break;
@@ -485,100 +536,6 @@ final class RecommendationManager implements RecommendationManagerInterface {
     }
 
     return $node_data;
-  }
-
-  /**
-   * Build local entity data.
-   *
-   * @param string $type
-   *   The entity type.
-   * @param string $bundle
-   *   The entity bundle.
-   * @param string $id
-   *   The entity ID.
-   * @param string $target_langcode
-   *   The target language code.
-   *
-   * @return array
-   *   The entity data.
-   */
-  private function buildLocalEntityData(string $type, string $bundle, string $id, string $target_langcode) : array {
-    $data = [];
-    $entity = $this->entityTypeManager->getStorage($type)->load($id);
-
-    if (!$entity->access('view')) {
-      return [];
-    }
-
-    if ($entity instanceof TranslatableInterface) {
-      if (!$entity->hasTranslation($target_langcode)) {
-        return [];
-      }
-      $entity = $entity->getTranslation($target_langcode);
-    }
-
-    if ($entity instanceof EntityInterface) {
-      $data['title'] = $entity->label();
-      $data['url'] = $entity->toUrl('canonical', [
-        'language' => $entity->language(),
-      ]);
-    }
-
-    return $data;
-  }
-
-  /**
-   * Build remote entity data.
-   *
-   * @param string $instance
-   *   The instance name.
-   * @param string $type
-   *   The entity type.
-   * @param string $bundle
-   *   The entity bundle.
-   * @param string $id
-   *   The entity ID.
-   * @param string $target_langcode
-   *   The target language code.
-   *
-   * @return array
-   *   The entity data.
-   */
-  private function buildRemoteEntityData(string $instance, string $type, string $bundle, string $id, string $target_langcode) : array {
-    $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
-
-    // Use internal url for json api requests to avoid varnish caching issues.
-    // This is also the only way for this to work in local environments.
-    $base_url = sprintf('%s/jsonapi/%s/%s', $environment->getInternalAddress($target_langcode), $type, $bundle);
-    $url = Url::fromUri($base_url, [
-      'query' => [
-        'filter[drupal_internal__nid]' => $id,
-        'filter[langcode]' => $target_langcode,
-      ],
-    ]);
-
-    try {
-      $response = json_decode($this->guzzleClient->request('GET', $url->toString())->getBody()->getContents());
-    }
-    catch (\Exception $e) {
-      Error::logException($this->logger, $e);
-      return [];
-    }
-
-    $json = !empty($response->data) && is_array($response->data) ? reset($response->data) : NULL;
-    if (!$json) {
-      return [];
-    }
-
-    $attributes = $json->attributes ?? NULL;
-    if (!$attributes) {
-      return [];
-    }
-
-    $data['title'] = $attributes->title ?? NULL;
-    $data['url'] = $attributes->path->alias ? sprintf('%s/%s', $environment->getUrl($target_langcode), ltrim($attributes->path->alias, '/')) : NULL;
-
-    return $data;
   }
 
 }

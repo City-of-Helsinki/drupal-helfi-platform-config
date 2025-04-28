@@ -96,7 +96,7 @@ final class Commands extends DrushCommands {
     $query = $this->connection
       ->select($definition->getBaseTable(), 't')
       ->fields('t', [$definition->getKey('id')])
-      ->condition($definition->getKey('bundle'), $bundle);
+      ->condition('t.' . $definition->getKey('bundle'), $bundle);
 
     $entityIds = $query
       ->execute()
@@ -134,7 +134,7 @@ final class Commands extends DrushCommands {
         ->getStorage($entityType)
         ->loadMultiple($slice);
 
-      $this->topicsManager->processEntities($entities, $overwrite);
+      $this->topicsManager->processEntities($entities, $overwrite, TRUE);
 
       $this->updateBatchParams($context, $entityIds, $to);
     }

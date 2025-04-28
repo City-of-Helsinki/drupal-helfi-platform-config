@@ -28,10 +28,14 @@ interface TopicsManagerInterface {
    *   The entity.
    * @param bool $overwriteExisting
    *   Overwrites existing keywords when set to TRUE.
+   * @param bool $reset
+   *   If TRUE, reset the processedItems property before processing. This
+   *   allows batch processing to function properly (like drush commands and
+   *   queue runners).
    *
    * @throws \Drupal\helfi_recommendations\RecommendationsException
    */
-  public function processEntity(ContentEntityInterface $entity, bool $overwriteExisting = FALSE) : void;
+  public function processEntity(ContentEntityInterface $entity, bool $overwriteExisting = FALSE, bool $reset = FALSE) : void;
 
   /**
    * Generates keywords for multiple entities.
@@ -40,10 +44,14 @@ interface TopicsManagerInterface {
    *   The entities.
    * @param bool $overwriteExisting
    *   Overwrites existing keywords when set to TRUE.
+   * @param bool $reset
+   *   If TRUE, reset the processedItems property before processing. This
+   *   allows batch processing to function properly (like drush commands and
+   *   queue runners).
    *
    * @throws \Drupal\helfi_recommendations\RecommendationsException
    */
-  public function processEntities(array $entities, bool $overwriteExisting = FALSE) : void;
+  public function processEntities(array $entities, bool $overwriteExisting = FALSE, bool $reset = FALSE) : void;
 
   /**
    * Get keyword data for a content entity.

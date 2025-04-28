@@ -97,14 +97,18 @@ final class TopicsManager implements TopicsManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function processEntity(ContentEntityInterface $entity, bool $overwriteExisting = FALSE) : void {
-    $this->processEntities([$entity], $overwriteExisting);
+  public function processEntity(ContentEntityInterface $entity, bool $overwriteExisting = FALSE, bool $reset = FALSE) : void {
+    $this->processEntities([$entity], $overwriteExisting, $reset);
   }
 
   /**
    * {@inheritDoc}
    */
-  public function processEntities(array $entities, bool $overwriteExisting = FALSE) : void {
+  public function processEntities(array $entities, bool $overwriteExisting = FALSE, bool $reset = FALSE) : void {
+    if ($reset) {
+      $this->processedItems = [];
+    }
+
     foreach ($this->prepareBatches($entities, $overwriteExisting) as $batch) {
       $result = $this->keywordGenerator->suggestBatch($batch);
 
@@ -318,7 +322,7 @@ final class TopicsManager implements TopicsManagerInterface {
       // suggested_topics_reference fields.
       foreach ($field->referencedEntities() as $topic) {
         assert($topic instanceof SuggestedTopicsInterface);
-        $topics[] = $topic;
+        $topics[$topic->id()] = $topic;
       }
     }
 
