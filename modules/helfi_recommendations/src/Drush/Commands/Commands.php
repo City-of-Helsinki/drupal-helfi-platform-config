@@ -170,7 +170,7 @@ final class Commands extends DrushCommands {
         ->load($id);
 
       if (!$entity) {
-        $this->io->error("Failed to load $entity_type:$id");
+        $this->io()->error("Failed to load $entity_type:$id");
         return self::EXIT_FAILURE;
       }
 
