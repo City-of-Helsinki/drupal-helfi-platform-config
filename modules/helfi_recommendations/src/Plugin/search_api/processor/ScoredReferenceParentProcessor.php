@@ -66,68 +66,52 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
     if ($datasource) {
       $propertyDefinitions = $datasource->getPropertyDefinitions();
       if (!empty($propertyDefinitions['parent_id']) && !empty($propertyDefinitions['parent_type'])) {
-        $properties['parent_url'] = new ProcessorProperty([
-          'label' => $this->t('Parent url'),
-          'description' => $this->t('Indexes parent entity url'),
-          'type' => 'string',
-          'processor_id' => $this->getPluginId(),
-        ]);
+        $fields = [
+          'parent_url' => [
+            'label' => $this->t('Parent url'),
+            'description' => $this->t('Indexes parent entity url'),
+          ],
+          'parent_title_fi' => [
+            'label' => $this->t('Parent title in Finnish'),
+            'description' => $this->t('Indexes parent title in Finnish'),
+          ],
+          'parent_title_sv' => [
+            'label' => $this->t('Parent title in Swedish'),
+            'description' => $this->t('Indexes parent title in Swedish'),
+          ],
+          'parent_title_en' => [
+            'label' => $this->t('Parent title in English'),
+            'description' => $this->t('Indexes parent title in English'),
+          ],
+          'parent_image_url' => [
+            'label' => $this->t('Parent image url'),
+            'description' => $this->t('Indexes parent image url'),
+          ],
+          'parent_image_alt_fi' => [
+            'label' => $this->t('Parent image alt in Finnish'),
+            'description' => $this->t('Indexes parent image alt in Finnish'),
+          ],
+          'parent_image_alt_sv' => [
+            'label' => $this->t('Parent image alt in Swedish'),
+            'description' => $this->t('Indexes parent image alt in Swedish'),
+          ],
+          'parent_image_alt_en' => [
+            'label' => $this->t('Parent image alt in English'),
+            'description' => $this->t('Indexes parent image alt in English'),
+          ],
+          'parent_published_at' => [
+            'label' => $this->t('Parent published date'),
+            'description' => $this->t('Indexes parent published date'),
+            'type' => 'date',
+          ],
+        ];
 
-        $properties['parent_title_fi'] = new ProcessorProperty([
-          'label' => $this->t('Parent title in Finnish'),
-          'description' => $this->t('Indexes parent title in Finnish'),
-          'type' => 'string',
-          'processor_id' => $this->getPluginId(),
-        ]);
-
-        $properties['parent_title_sv'] = new ProcessorProperty([
-          'label' => $this->t('Parent title in Swedish'),
-          'description' => $this->t('Indexes parent title in Swedish'),
-          'type' => 'string',
-          'processor_id' => $this->getPluginId(),
-        ]);
-
-        $properties['parent_title_en'] = new ProcessorProperty([
-          'label' => $this->t('Parent title in English'),
-          'description' => $this->t('Indexes parent title in English'),
-          'type' => 'string',
-          'processor_id' => $this->getPluginId(),
-        ]);
-
-        $properties['parent_image_url'] = new ProcessorProperty([
-          'label' => $this->t('Parent image url'),
-          'description' => $this->t('Indexes parent image url'),
-          'type' => 'string',
-          'processor_id' => $this->getPluginId(),
-        ]);
-
-        $properties['parent_image_alt_fi'] = new ProcessorProperty([
-          'label' => $this->t('Parent image alt in Finnish'),
-          'description' => $this->t('Indexes parent image alt in Finnish'),
-          'type' => 'string',
-          'processor_id' => $this->getPluginId(),
-        ]);
-
-        $properties['parent_image_alt_sv'] = new ProcessorProperty([
-          'label' => $this->t('Parent image alt in Swedish'),
-          'description' => $this->t('Indexes parent image alt in Swedish'),
-          'type' => 'string',
-          'processor_id' => $this->getPluginId(),
-        ]);
-
-        $properties['parent_image_alt_en'] = new ProcessorProperty([
-          'label' => $this->t('Parent image alt in English'),
-          'description' => $this->t('Indexes parent image alt in English'),
-          'type' => 'string',
-          'processor_id' => $this->getPluginId(),
-        ]);
-
-        $properties['parent_published_at'] = new ProcessorProperty([
-          'label' => $this->t('Parent published date'),
-          'description' => $this->t('Indexes parent published date'),
-          'type' => 'date',
-          'processor_id' => $this->getPluginId(),
-        ]);
+        foreach ($fields as $field => $definition) {
+          $properties[$field] = new ProcessorProperty($definition + [
+            'type' => 'string',
+            'processor_id' => $this->getPluginId(),
+          ]);
+        }
       }
     }
 
