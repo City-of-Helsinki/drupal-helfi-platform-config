@@ -75,7 +75,7 @@ class CommandsTest extends UnitTestCase {
       $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class)->reveal();
     }
     if (!$textConverter) {
-      $textConverter = $this->prophesize(TextConverterManager::class)->reveal();
+      $textConverter = new TextConverterManager();
     }
     if (!$topicsManager) {
       $topicsManager = $this->prophesize(TopicsManager::class)->reveal();
