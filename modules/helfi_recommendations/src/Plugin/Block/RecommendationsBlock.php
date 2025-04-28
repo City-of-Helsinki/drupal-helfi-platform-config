@@ -17,7 +17,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
-use Drupal\helfi_recommendations\RecommendationManager;
+use Drupal\helfi_recommendations\RecommendationManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -47,7 +47,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private readonly RecommendationManager $recommendationManager,
+    private readonly RecommendationManagerInterface $recommendationManager,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly AccountInterface $currentUser,
     private readonly LoggerInterface $logger,
@@ -61,7 +61,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     return new self($configuration, $plugin_id, $plugin_definition,
-      $container->get(RecommendationManager::class),
+      $container->get(RecommendationManagerInterface::class),
       $container->get('entity_type.manager'),
       $container->get('current_user'),
       $container->get('logger.channel.helfi_recommendations'),
@@ -160,6 +160,10 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   protected function blockAccess(AccountInterface $account) {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
+
+    if (!$entity instanceof ContentEntityInterface) {
+      return AccessResult::forbidden();
+    }
 
     // @todo This is a temporary restriction to allow validating the
     // cross-instance recommendations in production before allowing the

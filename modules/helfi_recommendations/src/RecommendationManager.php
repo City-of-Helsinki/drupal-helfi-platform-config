@@ -20,7 +20,7 @@ use Elastic\Elasticsearch\Client;
 /**
  * The recommendation manager.
  */
-final class RecommendationManager implements RecommendationManagerInterface {
+class RecommendationManager implements RecommendationManagerInterface {
 
   const INDEX_NAME = 'suggestions';
   const ELASTICSEARCH_QUERY_BUFFER = 10;

@@ -16,6 +16,7 @@ use Drupal\file\FileInterface;
 use Drupal\media\MediaInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Field\FieldItemInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Indexes scored reference parent data.
@@ -71,34 +72,12 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
             'label' => $this->t('Parent url'),
             'description' => $this->t('Indexes parent entity url'),
           ],
-          'parent_title_fi' => [
-            'label' => $this->t('Parent title in Finnish'),
-            'description' => $this->t('Indexes parent title in Finnish'),
-          ],
-          'parent_title_sv' => [
-            'label' => $this->t('Parent title in Swedish'),
-            'description' => $this->t('Indexes parent title in Swedish'),
-          ],
-          'parent_title_en' => [
-            'label' => $this->t('Parent title in English'),
-            'description' => $this->t('Indexes parent title in English'),
-          ],
+          ...$this->getLanguageSpecificFields('parent_title', $this->t('Parent title')),
           'parent_image_url' => [
             'label' => $this->t('Parent image url'),
             'description' => $this->t('Indexes parent image url'),
           ],
-          'parent_image_alt_fi' => [
-            'label' => $this->t('Parent image alt in Finnish'),
-            'description' => $this->t('Indexes parent image alt in Finnish'),
-          ],
-          'parent_image_alt_sv' => [
-            'label' => $this->t('Parent image alt in Swedish'),
-            'description' => $this->t('Indexes parent image alt in Swedish'),
-          ],
-          'parent_image_alt_en' => [
-            'label' => $this->t('Parent image alt in English'),
-            'description' => $this->t('Indexes parent image alt in English'),
-          ],
+          ...$this->getLanguageSpecificFields('parent_image_alt', $this->t('Parent image alt')),
           'parent_published_at' => [
             'label' => $this->t('Parent published date'),
             'description' => $this->t('Indexes parent published date'),
@@ -116,6 +95,37 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
     }
 
     return $properties;
+  }
+
+  /**
+   * Generates language-specific field definitions.
+   *
+   * @param string $field_id
+   *   The id of the field (e.g., 'parent_title', 'parent_image_alt').
+   * @param string|TranslatableMarkup $field_name
+   *   The name of the field.
+   *
+   * @return array
+   *   An array of field definitions.
+   */
+  private function getLanguageSpecificFields(string $field_id, string|TranslatableMarkup $field_name): array {
+    $fields = [];
+    $languages = ['fi' => 'Finnish', 'sv' => 'Swedish', 'en' => 'English'];
+
+    foreach ($languages as $code => $langname) {
+      $fields["{$field_id}_{$code}"] = [
+        'label' => $this->t("@field_name in @langname", [
+          '@field_name' => $field_name,
+          '@langname' => $langname,
+        ]),
+        'description' => $this->t("Indexes @field_name in @langname", [
+          '@field_name' => $field_name,
+          '@langname' => $langname,
+        ]),
+      ];
+    }
+
+    return $fields;
   }
 
   /**

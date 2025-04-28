@@ -13,6 +13,7 @@ services:
   Drupal\helfi_recommendations\ReferenceUpdater: ~
 
   Drupal\helfi_recommendations\RecommendationManager: ~
+  Drupal\helfi_recommendations\RecommendationManagerInterface: '@Drupal\helfi_recommendations\RecommendationManager'
 
   Drupal\helfi_recommendations\Client\ApiClient : ~
 
