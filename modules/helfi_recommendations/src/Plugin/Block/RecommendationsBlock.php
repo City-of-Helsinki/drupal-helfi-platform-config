@@ -81,7 +81,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       '#title' => $this->t('You might be interested in', [], ['context' => 'Recommendations block title']),
     ];
 
-    $recommendations = $this->getRecommendations($entity);
+    $recommendations = $entity instanceof ContentEntityInterface ? $this->getRecommendations($entity) : [];
     if (!$recommendations) {
       if ($this->currentUser->isAnonymous()) {
         return [];
@@ -125,7 +125,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
-    $recommendations = $this->getRecommendations($entity);
+    $recommendations = $entity instanceof ContentEntityInterface ? $this->getRecommendations($entity) : [];
 
     $tags = [];
     foreach ($recommendations as $recommendation) {
