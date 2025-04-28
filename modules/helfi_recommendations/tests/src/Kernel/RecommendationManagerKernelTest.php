@@ -71,8 +71,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
   /**
    * Tests showRecommendations without suggested topics reference fields.
-   *
-   * @covers ::showRecommendations
    */
   public function testShowRecommendationsWithoutFields(): void {
     NodeType::create([
@@ -92,8 +90,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
   /**
    * Tests showRecommendations with show_block = FALSE.
-   *
-   * @covers ::showRecommendations
    */
   public function testShowRecommendationsWithShowBlockFalse(): void {
     $node = Node::create([
@@ -114,8 +110,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
   /**
    * Tests showRecommendations with show_block = TRUE.
-   *
-   * @covers ::showRecommendations
    */
   public function testShowRecommendationsWithShowBlockTrue(): void {
     $node = Node::create([
@@ -136,8 +130,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
   /**
    * Tests getRecommendations with local entities and translations.
-   *
-   * @covers ::getRecommendations
    */
   public function testGetRecommendationsWithTranslations(): void {
     $term1 = Term::create([
@@ -211,8 +203,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
   /**
    * Tests getRecommendations with empty search results.
-   *
-   * @covers ::getRecommendations
    */
   public function testGetRecommendationsWithEmptyResults(): void {
     $term1 = Term::create([
@@ -252,8 +242,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
   /**
    * Tests getRecommendations with external results.
-   *
-   * @covers ::getRecommendations
    */
   public function testGetRecommendationsWithExternalResults(): void {
     $term1 = Term::create([
