@@ -1,0 +1,5 @@
+label: Tapahtuman kieli
+description: 'Näytä “Kieli” -suodatin'
+settings:
+  on_label: Kyllä
+  off_label: Ei
