@@ -1,4 +1,4 @@
-uuid: cb6b117c-b7cd-466c-8caa-c0771d852b38
+uuid: 591c90c8-42a5-4760-9a8c-b4bc6a309138
 langcode: en
 status: true
 dependencies:
@@ -11,6 +11,7 @@ dependencies:
     - field.field.paragraph.event_list.field_event_time
     - field.field.paragraph.event_list.field_filter_keywords
     - field.field.paragraph.event_list.field_free_events
+    - field.field.paragraph.event_list.field_language
     - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
   module:
@@ -80,6 +81,16 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_language:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 7
     region: content
   field_remote_events:
     type: boolean

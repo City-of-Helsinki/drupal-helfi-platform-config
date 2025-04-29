@@ -1,0 +1,23 @@
+uuid: c5dad672-6fdc-4512-ac95-ba14c95c2cad
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_language
+    - paragraphs.paragraphs_type.event_list
+id: paragraph.event_list.field_language
+field_name: field_language
+entity_type: paragraph
+bundle: event_list
+label: Language
+description: 'Show "Language" filter.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

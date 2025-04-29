@@ -1,4 +1,4 @@
-uuid: 7cd23379-a8db-4edb-97ee-e55e348d4623
+uuid: 4c5d5765-e436-4d83-91d8-928e5e0362a0
 langcode: en
 status: true
 dependencies:
@@ -11,6 +11,7 @@ dependencies:
     - field.field.paragraph.event_list.field_event_time
     - field.field.paragraph.event_list.field_filter_keywords
     - field.field.paragraph.event_list.field_free_events
+    - field.field.paragraph.event_list.field_language
     - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
   module:
@@ -32,7 +33,7 @@ content:
     third_party_settings: {  }
   field_event_count:
     type: options_select
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -68,7 +69,7 @@ content:
     third_party_settings: {  }
   field_filter_keywords:
     type: select2_entity_reference
-    weight: 8
+    weight: 9
     region: content
     settings:
       width: 100%
@@ -78,14 +79,21 @@ content:
     third_party_settings: {  }
   field_free_events:
     type: boolean_checkbox
-    weight: 7
+    weight: 8
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_language:
+    type: boolean_checkbox
+    weight: 6
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_remote_events:
     type: boolean_checkbox
-    weight: 6
+    weight: 7
     region: content
     settings:
       display_label: true
