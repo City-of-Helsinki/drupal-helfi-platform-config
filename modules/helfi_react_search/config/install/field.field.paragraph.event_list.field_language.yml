@@ -9,7 +9,7 @@ id: paragraph.event_list.field_language
 field_name: field_language
 entity_type: paragraph
 bundle: event_list
-label: Language
+label: 'Event Language'
 description: 'Show "Language" filter.'
 required: false
 translatable: false
