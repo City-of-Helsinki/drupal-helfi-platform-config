@@ -122,7 +122,6 @@ function helfi_react_search_update_9011() : void {
     ->update('helfi_react_search');
 }
 
-
 /**
  * UHF-X: Fix clashing 'language' label translation.
  */
