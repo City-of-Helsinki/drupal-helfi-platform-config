@@ -492,7 +492,7 @@ function helfi_platform_config_config_ignore_ignored_alter(ConfigIgnoreConfig $i
   // Add the configuration objects to the ignore list.
   foreach (['create', 'update', 'delete'] as $operation) {
     foreach (['import', 'export'] as $direction) {
-      // Let the configurations be create during import.
+      // Create the new configurations during import.
       if ($operation === 'create' && $direction === 'import') {
         continue;
       }
