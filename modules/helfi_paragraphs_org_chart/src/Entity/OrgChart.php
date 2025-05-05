@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_org_chart\Entity;
 
-use Drupal\helfi_paragraphs_org_chart\OrgChartStorage;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
@@ -30,21 +29,6 @@ class OrgChart extends Paragraph {
    */
   public function getDepth(): int {
     return (int) $this->get('field_org_chart_depth')->value;
-  }
-
-  /**
-   * Get org chart data.
-   *
-   * @return array
-   *   The data.
-   */
-  public function getOrgChartData(): array {
-    $language = $this->language()->getId();
-    $start = $this->getStartingOrganization();
-    $depth = $this->getDepth();
-
-    return \Drupal::service(OrgChartStorage::class)
-      ->load($language, $start, $depth);
   }
 
 }

@@ -17,7 +17,8 @@ class OrgChartImporter {
   /**
    * Constructs a new instance.
    */
-  public function __construct(readonly ClientInterface $client) {}
+  public function __construct(private readonly ClientInterface $client) {
+  }
 
   /**
    * Gets the uri for given language.

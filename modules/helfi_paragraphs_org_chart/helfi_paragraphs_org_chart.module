@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\helfi_paragraphs_org_chart\Entity\OrgChart;
+use Drupal\helfi_paragraphs_org_chart\OrgChartLazyBuilder;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -41,12 +42,16 @@ function helfi_paragraphs_org_chart_preprocess_paragraph__org_chart(array &$vari
   assert($paragraph instanceof OrgChart);
 
   $variables['org_chart_data'] = [
-    '#theme' => 'org_chart',
-    '#chart' => $paragraph->getOrgChartData(),
-    '#cache' => [
-      // Cache for 1 day.
-      'max-age' => 86400,
+    '#lazy_builder' => [
+      OrgChartLazyBuilder::class . ':build',
+      [
+        $paragraph->language()->getId(),
+        $paragraph->getStartingOrganization(),
+        $paragraph->getDepth(),
+      ],
     ],
+    '#create_placeholder' => TRUE,
+    '#lazy_builder_preview' => ['#markup' => ''],
   ];
 }
 
