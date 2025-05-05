@@ -1,4 +1,18 @@
+{% macro recursiveOrgChart(organization) %}
+  <li>
+    {{ organization.title }}
+    {% if organization.children|length %}
+      <ul>
+        {% for child in organization.children %}
+          {{ _self.recursiveOrgChart(child) }}
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </li>
+{% endmacro %}
+
 <div{{ attributes }}>
-  {# TODO: UHF-11178 #}
-  {{ dd(chart) }}
+  <ul>
+    {{ _self.recursiveOrgChart(chart) }}
+  </ul>
 </div>
