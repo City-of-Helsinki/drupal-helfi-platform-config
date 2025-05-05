@@ -1,0 +1,12 @@
+uuid: e95880ac-9e9c-4287-b508-39830bb3798d
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_paragraphs_org_chart
+id: org_chart
+label: 'Org chart'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

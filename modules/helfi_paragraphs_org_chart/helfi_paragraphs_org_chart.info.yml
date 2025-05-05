@@ -1,0 +1,8 @@
+name: 'HELfi Paragraphs: Org chart'
+type: module
+core_version_requirement: '^10 || ^11'
+dependencies:
+  - paragraphs:paragraphs
+  - drupal:text
+'interface translation project': helfi_paragraphs_org_chart
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_paragraphs_org_chart/translations/%language.po

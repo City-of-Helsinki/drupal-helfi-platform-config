@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_org_chart' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\helfi_paragraphs_org_chart\Entity\OrgChart;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_org_chart_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['org_chart'])) {
+    $bundles['paragraph']['org_chart']['class'] = OrgChart::class;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_paragraphs_org_chart_theme($existing, $type, $theme, $path): array {
+  return [
+    'org_chart' => [
+      'variables' => [
+        'chart' => NULL,
+        'attributes' => [],
+      ],
+    ],
+  ];
+}
