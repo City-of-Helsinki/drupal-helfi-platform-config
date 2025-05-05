@@ -1,0 +1,32 @@
+uuid: 31233b14-f4a4-4212-a8b2-b2ca252bfc4d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.org_chart.field_org_chart_desc
+    - field.field.paragraph.org_chart.field_org_chart_title
+    - paragraphs.paragraphs_type.org_chart
+  module:
+    - helfi_paragraphs_org_chart
+    - text
+id: paragraph.org_chart.default
+targetEntityType: paragraph
+bundle: org_chart
+mode: default
+content:
+  field_org_chart_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_org_chart_desc:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {}

@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Drupal\helfi_paragraphs_org_chart\OrgChartImporter: ~
+  Drupal\helfi_paragraphs_org_chart\OrgChartLazyBuilder: ~
+  Drupal\helfi_paragraphs_org_chart\OrgChartStorage: ~

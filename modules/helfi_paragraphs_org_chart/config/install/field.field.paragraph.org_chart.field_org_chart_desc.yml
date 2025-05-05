@@ -1,0 +1,23 @@
+uuid: 7b897001-f510-4974-8a2c-29a7b151206d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_org_chart_desc
+    - paragraphs.paragraphs_type.org_chart
+  module:
+    - helfi_paragraphs_org_chart
+    - text
+third_party_settings: { }
+id: paragraph.org_chart.field_org_chart_desc
+field_name: field_org_chart_desc
+entity_type: paragraph
+bundle: org_chart
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: { }
+field_type: text_long

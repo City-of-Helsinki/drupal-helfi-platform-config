@@ -1,0 +1,51 @@
+uuid: c65fa2b5-0576-4ee8-8865-6810758273e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.org_chart.field_org_chart_depth
+    - field.field.paragraph.org_chart.field_org_chart_desc
+    - field.field.paragraph.org_chart.field_org_chart_start
+    - field.field.paragraph.org_chart.field_org_chart_title
+    - paragraphs.paragraphs_type.org_chart
+  module:
+    - helfi_paragraphs_org_chart
+    - text
+id: paragraph.org_chart.default
+targetEntityType: paragraph
+bundle: org_chart
+mode: default
+content:
+  field_org_chart_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_org_chart_desc:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_org_chart_start:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_org_chart_depth:
+    type: options_select
+    weight: 3
+    region: content
+    settings: { }
+    third_party_settings: { }
+hidden:
+  created: true
+  status: true

@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_paragraphs_org_chart' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\helfi_paragraphs_org_chart\Entity\OrgChart;
+use Drupal\helfi_paragraphs_org_chart\OrgChartLazyBuilder;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_org_chart_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['org_chart'])) {
+    $bundles['paragraph']['org_chart']['class'] = OrgChart::class;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_paragraphs_org_chart_theme($existing, $type, $theme, $path): array {
+  return [
+    'org_chart' => [
+      'variables' => [
+        'chart' => NULL,
+        'attributes' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess().
+ */
+function helfi_paragraphs_org_chart_preprocess_paragraph__org_chart(array &$variables): void {
+  $paragraph = $variables['paragraph'];
+  assert($paragraph instanceof OrgChart);
+
+  $variables['org_chart_data'] = [
+    '#lazy_builder' => [
+      OrgChartLazyBuilder::class . ':build',
+      [
+        $paragraph->language()->getId(),
+        $paragraph->getStartingOrganization(),
+        $paragraph->getDepth(),
+      ],
+    ],
+    '#create_placeholder' => TRUE,
+    '#lazy_builder_preview' => ['#markup' => ''],
+  ];
+}
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_org_chart_helfi_paragraph_types() : array {
+  // @todo enable this paragraph on correct instances & fields. UHF-11178.
+  return [
+    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'org_chart', -99),
+  ];
+}
