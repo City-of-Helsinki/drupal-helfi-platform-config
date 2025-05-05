@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -478,21 +479,29 @@ function helfi_platform_config_set_language_link_disabled(array &$link): void {
 }
 
 /**
- * Implements hook_config_ignore_settings_alter().
+ * Implements hook_config_ignore_ignored_alter().
  */
-function helfi_platform_config_config_ignore_settings_alter(array &$settings) {
-  $add_ignore = [
+function helfi_platform_config_config_ignore_ignored_alter(ConfigIgnoreConfig $ignored): void {
+  $settings_to_ignore = [
     'block.block.ibmchatapp',
     'block.block.ibmchatapp_*',
     'block.block.teliaacewidget*',
     'block.block.hdbt_subtheme_teliaacewidget*',
   ];
 
-  foreach ($add_ignore as $config) {
-    if (in_array($config, $settings)) {
-      continue;
+  // Add the configuration objects to the ignore list.
+  foreach (['create', 'update', 'delete'] as $operation) {
+    foreach (['import', 'export'] as $direction) {
+      // Create the new configurations during import.
+      if ($operation === 'create' && $direction === 'import') {
+        continue;
+      }
+      $list = array_merge(
+        $ignored->getList($direction, $operation),
+        $settings_to_ignore,
+      );
+      $ignored->setList($direction, $operation, $list);
     }
-    array_push($settings, $config);
   }
 }
 
