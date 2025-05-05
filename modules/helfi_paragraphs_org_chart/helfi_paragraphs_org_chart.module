@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\helfi_paragraphs_org_chart\Entity\OrgChart;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -29,5 +30,32 @@ function helfi_paragraphs_org_chart_theme($existing, $type, $theme, $path): arra
         'attributes' => [],
       ],
     ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess().
+ */
+function helfi_paragraphs_org_chart_preprocess_paragraph__org_chart(array &$variables): void {
+  $paragraph = $variables['paragraph'];
+  assert($paragraph instanceof OrgChart);
+
+  $variables['org_chart_data'] = [
+    '#theme' => 'org_chart',
+    '#chart' => $paragraph->getOrgChartData(),
+    '#cache' => [
+      // Cache for 1 day.
+      'max-age' => 86400,
+    ],
+  ];
+}
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_org_chart_helfi_paragraph_types() : array {
+  // @todo enable this paragraph on correct instances & fields. UHF-11178.
+  return [
+    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'org_chart', -99),
   ];
 }
