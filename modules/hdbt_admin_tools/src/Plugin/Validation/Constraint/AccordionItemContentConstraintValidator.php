@@ -22,16 +22,15 @@ class AccordionItemContentConstraintValidator extends ConstraintValidator {
     $parent = $value->getEntity();
 
     // Make sure we're validating the correct field on the right paragraph type.
-    if (
-      $value->getName() !== 'field_accordion_item_content' ||
-      !$parent instanceof ParagraphInterface ||
-      $parent->bundle() !== 'accordion_item'
-    ) {
+    if ( $value->getName() !== 'field_accordion_item_content') {
       return;
     }
 
     // Check if the field is empty.
-    if ($parent->get('field_accordion_item_content')->isEmpty()) {
+    if (
+      $parent &&
+      $parent->hasField('field_accordion_item_content') &&
+      $parent->get('field_accordion_item_content')->isEmpty()) {
       $this->context->addViolation($constraint->accordionItemContentRequired);
     }
   }
