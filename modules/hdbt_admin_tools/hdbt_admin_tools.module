@@ -542,6 +542,20 @@ function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInt
     }
   }
 
+  if ($entity_type->id() === 'paragraph' && $bundle == 'accordion') {
+    // Add constraint to check if accordion has items.
+    if (array_key_exists('field_accordion_items', $fields)) {
+      $fields['field_accordion_items']->addConstraint('AccordionItems', []);
+    }
+  }
+
+  if ($entity_type->id() === 'paragraph' && $bundle == 'accordion_item') {
+    // Add constraint to check if accordion items has content.
+    if (array_key_exists('field_accordion_item_content', $fields)) {
+      $fields['field_accordion_item_content']->addConstraint('AccordionItemContent', []);
+    }
+  }
+
 }
 
 /**
