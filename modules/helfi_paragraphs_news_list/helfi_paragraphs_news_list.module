@@ -19,7 +19,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph;
-use Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber;
+use Drupal\helfi_paragraphs_news_list\Entity\NewsListLazyBuilder;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
@@ -65,53 +65,14 @@ function helfi_paragraphs_news_list_paragraph_view(
   EntityViewDisplayInterface $display,
   string $view_mode,
 ) : void {
-  if (!$entity instanceof NewsFeedParagraph) {
+  if (!$entity instanceof NewsFeedParagraph || !$display->getComponent('news_list')) {
     return;
   }
-  if ($display->getComponent('news_list')) {
-    $storage = Drupal::entityTypeManager()
-      ->getStorage('helfi_news');
-    $query = $storage
-      ->getQuery();
-    $query
-      ->condition('search_api_language', $entity->language()->getId())
-      ->range(0, $entity->getLimit());
-
-    $termFilters = [
-      'news_tags_uuid' => $entity->getTagsUuid(),
-      'news_groups_uuid' => $entity->getGroupsUuid(),
-      'neighbourhoods_uuid' => $entity->getNeighbourhoodsUuids(),
-    ];
-    foreach ($termFilters as $name => $value) {
-      $query->condition($name, $value, 'IN');
-    }
-    $query->sort('published_at', 'DESC');
-
-    $query->accessCheck(FALSE);
-
-    $ids = $query->execute();
-    $entities = $storage->loadMultiple($ids);
-
-    // Don't cache empty results for longer periods of time.
-    if (empty($entities)) {
-      // Setting a max-age here is not enough since it would not bubble up to
-      // the page cache. Therefore we set a cache tag for empty results and let
-      // CacheResponseSubscriber set the max-age of the response cache when
-      // the cache tag is present.
-      // @see https://www.drupal.org/node/2352009
-      // @see \Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber::handleNewsListCache()
-      $build['#cache']['tags'][] = 'helfi_news_list_empty_results';
-      $build['#cache']['max-age'] = CacheResponseSubscriber::EMPTY_LIST_MAX_AGE;
-    }
-
-    foreach ($entities as $item) {
-      $item->addCacheableDependency($entity);
-
-      $build['news_list'][] = Drupal::entityTypeManager()
-        ->getViewBuilder('helfi_news')
-        ->view($item, 'medium_teaser');
-    }
-  }
+  $build['news_list'] = [
+    '#lazy_builder' => [NewsListLazyBuilder::class . ':build', [$entity->id()]],
+    '#create_placeholder' => TRUE,
+    '#lazy_builder_preview' => ['#markup' => ''],
+  ];
 }
 
 /**
