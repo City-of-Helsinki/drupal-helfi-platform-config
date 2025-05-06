@@ -389,7 +389,12 @@ class RecommendationManager implements RecommendationManagerInterface {
         'terms_set' => [
           'parent_instance' => [
             'terms' => $allowed_instances,
-            'minimum_should_match' => 1,
+            'minimum_should_match_script' => [
+              'source' => 'params["minimum_should_match"]',
+              'params' => [
+                'minimum_should_match' => 1,
+              ],
+            ],
           ],
         ],
       ];
@@ -412,7 +417,12 @@ class RecommendationManager implements RecommendationManagerInterface {
           'terms_set' => [
             'parent_type' => [
               'terms' => $allowed_entity_types,
-              'minimum_should_match' => 1,
+              'minimum_should_match_script' => [
+                'source' => 'params["minimum_should_match"]',
+                'params' => [
+                  'minimum_should_match' => 1,
+                ],
+              ],
             ],
           ],
         ];
@@ -424,7 +434,12 @@ class RecommendationManager implements RecommendationManagerInterface {
           'terms_set' => [
             'parent_bundle' => [
               'terms' => $allowed_bundles,
-              'minimum_should_match' => 1,
+              'minimum_should_match_script' => [
+                'source' => 'params["minimum_should_match"]',
+                'params' => [
+                  'minimum_should_match' => 1,
+                ],
+              ],
             ],
           ],
         ];
