@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\hdbt_admin_tools\Plugin\Validation\Constraint;
+namespace Drupal\helfi_paragraphs_accordion\Plugin\Validation\Constraint;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Validation\Attribute\Constraint;

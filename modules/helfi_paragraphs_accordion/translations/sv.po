@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+
+msgid "The content contains an accordion with no items. Either remove the accordion entirely or add a new item to it."
+msgstr "Innehållet innehåller en dragspelsmodul utan några punkter. Ta bort dragspelsmodulen helt eller lägg till en ny punkt."
+
+msgid "The content contains an accordion item with no content. Add content to the item or remove the accordion entirely."
+msgstr "Innehållet innehåller en punkt i dragspelsmodulen utan innehåll. Lägg till innehåll i punkten eller ta bort dragspelsmodulen helt."

@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\helfi_paragraphs_accordion\Entity\Accordion;
 use Drupal\helfi_paragraphs_accordion\Entity\AccordionItem;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
@@ -35,4 +36,24 @@ function helfi_paragraphs_accordion_entity_bundle_info_alter(array &$bundles): v
   if (isset($bundles['paragraph']['accordion_item'])) {
     $bundles['paragraph']['accordion_item']['class'] = AccordionItem::class;
   }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_paragraphs_accordion_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
+  if ($entity_type->id() === 'paragraph' && $bundle == 'accordion') {
+    // Add constraint to check if accordion has items.
+    if (array_key_exists('field_accordion_items', $fields)) {
+      $fields['field_accordion_items']->addConstraint('AccordionItems', []);
+    }
+  }
+
+  if ($entity_type->id() === 'paragraph' && $bundle == 'accordion_item') {
+    // Add constraint to check if accordion items has content.
+    if (array_key_exists('field_accordion_item_content', $fields)) {
+      $fields['field_accordion_item_content']->addConstraint('AccordionItemContent', []);
+    }
+  }
+
 }
