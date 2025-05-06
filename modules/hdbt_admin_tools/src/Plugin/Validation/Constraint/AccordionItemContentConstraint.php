@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Constraint;
  * )
  */
 class AccordionItemContentConstraint extends Constraint {
- /**
-   * Message shown for the Hero paragraph.
+  /**
+   * Message shown for the Accordion Item paragraph.
    *
    * @var string
    */

@@ -15,7 +15,11 @@ use Symfony\Component\Validator\Constraint;
  * )
  */
 class AccordionItemsConstraint extends Constraint {
-
+  /**
+   * Message shown for the Accordion paragraph.
+   *
+   * @var string
+   */
   public string $accordionItemsRequired = 'The content contains an accordion with no items. Either remove the accordion entirely or add a new item to it.';
 
 }

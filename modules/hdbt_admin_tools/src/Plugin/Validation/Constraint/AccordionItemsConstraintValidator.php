@@ -19,7 +19,7 @@ class AccordionItemsConstraintValidator extends ConstraintValidator {
     assert($constraint instanceof AccordionItemsConstraint);
     $parent = $value->getEntity();
 
-    if ( $value->getName() !== 'field_accordion_items') {
+    if ($value->getName() !== 'field_accordion_items') {
       return;
     }
 
