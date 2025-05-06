@@ -69,9 +69,6 @@ class NewsListLazyBuilderTest extends KernelTestBase {
 
     $paragraph = Paragraph::create([
       'type' => 'news_list',
-      'field_helfi_news_neighbourhoods' => [$this->neighbourhood],
-      'field_helfi_news_tags' => [$this->tag],
-      'field_helfi_news_groups' => [$this->group],
       'field_limit' => 22,
       'field_news_list_title' => 'test title',
       'field_news_list_description' => 'test description',
