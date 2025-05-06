@@ -26,7 +26,7 @@ class AccordionItemsConstraintValidator extends ConstraintValidator {
     if (
       $parent &&
       $parent->hasField('field_accordion_items') &&
-      $parent->get('field_accordion_items')->count() === 0
+      $parent->get('field_accordion_items')->isEmpty()
     ) {
       $this->context->addViolation($constraint->accordionItemsRequired);
     }

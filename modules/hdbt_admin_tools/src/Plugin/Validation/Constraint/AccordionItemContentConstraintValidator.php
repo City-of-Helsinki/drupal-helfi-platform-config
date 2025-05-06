@@ -30,7 +30,8 @@ class AccordionItemContentConstraintValidator extends ConstraintValidator {
     if (
       $parent &&
       $parent->hasField('field_accordion_item_content') &&
-      $parent->get('field_accordion_item_content')->isEmpty()) {
+      $parent->get('field_accordion_item_content')->isEmpty()
+    ) {
       $this->context->addViolation($constraint->accordionItemContentRequired);
     }
   }
