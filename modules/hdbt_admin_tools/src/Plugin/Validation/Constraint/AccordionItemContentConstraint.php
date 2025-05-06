@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Validation\Constraint;
 
-use Symfony\Component\Validator\Constraint;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Validation\Attribute\Constraint;
+use Symfony\Component\Validator\Constraint as SymfonyConstraint;
 
 /**
- * Validates that accordion item content is not empty.
- *
- * @Constraint(
- *   id = "AccordionItemContent",
- *   label = @Translation("Accordion item content is mandatory.", context = "Validation"),
- *   type = "entity:paragraph"
- * )
+ * Validation constraint for accordion item content.
  */
-class AccordionItemContentConstraint extends Constraint {
+#[Constraint(
+  id: 'AccordionItemContent',
+  label: new TranslatableMarkup('Accordion item content is mandatory.', [], ['context' => 'Validation']),
+  type: 'entity:paragraph'
+)]
+class AccordionItemContentConstraint extends SymfonyConstraint {
+
   /**
    * Message shown for the Accordion Item paragraph.
    *

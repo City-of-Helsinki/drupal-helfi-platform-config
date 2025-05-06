@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Validation\Constraint;
 
-use Symfony\Component\Validator\Constraint;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Validation\Attribute\Constraint;
+use Symfony\Component\Validator\Constraint as SymfonyConstraint;
 
 /**
- * Validates that accordion has at least one item.
- *
- * @Constraint(
- *   id = "AccordionItems",
- *   label = @Translation("Accordion must contain at least one item", context = "Validation"),
- * )
+ * Validation constraint for accordions that must have at least one item.
  */
-class AccordionItemsConstraint extends Constraint {
+#[Constraint(
+  id: 'AccordionItems',
+  label: new TranslatableMarkup('Accordion must contain at least one item.', [], ['context' => 'Validation'])
+)]
+class AccordionItemsConstraint extends SymfonyConstraint {
+
   /**
    * Message shown for the Accordion paragraph.
    *

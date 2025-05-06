@@ -22,7 +22,7 @@ class AccordionItemContentConstraintValidator extends ConstraintValidator {
     $parent = $value->getEntity();
 
     // Make sure we're validating the correct field on the right paragraph type.
-    if ( $value->getName() !== 'field_accordion_item_content') {
+    if ($value->getName() !== 'field_accordion_item_content') {
       return;
     }
 
