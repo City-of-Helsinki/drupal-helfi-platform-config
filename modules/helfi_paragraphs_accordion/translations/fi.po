@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+
+msgid "The content contains an accordion with no items. Either remove the accordion entirely or add a new item to it."
+msgstr "Sisällössä on haitari, jolla ei ole yhtään alakohtaa. Poista haitari kokonaan tai lisää siihen uusi alakohta."
+
+msgid "The content contains an accordion item with no content. Add content to the item or remove the accordion entirely."
+msgstr "Sisällössä on haitari, jonka alakohdalla ei ole sisältöä. Poista haitari kokonaan tai lisää alakohdalle sisältöä."
