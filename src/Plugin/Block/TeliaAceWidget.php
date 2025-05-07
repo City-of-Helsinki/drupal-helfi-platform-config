@@ -35,7 +35,7 @@ class TeliaAceWidget extends BlockBase {
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => $this->t('Chat Widget ID'),
-      '#description' => $this->t('ID for the chat instance, without the humany_ prefix. This value can be translated. Example format: example-chat-fin'),
+      '#description' => $this->t('This value is provided by the service provider. The value can be translated. Example format: example-chat-fin'),
       '#default_value' => $config['chat_id'] ?? '',
     ];
 
