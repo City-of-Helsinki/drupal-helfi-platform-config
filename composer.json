@@ -41,7 +41,7 @@
         "drupal/menu_block_current_language": "^2.0",
         "drupal/menu_link_attributes": "^1.2",
         "drupal/metatag": "^2",
-        "drupal/oembed_providers": "^2.0",
+        "drupal/oembed_providers": "^2.2.2",
         "drupal/paragraphs": "^1.12",
         "drupal/paragraphs_asymmetric_translation_widgets": "^1.0",
         "drupal/pathauto": "^1.8",
