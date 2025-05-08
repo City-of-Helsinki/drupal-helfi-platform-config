@@ -2,8 +2,18 @@
   {% if organization.children|length %}
     {% set has_children = TRUE %}
   {% endif %}
-  <li class="org-chart__item {{ has_children ? 'org-chart__item--has-children' }}">
-    <span class="org-chart__item__title org-chart__item__title--level-{{ organization_level }}">{{ organization.title }}</span>
+  <li class="org-chart__item{{ has_children ? ' org-chart__item--has-children' }}">
+    {% set organization_name_attributes = {
+      'class': [
+        'org-chart__item__title',
+        'org-chart__item__title--level-' ~ organization_level,
+      ]
+    } %}
+    {% if organization.url %}
+      {{ link(organization.title, organization.url, organization_name_attributes) }}
+    {% else %}
+      <span{{ create_attribute(organization_name_attributes) }}>{{ organization.title }}</span>
+    {% endif %}
     {% if has_children %}
       <ul class="org-chart__container org-chart__container--inner">
         {% for child in organization.children %}
