@@ -61,6 +61,6 @@ function helfi_paragraphs_org_chart_preprocess_paragraph__org_chart(array &$vari
 function helfi_paragraphs_org_chart_helfi_paragraph_types() : array {
   // @todo enable this paragraph on correct instances & fields. UHF-11178.
   return [
-    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'org_chart', -99),
+    new ParagraphTypeCollection('node', 'page', 'field_content', 'org_chart', 39),
   ];
 }
