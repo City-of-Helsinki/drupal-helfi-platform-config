@@ -38,6 +38,9 @@ class OrgChartLazyBuilder implements TrustedCallbackInterface {
         // Cache for 1 day on successful requests.
         'max-age' => empty($data) ? 60 : 86400,
       ],
+      '#attributes' => [
+        'class' => ['org-chart'],
+      ],
     ];
   }
 
