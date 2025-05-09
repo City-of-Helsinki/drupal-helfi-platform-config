@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_org_chart;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
@@ -13,6 +14,8 @@ use GuzzleHttp\Utils;
  * Imports org chart from päätökset instance.
  */
 class OrgChartImporter {
+
+  use StringTranslationTrait;
 
   /**
    * Constructs a new instance.
@@ -58,7 +61,11 @@ class OrgChartImporter {
       $chart = Utils::jsonDecode($data, assoc: TRUE);
     }
     catch (GuzzleException | InvalidArgumentException) {
-      return [];
+      return [
+        'error' => TRUE,
+        'error_title' => $this->t('An error occurred while loading the content', [], ['context' => 'Organization chart error']),
+        'error_body' => $this->t('Please reload the page or try again later.', [], ['context' => 'Organization chart error']),
+      ];
     }
 
     return $chart;

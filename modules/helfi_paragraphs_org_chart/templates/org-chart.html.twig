@@ -25,12 +25,11 @@
 {% endmacro %}
 
 <div{{ attributes }}>
-  {% if chart %}
-  <ul class="org-chart__container">
-    {{ _self.recursiveOrgChart(chart, 1) }}
-  </ul>
+  {% if chart and not chart.error %}
+    <ul class="org-chart__container">
+      {{ _self.recursiveOrgChart(chart, 1) }}
+    </ul>
   {% else %}
-    <h3>{{ 'An error occurred while loading the content'|t({}, {'context': 'Organization chart error'}) }}</h3>
-    <p>{{ 'Please reload the page or try again later.'|t({}, {'context': 'Organization chart error'}) }}</p>
+    {% include '@hdbt/misc/status-message.twig' ignore missing with { title: chart.error_title } %}
   {% endif %}
 </div>
