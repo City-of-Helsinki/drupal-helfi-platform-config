@@ -9,6 +9,7 @@ dependencies:
   - helfi_platform_config:helfi_etusivu_entities
   - helfi_platform_config:helfi_paragraphs_image_gallery
   - helfi_platform_config:helfi_paragraphs_news_list
+  - helfi_platform_config:helfi_paragraphs_org_chart
   - helfi_platform_config:helfi_platform_config_base
   - helfi_platform_config:helfi_toc
   - helfi_platform_config:helfi_tpr_config
