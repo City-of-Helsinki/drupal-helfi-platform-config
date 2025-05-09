@@ -60,7 +60,7 @@ class OrgChartImporter {
   public function fetch(string $langcode, string $start, int $depth) : array {
     // Return mock response if the use mock feature is enabled.
     if ($this->featureManager->isEnabled(FeatureManager::USE_MOCK_RESPONSES)) {
-      $data = file_get_contents(__DIR__ . '/../tests/fixtures/org-chart.json');
+      $data = file_get_contents(__DIR__ . "/../tests/fixtures/org-chart-$depth.json");
       return Utils::jsonDecode($data, assoc: TRUE);
     }
 
