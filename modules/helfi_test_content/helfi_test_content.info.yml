@@ -125,6 +125,7 @@ default_content:
     - d71f793a-23e0-42d9-aca6-2b49d675a88e
     - ee9d7380-b0d1-4851-9fa6-878a78c15eba
     - d4d64c29-abc2-4e7e-94b2-7fc3bab25159
+    - 3b444534-9ba6-4fda-a29e-374ba87b5bd1
   node:
     - 1a89e8f5-03d5-440c-a8ba-a09b460f2ad2
     - 3a8dd5fc-a5aa-4976-9ec0-3432d9984c6e
@@ -194,6 +195,7 @@ default_content:
     - af71df27-c08a-40ab-a823-b7fe32d7545f
     - f65e4772-0571-4f6b-87cb-db1f83594dd6
     - c0aeeda3-54e5-4a08-b742-3b9c24b4f0b6
+    - 917d12cc-0d2d-4856-b31f-2d858b4dc87d
   tpr_service:
     - 0aa92e2b-092c-447e-b1e2-d331c1ff7b0c
     - 0cadef9b-6538-4e1e-9b3a-35fc895948fb
