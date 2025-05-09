@@ -1,0 +1,416 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 917d12cc-0d2d-4856-b31f-2d858b4dc87d
+  bundle: page
+  default_langcode: en
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'DC: Organization chart'
+  created:
+    -
+      value: 1746785504
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'DC: Organization chart | City of Helsinki'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'https://mysite.docker.so/en/dc-components/dc-org-chart'
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'City of Helsinki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:url'
+        content: 'https://mysite.docker.so/en/user/login'
+    -
+      tag: meta
+      attributes:
+        property: 'og:title'
+        content: 'DC: Organization chart'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'https://mysite.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+    -
+      tag: meta
+      attributes:
+        property: 'og:updated_time'
+        content: '2025-05-09T11:13:20+0000'
+    -
+      tag: meta
+      attributes:
+        property: 'article:published_time'
+        content: '2025-05-09T10:11:44+0000'
+    -
+      tag: meta
+      attributes:
+        property: 'article:modified_time'
+        content: '2025-05-09T11:13:20+0000'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary_large_image
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:title'
+        content: '| City of Helsinki'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'https://mysite.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+  path:
+    -
+      alias: /dc-components/dc-org-chart
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1746789058
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7ca089c1-ef0f-4641-bdb2-58dc2cc2c958
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746785733
+          behavior_settings:
+            -
+              value: {  }
+          field_org_chart_depth:
+            -
+              value: 1
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - without description - level 1'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a57009d6-c4ee-4257-92b3-8767a6641412
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746785733
+          behavior_settings:
+            -
+              value: {  }
+          field_org_chart_depth:
+            -
+              value: 2
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - without description - level 2'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: b0b4c912-b460-48ef-96e7-af68220f070a
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746785733
+          behavior_settings:
+            -
+              value: {  }
+          field_org_chart_depth:
+            -
+              value: 3
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - without description - level 3'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: e44f6539-9aaa-42d5-aa5c-1b5cb7f1eb8c
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746785733
+          behavior_settings:
+            -
+              value: {  }
+          field_org_chart_depth:
+            -
+              value: 4
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - without description - level 4'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 40f79808-f56b-4ce0-a748-0b99d97a6c7f
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746785733
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_org_chart_depth:
+            -
+              value: 4
+          field_org_chart_desc:
+            -
+              value: '<p>Sed ac lectus vitae ex gravida lacinia. Suspendisse blandit quis mauris id malesuada. Nulla commodo nisl semper, tempus lectus in, gravida leo. Nunc sed felis nec lectus mollis accumsan at ac nunc. Fusce suscipit quam sed quam porttitor, id suscipit massa elementum. Phasellus vel arcu mollis, tempus purus sed, tempus felis. Aenean aliquam tortor sed est ultrices feugiat. Nam pharetra lorem non risus molestie pretium. Vivamus eget nibh in purus lobortis malesuada quis id sem. Maecenas suscipit dignissim leo ac congue. Sed vitae urna tristique odio porta vehicula. Integer viverra massa aliquam libero efficitur porttitor. Curabitur eget aliquam nunc. Phasellus sem massa, auctor a nisl et, tempus pulvinar neque. Aliquam at purus ornare, congue dui nec, varius dolor.</p><p>Morbi porta, nisl at auctor pulvinar, erat libero ultrices sem, a rutrum massa mauris eu erat. Cras faucibus, massa in fermentum faucibus, justo arcu efficitur odio, vitae placerat urna nulla nec augue. Etiam id tempor lorem. Duis in turpis a arcu finibus varius non sit amet urna. Vestibulum ullamcorper eros massa, eget tempor augue dapibus vel. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque odio lorem, placerat eget blandit in, mollis in nisi. In fringilla nisi consectetur pharetra laoreet. Vivamus id nunc vitae metus aliquam finibus malesuada sed orci. Aliquam finibus metus mi, quis elementum tortor blandit sed. Suspendisse in est vitae metus gravida vestibulum et ut lorem.</p>'
+              format: full_html
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - with description - level 1'
+  field_has_hero:
+    -
+      value: false
+  field_lower_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 18ba8a38-6632-4fc5-8fa8-8a575afe1cb3
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746789118
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_org_chart_depth:
+            -
+              value: 1
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - without description - level 1'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 665f60c6-c811-46fd-be14-e35651521933
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746789118
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_org_chart_depth:
+            -
+              value: 2
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - without description - level 2'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: c25b3afb-c7dd-4907-9c93-8f01ce8627f2
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746789118
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_org_chart_depth:
+            -
+              value: 3
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - without description - level 3'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 314970e5-59a8-4e28-a7e6-4dfdb1c71d28
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746789118
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_org_chart_depth:
+            -
+              value: 4
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - without description - level 4'
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: f2a565cc-2e3d-404c-8a92-d4be8ce2eba6
+          bundle: org_chart
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1746789118
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_org_chart_depth:
+            -
+              value: 1
+          field_org_chart_desc:
+            -
+              value: '<p>Sed ac lectus vitae ex gravida lacinia. Suspendisse blandit quis mauris id malesuada. Nulla commodo nisl semper, tempus lectus in, gravida leo. Nunc sed felis nec lectus mollis accumsan at ac nunc. Fusce suscipit quam sed quam porttitor, id suscipit massa elementum. Phasellus vel arcu mollis, tempus purus sed, tempus felis. Aenean aliquam tortor sed est ultrices feugiat. Nam pharetra lorem non risus molestie pretium. Vivamus eget nibh in purus lobortis malesuada quis id sem. Maecenas suscipit dignissim leo ac congue. Sed vitae urna tristique odio porta vehicula. Integer viverra massa aliquam libero efficitur porttitor. Curabitur eget aliquam nunc. Phasellus sem massa, auctor a nisl et, tempus pulvinar neque. Aliquam at purus ornare, congue dui nec, varius dolor.</p><p>In enim elit, cursus vel dignissim vel, ultricies volutpat nunc. Ut nec posuere ex. Mauris magna augue, facilisis in massa sit amet, blandit sodales urna. Ut bibendum tincidunt venenatis. Nullam mollis dictum lacus, id maximus erat sodales nec. Vestibulum magna quam, dictum quis cursus vitae, convallis ac nulla. Suspendisse vestibulum eget metus nec feugiat. Etiam sit amet ultricies risus. Donec ut metus et ipsum scelerisque venenatis. Maecenas at ex interdum, hendrerit nulla sit amet, tempus enim. Praesent sodales rhoncus auctor. Praesent mattis est non fermentum mollis. Nunc cursus neque ac urna efficitur maximus. Suspendisse non elit venenatis, condimentum eros vel, feugiat ipsum. Praesent ac placerat tortor.</p><p>Etiam in imperdiet ex. Aenean facilisis, ante sed lobortis molestie, orci ex ultrices ipsum, eu fringilla neque nisl vitae nibh. Morbi volutpat nunc eget tempus ultricies. Nulla facilisi. Sed vulputate interdum dapibus. Nunc nec commodo eros. Mauris ut ante nibh. Ut aliquet, orci sit amet vulputate egestas, elit diam pharetra diam, sit amet tincidunt libero est nec turpis. Fusce ultrices sapien tellus, a commodo lorem dapibus vel. Suspendisse et posuere magna. Nam feugiat ipsum risus, eu egestas libero condimentum ac. Nam dictum velit libero, ut tincidunt sem placerat rhoncus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras commodo dolor ut turpis porta ultricies. Praesent sodales risus in congue blandit.</p><p>Morbi porta, nisl at auctor pulvinar, erat libero ultrices sem, a rutrum massa mauris eu erat. Cras faucibus, massa in fermentum faucibus, justo arcu efficitur odio, vitae placerat urna nulla nec augue. Etiam id tempor lorem. Duis in turpis a arcu finibus varius non sit amet urna. Vestibulum ullamcorper eros massa, eget tempor augue dapibus vel. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque odio lorem, placerat eget blandit in, mollis in nisi. In fringilla nisi consectetur pharetra laoreet. Vivamus id nunc vitae metus aliquam finibus malesuada sed orci. Aliquam finibus metus mi, quis elementum tortor blandit sed. Suspendisse in est vitae metus gravida vestibulum et ut lorem.</p>'
+              format: full_html
+          field_org_chart_start:
+            -
+              value: '00000'
+          field_org_chart_title:
+            -
+              value: 'Organization chart - with description - level 1'

@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: e34e9eac-f3ab-4313-ba96-f7c51db1b778
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3b444534-9ba6-4fda-a29e-374ba87b5bd1: menu_link_content
+    917d12cc-0d2d-4856-b31f-2d858b4dc87d: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Organization chart'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: 917d12cc-0d2d-4856-b31f-2d858b4dc87d
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3b444534-9ba6-4fda-a29e-374ba87b5bd1'
+  revision_translation_affected:
+    -
+      value: false
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1746789058
