@@ -30,6 +30,19 @@
       {{ _self.recursiveOrgChart(chart, 1) }}
     </ul>
   {% else %}
-    {% include '@hdbt/misc/status-message.twig' ignore missing with { title: chart.error_title } %}
+    {% include "@hdbt/misc/status-message.twig" ignore missing with
+      {
+        type: 'error',
+        size: 'large',
+        title: chart.error_title,
+        alternative_language: {
+          'fallback_lang': 'en',
+          'fallback_dir': 'ltr',
+        },
+        messages: [
+          chart.error_body,
+        ],
+      }
+    %}
   {% endif %}
 </div>
