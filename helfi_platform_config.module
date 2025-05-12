@@ -24,7 +24,9 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
@@ -352,6 +354,10 @@ function helfi_platform_config_system_breadcrumb_alter(
 
   /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
   $resolver = Drupal::service('helfi_api_base.environment_resolver');
+
+  if (!Drupal::service(ActiveProjectRoles::class)->hasRole(ProjectRoleEnum::Core)) {
+    return;
+  }
 
   // Do nothing if the current project is not in environments list.
   try {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\hdbt_cookie_banner\Services;
 
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\Core\Asset\LibraryDiscoveryInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -16,6 +17,7 @@ use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
@@ -30,6 +32,7 @@ class CookieSettings {
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly UrlGeneratorInterface $urlGenerator,
     private readonly LibraryDiscoveryInterface $libraryDiscovery,
+    private readonly ActiveProjectRoles $activeProjectRoles,
   ) {
   }
 
@@ -195,20 +198,24 @@ class CookieSettings {
     $environment = NULL;
 
     // Get active Etusivu environment.
-    try {
-      $environment = $this->environmentResolver->getEnvironment(
-        Project::ETUSIVU,
-        $this->environmentResolver->getActiveEnvironmentName()
-      );
-    }
-    catch (\InvalidArgumentException) {
-      if ($default_to_production) {
+    if ($this->activeProjectRoles->hasRole(ProjectRoleEnum::Core)) {
+      try {
         $environment = $this->environmentResolver->getEnvironment(
           Project::ETUSIVU,
-          EnvironmentEnum::Prod->value
+          $this->environmentResolver->getActiveEnvironmentName()
         );
       }
+      catch (\InvalidArgumentException) {
+      }
     }
+
+    if (!$environment && $default_to_production) {
+      $environment = $this->environmentResolver->getEnvironment(
+        Project::ETUSIVU,
+        EnvironmentEnum::Prod->value
+      );
+    }
+
     return $environment;
   }
 

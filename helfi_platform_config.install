@@ -96,12 +96,8 @@ function helfi_platform_config_update_9306() : void {
  */
 function helfi_platform_config_update_9307() : void {
   $module_installer = \Drupal::service('module_installer');
-  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
 
-  try {
-    $environmentResolver->getActiveEnvironment();
-  }
-  catch (\InvalidArgumentException) {
+  if (!\Drupal::service(ActiveProjectRoles::class)->hasRole(ProjectRoleEnum::Core)) {
     return;
   }
 
@@ -197,12 +193,7 @@ function helfi_platform_config_update_9312() : void {
  * UHF-10259: Enable helfi_paragraphs_curated_event_list module.
  */
 function helfi_platform_config_update_9313() : void {
-  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
-
-  try {
-    $environmentResolver->getActiveEnvironment();
-  }
-  catch (\InvalidArgumentException) {
+  if (!\Drupal::service(ActiveProjectRoles::class)->hasRole(ProjectRoleEnum::Core)) {
     return;
   }
 
@@ -441,9 +432,13 @@ function _helfi_platform_config_process_links(ContentEntityInterface $entity, st
  */
 function helfi_platform_config_update_9321(): void {
   $config = \Drupal::configFactory()->getEditable('helfi_platform_config.matomo_settings');
-  $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
+
+  if (!\Drupal::service(ActiveProjectRoles::class)->hasRole(ProjectRoleEnum::Core)) {
+    return;
+  }
 
   try {
+    $environmentResolver = \Drupal::getContainer()->get('helfi_api_base.environment_resolver');
     $project = $environmentResolver->getActiveProject();
   }
   catch (\InvalidArgumentException) {
