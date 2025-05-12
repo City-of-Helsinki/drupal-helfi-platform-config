@@ -44,4 +44,23 @@ class OrgChartImporterTest extends UnitTestCase {
     $this->assertArrayNotHasKey('error', $response);
   }
 
+  /**
+   * Tests the mock responses.
+   */
+  public function testMockResponses(): void {
+    $featureManager = $this->prophesize(FeatureManagerInterface::class);
+    $featureManager
+      ->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)
+      ->willReturn(TRUE);
+
+    $importer = new OrgChartImporter($this->createMockHttpClient([
+      new ClientException('test-error', new Request('GET', '/test'), new Response()),
+      new Response(body: file_get_contents(__DIR__ . '/../../fixtures/org-chart-2.json')),
+    ]), $featureManager->reveal());
+
+    $response = $importer->fetch('fi', '00000', 2);
+    $this->assertNotEmpty($response);
+    $this->assertArrayNotHasKey('error', $response);
+    $this->assertCount(5, (array) $response['children']);
+  }
 }
