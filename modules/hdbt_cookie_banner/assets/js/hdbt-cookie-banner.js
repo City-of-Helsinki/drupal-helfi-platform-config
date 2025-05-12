@@ -1,6 +1,6 @@
 'use strict';
 
-((Drupal, drupalSettings) => {
+((Drupal) => {
 
   // Global cookie consent status object.
   Drupal.cookieConsent = {
@@ -24,20 +24,26 @@
   };
 
   Drupal.behaviors.hdbt_cookie_banner = {
-    attach: function () {
+    attach: function (context, settings) {
+      // Run only once for the full document.
+      if (context !== document || window.hdsCookieConsentInitialized) {
+        return;
+      }
+
       // The hds-cookie-consent.min.js should be loaded before this script.
       // Check if the script is loaded.
       if (
         typeof window.hds !== 'undefined' &&
         typeof window.hds.CookieConsentCore !== 'undefined'
       ) {
-        const apiUrl = drupalSettings.hdbt_cookie_banner.apiUrl;
+        const apiUrl = settings.hdbt_cookie_banner.apiUrl;
         const options = {
-          language: drupalSettings.hdbt_cookie_banner.langcode,
-          theme: drupalSettings.hdbt_cookie_banner.theme,
-          settingsPageSelector: drupalSettings.hdbt_cookie_banner.settingsPageSelector,
-          spacerParentSelector: drupalSettings.hdbt_cookie_banner.spacerParentSelector || '.footer',
+          language: settings.hdbt_cookie_banner.langcode,
+          theme: settings.hdbt_cookie_banner.theme,
+          settingsPageSelector: settings.hdbt_cookie_banner.settingsPageSelector,
+          spacerParentSelector: settings.hdbt_cookie_banner.spacerParentSelector || '.footer',
         };
+        window.hdsCookieConsentInitialized = true;
         window.hds.CookieConsentCore.create(apiUrl, options);
       }
       else {
@@ -60,4 +66,4 @@
       };
     }
   }
-})(Drupal, drupalSettings);
+})(Drupal);
