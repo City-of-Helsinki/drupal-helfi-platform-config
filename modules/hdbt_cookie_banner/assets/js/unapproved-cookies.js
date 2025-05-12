@@ -7,13 +7,13 @@ class UnapprovedItemError extends Error {
   }
 }
 
-((Drupal, drupalSettings) => {
+((Drupal) => {
 
   let unapprovedCookiesInitialized = false;
 
   // Attach a behavior to capture unapproved cookies with Sentry.
   Drupal.behaviors.unapprovedCookies = {
-    attach: function attach(context) {
+    attach: function attach(context, settings) {
       // Run only once for the full document.
       if (context !== document || unapprovedCookiesInitialized) {
         return;
@@ -21,7 +21,7 @@ class UnapprovedItemError extends Error {
 
       unapprovedCookiesInitialized = true;
 
-      const apiUrl = drupalSettings.hdbt_cookie_banner.apiUrl;
+      const apiUrl = settings.hdbt_cookie_banner.apiUrl;
       fetch(apiUrl)
         .then(response => response.json())
         .then(jsonData => {
@@ -74,4 +74,4 @@ class UnapprovedItemError extends Error {
         })
     },
   }
-})(Drupal, drupalSettings);
+})(Drupal);
