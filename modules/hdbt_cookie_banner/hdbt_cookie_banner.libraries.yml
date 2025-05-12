@@ -43,7 +43,7 @@ cookie_banner_admin_ui:
     - hdbt_cookie_banner/json_editor
 
 hdbt_cookie_banner:
-  version: 1.0.0
+  version: 1.0.1
   header: true
   js:
     # The weight needs to be as low as drupal.init.js, which is -17.
@@ -57,3 +57,12 @@ hds_cookie_consent:
   header: true
   js:
     assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false }
+
+unapproved_cookies:
+  version: 1.0.0
+  js:
+    assets/js/unapproved-cookies.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - hdbt_cookie_banner/hdbt_cookie_banner
