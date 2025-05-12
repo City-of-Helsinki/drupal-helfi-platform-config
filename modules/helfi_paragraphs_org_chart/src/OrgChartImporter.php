@@ -68,7 +68,7 @@ class OrgChartImporter {
       $chart = Utils::jsonDecode($data, assoc: TRUE);
     }
     catch (GuzzleException | InvalidArgumentException) {
-      return ['error' => TRUE];
+      return [];
     }
 
     return $chart;

@@ -35,13 +35,11 @@ class OrgChartImporterTest extends UnitTestCase {
 
     // The api returns an error.
     $response = $importer->fetch('fi', '00400', 3);
-    $this->assertArrayHasKey('error', $response);
-    $this->assertTrue($response['error']);
+    $this->assertEmpty($response);
 
     // Empty response is not cached.
     $response = $importer->fetch('fi', '00400', 3);
     $this->assertNotEmpty($response);
-    $this->assertArrayNotHasKey('error', $response);
   }
 
   /**
@@ -60,7 +58,6 @@ class OrgChartImporterTest extends UnitTestCase {
 
     $response = $importer->fetch('fi', '00000', 2);
     $this->assertNotEmpty($response);
-    $this->assertArrayNotHasKey('error', $response);
     $this->assertCount(5, (array) $response['children']);
   }
 

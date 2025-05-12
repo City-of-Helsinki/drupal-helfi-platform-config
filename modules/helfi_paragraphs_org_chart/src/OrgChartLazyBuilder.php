@@ -33,10 +33,10 @@ class OrgChartLazyBuilder implements TrustedCallbackInterface {
     $data = $this->storage->fetch($langcode, $start, $depth);
     return [
       '#theme' => 'org_chart',
-      '#chart' => $data,
+      '#chart' => !empty($data) ? $data : ['error' => TRUE],
       '#cache' => [
         // Cache for 1 day on successful requests.
-        'max-age' => isset($data['error']) ? 60 : 86400,
+        'max-age' => empty($data) ? 60 : 86400,
       ],
       '#attributes' => [
         'class' => ['org-chart'],
