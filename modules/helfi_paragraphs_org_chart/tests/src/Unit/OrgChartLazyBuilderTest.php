@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_org_chart\Unit;
 
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\helfi_paragraphs_org_chart\OrgChartImporter;
 use Drupal\helfi_paragraphs_org_chart\OrgChartLazyBuilder;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -23,10 +24,15 @@ class OrgChartLazyBuilderTest extends UnitTestCase {
    * Tests lazy builder.
    */
   public function testLazyBuilder() {
+    $featureManager = $this->prophesize(FeatureManagerInterface::class);
+    $featureManager
+      ->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)
+      ->willReturn(FALSE);
+
     $sut = new OrgChartLazyBuilder(new OrgChartImporter($this->createMockHttpClient([
       new Response(body: '["test-response"]'),
       new ClientException('test-error', new Request('GET', '/test'), new Response()),
-    ])));
+    ]), $featureManager->reveal()));
 
     // Successful requests should be cached.
     $response = $sut->build('fi', '00400', 3);
