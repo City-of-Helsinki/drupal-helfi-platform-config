@@ -63,4 +63,5 @@ class OrgChartImporterTest extends UnitTestCase {
     $this->assertArrayNotHasKey('error', $response);
     $this->assertCount(5, (array) $response['children']);
   }
+
 }
