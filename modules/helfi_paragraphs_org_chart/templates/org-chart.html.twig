@@ -34,12 +34,13 @@
       {
         type: 'error',
         size: 'large',
-        title: chart.error_title,
+        title: 'An error occurred while loading the content'|t({}, {'context': 'Organization chart error'}),
         alternative_language: {
           'fallback_lang': 'en',
           'fallback_dir': 'ltr',
         },
         messages: [
+          title: 'Please reload the page or try again later.'|t({}, {'context': 'Organization chart error'}),
           chart.error_body,
         ],
       }
