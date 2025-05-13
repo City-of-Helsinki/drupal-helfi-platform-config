@@ -253,7 +253,7 @@ class CookieSettingsTest extends KernelTestBase {
 
     // Simulate that the environment resolver returns NULL because
     // the environment has a typo or current environment is f.e. dev.
-    $this->setActiveProject('non-existent', EnvironmentEnum::Test);
+    $this->setActiveProject('non-existent', EnvironmentEnum::Dev);
 
     // Test that the URL by route is returned.
     $url = $this->cookieSettings->getCookieSettingsPageUrl();
