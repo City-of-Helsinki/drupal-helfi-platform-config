@@ -1,0 +1,91 @@
+diff --git i/src/Backend/BackendPluginManager.php w/src/Backend/BackendPluginManager.php
+index 135e42b4..bfe31160 100644
+--- i/src/Backend/BackendPluginManager.php
++++ w/src/Backend/BackendPluginManager.php
+@@ -36,7 +36,7 @@ class BackendPluginManager extends SearchApiPluginManager {
+     parent::__construct('Plugin/search_api/backend', $namespaces, $module_handler, $eventDispatcher, BackendInterface::class, SearchApiBackend::class);
+ 
+     $this->alterInfo('search_api_backend_info');
+-    $this->alterEvent(SearchApiEvents::GATHERING_BACKENDS);
++    $this->alterEvent('search_api.gathering_backends');
+     $this->setCacheBackend($cache_backend, 'search_api_backends');
+   }
+ 
+diff --git i/src/DataType/DataTypePluginManager.php w/src/DataType/DataTypePluginManager.php
+index f4de2b38..b89b9d7e 100644
+--- i/src/DataType/DataTypePluginManager.php
++++ w/src/DataType/DataTypePluginManager.php
+@@ -55,7 +55,7 @@ class DataTypePluginManager extends SearchApiPluginManager {
+ 
+     $this->setCacheBackend($cache_backend, 'search_api_data_type');
+     $this->alterInfo('search_api_data_type_info');
+-    $this->alterEvent(SearchApiEvents::GATHERING_DATA_TYPES);
++    $this->alterEvent('search_api.gathering_data_types');
+   }
+ 
+   /**
+diff --git i/src/Datasource/DatasourcePluginManager.php w/src/Datasource/DatasourcePluginManager.php
+index 49641fde..c2064a1f 100644
+--- i/src/Datasource/DatasourcePluginManager.php
++++ w/src/Datasource/DatasourcePluginManager.php
+@@ -36,7 +36,7 @@ class DatasourcePluginManager extends SearchApiPluginManager {
+ 
+     $this->setCacheBackend($cache_backend, 'search_api_datasources');
+     $this->alterInfo('search_api_datasource_info');
+-    $this->alterEvent(SearchApiEvents::GATHERING_DATA_SOURCES);
++    $this->alterEvent('search_api.gathering_data_sources');
+   }
+ 
+ }
+diff --git i/src/Display/DisplayPluginManager.php w/src/Display/DisplayPluginManager.php
+index f87a6c52..fb03dc9e 100644
+--- i/src/Display/DisplayPluginManager.php
++++ w/src/Display/DisplayPluginManager.php
+@@ -45,7 +45,7 @@ class DisplayPluginManager extends SearchApiPluginManager implements DisplayPlug
+ 
+     $this->setCacheBackend($cache_backend, 'search_api_displays');
+     $this->alterInfo('search_api_displays');
+-    $this->alterEvent(SearchApiEvents::GATHERING_DISPLAYS);
++    $this->alterEvent('search_api.gathering_displays');
+   }
+ 
+   /**
+diff --git i/src/ParseMode/ParseModePluginManager.php w/src/ParseMode/ParseModePluginManager.php
+index 35151ef1..4af4b1c2 100644
+--- i/src/ParseMode/ParseModePluginManager.php
++++ w/src/ParseMode/ParseModePluginManager.php
+@@ -36,7 +36,7 @@ class ParseModePluginManager extends SearchApiPluginManager {
+ 
+     $this->setCacheBackend($cache_backend, 'search_api_parse_mode');
+     $this->alterInfo('search_api_parse_mode_info');
+-    $this->alterEvent(SearchApiEvents::GATHERING_PARSE_MODES);
++    $this->alterEvent('search_api.gathering_parse_modes');
+   }
+ 
+   /**
+diff --git i/src/Processor/ProcessorPluginManager.php w/src/Processor/ProcessorPluginManager.php
+index 56573f56..cfd88cfd 100644
+--- i/src/Processor/ProcessorPluginManager.php
++++ w/src/Processor/ProcessorPluginManager.php
+@@ -42,7 +42,7 @@ class ProcessorPluginManager extends SearchApiPluginManager {
+ 
+     $this->setCacheBackend($cache_backend, 'search_api_processors');
+     $this->alterInfo('search_api_processor_info');
+-    $this->alterEvent(SearchApiEvents::GATHERING_PROCESSORS);
++    $this->alterEvent('search_api.gathering_processors');
+     $this->setStringTranslation($translation);
+   }
+ 
+diff --git i/src/Tracker/TrackerPluginManager.php w/src/Tracker/TrackerPluginManager.php
+index 6b5171b3..af71c38e 100644
+--- i/src/Tracker/TrackerPluginManager.php
++++ w/src/Tracker/TrackerPluginManager.php
+@@ -38,7 +38,7 @@ class TrackerPluginManager extends SearchApiPluginManager {
+ 
+     $this->setCacheBackend($cache_backend, 'search_api_trackers');
+     $this->alterInfo('search_api_tracker_info');
+-    $this->alterEvent(SearchApiEvents::GATHERING_TRACKERS);
++    $this->alterEvent('search_api.gathering_trackers');
+   }
+ 
+   /**
