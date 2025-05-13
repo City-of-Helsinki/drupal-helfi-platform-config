@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_org_chart;
 
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -21,6 +24,7 @@ class OrgChartImporter {
   public function __construct(
     private readonly ClientInterface $client,
     private readonly FeatureManagerInterface $featureManager,
+    private readonly EnvironmentResolverInterface $environmentResolver,
   ) {
   }
 
@@ -38,7 +42,18 @@ class OrgChartImporter {
    *   The uri.
    */
   private function getUri(string $langcode, string $start, int $depth): string {
-    return "https://paatokset.hel.fi/$langcode/ahjo_api/org-chart/$start/$depth";
+    try {
+      $environment = $this
+        ->environmentResolver
+        ->getEnvironment(Project::PAATOKSET, $this->environmentResolver->getActiveEnvironmentName());
+    }
+    catch (\InvalidArgumentException) {
+      $environment = $this
+        ->environmentResolver
+        ->getEnvironment(Project::PAATOKSET, EnvironmentEnum::Prod->value);
+    }
+
+    return sprintf("%s/ahjo_api/org-chart/$start/$depth", $environment->getInternalAddress($langcode));
   }
 
   /**
