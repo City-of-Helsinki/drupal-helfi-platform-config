@@ -6,7 +6,6 @@ namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Services;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
-use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
@@ -56,7 +55,6 @@ class CookieSettingsTest extends KernelTestBase {
       $this->container->get(EnvironmentResolverInterface::class),
       $this->container->get('url_generator'),
       $this->container->get('library.discovery'),
-      $this->container->get(ActiveProjectRoles::class),
     );
 
     $this->languages = $this->setUpLanguages();

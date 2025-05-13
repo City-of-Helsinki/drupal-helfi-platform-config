@@ -88,13 +88,11 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
 
-    if ($container->get(ActiveProjectRoles::class)->hasRole(ProjectRoleEnum::Core)) {
-      try {
-        $instance->environment = $environmentResolver
-          ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
-      }
-      catch (\InvalidArgumentException) {
-      }
+    try {
+      $instance->environment = $environmentResolver
+        ->getEnvironment(Project::ETUSIVU, $environmentResolver->getActiveEnvironmentName());
+    }
+    catch (\InvalidArgumentException) {
     }
 
     $instance->setLogger($container->get('logger.channel.helfi_etusivu_entities'));
