@@ -1,13 +1,6 @@
 'use strict';
 
-class UnapprovedItemError extends Error {
-  constructor(message, name) {
-    super(message)
-    this.name = name
-  }
-}
-
-((Drupal, drupalSettings) => {
+((Drupal) => {
 
   // Global cookie consent status object.
   Drupal.cookieConsent = {
@@ -31,20 +24,26 @@ class UnapprovedItemError extends Error {
   };
 
   Drupal.behaviors.hdbt_cookie_banner = {
-    attach: function () {
+    attach: function (context, settings) {
+      // Run only once for the full document.
+      if (context !== document || window.hdsCookieConsentInitialized) {
+        return;
+      }
+
       // The hds-cookie-consent.min.js should be loaded before this script.
       // Check if the script is loaded.
       if (
         typeof window.hds !== 'undefined' &&
         typeof window.hds.CookieConsentCore !== 'undefined'
       ) {
-        const apiUrl = drupalSettings.hdbt_cookie_banner.apiUrl;
+        const apiUrl = settings.hdbt_cookie_banner.apiUrl;
         const options = {
-          language: drupalSettings.hdbt_cookie_banner.langcode,
-          theme: drupalSettings.hdbt_cookie_banner.theme,
-          settingsPageSelector: drupalSettings.hdbt_cookie_banner.settingsPageSelector,
-          spacerParentSelector: drupalSettings.hdbt_cookie_banner.spacerParentSelector || '.footer',
+          language: settings.hdbt_cookie_banner.langcode,
+          theme: settings.hdbt_cookie_banner.theme,
+          settingsPageSelector: settings.hdbt_cookie_banner.settingsPageSelector,
+          spacerParentSelector: settings.hdbt_cookie_banner.spacerParentSelector || '.footer',
         };
+        window.hdsCookieConsentInitialized = true;
         window.hds.CookieConsentCore.create(apiUrl, options);
       }
       else {
@@ -67,61 +66,4 @@ class UnapprovedItemError extends Error {
       };
     }
   }
-
-  // Attach a behavior to capture unapproved cookies with Sentry.
-  Drupal.behaviors.unapprovedCookies = {
-    attach: function attach() {
-      const apiUrl = drupalSettings.hdbt_cookie_banner.apiUrl;
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(jsonData => {
-
-          // Function to extract cookie names from each group
-          const extractCookiePatterns = (groups) =>
-            groups?.flatMap(group => group.cookies.map(cookie => cookie.name)) || [];
-
-          // Collect all allowed cookie name patterns
-          const validItems = [
-            ...extractCookiePatterns(jsonData.optionalGroups),
-            ...extractCookiePatterns(jsonData.requiredGroups),
-            ...extractCookiePatterns(jsonData.robotGroups),
-          ];
-
-          window.addEventListener(
-            'hds-cookie-consent-unapproved-item-found',
-            (e) => {
-              if (typeof window.Sentry === 'undefined') {
-                return;
-              }
-
-              const { storageType, keys, acceptedGroups } = e.detail;
-              const sortedKeys = keys.sort();
-
-              // Check which keys do not match any pattern in the valid items list
-              const unapprovedItems = sortedKeys.filter(
-                key => !validItems.some(pattern => key.includes(pattern.replace('*', '')))
-              ).sort();
-
-              // Only log if there are unapproved items that are not found in our list
-              if (unapprovedItems.length > 0) {
-                const name = `Unapproved ${storageType}`;
-                const message = `Found: ${unapprovedItems.join(', ')}`;
-
-                window.Sentry.captureException(new UnapprovedItemError(message, name), {
-                  level: 'warning',
-                  tags: {
-                    approvedCategories: acceptedGroups.join(', '),
-                  },
-                  extra: {
-                    storageType,
-                    missingCookies: unapprovedItems,
-                    approvedCategories: acceptedGroups,
-                  },
-                });
-              }
-            }
-          );
-        })
-    },
-  }
-})(Drupal, drupalSettings);
+})(Drupal);
