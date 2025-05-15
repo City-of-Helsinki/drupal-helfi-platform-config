@@ -85,6 +85,9 @@
             "drupal/content_lock": {
                 "[#UHF-4553] Fix unlock content button redirect": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/82081691e4a6d05b3716052d5fff46a04027bdc3/patches/content-lock-uhf-4553.patch"
             },
+            "drupal/search_api": {
+                "[#UHF-10647] Patch for fixing install on update hook": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/f9d8086fb9926c7e6fb6a3d446f9644424f9d1f7/patches/UHF-10647-search-api.patch"
+            },
             "drupal/core": {
                 "[#UHF-181] Hide untranslated menu links (https://www.drupal.org/project/drupal/issues/3091246)": "https://www.drupal.org/files/issues/2023-12-18/3091246--allow-menu-tree-manipulators-alter--24.patch",
                 "[#UHF-3812] Ajax exposed filters not working for multiple instances of the same Views block placed on one page (https://www.drupal.org/project/drupal/issues/3163299)": "https://www.drupal.org/files/issues/2023-05-07/3163299-104-D10.patch",
