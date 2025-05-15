@@ -12,6 +12,26 @@ use Drupal\paragraphs\Entity\Paragraph;
 class OrgChart extends Paragraph {
 
   /**
+   * Gets the paragraph title.
+   *
+   * @return string
+   *   The title.
+   */
+  public function getTitle() : string {
+    return $this->get('field_org_chart_title')->value;
+  }
+
+  /**
+   * Gets the paragraph description.
+   *
+   * @return string
+   *   The description.
+   */
+  public function getDescription() : string {
+    return $this->get('field_org_chart_desc')->value;
+  }
+
+  /**
    * Get starting organization.
    *
    * @return string

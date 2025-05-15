@@ -11,8 +11,10 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -92,6 +94,7 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
     }
     catch (\InvalidArgumentException) {
     }
+
     $instance->setLogger($container->get('logger.channel.helfi_etusivu_entities'));
 
     return $instance;

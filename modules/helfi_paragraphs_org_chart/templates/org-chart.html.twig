@@ -1,10 +1,23 @@
-{% macro recursiveOrgChart(organization) %}
-  <li>
-    {{ organization.title }}
-    {% if organization.children|length %}
-      <ul>
+{% macro recursiveOrgChart(organization, organization_level) %}
+  {% if organization.children|length %}
+    {% set has_children = TRUE %}
+  {% endif %}
+  <li class="org-chart__item{{ has_children ? ' org-chart__item--has-children' }}">
+    {% set organization_name_attributes = {
+      'class': [
+        'org-chart__item__title',
+        'org-chart__item__title--level-' ~ organization_level,
+      ]
+    } %}
+    {% if organization.url %}
+      {{ link(organization.title, organization.url, organization_name_attributes) }}
+    {% else %}
+      <span{{ create_attribute(organization_name_attributes) }}>{{ organization.title }}</span>
+    {% endif %}
+    {% if has_children %}
+      <ul class="org-chart__container org-chart__container--inner">
         {% for child in organization.children %}
-          {{ _self.recursiveOrgChart(child) }}
+          {{ _self.recursiveOrgChart(child, organization_level + 1) }}
         {% endfor %}
       </ul>
     {% endif %}
@@ -12,7 +25,24 @@
 {% endmacro %}
 
 <div{{ attributes }}>
-  <ul>
-    {{ _self.recursiveOrgChart(chart) }}
-  </ul>
+  {% if chart and not chart.error %}
+    <ul class="org-chart__container">
+      {{ _self.recursiveOrgChart(chart, 1) }}
+    </ul>
+  {% else %}
+    {% include "@hdbt/misc/status-message.twig" ignore missing with
+      {
+        type: 'error',
+        size: 'large',
+        title: 'An error occurred while loading the content'|t({}, {'context': 'Organization chart error'}),
+        alternative_language: {
+          'fallback_lang': 'en',
+          'fallback_dir': 'ltr',
+        },
+        messages: [
+          'Please reload the page or try again later.'|t({}, {'context': 'Organization chart error'}),
+        ],
+      }
+    %}
+  {% endif %}
 </div>

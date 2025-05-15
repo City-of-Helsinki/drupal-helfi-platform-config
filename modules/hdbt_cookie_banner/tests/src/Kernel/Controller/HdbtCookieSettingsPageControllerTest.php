@@ -21,9 +21,11 @@ class HdbtCookieSettingsPageControllerTest extends KernelTestBase {
   public function testContentWithCustomSettings() {
     // Set up configuration to not use custom settings.
     $expected = [
-      ['use_custom_settings', TRUE],
-      ['cookie_information.title', 'Cookie settings title'],
-      ['cookie_information.content', 'Cookie settings content'],
+      'use_custom_settings' => TRUE,
+      'cookie_information' => [
+        'title' => 'Cookie settings title',
+        'content' => 'Cookie settings content',
+      ],
     ];
     $this->setUpTheConfigurations($expected);
 
@@ -43,7 +45,7 @@ class HdbtCookieSettingsPageControllerTest extends KernelTestBase {
   public function testRedirectToCookiePolicyUrl() {
     // Set up configuration to not use custom settings.
     $expected = [
-      ['use_custom_settings', FALSE],
+      'use_custom_settings' => FALSE,
     ];
     $this->setUpTheConfigurations($expected);
 
