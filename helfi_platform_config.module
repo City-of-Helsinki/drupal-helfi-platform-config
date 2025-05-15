@@ -503,6 +503,23 @@ function helfi_platform_config_config_ignore_ignored_alter(ConfigIgnoreConfig $i
       $ignored->setList($direction, $operation, $list);
     }
   }
+
+  // Ignore external entities read_only and generate_aliases variables during
+  // update. These values tend to switch places during import/export and causes
+  // an unnecessary delay during config import.
+  // @todo UHF-11477 Is this needed after external_entities module v3 update.
+  $external_entities = [
+    'external_entities.external_entity_type.*:read_only',
+    'external_entities.external_entity_type.*:generate_aliases',
+  ];
+
+  foreach (['import', 'export'] as $direction) {
+    $list = array_merge(
+      $ignored->getList($direction, 'update'),
+      $external_entities,
+    );
+    $ignored->setList($direction, $operation, $list);
+  }
 }
 
 /**
