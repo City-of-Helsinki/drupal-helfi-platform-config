@@ -53,8 +53,9 @@ class OrgChartImporter {
         ->getEnvironment(Project::PAATOKSET, EnvironmentEnum::Prod->value);
     }
 
-    // We want to use public URL so that paatokset generates publicly accessible URLs
-    // for organizations. However, public URL does not work in local environment.
+    // We want to use public URL so that paatokset generates publicly
+    // accessible URLs for organizations. However, public URL does not
+    // work in the local environment.
     if ($environment->getEnvironment() === EnvironmentEnum::Local) {
       return sprintf("%s/ahjo_api/org-chart/$start/$depth", $environment->getInternalAddress($langcode));
     }
