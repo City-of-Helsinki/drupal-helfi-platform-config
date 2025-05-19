@@ -21,6 +21,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
@@ -560,9 +561,7 @@ function helfi_platform_config_cron(): void {
  * Implements hook_preprocess_html().
  */
 function helfi_platform_config_preprocess_html(&$variables): void {
-  $config = \Drupal::config('helfi_platform_config.matomo_settings');
-  $matomo_site_id = $config->get('matomo_site_id');
-
+  $matomo_site_id = Settings::get('matomo_site_id');
   if ($matomo_site_id) {
     $variables['#attached']['drupalSettings']['matomo_site_id'] = $matomo_site_id;
   }

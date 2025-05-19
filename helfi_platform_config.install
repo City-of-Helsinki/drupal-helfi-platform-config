@@ -380,3 +380,12 @@ function helfi_platform_config_update_9322(): void {
     }
   }
 }
+
+/**
+ * UHF-11535: Move matomo site id to settings.php.
+ */
+function helfi_platform_config_update_9323(): void {
+  \Drupal::configFactory()
+    ->getEditable('helfi_platform_config.matomo_settings')
+    ->delete();
+}
