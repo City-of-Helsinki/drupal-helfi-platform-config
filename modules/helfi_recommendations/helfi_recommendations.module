@@ -149,6 +149,47 @@ function helfi_recommendations_text_conversion_alter(Document &$document, Entity
 }
 
 /**
+ * Implements hook_page_attachments_alter().
+ */
+function helfi_recommendations_page_attachments_alter(array &$attachments) {
+  if (empty($attachments['#attached']['html_head'])) {
+    return;
+  }
+
+  $entities = array_filter(
+    \Drupal::routeMatch()->getParameters()->all(),
+    function ($param) {
+      return $param instanceof ContentEntityInterface;
+    }
+  );
+
+  $entity = !empty($entities) ? reset($entities) : NULL;
+  if ($entity) {
+    // Add a custom meta tag with a comma seprated list of suggested topics.
+    $topicsManager = \Drupal::service(TopicsManagerInterface::class);
+    $keywords = $topicsManager->getKeywords($entity);
+
+    if ($keywords) {
+      $tag_name = 'helfi_suggested_topics';
+      $tag = [
+        '#tag' => 'meta',
+        '#attributes' => [
+          'name' => $tag_name,
+          'content' => implode(',', array_map(function ($keyword) {
+            // Wrap the keyword in double quotes to make sure commas inside the
+            // keyword are not interpreted as a delimiter.
+            return $keyword['label'] ? "\"{$keyword['label']}\"" : NULL;
+          }, $keywords)),
+          'class' => 'elastic',
+        ],
+      ];
+
+      $attachments['#attached']['html_head'][] = [$tag, $tag_name];
+    }
+  }
+}
+
+/**
  * Implements template_preprocess_recommendations_block().
  */
 function helfi_recommendations_preprocess_recommendations_block(array &$variables) : void {
