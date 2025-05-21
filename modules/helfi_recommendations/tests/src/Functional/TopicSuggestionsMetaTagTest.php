@@ -13,6 +13,7 @@ use Drupal\node\Entity\NodeType;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
+
 /**
  * Taxonomy related tests.
  *
