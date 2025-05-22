@@ -223,6 +223,9 @@ class EntityVersionMatcherTest extends UnitTestCase {
     $this->setupRouteParameters([], NULL, 'some.other.route');
 
     $result = $this->entityVersionMatcher->getType();
-    $this->assertEmpty($result);
+    $this->assertEquals([
+      'entity_version' => \Drupal\helfi_platform_config\EntityVersionMatcher::ENTITY_VERSION_CANONICAL,
+      'entity' => FALSE
+    ], $result);
   }
 }
