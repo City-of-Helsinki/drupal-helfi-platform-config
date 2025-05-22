@@ -83,7 +83,7 @@ class EntityVersionMatcherTest extends UnitTestCase {
    * type definitions, simulating the available entity types in the system.
    *
    * @param array $definitions
-   *   Array of entity type definitions to return, defaults to 'node' and 'user'.
+   *   Array of entity type definitions to return, defaults: 'node' and 'user'.
    */
   private function setupEntityTypeDefinitions(array $definitions = ['node' => [], 'user' => []]): void {
     $this->entityTypeManager->method('getDefinitions')->willReturn($definitions);
@@ -166,7 +166,7 @@ class EntityVersionMatcherTest extends UnitTestCase {
     // Set up entity type definitions to include node and user.
     $this->setupEntityTypeDefinitions();
 
-    // Set up route parameters to include a node reference and a canonical route.
+    // Set up route parameters to include a node ref and a canonical route.
     $this->setupRouteParameters(['node' => 1], NULL, 'entity.node.canonical');
 
     // Mock the entity object that should be returned for the canonical view.

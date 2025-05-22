@@ -541,7 +541,7 @@ class RedirectCleanerTest extends UnitTestCase {
     $query->method('execute')
       ->willReturn(['1', '2', '3']);
 
-    // Mock the entity storage to return the query and map IDs to redirect entities.
+    // Mock the entity storage to return the query and map IDs to entities.
     $storage = $this->createMock(EntityStorageInterface::class);
     $storage->method('getQuery')
       ->willReturn($query);
@@ -605,7 +605,7 @@ class RedirectCleanerTest extends UnitTestCase {
   public function testUnpublishExpiredRedirectsInvalidPluginDefinitionException(): void {
     // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(TRUE);
-    // Simulate an InvalidPluginDefinitionException when attempting to get storage.
+    // Simulate an InvalidPluginDefinitionException when getting storage.
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
       ->willThrowException(new InvalidPluginDefinitionException('redirect'));
