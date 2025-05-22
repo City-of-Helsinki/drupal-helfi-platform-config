@@ -173,6 +173,8 @@ class RedirectCleanerTest extends UnitTestCase {
    * Verifies that isEnabled() returns TRUE when the configuration indicates
    * the redirect cleanup feature is enabled.
    *
+   * This test confirms the feature enablement check.
+   *
    * @covers ::isEnabled
    */
   public function testIsEnabledFeatureEnabled(): void {
@@ -186,6 +188,8 @@ class RedirectCleanerTest extends UnitTestCase {
    * Verifies that isEnabled() returns FALSE when the configuration indicates
    * the redirect cleanup feature is disabled.
    *
+   * This test confirms the feature disablement check.
+   *
    * @covers ::isEnabled
    */
   public function testIsEnabledFeatureDisabled(): void {
@@ -198,6 +202,8 @@ class RedirectCleanerTest extends UnitTestCase {
    *
    * Verifies that the method exits early and does not interact with entity
    * storage when the redirect cleanup feature is disabled.
+   *
+   * This test validates behavior when the feature is not active.
    *
    * @covers ::unpublishExpiredRedirects
    * @covers ::isEnabled
@@ -217,6 +223,8 @@ class RedirectCleanerTest extends UnitTestCase {
    *
    * Verifies that the method handles an empty result set from the query
    * gracefully, without attempting to load or process any entities.
+   *
+   * This test confirms behavior with no data to process.
    *
    * @covers ::unpublishExpiredRedirects
    * @covers ::isEnabled
@@ -262,6 +270,8 @@ class RedirectCleanerTest extends UnitTestCase {
    *
    * Verifies that the method correctly identifies expired redirects, unpublishes
    * them, saves the changes, and logs the action appropriately.
+   *
+   * This test validates successful unpublishing workflow.
    *
    * @covers ::unpublishExpiredRedirects
    * @covers ::isEnabled
@@ -322,6 +332,8 @@ class RedirectCleanerTest extends UnitTestCase {
    *
    * Verifies that the method throws an exception if saving a redirect after
    * unpublishing fails, ensuring errors are not silently ignored.
+   *
+   * This test confirms error handling during entity save operations.
    *
    * @covers ::unpublishExpiredRedirects
    * @covers ::isEnabled
@@ -387,6 +399,8 @@ class RedirectCleanerTest extends UnitTestCase {
    * Verifies that the method can handle multiple redirects up to the configured
    * range limit, unpublishing each one, saving changes, and logging actions.
    *
+   * This test validates batch processing within defined limits.
+   *
    * @covers ::unpublishExpiredRedirects
    * @covers ::isEnabled
    */
@@ -444,6 +458,8 @@ class RedirectCleanerTest extends UnitTestCase {
    * indicating a configuration issue with the redirect entity type, by exiting
    * early without logging or processing.
    *
+   * This test confirms exception handling for plugin definition issues.
+   *
    * @covers ::unpublishExpiredRedirects
    * @covers ::isEnabled
    */
@@ -468,6 +484,8 @@ class RedirectCleanerTest extends UnitTestCase {
    *
    * Verifies that the method handles a PluginNotFoundException, indicating the
    * redirect module is not installed, by exiting early without logging or processing.
+   *
+   * This test confirms behavior when required modules are missing.
    *
    * @covers ::unpublishExpiredRedirects
    * @covers ::isEnabled
