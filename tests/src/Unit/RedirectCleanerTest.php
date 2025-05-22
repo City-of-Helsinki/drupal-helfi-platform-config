@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit;
 
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -27,22 +29,30 @@ use Psr\Log\LoggerInterface;
 class RedirectCleanerTest extends UnitTestCase {
 
   /**
-   * @var \PHPUnit\Framework\MockObject\MockObject Config factory mock.
+   * The config factory mock object.
+   *
+   * @var \PHPUnit\Framework\MockObject\MockObject
    */
   protected $configFactory;
 
   /**
-   * @var \PHPUnit\Framework\MockObject\MockObject Entity type manager mock.
+   * The entity type manager mock object.
+   *
+   * @var \PHPUnit\Framework\MockObject\MockObject
    */
   protected $entityTypeManager;
 
   /**
-   * @var \PHPUnit\Framework\MockObject\MockObject Logger mock.
+   * The logger mock object.
+   *
+   * @var \PHPUnit\Framework\MockObject\MockObject
    */
   protected $logger;
 
   /**
-   * @var \Drupal\helfi_platform_config\RedirectCleaner The cleaner service under test.
+   * The RedirectCleaner service under test.
+   *
+   * @var \Drupal\helfi_platform_config\RedirectCleaner
    */
   protected $cleaner;
 
@@ -77,7 +87,7 @@ class RedirectCleanerTest extends UnitTestCase {
    * @param int $range
    *   The maximum number of redirects to process in a single run.
    */
-  private function setupConfigMock(bool $enabled = true, int $range = 100): void {
+  private function setupConfigMock(bool $enabled = TRUE, int $range = 100): void {
     $config = $this->createMock(ImmutableConfig::class);
     $config->method('get')
       ->willReturnCallback(function ($key) use ($enabled, $range) {
@@ -87,7 +97,7 @@ class RedirectCleanerTest extends UnitTestCase {
         if ($key === 'range') {
           return $range;
         }
-        return null;
+        return NULL;
       });
     $this->configFactory->method('get')
       ->with('helfi_platform_config.redirect_cleaner')
@@ -104,66 +114,116 @@ class RedirectCleanerTest extends UnitTestCase {
    *   Array of redirect entities to return from query execution.
    * @param array $loadMap
    *   Array mapping redirect IDs to entities for the load() method.
+   *
    * @return \Drupal\Core\Entity\EntityStorageInterface|\PHPUnit\Framework\MockObject\MockObject
    *   The mocked entity storage interface.
    */
   private function setupStorageMock(array $redirects = [], array $loadMap = []): EntityStorageInterface {
     $storage = $this->createMock(EntityStorageInterface::class);
-    
+
     $storage->method('getQuery')
       ->willReturn(new class {
+
+        /**
+         * A query mock object.
+         */
         public function condition() {
           return $this;
         }
+
+        /**
+         * A query mock object.
+         */
         public function accessCheck() {
           return $this;
         }
+
+        /**
+         * A query mock object.
+         */
         public function range() {
           return $this;
         }
+
+        /**
+         * A query mock object.
+         */
         public function execute() {
           return [];
         }
+
       });
-    
+
     if (!empty($redirects)) {
       $storage->method('getQuery')
         ->willReturn(new class($redirects) {
-          private $redirects;
+
+          /**
+           * The redirect IDs.
+           *
+           * @var array
+           */
+          public $redirects;
+
+          /**
+           * A query mock object.
+           */
           public function __construct($redirects) {
             $this->redirects = $redirects;
           }
+
+          /**
+           * A query mock object.
+           */
           public function condition() {
             return $this;
           }
+
+          /**
+           * A query mock object.
+           */
           public function accessCheck() {
             return $this;
           }
+
+          /**
+           * A query mock object.
+           */
           public function range() {
             return $this;
           }
+
+          /**
+           * A query mock object.
+           */
           public function execute() {
             return array_keys($this->redirects);
           }
+
         });
     }
-    
+
     if (!empty($loadMap)) {
       $storage->method('load')
         ->willReturnMap($loadMap);
     }
-    
+
     $storage->method('getEntityType')
       ->willReturn(new class {
+
+        /**
+         * Gets entity type key.
+         */
         public function getKey($key) {
           return $key === 'published' ? 'status' : ($key === 'custom' ? 'is_custom' : '');
         }
+
       });
-    
+
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
       ->willReturn($storage);
-    
+
     return $storage;
   }
 
@@ -178,7 +238,7 @@ class RedirectCleanerTest extends UnitTestCase {
    * @covers ::isEnabled
    */
   public function testIsEnabledFeatureEnabled(): void {
-    $this->setupConfigMock(true);
+    $this->setupConfigMock(TRUE);
     $this->assertTrue($this->cleaner->isEnabled());
   }
 
@@ -193,7 +253,7 @@ class RedirectCleanerTest extends UnitTestCase {
    * @covers ::isEnabled
    */
   public function testIsEnabledFeatureDisabled(): void {
-    $this->setupConfigMock(false);
+    $this->setupConfigMock(FALSE);
     $this->assertFalse($this->cleaner->isEnabled());
   }
 
@@ -210,7 +270,7 @@ class RedirectCleanerTest extends UnitTestCase {
    */
   public function testUnpublishExpiredRedirectsFeatureDisabled(): void {
     // Setup configuration mock to disable the redirect cleaner feature.
-    $this->setupConfigMock(false);
+    $this->setupConfigMock(FALSE);
     // Ensure that entity storage is not accessed when the feature is disabled.
     $this->entityTypeManager->expects($this->never())
       ->method('getStorage');
@@ -231,8 +291,9 @@ class RedirectCleanerTest extends UnitTestCase {
    */
   public function testUnpublishExpiredRedirectsNoRedirects(): void {
     // Enable the redirect cleaner feature in the configuration.
-    $this->setupConfigMock(true);
-    // Mock the entity query to return an empty result set, simulating no redirects.
+    $this->setupConfigMock(TRUE);
+    // Mock the entity query to return an empty result set, simulating no
+    // redirects.
     $query = $this->createMock('\Drupal\Core\Entity\Query\QueryInterface');
     $query->method('condition')
       ->willReturnSelf();
@@ -249,9 +310,14 @@ class RedirectCleanerTest extends UnitTestCase {
       ->willReturn($query);
     $storage->method('getEntityType')
       ->willReturn(new class {
+
+        /**
+         * Gets entity type key.
+         */
         public function getKey($key) {
           return $key === 'published' ? 'status' : ($key === 'custom' ? 'is_custom' : '');
         }
+
       });
 
     // Setup entity type manager to return the mocked storage.
@@ -278,7 +344,7 @@ class RedirectCleanerTest extends UnitTestCase {
    */
   public function testUnpublishExpiredRedirectsSuccess(): void {
     // Enable the redirect cleaner feature in the configuration.
-    $this->setupConfigMock(true);
+    $this->setupConfigMock(TRUE);
     // Mock the entity query to return a single redirect ID.
     $query = $this->createMock('\Drupal\Core\Entity\Query\QueryInterface');
     $query->method('condition')
@@ -308,9 +374,14 @@ class RedirectCleanerTest extends UnitTestCase {
       ->willReturn($redirect);
     $storage->method('getEntityType')
       ->willReturn(new class {
+
+        /**
+         * Gets entity type key.
+         */
         public function getKey($key) {
           return $key === 'published' ? 'status' : ($key === 'custom' ? 'is_custom' : '');
         }
+
       });
 
     // Setup entity type manager to return the mocked storage.
@@ -340,7 +411,7 @@ class RedirectCleanerTest extends UnitTestCase {
    */
   public function testUnpublishExpiredRedirectsSaveException(): void {
     // Enable the redirect cleaner feature in the configuration.
-    $this->setupConfigMock(true);
+    $this->setupConfigMock(TRUE);
     // Mock the entity query to return a single redirect ID.
     $query = $this->createMock('\Drupal\Core\Entity\Query\QueryInterface');
     $query->method('condition')
@@ -370,9 +441,14 @@ class RedirectCleanerTest extends UnitTestCase {
       ->willReturn($redirect);
     $storage->method('getEntityType')
       ->willReturn(new class {
+
+        /**
+         * Gets entity type key.
+         */
         public function getKey($key) {
           return $key === 'published' ? 'status' : ($key === 'custom' ? 'is_custom' : '');
         }
+
       });
 
     // Setup entity type manager to return the mocked storage.
@@ -406,9 +482,10 @@ class RedirectCleanerTest extends UnitTestCase {
    */
   public function testProcessMultipleRedirectsWithinRange(): void {
     // Enable the redirect cleaner feature and set a range limit of 3.
-    $this->setupConfigMock(true, 3);
-    
-    // Mock redirect entities for IDs 1, 2, and 3 to simulate unpublishing and saving.
+    $this->setupConfigMock(TRUE, 3);
+
+    // Mock redirect entities for IDs 1, 2, and 3 to simulate unpublishing and
+    // saving.
     $redirect1 = $this->createMock(PublishableRedirect::class);
     $redirect1->method('id')
       ->willReturn('1');
@@ -437,7 +514,7 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirects = ['1' => $redirect1, '2' => $redirect2, '3' => $redirect3];
     $loadMap = [['1', $redirect1], ['2', $redirect2], ['3', $redirect3]];
     $this->setupStorageMock($redirects, $loadMap);
-    
+
     // Expect logging for each processed redirect, up to the range limit of 3.
     $this->logger->expects($this->exactly(3))
       ->method('info')
@@ -446,7 +523,7 @@ class RedirectCleanerTest extends UnitTestCase {
         ['Unpublishing redirect: %id', ['%id' => '2']],
         ['Unpublishing redirect: %id', ['%id' => '3']]
       );
-    
+
     // Call the method to test processing multiple redirects within the range.
     $this->cleaner->unpublishExpiredRedirects();
   }
@@ -465,11 +542,11 @@ class RedirectCleanerTest extends UnitTestCase {
    */
   public function testUnpublishExpiredRedirectsInvalidPluginDefinitionException(): void {
     // Enable the redirect cleaner feature in the configuration.
-    $this->setupConfigMock(true);
+    $this->setupConfigMock(TRUE);
     // Simulate an InvalidPluginDefinitionException when attempting to get storage.
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
-      ->willThrowException(new \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException('redirect'));
+      ->willThrowException(new InvalidPluginDefinitionException('redirect'));
 
     // Ensure no logging occurs due to the exception.
     $this->logger->expects($this->never())
@@ -492,11 +569,11 @@ class RedirectCleanerTest extends UnitTestCase {
    */
   public function testUnpublishExpiredRedirectsRedirectModuleNotInstalled(): void {
     // Enable the redirect cleaner feature in the configuration.
-    $this->setupConfigMock(true);
+    $this->setupConfigMock(TRUE);
     // Simulate a PluginNotFoundException when attempting to get storage.
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
-      ->willThrowException(new \Drupal\Component\Plugin\Exception\PluginNotFoundException('redirect'));
+      ->willThrowException(new PluginNotFoundException('redirect'));
 
     // Ensure no logging occurs due to the exception.
     $this->logger->expects($this->never())
@@ -505,4 +582,5 @@ class RedirectCleanerTest extends UnitTestCase {
     // Call the method to test early exit due to the missing module.
     $this->cleaner->unpublishExpiredRedirects();
   }
+
 }
