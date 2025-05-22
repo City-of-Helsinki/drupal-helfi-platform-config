@@ -569,22 +569,15 @@ class RedirectCleanerTest extends UnitTestCase {
       ->willReturn($storage);
 
     // Expect logging for each processed redirect, up to the range limit of 3.
+    $callCount = 0;
+    $expectedIds = ['1', '2', '3'];
     $this->logger->expects($this->exactly(3))
       ->method('info')
-      ->withConsecutive(
-        [
-          'Unpublishing redirect: %id',
-          ['%id' => '1'],
-        ],
-        [
-          'Unpublishing redirect: %id',
-          ['%id' => '2'],
-        ],
-        [
-          'Unpublishing redirect: %id',
-          ['%id' => '3'],
-        ],
-      );
+      ->willReturnCallback(function ($message, $context) use (&$callCount, $expectedIds) {
+        $this->assertEquals('Unpublishing redirect: %id', $message);
+        $this->assertEquals(['%id' => $expectedIds[$callCount]], $context);
+        $callCount++;
+      });
 
     // Call the method to test processing multiple redirects within the range.
     $this->cleaner->unpublishExpiredRedirects();
