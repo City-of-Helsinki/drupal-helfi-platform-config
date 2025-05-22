@@ -18,10 +18,14 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests the RedirectCleaner class for unpublishing expired redirects.
  *
- * This test suite verifies the functionality of the RedirectCleaner service,
- * ensuring it correctly handles various scenarios including feature toggling,
- * entity storage interactions, exception handling, and processing multiple
- * redirects within configured limits.
+ * - Feature enablement check for redirect cleanup.
+ * - Feature disablement behavior for redirect cleanup.
+ * - Handling of no redirects to process.
+ * - Successful unpublishing of expired redirects.
+ * - Error handling during redirect save operations.
+ * - Processing multiple redirects within configured range limits.
+ * - Exception handling for invalid plugin definitions.
+ * - Behavior when the redirect module is not installed.
  *
  * @coversDefaultClass \Drupal\helfi_platform_config\RedirectCleaner
  * @group helfi_platform_config
@@ -333,8 +337,8 @@ class RedirectCleanerTest extends UnitTestCase {
   /**
    * Tests unpublishExpiredRedirects() successful unpublishing of redirects.
    *
-   * Verifies that the method correctly identifies expired redirects, unpublishes
-   * them, saves the changes, and logs the action appropriately.
+   * Verifies that the method correctly identifies expired redirects,
+   * unpublishes them, saves the changes, and logs the action appropriately.
    *
    * This test validates successful unpublishing workflow.
    *
@@ -404,7 +408,7 @@ class RedirectCleanerTest extends UnitTestCase {
   }
 
   /**
-   * Tests unpublishExpiredRedirects() when a save operation fails with an exception.
+   * Tests unpublishExpiredRedirects() with a save operation exception.
    *
    * Verifies that the method throws an exception if saving a redirect after
    * unpublishing fails, ensuring errors are not silently ignored.
@@ -473,10 +477,11 @@ class RedirectCleanerTest extends UnitTestCase {
   }
 
   /**
-   * Tests unpublishExpiredRedirects() processing multiple redirects within the range limit.
+   * Tests unpublishExpiredRedirects() with multiple redirects in range.
    *
-   * Verifies that the method can handle multiple redirects up to the configured
-   * range limit, unpublishing each one, saving changes, and logging actions.
+   * Verifies that the method can handle multiple redirects up to the
+   * configured range limit, unpublishing each one, saving changes, and
+   * logging actions.
    *
    * This test validates batch processing within defined limits.
    *
@@ -586,11 +591,11 @@ class RedirectCleanerTest extends UnitTestCase {
   }
 
   /**
-   * Tests unpublishExpiredRedirects() when InvalidPluginDefinitionException is thrown.
+   * Tests unpublishExpiredRedirects() with InvalidPluginDefinitionException.
    *
    * Verifies that the method handles an InvalidPluginDefinitionException,
-   * indicating a configuration issue with the redirect entity type, by exiting
-   * early without logging or processing.
+   * indicating a configuration issue with the redirect entity type, by
+   * exiting early without logging or processing.
    *
    * This test confirms exception handling for plugin definition issues.
    *
@@ -614,10 +619,11 @@ class RedirectCleanerTest extends UnitTestCase {
   }
 
   /**
-   * Tests unpublishExpiredRedirects() when the redirect module is not installed.
+   * Tests unpublishExpiredRedirects() without redirect module installed.
    *
-   * Verifies that the method handles a PluginNotFoundException, indicating the
-   * redirect module is not installed, by exiting early without logging or processing.
+   * Verifies that the method handles a PluginNotFoundException, indicating
+   * the redirect module is not installed, by exiting early without logging
+   * or processing.
    *
    * This test confirms behavior when required modules are missing.
    *

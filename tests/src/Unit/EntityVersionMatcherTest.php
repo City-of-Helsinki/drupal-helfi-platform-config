@@ -18,9 +18,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Unit tests for EntityVersionMatcher service.
  *
- * Verifies the functionality of the EntityVersionMatcher service, focusing on
- * the public getType() method to identify entity version states (canonical,
- * revision, preview) based on route parameters and current context.
+ * - Identification of canonical entity view context.
+ * - Detection and handling of revision entity view context.
+ * - Recognition of preview entity view context.
+ * - Behavior when no entity context is present.
  *
  * @coversDefaultClass \Drupal\helfi_platform_config\EntityVersionMatcher
  * @group helfi_platform_config
