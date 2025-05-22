@@ -10,6 +10,7 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -24,6 +25,7 @@ class RecommendationManager implements RecommendationManagerInterface {
 
   const INDEX_NAME = 'suggestions';
   const ELASTICSEARCH_QUERY_BUFFER = 10;
+  const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
 
   /**
    * The recommendations.
@@ -53,6 +55,7 @@ class RecommendationManager implements RecommendationManagerInterface {
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
     #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
+    private readonly CacheTagInvalidator $cacheTagInvalidator,
   ) {
   }
 
@@ -111,6 +114,24 @@ class RecommendationManager implements RecommendationManagerInterface {
     }
 
     return $this->recommendations[$entity->id()][$target_langcode][$limit];
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getCacheTagForUUID(string $uuid): string {
+    return self::EXTERNAL_CACHE_TAG_PREFIX . $uuid;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function invalidateExternalCacheTags(array $uuids): void {
+    $cache_tags = [];
+    foreach ($uuids as $uuid) {
+      $cache_tags[] = $this->getCacheTagForUUID($uuid);
+    }
+    $this->cacheTagInvalidator->invalidateTags($cache_tags);
   }
 
   /**

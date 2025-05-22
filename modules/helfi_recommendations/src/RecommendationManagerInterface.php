@@ -43,4 +43,23 @@ interface RecommendationManagerInterface {
    */
   public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL, ?array $options = []): array;
 
+  /**
+   * Get the cache tag for a UUID.
+   *
+   * @param string $uuid
+   *   The UUID.
+   *
+   * @return string
+   *   The cache tag.
+   */
+  public function getCacheTagForUUID(string $uuid): string;
+
+  /**
+   * Invalidate external cache tags.
+   *
+   * @param array $uuids
+   *   The UUIDs.
+   */
+  public function invalidateExternalCacheTags(array $uuids): void;
+
 }

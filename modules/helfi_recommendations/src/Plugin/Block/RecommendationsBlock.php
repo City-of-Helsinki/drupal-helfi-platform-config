@@ -130,7 +130,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     $tags = [];
     foreach ($recommendations as $recommendation) {
       if (!empty($recommendation['uuid'])) {
-        $tags[] = "suggested_topics_uuid:{$recommendation['uuid']}";
+        $tags[] = $this->recommendationManager->getCacheTagForUUID($recommendation['uuid']);
       }
     }
 
