@@ -303,7 +303,6 @@ class RedirectCleanerTest extends UnitTestCase {
       ->willReturnSelf();
     $query->method('execute')
       ->willReturn([]);
-
     // Mock the entity storage to return the query mock.
     $storage = $this->createMock(EntityStorageInterface::class);
     $storage->method('getQuery')
@@ -355,11 +354,16 @@ class RedirectCleanerTest extends UnitTestCase {
       ->willReturnSelf();
     $query->method('execute')
       ->willReturn(['1']);
-
     // Mock the redirect entity to simulate unpublishing and saving.
     $redirect = $this->createMock(PublishableRedirect::class);
     $redirect->method('id')
       ->willReturn('1');
+    $redirect->method('isExpired')
+      ->willReturn(TRUE);
+    $redirect->method('isPublished')
+      ->willReturn(TRUE);
+    $redirect->method('isCustom')
+      ->willReturn(FALSE);
     $redirect->expects($this->once())
       ->method('setUnpublished');
     $redirect->expects($this->once())
@@ -392,7 +396,10 @@ class RedirectCleanerTest extends UnitTestCase {
     // Expect logging of the unpublishing action for the redirect.
     $this->logger->expects($this->once())
       ->method('info')
-      ->with('Unpublishing redirect: %id', ['%id' => '1']);
+      ->with(
+        'Unpublishing redirect: %id',
+        ['%id' => '1']
+      );
 
     // Call the method to test successful unpublishing of a redirect.
     $this->cleaner->unpublishExpiredRedirects();
@@ -422,11 +429,16 @@ class RedirectCleanerTest extends UnitTestCase {
       ->willReturnSelf();
     $query->method('execute')
       ->willReturn(['1']);
-
     // Mock the redirect entity to simulate unpublishing and a save failure.
     $redirect = $this->createMock(PublishableRedirect::class);
     $redirect->method('id')
       ->willReturn('1');
+    $redirect->method('isExpired')
+      ->willReturn(TRUE);
+    $redirect->method('isPublished')
+      ->willReturn(TRUE);
+    $redirect->method('isCustom')
+      ->willReturn(FALSE);
     $redirect->expects($this->once())
       ->method('setUnpublished');
     $redirect->method('save')
@@ -456,10 +468,13 @@ class RedirectCleanerTest extends UnitTestCase {
       ->with('redirect')
       ->willReturn($storage);
 
-    // Expect logging of the unpublishing attempt before the exception.
+    // Expect logging for the exception to ensure errors are handled gracefully.
     $this->logger->expects($this->once())
-      ->method('info')
-      ->with('Unpublishing redirect: %id', ['%id' => '1']);
+      ->method('error')
+      ->with(
+        'Failed to unpublish redirect: %id. Error: %error',
+        ['%id' => '1', '%error' => 'Save failed']
+      );
 
     // Expect an exception to be thrown due to the save failure.
     $this->expectException(\Exception::class);
@@ -489,6 +504,12 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect1 = $this->createMock(PublishableRedirect::class);
     $redirect1->method('id')
       ->willReturn('1');
+    $redirect1->method('isExpired')
+      ->willReturn(TRUE);
+    $redirect1->method('isPublished')
+      ->willReturn(TRUE);
+    $redirect1->method('isCustom')
+      ->willReturn(FALSE);
     $redirect1->expects($this->once())
       ->method('setUnpublished');
     $redirect1->expects($this->once())
@@ -497,6 +518,12 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect2 = $this->createMock(PublishableRedirect::class);
     $redirect2->method('id')
       ->willReturn('2');
+    $redirect2->method('isExpired')
+      ->willReturn(TRUE);
+    $redirect2->method('isPublished')
+      ->willReturn(TRUE);
+    $redirect2->method('isCustom')
+      ->willReturn(FALSE);
     $redirect2->expects($this->once())
       ->method('setUnpublished');
     $redirect2->expects($this->once())
@@ -505,6 +532,12 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect3 = $this->createMock(PublishableRedirect::class);
     $redirect3->method('id')
       ->willReturn('3');
+    $redirect3->method('isExpired')
+      ->willReturn(TRUE);
+    $redirect3->method('isPublished')
+      ->willReturn(TRUE);
+    $redirect3->method('isCustom')
+      ->willReturn(FALSE);
     $redirect3->expects($this->once())
       ->method('setUnpublished');
     $redirect3->expects($this->once())
@@ -512,16 +545,29 @@ class RedirectCleanerTest extends UnitTestCase {
 
     // Setup arrays for storage mock to return the redirects.
     $redirects = ['1' => $redirect1, '2' => $redirect2, '3' => $redirect3];
-    $loadMap = [['1', $redirect1], ['2', $redirect2], ['3', $redirect3]];
+    $loadMap = [
+      ['1', $redirect1],
+      ['2', $redirect2],
+      ['3', $redirect3],
+    ];
     $this->setupStorageMock($redirects, $loadMap);
 
     // Expect logging for each processed redirect, up to the range limit of 3.
     $this->logger->expects($this->exactly(3))
       ->method('info')
       ->withConsecutive(
-        ['Unpublishing redirect: %id', ['%id' => '1']],
-        ['Unpublishing redirect: %id', ['%id' => '2']],
-        ['Unpublishing redirect: %id', ['%id' => '3']]
+        [
+          'Unpublishing redirect: %id',
+          ['%id' => '1'],
+        ],
+        [
+          'Unpublishing redirect: %id',
+          ['%id' => '2'],
+        ],
+        [
+          'Unpublishing redirect: %id',
+          ['%id' => '3'],
+        ],
       );
 
     // Call the method to test processing multiple redirects within the range.
@@ -552,7 +598,7 @@ class RedirectCleanerTest extends UnitTestCase {
     $this->logger->expects($this->never())
       ->method('info');
 
-    // Call the method to test early exit due to the exception.
+    // Call the method to test early exit due to the invalid plugin definition.
     $this->cleaner->unpublishExpiredRedirects();
   }
 
