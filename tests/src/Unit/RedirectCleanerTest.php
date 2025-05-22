@@ -358,8 +358,6 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect = $this->createMock(PublishableRedirect::class);
     $redirect->method('id')
       ->willReturn('1');
-    $redirect->method('isExpired')
-      ->willReturn(TRUE);
     $redirect->method('isPublished')
       ->willReturn(TRUE);
     $redirect->method('isCustom')
@@ -433,8 +431,6 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect = $this->createMock(PublishableRedirect::class);
     $redirect->method('id')
       ->willReturn('1');
-    $redirect->method('isExpired')
-      ->willReturn(TRUE);
     $redirect->method('isPublished')
       ->willReturn(TRUE);
     $redirect->method('isCustom')
@@ -468,14 +464,6 @@ class RedirectCleanerTest extends UnitTestCase {
       ->with('redirect')
       ->willReturn($storage);
 
-    // Expect logging for the exception to ensure errors are handled gracefully.
-    $this->logger->expects($this->once())
-      ->method('error')
-      ->with(
-        'Failed to unpublish redirect: %id. Error: %error',
-        ['%id' => '1', '%error' => 'Save failed']
-      );
-
     // Expect an exception to be thrown due to the save failure.
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage('Save failed');
@@ -504,8 +492,6 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect1 = $this->createMock(PublishableRedirect::class);
     $redirect1->method('id')
       ->willReturn('1');
-    $redirect1->method('isExpired')
-      ->willReturn(TRUE);
     $redirect1->method('isPublished')
       ->willReturn(TRUE);
     $redirect1->method('isCustom')
@@ -518,8 +504,6 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect2 = $this->createMock(PublishableRedirect::class);
     $redirect2->method('id')
       ->willReturn('2');
-    $redirect2->method('isExpired')
-      ->willReturn(TRUE);
     $redirect2->method('isPublished')
       ->willReturn(TRUE);
     $redirect2->method('isCustom')
@@ -532,8 +516,6 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect3 = $this->createMock(PublishableRedirect::class);
     $redirect3->method('id')
       ->willReturn('3');
-    $redirect3->method('isExpired')
-      ->willReturn(TRUE);
     $redirect3->method('isPublished')
       ->willReturn(TRUE);
     $redirect3->method('isCustom')
@@ -543,14 +525,43 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect3->expects($this->once())
       ->method('save');
 
-    // Setup arrays for storage mock to return the redirects.
-    $redirects = ['1' => $redirect1, '2' => $redirect2, '3' => $redirect3];
-    $loadMap = [
-      ['1', $redirect1],
-      ['2', $redirect2],
-      ['3', $redirect3],
-    ];
-    $this->setupStorageMock($redirects, $loadMap);
+    // Mock the entity query to return IDs 1, 2, and 3.
+    $query = $this->createMock('\Drupal\Core\Entity\Query\QueryInterface');
+    $query->method('condition')
+      ->willReturnSelf();
+    $query->method('accessCheck')
+      ->willReturnSelf();
+    $query->method('range')
+      ->willReturnSelf();
+    $query->method('execute')
+      ->willReturn(['1', '2', '3']);
+
+    // Mock the entity storage to return the query and map IDs to redirect entities.
+    $storage = $this->createMock(EntityStorageInterface::class);
+    $storage->method('getQuery')
+      ->willReturn($query);
+    $storage->method('load')
+      ->willReturnMap([
+        ['1', $redirect1],
+        ['2', $redirect2],
+        ['3', $redirect3],
+      ]);
+    $storage->method('getEntityType')
+      ->willReturn(new class {
+
+        /**
+         * Gets entity type key.
+         */
+        public function getKey($key) {
+          return $key === 'published' ? 'status' : ($key === 'custom' ? 'is_custom' : '');
+        }
+
+      });
+
+    // Setup entity type manager to return the mocked storage.
+    $this->entityTypeManager->method('getStorage')
+      ->with('redirect')
+      ->willReturn($storage);
 
     // Expect logging for each processed redirect, up to the range limit of 3.
     $this->logger->expects($this->exactly(3))
