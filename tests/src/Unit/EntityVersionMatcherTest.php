@@ -18,9 +18,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Unit tests for EntityVersionMatcher service.
  *
- * Verifies the functionality of the EntityVersionMatcher service, focusing on the
- * public getType() method to identify entity version states (canonical, revision,
- * preview) based on route parameters and current context.
+ * Verifies the functionality of the EntityVersionMatcher service, focusing on
+ * the public getType() method to identify entity version states (canonical,
+ * revision, preview) based on route parameters and current context.
  *
  * @coversDefaultClass \Drupal\helfi_platform_config\EntityVersionMatcher
  * @group helfi_platform_config
@@ -28,30 +28,38 @@ use PHPUnit\Framework\MockObject\MockObject;
 class EntityVersionMatcherTest extends UnitTestCase {
 
   /**
+   * The entity type manager mock.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit\Framework\MockObject\MockObject
    */
   private EntityTypeManagerInterface|MockObject $entityTypeManager;
 
   /**
+   * The route match mock.
+   *
    * @var \Drupal\Core\Routing\RouteMatchInterface|\PHPUnit\Framework\MockObject\MockObject
    */
   private RouteMatchInterface|MockObject $routeMatch;
 
   /**
+   * The language manager mock.
+   *
    * @var \Drupal\Core\Language\LanguageManagerInterface|\PHPUnit\Framework\MockObject\MockObject
    */
   private LanguageManagerInterface|MockObject $languageManager;
 
   /**
+   * The entity version matcher instance.
+   *
    * @var \Drupal\helfi_platform_config\EntityVersionMatcher
    */
   private EntityVersionMatcher $entityVersionMatcher;
 
   /**
-   * {@inheritdoc}
+   * Set up the test environment.
    *
-   * Sets up the test environment by initializing mock objects for dependencies
-   * and creating an instance of the EntityVersionMatcher service.
+   * Initializes mock objects for dependencies and creates an instance of
+   * EntityVersionMatcher for testing.
    */
   protected function setUp(): void {
     parent::setUp();
@@ -68,10 +76,10 @@ class EntityVersionMatcherTest extends UnitTestCase {
   }
 
   /**
-   * Helper method to set up entity type definitions mock.
+   * Set up entity type definitions mock.
    *
-   * Configures the entity type manager to return a predefined set of entity type
-   * definitions, simulating the available entity types in the system.
+   * Configures the entity type manager to return a predefined set of entity
+   * type definitions, simulating the available entity types in the system.
    *
    * @param array $definitions
    *   Array of entity type definitions to return, defaults to 'node' and 'user'.
@@ -81,10 +89,10 @@ class EntityVersionMatcherTest extends UnitTestCase {
   }
 
   /**
-   * Helper method to set up route parameters mock.
+   * Set up route parameters mock.
    *
-   * Configures the route match object to return specific parameters and raw values,
-   * simulating different routing contexts for entity detection.
+   * Configures the route match object to return specific parameters and raw
+   * values, simulating different routing contexts for entity detection.
    *
    * @param array $parameters
    *   Associative array of route parameters to return.
@@ -95,22 +103,61 @@ class EntityVersionMatcherTest extends UnitTestCase {
    */
   private function setupRouteParameters(array $parameters = [], $rawParameter = NULL, string $routeName = 'some.route'): void {
     $this->routeMatch->method('getParameters')->willReturn(new class($parameters) {
+      /**
+       * The parameters array.
+       *
+       * @var array
+       */
       private $params;
+
+      /**
+       * Constructor.
+       *
+       * @param array $params
+       *   The parameters to set.
+       */
       public function __construct($params) {
         $this->params = $params;
       }
+
+      /**
+       * Returns all parameters.
+       *
+       * @return array
+       *   The parameters array.
+       */
       public function all() {
         return $this->params;
       }
+
     });
     $this->routeMatch->method('getRawParameter')->willReturn($rawParameter);
     $this->routeMatch->method('getRouteName')->willReturn($routeName);
   }
 
   /**
+   * Set up entity type manager storage mock.
+   *
+   * Configures the entity type manager to return a specific storage mock
+   * for a given entity type, along with revisionable storage behavior if
+   * provided.
+   *
+   * @param string $entityType
+   *   The entity type to mock storage for.
+   * @param mixed $storage
+   *   The storage mock to return.
+   * @param array $revisionable
+   *   Array of revisionable storage behaviors if applicable.
+   */
+  private function setupStorageMock($entityType, $storage, array $revisionable = []): void {
+    $this->entityTypeManager->method('getStorage')->with($entityType)->willReturn($storage);
+  }
+
+  /**
    * Tests getType() for a canonical entity view context.
    *
-   * Verifies that the method identifies a canonical view and returns the correct version constant and entity.
+   * Verifies that the method identifies a canonical view and returns the
+   * correct version constant and entity.
    *
    * @covers \Drupal\helfi_platform_config\EntityVersionMatcher::getType
    */
@@ -125,15 +172,19 @@ class EntityVersionMatcherTest extends UnitTestCase {
     $entity = $this->createMock(ContentEntityInterface::class);
     $this->routeMatch->method('getParameter')->willReturn($entity);
 
-    // Set up the current language for context, though not directly used in canonical logic.
+    // Set up the current language for context, though not directly used in
+    // canonical logic.
     $language = $this->createMock(LanguageInterface::class);
     $this->languageManager->method('getCurrentLanguage')->willReturn($language);
 
-    // Call the getType method to test its behavior for a canonical entity view context.
-    // This method should return the correct entity version constant and entity object.
+    // Call the getType method to test its behavior for a canonical entity view
+    // context.
+    // This method should return the correct entity version constant and entity
+    // object.
     $result = $this->entityVersionMatcher->getType();
 
-    // Assert that the method returns the correct entity version constant and entity object.
+    // Assert that the method returns the correct entity version constant and
+    // entity object.
     $this->assertEquals(EntityVersionMatcher::ENTITY_VERSION_CANONICAL, $result['entity_version']);
     $this->assertEquals($entity, $result['entity']);
   }
@@ -141,7 +192,8 @@ class EntityVersionMatcherTest extends UnitTestCase {
   /**
    * Tests getType() for a revision entity view context.
    *
-   * Verifies that the method identifies a revision view, loads it, handles translation, and returns the correct data.
+   * Verifies that the method identifies a revision view, loads it, handles
+   * translation, and returns the correct data.
    *
    * @covers \Drupal\helfi_platform_config\EntityVersionMatcher::getType
    */
@@ -154,7 +206,7 @@ class EntityVersionMatcherTest extends UnitTestCase {
 
     // Mock the storage to return a revisionable entity storage for nodes.
     $storage = $this->createMock(RevisionableStorageInterface::class);
-    $this->entityTypeManager->method('getStorage')->willReturn($storage);
+    $this->setupStorageMock('node', $storage);
 
     // Mock a revision entity that can be loaded and translated.
     $revision = $this->createMock(TranslatableRevisionableInterface::class);
@@ -165,17 +217,21 @@ class EntityVersionMatcherTest extends UnitTestCase {
     $language->method('getId')->willReturn('en');
     $this->languageManager->method('getCurrentLanguage')->willReturn($language);
 
-    // Mock the translated entity that should be returned for the current language.
+    // Mock the translated entity that should be returned for the current
+    // language.
     $entity = $this->createMock(ContentEntityInterface::class);
     $revision->method('getTranslation')->willReturn($entity);
 
-    // Provide a revision ID as a parameter to simulate loading a specific revision.
+    // Provide a revision ID as a parameter to simulate loading a specific
+    // revision.
     $this->routeMatch->method('getParameter')->willReturn(123);
 
-    // Call the getType method to test its behavior for a revision entity view context.
+    // Call the getType method to test its behavior for a revision entity view
+    // context.
     $result = $this->entityVersionMatcher->getType();
 
-    // Assert that the method returns the correct entity version constant and entity object.
+    // Assert that the method returns the correct entity version constant and
+    // entity object.
     $this->assertEquals(EntityVersionMatcher::ENTITY_VERSION_REVISION, $result['entity_version']);
     $this->assertEquals($entity, $result['entity']);
   }
@@ -183,7 +239,8 @@ class EntityVersionMatcherTest extends UnitTestCase {
   /**
    * Tests getType() for a preview entity view context.
    *
-   * Verifies that the method identifies a preview view and returns the correct version constant and entity.
+   * Verifies that the method identifies a preview view and returns the correct
+   * version constant and entity.
    *
    * @covers \Drupal\helfi_platform_config\EntityVersionMatcher::getType
    */
@@ -198,15 +255,19 @@ class EntityVersionMatcherTest extends UnitTestCase {
     $entity = $this->createMock(ContentEntityInterface::class);
     $this->routeMatch->method('getParameter')->willReturn($entity);
 
-    // Set up the current language for context, though not directly used in preview logic.
+    // Set up the current language for context, though not directly used in
+    // preview logic.
     $language = $this->createMock(LanguageInterface::class);
     $this->languageManager->method('getCurrentLanguage')->willReturn($language);
 
-    // Call the getType method to test its behavior for a preview entity view context.
-    // This method should return the correct entity version constant and entity object.
+    // Call the getType method to test its behavior for a preview entity view
+    // context.
+    // This method should return the correct entity version constant and entity
+    // object.
     $result = $this->entityVersionMatcher->getType();
 
-    // Assert that the method returns the correct entity version constant and entity object.
+    // Assert that the method returns the correct entity version constant and
+    // entity object.
     $this->assertEquals(EntityVersionMatcher::ENTITY_VERSION_PREVIEW, $result['entity_version']);
     $this->assertEquals($entity, $result['entity']);
   }
@@ -214,7 +275,8 @@ class EntityVersionMatcherTest extends UnitTestCase {
   /**
    * Tests getType() when no entity context is present.
    *
-   * Verifies that the method returns an empty array when no entity or version context is detected.
+   * Verifies that the method returns an empty array when no entity or version
+   * context is detected.
    *
    * @covers \Drupal\helfi_platform_config\EntityVersionMatcher::getType
    */
@@ -224,8 +286,9 @@ class EntityVersionMatcherTest extends UnitTestCase {
 
     $result = $this->entityVersionMatcher->getType();
     $this->assertEquals([
-      'entity_version' => \Drupal\helfi_platform_config\EntityVersionMatcher::ENTITY_VERSION_CANONICAL,
-      'entity' => FALSE
+      'entity_version' => EntityVersionMatcher::ENTITY_VERSION_CANONICAL,
+      'entity' => FALSE,
     ], $result);
   }
+
 }
