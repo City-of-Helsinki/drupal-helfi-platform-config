@@ -203,10 +203,12 @@ class RedirectCleanerTest extends UnitTestCase {
    * @covers ::isEnabled
    */
   public function testUnpublishExpiredRedirectsFeatureDisabled(): void {
+    // Setup configuration mock to disable the redirect cleaner feature.
     $this->setupConfigMock(false);
+    // Ensure that entity storage is not accessed when the feature is disabled.
     $this->entityTypeManager->expects($this->never())
       ->method('getStorage');
-
+    // Call the method to confirm it exits early due to the disabled feature.
     $this->cleaner->unpublishExpiredRedirects();
   }
 
@@ -220,7 +222,9 @@ class RedirectCleanerTest extends UnitTestCase {
    * @covers ::isEnabled
    */
   public function testUnpublishExpiredRedirectsNoRedirects(): void {
+    // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(true);
+    // Mock the entity query to return an empty result set, simulating no redirects.
     $query = $this->createMock('\Drupal\Core\Entity\Query\QueryInterface');
     $query->method('condition')
       ->willReturnSelf();
@@ -231,6 +235,7 @@ class RedirectCleanerTest extends UnitTestCase {
     $query->method('execute')
       ->willReturn([]);
 
+    // Mock the entity storage to return the query mock.
     $storage = $this->createMock(EntityStorageInterface::class);
     $storage->method('getQuery')
       ->willReturn($query);
@@ -241,10 +246,14 @@ class RedirectCleanerTest extends UnitTestCase {
         }
       });
 
+    // Setup entity type manager to return the mocked storage.
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
       ->willReturn($storage);
-
+    // Ensure no logging occurs since there are no redirects to process.
+    $this->logger->expects($this->never())
+      ->method('info');
+    // Call the method to test handling of an empty redirect list.
     $this->cleaner->unpublishExpiredRedirects();
   }
 
@@ -258,7 +267,9 @@ class RedirectCleanerTest extends UnitTestCase {
    * @covers ::isEnabled
    */
   public function testUnpublishExpiredRedirectsSuccess(): void {
+    // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(true);
+    // Mock the entity query to return a single redirect ID.
     $query = $this->createMock('\Drupal\Core\Entity\Query\QueryInterface');
     $query->method('condition')
       ->willReturnSelf();
@@ -269,6 +280,7 @@ class RedirectCleanerTest extends UnitTestCase {
     $query->method('execute')
       ->willReturn(['1']);
 
+    // Mock the redirect entity to simulate unpublishing and saving.
     $redirect = $this->createMock(PublishableRedirect::class);
     $redirect->method('id')
       ->willReturn('1');
@@ -277,6 +289,7 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect->expects($this->once())
       ->method('save');
 
+    // Mock the entity storage to return the query and redirect entity.
     $storage = $this->createMock(EntityStorageInterface::class);
     $storage->method('getQuery')
       ->willReturn($query);
@@ -290,14 +303,17 @@ class RedirectCleanerTest extends UnitTestCase {
         }
       });
 
+    // Setup entity type manager to return the mocked storage.
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
       ->willReturn($storage);
 
+    // Expect logging of the unpublishing action for the redirect.
     $this->logger->expects($this->once())
       ->method('info')
       ->with('Unpublishing redirect: %id', ['%id' => '1']);
 
+    // Call the method to test successful unpublishing of a redirect.
     $this->cleaner->unpublishExpiredRedirects();
   }
 
@@ -311,7 +327,9 @@ class RedirectCleanerTest extends UnitTestCase {
    * @covers ::isEnabled
    */
   public function testUnpublishExpiredRedirectsSaveException(): void {
+    // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(true);
+    // Mock the entity query to return a single redirect ID.
     $query = $this->createMock('\Drupal\Core\Entity\Query\QueryInterface');
     $query->method('condition')
       ->willReturnSelf();
@@ -322,6 +340,7 @@ class RedirectCleanerTest extends UnitTestCase {
     $query->method('execute')
       ->willReturn(['1']);
 
+    // Mock the redirect entity to simulate unpublishing and a save failure.
     $redirect = $this->createMock(PublishableRedirect::class);
     $redirect->method('id')
       ->willReturn('1');
@@ -330,6 +349,7 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect->method('save')
       ->willThrowException(new \Exception('Save failed'));
 
+    // Mock the entity storage to return the query and redirect entity.
     $storage = $this->createMock(EntityStorageInterface::class);
     $storage->method('getQuery')
       ->willReturn($query);
@@ -343,17 +363,21 @@ class RedirectCleanerTest extends UnitTestCase {
         }
       });
 
+    // Setup entity type manager to return the mocked storage.
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
       ->willReturn($storage);
 
+    // Expect logging of the unpublishing attempt before the exception.
     $this->logger->expects($this->once())
       ->method('info')
       ->with('Unpublishing redirect: %id', ['%id' => '1']);
 
+    // Expect an exception to be thrown due to the save failure.
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage('Save failed');
 
+    // Call the method to test behavior when saving a redirect fails.
     $this->cleaner->unpublishExpiredRedirects();
   }
 
@@ -367,8 +391,10 @@ class RedirectCleanerTest extends UnitTestCase {
    * @covers ::isEnabled
    */
   public function testProcessMultipleRedirectsWithinRange(): void {
+    // Enable the redirect cleaner feature and set a range limit of 3.
     $this->setupConfigMock(true, 3);
     
+    // Mock redirect entities for IDs 1, 2, and 3 to simulate unpublishing and saving.
     $redirect1 = $this->createMock(PublishableRedirect::class);
     $redirect1->method('id')
       ->willReturn('1');
@@ -393,10 +419,12 @@ class RedirectCleanerTest extends UnitTestCase {
     $redirect3->expects($this->once())
       ->method('save');
 
+    // Setup arrays for storage mock to return the redirects.
     $redirects = ['1' => $redirect1, '2' => $redirect2, '3' => $redirect3];
     $loadMap = [['1', $redirect1], ['2', $redirect2], ['3', $redirect3]];
     $this->setupStorageMock($redirects, $loadMap);
     
+    // Expect logging for each processed redirect, up to the range limit of 3.
     $this->logger->expects($this->exactly(3))
       ->method('info')
       ->withConsecutive(
@@ -405,6 +433,7 @@ class RedirectCleanerTest extends UnitTestCase {
         ['Unpublishing redirect: %id', ['%id' => '3']]
       );
     
+    // Call the method to test processing multiple redirects within the range.
     $this->cleaner->unpublishExpiredRedirects();
   }
 
@@ -419,36 +448,43 @@ class RedirectCleanerTest extends UnitTestCase {
    * @covers ::isEnabled
    */
   public function testUnpublishExpiredRedirectsInvalidPluginDefinitionException(): void {
+    // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(true);
+    // Simulate an InvalidPluginDefinitionException when attempting to get storage.
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
       ->willThrowException(new \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException('redirect'));
 
+    // Ensure no logging occurs due to the exception.
     $this->logger->expects($this->never())
       ->method('info');
 
+    // Call the method to test early exit due to the exception.
     $this->cleaner->unpublishExpiredRedirects();
   }
 
   /**
    * Tests unpublishExpiredRedirects() when the redirect module is not installed.
    *
-   * Verifies that the method handles a PluginNotFoundException for the redirect
-   * entity type, indicating the module is not installed, by exiting early without
-   * logging or processing.
+   * Verifies that the method handles a PluginNotFoundException, indicating the
+   * redirect module is not installed, by exiting early without logging or processing.
    *
    * @covers ::unpublishExpiredRedirects
    * @covers ::isEnabled
    */
   public function testUnpublishExpiredRedirectsRedirectModuleNotInstalled(): void {
+    // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(true);
+    // Simulate a PluginNotFoundException when attempting to get storage.
     $this->entityTypeManager->method('getStorage')
       ->with('redirect')
       ->willThrowException(new \Drupal\Component\Plugin\Exception\PluginNotFoundException('redirect'));
 
+    // Ensure no logging occurs due to the exception.
     $this->logger->expects($this->never())
       ->method('info');
 
+    // Call the method to test early exit due to the missing module.
     $this->cleaner->unpublishExpiredRedirects();
   }
 }
