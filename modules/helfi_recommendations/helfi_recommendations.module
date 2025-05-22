@@ -56,7 +56,6 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
 
   // Invalidate suggestion topics tags for local recommendation blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
-    // _helfi_recommendations_invalidate_cache_tags($entity);
     \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
   }
 }
@@ -67,7 +66,6 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
 function helfi_recommendations_entity_delete(EntityInterface $entity) : void {
   // Invalidate suggestion topics tags for local recommendation blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
-    // _helfi_recommendations_invalidate_cache_tags($entity);
     \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
   }
 }
@@ -281,16 +279,4 @@ function _helfi_recommendations_can_see_review_mode() : bool {
   $current_user = \Drupal::currentUser();
   $roles = $current_user->getRoles();
   return in_array('administrator', $roles) || $current_user->hasPermission('administer modules');
-}
-
-/**
- * Helper function to invalidate cache tags for local recommendation blocks.
- */
-function _helfi_recommendations_invalidate_cache_tags(SuggestedTopicsInterface $entity) : void {
-  // $cache_tag = "suggested_topics_uuid:{$entity->uuid()}";
-  // \Drupal::service('cache_tags.invalidator')->invalidateTags([$cache_tag]);
-
-  // /** @var \Drupal\helfi_api_base\Cache\CacheTagInvalidator $service */
-  // $service = \Drupal::service(CacheTagInvalidator::class);
-  // $service->invalidateTags($entity->getExternalCacheTags());
 }
