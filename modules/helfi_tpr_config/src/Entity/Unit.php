@@ -47,7 +47,7 @@ class Unit extends BaseUnit {
   /**
    * Gets the website URL.
    *
-   * @return Url|null
+   * @return \Drupal\Core\Url|null
    *   The website url object.
    */
   public function getWebsiteUrl() : ? Url {
