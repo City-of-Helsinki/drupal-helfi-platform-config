@@ -1,6 +1,14 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
   logger.channel.helfi_etusivu_entities:
     parent: logger.channel_base
     arguments: [ 'helfi_etusivu_entities' ]
+
+  Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder: ~
+
+  Drupal\helfi_etusivu_entities\SurveyLazyBuilder: ~
 
 
