@@ -6,17 +6,11 @@ namespace Drupal\helfi_etusivu_entities\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Utility\Error;
-use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -107,155 +101,8 @@ abstract class EtusivuEntityBlockBase extends BlockBase implements ContainerFact
   }
 
   /**
-   * Checks if this block is configured to pull content from Etusivu.
-   *
-   * @return bool
-   *   If content should be pulled from Etusivu.
-   *   The block only shows local items when FALSE.
+   * {@inheritDoc}
    */
-  public function useRemoteEntities(): bool {
-    return $this->configuration['use_remote_entities'];
-  }
-
-  /**
-   * Gets a list of local entities the block should render.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface[]
-   *   Items the block should render.
-   *
-   * @throws \Exception
-   */
-  abstract protected function getLocalEntities(): array;
-
-  /**
-   * Gets a list of remote entities the block should render.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface[]
-   *   Items the block should render.
-   *
-   * @throws \Exception
-   */
-  abstract protected function getRemoteEntities(): array;
-
-  /**
-   * Sorts items the block should render.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface[]
-   *   Sorted entity list.
-   */
-  abstract protected function sortEntities(array $local, array $remote): array;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function build(): array {
-    try {
-      $local = $this->getLocalEntities();
-
-      // Some non-core instances might want to show only local entities.
-      // Block configuration allows disabling the remote entities.
-      $remote = $this->useRemoteEntities() ? $this->getRemoteEntities() : [];
-    }
-    catch (\Exception $e) {
-      Error::logException($this->logger, $e);
-      return [];
-    }
-
-    $sorted = $this->sortEntities($local, $remote);
-
-    return $this
-      ->entityTypeManager
-      ->getViewBuilder('node')
-      ->viewMultiple($sorted, 'default');
-  }
-
-  /**
-   * Get global entity storage.
-   *
-   * @param string $entityTypeId
-   *   External entity type.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
-  protected function getExternalEntityStorage(string $entityTypeId): ExternalEntityStorageInterface {
-    $globalEntityStorage = $this->entityTypeManager->getStorage($entityTypeId);
-    if ($globalEntityStorage instanceof ExternalEntityStorageInterface) {
-      return $globalEntityStorage;
-    }
-
-    throw new \InvalidArgumentException("$entityTypeId is not external entity type");
-  }
-
-  /**
-   * Gets content langcodes.
-   */
-  protected function getContentLangcodes(): array {
-    // Also fetch english announcements for languages with non-standard support.
-    $langcodes[] = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage(LanguageInterface::TYPE_CONTENT);
-    $currentLangcode = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-      ->getId();
-
-    if (reset($langcodes) !== $currentLangcode) {
-      $langcodes[] = $currentLangcode;
-    }
-
-    return $langcodes;
-  }
-
-  /**
-   * Get current page's entity from given possibilities.
-   *
-   * @param array $entityTypes
-   *   Entity names to be used to check the current page.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface|null
-   *   Current page's entity, if any.
-   */
-  protected function getCurrentPageEntity(array $entityTypes): ?EntityInterface {
-    foreach ($entityTypes as $entityType) {
-      $pageEntity = $this->routeMatch->getParameter($entityType);
-      if (!empty($pageEntity) && $pageEntity instanceof EntityInterface) {
-        return $pageEntity;
-      }
-    }
-    return NULL;
-  }
-
-  /**
-   * Checks if entity has reference to another entity.
-   *
-   * @param string $fieldName
-   *   Entity reference field name.
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity.
-   * @param \Drupal\Core\Entity\EntityInterface|null $target
-   *   Target entity.
-   *
-   * @return bool
-   *   True if $entity has reference to $target.
-   */
-  protected function hasReference(string $fieldName, FieldableEntityInterface $entity, ?EntityInterface $target): bool {
-    // Get announcement's referenced entities from the appropriate field,
-    // depending on the current page's entity.
-    $referencedEntities = [];
-
-    if ($entity->hasField($fieldName)) {
-      $field = $entity->get($fieldName);
-      assert($field instanceof EntityReferenceFieldItemListInterface);
-      $referencedEntities = $field->referencedEntities();
-    }
-
-    if ($target) {
-      foreach ($referencedEntities as $referencedEntity) {
-        if ($referencedEntity->id() === $target->id()) {
-          return TRUE;
-        }
-      }
-    }
-
-    return FALSE;
-  }
+  abstract public function build(): array;
 
 }
