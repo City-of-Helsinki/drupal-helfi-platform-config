@@ -75,7 +75,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
 
     $sorted = $this->sortEntities($local, $remote);
 
-    return \Drupal::entityTypeManager()
+    return $this->entityTypeManager
       ->getViewBuilder('node')
       ->viewMultiple($sorted, 'default');
   }
