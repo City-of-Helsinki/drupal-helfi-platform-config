@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
+use Drupal\helfi_etusivu_entities\Plugin\Block\SurveyBlock;
 use Drupal\helfi_etusivu_entities\SurveyLazyBuilder;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
@@ -57,11 +58,9 @@ class SurveyBlockTest extends EntityKernelTestBase {
 
   /**
    * Make sure build() works.
-   *
-   * @covers Drupal\helfi_etusivu_entities\Plugin\Block\SurveyBlock
    */
   public function testBuild(): void {
-    $block = AnnouncementsBlock::create($this->container, [
+    $block = SurveyBlock::create($this->container, [
       'use_remote_entities' => FALSE,
     ], 'announcement', ['provider' => 'helfi_announcement']);
     $result = $block->build();
