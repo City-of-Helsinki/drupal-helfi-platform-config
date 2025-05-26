@@ -69,7 +69,8 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
   /**
    * Test announcements lazy building.
    *
-   * @covers ::doSort
+   * @covers ::sortAnnouncements
+   * @covers ::resolveVisibilityWeight
    * @covers ::hasReference
    */
   public function testAnnouncementLazyBuild(): void {
