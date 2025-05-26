@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
+use Drupal\helfi_etusivu_entities\SurveyLazyBuilder;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
@@ -34,6 +35,7 @@ class SurveyBlockTest extends EntityKernelTestBase {
     'helfi_node_survey',
     'external_entities',
     'helfi_etusivu_entities',
+    'publication_date',
   ];
 
   /**
@@ -43,6 +45,7 @@ class SurveyBlockTest extends EntityKernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('node');
+
     $this->installConfig([
       'node',
       'helfi_node_survey',
@@ -61,6 +64,12 @@ class SurveyBlockTest extends EntityKernelTestBase {
     ], 'announcement', ['provider' => 'helfi_announcement']);
     $result = $block->build();
     $this->assertTrue(isset($result['#lazy_builder']));
+  }
+
+  public function testSurveyLazyBuild(): void {
+    $announcementLazyBuilder = $this->container->get(SurveyLazyBuilder::class);
+    $result = $announcementLazyBuilder->lazyBuild(FALSE);
+    $this->assertTrue($result['#sorted']);
   }
 
 }

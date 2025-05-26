@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
+use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
@@ -61,6 +62,12 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
     ], 'announcement', ['provider' => 'helfi_announcement']);
     $result = $block->build();
     $this->assertTrue(isset($result['#lazy_builder']));
+  }
+
+  public function testAnnouncementLazyBuild(): void {
+    $announcementLazyBuilder = $this->container->get(AnnouncementsLazyBuilder::class);
+    $result = $announcementLazyBuilder->lazyBuild();
+    $this->assertTrue($result['#sorted']);
   }
 
 }
