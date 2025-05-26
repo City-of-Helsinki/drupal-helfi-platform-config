@@ -60,7 +60,7 @@ class SurveyBlockTest extends EntityKernelTestBase {
       'use_remote_entities' => FALSE,
     ], 'announcement', ['provider' => 'helfi_announcement']);
     $result = $block->build();
-    $this->assertTrue($result['#sorted']);
+    $this->assertTrue(isset($result['#lazy_builder']));
   }
 
 }
