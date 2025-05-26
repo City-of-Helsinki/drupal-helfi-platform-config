@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
@@ -95,6 +96,15 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
       'field_announcement_all_pages' => 0,
     ]);
     $announcement->save();
+
+    $node = Node::create(['type' => 'page', 'langcode' => 'en', 'title' => 'titlele']);
+    $node->save();
+
+    $routeMatch = $this->prophesize(RouteMatchInterface::class);
+    $routeMatch->getParameter('node')->willReturn($node);
+    $routeMatch = $routeMatch->reveal();
+
+    $this->container->set('current_route_match', $routeMatch);
 
     $announcementLazyBuilder = $this->container->get(AnnouncementsLazyBuilder::class);
     $result = $announcementLazyBuilder->lazyBuild(TRUE);
