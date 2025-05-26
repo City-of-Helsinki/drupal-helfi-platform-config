@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
-use Drupal\external_entities\ExternalEntityStorage;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
@@ -80,6 +79,7 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
       'status' => NodeInterface::PUBLISHED,
       'field_announcement_title' => 'The title',
       'field_announcement_type' => 'notification',
+      'field_announcement_all_pages' => 1,
     ]);
     $announcement->save();
 
@@ -92,7 +92,7 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
       'status' => NodeInterface::PUBLISHED,
       'field_announcement_title' => 'The title2',
       'field_announcement_type' => 'alert',
-      'field_announcement_all_pages' => 1
+      'field_announcement_all_pages' => 0,
     ]);
     $announcement->save();
 
