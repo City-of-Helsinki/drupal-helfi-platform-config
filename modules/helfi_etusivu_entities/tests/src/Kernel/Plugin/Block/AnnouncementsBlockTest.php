@@ -69,9 +69,9 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
   /**
    * Test announcements lazy building.
    *
-   * @covers ::sortAnnouncements
-   * @covers ::resolveVisibilityWeight
-   * @covers ::hasReference
+   * @covers \Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder::sortAnnouncements
+   * @covers \Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder::resolveVisibilityWeight
+   * @covers \Drupal\helfi_etusivu_entities\LazyBuilderBase::hasReference
    */
   public function testAnnouncementLazyBuild(): void {
     $announcement = Node::create([
