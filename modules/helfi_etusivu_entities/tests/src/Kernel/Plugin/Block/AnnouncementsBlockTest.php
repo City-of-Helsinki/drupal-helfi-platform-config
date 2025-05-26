@@ -68,6 +68,8 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
 
   /**
    * Test announcements lazy building.
+   *
+   * @covers ::doSort
    */
   public function testAnnouncementLazyBuild(): void {
     $announcement = Node::create([
