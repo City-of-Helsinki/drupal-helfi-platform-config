@@ -7,6 +7,8 @@ namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 /**
  * Tests announcements block.
@@ -64,7 +66,35 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
     $this->assertTrue(isset($result['#lazy_builder']));
   }
 
+  /**
+   * Test announcements lazy building.
+   */
   public function testAnnouncementLazyBuild(): void {
+    $announcement = Node::create([
+      'uuid' => 'c9ee55c3-9ca5-4c53-900e-82b6d6928a63',
+      'type' => 'announcement',
+      'langcode' => 'en',
+      'body' => 'body',
+      'title' => 'title',
+      'status' => NodeInterface::PUBLISHED,
+      'field_announcement_title' => 'The title',
+      'field_announcement_type' => 'notification',
+    ]);
+    $announcement->save();
+
+    $announcement = Node::create([
+      'uuid' => 'c9ee55c3-9ca5-4c53-900e-82b6d6928a64',
+      'type' => 'announcement',
+      'langcode' => 'en',
+      'body' => 'body',
+      'title' => 'title2',
+      'status' => NodeInterface::PUBLISHED,
+      'field_announcement_title' => 'The title2',
+      'field_announcement_type' => 'alert',
+      'field_announcement_all_pages' => 1
+    ]);
+    $announcement->save();
+
     $announcementLazyBuilder = $this->container->get(AnnouncementsLazyBuilder::class);
     $result = $announcementLazyBuilder->lazyBuild();
     $this->assertTrue($result['#sorted']);
