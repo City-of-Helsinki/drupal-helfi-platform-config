@@ -27,6 +27,13 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 final class AnnouncementsLazyBuilder extends LazyBuilderBase {
 
   /**
+   * Announcement weights by type.
+   *
+   * @var int[]
+   */
+  public static $announcementTypeWeights = ['notification' => 0, 'attention' => 1, 'alert' => 2];
+
+  /**
    * The constructor.
    *
    * @param \Psr\Log\LoggerInterface $logger
@@ -138,7 +145,17 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Sort the entities.
+   *
+   * First local/remote, then by type & weight.
+   *
+   * @param array $local
+   *   Local entities.
+   * @param array $remote
+   *   Remote entities.
+   *
+   * @return array
+   *   All entities sorted.
    */
   protected function sortEntities(array $local, array $remote): array {
     $currentEntity = $this->getCurrentPageEntity(array_keys(AnnouncementsBlock::ENTITY_TYPE_FIELDS));
@@ -184,49 +201,12 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    *   Array of nodes.
    */
   private function sortAnnouncements(array &$announcements): void {
-    if (empty($announcements)) {
-      return;
-    }
-
-    // Get all possible values for the announcement types.
-    $announcementTypeDefinition = $announcements[0]->getFieldDefinitions()['field_announcement_type'];
-    $types = options_allowed_values(
-      $announcementTypeDefinition->getFieldStorageDefinition(),
-    );
-
-    // Map select-list values with numeric weight value.
-    $announcementTypeWeights = $this->createAnnouncementWeightMap($types);
-
-    $this->doSort($announcements, $announcementTypeWeights);
-  }
-
-  /**
-   * Create the map which is used to order the announcements by severity.
-   *
-   * @param array $announcementTypes
-   *   Should return ['notification' => 0, 'attention' => 1, 'alert' => 2].
-   *
-   * @return int[]|string[]
-   *   Array of announcement type keys and weights.
-   */
-  private function createAnnouncementWeightMap(array $announcementTypes): array {
-    return array_flip(array_keys($announcementTypes));
-  }
-
-  /**
-   * Execute sorting.
-   *
-   * @param \Drupal\node\NodeInterface[] $announcements
-   *   Announcement entities.
-   * @param array $announcementTypeWeights
-   *   Announcement types ordered by severity.
-   */
-  private function doSort(array &$announcements, array $announcementTypeWeights): void {
     // Sort by type/severity.
     usort($announcements, function (
       EntityInterface $a,
       EntityInterface $b,
-    ) use ($announcementTypeWeights) {
+    ) {
+      $announcementTypeWeights = self::$announcementTypeWeights;
       $weightA = $announcementTypeWeights[$a->get('field_announcement_type')->value];
       $weightB = $announcementTypeWeights[$b->get('field_announcement_type')->value];
       if ($weightA === $weightB) {
