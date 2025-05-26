@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
-use Drupal\Component\Utility\Xss;
-use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\helfi_etusivu_entities\Plugin\Block\SurveyBlock;
 use Drupal\helfi_etusivu_entities\SurveyLazyBuilder;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
-use Drupal\node\Entity\Node;
 
 /**
  * Tests Survey blocks.
