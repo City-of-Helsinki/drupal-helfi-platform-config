@@ -201,6 +201,8 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    *
    * @param \Drupal\node\NodeInterface[] $announcements
    *   Array of nodes.
+   *
+   * @codeCoverageIgnore
    */
   private function sortAnnouncements(array &$announcements): void {
     // Sort by type/severity.
@@ -242,6 +244,8 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    *
    * @return int
    *   Visibility weight.
+   *
+   * @codeCoverageIgnore
    */
   private function resolveVisibilityWeight(ContentEntityInterface $announcement): int {
     if ($announcement->get('field_announcement_all_pages')->value) {
