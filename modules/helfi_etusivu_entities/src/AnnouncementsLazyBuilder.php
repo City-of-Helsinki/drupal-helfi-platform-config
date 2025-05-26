@@ -156,6 +156,8 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    *
    * @return array
    *   All entities sorted.
+   *
+   * @codeCoverageIgnore
    */
   protected function sortEntities(array $local, array $remote): array {
     $currentEntity = $this->getCurrentPageEntity(array_keys(AnnouncementsBlock::ENTITY_TYPE_FIELDS));
