@@ -58,7 +58,7 @@ class SurveyBlockTest extends EntityKernelTestBase {
   /**
    * Make sure build() works.
    *
-   * @todo Improve these.
+   * @covers Drupal\helfi_etusivu_entities\Plugin\Block
    */
   public function testBuild(): void {
     $block = AnnouncementsBlock::create($this->container, [
