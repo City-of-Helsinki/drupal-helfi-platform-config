@@ -2,36 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_paragraphs_remote_video\Entity;
+namespace Drupal\helfi_paragraphs_map\Entity;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
- * Bundle class for remote_video paragraph.
+ * Bundle class for map paragraph.
  */
-class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
+class Map extends Paragraph implements ParagraphInterface {
   use StringTranslationTrait;
 
   /**
-   * Get title of video.
-   *
+   * Set the iframe title to the referenced entity in field_chart.
    */
-  public function getIframeTitle() :void {
+  public function getIframeTitle(): void {
     if (!$this->isValid()) {
       return;
     }
 
     $iframe_title = $this->get('field_iframe_title')->value;
-    $referenced_entities = $this->get('field_remote_video')->referencedEntities();
+    $referenced_entities = $this->get('field_map_map')->referencedEntities();
 
     if (empty($referenced_entities)) {
       return;
     }
-    
+
     $target = reset($referenced_entities);
-    $target->iframe_title = $iframe_title ? $iframe_title : t('Remote video');
+    $target->iframe_title = $iframe_title ? $iframe_title : t('Location on map');
   }
 
   /**
@@ -42,9 +41,9 @@ class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
    */
   private function isValid(): bool {
     if (
-      !$this->hasField('field_remote_video') ||
+      !$this->hasField('field_map_map') ||
       !$this->hasField('field_iframe_title') ||
-      $this->get('field_remote_video')->isEmpty()
+      $this->get('field_map_map')->isEmpty()
     ) {
       return FALSE;
     }

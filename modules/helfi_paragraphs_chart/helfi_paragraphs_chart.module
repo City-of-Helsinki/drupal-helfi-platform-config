@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_chart' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\helfi_paragraphs_chart\Entity\Chart;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_chart_helfi_paragraph_types() : array {
+  return [
+    new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'chart'),
+  ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_chart_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['chart'])) {
+    $bundles['paragraph']['chart']['class'] = Chart::class;
+  }
+}
