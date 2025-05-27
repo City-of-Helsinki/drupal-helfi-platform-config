@@ -170,6 +170,8 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
    *
    * @return array
    *   An array of sorted entities.
+   *
+   * @codeCoverageIgnore
    */
   protected function sortEntities(array $local, array $remote) : array {
     $currentEntity = $this->getCurrentPageEntity(array_keys(SurveyBlock::ENTITY_TYPE_FIELDS));
