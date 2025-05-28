@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
-use Drupal\external_entities\ExternalEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
@@ -136,10 +136,10 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
   /**
    * Create external entity for tests.
    *
-   * @return \Drupal\external_entities\ExternalEntityInterface
+   * @return \Drupal\Core\Entity\EntityInterface
    *   An external entity.
    */
-  private function createExternalEntity(): ExternalEntityInterface {
+  private function createExternalEntity(): EntityInterface {
     $storage = $this->container
       ->get('entity_type.manager')
       ->getStorage('helfi_announcements');
