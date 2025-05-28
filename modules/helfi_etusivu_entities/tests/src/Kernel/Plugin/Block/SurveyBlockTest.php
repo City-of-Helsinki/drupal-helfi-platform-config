@@ -56,7 +56,7 @@ class SurveyBlockTest extends EntityKernelTestBase {
   /**
    * Make sure build() works.
    */
-  public function disabledTestBuild(): void {
+  public function testBuild(): void {
     $block = SurveyBlock::create($this->container, [
       'use_remote_entities' => FALSE,
     ], 'announcement', ['provider' => 'helfi_announcement']);
@@ -67,10 +67,9 @@ class SurveyBlockTest extends EntityKernelTestBase {
   /**
    * Test survey lazy building.
    */
-  public function disabledTestSurveyLazyBuild(): void {
+  public function testSurveyLazyBuild(): void {
     $announcementLazyBuilder = $this->container->get(SurveyLazyBuilder::class);
     $result = $announcementLazyBuilder->lazyBuild(TRUE);
     $this->assertTrue($result['#sorted']);
   }
-
 }

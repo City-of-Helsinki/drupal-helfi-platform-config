@@ -39,6 +39,8 @@ final class AnnouncementsBlock extends EtusivuEntityBlockBase {
     $useRemoteEntities = $this->configuration['use_remote_entities'];
     return [
       '#lazy_builder' => [AnnouncementsLazyBuilder::class . '::lazyBuild', [$useRemoteEntities]],
+      '#create_placeholder' => TRUE,
+      '#lazy_builder_preview' => ['#markup' => ''],
     ];
   }
 

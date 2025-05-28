@@ -68,7 +68,7 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
   /**
    * Test announcements lazy building.
    */
-  public function disabledTestAnnouncementLazyBuild(): void {
+  public function testAnnouncementLazyBuild(): void {
     // Create testing data.
     $this->createAnnouncements();
 
@@ -80,7 +80,7 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
   /**
    * Test loading remote announcements.
    */
-  public function disabledTestRemoteLazyLoad(): void {
+  public function testRemoteLazyLoad(): void {
     // Create testing data.
     $externalEntity = $this->createExternalEntity();
 
