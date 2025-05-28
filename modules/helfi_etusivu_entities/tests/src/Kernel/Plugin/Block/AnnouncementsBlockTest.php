@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
-use Drupal\announcements_feed\Announcement;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\external_entities\ExternalEntityInterface;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
@@ -93,8 +91,6 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
 
   /**
    * Create announcement entities for tests.
-   *
-   * @return void
    */
   private function createAnnouncements(): void {
     $announcement = Node::create([
@@ -141,6 +137,7 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
    * Create external entity for tests.
    *
    * @return ExternalEntityInterface
+   *   An external entity.
    */
   private function createExternalEntity(): ExternalEntityInterface {
     $storage = $this->container
