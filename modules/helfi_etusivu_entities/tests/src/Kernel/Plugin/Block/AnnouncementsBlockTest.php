@@ -85,7 +85,7 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
     $externalEntity = $this->createExternalEntity();
 
     $announcementLazyBuilder = $this->container->get(AnnouncementsLazyBuilder::class);
-    $result = $announcementLazyBuilder->getRemoteEntities([$externalEntity]);
+    $result = $announcementLazyBuilder->handleRemoteEntities([$externalEntity]);
     $this->assertNotEmpty($result);
   }
 
