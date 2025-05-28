@@ -18,7 +18,6 @@ use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -48,6 +47,8 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
    * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver $defaultLanguageResolver
+   *   Default language resolver.
+   * @param \Drupal\helfi_api_base\Features\FeatureManagerInterface $featureManager
    *   Default language resolver.
    */
   public function __construct(
@@ -87,7 +88,6 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
           ->getExternalEntityStorage('helfi_announcements')
           ->loadMultiple();
       }
-
 
       // Some non-core instances might want to show only local entities.
       // Block configuration allows disabling the remote entities.
@@ -308,15 +308,15 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   private function useMockResponse(): array {
     $entity = $this->entityTypeManager
       ->getStorage('helfi_announcements')->create([
-      'uuid' => 'c9ee55c3-9ca5-4c53-900e-82b6d6928a99',
-      'langcode' => 'en',
-      'body' => 'body',
-      'title' => 'title3',
-      'status' => NodeInterface::PUBLISHED,
-      'field_announcement_title' => 'The title3',
-      'field_announcement_type' => 'alert',
-      'field_announcement_all_pages' => 0,
-      'field_announcement_assistive_technology_close_button_title' => 'assistance',
+        'uuid' => 'c9ee55c3-9ca5-4c53-900e-82b6d6928a99',
+        'langcode' => 'en',
+        'body' => 'body',
+        'title' => 'title3',
+        'status' => NodeInterface::PUBLISHED,
+        'field_announcement_title' => 'The title3',
+        'field_announcement_type' => 'alert',
+        'field_announcement_all_pages' => 0,
+        'field_announcement_assistive_technology_close_button_title' => 'assistance',
     ]);
     return [$entity];
   }
