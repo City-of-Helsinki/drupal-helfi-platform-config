@@ -28,7 +28,7 @@ class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
     }
 
     $target = reset($referenced_entities);
-    $target->iframe_title = $iframe_title ? $iframe_title : $this->t('Remote video');
+    $target->iframeTitle = $iframe_title ? $iframe_title : $this->t('Remote video');
   }
 
   /**

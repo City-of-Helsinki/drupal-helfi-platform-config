@@ -19,7 +19,6 @@ class ChartParagraphTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    // Core modules.
     'content_translation',
     'entity',
     'field',
@@ -31,21 +30,16 @@ class ChartParagraphTest extends KernelTestBase {
     'media_library',
     'options',
     'system',
-    'taxonomy',
     'text',
     'user',
     'views',
-
-    // Contrib modules.
+    'image',
+    'paragraphs_library',
     'allowed_formats',
     'crop',
     'linkit',
     'paragraphs',
-    'readonly_field_widget',
-
-    // Custom / HELFI modules.
     'hdbt_admin_tools',
-    'helfi_api_base',
     'helfi_media',
     'helfi_media_chart',
     'helfi_paragraphs_chart',
@@ -57,12 +51,26 @@ class ChartParagraphTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
+    $this->installConfig(['system', 'paragraphs']);
+    $this->installEntitySchema('user');
     $this->installEntitySchema('paragraph');
+    $this->installEntitySchema('paragraphs_type');
     $this->installEntitySchema('media');
+    $this->installEntitySchema('media_type');
+    $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
+
+    // Then install the rest of your module configs.
     $this->installConfig([
-      'helfi_paragraphs_chart',
+      'media',
       'helfi_media_chart',
+      'media_library',
+      'helfi_media',
+      'helfi_paragraphs_chart',
+      'hdbt_admin_tools',
+      'filter',
     ]);
+
   }
 
   /**
@@ -100,7 +108,7 @@ class ChartParagraphTest extends KernelTestBase {
     // Validate the iframe_title was set on the referenced media entity.
     $referenced = $paragraph->get('field_chart_chart')->referencedEntities();
     $this->assertNotEmpty($referenced);
-    $this->assertEquals('Test iframe title', $referenced[0]->iframe_title ?? NULL);
+    $this->assertEquals('Test iframe title', $referenced[0]->iframeTitle ?? NULL);
   }
 
 }

@@ -101,7 +101,7 @@ class RemoteVideoParagraphTest extends KernelTestBase {
     // Validate the iframe_title was set on the referenced media entity.
     $referenced = $paragraph->get('field_remote_video')->referencedEntities();
     $this->assertNotEmpty($referenced);
-    $this->assertEquals('Test iframe title', $referenced[0]->iframe_title ?? NULL);
+    $this->assertEquals('Test iframe title', $referenced[0]->iframeTitle ?? NULL);
   }
 
 }

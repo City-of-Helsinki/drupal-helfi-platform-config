@@ -165,7 +165,7 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
       'bundle' => 'remote_video',
       'field_media_oembed_video' => [
         'value' => $url,
-        'iframe_title' => $title,
+        'iframeTitle' => $title,
       ],
     ]);
 

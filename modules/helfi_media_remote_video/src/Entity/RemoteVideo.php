@@ -45,7 +45,7 @@ class RemoteVideo extends MediaEntityBundle implements MediaInterface {
    */
   public function getMediaTitle(): mixed {
     return $this->get('field_media_oembed_video')
-      ->iframe_title;
+      ->iframeTitle;
   }
 
 }

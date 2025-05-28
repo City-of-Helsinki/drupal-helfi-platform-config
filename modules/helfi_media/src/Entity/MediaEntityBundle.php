@@ -63,6 +63,6 @@ class MediaEntityBundle extends Media implements MediaInterface {
    *
    * @var string|null
    */
-  public ?string $iframe_title;
+  public ?string $iframeTitle;
 
 }

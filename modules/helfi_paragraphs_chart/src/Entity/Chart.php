@@ -28,7 +28,7 @@ class Chart extends Paragraph implements ParagraphInterface {
     }
 
     $target = reset($referenced_entities);
-    $target->iframe_title = $iframe_title ? $iframe_title : $this->t('Data chart');
+    $target->iframeTitle = $iframe_title ? $iframe_title : $this->t('Data chart');
   }
 
   /**
