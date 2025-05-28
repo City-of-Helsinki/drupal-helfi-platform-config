@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
+namespace Drupal\Tests\helfi_paragraphs_chart\Kernel\Entity;
+
 use Drupal\helfi_paragraphs_chart\Entity\Chart;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\media\Entity\Media;
 
 /**
  * Tests the chart paragraph bundle class.
- * 
+ *
  * @group helfi_paragraphs_chart
  */
 class ChartParagraphTest extends KernelTestBase {
@@ -28,7 +30,6 @@ class ChartParagraphTest extends KernelTestBase {
     'media',
     'media_library',
     'options',
-    'responsive_image',
     'system',
     'taxonomy',
     'text',

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Drupal\Tests\helfi_paragraphs_map\Kernel\Entity;
+
 use Drupal\helfi_paragraphs_map\Entity\Map;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\media\Entity\Media;
@@ -28,7 +30,6 @@ class MapParagraphTest extends KernelTestBase {
     'media',
     'media_library',
     'options',
-    'responsive_image',
     'system',
     'taxonomy',
     'text',

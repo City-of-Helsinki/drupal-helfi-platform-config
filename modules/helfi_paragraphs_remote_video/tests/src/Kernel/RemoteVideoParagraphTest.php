@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Drupal\Tests\helfi_paragraphs_remote_video\Kernel\Entity;
+
 use Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\media\Entity\Media;
@@ -28,7 +30,6 @@ class RemoteVideoParagraphTest extends KernelTestBase {
     'media',
     'media_library',
     'options',
-    'responsive_image',
     'system',
     'taxonomy',
     'text',
@@ -92,7 +93,8 @@ class RemoteVideoParagraphTest extends KernelTestBase {
     // Run the iframe title setter method.
     $paragraph->setMediaEntityIframeTitle();
 
-    // Validate field_remote_video_title and field_remote_video_description values.
+    // Validate field_remote_video_title and
+    // field_remote_video_description values.
     $this->assertEquals('Test title', $paragraph->get('field_remote_video_title')->value);
     $this->assertEquals('Test description', $paragraph->get('field_remote_video_description')->value);
 
