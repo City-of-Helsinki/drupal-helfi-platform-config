@@ -17,7 +17,7 @@ class Map extends Paragraph implements ParagraphInterface {
   /**
    * Set the iframe title to the referenced entity in field_chart.
    */
-  public function getIframeTitle(): void {
+  public function setMediaEntityIframeTitle(): void {
     if (!$this->isValid()) {
       return;
     }

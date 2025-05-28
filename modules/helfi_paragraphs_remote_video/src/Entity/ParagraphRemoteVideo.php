@@ -18,7 +18,7 @@ class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
    * Get title of video.
    *
    */
-  public function getIframeTitle() :void {
+  public function setMediaEntityIframeTitle() :void {
     if (!$this->isValid()) {
       return;
     }

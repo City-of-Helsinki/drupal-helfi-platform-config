@@ -22,7 +22,8 @@ function helfi_paragraphs_remote_video_entity_bundle_info_alter(array &$bundles)
 /**
  * Implements hook_preprocess_paragraph__type().
  */
-function helfi_paragraphs_chart_preprocess_paragraph__remote_video(&$variables) {
+function helfi_paragraphs_remote_video_preprocess_paragraph__remote_video(&$variables) {
+  /** @var \Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo $paragraph */
   $paragraph = $variables['paragraph'];
-  $paragraph->getIframeTitle();
+  $paragraph->setMediaEntityIframeTitle();
 }

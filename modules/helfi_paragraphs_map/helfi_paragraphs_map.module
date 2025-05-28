@@ -31,7 +31,8 @@ function helfi_paragraphs_map_entity_bundle_info_alter(array &$bundles): void {
 /**
  * Implements hook_preprocess_paragraph__type().
  */
-function helfi_paragraphs_chart_preprocess_paragraph__map(&$variables) {
+function helfi_paragraphs_map_preprocess_paragraph__map(&$variables) {
+  /** @var \Drupal\helfi_paragraphs_map\Entity\Map $paragraph */
   $paragraph = $variables['paragraph'];
-  $paragraph->getIframeTitle();
+  $paragraph->setMediaEntityIframeTitle();
 }
