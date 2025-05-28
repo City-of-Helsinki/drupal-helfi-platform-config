@@ -72,4 +72,5 @@ class SurveyBlockTest extends EntityKernelTestBase {
     $result = $announcementLazyBuilder->lazyBuild(TRUE);
     $this->assertTrue($result['#sorted']);
   }
+
 }
