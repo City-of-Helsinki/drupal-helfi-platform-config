@@ -136,7 +136,7 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
   /**
    * Create external entity for tests.
    *
-   * @return ExternalEntityInterface
+   * @return \Drupal\external_entities\ExternalEntityInterface
    *   An external entity.
    */
   private function createExternalEntity(): ExternalEntityInterface {
