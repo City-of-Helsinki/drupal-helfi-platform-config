@@ -4,18 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
-use Drupal\Component\Utility\Xss;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\external_entities\Entity\ExternalEntity;
-use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
-use Drupal\helfi_etusivu_entities\Entity\ExternalEntity\Announcement;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\node\NodeStorageInterface;
-use Prophecy\Argument;
 
 /**
  * Tests announcements block.
@@ -119,6 +112,9 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
     $this->assertTrue($result['#sorted']);
   }
 
+  /**
+   * Test loading remote announcements.
+   */
   public function testRemoteLazyLoad(): void {
     $storage = $this->container
       ->get('entity_type.manager')
@@ -133,9 +129,8 @@ class AnnouncementsBlockTest extends EntityKernelTestBase {
       'field_announcement_title' => 'The title3',
       'field_announcement_type' => 'alert',
       'field_announcement_all_pages' => 0,
-      'field_announcement_assistive_technology_close_button_title' => 'assistance'
+      'field_announcement_assistive_technology_close_button_title' => 'assistance',
     ]);
-
 
     $announcementLazyBuilder = $this->container->get(AnnouncementsLazyBuilder::class);
     $result = $announcementLazyBuilder->getRemoteEntities([$externalEntity]);

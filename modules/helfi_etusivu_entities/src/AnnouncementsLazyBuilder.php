@@ -10,13 +10,11 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -122,9 +120,9 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   }
 
   /**
-   * Get remote entities
+   * Get remote entities.
    *
-   * public for testing purposes.
+   * Public for testing purposes.
    *
    * @return array
    *   Remote announcements.
