@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 use Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo;
 
-
 /**
  * Implements hook_entity_bundle_info_alter().
  */

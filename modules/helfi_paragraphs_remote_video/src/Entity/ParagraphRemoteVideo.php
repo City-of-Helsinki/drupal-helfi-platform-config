@@ -16,7 +16,6 @@ class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
 
   /**
    * Get title of video.
-   *
    */
   public function setMediaEntityIframeTitle() :void {
     if (!$this->isValid()) {
@@ -29,7 +28,7 @@ class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
     if (empty($referenced_entities)) {
       return;
     }
-    
+
     $target = reset($referenced_entities);
     $target->iframe_title = $iframe_title ? $iframe_title : t('Remote video');
   }

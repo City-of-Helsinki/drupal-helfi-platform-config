@@ -5,10 +5,11 @@ declare(strict_types=1);
 use Drupal\helfi_paragraphs_map\Entity\Map;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\media\Entity\Media;
-use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Tests the map paragraph bundle class.
+ *
+ * @group helfi_paragraphs_map
  */
 class MapParagraphTest extends KernelTestBase {
 
@@ -16,7 +17,7 @@ class MapParagraphTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    // Core modules
+    // Core modules.
     'content_translation',
     'entity',
     'field',
@@ -34,14 +35,14 @@ class MapParagraphTest extends KernelTestBase {
     'user',
     'views',
 
-    // Contrib modules
+    // Contrib modules.
     'allowed_formats',
     'crop',
     'linkit',
     'paragraphs',
     'readonly_field_widget',
 
-    // Custom / HELFI modules
+    // Custom / HELFI modules.
     'hdbt_admin_tools',
     'helfi_api_base',
     'helfi_media',
