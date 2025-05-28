@@ -67,10 +67,12 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
   public function lazyBuild(bool $useRemoteEntities): array {
     try {
       $local = $this->getLocalEntities();
+      $remote = $this->getExternalEntityStorage('helfi_surveys')
+        ->loadMultiple();
 
       // Some non-core instances might want to show only local entities.
       // Block configuration allows disabling the remote entities.
-      $remote = $useRemoteEntities ? $this->getRemoteEntities() : [];
+      $remote = $useRemoteEntities && $remote ? $this->handleRemoteEntities($remote) : [];
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
@@ -117,17 +119,16 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
   }
 
   /**
-   * Load the external entities.
+   * Handle the external entities.
    *
    * @return array
    *   Remote entities.
    */
-  protected function getRemoteEntities(): array {
-    $entityStorage = $this->getExternalEntityStorage('helfi_surveys');
+  protected function handleRemoteEntities(array $remoteEntities): array {
     $nodes = [];
 
     /** @var \Drupal\external_entities\ExternalEntityInterface $entity */
-    foreach ($entityStorage->loadMultiple() as $entity) {
+    foreach ($remoteEntities $entity) {
       $linkUrl = NULL;
       $linkText = NULL;
       if ($entity->hasField('survey_link_text')) {

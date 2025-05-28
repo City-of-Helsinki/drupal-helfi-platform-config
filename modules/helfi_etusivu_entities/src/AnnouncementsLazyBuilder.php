@@ -78,7 +78,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
         ->loadMultiple();
       // Some non-core instances might want to show only local entities.
       // Block configuration allows disabling the remote entities.
-      $remote = $useRemoteEntities && $remote ? $this->getRemoteEntities($remote) : [];
+      $remote = $useRemoteEntities && $remote ? $this->handleRemoteEntities($remote) : [];
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
@@ -120,15 +120,14 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   }
 
   /**
-   * Get remote entities.
+   * Handle the remote entities.
    *
    * Public for testing purposes.
    *
    * @return array
    *   Remote announcements.
    */
-  public function getRemoteEntities(array $remoteEntities): array {
-    $entityStorage = $this->entityTypeManager->getStorage('node');
+  public function handleRemoteEntities(array $remoteEntities): array {
     $nodes = [];
 
     /** @var \Drupal\external_entities\ExternalEntityInterface $announcement */
@@ -141,7 +140,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
       }
 
       // Create announcement nodes for the block based on external entity data.
-      $nodes[] = $entityStorage->create([
+      $nodes[] = Node::create([
         'uuid' => $announcement->get('uuid')->value,
         'type' => 'announcement',
         'langcode' => $announcement->get('langcode')->value,
