@@ -317,7 +317,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
         'field_announcement_type' => 'alert',
         'field_announcement_all_pages' => 0,
         'field_announcement_assistive_technology_close_button_title' => 'assistance',
-    ]);
+      ]);
     return [$entity];
   }
 
