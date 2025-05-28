@@ -15,6 +15,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
