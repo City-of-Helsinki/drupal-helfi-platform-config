@@ -128,7 +128,7 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
     $nodes = [];
 
     /** @var \Drupal\external_entities\ExternalEntityInterface $entity */
-    foreach ($remoteEntities $entity) {
+    foreach ($remoteEntities as $entity) {
       $linkUrl = NULL;
       $linkText = NULL;
       if ($entity->hasField('survey_link_text')) {
