@@ -13,10 +13,12 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -56,6 +58,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
     protected EntityFieldManagerInterface $entityFieldManager,
     protected LanguageManagerInterface $languageManager,
     protected DefaultLanguageResolver $defaultLanguageResolver,
+    protected FeatureManagerInterface $featureManager,
   ) {
     parent::__construct(
       $this->entityTypeManager,
@@ -74,9 +77,18 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   public function lazyBuild(bool $useRemoteEntities = FALSE): array {
     try {
       $local = $this->getLocalEntities();
-      $remote = $this
-        ->getExternalEntityStorage('helfi_announcements')
-        ->loadMultiple();
+
+      $remote = [];
+      if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
+        $remote = $this->useMockResponse();
+      }
+      else {
+        $remote = $this
+          ->getExternalEntityStorage('helfi_announcements')
+          ->loadMultiple();
+      }
+
+
       // Some non-core instances might want to show only local entities.
       // Block configuration allows disabling the remote entities.
       $remote = $useRemoteEntities && $remote ? $this->handleRemoteEntities($remote) : [];
@@ -124,6 +136,9 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    * Handle the remote entities.
    *
    * Public for testing purposes.
+   *
+   * @param array $remoteEntities
+   *   Remote entities.
    *
    * @return array
    *   Remote announcements.
@@ -282,6 +297,28 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
     }
 
     return AnnouncementsBlock::VISIBILITY_ALL_WEIGHT;
+  }
+
+  /**
+   * Use mock response.
+   *
+   * @return array
+   *   Array of entities.
+   */
+  private function useMockResponse(): array {
+    $entity = $this->entityTypeManager
+      ->getStorage('helfi_announcements')->create([
+      'uuid' => 'c9ee55c3-9ca5-4c53-900e-82b6d6928a99',
+      'langcode' => 'en',
+      'body' => 'body',
+      'title' => 'title3',
+      'status' => NodeInterface::PUBLISHED,
+      'field_announcement_title' => 'The title3',
+      'field_announcement_type' => 'alert',
+      'field_announcement_all_pages' => 0,
+      'field_announcement_assistive_technology_close_button_title' => 'assistance',
+    ]);
+    return [$entity];
   }
 
 }
