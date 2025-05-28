@@ -8,9 +8,12 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\external_entities\ExternalEntityStorageInterface;
+use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 
 /**
  * Base class for lazy builder.
@@ -18,8 +21,10 @@ use Drupal\external_entities\ExternalEntityStorageInterface;
 class LazyBuilderBase implements TrustedCallbackInterface {
 
   public function __construct(
-    private EntityTypeManagerInterface $entityTypeManager,
-    private RouteMatchInterface $routeMatch,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected RouteMatchInterface $routeMatch,
+    protected LanguageManagerInterface $languageManager,
+    protected DefaultLanguageResolver $defaultLanguageResolver,
   ) {
   }
 
@@ -90,6 +95,26 @@ class LazyBuilderBase implements TrustedCallbackInterface {
     }
 
     return FALSE;
+  }
+
+  /**
+   * Get the content language codes.
+   *
+   * @return array
+   *   Content language codes.
+   */
+  protected function getContentLangcodes(): array {
+    // Also fetch english announcements for languages with non-standard support.
+    $langcodes[] = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage(LanguageInterface::TYPE_CONTENT);
+    $currentLangcode = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
+
+    if (reset($langcodes) !== $currentLangcode) {
+      $langcodes[] = $currentLangcode;
+    }
+
+    return $langcodes;
   }
 
   /**

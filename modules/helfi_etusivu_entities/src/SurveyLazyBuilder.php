@@ -41,14 +41,19 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_etusivu_entities')]
-    private readonly LoggerInterface $logger,
-    private readonly RouteMatchInterface $routeMatch,
-    private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly EntityFieldManagerInterface $entityFieldManager,
-    private readonly LanguageManagerInterface $languageManager,
-    private readonly DefaultLanguageResolver $defaultLanguageResolver,
+    protected LoggerInterface $logger,
+    protected RouteMatchInterface $routeMatch,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected EntityFieldManagerInterface $entityFieldManager,
+    protected LanguageManagerInterface $languageManager,
+    protected DefaultLanguageResolver $defaultLanguageResolver,
   ) {
-    parent::__construct($this->entityTypeManager, $this->routeMatch);
+    parent::__construct(
+      $this->entityTypeManager,
+      $this->routeMatch,
+      $this->languageManager,
+      $this->defaultLanguageResolver,
+    );
   }
 
   /**
@@ -113,24 +118,10 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
   }
 
   /**
-   * Get the content language codes.
-   */
-  protected function getContentLangcodes(): array {
-    // Also fetch english announcements for languages with non-standard support.
-    $langcodes[] = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage(LanguageInterface::TYPE_CONTENT);
-    $currentLangcode = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-      ->getId();
-
-    if (reset($langcodes) !== $currentLangcode) {
-      $langcodes[] = $currentLangcode;
-    }
-
-    return $langcodes;
-  }
-
-  /**
    * Load the external entities.
+   *
+   * @return array
+   *   Remote entities.
    */
   protected function getRemoteEntities(): array {
     $entityStorage = $this->getExternalEntityStorage('helfi_surveys');

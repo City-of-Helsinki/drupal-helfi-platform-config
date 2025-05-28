@@ -51,14 +51,19 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_etusivu_entities')]
-    private LoggerInterface $logger,
-    private RouteMatchInterface $routeMatch,
-    private EntityTypeManagerInterface $entityTypeManager,
-    private EntityFieldManagerInterface $entityFieldManager,
-    private LanguageManagerInterface $languageManager,
-    private DefaultLanguageResolver $defaultLanguageResolver,
+    protected LoggerInterface $logger,
+    protected RouteMatchInterface $routeMatch,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected EntityFieldManagerInterface $entityFieldManager,
+    protected LanguageManagerInterface $languageManager,
+    protected DefaultLanguageResolver $defaultLanguageResolver,
   ) {
-    parent::__construct($this->entityTypeManager, $this->routeMatch);
+    parent::__construct(
+      $this->entityTypeManager,
+      $this->routeMatch,
+      $this->languageManager,
+      $this->defaultLanguageResolver,
+    );
   }
 
   /**
@@ -70,10 +75,12 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   public function lazyBuild(bool $useRemoteEntities = FALSE): array {
     try {
       $local = $this->getLocalEntities();
-
+      $remote = $this
+        ->getExternalEntityStorage('helfi_announcements')
+        ->loadMultiple();
       // Some non-core instances might want to show only local entities.
       // Block configuration allows disabling the remote entities.
-      $remote = $useRemoteEntities ? $this->getRemoteEntities() : [];
+      $remote = $useRemoteEntities && $remote ? $this->getRemoteEntities($remote) : [];
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
@@ -88,7 +95,10 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Get local announcements.
+   *
+   * @return array
+   *   Local announcement entities.
    */
   private function getLocalEntities(): array {
     $langcodes = $this->getContentLangcodes();
@@ -112,14 +122,19 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Get remote entities
+   *
+   * public for testing purposes.
+   *
+   * @return array
+   *   Remote announcements.
    */
-  protected function getRemoteEntities(): array {
-    $entityStorage = $this->getExternalEntityStorage('helfi_announcements');
+  public function getRemoteEntities(array $remoteEntities): array {
+    $entityStorage = $this->entityTypeManager->getStorage('node');
     $nodes = [];
 
     /** @var \Drupal\external_entities\ExternalEntityInterface $announcement */
-    foreach ($entityStorage->loadMultiple() as $announcement) {
+    foreach ($remoteEntities as $announcement) {
       $linkUrl = NULL;
       $linkText = NULL;
       if ($announcement->hasField('announcement_link_text')) {
@@ -128,7 +143,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
       }
 
       // Create announcement nodes for the block based on external entity data.
-      $nodes[] = Node::create([
+      $nodes[] = $entityStorage->create([
         'uuid' => $announcement->get('uuid')->value,
         'type' => 'announcement',
         'langcode' => $announcement->get('langcode')->value,
@@ -159,7 +174,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    *
    * @codeCoverageIgnore
    */
-  protected function sortEntities(array $local, array $remote): array {
+  private function sortEntities(array $local, array $remote): array {
     $currentEntity = $this->getCurrentPageEntity(array_keys(AnnouncementsBlock::ENTITY_TYPE_FIELDS));
     $referenceField = AnnouncementsBlock::ENTITY_TYPE_FIELDS[$currentEntity?->getEntityTypeId()] ?? NULL;
 
@@ -269,23 +284,6 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
     }
 
     return AnnouncementsBlock::VISIBILITY_ALL_WEIGHT;
-  }
-
-  /**
-   * Gets content langcodes.
-   */
-  private function getContentLangcodes(): array {
-    // Also fetch english announcements for languages with non-standard support.
-    $langcodes[] = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage(LanguageInterface::TYPE_CONTENT);
-    $currentLangcode = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-      ->getId();
-
-    if (reset($langcodes) !== $currentLangcode) {
-      $langcodes[] = $currentLangcode;
-    }
-
-    return $langcodes;
   }
 
 }
