@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_react_search\Kernel\Entity;
 
+use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use Drupal\helfi_react_search\Entity\EventList;
 use Drupal\helfi_react_search\Enum\Filters;
 use Drupal\KernelTests\KernelTestBase;
@@ -18,6 +19,7 @@ class EventListTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'helfi_platform_config',
     'helfi_react_search',
     'helfi_api_base',
     'paragraphs',
@@ -31,6 +33,8 @@ class EventListTest extends KernelTestBase {
     'readonly_field_widget',
     'text',
     'select2',
+    'serialization',
+    'config_rewrite',
   ];
 
   /**
@@ -54,6 +58,7 @@ class EventListTest extends KernelTestBase {
     $this->assertInstanceOf(EventList::class, $paragraph);
 
     $this->testGetters($paragraph);
+    $this->testGetFilterKeywords($paragraph);
     $this->testFilterSettings($paragraph);
   }
 
@@ -73,6 +78,31 @@ class EventListTest extends KernelTestBase {
     $this->assertEmpty($paragraph->getTitle());
     $paragraph->set('field_event_list_title', 'Test title');
     $this->assertEquals('Test title', $paragraph->getTitle());
+  }
+
+  /**
+   * Tests getFilterKeywords.
+   *
+   * @param \Drupal\helfi_react_search\Entity\EventList $paragraph
+   *   The paragraph.
+   */
+  private function testGetFilterKeywords(EventList $paragraph): void {
+    $this->assertEmpty($paragraph->getFilterKeywords());
+
+    $paragraph->set('field_event_list_keywords_filter', 'invalid-json');
+    $this->assertEmpty($paragraph->getFilterKeywords());
+
+    $paragraph->set('field_event_list_keywords_filter', [
+      '{"id": "test1", "name": {"en": "Test1"}}',
+      'invalid-json',
+      '{"id": "test2", "name": {"en": "Test2"}}',
+    ]);
+    $items = $paragraph->getFilterKeywords();
+    $this->assertCount(2, $items);
+    foreach ($items as $item) {
+      $this->assertInstanceOf(LinkedEventsItem::class, $item);
+      $this->assertStringContainsString('test', $item->id);
+    }
   }
 
   /**

@@ -32,6 +32,9 @@ final class AutocompleteControllerTest extends KernelTestBase {
     'user',
     'helfi_api_base',
     'helfi_react_search',
+    'helfi_platform_config',
+    'serialization',
+    'config_rewrite',
   ];
 
   /**

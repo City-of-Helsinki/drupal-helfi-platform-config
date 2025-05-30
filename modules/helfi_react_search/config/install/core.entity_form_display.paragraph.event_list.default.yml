@@ -20,7 +20,7 @@ dependencies:
     - paragraphs.paragraphs_type.event_list
   module:
     - link
-    - select2
+    - helfi_react_search
     - text
 id: paragraph.event_list.default
 targetEntityType: paragraph
@@ -122,15 +122,13 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
-  field_filter_keywords:
-    type: select2_entity_reference
+  field_event_list_keywords_filter:
+    type: linked_events_select2
     weight: 10
     region: content
     settings:
-      width: 100%
-      autocomplete: true
-      match_operator: CONTAINS
-      match_limit: 10
+      endpoint: keyword
+      query: data_source=yso&has_upcoming_events=True&sort=name
     third_party_settings: {  }
 hidden:
   created: true

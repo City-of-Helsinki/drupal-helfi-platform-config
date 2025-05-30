@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Entity;
 
+use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use Drupal\helfi_react_search\Enum\Filters;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 /**
  * Bundle class for Hero -paragraph.
@@ -32,22 +34,20 @@ class EventList extends Paragraph implements ParagraphInterface {
   /**
    * Get list of enabled filter keywords.
    *
-   * @param string $langcode
-   *   Keyword translation langcode.
-   *
-   * @return \Drupal\taxonomy\TermInterface[]
+   * @return \Drupal\helfi_react_search\DTO\LinkedEventsItem[]
    *   Enabled keyword.
    */
-  public function getFilterKeywords(string $langcode) : array {
+  public function getFilterKeywords() : array {
+    /** @var \Symfony\Component\Serializer\SerializerInterface $serializer */
+    $serializer = \Drupal::service('serializer');
+
     $keywords = [];
-
-    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field_keywords */
-    $field_keywords = $this->get('field_filter_keywords');
-
-    /** @var \Drupal\taxonomy\TermInterface $term */
-    foreach ($field_keywords->referencedEntities() as $term) {
-      if ($term->hasTranslation($langcode)) {
-        $keywords[] = $term->getTranslation($langcode);
+    foreach ($this->get('field_event_list_keywords_filter') as $value) {
+      try {
+        $keywords[] = $serializer->deserialize($value->getString(), LinkedEventsItem::class, 'json');
+      }
+      catch (ExceptionInterface) {
+        // Ignore failing rows.
       }
     }
 

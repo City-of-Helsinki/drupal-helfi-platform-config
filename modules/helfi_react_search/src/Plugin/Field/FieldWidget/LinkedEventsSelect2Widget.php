@@ -130,11 +130,15 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
   /**
    * Get option label from value.
    *
+   * Option values are JSON serialized LinkedEventsItem objects.
+   *
    * @param string $value
    *   Option element value.
    *
    * @return string
    *   Option element label.
+   *
+   * @see \Drupal\helfi_react_search\DTO\LinkedEventsItem
    */
   private function getOptionLabel(string $value): string {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
