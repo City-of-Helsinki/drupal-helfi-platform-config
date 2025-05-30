@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.event_list.field_api_url
     - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_category_event
     - field.field.paragraph.event_list.field_event_list_category_hobby
@@ -30,14 +29,6 @@ targetEntityType: paragraph
 bundle: event_list
 mode: default
 content:
-  field_api_url:
-    type: link_default
-    weight: 2
-    region: content
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
   field_event_list_title:
     type: string_textfield
     weight: 0

@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.event_list.field_api_url
     - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_description
     - field.field.paragraph.event_list.field_event_list_title
@@ -94,5 +93,4 @@ content:
     weight: 4
     region: content
 hidden:
-  field_api_url: true
   search_api_excerpt: true

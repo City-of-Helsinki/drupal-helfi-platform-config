@@ -9,7 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 /**
  * Interface for event list category enums.
  */
-interface EventListCategoryInterface {
+interface EventListCategoryInterface extends \BackedEnum {
 
   /**
    * Get linked event keywords for this category.

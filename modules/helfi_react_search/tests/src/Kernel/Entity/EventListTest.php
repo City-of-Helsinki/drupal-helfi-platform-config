@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_react_search\Kernel\Entity;
 
 use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use Drupal\helfi_react_search\Entity\EventList;
+use Drupal\helfi_react_search\Enum\EventCategory;
 use Drupal\helfi_react_search\Enum\Filters;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -44,6 +45,59 @@ class EventListTest extends KernelTestBase {
 
     $this->installEntitySchema('paragraph');
     $this->installConfig('helfi_react_search');
+  }
+
+  /**
+   * Tests URL getters.
+   */
+  public function testUrls(): void {
+    $paragraph = Paragraph::create([
+      'type' => 'event_list',
+    ]);
+
+    $this->assertInstanceOf(EventList::class, $paragraph);
+    $this->assertEquals('https://tapahtumat.hel.fi/fi/haku', $paragraph->getEventsPublicUrl());
+
+    $paragraph->set('field_event_list_category_event', [
+      EventCategory::Dance->value,
+      EventCategory::Culture->value,
+    ]);
+    $this->assertEquals(
+      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture',
+      $paragraph->getEventsPublicUrl()
+    );
+
+    $paragraph->set('field_event_list_keywords', [
+      '{"id": "yso:p23", "name": {"en": "Test1"}}',
+    ]);
+    $this->assertEquals(
+      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture&keyword=yso%3Ap23',
+      $paragraph->getEventsPublicUrl()
+    );
+
+    $paragraph->set('field_event_list_place', [
+      '{"id": "tprek:28473", "name": {"en": "Test2"}}',
+    ]);
+    $this->assertEquals(
+      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture&keyword=yso%3Ap23&places=tprek%3A28473',
+      $paragraph->getEventsPublicUrl()
+    );
+
+    $paragraph->set('field_event_list_free_text', '?publisher=ahjo%3Au021200');
+    $this->assertEquals(
+      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture&keyword=yso%3Ap23&places=tprek%3A28473&publisher=ahjo%3Au021200',
+      $paragraph->getEventsPublicUrl()
+    );
+
+    $paragraph->set('field_event_list_free_text', 'jooga');
+    $this->assertEquals(
+      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture&keyword=yso%3Ap23&places=tprek%3A28473&text=jooga',
+      $paragraph->getEventsPublicUrl()
+    );
+    $this->assertEquals(
+      'https://harrastukset.hel.fi/fi/haku?keyword=yso%3Ap23&places=tprek%3A28473&text=jooga',
+      $paragraph->getHobbiesPublicUrl()
+    );
   }
 
   /**

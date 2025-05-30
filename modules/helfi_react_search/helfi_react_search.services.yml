@@ -1,18 +1,6 @@
-parameters:
-  helfi_react_search.request_timeout: 60
 services:
   _defaults:
     autoconfigure: true
     autowire: true
-
-  logger.channel.helfi_react_search:
-    parent: logger.channel_base
-    arguments: ['helfi_react_search']
-
-  helfi_react_search.api_client:
-    parent: helfi_api_base.api_client_base
-    arguments:
-      - '@logger.channel.helfi_react_search'
-      - { timeout: '%helfi_react_search.request_timeout%' }
 
   Drupal\helfi_react_search\LinkedEvents: ~

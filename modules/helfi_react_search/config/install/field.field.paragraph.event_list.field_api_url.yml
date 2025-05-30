@@ -11,7 +11,7 @@ id: paragraph.event_list.field_api_url
 field_name: field_api_url
 entity_type: paragraph
 bundle: event_list
-label: 'Api URL'
+label: 'Api URL (deprecated, do not use)'
 description: 'Add URL from tapahtumat.hel.fi to form a list of events. Example URL: https://tapahtumat.hel.fi/fi/events?categories=museum. If you want to use the location filter, the URL should contain the IDs of all relevant locations. For example: &places=tprek:123,tprek:456'
 required: false
 translatable: false
