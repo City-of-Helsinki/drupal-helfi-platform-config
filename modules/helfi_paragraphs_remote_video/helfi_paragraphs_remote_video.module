@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\Cache;
 use Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo;
 
 /**
@@ -25,4 +26,15 @@ function helfi_paragraphs_remote_video_preprocess_paragraph__remote_video(&$vari
   /** @var \Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo $paragraph */
   $paragraph = $variables['paragraph'];
   $paragraph->setMediaEntityIframeTitle();
+
+  // Add cache tags to referenced media field.
+  if (
+    $paragraph->hasField('field_remote_video') &&
+    !$paragraph->get('field_remote_video')->isEmpty()
+  ) {
+    $variables['content']['field_remote_video'][0]['#cache']['tags'] = Cache::mergeTags(
+     $variables['content']['field_remote_video'][0]['#cache']['tags'] ?? [],
+     $paragraph->getCacheTags()
+    );
+  }
 }

@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\Cache;
 use Drupal\helfi_paragraphs_chart\Entity\Chart;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
@@ -35,4 +36,15 @@ function helfi_paragraphs_chart_preprocess_paragraph__chart(&$variables) {
   /** @var \Drupal\helfi_paragraphs_chart\Entity\Chart $paragraph */
   $paragraph = $variables['paragraph'];
   $paragraph->setMediaEntityIframeTitle();
+
+  // Add cache tags to referenced media field.
+  if (
+    $paragraph->hasField('field_chart_chart') &&
+    !$paragraph->get('field_chart_chart')->isEmpty()
+  ) {
+    $variables['content']['field_chart_chart'][0]['#cache']['tags'] = Cache::mergeTags(
+     $variables['content']['field_chart_chart'][0]['#cache']['tags'] ?? [],
+     $paragraph->getCacheTags()
+    );
+  }
 }
