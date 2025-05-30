@@ -28,7 +28,6 @@ class EventListTest extends KernelTestBase {
     'link',
     'file',
     'system',
-    'taxonomy',
     'hdbt_admin_tools',
     'readonly_field_widget',
     'text',

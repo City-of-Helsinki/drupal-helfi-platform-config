@@ -16,6 +16,7 @@ use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Event\ReindexScheduledEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Drupal\taxonomy\TermInterface;
+use Drupal\taxonomy\Entity\Vocabulary;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
 
@@ -201,4 +202,23 @@ function helfi_react_search_update_9014() : void {
       FieldStorageConfig::loadByName($entityType, $fieldName)?->delete();
     }
   }
+}
+
+/**
+ * UHF-11676: Delete `linked_events_keywords` taxonomy.
+ */
+function helfi_react_search_update_9015() : void {
+  $storage = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term');
+
+  $ids = $storage->getQuery()
+    ->condition('vid', 'linked_events_keywords')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  foreach ($ids as $id) {
+    $storage->load($id)?->delete();
+  }
+
+  Vocabulary::load('linked_events_keywords')?->delete();
 }
