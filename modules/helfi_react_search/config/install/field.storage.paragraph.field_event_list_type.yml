@@ -1,0 +1,30 @@
+uuid: c3d71115-88ef-43cf-aa3a-f85c6b25b990
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_event_list_type
+field_name: field_event_list_type
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: events
+      label: Events
+    -
+      value: hobbies
+      label: Hobbies
+    -
+      value: events_and_hobbies
+      label: Events and hobbies
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

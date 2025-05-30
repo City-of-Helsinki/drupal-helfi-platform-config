@@ -1,0 +1,23 @@
+uuid: 27632f7f-19b7-4ef5-8d06-a2984d4b0d38
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_list_type
+    - paragraphs.paragraphs_type.event_list
+  module:
+    - options
+id: paragraph.event_list.field_event_list_type
+field_name: field_event_list_type
+entity_type: paragraph
+bundle: event_list
+label: 'Type'
+description: 'You can import events (from tapahtumat.hel.fi) and/or hobbies (from harrastukset.hel.fi). Choose what content to import'
+required: true
+translatable: false
+default_value:
+  -
+    value: events
+default_value_callback: ''
+settings: { }
+field_type: list_string
