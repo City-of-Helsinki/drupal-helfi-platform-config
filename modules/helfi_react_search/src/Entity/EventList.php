@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Entity;
 
+use Drupal\helfi_react_search\Enum\Filters;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -35,6 +36,21 @@ class EventList extends Paragraph implements ParagraphInterface {
     }
 
     return $keywords;
+  }
+
+  /**
+   * Gets enabled filters.
+   */
+  public function getFilterSettings(): array {
+    $filters = [];
+
+    foreach (Filters::cases() as $filter) {
+      if (!$this->get($filter->value)->isEmpty()) {
+        $filters[$filter->value] = (boolean) $this->get($filter->value)->value;
+      }
+    }
+
+    return $filters;
   }
 
 }
