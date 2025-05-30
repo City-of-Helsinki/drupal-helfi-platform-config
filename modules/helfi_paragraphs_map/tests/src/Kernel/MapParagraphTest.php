@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_map\Kernel\Entity;
 
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_paragraphs_map\Entity\Map;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\media\Entity\Media;
@@ -19,36 +20,29 @@ class MapParagraphTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    // Core modules.
+    'allowed_formats',
     'content_translation',
-    'entity',
+    'crop',
+    'entity_reference_revisions',
     'field',
     'file',
-    'filter',
-    'language',
-    'link',
-    'media',
-    'media_library',
-    'options',
-    'system',
-    'taxonomy',
-    'text',
-    'user',
-    'views',
-
-    // Contrib modules.
-    'allowed_formats',
-    'crop',
-    'linkit',
-    'paragraphs',
-    'readonly_field_widget',
-
-    // Custom / HELFI modules.
-    'hdbt_admin_tools',
-    'helfi_api_base',
+    'focal_point',
     'helfi_media',
     'helfi_media_map',
     'helfi_paragraphs_map',
+    'image',
+    'language',
+    'link',
+    'linkit',
+    'media',
+    'media_library',
+    'paragraphs',
+    'paragraphs_library',
+    'responsive_image',
+    'system',
+    'text',
+    'user',
+    'views',
   ];
 
   /**
@@ -57,11 +51,29 @@ class MapParagraphTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
+    $this->installConfig(['system', 'paragraphs']);
+    $this->installEntitySchema('user');
     $this->installEntitySchema('paragraph');
     $this->installEntitySchema('media');
+    $this->installEntitySchema('crop');
+    $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
+
+    // Field storage config lives in helfi_base_content module,
+    // which would pull a lot of dependencies to the test.
+    FieldStorageConfig::create([
+      'field_name' => 'field_iframe_title',
+      'entity_type' => 'paragraph',
+      'type' => 'string',
+    ])->save();
+
+    // Then install the rest of your module configs.
     $this->installConfig([
-      'helfi_paragraphs_map',
+      'focal_point',
+      'media_library',
+      'helfi_media',
       'helfi_media_map',
+      'helfi_paragraphs_map',
     ]);
   }
 
