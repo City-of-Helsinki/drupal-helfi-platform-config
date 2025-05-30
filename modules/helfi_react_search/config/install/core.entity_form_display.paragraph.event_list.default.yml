@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.event_list.field_api_url
     - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_description
+    - field.field.paragraph.event_list.field_event_list_free_text
     - field.field.paragraph.event_list.field_event_list_title
     - field.field.paragraph.event_list.field_event_list_type
     - field.field.paragraph.event_list.field_event_location
@@ -60,50 +61,58 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_event_location:
-    type: boolean_checkbox
+  field_event_list_free_text:
+    type: string_textfield
     weight: 4
     region: content
     settings:
-      display_label: true
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-  field_event_time:
+  field_event_location:
     type: boolean_checkbox
     weight: 5
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
-  field_filter_keywords:
-    type: select2_entity_reference
-    weight: 9
-    region: content
-    settings:
-      width: 100%
-      autocomplete: true
-      match_operator: CONTAINS
-      match_limit: 10
-    third_party_settings: {  }
-  field_free_events:
-    type: boolean_checkbox
-    weight: 8
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_language:
+  field_event_time:
     type: boolean_checkbox
     weight: 6
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
-  field_remote_events:
+  field_language:
     type: boolean_checkbox
     weight: 7
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  field_remote_events:
+    type: boolean_checkbox
+    weight: 8
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_free_events:
+    type: boolean_checkbox
+    weight: 9
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_filter_keywords:
+    type: select2_entity_reference
+    weight: 10
+    region: content
+    settings:
+      width: 100%
+      autocomplete: true
+      match_operator: CONTAINS
+      match_limit: 10
     third_party_settings: {  }
 hidden:
   created: true
