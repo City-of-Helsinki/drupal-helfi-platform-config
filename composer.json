@@ -104,7 +104,7 @@
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/main/patches/default_content_2.0.0-alpha2-2640734_manual_imports-e164a354.patch"
             },
             "drupal/eu_cookie_compliance": {
-                "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/923b35f699820b544397a35b7696570e101cd02c/patches/eu_cookie_compliance_block_8.x-1.24.patch",
+                "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/11b7b1f3e36504d410ff7cde0207a9f6213f6248/patches/eu_cookie_compliance_block_8.x-1.26.patch",
                 "[#UHF-8720] Missing config schema for dependencies (https://www.drupal.org/i/3330024)": "https://www.drupal.org/files/issues/2022-12-28/config_dependencies_schema-3330024-2.patch"
             },
             "drupal/diff": {
