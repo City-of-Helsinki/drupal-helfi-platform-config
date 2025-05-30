@@ -13,6 +13,7 @@ use Drupal\helfi_api_base\ApiClient\ApiFixture;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\helfi_react_search\Enum\CategoryKeywords;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
@@ -36,13 +37,6 @@ class LinkedEvents {
   public const TTL = 28800;
 
   /**
-   * Should the fixture data be used.
-   *
-   * @var bool|string
-   */
-  protected bool|string $useFixtures = FALSE;
-
-  /**
    * The previous exception.
    *
    * @var \Exception|null
@@ -60,11 +54,14 @@ class LinkedEvents {
    *   The language manager.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger channel.
+   * @param \Drupal\helfi_api_base\Features\FeatureManagerInterface $featureManager
+   *   The feature manager.
    */
   public function __construct(
     #[Autowire(service: 'helfi_react_search.api_client')] private ApiClient $client,
     private readonly LanguageManagerInterface $languageManager,
     #[Autowire(service: 'logger.channel.helfi_react_search')] private readonly LoggerInterface $logger,
+    private readonly FeatureManagerInterface $featureManager,
   ) {
   }
 
@@ -92,8 +89,8 @@ class LinkedEvents {
    *   Resulting api url with params a query string
    */
   public function getEventsRequest(array $options = [], string $pageSize = '3') : string {
-    if ($this->useFixtures) {
-      return $this->getFixturePath($this->useFixtures);
+    if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
+      return $this->getFixturePath(self::FIXTURE_NAME);
     }
 
     // Linked events URLs should end with '/' (URLs without '/' are redirect).
@@ -150,7 +147,7 @@ class LinkedEvents {
         $fixture = $this->getFixturePath(self::FIXTURE_NAME);
 
         // Return the mock data if fixture is set via URL field.
-        if ($this->useFixtures) {
+        if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
           $response = ApiFixture::requestFromFile($fixture);
         }
         else {
@@ -238,8 +235,8 @@ class LinkedEvents {
     try {
       $places = [];
 
-      if ($this->useFixtures) {
-        $response = $this->get($this->useFixtures);
+      if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
+        $response = $this->get(self::FIXTURE_NAME);
       }
       else {
         $response = $this->get($this->formatPlacesUrl($event_url));
@@ -318,11 +315,6 @@ class LinkedEvents {
    *   Array of params.
    */
   public function parseParams(string $url) : array {
-    if (str_contains($url, 'fixture')) {
-      $this->useFixtures = self::FIXTURE_NAME;
-      return [];
-    }
-
     $parsed = UrlHelper::parse($url);
     $params = [];
 
@@ -467,11 +459,11 @@ class LinkedEvents {
    * Get fixture for javascript.
    *
    * @return mixed
-   *   Returns FALSE if useFixtures is FALSE, otherwise returns the JSON object.
+   *   Returns JSON object if fixtures are enabled, otherwise returns FALSE.
    */
   public function getFixture() : mixed {
-    if ($this->useFixtures) {
-      $json = file_get_contents($this->getFixturePath($this->useFixtures));
+    if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
+      $json = file_get_contents($this->getFixturePath(self::FIXTURE_NAME));
       if ($json) {
         return json_decode($json);
       }

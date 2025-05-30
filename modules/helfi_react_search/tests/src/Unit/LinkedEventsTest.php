@@ -11,6 +11,7 @@ use Drupal\Core\Cache\MemoryBackend;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\helfi_api_base\ApiClient\ApiClient;
@@ -148,6 +149,8 @@ class LinkedEventsTest extends UnitTestCase {
    *   The language manager.
    * @param \Psr\Log\LoggerInterface|null $logger
    *   The logger channel.
+   * @param bool $useFixtures
+   *   The fixture feature is enabled if enabled.
    *
    * @return \Drupal\helfi_react_search\LinkedEvents
    *   The api manager instance.
@@ -156,6 +159,7 @@ class LinkedEventsTest extends UnitTestCase {
     ApiClient $client,
     ?LanguageManagerInterface $languageManager = NULL,
     ?LoggerInterface $logger = NULL,
+    bool $useFixtures = FALSE,
   ) : LinkedEvents {
 
     if (!$languageManager) {
@@ -166,10 +170,16 @@ class LinkedEventsTest extends UnitTestCase {
       $logger = $this->prophesize(LoggerInterface::class)->reveal();
     }
 
+    $featureManager = $this->prophesize(FeatureManagerInterface::class);
+    $featureManager
+      ->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)
+      ->willReturn($useFixtures);
+
     return new LinkedEvents(
       $client,
       $languageManager,
       $logger,
+      $featureManager->reveal(),
     );
   }
 
@@ -217,14 +227,12 @@ class LinkedEventsTest extends UnitTestCase {
     ]);
     $languageManager = $this->createMock(LanguageManagerInterface::class);
     $sut = $this->getSut(
-      $this->getApiClientMock($httpClient), $languageManager
+      $this->getApiClientMock($httpClient), $languageManager,
+      useFixtures: TRUE,
     );
 
     // Build event url.
     $event_url = 'https://' . $sut::FIXTURE_NAME . '?places=tprek:1923';
-
-    // Use the fixture.
-    $sut->parseParams('fixture');
 
     // Test that the getPlacesList method returns the fixture.
     $response = $sut->getPlacesList($event_url);
@@ -285,8 +293,10 @@ class LinkedEventsTest extends UnitTestCase {
       ->method('getCurrentLanguage')
       ->willReturn(new Language(['id' => 'en']));
 
+    $client = $this->getApiClientMock($httpClient);
     $sut = $this->getSut(
-      $this->getApiClientMock($httpClient), $languageManager
+      $client,
+      $languageManager
     );
 
     // Test the API response with no options set.
@@ -298,8 +308,9 @@ class LinkedEventsTest extends UnitTestCase {
     $this->assertEquals('https://api.hel.fi/linkedevents/v1/event/?event_type=General&format=json&include=keywords%2Clocation&page=1&page_size=4&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&keyword=matko%3Amuseo%2Cyso%3Ap4934&places=tprek%3A1923&all_ongoing=true', $url_with_options);
 
     // Test the API response with forced fixture.
-    $sut->parseParams('fixture');
-    $url_with_fixture = $sut->getEventsRequest();
+    $url_with_fixture = $this
+      ->getSut($client, $languageManager, useFixtures: TRUE)
+      ->getEventsRequest();
     $this->assertStringContainsString($sut::FIXTURE_NAME, $url_with_fixture);
 
     // Test the formatPlacesUrl method.
