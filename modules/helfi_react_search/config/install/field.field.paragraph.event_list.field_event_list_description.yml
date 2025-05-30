@@ -13,7 +13,7 @@ field_name: field_event_list_description
 entity_type: paragraph
 bundle: event_list
 label: Description
-description: 'Brief description for the events in the list.'
+description: 'Brief description for the content in the list.'
 required: false
 translatable: false
 default_value: {  }
