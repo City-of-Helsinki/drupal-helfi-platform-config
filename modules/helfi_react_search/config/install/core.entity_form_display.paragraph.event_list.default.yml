@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_description
     - field.field.paragraph.event_list.field_event_list_free_text
+    - field.field.paragraph.event_list.field_event_list_keywords
     - field.field.paragraph.event_list.field_event_list_place
     - field.field.paragraph.event_list.field_event_list_title
     - field.field.paragraph.event_list.field_event_list_type
@@ -69,6 +70,14 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_event_list_keywords:
+    type: linked_events_select2
+    weight: 5
+    region: content
+    settings:
+      endpoint: keyword
+      query: data_source=yso&has_upcoming_events=True&sort=name
     third_party_settings: {  }
   field_event_list_place:
     type: linked_events_select2
