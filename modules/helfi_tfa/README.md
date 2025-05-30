@@ -5,8 +5,12 @@ Provides default configuration for TFA module.
 ## Installation
 
 1. Generate a random 256-bit key: `dd if=/dev/urandom bs=32 count=1 | base64 -i -`
-2. Add a new secret called `TFA-ENCRYPTION-KEY` to Azure KeyVault and copy the key as value
-3. Enable `helfi_tfa` module
+1. Add a new secret called `TFA-ENCRYPTION-KEY` to Azure KeyVault and copy the key as value
+1. Set key to config in `settings.php`
+    ```
+    $config['key.key.tfa']['key_provider_settings']['key_value'] = getenv('TFA_ENCRYPTION_KEY');
+    ```
+1. Enable `helfi_tfa` module
 
 ## Reset TFA settings for other users
 
