@@ -14,6 +14,22 @@ use Drupal\paragraphs\ParagraphInterface;
 class EventList extends Paragraph implements ParagraphInterface {
 
   /**
+   * Get paragraph title.
+   */
+  public function getTitle(): ?string {
+    return $this->get('field_event_list_title')->value;
+  }
+
+  /**
+   * Get number of items to show.
+   */
+  public function getCount(): int {
+    $default_value = 3;
+
+    return (int) ($this->get('field_event_count')->value ?? $default_value);
+  }
+
+  /**
    * Get list of enabled filter keywords.
    *
    * @param string $langcode

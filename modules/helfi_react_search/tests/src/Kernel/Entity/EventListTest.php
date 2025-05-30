@@ -53,6 +53,35 @@ class EventListTest extends KernelTestBase {
 
     $this->assertInstanceOf(EventList::class, $paragraph);
 
+    $this->testGetters($paragraph);
+    $this->testFilterSettings($paragraph);
+  }
+
+  /**
+   * Tests getters.
+   *
+   * @param \Drupal\helfi_react_search\Entity\EventList $paragraph
+   *   The paragraph.
+   */
+  private function testGetters(EventList $paragraph): void {
+    // Test item count.
+    $this->assertEquals(3, $paragraph->getCount());
+    $paragraph->set('field_event_count', 6);
+    $this->assertEquals(6, $paragraph->getCount());
+
+    // Test title.
+    $this->assertEmpty($paragraph->getTitle());
+    $paragraph->set('field_event_list_title', 'Test title');
+    $this->assertEquals('Test title', $paragraph->getTitle());
+  }
+
+  /**
+   * Tests filter settings method.
+   *
+   * @param \Drupal\helfi_react_search\Entity\EventList $paragraph
+   *   The paragraph.
+   */
+  private function testFilterSettings(EventList $paragraph): void {
     // Paragraph must have a field that corresponds each filter value.
     foreach (Filters::cases() as $case) {
       $this->assertTrue($paragraph->hasField($case->value));
