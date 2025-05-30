@@ -16,3 +16,5 @@ dependencies:
   - 'readonly_field_widget:readonly_field_widget'
   - 'paragraphs:paragraphs'
 package: HELfi
+'interface translation project': helfi_react_search
+'interface translation server pattern': modules/custom/helfi_react_search/translations/%language.po

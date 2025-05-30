@@ -7,7 +7,10 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_react_search\Entity\EventList;
+use Drupal\helfi_react_search\Enum\CourseCategory;
+use Drupal\helfi_react_search\Enum\EventCategory;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -30,6 +33,32 @@ function helfi_react_search_event_list_allowed_values_function(): array {
     5 => 5,
     10 => 10,
   ];
+}
+
+/**
+ * Event categories dropdown selectable values.
+ */
+function helfi_react_search_event_list_allowed_event_categories(): array {
+  $values = [];
+
+  foreach (EventCategory::cases() as $category) {
+    $values[$category->value] = $category->translation();
+  }
+
+  return $values;
+}
+
+/**
+ * Hobby categories dropdown selectable values.
+ */
+function helfi_react_search_event_list_allowed_hobby_categories(): array {
+  $values = [];
+
+  foreach (CourseCategory::cases() as $category) {
+    $values[$category->value] = $category->translation();
+  }
+
+  return $values;
 }
 
 /**
@@ -75,6 +104,30 @@ function helfi_react_search_theme(): array {
       'template' => 'debug-item--search-api',
     ],
   ];
+}
+
+/**
+ * Implements hook_field_widget_single_element_form_alter().
+ */
+function helfi_react_search_field_widget_single_element_paragraphs_form_alter(array &$element, FormStateInterface $form_state, array $context): void {
+  if (empty($element['#paragraph_type']) || $element['#paragraph_type'] != 'event_list') {
+    return;
+  }
+
+  $type_select = ':input[name="' . $context['items']->getName() . '[' . $element['#delta'] . '][subform][field_event_list_type]"]';
+
+  $states = [
+    'field_event_list_category_event' => 'hobbies',
+    'field_event_list_category_hobby' => 'events',
+  ];
+
+  foreach ($states as $field => $condition) {
+    $element['subform'][$field]['#states'] = [
+      'invisible' => [
+        [$type_select => ['value' => $condition]],
+      ],
+    ];
+  }
 }
 
 /**

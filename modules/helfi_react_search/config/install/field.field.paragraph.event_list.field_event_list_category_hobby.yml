@@ -1,0 +1,23 @@
+uuid: 8482e70f-d92d-49c4-960a-e79806bcb537
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_list_category_hobby
+    - paragraphs.paragraphs_type.event_list
+  module:
+    - options
+id: paragraph.event_list.field_event_list_category_hobby
+field_name: field_event_list_category_hobby
+entity_type: paragraph
+bundle: event_list
+label: 'Hobby categories'
+description: 'Filter hobbies by category.'
+required: false
+translatable: false
+default_value: { }
+default_value_callback: ''
+settings:
+  allowed_values: {  }
+  allowed_values_function: helfi_react_search_event_list_allowed_hobby_categories
+field_type: list_string
