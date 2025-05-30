@@ -124,6 +124,16 @@ class RecommendationManager implements RecommendationManagerInterface {
   }
 
   /**
+   * Get the cache tag for all recommendation blocks.
+   *
+   * @return string
+   *   The cache tag.
+   */
+  public function getCacheTagForAll(): string {
+    return self::EXTERNAL_CACHE_TAG_PREFIX . 'all';
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function invalidateExternalCacheTags(array $uuids): void {
@@ -132,6 +142,13 @@ class RecommendationManager implements RecommendationManagerInterface {
       $cache_tags[] = $this->getCacheTagForUUID($uuid);
     }
     $this->cacheTagInvalidator->invalidateTags($cache_tags);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function invalidateAllRecommendationBlocks(): void {
+    $this->cacheTagInvalidator->invalidateTags([$this->getCacheTagForAll()]);
   }
 
   /**

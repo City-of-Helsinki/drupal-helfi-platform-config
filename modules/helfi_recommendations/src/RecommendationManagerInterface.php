@@ -55,11 +55,24 @@ interface RecommendationManagerInterface {
   public function getCacheTagForUUID(string $uuid): string;
 
   /**
+   * Get the cache tag for all recommendation blocks.
+   *
+   * @return string
+   *   The cache tag.
+   */
+  public function getCacheTagForAll(): string;
+
+  /**
    * Invalidate external cache tags.
    *
    * @param array $uuids
    *   The UUIDs.
    */
   public function invalidateExternalCacheTags(array $uuids): void;
+
+  /**
+   * Invalidate all recommendation blocks.
+   */
+  public function invalidateAllRecommendationBlocks(): void;
 
 }

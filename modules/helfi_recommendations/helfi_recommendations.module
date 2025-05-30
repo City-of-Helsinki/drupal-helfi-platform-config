@@ -42,6 +42,12 @@ function helfi_recommendations_entity_insert(EntityInterface $entity) : void {
     $topicsManager = \Drupal::service(TopicsManagerInterface::class);
     $topicsManager->queueEntity($entity, TRUE);
   }
+
+  // Invalidate suggestion topics tags for all recommendation blocks.
+  // This allows for new content to be picked up by the recommendation blocks.
+  if ($entity instanceof SuggestedTopicsInterface) {
+    \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
+  }
 }
 
 /**
@@ -54,9 +60,10 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
     $topicsManager->queueEntity($entity, TRUE);
   }
 
-  // Invalidate suggestion topics tags for local recommendation blocks.
+  // Invalidate suggestion topics tags for all recommendation blocks.
+  // This allows for updated topics to be picked up by the recommendation blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
-    \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
+    \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
   }
 }
 
@@ -64,7 +71,8 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
  * Implements hook_entity_delete().
  */
 function helfi_recommendations_entity_delete(EntityInterface $entity) : void {
-  // Invalidate suggestion topics tags for local recommendation blocks.
+  // Invalidate suggestion topics tags for all recommendation blocks.
+  // This allows for deleted topics to be removed from the recommendation blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
     \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
   }
