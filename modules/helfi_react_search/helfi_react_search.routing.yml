@@ -1,0 +1,8 @@
+helfi_react_search.linked_events.autocomplete:
+  path: '/linked_events_autocomplete/{target_type}/{selection_handler}/{selection_settings_key}'
+  defaults:
+    _controller: '\Drupal\helfi_react_search\Controller\LinkedEventsAutocompleteController::handleAutocomplete'
+    selection_handler: 'default'
+  requirements:
+    # Only logged-in users can operate the widget.
+    _user_is_logged_in: 'TRUE'
