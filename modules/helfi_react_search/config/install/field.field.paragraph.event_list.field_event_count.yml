@@ -11,8 +11,8 @@ id: paragraph.event_list.field_event_count
 field_name: field_event_count
 entity_type: paragraph
 bundle: event_list
-label: 'Event count'
-description: ''
+label: 'Count'
+description: 'Select the number of items to display on the site.'
 required: false
 translatable: false
 default_value:
