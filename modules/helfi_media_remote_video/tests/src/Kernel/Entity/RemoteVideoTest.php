@@ -205,7 +205,6 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
     // Test the non-empty media item values.
     $this->assertInstanceOf(RemoteVideo::class, $media);
     $this->assertSame($service_url, $media->getServiceUrl());
-    $this->assertSame($title, $media->getMediaTitle());
 
     // Test the oEmbed iframe output on YouTube and verify the no-cookie domain.
     if ($provider === 'Youtube') {

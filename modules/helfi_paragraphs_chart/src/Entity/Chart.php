@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_paragraphs_remote_video\Entity;
+namespace Drupal\helfi_paragraphs_chart\Entity;
 
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
- * Bundle class for remote_video paragraph.
+ * Bundle class for chart paragraph.
  */
-class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
+class Chart extends Paragraph implements ParagraphInterface {
 
   /**
-   * Get title of video.
+   * Set the iframe title to the referenced entity in field_chart.
    */
-  public function setMediaEntityIframeTitle() :void {
+  public function setMediaEntityIframeTitle(): void {
     if (!$this->isValid()) {
       return;
     }
 
     $iframe_title = $this->get('field_iframe_title')->value;
-    $referenced_entities = $this->get('field_remote_video')->referencedEntities();
+    $referenced_entities = $this->get('field_chart_chart')->referencedEntities();
 
     if (empty($referenced_entities)) {
       return;
     }
 
     $target = reset($referenced_entities);
-    $target->iframeTitle = $iframe_title ? $iframe_title : $this->t('Remote video');
+    $target->iframeTitle = $iframe_title ? $iframe_title : $this->t('Data chart');
   }
 
   /**
@@ -39,9 +39,9 @@ class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
    */
   private function isValid(): bool {
     if (
-      !$this->hasField('field_remote_video') ||
+      !$this->hasField('field_chart_chart') ||
       !$this->hasField('field_iframe_title') ||
-      $this->get('field_remote_video')->isEmpty()
+      $this->get('field_chart_chart')->isEmpty()
     ) {
       return FALSE;
     }

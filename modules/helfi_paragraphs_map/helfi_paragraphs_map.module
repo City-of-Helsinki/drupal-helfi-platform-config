@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\Cache;
+use Drupal\helfi_paragraphs_map\Entity\Map;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -16,4 +18,33 @@ function helfi_paragraphs_map_helfi_paragraph_types() : array {
   return [
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'map'),
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_map_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['map'])) {
+    $bundles['paragraph']['map']['class'] = Map::class;
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph__type().
+ */
+function helfi_paragraphs_map_preprocess_paragraph__map(&$variables) {
+  /** @var \Drupal\helfi_paragraphs_map\Entity\Map $paragraph */
+  $paragraph = $variables['paragraph'];
+  $paragraph->setMediaEntityIframeTitle();
+
+  // Add cache tags to referenced media field.
+  if (
+    $paragraph->hasField('field_map_map') &&
+    !$paragraph->get('field_map_map')->isEmpty()
+  ) {
+    $variables['content']['field_map_map'][0]['#cache']['tags'] = Cache::mergeTags(
+      $variables['content']['field_map_map'][0]['#cache']['tags'] ?? [],
+      $paragraph->getCacheTags()
+    );
+  }
 }
