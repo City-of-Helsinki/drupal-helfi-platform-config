@@ -10,6 +10,8 @@ declare(strict_types=1);
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Utility\UpdateException;
 use Drupal\helfi_react_search\Entity\EventList;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Event\ReindexScheduledEvent;
 use Drupal\search_api\Event\SearchApiEvents;
@@ -173,5 +175,30 @@ function helfi_react_search_update_9013() : void {
     $paragraph->set('field_event_list_keywords_filter', $values);
     $paragraph->set('field_filter_keywords', NULL);
     $paragraph->save();
+  }
+}
+
+/**
+ * UHF-11676: Delete `field_filter_keywords` field.
+ */
+function helfi_react_search_update_9014() : void {
+  $change = [
+    'paragraph' => [
+      'field_filter_keywords' => [
+        'event_list',
+      ],
+    ],
+  ];
+
+  foreach ($change as $entityType => $fieldNames) {
+    foreach ($fieldNames as $fieldName => $bundles) {
+      // Delete field definition.
+      foreach ($bundles as $bundle) {
+        FieldConfig::loadByName($entityType, $bundle, $fieldName)?->delete();
+      }
+
+      // Delete storage config.
+      FieldStorageConfig::loadByName($entityType, $fieldName)?->delete();
+    }
   }
 }
