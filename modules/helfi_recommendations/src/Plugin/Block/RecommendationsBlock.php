@@ -8,20 +8,17 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Utility\Error;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_recommendations\RecommendationsLazyBuilder;
 use Drupal\helfi_recommendations\RecommendationManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\user\Entity\User;
 
 /**
  * Provides 'AI powered recommendations'.
@@ -137,31 +134,31 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  // protected function blockAccess(AccountInterface $account) {
-  //   /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-  //   ['entity' => $entity] = $this->entityVersionMatcher->getType();
+  protected function blockAccess(AccountInterface $account) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
-  //   if (!$entity instanceof ContentEntityInterface) {
-  //     return AccessResult::forbidden();
-  //   }
+    if (!$entity instanceof ContentEntityInterface) {
+      return AccessResult::forbidden();
+    }
 
-  //   // @todo This is a temporary restriction to allow validating the
-  //   // cross-instance recommendations in production before allowing the
-  //   // use for all editors. Remove these once we have validated the
-  //   // cross-instance recommendations work as intended.
-  //   if ($entity->bundle() !== 'news_item' && $entity->bundle() !== 'news_article') {
-  //     if (_helfi_recommendations_can_see_review_mode()) {
-  //       return AccessResult::allowed();
-  //     }
+    // @todo This is a temporary restriction to allow validating the
+    // cross-instance recommendations in production before allowing the
+    // use for all editors. Remove these once we have validated the
+    // cross-instance recommendations work as intended.
+    if ($entity->bundle() !== 'news_item' && $entity->bundle() !== 'news_article') {
+      if (_helfi_recommendations_can_see_review_mode()) {
+        return AccessResult::allowed();
+      }
 
-  //     return AccessResult::forbidden();
-  //   }
+      return AccessResult::forbidden();
+    }
 
-  //   if ($entity instanceof ContentEntityInterface && $this->recommendationManager->showRecommendations($entity)) {
-  //     return AccessResult::allowed();
-  //   }
+    if ($entity instanceof ContentEntityInterface && $this->recommendationManager->showRecommendations($entity)) {
+      return AccessResult::allowed();
+    }
 
-  //   return AccessResult::forbidden();
-  // }
+    return AccessResult::forbidden();
+  }
 
 }
