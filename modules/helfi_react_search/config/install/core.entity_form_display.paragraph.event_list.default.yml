@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_description
     - field.field.paragraph.event_list.field_event_list_free_text
+    - field.field.paragraph.event_list.field_event_list_place
     - field.field.paragraph.event_list.field_event_list_title
     - field.field.paragraph.event_list.field_event_list_type
     - field.field.paragraph.event_list.field_event_location
@@ -68,6 +69,14 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_event_list_place:
+    type: linked_events_select2
+    weight: 5
+    region: content
+    settings:
+      endpoint: place
+      query: sort=name
     third_party_settings: {  }
   field_event_location:
     type: boolean_checkbox
