@@ -1,3 +1,4 @@
+uuid: 2d4aee18-cd16-4e50-b1fd-a5d1caa0e656
 langcode: en
 status: true
 dependencies: {  }
@@ -19,7 +20,7 @@ field_mapper_config:
     tid:
       value: '$._source.tid[0]'
     location:
-      value: $._source.field_location
+      value: '$._source.field_location'
 storage_client_id: helfi_news_neighbourhoods
 storage_client_config: {  }
 persistent_cache_max_age: 86400
