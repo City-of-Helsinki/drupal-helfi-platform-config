@@ -1,0 +1,5 @@
+label: 'Piilota asiontikanavat tässä palvelukuvauksessa'
+description: 'Voit joko piilottaa tai näyttää asiointikanavat tässä palvelukuvauksessa muuttamalla kentän arvoa.'
+settings:
+  on_label: Päällä
+  off_label: Pois
