@@ -39,6 +39,7 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
    */
   public function build(bool $isAnonymous, string $entityType, string $entityId, string $langcode): array {
     $entity = $this->entityTypeManager->getStorage($entityType)->load($entityId);
+
     if (!$entity instanceof ContentEntityInterface) {
       return [];
     }

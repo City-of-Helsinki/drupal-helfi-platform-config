@@ -10,7 +10,7 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -47,7 +47,7 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   The topics manager.
    * @param \Elastic\Elasticsearch\Client $elasticClient
    *   The Elasticsearch client.
-   * @param \Drupal\helfi_api_base\Cache\CacheTagInvalidator $cacheTagInvalidator
+   * @param \Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface $cacheTagInvalidator
    *   The cache tag invalidator.
    */
   public function __construct(
@@ -57,7 +57,7 @@ class RecommendationManager implements RecommendationManagerInterface {
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
     #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
-    private readonly CacheTagInvalidator $cacheTagInvalidator,
+    private readonly CacheTagInvalidatorInterface $cacheTagInvalidator,
   ) {
   }
 
