@@ -6,8 +6,8 @@ id: helfi_news_groups
 label: 'Helfi: News groups'
 label_plural: 'Helfi: News groups'
 description: 'Retrieves news groups taxonomy terms from Helfi'
-read_only: true
 generate_aliases: null
+read_only: true
 field_mapper_id: jsonpath
 field_mapper_config:
   field_mappings:

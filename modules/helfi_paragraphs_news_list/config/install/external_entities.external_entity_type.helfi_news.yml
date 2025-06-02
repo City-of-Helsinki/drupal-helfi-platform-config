@@ -6,8 +6,8 @@ id: helfi_news
 label: 'Helfi: News'
 label_plural: 'Helfi: News'
 description: ''
-read_only: true
 generate_aliases: false
+read_only: true
 field_mapper_id: jsonpath
 field_mapper_config:
   field_mappings:
