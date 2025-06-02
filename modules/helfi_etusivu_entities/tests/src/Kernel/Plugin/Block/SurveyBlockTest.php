@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
-use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
+use Drupal\helfi_etusivu_entities\Plugin\Block\SurveyBlock;
+use Drupal\helfi_etusivu_entities\SurveyLazyBuilder;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
@@ -34,6 +35,7 @@ class SurveyBlockTest extends EntityKernelTestBase {
     'helfi_node_survey',
     'external_entities',
     'helfi_etusivu_entities',
+    'publication_date',
   ];
 
   /**
@@ -43,6 +45,7 @@ class SurveyBlockTest extends EntityKernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('node');
+
     $this->installConfig([
       'node',
       'helfi_node_survey',
@@ -52,14 +55,21 @@ class SurveyBlockTest extends EntityKernelTestBase {
 
   /**
    * Make sure build() works.
-   *
-   * @todo Improve these.
    */
   public function testBuild(): void {
-    $block = AnnouncementsBlock::create($this->container, [
+    $block = SurveyBlock::create($this->container, [
       'use_remote_entities' => FALSE,
     ], 'announcement', ['provider' => 'helfi_announcement']);
     $result = $block->build();
+    $this->assertTrue(isset($result['#lazy_builder']));
+  }
+
+  /**
+   * Test survey lazy building.
+   */
+  public function testSurveyLazyBuild(): void {
+    $announcementLazyBuilder = $this->container->get(SurveyLazyBuilder::class);
+    $result = $announcementLazyBuilder->lazyBuild(TRUE);
     $this->assertTrue($result['#sorted']);
   }
 
