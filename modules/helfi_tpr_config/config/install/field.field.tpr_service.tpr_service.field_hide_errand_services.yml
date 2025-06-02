@@ -10,7 +10,7 @@ id: tpr_service.tpr_service.field_hide_errand_services
 field_name: field_hide_errand_services
 entity_type: tpr_service
 bundle: tpr_service
-label: 'Show errand services'
+label: 'Hide errand services'
 description: 'Toggle to hide or show errand services on this service entity.'
 required: false
 translatable: false
