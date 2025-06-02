@@ -389,3 +389,19 @@ function helfi_platform_config_update_9323(): void {
     ->getEditable('helfi_platform_config.matomo_settings')
     ->delete();
 }
+
+/**
+ * UHF-11420: Enable stage_file_proxy.
+ */
+function helfi_platform_config_update_9324(): void {
+  $projectRoles = \Drupal::service(ActiveProjectRoles::class);
+
+  // Only enable on core instances.
+  if ($projectRoles->hasRole(ProjectRoleEnum::Core)) {
+    if (!Drupal::moduleHandler()->moduleExists('stage_file_proxy')) {
+      Drupal::service('module_installer')->install([
+        'stage_file_proxy',
+      ]);
+    }
+  }
+}
