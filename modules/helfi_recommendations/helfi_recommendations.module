@@ -61,7 +61,8 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
   }
 
   // Invalidate suggestion topics tags for all recommendation blocks.
-  // This allows for updated topics to be picked up by the recommendation blocks.
+  // This allows for updated topics to be picked up by the recommendation
+  // blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
     \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
   }
@@ -72,7 +73,8 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
  */
 function helfi_recommendations_entity_delete(EntityInterface $entity) : void {
   // Invalidate suggestion topics tags for all recommendation blocks.
-  // This allows for deleted topics to be removed from the recommendation blocks.
+  // This allows for deleted topics to be removed from the recommendation
+  // blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
     \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
   }

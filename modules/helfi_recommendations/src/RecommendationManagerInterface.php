@@ -52,7 +52,7 @@ interface RecommendationManagerInterface {
    * @return string
    *   The cache tag.
    */
-  public function getCacheTagForUUID(string $uuid): string;
+  public function getCacheTagForUuid(string $uuid): string;
 
   /**
    * Get the cache tag for all recommendation blocks.

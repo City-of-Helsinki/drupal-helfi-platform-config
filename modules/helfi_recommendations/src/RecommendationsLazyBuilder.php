@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_recommendations\RecommendationManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -86,7 +85,7 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
     $response['#rows'] = $recommendations;
     foreach ($recommendations as $recommendation) {
       if (!empty($recommendation['uuid'])) {
-        $response['#cache']['tags'][] = $this->recommendationManager->getCacheTagForUUID($recommendation['uuid']);
+        $response['#cache']['tags'][] = $this->recommendationManager->getCacheTagForUuid($recommendation['uuid']);
       }
     }
 
@@ -132,6 +131,5 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
 
     return $recommendations;
   }
-
 
 }

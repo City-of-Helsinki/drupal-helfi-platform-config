@@ -47,6 +47,8 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   The topics manager.
    * @param \Elastic\Elasticsearch\Client $elasticClient
    *   The Elasticsearch client.
+   * @param \Drupal\helfi_api_base\Cache\CacheTagInvalidator $cacheTagInvalidator
+   *   The cache tag invalidator.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
@@ -119,7 +121,7 @@ class RecommendationManager implements RecommendationManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function getCacheTagForUUID(string $uuid): string {
+  public function getCacheTagForUuid(string $uuid): string {
     return self::EXTERNAL_CACHE_TAG_PREFIX . $uuid;
   }
 
@@ -139,7 +141,7 @@ class RecommendationManager implements RecommendationManagerInterface {
   public function invalidateExternalCacheTags(array $uuids): void {
     $cache_tags = [];
     foreach ($uuids as $uuid) {
-      $cache_tags[] = $this->getCacheTagForUUID($uuid);
+      $cache_tags[] = $this->getCacheTagForUuid($uuid);
     }
     $this->cacheTagInvalidator->invalidateTags($cache_tags);
   }
