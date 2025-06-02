@@ -12,6 +12,7 @@ use Drupal\Core\Utility\UpdateException;
 use Drupal\helfi_react_search\Entity\EventList;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\helfi_react_search\EventListUpdateHelper;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Event\ReindexScheduledEvent;
 use Drupal\search_api\Event\SearchApiEvents;
@@ -221,4 +222,53 @@ function helfi_react_search_update_9015() : void {
   }
 
   Vocabulary::load('linked_events_keywords')?->delete();
+}
+
+/**
+ * UHF-11676: Migrate `field_api_url` field to new format.
+ */
+function helfi_react_search_update_9016() : void {
+  $storage = \Drupal::entityTypeManager()
+    ->getStorage('paragraph');
+
+  $ids = $storage
+    ->getQuery()
+    ->condition('type', 'event_list')
+    // Query paragraphs that have `field_api_url` set.
+    ->exists('field_api_url')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  /** @var \Drupal\helfi_react_search\EventListUpdateHelper $updater */
+  $updater = \Drupal::service(EventListUpdateHelper::class);
+
+  foreach ($ids as $id) {
+    $paragraph = $storage->load($id);
+
+    assert($paragraph instanceof EventList);
+
+    if ($updater->migrateApiUrl($paragraph)) {
+      $paragraph->save();
+    }
+  }
+
+  $change = [
+    'paragraph' => [
+      'field_api_url' => [
+        'event_list',
+      ],
+    ],
+  ];
+
+  foreach ($change as $entityType => $fieldNames) {
+    foreach ($fieldNames as $fieldName => $bundles) {
+      // Delete field definition.
+      foreach ($bundles as $bundle) {
+        FieldConfig::loadByName($entityType, $bundle, $fieldName)?->delete();
+      }
+
+      // Delete storage config.
+      FieldStorageConfig::loadByName($entityType, $fieldName)?->delete();
+    }
+  }
 }

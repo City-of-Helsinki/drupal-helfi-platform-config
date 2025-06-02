@@ -74,11 +74,6 @@ default:
           revision_translation_affected:
             -
               value: true
-          field_api_url:
-            -
-              uri: 'https://fixture'
-              title: ''
-              options: {  }
           field_event_count:
             -
               value: 3

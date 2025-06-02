@@ -4,3 +4,4 @@ services:
     autowire: true
 
   Drupal\helfi_react_search\LinkedEvents: ~
+  Drupal\helfi_react_search\EventListUpdateHelper: ~
