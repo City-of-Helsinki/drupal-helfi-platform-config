@@ -12,19 +12,19 @@ index 041bf25..c708f6f 100644
      checkbox_default_state:
        type: string
 diff --git a/eu_cookie_compliance.libraries.yml b/eu_cookie_compliance.libraries.yml
-index 28b4e51..d2e5646 100644
+index 8e7d737..514ff5a 100644
 --- a/eu_cookie_compliance.libraries.yml
 +++ b/eu_cookie_compliance.libraries.yml
 @@ -1,7 +1,7 @@
  eu_cookie_compliance:
    version: VERSION
    js:
--    js/eu_cookie_compliance.min.js: { attributes: { defer: true } }
-+    js/eu_cookie_compliance.js: { attributes: { defer: true } }
+-    js/eu_cookie_compliance.min.js: { minified: true }
++    js/eu_cookie_compliance.min.js: { minified: true, attributes: { defer: true } }
    dependencies:
      - core/jquery
      - core/drupal
-@@ -36,3 +36,9 @@ admin:
+@@ -35,3 +35,9 @@ admin:
        css/eu_cookie_compliance_admin.css: {}
    js:
      js/eu_cookie_compliance_admin.js: {}
