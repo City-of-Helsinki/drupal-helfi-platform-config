@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Utility\UpdateException;
 use Drupal\helfi_react_search\Entity\EventList;
@@ -128,6 +129,10 @@ function helfi_react_search_update_9012() : void {
  * UHF-11676: Migrate data from `field_filter_keywords` to a new field.
  */
 function helfi_react_search_update_9013() : void {
+  // Make sure latest configuration is installed before running these hooks..
+  \Drupal::service(ConfigInstallerInterface::class)
+    ->installDefaultConfig('module', 'helfi_react_search');
+
   $storage = \Drupal::entityTypeManager()
     ->getStorage('paragraph');
 
