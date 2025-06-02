@@ -6,6 +6,7 @@ dependencies:
     - field.field.tpr_service.tpr_service.field_content
     - field.field.tpr_service.tpr_service.field_lower_content
     - field.field.tpr_service.tpr_service.field_metatags
+    - field.field.tpr_service.tpr_service.field_hide_errand_services
     - field.field.tpr_service.tpr_service.field_sidebar_content
   module:
     - hdbt_admin_tools
@@ -83,6 +84,13 @@ content:
     region: content
     settings:
       sidebar: false
+    third_party_settings: {  }
+  field_hide_errand_services:
+    type: boolean_checkbox
+    weight: 26
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_sidebar_content:
     type: paragraphs

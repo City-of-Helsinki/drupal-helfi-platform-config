@@ -7,6 +7,7 @@ dependencies:
     - field.field.tpr_service.tpr_service.field_content
     - field.field.tpr_service.tpr_service.field_lower_content
     - field.field.tpr_service.tpr_service.field_metatags
+    - field.field.tpr_service.tpr_service.field_hide_errand_services
     - field.field.tpr_service.tpr_service.field_sidebar_content
   module:
     - helfi_tpr
@@ -89,6 +90,7 @@ hidden:
   field_content: true
   field_lower_content: true
   field_metatags: true
+  field_hide_errand_services: true
   field_sidebar_content: true
   has_unit: true
   hide_service_points: true
@@ -96,5 +98,6 @@ hidden:
   links: true
   name_override: true
   name_synonyms: true
+  search_api_excerpt: true
   service_id: true
   toc_enabled: true
