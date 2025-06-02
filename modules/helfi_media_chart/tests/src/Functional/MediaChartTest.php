@@ -58,7 +58,6 @@ class MediaChartTest extends BrowserTestBase {
 
     $this->submitForm([
       'name[0][value]' => 'Test value',
-      'field_helfi_chart_title[0][value]' => 'Test value',
       'field_helfi_chart_url[0][uri]' => 'https://google.com',
       'field_helfi_chart_transcript[0][value]' => '123',
     ], 'Save');
@@ -72,7 +71,6 @@ class MediaChartTest extends BrowserTestBase {
     $this->submitForm([
       'name[0][value]' => 'Chart',
       'field_helfi_chart_url[0][uri]' => 'https://app.powerbi.com/view?r=123',
-      'field_helfi_chart_title[0][value]' => 'Test value',
       'field_helfi_chart_transcript[0][value]' => '123',
     ], 'Save');
     $this->assertSession()->pageTextContainsOnce('Chart embed Chart has been created.');

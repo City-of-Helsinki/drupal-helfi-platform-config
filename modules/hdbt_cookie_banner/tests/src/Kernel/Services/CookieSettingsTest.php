@@ -6,6 +6,8 @@ namespace Drupal\Tests\hdbt_cookie_banner\Kernel\Services;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\Tests\hdbt_cookie_banner\Kernel\KernelTestBase;
 use Drupal\hdbt_cookie_banner\Services\CookieSettings;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -50,7 +52,7 @@ class CookieSettingsTest extends KernelTestBase {
       $this->container->get('router.route_provider'),
       $this->container->get('config.factory'),
       $this->container->get('language_manager'),
-      $this->container->get('helfi_api_base.environment_resolver'),
+      $this->container->get(EnvironmentResolverInterface::class),
       $this->container->get('url_generator'),
       $this->container->get('library.discovery'),
     );
@@ -103,8 +105,8 @@ class CookieSettingsTest extends KernelTestBase {
   public function testGetCookieBannerApiUrlWithDefaultSettings(): void {
     // Expected settings for external (hel.fi) setup.
     $expected = [
-      ['site_settings', ''],
-      ['use_custom_settings', ''],
+      'site_settings' => '',
+      'use_custom_settings' => '',
     ];
 
     // Set up the configurations with specified settings.
@@ -121,8 +123,8 @@ class CookieSettingsTest extends KernelTestBase {
   public function testGetCookieBannerApiUrlWithCustomSettings(): void {
     // Expected settings for external (hel.fi) setup.
     $expected = [
-      ['site_settings', '{"test": "true"}'],
-      ['use_custom_settings', TRUE],
+      'site_settings' => '{"test": "true"}',
+      'use_custom_settings' => TRUE,
     ];
 
     // Set up the configurations with specified settings.
@@ -183,8 +185,8 @@ class CookieSettingsTest extends KernelTestBase {
   public function testGetCookieSettingsPage(): void {
     // Expected settings for external (hel.fi) setup.
     $expected = [
-      ['site_settings', '{"test": "true"}'],
-      ['use_custom_settings', FALSE],
+      'site_settings' => '{"test": "true"}',
+      'use_custom_settings' => FALSE,
     ];
 
     // Set up the configurations with specified settings.
@@ -218,7 +220,7 @@ class CookieSettingsTest extends KernelTestBase {
   public function testGetCookieSettingsPageUrlRouteNotExists(): void {
     // Expected settings for external (hel.fi) setup.
     $expected = [
-      ['use_custom_settings', TRUE],
+      'use_custom_settings' => TRUE,
     ];
 
     // Set up the configurations with specified settings.
@@ -243,7 +245,7 @@ class CookieSettingsTest extends KernelTestBase {
   public function testGetActiveEtusivuEnvironment(): void {
     // Expected settings for external (hel.fi) setup.
     $expected = [
-      ['use_custom_settings', FALSE],
+      'use_custom_settings' => FALSE,
     ];
 
     // Set up the configurations with specified settings.
@@ -251,9 +253,7 @@ class CookieSettingsTest extends KernelTestBase {
 
     // Simulate that the environment resolver returns NULL because
     // the environment has a typo or current environment is f.e. dev.
-    $this->environmentResolver
-      ->method('getEnvironment')
-      ->willThrowException(new \InvalidArgumentException());
+    $this->setActiveProject('non-existent', EnvironmentEnum::Dev);
 
     // Test that the URL by route is returned.
     $url = $this->cookieSettings->getCookieSettingsPageUrl();

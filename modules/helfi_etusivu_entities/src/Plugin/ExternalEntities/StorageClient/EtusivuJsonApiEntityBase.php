@@ -92,6 +92,7 @@ abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase 
     }
     catch (\InvalidArgumentException) {
     }
+
     $instance->setLogger($container->get('logger.channel.helfi_etusivu_entities'));
 
     return $instance;

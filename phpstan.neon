@@ -14,9 +14,6 @@ parameters:
       message: '#^Unsafe usage of new static#'
       path: src/Plugin/Block/ContentBlockBase.php
     -
-      message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemListInterface<Drupal\\Core\\Field\\FieldItemInterface>::\$iframe_title.#'
-      path: modules/helfi_media_remote_video/src/Entity/RemoteVideo.php
-    -
       message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
       path: modules/helfi_ckeditor/src/Plugin/CKEditor5Plugin/HelfiLink.php
     -

@@ -58,4 +58,11 @@ class MediaEntityBundle extends Media implements MediaInterface {
       $this->hasField('field_media_oembed_video');
   }
 
+  /**
+   * Temporary iframe title value for embed medias.
+   *
+   * @var string|null
+   */
+  public ?string $iframeTitle;
+
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_remote_video\Entity;
 
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -12,21 +11,24 @@ use Drupal\paragraphs\ParagraphInterface;
  * Bundle class for remote_video paragraph.
  */
 class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
-  use StringTranslationTrait;
 
   /**
    * Get title of video.
-   *
-   * @return string|null
-   *   Title of the video.
    */
-  public function getIframeTitle(): ?string {
+  public function setMediaEntityIframeTitle() :void {
     if (!$this->isValid()) {
-      return NULL;
+      return;
     }
 
-    return $this->get('field_iframe_title')->isEmpty()
-      ? (string) $this->t('Embedded video') : $this->get('field_iframe_title')->value;
+    $iframe_title = $this->get('field_iframe_title')->value;
+    $referenced_entities = $this->get('field_remote_video')->referencedEntities();
+
+    if (empty($referenced_entities)) {
+      return;
+    }
+
+    $target = reset($referenced_entities);
+    $target->iframeTitle = $iframe_title ? $iframe_title : $this->t('Remote video');
   }
 
   /**

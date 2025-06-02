@@ -18,10 +18,15 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
-    return [
-      SearchApiEvents::MAPPING_FIELD_TYPES => 'mapFieldTypes',
+    $events = [
       FieldMappingEvent::class => 'mapElasticFields',
     ];
+
+    if (class_exists(SearchApiEvents::class)) {
+      $events[SearchApiEvents::MAPPING_FIELD_TYPES] = 'mapFieldTypes';
+    }
+
+    return $events;
   }
 
   /**

@@ -6,24 +6,25 @@ namespace Drupal\Tests\hdbt_cookie_banner\Kernel;
 
 use Drupal\Core\Asset\LibraryDiscoveryInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
 use Drupal\hdbt_cookie_banner\Controller\HdbtCookieSettingsPageController;
 use Drupal\hdbt_cookie_banner\Form\HdbtCookieBannerForm;
-use Drupal\helfi_api_base\Environment\Address;
-use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Kernel test base for news feed list tests.
  */
 class KernelTestBase extends CoreKernelTestBase {
+
+  use EnvironmentResolverTrait;
 
   /**
    * Environment resolver.
@@ -97,33 +98,19 @@ class KernelTestBase extends CoreKernelTestBase {
     parent::setUp();
     $this->installConfig(['system', 'hdbt_cookie_banner']);
 
-    // Mock the environment resolver to return a specific environment.
-    $mockEnvironment = new Environment(
-      new Address('www.test.hel.ninja'),
-      new Address('internal-address.local', 'http', 8080),
-      ['en' => '/en', 'fi' => '/fi', 'sv' => '/sv'],
-      EnvironmentEnum::Test,
-      [],
-    );
-
-    // Mock the EnvironmentResolver service.
-    $this->environmentResolver = $this->createMock(EnvironmentResolverInterface::class);
-    $this->environmentResolver->method('getEnvironment')->willReturn($mockEnvironment);
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Test);
 
     // Create a mocks for the needed interfaces.
     $this->routeProvider = $this->createMock(RouteProviderInterface::class);
     $this->languageManager = $this->createMock(LanguageManagerInterface::class);
-    $this->configFactory = $this->createMock(ConfigFactoryInterface::class);
     $this->moduleExtensionList = $this->createMock(ModuleExtensionList::class);
     $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
     $this->libraryDiscovery = $this->createMock(LibraryDiscoveryInterface::class);
 
     // Set up the container with the mocked services.
     $this->container->set('router.route_provider', $this->routeProvider);
-    $this->container->set('config.factory', $this->configFactory);
     $this->container->set('language_manager', $this->languageManager);
     $this->container->set('extension.list.module', $this->moduleExtensionList);
-    $this->container->set('helfi_api_base.environment_resolver', $this->environmentResolver);
     $this->container->set('url_generator', $this->urlGenerator);
     $this->container->set('library.discovery', $this->libraryDiscovery);
 
@@ -138,18 +125,8 @@ class KernelTestBase extends CoreKernelTestBase {
    *   Configurations as an array.
    */
   protected function setUpTheConfigurations(array $configuration): void {
-    $immutableConfig = $this->createMock(ImmutableConfig::class);
-    $immutableConfig->method('get')->willReturnMap($configuration);
-
-    // Only mock the 'HdbtCookieBannerForm::SETTINGS' configuration.
-    $this->configFactory->expects($this->atLeastOnce())
-      ->method('get')
-      ->with(HdbtCookieBannerForm::SETTINGS)
-      ->willReturn($immutableConfig);
-
-    // Allow other calls to ConfigFactory::get() to return a default.
-    $this->configFactory->method('get')
-      ->willReturn($this->createMock(ImmutableConfig::class));
+    // Mock the 'HdbtCookieBannerForm::SETTINGS' configuration.
+    $this->config(HdbtCookieBannerForm::SETTINGS)->setData($configuration)->save();
   }
 
 }

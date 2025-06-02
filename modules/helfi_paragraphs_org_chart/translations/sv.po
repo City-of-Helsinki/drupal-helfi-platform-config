@@ -1,2 +1,10 @@
 msgid ""
 msgstr ""
+
+msgctxt "Organization chart error"
+msgid "An error occurred while loading the content"
+msgstr "Det uppstod ett fel vid inläsningen av innehållet"
+
+msgctxt "Organization chart error"
+msgid "Please reload the page or try again later."
+msgstr "Vänligen ladda om sidan eller försök igen senare."

@@ -21,10 +21,13 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
@@ -353,6 +356,10 @@ function helfi_platform_config_system_breadcrumb_alter(
   /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
   $resolver = Drupal::service('helfi_api_base.environment_resolver');
 
+  if (!Drupal::service(ActiveProjectRoles::class)->hasRole(ProjectRoleEnum::Core)) {
+    return;
+  }
+
   // Do nothing if the current project is not in environments list.
   try {
     $activeEnvironment = $resolver->getActiveEnvironment()->getEnvironmentName();
@@ -504,21 +511,16 @@ function helfi_platform_config_config_ignore_ignored_alter(ConfigIgnoreConfig $i
     }
   }
 
-  // Ignore external entities read_only and generate_aliases variables during
-  // update. These values tend to switch places during import/export and causes
-  // an unnecessary delay during config import.
-  // @todo UHF-11477 Is this needed after external_entities module v3 update.
-  $external_entities = [
-    'external_entities.external_entity_type.*:read_only',
-    'external_entities.external_entity_type.*:generate_aliases',
-  ];
-
-  foreach (['import', 'export'] as $direction) {
+  // Ignore the external menu block dependencies for menu configurations.
+  // Without this, configuration import will fail with an error when trying
+  // to delete the menu that the block depends on. The dependency is obsolete,
+  // but Drupal still adds it because of the block's plugin.
+  foreach (['create', 'update', 'delete'] as $operation) {
     $list = array_merge(
-      $ignored->getList($direction, 'update'),
-      $external_entities,
+      $ignored->getList('import', $operation),
+      ['block.block.external_*:dependencies.config'],
     );
-    $ignored->setList($direction, $operation, $list);
+    $ignored->setList('import', $operation, $list);
   }
 }
 
@@ -571,9 +573,7 @@ function helfi_platform_config_cron(): void {
  * Implements hook_preprocess_html().
  */
 function helfi_platform_config_preprocess_html(&$variables): void {
-  $config = \Drupal::config('helfi_platform_config.matomo_settings');
-  $matomo_site_id = $config->get('matomo_site_id');
-
+  $matomo_site_id = Settings::get('matomo_site_id');
   if ($matomo_site_id) {
     $variables['#attached']['drupalSettings']['matomo_site_id'] = $matomo_site_id;
   }

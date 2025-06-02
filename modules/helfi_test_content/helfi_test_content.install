@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_api_base\Features\FeatureManager;
+
 /**
  * Implements hook_install().
  */
@@ -43,4 +45,9 @@ function helfi_test_content_install($is_syncing) : void {
     ->set('use_custom_settings', TRUE)
     ->set('site_settings', $json_content)
     ->save();
+
+  /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
+  $service = \Drupal::service(FeatureManager::class);
+  // Enable the mock responses feature.
+  $service->enableFeature(FeatureManager::USE_MOCK_RESPONSES);
 }

@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for 'helfi_chart' module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Cache\Cache;
+use Drupal\helfi_paragraphs_chart\Entity\Chart;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function helfi_paragraphs_chart_helfi_paragraph_types() : array {
+  return [
+    new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'chart'),
+  ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_paragraphs_chart_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['chart'])) {
+    $bundles['paragraph']['chart']['class'] = Chart::class;
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph__type().
+ */
+function helfi_paragraphs_chart_preprocess_paragraph__chart(&$variables) {
+  /** @var \Drupal\helfi_paragraphs_chart\Entity\Chart $paragraph */
+  $paragraph = $variables['paragraph'];
+  $paragraph->setMediaEntityIframeTitle();
+
+  // Add cache tags to referenced media field.
+  if (
+    $paragraph->hasField('field_chart_chart') &&
+    !$paragraph->get('field_chart_chart')->isEmpty()
+  ) {
+    $variables['content']['field_chart_chart'][0]['#cache']['tags'] = Cache::mergeTags(
+     $variables['content']['field_chart_chart'][0]['#cache']['tags'] ?? [],
+     $paragraph->getCacheTags()
+    );
+  }
+}

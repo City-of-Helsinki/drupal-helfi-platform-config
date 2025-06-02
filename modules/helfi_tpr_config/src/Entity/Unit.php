@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_tpr_config\Entity;
 
+use Drupal\Core\Url;
 use Drupal\helfi_tpr\Entity\Unit as BaseUnit;
 
 /**
@@ -38,6 +39,22 @@ class Unit extends BaseUnit {
     if ($file = $picture_url->get('field_media_image')->entity) {
       /** @var \Drupal\file\FileInterface $file */
       return $file->getFileUri();
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Gets the website URL.
+   *
+   * @return \Drupal\Core\Url|null
+   *   The website url object.
+   */
+  public function getWebsiteUrl() : ? Url {
+    $website_uri = $this->get('www')->getString();
+
+    if ($website_uri) {
+      return Url::fromUri($website_uri);
     }
 
     return NULL;
