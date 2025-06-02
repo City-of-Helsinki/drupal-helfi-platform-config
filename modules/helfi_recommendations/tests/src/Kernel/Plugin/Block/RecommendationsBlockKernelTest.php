@@ -109,15 +109,6 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
   }
 
   /**
-   * Test cache max age.
-   */
-  public function testCacheMaxAge(): void {
-    $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
-    $cache_max_age = $block->getCacheMaxAge();
-    $this->assertEquals(3600, $cache_max_age);
-  }
-
-  /**
    * Test block access.
    */
   public function testBlockAccess(): void {

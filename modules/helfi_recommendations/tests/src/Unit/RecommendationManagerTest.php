@@ -10,6 +10,7 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_recommendations\RecommendationManager;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
@@ -78,6 +79,13 @@ class RecommendationManagerTest extends UnitTestCase {
   protected $elasticClient;
 
   /**
+   * The mocked cache tag invalidator.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected $cacheTagInvalidator;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -88,13 +96,15 @@ class RecommendationManagerTest extends UnitTestCase {
     $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
     $this->topicsManager = $this->prophesize(TopicsManagerInterface::class);
     $this->elasticClient = ClientBuilder::create()->build();
+    $this->cacheTagInvalidator = $this->prophesize(CacheTagInvalidator::class);
 
     $this->recommendationManager = new RecommendationManager(
       $this->logger->reveal(),
       $this->entityTypeManager->reveal(),
       $this->environmentResolver->reveal(),
       $this->topicsManager->reveal(),
-      $this->elasticClient
+      $this->elasticClient,
+      $this->cacheTagInvalidator->reveal()
     );
   }
 

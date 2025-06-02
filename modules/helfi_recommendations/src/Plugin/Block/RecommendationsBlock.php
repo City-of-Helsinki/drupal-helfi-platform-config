@@ -29,16 +29,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 )]
 final class RecommendationsBlock extends BlockBase implements ContainerFactoryPluginInterface, ContextAwarePluginInterface {
 
-  // Default cache max age is 1 hour.
-  // @todo Is this a good default? This max age will be set on
-  // almost all pages when the block is rolled out to all instances
-  // and most content types. We should consider implementing a
-  // pubsub based cache tag purging mechanism instead, and have a
-  // much higher value here (still need to update all of these in
-  // regular basis to keep the recommendations relevant and up to
-  // date).
-  const CACHE_MAX_AGE = 3600;
-
   /**
    * {@inheritdoc}
    */
@@ -125,7 +115,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
     if (!$entity instanceof ContentEntityInterface) {
-      parent::getCacheTags();
+      return parent::getCacheTags();
     }
 
     return Cache::mergeTags(parent::getCacheTags(), $entity->getCacheTags());
