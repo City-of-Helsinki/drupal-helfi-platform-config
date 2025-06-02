@@ -1,0 +1,24 @@
+uuid: 1259baa8-0eb1-4be2-afea-d4f7073ec7b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tpr_service.field_show_errand_services
+  module:
+    - helfi_tpr
+id: tpr_service.tpr_service.field_show_errand_services
+field_name: field_show_errand_services
+entity_type: tpr_service
+bundle: tpr_service
+label: 'Show errand services'
+description: 'Toggle to hide or show errand services on this service entity.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
