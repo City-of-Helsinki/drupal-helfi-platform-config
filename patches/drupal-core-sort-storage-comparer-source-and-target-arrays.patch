@@ -6,8 +6,8 @@ index 820fe041fc..06a1d8c779 100644
      foreach (array_intersect($this->sourceNames[$collection], $this->targetNames[$collection]) as $name) {
        $source_data = $this->getSourceStorage($collection)->read($name);
        $target_data = $this->getTargetStorage($collection)->read($name);
-+      asort($source_data);
-+      asort($target_data);
++      ksort($source_data);
++      ksort($target_data);
        if ($source_data !== $target_data) {
          if (isset($source_data['uuid']) && $source_data['uuid'] !== $target_data['uuid']) {
            // The entity has the same file as an existing entity but the UUIDs do
