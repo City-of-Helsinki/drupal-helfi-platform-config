@@ -99,7 +99,7 @@
                 "[#UHF-9690] Allow updating lists when switching from allowed values to allowed values function (https://www.drupal.org/i/2873353)": "https://www.drupal.org/files/issues/2021-05-18/allow-allowed-values-function-update-D9-2873353_1.patch",
                 "[#UHF-9952, #UHF-9980] Duplicate <br /> tags (https://www.drupal.org/i/3083786)": "https://www.drupal.org/files/issues/2024-08-08/3083786--mr-8066--10-3-backport.patch",
                 "[#UHF-11025] Status message templates missing theme when bigpipe is enabled (https://www.drupal.org/i/3396318)": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/319cfd8583f985f1af00990481176b1d95d5af65/patches/drupal-3396318-status-message-bigpipe-mr-9329.patch",
-                "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch"
+                "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/99ffcbd418dfa0265b51f29146d441b37904035e/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch"
             },
             "drupal/default_content": {
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-helfi-platform-config/main/patches/default_content_2.0.0-alpha2-2640734_manual_imports-e164a354.patch"
