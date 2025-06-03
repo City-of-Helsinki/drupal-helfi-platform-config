@@ -277,7 +277,7 @@ function helfi_recommendations_field_widget_single_element_suggested_topics_refe
 function _helfi_recommendations_can_see_review_mode() : bool {
   $current_user = \Drupal::currentUser();
   $roles = $current_user->getRoles();
-  return in_array('administrator', $roles) || $current_user->hasPermission('administer modules');
+  return in_array('admin', $roles) || $current_user->hasPermission('administer modules');
 }
 
 /**
