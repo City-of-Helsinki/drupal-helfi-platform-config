@@ -141,7 +141,6 @@ class RecommendationsLazyBuilderTest extends UnitTestCase {
     $this->assertArrayHasKey('#cache', $result);
     $this->assertEquals(['test_cache_tag_entity', 'test_cache_tag_all'], $result['#cache']['tags']);
     $this->assertEquals(['languages:language_content', 'user.roles', 'url.path'], $result['#cache']['contexts']);
-    $this->assertArrayNotHasKey('#title', $result);
     $this->assertArrayNotHasKey('#no_results_message', $result);
   }
 
@@ -157,7 +156,6 @@ class RecommendationsLazyBuilderTest extends UnitTestCase {
 
     $result = $this->recommendationsLazyBuilder->build(FALSE, 'node', '1', 'en');
     $this->assertArrayHasKey('#cache', $result);
-    $this->assertArrayHasKey('#title', $result);
     $this->assertArrayHasKey('#no_results_message', $result);
   }
 
@@ -183,7 +181,6 @@ class RecommendationsLazyBuilderTest extends UnitTestCase {
       'test_cache_tag_uuid_1',
       'test_cache_tag_uuid_2',
     ], $result['#cache']['tags']);
-    $this->assertEquals('You might be interested in', $result['#title']);
     $this->assertEquals([
       ['uuid' => 'test_uuid_1'],
       ['uuid' => 'test_uuid_2'],

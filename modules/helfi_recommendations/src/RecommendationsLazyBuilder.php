@@ -54,7 +54,6 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
 
     $response = [
       '#theme' => 'recommendations_block',
-      '#title' => $this->t('You might be interested in', [], ['context' => 'Recommendations block title']),
       '#cache' => [
         'contexts' => [
           'languages:language_content',
@@ -68,7 +67,6 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
     $recommendations = $entity instanceof ContentEntityInterface ? $this->getRecommendations($entity) : [];
     if (!$recommendations) {
       if ($isAnonymous) {
-        unset($response['#title']);
         return $response;
       }
 
