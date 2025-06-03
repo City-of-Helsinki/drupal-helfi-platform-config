@@ -17,7 +17,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_recommendations\RecommendationsLazyBuilder;
 use Drupal\helfi_recommendations\RecommendationManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -39,7 +38,6 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     private readonly RecommendationManagerInterface $recommendationManager,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly AccountInterface $currentUser,
-    private readonly LoggerInterface $logger,
     private readonly EntityVersionMatcher $entityVersionMatcher,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -53,7 +51,6 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       $container->get(RecommendationManagerInterface::class),
       $container->get('entity_type.manager'),
       $container->get('current_user'),
-      $container->get('logger.channel.helfi_recommendations'),
       $container->get('helfi_platform_config.entity_version_matcher'),
     );
   }

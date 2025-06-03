@@ -163,6 +163,7 @@ class RecommendationsLazyBuilderTest extends UnitTestCase {
    * Tests the build method with recommendations.
    *
    * @covers ::build
+   * @covers ::getRecommendations
    */
   public function testBuildWithRecommendations(): void {
     $this->entityStorage->load(Argument::any())->willReturn($this->entity->reveal());
@@ -186,6 +187,24 @@ class RecommendationsLazyBuilderTest extends UnitTestCase {
       ['uuid' => 'test_uuid_2'],
     ], $result['#rows']);
     $this->assertArrayNotHasKey('#no_results_message', $result);
+  }
+
+  /**
+   * Tests the build method with recommendations and translation.
+   *
+   * @covers ::build
+   * @covers ::getRecommendations
+   */
+  public function testBuildWithRecommendationsAndTranslation(): void {
+    $this->entityStorage->load(Argument::any())->willReturn($this->entity->reveal());
+    $this->language->getId()->willReturn('en');
+    $this->entity->hasTranslation('fi')->willReturn(TRUE);
+    $this->entity->getTranslation('fi')->willReturn($this->entity->reveal());
+    $this->recommendationManager->getRecommendations(Argument::any(), Argument::any(), Argument::any(), Argument::any())
+      ->shouldBeCalled()
+      ->willReturn([]);
+
+    $this->recommendationsLazyBuilder->build(TRUE, 'node', '1', 'fi');
   }
 
 }
