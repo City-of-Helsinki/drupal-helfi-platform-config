@@ -1,7 +1,7 @@
-diff --git a/lib/Drupal/Core/Config/StorageComparer.php b/lib/Drupal/Core/Config/StorageComparer.php
+diff --git a/core/lib/Drupal/Core/Config/StorageComparer.php b/core/lib/Drupal/Core/Config/StorageComparer.php
 index 820fe041fc..42017120f2 100644
---- a/lib/Drupal/Core/Config/StorageComparer.php
-+++ b/lib/Drupal/Core/Config/StorageComparer.php
+--- a/core/lib/Drupal/Core/Config/StorageComparer.php
++++ b/core/lib/Drupal/Core/Config/StorageComparer.php
 @@ -299,7 +299,7 @@ class StorageComparer implements StorageComparerInterface {
      foreach (array_intersect($this->sourceNames[$collection], $this->targetNames[$collection]) as $name) {
        $source_data = $this->getSourceStorage($collection)->read($name);
