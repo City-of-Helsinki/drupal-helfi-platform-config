@@ -1,5 +1,5 @@
 label: Etätapahtumat
-description: 'Näytä "näytä vain etätapahtumat" -suodatin.'
+description: 'Näytä "näytä vain etätapahtumat" -suodatin. Jos Tapahtumapaikka on valittuna, et voi käyttää Etätapahtumat-suodatinta.'
 settings:
   on_label: Kyllä
   off_label: Ei

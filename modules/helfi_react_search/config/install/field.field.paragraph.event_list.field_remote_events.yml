@@ -10,7 +10,7 @@ field_name: field_remote_events
 entity_type: paragraph
 bundle: event_list
 label: 'Remote events'
-description: 'Show "list only remote events" filter.'
+description: 'Show "list only remote events" filter. If Event location is selected, you cannot use the Remote Events filter.'
 required: false
 translatable: false
 default_value:
