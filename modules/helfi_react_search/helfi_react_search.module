@@ -114,18 +114,29 @@ function helfi_react_search_field_widget_single_element_paragraphs_form_alter(ar
     return;
   }
 
-  $type_select = ':input[name="' . $context['items']->getName() . '[' . $element['#delta'] . '][subform][field_event_list_type]"]';
-
+  $select = fn (string $prefix) => ':input[name="' . $context['items']->getName() . '[' . $element['#delta'] . '][subform]' . $prefix . '"]';
   $states = [
-    'field_event_list_category_event' => 'hobbies',
-    'field_event_list_category_hobby' => 'events',
+    'field_event_list_category_event' => [
+      'state' => 'invisible',
+      'condition' => [$select('[field_event_list_type]') => ['value' => 'hobbies']],
+    ],
+    'field_event_list_category_hobby' => [
+      'state' => 'invisible',
+      'condition' => [$select('[field_event_list_type]') => ['value' => 'events']],
+    ],
+    'field_event_location' => [
+      'state' => 'disabled',
+      'condition' => [$select('[field_remote_events][value]') => ['checked' => TRUE]],
+    ],
+    'field_remote_events' => [
+      'state' => 'disabled',
+      'condition' => [$select('[field_event_location][value]') => ['checked' => TRUE]],
+    ],
   ];
 
-  foreach ($states as $field => $condition) {
+  foreach ($states as $field => ['state' => $state, 'condition' => $condition]) {
     $element['subform'][$field]['#states'] = [
-      'invisible' => [
-        [$type_select => ['value' => $condition]],
-      ],
+      $state => [$condition],
     ];
   }
 }
