@@ -12,13 +12,14 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Tests the StorageComparer.
  *
- * Tests the configuration storage comparer with the following test cases:
- * - Configuration consists of arrays with differently ordered keys.
+ * The patch for the StorageComparer changes the handling of configuration
+ * arrays when comparing configurations. This test ensures that the patch
+ * works as expected and there should not be any false positives when only
+ * configuration keys change order.
  *
  * @group helfi_platform_config
  */
 class StorageComparerSortTest extends UnitTestCase {
-
 
   /**
    * @var \Drupal\Core\Config\StorageInterface|\PHPUnit\Framework\MockObject\MockObject
@@ -107,12 +108,10 @@ class StorageComparerSortTest extends UnitTestCase {
     ];
   }
 
-
   /**
-   * @covers ::createChangelist
+   * Tests the createChangelist() method with no actual changes.
    */
   public function testCreateChangelistUpdateWithoutChanges(): void {
-
 
     // Mock data using minimal data to use ConfigDependencyManger.
     $this->sourceStorage->expects($this->once())
@@ -137,14 +136,14 @@ class StorageComparerSortTest extends UnitTestCase {
     $this->storageComparer->createChangelist();
 
     // We expect the change list to be empty, because the configuration values
-    // are the same just the order is different.
+    // are the same just the order of keys are different.
     $this->assertEquals([], $this->storageComparer->getChangelist('update'));
     $this->assertEmpty($this->storageComparer->getChangelist('create'));
     $this->assertEmpty($this->storageComparer->getChangelist('delete'));
   }
 
   /**
-   * @covers ::createChangelist
+   * Tests the createChangelist() method with changes.
    */
   public function testCreateChangelistUpdateWithChanges(): void {
     $source_data = $this->getSourceData();
