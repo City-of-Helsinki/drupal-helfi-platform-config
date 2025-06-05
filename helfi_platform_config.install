@@ -389,3 +389,11 @@ function helfi_platform_config_update_9323(): void {
     ->getEditable('helfi_platform_config.matomo_settings')
     ->delete();
 }
+
+/**
+ * UHF-10647: Enable serialize module.
+ */
+function helfi_platform_config_update_9324(): void {
+  $module_installer = \Drupal::service('module_installer');
+  $module_installer->install(['serialization']);
+}
