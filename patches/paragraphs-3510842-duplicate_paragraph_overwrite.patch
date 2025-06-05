@@ -1,0 +1,66 @@
+diff --git a/src/Entity/Paragraph.php b/src/Entity/Paragraph.php
+index 55e65e4..268b687 100644
+--- a/src/Entity/Paragraph.php
++++ b/src/Entity/Paragraph.php
+@@ -499,22 +499,39 @@ class Paragraph extends ContentEntityBase implements ParagraphInterface {
+   /**
+   * {@inheritdoc}
+   */
+- public function createDuplicate() {
+-   $duplicate = parent::createDuplicate();
+-   // Loop over entity fields and duplicate nested paragraphs.
+-   foreach ($duplicate->getFields() as $fieldItemList) {
+-     if ($fieldItemList instanceof EntityReferenceFieldItemListInterface && $fieldItemList->getSetting('target_type') === $this->getEntityTypeId()) {
+-       foreach ($fieldItemList as $delta => $item) {
+-         // Duplicate child paragraphs, remove when requiring 10.2+.
+-         // @see \Drupal\paragraphs\Hook\EntityHooks::duplicate()
+-         if ($item->entity && !$item->entity->isNew()) {
+-           $fieldItemList[$delta] = $item->entity->createDuplicate();
+-         }
+-       }
+-     }
+-   }
+-   return $duplicate;
+- }
++  public function createDuplicate() {
++    $duplicate = parent::createDuplicate();
++
++    // Loop over entity fields and duplicate nested paragraphs.
++    foreach ($duplicate->getFields() as $field_name => $fieldItemList) {
++      if (!$fieldItemList instanceof EntityReferenceFieldItemListInterface || $fieldItemList->isEmpty()) {
++        continue;
++      }
++
++      $new_items = [];
++      foreach ($fieldItemList as $delta => $item) {
++        if (!isset($item->entity) || !$item->entity instanceof Paragraph) {
++          continue;
++        }
++
++        $cloned_entity = $item->entity->createDuplicate();
++        $cloned_entity->enforceIsNew();
++        $cloned_entity->save();
++
++        $new_items[] = [
++          'target_id' => $cloned_entity->id(),
++          'target_revision_id' => $cloned_entity->getRevisionId(),
++        ];
++      }
++
++      if (!empty($new_items)) {
++        $duplicate->set($field_name, $new_items);
++      }
++    }
++
++    return $duplicate;
++  }
++
+ 
+   /**
+    * {@inheritdoc}
+@@ -837,3 +854,5 @@ class Paragraph extends ContentEntityBase implements ParagraphInterface {
+     return $summary;
+   }
+ }
++
++
