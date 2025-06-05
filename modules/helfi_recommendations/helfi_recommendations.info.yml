@@ -12,4 +12,4 @@ dependencies:
   - search_api:search_api
   - elasticsearch_connector:elasticsearch_connector
 'interface translation project': helfi_recommendations
-'interface translation server pattern': modules/custom/helfi_recommendations/translations/%language.po
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_recommendations/translations/%language.po
