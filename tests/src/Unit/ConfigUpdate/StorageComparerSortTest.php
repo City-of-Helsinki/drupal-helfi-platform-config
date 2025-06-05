@@ -22,11 +22,15 @@ use Drupal\Tests\UnitTestCase;
 class StorageComparerSortTest extends UnitTestCase {
 
   /**
+   * The source storage.
+   *
    * @var \Drupal\Core\Config\StorageInterface|\PHPUnit\Framework\MockObject\MockObject
    */
   protected $sourceStorage;
 
   /**
+   * The target storage.
+   *
    * @var \Drupal\Core\Config\StorageInterface|\PHPUnit\Framework\MockObject\MockObject
    */
   protected $targetStorage;
