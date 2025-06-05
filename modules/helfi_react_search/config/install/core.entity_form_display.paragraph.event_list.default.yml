@@ -3,18 +3,24 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.event_list.field_api_url
+    - field.field.paragraph.event_list.field_event_count
+    - field.field.paragraph.event_list.field_event_list_category_event
+    - field.field.paragraph.event_list.field_event_list_category_hobby
     - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_description
+    - field.field.paragraph.event_list.field_event_list_free_text
+    - field.field.paragraph.event_list.field_event_list_keywords
+    - field.field.paragraph.event_list.field_event_list_place
     - field.field.paragraph.event_list.field_event_list_title
+    - field.field.paragraph.event_list.field_event_list_type
     - field.field.paragraph.event_list.field_event_location
     - field.field.paragraph.event_list.field_event_time
-    - field.field.paragraph.event_list.field_filter_keywords
     - field.field.paragraph.event_list.field_free_events
     - field.field.paragraph.event_list.field_language
     - field.field.paragraph.event_list.field_remote_events
     - paragraphs.paragraphs_type.event_list
   module:
+    - helfi_react_search
     - link
     - select2
     - text
@@ -23,19 +29,13 @@ targetEntityType: paragraph
 bundle: event_list
 mode: default
 content:
-  field_api_url:
-    type: link_default
-    weight: 2
+  field_event_list_title:
+    type: string_textfield
+    weight: 0
     region: content
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-  field_event_count:
-    type: options_select
-    weight: 3
-    region: content
-    settings: {  }
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_event_list_description:
     type: text_textarea
@@ -45,58 +45,98 @@ content:
       rows: 3
       placeholder: ''
     third_party_settings: {  }
-  field_event_list_title:
+  field_event_list_type:
+    type: options_buttons
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_event_count:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_event_list_free_text:
     type: string_textfield
-    weight: 0
+    weight: 4
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_event_list_category_event:
+    type: select2
+    weight: 5
+    region: content
+    settings:
+      width: 100%
+    third_party_settings: {  }
+  field_event_list_category_hobby:
+    type: select2
+    weight: 6
+    region: content
+    settings:
+      width: 100%
+    third_party_settings: {  }
+  field_event_list_keywords:
+    type: linked_events_select2
+    weight: 7
+    region: content
+    settings:
+      endpoint: keyword
+      query: data_source=yso&has_upcoming_events=True&sort=name
+    third_party_settings: {  }
+  field_event_list_place:
+    type: linked_events_select2
+    weight: 8
+    region: content
+    settings:
+      endpoint: place
+      query: sort=name
+    third_party_settings: {  }
   field_event_location:
     type: boolean_checkbox
-    weight: 4
+    weight: 9
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_event_time:
     type: boolean_checkbox
-    weight: 5
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_filter_keywords:
-    type: select2_entity_reference
-    weight: 9
-    region: content
-    settings:
-      width: 100%
-      autocomplete: true
-      match_operator: CONTAINS
-      match_limit: 10
-    third_party_settings: {  }
-  field_free_events:
-    type: boolean_checkbox
-    weight: 8
+    weight: 10
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_language:
     type: boolean_checkbox
-    weight: 6
+    weight: 11
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_remote_events:
     type: boolean_checkbox
-    weight: 7
+    weight: 12
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  field_free_events:
+    type: boolean_checkbox
+    weight: 13
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_event_list_keywords_filter:
+    type: linked_events_select2
+    weight: 14
+    region: content
+    settings:
+      endpoint: keyword
+      query: data_source=yso&has_upcoming_events=True&sort=name
     third_party_settings: {  }
 hidden:
   created: true

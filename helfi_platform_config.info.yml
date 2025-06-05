@@ -4,6 +4,7 @@ package: Custom
 core_version_requirement: ^9 || ^10
 dependencies:
   - drupal:language
+  - drupal:serialization
   - drupal:views
   - helfi_api_base:helfi_api_base
   - config_rewrite:config_rewrite

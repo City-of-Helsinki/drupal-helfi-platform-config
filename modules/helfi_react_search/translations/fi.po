@@ -1,0 +1,66 @@
+msgid ""
+msgstr ""
+
+msgctxt "event list category"
+msgid "Movies"
+msgstr "Elokuva"
+
+msgctxt "event list category"
+msgid "Arts and culture"
+msgstr "Kulttuuri ja taide"
+
+msgctxt "event list category"
+msgid "Exercise and sports"
+msgstr "Liikunta ja urheilu"
+
+msgctxt "event list category"
+msgid "Nature and outdoor activity"
+msgstr "Luonto ja ulkoilu"
+
+msgctxt "event list category"
+msgid "Museums"
+msgstr "Museot"
+
+msgctxt "event list category"
+msgid "Music"
+msgstr "Musiikki"
+
+msgctxt "event list category"
+msgid "Participate and influence"
+msgstr "Osallistu ja vaikuta"
+
+msgctxt "event list category"
+msgid "Food"
+msgstr "Ruoka"
+
+msgctxt "event list category"
+msgid "Dance"
+msgstr "Tanssi"
+
+msgctxt "event list category"
+msgid "Theatre"
+msgstr "Teatteri"
+
+msgctxt "event list category"
+msgid "Languages"
+msgstr "Kielet"
+
+msgctxt "event list category"
+msgid "Literature and literary art"
+msgstr "Kirjallisuus ja sanataide"
+
+msgctxt "event list category"
+msgid "Visual arts"
+msgstr "Kuvataide"
+
+msgctxt "event list category"
+msgid "Crafts"
+msgstr "Kädentaidot"
+
+msgctxt "event list category"
+msgid "Sport"
+msgstr "Liikunta ja ulkoilu"
+
+msgctxt "event list category"
+msgid "Games"
+msgstr "Pelit"

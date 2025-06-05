@@ -1,0 +1,21 @@
+uuid: 08349ce0-5c8c-47b0-8ad3-37384cd9934d
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_event_list_category_hobby
+field_name: field_event_list_category_hobby
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: helfi_react_search_event_list_allowed_hobby_categories
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

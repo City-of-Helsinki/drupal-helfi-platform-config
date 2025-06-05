@@ -7,7 +7,10 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_react_search\Entity\EventList;
+use Drupal\helfi_react_search\Enum\CourseCategory;
+use Drupal\helfi_react_search\Enum\EventCategory;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -30,6 +33,32 @@ function helfi_react_search_event_list_allowed_values_function(): array {
     5 => 5,
     10 => 10,
   ];
+}
+
+/**
+ * Event categories dropdown selectable values.
+ */
+function helfi_react_search_event_list_allowed_event_categories(): array {
+  $values = [];
+
+  foreach (EventCategory::cases() as $category) {
+    $values[$category->value] = $category->translation();
+  }
+
+  return $values;
+}
+
+/**
+ * Hobby categories dropdown selectable values.
+ */
+function helfi_react_search_event_list_allowed_hobby_categories(): array {
+  $values = [];
+
+  foreach (CourseCategory::cases() as $category) {
+    $values[$category->value] = $category->translation();
+  }
+
+  return $values;
 }
 
 /**
@@ -78,6 +107,41 @@ function helfi_react_search_theme(): array {
 }
 
 /**
+ * Implements hook_field_widget_single_element_form_alter().
+ */
+function helfi_react_search_field_widget_single_element_paragraphs_form_alter(array &$element, FormStateInterface $form_state, array $context): void {
+  if (empty($element['#paragraph_type']) || $element['#paragraph_type'] != 'event_list') {
+    return;
+  }
+
+  $select = fn (string $prefix) => ':input[name="' . $context['items']->getName() . '[' . $element['#delta'] . '][subform]' . $prefix . '"]';
+  $states = [
+    'field_event_list_category_event' => [
+      'state' => 'invisible',
+      'condition' => [$select('[field_event_list_type]') => ['value' => 'hobbies']],
+    ],
+    'field_event_list_category_hobby' => [
+      'state' => 'invisible',
+      'condition' => [$select('[field_event_list_type]') => ['value' => 'events']],
+    ],
+    'field_event_location' => [
+      'state' => 'disabled',
+      'condition' => [$select('[field_remote_events][value]') => ['checked' => TRUE]],
+    ],
+    'field_remote_events' => [
+      'state' => 'disabled',
+      'condition' => [$select('[field_event_location][value]') => ['checked' => TRUE]],
+    ],
+  ];
+
+  foreach ($states as $field => ['state' => $state, 'condition' => $condition]) {
+    $element['subform'][$field]['#states'] = [
+      $state => [$condition],
+    ];
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function helfi_react_search_preprocess_form_element(array &$variables): void {
@@ -92,36 +156,5 @@ function helfi_react_search_preprocess_form_element(array &$variables): void {
     isset($variables['description']['content']['#items'])
   ) {
     $variables['description']['content'] = reset($variables['description']['content']['#items']);
-  }
-}
-
-/**
- * Lookup tid with keyword id.
- */
-function _helfi_react_search_lookup_term_tid(string $keyword_id) {
-  $ids = \Drupal::entityQuery('taxonomy_term')
-    ->condition('field_keyword_id', $keyword_id)
-    ->range(0, 1)
-    ->latestRevision()
-    ->accessCheck(FALSE)
-    ->execute();
-
-  if (!empty($ids)) {
-    return reset($ids);
-  }
-
-  return NULL;
-}
-
-/**
- * Implements hook_select2_autocomplete_matches_alter().
- */
-function helfi_react_search_select2_autocomplete_matches_alter(array &$matches, array $options) {
-  // Sort from shortest to longest.
-  if (
-    isset($options['target_bundles']) &&
-    in_array('linked_events_keywords', $options['target_bundles'])
-  ) {
-    usort($matches, fn($a, $b) => strlen($a['text']) > strlen($b['text']));
   }
 }

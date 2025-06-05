@@ -1,8 +1,0 @@
-uuid: 757cd796-00f7-445a-907d-0977ffe099be
-langcode: en
-status: true
-dependencies: {  }
-name: 'Linked Events Keywords'
-vid: linked_events_keywords
-description: 'Keywords from yso dataset.'
-weight: 0

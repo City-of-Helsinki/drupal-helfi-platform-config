@@ -1,0 +1,10 @@
+field.widget.settings.linked_events_select2:
+  type: field.widget.settings.select2
+  label: 'Linked events Select2 widget'
+  mapping:
+    endpoint:
+      type: string
+      label: 'Linked events endpoint'
+    query:
+      type: string
+      label: 'Additional query parameters'

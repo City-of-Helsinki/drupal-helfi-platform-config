@@ -1,16 +1,17 @@
-uuid: 2950aba3-734a-4bd3-9791-775aceae8e5e
+uuid: b749df73-c3bc-43c8-a499-ef876e1a3c07
 langcode: en
 status: true
 dependencies:
   module:
     - paragraphs
-    - taxonomy
-id: paragraph.field_filter_keywords
-field_name: field_filter_keywords
+id: paragraph.field_event_list_place
+field_name: field_event_list_place
 entity_type: paragraph
-type: entity_reference
+type: string
 settings:
-  target_type: taxonomy_term
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
 cardinality: -1

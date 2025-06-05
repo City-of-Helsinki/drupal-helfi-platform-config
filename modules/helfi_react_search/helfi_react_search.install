@@ -7,9 +7,20 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Config\ConfigInstallerInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemList;
+use Drupal\Core\Utility\UpdateException;
+use Drupal\helfi_react_search\Entity\EventList;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\helfi_react_search\EventListUpdateHelper;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Event\ReindexScheduledEvent;
 use Drupal\search_api\Event\SearchApiEvents;
+use Drupal\taxonomy\TermInterface;
+use Drupal\taxonomy\Entity\Vocabulary;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Utils;
 
 /**
  * Remove stale event list paragraph load more field configurations.
@@ -107,25 +118,162 @@ function helfi_react_search_update_9006() : void {
 }
 
 /**
- * UHF-11299: Updated configuration translations for helfi_react_search.
- */
-function helfi_react_search_update_9010() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_react_search');
-}
-
-/**
- * UHF-11240: Updated configuration translations for helfi_react_search.
- */
-function helfi_react_search_update_9011() : void {
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_react_search');
-}
-
-/**
  * UHF-X: Fix clashing 'language' label translation.
  */
 function helfi_react_search_update_9012() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_react_search');
+}
+
+/**
+ * UHF-11676: Migrate data from `field_filter_keywords` to a new field.
+ */
+function helfi_react_search_update_9013() : void {
+  // Make sure latest configuration is installed before running these hooks..
+  \Drupal::service(ConfigInstallerInterface::class)
+    ->installDefaultConfig('module', 'helfi_react_search');
+
+  $storage = \Drupal::entityTypeManager()
+    ->getStorage('paragraph');
+
+  $ids = $storage
+    ->getQuery()
+    ->condition('type', 'event_list')
+    // Query paragraphs that have `field_filter_keywords` set.
+    ->exists('field_filter_keywords')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  $client = \Drupal::httpClient();
+
+  foreach ($ids as $id) {
+    $paragraph = $storage->load($id);
+
+    assert($paragraph instanceof EventList);
+    $field = $paragraph->get('field_filter_keywords');
+    assert($field instanceof EntityReferenceFieldItemList);
+
+    $values = [];
+
+    // Collect values from existing field.
+    foreach ($field->referencedEntities() as $entity) {
+      assert($entity instanceof TermInterface);
+      $termId = $entity->get('field_keyword_id')->value;
+
+      try {
+        $response = $client
+          ->request('GET', "https://api.hel.fi/linkedevents/v1/keyword/$termId/");
+
+        /** @var object $data */
+        $data = Utils::jsonDecode($response->getBody()->getContents());
+
+        $values[] = json_encode([
+          'id' => $data->id,
+          'name' => $data->name,
+        ]);
+
+      }
+      catch (GuzzleException $e) {
+        throw new UpdateException("Failed to update $termId", previous: $e);
+      }
+    }
+
+    // Update new field, clear old field & save.
+    $paragraph->set('field_event_list_keywords_filter', $values);
+    $paragraph->set('field_filter_keywords', NULL);
+    $paragraph->save();
+  }
+}
+
+/**
+ * UHF-11676: Delete `field_filter_keywords` field.
+ */
+function helfi_react_search_update_9014() : void {
+  $change = [
+    'paragraph' => [
+      'field_filter_keywords' => [
+        'event_list',
+      ],
+    ],
+  ];
+
+  foreach ($change as $entityType => $fieldNames) {
+    foreach ($fieldNames as $fieldName => $bundles) {
+      // Delete field definition.
+      foreach ($bundles as $bundle) {
+        FieldConfig::loadByName($entityType, $bundle, $fieldName)?->delete();
+      }
+
+      // Delete storage config.
+      FieldStorageConfig::loadByName($entityType, $fieldName)?->delete();
+    }
+  }
+}
+
+/**
+ * UHF-11676: Delete `linked_events_keywords` taxonomy.
+ */
+function helfi_react_search_update_9015() : void {
+  $storage = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term');
+
+  $ids = $storage->getQuery()
+    ->condition('vid', 'linked_events_keywords')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  foreach ($ids as $id) {
+    $storage->load($id)?->delete();
+  }
+
+  Vocabulary::load('linked_events_keywords')?->delete();
+}
+
+/**
+ * UHF-11676: Migrate `field_api_url` field to new format.
+ */
+function helfi_react_search_update_9016() : void {
+  $storage = \Drupal::entityTypeManager()
+    ->getStorage('paragraph');
+
+  $ids = $storage
+    ->getQuery()
+    ->condition('type', 'event_list')
+    // Query paragraphs that have `field_api_url` set.
+    ->exists('field_api_url')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  /** @var \Drupal\helfi_react_search\EventListUpdateHelper $updater */
+  $updater = \Drupal::service(EventListUpdateHelper::class);
+
+  foreach ($ids as $id) {
+    $paragraph = $storage->load($id);
+
+    assert($paragraph instanceof EventList);
+
+    if ($updater->migrateApiUrl($paragraph)) {
+      $paragraph->save();
+    }
+  }
+
+  $change = [
+    'paragraph' => [
+      'field_api_url' => [
+        'event_list',
+      ],
+    ],
+  ];
+
+  foreach ($change as $entityType => $fieldNames) {
+    foreach ($fieldNames as $fieldName => $bundles) {
+      // Delete field definition.
+      foreach ($bundles as $bundle) {
+        FieldConfig::loadByName($entityType, $bundle, $fieldName)?->delete();
+      }
+
+      // Delete storage config.
+      FieldStorageConfig::loadByName($entityType, $fieldName)?->delete();
+    }
+  }
 }

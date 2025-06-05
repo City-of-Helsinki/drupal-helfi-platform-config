@@ -1,0 +1,19 @@
+uuid: 871a092b-a34a-412e-bba2-483ca396d3c9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_list_keywords_filter
+    - paragraphs.paragraphs_type.event_list
+id: paragraph.event_list.field_event_list_keywords_filter
+field_name: field_event_list_keywords_filter
+entity_type: paragraph
+bundle: event_list
+label: Topics
+description: 'Select options for "Topics" filter. The filter is hidden if no keywords are selected.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

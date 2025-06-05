@@ -1,0 +1,23 @@
+uuid: 2428bfce-c575-4662-afdd-7889c5c219c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_list_category_event
+    - paragraphs.paragraphs_type.event_list
+  module:
+    - options
+id: paragraph.event_list.field_event_list_category_event
+field_name: field_event_list_category_event
+entity_type: paragraph
+bundle: event_list
+label: 'Event categories'
+description: 'Filter events by category.'
+required: false
+translatable: false
+default_value: { }
+default_value_callback: ''
+settings:
+  allowed_values: {  }
+  allowed_values_function: helfi_react_search_event_list_allowed_event_categories
+field_type: list_string
