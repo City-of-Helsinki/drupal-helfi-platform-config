@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_recommendations\Kernel;
 use DG\BypassFinals;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
@@ -310,12 +311,15 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $elasticsearchClient = $this->prophesize(Client::class);
     $elasticsearchClient->search(Argument::any())->willReturn($elasticResponse->reveal());
 
+    $cacheTagInvalidator = $this->prophesize(CacheTagInvalidator::class);
+
     return new RecommendationManager(
       $loggerChannel->reveal(),
       $entityTypeManager,
       $environmentResolver,
       $topicsManager,
       $elasticsearchClient->reveal(),
+      $cacheTagInvalidator->reveal(),
     );
   }
 

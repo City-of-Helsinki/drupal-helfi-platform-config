@@ -33,3 +33,6 @@ services:
   helfi_recommendations.elastic_client:
     class: Elastic\Elasticsearch\Client
     factory: ['@helfi_recommendations.elastic_client_factory', 'create']
+
+  Drupal\helfi_recommendations\RecommendationsLazyBuilderInterface: '@Drupal\helfi_recommendations\RecommendationsLazyBuilder'
+  Drupal\helfi_recommendations\RecommendationsLazyBuilder: ~
