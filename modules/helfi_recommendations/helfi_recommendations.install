@@ -174,3 +174,17 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
     ],
   ];
 }
+
+/**
+ * Unset '_info_file_ctime' for helfi_recommendations module.
+ */
+function helfi_recommandations_update_10001() : void {
+  $module_info = \Drupal::keyValue('locale.project')->get('helfi_recommendations');
+
+  // Unset '_info_file_ctime' for helfi_recommendations module as it contains
+  // outdated data which prevents the translastions from being updated.
+  if (isset($module_info['info']['_info_file_ctime'])) {
+    unset($module_info['info']['_info_file_ctime']);
+    \Drupal::keyValue('locale.project')->set('helfi_recommendations', $module_info);
+  }
+}
