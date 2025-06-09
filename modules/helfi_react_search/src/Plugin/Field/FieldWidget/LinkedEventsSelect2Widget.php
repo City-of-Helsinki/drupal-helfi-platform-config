@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\Field\FieldWidget;
 
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\Attribute\FieldWidget;
@@ -25,6 +26,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   multiple_values: TRUE,
 )]
 final class LinkedEventsSelect2Widget extends Select2Widget {
+
+  use DependencySerializationTrait;
 
   /**
    * The language manager.
