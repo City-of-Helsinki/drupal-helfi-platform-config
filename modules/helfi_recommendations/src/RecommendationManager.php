@@ -517,15 +517,16 @@ class RecommendationManager implements RecommendationManagerInterface {
       ];
 
       if ($image_url) {
+        $image_url_absolute = str_starts_with($image_url, 'http://') || str_starts_with($image_url, 'https://');
         $theme = 'responsive_image';
         $image_uri = $image_url;
 
         // Use external image when the recommendation item is from a different
-        // instance.
-        if ($instance !== $this->getParentInstance()) {
+        // instance or the image is an absolute URL.
+        if ($image_url_absolute || $instance !== $this->getParentInstance()) {
           $theme = 'imagecache_external_responsive';
           $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
-          $image_uri = sprintf('%s%s', $environment->getInternalBaseUrl(), $image_url);
+          $image_uri = $image_url_absolute ? $image_url : sprintf('%s%s', $environment->getInternalBaseUrl(), $image_url);
         }
 
         $data['image'] = [
