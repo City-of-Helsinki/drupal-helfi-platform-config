@@ -129,6 +129,12 @@ function helfi_react_search_update_9012() : void {
  * UHF-11676: Migrate data from `field_filter_keywords` to a new field.
  */
 function helfi_react_search_update_9013() : void {
+  // Skip if field_filter_keywords does not exist.
+  $fields = \Drupal::service('entity_field.manager')->getFieldDefinitions('paragraph', 'event_list');
+  if (empty($fields['field_filter_keywords'])) {
+    return;
+  }
+
   // Make sure latest configuration is installed before running these hooks..
   \Drupal::service(ConfigInstallerInterface::class)
     ->installDefaultConfig('module', 'helfi_react_search');
@@ -214,6 +220,12 @@ function helfi_react_search_update_9014() : void {
  * UHF-11676: Delete `linked_events_keywords` taxonomy.
  */
 function helfi_react_search_update_9015() : void {
+  // Skip if vocabulary no longer exists.
+  $vocabulary = Vocabulary::load('linked_events_keywords');
+  if (!$vocabulary) {
+    return;
+  }
+
   $storage = \Drupal::entityTypeManager()
     ->getStorage('taxonomy_term');
 
@@ -226,13 +238,19 @@ function helfi_react_search_update_9015() : void {
     $storage->load($id)?->delete();
   }
 
-  Vocabulary::load('linked_events_keywords')?->delete();
+  $vocabulary->delete();
 }
 
 /**
  * UHF-11676: Migrate `field_api_url` field to new format.
  */
 function helfi_react_search_update_9016() : void {
+  // Skip if field_filter_keywords does not exist.
+  $fields = \Drupal::service('entity_field.manager')->getFieldDefinitions('paragraph', 'event_list');
+  if (empty($fields['field_api_url'])) {
+    return;
+  }
+
   $storage = \Drupal::entityTypeManager()
     ->getStorage('paragraph');
 

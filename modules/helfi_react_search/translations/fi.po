@@ -1,66 +1,78 @@
 msgid ""
 msgstr ""
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
+msgid "Events"
+msgstr "Tapahtumat"
+
+msgctxt "helfi_react_search"
+msgid "Hobbies"
+msgstr "Harrastukset"
+
+msgctxt "helfi_react_search"
+msgid "Events and hobbies"
+msgstr "Tapahtumat ja harrastukset"
+
+msgctxt "helfi_react_search"
 msgid "Movies"
 msgstr "Elokuva"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Arts and culture"
 msgstr "Kulttuuri ja taide"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Exercise and sports"
 msgstr "Liikunta ja urheilu"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Nature and outdoor activity"
 msgstr "Luonto ja ulkoilu"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Museums"
 msgstr "Museot"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Music"
 msgstr "Musiikki"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Participate and influence"
 msgstr "Osallistu ja vaikuta"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Food"
 msgstr "Ruoka"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Dance"
 msgstr "Tanssi"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Theatre"
 msgstr "Teatteri"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Languages"
 msgstr "Kielet"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Literature and literary art"
 msgstr "Kirjallisuus ja sanataide"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Visual arts"
 msgstr "Kuvataide"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Crafts"
 msgstr "Kädentaidot"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Sport"
 msgstr "Liikunta ja ulkoilu"
 
-msgctxt "event list category"
+msgctxt "helfi_react_search"
 msgid "Games"
 msgstr "Pelit"

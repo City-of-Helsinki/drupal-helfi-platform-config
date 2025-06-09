@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\Entity\EventList;
 use Drupal\helfi_react_search\Enum\CourseCategory;
 use Drupal\helfi_react_search\Enum\EventCategory;
@@ -19,6 +20,17 @@ function helfi_react_search_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['paragraph']['event_list'])) {
     $bundles['paragraph']['event_list']['class'] = EventList::class;
   }
+}
+
+/**
+ * Event list type allowed values.
+ */
+function helfi_react_search_event_list_allowed_types(): array {
+  return [
+    'events' => new TranslatableMarkup('Events', [], ['context' => 'helfi_react_search']),
+    'hobbies' => new TranslatableMarkup('Hobbies', [], ['context' => 'helfi_react_search']),
+    'events_and_hobbies' => new TranslatableMarkup('Events and hobbies', [], ['context' => 'helfi_react_search']),
+  ];
 }
 
 /**
