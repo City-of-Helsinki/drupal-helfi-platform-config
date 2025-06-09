@@ -186,18 +186,18 @@ enum CourseCategory: string implements EventListCategoryInterface {
    */
   public function translation(): TranslatableMarkup {
     return match ($this) {
-      self::Movie => new TranslatableMarkup('Movies', [], ['context' => 'event list category']),
-      self::Languages => new TranslatableMarkup('Languages', [], ['context' => 'event list category']),
-      self::Literature => new TranslatableMarkup('Literature and literary art', [], ['context' => 'event list category']),
-      self::ArtsAndCulture => new TranslatableMarkup('Arts and culture', [], ['context' => 'event list category']),
-      self::VisualArts => new TranslatableMarkup('Visual arts', [], ['context' => 'event list category']),
-      self::Handicrafts => new TranslatableMarkup('Crafts', [], ['context' => 'event list category']),
-      self::Sport => new TranslatableMarkup('Sport', [], ['context' => 'event list category']),
-      self::Music => new TranslatableMarkup('Music', [], ['context' => 'event list category']),
-      self::Games => new TranslatableMarkup('Games', [], ['context' => 'event list category']),
-      self::Food => new TranslatableMarkup('Food', [], ['context' => 'event list category']),
-      self::Dance => new TranslatableMarkup('Dance', [], ['context' => 'event list category']),
-      self::Theatre => new TranslatableMarkup('Theatre', [], ['context' => 'event list category']),
+      self::Movie => new TranslatableMarkup('Movies', [], ['context' => 'helfi_react_search']),
+      self::Languages => new TranslatableMarkup('Languages', [], ['context' => 'helfi_react_search']),
+      self::Literature => new TranslatableMarkup('Literature and literary art', [], ['context' => 'helfi_react_search']),
+      self::ArtsAndCulture => new TranslatableMarkup('Arts and culture', [], ['context' => 'helfi_react_search']),
+      self::VisualArts => new TranslatableMarkup('Visual arts', [], ['context' => 'helfi_react_search']),
+      self::Handicrafts => new TranslatableMarkup('Crafts', [], ['context' => 'helfi_react_search']),
+      self::Sport => new TranslatableMarkup('Sport', [], ['context' => 'helfi_react_search']),
+      self::Music => new TranslatableMarkup('Music', [], ['context' => 'helfi_react_search']),
+      self::Games => new TranslatableMarkup('Games', [], ['context' => 'helfi_react_search']),
+      self::Food => new TranslatableMarkup('Food', [], ['context' => 'helfi_react_search']),
+      self::Dance => new TranslatableMarkup('Dance', [], ['context' => 'helfi_react_search']),
+      self::Theatre => new TranslatableMarkup('Theatre', [], ['context' => 'helfi_react_search']),
     };
   }
 

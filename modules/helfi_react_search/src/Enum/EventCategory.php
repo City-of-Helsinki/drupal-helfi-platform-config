@@ -126,16 +126,16 @@ enum EventCategory: string implements EventListCategoryInterface {
    */
   public function translation(): TranslatableMarkup {
     return match ($this) {
-      self::Movie => new TranslatableMarkup('Movies', [], ['context' => 'event list category']),
-      self::Culture => new TranslatableMarkup('Arts and culture', [], ['context' => 'event list category']),
-      self::Sport => new TranslatableMarkup('Exercise and sports', [], ['context' => 'event list category']),
-      self::Nature => new TranslatableMarkup('Nature and outdoor activity', [], ['context' => 'event list category']),
-      self::Museum => new TranslatableMarkup('Museums', [], ['context' => 'event list category']),
-      self::Music => new TranslatableMarkup('Music', [], ['context' => 'event list category']),
-      self::Influence => new TranslatableMarkup('Participate and influence', [], ['context' => 'event list category']),
-      self::Food => new TranslatableMarkup('Food', [], ['context' => 'event list category']),
-      self::Dance => new TranslatableMarkup('Dance', [], ['context' => 'event list category']),
-      self::Theatre => new TranslatableMarkup('Theatre', [], ['context' => 'event list category']),
+      self::Movie => new TranslatableMarkup('Movies', [], ['context' => 'helfi_react_search']),
+      self::Culture => new TranslatableMarkup('Arts and culture', [], ['context' => 'helfi_react_search']),
+      self::Sport => new TranslatableMarkup('Exercise and sports', [], ['context' => 'helfi_react_search']),
+      self::Nature => new TranslatableMarkup('Nature and outdoor activity', [], ['context' => 'helfi_react_search']),
+      self::Museum => new TranslatableMarkup('Museums', [], ['context' => 'helfi_react_search']),
+      self::Music => new TranslatableMarkup('Music', [], ['context' => 'helfi_react_search']),
+      self::Influence => new TranslatableMarkup('Participate and influence', [], ['context' => 'helfi_react_search']),
+      self::Food => new TranslatableMarkup('Food', [], ['context' => 'helfi_react_search']),
+      self::Dance => new TranslatableMarkup('Dance', [], ['context' => 'helfi_react_search']),
+      self::Theatre => new TranslatableMarkup('Theatre', [], ['context' => 'helfi_react_search']),
     };
   }
 
