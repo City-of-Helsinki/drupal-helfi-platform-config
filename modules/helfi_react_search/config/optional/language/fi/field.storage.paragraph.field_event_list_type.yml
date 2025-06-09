@@ -1,8 +1,0 @@
-settings:
-  allowed_values:
-    -
-      label: Tapahtumat
-    -
-      label: Harrastukset
-    -
-      label: Tapahtumat ja harrastukset

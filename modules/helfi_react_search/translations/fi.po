@@ -1,6 +1,18 @@
 msgid ""
 msgstr ""
 
+msgctxt "helfi_react_search"
+msgid "Events"
+msgstr "Tapahtumat"
+
+msgctxt "helfi_react_search"
+msgid "Hobbies"
+msgstr "Harrastukset"
+
+msgctxt "helfi_react_search"
+msgid "Events and hobbies"
+msgstr "Tapahtumat ja harrastukset"
+
 msgctxt "event list category"
 msgid "Movies"
 msgstr "Elokuva"

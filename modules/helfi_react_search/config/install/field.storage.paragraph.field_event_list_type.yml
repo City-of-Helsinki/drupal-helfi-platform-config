@@ -10,17 +10,8 @@ field_name: field_event_list_type
 entity_type: paragraph
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: events
-      label: Events
-    -
-      value: hobbies
-      label: Hobbies
-    -
-      value: events_and_hobbies
-      label: Events and hobbies
-  allowed_values_function: ''
+  allowed_values: { }
+  allowed_values_function: 'helfi_react_search_event_list_allowed_types'
 module: options
 locked: false
 cardinality: 1
