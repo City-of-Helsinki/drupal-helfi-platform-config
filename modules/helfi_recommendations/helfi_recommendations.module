@@ -46,7 +46,17 @@ function helfi_recommendations_entity_insert(EntityInterface $entity) : void {
   // Invalidate suggestion topics tags for all recommendation blocks.
   // This allows for new content to be picked up by the recommendation blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
-    \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
+    // Allow changing this behaviour online in case the full invalidation
+    // starts causing performance issues in Drupal or Elasticsearch.
+    // Full invalidation can be disabled by running this on all (or selected)
+    // instances:
+    // @code
+    // drush state:set helfi_recommendations.invalidate_all_on_insert 0
+    // @endcode
+    $invalidate_all = \Drupal::state()->get('helfi_recommendations.invalidate_all_on_insert', TRUE);
+    if ($invalidate_all) {
+      \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
+    }
   }
 }
 
@@ -64,7 +74,22 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
   // This allows for updated topics to be picked up by the recommendation
   // blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
-    \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
+    // Allow changing this behaviour online in case the full invalidation
+    // starts causing performance issues in Drupal or Elasticsearch.
+    // Full invalidation can be disabled by running this on all (or selected)
+    // instances:
+    // @code
+    // drush state:set helfi_recommendations.invalidate_all_on_update 0
+    // @endcode
+    $invalidate_all = \Drupal::state()->get('helfi_recommendations.invalidate_all_on_update', TRUE);
+    if ($invalidate_all) {
+      \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
+      $test = 'invalidate_all';
+    }
+    else {
+      \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
+      $test = 'invalidate_selected';
+    }
   }
 }
 
