@@ -84,11 +84,9 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
     $invalidate_all = \Drupal::state()->get('helfi_recommendations.invalidate_all_on_update', TRUE);
     if ($invalidate_all) {
       \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
-      $test = 'invalidate_all';
     }
     else {
       \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
-      $test = 'invalidate_selected';
     }
   }
 }
