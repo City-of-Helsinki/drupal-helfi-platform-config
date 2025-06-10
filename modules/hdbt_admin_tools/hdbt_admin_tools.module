@@ -395,6 +395,10 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
  */
 function hdbt_admin_tools_preprocess_toolbar(&$variables): void {
   if ($variables['element']['#attributes']['id'] === 'toolbar-administration') {
+    // Only LTR languages are supported for admin toolbar.
+    $variables['attributes']['dir'] = 'ltr';
+    $variables['toolbar_attributes']->setAttribute('dir', 'ltr');
+
     $theme_handler = Drupal::service('theme_handler');
     if (!$theme_handler->themeExists('hdbt')) {
       return;

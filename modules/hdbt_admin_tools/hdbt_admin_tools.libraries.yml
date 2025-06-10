@@ -68,6 +68,7 @@ menu_styles:
   css:
     theme:
        assets/css/menu.css: {}
+       assets/css/toolbar_rtl.css: {}
 
 modal_window_position:
   version: 1.x
