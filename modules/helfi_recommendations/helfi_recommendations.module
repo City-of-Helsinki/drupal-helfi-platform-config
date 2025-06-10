@@ -16,6 +16,7 @@ use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
 use Drupal\helfi_recommendations\TextConverter\Document;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
+use Drupal\helfi_recommendations\RecommendationManagerInterface;
 
 /**
  * Implements hook_theme().
@@ -41,6 +42,22 @@ function helfi_recommendations_entity_insert(EntityInterface $entity) : void {
     $topicsManager = \Drupal::service(TopicsManagerInterface::class);
     $topicsManager->queueEntity($entity, TRUE);
   }
+
+  // Invalidate suggestion topics tags for all recommendation blocks.
+  // This allows for new content to be picked up by the recommendation blocks.
+  if ($entity instanceof SuggestedTopicsInterface) {
+    // Allow changing this behaviour online in case the full invalidation
+    // starts causing performance issues in Drupal or Elasticsearch.
+    // Full invalidation can be disabled by running this on all (or selected)
+    // instances:
+    // @code
+    // drush state:set helfi_recommendations.invalidate_all_on_insert 0
+    // @endcode
+    $invalidate_all = \Drupal::state()->get('helfi_recommendations.invalidate_all_on_insert', TRUE);
+    if ($invalidate_all) {
+      \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
+    }
+  }
 }
 
 /**
@@ -53,9 +70,24 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
     $topicsManager->queueEntity($entity, TRUE);
   }
 
-  // Invalidate suggestion topics tags for local recommendation blocks.
+  // Invalidate suggestion topics tags for all recommendation blocks.
+  // This allows for updated topics to be picked up by the recommendation
+  // blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
-    _helfi_recommendations_invalidate_cache_tags($entity);
+    // Allow changing this behaviour online in case the full invalidation
+    // starts causing performance issues in Drupal or Elasticsearch.
+    // Full invalidation can be disabled by running this on all (or selected)
+    // instances:
+    // @code
+    // drush state:set helfi_recommendations.invalidate_all_on_update 0
+    // @endcode
+    $invalidate_all = \Drupal::state()->get('helfi_recommendations.invalidate_all_on_update', TRUE);
+    if ($invalidate_all) {
+      \Drupal::service(RecommendationManagerInterface::class)->invalidateAllRecommendationBlocks();
+    }
+    else {
+      \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
+    }
   }
 }
 
@@ -63,9 +95,11 @@ function helfi_recommendations_entity_update(EntityInterface $entity) : void {
  * Implements hook_entity_delete().
  */
 function helfi_recommendations_entity_delete(EntityInterface $entity) : void {
-  // Invalidate suggestion topics tags for local recommendation blocks.
+  // Invalidate suggestion topics tags for all recommendation blocks.
+  // This allows for deleted topics to be removed from the recommendation
+  // blocks.
   if ($entity instanceof SuggestedTopicsInterface) {
-    _helfi_recommendations_invalidate_cache_tags($entity);
+    \Drupal::service(RecommendationManagerInterface::class)->invalidateExternalCacheTags([$entity->uuid()]);
   }
 }
 
@@ -278,12 +312,4 @@ function _helfi_recommendations_can_see_review_mode() : bool {
   $current_user = \Drupal::currentUser();
   $roles = $current_user->getRoles();
   return in_array('admin', $roles) || $current_user->hasPermission('administer modules');
-}
-
-/**
- * Helper function to invalidate cache tags for local recommendation blocks.
- */
-function _helfi_recommendations_invalidate_cache_tags(SuggestedTopicsInterface $entity) : void {
-  $cache_tag = "suggested_topics_uuid:{$entity->uuid()}";
-  \Drupal::service('cache_tags.invalidator')->invalidateTags([$cache_tag]);
 }

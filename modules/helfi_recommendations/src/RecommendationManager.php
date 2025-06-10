@@ -10,6 +10,7 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -24,6 +25,7 @@ class RecommendationManager implements RecommendationManagerInterface {
 
   const INDEX_NAME = 'suggestions';
   const ELASTICSEARCH_QUERY_BUFFER = 10;
+  const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
 
   /**
    * The recommendations.
@@ -45,6 +47,8 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   The topics manager.
    * @param \Elastic\Elasticsearch\Client $elasticClient
    *   The Elasticsearch client.
+   * @param \Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface $cacheTagInvalidator
+   *   The cache tag invalidator.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
@@ -53,6 +57,7 @@ class RecommendationManager implements RecommendationManagerInterface {
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
     #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
+    private readonly CacheTagInvalidatorInterface $cacheTagInvalidator,
   ) {
   }
 
@@ -111,6 +116,41 @@ class RecommendationManager implements RecommendationManagerInterface {
     }
 
     return $this->recommendations[$entity->id()][$target_langcode][$limit];
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getCacheTagForUuid(string $uuid): string {
+    return self::EXTERNAL_CACHE_TAG_PREFIX . $uuid;
+  }
+
+  /**
+   * Get the cache tag for all recommendation blocks.
+   *
+   * @return string
+   *   The cache tag.
+   */
+  public function getCacheTagForAll(): string {
+    return self::EXTERNAL_CACHE_TAG_PREFIX . 'all';
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function invalidateExternalCacheTags(array $uuids): void {
+    $cache_tags = [];
+    foreach ($uuids as $uuid) {
+      $cache_tags[] = $this->getCacheTagForUuid($uuid);
+    }
+    $this->cacheTagInvalidator->invalidateTags($cache_tags);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function invalidateAllRecommendationBlocks(): void {
+    $this->cacheTagInvalidator->invalidateTags([$this->getCacheTagForAll()]);
   }
 
   /**

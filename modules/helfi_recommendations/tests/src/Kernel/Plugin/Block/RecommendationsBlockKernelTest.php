@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_recommendations\Kernel\Plugin\Block;
 
 use Drupal\helfi_platform_config\EntityVersionMatcher;
+use Drupal\helfi_recommendations\RecommendationsLazyBuilder;
 use Drupal\helfi_recommendations\Plugin\Block\RecommendationsBlock;
 use Drupal\helfi_recommendations\RecommendationManagerInterface;
 use Drupal\node\Entity\Node;
@@ -69,9 +70,9 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
   }
 
   /**
-   * Test that build returns an empty result when there are no recommendations.
+   * Test that build returns a lazy builder.
    */
-  public function testNoRecommendations(): void {
+  public function testBuild(): void {
     $node = Node::create([
       'type' => 'test_node_bundle',
       'title' => 'Test node',
@@ -83,7 +84,20 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
 
     $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
     $result = $block->build();
-    $this->assertEmpty($result);
+    $this->assertArrayHasKey('recommendations', $result);
+    $this->assertArrayHasKey('#cache', $result['recommendations']);
+    $this->assertArrayHasKey('#lazy_builder', $result['recommendations']);
+    $this->assertArrayHasKey('#create_placeholder', $result['recommendations']);
+    $this->assertArrayHasKey('#lazy_builder_preview', $result['recommendations']);
+    $this->assertEquals([
+      RecommendationsLazyBuilder::class . ':build',
+      [
+        'isAnonymous' => TRUE,
+        'entityType' => 'node',
+        'entityId' => $node->id(),
+        'langcode' => $node->language()->getId(),
+      ],
+    ], $result['recommendations']['#lazy_builder']);
   }
 
   /**
@@ -109,46 +123,12 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
   }
 
   /**
-   * Test cache max age.
-   */
-  public function testCacheMaxAge(): void {
-    $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
-    $cache_max_age = $block->getCacheMaxAge();
-    $this->assertEquals(3600, $cache_max_age);
-  }
-
-  /**
    * Test block access.
    */
   public function testBlockAccess(): void {
     $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
     $access = $block->access($this->createUser());
     $this->assertFalse($access);
-  }
-
-  /**
-   * Test build with recommendations.
-   */
-  public function testBuildWithRecommendations(): void {
-    $node = Node::create([
-      'type' => 'test_node_bundle',
-      'title' => $this->randomString(),
-    ]);
-    $node->save();
-
-    $this->entityVersionMatcher->getType()->willReturn(['entity' => $node]);
-    $this->recommendationManager->getRecommendations($node, Argument::any(), Argument::any(), Argument::any())->willReturn([
-      [
-        'uuid' => 'test-uuid',
-        'url' => 'test-url',
-        'title' => 'test-title',
-        'score' => 0.8,
-      ],
-    ]);
-
-    $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
-    $result = $block->build();
-    $this->assertArrayHasKey('#rows', $result);
   }
 
 }
