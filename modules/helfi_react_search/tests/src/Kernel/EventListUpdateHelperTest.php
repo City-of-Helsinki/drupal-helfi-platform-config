@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_react_search\Kernel;
 
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use Drupal\helfi_react_search\Entity\EventList;
 use Drupal\helfi_react_search\Enum\EventCategory;
@@ -50,20 +48,6 @@ class EventListUpdateHelperTest extends KernelTestBase {
 
     $this->installEntitySchema('paragraph');
     $this->installConfig('helfi_react_search');
-
-    // Create legacy field.
-    FieldStorageConfig::create([
-      'field_name' => 'field_api_url',
-      'entity_type' => 'paragraph',
-      'type' => 'link',
-      'cardinality' => 1,
-    ])->save();
-    FieldConfig::create([
-      'field_name' => 'field_api_url',
-      'label' => 'A test field',
-      'entity_type' => 'paragraph',
-      'bundle' => 'event_list',
-    ])->save();
   }
 
   /**

@@ -270,28 +270,9 @@ function helfi_react_search_update_9016() : void {
 
     assert($paragraph instanceof EventList);
 
+    // @todo delete field_api_url when this functionality is validated.
     if ($updater->migrateApiUrl($paragraph)) {
       $paragraph->save();
-    }
-  }
-
-  $change = [
-    'paragraph' => [
-      'field_api_url' => [
-        'event_list',
-      ],
-    ],
-  ];
-
-  foreach ($change as $entityType => $fieldNames) {
-    foreach ($fieldNames as $fieldName => $bundles) {
-      // Delete field definition.
-      foreach ($bundles as $bundle) {
-        FieldConfig::loadByName($entityType, $bundle, $fieldName)?->delete();
-      }
-
-      // Delete storage config.
-      FieldStorageConfig::loadByName($entityType, $fieldName)?->delete();
     }
   }
 }
