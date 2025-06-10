@@ -86,9 +86,7 @@ class TeliaAceWidget {
         this.cookieSet();
       }
       !this.state.chatInitialized && this.loadChatScript();
-
-      this.openChat(true);
-      this.addCloseEventlistener();
+      this.openChat();
     }, { once: true });
   }
 
@@ -123,7 +121,7 @@ class TeliaAceWidget {
   /**
    * Load the chat script.
    */
-  loadChatScript = () => {
+  loadChatScript = async () => {
     const chatScript = document.createElement('script');
     chatScript.src = this.static.scriptUrl;
     chatScript.type = 'text/javascript';
@@ -143,21 +141,24 @@ class TeliaAceWidget {
   render = () => {
     const { chatOpened, chatLoading } = this.state;
     const label = chatLoading ? Drupal.t('Loading chat...', {}, {context: 'Telia ACE chat'}) : this.static.chatTitle;
-    const element = document.getElementById(this.static.selector);
-    if (!element) {
-      return;
-    }
-    const innerHTML = `
+
+    const i = setInterval(()=>{
+      const element = document.getElementById(this.static.selector);
+      if (element) {
+        const innerHTML = `
         <span class="hel-icon hel-icon--speechbubble-text"></span>
         <span>${label}</span>
         <span class="hel-icon hel-icon--angle-up"></span>
       `;
 
-    if (element.innerHTML !== innerHTML) {
-      element.innerHTML = innerHTML;
-    }
-    element.classList.toggle('loading', chatLoading);
-    element.classList.toggle('hidden', chatOpened);
+        if (element.innerHTML !== innerHTML) {
+          element.innerHTML = innerHTML;
+        }
+        element.classList.toggle('loading', chatLoading);
+        element.classList.toggle('hidden', chatOpened);
+        clearInterval(i)
+      }
+    }, 200);
   }
 
   cookieCheck = () => {
@@ -178,7 +179,6 @@ class TeliaAceWidget {
       chatLoaded: true,
     };
     this.openChat();
-    this.render();
   }
 
   /**
@@ -189,12 +189,16 @@ class TeliaAceWidget {
    */
   openChat = (openWidget) => {
     const teliaAceWidgetInitialized = setInterval(() => {
-      if(typeof window.humany !== 'undefined' && typeof window.humany.widgets !== 'undefined' && window.humany.widgets.find(this.static.chatId)){
-        if (openWidget) {
+      if (
+        typeof window.humany !== 'undefined' &&
+        typeof window.humany.widgets !== 'undefined' &&
+        window.humany.widgets.find(this.static.chatId)
+      ){
+        // if (openWidget) {
           const myWidget = window.humany.widgets.find(this.static.chatId);
           myWidget.activate();
           myWidget.invoke('show');
-        }
+        // }
         clearInterval(teliaAceWidgetInitialized);
         this.state = {
           ...this.state,
@@ -204,7 +208,7 @@ class TeliaAceWidget {
         };
         this.render();
       }
-    }, 50);
+    }, 5000);
   }
 
 }
