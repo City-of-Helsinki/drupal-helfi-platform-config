@@ -27,10 +27,10 @@ class PhasingItem extends Paragraph implements ParagraphInterface {
   }
 
   /**
-   * The number of current phasing item.
+   * The value if phase numbers should be shown or not.
    *
    * @return string
-   *   Number of item.
+   *   Value of boolean.
    */
   public function getShowNumbers(): string {
     return $this->getParentEntity()

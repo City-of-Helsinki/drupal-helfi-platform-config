@@ -25,4 +25,15 @@ class Phasing extends Paragraph implements ParagraphInterface {
     return "h$headingLevel";
   }
 
+  /**
+   * The value if phase numbers should be shown or not.
+   *
+   * @return string
+   *   Value of boolean.
+   */
+  public function getShowNumbers(): string {
+    return $this->get('field_show_phase_numbers')
+      ->value;
+  }
+
 }
