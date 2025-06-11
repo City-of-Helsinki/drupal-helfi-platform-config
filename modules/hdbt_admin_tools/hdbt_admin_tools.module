@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
@@ -24,16 +23,6 @@ use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\node\NodeInterface;
 use Drupal\user\UserInterface;
-
-/**
- * Implements hook_rewrite_config_update().
- */
-function hdbt_admin_tools_config_rewrite_config_update(string $module, ConfigRewriterInterface $configRewriter): void {
-  // Rewrite module configuration.
-  if ($module === 'hdbt_admin_tools') {
-    $configRewriter->rewriteModuleConfig('hdbt_admin_tools');
-  }
-}
 
 /**
  * Register routes to apply Gin’s content edit form layout.
