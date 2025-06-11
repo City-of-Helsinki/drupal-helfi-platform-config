@@ -798,14 +798,6 @@ function hdbt_admin_tools_entity_presave($entity): void {
 }
 
 /**
- * Implements hook_ckeditor_css_alter().
- */
-function hdbt_admin_tools_ckeditor_css_alter(array &$css): void {
-  $css[] = Drupal::service('extension.list.theme')
-    ->getPath('hdbt_admin') . '/dist/css/ckeditor.min.css';
-}
-
-/**
  * Implements hook_entity_operation().
  *
  * Add update password operation to users list action list.
