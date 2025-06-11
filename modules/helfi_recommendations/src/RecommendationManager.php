@@ -367,7 +367,7 @@ class RecommendationManager implements RecommendationManagerInterface {
             ],
             [
               'exists' => [
-                'field' => 'parent_url',
+                'field' => "parent_url_$target_langcode",
               ],
             ],
             [
@@ -537,7 +537,7 @@ class RecommendationManager implements RecommendationManagerInterface {
     foreach ($results['hits']['hits'] as $hit) {
       $instance = !empty($hit['_source']['parent_instance']) ? reset($hit['_source']['parent_instance']) : NULL;
       $uuid = !empty($hit['_source']['uuid']) ? reset($hit['_source']['uuid']) : NULL;
-      $url = !empty($hit['_source']['parent_url']) ? reset($hit['_source']['parent_url']) : NULL;
+      $url = !empty($hit['_source']['parent_url_' . $target_langcode]) ? reset($hit['_source']['parent_url_' . $target_langcode]) : NULL;
       $title = !empty($hit['_source']['parent_title_' . $target_langcode]) ? reset($hit['_source']['parent_title_' . $target_langcode]) : NULL;
       $image_url = !empty($hit['_source']['parent_image_url']) ? reset($hit['_source']['parent_image_url']) : NULL;
       $image_alt = !empty($hit['_source']['parent_image_alt_' . $target_langcode]) ? reset($hit['_source']['parent_image_alt_' . $target_langcode]) : NULL;

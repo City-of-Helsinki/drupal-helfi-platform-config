@@ -5,6 +5,8 @@ dependencies:
   config:
     - search_api.server.etusivu
   module:
+    - helfi_etusivu
+    - helfi_react_search
     - helfi_recommendations
 id: suggestions
 name: Suggestions
@@ -96,10 +98,20 @@ field_settings:
     dependencies:
       module:
         - helfi_recommendations
-  parent_url:
-    label: 'Parent url'
+  parent_url_en:
+    label: 'Parent url in English'
     datasource_id: 'entity:suggested_topics'
-    property_path: parent_url
+    property_path: parent_url_en
+    type: string
+  parent_url_fi:
+    label: 'Parent url in Finnish'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_url_fi
+    type: string
+  parent_url_sv:
+    label: 'Parent url in Swedish'
+    datasource_id: 'entity:suggested_topics'
+    property_path: parent_url_sv
     type: string
   uuid:
     label: UUID
