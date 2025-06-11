@@ -157,7 +157,8 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $nodeSource->save();
 
     $suggestionUUID = $this->randomString();
-    $parentUrl = $this->randomString();
+    $parentUrlEn = $this->randomString();
+    $parentUrlSv = $this->randomString();
     $parentTitleEn = $this->randomString();
     $parentTitleSv = $this->randomString();
 
@@ -170,7 +171,8 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
               'parent_type' => ['node'],
               'parent_bundle' => ['test_node_bundle'],
               'uuid' => [$suggestionUUID],
-              'parent_url' => [$parentUrl],
+              'parent_url_en' => [$parentUrlEn],
+              'parent_url_sv' => [$parentUrlSv],
               'parent_title_en' => [$parentTitleEn],
               'parent_title_sv' => [$parentTitleSv],
             ],
@@ -183,13 +185,13 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $recommendations = $recommendationManager->getRecommendations($nodeSource);
     $this->assertEquals($parentTitleEn, $recommendations[0]['title']);
     $this->assertEquals($suggestionUUID, $recommendations[0]['uuid']);
-    $this->assertEquals($parentUrl, $recommendations[0]['url']);
+    $this->assertEquals($parentUrlEn, $recommendations[0]['url']);
 
     // Test recommendations in Swedish.
     $recommendations = $recommendationManager->getRecommendations($nodeSource, 3, 'sv');
     $this->assertEquals($parentTitleSv, $recommendations[0]['title']);
     $this->assertEquals($suggestionUUID, $recommendations[0]['uuid']);
-    $this->assertEquals($parentUrl, $recommendations[0]['url']);
+    $this->assertEquals($parentUrlSv, $recommendations[0]['url']);
   }
 
   /**
@@ -273,7 +275,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
                 'parent_bundle' => ['test_node_bundle'],
                 'parent_id' => [$nodeSource->id()],
                 'uuid' => [$resultUUID],
-                'parent_url' => [$resultUrl],
+                'parent_url_en' => [$resultUrl],
                 'parent_title_en' => [$resultTitle],
               ],
             ],

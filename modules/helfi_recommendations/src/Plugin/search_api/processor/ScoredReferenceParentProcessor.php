@@ -68,21 +68,18 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
       $propertyDefinitions = $datasource->getPropertyDefinitions();
       if (!empty($propertyDefinitions['parent_id']) && !empty($propertyDefinitions['parent_type'])) {
         $fields = [
-          'parent_url' => [
-            'label' => $this->t('Parent url'),
-            'description' => $this->t('Indexes parent entity url'),
-          ],
-          ...$this->getLanguageSpecificFields('parent_title', $this->t('Parent title')),
           'parent_image_url' => [
             'label' => $this->t('Parent image url'),
             'description' => $this->t('Indexes parent image url'),
           ],
-          ...$this->getLanguageSpecificFields('parent_image_alt', $this->t('Parent image alt')),
           'parent_published_at' => [
             'label' => $this->t('Parent published date'),
             'description' => $this->t('Indexes parent published date'),
             'type' => 'date',
           ],
+          ...$this->getLanguageSpecificFields('parent_url', $this->t('Parent url')),
+          ...$this->getLanguageSpecificFields('parent_title', $this->t('Parent title')),
+          ...$this->getLanguageSpecificFields('parent_image_alt', $this->t('Parent image alt')),
         ];
 
         foreach ($fields as $field => $definition) {
@@ -151,8 +148,16 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
       $propertyPath = $field->getPropertyPath();
 
       switch ($propertyPath) {
-        case 'parent_url':
-          $indexableValue = $parentEntity->toUrl(NULL, ['absolute' => TRUE])->toString();
+        case 'parent_url_fi':
+          $indexableValue = $this->getParentUrl($parentEntity, 'fi');
+          break;
+
+        case 'parent_url_sv':
+          $indexableValue = $this->getParentUrl($parentEntity, 'sv');
+          break;
+
+        case 'parent_url_en':
+          $indexableValue = $this->getParentUrl($parentEntity, 'en');
           break;
 
         case 'parent_title_fi':
@@ -195,6 +200,27 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
 
       $field->addValue($indexableValue);
     }
+  }
+
+  /**
+   * Get parent url for a given language.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $parentEntity
+   *   The parent entity.
+   * @param string $langcode
+   *   The language code.
+   *
+   * @return string|null
+   *   The parent url or NULL if no translation is found.
+   */
+  private function getParentUrl(ContentEntityInterface $parentEntity, string $langcode) : ?string {
+    if (!$parentEntity->hasTranslation($langcode)) {
+      return NULL;
+    }
+
+    $translation = $parentEntity->getTranslation($langcode);
+
+    return $translation->toUrl(NULL, ['absolute' => TRUE])->toString();
   }
 
   /**
