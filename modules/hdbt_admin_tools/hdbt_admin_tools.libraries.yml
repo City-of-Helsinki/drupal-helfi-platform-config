@@ -57,27 +57,11 @@ language_selector:
     - core/drupal
     - helfi_platform_config/tom_select
 
-link_plugin_enhancements:
-  version: 1.x
-  js:
-    assets/js/linkPluginEnhancements.js: {}
-  dependencies:
-    - core/drupal
-
 menu_styles:
   css:
     theme:
        assets/css/menu.css: {}
        assets/css/toolbar_rtl.css: {}
-
-modal_window_position:
-  version: 1.x
-  js:
-    assets/js/modalWindowPosition.js: {}
-  dependencies:
-    - core/drupal
-    - core/jquery
-    - core/once
 
 site_settings:
   js:
