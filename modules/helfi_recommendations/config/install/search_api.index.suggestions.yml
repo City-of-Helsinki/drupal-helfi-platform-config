@@ -5,8 +5,6 @@ dependencies:
   config:
     - search_api.server.etusivu
   module:
-    - helfi_etusivu
-    - helfi_react_search
     - helfi_recommendations
 id: suggestions
 name: Suggestions

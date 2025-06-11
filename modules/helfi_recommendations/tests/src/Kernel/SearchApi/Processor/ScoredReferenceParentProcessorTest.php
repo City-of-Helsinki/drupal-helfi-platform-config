@@ -145,8 +145,12 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
 
     $properties = $sut->getPropertyDefinitions($datasource);
     $this->assertNotEmpty($properties);
-    $this->assertArrayHasKey('parent_url', $properties);
-    $this->assertInstanceOf(ProcessorPropertyInterface::class, $properties['parent_url']);
+    $this->assertArrayHasKey('parent_url_fi', $properties);
+    $this->assertInstanceOf(ProcessorPropertyInterface::class, $properties['parent_url_fi']);
+    $this->assertArrayHasKey('parent_url_sv', $properties);
+    $this->assertInstanceOf(ProcessorPropertyInterface::class, $properties['parent_url_sv']);
+    $this->assertArrayHasKey('parent_url_en', $properties);
+    $this->assertInstanceOf(ProcessorPropertyInterface::class, $properties['parent_url_en']);
     $this->assertArrayHasKey('parent_title_fi', $properties);
     $this->assertInstanceOf(ProcessorPropertyInterface::class, $properties['parent_title_fi']);
     $this->assertArrayHasKey('parent_title_sv', $properties);
@@ -199,7 +203,9 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
     $this->assertEmpty($fields['parent_title_fi']->getValues());
     $this->assertEmpty($fields['parent_title_sv']->getValues());
     $this->assertEquals([$this->nodes[0]->label()], $fields['parent_title_en']->getValues());
-    $this->assertEmpty($fields['parent_image_url']->getValues());
+    $this->assertEmpty($fields['parent_image_url_fi']->getValues());
+    $this->assertEmpty($fields['parent_image_url_sv']->getValues());
+    $this->assertEmpty($fields['parent_image_url_en']->getValues());
     $this->assertEmpty($fields['parent_image_alt_fi']->getValues());
     $this->assertEmpty($fields['parent_image_alt_sv']->getValues());
     $this->assertEmpty($fields['parent_image_alt_en']->getValues());
