@@ -46,7 +46,7 @@ class TeliaAceWidget {
 
     this.initialize()
 
-    // this.render()
+    this.render();
   }
 
   /**
