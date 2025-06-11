@@ -61,7 +61,7 @@ class TeliaAceWidget {
       document.body.append(wrapper);
     }
 
-    // Open/close-button.
+    // The custom chat-button.
     const button = document.createElement('button');
     button.id = this.static.selector;
     button.classList.add('chat-leijuke');
@@ -72,14 +72,14 @@ class TeliaAceWidget {
   }
 
   /**
-   * Check cookies, add event listener
+   * Check cookies, add event listener.
    */
   initialize = () => {
     if (!this.cookieCheck()) {
       this.cookieSet();
     }
 
-    this.addOpenEventlistener()
+    this.addOpenEventListener()
 
     this.render();
   }
@@ -87,39 +87,42 @@ class TeliaAceWidget {
   /**
    * "Open" -chat button functionality.
    *
-   * Self removing eventlistener, no need for debounce-code since
+   * Self removing event listener, no need for debounce-code since
    * it can only be triggered once. It is added back when
    * "close" -button is pressed
+   *
+   * The very first click also adds the chat script to DOM.
    */
-  addOpenEventlistener = () => {
+  addOpenEventListener = () => {
     this.customChatButton.addEventListener('click', () => {
-      // First click
-      // The chat script cannot be loaded earlier.
+      // Only on first click, the chat script cannot be loaded earlier.
       if (!this.state.chatInitialized) {
         this.state.chatInitialized = true;
-        this.loadChatScript();
+        this.addChatScript();
         this.state.chatLoading = true;
 
         this.render();
         return;
       }
 
+      // second "open" -click only needs to open the chat.
       this.state.chatOpened = true;
       this.openChat(true);
-
       this.render();
     }, {once: true});
   }
 
   /**
    * "Close" -chat button functionality.
+   *
+   * Uses the actual ACE-close button.
    */
   addCloseEventListener = () => {
     this.closeButton.addEventListener('click', () => {
       this.state.chatOpened = false;
-      this.addOpenEventlistener();
+      // readd the self-removing event listener.
+      this.addOpenEventListener();
       this.render();
-
     });
   }
 
@@ -150,9 +153,9 @@ class TeliaAceWidget {
   }
 
   /**
-   * Load the chat script.
+   * Load the chat script by adding it to DOM.
    */
-  loadChatScript = () => {
+  addChatScript = () => {
     const chatScript = document.createElement('script');
     chatScript.src = this.static.scriptUrl;
     chatScript.type = 'text/javascript';
@@ -194,10 +197,16 @@ class TeliaAceWidget {
     element.classList.toggle('hidden', chatOpened);
   }
 
+  /**
+   * Check if cookies has been accepted.
+   */
   cookieCheck = () => {
     return Drupal.cookieConsent.getConsentStatus(['chat']);
   }
 
+  /**
+   * Set the chat acceptance if chat-button is clicked.
+   */
   cookieSet = () => {
     if (Drupal.cookieConsent.getConsentStatus(['chat'])) return;
     Drupal.cookieConsent.setAcceptedCategories(['chat']);
@@ -205,6 +214,8 @@ class TeliaAceWidget {
 
   /**
    * Onload-callback.
+   *
+   * This is triggered after the third party library has been loaded.
    */
   onload = () => {
     // Interval must be set because onload triggers too soon.
@@ -234,6 +245,11 @@ class TeliaAceWidget {
 
 }
 
+/**
+ * Chat settings class.
+ *
+ * Check that all required settings exist.
+ */
 class ChatSettings {
   constructor(settings) {
     const requiredSettings = [
