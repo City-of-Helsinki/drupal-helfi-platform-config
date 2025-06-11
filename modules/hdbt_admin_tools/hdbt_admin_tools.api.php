@@ -12,8 +12,6 @@ declare(strict_types=1);
  * Hooks provided by the Helfi admin tools module.
  */
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Modify the image list items for the field preview images.
  *
