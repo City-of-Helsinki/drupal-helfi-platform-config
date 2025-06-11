@@ -55,7 +55,9 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
     parent::setUp();
 
     $string_fields = [
-      'parent_url',
+      'parent_url_fi',
+      'parent_url_sv',
+      'parent_url_en',
       'parent_title_fi',
       'parent_title_sv',
       'parent_title_en',
@@ -199,13 +201,12 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
       ->createItemFromObject($this->index, $this->suggestions[0]->getTypedData(), $id);
 
     $fields = $item->getFields();
-    $this->assertEquals([$this->nodes[0]->toUrl('canonical', ['absolute' => TRUE])->toString()], $fields['parent_url']->getValues());
+    $this->assertEquals([$this->nodes[0]->toUrl('canonical', ['absolute' => TRUE])->toString()], $fields['parent_url_en']->getValues());
+    $this->assertEmpty($fields['parent_url_fi']->getValues());
+    $this->assertEmpty($fields['parent_url_sv']->getValues());
     $this->assertEmpty($fields['parent_title_fi']->getValues());
     $this->assertEmpty($fields['parent_title_sv']->getValues());
     $this->assertEquals([$this->nodes[0]->label()], $fields['parent_title_en']->getValues());
-    $this->assertEmpty($fields['parent_image_url_fi']->getValues());
-    $this->assertEmpty($fields['parent_image_url_sv']->getValues());
-    $this->assertEmpty($fields['parent_image_url_en']->getValues());
     $this->assertEmpty($fields['parent_image_alt_fi']->getValues());
     $this->assertEmpty($fields['parent_image_alt_sv']->getValues());
     $this->assertEmpty($fields['parent_image_alt_en']->getValues());

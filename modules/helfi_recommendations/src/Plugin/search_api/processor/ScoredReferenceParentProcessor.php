@@ -68,10 +68,6 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
       $propertyDefinitions = $datasource->getPropertyDefinitions();
       if (!empty($propertyDefinitions['parent_id']) && !empty($propertyDefinitions['parent_type'])) {
         $fields = [
-          'parent_url' => [
-            'label' => $this->t('Parent url'),
-            'description' => $this->t('Indexes parent entity url'),
-          ],
           ...$this->getLanguageSpecificFields('parent_url', $this->t('Parent url')),
           ...$this->getLanguageSpecificFields('parent_title', $this->t('Parent title')),
           'parent_image_url' => [
