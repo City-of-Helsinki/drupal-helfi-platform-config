@@ -49,14 +49,6 @@ columns-toggle:
     - core/drupal
     - core/jquery
 
-language_selector:
-  css:
-    theme:
-      assets/css/language_selector.css: {}
-  dependencies:
-    - core/drupal
-    - helfi_platform_config/tom_select
-
 menu_styles:
   css:
     theme:
