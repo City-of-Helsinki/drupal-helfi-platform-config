@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_react_search\Kernel;
 
-use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use Drupal\helfi_react_search\Entity\EventList;
 use Drupal\helfi_react_search\Enum\EventCategory;
 use Drupal\helfi_react_search\EventListUpdateHelper;
@@ -77,10 +76,7 @@ class EventListUpdateHelperTest extends KernelTestBase {
         ],
       ])),
     ]);
-    $sut = new EventListUpdateHelper(
-      $client,
-      $this->container->get('serializer'),
-    );
+    $sut = new EventListUpdateHelper($client);
 
     $paragraph = EventList::create([
       'type' => 'event_list',
@@ -131,9 +127,7 @@ class EventListUpdateHelperTest extends KernelTestBase {
       $field = $paragraph->get('field_event_list_place')->get($index);
       $this->assertNotEmpty($field?->getString());
 
-      /** @var \Drupal\helfi_react_search\DTO\LinkedEventsItem $item */
-      $item = $this->container->get('serializer')
-        ->deserialize($field->getString(), LinkedEventsItem::class, 'json');
+      $item = json_decode($field->getString());
 
       $this->assertEquals($place, $item->id);
     }
@@ -149,9 +143,7 @@ class EventListUpdateHelperTest extends KernelTestBase {
       $field = $paragraph->get('field_event_list_keywords')->get($index);
       $this->assertNotEmpty($field?->getString());
 
-      /** @var \Drupal\helfi_react_search\DTO\LinkedEventsItem $item */
-      $item = $this->container->get('serializer')
-        ->deserialize($field->getString(), LinkedEventsItem::class, 'json');
+      $item = json_decode($field->getString());
 
       $this->assertEquals($keyword, $item->id);
     }

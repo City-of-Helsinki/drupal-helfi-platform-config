@@ -11,9 +11,8 @@ use Drupal\helfi_react_search\Enum\CategoryKeywords;
 use Drupal\helfi_react_search\Enum\EventCategory;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use GuzzleHttp\Utils;
 use Symfony\Component\Serializer\Exception\RuntimeException;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Event list update helper.
@@ -25,8 +24,6 @@ class EventListUpdateHelper {
 
   public function __construct(
     private readonly ClientInterface $client,
-    #[Autowire(service: 'serializer')]
-    private readonly SerializerInterface $serializer,
   ) {
   }
 
@@ -72,16 +69,11 @@ class EventListUpdateHelper {
         $response = $this->client
           ->request('GET', "https://api.hel.fi/linkedevents/v1/keyword/$keyword/");
 
-        // Serialize-deserialize strips all the unnecessary
-        // fields from LinkedEvents API response.
-        $item = $this->serializer
-          ->deserialize($response->getBody()->getContents(), LinkedEventsItem::class, 'json');
+        $item = Utils::jsonDecode($response->getBody()->getContents(), assoc: TRUE);
 
-        $result[] = $this->serializer
-          ->serialize($item, 'json');
-
+        $result[] = json_encode(new LinkedEventsItem($item['id'], $item['name']));
       }
-      catch (GuzzleException | RuntimeException $e) {
+      catch (GuzzleException) {
         // Ignore error.
       }
     }
@@ -106,14 +98,9 @@ class EventListUpdateHelper {
         $response = $this->client
           ->request('GET', "https://api.hel.fi/linkedevents/v1/place/$place/");
 
-        // Serialize-deserialize strips all the unnecessary
-        // fields from LinkedEvents API response.
-        $item = $this->serializer
-          ->deserialize($response->getBody()->getContents(), LinkedEventsItem::class, 'json');
+        $item = Utils::jsonDecode($response->getBody()->getContents(), assoc: TRUE);
 
-        $result[] = $this->serializer
-          ->serialize($item, 'json');
-
+        $result[] = json_encode(new LinkedEventsItem($item['id'], $item['name']));
       }
       catch (GuzzleException | RuntimeException $e) {
         // Ignore error.

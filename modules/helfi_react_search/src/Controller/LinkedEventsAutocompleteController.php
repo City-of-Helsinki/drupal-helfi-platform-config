@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Serializer\Exception\RuntimeException;
 
 /**
  * Handle autocomplete for linked events data.
@@ -79,7 +78,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
         'text' => $item->name?->{$langcode} ?: $item->name?->en ?: 'Unknown',
       ], $response->data ?? []);
     }
-    catch (GuzzleException | RuntimeException) {
+    catch (GuzzleException) {
       return new Response(status: 503);
     }
 
