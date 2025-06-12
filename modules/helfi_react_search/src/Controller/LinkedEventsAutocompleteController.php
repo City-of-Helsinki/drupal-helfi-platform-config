@@ -12,14 +12,12 @@ use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Exception\RuntimeException;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Handle autocomplete for linked events data.
@@ -33,8 +31,6 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
    */
   public function __construct(
     private readonly ClientInterface $client,
-    #[Autowire(service: 'serializer')]
-    private readonly SerializerInterface $serializer,
   ) {
   }
 
@@ -79,10 +75,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
 
       $results = array_map(fn (object $item) => [
         // Ids are JSON serialized LinkedEventsItems.
-        'id' => $this->serializer->serialize(
-          new LinkedEventsItem($item->id, (array) $item->name),
-          'json'
-        ),
+        'id' => json_encode(new LinkedEventsItem($item->id, (array) $item->name)),
         'text' => $item->name?->{$langcode} ?: $item->name?->en ?: 'Unknown',
       ], $response->data ?? []);
     }

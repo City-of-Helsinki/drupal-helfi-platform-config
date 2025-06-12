@@ -20,7 +20,6 @@ class EventListTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_platform_config',
     'helfi_react_search',
     'helfi_api_base',
     'paragraphs',
@@ -33,8 +32,6 @@ class EventListTest extends KernelTestBase {
     'readonly_field_widget',
     'text',
     'select2',
-    'serialization',
-    'config_rewrite',
   ];
 
   /**
