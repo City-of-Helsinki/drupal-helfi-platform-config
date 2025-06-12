@@ -3,3 +3,7 @@ social_media:
     text: 'Send as an email'
   facebook_share:
     api_url: "https://www.facebook.com/share.php?u=[current-page:url]&title=[current-page:title]"
+  twitter:
+    api_url: 'https://x.com/intent/post?url=[current-page:url]&status=[current-page:title]+[current-page:url]'
+    text: 'Share on X'
+    img: x
