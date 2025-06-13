@@ -26,6 +26,13 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
     return 'HelfiLanguageSelectorEditing';
   }
 
+  constructor(editor) {
+    super(editor);
+    this.editor = editor;
+    this.helfiLanguageSelectorConfig = this.editor.config.get('helfiLanguageSelector');
+    this.currentLanguage = this.helfiLanguageSelectorConfig?.current_language;
+  }
+
   /**
    * @inheritDoc
    */
@@ -46,6 +53,13 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
         value: (viewElement) => {
           const languageCode = viewElement.getAttribute('lang') ?? '';
           const textDirection = viewElement.getAttribute('dir') ?? '';
+
+          // Remove lang and dir attributes if they are the same as
+          // the current language.
+          if (languageCode.toLowerCase() === this.currentLanguage.toLowerCase()) {
+            return;
+          }
+
           return stringifyLanguageAttribute(languageCode.toLowerCase(), textDirection.toLowerCase());
         }
       },
