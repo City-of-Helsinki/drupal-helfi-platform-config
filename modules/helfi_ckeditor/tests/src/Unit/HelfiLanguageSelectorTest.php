@@ -18,6 +18,10 @@ final class HelfiLanguageSelectorTest extends TestCase {
 
   /**
    * Tests that getDynamicPluginConfig returns valid languages.
+   *
+   * @covers ::create
+   * @covers ::getDynamicPluginConfig
+   * @covers ::getLanguages
    */
   public function testGetDynamicPluginConfigReturnsValidLanguages(): void {
     $mockLangManager = $this->createMock(LanguageManager::class);
