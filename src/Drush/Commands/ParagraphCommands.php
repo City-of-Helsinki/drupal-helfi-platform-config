@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_platform_config\Commands;
+namespace Drupal\helfi_platform_config\Drush\Commands;
 
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -16,31 +17,20 @@ use Drush\Commands\DrushCommands;
  */
 final class ParagraphCommands extends DrushCommands {
 
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected Connection $connection;
+  use AutowireTrait;
 
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connection.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, Connection $connection) {
-    $this->entityTypeManager = $entity_type_manager;
-    $this->connection = $connection;
+  public function __construct(
+    private EntityTypeManagerInterface $entityTypeManager,
+    private Connection $connection,
+  ) {
   }
 
   /**
