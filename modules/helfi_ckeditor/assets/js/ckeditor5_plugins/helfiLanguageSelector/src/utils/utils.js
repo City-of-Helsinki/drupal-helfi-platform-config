@@ -12,11 +12,6 @@ import { getLanguageDirection } from 'ckeditor5/src/utils';
  * @return {string} Returns the human-readable text of lang and dir.
  */
 export function stringifyLanguageAttribute(languageCode, textDirection) {
-  // Remove possible country code from the language code.
-  languageCode = languageCode.replace(
-    /([a-z]{2})-[a-z]{2}/g,
-    '$1'
-  );
   textDirection = textDirection || getLanguageDirection(languageCode);
   return `${ languageCode }:${ textDirection }`;
 }

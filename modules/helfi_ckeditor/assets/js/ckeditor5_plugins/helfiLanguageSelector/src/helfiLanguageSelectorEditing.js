@@ -51,8 +51,14 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
       model: {
         key: 'helfiLanguageSelector',
         value: (viewElement) => {
-          const languageCode = viewElement.getAttribute('lang') ?? '';
+          const langAttribute = viewElement.getAttribute('lang') ?? '';
           const textDirection = viewElement.getAttribute('dir') ?? '';
+
+          // Remove possible country code from the language code.
+          const languageCode = langAttribute.replace(
+            /([a-z]{2})-[a-z]{2}/g,
+            '$1'
+          );
 
           // Remove lang and dir attributes if they are the same as
           // the current language.
