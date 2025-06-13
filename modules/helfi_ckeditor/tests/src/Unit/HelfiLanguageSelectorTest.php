@@ -17,8 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class HelfiLanguageSelectorTest extends TestCase {
 
   /**
-   * @covers ::getDynamicPluginConfig
-   * @covers ::getLanguages
+   * Tests that getDynamicPluginConfig returns valid languages.
    */
   public function testGetDynamicPluginConfigReturnsValidLanguages(): void {
     $mockLangManager = $this->createMock(LanguageManager::class);
