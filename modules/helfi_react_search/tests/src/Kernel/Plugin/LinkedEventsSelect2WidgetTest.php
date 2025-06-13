@@ -27,7 +27,6 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
     'helfi_react_search',
     'entity_test',
     'select2',
-    'serialization',
     'config_rewrite',
   ];
 

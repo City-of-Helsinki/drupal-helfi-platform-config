@@ -13,7 +13,6 @@ use Drupal\helfi_react_search\Enum\EventListCategoryInterface;
 use Drupal\helfi_react_search\Enum\Filters;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 /**
  * Bundle class for Hero -paragraph.
@@ -245,16 +244,11 @@ class EventList extends Paragraph implements ParagraphInterface {
    *   Selected values.
    */
   private function deserializeAutocompleteField(FieldItemListInterface $field): array {
-    /** @var \Symfony\Component\Serializer\SerializerInterface $serializer */
-    $serializer = \Drupal::service('serializer');
-
     $keywords = [];
     foreach ($field as $value) {
-      try {
-        $keywords[] = $serializer->deserialize($value->getString(), LinkedEventsItem::class, 'json');
-      }
-      catch (ExceptionInterface) {
-        // Ignore failing rows.
+      $item = json_decode($value->getString());
+      if ($item instanceof \stdClass) {
+        $keywords[] = new LinkedEventsItem($item->id, (array) $item->name);
       }
     }
 

@@ -82,9 +82,3 @@ services:
       - { name: helfi_platform_config.og_image_builder, priority: -100 }
 
   Drupal\helfi_platform_config\RedirectCleaner: ~
-
-  helfi_platform_config.normalizer.object:
-    class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
-    public: false
-    tags:
-      - { name: normalizer }
