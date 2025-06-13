@@ -49,34 +49,11 @@ columns-toggle:
     - core/drupal
     - core/jquery
 
-language_selector:
-  css:
-    theme:
-      assets/css/language_selector.css: {}
-  dependencies:
-    - core/drupal
-    - helfi_platform_config/tom_select
-
-link_plugin_enhancements:
-  version: 1.x
-  js:
-    assets/js/linkPluginEnhancements.js: {}
-  dependencies:
-    - core/drupal
-
 menu_styles:
   css:
     theme:
        assets/css/menu.css: {}
-
-modal_window_position:
-  version: 1.x
-  js:
-    assets/js/modalWindowPosition.js: {}
-  dependencies:
-    - core/drupal
-    - core/jquery
-    - core/once
+       assets/css/toolbar_rtl.css: {}
 
 site_settings:
   js:

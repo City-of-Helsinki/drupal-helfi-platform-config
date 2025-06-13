@@ -29,3 +29,20 @@ export function parseLanguageAttribute(str) {
   const [ languageCode, textDirection ] = str.split(':');
   return { languageCode, textDirection };
 }
+
+/**
+ * Simplify the language code.
+ *
+ * @param {string} str The attribute value.
+ * @return {string} The language code without country code or empty string.
+ */
+export function simplifyLangCode(str) {
+  // Return empty string if the string is not a supported language code.
+  // Supported formats: "xx", "xx-YY".
+  if (!/^[a-z]{2}(-[a-z]{2})?$/i.test(str)) {
+    return '';
+  }
+
+  // Return the language code without country code.
+  return str.slice(0, 2).toLowerCase();
+}

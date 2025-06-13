@@ -1,0 +1,26 @@
+/**
+ * Hel.fi only supports LTR languages (en, fi, sv) in admin UI.
+ * As the admin toolbar can be viewed in frontend, we need to reset the admin
+ * toolbar styles to LTR mode, even if the page language direction is RTL.
+ */
+[dir="rtl"] .gin--horizontal-toolbar .toolbar[dir="ltr"] .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-icon,
+[dir="rtl"] .gin--horizontal-toolbar .toolbar[dir="ltr"] .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-box > .toolbar-icon:not(.toolbar-handle) {
+  padding-inline-end: 1em;
+}
+[dir="rtl"] .toolbar-horizontal [dir="ltr"] .toolbar-lining {
+  padding-inline-start: 0;
+  padding-inline-end: 5em;
+}
+[dir="rtl"] .toolbar-horizontal [dir="ltr"] .menu-item + .menu-item {
+  border: 0 none;
+}
+[dir="rtl"] .toolbar-horizontal [dir="ltr"] .toolbar-menu ul .toolbar-icon {
+  padding-left: 1.3333em;
+  padding-right: 1.3333em;
+}
+[dir="rtl"] .toolbar-horizontal [dir="ltr"] ul li.menu-item--expanded ul li.menu-item--expanded::before {
+  transform: scaleX(1);
+}
+[dir="rtl"] .toolbar-horizontal [dir="ltr"] ul li.menu-item--expanded .menu-item.hover-intent ul {
+  margin: -40px 0 0 197px;
+}
