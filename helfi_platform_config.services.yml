@@ -41,6 +41,7 @@ services:
       - '@config.installer'
       - '@config_rewrite.config_rewriter'
       - '@module_handler'
+      - '@entity_type.manager'
 
   helfi_platform_config.term_route_subscriber:
     class: Drupal\helfi_platform_config\Routing\TermRouteSubscriber

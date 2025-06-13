@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\ConfigUpdate;
 
 use Drupal\Core\Config\ConfigInstallerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\config_rewrite\ConfigRewriterInterface;
-use Drupal\user\Entity\Role;
 
 /**
  * A helper class to deal with config updates.
@@ -31,11 +31,14 @@ final class ConfigUpdater {
    *   The config rewriter service.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   The module handler.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
   public function __construct(
     private ConfigInstallerInterface $configInstaller,
     private ConfigRewriterInterface $configRewriter,
     private ModuleHandlerInterface $moduleHandler,
+    private EntityTypeManagerInterface $entityTypeManager,
   ) {
     $this->skipUpdate = Settings::get('is_azure', FALSE);
   }
@@ -48,7 +51,7 @@ final class ConfigUpdater {
    */
   public function updatePermissions(array $permissionMap) : void {
     foreach ($permissionMap as $rid => $permissions) {
-      if (!$role = Role::load($rid)) {
+      if (!$role = $this->entityTypeManager->getStorage('user_role')->load($rid)) {
         throw new \InvalidArgumentException("Role ($rid) not found.");
       }
       array_map(fn (string $permission) => $role->grantPermission($permission), $permissions);
