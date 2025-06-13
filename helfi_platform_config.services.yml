@@ -16,12 +16,6 @@ services:
     arguments:
       - '@router.admin_context'
 
-  helfi_platform_config.translation_writer_command:
-    class: Drupal\helfi_platform_config\Commands\TranslationWriterCommand
-    arguments: ['@language_manager','@string_translation', '@file_system', '@extension.path.resolver']
-    tags:
-      - { name: drush.command }
-
   helfi_platform_config.route_subscriber:
     class: Drupal\helfi_platform_config\EventSubscriber\RouteSubscriber
     arguments: ['@current_route_match']
