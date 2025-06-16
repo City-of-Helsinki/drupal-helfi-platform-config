@@ -7,9 +7,11 @@ namespace Drupal\Tests\helfi_ckeditor\Unit;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManager;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\editor\Entity\Editor;
 use Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin\HelfiLanguageSelector;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @coversDefaultClass \Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin\HelfiLanguageSelector
@@ -19,7 +21,6 @@ final class HelfiLanguageSelectorTest extends TestCase {
   /**
    * Tests that getDynamicPluginConfig returns valid languages.
    *
-   * @covers ::create
    * @covers ::getDynamicPluginConfig
    * @covers ::getLanguages
    */
@@ -57,6 +58,21 @@ final class HelfiLanguageSelectorTest extends TestCase {
 
     // Assert that a known missing language was added.
     $this->assertContains('co', array_column($languages, 'languageCode'));
+  }
+
+  /**
+   * Tests that create() correctly initializes the language selector instance.
+   *
+   * @covers ::create
+   */
+  public function testCreate(): void {
+    $container = $this->createMock(ContainerInterface::class);
+    $container->method('get')
+      ->with('language_manager')
+      ->willReturn($this->createMock(LanguageManagerInterface::class));
+
+    $instance = HelfiLanguageSelector::create($container, [], 'plugin_id', []);
+    $this->assertInstanceOf(HelfiLanguageSelector::class, $instance);
   }
 
 }

@@ -7,6 +7,7 @@ namespace Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\editor\EditorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,7 +27,7 @@ final class HelfiLanguageSelector extends CKEditor5PluginDefault implements Cont
     array $configuration,
     string $plugin_id,
     mixed $plugin_definition,
-    protected LanguageManager $languageManager,
+    protected LanguageManagerInterface $languageManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
