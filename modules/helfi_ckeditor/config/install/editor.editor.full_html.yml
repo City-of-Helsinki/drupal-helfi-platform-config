@@ -102,31 +102,46 @@ settings:
         -
           enabled: true
           weight: 10
+          search: '(<span\b[^>]*?)\s*dir="[^"]*"'
+          replace: $1
+        -
+          enabled: true
+          weight: 11
+          search: 'lang="([a-z]{2})-[a-z]{2}"'
+          replace: 'lang="$1"'
+        -
+          enabled: true
+          weight: 12
+          search: '<span>(.*?)<\/span>'
+          replace: $1
+        -
+          enabled: true
+          weight: 13
           search: '<p>&nbsp;<\/p>'
           replace: ''
         -
           enabled: true
-          weight: 11
+          weight: 14
           search: '<p><\/p>'
           replace: ''
         -
           enabled: true
-          weight: 12
+          weight: 15
           search: '<b><\/b>'
           replace: ''
         -
           enabled: true
-          weight: 13
+          weight: 16
           search: '<i><\/i>'
           replace: ''
         -
           enabled: true
-          weight: 14
+          weight: 17
           search: '<a name="OLE_LINK[^"]*">(.*?)<\/a>'
           replace: $1
         -
           enabled: true
-          weight: 15
+          weight: 18
           search: '<a name="[^"]*">(.*?)<\/a>'
           replace: $1
     ckeditor5_sourceEditing:

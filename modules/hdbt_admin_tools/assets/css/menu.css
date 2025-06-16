@@ -7,11 +7,11 @@
   mask-image: url(../icons/debug.svg);
 }
 
-[dir="ltr"] .gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-icon,
-[dir="ltr"] .gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-box > .toolbar-icon:not(.toolbar-handle) {
-  padding-right: 1em;
+.gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-icon,
+.gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-box > .toolbar-icon:not(.toolbar-handle) {
+  padding-inline-end: 1em;
 }
 
-[dir="ltr"] .gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-icon.is-active {
+.gin--horizontal-toolbar .toolbar .toolbar-bar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-icon.is-active {
   background-color: rgba(38,88,168,0.05);
 }

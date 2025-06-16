@@ -7,7 +7,10 @@ namespace Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\editor\EditorInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * CKEditor 5 HelfiLanguageSelector plugin.
@@ -15,7 +18,31 @@ use Drupal\editor\EditorInterface;
  * @internal
  *   Plugin classes are internal.
  */
-class HelfiLanguageSelector extends CKEditor5PluginDefault {
+final class HelfiLanguageSelector extends CKEditor5PluginDefault implements ContainerFactoryPluginInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(
+    array $configuration,
+    string $plugin_id,
+    mixed $plugin_definition,
+    protected LanguageManagerInterface $languageManager,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('language_manager'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -23,7 +50,12 @@ class HelfiLanguageSelector extends CKEditor5PluginDefault {
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
     $config = $static_plugin_config;
     $config += [
-      'helfiLanguageSelector' => $this->getLanguages(),
+      'helfiLanguageSelector' => $this->getLanguages() +
+      [
+        'current_language' => $this->languageManager
+          ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+          ->getId(),
+      ],
     ];
     return $config;
   }
