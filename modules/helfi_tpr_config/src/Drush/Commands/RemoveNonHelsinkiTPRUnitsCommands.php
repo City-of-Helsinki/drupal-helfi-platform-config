@@ -69,7 +69,7 @@ final class RemoveNonHelsinkiTPRUnitsCommands extends DrushCommands {
       $unit_count++;
     }
 
-    $this->output()->writeln($this->t('@unit_count units deleted.', ['@unit_count' => $unit_count]));
+    $this->output()->writeln((string) $this->t('@unit_count units deleted.', ['@unit_count' => $unit_count]));
   }
 
 }
