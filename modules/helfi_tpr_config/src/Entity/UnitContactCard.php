@@ -25,7 +25,7 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
       if ($unit && $unit->hasField('name_override')) {
         $unit_name = $unit->get('name_override')->value;
         if ($unit_name) {
-          return t('See more details of @unit', [
+          return $this->t('See more details of @unit', [
             '@unit' => $unit_name,
           ], [
             'context' => 'Unit contact card aria label',
