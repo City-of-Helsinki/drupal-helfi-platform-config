@@ -50,11 +50,10 @@ content:
       match_limit: 10
     third_party_settings: {  }
   field_limit:
-    type: number
+    type: options_select
     weight: 2
     region: content
-    settings:
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   field_news_list_description:
     type: text_textarea
