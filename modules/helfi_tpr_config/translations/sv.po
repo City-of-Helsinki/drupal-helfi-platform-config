@@ -15,4 +15,4 @@ msgstr "Observera! Innehållet visas på webbplatsen endast om den långa beskri
 
 msgctxt "Unit contact card aria label"
 msgid "See more details of @unit"
-msgstr "Se närmare information om enheten @unit"
+msgstr "Se mera information om enheten @unit"
