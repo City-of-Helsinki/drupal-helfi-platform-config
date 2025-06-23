@@ -113,7 +113,7 @@ class UnitContactCardTest extends KernelTestBase {
     ]);
     $unit->save();
 
-    // Create Unit contact card paragraph with all relevant fields.
+    /** @var \Drupal\helfi_tpr_config\Entity\UnitContactCard $paragraph */
     $paragraph = UnitContactCard::create([
       'type' => 'unit_contact_card',
       'field_unit_contact_unit' => [['target_id' => $unit->id()]],
