@@ -1,0 +1,18 @@
+msgid ""
+msgstr ""
+
+msgctxt "helfi_node_announcement"
+msgid "Alert"
+msgstr "Varoitus"
+
+msgctxt "helfi_node_announcement"
+msgid "Attention"
+msgstr "Huomio"
+
+msgctxt "helfi_node_announcement"
+msgid "Notification"
+msgstr "Ilmoitus"
+
+msgctxt "helfi_node_announcement"
+msgid "Close"
+msgstr "Sulje"
