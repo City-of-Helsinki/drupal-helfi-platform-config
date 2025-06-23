@@ -102,7 +102,6 @@ function helfi_paragraphs_news_list_update_9011(): void {
   $entity_type = 'paragraph';
   $field_name = 'field_limit';
   $bundle = 'news_list';
-  $default_value = 6;
 
   $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
   $field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
@@ -140,14 +139,14 @@ function helfi_paragraphs_news_list_update_9011(): void {
   ];
   $new_field_storage['module'] = 'options';
 
-  // Remove the old limit field
+  // Remove the old limit field.
   $field_storage->delete();
   field_purge_batch(10);
 
   FieldStorageConfig::create($new_field_storage)
     ->save();
 
-  \Drupal\field\Entity\FieldConfig::create($new_field)
+  FieldConfig::create($new_field)
     ->save();
 
   if (!$old_rows) {
@@ -155,17 +154,13 @@ function helfi_paragraphs_news_list_update_9011(): void {
   }
 
   // Reapply the values, update the values to match the select list.
-  $entities = \Drupal::entityTypeManager()
-    ->getStorage('paragraph')
-    ->loadMultiple(array_column($old_rows, 'entity_id'));
-
   foreach ($old_rows as $row) {
-    $values = (array)$row;
+    $values = (array) $row;
 
     $original_limit = $values['field_limit_value'] ?? 6;
-    $new_limit = match(true) {
+    $new_limit = match(TRUE) {
       $original_limit <= 4 => 4,
-      in_array($original_limit, [5,6]) => 6,
+      in_array($original_limit, [5, 6]) => 6,
       $original_limit >= 7 => 8,
     };
     $values['field_limit_value'] = $new_limit;

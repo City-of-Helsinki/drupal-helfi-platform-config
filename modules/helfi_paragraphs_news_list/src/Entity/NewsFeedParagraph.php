@@ -125,6 +125,7 @@ final class NewsFeedParagraph extends Paragraph {
    * Allowed values function for the paragraphs news limit field.
    *
    * @return int[]
+   *   The list of allowed values.
    */
   public static function getNewsLimitValues(): array {
     return [4, 6, 8];
