@@ -80,7 +80,6 @@ class TeliaAceWidget {
     }
 
     this.addOpenEventListener()
-
     this.render();
   }
 
@@ -105,7 +104,7 @@ class TeliaAceWidget {
         return;
       }
 
-      // second "open" -click only needs to open the chat.
+      // Second "open"-click only needs to open the chat.
       this.state.chatOpened = true;
       this.openChat(true);
       this.render();
@@ -124,6 +123,33 @@ class TeliaAceWidget {
       this.addOpenEventListener();
       this.render();
     });
+  }
+
+  /**
+   * The mobile view has another close button.
+   */
+  addMobileCloseEventListener = () => {
+    const interval = setInterval(() => {
+      const header = document.getElementsByClassName('humany-widget-header')[0];
+
+      if (!header) {
+        return;
+      }
+
+      const button = header.getElementsByTagName('svg')[0];
+
+      // If header is present, the button should be there as well.
+      if (!button) {
+        return;
+      }
+
+      button.addEventListener('click', ()=> {
+        this.state.chatOpened = false;
+        // this.closeButton.click();
+        this.render();
+      });
+      clearInterval(interval);
+    }, 250);
   }
 
   /**
@@ -174,8 +200,9 @@ class TeliaAceWidget {
    * It changes the button texts and visibility.
    */
   render = () => {
-    const { chatOpened, chatLoading } = this.state;
-    const label = chatLoading ? Drupal.t('Loading chat...', {}, {context: 'Telia ACE chat'}) : this.static.chatTitle;
+    const label =  this.state.chatLoading ?
+      Drupal.t('Loading chat...', {}, {context: 'Telia ACE chat'}) :
+      this.static.chatTitle;
 
     const element = document.getElementById(this.static.selector);
     if (!element) {
@@ -193,8 +220,8 @@ class TeliaAceWidget {
     }
 
     // Hide and show the button based on this.state
-    element.classList.toggle('loading', chatLoading);
-    element.classList.toggle('hidden', chatOpened);
+    element.classList.toggle('loading', this.state.chatLoading);
+    element.classList.toggle('hidden', this.state.chatOpened);
   }
 
   /**
@@ -236,11 +263,12 @@ class TeliaAceWidget {
         this.state.chatLoaded = true;
         this.state.chatOpened = true;
 
-        this.addCloseEventListener()
+        this.addMobileCloseEventListener();
+        this.addCloseEventListener();
         this.openChat(true);
         clearInterval(loaded);
       }
-    }, 50);
+    }, 100);
   }
 
 }
