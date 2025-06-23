@@ -679,3 +679,28 @@ function helfi_tpr_config_preprocess_field__service_map_embed(array &$variables)
     $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
   }
 }
+
+/**
+ * Implements hook_preprocess_paragraph__type().
+ */
+function helfi_tpr_config_preprocess_paragraph__unit_accessibility_information(array &$variables): void {
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->hasField('field_unit_accessibility_unit')) {
+    $langcode = $variables['language']->getId();
+
+    // Get the information from the unit entity.
+    $unit = $paragraph->get('field_unit_accessibility_unit')
+      ?->first()
+      ?->get('entity')
+      ?->getTarget()
+      ?->getEntity();
+
+    if ($unit instanceof Unit && $unit->hasTranslation($langcode)) {
+      $variables['unit_accessbility_information'] = $unit
+        ->getTranslation($langcode)
+        ?->get('accessibility_sentences')
+        ?->view('full');
+    }
+  }
+}
