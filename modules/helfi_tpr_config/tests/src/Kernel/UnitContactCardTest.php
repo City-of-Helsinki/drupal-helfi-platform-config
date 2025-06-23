@@ -8,6 +8,9 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_tpr_config\Entity\UnitContactCard;
 use Drupal\helfi_tpr_config\Entity\Unit;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
 
 /**
  * Tests the unit contact card paragraph bundle class.
@@ -22,10 +25,10 @@ class UnitContactCardTest extends KernelTestBase {
   protected static $modules = [
     'address',
     'allowed_formats',
-    'content_lock',
     'content_translation',
     'entity_reference_revisions',
     'field',
+    'field_group',
     'file',
     'helfi_media',
     'helfi_tpr',
@@ -40,11 +43,14 @@ class UnitContactCardTest extends KernelTestBase {
     'metatag',
     'metatag_open_graph',
     'metatag_twitter_cards',
+    'node',
     'options',
     'paragraphs',
     'paragraphs_library',
     'responsive_image',
+    'imagecache_external',
     'readonly_field_widget',
+    'select2',
     'system',
     'taxonomy',
     'telephone',
@@ -60,15 +66,38 @@ class UnitContactCardTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-
     $this->installConfig(['system', 'paragraphs']);
     $this->installEntitySchema('user');
+    $this->installEntitySchema('node');
+    $this->installEntitySchema('media');
     $this->installEntitySchema('paragraph');
+    $this->installEntitySchema('taxonomy_term');
     $this->installEntitySchema('tpr_unit');
 
-    $this->installConfig([
-      'helfi_tpr_config',
-    ]);
+    ParagraphsType::create([
+      'id' => 'unit_contact_card',
+      'label' => 'Unit Contact Card',
+    ])->save();
+
+    // Add field_unit_contact_unit.
+    FieldStorageConfig::create([
+      'field_name' => 'field_unit_contact_unit',
+      'entity_type' => 'paragraph',
+      'type' => 'entity_reference',
+      'settings' => [
+        'target_type' => 'tpr_unit',
+      ],
+    ])->save();
+
+    FieldConfig::create([
+      'field_storage' => FieldStorageConfig::loadByName('paragraph', 'field_unit_contact_unit'),
+      'bundle' => 'unit_contact_card',
+      'entity_type' => 'paragraph',
+      'label' => 'Unit reference',
+      'settings' => [
+        'handler' => 'default:tpr_unit',
+      ],
+    ])->save();
   }
 
   /**
@@ -87,14 +116,11 @@ class UnitContactCardTest extends KernelTestBase {
     // Create Unit contact card paragraph with all relevant fields.
     $paragraph = UnitContactCard::create([
       'type' => 'unit_contact_card',
-      'field_unit_contact_heading' => 'Test title',
       'field_unit_contact_unit' => [['target_id' => $unit->id()]],
     ]);
     $paragraph->save();
 
     $this->assertInstanceOf(UnitContactCard::class, $paragraph);
-
-    $this->assertEquals('Test title', $paragraph->get('field_unit_contact_heading')->value);
 
     $label = $paragraph->getAriaLabel();
     $this->assertInstanceOf(TranslatableMarkup::class, $label);
