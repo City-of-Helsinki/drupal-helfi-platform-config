@@ -651,7 +651,7 @@ function helfi_base_content_config_rewrite_config_update(string $module, ConfigR
 function helfi_base_content_preprocess_social_media_links(&$variables): void {
   // Convert Attributes to strings.
   if (isset($variables['elements'])) {
-    foreach ($variables['elements'] as $key => &$element) {
+    foreach ($variables['elements'] as &$element) {
       // Convert href attribute to URL.
       if (
         $element['api'] instanceof Attribute &&
