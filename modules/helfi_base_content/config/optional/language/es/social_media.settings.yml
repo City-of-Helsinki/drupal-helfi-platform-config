@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'Compartir en Facebook'
+  linkedin:
+    text: 'Compartir en LinkedIn'
+  twitter:
+    text: 'Compartir en X'
+  email:
+    text: 'Enviar página por correo electrónico'

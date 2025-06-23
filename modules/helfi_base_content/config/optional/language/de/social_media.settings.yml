@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'Auf Facebook teilen'
+  linkedin:
+    text: 'Auf LinkedIn teilen'
+  twitter:
+    text: 'Auf X teilen'
+  email:
+    text: 'Seite per E-Mail senden'

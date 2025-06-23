@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'مشاركة على فيسبوك'
+  linkedin:
+    text: 'مشاركة على لينكدإن'
+  twitter:
+    text: 'مشاركة على X'
+  email:
+    text: 'أرسل الصفحة عبر البريد الإلكتروني'

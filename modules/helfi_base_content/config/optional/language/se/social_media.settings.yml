@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'Juohkit Facebookas'
+  linkedin:
+    text: 'Juohkit LinkedInis'
+  twitter:
+    text: 'Juohkit X:s'
+  email:
+    text: 'E-poastasiidu'
