@@ -122,7 +122,7 @@ final class NewsFeedParagraph extends Paragraph {
   }
 
   /**
-   * Allowed values function for the paragraphs news limit field.
+   * Allowed values function for the news list paragraph's field_limit.
    *
    * @return int[]
    *   The list of allowed values.
