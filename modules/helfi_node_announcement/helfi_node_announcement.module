@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_node_announcement\Entity\Announcement;
+
 /**
  * Implements hook_platform_config_grant_permissions().
  */
@@ -49,6 +51,15 @@ function helfi_node_announcement_platform_config_grant_permissions() : array {
       'view any unpublished announcement content',
     ],
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_node_announcement_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['node']['announcement'])) {
+    $bundles['node']['announcement']['class'] = Announcement::class;
+  }
 }
 
 /**
