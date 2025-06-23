@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -91,4 +93,95 @@ function helfi_paragraphs_news_list_update_9007() : void {
  */
 function helfi_paragraphs_news_list_update_9010() : void {
   // This is now automated.
+}
+
+/**
+ * Update the news limit from integer to list of integers.
+ */
+function helfi_paragraphs_news_list_update_9011(): void {
+  $entity_type = 'paragraph';
+  $field_name = 'field_limit';
+  $bundle = 'news_list';
+  $default_value = 6;
+
+  $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+  $field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+
+  $paragraph_display = EntityFormDisplay::load('paragraph.news_list.default');
+  $old_display_component = $paragraph_display->getComponent($field_name);
+
+  if (!$field_storage || !$field) {
+    return;
+  }
+
+  $old_rows = \Drupal::database()
+    ->select('paragraph__field_limit')
+    ->fields('paragraph__field_limit')
+    ->condition('bundle', $bundle)
+    ->execute()
+    ->fetchAll();
+
+  // Alter the old configs.
+  $new_field = $field->toArray();
+  $new_field['dependencies']['module'][] = 'options';
+  $new_field['field_type'] = 'list_integer';
+  $new_field['default_value'] = [['value' => $default_value]];
+
+  $new_field_storage = $field_storage->toArray();
+  $new_field_storage['dependencies']['module'][] = 'options';
+  $new_field_storage['type'] = 'list_integer';
+  $new_field_storage['settings'] = [
+    'allowed_values' => [
+      4 => 4,
+      6 => 6,
+      8 => 8,
+    ],
+    'allowed_values_function' => 'Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph::getNewsLimitValues',
+  ];
+  $new_field_storage['module'] = 'options';
+
+  // Remove the old limit field
+  $field_storage->delete();
+  field_purge_batch(10);
+
+  FieldStorageConfig::create($new_field_storage)
+    ->save();
+
+  \Drupal\field\Entity\FieldConfig::create($new_field)
+    ->save();
+
+  if (!$old_rows) {
+    return;
+  }
+
+  // Reapply the values, update the values to match the select list.
+  $entities = \Drupal::entityTypeManager()
+    ->getStorage('paragraph')
+    ->loadMultiple(array_column($old_rows, 'entity_id'));
+
+  foreach ($old_rows as $row) {
+    $values = (array)$row;
+
+    $original_limit = $values['field_limit_value'] ?? 6;
+    $new_limit = match(true) {
+      $original_limit <= 4 => 4,
+      in_array($original_limit, [5,6]) => 6,
+      $original_limit >= 7 => 8,
+    };
+    $values['field_limit_value'] = $new_limit;
+
+    \Drupal::database()
+      ->insert('paragraph__field_limit')
+      ->fields($values)
+      ->execute();
+  }
+
+  // Update the form display.
+  $new_component = $old_display_component;
+  $new_component['type'] = 'options_select';
+  $new_component['settings'] = [];
+  $new_component['third_party_settings'] = [];
+
+  $paragraph_display->setComponent($field_name, $new_component);
+  $paragraph_display->save();
 }
