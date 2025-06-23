@@ -121,4 +121,13 @@ final class NewsFeedParagraph extends Paragraph {
     return $this->get('field_news_list_description')->value;
   }
 
+  /**
+   * Allowed values function for the paragraphs news limit field.
+   *
+   * @return int[]
+   */
+  public static function getNewsLimitValues(): array {
+    return [4, 6, 8];
+  }
+
 }
