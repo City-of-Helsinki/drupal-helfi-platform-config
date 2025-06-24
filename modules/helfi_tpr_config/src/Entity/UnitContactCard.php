@@ -28,7 +28,7 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
   public function getAriaLabel(): ?TranslatableMarkup {
     if ($this->hasField('field_unit_contact_unit')) {
       $unit = $this->get('field_unit_contact_unit')->entity;
-      $langcode = $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
       if ($unit instanceof Unit && $unit->hasField('name_override') && $unit->hasField('name')) {
         if (($langcode === 'sv' || $langcode === 'en') && $unit->hasTranslation($langcode)) {
           $translated_unit = $unit->getTranslation($langcode);
