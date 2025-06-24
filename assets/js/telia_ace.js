@@ -25,6 +25,23 @@
   };
 })(Drupal, drupalSettings);
 
+/**
+ * Telia ace widget.
+ *
+ * Wrapper for the actual telia ace chat implementation.
+ *
+ * How it works:
+ * 1. On page load, only a custom chat button is added to a page.
+ * 2. User clicks the custom chat button, perform firstClickCallback().
+ * 2.1 Chat cookies are set as accepted.
+ * 2.2 Custom button state is changed.
+ * 2.3 The ACE-chat is loaded dynamically with onload-callback attached to it.
+ * 2.4 Wait for onload-callback to trigger.
+ * 3. The onload-functionality opens the chat and adds one-use event listener for closing.
+ * 4. Close button closes the chat window and adds one-use event listener for opening.
+ *
+ * {once: true} option is added to all event listeners to get rid of debounce-code.
+ */
 class TeliaAceWidget {
   constructor(chatSettings) {
     this.static = {
@@ -42,18 +59,15 @@ class TeliaAceWidget {
       busy: false
     };
 
-    this.createChatButton();
-
-    this.initialize()
-
+    const button = this.createChatButton();
+    button.addEventListener('click', this.firstClickCallback,{once: true});
     this.render();
   }
 
   /**
-   * Create the open button.
+   * Create the custom chat button.
    */
   createChatButton = () => {
-    // Wrapper
     let wrapper = document.getElementById('telia-ace-leijuke');
     if (!wrapper) {
       wrapper = document.createElement('aside');
@@ -69,87 +83,51 @@ class TeliaAceWidget {
 
     wrapper.append(button);
     this.customChatButton = button;
+
+    return button
   }
 
   /**
-   * Check cookies, add event listener.
+   * User clicks chat button for the first time.
+   *
+   * Handle the cookies and load the third party js-script.
    */
-  initialize = () => {
+  firstClickCallback = () => {
     if (!this.cookieCheck()) {
       this.cookieSet();
     }
+    this.state.chatInitialized = true;
 
-    this.addOpenEventListener()
+    const chatScript = document.createElement('script');
+    chatScript.src = this.static.scriptUrl;
+    chatScript.type = 'text/javascript';
+    chatScript.setAttribute('async', '');
+    chatScript.onload = this.onload;
+
+    const head = document.querySelector('head');
+    head.appendChild(chatScript);
+
+    this.state.chatLoading = true;
     this.render();
   }
 
   /**
-   * "Open" -chat button functionality.
-   *
-   * Self removing event listener, no need for debounce-code since
-   * it can only be triggered once. It is added back when
-   * "close" -button is pressed
-   *
-   * The very first click also adds the chat script to DOM.
+   * Open button click event callback.
    */
-  addOpenEventListener = () => {
-    this.customChatButton.addEventListener('click', () => {
-      // Only on first click, the chat script cannot be loaded earlier.
-      if (!this.state.chatInitialized) {
-        this.state.chatInitialized = true;
-        this.addChatScript();
-        this.state.chatLoading = true;
-
-        this.render();
-        return;
-      }
-
-      // Second "open"-click only needs to open the chat.
-      this.state.chatOpened = true;
-      this.openChat(true);
-      this.render();
-    }, {once: true});
+  openCallback = () => {
+    this.state.chatOpened = true;
+    this.openChat(true);
+    this.closeButton.addEventListener('click', this.closeCallback, {once: true});
+    this.render();
   }
 
   /**
-   * "Close" -chat button functionality.
-   *
-   * Uses the actual ACE-close button.
+   * Close button click event callback.
    */
-  addCloseEventListener = () => {
-    this.closeButton.addEventListener('click', () => {
-      this.state.chatOpened = false;
-      // readd the self-removing event listener.
-      this.addOpenEventListener();
-      this.render();
-    });
-  }
-
-  /**
-   * The mobile view has another close button.
-   */
-  addMobileCloseEventListener = () => {
-    const interval = setInterval(() => {
-      const header = document.getElementsByClassName('humany-widget-header')[0];
-
-      if (!header) {
-        return;
-      }
-
-      const button = header.getElementsByTagName('svg')[0];
-
-      // If header is present, the button should be there as well.
-      if (!button) {
-        return;
-      }
-
-      button.addEventListener('click', ()=> {
-        this.state.chatOpened = false;
-        // this.closeButton.click();
-        this.render();
-      });
-      clearInterval(interval);
-    }, 250);
+  closeCallback = () => {
+    this.state.chatOpened = false;
+    this.customChatButton.addEventListener('click', this.openChat, {once: true})
+    this.render();
   }
 
   /**
@@ -176,21 +154,6 @@ class TeliaAceWidget {
       }
 
     }, 100);
-  }
-
-  /**
-   * Load the chat script by adding it to DOM.
-   */
-  addChatScript = () => {
-    const chatScript = document.createElement('script');
-    chatScript.src = this.static.scriptUrl;
-    chatScript.type = 'text/javascript';
-    chatScript.setAttribute('async', '');
-
-    chatScript.onload = this.onload;
-
-    const head = document.querySelector('head');
-    head.appendChild(chatScript);
   }
 
   /**
@@ -263,8 +226,8 @@ class TeliaAceWidget {
         this.state.chatLoaded = true;
         this.state.chatOpened = true;
 
-        this.addMobileCloseEventListener();
-        this.addCloseEventListener();
+
+        this.closeButton.addEventListener('click', this.closeCallback, {once: true});
         this.openChat(true);
         clearInterval(loaded);
       }
