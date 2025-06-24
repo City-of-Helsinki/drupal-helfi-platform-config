@@ -1,6 +1,0 @@
-services:
-  helfi_platform_config.paragraph_commands:
-    class: \Drupal\helfi_platform_config\Commands\ParagraphCommands
-    arguments: ['@entity_type.manager', '@database']
-    tags:
-      - { name: drush.command }
