@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_tpr_config\Kernel\Entity;
 
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_tpr_config\Entity\UnitContactCard;
 use Drupal\helfi_tpr_config\Entity\Unit;
@@ -11,6 +12,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\language\Entity\ConfigurableLanguage;
 
 /**
  * Tests the unit contact card paragraph bundle class.
@@ -18,6 +20,12 @@ use Drupal\field\Entity\FieldConfig;
  * @group helfi_tpr_config
  */
 class UnitContactCardTest extends KernelTestBase {
+
+
+  /**
+   * The language manager.
+   */
+  private LanguageManagerInterface $languageManager;
 
   /**
    * {@inheritdoc}
@@ -104,12 +112,22 @@ class UnitContactCardTest extends KernelTestBase {
    * Tests the Unit contact card paragraph bundle behavior.
    */
   public function testUnitContactCard(): void {
-    // Create a unit entity.
+    ConfigurableLanguage::createFromLangcode('fi')->save();
+
+    /** @var \Drupal\helfi_tpr_config\Entity\Unit $unit */
     $unit = Unit::create([
       'id' => 'test-unit',
       'type' => 'tpr_unit',
       'www' => 'https://example.com',
-      'name_override' => 'Test Unit Name',
+      'name_override' => 'Name Override en',
+      'name' => 'Unit en',
+    ]);
+    $unit->addTranslation('fi', [
+      'id' => 'test-unit',
+      'type' => 'tpr_unit',
+      'www' => 'https://example.com',
+      'name_override' => 'Name Override fi',
+      'name' => 'Unit fi',
     ]);
     $unit->save();
 
@@ -118,16 +136,24 @@ class UnitContactCardTest extends KernelTestBase {
       'type' => 'unit_contact_card',
       'field_unit_contact_unit' => [['target_id' => $unit->id()]],
     ]);
+    $paragraph->addTranslation('fi', [
+      'type' => 'unit_contact_card',
+      'field_unit_contact_unit' => [['target_id' => $unit->getTranslation('fi')->id()]],
+    ]);
     $paragraph->save();
 
     $this->assertInstanceOf(UnitContactCard::class, $paragraph);
 
     $label = $paragraph->getAriaLabel();
     $this->assertInstanceOf(TranslatableMarkup::class, $label);
-    $this->assertEquals(
-      'See more details of Test Unit Name',
-      (string) $label
-    );
+    $this->assertEquals('See more details of Unit en', (string) $label);
+
+    $paragraph = $paragraph->getTranslation('fi');
+    $unit = $unit->getTranslation('fi');
+    $label = $paragraph->getAriaLabel();
+    $this->assertInstanceOf(TranslatableMarkup::class, $label);
+    $this->assertEquals('See more details of Name Override fi', (string) $label);
+
   }
 
 }
