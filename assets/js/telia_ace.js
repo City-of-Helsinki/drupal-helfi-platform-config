@@ -226,7 +226,6 @@ class TeliaAceWidget {
         this.state.chatLoaded = true;
         this.state.chatOpened = true;
 
-
         this.closeButton.addEventListener('click', this.closeCallback, {once: true});
         this.openChat(true);
         clearInterval(loaded);
