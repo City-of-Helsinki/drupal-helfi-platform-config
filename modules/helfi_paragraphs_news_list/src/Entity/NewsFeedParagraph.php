@@ -128,7 +128,7 @@ final class NewsFeedParagraph extends Paragraph {
    *   The list of allowed values.
    */
   public static function getNewsLimitValues(): array {
-    return [4, 6, 8];
+    return [4 => 4, 6 => 6, 8 => 8];
   }
 
 }
