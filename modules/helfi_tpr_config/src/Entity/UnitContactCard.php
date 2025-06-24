@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_tpr_config\Entity;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_tpr_config\Entity\Unit;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 
