@@ -1,12 +1,14 @@
-uuid: 74b4a174-2f90-4dbf-aede-425fd3903f72
+uuid: 74b4a172-2f90-4dbf-aede-425fd3903f72
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_limit
+    - field.storage.paragraph.field_news_limit
     - paragraphs.paragraphs_type.news_list
-id: paragraph.news_list.field_limit
-field_name: field_limit
+  module:
+    - options
+id: paragraph.news_list.field_news_limit
+field_name: field_news_limit
 entity_type: paragraph
 bundle: news_list
 label: 'Number of items to show'
@@ -15,11 +17,7 @@ required: true
 translatable: false
 default_value:
   -
-    value: 10
+    value: 1
 default_value_callback: ''
-settings:
-  min: 1
-  max: 50
-  prefix: ''
-  suffix: ''
-field_type: integer
+settings: {  }
+field_type: list_integer

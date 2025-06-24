@@ -61,7 +61,7 @@ class NewsFeedParagraphTest extends KernelTestBase {
       'field_helfi_news_neighbourhoods' => [$neighbourhood],
       'field_helfi_news_tags' => [$tags],
       'field_helfi_news_groups' => [$groups],
-      'field_limit' => 22,
+      'field_news_limit' => 6,
       'field_news_list_title' => 'test title',
       'field_news_list_description' => 'test description',
     ]);
@@ -74,7 +74,7 @@ class NewsFeedParagraphTest extends KernelTestBase {
     $this->assertEquals([$tags_uuid], $paragraph->getTagsUuid());
     $this->assertEquals([['target_id' => $groups_id]], $paragraph->getGroups());
     $this->assertEquals([$groups_uuid], $paragraph->getGroupsUuid());
-    $this->assertEquals(22, $paragraph->getLimit());
+    $this->assertEquals(6, $paragraph->getLimit());
     $this->assertEquals('test title', $paragraph->getTitle());
     $this->assertEquals('test description', $paragraph->getDescription());
   }
