@@ -397,3 +397,19 @@ function helfi_platform_config_update_9324(): void {
   $module_installer = \Drupal::service('module_installer');
   $module_installer->install(['serialization']);
 }
+
+/**
+ * UHF-11420: Enable stage_file_proxy.
+ */
+function helfi_platform_config_update_9325(): void {
+  $projectRoles = \Drupal::service(ActiveProjectRoles::class);
+
+  // Only enable on core instances.
+  if ($projectRoles->hasRole(ProjectRoleEnum::Core)) {
+    if (!Drupal::moduleHandler()->moduleExists('stage_file_proxy')) {
+      Drupal::service('module_installer')->install([
+        'stage_file_proxy',
+      ]);
+    }
+  }
+}
