@@ -137,8 +137,7 @@ class UnitContactCardTest extends KernelTestBase {
       'field_unit_contact_unit' => [['target_id' => $unit->id()]],
     ]);
     $paragraph->addTranslation('fi', [
-      'type' => 'unit_contact_card',
-      'field_unit_contact_unit' => [['target_id' => $unit->getTranslation('fi')->id()]],
+      'field_unit_contact_unit' => [['target_id' => $unit->id()]],
     ]);
     $paragraph->save();
 
@@ -149,7 +148,6 @@ class UnitContactCardTest extends KernelTestBase {
     $this->assertEquals('See more details of Unit en', (string) $label);
 
     $paragraph = $paragraph->getTranslation('fi');
-    $unit = $unit->getTranslation('fi');
     $label = $paragraph->getAriaLabel();
     $this->assertInstanceOf(TranslatableMarkup::class, $label);
     $this->assertEquals('See more details of Name Override fi', (string) $label);
