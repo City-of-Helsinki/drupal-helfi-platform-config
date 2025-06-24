@@ -5,8 +5,6 @@ dependencies:
   config:
     - field.storage.paragraph.field_limit
     - paragraphs.paragraphs_type.news_list
-  module:
-    - options
 id: paragraph.news_list.field_limit
 field_name: field_limit
 entity_type: paragraph
@@ -17,7 +15,11 @@ required: true
 translatable: false
 default_value:
   -
-    value: 1
+    value: 10
 default_value_callback: ''
-settings: {  }
-field_type: list_integer
+settings:
+  min: 1
+  max: 50
+  prefix: ''
+  suffix: ''
+field_type: integer

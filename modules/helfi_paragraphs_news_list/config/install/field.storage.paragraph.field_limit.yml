@@ -3,25 +3,15 @@ langcode: en
 status: true
 dependencies:
   module:
-    - options
     - paragraphs
 id: paragraph.field_limit
 field_name: field_limit
 entity_type: paragraph
-type: list_integer
+type: integer
 settings:
-  allowed_values:
-    -
-      value: 4
-      label: '4'
-    -
-      value: 6
-      label: '6'
-    -
-      value: 8
-      label: '8'
-  allowed_values_function: 'Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph::getNewsLimitValues'
-module: options
+  unsigned: false
+  size: normal
+module: core
 locked: false
 cardinality: 1
 translatable: true

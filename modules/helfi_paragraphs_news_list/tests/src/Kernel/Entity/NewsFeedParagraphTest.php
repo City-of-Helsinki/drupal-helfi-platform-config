@@ -61,7 +61,7 @@ class NewsFeedParagraphTest extends KernelTestBase {
       'field_helfi_news_neighbourhoods' => [$neighbourhood],
       'field_helfi_news_tags' => [$tags],
       'field_helfi_news_groups' => [$groups],
-      'field_limit' => 22,
+      'field_news_limit' => 6,
       'field_news_list_title' => 'test title',
       'field_news_list_description' => 'test description',
     ]);
