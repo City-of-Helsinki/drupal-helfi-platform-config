@@ -42,6 +42,7 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
         ]);
       }
     }
+    return NULL;
   }
 
 }
