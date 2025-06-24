@@ -1,0 +1,23 @@
+uuid: 279bd83b-2120-4ffa-af7e-10afef089f73
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+_core:
+  default_config_hash: UY9Qakkj3TBaF4CVQe9dOaOcUHeggIBAwDWE1nNRROk
+id: paragraph.field_news_limit
+field_name: field_news_limit
+entity_type: paragraph
+type: list_integer
+settings:
+  allowed_values: {  }
+  allowed_values_function: 'Drupal\helfi_paragraphs_news_list\Entity\NewsFeedParagraph::getNewsLimitValues'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
