@@ -74,7 +74,7 @@ class NewsFeedParagraphTest extends KernelTestBase {
     $this->assertEquals([$tags_uuid], $paragraph->getTagsUuid());
     $this->assertEquals([['target_id' => $groups_id]], $paragraph->getGroups());
     $this->assertEquals([$groups_uuid], $paragraph->getGroupsUuid());
-    $this->assertEquals(22, $paragraph->getLimit());
+    $this->assertEquals(6, $paragraph->getLimit());
     $this->assertEquals('test title', $paragraph->getTitle());
     $this->assertEquals('test description', $paragraph->getDescription());
   }
