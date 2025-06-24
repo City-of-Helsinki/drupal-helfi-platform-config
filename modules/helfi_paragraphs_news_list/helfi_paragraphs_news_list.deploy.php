@@ -5,6 +5,8 @@
  * Contains news list paragraph deploy hooks.
  */
 
+declare(strict_types=1);
+
 /**
  * Migrate the field_limit values to field_news_limit in deploy hook.
  */
