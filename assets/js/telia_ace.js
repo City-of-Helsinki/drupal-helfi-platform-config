@@ -7,6 +7,7 @@
           return;
         }
 
+        // Make sure the chat is configured properly.
         let chatSettings = {};
         try {
           chatSettings = new ChatSettings(drupalSettings.telia_ace_data ?? {});
@@ -16,6 +17,7 @@
           return;
         }
 
+        // Initialize the chat.
         new TeliaAceWidget(chatSettings);
         drupalSettings.telia_ace_data.initialized = true;
       });
@@ -23,6 +25,23 @@
   };
 })(Drupal, drupalSettings);
 
+/**
+ * Telia ace widget.
+ *
+ * Wrapper for the actual telia ace chat implementation.
+ *
+ * How it works:
+ * 1. On page load, only a custom chat button is added to a page.
+ * 2. User clicks the custom chat button, perform firstClickCallback().
+ * 2.1 Chat cookies are set as accepted.
+ * 2.2 Custom button state is changed.
+ * 2.3 The ACE-chat is loaded dynamically with onload-callback attached to it.
+ * 2.4 Wait for onload-callback to trigger.
+ * 3. The onload-functionality opens the chat and adds one-use event listener for closing.
+ * 4. Close button closes the chat window and adds one-use event listener for opening.
+ *
+ * {once: true} option is added to all event listeners to get rid of debounce-code.
+ */
 class TeliaAceWidget {
   constructor(chatSettings) {
     this.static = {
@@ -39,163 +58,91 @@ class TeliaAceWidget {
       chatInitialized: false,
       busy: false
     };
-    this.init();
-  }
 
-  /**
-   * Initialize the chat libraries and elements.
-   */
-  init = () => {
-    this.widgetChatButton = this.createChatWidget();
-    this.addOpenEventlistener();
+    const button = this.createChatButton();
+    button.addEventListener('click', this.firstClickCallback, {once: true});
     this.render();
   }
 
   /**
-   * Set up the chat button elements.
+   * Create the custom chat button.
    */
-  createChatWidget = () => {
-    let teliaAceWidgetWrapper = document.getElementById('telia-ace-leijuke');
-    if (!teliaAceWidgetWrapper) {
-      teliaAceWidgetWrapper = document.createElement('aside');
-      teliaAceWidgetWrapper.id = 'telia-ace-leijuke';
-      document.body.append(teliaAceWidgetWrapper);
+  createChatButton = () => {
+    let wrapper = document.getElementById('telia-ace-leijuke');
+    if (!wrapper) {
+      wrapper = document.createElement('aside');
+      wrapper.id = 'telia-ace-leijuke';
+      document.body.append(wrapper);
     }
 
-    const teliaAceWidgetInstance = document.createElement('button');
-    teliaAceWidgetInstance.id = this.static.selector;
-    teliaAceWidgetInstance.classList.add('chat-leijuke');
-    teliaAceWidgetInstance.classList.add('telia-chat-leijuke');
+    // The custom chat-button.
+    const button = document.createElement('button');
+    button.id = this.static.selector;
+    button.classList.add('chat-leijuke');
+    button.classList.add('telia-chat-leijuke');
 
-    teliaAceWidgetWrapper.append(teliaAceWidgetInstance);
+    wrapper.append(button);
+    this.customChatButton = button;
 
-    return teliaAceWidgetInstance;
+    return button;
   }
 
   /**
-   * Adds self-removing eventlistener to the chat button.
+   * User clicks chat button for the first time.
    *
-   * Automatically accept the chat cookies and load the chat script
-   * when user clicks the chat button. Then open the chat on "onloaad".
-   *
-   * @param chatButton
+   * Handle the cookies and load the third party js-script.
    */
-  addOpenEventlistener = () => {
-    this.widgetChatButton.addEventListener('click', () => {
-      if (!this.cookieCheck()) {
-        this.cookieSet();
-      }
-      !this.state.chatInitialized && this.loadChatScript();
+  firstClickCallback = () => {
+    if (!this.cookieCheck()) {
+      this.cookieSet();
+    }
+    this.state.chatInitialized = true;
 
-      this.openChat(true);
-      this.addCloseEventlistener();
-    }, { once: true });
-  }
-
-  /**
-   * A self-removing close-eventlistener to the chat button.
-   *
-   * There are actually 2 chat buttons. One delivered by the chat
-   * and one created by this script. The one delivered by the chat
-   * is not gdpr-compliant. Therefore we must make sure the correct
-   * button is visible at correct time.
-   */
-  addCloseEventlistener = () => {
-    const interval = setInterval(()=> {
-      // Make sure the chat-implementation has given us the close button.
-      const humany_widget = document.getElementsByClassName('humany-trigger')[0];
-      let close = null;
-      humany_widget && (close = humany_widget.getElementsByClassName('humany-close')[0]);
-
-      if (close) {
-        // Add an eventlistener to the close-button which makes our "open chat" -button visible on click.
-        close.addEventListener('click', ()=> {
-          document.getElementsByClassName('telia-chat-leijuke')[0].classList.remove('hidden');
-        }, { once: true });
-
-        // Readd the eventlistener to the "open chat" -button.
-        this.addOpenEventlistener()
-        clearInterval(interval);
-      }
-    }, 100)
-  }
-
-  /**
-   * Load the chat script.
-   */
-  loadChatScript = () => {
     const chatScript = document.createElement('script');
     chatScript.src = this.static.scriptUrl;
     chatScript.type = 'text/javascript';
     chatScript.setAttribute('async', '');
-
-    chatScript.onload = this.loaded;
+    chatScript.onload = this.onload;
 
     const head = document.querySelector('head');
     head.appendChild(chatScript);
+
     this.state.chatLoading = true;
-    this.state.chatInitialized = true;
-  }
-
-  /**
-   * Render the chat element.
-   */
-  render = () => {
-    const { chatOpened, chatLoading } = this.state;
-    const label = chatLoading ? Drupal.t('Loading chat...', {}, {context: 'Telia ACE chat'}) : this.static.chatTitle;
-    const element = document.getElementById(this.static.selector);
-    if (!element) {
-      return;
-    }
-    const innerHTML = `
-        <span class="hel-icon hel-icon--speechbubble-text"></span>
-        <span>${label}</span>
-        <span class="hel-icon hel-icon--angle-up"></span>
-      `;
-
-    if (element.innerHTML !== innerHTML) {
-      element.innerHTML = innerHTML;
-    }
-    element.classList.toggle('loading', chatLoading);
-    element.classList.toggle('hidden', chatOpened);
-  }
-
-  cookieCheck = () => {
-    return Drupal.cookieConsent.getConsentStatus(['chat']);
-  }
-
-  cookieSet = () => {
-    if (Drupal.cookieConsent.getConsentStatus(['chat'])) return;
-    Drupal.cookieConsent.setAcceptedCategories(['chat']);
-  }
-
-  /**
-   * Onload callback for the chat script.
-   */
-  loaded = () => {
-    this.state = {
-      ...this.state,
-      chatLoaded: true,
-    };
-    this.openChat();
     this.render();
   }
 
   /**
-   * Call the humany activation method if chat is loaded.
+   * Open button click event callback.
+   */
+  openCallback = () => {
+    this.state.chatOpened = true;
+    this.openChat(true);
+    this.closeButton.addEventListener('click', this.closeCallback, {once: true});
+    this.render();
+  }
+
+  /**
+   * Close button click event callback.
+   */
+  closeCallback = () => {
+    this.state.chatOpened = false;
+    this.customChatButton.addEventListener('click', this.openChat, {once: true})
+    this.render();
+  }
+
+  /**
+   * Open the chat after the chat has been loaded.
    *
    * @param openWidget
-   *   To open the chat session or not.
    */
   openChat = (openWidget) => {
-    const teliaAceWidgetInitialized = setInterval(() => {
+    const widgetInitialized = setInterval(() => {
       if(typeof window.humany !== 'undefined' && typeof window.humany.widgets !== 'undefined' && window.humany.widgets.find(this.static.chatId)){
         if (openWidget) {
-          const myWidget = window.humany.widgets.find(this.static.chatId);
-          myWidget.activate();
-          myWidget.invoke('show');
+          const widget = window.humany.widgets.find(this.static.chatId);
+          widget.activate();
+          widget.invoke('show');
         }
-        clearInterval(teliaAceWidgetInitialized);
         this.state = {
           ...this.state,
           chatLoading: false,
@@ -203,12 +150,96 @@ class TeliaAceWidget {
           busy: false,
         };
         this.render();
+        clearInterval(widgetInitialized);
       }
-    }, 50);
+
+    }, 100);
+  }
+
+  /**
+   * Render and rerender the chat element.
+   *
+   * Render is called every time the widget state changes.
+   * It changes the button texts and visibility.
+   */
+  render = () => {
+    const label =  this.state.chatLoading ?
+      Drupal.t('Loading chat...', {}, {context: 'Telia ACE chat'}) :
+      this.static.chatTitle;
+
+    const element = document.getElementById(this.static.selector);
+    if (!element) {
+      return;
+    }
+
+    const innerHTML = `
+      <span class="hel-icon hel-icon--speechbubble-text"></span>
+      <span>${label}</span>
+      <span class="hel-icon hel-icon--angle-up"></span>
+    `;
+
+    if (element.innerHTML !== innerHTML) {
+      element.innerHTML = innerHTML;
+    }
+
+    // Hide and show the button based on this.state
+    element.classList.toggle('loading', this.state.chatLoading);
+    element.classList.toggle('hidden', this.state.chatOpened);
+  }
+
+  /**
+   * Check if cookies has been accepted.
+   */
+  cookieCheck = () => {
+    return Drupal.cookieConsent.getConsentStatus(['chat']);
+  }
+
+  /**
+   * Set the chat acceptance if chat-button is clicked.
+   */
+  cookieSet = () => {
+    if (Drupal.cookieConsent.getConsentStatus(['chat'])) return;
+    Drupal.cookieConsent.setAcceptedCategories(['chat']);
+  }
+
+  /**
+   * Onload-callback.
+   *
+   * This is triggered after the third party library has been loaded.
+   */
+  onload = () => {
+    // Interval must be set because onload triggers too soon.
+    // This caused the chat not to open when cache was disabled.
+    const loaded = setInterval(() => {
+      // The close button seems to be the best way to figure out
+      // if the chat has actually ready to be used.
+      const humany_widget = document.getElementsByClassName('humany-trigger')[0];
+      let close = null;
+      if (!humany_widget) {
+        return;
+      }
+      close = humany_widget.getElementsByClassName('humany-close')[0];
+
+      if (humany_widget && close) {
+        this.closeButton = close;
+        this.state.chatLoading = false;
+        this.state.chatLoaded = true;
+        this.state.chatOpened = true;
+
+        this.closeButton.addEventListener('click', this.closeCallback, {once: true});
+        this.openChat(true);
+        clearInterval(loaded);
+      }
+    }, 100);
   }
 
 }
 
+/**
+ * Chat settings class.
+ *
+ * Check that all required settings exist.
+ */
 class ChatSettings {
   constructor(settings) {
     const requiredSettings = [
