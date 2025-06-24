@@ -60,7 +60,7 @@ class TeliaAceWidget {
     };
 
     const button = this.createChatButton();
-    button.addEventListener('click', this.firstClickCallback,{once: true});
+    button.addEventListener('click', this.firstClickCallback, {once: true});
     this.render();
   }
 
@@ -84,7 +84,7 @@ class TeliaAceWidget {
     wrapper.append(button);
     this.customChatButton = button;
 
-    return button
+    return button;
   }
 
   /**
