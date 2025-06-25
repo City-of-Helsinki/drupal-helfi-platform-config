@@ -73,8 +73,8 @@
         "dg/bypass-finals": "^1.0"
     },
     "conflict": {
-        "drupal/core": "<10.4",
-        "drupal/core-composer-scaffold": "<10.4",
+        "drupal/core": "<10.4 || >=10.5",
+        "drupal/core-composer-scaffold": "<10.4 || >=10.5",
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/helfi_media_map": "*",
         "drupal/default_content": ">2.0.0-alpha2",
