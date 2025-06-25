@@ -23,6 +23,7 @@ abstract class KernelTestBase extends CoreKernelTestBase {
     'file',
     'link',
     'user',
+    'options',
     'paragraphs',
     'external_entities',
     'text',

@@ -69,7 +69,7 @@ class NewsListLazyBuilderTest extends KernelTestBase {
 
     $paragraph = Paragraph::create([
       'type' => 'news_list',
-      'field_limit' => 22,
+      'field_news_limit' => 8,
       'field_news_list_title' => 'test title',
       'field_news_list_description' => 'test description',
     ]);

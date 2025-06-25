@@ -96,7 +96,7 @@ final class NewsFeedParagraph extends Paragraph {
    *   The limit.
    */
   public function getLimit() : int {
-    $limit = (int) $this->get('field_limit')->value;
+    $limit = (int) $this->get('field_news_limit')->value;
 
     return $limit > 0 ? $limit : 1;
   }
@@ -119,6 +119,16 @@ final class NewsFeedParagraph extends Paragraph {
    */
   public function getDescription() : string {
     return $this->get('field_news_list_description')->value;
+  }
+
+  /**
+   * Allowed values function for the news list paragraph's field_news_limit.
+   *
+   * @return int[]
+   *   The list of allowed values.
+   */
+  public static function getNewsLimitValues(): array {
+    return [4 => 4, 6 => 6, 8 => 8];
   }
 
 }
