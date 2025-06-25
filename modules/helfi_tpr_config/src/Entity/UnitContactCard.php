@@ -24,10 +24,14 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
     if (!$this->hasField('field_unit_contact_unit')) {
       return NULL;
     }
-    $unit = $this->get('field_unit_contact_unit')->entity;
 
+    $unit = $this->get('field_unit_contact_unit')->entity;
+    if (!$unit->hasTranslation($langcode)) {
+      return NULL;
+    }
+
+    $unit = $unit->getTranslation($langcode);
     if ($unit instanceof Unit && $unit->hasField('name_override') && $unit->hasField('name')) {
-      $unit = $unit->getTranslation($langcode);
       if (($langcode === 'sv' || $langcode === 'en') && $unit->hasTranslation($langcode)) {
         $unit_name = $unit->get('name')->value;
       }
