@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'La wadaag Facebook'
+  linkedin:
+    text: 'La wadaag LinkedIn'
+  twitter:
+    text: 'La wadaag X'
+  email:
+    text: 'Dir webka emayl ahaan'

@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'Jaga Facebookis'
+  linkedin:
+    text: 'Jaga LinkedInis'
+  twitter:
+    text: 'Jaga X-is'
+  email:
+    text: 'Saada leht e‑postiga'

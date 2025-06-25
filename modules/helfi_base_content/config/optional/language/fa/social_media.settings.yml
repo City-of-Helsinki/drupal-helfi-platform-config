@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'به اشتراک گذاری در فیس‌بوک'
+  linkedin:
+    text: 'به اشتراک گذاری در لینکدین'
+  twitter:
+    text: 'به اشتراک گذاری در ایکس'
+  email:
+    text: 'ارسال صفحه از طریق ایمیل'

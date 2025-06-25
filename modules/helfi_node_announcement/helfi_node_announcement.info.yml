@@ -9,3 +9,5 @@ dependencies:
   - helfi_node_page:helfi_node_page
   - publication_date:publication_date
   - helfi_api_base:helfi_api_base
+'interface translation project': helfi_node_announcement
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_node_announcement/translations/%language.po

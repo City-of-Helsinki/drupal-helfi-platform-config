@@ -656,3 +656,51 @@ function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_typ
   }
   return $fields;
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_tpr_config_preprocess_field__service_map_embed(array &$variables): void {
+  if (!isset($variables['items'][0]['content']['iframe']['#attributes']['src'])) {
+    return;
+  }
+
+  // Set map service url for templates.
+  $url_parts = parse_url($variables['items'][0]['content']['iframe']['#attributes']['src']);
+  $variables['map_service_url'] = $url_parts['scheme'] . "://" . $url_parts['host'];
+
+  // Set privacy policy url for templates.
+  if (Drupal::moduleHandler()->moduleExists('hdbt_cookie_banner')) {
+    $cookie_settings = Drupal::service('hdbt_cookie_banner.cookie_settings');
+    $variables['privacy_policy_url'] = $cookie_settings->getCookieSettingsPageUrl();
+  }
+  // @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
+  elseif (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
+    $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph__type().
+ */
+function helfi_tpr_config_preprocess_paragraph__unit_accessibility_information(array &$variables): void {
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->hasField('field_unit_accessibility_unit')) {
+    $langcode = $variables['language']->getId();
+
+    // Get the information from the unit entity.
+    $unit = $paragraph->get('field_unit_accessibility_unit')
+      ?->first()
+      ?->get('entity')
+      ?->getTarget()
+      ?->getEntity();
+
+    if ($unit instanceof Unit && $unit->hasTranslation($langcode)) {
+      $variables['unit_accessbility_information'] = $unit
+        ->getTranslation($langcode)
+        ?->get('accessibility_sentences')
+        ?->view('full');
+    }
+  }
+}

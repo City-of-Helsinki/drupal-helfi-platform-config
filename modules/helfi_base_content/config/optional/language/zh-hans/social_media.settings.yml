@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: '分享到Facebook'
+  linkedin:
+    text: '分享到LinkedIn'
+  twitter:
+    text: '分享到X'
+  email:
+    text: '通过电子邮件发送页面'

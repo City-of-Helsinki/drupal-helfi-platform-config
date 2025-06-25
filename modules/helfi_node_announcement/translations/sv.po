@@ -1,0 +1,18 @@
+msgid ""
+msgstr ""
+
+msgctxt "helfi_node_announcement"
+msgid "Alert"
+msgstr "Varning"
+
+msgctxt "helfi_node_announcement"
+msgid "Attention"
+msgstr "Obs"
+
+msgctxt "helfi_node_announcement"
+msgid "Notification"
+msgstr "Notifikation"
+
+msgctxt "helfi_node_announcement"
+msgid "Close"
+msgstr "Stäng"

@@ -1,0 +1,9 @@
+social_media:
+  facebook_share:
+    text: 'Поделиться на Facebook'
+  linkedin:
+    text: 'Поделиться на LinkedIn'
+  twitter:
+    text: 'Поделиться в X'
+  email:
+    text: 'Отправить страницу по электронной почте'
