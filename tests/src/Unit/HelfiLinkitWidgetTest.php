@@ -18,6 +18,8 @@ use Drupal\path_alias\AliasManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 
 /**
  * Tests the HelfiLinkitWidget.
@@ -58,6 +60,9 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
     $container->set('config.factory', $this->createMock(ConfigFactoryInterface::class));
     $container->set('current_user', $this->createMock(AccountProxyInterface::class));
     $container->set('entity_type.manager', $this->createMock(EntityTypeManager::class));
+    $container->set('entity.repository', $this->createMock(EntityRepositoryInterface::class));
+    $container->set('entity.repository', $this->createMock(EntityRepositoryInterface::class));
+    $container->set('file_url_generator', $this->createMock(FileUrlGeneratorInterface::class));
     $container->set('language_manager', $language_manager->reveal());
     $container->set('path_alias.manager', $this->createMock(AliasManagerInterface::class));
     $container->set('request_stack', $request_stack->reveal());
