@@ -25,6 +25,7 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
       return NULL;
     }
 
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $unit */
     $unit = $this->get('field_unit_contact_unit')->entity;
     if (!$unit->hasTranslation($langcode)) {
       return NULL;

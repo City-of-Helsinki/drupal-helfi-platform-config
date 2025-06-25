@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_tpr_config\Kernel\Entity;
 
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_tpr_config\Entity\UnitContactCard;
 use Drupal\helfi_tpr_config\Entity\Unit;
@@ -20,12 +19,6 @@ use Drupal\language\Entity\ConfigurableLanguage;
  * @group helfi_tpr_config
  */
 class UnitContactCardTest extends KernelTestBase {
-
-
-  /**
-   * The language manager.
-   */
-  private LanguageManagerInterface $languageManager;
 
   /**
    * {@inheritdoc}
