@@ -23,8 +23,14 @@
 }
 
 /* Helfi link form */
-.ck.ck-responsive-form.helfi-link-form {
+.ck.ck-form.ck-link-form.helfi-link-form {
   padding: 0;
+  width: 100%;
+}
+
+/* Hide plugin header and title. */
+.ck.ck-balloon-panel.helfi-contextual-balloon .ck.ck-form__header {
+  display:none;
 }
 
 /* Dropdown */
