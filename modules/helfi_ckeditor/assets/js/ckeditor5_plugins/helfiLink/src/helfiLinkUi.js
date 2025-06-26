@@ -240,7 +240,7 @@ export default class HelfiLinkUi extends Plugin {
 
     // Add advanced settings (details summary) to linkFormView
     // after the linkHref field; 2.
-    linkFormView.children.add(advancedSettings, 2);
+    linkFormView.children.add(advancedSettings, 3);
 
     // Remove the error text if user has managed to make an error on last go.
     if (linkFormView.urlInputView.errorText) {
@@ -619,16 +619,20 @@ export default class HelfiLinkUi extends Plugin {
         }
       }
 
+      const decoratorsArgIndex = 1;
+
       // Stop the execution of the link command caused by closing the form.
       // Inject the attribute values.
       linkCommand.once('execute', (execEvt, args) => {
-        if (args.length < 3) {
-          args.push(values);
-        } else if (args.length === 3) {
-          Object.assign(args[2], values);
-        } else {
-          throw Error('The link command has more than 3 arguments.');
+        // Assume decorators is the second argument provided to the
+        // linkCommand.execute() call.
+        if (!(typeof args[decoratorsArgIndex] === 'object')) {
+          // This is either an object or null because decorators are optional.
+          args[decoratorsArgIndex] = values;
+          return;
         }
+        // An object exists, so we need to merge the values.
+        Object.assign(args[decoratorsArgIndex], values);
       }, { priority: 'highest' });
     }, { priority: 'high' });
   }
