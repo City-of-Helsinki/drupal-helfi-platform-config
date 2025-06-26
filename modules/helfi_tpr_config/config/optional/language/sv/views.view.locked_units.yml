@@ -4,18 +4,8 @@ display:
     display_options:
       exposed_form:
         options:
+          submit_button: Verkställ
           reset_button_label: Återställ
           exposed_sorts_label: 'Sortera efter'
           sort_asc_label: Stigande
           sort_desc_label: Fallande
-          submit_button: Verkställ
-      fields:
-        view_node:
-          text: visa
-      title: 'Senaste nyheterna'
-      arguments:
-        nid:
-          exception:
-            title: Alla
-  latest_news:
-    display_title: 'Senaste nyheterna'
