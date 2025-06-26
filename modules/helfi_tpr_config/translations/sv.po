@@ -12,3 +12,7 @@ msgstr "Lång beskrivning (ersätter saknad information)"
 
 msgid "Note! The content is displayed on the website only if the long description is missing from the data source."
 msgstr "Observera! Innehållet visas på webbplatsen endast om den långa beskrivningen saknas från datakäll."
+
+msgctxt "Unit contact card aria label"
+msgid "See more details of @unit"
+msgstr "Se mera information om enheten @unit"

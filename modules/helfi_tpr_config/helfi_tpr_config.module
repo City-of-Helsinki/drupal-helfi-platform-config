@@ -16,6 +16,7 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_tpr_config\Entity\ServiceList;
 use Drupal\helfi_tpr_config\Entity\ServiceListSearch;
 use Drupal\helfi_tpr_config\Entity\Unit;
+use Drupal\helfi_tpr_config\Entity\UnitContactCard;
 use Drupal\helfi_tpr_config\Entity\UnitSearch;
 use Drupal\linkit\Entity\Profile;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -137,6 +138,9 @@ function helfi_tpr_config_entity_bundle_info_alter(array &$bundles): void {
   }
   if (isset($bundles['paragraph']['unit_search'])) {
     $bundles['paragraph']['unit_search']['class'] = UnitSearch::class;
+  }
+  if (isset($bundles['paragraph']['unit_contact_card'])) {
+    $bundles['paragraph']['unit_contact_card']['class'] = UnitContactCard::class;
   }
 }
 
