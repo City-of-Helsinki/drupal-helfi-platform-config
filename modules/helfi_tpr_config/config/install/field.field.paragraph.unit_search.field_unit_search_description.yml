@@ -11,7 +11,7 @@ id: paragraph.unit_search.field_unit_search_description
 field_name: field_unit_search_description
 entity_type: paragraph
 bundle: unit_search
-label: 'Search description'
+label: Description
 description: 'For example: You can search for the closest playground by address.'
 required: false
 translatable: false

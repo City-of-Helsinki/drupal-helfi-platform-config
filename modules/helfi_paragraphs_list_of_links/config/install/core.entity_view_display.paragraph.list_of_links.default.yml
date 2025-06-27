@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.list_of_links.field_list_of_links_description
     - field.field.paragraph.list_of_links.field_list_of_links_design
     - field.field.paragraph.list_of_links.field_list_of_links_links
     - field.field.paragraph.list_of_links.field_list_of_links_title
@@ -10,11 +11,19 @@ dependencies:
   module:
     - entity_reference_revisions
     - options
+    - text
 id: paragraph.list_of_links.default
 targetEntityType: paragraph
 bundle: list_of_links
 mode: default
 content:
+  field_list_of_links_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
   field_list_of_links_design:
     type: list_key
     label: inline
@@ -39,4 +48,5 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden: {  }
+hidden:
+  search_api_excerpt: true

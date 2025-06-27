@@ -11,7 +11,7 @@ entity_type: paragraph
 bundle: content_cards
 label: Title
 description: 'The title of the content cards paragraph.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
