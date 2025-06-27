@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.content_cards.field_content_cards_content
+    - field.field.paragraph.content_cards.field_content_cards_desc
     - field.field.paragraph.content_cards.field_content_cards_design
     - field.field.paragraph.content_cards.field_content_cards_title
     - paragraphs.paragraphs_type.content_cards
   module:
     - options
+    - text
 id: paragraph.content_cards.default
 targetEntityType: paragraph
 bundle: content_cards
@@ -22,6 +24,13 @@ content:
       link: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_content_cards_desc:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_content_cards_design:
     type: list_key
@@ -38,4 +47,5 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden: {  }
+hidden:
+  search_api_excerpt: true

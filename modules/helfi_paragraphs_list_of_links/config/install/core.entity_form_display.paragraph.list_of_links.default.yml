@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.list_of_links.field_list_of_links_description
     - field.field.paragraph.list_of_links.field_list_of_links_design
     - field.field.paragraph.list_of_links.field_list_of_links_links
     - field.field.paragraph.list_of_links.field_list_of_links_title
@@ -10,20 +11,29 @@ dependencies:
   module:
     - hdbt_admin_tools
     - paragraphs
+    - text
 id: paragraph.list_of_links.default
 targetEntityType: paragraph
 bundle: list_of_links
 mode: default
 content:
+  field_list_of_links_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_list_of_links_design:
     type: design_field_widget
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   field_list_of_links_links:
     type: paragraphs
-    weight: 2
+    weight: 3
     region: content
     settings:
       title: Paragraph

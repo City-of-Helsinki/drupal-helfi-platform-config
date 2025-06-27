@@ -11,7 +11,7 @@ entity_type: paragraph
 bundle: list_of_links
 label: Title
 description: 'The title of the list of links paragraph.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

@@ -9,7 +9,7 @@ id: paragraph.unit_search.field_unit_search_title
 field_name: field_unit_search_title
 entity_type: paragraph
 bundle: unit_search
-label: 'Search title (H2)'
+label: Title
 description: 'For example: Search for beaches'
 required: true
 translatable: false
