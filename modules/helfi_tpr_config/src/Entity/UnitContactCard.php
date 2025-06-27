@@ -33,11 +33,12 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
 
     $unit = $unit->getTranslation($langcode);
     if ($unit instanceof Unit && $unit->hasField('name_override') && $unit->hasField('name')) {
-      // If the page is in Swedish or English, or if the unit does not have a name_override,
+      // If the page is in Swedish or English, or if the unit
+      // does not have a name_override,.
       if (($langcode === 'sv' || $langcode === 'en') || !$unit->get('name_override')->value && $unit->hasTranslation($langcode)) {
         $unit_name = $unit->get('name')->value;
       }
-      // If the unit has a name_override and is in Finnish
+      // If the unit has a name_override and is in Finnish.
       else {
         $unit_name = $unit->get('name_override')->value;
       }
