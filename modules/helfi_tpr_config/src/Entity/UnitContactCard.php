@@ -33,7 +33,7 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
 
     $unit = $unit->getTranslation($langcode);
     if ($unit instanceof Unit && $unit->hasField('name_override') && $unit->hasField('name')) {
-      if (($langcode === 'sv' || $langcode === 'en') && $unit->hasTranslation($langcode)) {
+      if (($langcode === 'sv' || $langcode === 'en') || !$unit->get('name_override')->value && $unit->hasTranslation($langcode)) {
         $unit_name = $unit->get('name')->value;
       }
       else {
