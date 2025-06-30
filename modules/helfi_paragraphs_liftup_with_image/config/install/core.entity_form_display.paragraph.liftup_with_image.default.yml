@@ -12,8 +12,6 @@ dependencies:
     - hdbt_admin_tools
     - media_library
     - text
-_core:
-  default_config_hash: O4zMHxwRRHp-yrN0JH1svHXLCBbLGqZIF8WdjPfkhng
 id: paragraph.liftup_with_image.default
 targetEntityType: paragraph
 bundle: liftup_with_image
