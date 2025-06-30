@@ -95,7 +95,7 @@ function helfi_paragraphs_news_list_update_9010() : void {
 }
 
 /**
- * #UHF-12028 Remove the old "field_limit" -field.
+ * UHF-12028 Remove the old "field_limit" -field.
  */
 function helfi_paragraphs_news_list_update_9011() : void {
   $entity_type = 'paragraph';
