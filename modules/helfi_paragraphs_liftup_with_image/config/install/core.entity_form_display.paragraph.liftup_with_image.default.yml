@@ -1,4 +1,4 @@
-uuid: 26ca2c4c-80ab-4461-bb0d-e7c85661dc2f
+uuid: f86c2fed-5592-4530-be0f-998ede895ac4
 langcode: en
 status: true
 dependencies:
@@ -12,6 +12,8 @@ dependencies:
     - hdbt_admin_tools
     - media_library
     - text
+_core:
+  default_config_hash: O4zMHxwRRHp-yrN0JH1svHXLCBbLGqZIF8WdjPfkhng
 id: paragraph.liftup_with_image.default
 targetEntityType: paragraph
 bundle: liftup_with_image
@@ -19,7 +21,7 @@ mode: default
 content:
   field_liftup_with_image_desc:
     type: text_textarea
-    weight: 3
+    weight: 2
     region: content
     settings:
       rows: 3
@@ -33,7 +35,7 @@ content:
     third_party_settings: {  }
   field_liftup_with_image_image:
     type: media_library_widget
-    weight: 2
+    weight: 3
     region: content
     settings:
       media_types: {  }
