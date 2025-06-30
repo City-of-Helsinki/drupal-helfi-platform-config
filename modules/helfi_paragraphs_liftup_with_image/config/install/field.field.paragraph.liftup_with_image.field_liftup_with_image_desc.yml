@@ -14,7 +14,7 @@ entity_type: paragraph
 bundle: liftup_with_image
 label: Description
 description: 'Optional short description for liftup block.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

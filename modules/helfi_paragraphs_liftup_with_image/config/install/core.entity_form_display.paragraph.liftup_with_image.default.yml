@@ -19,7 +19,7 @@ mode: default
 content:
   field_liftup_with_image_desc:
     type: text_textarea
-    weight: 3
+    weight: 2
     region: content
     settings:
       rows: 3
@@ -33,7 +33,7 @@ content:
     third_party_settings: {  }
   field_liftup_with_image_image:
     type: media_library_widget
-    weight: 2
+    weight: 3
     region: content
     settings:
       media_types: {  }
