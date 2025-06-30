@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -91,4 +92,23 @@ function helfi_paragraphs_news_list_update_9007() : void {
  */
 function helfi_paragraphs_news_list_update_9010() : void {
   // This is now automated.
+}
+
+/**
+ * #UHF-12028 Remove the old "field_limit" -field.
+ */
+function helfi_paragraphs_news_list_update_9011() : void {
+  $entity_type = 'paragraph';
+  $field_name = 'field_limit';
+  $bundle = 'news_list';
+
+  $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+  $field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+
+  if (!$field_storage || !$field) {
+    return;
+  }
+
+  $field_storage->delete();
+  field_purge_batch(50);
 }
