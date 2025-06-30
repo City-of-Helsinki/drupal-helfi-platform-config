@@ -5,6 +5,10 @@ msgctxt "Recommendations block title"
 msgid "You might be interested in"
 msgstr "Du kanske är intresserad av"
 
+msgctxt "Recommendations block description"
+msgid "Recommendations are generated automatically based on content."
+msgstr "Rekommendationer genereras automatiskt baserat på innehåll."
+
 msgctxt "Annif"
 msgid "No recommended content has been created for this page yet."
 msgstr "Inget rekommenderat innehåll har skapats för denna sida ännu."
