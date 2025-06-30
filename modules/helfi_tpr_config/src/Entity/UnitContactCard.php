@@ -21,32 +21,29 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
    */
   public function getAriaLabel(): ?TranslatableMarkup {
     $langcode = $this->language()->getId();
-    if (!$this->hasField('field_unit_contact_unit')) {
-      return NULL;
-    }
 
     /** @var \Drupal\Core\Entity\ContentEntityInterface $unit */
-    $unit = $this->get('field_unit_contact_unit')->entity;
-    if (!$unit->hasTranslation($langcode)) {
+    $unit = $this->get('field_unit_contact_unit')?->entity;
+
+    if (!$unit instanceof Unit) {
       return NULL;
     }
 
-    $unit = $unit->getTranslation($langcode);
-    if ($unit instanceof Unit && $unit->hasField('name_override') && $unit->hasField('name')) {
-      if (($langcode === 'sv' || $langcode === 'en') && $unit->hasTranslation($langcode)) {
-        $unit_name = $unit->get('name')->value;
-      }
-      else {
-        $unit_name = $unit->get('name_override')->value;
-      }
-      if ($unit_name) {
-        return $this->t('See more details of @unit', [
-          '@unit' => $unit_name,
-        ], [
-          'context' => 'Unit contact card aria label',
-        ]);
-      }
+    $unit = $unit->hasTranslation($langcode) ? $unit->getTranslation($langcode) : $unit;
+
+    $unit_name = $unit->get('name')?->value;
+    if ($langcode == 'fi') {
+      $unit_name = $unit->get('name_override')?->value ? $unit->get('name_override')->value : $unit_name;
     }
+
+    if ($unit_name) {
+      return $this->t('See more details of @unit', [
+        '@unit' => $unit_name,
+      ], [
+        'context' => 'Unit contact card aria label',
+      ]);
+    }
+
     return NULL;
   }
 
