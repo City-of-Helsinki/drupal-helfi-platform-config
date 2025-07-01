@@ -114,6 +114,9 @@ export default class HelfiLinkUi extends Plugin {
         // to the bottom of the dialog.
         this._moveSubmitButtonToBottom();
 
+        // Reorder all fields in the desired layout.
+        this._reorderFormFields();
+
         // Handle form field submit.
         this._handleFormFieldSubmit(models);
       });
@@ -661,6 +664,62 @@ export default class HelfiLinkUi extends Plugin {
 
     // Store a reference so you can reorder it later
     this.linkFormView.saveButtonView = submitRow;
+  }
+
+  /**
+   * Reorder the form fields to match the desired layout.
+   */
+  _reorderFormFields() {
+    const {
+      advancedSettings,
+      children,
+      displayedTextInputView,
+      linkProtocol,
+      saveButtonView,
+      urlInputView,
+      backButtonView,
+    } = this.linkFormView;
+
+    // Resolve actual views by type or element match.
+    const headerView = children.find(view =>
+      view.template?.attributes?.class?.includes('ck-form__header')
+    );
+
+    // Add custom classes to link plugin elements.
+    const newClasses = [
+      [urlInputView, 'helfi-link-url-input'],
+      [displayedTextInputView, 'helfi-link-text-input'],
+      [saveButtonView, 'helfi-link-save-button'],
+      [backButtonView, 'helfi-link-back-button'],
+    ];
+    newClasses.forEach(([view, className]) => {
+      addViewClass(view, className);
+    });
+
+    // Reorder the views.
+    const ordered = [
+      headerView,
+      linkProtocol,
+      displayedTextInputView,
+      urlInputView,
+      advancedSettings,
+      backButtonView,
+      saveButtonView,
+    ].filter(Boolean);
+
+    // Clear and re-add in correct order
+    children.clear();
+    ordered.forEach(view => {
+      children.add(view);
+    });
+
+    // Re-add anything that wasn’t explicitly reordered
+    const movedViews = new Set(ordered);
+    children._items
+      .filter(view => !movedViews.has(view))
+      .forEach(view => {
+        children.add(view);
+      });
   }
 
 }
