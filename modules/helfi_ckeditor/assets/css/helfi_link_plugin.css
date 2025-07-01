@@ -1,4 +1,5 @@
 .ck.ck-balloon-panel.helfi-contextual-balloon {
+  border: 0;
   border-radius: 10px !important;
   height: auto;
   left: 50vw !important;
@@ -11,9 +12,43 @@
   z-index: 10001;
 }
 
+@media (min-width: 1024px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 19% !important;
+    transform: translate(-20%, -50%);
+  }
+}
+
+@media (min-width: 1300px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 22% !important;
+    transform: translate(-22%, -50%);
+  }
+}
+
+@media (min-width: 1500px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 27% !important;
+    transform: translate(-26%, -50%);
+  }
+}
+
+@media (min-width: 1800px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 34% !important;
+    transform: translate(-34%, -50%);
+  }
+}
+
+@media (min-width: 2200px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 38% !important;
+    transform: translate(-38%, -50%);
+  }
+}
+
 .ck.ck-balloon-panel.helfi-contextual-balloon .ck-labeled-field-view {
   max-width: 600px;
-  margin: 1rem !important;
 }
 
 /**
@@ -125,15 +160,11 @@
   display: none;
 }
 
-/* Helfi link form */
-.ck.ck-form.ck-link-form.helfi-link-form {
+/* Contextual balloon header. */
+.ck.ck-balloon-panel.helfi-contextual-balloon .ck.ck-form__header .ck-form__header__label {
+  font-size: 1rem;
+  margin: 0;
   padding: 0;
-  width: 100%;
-}
-
-/* Hide plugin header and title. */
-.ck.ck-balloon-panel.helfi-contextual-balloon .ck.ck-form__header {
-  display:none;
 }
 
 /* Dropdown */
@@ -154,6 +185,7 @@
   min-height: 3rem; /* iOS. */
   padding: 0;
   transition: .15s cubic-bezier(.19, 1, .22, 1);
+  box-shadow: 0 1px 2px rgba(18, 18, 18, .25);
 }
 
 .ck.helfi-link--icon .ck-labeled-field-view__input-wrapper .ck.ck-label,
@@ -230,8 +262,7 @@ select.tomselected.is-hidden + .ts-wrapper {
   box-shadow: none;
   color: #232429;
   display: block;
-  margin: 1rem !important;
-  padding: 0.5rem 0;
+  padding: 0.2rem 0;
   position: relative;
 }
 
