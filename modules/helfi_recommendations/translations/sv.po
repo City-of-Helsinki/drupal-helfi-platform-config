@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 
 msgctxt "Recommendations block title"
-msgid "You might be interested in"
-msgstr "Du kanske är intresserad av"
+msgid "Recommended for you"
+msgstr "Rekommenderat för dig"
 
 msgctxt "Recommendations block description"
 msgid "Recommendations are generated automatically based on content."
