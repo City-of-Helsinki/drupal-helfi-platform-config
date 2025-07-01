@@ -110,6 +110,10 @@ export default class HelfiLinkUi extends Plugin {
         // Add logic to checkboxes.
         this._handleCheckboxes();
 
+        // Move the submit button row from inside urlInputView
+        // to the bottom of the dialog.
+        this._moveSubmitButtonToBottom();
+
         // Handle form field submit.
         this._handleFormFieldSubmit(models);
       });
@@ -630,5 +634,33 @@ export default class HelfiLinkUi extends Plugin {
     }, { priority: 'high' });
   }
 
+  /**
+   * Move the submit button row from inside urlInputView to the bottom
+   * of the main linkFormView so it's not nested inside the URL input.
+   */
+  _moveSubmitButtonToBottom() {
+    const { urlInputView } = this.linkFormView;
+
+    if (!urlInputView || !urlInputView.children) {
+      return;
+    }
+
+    const submitRow = urlInputView.children.find(view =>
+      view.element?.classList.contains('ck-form__row_with-submit')
+    );
+
+    if (!submitRow) {
+      return;
+    }
+
+    // Remove from inside the urlInputView
+    urlInputView.children.remove(submitRow);
+
+    // Add at the end of the main form
+    this.linkFormView.children.add(submitRow);
+
+    // Store a reference so you can reorder it later
+    this.linkFormView.saveButtonView = submitRow;
+  }
 
 }
