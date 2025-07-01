@@ -15,7 +15,7 @@ import formElements from './formElements';
 import HelfiDetailsView from './ui/helfiDetailsView';
 import HelfiLinkVariantView from './ui/helfiLinkVariantView';
 import HelfiLinkIconView from './ui/helfiLinkIconView';
-import { isUrlExternal, parseProtocol } from './utils/utils';
+import { isUrlExternal, parseProtocol, addViewClass } from './utils/utils';
 
 export default class HelfiLinkUi extends Plugin {
 
@@ -108,7 +108,7 @@ export default class HelfiLinkUi extends Plugin {
         }
 
         // Add logic to checkboxes.
-        this._handleCheckboxes(linkFormView);
+        this._handleCheckboxes();
 
         // Handle form field submit.
         this._handleFormFieldSubmit(models);
@@ -282,7 +282,7 @@ export default class HelfiLinkUi extends Plugin {
     const options = this.formElements[modelName];
     const linkCommand = editor.commands.get('link');
 
-    if (!linkFormView[modelName]) {
+    if (!this.linkFormView[modelName]) {
       let fieldView = {};
 
       // Create fields based on their types.
@@ -379,8 +379,6 @@ export default class HelfiLinkUi extends Plugin {
 
         case 'select':
           // Initialize TomSelect for current select list.
-          linkFormView[modelName].renderTomSelect(
-            linkFormView[modelName].element,
           this.linkFormView[modelName].renderTomSelect(
             this.linkFormView[modelName].element,
             options?.selectListOptions
@@ -631,5 +629,6 @@ export default class HelfiLinkUi extends Plugin {
       }, { priority: 'highest' });
     }, { priority: 'high' });
   }
+
 
 }
