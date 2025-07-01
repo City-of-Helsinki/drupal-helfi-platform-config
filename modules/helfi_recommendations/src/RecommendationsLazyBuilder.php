@@ -62,6 +62,7 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
         ],
         'tags' => Cache::mergeTags($entity->getCacheTags(), [$this->recommendationManager->getCacheTagForAll()]),
       ],
+      '#entity_type' => $entity->bundle(),
     ];
 
     $recommendations = $entity instanceof ContentEntityInterface ? $this->getRecommendations($entity) : [];
