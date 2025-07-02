@@ -10,6 +10,8 @@ display:
           label: Titel
         name_1:
           label: 'Lås ägare'
+        langcode:
+          label: 'Språk för innehåll'
         operations:
           label: Funktioner
       pager:
