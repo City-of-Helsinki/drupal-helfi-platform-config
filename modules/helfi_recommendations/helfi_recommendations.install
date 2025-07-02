@@ -154,7 +154,6 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
             'node' => '@node.node_route_context:node',
           ],
           'bundles' => [
-            'landing_page' => 'landing_page',
             'news_article' => 'news_article',
             'news_item' => 'news_item',
             'page' => 'page',
@@ -178,7 +177,7 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
 /**
  * Unset '_info_file_ctime' for helfi_recommendations module.
  */
-function helfi_recommandations_update_10001() : void {
+function helfi_recommendations_update_10001() : void {
   $module_info = \Drupal::keyValue('locale.project')->get('helfi_recommendations');
 
   // Unset '_info_file_ctime' for helfi_recommendations module as it contains
@@ -186,5 +185,22 @@ function helfi_recommandations_update_10001() : void {
   if (isset($module_info['info']['_info_file_ctime'])) {
     unset($module_info['info']['_info_file_ctime']);
     \Drupal::keyValue('locale.project')->set('helfi_recommendations', $module_info);
+  }
+}
+
+/**
+ * Remove recommendations block from landing pages.
+ */
+function helfi_recommendations_update_10002() : void {
+  $recommendations_block = Drupal::configFactory()
+    ->getEditable('block.block.helfirecommendationsblock');
+  $raw_data = $recommendations_block->getRawData();
+
+  if (isset($raw_data['visibility']['entity_bundle:node']['bundles'])) {
+    if (array_key_exists('landing_page', $raw_data['visibility']['entity_bundle:node']['bundles'])) {
+      unset($raw_data['visibility']['entity_bundle:node']['bundles']['landing_page']);
+    }
+    $recommendations_block->setData($raw_data);
+    $recommendations_block->save();
   }
 }
