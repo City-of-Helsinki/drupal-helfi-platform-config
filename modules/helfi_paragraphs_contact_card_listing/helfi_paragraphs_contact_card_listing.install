@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\field\Entity\FieldStorageConfig;
+
 /**
  * UHF-8975 Updated translations for contact card listing paragraph type.
  */
@@ -19,6 +21,25 @@ function helfi_paragraphs_contact_card_listing_update_9003() : void {
  * UHF-10191 Update image to use responsive image style.
  */
 function helfi_paragraphs_contact_card_listing_update_9005() : void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_paragraphs_contact_card_listing');
+}
+
+/**
+ * UHF-11580 Remove deprecated image and social media fields.
+ */
+function helfi_paragraphs_contact_card_listing_update_9006() : void {
+  $fields = [
+    'field_contact_image',
+    'field_contact_social_media',
+  ];
+  foreach ($fields as $field_name) {
+    $field = FieldStorageConfig::loadByName('paragraph', $field_name);
+    if ($field) {
+      $field->delete();
+    }
+  }
+
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_contact_card_listing');
 }
