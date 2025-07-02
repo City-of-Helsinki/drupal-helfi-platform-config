@@ -35,9 +35,6 @@ function helfi_recommendations_install($is_syncing) {
   $block_installer->install($block, $variations);
 
   // Set the text converter view display for the given content types.
-  helfi_recommendations_set_text_converter_view_display('node', 'landing_page', [
-    'field_content',
-  ]);
   helfi_recommendations_set_text_converter_view_display('node', 'news_article', [
     'field_content',
     'field_lead_in',
