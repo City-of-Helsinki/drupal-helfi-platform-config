@@ -6,7 +6,7 @@ import {
   View
 } from 'ckeditor5/src/ui';
 import { KeystrokeHandler } from 'ckeditor5/src/utils';
-import { icons } from 'ckeditor5/src/core';
+import { IconCheck, IconCancel  } from '@ckeditor/ckeditor5-icons';
 import TextareaView from './helfiTextareaView';
 
 /**
@@ -28,14 +28,14 @@ export default class HelfiQuoteForm extends View {
 
     this.saveButtonView = this._createButton(
       Drupal.t('Save', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
-      icons.check,
+      IconCheck,
       'ck-button-save'
     );
     this.saveButtonView.type = 'submit';
 
     this.cancelButtonView = this._createButton(
       Drupal.t('Cancel', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
-      icons.cancel,
+      IconCancel,
       'ck-button-cancel',
       'cancel'
     );

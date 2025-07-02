@@ -47,7 +47,7 @@ export default class HelfiQuoteCommand extends Command {
     const { model } = this.editor;
 
     model.change(writer => {
-      if (!quoteText) { return; }
+      if (!quoteText || quoteText.trim() === '') { return; }
       model.insertContent(createQuote(writer, quoteText, author));
     });
   }

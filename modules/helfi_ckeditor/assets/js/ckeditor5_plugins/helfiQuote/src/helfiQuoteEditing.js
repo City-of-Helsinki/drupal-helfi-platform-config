@@ -74,6 +74,8 @@ export default class HelfiQuoteEditing extends Plugin {
       isObject: true,
       // Allow in places where other blocks are allowed.
       allowWhere: '$block',
+      // Allow only helfiQuoteText and helfiQuoteFooter as direct children.
+      allowChildren: [ 'helfiQuoteText', 'helfiQuoteFooter' ],
     });
 
     schema.register('helfiQuoteText', {
@@ -94,6 +96,8 @@ export default class HelfiQuoteEditing extends Plugin {
       allowIn: 'helfiQuote',
       // Allow content that is allowed in blocks (e.g. text with attributes).
       allowContentOf: '$block',
+      // Allow only helfiQuoteFooterCite as direct children.
+      allowChildren: [ 'helfiQuoteFooterCite' ]
     });
 
     schema.register('helfiQuoteFooterCite', {
@@ -120,7 +124,7 @@ export default class HelfiQuoteEditing extends Plugin {
 
     // Upcast Converters: determine how existing HTML is interpreted by the
     // editor. These trigger when an editor instance loads.
-    const convertUpcast = (modelName, viewName, attribute = null) => {
+    const convertUpcast = (modelName, viewName, attribute = '') => {
       const variants = {
         'dataAttributes': {
           name: viewName,
@@ -176,7 +180,7 @@ export default class HelfiQuoteEditing extends Plugin {
     // <helfiQuoteFooter>, as required by the schema.
     // Instances of <helfiQuoteFooterCite> are saved as
     // <cite>{{inner content}}</cite>.
-    convertUpcast('helfiQuoteFooterCite', 'footer');
+    convertUpcast('helfiQuoteFooterCite', 'cite');
 
     // Downcast Converters: converts stored model data into HTML.
     const convertDowncast = (model, elementType, attributes = {}, container = false) => {
@@ -209,7 +213,7 @@ export default class HelfiQuoteEditing extends Plugin {
     // Convert the <helfiQuoteText> model into an editable <p> element.
     convertDowncast('helfiQuoteText', 'p', { 'data-helfi-quote-text': '' });
     // Convert the <helfiQuoteFooter> model into a container <footer> element.
-    convertDowncast('helfiQuoteFooter', 'footer', { 'data-helfi-quote-author': '' }, true);
+    convertDowncast('helfiQuoteFooter', 'footer', { 'data-helfi-quote-author': '' });
     // Convert the <helfiQuoteFooterCite> model into an editable <cite> element.
     convertDowncast('helfiQuoteFooterCite', 'cite');
   }

@@ -68,3 +68,23 @@ export const sanitizeSafeLinks = url => {
   const matches = url.match(/(?<=\?url=).*?(?=&data=)/);
   return (matches) ? decodeURIComponent(matches[0]) : url;
 };
+
+/**
+ * Add a class to a view.
+ *
+ * @param {object} view The view.
+ * @param {string} className The class name.
+ * @return {view|undefined} The view.
+ */
+export const addViewClass = (view, className) => {
+  if (!view || typeof view.class !== 'string') {
+    return;
+  }
+
+  const existing = view.class.split(' ');
+  if (!existing.includes(className)) {
+    view.class += ` ${className}`;
+  }
+
+  return view;
+};

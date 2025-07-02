@@ -1,4 +1,5 @@
 .ck.ck-balloon-panel.helfi-contextual-balloon {
+  border: 0;
   border-radius: 10px !important;
   height: auto;
   left: 50vw !important;
@@ -11,9 +12,146 @@
   z-index: 10001;
 }
 
+@media (min-width: 1024px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 19% !important;
+    transform: translate(-20%, -50%);
+  }
+}
+
+@media (min-width: 1300px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 22% !important;
+    transform: translate(-22%, -50%);
+  }
+}
+
+@media (min-width: 1500px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 27% !important;
+    transform: translate(-26%, -50%);
+  }
+}
+
+@media (min-width: 1800px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 34% !important;
+    transform: translate(-34%, -50%);
+  }
+}
+
+@media (min-width: 2200px) {
+  .ck.ck-balloon-panel.helfi-contextual-balloon {
+    left: 38% !important;
+    transform: translate(-38%, -50%);
+  }
+}
+
 .ck.ck-balloon-panel.helfi-contextual-balloon .ck-labeled-field-view {
   max-width: 600px;
-  margin: 1rem !important;
+}
+
+/**
+ * The link plugin has changed the field layout in CKEditor 4.20.0.
+ * The following styles are to make sure the layout is the same as before.
+ */
+
+/* Helfi link form */
+.ck.ck-form.ck-link-form.helfi-link-form {
+  column-gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+  "header header"
+  "protocol protocol"
+  "link-url link-url"
+  "link-text link-text"
+  "advanced-settings advanced-settings"
+  "save-button back-button";
+  padding: 0 0 1rem;
+  row-gap: 0.8rem;
+  width: 100%;
+}
+
+/* Link form header */
+.ck.ck-link-form.helfi-link-form .ck.ck-form__header {
+  background-color: #0072c6;
+  border-radius: 0.5rem 0.5rem 0 0;
+  color: #fff;
+  grid-area: header;
+  padding: 0 1rem;
+}
+
+/* Link form protocol */
+.ck.ck-link-form.helfi-link-form > select.ck-helfi-link-select-list ~ .ts-wrapper.ck-helfi-link-select-list {
+  grid-area: protocol;
+  margin: 0 1rem !important;
+}
+
+/* Link form link text field */
+.ck.ck-link-form.helfi-link-form > .helfi-link-text-input {
+  grid-area: link-url;
+  margin: 0 1rem !important;
+}
+
+/* Link form URL field */
+.ck.ck-link-form.helfi-link-form > .helfi-link-url-input {
+  grid-area: link-text;
+  margin: 0 1rem !important;
+}
+
+/* Link form advanced settings */
+.ck.ck-link-form.helfi-link-form > .ck-helfi-link-details {
+  grid-area: advanced-settings;
+  margin: 0 1rem 0.5rem !important;
+}
+
+/* Link form save button */
+.ck.ck-link-form.helfi-link-form .helfi-link-save-button {
+  background-color: #0072c6;
+  color: #fff;
+  grid-area: save-button;
+  margin: 0 1rem !important;
+  padding: 0.5rem;
+}
+
+.ck.ck-link-form.helfi-link-form .helfi-link-save-button:hover {
+  background-color: #005799;
+  color: #fff !important;
+}
+
+.ck.ck-link-form.helfi-link-form .helfi-link-save-button .ck-button__label {
+  text-align: center;
+  width: 100%;
+}
+
+.ck.ck-link-form.helfi-link-form .helfi-link-save-button::after {
+  display: none;
+}
+
+/* Link form back button */
+.ck.ck-link-form.helfi-link-form .helfi-link-back-button {
+  background-color: #595959;
+  color: #fff;
+  grid-area: back-button;
+  margin: 0 1rem !important;
+  padding: 0.5rem;
+}
+
+.ck.ck-link-form.helfi-link-form .helfi-link-back-button:hover {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+/* Hide the back button icon. */
+.ck.ck-link-form.helfi-link-form .helfi-link-back-button svg.ck-button__icon {
+  display: none;
+}
+
+/* Show the back button label.  */
+.ck.ck-link-form.helfi-link-form .helfi-link-back-button .ck-button__label {
+  display: block;
 }
 
 /* Hide panel arrows. */
@@ -22,8 +160,10 @@
   display: none;
 }
 
-/* Helfi link form */
-.ck.ck-responsive-form.helfi-link-form {
+/* Contextual balloon header. */
+.ck.ck-balloon-panel.helfi-contextual-balloon .ck.ck-form__header .ck-form__header__label {
+  font-size: 1rem;
+  margin: 0;
   padding: 0;
 }
 
@@ -45,6 +185,7 @@
   min-height: 3rem; /* iOS. */
   padding: 0;
   transition: .15s cubic-bezier(.19, 1, .22, 1);
+  box-shadow: 0 1px 2px rgba(18, 18, 18, .25);
 }
 
 .ck.helfi-link--icon .ck-labeled-field-view__input-wrapper .ck.ck-label,
@@ -121,8 +262,7 @@ select.tomselected.is-hidden + .ts-wrapper {
   box-shadow: none;
   color: #232429;
   display: block;
-  margin: 1rem !important;
-  padding: 0.5rem 0;
+  padding: 0.2rem 0;
   position: relative;
 }
 
