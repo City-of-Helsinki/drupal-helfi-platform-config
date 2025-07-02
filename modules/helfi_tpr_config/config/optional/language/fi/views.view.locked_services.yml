@@ -10,15 +10,12 @@ display:
           action_title: Toiminto
         name:
           label: Otsikko
-          separator: ', '
         name_1:
           label: 'Lukituksen tekijä'
-          separator: ', '
         timestamp:
           label: 'Lukituksen ajankohta'
         langcode:
           label: 'Sisällön kieli'
-          separator: ', '
         operations:
           label: Toimenpiteet
       pager:

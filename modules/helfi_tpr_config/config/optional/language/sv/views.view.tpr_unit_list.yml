@@ -24,24 +24,19 @@ display:
       fields:
         name:
           label: Namn
-          separator: ', '
         langcode:
           label: Språk
-          separator: ', '
         content_translation_status:
           settings:
             format_custom_true: Publicerad
             format_custom_false: 'Ej publicerad'
           label: Status
-          separator: ', '
         content_translation_changed:
           label: Uppdaterad
-          separator: ', '
         operations:
           label: Funktioner
         id:
           label: ID
-          separator: ', '
       filters:
         combine:
           expose:

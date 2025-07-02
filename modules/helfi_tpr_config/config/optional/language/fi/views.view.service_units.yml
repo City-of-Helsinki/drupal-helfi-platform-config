@@ -24,8 +24,5 @@ display:
         id:
           exception:
             title: Kaikki
-      fields:
-        name:
-          separator: ', '
   service_units:
     display_title: Lohko

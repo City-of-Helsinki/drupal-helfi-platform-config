@@ -35,26 +35,9 @@ display:
         id:
           exception:
             title: Kaikki
-      fields:
-        name:
-          separator: ', '
-        address__postal_code:
-          separator: ', '
-        address__address_line1:
-          separator: ', '
-        address__address_line2:
-          separator: ', '
     display_title: Oletus
   block:
     display_title: Lohko
   entity_reference:
     display_title: Entiteettiviittaus
-    display_options:
-      fields:
-        name_override:
-          separator: ', '
-        id:
-          separator: ', '
-        name:
-          separator: ', '
 label: Toimipistehaku
