@@ -30,9 +30,6 @@ display:
         id:
           exception:
             title: Kaikki
-      fields:
-        name:
-          separator: ', '
   block_search:
     display_options:
       pager:
@@ -63,25 +60,8 @@ display:
             label: 'Neuvontapalvelun nimi tai hakusana'
             placeholder: 'Esim. Sosiaalineuvonta, terveys tai digi'
       title: Palveluluettelohaku
-      fields:
-        name:
-          separator: ', '
-        name_synonyms:
-          separator: ', '
-        description__summary:
-          separator: ', '
-        name_override:
-          separator: ', '
     display_title: Lohko
   entity_reference_1:
     display_title: Entiteettiviittaus
-    display_options:
-      fields:
-        name_override:
-          separator: ', '
-        id:
-          separator: ', '
-        name:
-          separator: ', '
   block:
     display_title: Lohko

@@ -27,16 +27,5 @@ display:
         id:
           exception:
             title: Alla
-      fields:
-        name:
-          separator: ', '
   entity_reference:
     display_title: Objektsreferens
-    display_options:
-      fields:
-        name_override:
-          separator: ', '
-        id:
-          separator: ', '
-        name:
-          separator: ', '

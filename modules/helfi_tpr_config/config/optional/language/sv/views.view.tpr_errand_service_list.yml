@@ -14,6 +14,8 @@ display:
           tags:
             first: Första
             last: Sista
+            previous: Föregående
+            next: Nästa
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
@@ -30,11 +32,13 @@ display:
           settings:
             format_custom_true: Publicerad
             format_custom_false: 'Ej publicerad'
+          label: Status
         content_translation_changed:
           label: Uppdaterad
         operations:
           label: Funktioner
-        id: {  }
+        id:
+          label: ID
       filters:
         combine:
           expose:
@@ -45,5 +49,9 @@ display:
       header:
         result:
           content: 'Visar @start - @end av @total'
+      empty:
+        area:
+          content:
+            value: 'Inga resultat hittades.'
   page_1:
     display_title: Sida
