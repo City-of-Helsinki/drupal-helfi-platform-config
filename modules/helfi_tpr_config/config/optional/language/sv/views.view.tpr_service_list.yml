@@ -49,5 +49,9 @@ display:
       header:
         result:
           content: 'Visar @start - @end av @total'
+      empty:
+        area:
+          content:
+            value: 'Inga resultat hittades.'
   page_1:
     display_title: Sida
