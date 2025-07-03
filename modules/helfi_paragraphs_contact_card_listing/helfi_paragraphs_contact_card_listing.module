@@ -17,7 +17,6 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 function helfi_paragraphs_contact_card_listing_helfi_paragraph_types() : array {
   return [
     new ParagraphTypeCollection('paragraph', 'contact_card_listing', 'field_contact_card', 'contact_card'),
-    new ParagraphTypeCollection('paragraph', 'contact_card', 'field_contact_social_media', 'social_media_link'),
     new ParagraphTypeCollection('paragraphs_library_item', 'paragraphs_library_item', 'paragraphs', 'contact_card_listing'),
   ];
 }
