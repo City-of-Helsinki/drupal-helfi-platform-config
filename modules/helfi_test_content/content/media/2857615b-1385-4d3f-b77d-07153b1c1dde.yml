@@ -1,0 +1,48 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 2857615b-1385-4d3f-b77d-07153b1c1dde
+  bundle: image
+  default_langcode: en
+  depends:
+    fbd5b487-2f0a-4301-9c18-5d7d68855529: file
+default:
+  revision_user:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'Contact card - picture 2'
+  created:
+    -
+      value: 1751464666
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_media_image:
+    -
+      entity: fbd5b487-2f0a-4301-9c18-5d7d68855529
+      alt: 'alt text'
+      title: ''
+      width: 1635
+      height: 1920
+  field_photographer:
+    -
+      value: Archive
