@@ -26,24 +26,19 @@ display:
           action_title: Åtgärd
         name:
           label: Namn
-          separator: ', '
         langcode:
           label: Språk
-          separator: ', '
         content_translation_status:
           settings:
             format_custom_true: Publicerad
             format_custom_false: 'Ej publicerad'
           label: Status
-          separator: ', '
         content_translation_changed:
           label: Uppdaterad
-          separator: ', '
         operations:
           label: Funktioner
         id:
           label: ID
-          separator: ', '
       filters:
         combine:
           expose:
@@ -54,5 +49,9 @@ display:
       header:
         result:
           content: 'Visar @start - @end av @total'
+      empty:
+        area:
+          content:
+            value: 'Inga resultat hittades.'
   page_1:
     display_title: Sida

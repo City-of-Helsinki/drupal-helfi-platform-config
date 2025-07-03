@@ -5,8 +5,6 @@ import HelfiLinkBaseView from './helfiLinkBaseView';
  */
 export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
 
-
-
   /**
    * Render function for the Tom Select library.
    *

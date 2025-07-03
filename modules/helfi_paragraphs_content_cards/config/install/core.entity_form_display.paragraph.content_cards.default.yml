@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.content_cards.field_content_cards_content
+    - field.field.paragraph.content_cards.field_content_cards_desc
     - field.field.paragraph.content_cards.field_content_cards_design
     - field.field.paragraph.content_cards.field_content_cards_title
     - paragraphs.paragraphs_type.content_cards
   module:
     - hdbt_admin_tools
+    - text
 id: paragraph.content_cards.default
 targetEntityType: paragraph
 bundle: content_cards
@@ -16,7 +18,7 @@ mode: default
 content:
   field_content_cards_content:
     type: entity_reference_autocomplete
-    weight: 2
+    weight: 3
     region: content
     settings:
       match_operator: CONTAINS
@@ -24,9 +26,17 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_content_cards_desc:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_content_cards_design:
     type: design_field_widget
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }

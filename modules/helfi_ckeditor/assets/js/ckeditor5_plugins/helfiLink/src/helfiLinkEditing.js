@@ -567,11 +567,10 @@ export default class HelfiLinkEditing extends Plugin {
       // is being executed by this function.
       helfiLinkCommandExecuting = true;
 
-      const attributeValues = args[args.length - 1];
-      const { model } = editor;
-      const { selection } = model.document;
 
-      // The arguments on linkCommand.execute() are: href, target, attributes.
+      const { model } = editor;
+
+      // The arguments on linkCommand.execute() are: href, attributes, .
       // We need to trim the href value.
       const hrefValue = args[0];
       let trimmedHref = hrefValue;
@@ -589,7 +588,7 @@ export default class HelfiLinkEditing extends Plugin {
         // Remove leading and trailing spaces, parentheses and hyphens.
         // This is used for tel: numbers.
         const linkProtocol = parseProtocol(trimmedHref);
-        if (linkProtocol && linkProtocol === 'tel') {
+        if (linkProtocol === 'tel') {
           trimmedHref = trimmedHref.replace(/[\s()-]/g, '');
         }
 
@@ -597,52 +596,77 @@ export default class HelfiLinkEditing extends Plugin {
         args[0] = trimmedHref;
       }
 
+      // The attributes are always the second value of arguments.
+      const attributeValues = args[1];
+
+      // Before executing the helfiLink plugin, execute the link command.
+      // The displayedTextInput might have changed and thus the selection
+      // range could have also changed.
+      model.change(() => {
+        editor.execute('link', ...args);
+      });
+
       // The linkCommand.execute() might execute other plugins which will alter
       // the same anchor element. For example, the linkit plugin.
       // Wrap the selection writer to a try catch to catch any errors.
       try {
-        // Wrapping the original command execution in a model.change() to make
-        // sure there's a single undo step when the attribute is added.
-        model.change(writer => {
-          editor.execute('link', ...args);
+        // Create a new "transparent" batch, which groups changes that should
+        // not be added to the undo stack. This is useful for programmatic
+        // changes that the user shouldn't be able to undo, like the
+        // custom internal attribute updates.
+        const transparentBatch = editor.model.createBatch({ isUndoable: false });
 
-          // Determine the selection range and add/remove the attributes to the
-          // node or range.
+        // Use `enqueueChange('transparent')` to safely schedule attribute
+        // changes after the link command has completed and the view
+        // has been updated.
+        // This avoids errors like `cannot-change-view-tree` that can occur
+        // when modifying the model or view immediately after a changing the
+        // selection range or changing the element structure.
+        editor.model.enqueueChange(transparentBatch, writer => {
+          const currentSelection = editor.model.document.selection;
+
           modelNames.forEach(modelName => {
-            if (selection.isCollapsed) {
-              // Get the current selection textNode or the nodeBefore the selection.
-              // If neither are available, create a range from root position.
-              const writtenRange = (position) => {
-                const node = position.textNode || position.nodeBefore;
-                if (!node) {
-                  const range = writer.createRange(position);
-                  writer.setSelection(range);
-                  return range;
-                }
-                return writer.createRangeOn(node);
-              };
+            // Check if the selection is collapsed, meaning the user has placed
+            // the cursor at a single point without selecting any text.
+            if (currentSelection.isCollapsed) {
 
-              // Set or remove attributes.
+              // In this case, we need to find the link element surrounding
+              // the cursor and apply attributes to that single node instead
+              // of a range.
+              const position = currentSelection.getFirstPosition();
+              const node = position.textNode || position.nodeAfter || position.nodeBefore;
+              if (!node) return;
+
+              const range = writer.createRangeOn(node);
+
               if (attributeValues[modelName]) {
-                writer.setAttribute(modelName, attributeValues[modelName], writtenRange(selection.getFirstPosition()));
+                writer.setAttribute(modelName, attributeValues[modelName], range);
               } else {
-                writer.removeAttribute(modelName, writtenRange(selection.getFirstPosition()));
+                writer.removeAttribute(modelName, range);
               }
+
+              // Remove the temporary attribute from the selection itself.
+              // This prevents CKEditor from applying the attribute to any new
+              // content the user types after the link, which would
+              // unintentionally carry over the custom attribute.
               writer.removeSelectionAttribute(modelName);
-            } else {
-              const ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
-              let range = ranges.next();
 
-              while (!range.done) {
-                const currentRange = range.value;
-
+              // Move the selection to the newly modified range.
+              // This ensures the cursor is placed inside or on the link with
+              // the updated attributes, keeping the editor state consistent.
+              writer.setSelection(range);
+            }
+            // Selection not collapsed means the user has selected a range
+            // in the document. F.e. selected a word or a sentence.
+            else {
+              const ranges = model.schema.getValidRanges(currentSelection.getRanges(), modelName);
+              ranges.forEach(range => {
                 if (attributeValues[modelName]) {
-                  writer.setAttribute(modelName, attributeValues[modelName], currentRange);
+                  writer.setAttribute(modelName, attributeValues[modelName], range);
                 } else {
-                  writer.removeAttribute(modelName, currentRange);
+                  writer.removeAttribute(modelName, range);
                 }
-                range = ranges.next();
-              }
+              });
             }
           });
           helfiLinkCommandExecuting = false;

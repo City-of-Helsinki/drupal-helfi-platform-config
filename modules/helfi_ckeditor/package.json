@@ -8,9 +8,10 @@
     "lint:js": "eslint assets/js/ckeditor5_plugins/",
     "format:js": "eslint --fix assets/js/ckeditor5_plugins/"
   },
-  "devDependencies": {
-    "@ckeditor/ckeditor5-core": "^44.0.0",
-    "@ckeditor/ckeditor5-dev-translations": "^44.0.0",
+  "dependencies": {
+    "@ckeditor/ckeditor5-core": "^45.2.0",
+    "@ckeditor/ckeditor5-icons": "^45.2.0",
+    "@ckeditor/ckeditor5-dev-translations": "^45.0.0",
     "@ckeditor/ckeditor5-dev-utils": "^46.0.0",
     "@nuxt/friendly-errors-webpack-plugin": "^2.5.1",
     "babel-loader": "^9.1.2",
