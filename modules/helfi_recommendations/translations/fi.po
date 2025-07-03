@@ -2,8 +2,12 @@ msgid ""
 msgstr ""
 
 msgctxt "Recommendations block title"
-msgid "You might be interested in"
-msgstr "Sinua voisi kiinnostaa"
+msgid "Recommended for you"
+msgstr "Suosituksia sinulle"
+
+msgctxt "Recommendations block description"
+msgid "Recommendations are generated automatically based on content."
+msgstr "Suosittelut luodaan automaattisesti sisältöjen perusteella."
 
 msgctxt "Annif"
 msgid "Automatically recommended content"

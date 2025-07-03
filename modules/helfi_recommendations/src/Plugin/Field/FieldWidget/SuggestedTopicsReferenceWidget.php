@@ -107,7 +107,6 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#options' => [
         'node|news_article' => $this->t('News article'),
         'node|news_item' => $this->t('News item'),
-        'node|landing_page' => $this->t('Landing page'),
         'node|page' => $this->t('Standard page'),
       ],
       '#description' => $this->t('Select the content types that should be used for recommendations. If no content types are selected, recommendations will be shown from all content types.'),

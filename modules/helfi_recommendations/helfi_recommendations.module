@@ -27,6 +27,7 @@ function helfi_recommendations_theme() : array {
       'variables' => [
         'rows' => NULL,
         'no_results_message' => NULL,
+        'entity_type' => NULL,
       ],
       'template' => 'recommendations-block',
     ],
@@ -114,7 +115,6 @@ function helfi_recommendations_entity_bundle_field_info_alter(&$fields, EntityTy
   }
 
   $recommendable_node_bundles = [
-    'landing_page',
     'news_item',
     'news_article',
     'page',
@@ -132,7 +132,6 @@ function helfi_recommendations_entity_bundle_field_info_alter(&$fields, EntityTy
 function helfi_recommendations_entity_field_storage_info(EntityTypeInterface $entity_type): array {
   if ($entity_type->id() === 'node') {
     return array_merge(
-      helfi_recommendations_bundle_fields($entity_type->id(), 'landing_page'),
       helfi_recommendations_bundle_fields($entity_type->id(), 'news_item'),
       helfi_recommendations_bundle_fields($entity_type->id(), 'news_article'),
       helfi_recommendations_bundle_fields($entity_type->id(), 'page')
