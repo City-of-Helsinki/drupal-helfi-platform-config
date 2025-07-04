@@ -83,7 +83,9 @@ final class QueueWorker extends QueueWorkerBase implements ContainerFactoryPlugi
 
     if ($language && $entity instanceof TranslatableInterface) {
       assert($entity->hasTranslation($language));
-
+      if (!$entity->hasTranslation($language)) {
+        return;
+      }
       $entity = $entity->getTranslation($language);
     }
 
