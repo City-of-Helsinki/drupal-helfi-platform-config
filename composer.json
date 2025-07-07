@@ -78,7 +78,7 @@
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/helfi_media_map": "*",
         "drupal/default_content": ">2.0.0-alpha2",
-        "drupal/translatable_menu_link_uri": ">2.1.2",
+        "drupal/translatable_menu_link_uri": ">2.1.1",
         "drush/drush": "<12"
     },
     "extra": {
