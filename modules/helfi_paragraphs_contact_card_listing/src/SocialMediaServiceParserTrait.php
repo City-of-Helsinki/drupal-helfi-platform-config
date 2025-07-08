@@ -69,11 +69,6 @@ trait SocialMediaServiceParserTrait {
         'youtube' => 'YouTube',
         default => $service['social_media_name'],
       };
-
-      // Handle twitter separately.
-      if ($domain === 'x') {
-        $service['social_media_icon'] = 'twitter';
-      }
     }
     else {
       $service['social_media_icon'] = 'link';
