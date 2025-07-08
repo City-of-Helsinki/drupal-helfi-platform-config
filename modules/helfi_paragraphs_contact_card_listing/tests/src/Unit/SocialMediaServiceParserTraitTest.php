@@ -51,7 +51,7 @@ class SocialMediaServiceParserTraitTest extends UnitTestCase {
     return [
       ['https://www.facebook.com/user', 'Facebook', 'facebook', 'https://www.facebook.com/user'],
       ['https://twitter.com/user', 'X', 'twitter', 'https://twitter.com/user'],
-      ['https://x.com/user', 'X', 'twitter', 'https://x.com/user'],
+      ['https://x.com/user', 'X', 'x', 'https://x.com/user'],
       ['https://instagram.com/user', 'Instagram', 'instagram', 'https://instagram.com/user'],
       ['https://linkedin.com/in/user', 'LinkedIn', 'linkedin', 'https://linkedin.com/in/user'],
       ['https://www.youtube.com/channel/xyz', 'YouTube', 'youtube', 'https://www.youtube.com/channel/xyz'],
