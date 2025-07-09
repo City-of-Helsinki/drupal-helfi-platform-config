@@ -115,9 +115,6 @@
             "drupal/stage_file_proxy": {
                 "Passing null to a parameter (https://www.drupal.org/i/3520313)": "https://www.drupal.org/files/issues/2025-05-29/stage_file_proxy-passing-null-to-parameter-fix-3520313-13.patch"
             },
-            "drupal/translatable_menu_link_uri": {
-                "Translatable menu link URI type error (https://www.drupal.org/i/3534555)": "./public/modules/contrib/helfi_platform_config/patches/translatable_menu_link_uri-3534555-type-error.patch"
-            },
             "drupal/view_unpublished": {
                 "[#UHF-9256] Fix missing dynamic permission dependencies.": "./public/modules/contrib/helfi_platform_config/patches/view_unpublished_permissions_missing_dependencies.patch"
             }
