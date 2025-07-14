@@ -7,7 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\linkit\Entity\Profile;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -193,4 +195,69 @@ function helfi_tpr_config_update_9074(): void {
  */
 function helfi_tpr_config_update_9077(): void {
   // This is automated now.
+}
+
+/**
+ * UHF-8717: Add a field to tpr_service and re-import configs.
+ */
+function helfi_tpr_config_update_9078() : void {
+  $fields = [];
+  $fields['field_recommended_topics'] = BaseFieldDefinition::create('suggested_topics_reference')
+    ->setName('field_recommended_topics')
+    ->setLabel(new TranslatableMarkup('Automatically selected recommendation topics', [], ['context' => 'Recommendations']))
+    ->setTargetEntityTypeId('tpr_service')
+    ->setReadonly(TRUE)
+    ->setTranslatable(FALSE)
+    ->setDisplayOptions('form', [
+      'type' => 'suggested_topics_reference',
+      'weight' => 1000,
+      'module' => 'helfi_recommendations',
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayConfigurable('view', FALSE);
+
+  $fields['keywords'] = BaseFieldDefinition::create('scored_entity_reference')
+    ->setLabel(new TranslatableMarkup('Keywords'))
+    ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+    ->setSetting('target_type', 'taxonomy_term')
+    ->setDisplayOptions('view', [
+      'label' => 'above',
+      'type' => 'entity_reference_label',
+      'weight' => 15,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  $fields['parent_id'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent ID'))
+    ->setDescription(t('The ID of the parent entity of which this entity is referenced.'))
+    ->setSetting('is_ascii', TRUE);
+
+  $fields['parent_type'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent type'))
+    ->setDescription(t('The entity parent type to which this entity is referenced.'))
+    ->setSetting('is_ascii', TRUE)
+    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH);
+
+  $fields['parent_bundle'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent bundle'))
+    ->setDescription(t('The entity parent bundle to which this entity is referenced.'))
+    ->setSetting('is_ascii', TRUE)
+    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH);
+
+  $fields['parent_translations'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent translations'))
+    ->setDescription(t('The entity parent published translation languages to which this entity is referenced.'))
+    ->setSetting('is_ascii', TRUE)
+    ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH)
+    ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+
+  $fields['parent_instance'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Parent instance'))
+    ->setDescription(t('The name of the instance where this entity is located at.'))
+    ->setSetting('is_ascii', TRUE);
+
+  foreach ($fields as $name => $field) {
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($name, 'tpr_service', 'helfi_tpr_config', $field);
+  }
 }

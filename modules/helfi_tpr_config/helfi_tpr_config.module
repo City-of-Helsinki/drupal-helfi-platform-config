@@ -7,12 +7,10 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\helfi_tpr_config\Entity\Service;
 use Drupal\helfi_tpr_config\Entity\ServiceList;
 use Drupal\helfi_tpr_config\Entity\ServiceListSearch;
 use Drupal\helfi_tpr_config\Entity\Unit;
@@ -129,6 +127,9 @@ function helfi_tpr_config_platform_config_grant_permissions() : array {
 function helfi_tpr_config_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['tpr_unit']['tpr_unit'])) {
     $bundles['tpr_unit']['tpr_unit']['class'] = Unit::class;
+  }
+  if (isset($bundles['tpr_service']['tpr_service'])) {
+    $bundles['tpr_service']['tpr_service']['class'] = Service::class;
   }
   if (isset($bundles['paragraph']['service_list'])) {
     $bundles['paragraph']['service_list']['class'] = ServiceList::class;
@@ -621,44 +622,6 @@ function helfi_tpr_config_form_views_exposed_form_alter(&$form, $form_state) : v
       ->get('field_unit_search_meta_desc')
       ->value;
   }
-}
-
-/**
- * Implements hook_entity_base_field_info().
- */
-function helfi_tpr_config_entity_base_field_info(EntityTypeInterface $entity_type) : array {
-  $fields = [];
-
-  if ($entity_type->id() === 'tpr_service') {
-    $fields['hide_service_points'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(new TranslatableMarkup('Hide service units listing'))
-      ->setDescription(new TranslatableMarkup('Select this if you link from the page to a filter search or another listing.'))
-      ->setTranslatable(TRUE)
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-  }
-  if ($entity_type->id() === 'tpr_unit') {
-    $fields['unit_picture_caption'] = BaseFieldDefinition::create('string_long')
-      ->setTranslatable(TRUE)
-      ->setRevisionable(FALSE)
-      ->setLabel(new TranslatableMarkup('Caption'))
-      ->setDisplayOptions('form', [
-        'weight' => 5,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setSetting('allowed_formats', [0 => 'plain_text']);
-
-    $fields['enrich_description'] = BaseFieldDefinition::create('text_with_summary')
-      ->setTranslatable(TRUE)
-      ->setRevisionable(FALSE)
-      ->setLabel(new TranslatableMarkup('Long description (replacing missing information)'))
-      ->setDescription(new TranslatableMarkup('Note! The content is displayed on the website only if the long description is missing from the data source.'))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setSetting('allowed_formats', [0 => 'plain_text']);
-  }
-  return $fields;
 }
 
 /**
