@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_tpr_config\Entity\Service;
 use Drupal\linkit\Entity\Profile;
 use Drupal\field\Entity\FieldStorageConfig;
 
@@ -200,14 +199,11 @@ function helfi_tpr_config_update_9077(): void {
  * UHF-8717: Add a field to tpr_service and re-import configs.
  */
 function helfi_tpr_config_update_9078() : void {
-  $entityTypeManager = Drupal::entityTypeManager();
-  $entityType = $entityTypeManager->getDefinition('tpr_service');
-  $fields = Service::suggestedTopicsFields($entityType);
-
   $fields['field_recommended_topics'] = BaseFieldDefinition::create('suggested_topics_reference')
     ->setName('field_recommended_topics')
     ->setLabel(new TranslatableMarkup('Automatically selected recommendation topics', [], ['context' => 'Recommendations']))
     ->setTargetEntityTypeId('tpr_service')
+    ->setTargetBundle('tpr_service')
     ->setReadonly(TRUE)
     ->setTranslatable(FALSE)
     ->setDisplayOptions('form', [
