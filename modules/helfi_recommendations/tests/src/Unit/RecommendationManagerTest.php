@@ -44,13 +44,6 @@ class RecommendationManagerTest extends UnitTestCase {
   protected $logger;
 
   /**
-   * The mocked entity type manager.
-   *
-   * @var \Prophecy\Prophecy\ObjectProphecy
-   */
-  protected $entityTypeManager;
-
-  /**
    * The mocked environment resolver.
    *
    * @var \Prophecy\Prophecy\ObjectProphecy
@@ -92,7 +85,6 @@ class RecommendationManagerTest extends UnitTestCase {
     parent::setUp();
 
     $this->logger = $this->prophesize(LoggerInterface::class);
-    $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
     $this->topicsManager = $this->prophesize(TopicsManagerInterface::class);
     $this->elasticClient = ClientBuilder::create()->build();
@@ -100,7 +92,6 @@ class RecommendationManagerTest extends UnitTestCase {
 
     $this->recommendationManager = new RecommendationManager(
       $this->logger->reveal(),
-      $this->entityTypeManager->reveal(),
       $this->environmentResolver->reveal(),
       $this->topicsManager->reveal(),
       $this->elasticClient,

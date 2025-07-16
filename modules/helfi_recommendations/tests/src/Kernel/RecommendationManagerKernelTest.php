@@ -303,7 +303,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     array $elasticData = [],
   ): RecommendationManager {
     $loggerChannel = $this->prophesize(LoggerChannelInterface::class);
-    $entityTypeManager = $this->container->get(EntityTypeManagerInterface::class);
     $environmentResolver = $this->container->get(EnvironmentResolverInterface::class);
     $topicsManager = $this->container->get(TopicsManagerInterface::class);
 
@@ -317,7 +316,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
 
     return new RecommendationManager(
       $loggerChannel->reveal(),
-      $entityTypeManager,
       $environmentResolver,
       $topicsManager,
       $elasticsearchClient->reveal(),

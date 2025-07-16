@@ -7,6 +7,7 @@ namespace Drupal\helfi_recommendations\Entity;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\Exception\UnsupportedEntityTypeDefinitionException;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -15,7 +16,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\taxonomy\TermInterface;
 
 /**
- * A trait for shared suggested topics functionality.
+ * A trait for shared Suggested topics functionality.
  */
 trait SuggestedTopicsTrait {
 
@@ -30,7 +31,7 @@ trait SuggestedTopicsTrait {
     try {
       $project = $environmentResolver->getActiveProject()->getName();
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
     }
 
     $this->set('parent_id', $parent->id());
@@ -41,7 +42,16 @@ trait SuggestedTopicsTrait {
     return $this;
   }
 
+  /**
+   * Returns an array of base field definitions for Suggested topics.
+   *
+   * @return \Drupal\Core\Field\BaseFieldDefinition[]
+   *   The fields.
+   */
   public static function suggestedTopicsFields(EntityTypeInterface $entity_type) : array {
+    if (!is_subclass_of($entity_type->getClass(), SuggestedTopicsInterface::class)) {
+      throw new UnsupportedEntityTypeDefinitionException('The entity type ' . $entity_type->id() . ' does not implement ' . SuggestedTopicsInterface::class);
+    }
     $fields = [];
 
     $fields['parent_id'] = BaseFieldDefinition::create('string')
