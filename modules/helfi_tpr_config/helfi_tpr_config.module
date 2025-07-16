@@ -122,15 +122,22 @@ function helfi_tpr_config_platform_config_grant_permissions() : array {
 }
 
 /**
+ * Implements hook_entity_type_build().
+ */
+function helfi_tpr_config_entity_type_build(array &$entity_types) : void {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  if (isset($entity_types['tpr_service'])) {
+    $entity_types['tpr_service']->setClass(Service::class);
+  }
+  if (isset($entity_types['tpr_unit'])) {
+    $entity_types['tpr_unit']->setClass(Unit::class);
+  }
+}
+
+/**
  * Implements hook_entity_bundle_info_alter().
  */
 function helfi_tpr_config_entity_bundle_info_alter(array &$bundles): void {
-  if (isset($bundles['tpr_unit']['tpr_unit'])) {
-    $bundles['tpr_unit']['tpr_unit']['class'] = Unit::class;
-  }
-  if (isset($bundles['tpr_service']['tpr_service'])) {
-    $bundles['tpr_service']['tpr_service']['class'] = Service::class;
-  }
   if (isset($bundles['paragraph']['service_list'])) {
     $bundles['paragraph']['service_list']['class'] = ServiceList::class;
   }
