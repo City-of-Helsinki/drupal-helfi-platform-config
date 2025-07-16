@@ -7,7 +7,6 @@ dependencies:
   - drupal:views
   - helfi_platform_config:helfi_platform_config
   - helfi_api_base:helfi_api_base
-  - helfi_recommendations:helfi_recommendations
   - config_rewrite:config_rewrite
   - menu_block_current_language:menu_block_current_language
 'interface translation project': helfi_platform_config
