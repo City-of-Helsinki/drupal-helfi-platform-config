@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_recommendations\Kernel;
 
 use DG\BypassFinals;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
