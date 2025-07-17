@@ -1,5 +1,5 @@
 react_and_share:
-  version: 1.0.x
+  version: 1.0.0
   js:
     assets/js/reactAndShareSettings.js: {}
 
