@@ -192,4 +192,20 @@ function helfi_recommendations_update_10001() : void {
  */
 function helfi_recommendations_update_10003() : void {
   helfi_recommendations_install(FALSE);
+
+  $recommendations_block = Drupal::configFactory()
+    ->getEditable('block.block.helfirecommendationsblock');
+  $raw_data = $recommendations_block->getRawData();
+
+  if (isset($raw_data['visibility']['entity_bundle:node'])) {
+    unset($raw_data['visibility']['entity_bundle:node']);
+  }
+
+  $raw_data['visibility']['request_path'] = [
+    'id' => 'request_path',
+    'negate' => FALSE,
+    'pages' => "/tpr-service/*\r\n/node/*",
+  ];
+  $recommendations_block->setData($raw_data);
+  $recommendations_block->save();
 }
