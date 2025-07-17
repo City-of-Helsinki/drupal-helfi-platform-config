@@ -8,11 +8,12 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**
  * Implements hook_install().
  */
-function helfi_recommendations_install($is_syncing) {
+function helfi_recommendations_install($is_syncing) : void {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
@@ -49,6 +50,17 @@ function helfi_recommendations_install($is_syncing) {
     'field_lower_content',
     'field_sidebar_content',
   ]);
+
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = \Drupal::service(ModuleHandlerInterface::class);
+
+  if ($moduleHandler->moduleExists('helfi_tpr_config')) {
+    helfi_recommendations_set_text_converter_view_display('tpr_service', 'tpr_service', [
+      'field_content',
+      'field_lower_content',
+      'field_sidebar_content',
+    ]);
+  }
 }
 
 /**
@@ -75,15 +87,10 @@ function helfi_recommendations_set_text_converter_view_display(string $entity_ty
 
   // Load default view display to be used as basis for the text converter
   // view display.
-  $default_view_display = $storage->load('node.' . $content_type . '.default')->toArray();
-  $text_converter_view_display = [
-    'targetEntityType' => 'node',
-    'bundle' => $content_type,
-    'mode' => 'text_converter',
-  ];
-
+  $default_view_display = $storage->load($entity_type . '.' . $content_type . '.default')->toArray();
   // Try loading text converter view display, or create it if it doesn't exist.
   $text_converter_view_display = $storage->load($entity_type . '.' . $content_type . '.text_converter');
+
   if (!$text_converter_view_display) {
     $text_converter_view_display = $storage->create([
       'targetEntityType' => $entity_type,
@@ -119,7 +126,7 @@ function helfi_recommendations_set_text_converter_view_display(string $entity_ty
  *   The block configurations.
  */
 function helfi_recommendations_get_block_configurations(string $theme) : array {
-  return [
+  $blocks = [
     'block' => [
       'id' => 'helfirecommendationsblock',
       'plugin' => 'helfi_recommendations',
@@ -144,17 +151,10 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
             'en' => 'en',
           ],
         ],
-        'entity_bundle:node' => [
-          'id' => 'entity_bundle:node',
+        'request_path' => [
+          'id' => 'request_path',
           'negate' => FALSE,
-          'context_mapping' => [
-            'node' => '@node.node_route_context:node',
-          ],
-          'bundles' => [
-            'news_article' => 'news_article',
-            'news_item' => 'news_item',
-            'page' => 'page',
-          ],
+          'pages' => "/tpr-service/*\r\n/node/*",
         ],
       ],
     ],
@@ -169,6 +169,8 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
       ],
     ],
   ];
+
+  return $blocks;
 }
 
 /**
@@ -186,18 +188,24 @@ function helfi_recommendations_update_10001() : void {
 }
 
 /**
- * Remove recommendations block from landing pages.
+ * Re-trigger install hook to install view mode and block for tpr_service.
  */
-function helfi_recommendations_update_10002() : void {
+function helfi_recommendations_update_10003() : void {
+  helfi_recommendations_install(FALSE);
+
   $recommendations_block = Drupal::configFactory()
     ->getEditable('block.block.helfirecommendationsblock');
   $raw_data = $recommendations_block->getRawData();
 
-  if (isset($raw_data['visibility']['entity_bundle:node']['bundles'])) {
-    if (array_key_exists('landing_page', $raw_data['visibility']['entity_bundle:node']['bundles'])) {
-      unset($raw_data['visibility']['entity_bundle:node']['bundles']['landing_page']);
-    }
-    $recommendations_block->setData($raw_data);
-    $recommendations_block->save();
+  if (isset($raw_data['visibility']['entity_bundle:node'])) {
+    unset($raw_data['visibility']['entity_bundle:node']);
   }
+
+  $raw_data['visibility']['request_path'] = [
+    'id' => 'request_path',
+    'negate' => FALSE,
+    'pages' => "/tpr-service/*\r\n/node/*",
+  ];
+  $recommendations_block->setData($raw_data);
+  $recommendations_block->save();
 }

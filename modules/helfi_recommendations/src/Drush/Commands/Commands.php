@@ -78,7 +78,7 @@ final class Commands extends DrushCommands {
   #[Argument(name: 'bundle', description: 'Entity bundle')]
   #[Option(name: 'overwrite', description: 'Overwrites existing keywords (use with caution)')]
   #[Option(name: 'batch-size', description: 'Batch size')]
-  #[Usage(name: 'drush helfi:generate-keywords node news_item', description: 'Generate keywords for news items.')]
+  #[Usage(name: 'drush helfi:recommendations:generate-keywords node news_item', description: 'Generate keywords for news items.')]
   public function process(
     string $entityType,
     string $bundle,
@@ -88,6 +88,7 @@ final class Commands extends DrushCommands {
     ],
   ) : int {
     $definition = $this->entityTypeManager->getDefinition($entityType);
+
     if (!$definition) {
       $this->io()->writeln('Given entity type is not supported.');
       return DrushCommands::EXIT_FAILURE;
@@ -95,9 +96,11 @@ final class Commands extends DrushCommands {
 
     $query = $this->connection
       ->select($definition->getBaseTable(), 't')
-      ->fields('t', [$definition->getKey('id')])
-      ->condition('t.' . $definition->getKey('bundle'), $bundle);
+      ->fields('t', [$definition->getKey('id')]);
 
+    if ($definition->hasKey('bundle')) {
+      $query->condition('t.' . $definition->getKey('bundle'), $bundle);
+    }
     $entityIds = $query
       ->execute()
       ->fetchCol();
@@ -161,8 +164,8 @@ final class Commands extends DrushCommands {
   #[Argument(name: 'entity_type', description: 'Entity type')]
   #[Argument(name: 'id', description: 'Entity id')]
   #[Option(name: 'language', description: 'Entity language', suggestedValues: ['fi', 'sv', 'en'])]
-  #[Usage(name: 'drush helfi:preview-text node 123', description: 'Preview node with id 123.')]
-  #[Usage(name: 'drush helfi:preview-text node 123 --language sv', description: 'Preview swedish translation of node 123.')]
+  #[Usage(name: 'drush helfi:recommendations:preview-text node 123', description: 'Preview node with id 123.')]
+  #[Usage(name: 'drush helfi:recommendations:preview-text node 123 --language sv', description: 'Preview swedish translation of node 123.')]
   public function preview(string $entity_type, string $id, array $options = ['language' => NULL]) : int {
     try {
       $entity = $this->entityTypeManager

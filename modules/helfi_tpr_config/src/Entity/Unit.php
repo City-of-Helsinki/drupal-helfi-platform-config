@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_tpr_config\Entity;
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\helfi_tpr\Entity\Unit as BaseUnit;
 
@@ -58,6 +61,49 @@ class Unit extends BaseUnit {
     }
 
     return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    $fields['unit_picture_caption'] = BaseFieldDefinition::create('string_long')
+      ->setTranslatable(TRUE)
+      ->setRevisionable(FALSE)
+      ->setLabel(new TranslatableMarkup('Caption'))
+      ->setDisplayOptions('form', [
+        'weight' => 5,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setSetting('allowed_formats', [0 => 'plain_text']);
+
+    $fields['enrich_description'] = BaseFieldDefinition::create('text_with_summary')
+      ->setTranslatable(TRUE)
+      ->setRevisionable(FALSE)
+      ->setLabel(new TranslatableMarkup('Long description (replacing missing information)'))
+      ->setDescription(new TranslatableMarkup('Note! The content is displayed on the website only if the long description is missing from the data source.'))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setSetting('allowed_formats', [0 => 'plain_text']);
+
+    $fields['field_recommended_topics'] = BaseFieldDefinition::create('suggested_topics_reference')
+      ->setName('field_recommended_topics')
+      ->setLabel(new TranslatableMarkup('Automatically selected recommendation topics', [], ['context' => 'Recommendations']))
+      ->setTargetEntityTypeId('tpr_service')
+      ->setReadonly(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'suggested_topics_reference',
+        'weight' => 1000,
+        'module' => 'helfi_recommendations',
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', FALSE);
+
+    return $fields;
   }
 
 }

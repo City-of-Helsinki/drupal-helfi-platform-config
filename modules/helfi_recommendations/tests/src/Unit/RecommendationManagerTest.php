@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_recommendations\Unit;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -42,13 +41,6 @@ class RecommendationManagerTest extends UnitTestCase {
    * @var \Prophecy\Prophecy\ObjectProphecy
    */
   protected $logger;
-
-  /**
-   * The mocked entity type manager.
-   *
-   * @var \Prophecy\Prophecy\ObjectProphecy
-   */
-  protected $entityTypeManager;
 
   /**
    * The mocked environment resolver.
@@ -92,7 +84,6 @@ class RecommendationManagerTest extends UnitTestCase {
     parent::setUp();
 
     $this->logger = $this->prophesize(LoggerInterface::class);
-    $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
     $this->topicsManager = $this->prophesize(TopicsManagerInterface::class);
     $this->elasticClient = ClientBuilder::create()->build();
@@ -100,7 +91,6 @@ class RecommendationManagerTest extends UnitTestCase {
 
     $this->recommendationManager = new RecommendationManager(
       $this->logger->reveal(),
-      $this->entityTypeManager->reveal(),
       $this->environmentResolver->reveal(),
       $this->topicsManager->reveal(),
       $this->elasticClient,

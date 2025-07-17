@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -39,8 +38,6 @@ class RecommendationManager implements RecommendationManagerInterface {
    *
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   The environment resolver.
    * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
@@ -53,7 +50,6 @@ class RecommendationManager implements RecommendationManagerInterface {
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
     private readonly LoggerInterface $logger,
-    private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
     #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
