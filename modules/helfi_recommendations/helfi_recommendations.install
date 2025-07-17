@@ -151,17 +151,10 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
             'en' => 'en',
           ],
         ],
-        'entity_bundle:node' => [
-          'id' => 'entity_bundle:node',
+        'request_path' => [
+          'id' => 'request_path',
           'negate' => FALSE,
-          'context_mapping' => [
-            'node' => '@node.node_route_context:node',
-          ],
-          'bundles' => [
-            'news_article' => 'news_article',
-            'news_item' => 'news_item',
-            'page' => 'page',
-          ],
+          'pages' => "/tpr-service/*\r\n/node/*",
         ],
       ],
     ],
@@ -176,13 +169,6 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
       ],
     ],
   ];
-
-  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-  $moduleHandler = \Drupal::service(ModuleHandlerInterface::class);
-
-  if ($moduleHandler->moduleExists('helfi_tpr_config')) {
-    // @todo Add to service pages.
-  }
 
   return $blocks;
 }
@@ -202,24 +188,7 @@ function helfi_recommendations_update_10001() : void {
 }
 
 /**
- * Remove recommendations block from landing pages.
- */
-function helfi_recommendations_update_10002() : void {
-  $recommendations_block = Drupal::configFactory()
-    ->getEditable('block.block.helfirecommendationsblock');
-  $raw_data = $recommendations_block->getRawData();
-
-  if (isset($raw_data['visibility']['entity_bundle:node']['bundles'])) {
-    if (array_key_exists('landing_page', $raw_data['visibility']['entity_bundle:node']['bundles'])) {
-      unset($raw_data['visibility']['entity_bundle:node']['bundles']['landing_page']);
-    }
-    $recommendations_block->setData($raw_data);
-    $recommendations_block->save();
-  }
-}
-
-/**
- * Re-trigger install hook to install view mode for tpr_service.
+ * Re-trigger install hook to install view mode and block for tpr_service.
  */
 function helfi_recommendations_update_10003() : void {
   helfi_recommendations_install(FALSE);

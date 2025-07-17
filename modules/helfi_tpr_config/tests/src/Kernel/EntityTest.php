@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_tpr_config\Kernel;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\helfi_tpr\Entity\Service as ServiceBase;
+use Drupal\helfi_tpr\Entity\Unit as UnitBase;
 use Drupal\helfi_tpr_config\Entity\Service;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\helfi_tpr_config\Entity\Unit;
@@ -77,6 +79,8 @@ class EntityTest extends KernelTestBase {
     ]);
     $unit->save();
     $this->assertInstanceOf(Unit::class, $unit);
+    // Make sure Unit extends the original unit class.
+    $this->assertInstanceOf(UnitBase::class, $unit);
 
     $url = $unit->getWebsiteUrl();
     $this->assertInstanceOf(Url::class, $url);
@@ -94,6 +98,8 @@ class EntityTest extends KernelTestBase {
     ]);
     $service->save();
     $this->assertInstanceOf(Service::class, $service);
+    // Make sure Unit extends the original service class.
+    $this->assertInstanceOf(ServiceBase::class, $service);
   }
 
 }
