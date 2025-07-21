@@ -89,20 +89,6 @@ class Unit extends BaseUnit {
       ->setDisplayConfigurable('view', TRUE)
       ->setSetting('allowed_formats', [0 => 'plain_text']);
 
-    $fields['field_recommended_topics'] = BaseFieldDefinition::create('suggested_topics_reference')
-      ->setName('field_recommended_topics')
-      ->setLabel(new TranslatableMarkup('Automatically selected recommendation topics', [], ['context' => 'Recommendations']))
-      ->setTargetEntityTypeId('tpr_service')
-      ->setReadonly(TRUE)
-      ->setTranslatable(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'suggested_topics_reference',
-        'weight' => 1000,
-        'module' => 'helfi_recommendations',
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', FALSE);
-
     return $fields;
   }
 
