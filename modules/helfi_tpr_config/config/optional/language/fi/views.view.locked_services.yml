@@ -32,9 +32,9 @@ display:
       exposed_form:
         options:
           submit_button: Suodata
-          exposed_sorts_label: Järjestä
-          sort_asc_label: Nouseva
-          sort_desc_label: Laskeva
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
           reset_button_label: Palauta
       empty:
         area_text_custom:

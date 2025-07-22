@@ -23,7 +23,7 @@ display:
         options:
           submit_button: Etsi
           reset_button_label: Palauta
-          exposed_sorts_label: Järjestä
+          exposed_sorts_label: Lajittele
           sort_asc_label: Nouseva
           sort_desc_label: Laskeva
       empty:
