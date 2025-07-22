@@ -52,6 +52,11 @@ hdbt_cookie_banner:
     - core/drupal
     - core/drupalSettings
 
+# The original hds-cookie-consent.min.js has been altered to include the
+# following changes:
+# - Appended the hel.fi color scheme styles to the hds-cookie-consent.min.js.
+# - Added data-nosnippet attribute to div.hds-cc__target to prevent Google
+#   using cookie banner texts in their search result snippets.
 hds_cookie_consent:
   version: 1.0.1
   header: true
