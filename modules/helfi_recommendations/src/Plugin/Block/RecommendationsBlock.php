@@ -133,7 +133,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     // cross-instance recommendations in production before allowing the
     // use for all editors. Remove these once we have validated the
     // cross-instance recommendations work as intended.
-    if ($entity->bundle() !== 'news_item' && $entity->bundle() !== 'news_article' && $entity->bundle() !== 'page') {
+    if ($entity->bundle() !== 'news_item' && $entity->bundle() !== 'news_article') {
       if (_helfi_recommendations_can_see_review_mode()) {
         return AccessResult::allowed();
       }
