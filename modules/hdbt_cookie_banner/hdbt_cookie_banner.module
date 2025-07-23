@@ -105,10 +105,4 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
     'settingsPageSelector' => '.cookie-settings',
     'settingsPageUrl' => $cookie_settings_service->getCookieSettingsPageUrl()?->setAbsolute()?->toString(),
   ];
-
-  // Fallback for the old variable used in HDBT theme react search JS.
-  // @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
-  $attachments['#attached']['drupalSettings']['helfi_react_search'] = [
-    'cookie_privacy_url' => $cookie_settings_service->getCookieSettingsPageUrl()?->setAbsolute()?->toString(),
-  ];
 }
