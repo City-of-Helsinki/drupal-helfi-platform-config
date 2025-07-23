@@ -216,13 +216,6 @@ function helfi_platform_config_page_attachments_alter(array &$attachments): void
  */
 function helfi_platform_config_theme() : array {
   return [
-    // @todo UHF-10862 Remove cookie_consent_intro once the HDBT cookie banner module is in use.
-    'cookie_consent_intro' => [
-      'variables' => [
-        'title' => NULL,
-        'content' => NULL,
-      ],
-    ],
     'hero_block' => [
       'variables' => [
         'title' => NULL,
