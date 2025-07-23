@@ -22,7 +22,6 @@
         "drupal/elasticsearch_connector": "^8.0@alpha",
         "drupal/entity_browser": "^2.5",
         "drupal/entity_usage": "^2.0@beta",
-        "drupal/eu_cookie_compliance": "1.26",
         "drupal/external_entities": "^2.0@beta",
         "drupal/field_group": "^3.1",
         "drupal/focal_point": "^2.0",
@@ -97,9 +96,6 @@
             },
             "drupal/default_content": {
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "./public/modules/contrib/helfi_platform_config/patches/default_content_2.0.0-alpha2-2640734_manual_imports-e164a354.patch"
-            },
-            "drupal/eu_cookie_compliance": {
-                "[#UHF-885] Helfi-specific customizations to EU Cookie Compliance": "./public/modules/contrib/helfi_platform_config/patches/eu_cookie_compliance_block_8.x-1.26.patch"
             },
             "drupal/diff": {
                 "Revision overview form problem (https://www.drupal.org/i/3390329)": "./public/modules/contrib/helfi_platform_config/patches/diff_8.x_1.3_revision_overview_form.patch"
