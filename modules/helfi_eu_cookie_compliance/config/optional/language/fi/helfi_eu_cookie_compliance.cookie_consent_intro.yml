@@ -1,5 +1,0 @@
-cc:
-  content:
-    value: '<p>Eväste (engl. cookie) on pienikokoinen tekstitiedosto, jonka verkkoselain tallentaa käyttäjän tietokoneelle tai mobiililaitteelle, kun vierailet verkkosivustolla. Se ei vahingoita käyttäjän laitetta tai tiedostoja. Evästeitä ei voi käyttää haittaohjelmien levittämiseen.<br><br>Evästeistä saatava käyttäjätieto auttaa meitä varmistamaan sivuston teknisen toimivuuden ja parantamaan digitaalisten palveluidemme laatua. Niiden avulla voimme kehittää sivuston käyttäjäystävällisyyttä ja helpottaa tiedon löytymistä.</p>'
-    format: full_html
-  title: Evästeasetukset

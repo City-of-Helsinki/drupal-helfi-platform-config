@@ -1,9 +1,0 @@
-helfi_eu_cookie_compliance.cookie_consent_content:
-  title: 'Cookie consent intro'
-  parent: helfi_eu_cookie_compliance.site_information
-  route_name: helfi_eu_cookie_compliance.cookie_consent_intro_form
-
-helfi_eu_cookie_compliance.eu_cookie_consent_content:
-  title: 'Cookie consent intro'
-  parent: eu_cookie_compliance
-  route_name: helfi_eu_cookie_compliance.cookie_consent_intro_form
