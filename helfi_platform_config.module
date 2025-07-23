@@ -409,10 +409,6 @@ function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
     $cookie_settings = \Drupal::service('hdbt_cookie_banner.cookie_settings');
     $variables['privacy_policy_url'] = $cookie_settings->getCookieSettingsPageUrl();
   }
-  // @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
-  elseif (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
-    $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
-  }
 }
 
 /**
