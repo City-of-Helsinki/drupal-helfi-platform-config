@@ -13,7 +13,7 @@
         "drupal/ckeditor5_paste_filter": "^1.0",
         "drupal/config_ignore": "^3.0",
         "drupal/config_rewrite": "^1.4",
-        "drupal/content_lock": "^2.2",
+        "drupal/content_lock": "^3.0",
         "drupal/crop": "^2.1",
         "drupal/default_content": "^2.0.0-alpha2",
         "drupal/diff": "^1.0",
@@ -82,9 +82,6 @@
     },
     "extra": {
         "patches": {
-            "drupal/content_lock": {
-                "[#UHF-4553] Fix unlock content button redirect": "./public/modules/contrib/helfi_platform_config/patches/content-lock-uhf-4553.patch"
-            },
             "drupal/core": {
                 "[#UHF-181] Hide untranslated menu links (https://www.drupal.org/project/drupal/issues/3091246)": "https://www.drupal.org/files/issues/2023-12-18/3091246--allow-menu-tree-manipulators-alter--24.patch",
                 "[#UHF-3812] Ajax exposed filters not working for multiple instances of the same Views block placed on one page (https://www.drupal.org/project/drupal/issues/3163299)": "https://www.drupal.org/files/issues/2023-05-07/3163299-104-D10.patch",
