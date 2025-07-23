@@ -15,6 +15,7 @@
         "drupal/config_rewrite": "^1.4",
         "drupal/content_lock": "^3.0",
         "drupal/crop": "^2.1",
+        "drupal/csp": "^2.2",
         "drupal/default_content": "^2.0.0-alpha2",
         "drupal/diff": "^1.0",
         "drupal/easy_breadcrumb": "^2.0",
