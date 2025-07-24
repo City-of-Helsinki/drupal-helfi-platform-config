@@ -1,9 +1,0 @@
-cookie_consent:
-  version: 1.0.0
-  header: true
-  js:
-    # The weight needs to be as low as drupal.init.js, which is -17.
-    assets/js/helfi-eu-cookie-compliance.js: { weight: -16 }
-  dependencies:
-    - core/drupal
-    - core/drupalSettings

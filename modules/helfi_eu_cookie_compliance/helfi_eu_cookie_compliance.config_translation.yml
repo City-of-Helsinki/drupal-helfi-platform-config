@@ -1,5 +1,0 @@
-helfi_eu_cookie_compliance.cookie_consent_intro:
-  title: 'Cookie consent intro'
-  base_route_name: helfi_eu_cookie_compliance.cookie_consent_intro_form
-  names:
-    - helfi_eu_cookie_compliance.cookie_consent_intro
