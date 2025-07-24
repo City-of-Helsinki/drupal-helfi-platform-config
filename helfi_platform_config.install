@@ -429,3 +429,19 @@ function helfi_platform_config_update_9326(): void {
       ->save();
   }
 }
+
+/**
+ * UHF-11973: Enable helfi_csp.
+ */
+function helfi_platform_config_update_9326(): void {
+  $projectRoles = \Drupal::service(ActiveProjectRoles::class);
+
+  // Only enable on core instances.
+  if ($projectRoles->hasRole(ProjectRoleEnum::Core)) {
+    if (!Drupal::moduleHandler()->moduleExists('helfi_csp')) {
+      Drupal::service('module_installer')->install([
+        'helfi_csp',
+      ]);
+    }
+  }
+}

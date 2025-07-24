@@ -1,0 +1,63 @@
+report-only:
+  enable: true
+  directives:
+    base-uri:
+      base: none
+    frame-ancestors:
+      base: self
+    default-src:
+      base: self
+    connect-src:
+      base: self
+      sources:
+        - 'https://www.youtube-nocookie.com'
+    img-src:
+      base: self
+      sources:
+        - 'data:'
+        - '*.blob.core.windows.net'
+    script-src:
+      base: self
+      flags:
+        - report-sample
+    style-src:
+      base: self
+      flags:
+        - report-sample
+    script-src-elem:
+      base: self
+      flags:
+        - report-sample
+        - unsafe-inline
+    style-src-elem:
+      base: self
+      flags:
+        - report-sample
+  reporting:
+    plugin: none
+enforce:
+  enable: false
+  directives:
+    object-src:
+      base: none
+    script-src:
+      base: any
+      flags:
+        - report-sample
+        - unsafe-inline
+    style-src:
+      base: any
+      flags:
+        - report-sample
+        - unsafe-inline
+    webrtc: block
+    worker-src:
+      base: self
+    base-uri:
+      base: self
+    form-action:
+      base: self
+    frame-ancestors:
+      base: self
+  reporting:
+    plugin: none

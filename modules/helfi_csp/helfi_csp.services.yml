@@ -1,0 +1,5 @@
+services:
+  helfi_csp.csp_event_subscriber:
+    class: Drupal\helfi_csp\EventSubscriber\CspEventSubscriber
+    tags:
+      - { name: event_subscriber }
