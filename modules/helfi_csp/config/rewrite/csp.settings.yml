@@ -1,4 +1,3 @@
-config_rewrite: 'replace'
 report-only:
   enable: true
   directives:
@@ -35,7 +34,7 @@ report-only:
       flags:
         - report-sample
   reporting:
-    plugin: none
+    plugin: raven
 enforce:
   enable: false
   directives:
