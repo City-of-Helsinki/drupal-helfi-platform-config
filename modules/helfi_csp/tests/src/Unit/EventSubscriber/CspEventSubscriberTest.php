@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_recommendations\Unit;
 
 use Drupal\csp\Csp;
+use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
 use Drupal\helfi_csp\EventSubscriber\CspEventSubscriber;
 use Drupal\Tests\UnitTestCase;
@@ -37,8 +38,18 @@ class CspEventSubscriberTest extends UnitTestCase {
   }
 
   /**
+   * Tests the getSubscribedEvents method.
+   *
+   * @covers ::getSubscribedEvents
+   */
+  public function testGetSubscribedEvents(): void {
+    $this->assertEquals([CspEvents::POLICY_ALTER => 'policyAlter'], CspEventSubscriber::getSubscribedEvents());
+  }
+
+  /**
    * Tests cleaning of bad directive values.
    *
+   * @covers ::policyAlter
    * @covers ::cleanDirectiveValues
    */
   public function testShowRecommendationsNoFields(): void {
