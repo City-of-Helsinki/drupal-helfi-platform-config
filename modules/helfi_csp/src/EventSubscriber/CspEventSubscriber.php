@@ -16,8 +16,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CspEventSubscriber implements EventSubscriberInterface {
 
   const BAD_DIRECTIVE_VALUES = [
-    // Drupal module select2 does some library path altering, which results in
-    // 'dist' being detected as an external domain.
+    // Drupal module select2 does library path altering, which in some cases
+    // results in 'dist' being detected as an external domain.
     'dist',
   ];
 
@@ -25,9 +25,13 @@ class CspEventSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
-    return [
-      CspEvents::POLICY_ALTER => 'policyAlter',
-    ];
+    $events = [];
+
+    if (class_exists(CspEvents::class)) {
+      $events[CspEvents::POLICY_ALTER] = 'policyAlter';
+    }
+
+    return $events;
   }
 
   /**
