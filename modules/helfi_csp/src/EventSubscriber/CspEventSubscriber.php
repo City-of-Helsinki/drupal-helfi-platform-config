@@ -6,6 +6,10 @@ namespace Drupal\helfi_csp\EventSubscriber;
 
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
+use Drupal\helfi_api_base\Environment\Environment;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\Project;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -20,6 +24,11 @@ class CspEventSubscriber implements EventSubscriberInterface {
     // results in 'dist' being detected as an external domain.
     'dist',
   ];
+
+  public function __construct(
+    private readonly EnvironmentResolverInterface $environmentResolver,
+  ) {
+  }
 
   /**
    * {@inheritdoc}
@@ -41,7 +50,28 @@ class CspEventSubscriber implements EventSubscriberInterface {
    *   The policy alter event.
    */
   public function policyAlter(PolicyAlterEvent $event): void {
-    $this->cleanDirectiveValues($event, ['script-src', 'style-src']);
+    // Clean up bad directive values.
+    $this->cleanDirectiveValues($event, [
+      'script-src',
+      'script-src-elem',
+      'style-src',
+      'style-src-elem',
+    ]);
+
+    // Add frontpage domain when on local dev environments to allow
+    // other instances to fetch frontpage assets.
+    $current_site = $this->environmentResolver->getActiveProject();
+    if ($current_site->getName() !== Project::ETUSIVU) {
+      $environment = $this->environmentResolver->getEnvironment(
+        Project::ETUSIVU,
+        $this->environmentResolver->getActiveEnvironmentName()
+      );
+      if ($environment instanceof Environment && $environment->getEnvironment() === EnvironmentEnum::Local) {
+        $event->getPolicy()->appendDirective('script-src-elem', $environment->getBaseUrl());
+        $event->getPolicy()->appendDirective('style-src-elem', $environment->getBaseUrl());
+        $event->getPolicy()->appendDirective('connect-src', $environment->getBaseUrl());
+      }
+    }
   }
 
   /**

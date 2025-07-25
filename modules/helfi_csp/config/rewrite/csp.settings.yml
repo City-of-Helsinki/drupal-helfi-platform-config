@@ -17,10 +17,12 @@ report-only:
       sources:
         - 'data:'
         - '*.blob.core.windows.net'
+        - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
     script-src:
       base: self
       flags:
         - report-sample
+        - unsafe-inline
     style-src:
       base: self
       flags:
@@ -30,10 +32,19 @@ report-only:
       flags:
         - report-sample
         - unsafe-inline
+      sources:
+        - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
     style-src-elem:
       base: self
       flags:
         - report-sample
+        - unsafe-inline
+      sources:
+        - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
+    font-src:
+      base: self
+      sources:
+        - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
   reporting:
     plugin: raven
 enforce:
