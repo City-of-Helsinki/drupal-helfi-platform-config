@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_recommendations\Unit;
 
+use DG\BypassFinals;
 use Drupal\csp\Csp;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
+use Drupal\helfi_api_base\Environment\Environment;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_csp\EventSubscriber\CspEventSubscriber;
 use Drupal\Tests\UnitTestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Unit tests for CspEventSubscriber.
@@ -29,12 +36,61 @@ class CspEventSubscriberTest extends UnitTestCase {
   protected CspEventSubscriber $cspEventSubscriber;
 
   /**
+   * The EnvironmentResolverInterface.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $environmentResolver;
+
+  /**
+   * The Environment.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $environment;
+
+  /**
+   * The Project.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $project;
+
+  /**
+   * The Event.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $event;
+
+  /**
+   * The Csp policy.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $policy;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
+    BypassFinals::enable();
 
-    $this->cspEventSubscriber = new CspEventSubscriber();
+    $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
+    $this->environment = $this->prophesize(Environment::class);
+    $this->project = $this->prophesize(Project::class);
+    $this->environmentResolver->getActiveEnvironmentName()->willReturn('local');
+    $this->environmentResolver->getActiveProject()->willReturn($this->project->reveal());
+    $this->environmentResolver->getEnvironment(Argument::any(), Argument::any())->willReturn($this->environment->reveal());
+    $this->environment->getEnvironment()->willReturn(EnvironmentEnum::Local);
+    $this->environment->getBaseUrl()->willReturn('https://local.example.com');
+
+    $this->event = $this->prophesize(PolicyAlterEvent::class);
+    $this->policy = $this->prophesize(Csp::class);
+    $this->event->getPolicy()->willReturn($this->policy->reveal());
+
+    $this->cspEventSubscriber = new CspEventSubscriber($this->environmentResolver->reveal());
   }
 
   /**
@@ -53,19 +109,52 @@ class CspEventSubscriberTest extends UnitTestCase {
    * @covers ::cleanDirectiveValues
    */
   public function testShowRecommendationsNoFields(): void {
-    $policy = $this->prophesize(Csp::class);
-    $policy->hasDirective('script-src')->willReturn(TRUE);
-    $policy->getDirective('script-src')->willReturn(['https://example.com', 'dist']);
-    $policy->hasDirective('style-src')->willReturn(TRUE);
-    $policy->getDirective('style-src')->willReturn(['https://example.com', 'dist']);
+    $this->project->getName()->willReturn(Project::ETUSIVU);
 
-    $event = $this->prophesize(PolicyAlterEvent::class);
-    $event->getPolicy()->willReturn($policy->reveal());
+    foreach ([
+      'script-src',
+      'style-src',
+      'script-src-elem',
+      'style-src-elem',
+    ] as $directive) {
+      $this->policy->hasDirective($directive)->willReturn(TRUE);
+      $this->policy->getDirective($directive)->willReturn(['https://example.com', 'dist']);
+      $this->policy->setDirective($directive, ['https://example.com'])->shouldBeCalled();
+    }
 
-    $policy->setDirective('script-src', ['https://example.com'])->shouldBeCalled();
-    $policy->setDirective('style-src', ['https://example.com'])->shouldBeCalled();
+    $this->cspEventSubscriber->policyAlter($this->event->reveal());
+  }
 
-    $this->cspEventSubscriber->policyAlter($event->reveal());
+  /**
+   * Tests cleaning of bad directive values on local environment.
+   *
+   * @covers ::policyAlter
+   * @covers ::cleanDirectiveValues
+   */
+  public function testPolicyAlterWithLocalEnvironment(): void {
+    $this->project->getName()->willReturn(Project::ASUMINEN);
+    $this->environment->getEnvironment()->willReturn(EnvironmentEnum::Local);
+
+    foreach ([
+      'script-src',
+      'style-src',
+      'script-src-elem',
+      'style-src-elem',
+    ] as $directive) {
+      $this->policy->hasDirective($directive)->willReturn(TRUE);
+      $this->policy->getDirective($directive)->willReturn(['https://example.com', 'dist']);
+      $this->policy->setDirective($directive, ['https://example.com'])->shouldBeCalled();
+    }
+
+    foreach ([
+      'script-src-elem',
+      'style-src-elem',
+      'connect-src',
+    ] as $directive) {
+      $this->policy->appendDirective($directive, 'https://local.example.com')->shouldBeCalled();
+    }
+
+    $this->cspEventSubscriber->policyAlter($this->event->reveal());
   }
 
 }
