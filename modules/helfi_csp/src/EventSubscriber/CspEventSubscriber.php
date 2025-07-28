@@ -60,8 +60,13 @@ class CspEventSubscriber implements EventSubscriberInterface {
 
     // Add frontpage domain when on local dev environments to allow
     // other instances to fetch frontpage assets.
-    $current_site = $this->environmentResolver->getActiveProject();
-    if ($current_site->getName() !== Project::ETUSIVU) {
+    $current_site = NULL;
+    try {
+      $current_site = $this->environmentResolver->getActiveProject();
+    }
+    catch (\InvalidArgumentException) {
+    }
+    if ($current_site instanceof Project && $current_site->getName() !== Project::ETUSIVU) {
       $environment = $this->environmentResolver->getEnvironment(
         Project::ETUSIVU,
         $this->environmentResolver->getActiveEnvironmentName()
