@@ -53,7 +53,7 @@ class SuggestedTopics extends ContentEntityBase implements SuggestedTopicsInterf
     try {
       $project = $environmentResolver->getActiveProject()->getName();
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
     }
 
     $this->set('parent_id', $parent->id());
@@ -70,17 +70,6 @@ class SuggestedTopics extends ContentEntityBase implements SuggestedTopicsInterf
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
     $fields += self::publishedBaseFieldDefinitions($entity_type);
-
-    $fields['keywords'] = BaseFieldDefinition::create('scored_entity_reference')
-      ->setLabel(new TranslatableMarkup('Keywords'))
-      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'taxonomy_term')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'entity_reference_label',
-        'weight' => 15,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
 
     $fields['parent_id'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Parent ID'))
@@ -110,6 +99,17 @@ class SuggestedTopics extends ContentEntityBase implements SuggestedTopicsInterf
       ->setLabel(t('Parent instance'))
       ->setDescription(t('The name of the instance where this entity is located at.'))
       ->setSetting('is_ascii', TRUE);
+
+    $fields['keywords'] = BaseFieldDefinition::create('scored_entity_reference')
+      ->setLabel(new TranslatableMarkup('Keywords'))
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'taxonomy_term')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'entity_reference_label',
+        'weight' => 15,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

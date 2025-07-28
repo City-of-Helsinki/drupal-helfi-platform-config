@@ -194,3 +194,28 @@ function helfi_tpr_config_update_9074(): void {
 function helfi_tpr_config_update_9077(): void {
   // This is automated now.
 }
+
+/**
+ * UHF-8717: Add a field to tpr_service and re-import configs.
+ */
+function helfi_tpr_config_update_9078() : void {
+  $fields['field_recommended_topics'] = BaseFieldDefinition::create('suggested_topics_reference')
+    ->setName('field_recommended_topics')
+    ->setLabel(new TranslatableMarkup('Automatically selected recommendation topics', [], ['context' => 'Recommendations']))
+    ->setTargetEntityTypeId('tpr_service')
+    ->setTargetBundle('tpr_service')
+    ->setReadonly(TRUE)
+    ->setTranslatable(FALSE)
+    ->setDisplayOptions('form', [
+      'type' => 'suggested_topics_reference',
+      'weight' => 1000,
+      'module' => 'helfi_recommendations',
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayConfigurable('view', FALSE);
+
+  foreach ($fields as $name => $field) {
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($name, 'tpr_service', 'helfi_tpr_config', $field);
+  }
+}

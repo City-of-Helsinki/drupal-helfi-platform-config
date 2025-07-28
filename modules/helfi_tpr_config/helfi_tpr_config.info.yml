@@ -10,6 +10,7 @@ dependencies:
   - 'helfi_media:helfi_media'
   - 'helfi_image_styles:helfi_image_styles'
   - 'helfi_tpr:helfi_tpr'
+  - 'helfi_recommendations:helfi_recommendations'
   - 'imagecache_external:imagecache_external'
   - 'views:views'
   - 'views_bulk_edit:views_bulk_edit'
