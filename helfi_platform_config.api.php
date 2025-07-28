@@ -13,7 +13,7 @@ declare(strict_types=1);
  */
 
 /**
- * Modify the list of paragraphs of first-paragraph-grey.
+ * Modify the list of paragraphs of first-paragraph-grey. Test.
  *
  * The paragraphs on the list will get the special class
  * has-first-paragraph-gray.
