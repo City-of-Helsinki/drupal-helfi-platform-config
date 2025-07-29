@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_csp\EventSubscriber;
+namespace Drupal\helfi_platform_config\EventSubscriber;
 
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
@@ -59,7 +59,11 @@ class CspEventSubscriber implements EventSubscriberInterface {
     ]);
 
     // Add frontpage domain when on local dev environments to allow
-    // other instances to fetch frontpage assets.
+    // other core instances to fetch frontpage assets. All core instances
+    // share the same domain in testing and production environments, so CSP
+    // value 'self' is sufficient there, but on local dev environments the
+    // domains are different, so frontpage domain needs to be added to allow
+    // proper behavior for things like the cookie banner.
     $current_site = NULL;
     try {
       $current_site = $this->environmentResolver->getActiveProject();

@@ -56,9 +56,26 @@ report-only:
         - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
         - 'https://*.hel.fi'
         - 'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud'
+  reporting:
+    plugin: raven
+enforce:
+  enable: true
+  directives:
+    object-src:
+      base: self
+      sources:
+        - palvelukartta.hel.fi
+        - 'https://*.youtube-nocookie.com'
+        - 'https://*.youtube.com'
+        - 'https://*.youtu.be'
+        - 'https://*.vimeo.com'
+        - 'https://suite.icareus.com'
+        - 'https://players.icareus.com'
+        - 'https://*.helsinkikanava.fi'
     frame-src:
       base: self
       sources:
+        - palvelukartta.hel.fi
         - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
         - 'https://*.hel.fi'
         - 'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud'
@@ -106,29 +123,3 @@ report-only:
         - 'https://wds.ace.teliacompany.com'
   reporting:
     plugin: raven
-enforce:
-  enable: false
-  directives:
-    object-src:
-      base: none
-    script-src:
-      base: any
-      flags:
-        - report-sample
-        - unsafe-inline
-    style-src:
-      base: any
-      flags:
-        - report-sample
-        - unsafe-inline
-    webrtc: block
-    worker-src:
-      base: self
-    base-uri:
-      base: self
-    form-action:
-      base: self
-    frame-ancestors:
-      base: self
-  reporting:
-    plugin: none

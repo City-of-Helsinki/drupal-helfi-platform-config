@@ -12,7 +12,7 @@ use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_csp\EventSubscriber\CspEventSubscriber;
+use Drupal\helfi_platform_config\EventSubscriber\CspEventSubscriber;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,8 +21,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 /**
  * Unit tests for CspEventSubscriber.
  *
- * @group helfi_csp
- * @coversDefaultClass \Drupal\helfi_csp\EventSubscriber\CspEventSubscriber
+ * @group helfi_platform_config
+ * @coversDefaultClass \Drupal\helfi_platform_config\EventSubscriber\CspEventSubscriber
  */
 class CspEventSubscriberTest extends UnitTestCase {
 
@@ -31,7 +31,7 @@ class CspEventSubscriberTest extends UnitTestCase {
   /**
    * The CspEventSubscriber.
    *
-   * @var \Drupal\helfi_csp\EventSubscriber\CspEventSubscriber
+   * @var \Drupal\helfi_platform_config\EventSubscriber\CspEventSubscriber
    */
   protected CspEventSubscriber $cspEventSubscriber;
 
