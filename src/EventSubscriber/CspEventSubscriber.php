@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Event subscriber for CSP policy alteration.
  *
- * @package Drupal\helfi_csp\EventSubscriber
+ * @package Drupal\helfi_platform_config\EventSubscriber
  */
 class CspEventSubscriber implements EventSubscriberInterface {
 
