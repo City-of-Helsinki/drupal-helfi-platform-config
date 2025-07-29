@@ -20,21 +20,6 @@ class Service extends BaseService {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    $fields['field_recommended_topics'] = BaseFieldDefinition::create('suggested_topics_reference')
-      ->setName('field_recommended_topics')
-      ->setLabel(new TranslatableMarkup('Automatically selected recommendation topics', [], ['context' => 'Recommendations']))
-      ->setTargetEntityTypeId('tpr_service')
-      ->setTargetBundle('tpr_service')
-      ->setReadonly(TRUE)
-      ->setTranslatable(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'suggested_topics_reference',
-        'weight' => 1000,
-        'module' => 'helfi_recommendations',
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', FALSE);
-
     $fields['hide_service_points'] = BaseFieldDefinition::create('boolean')
       ->setLabel(new TranslatableMarkup('Hide service units listing'))
       ->setDescription(new TranslatableMarkup('Select this if you link from the page to a filter search or another listing.'))

@@ -11,6 +11,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\linkit\Entity\Profile;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Install metatag configurations manually.
@@ -196,26 +197,24 @@ function helfi_tpr_config_update_9077(): void {
 }
 
 /**
- * UHF-8717: Add a field to tpr_service and re-import configs.
+ * UHF-12050: Remove field_recommended_topics from tpr_service.
  */
-function helfi_tpr_config_update_9078() : void {
-  $fields['field_recommended_topics'] = BaseFieldDefinition::create('suggested_topics_reference')
-    ->setName('field_recommended_topics')
-    ->setLabel(new TranslatableMarkup('Automatically selected recommendation topics', [], ['context' => 'Recommendations']))
-    ->setTargetEntityTypeId('tpr_service')
-    ->setTargetBundle('tpr_service')
-    ->setReadonly(TRUE)
-    ->setTranslatable(FALSE)
-    ->setDisplayOptions('form', [
-      'type' => 'suggested_topics_reference',
-      'weight' => 1000,
-      'module' => 'helfi_recommendations',
-    ])
-    ->setDisplayConfigurable('form', FALSE)
-    ->setDisplayConfigurable('view', FALSE);
+function helfi_tpr_config_update_9079(): void {
+  $fieldStorageDefinition = \Drupal::entityDefinitionUpdateManager()->getFieldStorageDefinition('field_recommended_topics', 'tpr_service');
 
-  foreach ($fields as $name => $field) {
-    \Drupal::entityDefinitionUpdateManager()
-      ->installFieldStorageDefinition($name, 'tpr_service', 'helfi_tpr_config', $field);
+  if ($fieldStorageDefinition instanceof FieldStorageDefinitionInterface) {
+    // Remove data from the storage.
+    $database = \Drupal::database();
+    $database->update('tpr_service_field_data')
+      ->fields([
+        'field_recommended_topics__target_id' => NULL,
+        'field_recommended_topics__show_block' => NULL,
+        'field_recommended_topics__instances' => NULL,
+        'field_recommended_topics__content_types' => NULL,
+        ])
+      ->execute();
+
+    // Uninstall the field storage definition.
+    \Drupal::entityDefinitionUpdateManager()->uninstallFieldStorageDefinition($fieldStorageDefinition);
   }
 }
