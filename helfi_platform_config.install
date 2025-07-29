@@ -413,3 +413,19 @@ function helfi_platform_config_update_9325(): void {
     }
   }
 }
+
+/**
+ * UHF-11420: Update content_lock config.
+ */
+function helfi_platform_config_update_9326(): void {
+  $configFactory = \Drupal::configFactory();
+
+  // We had issues with content_lock module
+  // update & missing config value on some instances.
+  if (\Drupal::moduleHandler()->moduleExists('content_lock')) {
+    $configFactory
+      ->getEditable('content_lock.settings')
+      ->set('verbose', TRUE)
+      ->save();
+  }
+}
