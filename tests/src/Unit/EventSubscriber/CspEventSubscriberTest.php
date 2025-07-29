@@ -151,6 +151,7 @@ class CspEventSubscriberTest extends UnitTestCase {
       'style-src-elem',
       'connect-src',
     ] as $directive) {
+      $this->policy->hasDirective($directive)->willReturn(TRUE);
       $this->policy->appendDirective($directive, 'https://local.example.com')->shouldBeCalled();
     }
 

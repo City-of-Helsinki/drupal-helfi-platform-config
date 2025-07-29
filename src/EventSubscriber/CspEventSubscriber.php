@@ -76,9 +76,16 @@ class CspEventSubscriber implements EventSubscriberInterface {
         $this->environmentResolver->getActiveEnvironmentName()
       );
       if ($environment instanceof Environment && $environment->getEnvironment() === EnvironmentEnum::Local) {
-        $event->getPolicy()->appendDirective('script-src-elem', $environment->getBaseUrl());
-        $event->getPolicy()->appendDirective('style-src-elem', $environment->getBaseUrl());
-        $event->getPolicy()->appendDirective('connect-src', $environment->getBaseUrl());
+        $policy = $event->getPolicy();
+        if ($policy->hasDirective('script-src-elem')) {
+          $policy->appendDirective('script-src-elem', $environment->getBaseUrl());
+        }
+        if ($policy->hasDirective('style-src-elem')) {
+          $policy->appendDirective('style-src-elem', $environment->getBaseUrl());
+        }
+        if ($policy->hasDirective('connect-src')) {
+          $policy->appendDirective('connect-src', $environment->getBaseUrl());
+        }
       }
     }
   }
