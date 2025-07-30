@@ -177,12 +177,16 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
  * Implements hook_update_dependencies().
  */
 function helfi_recommendations_update_dependencies() : array {
-  // Allow tpr config to remove field_recommended_topics before installing
-  // it here again.
-  $dependencies['helfi_recommendations']['10004'] = [
-    'helfi_tpr_config' => '9079',
-  ];
-  return $dependencies;
+  if (\Drupal::moduleHandler()->moduleExists('helfi_tpr_config')) {
+    // Allow tpr config to remove field_recommended_topics before installing
+    // it here again.
+    $dependencies['helfi_recommendations']['10004'] = [
+      'helfi_tpr_config' => '9079',
+    ];
+    return $dependencies;
+  }
+
+  return [];
 }
 
 /**
@@ -226,9 +230,11 @@ function helfi_recommendations_update_10003() : void {
  * Install field storage definition for field_recommended_topics on tpr_service.
  */
 function helfi_recommendations_update_10004() : void {
-  $field_storage_definitions = helfi_recommendations_bundle_fields('tpr_service', 'tpr_service');
+  if (\Drupal::moduleHandler()->moduleExists('helfi_tpr_config')) {
+    $field_storage_definitions = helfi_recommendations_bundle_fields('tpr_service', 'tpr_service');
 
-  foreach ($field_storage_definitions as $name => $field_storage_definition) {
-    \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition($name, 'tpr_service', 'helfi_recommendations', $field_storage_definition);
+    foreach ($field_storage_definitions as $name => $field_storage_definition) {
+      \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition($name, 'tpr_service', 'helfi_recommendations', $field_storage_definition);
+    }
   }
 }
