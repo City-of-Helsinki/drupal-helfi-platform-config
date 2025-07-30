@@ -211,7 +211,7 @@ function helfi_tpr_config_update_9079(): void {
         'field_recommended_topics__show_block' => NULL,
         'field_recommended_topics__instances' => NULL,
         'field_recommended_topics__content_types' => NULL,
-        ])
+      ])
       ->execute();
 
     // Uninstall the field storage definition.
