@@ -1,0 +1,17 @@
+uuid: 75d5783c-060c-4762-9221-340db13886a3
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 1.5_220w_147h
+label: '1.5_220w_147h'
+effects:
+  9ed55afd-660f-4c5b-a5f7-535ee60cc562:
+    uuid: 9ed55afd-660f-4c5b-a5f7-535ee60cc562
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 220
+      height: 147
+      crop_type: focal_point
