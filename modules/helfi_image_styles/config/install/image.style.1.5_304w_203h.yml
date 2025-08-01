@@ -1,0 +1,17 @@
+uuid: 938bf06d-e6b5-4bf0-9ff0-5d4b9727bc30
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 1.5_304w_203h
+label: '1.5_304w_203h'
+effects:
+  d0a10a90-1fb0-4fac-92d6-002cd101c480:
+    uuid: d0a10a90-1fb0-4fac-92d6-002cd101c480
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 304
+      height: 203
+      crop_type: focal_point
