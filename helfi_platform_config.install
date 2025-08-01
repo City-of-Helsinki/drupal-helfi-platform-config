@@ -429,3 +429,14 @@ function helfi_platform_config_update_9326(): void {
       ->save();
   }
 }
+
+/**
+ * UHF-11973: Enable csp.
+ */
+function helfi_platform_config_update_9327(): void {
+  if (!Drupal::moduleHandler()->moduleExists('csp')) {
+    Drupal::service('module_installer')->install([
+      'csp',
+    ]);
+  }
+}

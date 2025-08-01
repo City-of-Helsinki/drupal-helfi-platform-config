@@ -15,6 +15,7 @@
         "drupal/config_rewrite": "^1.4",
         "drupal/content_lock": "^3.0",
         "drupal/crop": "^2.1",
+        "drupal/csp": "^2.2",
         "drupal/default_content": "^2.0.0-alpha2",
         "drupal/diff": "^1.0",
         "drupal/easy_breadcrumb": "^2.0",
@@ -93,6 +94,9 @@
                 "[#UHF-9952, #UHF-9980] Duplicate <br /> tags (https://www.drupal.org/i/3083786)": "https://www.drupal.org/files/issues/2024-08-08/3083786--mr-8066--10-3-backport.patch",
                 "[#UHF-11025] Status message templates missing theme when bigpipe is enabled (https://www.drupal.org/i/3396318)": "./public/modules/contrib/helfi_platform_config/patches/drupal-3396318-status-message-bigpipe-mr-9329.patch",
                 "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch"
+            },
+            "drupal/csp": {
+                "[#UHF-11973] Allow installing csp in an install hook": "./public/modules/contrib/helfi_platform_config/patches/csp-uhf-11973.patch"
             },
             "drupal/default_content": {
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "./public/modules/contrib/helfi_platform_config/patches/default_content_2.0.0-alpha2-2640734_manual_imports-e164a354.patch"

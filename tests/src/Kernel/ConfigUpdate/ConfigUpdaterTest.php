@@ -29,6 +29,7 @@ class ConfigUpdaterTest extends KernelTestBase {
     'user',
     'helfi_platform_config',
     'helfi_user_roles',
+    'helfi_api_base',
   ];
 
   /**

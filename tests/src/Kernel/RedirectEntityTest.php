@@ -28,6 +28,7 @@ class RedirectEntityTest extends KernelTestBase {
     'path_alias',
     'config_rewrite',
     'helfi_platform_config',
+    'helfi_api_base',
   ];
 
   /**
