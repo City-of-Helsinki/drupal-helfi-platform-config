@@ -1,4 +1,3 @@
-config_rewrite: replace
 report-only:
   enable: true
   directives:
