@@ -84,7 +84,8 @@ final class ConfigUpdaterCommands extends DrushCommands {
     if (!$moduleName) {
       $module = $this->moduleHandler->getModule('helfi_platform_config');
 
-      $modules = $this->getModules($module->getPath() . '/modules/', ignore: $ignore);
+      $submodules = $this->getModules($module->getPath() . '/modules/', ignore: $ignore);
+      $modules = ['helfi_platform_config', ...$submodules];
     }
     foreach ($modules as $name) {
       $this->configUpdater->update($name);

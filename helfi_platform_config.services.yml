@@ -24,6 +24,9 @@ services:
     class: Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber
     arguments: []
 
+  Drupal\helfi_platform_config\EventSubscriber\CspEventSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspEventSubscriber
+
   Drupal\helfi_platform_config\EntityVersionMatcher: '@helfi_platform_config.entity_version_matcher'
   helfi_platform_config.entity_version_matcher:
     class: Drupal\helfi_platform_config\EntityVersionMatcher
