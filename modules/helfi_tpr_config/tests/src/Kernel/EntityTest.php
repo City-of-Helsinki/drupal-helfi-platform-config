@@ -44,7 +44,6 @@ class EntityTest extends KernelTestBase {
     'options',
     'token',
     'helfi_api_base',
-    'helfi_recommendations',
     'helfi_tpr',
     'helfi_tpr_config',
   ];
