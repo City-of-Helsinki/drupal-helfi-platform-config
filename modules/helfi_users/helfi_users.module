@@ -100,6 +100,7 @@ function helfi_users_user_cancel($edit, UserInterface $account, $method): void {
 function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface $target): void {
   $database = \Drupal::database();
   $tables = [
+    'node' => 'uuid',
     'node_field_data' => 'uid',
     'node_field_revision' => 'uid',
     'node_revision' => 'revision_uid',
