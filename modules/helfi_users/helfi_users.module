@@ -116,8 +116,6 @@ function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface 
       continue;
     }
 
-    // Notice: this does not invalidate any caches. This should be fine for
-    // HELfi, where user information is not rendered on public pages.
     $database->update($table)
       ->fields([$uid_field => $target->id()])
       ->condition($uid_field, $source->id())
@@ -129,5 +127,16 @@ function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface 
       '@target' => $target->id(),
       '@source' => $source->id(),
     ]));
+  }
+
+  // Invalidate cache for these nodes.
+  $affected_node_ids = $database->select('node_field_data')
+    ->fields('node_field_data', ['nid'])
+    ->condition('uid', $target->id())
+    ->execute()
+    ->fetchCol();
+
+  if (!empty($affected_node_ids)) {
+    \Drupal::entityTypeManager()->getStorage('node')->resetCache($affected_node_ids);
   }
 }
