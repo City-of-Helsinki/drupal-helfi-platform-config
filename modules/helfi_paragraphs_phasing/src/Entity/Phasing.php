@@ -32,7 +32,7 @@ class Phasing extends Paragraph implements ParagraphInterface {
    *   Value of boolean.
    */
   public function getShowNumbers(): string {
-    return $this->get('field_show_phase_numbers')
+    return (string) $this->get('field_show_phase_numbers')
       ->value;
   }
 
