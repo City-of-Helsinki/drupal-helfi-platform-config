@@ -3,19 +3,21 @@
 
   let loadReactAndShare = () => {
     if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
-      window.rnsData = {
-        apiKey: drupalSettings.reactAndShareApiKey,
-        disableFa: true,
-        disableFonts: true,
+      window.askem = {
+        settings: {
+          apiKey: drupalSettings.reactAndShareApiKey,
+          disableFonts: true,
+        }
       };
 
       if (drupalSettings.siteName !== undefined) {
-        window.rnsData.categories = [drupalSettings.siteName]
+        window.askem.settings.categories = [drupalSettings.siteName]
       }
 
       const scriptElement = document.createElement('script');
-      scriptElement.async = true;
-      scriptElement.src = 'https://cdn.reactandshare.com/plugin/rns.js';
+      scriptElement.integrity = "sha384-IyR9lHXB7FlXbifApQRUdDvlfxWnp7yOM7JP1Uo/xn4bIUlbRgxYOfEk80efwlD8";
+      scriptElement.crossOrigin = 'anonymous';
+      scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';
 
       document.body.appendChild(scriptElement);
 
