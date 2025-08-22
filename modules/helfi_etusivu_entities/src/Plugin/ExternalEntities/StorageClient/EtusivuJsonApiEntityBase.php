@@ -19,16 +19,12 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Utils;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for etusivu external entity storage client.
  */
-abstract class EtusivuJsonApiEntityBase extends StorageClientBase implements LoggerAwareInterface {
-
-  use LoggerAwareTrait;
+abstract class EtusivuJsonApiEntityBase extends StorageClientBase {
 
   /**
    * Custom cache tag.
@@ -93,7 +89,7 @@ abstract class EtusivuJsonApiEntityBase extends StorageClientBase implements Log
     catch (\InvalidArgumentException) {
     }
 
-    $instance->setLogger($container->get('logger.channel.helfi_etusivu_entities'));
+    $instance->logger = $container->get('logger.channel.helfi_etusivu_entities');
 
     return $instance;
   }

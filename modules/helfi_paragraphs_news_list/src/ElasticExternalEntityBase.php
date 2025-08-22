@@ -104,13 +104,13 @@ abstract class ElasticExternalEntityBase extends StorageClientBase {
 
     $prepared = [];
     foreach ($data['hits']['hits'] as $hit) {
-      // @todo extrantidfromrawdata has been removed
-      $id = $this->externalEntityType->getFieldMapper()
-        ->extractIdFromRawData($hit);
-      if (!$id) {
+      // @todo Better way to get id ?
+      $id = $this->externalEntityType->getFieldMapper('id')
+        ->extractFieldValuesFromRawData($hit);
+      if (!$id || !isset($id[0]['value'])) {
         continue;
       }
-      $prepared[$id] = $hit;
+      $prepared[$id[0]['value']] = $hit;
     }
     return $prepared;
   }

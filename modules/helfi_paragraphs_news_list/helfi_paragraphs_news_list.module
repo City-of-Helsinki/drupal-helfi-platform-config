@@ -63,7 +63,6 @@ function helfi_paragraphs_news_list_paragraph_view(
   array &$build,
   ParagraphInterface $entity,
   EntityViewDisplayInterface $display,
-  string $view_mode,
 ) : void {
   if (!$entity instanceof NewsFeedParagraph || !$display->getComponent('news_list')) {
     return;
