@@ -15,47 +15,62 @@ report-only:
         - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
         - 'https://*.hel.fi'
         - 'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud'
+        - 'https://data.reactandshare.com'
+        - 'https://webanalytics.digiaiiris.com'
+        - 'https://*.siteimprove.com'
+        - 'https://connect.facebook.net'
+        - 'https://hel.humany.net'
+        - 'https://wds.ace.teliacompany.com'
+        - 'https://chat.ace.teliacompany.net'
+        - 'https://api.ace.teliacompany.net'
     img-src:
-      base: self
+      base: any
       sources:
         - 'data:'
         - '*.blob.core.windows.net'
         - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
         - 'https://*.hel.fi'
         - 'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud'
+        - 'https://data.reactandshare.com'
     script-src:
       base: self
       flags:
         - report-sample
         - unsafe-inline
+        - unsafe-eval
+        - wasm-unsafe-eval
+      sources:
+        - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
+        - 'https://*.hel.fi'
+        - 'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud'
+        - 'https://cdn.reactandshare.com'
+        - 'https://data.reactandshare.com'
+        - 'https://webanalytics.digiaiiris.com'
+        - 'https://connect.facebook.net'
+        - 'https://wds.ace.teliacompany.com'
+        - 'https://e.infogram.com'
     style-src:
       base: self
       flags:
         - report-sample
-    script-src-elem:
-      base: self
-      flags:
-        - report-sample
         - unsafe-inline
       sources:
         - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
         - 'https://*.hel.fi'
         - 'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud'
-    style-src-elem:
-      base: self
-      flags:
-        - report-sample
-        - unsafe-inline
-      sources:
-        - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
-        - 'https://*.hel.fi'
-        - 'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud'
+        - 'https://fonts.googleapis.com'
+        - 'https://hel.humany.net'
+        - 'https://wds.ace.teliacompany.com'
     font-src:
       base: self
       sources:
         - 'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud'
         - 'https://*.hel.fi'
         - 'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud'
+        - 'https://fonts.gstatic.com'
+        - 'https://hel.humany.net'
+        - 'https://makasiini.hel.ninja'
+        - 'https://ace-knowledge-cdn.teliacompany.net'
     frame-src:
       base: self
       sources:
@@ -86,6 +101,7 @@ report-only:
         - 'https://dreambroker.com'
         - 'https://pollev.com'
         - 'https://e.infogram.com'
+        - 'https://infogram.com'
         - 'https://tyoterveys-helsinki-pv.mail-eur.net'
         - 'https://walls.io'
         - 'https://*.youtube-nocookie.com'
@@ -118,8 +134,12 @@ report-only:
         - 'https://players.icareus.com'
         - 'https://events.icareus.com'
         - 'https://*.helsinkikanava.fi'
+    media-src:
+      base: self
+      sources:
+        - 'data:'
   reporting:
-    plugin: raven
+    plugin: none
 enforce:
   enable: true
   directives:
@@ -165,6 +185,7 @@ enforce:
         - 'https://dreambroker.com'
         - 'https://pollev.com'
         - 'https://e.infogram.com'
+        - 'https://infogram.com'
         - 'https://tyoterveys-helsinki-pv.mail-eur.net'
         - 'https://walls.io'
         - 'https://*.youtube-nocookie.com'

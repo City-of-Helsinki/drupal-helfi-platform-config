@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\EventSubscriber;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
 use Drupal\helfi_api_base\Environment\Environment;
@@ -25,8 +26,17 @@ class CspEventSubscriber implements EventSubscriberInterface {
     'dist',
   ];
 
+  /**
+   * Constructor.
+   *
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
+   *   The environment resolver.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
+   */
   public function __construct(
     private readonly EnvironmentResolverInterface $environmentResolver,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
   }
 
@@ -57,6 +67,15 @@ class CspEventSubscriber implements EventSubscriberInterface {
       'style-src',
       'style-src-elem',
     ]);
+
+    // Allow access to Elasticsearch proxy.
+    $proxy_url = $this->configFactory->get('elastic_proxy.settings')?->get('elastic_proxy_url');
+    if ($proxy_url) {
+      $policy = $event->getPolicy();
+      if ($policy->hasDirective('connect-src')) {
+        $policy->appendDirective('connect-src', $proxy_url);
+      }
+    }
 
     // Add frontpage domain when on local dev environments to allow
     // other core instances to fetch frontpage assets. All core instances
