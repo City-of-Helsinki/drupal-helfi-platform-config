@@ -21,11 +21,11 @@
 
       document.body.appendChild(scriptElement);
 
-      $('.js-react-and-share__container .js-react-and-share-cookie-compliance').hide();
-      $('.js-react-and-share__container .rns').show();
+      $('.js-askem__container .js-askem-cookie-compliance').hide();
+      $('.js-askem__container .askem').show();
     }
     else {
-      $('.js-react-and-share__container .js-react-and-share-cookie-compliance').show();
+      $('.js-askem__container .js-askem-cookie-compliance').show();
     }
 
     // Only load once.
