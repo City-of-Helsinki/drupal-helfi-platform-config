@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Drupal\helfi_paragraphs_news_list;
 
 use Drupal\Core\Utility\Error;
-use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
+use Drupal\external_entities\Entity\ExternalEntityInterface;
+use Drupal\external_entities\StorageClient\StorageClientBase;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class used by taxonomy external entity.
  */
-abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase {
+abstract class ElasticExternalEntityBase extends StorageClientBase {
 
   /**
    * Which endpoint to query.
@@ -31,13 +30,6 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
    * @var \Elastic\Elasticsearch\Client
    */
   protected Client $client;
-
-  /**
-   * The logger.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected LoggerInterface $logger;
 
   /**
    * {@inheritdoc}
@@ -112,6 +104,7 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
 
     $prepared = [];
     foreach ($data['hits']['hits'] as $hit) {
+      // @todo extrantidfromrawdata has been removed
       $id = $this->externalEntityType->getFieldMapper()
         ->extractIdFromRawData($hit);
       if (!$id) {

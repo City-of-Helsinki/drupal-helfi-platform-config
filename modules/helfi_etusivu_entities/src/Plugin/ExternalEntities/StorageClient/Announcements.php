@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 
 /**
- * External entity storage client for News feed entities.
+ * External entity storage client for Announcement-entities.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "helfi_announcements",
  *   label = @Translation("Helfi: Announcements"),
  *   description = @Translation("Retrieves announcements from helfi")
@@ -42,4 +42,13 @@ final class Announcements extends EtusivuJsonApiEntityBase {
     return $this->request("/node/announcement", $query, $query['filter[langcode]']);
   }
 
+  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
+    // @todo Implement
+    return [];
+  }
+
+  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
+    // @todo Implement
+    return [];
+  }
 }

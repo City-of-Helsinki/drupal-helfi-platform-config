@@ -7,7 +7,7 @@ namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClien
 /**
  * External entity storage client for News neighbourhoods taxonomy terms.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "helfi_news_neighbourhoods",
  *   label = @Translation("Helfi: News neighbourhoods"),
  *   description = @Translation("Retrieves news neighbourhoods taxonomy terms from Helfi")
@@ -30,4 +30,13 @@ final class NewsNeighbourhoods extends TermBase {
     };
   }
 
+  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
+    // @todo Implement
+    return [];
+  }
+
+  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
+    // @todo Implement
+    return [];
+  }
 }

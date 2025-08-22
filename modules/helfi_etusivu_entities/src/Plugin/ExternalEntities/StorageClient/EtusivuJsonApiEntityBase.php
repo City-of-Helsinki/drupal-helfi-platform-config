@@ -9,8 +9,8 @@ use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
+use Drupal\external_entities\Entity\ExternalEntityInterface;
+use Drupal\external_entities\StorageClient\StorageClientBase;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Base class for etusivu external entity storage client.
  */
-abstract class EtusivuJsonApiEntityBase extends ExternalEntityStorageClientBase implements LoggerAwareInterface {
+abstract class EtusivuJsonApiEntityBase extends StorageClientBase implements LoggerAwareInterface {
 
   use LoggerAwareTrait;
 

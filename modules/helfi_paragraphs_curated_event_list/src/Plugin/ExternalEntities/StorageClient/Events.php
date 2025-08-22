@@ -6,23 +6,22 @@ namespace Drupal\helfi_paragraphs_curated_event_list\Plugin\ExternalEntities\Sto
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
+use Drupal\external_entities\Entity\ExternalEntityInterface;
+use Drupal\external_entities\StorageClient\StorageClientBase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Utils;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Extrernal entity storage client for LinkedEvents events.
+ * External entity storage client for LinkedEvents events.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "linkedevents_events",
  *   label = @Translation("LinkedEvents: Events"),
  *   description = @Translation("Retrieves 'events' content from LinkedEvents")
  * )
  */
-class Events extends ExternalEntityStorageClientBase {
+class Events extends StorageClientBase {
   protected const API_URL = 'https://api.hel.fi/linkedevents/v1';
   protected const EVENTS_BASE_URL = 'https://tapahtumat.hel.fi/';
 
@@ -32,13 +31,6 @@ class Events extends ExternalEntityStorageClientBase {
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
   private LanguageManagerInterface $languageManager;
-
-  /**
-   * The logger.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected LoggerInterface $logger;
 
   /**
    * The HTTP client service.
@@ -184,4 +176,13 @@ class Events extends ExternalEntityStorageClientBase {
     return $prepared;
   }
 
+  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
+    // @todo Implement
+    return [];
+  }
+
+  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
+    // @todo Implement
+    return [];
+  }
 }

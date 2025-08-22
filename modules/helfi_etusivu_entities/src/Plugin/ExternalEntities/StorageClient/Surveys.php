@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 
 /**
- * External entity storage client for News feed entities.
+ * External entity storage client for Survey-entities.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "helfi_surveys",
  *   label = @Translation("Helfi: Surveys"),
  *   description = @Translation("Retrieves surveys from helfi")
@@ -46,4 +46,13 @@ final class Surveys extends EtusivuJsonApiEntityBase {
     return $this->request("/node/survey", $query, $query['filter[langcode]']);
   }
 
+  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
+    // @todo Implement
+    return [];
+  }
+
+  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
+    // @todo Implement
+    return [];
+  }
 }

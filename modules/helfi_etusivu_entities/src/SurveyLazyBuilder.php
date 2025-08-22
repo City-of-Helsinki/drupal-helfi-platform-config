@@ -127,7 +127,7 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
   protected function handleRemoteEntities(array $remoteEntities): array {
     $nodes = [];
 
-    /** @var \Drupal\external_entities\ExternalEntityInterface $entity */
+    /** @var \Drupal\external_entities\Entity\ExternalEntityInterface $entity */
     foreach ($remoteEntities as $entity) {
       $linkUrl = NULL;
       $linkText = NULL;
