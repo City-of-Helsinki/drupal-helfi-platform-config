@@ -43,7 +43,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     assert($container->get('language_manager') instanceof ConfigurableLanguageManagerInterface);
     $instance->languageManager = $container->get('language_manager');
-    $instance->state = $container->get('askem.script_monitoring', TRUE);
+    $instance->state = $container->get('state');
     return $instance;
   }
 
