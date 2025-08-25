@@ -8,6 +8,7 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,6 +29,8 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
    */
   private ConfigurableLanguageManagerInterface $languageManager;
 
+  private StateInterface $state;
+
   /**
    * {@inheritdoc}
    */
@@ -40,6 +43,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     assert($container->get('language_manager') instanceof ConfigurableLanguageManagerInterface);
     $instance->languageManager = $container->get('language_manager');
+    $instance->state = $container->get('askem.script_monitoring', TRUE);
     return $instance;
   }
 
@@ -59,7 +63,6 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
     $sitename = $this->languageManager
       ->getLanguageConfigOverride('fi', 'system.site')
       ->get('name');
-    $askem_monitoring_enabled = \Drupal::state()->get('askem.script_monitoring', TRUE);
 
     $build['react_and_share'] = [
       '#theme' => 'react_and_share',
@@ -69,7 +72,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
         'drupalSettings' => [
           'reactAndShareApiKey' => $apikey,
           'siteName' => $sitename,
-          'askemMonitoringEnabled' => (bool) $askem_monitoring_enabled,
+          'askemMonitoringEnabled' => (bool) $this->state->get('askemMonitoringEnabled'),
         ],
       ],
     ];
