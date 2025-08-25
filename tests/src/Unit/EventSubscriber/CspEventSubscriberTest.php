@@ -17,6 +17,8 @@ use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Config\ConfigFactoryInterface;
 
 /**
  * Unit tests for CspEventSubscriber.
@@ -71,6 +73,13 @@ class CspEventSubscriberTest extends UnitTestCase {
   protected ObjectProphecy $policy;
 
   /**
+   * The Elastic proxy config.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $elasticProxyConfig;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -86,11 +95,16 @@ class CspEventSubscriberTest extends UnitTestCase {
     $this->environment->getEnvironment()->willReturn(EnvironmentEnum::Local);
     $this->environment->getBaseUrl()->willReturn('https://local.example.com');
 
+    $this->elasticProxyConfig = $this->prophesize(ImmutableConfig::class);
+    $this->elasticProxyConfig->get('elastic_proxy_url')->willReturn('');
+    $config = $this->prophesize(ConfigFactoryInterface::class);
+    $config->get('elastic_proxy.settings')->willReturn($this->elasticProxyConfig->reveal());
+
     $this->event = $this->prophesize(PolicyAlterEvent::class);
     $this->policy = $this->prophesize(Csp::class);
     $this->event->getPolicy()->willReturn($this->policy->reveal());
 
-    $this->cspEventSubscriber = new CspEventSubscriber($this->environmentResolver->reveal());
+    $this->cspEventSubscriber = new CspEventSubscriber($this->environmentResolver->reveal(), $config->reveal());
   }
 
   /**
@@ -154,6 +168,21 @@ class CspEventSubscriberTest extends UnitTestCase {
       $this->policy->hasDirective($directive)->willReturn(TRUE);
       $this->policy->appendDirective($directive, 'https://local.example.com')->shouldBeCalled();
     }
+
+    $this->cspEventSubscriber->policyAlter($this->event->reveal());
+  }
+
+  /**
+   * Tests policy alteration with elastic proxy config.
+   *
+   * @covers ::policyAlter
+   */
+  public function testPolicyAlterWithElasticProxyConfig(): void {
+    $this->elasticProxyConfig->get('elastic_proxy_url')->willReturn('https://elastic.example.com');
+    $this->project->getName()->willReturn(Project::ETUSIVU);
+    $this->policy->hasDirective(Argument::any())->willReturn(FALSE);
+    $this->policy->hasDirective('connect-src')->willReturn(TRUE);
+    $this->policy->appendDirective('connect-src', 'https://elastic.example.com')->shouldBeCalled();
 
     $this->cspEventSubscriber->policyAlter($this->event->reveal());
   }
