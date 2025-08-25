@@ -441,6 +441,9 @@ function helfi_platform_config_update_9327(): void {
   }
 }
 
+/**
+ * UHF-12102: Add state variable for askem monitoring.
+ */
 function helfi_platform_config_update_9328(): void {
   \Drupal::state()->set('askem.script_monitoring', TRUE);
 }

@@ -15,7 +15,10 @@
       }
 
       const errorTracker = {};
+      const errorFrequency = 10;
 
+      // Report errors to Sentry but throttle them so that only every tenth
+      // is sent to avoid spamming logs.
       function reportToSentryThrottled(errorKey, error) {
         if (!errorTracker[errorKey]) {
           errorTracker[errorKey] = { count: 0 };
@@ -24,7 +27,7 @@
         errorTracker[errorKey].count++;
 
         if (errorTracker[errorKey].count === 1 ||
-          errorTracker[errorKey].count % 10 === 0) {
+          errorTracker[errorKey].count % errorFrequency === 0) {
           Sentry.captureException(error);
         }
       }
@@ -32,7 +35,7 @@
       function handleScriptError(event) {
         const script = event.target;
         const src = script.src || "inline-script";
-        const err = new Error(`Script failed to load or integrity check failed: ${src}`);
+        const err = new Error(`Askem script failed to load or integrity check failed: ${src}`);
 
         reportToSentryThrottled(src, err);
       }
@@ -41,6 +44,8 @@
       scriptElement.integrity = "sha384-IyR9lHXB7FlXbifApQRUdDvlfxWnp7yOM7JP1Uo/xn4bIUlbRgxYOfEk80efwlD7";
       scriptElement.crossOrigin = 'anonymous';
       scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';
+
+      // Use the error monitoring only if it is set on.
       if (drupalSettings.askemMonitoringEnabled) {
         scriptElement.onerror = handleScriptError;
       }
