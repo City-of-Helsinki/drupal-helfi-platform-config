@@ -440,3 +440,7 @@ function helfi_platform_config_update_9327(): void {
     ]);
   }
 }
+
+function helfi_platform_config_update_9328(): void {
+  \Drupal::state()->set('askem.script_monitoring', TRUE);
+}

@@ -2,6 +2,9 @@ react_and_share:
   version: 1.0.0
   js:
     assets/js/reactAndShareSettings.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
 
 chat_enhancer:
   version: 1.0.0

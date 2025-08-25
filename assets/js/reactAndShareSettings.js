@@ -1,4 +1,4 @@
-(function ($, Drupal) {
+(function ($, Drupal, drupalSettings) {
   'use strict';
 
   let loadReactAndShare = () => {
@@ -14,10 +14,36 @@
         window.askem.settings.categories = [drupalSettings.siteName]
       }
 
+      const errorTracker = {};
+
+      function reportToSentryThrottled(errorKey, error) {
+        if (!errorTracker[errorKey]) {
+          errorTracker[errorKey] = { count: 0 };
+        }
+
+        errorTracker[errorKey].count++;
+
+        if (errorTracker[errorKey].count === 1 ||
+          errorTracker[errorKey].count % 10 === 0) {
+          Sentry.captureException(error);
+        }
+      }
+
+      function handleScriptError(event) {
+        const script = event.target;
+        const src = script.src || "inline-script";
+        const err = new Error(`Script failed to load or integrity check failed: ${src}`);
+
+        reportToSentryThrottled(src, err);
+      }
+
       const scriptElement = document.createElement('script');
-      scriptElement.integrity = "sha384-IyR9lHXB7FlXbifApQRUdDvlfxWnp7yOM7JP1Uo/xn4bIUlbRgxYOfEk80efwlD8";
+      scriptElement.integrity = "sha384-IyR9lHXB7FlXbifApQRUdDvlfxWnp7yOM7JP1Uo/xn4bIUlbRgxYOfEk80efwlD7";
       scriptElement.crossOrigin = 'anonymous';
       scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';
+      if (drupalSettings.askemMonitoringEnabled) {
+        scriptElement.onerror = handleScriptError;
+      }
 
       document.body.appendChild(scriptElement);
 
@@ -37,4 +63,4 @@
   } else {
     Drupal.cookieConsent.loadFunction(loadReactAndShare);
   }
-})(jQuery, Drupal);
+})(jQuery, Drupal, drupalSettings);

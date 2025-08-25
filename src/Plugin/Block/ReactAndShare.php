@@ -59,6 +59,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
     $sitename = $this->languageManager
       ->getLanguageConfigOverride('fi', 'system.site')
       ->get('name');
+    $askem_monitoring_enabled = \Drupal::state()->get('askem.script_monitoring', TRUE);
 
     $build['react_and_share'] = [
       '#theme' => 'react_and_share',
@@ -68,6 +69,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
         'drupalSettings' => [
           'reactAndShareApiKey' => $apikey,
           'siteName' => $sitename,
+          'askemMonitoringEnabled' => (bool) $askem_monitoring_enabled,
         ],
       ],
     ];
