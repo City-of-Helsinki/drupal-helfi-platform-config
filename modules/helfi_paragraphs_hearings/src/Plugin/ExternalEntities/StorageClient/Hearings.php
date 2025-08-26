@@ -104,10 +104,9 @@ final class Hearings extends StorageClientBase {
       'limit' => 3,
     ]);
 
-    $uri = sprintf('%s%s', self::API_URL, $query);
-
+    $url = sprintf('%s%s', self::API_URL, $query);
     try {
-      $content = $this->client->request('GET', $uri);
+      $content = $this->client->request('GET', $url);
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
       if (empty($json['results'])) {
         return [];
@@ -163,13 +162,19 @@ final class Hearings extends StorageClientBase {
     return array_keys($hearing['title']);
   }
 
-  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
-    // @todo Implement
-    return [];
+  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
+    return $this->transliterateDrupalFiltersAlter(
+      ['source' => [], 'drupal' => $parameters],
+      $parameters,
+      $context
+    );
   }
 
-  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
-    // @todo Implement
-    return [];
+  /**
+   * {@inheritDoc}
+   */
+  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL,): array {
+    return $this->query($parameters, $sorts, $start, $length);
   }
+
 }

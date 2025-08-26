@@ -176,13 +176,4 @@ class Events extends StorageClientBase {
     return $prepared;
   }
 
-  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
-    // @todo Implement
-    return [];
-  }
-
-  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
-    // @todo Implement
-    return [];
-  }
 }

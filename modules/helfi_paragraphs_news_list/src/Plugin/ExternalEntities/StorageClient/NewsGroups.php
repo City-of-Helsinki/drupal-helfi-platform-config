@@ -20,13 +20,4 @@ final class NewsGroups extends TermBase {
    */
   protected string $vid = 'news_group';
 
-  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
-    // @todo Implement
-    return [];
-  }
-
-  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
-    // @todo Implement
-    return [];
-  }
 }

@@ -42,13 +42,4 @@ final class Announcements extends EtusivuJsonApiEntityBase {
     return $this->request("/node/announcement", $query, $query['filter[langcode]']);
   }
 
-  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
-    // @todo Implement
-    return [];
-  }
-
-  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
-    // @todo Implement
-    return [];
-  }
 }
