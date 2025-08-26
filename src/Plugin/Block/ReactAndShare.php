@@ -29,6 +29,11 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
    */
   private ConfigurableLanguageManagerInterface $languageManager;
 
+  /**
+   * State.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
   private StateInterface $state;
 
   /**
