@@ -77,7 +77,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
         'drupalSettings' => [
           'reactAndShareApiKey' => $apikey,
           'siteName' => $sitename,
-          'askemMonitoringEnabled' => (bool) $this->state->get('askem.script_monitoring', TRUE)
+          'askemMonitoringEnabled' => (bool) $this->state->get('askem.script_monitoring', TRUE),
         ],
       ],
     ];
