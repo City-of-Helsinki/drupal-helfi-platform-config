@@ -40,7 +40,7 @@ final class RouteSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [
-      KernelEvents::REQUEST => [['rerouteParagraphCanonicalUrl'], ['rerouteExternalEntityCanonicalUrl']],
+      KernelEvents::REQUEST => [['rerouteParagraphCanonicalUrl'], ['restrictedCanonicalUrlRerouting']],
     ];
     return $events;
   }
@@ -66,7 +66,16 @@ final class RouteSubscriber implements EventSubscriberInterface {
     }
   }
 
-  public function rerouteExternalEntityCanonicalUrl(RequestEvent $event): void {
+  /**
+   * Redirect users from certain canonical routes.
+   *
+   * For example, announcements are rendered only in blocks, therefore
+   * we should prevent user from accessing the canonical url.
+   *
+   * @param RequestEvent $event
+   * @return void
+   */
+  public function restrictedCanonicalUrlRerouting(RequestEvent $event): void {
     $routeName = $this->currentRouteMatch->getRouteName();
     $entityBundles = ['announcement', 'survey'];
 
