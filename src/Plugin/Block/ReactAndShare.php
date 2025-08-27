@@ -8,6 +8,7 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,6 +30,13 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
   private ConfigurableLanguageManagerInterface $languageManager;
 
   /**
+   * State.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
+  private StateInterface $state;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -40,6 +48,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     assert($container->get('language_manager') instanceof ConfigurableLanguageManagerInterface);
     $instance->languageManager = $container->get('language_manager');
+    $instance->state = $container->get('state');
     return $instance;
   }
 
@@ -68,6 +77,7 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
         'drupalSettings' => [
           'reactAndShareApiKey' => $apikey,
           'siteName' => $sitename,
+          'askemMonitoringEnabled' => (bool) $this->state->get('askem.script_monitoring', TRUE),
         ],
       ],
     ];
