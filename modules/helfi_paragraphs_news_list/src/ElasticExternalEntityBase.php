@@ -42,7 +42,6 @@ abstract class ElasticExternalEntityBase extends StorageClientBase {
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->client = $container->get('helfi_paragraphs_news_list.elastic_client');
-    $instance->logger = $container->get('logger.factory')->get('helfi_external_entity');
 
     return $instance;
   }
