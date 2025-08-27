@@ -41,7 +41,7 @@
       }
 
       const scriptElement = document.createElement('script');
-      scriptElement.integrity = "sha384-IyR9lHXB7FlXbifApQRUdDvlfxWnp7yOM7JP1Uo/xn4bIUlbRgxYOfEk80efwlD8";
+      scriptElement.integrity = "sha384-fxefL+yfJDZZIDd0dpHPI0WdzOeSh9QecaVam/sAYq2NtZB2qCXzX/7r7cWE+Xef";
       scriptElement.crossOrigin = 'anonymous';
       scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';
 
