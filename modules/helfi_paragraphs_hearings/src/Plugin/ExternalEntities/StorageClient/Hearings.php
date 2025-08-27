@@ -8,26 +8,25 @@ use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
-use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
+use Drupal\external_entities\Entity\ExternalEntityInterface;
+use Drupal\external_entities\StorageClient\StorageClientBase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Utils;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * External entity storage client for hearings.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "helfi_hearings",
  *   label = @Translation("Helfi: Hearings"),
  *   description = @Translation("Retrieves hearings from hearing api")
  * )
  */
-final class Hearings extends ExternalEntityStorageClientBase {
+final class Hearings extends StorageClientBase {
 
   public const API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
 
@@ -46,13 +45,6 @@ final class Hearings extends ExternalEntityStorageClientBase {
    * @var \GuzzleHttp\ClientInterface
    */
   private ClientInterface $client;
-
-  /**
-   * The logger.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  private LoggerInterface $logger;
 
   /**
    * {@inheritdoc}
@@ -112,10 +104,9 @@ final class Hearings extends ExternalEntityStorageClientBase {
       'limit' => 3,
     ]);
 
-    $uri = sprintf('%s%s', self::API_URL, $query);
-
+    $url = sprintf('%s%s', self::API_URL, $query);
     try {
-      $content = $this->client->request('GET', $uri);
+      $content = $this->client->request('GET', $url);
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
       if (empty($json['results'])) {
         return [];
@@ -169,6 +160,24 @@ final class Hearings extends ExternalEntityStorageClientBase {
    */
   private static function getTranslationLanguages(array $hearing): array {
     return array_keys($hearing['title']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
+    return $this->transliterateDrupalFiltersAlter(
+      ['source' => [], 'drupal' => $parameters],
+      $parameters,
+      $context
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
+    return [];
   }
 
 }

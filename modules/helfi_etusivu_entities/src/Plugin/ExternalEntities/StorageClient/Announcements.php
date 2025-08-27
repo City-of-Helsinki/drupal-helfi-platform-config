@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 
 /**
- * External entity storage client for News feed entities.
+ * External entity storage client for Announcement-entities.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "helfi_announcements",
  *   label = @Translation("Helfi: Announcements"),
  *   description = @Translation("Retrieves announcements from helfi")
