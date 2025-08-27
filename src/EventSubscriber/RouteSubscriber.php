@@ -7,11 +7,7 @@ namespace Drupal\helfi_platform_config\EventSubscriber;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Routing\TrustedRedirectResponse;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
-use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Surveys;
-use Drupal\helfi_node_announcement\Entity\Announcement;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -31,7 +27,6 @@ final class RouteSubscriber implements EventSubscriberInterface {
    */
   public function __construct(
     private CurrentRouteMatch $currentRouteMatch,
-    private AccountInterface $currentUser,
   ) {
   }
 
@@ -39,10 +34,9 @@ final class RouteSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
-    $events = [
-      KernelEvents::REQUEST => [['rerouteParagraphCanonicalUrl'], ['restrictedCanonicalUrlRerouting']],
+    return [
+      KernelEvents::REQUEST => 'rerouteParagraphCanonicalUrl',
     ];
-    return $events;
   }
 
   /**
@@ -64,46 +58,6 @@ final class RouteSubscriber implements EventSubscriberInterface {
       $response = new TrustedRedirectResponse($redirectTo->toString(), 302);
       $event->setResponse($response);
     }
-  }
-
-  /**
-   * Redirect users from certain canonical routes.
-   *
-   * For example, announcements are rendered only in blocks, therefore
-   * we should prevent user from accessing the canonical url.
-   *
-   * @param RequestEvent $event
-   * @return void
-   */
-  public function restrictedCanonicalUrlRerouting(RequestEvent $event): void {
-    $routeName = $this->currentRouteMatch->getRouteName();
-    $entityBundles = ['announcement', 'survey'];
-
-    if (str_contains($routeName, 'canonical')) {
-      $entity = $this->currentRouteMatch->getParameter('node');
-      if (
-        $entity &&
-        in_array($entity->bundle(), $entityBundles)
-      ) {
-        $event->setResponse($this->getRedirectByAuthentication());
-      }
-    }
-  }
-
-  /**
-   * Prevent users from getting to certain node canonical routes.
-   *
-   * @return TrustedRedirectResponse
-   *   The redirect response based on authentication.
-   */
-  private function getRedirectByAuthentication(): TrustedRedirectResponse {
-    if ($this->currentUser->isAuthenticated()) {
-      $content_view = Url::fromRoute('view.content.page_1');
-      return new TrustedRedirectResponse($content_view->toString(), 302);
-    }
-
-    $frontpage = Url::fromRoute('<front>');
-    return new TrustedRedirectResponse($frontpage->toString(), 302);
   }
 
 }
