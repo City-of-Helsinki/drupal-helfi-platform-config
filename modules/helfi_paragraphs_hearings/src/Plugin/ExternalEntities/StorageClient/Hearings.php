@@ -174,7 +174,7 @@ final class Hearings extends StorageClientBase {
    * {@inheritDoc}
    */
   public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL,): array {
-    return $this->query($parameters, $sorts, $start, $length);
+    return [];
   }
 
 }
