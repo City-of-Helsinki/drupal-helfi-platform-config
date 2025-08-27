@@ -73,7 +73,7 @@ function helfi_node_survey_content_translation_status_access($form_id) : bool {
 function helfi_node_survey_entity_access(
   EntityInterface $entity,
   $operation,
-  AccountInterface $account
+  AccountInterface $account,
 ): AccessResult {
   if ($entity->bundle() !== 'survey') {
     return AccessResult::neutral();
@@ -89,7 +89,7 @@ function helfi_node_survey_entity_access(
 /**
  * Implements hook_form_alter().
  */
-function helfi_node_survey_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function helfi_node_survey_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   if ($form_id !== 'node_survey_edit_form') {
     return;
   }

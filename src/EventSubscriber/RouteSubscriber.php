@@ -22,8 +22,6 @@ final class RouteSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The current route match.
-   * @param \Drupal\Core\Session\AccountInterface $currentUser
-   *   The account interface.
    */
   public function __construct(
     private CurrentRouteMatch $currentRouteMatch,
