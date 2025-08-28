@@ -28,6 +28,7 @@ use Drupal\block\Entity\Block;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
+use Drupal\helfi_platform_config\ActionLog\ActionLogger;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
@@ -566,4 +567,18 @@ function helfi_platform_config_preprocess_html(&$variables): void {
   if ($matomo_site_id) {
     $variables['#attached']['drupalSettings']['matomo_site_id'] = $matomo_site_id;
   }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function helfi_platform_config_entity_presave(EntityInterface $entity): void {
+  \Drupal::service(ActionLogger::class)->log('Save', $entity);
+}
+
+/**
+ * Implements hook_entity_predelete().
+ */
+function helfi_platform_config_entity_predelete(EntityInterface $entity): void {
+  \Drupal::service(ActionLogger::class)->log('Delete', $entity);
 }

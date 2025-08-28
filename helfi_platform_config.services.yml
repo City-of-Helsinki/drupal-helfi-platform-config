@@ -1,3 +1,13 @@
+parameters:
+  helfi_platform_config.action_log_entities:
+    - 'node'
+    - 'media'
+    - 'taxonomy_term'
+    - 'tpr_unit'
+    - 'tpr_service'
+    - 'tpr_errand_service'
+    - 'redirect'
+    - 'user'
 services:
   _defaults:
     autoconfigure: true
@@ -80,3 +90,4 @@ services:
       - { name: helfi_platform_config.og_image_builder, priority: -100 }
 
   Drupal\helfi_platform_config\RedirectCleaner: ~
+  Drupal\helfi_platform_config\ActionLog\ActionLogger: ~
