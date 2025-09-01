@@ -6,6 +6,7 @@ namespace Drupal\helfi_paragraphs_news_list;
 
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
+use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\external_entities\StorageClient\StorageClientBase;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
@@ -103,7 +104,9 @@ abstract class ElasticExternalEntityBase extends StorageClientBase {
 
     $prepared = [];
     foreach ($data['hits']['hits'] as $hit) {
-      $id = $this->externalEntityType->getFieldMapper('id')
+      $xttn = $this->externalEntityType;
+      assert($xttn instanceof ExternalEntityType);
+      $id = $xttn->getFieldMapper('id')
         ->extractFieldValuesFromRawData($hit);
       if (!$id || !isset($id[0]['value'])) {
         continue;
