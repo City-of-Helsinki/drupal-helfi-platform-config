@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Retrieves hearings from hearing api")
  * )
  */
-final class Hearings extends RestClient  {
+final class Hearings extends RestClient {
 
   public const API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
 
