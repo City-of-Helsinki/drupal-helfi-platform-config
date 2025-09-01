@@ -21,7 +21,7 @@ class PublishableRedirectRepository extends RedirectRepository {
   /**
    * {@inheritDoc}
    */
-  public function findMatchingRedirect($source_path, array $query = [], $language = Language::LANGCODE_NOT_SPECIFIED, ?CacheableMetadata $cacheable_metadata = null): ?Redirect {
+  public function findMatchingRedirect($source_path, array $query = [], $language = Language::LANGCODE_NOT_SPECIFIED, ?CacheableMetadata $cacheable_metadata = NULL): ?Redirect {
     $redirect = parent::findMatchingRedirect($source_path, $query, $language);
 
     // If the redirect is not published, return NULL instead.
