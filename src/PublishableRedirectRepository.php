@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Language\Language;
 use Drupal\redirect\Entity\Redirect;
@@ -20,7 +21,7 @@ class PublishableRedirectRepository extends RedirectRepository {
   /**
    * {@inheritDoc}
    */
-  public function findMatchingRedirect($source_path, array $query = [], $language = Language::LANGCODE_NOT_SPECIFIED): ?Redirect {
+  public function findMatchingRedirect($source_path, array $query = [], $language = Language::LANGCODE_NOT_SPECIFIED, ?CacheableMetadata $cacheable_metadata = null): ?Redirect {
     $redirect = parent::findMatchingRedirect($source_path, $query, $language);
 
     // If the redirect is not published, return NULL instead.
