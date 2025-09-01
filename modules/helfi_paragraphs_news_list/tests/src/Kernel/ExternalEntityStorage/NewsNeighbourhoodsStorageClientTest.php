@@ -72,7 +72,6 @@ class NewsNeighbourhoodsStorageClientTest extends TermStorageClientTestBase {
     // Drupal query interface is not quite flexible enough to support all the
     // options and parameters geo_distance sort needs, so the implementation
     // uses setParameter from external_entities Query class.
-
     $query_parameter = [
       'location', [
         [
@@ -91,7 +90,7 @@ class NewsNeighbourhoodsStorageClientTest extends TermStorageClientTestBase {
           // Unmapped field cause the search to fail.
           'ignore_unmapped' => FALSE,
         ],
-      ], 'GEO_DISTANCE_SORT'
+      ], 'GEO_DISTANCE_SORT',
     ];
 
     $query->setParameters([$query_parameter]);

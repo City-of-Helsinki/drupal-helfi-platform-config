@@ -10,7 +10,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\StorageClientBase;
+use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Base class for etusivu external entity storage client.
  */
-abstract class EtusivuJsonApiEntityBase extends StorageClientBase {
+abstract class EtusivuJsonApiEntityBase extends RestClient {
 
   /**
    * Custom cache tag.

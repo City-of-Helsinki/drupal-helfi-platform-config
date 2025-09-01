@@ -9,7 +9,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\StorageClientBase;
+use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Retrieves hearings from hearing api")
  * )
  */
-final class Hearings extends StorageClientBase {
+final class Hearings extends RestClient  {
 
   public const API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
 
