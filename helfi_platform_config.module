@@ -42,7 +42,6 @@ function helfi_platform_config_entity_type_build(array &$entity_types): void {
   if (isset($entity_types['redirect'])) {
     $entity_types['redirect']->setClass(PublishableRedirect::class);
     $entity_types['redirect']->set('entity_keys', $entity_types['redirect']->getKeys() + [
-      'published' => 'status',
       'custom' => 'is_custom',
     ]);
   }
