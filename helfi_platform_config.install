@@ -20,6 +20,18 @@ use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
 
 /**
+ * Implements hook_update_dependencies().
+ */
+function helfi_platform_config_update_dependencies() : array {
+  // Run redirect update hook before helfi_platform_config_update_9328().
+  $dependencies['helfi_platform_config']['9328'] = [
+    'redirect' => '8110',
+  ];
+
+  return $dependencies;
+}
+
+/**
  * UHF-9113: Remove obsolete hotjar permission.
  */
 function helfi_platform_config_update_9301(): void {
