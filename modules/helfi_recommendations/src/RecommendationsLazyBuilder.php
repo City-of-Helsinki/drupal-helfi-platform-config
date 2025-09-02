@@ -104,24 +104,12 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
   private function getRecommendations(ContentEntityInterface $entity): array {
     $recommendations = [];
 
-    $options = [];
-    if (in_array($entity->bundle(), ['news_item', 'news_article'])) {
-      // @todo This is to preserve the functionality from the previous
-      // implementation. Remove these once we have validated the
-      // cross-instance recommendations work as intended.
-      $options = [
-        'instances' => ['etusivu'],
-        'content_types' => ['node' => ['news_item', 'news_article']],
-      ];
-    }
-
     try {
       $recommendations = $this->recommendationManager
         ->getRecommendations(
           $entity,
           3,
           $entity->language()->getId(),
-          $options,
         );
     }
     catch (\Exception $exception) {

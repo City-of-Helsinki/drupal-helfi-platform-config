@@ -252,58 +252,9 @@ function helfi_recommendations_preprocess_recommendations_block(array &$variable
  * suggested_topics_reference.
  */
 function helfi_recommendations_field_widget_complete_suggested_topics_reference_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) : void {
-  // Hide the field from users other than administrators, when on content types
-  // that are not news items or articles.
-  // @todo This is a temporary restriction to allow validating the cross-instance
-  // recommendations in production before allowing the use for all editors.
-  // Remove this once we have validated the cross-instance recommendations works
-  // as intended.
-  $entity = $context['items']->getEntity();
-  assert($entity instanceof ContentEntityInterface);
-  if (
-    $entity->bundle() !== 'news_item' &&
-    $entity->bundle() !== 'news_article' &&
-    !_helfi_recommendations_can_see_review_mode()
-  ) {
-    return;
-  }
-
   // Wrap the field in a details element to allow users to expand it.
   $field_widget_complete_form['#prefix'] = '<details><summary>' . t('Automatically recommended content', options: ['context' => 'helfi_recommendations']) . '</summary>';
   $field_widget_complete_form['#suffix'] = '</details>';
-}
-
-/**
- * Implements hook_field_widget_single_element_form_alter().
- *
- * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter() for
- * suggested_topics_reference.
- *
- * @todo This is a temporary restriction to allow validating the cross-instance
- * recommendations in production before allowing the use for all editors.
- * Remove this once we have validated the cross-instance recommendations works
- * as intended.
- */
-function helfi_recommendations_field_widget_single_element_suggested_topics_reference_form_alter(array &$element, FormStateInterface $formState, array &$context) : void {
-  $entity = $context['items']->getEntity();
-  assert($entity instanceof ContentEntityInterface);
-
-  if ($entity->bundle() === 'news_item' || $entity->bundle() === 'news_article') {
-    // Hide instance and content type selection from news items and articles.
-    // Not allowed even for admin users to preserve the single instance
-    // behaviour from the previous implementation for now.
-    $element['instances']['#access'] = FALSE;
-    $element['content_types']['#access'] = FALSE;
-  }
-  else {
-    // Hide suggestions field in other content types from users other than
-    // administrators.
-    $element['#access'] = FALSE;
-
-    if (_helfi_recommendations_can_see_review_mode()) {
-      $element['#access'] = TRUE;
-    }
-  }
 }
 
 /**
