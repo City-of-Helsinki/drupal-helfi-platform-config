@@ -225,12 +225,12 @@ display:
         status:
           id: status
           table: redirect
-          field: status
+          field: enabled
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: redirect
-          entity_field: status
+          entity_field: enabled
           plugin_id: field
           label: Published
           exclude: false

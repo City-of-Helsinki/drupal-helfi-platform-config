@@ -104,7 +104,7 @@ class RedirectEntityTest extends KernelTestBase {
       ->getStorage('redirect');
 
     $redirects = $storage->loadByProperties([
-      'status' => 1,
+      'enabled' => 1,
     ]);
 
     // One redirect should be created when path alias is updated.
@@ -120,17 +120,17 @@ class RedirectEntityTest extends KernelTestBase {
 
     $tests = [
       [
-        'status' => 1,
+        'enabled' => 1,
         'is_custom' => 1,
         'created' => strtotime('-1 year'),
       ],
       [
-        'status' => 1,
+        'enabled' => 1,
         'is_custom' => 0,
         'created' => strtotime('-1 year'),
       ],
       [
-        'status' => 1,
+        'enabled' => 1,
         'is_custom' => 0,
         'created' => strtotime('now'),
       ],
