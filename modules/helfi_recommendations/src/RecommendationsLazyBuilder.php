@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Utility\Error;
+use Drupal\user\UserInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -37,9 +38,15 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
   /**
    * {@inheritdoc}
    */
-  public function build(bool $isAnonymous, string $entityType, string $entityId, string $langcode): array {
-    $entity = $this->entityTypeManager->getStorage($entityType)->load($entityId);
+  public function build(int $userId, string $entityType, string $entityId, string $langcode): array {
+    $user = $this->entityTypeManager->getStorage('user')->load($userId);
+    if (!$user instanceof UserInterface) {
+      return [];
+    }
+    $isAnonymous = $user->isAnonymous();
+    $canSeeScore = $user->hasPermission('view recommendation score');
 
+    $entity = $this->entityTypeManager->getStorage($entityType)->load($entityId);
     if (!$entity instanceof ContentEntityInterface) {
       return [];
     }
@@ -83,7 +90,12 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
     // usage to get the codebase D11 compatible. Let's revisit this
     // once we've updated to D11.
     $response['#rows'] = $recommendations;
-    foreach ($recommendations as $recommendation) {
+    foreach ($response['#rows'] as &$recommendation) {
+      // Show recommendation score to users who have the permission.
+      if ($canSeeScore && !empty($recommendation['score'])) {
+        $recommendation['helptext'] = $this->t('Search result score: @score', ['@score' => $recommendation['score']]);
+      }
+
       if (!empty($recommendation['uuid'])) {
         $response['#cache']['tags'][] = $this->recommendationManager->getCacheTagForUuid($recommendation['uuid']);
       }

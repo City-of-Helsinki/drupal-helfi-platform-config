@@ -76,7 +76,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       '#lazy_builder' => [
         RecommendationsLazyBuilder::class . ':build',
         [
-          'isAnonymous' => $this->currentUser->isAnonymous(),
+          'userId' => $this->currentUser->id(),
           'entityType' => $entity->getEntityTypeId(),
           'entityId' => $entity->id(),
           'langcode' => $entity->language()->getId(),
@@ -95,7 +95,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   public function getCacheContexts(): array {
     return Cache::mergeContexts(
       parent::getCacheContexts(),
-      ['languages:language_content', 'user.roles:anonymous', 'url.path'],
+      ['languages:language_content', 'user.roles', 'url.path'],
     );
   }
 
