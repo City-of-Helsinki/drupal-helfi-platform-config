@@ -7,7 +7,7 @@ namespace Drupal\helfi_paragraphs_news_list;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
-use Drupal\external_entities\StorageClient\StorageClientBase;
+use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Base class used by taxonomy external entity.
  */
-abstract class ElasticExternalEntityBase extends StorageClientBase {
+abstract class ElasticExternalEntityBase extends RestClient {
 
   /**
    * Which endpoint to query.
