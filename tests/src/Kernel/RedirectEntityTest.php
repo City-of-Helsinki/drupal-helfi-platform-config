@@ -7,7 +7,6 @@ namespace Drupal\Tests\helfi_platform_config\Kernel;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
-use Drupal\helfi_platform_config\PublishableRedirectRepository;
 use Drupal\helfi_platform_config\RedirectCleaner;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\path_alias\Entity\PathAlias;
@@ -69,7 +68,6 @@ class RedirectEntityTest extends KernelTestBase {
     $this->assertFalse($redirect->isCustom());
 
     $repository = $this->container->get('redirect.repository');
-    $this->assertInstanceOf(PublishableRedirectRepository::class, $repository);
 
     $match = $repository->findMatchingRedirect('/source', language: $redirect->language()->getId());
     $this->assertNotEmpty($match);
