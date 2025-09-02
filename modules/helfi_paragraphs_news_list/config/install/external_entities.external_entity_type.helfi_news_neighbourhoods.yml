@@ -1,28 +1,134 @@
 uuid: 2d4aee18-cd16-4e50-b1fd-a5d1caa0e656
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - helfi_paragraphs_news_list
 id: helfi_news_neighbourhoods
 label: 'Helfi: News neighbourhoods'
 label_plural: 'Helfi: News neighbourhoods'
 description: 'Retrieves news neighbourhoods taxonomy terms from Helfi'
-generate_aliases: null
+content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
-field_mapper_id: jsonpath
-field_mapper_config:
-  field_mappings:
-    id:
-      value: '$._source.uuid_langcode[0]'
-    uuid:
-      value: '$._source.uuid[0]'
-    title:
-      value: '$._source.name[0]'
-    tid:
-      value: '$._source.tid[0]'
-    location:
-      value: '$._source.field_location'
-storage_client_id: helfi_news_neighbourhoods
-storage_client_config: {  }
+debug_level: 0
+generate_aliases: false
+field_mappers:
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.uuid_langcode[0]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.uuid[0]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.name[0]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  langcode:
+    id: null
+    config: {  }
+  default_langcode:
+    id: null
+    config: {  }
+  tid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.tid[0]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+field_mapping_notes: ''
+data_aggregator:
+  id: single
+  config:
+    storage_clients:
+      -
+        id: helfi_news_neighbourhoods
+        config:
+          endpoint: 'https://localhost'
+          endpoint_options:
+            single: ''
+            count: ''
+            count_mode: entities
+            cache: 0
+            limit_qcount: '0'
+            limit_qtime: '0'
+            requests_by_user: false
+          response_format: json
+          data_path:
+            list: ''
+            single: ''
+            keyed_by_id: 0
+            count: ''
+          pager:
+            default_limit: '0'
+            type: pagination
+            page_parameter: ''
+            page_parameter_type: pagenum
+            page_start_one: 0
+            always_query: 0
+            page_size_parameter: ''
+            page_size_parameter_type: pagesize
+          api_key:
+            type: none
+            header_name: ''
+            key: ''
+          http:
+            headers: ''
+          parameters:
+            list: {  }
+            list_param_mode: query
+            single: {  }
+            single_param_mode: query
+          filtering:
+            drupal: 0
+            basic: 0
+            basic_fields: {  }
+            list_support: none
+            list_join: ''
+data_aggregator_notes: ''
 persistent_cache_max_age: 86400
 annotation_entity_type_id: null
 annotation_bundle_id: null

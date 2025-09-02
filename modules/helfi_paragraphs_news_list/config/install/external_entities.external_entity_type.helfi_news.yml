@@ -207,7 +207,7 @@ data_aggregator:
       -
         id: helfi_news
         config:
-          endpoint: 'https://google.com'
+          endpoint: 'https://localhost'
           endpoint_options:
             single: ''
             count: ''

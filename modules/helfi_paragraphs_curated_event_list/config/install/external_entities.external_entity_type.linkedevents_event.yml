@@ -1,34 +1,201 @@
 uuid: 66fe8cbc-203c-40aa-ac7b-6e0e89470312
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - helfi_paragraphs_curated_event_list
 id: linkedevents_event
 label: 'LinkedEvents: Event'
 label_plural: 'LinkedEvents: Events'
 description: 'Event entities from https://api.hel.fi/linkedevents.'
-generate_aliases: false
+content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
-field_mapper_id: jsonpath
-field_mapper_config:
-  field_mappings:
-    id:
-      value: $.id
-    uuid:
-      value: $.id
-    title:
-      value: $.title
-    main_image:
-      uri: '$.images[0].url'
-      title: '$.images[0].alt_text'
-    start_time:
-      value: $.start_time
-    end_time:
-      value: $.end_time
-    external_link:
-      uri: $.external_link
-      title: $.clean_title
-storage_client_id: linkedevents_events
-storage_client_config: null
+debug_level: 0
+generate_aliases: false
+field_mappers:
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.title
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  langcode:
+    id: null
+    config: {  }
+  default_langcode:
+    id: null
+    config: {  }
+  main_image:
+    id: generic
+    config:
+      property_mappings:
+        uri:
+          id: jsonpath
+          config:
+            mapping: '$.images[0].url'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+        title:
+          id: jsonpath
+          config:
+            mapping: '$.images[0].alt_text'
+            required_field: false
+            main_property: false
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  start_time:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.start_time
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  end_time:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.end_time
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  external_link:
+    id: generic
+    config:
+      property_mappings:
+        uri:
+          id: jsonpath
+          config:
+            mapping: $.external_link
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+        title:
+          id: jsonpath
+          config:
+            mapping: $.clean_title
+            required_field: false
+            main_property: false
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+field_mapping_notes: ''
+data_aggregator:
+  id: single
+  config:
+    storage_clients:
+      -
+        id: linkedevents_events
+        config:
+          endpoint: 'https://localhost'
+          endpoint_options:
+            single: ''
+            count: ''
+            count_mode: entities
+            cache: 0
+            limit_qcount: '0'
+            limit_qtime: '0'
+            requests_by_user: false
+          response_format: json
+          data_path:
+            list: ''
+            single: ''
+            keyed_by_id: 0
+            count: ''
+          pager:
+            default_limit: '0'
+            type: pagination
+            page_parameter: ''
+            page_parameter_type: pagenum
+            page_start_one: 0
+            always_query: 0
+            page_size_parameter: ''
+            page_size_parameter_type: pagesize
+          api_key:
+            type: none
+            header_name: ''
+            key: ''
+          http:
+            headers: ''
+          parameters:
+            list: {  }
+            list_param_mode: query
+            single: {  }
+            single_param_mode: query
+          filtering:
+            drupal: 0
+            basic: 0
+            basic_fields: {  }
+            list_support: none
+            list_join: ''
+data_aggregator_notes: ''
 persistent_cache_max_age: 0
 annotation_entity_type_id: null
 annotation_bundle_id: null

@@ -1,44 +1,266 @@
 uuid: 072df4c4-3de5-44f9-bd4f-c1d09006ce88
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - helfi_etusivu_entities
 id: helfi_announcements
 label: 'Helfi: Announcements'
 label_plural: 'Helfi: Announcements'
 description: ''
-generate_aliases: null
+content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
-field_mapper_id: jsonpath
-field_mapper_config:
-  field_mappings:
-    id:
-      value: $.id
-    uuid:
-      value: $.id
-    title:
-      value: '$.attributes["title"]'
-    published_at:
-      value: '$.attributes["published_at"]'
-    unpublish_on:
-      value: '$.attributes["unpublish_on"]'
-    notification:
-      value: '$.attributes["notification"]'
-    langcode:
-      value: '$.attributes["langcode"]'
-    body:
-      value: '$.attributes["body"]["value"]'
-    status:
-      value: '$.attributes["status"]'
-    announcement_type:
-      value: '$.attributes["field_announcement_type"]'
-    announcement_link_text:
-      value: '$.attributes["field_announcement_link"]["title"]'
-    announcement_link_url:
-      value: '$.attributes["field_announcement_link"]["uri"]'
-    announcement_assistive_technology_close_button_title:
-      value: '$.attributes["field_announcement_title"]'
-storage_client_id: helfi_announcements
-storage_client_config: {  }
+debug_level: 0
+generate_aliases: false
+field_mappers:
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["title"]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  langcode:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["langcode"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  default_langcode:
+    id: null
+    config: {  }
+  published_at:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["published_at"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  unpublish_on:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["unpublish_on"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  body:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["body"]["value"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  status:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["status"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  notification:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["notification"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  announcement_type:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["field_announcement_type"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  announcement_link_text:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["field_announcement_link"]["title"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  announcement_link_url:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["field_announcement_link"]["uri"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  announcement_assistive_technology_close_button_title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["field_announcement_title"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+field_mapping_notes: ''
+data_aggregator:
+  id: single
+  config:
+    storage_clients:
+      -
+        id: helfi_announcements
+        config:
+          endpoint: 'https://localhost'
+          endpoint_options:
+            single: 'https://localhost'
+            count: ''
+            count_mode: entities
+            cache: '1'
+            limit_qcount: '0'
+            limit_qtime: '1'
+            requests_by_user: ''
+          response_format: json
+          data_path:
+            list: '$[data,included].*'
+            single: '$[data,included].*'
+            keyed_by_id: ''
+            count: ''
+          pager:
+            default_limit: '50'
+            type: pagination
+            page_parameter: 'page[offset]'
+            page_parameter_type: startitem
+            page_start_one: ''
+            always_query: ''
+            page_size_parameter: 'page[limit]'
+            page_size_parameter_type: pagesize
+          api_key:
+            type: none
+            header_name: ''
+            key: ''
+          http:
+            headers: 'Accept: application/vnd.api+json'
+          parameters:
+            list: {  }
+            list_param_mode: query
+            single: {  }
+            single_param_mode: query
+          filtering:
+            drupal: ''
+            basic: ''
+            basic_fields: {  }
+            list_support: none
+            list_join: ''
+data_aggregator_notes: ''
 persistent_cache_max_age: -1
 annotation_entity_type_id: null
 annotation_bundle_id: null
