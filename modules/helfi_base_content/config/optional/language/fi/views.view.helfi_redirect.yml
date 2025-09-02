@@ -34,9 +34,9 @@ display:
         is_custom:
           expose:
             label: 'Käyttäjän luoma'
-        status:
+        enabled:
           expose:
-            label: Julkaistu
+            label: Käytössä
       exposed_form:
         options:
           submit_button: Suodata
@@ -63,8 +63,8 @@ display:
           label: Luotu
         is_custom:
           label: 'Käyttäjän luoma'
-        status:
-          label: Julkaistu
+        enabled:
+          label: Käytössä
       empty:
         area_text_custom:
           content: 'Ei ole vielä uudelleenohjaksia.'

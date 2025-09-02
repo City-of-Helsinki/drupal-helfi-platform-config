@@ -222,8 +222,8 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        status:
-          id: status
+        enabled:
+          id: enabled
           table: redirect
           field: enabled
           relationship: none
@@ -232,7 +232,7 @@ display:
           entity_type: redirect
           entity_field: enabled
           plugin_id: field
-          label: Published
+          label: Enabled
           exclude: false
           alter:
             alter_text: false
@@ -276,7 +276,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: default
+            format: unicode-yes-no
             format_custom_false: ''
             format_custom_true: ''
           group_column: value
@@ -680,15 +680,15 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        status:
-          id: status
+        enabled:
+          id: enabled
           table: redirect
-          field: status
+          field: enabled
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: redirect
-          entity_field: status
+          entity_field: enabled
           plugin_id: boolean
           operator: '='
           value: '1'
@@ -696,13 +696,13 @@ display:
           exposed: true
           expose:
             operator_id: ''
-            label: Published
+            label: Enabled
             description: ''
             use_operator: false
-            operator: status_op
+            operator: enabled_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: status
+            identifier: enabled
             required: false
             remember: false
             multiple: false
@@ -745,7 +745,7 @@ display:
             redirect_redirect__uri: redirect_redirect__uri
             status_code: status_code
             is_custom: is_custom
-            status: status
+            enabled: enabled
             language: language
             created: created
             operations: operations
@@ -784,7 +784,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            status:
+            enabled:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -800,7 +800,7 @@ display:
               responsive: ''
             created:
               sortable: true
-              default_sort_order: asc
+              default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false
