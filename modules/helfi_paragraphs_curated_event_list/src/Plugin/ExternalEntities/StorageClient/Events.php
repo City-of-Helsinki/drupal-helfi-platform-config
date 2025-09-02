@@ -7,7 +7,7 @@ namespace Drupal\helfi_paragraphs_curated_event_list\Plugin\ExternalEntities\Sto
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\StorageClientBase;
+use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Retrieves 'events' content from LinkedEvents")
  * )
  */
-class Events extends StorageClientBase {
+class Events extends RestClient {
   protected const API_URL = 'https://api.hel.fi/linkedevents/v1';
   protected const EVENTS_BASE_URL = 'https://tapahtumat.hel.fi/';
 
