@@ -9,8 +9,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\PublishableRedirectRepository;
 use Drupal\helfi_platform_config\RedirectCleaner;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\path_alias\Entity\PathAlias;
-use Drupal\Tests\purge\Kernel\KernelTestBase;
 
 /**
  * Tests custom redirect entity.
