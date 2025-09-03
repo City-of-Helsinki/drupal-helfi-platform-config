@@ -12,3 +12,5 @@ dependencies:
   - helfi_base_content:helfi_base_content
   - select2:select2
   - paragraphs:paragraphs
+'interface translation project': helfi_paragraphs_news_list
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_paragraphs_news_list/translations/%language.po
