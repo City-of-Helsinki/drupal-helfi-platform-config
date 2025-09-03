@@ -98,7 +98,7 @@ const getTranslation = (fullName) => {
     const autocomplete = A11yAutocomplete(element, {
       classes: {
         inputLoading: 'loading',
-        wrapper: 'helfi-etusivu-autocomplete',
+        wrapper: 'helfi-location-autocomplete',
       },
       highlightedAssistiveHint,
       inputAssistiveHint,
