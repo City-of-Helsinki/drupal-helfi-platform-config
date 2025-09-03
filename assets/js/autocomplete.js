@@ -15,7 +15,7 @@ let abortController = new AbortController();
 
 /**
  * Get the most appropriate translation for address.
- * 
+ *
  * @param {object} fullName - Translations object
  * @return {string} - the result
  */
@@ -160,7 +160,7 @@ const getTranslation = (fullName) => {
       setLoading(element, autocompleteInstance, true);
       navigator.geolocation.getCurrentPosition(async(position) => {
         const { coords: { latitude, longitude } } = position;
-        
+
         const params = new URLSearchParams({
           lat: latitude,
           lon: longitude,
@@ -184,7 +184,7 @@ const getTranslation = (fullName) => {
         setLoading(false);
       });
     });
-    
+
     // Opens the dropdown on focus when input is empty
     // Not supported by the a11y-autocomplete library
     element.addEventListener('focus', () => {
@@ -211,11 +211,11 @@ const getTranslation = (fullName) => {
     element.addEventListener('change', removeLocationError);
   };
 
-  Drupal.behaviors.helfi_etusivu_autocomplete = {
+  Drupal.behaviors.helfi_location_autocomplete = {
     attach(context) {
       once(
         'a11y_autocomplete_element',
-        '[data-helfi-etusivu-autocomplete]',
+        '[data-helfi-location-autocomplete]',
         context,
       ).forEach(init);
     },

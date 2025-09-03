@@ -28,13 +28,14 @@ class LocationAutocomplete extends Textfield {
    */
   public static function processLocationAutocomplete(array $element): array {
     $element['#attached']['library'][] = 'helfi_platform_config/location_autocomplete';
-    $element['#attributes']['data-helfi-etusivu-autocomplete'] = TRUE;
+    $element['#attributes']['data-helfi-location-autocomplete'] = TRUE;
+    $element['#theme'] = 'helfi_location_autocomplete';
 
     // Remove "form-autocomplete" class.
     // This prevents Drupal autocomplete from hijacking the element.
     $element['#attributes']['class'] = array_filter(
       $element['#attributes']['class'] ?? [],
-      fn ($class) => $class !== 'form-autocomplete'
+      static fn ($class) => $class !== 'form-autocomplete'
     );
 
     return $element;
