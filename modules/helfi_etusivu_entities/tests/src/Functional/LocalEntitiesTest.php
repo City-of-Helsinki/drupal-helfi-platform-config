@@ -37,16 +37,17 @@ final class LocalEntitiesTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
+   * Test node.
+   */
+  private NodeInterface $testNode;
+
+  /**
    * Skip strict schema check.
    *
    * @var bool
    */
+  // phpcs:ignore
   protected $strictConfigSchema = FALSE;
-
-  /**
-   * Test node.
-   */
-  private NodeInterface $testNode;
 
   /**
    * {@inheritDoc}
