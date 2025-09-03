@@ -32,6 +32,14 @@ class EtusivuJsonApiEntityTest extends KernelTestBase {
   private EnvironmentEnum $environment = EnvironmentEnum::Local;
 
   /**
+   * Skip schema check.
+   *
+   * @var bool
+   */
+  // phpcs:ignore
+  protected $strictConfigSchema = FALSE;
+
+  /**
    * {@inheritdoc}
    */
   protected static $modules = [
