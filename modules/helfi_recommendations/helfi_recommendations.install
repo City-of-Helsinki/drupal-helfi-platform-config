@@ -244,24 +244,57 @@ function helfi_recommendations_update_10004() : void {
 /**
  * UHF-11798: Hide recommendations block by default on kuva-instance.
  */
-function helfi_recommendations_update_10005() : void {
+function helfi_recommendations_update_10005(&$sandbox) : void {
   $project = \Drupal::service('helfi_api_base.environment_resolver')->getActiveProject();
   if ($project->getName() !== 'kuva') {
     return;
   }
 
-  // Set default show_block value for new content via a State API variable.
-  \Drupal::state()->set('helfi_recommendations.suggested_topics_default_show_block', FALSE);
+  // Set up batch process to loop through 100 entities at a time.
+  if (!isset($sandbox['progress'])) {
+    // Set default show_block value for new content via a State API variable.
+    \Drupal::state()->set('helfi_recommendations.suggested_topics_default_show_block', FALSE);
+
+    // Initialize sandbox.
+    $sandbox['progress'] = 0;
+    $sandbox['current_entity_type'] = 'node';
+    $sandbox['current_id_key'] = 'nid';
+    $sandbox['current_id'] = 0;
+    $count = [];
+    $max = 0;
+    foreach (['node', 'tpr_service'] as $entity_type) {
+      $count[$entity_type] = \Drupal::entityQuery($entity_type)
+        ->condition('field_recommended_topics.show_block', 1)
+        ->accessCheck(FALSE)
+        ->count()
+        ->execute();
+      $max += $count[$entity_type];
+    }
+    $sandbox['max'] = $max;
+    \Drupal::messenger()->addMessage(t('Hiding recommendations block on @count_node node-entities and @count_tpr_service tpr_service-entities.', [
+      '@count_node' => $count['node'],
+      '@count_tpr_service' => $count['tpr_service'],
+    ]));
+  }
 
   // Hide recommendations block on all existing content.
-  foreach (['node', 'tpr_service'] as $entity_type) {
-    $results = \Drupal::entityQuery($entity_type)
-      ->condition('field_recommended_topics.show_block', 1)
-      ->accessCheck(FALSE)
-      ->execute();
+  $entity_type = $sandbox['current_entity_type'];
+  $id_key = $sandbox['current_id_key'];
+  $results = \Drupal::entityQuery($entity_type)
+    ->condition('field_recommended_topics.show_block', 1)
+    ->condition($id_key, $sandbox['current_id'], '>')
+    ->sort($id_key, 'ASC')
+    ->range(0, 100)
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if ($results) {
     $entities = \Drupal::entityTypeManager()->getStorage($entity_type)->loadMultiple($results);
     foreach ($entities as $entity) {
       assert($entity instanceof NodeInterface || $entity instanceof Service);
+      $sandbox['progress']++;
+      $sandbox['current_id'] = $entity->id();
+
       if ($entity->hasField('field_recommended_topics')) {
         $field = $entity->get('field_recommended_topics')->getValue();
         foreach ($field as &$item) {
@@ -271,5 +304,22 @@ function helfi_recommendations_update_10005() : void {
         $entity->save();
       }
     }
+    \Drupal::messenger()->addMessage(t('Hidden recommendations block on @count @type-entities.', [
+      '@count' => count($entities),
+      '@type' => $sandbox['current_entity_type'],
+    ]));
+    $sandbox['#finished'] = FALSE;
   }
+  else if ($sandbox['current_entity_type'] === 'node') {
+    // Finished with node entities, moving on to tpr_service entities.
+    $sandbox['current_entity_type'] = 'tpr_service';
+    $sandbox['current_id_key'] = 'id';
+    $sandbox['current_id'] = 0;
+    $sandbox['#finished'] = FALSE;
+  }
+  else {
+    // Finished with tpr_service entities, all done.
+    $sandbox['#finished'] = TRUE;
+  }
+
 }
