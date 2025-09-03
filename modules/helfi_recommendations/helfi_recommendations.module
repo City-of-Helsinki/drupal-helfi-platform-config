@@ -259,7 +259,7 @@ function helfi_recommendations_field_widget_complete_suggested_topics_reference_
   }
 
   // Wrap the field in a details element to allow users to expand it.
-  $field_widget_complete_form['#prefix'] = '<details><summary>' . t('Automatically recommended content') . '</summary>';
+  $field_widget_complete_form['#prefix'] = '<details><summary>' . t('Automatically recommended content', options: ['context' => 'helfi_recommendations']) . '</summary>';
   $field_widget_complete_form['#suffix'] = '</details>';
 }
 

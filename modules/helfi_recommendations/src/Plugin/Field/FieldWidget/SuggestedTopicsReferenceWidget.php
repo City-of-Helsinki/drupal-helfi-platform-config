@@ -96,7 +96,7 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#default_value' => $field->get('instances')->getValue() ?? [],
       '#title' => $this->getFieldPropertyDefinition($field, 'instances')->getLabel(),
       '#options' => array_map(fn (Project $project) => $project->label(), $projects),
-      '#description' => $this->t('Select the instances that should be used for recommendations. If no instances are selected, recommendations will be shown from all instances.'),
+      '#description' => $this->t('Select the instances that should be used for recommendations. If no instances are selected, recommendations will be shown from all instances.', options: ['context' => 'helfi_recommendations']),
     ];
 
     $element['content_types'] = [
@@ -105,11 +105,11 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#title' => $this->getFieldPropertyDefinition($field, 'content_types')->getLabel(),
       // @todo Include TPR entity types & bundles.
       '#options' => [
-        'node|news_article' => $this->t('News article'),
-        'node|news_item' => $this->t('News item'),
-        'node|page' => $this->t('Standard page'),
+        'node|news_article' => $this->t('News article', options: ['context' => 'helfi_recommendations']),
+        'node|news_item' => $this->t('News item', options: ['context' => 'helfi_recommendations']),
+        'node|page' => $this->t('Standard page', options: ['context' => 'helfi_recommendations']),
       ],
-      '#description' => $this->t('Select the content types that should be used for recommendations. If no content types are selected, recommendations will be shown from all content types.'),
+      '#description' => $this->t('Select the content types that should be used for recommendations. If no content types are selected, recommendations will be shown from all content types.', options: ['context' => 'helfi_recommendations']),
     ];
 
     // Generated keywords.
@@ -122,10 +122,10 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
     $element['keywords'] = [
       '#type' => 'textarea',
       '#default_value' => implode("\n", $keywords),
-      '#title' => $this->t('Generated keywords'),
+      '#title' => $this->t('Generated keywords', options: ['context' => 'helfi_recommendations']),
       '#disabled' => TRUE,
-      '#description' => $this->t('Keywords are generated automatically. Trailing number is a score between 0 and 1, and indicates the relevance of the keyword.'),
-      '#placeholder' => $this->t('No keywords generated yet.'),
+      '#description' => $this->t('Keywords are generated automatically. Trailing number is a score between 0 and 1, and indicates the relevance of the keyword.', options: ['context' => 'helfi_recommendations']),
+      '#placeholder' => $this->t('No keywords generated yet.', options: ['context' => 'helfi_recommendations']),
     ];
 
     return $element;
