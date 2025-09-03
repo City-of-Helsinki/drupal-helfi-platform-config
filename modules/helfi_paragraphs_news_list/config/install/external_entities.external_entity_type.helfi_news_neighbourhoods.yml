@@ -58,6 +58,21 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+  location:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.field_location'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
   langcode:
     id: null
     config: {  }
