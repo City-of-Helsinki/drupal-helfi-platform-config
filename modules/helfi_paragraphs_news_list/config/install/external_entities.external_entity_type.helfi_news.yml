@@ -206,48 +206,7 @@ data_aggregator:
     storage_clients:
       -
         id: helfi_news
-        config:
-          endpoint: 'https://localhost'
-          endpoint_options:
-            single: ''
-            count: ''
-            count_mode: entities
-            cache: 0
-            limit_qcount: '0'
-            limit_qtime: '0'
-            requests_by_user: false
-          response_format: json
-          data_path:
-            list: ''
-            single: ''
-            keyed_by_id: 0
-            count: ''
-          pager:
-            default_limit: '0'
-            type: pagination
-            page_parameter: ''
-            page_parameter_type: pagenum
-            page_start_one: 0
-            always_query: 0
-            page_size_parameter: ''
-            page_size_parameter_type: pagesize
-          api_key:
-            type: none
-            header_name: ''
-            key: ''
-          http:
-            headers: ''
-          parameters:
-            list: {  }
-            list_param_mode: query
-            single: {  }
-            single_param_mode: query
-          filtering:
-            drupal: 0
-            basic: 0
-            basic_fields: {  }
-            list_support: none
-            list_join: ''
+        config: {  }
 data_aggregator_notes: ''
 persistent_cache_max_age: 1800
 annotation_entity_type_id: null
