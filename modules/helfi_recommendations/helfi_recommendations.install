@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\node\NodeInterface;
+use Drupal\helfi_tpr\Entity\Service;
 
 /**
  * Implements hook_install().
@@ -235,6 +237,39 @@ function helfi_recommendations_update_10004() : void {
 
     foreach ($field_storage_definitions as $name => $field_storage_definition) {
       \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition($name, 'tpr_service', 'helfi_recommendations', $field_storage_definition);
+    }
+  }
+}
+
+/**
+ * UHF-11798: Hide recommendations block by default on kuva-instance.
+ */
+function helfi_recommendations_update_10005() : void {
+  $project = \Drupal::service('helfi_api_base.environment_resolver')->getActiveProject();
+  if ($project->getName() !== 'kuva') {
+    return;
+  }
+
+  // Set default show_block value for new content via a State API variable.
+  \Drupal::state()->set('helfi_recommendations.suggested_topics_default_show_block', FALSE);
+
+  // Hide recommendations block on all existing content.
+  foreach (['node', 'tpr_service'] as $entity_type) {
+    $results = \Drupal::entityQuery($entity_type)
+      ->condition('field_recommended_topics.show_block', 1)
+      ->accessCheck(FALSE)
+      ->execute();
+    $entities = \Drupal::entityTypeManager()->getStorage($entity_type)->loadMultiple($results);
+    foreach ($entities as $entity) {
+      assert($entity instanceof NodeInterface || $entity instanceof Service);
+      if ($entity->hasField('field_recommended_topics')) {
+        $field = $entity->get('field_recommended_topics')->getValue();
+        foreach ($field as &$item) {
+          $item['show_block'] = 0;
+        }
+        $entity->set('field_recommended_topics', $field);
+        $entity->save();
+      }
     }
   }
 }

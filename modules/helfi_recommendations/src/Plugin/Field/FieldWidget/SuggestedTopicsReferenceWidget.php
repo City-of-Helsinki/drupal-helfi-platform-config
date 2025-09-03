@@ -84,9 +84,15 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#title' => $this->getFieldPropertyDefinition($field, 'published')->getLabel(),
     ];
 
+    // Allow changing the default value of the show_block field.
+    // This can be changed per instance by running:
+    // @code
+    // drush state:set helfi_recommendations.suggested_topics_default_show_block 0
+    // @endcode
+    $default_show_block = \Drupal::state()->get('helfi_recommendations.suggested_topics_default_show_block', TRUE);
     $element['show_block'] = [
       '#type' => 'checkbox',
-      '#default_value' => $field->get('show_block')->getValue() ?? TRUE,
+      '#default_value' => $field->get('show_block')->getValue() ?? $default_show_block,
       '#title' => $this->getFieldPropertyDefinition($field, 'show_block')->getLabel(),
     ];
 
