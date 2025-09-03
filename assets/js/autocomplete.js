@@ -83,7 +83,6 @@ const getTranslation = (fullName) => {
     };
 
     const {
-      autocompleteRoute,
       noResultsAssistiveHint,
       someResultsAssistiveHint,
       oneResultAssistiveHint,
@@ -91,6 +90,9 @@ const getTranslation = (fullName) => {
       inputAssistiveHint,
       minCharAssistiveHint
     } = drupalSettings.helsinki_near_you_form;
+
+    // Set by '#autocomplete_route_name'.
+    const autocompleteRoute = element.dataset.autocompletePath;
 
     // eslint-disable-next-line no-undef
     const autocomplete = A11yAutocomplete(element, {
