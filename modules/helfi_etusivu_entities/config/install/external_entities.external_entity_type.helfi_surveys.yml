@@ -173,48 +173,7 @@ data_aggregator:
     storage_clients:
       -
         id: helfi_surveys
-        config:
-          endpoint: 'https://localhost'
-          endpoint_options:
-            single: 'https://localhost'
-            count: ''
-            count_mode: entities
-            cache: '1'
-            limit_qcount: '0'
-            limit_qtime: '1'
-            requests_by_user: ''
-          response_format: json
-          data_path:
-            list: '$[data,included].*'
-            single: '$[data,included].*'
-            keyed_by_id: ''
-            count: ''
-          pager:
-            default_limit: '50'
-            type: pagination
-            page_parameter: 'page[offset]'
-            page_parameter_type: startitem
-            page_start_one: ''
-            always_query: ''
-            page_size_parameter: 'page[limit]'
-            page_size_parameter_type: pagesize
-          api_key:
-            type: none
-            header_name: ''
-            key: ''
-          http:
-            headers: 'Accept: application/vnd.api+json'
-          parameters:
-            list: {  }
-            list_param_mode: query
-            single: {  }
-            single_param_mode: query
-          filtering:
-            drupal: ''
-            basic: ''
-            basic_fields: {  }
-            list_support: none
-            list_join: ''
+        config: {  }
 data_aggregator_notes: ''
 persistent_cache_max_age: -1
 annotation_entity_type_id: null
