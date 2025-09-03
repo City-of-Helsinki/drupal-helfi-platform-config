@@ -21,6 +21,7 @@ final class LocalEntitiesTest extends BrowserTestBase {
   use NodeCreationTrait;
   use BlockCreationTrait;
 
+
   /**
    * Modules to enable.
    *
@@ -34,6 +35,13 @@ final class LocalEntitiesTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
+
+  /**
+   * Skip strict schema check.
+   *
+   * @var bool
+   */
+  protected $strictConfigSchema = FALSE;
 
   /**
    * Test node.
