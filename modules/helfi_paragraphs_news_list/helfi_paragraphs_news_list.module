@@ -62,7 +62,7 @@ function helfi_paragraphs_news_list_entity_extra_field_info() : array {
 function helfi_paragraphs_news_list_theme() {
   return [
     'news_list__no_results' => [
-      'render element' => 'element'
+      'render element' => 'element',
     ],
   ];
 }
