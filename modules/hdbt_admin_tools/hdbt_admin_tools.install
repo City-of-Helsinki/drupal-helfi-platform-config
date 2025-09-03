@@ -105,8 +105,10 @@ function hdbt_admin_tools_update_9005(): void {
 }
 
 /**
- * UHF-11363: Updated pager labels in views.
+ * UHF-10862: Removed obsolete EU cookie compliance configuration.
  */
-function hdbt_admin_tools_update_9008(): void {
-  // This is now automated.
+function hdbt_admin_tools_update_9009(): void {
+  $config_factory = Drupal::configFactory();
+  // Remove the default frontpage view.
+  $config_factory->getEditable('hdbt_admin_tools.cookie_consent_intro')->delete();
 }

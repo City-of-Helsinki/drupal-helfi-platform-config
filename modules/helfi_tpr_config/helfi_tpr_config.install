@@ -11,6 +11,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\linkit\Entity\Profile;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Install metatag configurations manually.
@@ -193,4 +194,27 @@ function helfi_tpr_config_update_9074(): void {
  */
 function helfi_tpr_config_update_9077(): void {
   // This is automated now.
+}
+
+/**
+ * UHF-12050: Remove field_recommended_topics from tpr_service.
+ */
+function helfi_tpr_config_update_9079(): void {
+  $fieldStorageDefinition = \Drupal::entityDefinitionUpdateManager()->getFieldStorageDefinition('field_recommended_topics', 'tpr_service');
+
+  if ($fieldStorageDefinition instanceof FieldStorageDefinitionInterface) {
+    // Remove data from the storage.
+    $database = \Drupal::database();
+    $database->update('tpr_service_field_data')
+      ->fields([
+        'field_recommended_topics__target_id' => NULL,
+        'field_recommended_topics__show_block' => NULL,
+        'field_recommended_topics__instances' => NULL,
+        'field_recommended_topics__content_types' => NULL,
+      ])
+      ->execute();
+
+    // Uninstall the field storage definition.
+    \Drupal::entityDefinitionUpdateManager()->uninstallFieldStorageDefinition($fieldStorageDefinition);
+  }
 }

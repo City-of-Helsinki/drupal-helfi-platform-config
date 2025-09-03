@@ -31,6 +31,7 @@ class UnitContactCardTest extends KernelTestBase {
     'field',
     'field_group',
     'file',
+    'helfi_api_base',
     'helfi_media',
     'helfi_tpr',
     'helfi_tpr_config',

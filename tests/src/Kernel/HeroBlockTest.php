@@ -30,6 +30,7 @@ class HeroBlockTest extends EntityKernelTestBase {
     'block',
     'config_rewrite',
     'helfi_platform_config',
+    'helfi_api_base',
   ];
 
   /**

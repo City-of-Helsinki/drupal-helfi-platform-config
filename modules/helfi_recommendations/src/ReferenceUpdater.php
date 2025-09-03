@@ -210,7 +210,11 @@ final class ReferenceUpdater {
 
         assert($topicsEntity instanceof SuggestedTopicsInterface);
         $topicsEntity->setParentEntity($entity);
-        $referenceField->setValue($topicsEntity);
+        $referenceField->setValue([
+          'entity' => $topicsEntity,
+          'instances' => NULL,
+          'content_types' => NULL,
+        ]);
 
         assert($topicsEntity instanceof SuggestedTopics);
 

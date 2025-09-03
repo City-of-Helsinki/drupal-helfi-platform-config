@@ -42,7 +42,6 @@ function helfi_platform_config_entity_type_build(array &$entity_types): void {
   if (isset($entity_types['redirect'])) {
     $entity_types['redirect']->setClass(PublishableRedirect::class);
     $entity_types['redirect']->set('entity_keys', $entity_types['redirect']->getKeys() + [
-      'published' => 'status',
       'custom' => 'is_custom',
     ]);
   }
@@ -216,13 +215,6 @@ function helfi_platform_config_page_attachments_alter(array &$attachments): void
  */
 function helfi_platform_config_theme() : array {
   return [
-    // @todo UHF-10862 Remove cookie_consent_intro once the HDBT cookie banner module is in use.
-    'cookie_consent_intro' => [
-      'variables' => [
-        'title' => NULL,
-        'content' => NULL,
-      ],
-    ],
     'hero_block' => [
       'variables' => [
         'title' => NULL,
@@ -415,10 +407,6 @@ function helfi_platform_config_preprocess_react_and_share(&$variables) : void {
     /** @var \Drupal\hdbt_cookie_banner\Services\CookieSettings $cookie_settings */
     $cookie_settings = \Drupal::service('hdbt_cookie_banner.cookie_settings');
     $variables['privacy_policy_url'] = $cookie_settings->getCookieSettingsPageUrl();
-  }
-  // @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
-  elseif (Drupal::moduleHandler()->moduleExists('helfi_eu_cookie_compliance')) {
-    $variables['privacy_policy_url'] = helfi_eu_cookie_compliance_get_privacy_policy_url();
   }
 }
 
