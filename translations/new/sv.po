@@ -34,3 +34,28 @@ msgstr "Chatt"
 msgctxt "Telia ACE chat"
 msgid "Loading chat..."
 msgstr "Laddar..."
+
+msgctxt "Helsinki near you form"
+msgid "Type @count or more characters for results"
+msgstr "Skriv @count eller fler tecken för att se resultat"
+
+msgctxt "Helsinki near you form"
+msgid "When autocomplete results are available use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures."
+msgstr "När autokomplettering är tillgänglig, använd upp- och nedåtpilarna för att bläddra och tryck enter för att välja. För pekskärmsanvändare, navigera med beröring eller svepgester."
+
+msgctxt "Helsinki near you form"
+msgid "No address suggestions were found"
+msgstr "Inga adressförslag hittades"
+
+msgctxt "Helsinki near you form"
+msgid "There are @count results available."
+msgstr "Det finns @count resultat tillgängliga."
+
+msgctxt "Helsinki near you form"
+msgid "There is one result available."
+msgstr "Det finns ett resultat tillgängligt."
+
+msgctxt "Helsinki near you form"
+msgid "@selectedItem @position of @count is highlighted"
+msgstr "@selectedItem @position av @count är markerad"
+
