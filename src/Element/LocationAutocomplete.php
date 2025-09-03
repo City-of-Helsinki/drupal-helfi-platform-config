@@ -28,7 +28,7 @@ class LocationAutocomplete extends Textfield {
    * Preprocess callback.
    */
   public static function processLocationAutocomplete(array $element): array {
-    $translation_context = 'Helsinki near you form';
+    $translation_context = 'Location autocomplete';
 
     $element['#theme'] = 'helfi_location_autocomplete';
     $element['#attributes']['data-helfi-location-autocomplete'] = TRUE;

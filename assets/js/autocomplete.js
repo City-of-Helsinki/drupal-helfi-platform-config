@@ -1,4 +1,4 @@
-const LOCATION_OPTION = Drupal.t('Use current Location', {}, { context: 'Helsinki near you' });
+const LOCATION_OPTION = Drupal.t('Use current Location', {}, { context: 'Location autocomplete' });
 const API_URL = 'https://api.hel.fi/servicemap/v2/address/';
 const LOCATION_LOADING = 'location-loading';
 
@@ -67,7 +67,7 @@ const getTranslation = (fullName) => {
       parent.classList.add('hds-text-input--invalid');
       const errorSpan = document.createElement('span');
       errorSpan.classList.add('hds-text-input__error-text');
-      errorSpan.textContent = Drupal.t('We couldn\'t retrieve your current location. Try entering an address.', {}, { context: 'Helsinki near you' });
+      errorSpan.textContent = Drupal.t('We couldn\'t retrieve your current location. Try entering an address.', {}, { context: 'Location autocomplete' });
       parent.appendChild(errorSpan);
 
       // Remove automatic location from default options
