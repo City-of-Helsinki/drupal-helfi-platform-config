@@ -50,6 +50,10 @@ msgid "Allowed content types for recommendations"
 msgstr "Tillåtna innehållstyper för rekommendationer"
 
 msgctxt "helfi_recommendations"
+msgid "Standard page"
+msgstr "Sida"
+
+msgctxt "helfi_recommendations"
 msgid "News article"
 msgstr "Nyhetsartikel"
 
