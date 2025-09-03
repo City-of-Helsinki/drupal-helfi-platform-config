@@ -254,6 +254,12 @@ function helfi_platform_config_theme() : array {
         'content' => NULL,
       ],
     ],
+    'helfi_location_autocomplete' => [
+      'variables' => [
+        'attributes' => [],
+        'children' => NULL,
+      ],
+    ],
   ];
 }
 
