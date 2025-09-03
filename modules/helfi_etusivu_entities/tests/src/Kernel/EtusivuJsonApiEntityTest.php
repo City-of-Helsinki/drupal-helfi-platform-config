@@ -6,12 +6,12 @@ namespace Drupal\Tests\helfi_etusivu_entities\Unit;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Surveys;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announcements;
 use GuzzleHttp\Psr7\Response;
 
 /**
@@ -62,13 +62,14 @@ class EtusivuJsonApiEntityTest extends KernelTestBase {
    * Make sure that cache is used.
    */
   public function testRequestCache(): void {
-    $this->setupMockHttpClient([
+    $client = $this->setupMockHttpClient([
       new Response(body: file_get_contents(__DIR__ . "/../../fixtures/survey.json")),
       new Response(body: json_encode(['data' => []])),
     ]);
+    $this->container->set('http_client', $client);
 
     $entityTypeManager = $this->container->get(EntityTypeManagerInterface::class);
-    $storage = $entityTypeManager->getStorage('helfi_announcements');
+    $storage = $entityTypeManager->getStorage('helfi_surveys');
 
     // Cache should be used on seconds request.
     $this->assertNotEmpty($storage->loadMultiple());
@@ -76,7 +77,7 @@ class EtusivuJsonApiEntityTest extends KernelTestBase {
 
     /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cacheTagInvalidator */
     $cacheTagInvalidator = $this->container->get(CacheTagsInvalidatorInterface::class);
-    $cacheTagInvalidator->invalidateTags([Announcements::$customCacheTag]);
+    $cacheTagInvalidator->invalidateTags([Surveys::$customCacheTag]);
 
     // Cache should not be used.
     $this->assertEmpty($storage->loadMultiple());
