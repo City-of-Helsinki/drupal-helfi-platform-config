@@ -31,6 +31,15 @@ class LocationAutocomplete extends Textfield {
     $element['#attributes']['data-helfi-location-autocomplete'] = TRUE;
     $element['#attached']['library'][] = 'helfi_platform_config/location_autocomplete';
 
+    $element['#label_attributes']['class'] = array_merge([
+      'hds-text-input__label',
+    ], $element['#label_attributes']['class'] ?? []);
+
+    $element['#wrapper_attributes']['class'] = array_merge([
+      'hds-text-input',
+      'hdbt-search__filter',
+    ], $element['#wrapper_attributes']['class'] ?? []);
+
     // Remove "form-autocomplete" class.
     // This prevents Drupal autocomplete from hijacking the element.
     $element['#attributes']['class'] = array_filter(

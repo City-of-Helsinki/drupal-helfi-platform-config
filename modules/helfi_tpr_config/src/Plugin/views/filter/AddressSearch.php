@@ -19,6 +19,7 @@ class AddressSearch extends AddressSearchBase {
     parent::valueForm($form, $form_state);
 
     $form['value']['#type'] = 'helfi_location_autocomplete';
+    $form['value']['#autocomplete_route_name'] = 'helfi_api_base.location_autocomplete';
   }
 
 }
