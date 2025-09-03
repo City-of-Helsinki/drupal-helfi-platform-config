@@ -1,0 +1,30 @@
+{
+  "name": "hdbt_platform_config",
+  "description": "Asset builder configuration for helfi_platform_config",
+  "author": "Druid",
+  "license": "MIT",
+  "repository": "github:City-of-Helsinki/drupal-helfi-platform-config",
+  "scripts": {
+    "dev": "node theme-builder.mjs --watch --dev",
+    "build": "npm run lint -s && node theme-builder.mjs",
+    "preinstall": "npx update-browserslist-db@latest",
+    "postinstall": "npm --prefix ../../../themes/contrib/hdbt install --no-audit --progress=false",
+    "lint:js": "eslint --fix src/js/ --no-error-on-unmatched-pattern",
+    "lint": "npm-run-all --parallel lint:js -s"
+  },
+  "dependencies": {
+    "@babel/core": "^7.23.2",
+    "@drupal/autocomplete": "^0.0.2",
+    "@hdbt/theme-builder": "file:../../../themes/contrib/hdbt/theme-builder",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^10.0.0",
+    "eslint-plugin-jsdoc": "^51.0.0",
+    "npm-run-all2": "^8.0.4"
+  },
+  "browserslist": [
+    "last 3 major versions",
+    "> 1%",
+    "not dead"
+  ]
+}
