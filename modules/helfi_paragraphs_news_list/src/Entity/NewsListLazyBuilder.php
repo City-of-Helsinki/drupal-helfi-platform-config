@@ -69,13 +69,14 @@ final readonly class NewsListLazyBuilder implements TrustedCallbackInterface {
     // Don't cache empty results for longer periods of time.
     if (empty($entities)) {
       // Setting a max-age here is not enough since it would not bubble up to
-      // the page cache. Therefore we set a cache tag for empty results and let
+      // the page cache. Therefore, we set a cache tag for empty results and let
       // CacheResponseSubscriber set the max-age of the response cache when
       // the cache tag is present.
       // @see https://www.drupal.org/node/2352009
       // @see \Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber::handleNewsListCache()
       $build['#cache']['tags'][] = 'helfi_news_list_empty_results';
       $build['#cache']['max-age'] = CacheResponseSubscriber::EMPTY_LIST_MAX_AGE;
+      $build['#theme'] = 'news_list__no_results';
     }
 
     foreach ($entities as $item) {
