@@ -43,15 +43,13 @@ const getTranslation = (fullName) => {
       throw new Error('A11yAutocomplete object not found. Make sure the library is loaded.');
     }
 
-    if (!drupalSettings.helsinki_near_you_form) {
-      throw new Error('Helsinki near you form object not found. Configuration cannot be loaded for autocomplete.');
-    }
 
     // Dont add 'Use current location' option if location not available
     let defaultOptions = 'geolocation' in navigator ? [{
       label: locationOptionLabel,
       value: LOCATION_OPTION,
       index: 0,
+      // minCharAssistiveHint doesn't seem to work when there is always one item.
       item: {
         label: LOCATION_OPTION,
         value: LOCATION_OPTION,
@@ -82,14 +80,12 @@ const getTranslation = (fullName) => {
       parent.querySelector('.hds-text-input__error-text')?.remove();
     };
 
-    const {
-      noResultsAssistiveHint,
-      someResultsAssistiveHint,
-      oneResultAssistiveHint,
-      highlightedAssistiveHint,
-      inputAssistiveHint,
-      minCharAssistiveHint
-    } = drupalSettings.helsinki_near_you_form;
+    const minCharAssistiveHint = Drupal.t('Type @count or more characters for results', {}, { context: 'Location autocomplete' });
+    const inputAssistiveHint = Drupal.t('When autocomplete results are available use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures.', {}, { context: 'Location autocomplete' });
+    const noResultsAssistiveHint = Drupal.t('No address suggestions were found', {}, { context: 'Location autocomplete' });
+    const someResultsAssistiveHint = Drupal.t('There are @count results available.', {}, { context: 'Location autocomplete' });
+    const oneResultAssistiveHint = Drupal.t('There is one result available.', {}, { context: 'Location autocomplete' });
+    const highlightedAssistiveHint = Drupal.t('@selectedItem @position of @count is highlighted', {}, { context: 'Location autocomplete' });
 
     // Set by '#autocomplete_route_name'.
     const autocompleteRoute = element.dataset.autocompletePath;
