@@ -103,11 +103,11 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#type' => 'checkboxes',
       '#default_value' => $field->get('content_types')->getValue() ?? [],
       '#title' => $this->getFieldPropertyDefinition($field, 'content_types')->getLabel(),
-      // @todo Include TPR entity types & bundles.
       '#options' => [
         'node|news_article' => $this->t('News article', options: ['context' => 'helfi_recommendations']),
         'node|news_item' => $this->t('News item', options: ['context' => 'helfi_recommendations']),
         'node|page' => $this->t('Standard page', options: ['context' => 'helfi_recommendations']),
+        'tpr_service|tpr_service' => $this->t('Service', options: ['context' => 'helfi_recommendations']),
       ],
       '#description' => $this->t('Select the content types that should be used for recommendations. If no content types are selected, recommendations will be shown from all content types.', options: ['context' => 'helfi_recommendations']),
     ];

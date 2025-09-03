@@ -124,6 +124,12 @@ function helfi_recommendations_entity_bundle_field_info_alter(&$fields, EntityTy
       $fields[$name] = $field;
     }
   }
+
+  if ($entityType->id() === 'tpr_service' && $bundle === 'tpr_service') {
+    foreach (helfi_recommendations_bundle_fields($entityType->id(), $bundle) as $name => $field) {
+      $fields[$name] = $field;
+    }
+  }
 }
 
 /**
@@ -136,6 +142,10 @@ function helfi_recommendations_entity_field_storage_info(EntityTypeInterface $en
       helfi_recommendations_bundle_fields($entity_type->id(), 'news_article'),
       helfi_recommendations_bundle_fields($entity_type->id(), 'page')
     );
+  }
+
+  if ($entity_type->id() === 'tpr_service') {
+    return helfi_recommendations_bundle_fields($entity_type->id(), 'tpr_service');
   }
 
   return [];

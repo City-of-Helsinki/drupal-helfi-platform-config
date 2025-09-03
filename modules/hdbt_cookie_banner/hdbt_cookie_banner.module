@@ -94,8 +94,6 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
 
   // Attach HDBT cookie banner initialization JS file.
   $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hdbt_cookie_banner';
-  // Attach HDBT cookie banner unapproved cookies JS file.
-  $attachments['#attached']['library'][] = 'hdbt_cookie_banner/unapproved_cookies';
 
   // Attach HDBT cookie banner settings.
   $attachments['#attached']['drupalSettings']['hdbt_cookie_banner'] = [
@@ -104,11 +102,5 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
     'theme' => 'black',
     'settingsPageSelector' => '.cookie-settings',
     'settingsPageUrl' => $cookie_settings_service->getCookieSettingsPageUrl()?->setAbsolute()?->toString(),
-  ];
-
-  // Fallback for the old variable used in HDBT theme react search JS.
-  // @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
-  $attachments['#attached']['drupalSettings']['helfi_react_search'] = [
-    'cookie_privacy_url' => $cookie_settings_service->getCookieSettingsPageUrl()?->setAbsolute()?->toString(),
   ];
 }

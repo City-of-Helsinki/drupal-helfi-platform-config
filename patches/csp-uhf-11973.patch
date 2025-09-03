@@ -1,0 +1,98 @@
+diff --git a/src/EventSubscriber/CoreCspSubscriber.php b/src/EventSubscriber/CoreCspSubscriber.php
+index ee6a4da..2b228a9 100644
+--- a/src/EventSubscriber/CoreCspSubscriber.php
++++ b/src/EventSubscriber/CoreCspSubscriber.php
+@@ -33,6 +33,9 @@ class CoreCspSubscriber implements EventSubscriberInterface {
+    * {@inheritdoc}
+    */
+   public static function getSubscribedEvents(): array {
++    if (!class_exists(CspEvents::class)) {
++      return [];
++    }
+     $events[CspEvents::POLICY_ALTER] = ['onCspPolicyAlter'];
+     return $events;
+   }
+diff --git a/src/EventSubscriber/LibrariesCspSubscriber.php b/src/EventSubscriber/LibrariesCspSubscriber.php
+index 2968c2b..2a4f6b5 100644
+--- a/src/EventSubscriber/LibrariesCspSubscriber.php
++++ b/src/EventSubscriber/LibrariesCspSubscriber.php
+@@ -17,6 +17,9 @@ class LibrariesCspSubscriber implements EventSubscriberInterface {
+    * {@inheritdoc}
+    */
+   public static function getSubscribedEvents(): array {
++    if (!class_exists(CspEvents::class)) {
++      return [];
++    }
+     $events[CspEvents::POLICY_ALTER] = ['onCspPolicyAlter', 0];
+     return $events;
+   }
+diff --git a/src/EventSubscriber/RenderElementAttachedCspSubscriber.php b/src/EventSubscriber/RenderElementAttachedCspSubscriber.php
+index 91da88a..424768e 100644
+--- a/src/EventSubscriber/RenderElementAttachedCspSubscriber.php
++++ b/src/EventSubscriber/RenderElementAttachedCspSubscriber.php
+@@ -24,6 +24,9 @@ class RenderElementAttachedCspSubscriber implements EventSubscriberInterface {
+    * {@inheritdoc}
+    */
+   public static function getSubscribedEvents(): array {
++    if (!class_exists(CspEvents::class)) {
++      return [];
++    }
+     $events[CspEvents::POLICY_ALTER] = [
+       ['applyDirectives'],
+       // Nonces and Hashes must be applied after other alters.
+diff --git a/src/EventSubscriber/ReportingCspSubscriber.php b/src/EventSubscriber/ReportingCspSubscriber.php
+index cd85908..aa861d7 100644
+--- a/src/EventSubscriber/ReportingCspSubscriber.php
++++ b/src/EventSubscriber/ReportingCspSubscriber.php
+@@ -20,6 +20,9 @@ class ReportingCspSubscriber implements EventSubscriberInterface {
+    * {@inheritdoc}
+    */
+   public static function getSubscribedEvents(): array {
++    if (!class_exists(CspEvents::class)) {
++      return [];
++    }
+     $events[CspEvents::POLICY_ALTER] = ['onCspPolicyAlter', 0];
+     return $events;
+   }
+diff --git a/src/EventSubscriber/ResponseCspSubscriber.php b/src/EventSubscriber/ResponseCspSubscriber.php
+index 720feae..93a6d9f 100644
+--- a/src/EventSubscriber/ResponseCspSubscriber.php
++++ b/src/EventSubscriber/ResponseCspSubscriber.php
+@@ -49,6 +49,9 @@ class ResponseCspSubscriber implements EventSubscriberInterface {
+    * {@inheritdoc}
+    */
+   public static function getSubscribedEvents(): array {
++    if (!class_exists(CspEvents::class)) {
++      return [];
++    }
+     $events[KernelEvents::RESPONSE] = [
+       // Nonce value needs to be added before settings are rendered to the page
+       // by \Drupal\Core\EventSubscriber\HtmlResponseSubscriber.
+diff --git a/src/EventSubscriber/SettingsCspSubscriber.php b/src/EventSubscriber/SettingsCspSubscriber.php
+index e73f71c..d7e5345 100644
+--- a/src/EventSubscriber/SettingsCspSubscriber.php
++++ b/src/EventSubscriber/SettingsCspSubscriber.php
+@@ -26,6 +26,9 @@ class SettingsCspSubscriber implements EventSubscriberInterface {
+    * {@inheritdoc}
+    */
+   public static function getSubscribedEvents(): array {
++    if (!class_exists(CspEvents::class)) {
++      return [];
++    }
+     $events[CspEvents::POLICY_ALTER] = ['onCspPolicyAlter', 256];
+     return $events;
+   }
+diff --git a/src/EventSubscriber/ThemeHookCspSubscriber.php b/src/EventSubscriber/ThemeHookCspSubscriber.php
+index a233a1d..17f1d1f 100644
+--- a/src/EventSubscriber/ThemeHookCspSubscriber.php
++++ b/src/EventSubscriber/ThemeHookCspSubscriber.php
+@@ -16,6 +16,9 @@ class ThemeHookCspSubscriber implements EventSubscriberInterface {
+    * {@inheritdoc}
+    */
+   public static function getSubscribedEvents(): array {
++    if (!class_exists(CspEvents::class)) {
++      return [];
++    }
+     $events[CspEvents::POLICY_ALTER] = ['onCspPolicyAlter', -10];
+     return $events;
+   }

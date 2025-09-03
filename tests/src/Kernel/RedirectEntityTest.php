@@ -7,7 +7,6 @@ namespace Drupal\Tests\helfi_platform_config\Kernel;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
-use Drupal\helfi_platform_config\PublishableRedirectRepository;
 use Drupal\helfi_platform_config\RedirectCleaner;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\path_alias\Entity\PathAlias;
@@ -28,6 +27,7 @@ class RedirectEntityTest extends KernelTestBase {
     'path_alias',
     'config_rewrite',
     'helfi_platform_config',
+    'helfi_api_base',
   ];
 
   /**
@@ -68,7 +68,6 @@ class RedirectEntityTest extends KernelTestBase {
     $this->assertFalse($redirect->isCustom());
 
     $repository = $this->container->get('redirect.repository');
-    $this->assertInstanceOf(PublishableRedirectRepository::class, $repository);
 
     $match = $repository->findMatchingRedirect('/source', language: $redirect->language()->getId());
     $this->assertNotEmpty($match);
@@ -103,7 +102,7 @@ class RedirectEntityTest extends KernelTestBase {
       ->getStorage('redirect');
 
     $redirects = $storage->loadByProperties([
-      'status' => 1,
+      'enabled' => 1,
     ]);
 
     // One redirect should be created when path alias is updated.
@@ -119,17 +118,17 @@ class RedirectEntityTest extends KernelTestBase {
 
     $tests = [
       [
-        'status' => 1,
+        'enabled' => 1,
         'is_custom' => 1,
         'created' => strtotime('-1 year'),
       ],
       [
-        'status' => 1,
+        'enabled' => 1,
         'is_custom' => 0,
         'created' => strtotime('-1 year'),
       ],
       [
-        'status' => 1,
+        'enabled' => 1,
         'is_custom' => 0,
         'created' => strtotime('now'),
       ],
