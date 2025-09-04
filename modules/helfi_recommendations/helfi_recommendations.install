@@ -250,7 +250,7 @@ function helfi_recommendations_update_10005(&$sandbox) : void {
     return;
   }
 
-  // Set up batch process to loop through 100 entities at a time.
+  // Set up batch process to loop through 10 entities at a time.
   if (!isset($sandbox['progress'])) {
     // Set default show_block value for new content via a State API variable.
     \Drupal::state()->set('helfi_recommendations.suggested_topics_default_show_block', FALSE);
@@ -270,11 +270,8 @@ function helfi_recommendations_update_10005(&$sandbox) : void {
         ->execute();
       $max += $count[$entity_type];
     }
+    $sandbox['count'] = $count;
     $sandbox['max'] = $max;
-    \Drupal::messenger()->addMessage(t('Hiding recommendations block on @count_node node-entities and @count_tpr_service tpr_service-entities.', [
-      '@count_node' => $count['node'],
-      '@count_tpr_service' => $count['tpr_service'],
-    ]));
   }
 
   // Hide recommendations block on all existing content.
@@ -284,7 +281,7 @@ function helfi_recommendations_update_10005(&$sandbox) : void {
     ->condition('field_recommended_topics.show_block', 1)
     ->condition($id_key, $sandbox['current_id'], '>')
     ->sort($id_key, 'ASC')
-    ->range(0, 100)
+    ->range(0, 10)
     ->accessCheck(FALSE)
     ->execute();
 
@@ -304,10 +301,6 @@ function helfi_recommendations_update_10005(&$sandbox) : void {
         $entity->save();
       }
     }
-    \Drupal::messenger()->addMessage(t('Hidden recommendations block on @count @type-entities.', [
-      '@count' => count($entities),
-      '@type' => $sandbox['current_entity_type'],
-    ]));
     $sandbox['#finished'] = FALSE;
   }
   else if ($sandbox['current_entity_type'] === 'node') {
@@ -319,6 +312,10 @@ function helfi_recommendations_update_10005(&$sandbox) : void {
   }
   else {
     // Finished with tpr_service entities, all done.
+    \Drupal::messenger()->addMessage(t('Finished hiding recommendations block on @count_node node-entities and @count_tpr_service tpr_service-entities.', [
+      '@count_node' => $sandbox['count']['node'],
+      '@count_tpr_service' => $sandbox['count']['tpr_service'],
+    ]));
     $sandbox['#finished'] = TRUE;
   }
 
