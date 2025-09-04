@@ -93,21 +93,21 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
     $properties = parent::propertyDefinitions($field_definition);
 
     $properties['published'] = DataDefinition::create('boolean')
-      ->setLabel(new TranslatableMarkup('Show this page in recommendations for other pages', [], ['context' => 'annif']))
+      ->setLabel(new TranslatableMarkup('Show this page in recommendations for other pages', options:['context' => 'helfi_recommendations']))
       ->setClass(ComputedReferencePublishedStatus::class)
       ->setComputed(TRUE)
       ->setRequired(FALSE);
 
     $properties['show_block'] = DataDefinition::create('boolean')
-      ->setLabel(new TranslatableMarkup('Show automatically recommended content on this page', [], ['context' => 'annif']))
+      ->setLabel(new TranslatableMarkup('Show automatically recommended content on this page', options:['context' => 'helfi_recommendations']))
       ->setRequired(FALSE);
 
     $properties['instances'] = MapDataDefinition::create()
-      ->setLabel(new TranslatableMarkup('Instances to show recommendations from', [], ['context' => 'annif']))
+      ->setLabel(new TranslatableMarkup('Instances to show recommendations from', options: ['context' => 'helfi_recommendations']))
       ->setRequired(FALSE);
 
     $properties['content_types'] = MapDataDefinition::create()
-      ->setLabel(new TranslatableMarkup('Allowed content types for recommendations', [], ['context' => 'annif']))
+      ->setLabel(new TranslatableMarkup('Allowed content types for recommendations', options: ['context' => 'helfi_recommendations']))
       ->setRequired(FALSE);
 
     return $properties;
