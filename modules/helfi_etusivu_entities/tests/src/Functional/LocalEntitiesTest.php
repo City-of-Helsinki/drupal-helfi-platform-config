@@ -21,7 +21,6 @@ final class LocalEntitiesTest extends BrowserTestBase {
   use NodeCreationTrait;
   use BlockCreationTrait;
 
-
   /**
    * Modules to enable.
    *
@@ -46,8 +45,6 @@ final class LocalEntitiesTest extends BrowserTestBase {
    *
    * @var bool
    */
-  // phpcs:ignore
-  protected $strictConfigSchema = FALSE;
 
   /**
    * {@inheritDoc}

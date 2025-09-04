@@ -36,8 +36,6 @@ class EtusivuJsonApiEntityTest extends KernelTestBase {
    *
    * @var bool
    */
-  // phpcs:ignore
-  protected $strictConfigSchema = FALSE;
 
   /**
    * {@inheritdoc}
