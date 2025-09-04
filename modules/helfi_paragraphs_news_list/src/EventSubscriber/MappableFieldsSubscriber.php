@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_paragraphs_news_list\EventSubscriber;
 
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\external_entities\Event\ExternalEntitiesEvents;
 use Drupal\external_entities\Event\ExternalEntityGetMappableFieldsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,10 +15,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class MappableFieldsSubscriber implements EventSubscriberInterface {
 
+  use StringTranslationTrait;
+
   /**
-   * Set the fields
+   * Update mappable fields.
    *
-   * @param ExternalEntityGetMappableFieldsEvent $event
+   * @param Drupal\external_entities\Event\ExternalEntityGetMappableFieldsEvent $event
    *   The event.
    */
   public function mappableFields(ExternalEntityGetMappableFieldsEvent $event): void {
@@ -29,10 +32,9 @@ final class MappableFieldsSubscriber implements EventSubscriberInterface {
     $fields = $event->getMappableFields() + [
       'location' => BaseFieldDefinition::create('string')
         ->setName('field_location')
-        // ->setComputed(TRUE)
         ->setTranslatable(FALSE)
         ->setCardinality(1)
-        ->setLabel(t('Location'))
+        ->setLabel($this->t('Location')),
     ];
 
     $event->setMappableFields($fields);

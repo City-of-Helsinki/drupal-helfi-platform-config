@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity;
 
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\external_entities\Entity\ExternalEntity;
 
 /**

@@ -7,7 +7,6 @@ namespace Drupal\helfi_paragraphs_news_list;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
-use Drupal\external_entities\FieldMapper\FieldMapperBase;
 use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
@@ -117,7 +116,6 @@ abstract class ElasticExternalEntityBase extends RestClient {
     return $prepared;
   }
 
-
   /**
    * Get callback that builds elasticsearch query fragment for given operator.
    *
@@ -223,7 +221,7 @@ abstract class ElasticExternalEntityBase extends RestClient {
         $callback = $this->getOperatorCallback($op);
         $body = array_merge_recursive($body, $callback($value, $fieldName));
       }
-q    }
+    }
 
     $sortQuery = [];
     foreach ($sorts as $sort) {
