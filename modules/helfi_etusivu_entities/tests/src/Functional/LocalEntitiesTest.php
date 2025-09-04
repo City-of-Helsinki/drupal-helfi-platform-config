@@ -41,12 +41,6 @@ final class LocalEntitiesTest extends BrowserTestBase {
   private NodeInterface $testNode;
 
   /**
-   * Skip strict schema check.
-   *
-   * @var bool
-   */
-
-  /**
    * {@inheritDoc}
    */
   public function setUp(): void {

@@ -20,7 +20,7 @@ final class MappableFieldsSubscriber implements EventSubscriberInterface {
   /**
    * Update mappable fields.
    *
-   * @param Drupal\external_entities\Event\ExternalEntityGetMappableFieldsEvent $event
+   * @param \Drupal\external_entities\Event\ExternalEntityGetMappableFieldsEvent $event
    *   The event.
    */
   public function mappableFields(ExternalEntityGetMappableFieldsEvent $event): void {
