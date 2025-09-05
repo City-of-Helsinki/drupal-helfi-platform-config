@@ -22,4 +22,15 @@ final class News extends ElasticExternalEntityBase {
    */
   protected string $index = 'news';
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function getFieldMapping(string $field) : string {
+    return match($field) {
+      'tags_uuid' => 'news_tags_uuid',
+      'groups_uuid' => 'news_groups_uuid',
+      default => $field,
+    };
+  }
+
 }

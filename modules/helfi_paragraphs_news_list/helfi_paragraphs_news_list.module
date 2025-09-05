@@ -136,13 +136,11 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
   }
 
   if (in_array($entity_type->id(), ['helfi_news_neighbourhoods'])) {
-    /*
     $fields['location'] = BundleFieldDefinition::create('string')
       ->setName('field_location')
       ->setTranslatable(FALSE)
       ->setCardinality(1)
       ->setLabel(t('Location'));
-    */
   }
 }
 

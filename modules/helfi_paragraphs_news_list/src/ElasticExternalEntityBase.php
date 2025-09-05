@@ -117,19 +117,6 @@ abstract class ElasticExternalEntityBase extends RestClient {
   }
 
   /**
-   * Maps the given field to something else.
-   *
-   * @param string $field
-   *   The field name to map.
-   *
-   * @return string
-   *   The mapped field.
-   */
-  protected function getFieldMapping(string $field) : string {
-    return $field;
-  }
-
-  /**
    * Get callback that builds elasticsearch query fragment for given operator.
    *
    * @param ?string $op
