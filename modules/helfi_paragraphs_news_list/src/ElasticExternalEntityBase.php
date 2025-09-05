@@ -61,6 +61,19 @@ abstract class ElasticExternalEntityBase extends RestClient {
   }
 
   /**
+   * Get field mapping.
+   *
+   * @param string $field
+   *   The field to map.
+   *
+   * @return array|string
+   *   The mapped field.
+   */
+  public function getFieldMapping(string $field): string {
+    return $field;
+  }
+
+  /**
    * Creates a request against JSON:API.
    *
    * @param array $parameters
