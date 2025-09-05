@@ -35,4 +35,15 @@ abstract class TermBase extends ElasticExternalEntityBase {
     return $query;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function getFieldMapping(string $field) : string {
+    return match($field) {
+      'id' => 'uuid_langcode',
+      'title' => 'name',
+      default => $field,
+    };
+  }
+
 }

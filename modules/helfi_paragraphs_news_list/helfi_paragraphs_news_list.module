@@ -115,6 +115,7 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
       'node_url' => new TranslatableMarkup('Node URL'),
       'published_at' => new TranslatableMarkup('Published at'),
       'short_title' => new TranslatableMarkup('Short title'),
+      'search_api_language' => new TranslatableMarkup('Search api language'),
     ];
 
     foreach ($entity_info_fields as $field_name => $field_label) {
@@ -135,14 +136,14 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
   }
 
   if (in_array($entity_type->id(), ['helfi_news_neighbourhoods'])) {
-    // @todo Correct type.
+    /*
     $fields['location'] = BundleFieldDefinition::create('string')
       ->setName('field_location')
       ->setTranslatable(FALSE)
       ->setCardinality(1)
       ->setLabel(t('Location'));
+    */
   }
-
 }
 
 /**

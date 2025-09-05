@@ -117,6 +117,19 @@ abstract class ElasticExternalEntityBase extends RestClient {
   }
 
   /**
+   * Maps the given field to something else.
+   *
+   * @param string $field
+   *   The field name to map.
+   *
+   * @return string
+   *   The mapped field.
+   */
+  protected function getFieldMapping(string $field) : string {
+    return $field;
+  }
+
+  /**
    * Get callback that builds elasticsearch query fragment for given operator.
    *
    * @param ?string $op
@@ -205,22 +218,19 @@ abstract class ElasticExternalEntityBase extends RestClient {
       'query' => [],
     ];
 
-    $xttn = $this->externalEntityType;
-    assert($xttn instanceof ExternalEntityType);
+    $entity = $this->externalEntityType;
+    assert($entity instanceof ExternalEntityType);
 
+    // Set filters.
     foreach ($parameters as $parameter) {
-      $fieldName = NULL;
       ['field' => $field, 'value' => $value, 'operator' => $op] = $parameter;
       if (!$value) {
         continue;
       }
 
-      if ($mapper = $xttn->getFieldMapper($field)) {
-        $fieldName = $mapper->getFieldDefinition()
-          ->getName();
-        $callback = $this->getOperatorCallback($op);
-        $body = array_merge_recursive($body, $callback($value, $fieldName));
-      }
+      $fieldName = $this->getFieldMapping($field);
+      $callback = $this->getOperatorCallback($op);
+      $body = array_merge_recursive($body, $callback($value, $fieldName));
     }
 
     $sortQuery = [];
@@ -228,11 +238,8 @@ abstract class ElasticExternalEntityBase extends RestClient {
       $fieldName = NULL;
       ['field' => $field, 'direction' => $direction] = $sort;
 
-      if ($mapper = $xttn->getFieldMapper($field)) {
-        $fieldName = $mapper->getFieldDefinition()
-          ->getName();
-        $sortQuery[$fieldName] = ['order' => strtolower($direction)];
-      }
+      $fieldName = $this->getFieldMapping($field);
+      $sortQuery[$fieldName] = ['order' => strtolower($direction)];
     }
 
     $body = array_merge_recursive($body, [

@@ -8,7 +8,7 @@ id: helfi_news_tags
 label: 'Helfi: News tags'
 label_plural: 'Helfi: News tags'
 description: 'Retrieves news tags taxonomy terms from Helfi'
-content_class: Drupal\external_entities\Entity\ExternalEntity
+content_class: Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term
 read_only: true
 debug_level: 0
 generate_aliases: false

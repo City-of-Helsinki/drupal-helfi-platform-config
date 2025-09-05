@@ -8,7 +8,7 @@ id: helfi_news
 label: 'Helfi: News'
 label_plural: 'Helfi: News'
 description: ''
-content_class: Drupal\external_entities\Entity\ExternalEntity
+content_class: Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News
 read_only: true
 debug_level: 0
 generate_aliases: false
