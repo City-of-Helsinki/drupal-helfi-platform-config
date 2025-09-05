@@ -11,5 +11,4 @@ services:
     factory: ['@helfi_paragraphs_news_list.elastic_client_factory', 'create']
 
   Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber: ~
-  Drupal\helfi_paragraphs_news_list\EventSubscriber\MappableFieldsSubscriber: ~
   Drupal\helfi_paragraphs_news_list\Entity\NewsListLazyBuilder: ~
