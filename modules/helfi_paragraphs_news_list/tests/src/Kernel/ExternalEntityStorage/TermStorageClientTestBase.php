@@ -101,7 +101,7 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
       'index' => 'news_terms',
       'body' => [
         'sort' => [
-          'title' => ['order' => 'desc'],
+          'name' => ['order' => 'desc'],
         ],
         'query' => [
           'bool' => [
@@ -134,7 +134,7 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
         'query' => [
           'bool' => [
             'must' => [
-              ['term' => ['title' => 'value']],
+              ['term' => ['name' => 'value']],
               [
                 'bool' => [
                   'should' => [
@@ -146,7 +146,7 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
               ],
               [
                 'regexp' => [
-                  'title' => ['value' => 'test.*', 'case_insensitive' => TRUE],
+                  'name' => ['value' => 'test.*', 'case_insensitive' => TRUE],
                 ],
               ],
               ['term' => ['vid' => $this->getVid()]],

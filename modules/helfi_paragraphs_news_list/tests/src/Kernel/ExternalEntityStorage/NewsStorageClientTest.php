@@ -135,9 +135,9 @@ class NewsStorageClientTest extends StorageClientTestBase {
               [
                 'bool' => [
                   'should' => [
-                    ['term' => ['groups' => 'group1']],
-                    ['term' => ['groups' => 'group2']],
-                    ['term' => ['groups' => 'group3']],
+                    ['term' => ['news_groups' => 'group1']],
+                    ['term' => ['news_groups' => 'group2']],
+                    ['term' => ['news_groups' => 'group3']],
                   ],
                 ],
               ],
@@ -158,7 +158,7 @@ class NewsStorageClientTest extends StorageClientTestBase {
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('title', 'value')
-      ->condition('groups', ['group1', 'group2', 'group3'], 'IN')
+      ->condition('news_groups', ['group1', 'group2', 'group3'], 'IN')
       ->condition('title', 'test', 'CONTAINS')
       ->execute();
   }
