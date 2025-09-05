@@ -37,7 +37,7 @@ content:
     weight: 4
     region: content
   langcode:
-    type: string_default
+    type: string
     label: hidden
     settings: {  }
     third_party_settings: {  }

@@ -71,25 +71,28 @@ class NewsNeighbourhoodsStorageClientTest extends TermStorageClientTestBase {
 
     // Drupal query interface is not quite flexible enough to support all the
     // options and parameters geo_distance sort needs, so the implementation
-    // uses setParameter from external_entities Query class.
-    $query->setParameter('location', [
-      [
-        'lat' => 48.8584,
-        'lon' => 2.2945,
-      ],
-      [
-        'unit' => 'km',
-        // Geo distance sort direction.
-        'order' => 'asc',
-        // 'arc' is more accurate, but within
-        // a city it should not matter.
-        'distance_type' => 'plane',
-        // What to do in case a field has several geo points.
-        'mode' => 'min',
-        // Unmapped field cause the search to fail.
-        'ignore_unmapped' => FALSE,
-      ],
-    ], 'GEO_DISTANCE_SORT');
+    // used to use setParameter from external_entities Query class.
+    // It was changed to condition on v3 update.
+    $query->condition(
+      'location', [
+        [
+          'lat' => 48.8584,
+          'lon' => 2.2945,
+        ],
+        [
+          'unit' => 'km',
+          // Geo distance sort direction.
+          'order' => 'asc',
+          // 'arc' is more accurate, but within
+          // a city it should not matter.
+          'distance_type' => 'plane',
+          // What to do in case a field has several geo points.
+          'mode' => 'min',
+          // Unmapped field cause the search to fail.
+          'ignore_unmapped' => FALSE,
+        ],
+      ], 'GEO_DISTANCE_SORT',
+    );
 
     $query->accessCheck(FALSE)->execute();
   }

@@ -52,8 +52,8 @@ final readonly class NewsListLazyBuilder implements TrustedCallbackInterface {
       ->range(0, $entity->getLimit());
 
     $termFilters = [
-      'news_tags_uuid' => $entity->getTagsUuid(),
-      'news_groups_uuid' => $entity->getGroupsUuid(),
+      'tags_uuid' => $entity->getTagsUuid(),
+      'groups_uuid' => $entity->getGroupsUuid(),
       'neighbourhoods_uuid' => $entity->getNeighbourhoodsUuids(),
     ];
     foreach ($termFilters as $name => $value) {

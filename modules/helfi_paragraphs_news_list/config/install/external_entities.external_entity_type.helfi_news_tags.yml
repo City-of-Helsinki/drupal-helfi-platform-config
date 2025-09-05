@@ -1,26 +1,93 @@
 uuid: 12da4807-d6f4-4a1c-a59a-92e3f5c419b4
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - helfi_paragraphs_news_list
 id: helfi_news_tags
 label: 'Helfi: News tags'
 label_plural: 'Helfi: News tags'
 description: 'Retrieves news tags taxonomy terms from Helfi'
-generate_aliases: null
+content_class: Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term
 read_only: true
-field_mapper_id: jsonpath
-field_mapper_config:
-  field_mappings:
-    id:
-      value: '$._source.uuid_langcode[0]'
-    uuid:
-      value: '$._source.uuid[0]'
-    title:
-      value: '$._source.name[0]'
-    tid:
-      value: '$._source.tid[0]'
-storage_client_id: helfi_news_tags
-storage_client_config: {  }
+debug_level: 0
+generate_aliases: false
+field_mappers:
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.uuid_langcode[0]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.uuid[0]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.name[0]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  langcode:
+    id: null
+    config: {  }
+  default_langcode:
+    id: null
+    config: {  }
+  tid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.tid[0]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+field_mapping_notes: ''
+data_aggregator:
+  id: single
+  config:
+    storage_clients:
+      -
+        id: helfi_news_tags
+        config: {  }
+data_aggregator_notes: ''
 persistent_cache_max_age: 86400
 annotation_entity_type_id: null
 annotation_bundle_id: null

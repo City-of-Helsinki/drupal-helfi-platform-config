@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Drupal\helfi_paragraphs_news_list;
 
 use Drupal\Core\Utility\Error;
-use Drupal\external_entities\ExternalEntityInterface;
-use Drupal\external_entities\StorageClient\ExternalEntityStorageClientBase;
+use Drupal\external_entities\Entity\ExternalEntityInterface;
+use Drupal\external_entities\Entity\ExternalEntityType;
+use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class used by taxonomy external entity.
  */
-abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase {
+abstract class ElasticExternalEntityBase extends RestClient {
 
   /**
    * Which endpoint to query.
@@ -33,13 +33,6 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   protected Client $client;
 
   /**
-   * The logger.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected LoggerInterface $logger;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -50,7 +43,6 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->client = $container->get('helfi_paragraphs_news_list.elastic_client');
-    $instance->logger = $container->get('logger.factory')->get('helfi_external_entity');
 
     return $instance;
   }
@@ -66,6 +58,19 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
    * {@inheritdoc}
    */
   public function delete(ExternalEntityInterface $entity) : void {
+  }
+
+  /**
+   * Maps the given field to something else.
+   *
+   * @param string $field
+   *   The field name to map.
+   *
+   * @return string
+   *   The mapped field.
+   */
+  protected function getFieldMapping(string $field) : string {
+    return $field;
   }
 
   /**
@@ -112,27 +117,16 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
 
     $prepared = [];
     foreach ($data['hits']['hits'] as $hit) {
-      $id = $this->externalEntityType->getFieldMapper()
-        ->extractIdFromRawData($hit);
-      if (!$id) {
+      $xttn = $this->externalEntityType;
+      assert($xttn instanceof ExternalEntityType);
+      $id = $xttn->getFieldMapper('id')
+        ->extractFieldValuesFromRawData($hit);
+      if (!$id || !isset($id[0]['value'])) {
         continue;
       }
-      $prepared[$id] = $hit;
+      $prepared[$id[0]['value']] = $hit;
     }
     return $prepared;
-  }
-
-  /**
-   * Maps the given field to something else.
-   *
-   * @param string $field
-   *   The field name to map.
-   *
-   * @return string
-   *   The mapped field.
-   */
-  protected function getFieldMapping(string $field) : string {
-    return $field;
   }
 
   /**
@@ -224,23 +218,27 @@ abstract class ElasticExternalEntityBase extends ExternalEntityStorageClientBase
       'query' => [],
     ];
 
+    $entity = $this->externalEntityType;
+    assert($entity instanceof ExternalEntityType);
+
+    // Set filters.
     foreach ($parameters as $parameter) {
       ['field' => $field, 'value' => $value, 'operator' => $op] = $parameter;
-      $fieldName = $this->getFieldMapping($field);
-
       if (!$value) {
         continue;
       }
 
+      $fieldName = $this->getFieldMapping($field);
       $callback = $this->getOperatorCallback($op);
       $body = array_merge_recursive($body, $callback($value, $fieldName));
     }
 
     $sortQuery = [];
     foreach ($sorts as $sort) {
+      $fieldName = NULL;
       ['field' => $field, 'direction' => $direction] = $sort;
-      $fieldName = $this->getFieldMapping($field);
 
+      $fieldName = $this->getFieldMapping($field);
       $sortQuery[$fieldName] = ['order' => strtolower($direction)];
     }
 

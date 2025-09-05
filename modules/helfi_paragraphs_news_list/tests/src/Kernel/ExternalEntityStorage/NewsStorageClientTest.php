@@ -77,7 +77,7 @@ class NewsStorageClientTest extends StorageClientTestBase {
   }
 
   /**
-   * Tests query() method.
+   * Test the query.
    */
   public function testQuery(): void {
     $client = $this->prophesize(Client::class);
@@ -91,19 +91,39 @@ class NewsStorageClientTest extends StorageClientTestBase {
     ])
       ->shouldBeCalled()
       ->willReturn($this->createElasticsearchResponse([]));
-    // Test sort.
+
+    $this->getSut($client->reveal())->getQuery()->accessCheck(FALSE)->execute();
+  }
+
+  /**
+   * Test the sort query.
+   */
+  public function testSort(): void {
+    $client = $this->prophesize(Client::class);
     $client->search([
       'index' => 'news',
       'body' => [
         'sort' => [
-          'name' => ['order' => 'desc'],
+          'title' => ['order' => 'desc'],
         ],
         'query' => [],
       ],
     ])
       ->shouldBeCalled()
       ->willReturn($this->createElasticsearchResponse([]));
-    // Test filters.
+
+    $this->getSut($client->reveal())
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->sort('title', 'DESC')
+      ->execute();
+  }
+
+  /**
+   * Test the filter query.
+   */
+  public function testFilter(): void {
+    $client = $this->prophesize(Client::class);
     $client->search([
       'index' => 'news',
       'body' => [
@@ -111,19 +131,19 @@ class NewsStorageClientTest extends StorageClientTestBase {
         'query' => [
           'bool' => [
             'must' => [
-              ['term' => ['name' => 'value']],
+              ['term' => ['title' => 'value']],
               [
                 'bool' => [
                   'should' => [
-                    ['term' => ['group' => 'group1']],
-                    ['term' => ['group' => 'group2']],
-                    ['term' => ['group' => 'group3']],
+                    ['term' => ['news_groups' => 'group1']],
+                    ['term' => ['news_groups' => 'group2']],
+                    ['term' => ['news_groups' => 'group3']],
                   ],
                 ],
               ],
               [
                 'regexp' => [
-                  'name' => ['value' => 'test.*', 'case_insensitive' => TRUE],
+                  'title' => ['value' => 'test.*', 'case_insensitive' => TRUE],
                 ],
               ],
             ],
@@ -133,18 +153,13 @@ class NewsStorageClientTest extends StorageClientTestBase {
     ])
       ->shouldBeCalled()
       ->willReturn($this->createElasticsearchResponse([]));
-    $this->getSut($client->reveal())->getQuery()->accessCheck(FALSE)->execute();
+
     $this->getSut($client->reveal())
       ->getQuery()
       ->accessCheck(FALSE)
-      ->sort('name', 'DESC')
-      ->execute();
-    $this->getSut($client->reveal())
-      ->getQuery()
-      ->accessCheck(FALSE)
-      ->condition('name', 'value')
-      ->condition('group', ['group1', 'group2', 'group3'], 'IN')
-      ->condition('name', 'test', 'CONTAINS')
+      ->condition('title', 'value')
+      ->condition('news_groups', ['group1', 'group2', 'group3'], 'IN')
+      ->condition('title', 'test', 'CONTAINS')
       ->execute();
   }
 

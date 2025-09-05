@@ -18,30 +18,23 @@ use Symfony\Component\HttpKernel\KernelEvents;
 final class RouteSubscriber implements EventSubscriberInterface {
 
   /**
-   * The current route match.
-   *
-   * @var \Drupal\Core\Routing\CurrentRouteMatch
-   */
-  protected $currentRouteMatch;
-
-  /**
    * EventSubscriber constructor.
    *
-   * @param \Drupal\Core\Routing\CurrentRouteMatch $current_route_match
+   * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The current route match.
    */
-  public function __construct(CurrentRouteMatch $current_route_match) {
-    $this->currentRouteMatch = $current_route_match;
+  public function __construct(
+    private CurrentRouteMatch $currentRouteMatch,
+  ) {
   }
 
   /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
-    $events = [
+    return [
       KernelEvents::REQUEST => 'rerouteParagraphCanonicalUrl',
     ];
-    return $events;
   }
 
   /**

@@ -66,11 +66,10 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
   }
 
   /**
-   * Tests query() method.
+   * Test the query.
    */
   public function testQuery(): void {
     $client = $this->prophesize(Client::class);
-    // Test no filters or sorts.
     $client->search([
       'index' => 'news_terms',
       'body' => [
@@ -86,7 +85,18 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
     ])
       ->shouldBeCalled()
       ->willReturn($this->createElasticsearchResponse([]));
-    // Test sort.
+
+    $this->getSut($client->reveal())
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->execute();
+  }
+
+  /**
+   * Test the sort query.
+   */
+  public function testSort(): void {
+    $client = $this->prophesize(Client::class);
     $client->search([
       'index' => 'news_terms',
       'body' => [
@@ -104,7 +114,19 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
     ])
       ->shouldBeCalled()
       ->willReturn($this->createElasticsearchResponse([]));
-    // Test filters.
+
+    $this->getSut($client->reveal())
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->sort('title', 'DESC')
+      ->execute();
+  }
+
+  /**
+   * Test filter query.
+   */
+  public function testFilter(): void {
+    $client = $this->prophesize(Client::class);
     $client->search([
       'index' => 'news_terms',
       'body' => [
@@ -116,9 +138,9 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
               [
                 'bool' => [
                   'should' => [
-                    ['term' => ['tags' => 1]],
-                    ['term' => ['tags' => 2]],
-                    ['term' => ['tags' => 3]],
+                    ['term' => ['tid' => 1]],
+                    ['term' => ['tid' => 2]],
+                    ['term' => ['tid' => 3]],
                   ],
                 ],
               ],
@@ -135,21 +157,13 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
     ])
       ->shouldBeCalled()
       ->willReturn($this->createElasticsearchResponse([]));
+
     $this->getSut($client->reveal())
       ->getQuery()
       ->accessCheck(FALSE)
-      ->execute();
-    $this->getSut($client->reveal())
-      ->getQuery()
-      ->accessCheck(FALSE)
-      ->sort('name', 'DESC')
-      ->execute();
-    $this->getSut($client->reveal())
-      ->getQuery()
-      ->accessCheck(FALSE)
-      ->condition('name', 'value')
-      ->condition('tags', [1, 2, 3], 'IN')
-      ->condition('name', 'test', 'CONTAINS')
+      ->condition('title', 'value')
+      ->condition('tid', [1, 2, 3], 'IN')
+      ->condition('title', 'test', 'CONTAINS')
       ->execute();
   }
 
