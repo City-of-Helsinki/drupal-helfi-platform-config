@@ -21,7 +21,7 @@
 ## How to test
 <!-- Describe steps how to test the features, add as many steps as you want to be tested -->
 
-* [ ] Check that this feature works
+* [ ] 
 * [ ] Check that code follows our standards
 
 <!-- Check list for the developer. Did you update/add/check the -->
