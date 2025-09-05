@@ -29,4 +29,5 @@ final class NewsNeighbourhoods extends TermBase {
       default => parent::getFieldMapping($field),
     };
   }
+  
 }
