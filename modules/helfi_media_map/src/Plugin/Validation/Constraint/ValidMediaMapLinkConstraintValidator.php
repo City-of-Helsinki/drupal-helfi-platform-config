@@ -17,7 +17,7 @@ final class ValidMediaMapLinkConstraintValidator extends ConstraintValidator {
   /**
    * {@inheritdoc}
    */
-  public function validate($item, Constraint $constraint) {
+  public function validate($item, Constraint $constraint): void {
     assert($constraint instanceof ValidMediaMapLinkConstraint);
     foreach ($item->getValue() as $value) {
       ['uri' => $uri] = $value;
