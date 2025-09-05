@@ -75,4 +75,14 @@ interface RecommendationManagerInterface {
    */
   public function invalidateAllRecommendationBlocks(): void;
 
+  /**
+   * Get allowed instances.
+   */
+  public function getAllowedInstances(): array;
+
+  /**
+   * Get allowed content types and bundles.
+   */
+  public function getAllowedContentTypesAndBundles(): array;
+
 }

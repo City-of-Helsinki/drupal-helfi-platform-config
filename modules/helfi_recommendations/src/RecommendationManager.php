@@ -8,9 +8,13 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\State\StateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
@@ -22,8 +26,9 @@ use Elastic\Elasticsearch\Client;
  */
 class RecommendationManager implements RecommendationManagerInterface {
 
+  use StringTranslationTrait;
+
   const INDEX_NAME = 'suggestions';
-  const ELASTICSEARCH_QUERY_BUFFER = 10;
   const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
 
   /**
@@ -46,6 +51,10 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   The Elasticsearch client.
    * @param \Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface $cacheTagInvalidator
    *   The cache tag invalidator.
+   * @param \Drupal\Core\State\StateInterface $state
+   *   The State API.
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
+   *   The string translation.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
@@ -54,7 +63,10 @@ class RecommendationManager implements RecommendationManagerInterface {
     private readonly TopicsManagerInterface $topicsManager,
     #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
     private readonly CacheTagInvalidatorInterface $cacheTagInvalidator,
+    private readonly StateInterface $state,
+    TranslationInterface $stringTranslation,
   ) {
+    $this->stringTranslation = $stringTranslation;
   }
 
   /**
@@ -71,6 +83,13 @@ class RecommendationManager implements RecommendationManagerInterface {
       return FALSE;
     }
 
+    // Allow changing the default value of the show_block field.
+    // This can be changed per instance by running:
+    // @code
+    // drush state:set helfi_recommendations.suggested_topics_default_show_block 0
+    // @endcode
+    $default_show_block = $this->state->get('helfi_recommendations.suggested_topics_default_show_block', TRUE);
+
     // Check if any of the suggested topics reference fields have the show_block
     // property set to FALSE. If so, do not show recommendations.
     foreach ($fields as $key => $definition) {
@@ -78,13 +97,14 @@ class RecommendationManager implements RecommendationManagerInterface {
       assert($field instanceof EntityReferenceFieldItemListInterface);
 
       foreach ($field->getValue() as $value) {
-        if (isset($value['show_block']) && !$value['show_block']) {
-          return FALSE;
+        if (isset($value['show_block'])) {
+          return (bool) $value['show_block'];
         }
       }
     }
 
-    return TRUE;
+    // Return the default value for entities that do not yet have a value saved.
+    return $default_show_block;
   }
 
   /**
@@ -100,12 +120,11 @@ class RecommendationManager implements RecommendationManagerInterface {
     if (empty($this->recommendations[$entity->id()][$target_langcode][$limit])) {
       $data = [];
 
-      // Get results from Elasticsearch. Fetch more than needed to account for
-      // the fact that some results may not be available from json api anymore.
-      $query = $this->getElasticQuery($entity, $target_langcode, $limit + self::ELASTICSEARCH_QUERY_BUFFER, $options);
+      // Get results from Elasticsearch.
+      $query = $this->getElasticQuery($entity, $target_langcode, $limit, $options);
       $results = $query ? $this->searchElastic($query) : [];
 
-      // Fetch node data for each result via a JSON:API request.
+      // Build result data.
       $data = $results ? $this->fetchNodeData($results, $target_langcode, $limit) : [];
 
       $this->recommendations[$entity->id()][$target_langcode][$limit] = $data;
@@ -147,6 +166,34 @@ class RecommendationManager implements RecommendationManagerInterface {
    */
   public function invalidateAllRecommendationBlocks(): void {
     $this->cacheTagInvalidator->invalidateTags([$this->getCacheTagForAll()]);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getAllowedInstances(): array {
+    $instances = [];
+
+    $projects = $this->environmentResolver->getProjects();
+    foreach ($projects as $key => $project) {
+      if ($project->hasRole(ProjectRoleEnum::Core)) {
+        $instances[$key] = $project->label();
+      }
+    }
+
+    return $instances;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getAllowedContentTypesAndBundles(): array {
+    return [
+      'node|news_article' => $this->t('News article', options: ['context' => 'helfi_recommendations']),
+      'node|news_item' => $this->t('News item', options: ['context' => 'helfi_recommendations']),
+      'node|page' => $this->t('Standard page', options: ['context' => 'helfi_recommendations']),
+      'tpr_service|tpr_service' => $this->t('Service', options: ['context' => 'helfi_recommendations']),
+    ];
   }
 
   /**
@@ -197,6 +244,45 @@ class RecommendationManager implements RecommendationManagerInterface {
   }
 
   /**
+   * Get valid instances.
+   *
+   * @param array $instances
+   *   The instances to validate. Optional, defaults to all allowed instances.
+   *
+   * @return array
+   *   The valid instances.
+   */
+  private function getValidInstances(array $instances = []): array {
+    $allowed = array_keys($this->getAllowedInstances());
+
+    if (empty($instances)) {
+      return $allowed;
+    }
+
+    return array_intersect($instances, $allowed);
+  }
+
+  /**
+   * Get valid content types and bundles.
+   *
+   * @param array $content_types_and_bundles
+   *   The content types and bundles to validate. Optional, defaults to all
+   *   allowed content types and bundles.
+   *
+   * @return array
+   *   The valid content types and bundles.
+   */
+  private function getValidContentTypesAndBundles(array $content_types_and_bundles = []): array {
+    $allowed = array_keys($this->getAllowedContentTypesAndBundles());
+
+    if (empty($content_types_and_bundles)) {
+      return $allowed;
+    }
+
+    return array_intersect($content_types_and_bundles, $allowed);
+  }
+
+  /**
    * Get enabled instances.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
@@ -219,9 +305,66 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   Array of enabled content types and bundles.
    */
   private function getEnabledContentTypesAndBundles(ContentEntityInterface $entity): array {
+    return $this->getOptions($entity, 'content_types');
+  }
+
+  /**
+   * Set query filter for instances.
+   *
+   * @param array &$query
+   *   The query to set the filter for.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   * @param array $options
+   *   The options.
+   */
+  private function setQueryFilterForInstances(array &$query, ContentEntityInterface $entity, array $options): void {
+    // First get allowed instances from provided options or the entity.
+    $allowed_instances = $options['instances'] ?? $this->getEnabledInstances($entity);
+
+    // Validate options against allowed instances.
+    $allowed_instances = $this->getValidInstances($allowed_instances);
+
+    // Set query filter for allowed instances.
+    if (!empty($allowed_instances)) {
+      $query[] = [
+        'terms_set' => [
+          'parent_instance' => [
+            'terms' => $allowed_instances,
+            'minimum_should_match_script' => [
+              'source' => 'params["minimum_should_match"]',
+              'params' => [
+                'minimum_should_match' => 1,
+              ],
+            ],
+          ],
+        ],
+      ];
+    }
+  }
+
+  /**
+   * Set query filter for content types and bundles.
+   *
+   * @param array &$query
+   *   The query to set the filter for.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   * @param array $options
+   *   The options.
+   */
+  private function setQueryFilterForContentTypesAndBundles(array &$query, ContentEntityInterface $entity, array $options): void {
     $content_types = [];
-    $options = $this->getOptions($entity, 'content_types');
-    foreach ($options as $option) {
+
+    // First get allowed content types and bundles from provided options or the entity.
+    $allowed_content_types = $options['content_types'] ?? $this->getEnabledContentTypesAndBundles($entity);
+
+    // Validate options against allowed content types and bundles.
+    $allowed_content_types = $this->getValidContentTypesAndBundles($allowed_content_types);
+
+    // Create an associative array of content types and bundles from the option
+    // pair string format used in the options.
+    foreach ($allowed_content_types as $option) {
       $option_pair = explode('|', $option);
       $entity_type = $option_pair[0];
       $bundle = $option_pair[1];
@@ -233,7 +376,49 @@ class RecommendationManager implements RecommendationManagerInterface {
       $content_types[$entity_type][] = $bundle;
     }
 
-    return $content_types;
+    // Set query filter for allowed content types.
+    if (!empty($content_types)) {
+      $allowed_entity_types = [];
+      $allowed_bundles = [];
+
+      foreach ($content_types as $content_type => $bundles) {
+        $allowed_entity_types[] = $content_type;
+        array_push($allowed_bundles, ...$bundles);
+      }
+
+      if ($allowed_entity_types) {
+        $query[] = [
+          'terms_set' => [
+            'parent_type' => [
+              'terms' => $allowed_entity_types,
+              'minimum_should_match_script' => [
+                'source' => 'params["minimum_should_match"]',
+                'params' => [
+                  'minimum_should_match' => 1,
+                ],
+              ],
+            ],
+          ],
+        ];
+      }
+
+      // Set query filter for allowed bundles.
+      if ($allowed_bundles) {
+        $query[] = [
+          'terms_set' => [
+            'parent_bundle' => [
+              'terms' => $allowed_bundles,
+              'minimum_should_match_script' => [
+                'source' => 'params["minimum_should_match"]',
+                'params' => [
+                  'minimum_should_match' => 1,
+                ],
+              ],
+            ],
+          ],
+        ];
+      }
+    }
   }
 
   /**
@@ -418,70 +603,9 @@ class RecommendationManager implements RecommendationManagerInterface {
       ],
     ];
 
-    // Filter enabled instances.
-    $allowed_instances = $options['instances'] ?? $this->getEnabledInstances($entity);
-    if (!empty($allowed_instances)) {
-      $terms_set = [
-        'terms_set' => [
-          'parent_instance' => [
-            'terms' => $allowed_instances,
-            'minimum_should_match_script' => [
-              'source' => 'params["minimum_should_match"]',
-              'params' => [
-                'minimum_should_match' => 1,
-              ],
-            ],
-          ],
-        ],
-      ];
-      $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
-    }
-
-    // Filter enabled entity types and bundles.
-    $allowed_content_types = $options['content_types'] ?? $this->getEnabledContentTypesAndBundles($entity);
-    if (!empty($allowed_content_types)) {
-      $allowed_entity_types = [];
-      $allowed_bundles = [];
-
-      foreach ($allowed_content_types as $content_type => $bundles) {
-        $allowed_entity_types[] = $content_type;
-        array_push($allowed_bundles, ...$bundles);
-      }
-
-      if ($allowed_entity_types) {
-        $terms_set = [
-          'terms_set' => [
-            'parent_type' => [
-              'terms' => $allowed_entity_types,
-              'minimum_should_match_script' => [
-                'source' => 'params["minimum_should_match"]',
-                'params' => [
-                  'minimum_should_match' => 1,
-                ],
-              ],
-            ],
-          ],
-        ];
-        $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
-      }
-
-      if ($allowed_bundles) {
-        $terms_set = [
-          'terms_set' => [
-            'parent_bundle' => [
-              'terms' => $allowed_bundles,
-              'minimum_should_match_script' => [
-                'source' => 'params["minimum_should_match"]',
-                'params' => [
-                  'minimum_should_match' => 1,
-                ],
-              ],
-            ],
-          ],
-        ];
-        $query['query']['bool']['filter']['bool']['must'][] = $terms_set;
-      }
-    }
+    // Filter instances, content types and bundles.
+    $this->setQueryFilterForInstances($query['query']['bool']['filter']['bool']['must'], $entity, $options);
+    $this->setQueryFilterForContentTypesAndBundles($query['query']['bool']['filter']['bool']['must'], $entity, $options);
 
     return $query;
   }
