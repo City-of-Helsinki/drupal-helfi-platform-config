@@ -175,22 +175,4 @@ class Events extends RestClient {
     return $prepared;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function querySource(array $parameters = [], array $sorts = [], ?int $start = NULL, ?int $length = NULL): array {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function transliterateDrupalFilters(array $parameters, array $context = []): array {
-    return $this->transliterateDrupalFiltersAlter(
-      ['source' => [], 'drupal' => $parameters],
-      $parameters,
-      $context
-    );
-  }
-
 }
