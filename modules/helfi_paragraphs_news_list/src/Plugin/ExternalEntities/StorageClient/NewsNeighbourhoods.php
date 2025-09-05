@@ -13,7 +13,8 @@ namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClien
  *   description = @Translation("Retrieves news neighbourhoods taxonomy terms from Helfi")
  * )
  */
-final class NewsNeighbourhoods extends TermBase {
+final class NewsNeighbourhoods extends TermBase
+{
 
   /**
    * {@inheritdoc}
@@ -23,11 +24,12 @@ final class NewsNeighbourhoods extends TermBase {
   /**
    * {@inheritdoc}
    */
-  protected function getFieldMapping(string $field) : string {
-    return match($field) {
+  protected function getFieldMapping(string $field): string
+  {
+    return match ($field) {
       'location' => 'field_location',
       default => parent::getFieldMapping($field),
     };
   }
-  
+
 }
