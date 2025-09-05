@@ -61,15 +61,15 @@ abstract class ElasticExternalEntityBase extends RestClient {
   }
 
   /**
-   * Get field mapping.
+   * Maps the given field to something else.
    *
    * @param string $field
-   *   The field to map.
+   *   The field name to map.
    *
-   * @return array|string
+   * @return string
    *   The mapped field.
    */
-  public function getFieldMapping(string $field): string {
+  protected function getFieldMapping(string $field) : string {
     return $field;
   }
 
