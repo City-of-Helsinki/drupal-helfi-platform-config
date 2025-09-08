@@ -22,20 +22,25 @@ function helfi_recommendations_install($is_syncing) : void {
     return;
   }
 
-  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
-  $block_installer = \Drupal::service('helfi_platform_config.helper.block_installer');
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = \Drupal::service(ModuleHandlerInterface::class);
 
-  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
-  $theme_handler = \Drupal::service('theme_handler');
+  if ($moduleHandler->moduleExists('helfi_platform_config')) {
+    /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+    $block_installer = \Drupal::service('helfi_platform_config.helper.block_installer');
 
-  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
-    return;
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = \Drupal::service('theme_handler');
+
+    if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+      return;
+    }
+
+    $theme = $theme_handler->getDefault();
+    $block_config = helfi_recommendations_get_block_configurations($theme);
+    ['block' => $block, 'variations' => $variations] = $block_config;
+    $block_installer->install($block, $variations);
   }
-
-  $theme = $theme_handler->getDefault();
-  $block_config = helfi_recommendations_get_block_configurations($theme);
-  ['block' => $block, 'variations' => $variations] = $block_config;
-  $block_installer->install($block, $variations);
 
   // Set the text converter view display for the given content types.
   helfi_recommendations_set_text_converter_view_display('node', 'news_article', [
@@ -52,9 +57,6 @@ function helfi_recommendations_install($is_syncing) : void {
     'field_lower_content',
     'field_sidebar_content',
   ]);
-
-  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-  $moduleHandler = \Drupal::service(ModuleHandlerInterface::class);
 
   if ($moduleHandler->moduleExists('helfi_tpr_config')) {
     helfi_recommendations_set_text_converter_view_display('tpr_service', 'tpr_service', [
@@ -303,7 +305,7 @@ function helfi_recommendations_update_10005(&$sandbox) : void {
     }
     $sandbox['#finished'] = FALSE;
   }
-  else if ($sandbox['current_entity_type'] === 'node') {
+  elseif ($sandbox['current_entity_type'] === 'node') {
     // Finished with node entities, moving on to tpr_service entities.
     $sandbox['current_entity_type'] = 'tpr_service';
     $sandbox['current_id_key'] = 'id';

@@ -11,6 +11,7 @@ use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
@@ -38,6 +39,7 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
     array $settings,
     array $third_party_settings,
     private readonly RecommendationManagerInterface $recommendationManager,
+    private readonly StateInterface $state,
   ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
   }
@@ -52,7 +54,8 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       $configuration['field_definition'],
       $configuration['settings'],
       $configuration['third_party_settings'],
-      $container->get(RecommendationManagerInterface::class)
+      $container->get(RecommendationManagerInterface::class),
+      $container->get('state'),
     );
   }
 
@@ -83,12 +86,7 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#title' => $this->getFieldPropertyDefinition($field, 'published')->getLabel(),
     ];
 
-    // Allow changing the default value of the show_block field.
-    // This can be changed per instance by running:
-    // @code
-    // drush state:set helfi_recommendations.suggested_topics_default_show_block 0
-    // @endcode
-    $default_show_block = \Drupal::state()->get('helfi_recommendations.suggested_topics_default_show_block', TRUE);
+    $default_show_block = $this->state->get('helfi_recommendations.suggested_topics_default_show_block', TRUE);
     $element['show_block'] = [
       '#type' => 'checkbox',
       '#default_value' => $field->get('show_block')->getValue() ?? $default_show_block,

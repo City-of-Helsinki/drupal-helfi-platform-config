@@ -83,13 +83,6 @@ class RecommendationManager implements RecommendationManagerInterface {
       return FALSE;
     }
 
-    // Allow changing the default value of the show_block field.
-    // This can be changed per instance by running:
-    // @code
-    // drush state:set helfi_recommendations.suggested_topics_default_show_block 0
-    // @endcode
-    $default_show_block = $this->state->get('helfi_recommendations.suggested_topics_default_show_block', TRUE);
-
     // Check if any of the suggested topics reference fields have the show_block
     // property set to FALSE. If so, do not show recommendations.
     foreach ($fields as $key => $definition) {
@@ -104,7 +97,7 @@ class RecommendationManager implements RecommendationManagerInterface {
     }
 
     // Return the default value for entities that do not yet have a value saved.
-    return $default_show_block;
+    return $this->state->get('helfi_recommendations.suggested_topics_default_show_block', TRUE);
   }
 
   /**
@@ -356,7 +349,8 @@ class RecommendationManager implements RecommendationManagerInterface {
   private function setQueryFilterForContentTypesAndBundles(array &$query, ContentEntityInterface $entity, array $options): void {
     $content_types = [];
 
-    // First get allowed content types and bundles from provided options or the entity.
+    // First get allowed content types and bundles from provided options or
+    // the entity.
     $allowed_content_types = $options['content_types'] ?? $this->getEnabledContentTypesAndBundles($entity);
 
     // Validate options against allowed content types and bundles.
