@@ -71,7 +71,7 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
         return $response;
       }
 
-      $response['#no_results_message'] = $this->t('No recommended content has been created for this page yet.', [], ['context' => 'Helfi AI recommendations']);
+      $response['#no_results_message'] = $this->t('No recommended content has been created for this page yet.', options: ['context' => 'helfi_recommendations']);
       return $response;
     }
 

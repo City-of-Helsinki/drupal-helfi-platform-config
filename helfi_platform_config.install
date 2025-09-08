@@ -12,10 +12,24 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Utility\UpdateException;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function helfi_platform_config_update_dependencies() : array {
+  // Run redirect update hook before helfi_platform_config_update_9328().
+  $dependencies['helfi_platform_config']['9328'] = [
+    'redirect' => '8110',
+  ];
+
+  return $dependencies;
+}
 
 /**
  * UHF-9113: Remove obsolete hotjar permission.
@@ -442,8 +456,44 @@ function helfi_platform_config_update_9327(): void {
 }
 
 /**
- * UHF-12102: Add state variable for askem monitoring.
+ * Update redirect module.
  */
 function helfi_platform_config_update_9328(): void {
+  // Redirect implemented EntityPublishableInterface:
+  // https://www.drupal.org/project/redirect/issues/3424962.
+  // We implemented similar field in UHF-10539.
+  $db = \Drupal::database();
+
+  // Migrate our data to the redirect module format:
+  $db->update('redirect')
+    ->expression('enabled', 'status')
+    ->execute();
+
+  // Verify the data was copied successfully.
+  $status_count = $db->select('redirect', 'r')
+    ->fields('r', ['rid'])
+    ->where('r.status != r.enabled')
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+
+  if ($status_count > 0) {
+    throw new UpdateException("Data migration failed: {$status_count} records have mismatched status/enabled values.");
+  }
+
+  // Remove the status field.
+  $fieldStorageDefinition = \Drupal::entityDefinitionUpdateManager()
+    ->getFieldStorageDefinition('status', 'redirect');
+
+  if ($fieldStorageDefinition instanceof FieldStorageDefinitionInterface) {
+    \Drupal::entityDefinitionUpdateManager()->uninstallFieldStorageDefinition($fieldStorageDefinition);
+  }
+}
+
+
+/**
+ * UHF-12102: Add state variable for Askem monitoring.
+ */
+function helfi_platform_config_update_9329(): void {
   \Drupal::state()->set('askem.script_monitoring', TRUE);
 }

@@ -34,3 +34,35 @@ msgstr "Chatt"
 msgctxt "Telia ACE chat"
 msgid "Loading chat..."
 msgstr "Laddar..."
+
+msgctxt "Location autocomplete"
+msgid "Type @count or more characters for results"
+msgstr "Skriv @count eller fler tecken för att se resultat"
+
+msgctxt "Location autocomplete"
+msgid "When autocomplete results are available use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures."
+msgstr "När autokomplettering är tillgänglig, använd upp- och nedåtpilarna för att bläddra och tryck enter för att välja. För pekskärmsanvändare, navigera med beröring eller svepgester."
+
+msgctxt "Location autocomplete"
+msgid "No address suggestions were found"
+msgstr "Inga adressförslag hittades"
+
+msgctxt "Location autocomplete"
+msgid "There are @count results available."
+msgstr "Det finns @count resultat tillgängliga."
+
+msgctxt "Location autocomplete"
+msgid "There is one result available."
+msgstr "Det finns ett resultat tillgängligt."
+
+msgctxt "Location autocomplete"
+msgid "@selectedItem @position of @count is highlighted"
+msgstr "@selectedItem @position av @count är markerad"
+
+msgctxt "Location autocomplete"
+msgid "Use current Location"
+msgstr "Använd aktuell plats"
+
+msgctxt "Location autocomplete"
+msgid "We couldn\'t retrieve your current location. Try entering an address."
+msgstr "Kunde inte använda din position. Prova att skriva in en adress."

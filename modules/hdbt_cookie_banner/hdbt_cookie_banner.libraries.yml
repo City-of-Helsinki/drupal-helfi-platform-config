@@ -62,12 +62,3 @@ hds_cookie_consent:
   header: true
   js:
     assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false }
-
-unapproved_cookies:
-  version: 1.0.0
-  js:
-    assets/js/unapproved-cookies.js: {}
-  dependencies:
-    - core/drupal
-    - core/drupalSettings
-    - hdbt_cookie_banner/hdbt_cookie_banner

@@ -65,6 +65,7 @@ class NewsListLazyBuilderTest extends KernelTestBase {
         'tags' => ['helfi_news_list_empty_results'],
         'max-age' => CacheResponseSubscriber::EMPTY_LIST_MAX_AGE,
       ],
+      '#theme' => 'news_list__no_results',
     ], $sut->build($paragraph->id()));
 
     $paragraph = Paragraph::create([

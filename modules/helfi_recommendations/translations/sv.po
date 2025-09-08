@@ -9,6 +9,74 @@ msgctxt "Recommendations block description"
 msgid "Recommendations are generated automatically based on content."
 msgstr "Rekommendationer genereras automatiskt baserat på innehåll."
 
-msgctxt "Annif"
+msgctxt "helfi_recommendations"
+msgid "Automatically recommended content"
+msgstr "Automatiskt rekommenderat innehåll"
+
+msgctxt "helfi_recommendations"
+msgid "Show this page in recommendations for other pages"
+msgstr "Visa denna sida i rekommendationer för andra sidor"
+
+msgctxt "helfi_recommendations"
+msgid "Instances to show recommendations from"
+msgstr "Instanser att visa rekommendationer från"
+
+msgctxt "helfi_recommendations"
+msgid "Show automatically recommended content on this page"
+msgstr "Visa automatiskt rekommenderat innehåll på denna sida"
+
+msgctxt "helfi_recommendations"
 msgid "No recommended content has been created for this page yet."
 msgstr "Inget rekommenderat innehåll har skapats för denna sida ännu."
+
+msgctxt "helfi_recommendations"
+msgid ""
+"Select the instances that should be used for recommendations. "
+"If no instances are selected, recommendations will be shown from all instances."
+msgstr ""
+"Välj de instanser som ska användas för rekommendationer. "
+"Om inga instanser väljs visas rekommendationer från alla instanser."
+
+msgctxt "helfi_recommendations"
+msgid ""
+"Select the content types that should be used for recommendations. "
+"If no content types are selected, recommendations will be shown from all content types."
+msgstr ""
+"Välj de innehållstyper som ska användas för rekommendationer. "
+"Om inga innehållstyper väljs visas rekommendationer från alla innehållstyper."
+
+msgctxt "helfi_recommendations"
+msgid "Allowed content types for recommendations"
+msgstr "Tillåtna innehållstyper för rekommendationer"
+
+msgctxt "helfi_recommendations"
+msgid "Standard page"
+msgstr "Sida"
+
+msgctxt "helfi_recommendations"
+msgid "News article"
+msgstr "Nyhetsartikel"
+
+msgctxt "helfi_recommendations"
+msgid "News item"
+msgstr "Nyhet"
+
+msgctxt "helfi_recommendations"
+msgid "Service"
+msgstr "Tjänstsidan"
+
+msgctxt "helfi_recommendations"
+msgid "Generated keywords"
+msgstr "Genererade nyckelord"
+
+msgctxt "helfi_recommendations"
+msgid "No keywords generated yet."
+msgstr "Inga nyckelord har genererats ännu."
+
+msgctxt "helfi_recommendations"
+msgid ""
+"Keywords are generated automatically. Trailing number is a score "
+"between 0 and 1, and indicates the relevance of the keyword."
+msgstr ""
+"Nyckelord genereras automatiskt. Det efterföljande numret är en poäng "
+"mellan 0 och 1 som anger nyckelordets relevans."

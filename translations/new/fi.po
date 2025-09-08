@@ -476,3 +476,35 @@ msgstr "Kirjoita osa sivun otsikosta tai liitä URL-osoite, ja valitse oikea siv
 msgctxt "Telia ACE chat"
 msgid "Loading chat..."
 msgstr "Ladataan..."
+
+msgctxt "Location autocomplete"
+msgid "Type @count or more characters for results"
+msgstr "Kirjoita @count tai enemmän kirjainta nähdäksesi tuloksia"
+
+msgctxt "Location autocomplete"
+msgid "When autocomplete results are available use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures."
+msgstr "Kun osoite-ehdotustuloksia tarjotaan, käytä nuolinäppäimiä ylä- ja alasuuntaan liikkumiseen. Paina enter-painiketta käyttääksesi valittua ehdotusta. Kosketuslaitteiden käyttäjät voivat selata listaa pyyhkäisyeleillä."
+
+msgctxt "Location autocomplete"
+msgid "No address suggestions were found"
+msgstr "Osoite-ehdotuksia ei löytynyt"
+
+msgctxt "Location autocomplete"
+msgid "There are @count results available."
+msgstr "Osoite-ehdotuksia löytyi @count kappaletta."
+
+msgctxt "Location autocomplete"
+msgid "There is one result available."
+msgstr "Yksi osoite-ehdotus löytyi."
+
+msgctxt "Location autocomplete"
+msgid "@selectedItem @position of @count is highlighted"
+msgstr "Vaihtoehto numero @position: @selectedItem korostettu. Vaihtoehtojen määrä: @count."
+
+msgctxt "Location autocomplete"
+msgid "Use current Location"
+msgstr "Käytä nykyistä sijaintia"
+
+msgctxt "Location autocomplete"
+msgid "We couldn\'t retrieve your current location. Try entering an address."
+msgstr "Nykyisen sijainnin käyttö ei onnistunut. Kokeile kirjoittaa osoite."

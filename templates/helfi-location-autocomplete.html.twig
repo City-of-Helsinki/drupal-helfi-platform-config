@@ -1,0 +1,27 @@
+{#
+/**
+ * @file
+ * Template for the helfi location autocomplete field.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ * @see claro_preprocess_input()
+ */
+#}
+
+{% apply spaceless %}
+  <div class="helfi-location-autocomplete__wrapper hds-text-input__input-wrapper">
+    <input {{ attributes.addClass('hds-text-input__input') }} />
+    <div class="helfi-location-autocomplete__loader">
+      <div class="hds-loading-spinner hds-loading-spinner--small">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  {{ children }}
+{% endapply %}
