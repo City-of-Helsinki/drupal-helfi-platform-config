@@ -490,7 +490,6 @@ function helfi_platform_config_update_9328(): void {
   }
 }
 
-
 /**
  * UHF-12102: Add state variable for Askem monitoring.
  */
