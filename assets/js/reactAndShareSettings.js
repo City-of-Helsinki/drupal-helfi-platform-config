@@ -35,13 +35,13 @@
       function handleScriptError(event) {
         const script = event.target;
         const src = script.src || "inline-script";
-        const err = new Error(`Askem script failed to load or integrity check failed: ${src}`);
+        const err = new Error(`Askem script failed to load: ${src}`);
 
-        reportToSentryThrottled(src, err);
+        // reportToSentryThrottled(src, err);
+        console.log('error reporting works');
       }
 
       const scriptElement = document.createElement('script');
-      scriptElement.integrity = "sha384-fxefL+yfJDZZIDd0dpHPI0WdzOeSh9QecaVam/sAYq2NtZB2qCXzX/7r7cWE+Xef";
       scriptElement.crossOrigin = 'anonymous';
       scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';
 
