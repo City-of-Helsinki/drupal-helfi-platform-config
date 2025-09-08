@@ -37,7 +37,7 @@ class UnitContactCard extends Paragraph implements ParagraphInterface {
     }
 
     if ($unit_name) {
-      return $this->t('See more details of @unit', [
+      return $this->t('See details of @unit', [
         '@unit' => $unit_name,
       ], [
         'context' => 'Unit contact card aria label',

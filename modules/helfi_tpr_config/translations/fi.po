@@ -14,5 +14,5 @@ msgid "Note! The content is displayed on the website only if the long descriptio
 msgstr "Huom! Kentän sisältö näytetään verkkosivulla vain, jos pitkä kuvaus puuttuu kokonaan lähdejärjestelmästä."
 
 msgctxt "Unit contact card aria label"
-msgid "See more details of @unit"
-msgstr "Katso toimipisteen @unit tarkemmat tiedot"
+msgid "See details of @unit"
+msgstr "Katso tarkemmat tiedot toimipisteelle @unit"
