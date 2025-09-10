@@ -76,7 +76,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       '#lazy_builder' => [
         RecommendationsLazyBuilder::class . ':build',
         [
-          'isAnonymous' => $this->currentUser->isAnonymous(),
+          'userId' => $this->currentUser->id(),
           'entityType' => $entity->getEntityTypeId(),
           'entityId' => $entity->id(),
           'langcode' => $entity->language()->getId(),
@@ -93,11 +93,6 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
    * {@inheritdoc}
    */
   public function getCacheContexts(): array {
-    // @todo "user.roles" context is needed while cross-instance
-    // recommendations are in review mode as part of the content is
-    // displayed to selected roles only. We can replace it with
-    // "user.roles:anonymous" once we have validated the cross-instance
-    // recommendations work as intended.
     return Cache::mergeContexts(
       parent::getCacheContexts(),
       ['languages:language_content', 'user.roles', 'url.path'],
@@ -126,18 +121,6 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
     if (!$entity instanceof ContentEntityInterface) {
-      return AccessResult::forbidden();
-    }
-
-    // @todo This is a temporary restriction to allow validating the
-    // cross-instance recommendations in production before allowing the
-    // use for all editors. Remove these once we have validated the
-    // cross-instance recommendations work as intended.
-    if ($entity->bundle() !== 'news_item' && $entity->bundle() !== 'news_article') {
-      if (_helfi_recommendations_can_see_review_mode()) {
-        return AccessResult::allowed();
-      }
-
       return AccessResult::forbidden();
     }
 
