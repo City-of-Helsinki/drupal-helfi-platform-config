@@ -60,6 +60,18 @@ class CspEventSubscriber implements EventSubscriberInterface {
    *   The policy alter event.
    */
   public function policyAlter(PolicyAlterEvent $event): void {
+    $policy = $event->getPolicy();
+    $cspConfig = $this->configFactory->get('csp.settings');
+
+    // Some directives are auto added even if disabled in config.
+    // Let's make sure config is respected here.
+    if (!$cspConfig->get('script-src-elem') && $policy->hasDirective('script-src-elem')) {
+      $policy->removeDirective('script-src-elem');
+    }
+    if (!$cspConfig->get('style-src-elem') && $policy->hasDirective('style-src-elem')) {
+      $policy->removeDirective('style-src-elem');
+    }
+
     // Clean up bad directive values.
     $this->cleanDirectiveValues($event, [
       'script-src',
@@ -71,7 +83,6 @@ class CspEventSubscriber implements EventSubscriberInterface {
     // Allow access to Elasticsearch proxy.
     $proxy_url = $this->configFactory->get('elastic_proxy.settings')?->get('elastic_proxy_url');
     if ($proxy_url) {
-      $policy = $event->getPolicy();
       if ($policy->hasDirective('connect-src')) {
         $policy->appendDirective('connect-src', $proxy_url);
       }
@@ -95,12 +106,11 @@ class CspEventSubscriber implements EventSubscriberInterface {
         $this->environmentResolver->getActiveEnvironmentName()
       );
       if ($environment instanceof Environment && $environment->getEnvironment() === EnvironmentEnum::Local) {
-        $policy = $event->getPolicy();
-        if ($policy->hasDirective('script-src-elem')) {
-          $policy->appendDirective('script-src-elem', $environment->getBaseUrl());
+        if ($policy->hasDirective('script-src')) {
+          $policy->appendDirective('script-src', $environment->getBaseUrl());
         }
-        if ($policy->hasDirective('style-src-elem')) {
-          $policy->appendDirective('style-src-elem', $environment->getBaseUrl());
+        if ($policy->hasDirective('style-src')) {
+          $policy->appendDirective('style-src', $environment->getBaseUrl());
         }
         if ($policy->hasDirective('connect-src')) {
           $policy->appendDirective('connect-src', $environment->getBaseUrl());

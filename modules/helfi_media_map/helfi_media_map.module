@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\helfi_media_map\Entity\HelMap;
+use Drupal\helfi_media_map\Plugin\media\Source\Map;
 
 /**
  * Implements hook_platform_config_grant_permissions().
@@ -67,5 +68,17 @@ function helfi_media_map_theme($existing, $type, $theme, $path) : array {
 function helfi_media_map_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['media']['hel_map'])) {
     $bundles['media']['hel_map']['class'] = HelMap::class;
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function helfi_media_map_page_attachments(array &$attachments): void {
+  if (\Drupal::service('module_handler')->moduleExists('csp')) {
+    $attachments['#attached']['csp'] = [
+      'frame-src' => array_values(Map::VALID_URLS),
+      'object-src' => array_values(Map::VALID_URLS),
+    ];
   }
 }
