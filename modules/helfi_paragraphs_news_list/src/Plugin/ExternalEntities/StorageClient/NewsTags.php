@@ -7,7 +7,7 @@ namespace Drupal\helfi_paragraphs_news_list\Plugin\ExternalEntities\StorageClien
 /**
  * External entity storage client for News tags taxonomy terms.
  *
- * @ExternalEntityStorageClient(
+ * @StorageClient(
  *   id = "helfi_news_tags",
  *   label = @Translation("Helfi: News tags"),
  *   description = @Translation("Retrieves news tags taxonomy terms from Helfi")

@@ -1,38 +1,180 @@
 uuid: be631905-d77b-418a-890e-b04fa3ed3e22
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - helfi_etusivu_entities
 id: helfi_surveys
 label: 'Helfi: Survey'
 label_plural: 'Helfi: Surveys'
 description: ''
-generate_aliases: null
+content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
-field_mapper_id: jsonpath
-field_mapper_config:
-  field_mappings:
-    id:
-      value: $.id
-    uuid:
-      value: $.id
-    title:
-      value: '$.attributes["title"]'
-    published_at:
-      value: '$.attributes["published_at"]'
-    unpublish_on:
-      value: '$.attributes["unpublish_on"]'
-    langcode:
-      value: '$.attributes["langcode"]'
-    body:
-      value: '$.attributes["body"]["value"]'
-    status:
-      value: '$.attributes["status"]'
-    survey_link_text:
-      value: '$.attributes["field_survey_link"]["title"]'
-    survey_link_url:
-      value: '$.attributes["field_survey_link"]["uri"]'
-storage_client_id: helfi_surveys
-storage_client_config: {  }
+debug_level: 0
+generate_aliases: false
+field_mappers:
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["title"]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  langcode:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["langcode"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  default_langcode:
+    id: null
+    config: {  }
+  published_at:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["published_at"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  unpublish_on:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["unpublish_on"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  body:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["body"]["value"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  status:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["status"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  survey_link_text:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["field_survey_link"]["title"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  survey_link_url:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["field_survey_link"]["uri"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+field_mapping_notes: ''
+data_aggregator:
+  id: single
+  config:
+    storage_clients:
+      -
+        id: helfi_surveys
+        config: {  }
+data_aggregator_notes: ''
 persistent_cache_max_age: -1
 annotation_entity_type_id: null
 annotation_bundle_id: null
