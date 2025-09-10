@@ -1,29 +1,62 @@
-(function ($, Drupal) {
+(function ($, Drupal, drupalSettings) {
   'use strict';
 
   let loadReactAndShare = () => {
     if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
-      window.rnsData = {
-        apiKey: drupalSettings.reactAndShareApiKey,
-        disableFa: true,
-        disableFonts: true,
+      window.askem = {
+        settings: {
+          apiKey: drupalSettings.reactAndShareApiKey,
+          disableFonts: true,
+        }
       };
 
       if (drupalSettings.siteName !== undefined) {
-        window.rnsData.categories = [drupalSettings.siteName]
+        window.askem.settings.categories = [drupalSettings.siteName]
+      }
+
+      const errorTracker = {};
+      const errorFrequency = 10;
+
+      // Report errors to Sentry but throttle them so that only every tenth
+      // is sent to avoid spamming logs.
+      function reportToSentryThrottled(errorKey, error) {
+        if (!errorTracker[errorKey]) {
+          errorTracker[errorKey] = { count: 0 };
+        }
+
+        errorTracker[errorKey].count++;
+
+        if (errorTracker[errorKey].count === 1 ||
+          errorTracker[errorKey].count % errorFrequency === 0) {
+          Sentry.captureException(error);
+        }
+      }
+
+      function handleScriptError(event) {
+        const script = event.target;
+        const src = script.src || "inline-script";
+        const err = new Error(`Askem script failed to load: ${src}`);
+
+        // reportToSentryThrottled(src, err);
+        console.log('error reporting works');
       }
 
       const scriptElement = document.createElement('script');
-      scriptElement.async = true;
-      scriptElement.src = 'https://cdn.reactandshare.com/plugin/rns.js';
+      scriptElement.crossOrigin = 'anonymous';
+      scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';
+
+      // Use the error monitoring only if it is set on.
+      if (drupalSettings.askemMonitoringEnabled) {
+        scriptElement.onerror = handleScriptError;
+      }
 
       document.body.appendChild(scriptElement);
 
-      $('.js-react-and-share__container .js-react-and-share-cookie-compliance').hide();
-      $('.js-react-and-share__container .rns').show();
+      $('.js-askem__container .js-askem-cookie-compliance').hide();
+      $('.js-askem__container .askem').show();
     }
     else {
-      $('.js-react-and-share__container .js-react-and-share-cookie-compliance').show();
+      $('.js-askem__container .js-askem-cookie-compliance').show();
     }
 
     // Only load once.
@@ -35,4 +68,4 @@
   } else {
     Drupal.cookieConsent.loadFunction(loadReactAndShare);
   }
-})(jQuery, Drupal);
+})(jQuery, Drupal, drupalSettings);

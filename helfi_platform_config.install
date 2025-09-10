@@ -489,3 +489,10 @@ function helfi_platform_config_update_9328(): void {
     \Drupal::entityDefinitionUpdateManager()->uninstallFieldStorageDefinition($fieldStorageDefinition);
   }
 }
+
+/**
+ * UHF-12102: Add state variable for Askem monitoring.
+ */
+function helfi_platform_config_update_9329(): void {
+  \Drupal::state()->set('askem.script_monitoring', TRUE);
+}
