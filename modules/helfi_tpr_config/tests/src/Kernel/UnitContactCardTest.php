@@ -139,12 +139,12 @@ class UnitContactCardTest extends KernelTestBase {
 
     $label = $paragraph->getAriaLabel();
     $this->assertInstanceOf(TranslatableMarkup::class, $label);
-    $this->assertEquals('See more details of Unit en', (string) $label);
+    $this->assertEquals('See details of Unit en', (string) $label);
 
     $paragraph = $paragraph->getTranslation('fi');
     $label = $paragraph->getAriaLabel();
     $this->assertInstanceOf(TranslatableMarkup::class, $label);
-    $this->assertEquals('See more details of Name Override fi', (string) $label);
+    $this->assertEquals('See details of Name Override fi', (string) $label);
 
   }
 
