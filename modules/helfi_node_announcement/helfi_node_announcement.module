@@ -110,27 +110,6 @@ function helfi_node_announcement_content_translation_status_access($form_id) : b
 }
 
 /**
- * Implements hook_entity_access().
- *
- * Prevent unauthenticated from accessing announcement-node page.
- */
-function helfi_node_announcement_entity_access(
-  EntityInterface $entity,
-  $operation,
-  AccountInterface $account,
-): AccessResult {
-  if (!$entity instanceof Announcement) {
-    return AccessResult::neutral();
-  }
-
-  if ($account->isAnonymous()) {
-    return AccessResult::forbidden();
-  }
-
-  return AccessResult::neutral();
-}
-
-/**
  * Implements hook_form_alter().
  */
 function helfi_node_announcement_form_alter(&$form, FormStateInterface $form_state, $form_id): void {

@@ -66,27 +66,6 @@ function helfi_node_survey_content_translation_status_access($form_id) : bool {
 }
 
 /**
- * Implements hook_entity_access().
- *
- * Prevent unauthenticated from accessing survey-node page.
- */
-function helfi_node_survey_entity_access(
-  EntityInterface $entity,
-  $operation,
-  AccountInterface $account,
-): AccessResult {
-  if ($entity->bundle() !== 'survey') {
-    return AccessResult::neutral();
-  }
-
-  if ($account->isAnonymous()) {
-    return AccessResult::forbidden();
-  }
-
-  return AccessResult::neutral();
-}
-
-/**
  * Implements hook_form_alter().
  */
 function helfi_node_survey_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
