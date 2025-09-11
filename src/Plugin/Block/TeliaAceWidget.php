@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   id: "telia_ace_widget",
   admin_label: new TranslatableMarkup("Telia ACE Widget"),
 )]
-class TeliaAceWidget extends BlockBase implements ContainerFactoryPluginInterface {
+final class TeliaAceWidget extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * URL for Telia ACE SDK script.

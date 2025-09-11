@@ -26,7 +26,7 @@ class CspEventSubscriber implements EventSubscriberInterface {
     'https://vimeo.com',
     'https://*.icareus.com',
     'https://icareus.com',
-    'https://*.helsinkikanava.fi'
+    'https://*.helsinkikanava.fi',
   ];
   const CONNECT_SRC = [
     'https://*.youtube-nocookie.com',

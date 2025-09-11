@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   id: "ibm_chat_app",
   admin_label: new TranslatableMarkup("IBM Chat App"),
 )]
-class IbmChatApp extends BlockBase implements ContainerFactoryPluginInterface {
+final class IbmChatApp extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * Module handler.

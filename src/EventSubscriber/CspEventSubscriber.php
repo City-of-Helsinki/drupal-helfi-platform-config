@@ -34,6 +34,8 @@ class CspEventSubscriber implements EventSubscriberInterface {
    *   The environment resolver.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
+   *   The module handler.
    */
   public function __construct(
     private readonly EnvironmentResolverInterface $environmentResolver,

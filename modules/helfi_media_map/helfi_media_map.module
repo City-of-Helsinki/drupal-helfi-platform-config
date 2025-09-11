@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\helfi_media_map\Entity\HelMap;
-use Drupal\helfi_media_map\Plugin\media\Source\Map;
 
 /**
  * Implements hook_platform_config_grant_permissions().
