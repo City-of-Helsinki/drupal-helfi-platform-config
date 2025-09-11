@@ -368,15 +368,16 @@ function helfi_platform_config_system_breadcrumb_alter(
   }
 
   $currentLanguage = Drupal::languageManager()
-  ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-  ->getId();
+    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+    ->getId();
 
   $active_project = $resolver->getActiveProject()->getName();
   $etusivu_project = $resolver->getProject(Project::ETUSIVU)->getName();
 
   if ($active_project === $etusivu_project) {
     $url = Url::fromRoute('<front>');
-  } else {
+  }
+  else {
     // Revert to Finnish path, if current language path is not found.
     try {
       $url = Url::fromUri($environment->getUrl($currentLanguage));
@@ -385,7 +386,6 @@ function helfi_platform_config_system_breadcrumb_alter(
       $url = Url::fromUri($environment->getUrl('fi'));
     }
   }
-
 
   $links = $breadcrumb->getLinks();
   array_unshift($links, Link::fromTextAndUrl(t('Front page'), $url));
