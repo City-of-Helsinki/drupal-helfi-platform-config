@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_recommendations\Unit;
+namespace Drupal\Tests\helfi_platform_config\Unit;
 
 use DG\BypassFinals;
 use Drupal\csp\Csp;
