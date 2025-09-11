@@ -367,20 +367,8 @@ function helfi_platform_config_system_breadcrumb_alter(
     return;
   }
 
-  $currentLanguage = Drupal::languageManager()
-    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-    ->getId();
-
-  // Revert to English path, if current language path is not found.
-  try {
-    $url = $environment->getUrl($currentLanguage);
-  }
-  catch (Exception $e) {
-    $url = $environment->getUrl('en');
-  }
-
   $links = $breadcrumb->getLinks();
-  array_unshift($links, Link::fromTextAndUrl(t('Front page'), Url::fromUri($url)));
+  array_unshift($links, Link::fromTextAndUrl(t('Front page'), Url::fromRoute('<front>')));
 
   // Include front page in breadcrumb if it's the only item.
   if (count($links) === 1 && Drupal::service('path.matcher')->isFrontPage()) {
