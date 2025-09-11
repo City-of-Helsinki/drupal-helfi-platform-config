@@ -367,8 +367,28 @@ function helfi_platform_config_system_breadcrumb_alter(
     return;
   }
 
+  $currentLanguage = Drupal::languageManager()
+  ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+  ->getId();
+
+  $active_project = $resolver->getActiveProject()->getName();
+  $etusivu_project = $resolver->getProject(Project::ETUSIVU)->getName();
+
+  if ($active_project === $etusivu_project) {
+    $url = Url::fromRoute('<front>');
+  } else {
+    // Revert to Finnish path, if current language path is not found.
+    try {
+      $url = Url::fromUri($environment->getUrl($currentLanguage));
+    }
+    catch (Exception $e) {
+      $url = Url::fromUri($environment->getUrl('fi'));
+    }
+  }
+
+
   $links = $breadcrumb->getLinks();
-  array_unshift($links, Link::fromTextAndUrl(t('Front page'), Url::fromRoute('<front>')));
+  array_unshift($links, Link::fromTextAndUrl(t('Front page'), $url));
 
   // Include front page in breadcrumb if it's the only item.
   if (count($links) === 1 && Drupal::service('path.matcher')->isFrontPage()) {
