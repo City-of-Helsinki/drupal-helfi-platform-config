@@ -22,25 +22,22 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class IbmChatApp extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * {@inheritdoc}
+   * Module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
-  public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    private readonly ModuleHandlerInterface $moduleHandler,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }
+  private ModuleHandlerInterface $moduleHandler;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
-    return new self($configuration, $plugin_id, $plugin_definition,
-      $container->get(ModuleHandlerInterface::class),
-    );
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
+    assert($container->get('module_handler') instanceof ModuleHandlerInterface);
+    $instance->moduleHandler = $container->get('module_handler');
+    return $instance;
   }
+
   /**
    * {@inheritdoc}
    */

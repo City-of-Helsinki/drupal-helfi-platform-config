@@ -304,22 +304,3 @@ function helfi_media_remote_video_preprocess_media_oembed_iframe(array &$variabl
     $variables['media'] = IFrameMarkup::create($new_iframe);
   }
 }
-
-/**
- * Implements hook_page_attachments().
- */
-function helfi_media_remote_video_page_attachments(array &$attachments): void {
-  if (\Drupal::service('module_handler')->moduleExists('csp')) {
-    // Allow all domains that are used for remote video embedding.
-    $domains = [
-      'youtube.com',
-      'youtube-nocookie.com',
-      'vimeo.com',
-      'suite.icareus.com',
-      'players.icareus.com',
-    ];
-    foreach (['frame-src', 'object-src'] as $directive) {
-      $attachments['#attached']['csp'][$directive] = $domains;
-    }
-  }
-}

@@ -70,15 +70,3 @@ function helfi_media_map_entity_bundle_info_alter(array &$bundles): void {
     $bundles['media']['hel_map']['class'] = HelMap::class;
   }
 }
-
-/**
- * Implements hook_page_attachments().
- */
-function helfi_media_map_page_attachments(array &$attachments): void {
-  if (\Drupal::service('module_handler')->moduleExists('csp')) {
-    $attachments['#attached']['csp'] = [
-      'frame-src' => array_values(Map::VALID_URLS),
-      'object-src' => array_values(Map::VALID_URLS),
-    ];
-  }
-}

@@ -7,8 +7,11 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a Telia ACE chat widget block.
@@ -17,12 +20,29 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   id: "telia_ace_widget",
   admin_label: new TranslatableMarkup("Telia ACE Widget"),
 )]
-class TeliaAceWidget extends BlockBase {
+class TeliaAceWidget extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * URL for Telia ACE SDK script.
    */
   const SDK_URL = 'https://wds.ace.teliacompany.com/wds/instances/J5XKjqJt/ACEWebSDK.min.js';
+
+  /**
+   * Module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  private ModuleHandlerInterface $moduleHandler;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
+    assert($container->get('module_handler') instanceof ModuleHandlerInterface);
+    $instance->moduleHandler = $container->get('module_handler');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -78,6 +98,31 @@ class TeliaAceWidget extends BlockBase {
         ],
       ],
     ];
+    if ($this->moduleHandler->moduleExists('csp')) {
+      $attached['csp'] = [
+        'connect-src' => [
+          'https://hel.humany.net',
+          'https://wds.ace.teliacompany.com',
+          'https://chat.ace.teliacompany.net',
+          'https://api.ace.teliacompany.net',
+        ],
+        'font-src' => [
+          'https://hel.humany.net',
+          'https://ace-knowledge-cdn.teliacompany.net',
+          'https://makasiini.hel.ninja',
+        ],
+        'frame-src' => [
+          'https://wds.ace.teliacompany.com',
+        ],
+        'script-src' => [
+          'https://wds.ace.teliacompany.com',
+        ],
+        'style-src' => [
+          'https://hel.humany.net',
+          'https://wds.ace.teliacompany.com',
+        ],
+      ];
+    }
 
     $build['telia_chat_widget'] = [
       'button' => [

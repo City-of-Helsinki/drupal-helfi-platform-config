@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\State\StateInterface;
@@ -37,6 +38,13 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
   private StateInterface $state;
 
   /**
+   * Module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  private ModuleHandlerInterface $moduleHandler;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -48,7 +56,10 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     assert($container->get('language_manager') instanceof ConfigurableLanguageManagerInterface);
     $instance->languageManager = $container->get('language_manager');
+    assert($container->get('state') instanceof StateInterface);
     $instance->state = $container->get('state');
+    assert($container->get('module_handler') instanceof ModuleHandlerInterface);
+    $instance->moduleHandler = $container->get('module_handler');
     return $instance;
   }
 
@@ -81,6 +92,23 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
         ],
       ],
     ];
+
+    if ($this->moduleHandler->moduleExists('csp')) {
+      // Content-Security-Policy headers needed for this block.
+      $build['react_and_share']['#attached']['csp'] = [
+        'connect-src' => [
+          'https://*.reactandshare.com',
+          'https://*.askem.com',
+        ],
+        'img-src' => [
+          'https://*.reactandshare.com',
+        ],
+        'script-src' => [
+          'https://*.reactandshare.com',
+          'https://*.askem.com',
+        ],
+      ];
+    }
 
     return $build;
   }
