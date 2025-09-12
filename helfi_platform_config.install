@@ -499,8 +499,14 @@ function helfi_platform_config_update_9329(): void {
  * UHF-11974: Enable helfi_csp module on selected instances.
  */
 function helfi_platform_config_update_9330(): void {
-  $project = \Drupal::service('helfi_api_base.environment_resolver')
-    ->getActiveProject();
+  try {
+    $project = \Drupal::service('helfi_api_base.environment_resolver')
+      ->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    // No need to proceed.
+    return;
+  }
 
   // Only enable on core instances, päätökset, avustusasiointi,
   // palvelukeskus and kaupunkitieto.
