@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
-use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a Watson chatbot block.
@@ -19,24 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   id: "ibm_chat_app",
   admin_label: new TranslatableMarkup("IBM Chat App"),
 )]
-final class IbmChatApp extends BlockBase implements ContainerFactoryPluginInterface {
-
-  /**
-   * Module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  private ModuleHandlerInterface $moduleHandler;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
-    $instance = new self($configuration, $plugin_id, $plugin_definition);
-    assert($container->get('module_handler') instanceof ModuleHandlerInterface);
-    $instance->moduleHandler = $container->get('module_handler');
-    return $instance;
-  }
+final class IbmChatApp extends ChatBlockBase {
 
   /**
    * {@inheritdoc}
