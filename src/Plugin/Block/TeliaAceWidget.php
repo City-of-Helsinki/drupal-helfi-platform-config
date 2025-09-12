@@ -6,7 +6,6 @@ namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\Attribute\Block;
-use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
@@ -17,7 +16,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   id: "telia_ace_widget",
   admin_label: new TranslatableMarkup("Telia ACE Widget"),
 )]
-class TeliaAceWidget extends BlockBase {
+final class TeliaAceWidget extends ChatBlockBase {
 
   /**
    * URL for Telia ACE SDK script.
@@ -78,6 +77,31 @@ class TeliaAceWidget extends BlockBase {
         ],
       ],
     ];
+    if ($this->moduleHandler->moduleExists('csp')) {
+      $attached['csp'] = [
+        'connect-src' => [
+          'https://hel.humany.net',
+          'https://wds.ace.teliacompany.com',
+          'https://chat.ace.teliacompany.net',
+          'https://api.ace.teliacompany.net',
+        ],
+        'font-src' => [
+          'https://hel.humany.net',
+          'https://ace-knowledge-cdn.teliacompany.net',
+          'https://makasiini.hel.ninja',
+        ],
+        'frame-src' => [
+          'https://wds.ace.teliacompany.com',
+        ],
+        'script-src' => [
+          'https://wds.ace.teliacompany.com',
+        ],
+        'style-src' => [
+          'https://hel.humany.net',
+          'https://wds.ace.teliacompany.com',
+        ],
+      ];
+    }
 
     $build['telia_chat_widget'] = [
       'button' => [
