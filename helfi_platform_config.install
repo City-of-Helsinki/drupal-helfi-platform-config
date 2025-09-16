@@ -15,6 +15,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Utility\UpdateException;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
@@ -448,11 +449,8 @@ function helfi_platform_config_update_9326(): void {
  * UHF-11973: Enable csp.
  */
 function helfi_platform_config_update_9327(): void {
-  if (!Drupal::moduleHandler()->moduleExists('csp')) {
-    Drupal::service('module_installer')->install([
-      'csp',
-    ]);
-  }
+  // Decided not to enable CSP automatically in all sites, to allow
+  // external sites to decide for themselves.
 }
 
 /**
@@ -495,4 +493,33 @@ function helfi_platform_config_update_9328(): void {
  */
 function helfi_platform_config_update_9329(): void {
   \Drupal::state()->set('askem.script_monitoring', TRUE);
+}
+
+/**
+ * UHF-11974: Enable helfi_csp module on selected instances.
+ */
+function helfi_platform_config_update_9330(): void {
+  try {
+    $project = \Drupal::service('helfi_api_base.environment_resolver')
+      ->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    // No need to proceed.
+    return;
+  }
+
+  // Only enable on core instances, päätökset, avustusasiointi,
+  // palvelukeskus and kaupunkitieto.
+  $names = [
+    Project::PAATOKSET,
+    Project::GRANTS,
+    Project::KAUPUNKITIETO,
+    Project::PALVELUKESKUS,
+  ];
+  if ($project->hasRole(ProjectRoleEnum::Core) || in_array($project->getName(), $names)) {
+    if (!\Drupal::moduleHandler()->moduleExists('helfi_csp')) {
+      $module_installer = \Drupal::service('module_installer');
+      $module_installer->install(['helfi_csp']);
+    }
+  }
 }

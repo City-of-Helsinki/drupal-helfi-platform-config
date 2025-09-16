@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_recommendations\Unit;
+namespace Drupal\Tests\helfi_platform_config\Unit;
 
 use DG\BypassFinals;
 use Drupal\csp\Csp;
@@ -19,6 +19,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**
  * Unit tests for CspEventSubscriber.
@@ -80,6 +81,20 @@ class CspEventSubscriberTest extends UnitTestCase {
   protected ObjectProphecy $elasticProxyConfig;
 
   /**
+   * The Csp config.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $cspConfig;
+
+  /**
+   * The ModuleHandlerInterface.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $moduleHandler;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -97,14 +112,28 @@ class CspEventSubscriberTest extends UnitTestCase {
 
     $this->elasticProxyConfig = $this->prophesize(ImmutableConfig::class);
     $this->elasticProxyConfig->get('elastic_proxy_url')->willReturn('');
+    $this->cspConfig = $this->prophesize(ImmutableConfig::class);
+    $this->cspConfig->get('script-src-elem')->willReturn(NULL);
+    $this->cspConfig->get('style-src-elem')->willReturn(NULL);
     $config = $this->prophesize(ConfigFactoryInterface::class);
     $config->get('elastic_proxy.settings')->willReturn($this->elasticProxyConfig->reveal());
+    $config->get('csp.settings')->willReturn($this->cspConfig->reveal());
 
     $this->event = $this->prophesize(PolicyAlterEvent::class);
     $this->policy = $this->prophesize(Csp::class);
+    $this->policy->hasDirective('script-src-elem')->willReturn(FALSE);
+    $this->policy->hasDirective('style-src-elem')->willReturn(FALSE);
+    $this->policy->fallbackAwareAppendIfEnabled(Argument::any(), Argument::any())->shouldBeCalled();
     $this->event->getPolicy()->willReturn($this->policy->reveal());
 
-    $this->cspEventSubscriber = new CspEventSubscriber($this->environmentResolver->reveal(), $config->reveal());
+    $this->moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
+    $this->moduleHandler->moduleExists(Argument::any())->willReturn(TRUE);
+
+    $this->cspEventSubscriber = new CspEventSubscriber(
+      $this->environmentResolver->reveal(),
+      $config->reveal(),
+      $this->moduleHandler->reveal(),
+    );
   }
 
   /**
@@ -113,6 +142,7 @@ class CspEventSubscriberTest extends UnitTestCase {
    * @covers ::getSubscribedEvents
    */
   public function testGetSubscribedEvents(): void {
+    $this->policy->fallbackAwareAppendIfEnabled(Argument::any(), Argument::any())->shouldNotBeCalled();
     $this->assertEquals([CspEvents::POLICY_ALTER => 'policyAlter'], CspEventSubscriber::getSubscribedEvents());
   }
 
@@ -128,8 +158,6 @@ class CspEventSubscriberTest extends UnitTestCase {
     foreach ([
       'script-src',
       'style-src',
-      'script-src-elem',
-      'style-src-elem',
     ] as $directive) {
       $this->policy->hasDirective($directive)->willReturn(TRUE);
       $this->policy->getDirective($directive)->willReturn(['https://example.com', 'dist']);
@@ -152,8 +180,6 @@ class CspEventSubscriberTest extends UnitTestCase {
     foreach ([
       'script-src',
       'style-src',
-      'script-src-elem',
-      'style-src-elem',
     ] as $directive) {
       $this->policy->hasDirective($directive)->willReturn(TRUE);
       $this->policy->getDirective($directive)->willReturn(['https://example.com', 'dist']);
@@ -161,12 +187,9 @@ class CspEventSubscriberTest extends UnitTestCase {
     }
 
     foreach ([
-      'script-src-elem',
-      'style-src-elem',
       'connect-src',
     ] as $directive) {
-      $this->policy->hasDirective($directive)->willReturn(TRUE);
-      $this->policy->appendDirective($directive, 'https://local.example.com')->shouldBeCalled();
+      $this->policy->fallbackAwareAppendIfEnabled($directive, 'https://local.example.com')->shouldBeCalled();
     }
 
     $this->cspEventSubscriber->policyAlter($this->event->reveal());
@@ -181,8 +204,7 @@ class CspEventSubscriberTest extends UnitTestCase {
     $this->elasticProxyConfig->get('elastic_proxy_url')->willReturn('https://elastic.example.com');
     $this->project->getName()->willReturn(Project::ETUSIVU);
     $this->policy->hasDirective(Argument::any())->willReturn(FALSE);
-    $this->policy->hasDirective('connect-src')->willReturn(TRUE);
-    $this->policy->appendDirective('connect-src', 'https://elastic.example.com')->shouldBeCalled();
+    $this->policy->fallbackAwareAppendIfEnabled('connect-src', ['https://elastic.example.com'])->shouldBeCalled();
 
     $this->cspEventSubscriber->policyAlter($this->event->reveal());
   }
