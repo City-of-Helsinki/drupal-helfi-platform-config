@@ -31,16 +31,12 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->teliaAceWidget = new TeliaAceWidget(
+    $this->teliaAceWidget = new class (
       [],
       'telia_ace_widget',
       ['provider' => 'helfi_platform_config']
-    );
-
-    // Inject the mock module handler using reflection.
-    $reflection = new \ReflectionClass($this->teliaAceWidget);
-    $property = $reflection->getProperty('moduleHandler');
-    $property->setValue($this->teliaAceWidget, $this->moduleHandler);
+    ) extends TeliaAceWidget {
+    };
 
     // Set the translation service for StringTranslationTrait.
     $this->teliaAceWidget->setStringTranslation($this->stringTranslation);
@@ -156,25 +152,6 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
       Xss::filter('<img src="x" onerror="alert(\'XSS\')">'),
       $build['telia_chat_widget']['#attached']['drupalSettings']['telia_ace_data']['chat_title']
     );
-  }
-
-  /**
-   * Tests that CSP directives are added to the block.
-   *
-   * @covers ::build
-   */
-  public function testBuildAddsCspDirectives(): void {
-    $this->teliaAceWidget->setConfiguration([
-      'chat_id' => 'test-chat',
-      'chat_title' => 'Test chat',
-    ]);
-
-    $this->moduleHandler->method('moduleExists')
-      ->with('csp')
-      ->willReturn(TRUE);
-
-    $build = $this->teliaAceWidget->build();
-    $this->assertArrayHasKey('csp', $build['telia_chat_widget']['#attached']);
   }
 
 }

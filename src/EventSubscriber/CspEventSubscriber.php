@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
 use Drupal\helfi_api_base\Environment\Environment;
@@ -34,13 +33,10 @@ class CspEventSubscriber implements EventSubscriberInterface {
    *   The environment resolver.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
-   *   The module handler.
    */
   public function __construct(
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly ConfigFactoryInterface $configFactory,
-    private readonly ModuleHandlerInterface $moduleHandler,
   ) {
   }
 
@@ -64,18 +60,6 @@ class CspEventSubscriber implements EventSubscriberInterface {
    *   The policy alter event.
    */
   public function policyAlter(PolicyAlterEvent $event): void {
-    $policy = $event->getPolicy();
-    $cspConfig = $this->configFactory->get('csp.settings');
-
-    // Some directives are auto added even if disabled in config.
-    // Let's make sure config is respected here.
-    if (!$cspConfig->get('script-src-elem') && $policy->hasDirective('script-src-elem')) {
-      $policy->removeDirective('script-src-elem');
-    }
-    if (!$cspConfig->get('style-src-elem') && $policy->hasDirective('style-src-elem')) {
-      $policy->removeDirective('style-src-elem');
-    }
-
     // Clean up bad directive values.
     $this->cleanDirectiveValues($event, [
       'script-src',
@@ -87,61 +71,11 @@ class CspEventSubscriber implements EventSubscriberInterface {
     // Allow access to Elasticsearch proxy.
     $proxy_url = $this->configFactory->get('elastic_proxy.settings')?->get('elastic_proxy_url');
     if ($proxy_url) {
-      $policy->fallbackAwareAppendIfEnabled('connect-src', [$proxy_url]);
+      $policy = $event->getPolicy();
+      if ($policy->hasDirective('connect-src')) {
+        $policy->appendDirective('connect-src', $proxy_url);
+      }
     }
-
-    // Allow access to all hel.fi subdomains.
-    $policy->fallbackAwareAppendIfEnabled('connect-src', ['https://*.hel.fi']);
-    $policy->fallbackAwareAppendIfEnabled('font-src', ['https://*.hel.fi']);
-    $policy->fallbackAwareAppendIfEnabled('frame-src', ['https://*.hel.fi']);
-    $policy->fallbackAwareAppendIfEnabled('script-src', ['https://*.hel.fi']);
-    $policy->fallbackAwareAppendIfEnabled('style-src', ['https://*.hel.fi']);
-
-    // Siteimprove-module.
-    if ($this->moduleHandler->moduleExists('siteimprove')) {
-      $policy->fallbackAwareAppendIfEnabled('connect-src', ['https://*.siteimprove.com']);
-      $policy->fallbackAwareAppendIfEnabled('frame-src', [
-        'https://*.siteimprove.com',
-        'https://*.siteimproveanalytics.com',
-      ]);
-    }
-
-    // "Social media"-module.
-    if ($this->moduleHandler->moduleExists('social_media')) {
-      $policy->fallbackAwareAppendIfEnabled('connect-src', ['https://connect.facebook.net']);
-      $policy->fallbackAwareAppendIfEnabled('script-src', ['https://connect.facebook.net']);
-    }
-
-    // Common rules that affect many modules and theme layers.
-    $policy->fallbackAwareAppendIfEnabled('img-src', ['data:']);
-    $policy->fallbackAwareAppendIfEnabled('media-src', ['data:']);
-
-    // Miscellaneous frame-src domains migrated from helfi proxy.
-    $policy->fallbackAwareAppendIfEnabled('frame-src', [
-      'https://*.userneeds.com',
-      'https://agreeable-island-03e85b803.azurestaticapps.net',
-      'https://*.hotjar.com',
-      'https://*.facebook.com',
-      'https://*.twitter.com',
-      'https://*.linkedin.com',
-      'https://*.readspeaker.com',
-      'https://*.google.com',
-      'https://*.snoobi.com',
-      'https://*.dreambroker.com',
-      'https://dreambroker.com',
-      'https://pollev.com',
-      'https://tyoterveys-helsinki-pv.mail-eur.net',
-      'https://walls.io',
-      'https://*.flockler.com',
-      'https://*.lightwidget.com',
-      'https://hel-thk-botti.kuurahealth.com',
-      'https://*.giosg.com',
-      'https://*.giosgusercontent.com',
-      'https://helfi.fi1.frosmo.com',
-      'https://survey.feedbackly.com',
-      'https://hkp.maanmittauslaitos.fi',
-      'https://reittiopas.hsl.fi',
-    ]);
 
     // Add frontpage domain when on local dev environments to allow
     // other core instances to fetch frontpage assets. All core instances
@@ -161,9 +95,16 @@ class CspEventSubscriber implements EventSubscriberInterface {
         $this->environmentResolver->getActiveEnvironmentName()
       );
       if ($environment instanceof Environment && $environment->getEnvironment() === EnvironmentEnum::Local) {
-        $policy->fallbackAwareAppendIfEnabled('script-src', $environment->getBaseUrl());
-        $policy->fallbackAwareAppendIfEnabled('style-src', $environment->getBaseUrl());
-        $policy->fallbackAwareAppendIfEnabled('connect-src', $environment->getBaseUrl());
+        $policy = $event->getPolicy();
+        if ($policy->hasDirective('script-src-elem')) {
+          $policy->appendDirective('script-src-elem', $environment->getBaseUrl());
+        }
+        if ($policy->hasDirective('style-src-elem')) {
+          $policy->appendDirective('style-src-elem', $environment->getBaseUrl());
+        }
+        if ($policy->hasDirective('connect-src')) {
+          $policy->appendDirective('connect-src', $environment->getBaseUrl());
+        }
       }
     }
   }

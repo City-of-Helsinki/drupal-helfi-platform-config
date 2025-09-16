@@ -9,5 +9,6 @@ dependencies:
   - helfi_api_base:helfi_api_base
   - config_rewrite:config_rewrite
   - menu_block_current_language:menu_block_current_language
+  - csp:csp
 'interface translation project': helfi_platform_config
 'interface translation server pattern': modules/contrib/helfi_platform_config/translations/new/%language.po
