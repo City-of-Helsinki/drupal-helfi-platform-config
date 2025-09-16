@@ -6,11 +6,10 @@ namespace Drupal\Tests\helfi_platform_config\Unit\Plugin\Block;
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\State\StateInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\helfi_platform_config\Plugin\Block\ReactAndShare;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\Tests\UnitTestCase;
@@ -40,11 +39,6 @@ class ReactAndShareTest extends UnitTestCase {
   private StateInterface|MockObject $state;
 
   /**
-   * The mock module handler.
-   */
-  private ModuleHandlerInterface&MockObject $moduleHandler;
-
-  /**
    * The block instance being tested.
    *
    * @var \Drupal\helfi_platform_config\Plugin\Block\ReactAndShare
@@ -66,7 +60,6 @@ class ReactAndShareTest extends UnitTestCase {
 
     $this->languageManager = $this->createMock(ConfigurableLanguageManagerInterface::class);
     $this->state = $this->createMock(StateInterface::class);
-    $this->moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $this->stringTranslation = $this->createMock('Drupal\Core\StringTranslation\TranslationInterface');
 
     $this->reactAndShareBlock = new ReactAndShare(
@@ -81,8 +74,6 @@ class ReactAndShareTest extends UnitTestCase {
     $property->setValue($this->reactAndShareBlock, $this->languageManager);
     $stateProperty = $reflection->getProperty('state');
     $stateProperty->setValue($this->reactAndShareBlock, $this->state);
-    $moduleHandlerproperty = $reflection->getProperty('moduleHandler');
-    $moduleHandlerproperty->setValue($this->reactAndShareBlock, $this->moduleHandler);
 
     // Ensure translation works within the block.
     $this->reactAndShareBlock->setStringTranslation($this->createMock(TranslationInterface::class));
@@ -150,37 +141,6 @@ class ReactAndShareTest extends UnitTestCase {
     ];
 
     $this->assertEquals($expected, $this->reactAndShareBlock->build());
-  }
-
-  /**
-   * Tests that CSP directives are added to the block.
-   *
-   * @covers ::build
-   */
-  public function testBuildAddsCspDirectives(): void {
-    $language = $this->createMock(LanguageInterface::class);
-    $language->method('getId')->willReturn('fi');
-
-    $this->languageManager->method('getCurrentLanguage')
-      ->with(LanguageInterface::TYPE_CONTENT)
-      ->willReturn($language);
-
-    // Set a fake API key environment variable.
-    putenv('REACT_AND_SHARE_APIKEY_FI=fake-api-key');
-
-    $configMock = $this->createMock(Config::class);
-    $configMock->method('get')->with('name')->willReturn('Test Site');
-
-    $this->languageManager->method('getLanguageConfigOverride')
-      ->with('fi', 'system.site')
-      ->willReturn($configMock);
-
-    $this->moduleHandler->method('moduleExists')
-      ->with('csp')
-      ->willReturn(TRUE);
-
-    $build = $this->reactAndShareBlock->build();
-    $this->assertArrayHasKey('csp', $build['react_and_share']['#attached']);
   }
 
 }
