@@ -8,7 +8,6 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
-use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
@@ -97,6 +96,73 @@ class CspEventSubscriber implements EventSubscriberInterface {
     $policy->fallbackAwareAppendIfEnabled('script-src', ['https://*.hel.fi']);
     $policy->fallbackAwareAppendIfEnabled('style-src', ['https://*.hel.fi']);
 
+    // Telia ACE:
+    $policy->fallbackAwareAppendIfEnabled('connect-src', [
+      'https://hel.humany.net',
+      'https://wds.ace.teliacompany.com',
+      'https://chat.ace.teliacompany.net',
+      'https://api.ace.teliacompany.net',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('font-src', [
+      'https://hel.humany.net',
+      'https://ace-knowledge-cdn.teliacompany.net',
+      'https://makasiini.hel.ninja',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('frame-src', [
+      'https://wds.ace.teliacompany.com',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('script-src', [
+      'https://wds.ace.teliacompany.com',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('style-src', [
+      'https://hel.humany.net',
+      'https://wds.ace.teliacompany.com',
+    ]);
+
+    // React and share:
+    $policy->fallbackAwareAppendIfEnabled('connect-src', [
+      'https://*.reactandshare.com',
+      'https://*.askem.com',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('img-src', [
+      'https://*.reactandshare.com',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('script-src', [
+      'https://*.reactandshare.com',
+      'https://*.askem.com',
+    ]);
+
+    // IBM Chat app:
+    $policy->fallbackAwareAppendIfEnabled('connect-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('font-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('frame-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-ibm.eu-de.mybluemix.net',
+      'https://coh-chat-app-prod-ibm.eu-de.mybluemix.net',
+      'https://coh-chat-app-test.eu-de.mybluemix.net',
+      'https://coh-chat-app-dev.eu-de.mybluemix.net',
+      'https://coh-chat-app-prod.eu-de.mybluemix.net',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('img-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('script-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('style-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+
     // Siteimprove-module.
     if ($this->moduleHandler->moduleExists('siteimprove')) {
       $policy->fallbackAwareAppendIfEnabled('connect-src', ['https://*.siteimprove.com']);
@@ -149,22 +215,22 @@ class CspEventSubscriber implements EventSubscriberInterface {
     // value 'self' is sufficient there, but on local dev environments the
     // domains are different, so frontpage domain needs to be added to allow
     // proper behavior for things like the cookie banner.
-    $current_site = NULL;
     try {
       $current_site = $this->environmentResolver->getActiveProject();
+
+      if ($current_site->getName() !== Project::ETUSIVU) {
+        $environment = $this->environmentResolver->getEnvironment(
+          Project::ETUSIVU,
+          $this->environmentResolver->getActiveEnvironmentName()
+        );
+        if ($environment->getEnvironment() === EnvironmentEnum::Local) {
+          $policy->fallbackAwareAppendIfEnabled('script-src', $environment->getBaseUrl());
+          $policy->fallbackAwareAppendIfEnabled('style-src', $environment->getBaseUrl());
+          $policy->fallbackAwareAppendIfEnabled('connect-src', $environment->getBaseUrl());
+        }
+      }
     }
     catch (\InvalidArgumentException) {
-    }
-    if ($current_site instanceof Project && $current_site->getName() !== Project::ETUSIVU) {
-      $environment = $this->environmentResolver->getEnvironment(
-        Project::ETUSIVU,
-        $this->environmentResolver->getActiveEnvironmentName()
-      );
-      if ($environment instanceof Environment && $environment->getEnvironment() === EnvironmentEnum::Local) {
-        $policy->fallbackAwareAppendIfEnabled('script-src', $environment->getBaseUrl());
-        $policy->fallbackAwareAppendIfEnabled('style-src', $environment->getBaseUrl());
-        $policy->fallbackAwareAppendIfEnabled('connect-src', $environment->getBaseUrl());
-      }
     }
   }
 
