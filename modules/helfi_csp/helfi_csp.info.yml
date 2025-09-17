@@ -1,0 +1,7 @@
+name: 'HELfi CSP'
+description: 'Provides a centrally managed CSP base configuration.'
+type: module
+core_version_requirement: ^10 || ^11
+dependencies:
+  - csp:csp
+package: HELfi
