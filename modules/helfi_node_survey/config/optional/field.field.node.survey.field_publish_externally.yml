@@ -9,7 +9,7 @@ id: node.survey.field_publish_externally
 field_name: field_publish_externally
 entity_type: node
 bundle: survey
-label: 'Publish on external site'
+label: 'Publish survey on external site'
 description: ''
 required: false
 translatable: false
