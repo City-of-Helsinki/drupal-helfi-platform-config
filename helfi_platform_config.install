@@ -496,3 +496,18 @@ function helfi_platform_config_update_9328(): void {
 function helfi_platform_config_update_9329(): void {
   \Drupal::state()->set('askem.script_monitoring', TRUE);
 }
+
+/**
+ * UHF-11501: Remove deprecated modules.
+ */
+function helfi_platform_config_update_9400(): void {
+  $uninstall = [
+  ];
+
+  $module_installer = \Drupal::service('module_installer');
+  foreach ($uninstall as $module) {
+    if (\Drupal::moduleHandler()->moduleExists($module)) {
+      $module_installer->uninstall([$module]);
+    }
+  }
+}

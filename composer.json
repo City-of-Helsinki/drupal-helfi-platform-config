@@ -7,6 +7,7 @@
     "require": {
         "ext-curl": "*",
         "drupal/core": "^10",
+        "drupal/action": "^0.2",
         "drupal/core-composer-scaffold": "^10",
         "drupal/admin_toolbar": "^3.0",
         "drupal/allowed_formats": "^2.0",
