@@ -16,7 +16,7 @@
         "drupal/content_lock": "^3.0",
         "drupal/crop": "^2.1",
         "drupal/csp": "^2.2",
-        "drupal/default_content": "^2.0.0-alpha2",
+        "drupal/default_content": "^2.0.0",
         "drupal/diff": "^1.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editoria11y": "^2.0",
@@ -76,7 +76,6 @@
         "drupal/core-composer-scaffold": "<10.5",
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/helfi_media_map": "*",
-        "drupal/default_content": ">2.0.0-alpha2",
         "drush/drush": "<12"
     },
     "extra": {
