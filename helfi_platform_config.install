@@ -502,6 +502,7 @@ function helfi_platform_config_update_9329(): void {
  */
 function helfi_platform_config_update_9400(): void {
   $uninstall = [
+    'hal',
   ];
 
   $module_installer = \Drupal::service('module_installer');
