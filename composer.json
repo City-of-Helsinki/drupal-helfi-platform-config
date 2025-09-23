@@ -89,7 +89,7 @@
                 "[#UHF-9388] Process configuration translation files for custom modules (https://www.drupal.org/i/2845437)": "./public/modules/contrib/helfi_platform_config/patches/drupal-2845437-process-custom-module-translation-config-10.3.x.patch",
                 "[#UHF-9690] Allow updating lists when switching from allowed values to allowed values function (https://www.drupal.org/i/2873353)": "https://www.drupal.org/files/issues/2025-06-27/allow-allowed-values-function-update-2873353-20.patch",
                 "[#UHF-9952, #UHF-9980] Duplicate <br /> tags (https://www.drupal.org/i/3083786)": "https://www.drupal.org/files/issues/2024-08-08/3083786--mr-8066--10-3-backport.patch",
-                "[#UHF-11025] Status message templates missing theme when bigpipe is enabled (https://www.drupal.org/i/3396318)": "./public/modules/contrib/helfi_platform_config/patches/drupal-3396318-status-message-bigpipe-mr-9329.patch",
+                "[#UHF-11025] Status message templates missing theme when bigpipe is enabled (https://www.drupal.org/i/3396318)": "./public/modules/contrib/helfi_platform_config/patches/3396318.patch",
                 "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch"
             },
             "drupal/csp": {
