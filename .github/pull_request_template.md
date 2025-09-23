@@ -11,7 +11,9 @@
   * `make fresh`
 * Update the Helfi Platform config
   * `composer require drupal/helfi_platform_config:dev-UHF-0000_insert_correct_branch`
-* Run `make drush-updb drush-cr`
+* Run code updates
+  * `composer install`
+  * `make drush-updb drush-locale-update drush-cr`
 * Run `make shell`
   * In the shell, run `drush helfi:platform-config:update`
   <!-- 
