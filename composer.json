@@ -8,7 +8,6 @@
         "ext-curl": "*",
         "drupal/core": "^11",
         "drupal/action": "^0.2",
-        "drupal/core-composer-scaffold": "^11",
         "drupal/admin_toolbar": "^3.0",
         "drupal/allowed_formats": "^3.0",
         "drupal/ckeditor5_paste_filter": "^1.0",
