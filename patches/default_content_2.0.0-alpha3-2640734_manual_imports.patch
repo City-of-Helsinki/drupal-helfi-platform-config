@@ -1,0 +1,1500 @@
+diff --git a/drush.services.yml b/drush.services.yml
+index 441ae0c3a481128e5f264ae5ad579ba38e3e6144..a02bba6579a1fa3a0be15dfd2283405e2edd09f7 100644
+--- a/drush.services.yml
++++ b/drush.services.yml
+@@ -1,6 +1,6 @@
+ services:
+   default_content.commands:
+-    class: \Drupal\default_content\Commands\DefaultContentCommands
+-    arguments: ['@default_content.exporter']
++    class: Drupal\default_content\Commands\DefaultContentCommands
++    arguments: ['@default_content.exporter', '@default_content.importer', '%container.modules%']
+     tags:
+       - { name: drush.command }
+diff --git a/src/Commands/DefaultContentCommands.php b/src/Commands/DefaultContentCommands.php
+index 19b858aa04dbaf4760dacf5c02dd4ffa65bda066..00146abf54c4f443011b9f8aa64a5b10c639c7fd 100644
+--- a/src/Commands/DefaultContentCommands.php
++++ b/src/Commands/DefaultContentCommands.php
+@@ -2,13 +2,13 @@
+ 
+ namespace Drupal\default_content\Commands;
+ 
++use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
+ use Drupal\default_content\ExporterInterface;
++use Drupal\default_content\ImporterInterface;
+ use Drush\Commands\DrushCommands;
+ 
+ /**
+- * Class DefaultContentCommands.
+- *
+- * @package Drupal\default_content
++ * Provides Drush commands for 'Default content' module.
+  */
+ class DefaultContentCommands extends DrushCommands {
+ 
+@@ -20,13 +20,34 @@ class DefaultContentCommands extends DrushCommands {
+   protected $defaultContentExporter;
+ 
+   /**
+-   * SimplesitemapController constructor.
++   * The default content importer.
++   *
++   * @var \Drupal\default_content\ImporterInterface
++   */
++  protected $defaultContentImporter;
++
++  /**
++   * A full list of installed modules plus the active profile.
++   *
++   * @var string[]
++   */
++  protected $installedExtensions;
++
++  /**
++   * DefaultContentCommands constructor.
+    *
+    * @param \Drupal\default_content\ExporterInterface $default_content_exporter
+    *   The default content exporter.
++   * @param \Drupal\default_content\ImporterInterface $default_content_importer
++   *   The default content importer.
++   * @param array[] $installed_modules
++   *   Installed modules list from the 'container.modules' container parameter.
+    */
+-  public function __construct(ExporterInterface $default_content_exporter) {
++  public function __construct(ExporterInterface $default_content_exporter, ImporterInterface $default_content_importer, array $installed_modules) {
++    parent::__construct();
+     $this->defaultContentExporter = $default_content_exporter;
++    $this->defaultContentImporter = $default_content_importer;
++    $this->installedExtensions = array_keys($installed_modules);
+   }
+ 
+   /**
+@@ -85,12 +106,75 @@ class DefaultContentCommands extends DrushCommands {
+    * @aliases dcem
+    */
+   public function contentExportModule($module) {
++    $this->checkExtensions([$module]);
+     $module_folder = \Drupal::service('extension.list.module')
+       ->get($module)
+       ->getPath() . '/content';
+     $this->defaultContentExporter->exportModuleContent($module, $module_folder);
+   }
+ 
++  /**
++   * Imports default content from installed modules or active profile.
++   *
++   * @param string[] $extensions
++   *   Space-delimited list of module which may contain also the active profile.
++   *
++   * @option update Overwrite existing entities with values from the default
++   *   content.
++   *
++   * @usage drush default-content:import
++   *   Imports default content from all installed modules, including the active
++   *   profile.
++   * @usage drush dcim my_module other_module custom_profile
++   *   Imports default content from <info>my_module</info>,
++   *   <info>other_module<info> modules and <info>custom_profile<info> active
++   *   profile. Does not overwrite content that was already imported before.
++   * @usage drush default-content:import my_module --update
++   *   Imports all default content from <info>my_module</info> module, including
++   *   content that has already been imported.
++   *
++   * @command default-content:import
++   * @aliases dcim
++   */
++  public function import(array $extensions, array $options = ['update' => FALSE]): void {
++    $count = 0;
++    $import_from_extensions = [];
++    foreach ($this->checkExtensions($extensions) as $extension) {
++      if ($extension_count = count($this->defaultContentImporter->importContent($extension, $options['update']))) {
++        $import_from_extensions[] = $extension;
++        $count += $extension_count;
++      }
++    }
++    if ($count) {
++      $this->logger()->notice(new PluralTranslatableMarkup($count, '1 entity imported from @modules', '@count entities imported from @modules', [
++        '@modules' => implode(', ', $import_from_extensions),
++      ]));
++      return;
++    }
++    $this->logger()->warning(dt('No content has been imported.'));
++  }
++
++  /**
++   * Checks and returns a list of extension given the user input.
++   *
++   * @param array $extensions
++   *   An array of modules and/or the active profile.
++   *
++   * @return array
++   *   A list of modules and/or the active profile.
++   */
++  protected function checkExtensions(array $extensions): array {
++    if (!$extensions) {
++      return $this->installedExtensions;
++    }
++
++    if ($invalid_extensions = array_diff($extensions, $this->installedExtensions)) {
++      throw new \InvalidArgumentException(sprintf('Invalid modules or profile passed: %s', implode(', ', $invalid_extensions)));
++    }
++
++    return $extensions;
++  }
++
+   /**
+    * Exports all the content and references defined in a module info file.
+    *
+@@ -102,8 +186,8 @@ class DefaultContentCommands extends DrushCommands {
+    */
+   public function contentExportModuleWithReferences($module) {
+     $module_folder = \Drupal::moduleHandler()
+-        ->getModule($module)
+-        ->getPath() . '/content';
++      ->getModule($module)
++      ->getPath() . '/content';
+     $this->defaultContentExporter->exportModuleContentWithReferences($module, $module_folder);
+   }
+ 
+diff --git a/src/Importer.php b/src/Importer.php
+index 423c8ffb15eda57151a21ce45e393ac9ac85bea2..a4fc9be40e95a935aa3ed3f72f8a2881b016ef69 100644
+--- a/src/Importer.php
++++ b/src/Importer.php
+@@ -179,7 +179,7 @@ class Importer implements ImporterInterface {
+   /**
+    * {@inheritdoc}
+    */
+-  public function importContent($module) {
++  public function importContent($module, bool $update_existing = FALSE) {
+     $created = [];
+     $folder = $this->extensionList->getPath($module) . "/content";
+ 
+@@ -285,10 +285,13 @@ class Importer implements ImporterInterface {
+             $entity = $this->serializer->deserialize($contents, $class, 'hal_json', ['request_method' => 'POST']);
+           }
+           else {
+-            $entity = $this->contentEntityNormalizer->denormalize(Yaml::decode($contents));
++            $entity = $this->contentEntityNormalizer->denormalize(Yaml::decode($contents), $update_existing);
++          }
++
++          if (!$entity->isNew() && !$update_existing) {
++            continue;
+           }
+ 
+-          $entity->enforceIsNew(TRUE);
+           // Ensure that the entity is not owned by the anonymous user.
+           if ($entity instanceof EntityOwnerInterface && empty($entity->getOwnerId())) {
+             $entity->setOwner($root_user);
+diff --git a/src/ImporterInterface.php b/src/ImporterInterface.php
+index 0d300a31a259081e6a2ee297834243b5182d69d6..25fdcac7c8537b8be08f558edc5b042a34bce830 100644
+--- a/src/ImporterInterface.php
++++ b/src/ImporterInterface.php
+@@ -12,10 +12,13 @@ interface ImporterInterface {
+    *
+    * @param string $module
+    *   The module to create the default content from.
++   * @param bool $update_existing
++   *   Whether to update already existing entities with the imported values.
++   *   Defaults to FALSE.
+    *
+    * @return \Drupal\Core\Entity\EntityInterface[]
+    *   An array of created entities keyed by their UUIDs.
+    */
+-  public function importContent($module);
++  public function importContent($module, bool $update_existing = FALSE);
+ 
+ }
+diff --git a/src/Normalizer/ContentEntityNormalizer.php b/src/Normalizer/ContentEntityNormalizer.php
+index 4d5a932f7678b25b2f137074c66b109068d3da05..30f9d67a640f6fecc40fe9ae8b0e612cdb667243 100644
+--- a/src/Normalizer/ContentEntityNormalizer.php
++++ b/src/Normalizer/ContentEntityNormalizer.php
+@@ -150,7 +150,7 @@ class ContentEntityNormalizer implements ContentEntityNormalizerInterface {
+   /**
+    * {@inheritdoc}
+    */
+-  public function denormalize(array $data) {
++  public function denormalize(array $data, bool $update_existing = FALSE) {
+     if (!isset($data['_meta']['entity_type'])) {
+       throw new UnexpectedValueException('The entity type metadata must be specified.');
+     }
+@@ -178,18 +178,40 @@ class ContentEntityNormalizer implements ContentEntityNormalizerInterface {
+       $values[$entity_type->getKey('langcode')] = $data['_meta']['default_langcode'];
+     }
+ 
++    // Load the entity by UUID and check if it exists.
++    $existing = $this->entityTypeManager->getStorage($entity_type->id())->loadByProperties(['uuid' => $values['uuid']]);
+     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+-    $entity = $this->entityTypeManager->getStorage($entity_type->id())->create($values);
++    if (!empty($existing)) {
++      $entity = reset($existing);
++      if (!$update_existing) {
++        // Do not override the existing entity.
++        return $entity;
++      }
++      elseif (method_exists($entity, 'setNeedsSave')) {
++        // Ensure ERR entity will be saved.
++        // @todo Use instanceof EntityNeedSaveInterface once
++        // https://www.drupal.org/project/entity_reference_revisions/issues/3336752
++        // is fixed.
++        $entity->setNeedsSave(TRUE);
++      }
++    }
++    else {
++      $entity = $this->entityTypeManager->getStorage($entity_type->id())->create($values);
++      $entity->enforceIsNew(TRUE);
++    }
++
+     foreach ($data['default'] as $field_name => $values) {
+-      $this->setFieldValues($entity, $field_name, $values);
++      $this->setFieldValues($entity, $field_name, $values, $update_existing);
+     }
+ 
+     if (!empty($data['translations'])) {
+       foreach ($data['translations'] as $langcode => $translation_data) {
+         if ($this->languageManager->getLanguage($langcode)) {
+-          $translation = $entity->addTranslation($langcode, $entity->toArray());
++          $translation = $entity->hasTranslation($langcode)
++            ? $entity->getTranslation($langcode)
++            : $entity->addTranslation($langcode, $entity->toArray());
+           foreach ($translation_data as $field_name => $values) {
+-            $this->setFieldValues($translation, $field_name, $values);
++            $this->setFieldValues($translation, $field_name, $values, $update_existing);
+           }
+         }
+       }
+@@ -211,8 +233,10 @@ class ContentEntityNormalizer implements ContentEntityNormalizerInterface {
+    *   The name of the field.
+    * @param array $values
+    *   The normalized data for the field.
++   * @param bool $update_existing
++   *   Whether to update already existing entities with the imported values.
+    */
+-  protected function setFieldValues(ContentEntityInterface $entity, string $field_name, array $values) {
++  protected function setFieldValues(ContentEntityInterface $entity, string $field_name, array $values, bool $update_existing = FALSE) {
+     if (!$entity->hasField($field_name)) {
+       return;
+     }
+@@ -246,7 +270,7 @@ class ContentEntityNormalizer implements ContentEntityNormalizerInterface {
+ 
+         if ($property instanceof EntityReference) {
+           if (is_array($value)) {
+-            $target_entity = $this->denormalize($value);
++            $target_entity = $this->denormalize($value, $update_existing);
+           }
+           else {
+             $target_entity = $this->loadEntityDependency($value);
+diff --git a/src/Normalizer/ContentEntityNormalizerInterface.php b/src/Normalizer/ContentEntityNormalizerInterface.php
+index fa78b79545786772df49b110d6f72fa442c38aa9..1587248f3872226ddac1cdd90e0ecb1e995d9d31 100644
+--- a/src/Normalizer/ContentEntityNormalizerInterface.php
++++ b/src/Normalizer/ContentEntityNormalizerInterface.php
+@@ -27,10 +27,13 @@ interface ContentEntityNormalizerInterface {
+    *
+    * @param array $data
+    *   The normalized data.
++   * @param bool $update_existing
++   *   Whether to update an already existing entity with the imported values.
++   *   Defaults to FALSE.
+    *
+    * @return \Drupal\Core\Entity\ContentEntityInterface
+    *   The denormalized content entity.
+    */
+-  public function denormalize(array $data);
++  public function denormalize(array $data, bool $update_existing = FALSE);
+ 
+ }
+diff --git a/tests/modules/default_content_test_yaml_updated/config/install/field.field.node.page.field_tags.yml b/tests/modules/default_content_test_yaml_updated/config/install/field.field.node.page.field_tags.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..9153fbcfcb5a4427de8b6b439a5b9e5888984427
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/config/install/field.field.node.page.field_tags.yml
+@@ -0,0 +1,19 @@
++id: node.page.field_tags
++status: true
++langcode: en
++field_name: field_tags
++entity_type: node
++bundle: page
++label: Tags
++description: 'Select the tag.'
++required: true
++default_value: {  }
++default_value_function: ''
++settings:
++  bundles:
++    - tags
++field_type: entity_reference
++dependencies:
++  config:
++    - field.storage.node.field_tags
++    - node.type.page
+diff --git a/tests/modules/default_content_test_yaml_updated/config/install/field.storage.node.field_tags.yml b/tests/modules/default_content_test_yaml_updated/config/install/field.storage.node.field_tags.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..350d54f77d97b32507038b3cd95ff4098fbd125f
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/config/install/field.storage.node.field_tags.yml
+@@ -0,0 +1,19 @@
++id: node.field_tags
++status: true
++langcode: en
++field_name: field_tags
++entity_type: node
++type: entity_reference
++settings:
++  target_type: taxonomy_term
++  options_list_callback: null
++module: taxonomy
++active: true
++locked: false
++cardinality: 1
++translatable: false
++indexes: {  }
++dependencies:
++  module:
++    - node
++    - taxonomy
+diff --git a/tests/modules/default_content_test_yaml_updated/config/install/taxonomy.vocabulary.tags.yml b/tests/modules/default_content_test_yaml_updated/config/install/taxonomy.vocabulary.tags.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..352d64284555049e5e071edc6d7dd94b82040e5a
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/config/install/taxonomy.vocabulary.tags.yml
+@@ -0,0 +1,7 @@
++vid: tags
++name: Tags
++description: 'Tags'
++hierarchy: 1
++weight: -10
++status: true
++langcode: en
+diff --git a/tests/modules/default_content_test_yaml_updated/content/file/806afcf6-05bf-4178-92dd-ae9445285770.yml b/tests/modules/default_content_test_yaml_updated/content/file/806afcf6-05bf-4178-92dd-ae9445285770.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..d0110960f53130dc0e06090dd2a7997ee4b05d21
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/content/file/806afcf6-05bf-4178-92dd-ae9445285770.yml
+@@ -0,0 +1,24 @@
++_meta:
++  version: '1.0'
++  entity_type: file
++  uuid: 806afcf6-05bf-4178-92dd-ae9445285770
++  default_langcode: en
++default:
++  filename:
++    -
++      value: test-file.txt
++  uri:
++    -
++      value: 'public://test-document.txt'
++  filemime:
++    -
++      value: text/plain
++  filesize:
++    -
++      value: 20
++  status:
++    -
++      value: true
++  created:
++    -
++      value: 1594458177
+diff --git a/tests/modules/default_content_test_yaml_updated/content/file/806afcf6-05bf-4178-92dd-ae9445285771.yml b/tests/modules/default_content_test_yaml_updated/content/file/806afcf6-05bf-4178-92dd-ae9445285771.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..a768bfb935a39df50ef8c0e6f52d72cba09269ed
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/content/file/806afcf6-05bf-4178-92dd-ae9445285771.yml
+@@ -0,0 +1,24 @@
++_meta:
++  version: '1.0'
++  entity_type: file
++  uuid: 806afcf6-05bf-4178-92dd-ae9445285771
++  default_langcode: en
++default:
++  filename:
++    -
++      value: test-file2.txt
++  uri:
++    -
++      value: 'public://example/test-file2.txt'
++  filemime:
++    -
++      value: text/plain
++  filesize:
++    -
++      value: 20
++  status:
++    -
++      value: true
++  created:
++    -
++      value: 1594458177
+diff --git a/tests/modules/default_content_test_yaml_updated/content/file/test-document.txt b/tests/modules/default_content_test_yaml_updated/content/file/test-document.txt
+new file mode 100644
+index 0000000000000000000000000000000000000000..9f4b6d8bfeaf44aaa69872286163784706d1b053
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/content/file/test-document.txt
+@@ -0,0 +1 @@
++This is a test file
+diff --git a/tests/modules/default_content_test_yaml_updated/content/file/test-file2.txt b/tests/modules/default_content_test_yaml_updated/content/file/test-file2.txt
+new file mode 100644
+index 0000000000000000000000000000000000000000..9f4b6d8bfeaf44aaa69872286163784706d1b053
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/content/file/test-file2.txt
+@@ -0,0 +1 @@
++This is a test file
+diff --git a/tests/modules/default_content_test_yaml_updated/content/node/65c412a3-b83f-4efb-8a05-5a6ecea10ad4.yml b/tests/modules/default_content_test_yaml_updated/content/node/65c412a3-b83f-4efb-8a05-5a6ecea10ad4.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..4a747f47e191d5a89795c71d6b743fca61aad2c2
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/content/node/65c412a3-b83f-4efb-8a05-5a6ecea10ad4.yml
+@@ -0,0 +1,50 @@
++_meta:
++  version: '1.0'
++  entity_type: node
++  uuid: 65c412a3-b83f-4efb-8a05-5a6ecea10ad4
++  bundle: page
++  default_langcode: en
++  depends:
++    ab301be5-7017-4ff8-b2d3-09dc0a30bd43: user
++    550f86ad-aa11-4047-953f-636d42889f85: taxonomy_term
++default:
++  revision_timestamp:
++    -
++      value: 1381646540
++  revision_uid:
++    -
++      entity: ab301be5-7017-4ff8-b2d3-09dc0a30bd43
++  status:
++    -
++      value: true
++  uid:
++    -
++      entity: ab301be5-7017-4ff8-b2d3-09dc0a30bd43
++  title:
++    -
++      value: 'Updated node'
++  created:
++    -
++      value: 1381645976
++  promote:
++    -
++      value: true
++  sticky:
++    -
++      value: true
++  revision_translation_affected:
++    -
++      value: true
++  path:
++    -
++      alias: ''
++      pid: 0
++      langcode: en
++  body:
++    -
++      value: 'Crikey it changed!'
++      format: ''
++      summary: ''
++  field_tags:
++    -
++      entity: 550f86ad-aa11-4047-953f-636d42889f85
+diff --git a/tests/modules/default_content_test_yaml_updated/content/node/78c412a3-b83f-4efb-8a05-5a6ecea10aee.yml b/tests/modules/default_content_test_yaml_updated/content/node/78c412a3-b83f-4efb-8a05-5a6ecea10aee.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..a69b035324edf8789d6161bb0980664f9b1bc8e7
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/content/node/78c412a3-b83f-4efb-8a05-5a6ecea10aee.yml
+@@ -0,0 +1,50 @@
++_meta:
++  version: '1.0'
++  entity_type: node
++  uuid: 78c412a3-b83f-4efb-8a05-5a6ecea10aee
++  bundle: page
++  default_langcode: en
++  depends:
++    598aa6e8-119d-4ac6-87e9-ca27ca779999: user
++    550f86ad-aa11-4047-953f-636d42889f85: taxonomy_term
++default:
++  revision_timestamp:
++    -
++      value: 1381646540
++  revision_uid:
++    -
++      entity: 598aa6e8-119d-4ac6-87e9-ca27ca779999
++  status:
++    -
++      value: true
++  uid:
++    -
++      entity: 598aa6e8-119d-4ac6-87e9-ca27ca779999
++  title:
++    -
++      value: 'Updated node owned by user that does not exist'
++  created:
++    -
++      value: 1381645976
++  promote:
++    -
++      value: true
++  sticky:
++    -
++      value: true
++  revision_translation_affected:
++    -
++      value: true
++  path:
++    -
++      alias: ''
++      pid: 0
++      langcode: en
++  body:
++    -
++      value: ''
++      format: ''
++      summary: ''
++  field_tags:
++    -
++      entity: 550f86ad-aa11-4047-953f-636d42889f85
+diff --git a/tests/modules/default_content_test_yaml_updated/content/node/testing_node.yml b/tests/modules/default_content_test_yaml_updated/content/node/testing_node.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..1df051e5ebce4bbd3f69e9c614569c0cce724151
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/content/node/testing_node.yml
+@@ -0,0 +1,50 @@
++_meta:
++  version: '1.0'
++  entity_type: node
++  uuid: 7a8563a8-15c9-4f60-9ebc-630b9562672c
++  bundle: page
++  default_langcode: en
++  depends:
++    ab301be5-7017-4ff8-b2d3-09dc0a30bd43: user
++    550f86ad-aa11-4047-953f-636d42889f85: taxonomy_term
++default:
++  revision_timestamp:
++    -
++      value: 1381646547
++  revision_uid:
++    -
++      entity: ab301be5-7017-4ff8-b2d3-09dc0a30bd43
++  status:
++    -
++      value: true
++  uid:
++    -
++      entity: ab301be5-7017-4ff8-b2d3-09dc0a30bd43
++  title:
++    -
++      value: 'Additional node'
++  created:
++    -
++      value: 1381645979
++  promote:
++    -
++      value: true
++  sticky:
++    -
++      value: false
++  revision_translation_affected:
++    -
++      value: true
++  path:
++    -
++      alias: ''
++      pid: 0
++      langcode: en
++  body:
++    -
++      value: 'Just another node'
++      format: ''
++      summary: ''
++  field_tags:
++    -
++      entity: 550f86ad-aa11-4047-953f-636d42889f85
+diff --git a/tests/modules/default_content_test_yaml_updated/content/taxonomy_term/550f86ad-aa11-4047-953f-636d42889f85.yml b/tests/modules/default_content_test_yaml_updated/content/taxonomy_term/550f86ad-aa11-4047-953f-636d42889f85.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..dc538b6e3b839ea2e8347273ff58e32c994dd661
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/content/taxonomy_term/550f86ad-aa11-4047-953f-636d42889f85.yml
+@@ -0,0 +1,31 @@
++_meta:
++  version: '1.0'
++  entity_type: taxonomy_term
++  uuid: 550f86ad-aa11-4047-953f-636d42889f85
++  bundle: tags
++  default_langcode: und
++default:
++  revision_created:
++    -
++      value: 1594327087
++  status:
++    -
++      value: true
++  name:
++    -
++      value: 'Another tag'
++  description:
++    -
++      value: 'An actual description'
++      format: ''
++  weight:
++    -
++      value: 0
++  revision_translation_affected:
++    -
++      value: true
++  path:
++    -
++      alias: ''
++      pid: 0
++      langcode: und
+diff --git a/tests/modules/default_content_test_yaml_updated/default_content_test_yaml_updated.info.yml b/tests/modules/default_content_test_yaml_updated/default_content_test_yaml_updated.info.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..fa77e97928a2d843e47dd0ce930553909029384e
+--- /dev/null
++++ b/tests/modules/default_content_test_yaml_updated/default_content_test_yaml_updated.info.yml
+@@ -0,0 +1,8 @@
++name: 'Default content YAML tests'
++type: module
++hidden: TRUE
++description: 'Contains updated default content.'
++package: Testing
++dependencies:
++  - drupal:node
++  - drupal:taxonomy
+diff --git a/tests/src/Functional/DefaultContentDrushTest.php b/tests/src/Functional/DefaultContentDrushTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..b07bcf7f7dedd5c164943e8f3134c3bce8398015
+--- /dev/null
++++ b/tests/src/Functional/DefaultContentDrushTest.php
+@@ -0,0 +1,292 @@
++<?php
++
++declare(strict_types = 1);
++
++namespace Drupal\Tests\default_content\Functional;
++
++use Drupal\file\Entity\File;
++use Drupal\file\FileInterface;
++use Drupal\Tests\BrowserTestBase;
++use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
++use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
++use Drush\TestTraits\DrushTestTrait;
++
++/**
++ * Tests 'Default content' module Drush commands.
++ *
++ * @group default_content
++ */
++class DefaultContentDrushTest extends BrowserTestBase {
++
++  use ContentTypeCreationTrait;
++  use DrushTestTrait;
++  use TaxonomyTestTrait;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'file',
++    'node',
++    'taxonomy',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $defaultTheme = 'stark';
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++    $this->createContentType(['type' => 'page']);
++
++    // Enable the test module. It depends on the 'page' node type so we cannot
++    // put it in the static::$modules array.
++    $this->container->get('module_installer')->install(['default_content_test_yaml_updated']);
++
++    // Create pre-existing content entities. This is used to check if the
++    // 'default_content:import' command successfully ignores or updates
++    // existing content.
++    $nodes_to_create = [
++      [
++        'title' => 'Existing page',
++        'type' => 'page',
++        'body' => 'This is an existing page.',
++        'uuid' => '65c412a3-b83f-4efb-8a05-5a6ecea10ad4',
++      ],
++      [
++        'title' => 'Existing page 2',
++        'type' => 'page',
++        'body' => 'This is another existing page.',
++        'uuid' => '78c412a3-b83f-4efb-8a05-5a6ecea10aee',
++      ],
++    ];
++    foreach ($nodes_to_create as $node_to_create) {
++      $this->drupalCreateNode($node_to_create);
++    }
++
++    $files_to_create = [
++      [
++        'filename' => 'test-file.txt',
++        'uri' => 'public://test-file.txt',
++        'uuid' => '806afcf6-05bf-4178-92dd-ae9445285770',
++      ],
++      [
++        'filename' => 'test-file2.txt',
++        'uri' => 'public://existing_file2.txt',
++        'uuid' => '806afcf6-05bf-4178-92dd-ae9445285771',
++      ],
++    ];
++    foreach ($files_to_create as $file_to_create) {
++      $this->createFile($file_to_create);
++    }
++
++    // The 'tags' vocabulary has been created when we enabled the
++    // 'default_content_test_yaml_updated' module.
++    $tags_vocabulary = $this->container->get('entity_type.manager')->getStorage('taxonomy_vocabulary')->load('tags');
++
++    // Create a pre-existing taxonomy term.
++    $taxonomy_term_to_create = [
++      'name' => 'A tag',
++      'vid' => $tags_vocabulary->id(),
++      'description' => '',
++      'uuid' => '550f86ad-aa11-4047-953f-636d42889f85',
++    ];
++    $this->createTerm($tags_vocabulary, $taxonomy_term_to_create);
++  }
++
++  /**
++   * Tests the 'default-content:import' command.
++   *
++   * @see \Drupal\default_content\Commands\DefaultContentCommands::import()
++   *
++   * @dataProvider importTestDataProvider
++   */
++  public function testImport(bool $pass_module_list): void {
++    // Before we update the content, verify that the content has the original
++    // data.
++    $this->assertFieldValues($this->getOriginalFieldValues());
++
++    // Enable the default_content module. This has not been enabled earlier in
++    // the test setup because we need to test the 'default_content:import'
++    // command using the 'default_content_test_yaml_updated' module. If the
++    // default_content module was already enabled, it would try to import the
++    // default content automatically, and we want to test doing this manually.
++    $this->container->get('module_installer')->install(['default_content']);
++
++    // At this point, the content should still be in their original state.
++    $this->assertFieldValues($this->getOriginalFieldValues());
++
++    // Run the import without allowing updates.
++    $args = $pass_module_list ? ['default_content_test_yaml_updated'] : [];
++    $this->drush('default-content:import', $args);
++    $this->assertStringContainsString('1 entity imported from default_content_test_yaml_updated', $this->getErrorOutputRaw());
++
++    // Check that entities were not updated.
++    $this->assertFieldValues($this->getOriginalFieldValues());
++    // Check that new entities were imported.
++    $this->assertSame('Additional node', \Drupal::service('entity.repository')->loadEntityByUuid('node', '7a8563a8-15c9-4f60-9ebc-630b9562672c')->label());
++
++    // Run again the import but allow updates.
++    $this->drush('default-content:import', $args, ['update' => NULL]);
++    $this->assertStringContainsString('6 entities imported from default_content_test_yaml_updated', $this->getErrorOutputRaw());
++
++    // Check that entities were updated.
++    $this->assertFieldValues($this->getUpdatedFieldValues());
++  }
++
++  /**
++   * Data provider for ::testImport().
++   *
++   * Provides test cases to test the import command with and without passing
++   * the module list as an argument.
++   *
++   * @return array
++   *   An array of test cases.
++   */
++  public function importTestDataProvider(): array {
++    return [[TRUE], [FALSE]];
++  }
++
++  /**
++   * Asserts that a list of entities have expected field values.
++   *
++   * @param array $expected
++   *   An associative array where the keys are entity type IDs and values are
++   *   associative arrays keyed by entity UUIDs and having the expected labels
++   *   as values.
++   */
++  protected function assertFieldValues(array $expected): void {
++    $entity_type_manager = \Drupal::entityTypeManager();
++    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $repository */
++    $repository = \Drupal::service('entity.repository');
++    foreach ($expected as $entity_type_id => $uuids) {
++      // Need to get fresh copies of the entities.
++      $entity_type_manager->getStorage($entity_type_id)->resetCache();
++      foreach ($uuids as $uuid => $fields) {
++        $entity = $repository->loadEntityByUuid($entity_type_id, $uuid);
++        foreach ($fields as $field_name => $expected_field_value) {
++          $this->assertSame($expected_field_value, $entity->get($field_name)->value, "Entity $entity_type_id:$uuid has the expected value for field $field_name.");
++        }
++      }
++    }
++  }
++
++  /**
++   * Returns the original field values of entities to be imported.
++   *
++   * This returns a curated list of test field values of default content in the
++   * `default_content_test_yaml` module.
++   *
++   * @return string[][][]
++   *   An associative array where the keys are entity type IDs and values are
++   *   associative arrays keyed by entity UUIDs. The values are associative
++   *   arrays keyed by field names and having the original field values as
++   *   values.
++   */
++  protected function getOriginalFieldValues(): array {
++    return [
++      'file' => [
++        '806afcf6-05bf-4178-92dd-ae9445285770' => [
++          'filename' => 'test-file.txt',
++          'uri' => 'public://test-file.txt',
++        ],
++        '806afcf6-05bf-4178-92dd-ae9445285771' => [
++          'filename' => 'test-file2.txt',
++          'uri' => 'public://existing_file2.txt',
++        ],
++      ],
++      'node' => [
++        '65c412a3-b83f-4efb-8a05-5a6ecea10ad4' => [
++          'title' => 'Existing page',
++          'body' => 'This is an existing page.',
++        ],
++        '78c412a3-b83f-4efb-8a05-5a6ecea10aee' => [
++          'title' => 'Existing page 2',
++          'body' => 'This is another existing page.',
++        ],
++      ],
++      'taxonomy_term' => [
++        '550f86ad-aa11-4047-953f-636d42889f85' => [
++          'name' => 'A tag',
++          'description' => NULL,
++        ],
++      ],
++    ];
++  }
++
++  /**
++   * Returns the updated field values of entities to be imported.
++   *
++   * This returns a curated list of test field values of default content in the
++   * `default_content_test_yaml_updated` module.
++   *
++   * @return string[][][]
++   *   Same as ::getOriginalFieldValues() but with updated field values.
++   */
++  protected function getUpdatedFieldValues(): array {
++    return [
++      'file' => [
++        '806afcf6-05bf-4178-92dd-ae9445285770' => [
++          'filename' => 'test-file.txt',
++          'uri' => 'public://test-document.txt',
++        ],
++        '806afcf6-05bf-4178-92dd-ae9445285771' => [
++          'filename' => 'test-file2.txt',
++          'uri' => 'public://example/test-file2.txt',
++        ],
++      ],
++      'node' => [
++        '65c412a3-b83f-4efb-8a05-5a6ecea10ad4' => [
++          'title' => 'Updated node',
++          'body' => 'Crikey it changed!',
++        ],
++        '78c412a3-b83f-4efb-8a05-5a6ecea10aee' => [
++          'title' => 'Updated node owned by user that does not exist',
++          'body' => NULL,
++        ],
++      ],
++      'taxonomy_term' => [
++        '550f86ad-aa11-4047-953f-636d42889f85' => [
++          'name' => 'Another tag',
++          'description' => 'An actual description',
++        ],
++      ],
++    ];
++  }
++
++  /**
++   * Creates and saves a test file.
++   *
++   * @param array $values
++   *   An array of values to set, keyed by property name.
++   *
++   * @return \Drupal\file\FileInterface
++   *   A file entity.
++   */
++  protected function createFile(array $values): FileInterface {
++    // Add defaults for missing properties.
++    $values += [
++      'uid' => 1,
++      'filename' => 'default_content_test_file.txt',
++      'uri' => 'public://default_content_test_file.txt',
++      'filemime' => 'text/plain',
++      'created' => 1,
++      'changed' => 1,
++    ];
++
++    $file = File::create($values);
++    $file->setPermanent();
++
++    file_put_contents($file->getFileUri(), 'hello world');
++
++    $file->save();
++
++    return $file;
++  }
++
++}
+diff --git a/tests/src/Functional/DefaultContentTest.php b/tests/src/Functional/DefaultContentTest.php
+index cea7bddfc5dcf35290a15f1648ef7618337dda72..4ac9aa5cafa696ab60f924694d0f4e7cd41e83df 100644
+--- a/tests/src/Functional/DefaultContentTest.php
++++ b/tests/src/Functional/DefaultContentTest.php
+@@ -102,7 +102,7 @@ class DefaultContentTest extends BrowserTestBase {
+     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple();
+     $term = reset($terms);
+     $this->assertNotEmpty($term);
+-    $this->assertEquals($term->name->value, 'A tag');
++    $this->assertEquals($term->label(), 'A tag');
+     $term_id = $node->field_tags->target_id;
+     $this->assertNotEmpty($term_id);
+   }
+diff --git a/tests/src/Kernel/DefaultContentImportExistingContentTest.php b/tests/src/Kernel/DefaultContentImportExistingContentTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..b0bd528f7ab0ad48b752c899336563cb90971083
+--- /dev/null
++++ b/tests/src/Kernel/DefaultContentImportExistingContentTest.php
+@@ -0,0 +1,277 @@
++<?php
++
++declare(strict_types = 1);
++
++namespace Drupal\Tests\default_content\Kernel;
++
++use Drupal\file\Entity\File;
++use Drupal\file\FileInterface;
++use Drupal\KernelTests\KernelTestBase;
++use Drupal\taxonomy\Entity\Vocabulary;
++use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
++use Drupal\Tests\node\Traits\NodeCreationTrait;
++use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
++use Drupal\Tests\user\Traits\UserCreationTrait;
++
++/**
++ * Tests that we can control whether existing content is updated on import.
++ *
++ * @coversDefaultClass \Drupal\default_content\Importer
++ * @group default_content
++ */
++class DefaultContentImportExistingContentTest extends KernelTestBase {
++
++  use ContentTypeCreationTrait;
++  use NodeCreationTrait;
++  use TaxonomyTestTrait;
++  use UserCreationTrait;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'default_content',
++    'field',
++    'file',
++    'filter',
++    'node',
++    'system',
++    'taxonomy',
++    'text',
++    'user',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++    $this->installSchema('node', 'node_access');
++    $this->installEntitySchema('file');
++    $this->installEntitySchema('node');
++    $this->installEntitySchema('taxonomy_term');
++    $this->installEntitySchema('user');
++    $this->installSchema('file', 'file_usage');
++    $this->installConfig(['field', 'file', 'filter', 'node', 'system', 'taxonomy']);
++
++    // Create the root user since this is used as the default owner for imported
++    // content.
++    $this->createUser([], 'root', FALSE, ['uid' => 1]);
++
++    $this->createContentType(['type' => 'page']);
++
++    // Create pre-existing content entities. This is used to check if the
++    // 'default_content:import' command successfully ignores or updates
++    // existing content.
++    $nodes_to_create = [
++      [
++        'title' => 'Existing page',
++        'type' => 'page',
++        'body' => 'This is an existing page.',
++        'uuid' => '65c412a3-b83f-4efb-8a05-5a6ecea10ad4',
++      ],
++      [
++        'title' => 'Existing page 2',
++        'type' => 'page',
++        'body' => 'This is another existing page.',
++        'uuid' => '78c412a3-b83f-4efb-8a05-5a6ecea10aee',
++      ],
++    ];
++    foreach ($nodes_to_create as $node_to_create) {
++      $this->createNode($node_to_create);
++    }
++
++    $files_to_create = [
++      [
++        'filename' => 'test-file.txt',
++        'uri' => 'public://test-file.txt',
++        'uuid' => '806afcf6-05bf-4178-92dd-ae9445285770',
++      ],
++      [
++        'filename' => 'test-file2.txt',
++        'uri' => 'public://existing_file2.txt',
++        'uuid' => '806afcf6-05bf-4178-92dd-ae9445285771',
++      ],
++    ];
++    foreach ($files_to_create as $file_to_create) {
++      $this->createFile($file_to_create);
++    }
++
++    $tags_vocabulary = Vocabulary::create(['vid' => 'tags', 'name' => 'Tags']);
++    $tags_vocabulary->save();
++
++    // Create a pre-existing taxonomy term.
++    $taxonomy_term_to_create = [
++      'name' => 'A tag',
++      'vid' => $tags_vocabulary->id(),
++      'description' => '',
++      'uuid' => '550f86ad-aa11-4047-953f-636d42889f85',
++    ];
++    $this->createTerm($tags_vocabulary, $taxonomy_term_to_create);
++  }
++
++  /**
++   * Tests that existing content is only updated if $update_existing is TRUE.
++   *
++   * @covers ::importContent
++   * @dataProvider importingExistingContentDataProvider
++   */
++  public function testImportingExistingContent(bool $update_existing): void {
++    $this->container->get('default_content.importer')->importContent('default_content_test_yaml', $update_existing);
++
++    $expected_values = $update_existing ? $this->getUpdatedFieldValues() : $this->getOriginalFieldValues();
++    $this->assertFieldValues($expected_values);
++  }
++
++  /**
++   * Data provider for ::testImportingExistingContent().
++   *
++   * @return array
++   *   An array of test data for testing both states of the $update_existing
++   *   parameter.
++   */
++  public function importingExistingContentDataProvider(): array {
++    return [[TRUE], [FALSE]];
++  }
++
++  /**
++   * Asserts that a list of entities have expected field values.
++   *
++   * @param array $expected
++   *   An associative array where the keys are entity type IDs and values are
++   *   associative arrays keyed by entity UUIDs and having the expected labels
++   *   as values.
++   */
++  protected function assertFieldValues(array $expected): void {
++    $entity_type_manager = \Drupal::entityTypeManager();
++    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $repository */
++    $repository = \Drupal::service('entity.repository');
++    foreach ($expected as $entity_type_id => $uuids) {
++      // Need to get fresh copies of the entities.
++      $entity_type_manager->getStorage($entity_type_id)->resetCache();
++      foreach ($uuids as $uuid => $fields) {
++        $entity = $repository->loadEntityByUuid($entity_type_id, $uuid);
++        foreach ($fields as $field_name => $expected_field_value) {
++          $this->assertSame($expected_field_value, $entity->get($field_name)->value, "Entity $entity_type_id:$uuid has the expected value for field $field_name.");
++        }
++      }
++    }
++  }
++
++  /**
++   * Returns the original field values of entities to be imported.
++   *
++   * This returns a curated list of test field values of default content in the
++   * `default_content_test_yaml` module.
++   *
++   * @return string[][][]
++   *   An associative array where the keys are entity type IDs and values are
++   *   associative arrays keyed by entity UUIDs. The values are associative
++   *   arrays keyed by field names and having the original field values as
++   *   values.
++   */
++  protected function getOriginalFieldValues(): array {
++    return [
++      'file' => [
++        '806afcf6-05bf-4178-92dd-ae9445285770' => [
++          'filename' => 'test-file.txt',
++          'uri' => 'public://test-file.txt',
++        ],
++        '806afcf6-05bf-4178-92dd-ae9445285771' => [
++          'filename' => 'test-file2.txt',
++          'uri' => 'public://existing_file2.txt',
++        ],
++      ],
++      'node' => [
++        '65c412a3-b83f-4efb-8a05-5a6ecea10ad4' => [
++          'title' => 'Existing page',
++          'body' => 'This is an existing page.',
++        ],
++        '78c412a3-b83f-4efb-8a05-5a6ecea10aee' => [
++          'title' => 'Existing page 2',
++          'body' => 'This is another existing page.',
++        ],
++      ],
++      'taxonomy_term' => [
++        '550f86ad-aa11-4047-953f-636d42889f85' => [
++          'name' => 'A tag',
++          'description' => NULL,
++        ],
++      ],
++    ];
++  }
++
++  /**
++   * Returns the updated field values of entities to be imported.
++   *
++   * This returns a curated list of test field values of default content in the
++   * `default_content_test_yaml_updated` module.
++   *
++   * @return string[][][]
++   *   Same as ::getOriginalFieldValues() but with updated field values.
++   */
++  protected function getUpdatedFieldValues(): array {
++    return [
++      'file' => [
++        '806afcf6-05bf-4178-92dd-ae9445285770' => [
++          'filename' => 'test-file.txt',
++          // Since a file already exists at that location, the updated file has
++          // automatically been suffixed with '_0'.
++          'uri' => 'public://test-file_0.txt',
++        ],
++        '806afcf6-05bf-4178-92dd-ae9445285771' => [
++          'filename' => 'test-file1.txt',
++          'uri' => 'public://example/test-file1.txt',
++        ],
++      ],
++      'node' => [
++        '65c412a3-b83f-4efb-8a05-5a6ecea10ad4' => [
++          'title' => 'Imported node',
++          'body' => 'Crikey it works!',
++        ],
++        '78c412a3-b83f-4efb-8a05-5a6ecea10aee' => [
++          'title' => 'Imported node with owned by user that does not exist',
++          'body' => 'Crikey it works!',
++        ],
++      ],
++      'taxonomy_term' => [
++        '550f86ad-aa11-4047-953f-636d42889f85' => [
++          'name' => 'A tag',
++          'description' => NULL,
++        ],
++      ],
++    ];
++  }
++
++  /**
++   * Creates and saves a test file.
++   *
++   * @param array $values
++   *   An array of values to set, keyed by property name.
++   *
++   * @return \Drupal\file\FileInterface
++   *   A file entity.
++   */
++  protected function createFile(array $values): FileInterface {
++    // Add defaults for missing properties.
++    $values += [
++      'uid' => 1,
++      'filename' => 'default_content_test_file.txt',
++      'uri' => 'public://default_content_test_file.txt',
++      'filemime' => 'text/plain',
++      'created' => 1,
++      'changed' => 1,
++    ];
++
++    $file = File::create($values);
++    $file->setPermanent();
++
++    file_put_contents($file->getFileUri(), 'hello world');
++
++    $file->save();
++
++    return $file;
++  }
++
++}
+diff --git a/tests/src/Kernel/MenuLinkContentNormalizerTest.php b/tests/src/Kernel/MenuLinkContentNormalizerTest.php
+index 4b195703a3f7e8ae6197fe7161dbad8bee6b467b..4b0374f3671c330f744b834b9e8e50858d08476f 100644
+--- a/tests/src/Kernel/MenuLinkContentNormalizerTest.php
++++ b/tests/src/Kernel/MenuLinkContentNormalizerTest.php
+@@ -45,6 +45,20 @@ class MenuLinkContentNormalizerTest extends KernelTestBase {
+    */
+   protected $exporter;
+ 
++  /**
++   * A node to reference in menu links.
++   *
++   * @var \Drupal\node\NodeInterface
++   */
++  protected $referencedNode;
++
++  /**
++   * A test menu link.
++   *
++   * @var \Drupal\menu_link_content\MenuLinkContentInterface
++   */
++  protected $link;
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -62,31 +76,30 @@ class MenuLinkContentNormalizerTest extends KernelTestBase {
+       'type' => 'page',
+       'name' => 'page',
+     ])->save();
+-  }
+-
+-  /**
+-   * Tests menu_link_content entities.
+-   */
+-  public function testMenuLinks() {
+ 
+-    /** @var \Drupal\node\NodeInterface $referenced_node */
+-    $referenced_node = Node::create([
++    // Create a node to reference in menu links.
++    $this->referencedNode = Node::create([
+       'type' => 'page',
+       'title' => 'Referenced node',
+     ]);
+-    $referenced_node->save();
++    $this->referencedNode->save();
+ 
+-    /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
+-    $link = MenuLinkContent::create([
++    // Create a test menu link that references the test node.
++    $this->link = MenuLinkContent::create([
+       'title' => 'Parent menu link',
+-      'link' => 'entity:node/' . $referenced_node->id(),
++      'link' => 'entity:node/' . $this->referencedNode->id(),
+     ]);
+-    $link->save();
++    $this->link->save();
++  }
+ 
++  /**
++   * Tests menu_link_content entities.
++   */
++  public function testMenuLinks() {
+     /** @var \Drupal\menu_link_content\MenuLinkContentInterface $child_link */
+     $child_link = MenuLinkContent::create([
+       'title' => 'Child menu link',
+-      'parent' => 'menu_link_content:' . $link->uuid(),
++      'parent' => 'menu_link_content:' . $this->link->uuid(),
+       'link' => [
+         'uri' => 'https://www.example.org',
+         'options' => [
+@@ -101,17 +114,17 @@ class MenuLinkContentNormalizerTest extends KernelTestBase {
+     /** @var \Drupal\default_content\Normalizer\ContentEntityNormalizerInterface $normalizer */
+     $normalizer = \Drupal::service('default_content.content_entity_normalizer');
+ 
+-    $normalized = $normalizer->normalize($link);
++    $normalized = $normalizer->normalize($this->link);
+ 
+     $expected = [
+       '_meta' => [
+         'version' => '1.0',
+         'entity_type' => 'menu_link_content',
+-        'uuid' => $link->uuid(),
++        'uuid' => $this->link->uuid(),
+         'bundle' => 'menu_link_content',
+         'default_langcode' => 'en',
+         'depends' => [
+-          $referenced_node->uuid() => 'node',
++          $this->referencedNode->uuid() => 'node',
+         ],
+       ],
+       'default' => [
+@@ -132,7 +145,7 @@ class MenuLinkContentNormalizerTest extends KernelTestBase {
+         ],
+         'link' => [
+           0 => [
+-            'target_uuid' => $referenced_node->uuid(),
++            'target_uuid' => $this->referencedNode->uuid(),
+             'title' => '',
+             'options' => [],
+           ],
+@@ -177,7 +190,7 @@ class MenuLinkContentNormalizerTest extends KernelTestBase {
+         'bundle' => 'menu_link_content',
+         'default_langcode' => 'en',
+         'depends' => [
+-          $link->uuid() => 'menu_link_content',
++          $this->link->uuid() => 'menu_link_content',
+         ],
+       ],
+       'default' => [
+@@ -242,19 +255,64 @@ class MenuLinkContentNormalizerTest extends KernelTestBase {
+     $this->assertEquals($expected_child, $normalized_child);
+ 
+     // Delete the link and referenced node and recreate them.
+-    $normalized_node = $normalizer->normalize($referenced_node);
++    $normalized_node = $normalizer->normalize($this->referencedNode);
+     $child_link->delete();
+-    $link->delete();
+-    $referenced_node->delete();
++    $this->link->delete();
++    $this->referencedNode->delete();
+ 
+     $recreated_node = $normalizer->denormalize($normalized_node);
+     $recreated_node->save();
+-    $this->assertNotEquals($referenced_node->id(), $recreated_node->id());
++    $this->assertNotEquals($this->referencedNode->id(), $recreated_node->id());
+ 
+     $recreated_link = $normalizer->denormalize($normalized);
+-    $recreated_link->save();
+-
+     $this->assertEquals('entity:node/' . $recreated_node->id(), $recreated_link->get('link')->uri);
++
++    // Since the original link has been deleted, this should be a new link.
++    $this->assertTrue($recreated_link->isNew());
++  }
++
++  /**
++   * Tests that we can control whether existing menu links are updated or not.
++   *
++   * @param bool $update_existing
++   *   Whether to update existing menu links.
++   *
++   * @dataProvider updateExistingMenuLinkProvider
++   */
++  public function testUpdatingExistingMenuLink($update_existing): void {
++    // Change the existing menu link to reference a different node.
++    $different_node = Node::create([
++      'type' => 'page',
++      'title' => 'Different node',
++    ]);
++    $different_node->save();
++
++    $this->link->set('link', 'entity:node/' . $different_node->id());
++
++    /** @var \Drupal\default_content\Normalizer\ContentEntityNormalizerInterface $normalizer */
++    $normalizer = \Drupal::service('default_content.content_entity_normalizer');
++    $normalized_link = $normalizer->normalize($this->link);
++    $recreated_link = $normalizer->denormalize($normalized_link, $update_existing);
++
++    // Regardless whether or not we are updating existing menu links, the link
++    // is not new since it already exists in the database.
++    $this->assertFalse($recreated_link->isNew());
++
++    // The node reference should only change if we allow updating existing menu
++    // links.
++    $expected_reference = $update_existing ? 'entity:node/' . $different_node->id() : 'entity:node/' . $this->referencedNode->id();
++    $this->assertEquals($expected_reference, $recreated_link->get('link')->uri);
++  }
++
++  /**
++   * Provides test data for ::testUpdatingExistingMenuLink().
++   *
++   * @return array
++   *   An array of test data for testing both states of the '$update_existing'
++   *   parameter.
++   */
++  public function updateExistingMenuLinkProvider() {
++    return [[TRUE], [FALSE]];
+   }
+ 
+ }
+diff --git a/tests/src/Kernel/ParagraphNormalizerTest.php b/tests/src/Kernel/ParagraphNormalizerTest.php
+index 22a729a95534a971c89a0b2b9dbefa24580e3b0b..e55766fb18277e3eff742f36d0f5e597756d4b3a 100644
+--- a/tests/src/Kernel/ParagraphNormalizerTest.php
++++ b/tests/src/Kernel/ParagraphNormalizerTest.php
+@@ -361,4 +361,61 @@ class ParagraphNormalizerTest extends KernelTestBase {
+     $this->assertArrayNotHasKey('paragraph', $by_entity_type);
+   }
+ 
++  /**
++   * Tests that we can control whether existing paragraphs are updated or not.
++   *
++   * @param bool $update_existing
++   *   Whether to update existing paragraphs.
++   *
++   * @dataProvider updateExistingParagraphsProvider
++   */
++  public function testUpdatingExistingParagraphs($update_existing): void {
++    // Create a pre-existing paragraph that references a node.
++    $referenced_node = Node::create([
++      'type' => 'page',
++      'title' => 'Referenced node',
++    ]);
++    $referenced_node->save();
++
++    $paragraph = Paragraph::create([
++      'type' => 'paragraph_type',
++      'field_node_reference' => $referenced_node,
++    ]);
++    $paragraph->save();
++
++    // Change the existing paragraph to reference a different node.
++    $different_node = Node::create([
++      'type' => 'page',
++      'title' => 'Different node',
++    ]);
++    $different_node->save();
++
++    $paragraph->set('field_node_reference', $different_node);
++
++    /** @var \Drupal\default_content\Normalizer\ContentEntityNormalizerInterface $normalizer */
++    $normalizer = \Drupal::service('default_content.content_entity_normalizer');
++    $normalized_paragraph = $normalizer->normalize($paragraph);
++    $recreated_paragraph = $normalizer->denormalize($normalized_paragraph, $update_existing);
++
++    // Regardless whether or not we are updating existing paragraphs, the
++    // paragraph is not new since it already exists in the database.
++    $this->assertFalse($recreated_paragraph->isNew());
++
++    // The node reference should only change if we allow to update existing]
++    // paragraphs.
++    $expected_reference = $update_existing ? $different_node->id() : $referenced_node->id();
++    $this->assertEquals($expected_reference, $recreated_paragraph->get('field_node_reference')->target_id);
++  }
++
++  /**
++   * Provides test data for ::testUpdatingExistingParagraphs().
++   *
++   * @return array
++   *   An array of test data for testing both states of the '$update_existing'
++   *   parameter.
++   */
++  public function updateExistingParagraphsProvider() {
++    return [[TRUE], [FALSE]];
++  }
++
+ }

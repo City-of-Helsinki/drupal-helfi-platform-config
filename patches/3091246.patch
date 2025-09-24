@@ -1,0 +1,256 @@
+diff --git a/core/core.services.yml b/core/core.services.yml
+index 843ee7d6e8c452859f204e3d4c00f7b5b950cb17..0f42203ee86292c737d1f37d86b739e9febab1a0 100644
+--- a/core/core.services.yml
++++ b/core/core.services.yml
+@@ -831,7 +831,7 @@ services:
+   Drupal\Core\Menu\MenuLinkManagerInterface: '@plugin.manager.menu.link'
+   menu.link_tree:
+     class: Drupal\Core\Menu\MenuLinkTree
+-    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver']
++    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver', '@event_dispatcher']
+   Drupal\Core\Menu\MenuLinkTreeInterface: '@menu.link_tree'
+   menu.default_tree_manipulators:
+     class: Drupal\Core\Menu\DefaultMenuLinkTreeManipulators
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkBase.php b/core/lib/Drupal/Core/Menu/MenuLinkBase.php
+index 7757f451593ad453904775504fb151d75bf050d8..6ef381f6e1b079ecc75fdbeae1214ec02c360b02 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkBase.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkBase.php
+@@ -3,7 +3,7 @@
+ namespace Drupal\Core\Menu;
+ 
+ use Drupal\Component\Plugin\Exception\PluginException;
+-use Drupal\Core\Cache\Cache;
++use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
+ use Drupal\Core\Plugin\PluginBase;
+ use Drupal\Core\Url;
+ 
+@@ -12,6 +12,8 @@
+  */
+ abstract class MenuLinkBase extends PluginBase implements MenuLinkInterface {
+ 
++  use RefinableCacheableDependencyTrait;
++
+   /**
+    * The list of definition values where an override is allowed.
+    *
+@@ -209,25 +211,4 @@ public function deleteLink() {
+     throw new PluginException("Menu link plugin with ID '{$this->getPluginId()}' does not support deletion");
+   }
+ 
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public function getCacheMaxAge() {
+-    return Cache::PERMANENT;
+-  }
+-
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public function getCacheContexts() {
+-    return [];
+-  }
+-
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public function getCacheTags() {
+-    return [];
+-  }
+-
+ }
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkInterface.php b/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
+index 0699aef361d9a3037712083e68f512574005fcf0..4a420627fcf15fe27f304a317ed2672c54aae17f 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
+@@ -4,13 +4,13 @@
+ 
+ use Drupal\Component\Plugin\PluginInspectionInterface;
+ use Drupal\Component\Plugin\DerivativeInspectionInterface;
+-use Drupal\Core\Cache\CacheableDependencyInterface;
++use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+ use Drupal\Core\Url;
+ 
+ /**
+  * Defines an interface for classes providing a type of menu link.
+  */
+-interface MenuLinkInterface extends PluginInspectionInterface, DerivativeInspectionInterface, CacheableDependencyInterface {
++interface MenuLinkInterface extends PluginInspectionInterface, DerivativeInspectionInterface, RefinableCacheableDependencyInterface {
+ 
+   /**
+    * Returns the weight of the menu link.
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTree.php b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+index 0d2035055bb6936321294aebbb88554b58062c39..a3b892277ecc56bf6c1bdfe850825eda5c61e18d 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTree.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+@@ -9,6 +9,7 @@
+ use Drupal\Core\Routing\RouteProviderInterface;
+ use Drupal\Core\Template\Attribute;
+ use Drupal\Core\Utility\CallableResolver;
++use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+ 
+ /**
+  * Implements the loading, transforming and rendering of menu link trees.
+@@ -28,6 +29,8 @@ class MenuLinkTree implements MenuLinkTreeInterface {
+    *   The active menu trail service.
+    * @param \Drupal\Core\Utility\CallableResolver $callableResolver
+    *   The callable resolver.
++   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
++   *   The event dispatcher.
+    */
+   public function __construct(
+     protected MenuTreeStorageInterface $treeStorage,
+@@ -35,7 +38,12 @@ public function __construct(
+     protected RouteProviderInterface $routeProvider,
+     protected MenuActiveTrailInterface $menuActiveTrail,
+     protected CallableResolver $callableResolver,
++    protected ?EventDispatcherInterface $eventDispatcher = NULL,
+   ) {
++    if ($eventDispatcher === NULL) {
++      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.1.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
++      $this->eventDispatcher = \Drupal::service('event_dispatcher');
++    }
+   }
+ 
+   /**
+@@ -102,7 +110,9 @@ protected function createInstances(array $data_tree) {
+    * {@inheritdoc}
+    */
+   public function transform(array $tree, array $manipulators) {
+-    foreach ($manipulators as $manipulator) {
++    $event = new MenuLinkTreeManipulatorsAlterEvent($tree, $manipulators, $this);
++    $this->eventDispatcher->dispatch($event);
++    foreach ($event->getManipulators() as $manipulator) {
+       $callable = $this->callableResolver->getCallableFromDefinition($manipulator['callable']);
+       // Prepare the arguments for the menu tree manipulator callable; the first
+       // argument is always the menu link tree.
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..f8ba5d3dd43bd87b69283c511788e688fdce239a
+--- /dev/null
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+@@ -0,0 +1,71 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Core\Menu;
++
++use Drupal\Component\EventDispatcher\Event;
++
++/**
++ * Represents menu link tree manipulator information as event.
++ */
++class MenuLinkTreeManipulatorsAlterEvent extends Event {
++
++  /**
++   * MenuLinkTreeManipulatorsAlterEvent constructor.
++   *
++   * @param \Drupal\Core\Menu\MenuLinkTreeElement[] $tree
++   *   The menu tree to manipulate.
++   * @param array $manipulators
++   *   The menu link tree manipulators.
++   * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuLinkTree
++   *   The menu link tree.
++   */
++  public function __construct(
++    protected array $tree,
++    protected array $manipulators,
++    protected MenuLinkTreeInterface $menuLinkTree,
++  ) {
++  }
++
++  /**
++   * The MenuLinkElement tree.
++   *
++   * @return \Drupal\Core\Menu\MenuLinkTreeElement[]
++   *   The menu tree.
++   */
++  public function getTree(): array {
++    return $this->tree;
++  }
++
++  /**
++   * Get the manipulators for the tree.
++   *
++   * @return array
++   *   The menu tree manipulators.
++   */
++  public function getManipulators(): array {
++    return $this->manipulators;
++  }
++
++  /**
++   * Set the manipulators for the tree.
++   *
++   * @param array $manipulators
++   *   The menu tree manipulators.
++   */
++  public function setManipulators(array $manipulators): void {
++    $this->manipulators = $manipulators;
++  }
++
++  /**
++   * The MenuLinkTree.
++   *
++   * @return \Drupal\Core\Menu\MenuLinkTreeInterface
++   *   The menu link tree.
++   */
++  public function getMenuLinkTree(): MenuLinkTreeInterface {
++    return $this->menuLinkTree;
++  }
++
++}
+diff --git a/core/modules/navigation/navigation.services.yml b/core/modules/navigation/navigation.services.yml
+index 6a8c54d2519..bb4a6b37b9a 100644
+--- a/core/modules/navigation/navigation.services.yml
++++ b/core/modules/navigation/navigation.services.yml
+@@ -28,6 +28,7 @@ services:
+         '@router.route_provider',
+         '@menu.active_trail',
+         '@callable_resolver',
++        '@event_dispatcher',
+       ]
+ 
+   navigation.user_lazy_builder:
+diff --git a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+index e01f5748edf..1a7e6aa92e3 100644
+--- a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
++++ b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+@@ -4,7 +4,13 @@
+ 
+ namespace Drupal\navigation\Menu;
+ 
++use Drupal\Core\Menu\MenuActiveTrailInterface;
++use Drupal\Core\Menu\MenuLinkManagerInterface;
+ use Drupal\Core\Menu\MenuLinkTree;
++use Drupal\Core\Menu\MenuTreeStorageInterface;
++use Drupal\Core\Routing\RouteProviderInterface;
++use Drupal\Core\Utility\CallableResolver;
++use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+ 
+ /**
+  * Extends MenuLinkTree to add specific theme suggestions for the navigation.
+@@ -13,6 +19,22 @@
+  */
+ final class NavigationMenuLinkTree extends MenuLinkTree {
+ 
++  public function __construct(
++    MenuTreeStorageInterface $treeStorage,
++    MenuLinkManagerInterface $menuLinkManager,
++    RouteProviderInterface $routeProvider,
++    MenuActiveTrailInterface $menuActiveTrail,
++    CallableResolver $callableResolver,
++    protected ?EventDispatcherInterface $eventDispatcher = NULL,
++  ) {
++    parent::__construct($treeStorage, $menuLinkManager, $routeProvider, $menuActiveTrail, $callableResolver);
++
++    if ($eventDispatcher === NULL) {
++      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.1.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
++      $this->eventDispatcher = \Drupal::service('event_dispatcher');
++    }
++  }
++
+   /**
+    * {@inheritdoc}
+    */

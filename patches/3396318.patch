@@ -1,0 +1,93 @@
+diff --git i/core/core.libraries.yml w/core/core.libraries.yml
+index 5a4d983ad59..3bec6ca114f 100644
+--- i/core/core.libraries.yml
++++ w/core/core.libraries.yml
+@@ -618,6 +618,11 @@ drupal.message:
+   dependencies:
+     - core/drupal
+     - core/drupal.announce
++  # These placeholders will be set by system_js_settings_alter().
++  drupalSettings:
++    statusMessagesTemplate: null
++    warningMessagesTemplate: null
++    errorMessagesTemplate: null
+ 
+ drupal.progress:
+   version: VERSION
+diff --git i/core/misc/message.js w/core/misc/message.js
+index dac4049db50..c665ea4cb28 100644
+--- i/core/misc/message.js
++++ w/core/misc/message.js
+@@ -248,21 +248,15 @@
+    *   A DOM Node.
+    */
+   Drupal.theme.message = ({ text }, { type, id }) => {
+-    const messagesTypes = Drupal.Message.getMessageTypeLabels();
+-    const messageWrapper = document.createElement('div');
+-
+-    messageWrapper.setAttribute('class', `messages messages--${type}`);
+-    messageWrapper.setAttribute(
+-      'role',
+-      type === 'error' || type === 'warning' ? 'alert' : 'status',
++    const element = document.createElement('div');
++    element.innerHTML = drupalSettings[`${type}MessagesTemplate`];
++    element.querySelector('[data-drupal-message-template]').innerHTML = text;
++    const fragment = document.createDocumentFragment();
++    fragment.appendChild(element);
++    fragment.firstElementChild.firstElementChild.setAttribute(
++      'data-drupal-message-id',
++      id,
+     );
+-    messageWrapper.setAttribute('data-drupal-message-id', id);
+-    messageWrapper.setAttribute('data-drupal-message-type', type);
+-
+-    messageWrapper.setAttribute('aria-label', messagesTypes[type]);
+-
+-    messageWrapper.innerHTML = `${text}`;
+-
+-    return messageWrapper;
++    return fragment.firstElementChild.firstElementChild;
+   };
+ })(Drupal);
+diff --git i/core/modules/system/src/Hook/SystemHooks.php w/core/modules/system/src/Hook/SystemHooks.php
+index 90307fae353..c3e96cc035c 100644
+--- i/core/modules/system/src/Hook/SystemHooks.php
++++ w/core/modules/system/src/Hook/SystemHooks.php
+@@ -21,6 +21,7 @@
+ use Drupal\Core\Url;
+ use Drupal\Core\Routing\RouteMatchInterface;
+ use Drupal\Core\Hook\Attribute\Hook;
++use Drupal\Core\Render\Markup;
+ 
+ /**
+  * Hook implementations for system.
+@@ -285,6 +286,29 @@ public function jsSettingsAlter(&$settings, AttachedAssetsInterface $assets): vo
+       sort($minimal_libraries);
+       $settings['ajaxPageState']['libraries'] = implode(',', $minimal_libraries);
+     }
++
++    // @todo Preferably, retrieve these from the render element.
++    foreach (['status', 'error', 'warning'] as $type) {
++      $message_type_key = $type . 'MessagesTemplate';
++      if (array_key_exists($message_type_key, $settings)) {
++        /** @var \Drupal\Core\Render\RendererInterface $renderer */
++        $renderer = \Drupal::service('renderer');
++        $message_template = [
++          '#theme' => 'status_messages',
++          '#message_list' => [
++            $type => [
++              '#markup' => Markup::create('<div data-drupal-message-template></div>'),
++            ],
++          ],
++          '#status_headings' => [
++            'status' => t('Status message'),
++            'error' => t('Error message'),
++            'warning' => t('Warning message'),
++          ],
++        ];
++        $settings[$message_type_key] = $renderer->renderInIsolation($message_template);
++      }
++    }
+   }
+ 
+   /**

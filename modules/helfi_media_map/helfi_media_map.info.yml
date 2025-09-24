@@ -2,7 +2,7 @@ name: 'HELfi: Media map'
 type: module
 description: Provides media types for Service map and kartta.hel.fi services
 package: Custom
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - drupal:link
   - drupal:media

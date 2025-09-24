@@ -185,8 +185,7 @@ function helfi_platform_config_update_paragraph_target_types() : void {
  */
 function helfi_platform_config_module_implements_alter(&$implementations, $hook) : void {
   if ($hook == 'modules_installed') {
-    $moduleHandler = Drupal::service('module_handler');
-    if ($moduleHandler->moduleExists('locale')) {
+    if (isset($implementations['locale'])) {
       unset($implementations['locale']);
     }
   }
