@@ -50,7 +50,7 @@ index dac4049db50..c665ea4cb28 100644
    };
  })(Drupal);
 diff --git i/core/modules/system/src/Hook/SystemHooks.php w/core/modules/system/src/Hook/SystemHooks.php
-index 90307fae353..b651459b205 100644
+index 90307fae353..c3e96cc035c 100644
 --- i/core/modules/system/src/Hook/SystemHooks.php
 +++ w/core/modules/system/src/Hook/SystemHooks.php
 @@ -21,6 +21,7 @@
@@ -80,9 +80,9 @@ index 90307fae353..b651459b205 100644
 +            ],
 +          ],
 +          '#status_headings' => [
-+            'status' => $this->t('Status message'),
-+            'error' => $this->t('Error message'),
-+            'warning' => $this->t('Warning message'),
++            'status' => t('Status message'),
++            'error' => t('Error message'),
++            'warning' => t('Warning message'),
 +          ],
 +        ];
 +        $settings[$message_type_key] = $renderer->renderInIsolation($message_template);
