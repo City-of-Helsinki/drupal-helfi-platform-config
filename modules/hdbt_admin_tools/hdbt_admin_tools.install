@@ -112,3 +112,13 @@ function hdbt_admin_tools_update_9009(): void {
   // Remove the default frontpage view.
   $config_factory->getEditable('hdbt_admin_tools.cookie_consent_intro')->delete();
 }
+
+/**
+ * UHF-12206: Install editoria11y module, if it's not installed.
+ */
+function hdbt_admin_tools_update_9010(): void {
+  if (!Drupal::moduleHandler()->moduleExists('editoria11y')) {
+    $module_installer = \Drupal::service('module_installer');
+    $module_installer->install(['editoria11y']);
+  }
+}
