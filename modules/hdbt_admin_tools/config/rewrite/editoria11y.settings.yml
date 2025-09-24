@@ -58,5 +58,3 @@ ignore_tests:
   altDeadspace: '0'
   altLong: '0'
   altPartOfLinkWithText: '0'
-ignore_containers: ''
-allow_overflow: ''
