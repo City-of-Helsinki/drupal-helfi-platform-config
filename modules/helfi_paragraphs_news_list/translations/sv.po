@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+
+msgctxt "helfi_paragraphs_news_list"
+msgid "No related news."
+msgstr "Inga nyheter i ämnet."

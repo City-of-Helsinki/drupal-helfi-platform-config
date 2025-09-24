@@ -7,6 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+
 /**
  * Implements hook_platform_config_grant_permissions().
  */
@@ -57,4 +60,15 @@ function helfi_node_survey_form_node_form_alter(&$form, &$form_state, $form_id) 
  */
 function helfi_node_survey_content_translation_status_access($form_id) : bool {
   return !in_array($form_id, ['node_survey_edit_form', 'node_survey_form']);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function helfi_node_survey_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  if ($form_id !== 'node_survey_edit_form') {
+    return;
+  }
+
+  $form_state->setRedirectUrl(Url::fromRoute('view.content.page_1'));
 }

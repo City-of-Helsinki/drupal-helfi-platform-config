@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_media_map\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_media_map\UrlParserTrait;
@@ -15,15 +17,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'Map' formatter.
- *
- * @FieldFormatter(
- *   id = "hel_media_map",
- *   label = @Translation("Map"),
- *   field_types = {
- *     "link",
- *   }
- * )
  */
+#[FieldFormatter(
+  id: 'hel_media_map',
+  label: new TranslatableMarkup('Map'),
+  field_types: [
+    'link',
+  ]
+)]
 final class MediaMapFormatter extends FormatterBase {
 
   use UrlParserTrait;

@@ -92,10 +92,10 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
     $this->assertEquals([
       RecommendationsLazyBuilder::class . ':build',
       [
-        'isAnonymous' => TRUE,
         'entityType' => 'node',
         'entityId' => $node->id(),
         'langcode' => $node->language()->getId(),
+        'userId' => 0,
       ],
     ], $result['recommendations']['#lazy_builder']);
   }

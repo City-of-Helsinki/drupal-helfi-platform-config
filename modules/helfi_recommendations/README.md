@@ -1,5 +1,7 @@
 # Helfi annif integration
 
+See also Confluence documentation (in Finnish): https://helsinkisolutionoffice.atlassian.net/wiki/x/AQCFSwI
+
 Recommendation topics are generated for entities that include the `suggested_topics_reference` field. This is a custom
 field extending the core entity reference field.
 
@@ -12,11 +14,28 @@ See the API documentation at: [https://ai.finto.fi/v1/ui/](https://ai.finto.fi/v
 
 ## Suggestions across hel.fi instances
 
-**This feature is work in progress.**
+### Elasticsearch index
 
-Suggested topics entities are synced to suggestions search api index. In the future, other instances communicate with
-etusivu so that suggested topics entity is created for their content, and they can search suggestions for their content
-from the shared search index.
+Suggested topics entities are synced to `suggestions` search api index. The index is hosted with etusivu instance and all instances write and read to/from that shared index.
+
+#### Clearing the index
+
+Search index can be cleared manually or by certain configuration changes on deploy. Search API maintains a db registry for search index status but this registry will become out-of-date when the index is cleared by another instance. A mechanism to handle this will be implemented in UHF-12198, but until that we need to follow these guidelines:
+
+* Clear index on all instances at the same time, to make sure none of the local registries have items that are actually missing from the index.
+* Run indexing on all instances only after each of them has been cleared (this is challenged by the cron based indexing, which might trigger too early) 
+
+### "Recommended for you"-block
+
+All core instances have a "Recommended for you"-block enabled on Article, News, Standard Page and TPR Service content types. The block fetches content recommendations from the `suggestions` index, filtering results based on suggestion topics generated for current entity as well as editor managed settings for instances and content types.
+
+#### Block visibility
+
+Block visibility is controlled per entity ("Show automatically recommended content on this page"-field). This boolean field is enabled by default, but the default visibility can be changed per instance via a State API variable `helfi_recommendations.suggested_topics_default_show_block`:
+
+```shell
+drush sset helfi_recommendations.suggested_topics_default_show_block FALSE
+```
 
 ## Text converter
 

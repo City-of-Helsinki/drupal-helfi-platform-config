@@ -16,6 +16,7 @@ use Drupal\helfi_tpr_config\Entity\ServiceListSearch;
 use Drupal\helfi_tpr_config\Entity\Unit;
 use Drupal\helfi_tpr_config\Entity\UnitContactCard;
 use Drupal\helfi_tpr_config\Entity\UnitSearch;
+use Drupal\helfi_tpr_config\Plugin\views\filter\AddressSearch;
 use Drupal\linkit\Entity\Profile;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -672,5 +673,21 @@ function helfi_tpr_config_preprocess_paragraph__unit_accessibility_information(a
         ?->get('accessibility_sentences')
         ?->view('full');
     }
+  }
+}
+
+/**
+ * Implements hook_views_plugins_filter_alter().
+ */
+function helfi_tpr_config_views_plugins_filter_alter(array &$plugins): void {
+  $module_handler = Drupal::moduleHandler();
+  if (!$module_handler->moduleExists('helfi_address_search')) {
+    return;
+  }
+
+  // If helfi_tpr_config is installed, replace address_search filter, which
+  // adds address autocomplete.
+  if (isset($plugins['address_search'])) {
+    $plugins['address_search']['class'] = AddressSearch::class;
   }
 }

@@ -57,13 +57,23 @@ function helfi_paragraphs_news_list_entity_extra_field_info() : array {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function helfi_paragraphs_news_list_theme() {
+  return [
+    'news_list__no_results' => [
+      'render element' => 'element',
+    ],
+  ];
+}
+
+/**
  * Implements hook_ENTITY_TYPE_view().
  */
 function helfi_paragraphs_news_list_paragraph_view(
   array &$build,
   ParagraphInterface $entity,
   EntityViewDisplayInterface $display,
-  string $view_mode,
 ) : void {
   if (!$entity instanceof NewsFeedParagraph || !$display->getComponent('news_list')) {
     return;
@@ -116,6 +126,7 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
       'node_url' => new TranslatableMarkup('Node URL'),
       'published_at' => new TranslatableMarkup('Published at'),
       'short_title' => new TranslatableMarkup('Short title'),
+      'search_api_language' => new TranslatableMarkup('Search api language'),
     ];
 
     foreach ($entity_info_fields as $field_name => $field_label) {
@@ -133,6 +144,14 @@ function helfi_paragraphs_news_list_entity_bundle_field_info_alter(
       ->setLabel(new TranslatableMarkup('Term ID'))
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
+  }
+
+  if (in_array($entity_type->id(), ['helfi_news_neighbourhoods'])) {
+    $fields['location'] = BundleFieldDefinition::create('string')
+      ->setName('field_location')
+      ->setTranslatable(FALSE)
+      ->setCardinality(1)
+      ->setLabel(t('Location'));
   }
 }
 

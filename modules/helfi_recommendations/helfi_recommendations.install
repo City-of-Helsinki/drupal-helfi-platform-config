@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\node\NodeInterface;
+use Drupal\helfi_tpr\Entity\Service;
 
 /**
  * Implements hook_install().
@@ -20,20 +22,25 @@ function helfi_recommendations_install($is_syncing) : void {
     return;
   }
 
-  /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
-  $block_installer = \Drupal::service('helfi_platform_config.helper.block_installer');
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = \Drupal::service(ModuleHandlerInterface::class);
 
-  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
-  $theme_handler = \Drupal::service('theme_handler');
+  if ($moduleHandler->moduleExists('helfi_platform_config')) {
+    /** @var Drupal\helfi_platform_config\Helper\BlockInstaller $block_installer */
+    $block_installer = \Drupal::service('helfi_platform_config.helper.block_installer');
 
-  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
-    return;
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = \Drupal::service('theme_handler');
+
+    if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+      return;
+    }
+
+    $theme = $theme_handler->getDefault();
+    $block_config = helfi_recommendations_get_block_configurations($theme);
+    ['block' => $block, 'variations' => $variations] = $block_config;
+    $block_installer->install($block, $variations);
   }
-
-  $theme = $theme_handler->getDefault();
-  $block_config = helfi_recommendations_get_block_configurations($theme);
-  ['block' => $block, 'variations' => $variations] = $block_config;
-  $block_installer->install($block, $variations);
 
   // Set the text converter view display for the given content types.
   helfi_recommendations_set_text_converter_view_display('node', 'news_article', [
@@ -50,9 +57,6 @@ function helfi_recommendations_install($is_syncing) : void {
     'field_lower_content',
     'field_sidebar_content',
   ]);
-
-  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-  $moduleHandler = \Drupal::service(ModuleHandlerInterface::class);
 
   if ($moduleHandler->moduleExists('helfi_tpr_config')) {
     helfi_recommendations_set_text_converter_view_display('tpr_service', 'tpr_service', [
@@ -237,4 +241,84 @@ function helfi_recommendations_update_10004() : void {
       \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition($name, 'tpr_service', 'helfi_recommendations', $field_storage_definition);
     }
   }
+}
+
+/**
+ * UHF-11798: Hide recommendations block by default on kuva-instance.
+ */
+function helfi_recommendations_update_10005(&$sandbox) : void {
+  $project = \Drupal::service('helfi_api_base.environment_resolver')->getActiveProject();
+  if ($project->getName() !== 'kuva') {
+    return;
+  }
+
+  // Set up batch process to loop through 10 entities at a time.
+  if (!isset($sandbox['progress'])) {
+    // Set default show_block value for new content via a State API variable.
+    \Drupal::state()->set('helfi_recommendations.suggested_topics_default_show_block', FALSE);
+
+    // Initialize sandbox.
+    $sandbox['progress'] = 0;
+    $sandbox['current_entity_type'] = 'node';
+    $sandbox['current_id_key'] = 'nid';
+    $sandbox['current_id'] = 0;
+    $count = [];
+    $max = 0;
+    foreach (['node', 'tpr_service'] as $entity_type) {
+      $count[$entity_type] = \Drupal::entityQuery($entity_type)
+        ->condition('field_recommended_topics.show_block', 1)
+        ->accessCheck(FALSE)
+        ->count()
+        ->execute();
+      $max += $count[$entity_type];
+    }
+    $sandbox['count'] = $count;
+    $sandbox['max'] = $max;
+  }
+
+  // Hide recommendations block on all existing content.
+  $entity_type = $sandbox['current_entity_type'];
+  $id_key = $sandbox['current_id_key'];
+  $results = \Drupal::entityQuery($entity_type)
+    ->condition('field_recommended_topics.show_block', 1)
+    ->condition($id_key, $sandbox['current_id'], '>')
+    ->sort($id_key, 'ASC')
+    ->range(0, 10)
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if ($results) {
+    $entities = \Drupal::entityTypeManager()->getStorage($entity_type)->loadMultiple($results);
+    foreach ($entities as $entity) {
+      assert($entity instanceof NodeInterface || $entity instanceof Service);
+      $sandbox['progress']++;
+      $sandbox['current_id'] = $entity->id();
+
+      if ($entity->hasField('field_recommended_topics')) {
+        $field = $entity->get('field_recommended_topics')->getValue();
+        foreach ($field as &$item) {
+          $item['show_block'] = 0;
+        }
+        $entity->set('field_recommended_topics', $field);
+        $entity->save();
+      }
+    }
+    $sandbox['#finished'] = FALSE;
+  }
+  elseif ($sandbox['current_entity_type'] === 'node') {
+    // Finished with node entities, moving on to tpr_service entities.
+    $sandbox['current_entity_type'] = 'tpr_service';
+    $sandbox['current_id_key'] = 'id';
+    $sandbox['current_id'] = 0;
+    $sandbox['#finished'] = FALSE;
+  }
+  else {
+    // Finished with tpr_service entities, all done.
+    \Drupal::messenger()->addMessage(t('Finished hiding recommendations block on @count_node node-entities and @count_tpr_service tpr_service-entities.', [
+      '@count_node' => $sandbox['count']['node'],
+      '@count_tpr_service' => $sandbox['count']['tpr_service'],
+    ]));
+    $sandbox['#finished'] = TRUE;
+  }
+
 }

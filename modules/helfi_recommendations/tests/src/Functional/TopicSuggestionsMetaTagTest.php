@@ -30,10 +30,7 @@ class TopicSuggestionsMetaTagTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'taxonomy',
-    'node',
     'helfi_recommendations',
-    'helfi_platform_config',
   ];
 
   /**

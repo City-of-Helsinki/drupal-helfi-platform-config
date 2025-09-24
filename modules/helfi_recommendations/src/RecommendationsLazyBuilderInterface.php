@@ -12,8 +12,8 @@ interface RecommendationsLazyBuilderInterface {
   /**
    * Builds the recommendations block.
    *
-   * @param bool $isAnonymous
-   *   Whether the current user is anonymous.
+   * @param int $userId
+   *   The ID of the user.
    * @param string $entityType
    *   The type of the entity.
    * @param string $entityId
@@ -24,6 +24,6 @@ interface RecommendationsLazyBuilderInterface {
    * @return array
    *   The recommendations block render array.
    */
-  public function build(bool $isAnonymous, string $entityType, string $entityId, string $langcode): array;
+  public function build(int $userId, string $entityType, string $entityId, string $langcode): array;
 
 }

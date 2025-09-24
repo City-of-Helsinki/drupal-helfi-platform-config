@@ -146,7 +146,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   public function handleRemoteEntities(array $remoteEntities): array {
     $nodes = [];
 
-    /** @var \Drupal\external_entities\ExternalEntityInterface $announcement */
+    /** @var \Drupal\external_entities\Entity\ExternalEntityInterface $announcement */
     foreach ($remoteEntities as $announcement) {
       $linkUrl = NULL;
       $linkText = NULL;

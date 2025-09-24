@@ -14,5 +14,5 @@ msgid "Note! The content is displayed on the website only if the long descriptio
 msgstr "Observera! Innehållet visas på webbplatsen endast om den långa beskrivningen saknas från datakäll."
 
 msgctxt "Unit contact card aria label"
-msgid "See more details of @unit"
-msgstr "Se mera information om enheten @unit"
+msgid "See details of @unit"
+msgstr "Se detaljer om enheten @unit"

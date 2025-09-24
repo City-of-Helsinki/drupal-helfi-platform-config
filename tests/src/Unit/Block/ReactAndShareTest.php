@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Unit\Plugin\Block;
 
 use Drupal\Core\Config\Config;
+use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -31,6 +32,13 @@ class ReactAndShareTest extends UnitTestCase {
   private ConfigurableLanguageManagerInterface|MockObject $languageManager;
 
   /**
+   * The mocked state.
+   *
+   * @var \Drupal\Core\State\StateInterface|MockObject
+   */
+  private StateInterface|MockObject $state;
+
+  /**
    * The block instance being tested.
    *
    * @var \Drupal\helfi_platform_config\Plugin\Block\ReactAndShare
@@ -51,6 +59,7 @@ class ReactAndShareTest extends UnitTestCase {
     parent::setUp();
 
     $this->languageManager = $this->createMock(ConfigurableLanguageManagerInterface::class);
+    $this->state = $this->createMock(StateInterface::class);
     $this->stringTranslation = $this->createMock('Drupal\Core\StringTranslation\TranslationInterface');
 
     $this->reactAndShareBlock = new ReactAndShare(
@@ -59,10 +68,12 @@ class ReactAndShareTest extends UnitTestCase {
       ['provider' => 'helfi_platform_config']
     );
 
-    // Inject the mock language manager using reflection.
+    // Inject the mock language manager and state using reflection.
     $reflection = new \ReflectionClass($this->reactAndShareBlock);
     $property = $reflection->getProperty('languageManager');
     $property->setValue($this->reactAndShareBlock, $this->languageManager);
+    $stateProperty = $reflection->getProperty('state');
+    $stateProperty->setValue($this->reactAndShareBlock, $this->state);
 
     // Ensure translation works within the block.
     $this->reactAndShareBlock->setStringTranslation($this->createMock(TranslationInterface::class));
@@ -110,6 +121,10 @@ class ReactAndShareTest extends UnitTestCase {
       ->with('fi', 'system.site')
       ->willReturn($configMock);
 
+    $this->state->method('get')
+      ->with('askem.script_monitoring', TRUE)
+      ->willReturn(TRUE);
+
     $expected = [
       'react_and_share' => [
         '#theme' => 'react_and_share',
@@ -119,6 +134,7 @@ class ReactAndShareTest extends UnitTestCase {
           'drupalSettings' => [
             'reactAndShareApiKey' => 'fake-api-key',
             'siteName' => 'Test Site',
+            'askemMonitoringEnabled' => TRUE,
           ],
         ],
       ],

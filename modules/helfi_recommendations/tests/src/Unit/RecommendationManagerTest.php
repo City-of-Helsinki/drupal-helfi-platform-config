@@ -9,6 +9,7 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_recommendations\RecommendationManager;
@@ -78,6 +79,13 @@ class RecommendationManagerTest extends UnitTestCase {
   protected $cacheTagInvalidator;
 
   /**
+   * The mocked state.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected $state;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -88,6 +96,7 @@ class RecommendationManagerTest extends UnitTestCase {
     $this->topicsManager = $this->prophesize(TopicsManagerInterface::class);
     $this->elasticClient = ClientBuilder::create()->build();
     $this->cacheTagInvalidator = $this->prophesize(CacheTagInvalidatorInterface::class);
+    $this->state = $this->prophesize(StateInterface::class);
 
     $this->recommendationManager = new RecommendationManager(
       $this->logger->reveal(),
@@ -95,6 +104,8 @@ class RecommendationManagerTest extends UnitTestCase {
       $this->topicsManager->reveal(),
       $this->elasticClient,
       $this->cacheTagInvalidator->reveal(),
+      $this->state->reveal(),
+      $this->getStringTranslationStub(),
     );
   }
 

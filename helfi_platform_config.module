@@ -42,7 +42,6 @@ function helfi_platform_config_entity_type_build(array &$entity_types): void {
   if (isset($entity_types['redirect'])) {
     $entity_types['redirect']->setClass(PublishableRedirect::class);
     $entity_types['redirect']->set('entity_keys', $entity_types['redirect']->getKeys() + [
-      'published' => 'status',
       'custom' => 'is_custom',
     ]);
   }
@@ -255,6 +254,12 @@ function helfi_platform_config_theme() : array {
         'content' => NULL,
       ],
     ],
+    'helfi_location_autocomplete' => [
+      'variables' => [
+        'attributes' => [],
+        'children' => NULL,
+      ],
+    ],
   ];
 }
 
@@ -366,16 +371,24 @@ function helfi_platform_config_system_breadcrumb_alter(
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
     ->getId();
 
-  // Revert to English path, if current language path is not found.
-  try {
-    $url = $environment->getUrl($currentLanguage);
+  $active_project = $resolver->getActiveProject()->getName();
+  $etusivu_project = $resolver->getProject(Project::ETUSIVU)->getName();
+
+  if ($active_project === $etusivu_project) {
+    $url = Url::fromRoute('<front>');
   }
-  catch (Exception $e) {
-    $url = $environment->getUrl('en');
+  else {
+    // Revert to Finnish path, if current language path is not found.
+    try {
+      $url = Url::fromUri($environment->getUrl($currentLanguage));
+    }
+    catch (Exception $e) {
+      $url = Url::fromUri($environment->getUrl('fi'));
+    }
   }
 
   $links = $breadcrumb->getLinks();
-  array_unshift($links, Link::fromTextAndUrl(t('Front page'), Url::fromUri($url)));
+  array_unshift($links, Link::fromTextAndUrl(t('Front page'), $url));
 
   // Include front page in breadcrumb if it's the only item.
   if (count($links) === 1 && Drupal::service('path.matcher')->isFrontPage()) {

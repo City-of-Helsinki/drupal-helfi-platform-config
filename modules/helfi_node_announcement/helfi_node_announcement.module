@@ -8,6 +8,8 @@
 declare(strict_types=1);
 
 use Drupal\helfi_node_announcement\Entity\Announcement;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_platform_config_grant_permissions().
@@ -102,4 +104,15 @@ function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $for
  */
 function helfi_node_announcement_content_translation_status_access($form_id) : bool {
   return !in_array($form_id, ['node_announcement_edit_form', 'node_announcement_form']);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function helfi_node_announcement_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  if ($form_id !== 'node_announcement_edit_form') {
+    return;
+  }
+
+  $form_state->setRedirectUrl(Url::fromRoute('view.content.page_1'));
 }
