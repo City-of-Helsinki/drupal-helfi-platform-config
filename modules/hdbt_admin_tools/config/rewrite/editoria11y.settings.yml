@@ -3,7 +3,7 @@ content_root: ''
 assertiveness: smart
 no_load: ''
 ignore_all_if_absent: ''
-ignore_elements: '.card img, .picture--computed img, .content-card__image img, .card-teaser__img img, .components--computed *'
+ignore_elements: '.card img, .picture--computed img, .content-card__image img, .card-teaser__img img, .list-of-links__item__image img, .components--computed *, .announcement__content-body p'
 panel_no_cover: ''
 embedded_content_warning: ''
 download_links: ''
