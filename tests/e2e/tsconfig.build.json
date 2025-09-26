@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "module": "CommonJS",
+    "target": "ES2020",
+    "moduleResolution": "Node",
+    "emitDeclarationOnly": false,
+    "rootDir": "./",
+    "stripInternal": true
+  },
+  "include": ["utils", "playwright.config.ts"]
+}
