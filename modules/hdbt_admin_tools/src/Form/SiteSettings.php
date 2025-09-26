@@ -216,6 +216,7 @@ class SiteSettings extends ConfigFormBase {
       'summer' => t('Summer'),
       'suomenlinna' => t('Suomenlinna'),
       'tram' => t('Tram'),
+      'fog' => t('Fog'),
     ];
   }
 
