@@ -10,7 +10,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_recommendations\Drush\Commands\Commands;
 use Drupal\helfi_recommendations\ReferenceUpdater;
-use Drupal\helfi_recommendations\TextConverter\TextConverterManager;
+use Drupal\helfi_api_base\TextConverter\TextConverterManager;
 use Drupal\helfi_recommendations\TopicsManager;
 use Drupal\node\NodeStorage;
 use Drupal\Tests\UnitTestCase;
@@ -48,7 +48,7 @@ class CommandsTest extends UnitTestCase {
    *   The connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface|null $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\helfi_recommendations\TextConverter\TextConverterManager|null $textConverter
+   * @param \Drupal\helfi_api_base\TextConverter\TextConverterManager|null $textConverter
    *   The text converter.
    * @param \Drupal\helfi_recommendations\TopicsManager|null $topicsManager
    *   The topics manager.
