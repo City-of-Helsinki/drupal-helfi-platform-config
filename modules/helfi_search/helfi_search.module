@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\helfi_search\Plugin\search_api\datasource\UuidContentEntityTrackingManager;
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * @see \Drupal\search_api\Plugin\search_api\datasource\UuidContentEntityTrackingManager::entityInsert()
+ */
+function helfi_search_entity_insert(EntityInterface $entity): void {
+  \Drupal::getContainer()->get(UuidContentEntityTrackingManager::class)
+    ->entityInsert($entity);
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * @see \Drupal\search_api\Plugin\search_api\datasource\UuidContentEntityTrackingManager::entityUpdate()
+ */
+function helfi_search_entity_update(EntityInterface $entity): void {
+  \Drupal::getContainer()->get(UuidContentEntityTrackingManager::class)
+    ->entityUpdate($entity);
+}
+
+/**
+ * Implements hook_entity_delete().
+ *
+ * @see \Drupal\search_api\Plugin\search_api\datasource\UuidContentEntityTrackingManager::entityDelete()
+ */
+function helfi_search_entity_delete(EntityInterface $entity): void {
+  \Drupal::getContainer()->get(UuidContentEntityTrackingManager::class)
+    ->entityDelete($entity);
+}
