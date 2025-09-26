@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_recommendations\Traits;
 
-use Drupal\helfi_recommendations\TextConverter\TextConverterInterface;
-use Drupal\helfi_recommendations\TextConverter\TextConverterManager;
+use Drupal\helfi_api_base\TextConverter\TextConverterInterface;
+use Drupal\helfi_api_base\TextConverter\TextConverterManager;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\Argument;

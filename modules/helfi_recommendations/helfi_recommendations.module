@@ -13,8 +13,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_api_base\TextConverter\Document;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
-use Drupal\helfi_recommendations\TextConverter\Document;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
 use Drupal\helfi_recommendations\RecommendationManagerInterface;
 
