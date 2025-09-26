@@ -1,7 +1,7 @@
 name: 'HELfi Calculator'
 description: 'Provides paragraph type for calculator'
 type: module
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - allowed_formats:allowed_formats
   - helfi_base_content:helfi_base_content

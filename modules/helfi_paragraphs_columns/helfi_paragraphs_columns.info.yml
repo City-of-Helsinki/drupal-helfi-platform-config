@@ -1,6 +1,6 @@
 name: 'HELfi Paragraphs: Columns'
 type: module
-core_version_requirement: '^9 || ^10'
+core_version_requirement: '^10 || ^11'
 dependencies:
   - drupal:options
   - hdbt_admin_tools:hdbt_admin_tools
