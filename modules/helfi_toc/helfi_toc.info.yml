@@ -1,6 +1,6 @@
 name: 'HELfi Table of contents'
 type: module
 description: 'Table of contents for the selected entity.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 'interface translation project': helfi_toc
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_toc/translations/%language.po
