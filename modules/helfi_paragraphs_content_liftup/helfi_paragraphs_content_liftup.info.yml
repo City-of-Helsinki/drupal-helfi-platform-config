@@ -1,4 +1,4 @@
 name: 'Deprecated. HELfi Paragraphs: Content liftup'
 description: 'Deprecated. Do not install. Use the `Unit contact card` instead.'
 type: module
-core_version_requirement: '^9 || ^10'
+core_version_requirement: '^10 || ^11'
