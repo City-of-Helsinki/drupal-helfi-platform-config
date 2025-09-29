@@ -47,6 +47,9 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
 
     try {
       $response = $this->client->request('POST', $baseUrl . '/embeddings', [
+        'query' => [
+          'api-version' => self::API_VERSION,
+        ],
         'headers' => [
           'Authorization' => "Bearer $apiKey",
           'Content-Type' => 'application/json',

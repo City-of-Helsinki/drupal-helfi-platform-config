@@ -73,7 +73,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
    * Process field values in batches.
    */
   public function alterIndexedItems(array &$items) : void {
-    foreach (array_chunk($items, 10, TRUE) as $batch) {
+    foreach (array_chunk($items, 25, TRUE) as $batch) {
       $this->processBatch($items, $batch);
     }
   }
