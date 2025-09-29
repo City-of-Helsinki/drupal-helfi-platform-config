@@ -86,3 +86,12 @@ services:
   helfi_platform_config.etusivu_elastic_client:
     class: Elastic\Elasticsearch\Client
     factory: ['@Drupal\helfi_platform_config\ClientBuilder', 'create']
+
+
+  Drupal\helfi_platform_config\TextConverter\TextConverterManager:
+    tags:
+      - { name: service_collector, call: add, tag: helfi_platform_config.text_converter }
+
+  Drupal\helfi_platform_config\TextConverter\RenderTextConverter:
+    tags:
+      - { name: helfi_platform_config.text_converter, priority: -1 }

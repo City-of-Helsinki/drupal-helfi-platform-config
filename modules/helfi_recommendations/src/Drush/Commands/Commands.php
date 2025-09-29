@@ -14,7 +14,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_api_base\TextConverter\TextConverterManager;
+use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\helfi_recommendations\Client\ApiClient;
 use Drupal\helfi_recommendations\ReferenceUpdater;
 use Drupal\helfi_recommendations\TopicsManager;
@@ -41,7 +41,7 @@ final class Commands extends DrushCommands {
    *   The connection service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\helfi_api_base\TextConverter\TextConverterManager $textConverter
+   * @param \Drupal\helfi_platform_config\TextConverter\TextConverterManager $textConverter
    *   The text converter.
    * @param \Drupal\helfi_recommendations\TopicsManager $topicsManager
    *   The keyword generator.

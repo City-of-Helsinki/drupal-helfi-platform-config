@@ -9,7 +9,7 @@ use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\helfi_api_base\TextConverter\TextConverterInterface;
+use Drupal\helfi_platform_config\TextConverter\TextConverterInterface;
 use Drupal\helfi_recommendations\Client\ApiClient;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
 use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;

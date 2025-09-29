@@ -11,7 +11,7 @@ use Drupal\helfi_recommendations\Client\ApiClient;
 use Drupal\helfi_recommendations\Client\ApiClientException;
 use Drupal\helfi_recommendations\Client\Keyword;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
-use Drupal\helfi_api_base\TextConverter\TextConverterInterface;
+use Drupal\helfi_platform_config\TextConverter\TextConverterInterface;
 use Drupal\Tests\helfi_recommendations\Traits\AnnifApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\Client;

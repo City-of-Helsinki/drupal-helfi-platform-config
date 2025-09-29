@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Plugin\search_api\processor;
 
-use Drupal\helfi_api_base\TextConverter\TextConverterManager;
+use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
