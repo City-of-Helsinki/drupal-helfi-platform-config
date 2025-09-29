@@ -1,0 +1,53 @@
+import {
+  APIRequestContext,
+  expect,
+  request as playwrightRequest
+} from '@playwright/test';
+
+/**
+ * Create a new API context and make a request
+ * to the JSON:API endpoint.
+ */
+export async function fetchJsonApiRequest<T>(
+  baseURL: string,
+  endpoint: string,
+  params?: Record<string, string | number | boolean>
+): Promise<T> {
+  // Create a new API context with the provided base URL
+  // @todo: Should we use a valid certificate instead of
+  //        ignoring the certificate?
+  const api = await playwrightRequest.newContext({
+    baseURL,
+    ignoreHTTPSErrors: true,
+  });
+
+  // Make the request and ensure the API context is properly disposed.
+  try {
+    return await fetchRequest<T>(api, endpoint, params);
+  }
+  finally {
+    await api.dispose();
+  }
+}
+
+/**
+ * Makes a GET request to the specified endpoint and
+ * returns the JSON response.
+ */
+export async function fetchRequest<T>(
+  request: APIRequestContext,
+  endpoint: string,
+  params?: Record<string, string | number | boolean>
+): Promise<T> {
+  // Make the GET request and handle the response.
+  const response = await request.get(endpoint, { params });
+
+  // Verify the response was successful.
+  expect(
+    response.ok(),
+    `GET ${endpoint} failed with status ${response.status()} ${response.statusText()}`
+  ).toBeTruthy();
+
+  // Parse and return the JSON response.
+  return (await response.json()) as T;
+}
