@@ -49,4 +49,3 @@ function hook_text_conversion_alter(Document $document, EntityInterface $entity)
 function hook_entity_type_text_conversion_alter(Document $document, EntityInterface $entity) : void {
   assert($entity->getEntityTypeId(), 'entity_type');
 }
-
