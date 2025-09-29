@@ -1,18 +1,26 @@
 import { FullConfig, chromium } from '@playwright/test';
-import { cookieHandler, dialogHandler } from "./handlers";
+import { cookieHandler, dialogHandler } from './handlers';
+import { getStorageStatePath } from "./storagePath";
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Global setup function that runs once before all tests.
  * The function handles common setup tasks and saves the browser state to
- * in storageState file.
+ * a storageState file.
  */
 export default async function globalSetup(config: FullConfig) {
-  // Extract configuration values.
-  const { baseURL, storageState } = config.projects[0].use;
+  const storageStatePath = getStorageStatePath();
+
+  // Early return if storage state already exists.
+  if (fs.existsSync(storageStatePath)) return;
+
+  // Ensure the parent directory exists.
+  fs.mkdirSync(path.dirname(storageStatePath), { recursive: true });
 
   // Launch a new browser instance.
   const browser = await chromium.launch();
-  const page = await browser.newPage({ baseURL });
+  const page = await browser.newPage({ baseURL: config.projects[0].use.baseURL });
 
   try {
     // Navigate to the base URL to initialize the session.
@@ -25,7 +33,7 @@ export default async function globalSetup(config: FullConfig) {
     await dialogHandler(page);
 
     // Save the browser's storage state (cookies, local storage) to a file.
-    await page.context().storageState({ path: storageState as string });
+    await page.context().storageState({ path: storageStatePath });
   } finally {
     // Ensure the browser is always closed, even if an error occurs.
     await browser.close();

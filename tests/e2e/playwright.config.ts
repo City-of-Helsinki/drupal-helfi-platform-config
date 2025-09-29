@@ -5,9 +5,6 @@ import { getStorageStatePath } from './utils/storagePath';
 
 type Config = Parameters<typeof defineConfig>[0];
 
-const storageStatePath = getStorageStatePath();
-fs.mkdirSync(path.dirname(storageStatePath), { recursive: true });
-
 const baseSetupPath = require.resolve('./utils/globalSetup');
 const baseTeardownPath = require.resolve('./utils/globalTeardown');
 
@@ -23,7 +20,7 @@ const base: Config = {
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: process.env.BASE_URL ?? 'https://www.test.hel.ninja/',
-    storageState: storageStatePath,
+    storageState: getStorageStatePath(),
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
