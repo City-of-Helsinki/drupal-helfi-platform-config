@@ -1,0 +1,16 @@
+helfi_search.settings:
+  type: config_object
+  label: 'HELFI Search settings'
+  mapping:
+    openai_api_key:
+      type: string
+      label: 'OpenAI API key'
+      description: 'API key for OpenAI embeddings service'
+    openai_base_url:
+      type: string
+      label: 'OpenAI base URL'
+      description: 'Base URL for OpenAI API (defaults to https://api.openai.com/v1 if not set)'
+    openai_model:
+      type: string
+      label: 'OpenAI model'
+      description: 'OpenAI embedding model to use (defaults to text-embedding-3-small if not set)'

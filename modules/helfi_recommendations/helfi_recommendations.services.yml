@@ -19,12 +19,9 @@ services:
 
   Drupal\helfi_recommendations\EventSubscriber\SearchApiSubscriber: ~
 
-  helfi_recommendations.elastic_client_factory:
-    class: Drupal\helfi_recommendations\ElasticClientBuilder
-
   helfi_recommendations.elastic_client:
     class: Elastic\Elasticsearch\Client
-    factory: ['@helfi_recommendations.elastic_client_factory', 'create']
+    factory: ['@Drupal\helfi_platform_config\ClientBuilder', 'create']
 
   Drupal\helfi_recommendations\RecommendationsLazyBuilderInterface: '@Drupal\helfi_recommendations\RecommendationsLazyBuilder'
   Drupal\helfi_recommendations\RecommendationsLazyBuilder: ~

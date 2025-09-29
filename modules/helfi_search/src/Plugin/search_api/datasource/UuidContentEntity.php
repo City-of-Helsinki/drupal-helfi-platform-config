@@ -294,7 +294,7 @@ class UuidContentEntity extends ContentEntity {
    * item ID.
    */
   public function getAffectedItemsForEntityChange(EntityInterface $entity, array $foreign_entity_relationship_map, ?EntityInterface $original_entity = NULL): array {
-    if (!($entity instanceof ContentEntityInterface)) {
+    if (!$entity instanceof ContentEntityInterface) {
       return [];
     }
 
@@ -325,6 +325,7 @@ class UuidContentEntity extends ContentEntity {
 
       // We trigger re-indexing if either it is a removed entity or the
       // entity has changed its field value (in case it's an update).
+      /** @var \Drupal\Core\Entity\ContentEntityInterface|NULL $original_entity */
       if (!$original_entity || !$items->equals($original_entity->get($relation_info['field_name']))) {
         $query = $this->entityTypeManager->getStorage($this->getEntityTypeId())
           ->getQuery();
