@@ -76,7 +76,7 @@ default:
               value: true
           field_text:
             -
-              value: '<h2>Color palettes</h2><ul><li>Bus</li><li>Coat of Arms</li><li>Copper</li><li>Gold</li><li>Engel</li><li>Metro</li><li>Silver</li><li>Summer</li><li>Suomenlinna</li><li>Tram</li></ul>'
+              value: '<h2>Color palettes</h2><ul><li>Bus</li><li>Coat of Arms</li><li>Copper</li><li>Gold</li><li>Engel</li><li>Metro</li><li>Silver</li><li>Summer</li><li>Suomenlinna</li><li>Tram</li><li>Fog</li></ul>'
               format: full_html
   field_has_hero:
     -

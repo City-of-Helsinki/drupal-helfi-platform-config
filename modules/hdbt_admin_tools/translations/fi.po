@@ -155,3 +155,36 @@ msgstr "Kuvagalleriassa tulisi olla vähintään kaksi kuvaa."
 
 msgid "Image is mandatory with the selected Hero design."
 msgstr "Kuva on pakollinen valitun designin kanssa."
+
+msgid "Bus"
+msgstr "Bussi"
+
+msgid "Coat of Arms"
+msgstr "Vaakuna"
+
+msgid "Copper"
+msgstr "Kupari"
+
+msgid "Gold"
+msgstr "Kulta"
+
+msgid "Engel"
+msgstr "Engel"
+
+msgid "Metro"
+msgstr "Metro"
+
+msgid "Silver"
+msgstr "Hopea"
+
+msgid "Summer"
+msgstr "Kesä"
+
+msgid "Suomenlinna"
+msgstr "Suomenlinna"
+
+msgid "Tram"
+msgstr "Raitiovaunu"
+
+msgid "Fog"
+msgstr "Sumu"
