@@ -43,10 +43,8 @@ export async function fetchRequest<T>(
   const response = await request.get(endpoint, { params });
 
   // Verify the response was successful.
-  expect(
-    response.ok(),
-    `GET ${endpoint} failed with status ${response.status()} ${response.statusText()}`
-  ).toBeTruthy();
+  const isOk = response.ok();
+  expect(isOk, isOk ? undefined : `GET ${endpoint} failed with status ${response.status()} ${response.statusText()}`).toBeTruthy();
 
   // Parse and return the JSON response.
   return (await response.json()) as T;
