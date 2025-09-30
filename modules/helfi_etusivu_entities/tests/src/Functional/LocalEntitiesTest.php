@@ -27,7 +27,6 @@ final class LocalEntitiesTest extends BrowserTestBase {
    * @var string[]
    */
   protected static $modules = [
-    'helfi_ckeditor',
     'helfi_etusivu_entities',
   ];
 
@@ -75,10 +74,7 @@ final class LocalEntitiesTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
       'type' => 'survey',
       'title' => 'Old test survey',
-      'body' => [
-        'value' => 'Old survey content',
-        'format' => 'minimal',
-      ],
+      'body' => 'Old survey content',
       'langcode' => 'en',
       // Hide this if there is a survey published after 2000-01-01.
       'published_at' => 946677600,
@@ -90,10 +86,7 @@ final class LocalEntitiesTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
       'type' => 'survey',
       'title' => 'New test survey',
-      'body' => [
-        'value' => 'New survey content',
-        'format' => 'minimal',
-      ],
+      'body' => 'New survey content',
       'langcode' => 'en',
       'field_survey_link' => 'https://example.com',
       // Only show this on test node.
@@ -108,10 +101,7 @@ final class LocalEntitiesTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
       'type' => 'announcement',
       'title' => 'Test announcement',
-      'body' => [
-        'value' => 'Announcement content',
-        'format' => 'minimal',
-      ],
+      'body' => 'Announcement content',
       'field_announcement_type' => 'notification',
       'langcode' => 'en',
     ]);
@@ -120,10 +110,7 @@ final class LocalEntitiesTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
       'type' => 'announcement',
       'title' => 'UK announcement (uk)',
-      'body' => [
-        'value' => 'Announcement content',
-        'format' => 'minimal',
-      ],
+      'body' => 'Announcement content',
       'field_announcement_type' => 'notification',
       'langcode' => 'uk',
     ]);
