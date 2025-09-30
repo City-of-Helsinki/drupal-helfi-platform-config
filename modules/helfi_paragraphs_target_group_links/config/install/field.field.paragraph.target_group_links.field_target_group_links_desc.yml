@@ -6,6 +6,7 @@ dependencies:
     - field.storage.paragraph.field_target_group_links_desc
     - paragraphs.paragraphs_type.target_group_links
   module:
+    - allowed_formats
     - text
 id: paragraph.target_group_links.field_target_group_links_desc
 field_name: field_target_group_links_desc

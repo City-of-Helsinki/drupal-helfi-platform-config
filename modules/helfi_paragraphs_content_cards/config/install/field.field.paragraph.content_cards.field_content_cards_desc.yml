@@ -6,6 +6,7 @@ dependencies:
     - field.storage.paragraph.field_content_cards_desc
     - paragraphs.paragraphs_type.content_cards
   module:
+    - allowed_formats
     - text
 id: paragraph.content_cards.field_content_cards_desc
 field_name: field_content_cards_desc

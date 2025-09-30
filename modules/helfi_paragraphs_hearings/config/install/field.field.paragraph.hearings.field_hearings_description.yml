@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_hearings_description
+    - filter.format.minimal
     - paragraphs.paragraphs_type.hearings
   module:
+    - allowed_formats
     - text
 id: paragraph.hearings.field_hearings_description
 field_name: field_hearings_description

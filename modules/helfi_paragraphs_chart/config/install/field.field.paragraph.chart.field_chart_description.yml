@@ -6,6 +6,7 @@ dependencies:
     - field.storage.paragraph.field_chart_description
     - paragraphs.paragraphs_type.chart
   module:
+    - allowed_formats
     - text
 id: paragraph.chart.field_chart_description
 field_name: field_chart_description

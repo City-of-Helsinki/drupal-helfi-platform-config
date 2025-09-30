@@ -6,6 +6,7 @@ dependencies:
     - field.storage.paragraph.field_event_list_description
     - paragraphs.paragraphs_type.event_list
   module:
+    - allowed_formats
     - text
 id: paragraph.event_list.field_event_list_description
 field_name: field_event_list_description

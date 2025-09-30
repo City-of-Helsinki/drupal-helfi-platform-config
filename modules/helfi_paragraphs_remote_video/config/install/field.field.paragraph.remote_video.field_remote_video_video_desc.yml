@@ -6,6 +6,7 @@ dependencies:
     - field.storage.paragraph.field_remote_video_video_desc
     - paragraphs.paragraphs_type.remote_video
   module:
+    - allowed_formats
     - text
 id: paragraph.remote_video.field_remote_video_video_desc
 field_name: field_remote_video_video_desc

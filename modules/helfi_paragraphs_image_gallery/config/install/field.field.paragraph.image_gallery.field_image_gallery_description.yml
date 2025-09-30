@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_image_gallery_description
+    - filter.format.minimal
     - paragraphs.paragraphs_type.image_gallery
   module:
+    - allowed_formats
     - text
 id: paragraph.image_gallery.field_image_gallery_description
 field_name: field_image_gallery_description

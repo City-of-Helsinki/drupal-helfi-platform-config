@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_news_list_description
+    - filter.format.minimal
     - paragraphs.paragraphs_type.news_list
   module:
+    - allowed_formats
     - text
 id: paragraph.news_list.field_news_list_description
 field_name: field_news_list_description

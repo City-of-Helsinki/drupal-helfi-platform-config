@@ -6,6 +6,7 @@ dependencies:
     - field.storage.paragraph.field_number_highlights_desc
     - paragraphs.paragraphs_type.number_highlights
   module:
+    - allowed_formats
     - text
 third_party_settings: { }
 id: paragraph.number_highlights.field_number_highlights_desc

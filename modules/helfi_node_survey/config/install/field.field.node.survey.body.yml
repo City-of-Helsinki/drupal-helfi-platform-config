@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
+    - filter.format.minimal
     - node.type.survey
   module:
+    - allowed_formats
     - text
 id: node.survey.body
 field_name: body
