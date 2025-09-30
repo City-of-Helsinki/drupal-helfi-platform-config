@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_sidebar_text_text
-    - filter.format.minimal
     - paragraphs.paragraphs_type.sidebar_text
   module:
-    - allowed_formats
     - text
 id: paragraph.sidebar_text.field_sidebar_text_text
 field_name: field_sidebar_text_text

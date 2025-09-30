@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_description
-    - filter.format.minimal
     - paragraphs.paragraphs_type.contact_card_listing
   module:
-    - allowed_formats
     - text
 id: paragraph.contact_card_listing.field_description
 field_name: field_description

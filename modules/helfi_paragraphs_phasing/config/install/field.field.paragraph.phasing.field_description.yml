@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_description
-    - filter.format.minimal
     - paragraphs.paragraphs_type.phasing
   module:
-    - allowed_formats
     - text
 id: paragraph.phasing.field_description
 field_name: field_description

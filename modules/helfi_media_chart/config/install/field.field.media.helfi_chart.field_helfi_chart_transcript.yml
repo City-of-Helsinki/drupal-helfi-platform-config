@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.media.field_helfi_chart_transcript
-    - filter.format.minimal
     - media.type.helfi_chart
   module:
-    - allowed_formats
     - text
 id: media.helfi_chart.field_helfi_chart_transcript
 field_name: field_helfi_chart_transcript
