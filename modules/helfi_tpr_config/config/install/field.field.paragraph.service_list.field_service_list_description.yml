@@ -6,7 +6,6 @@ dependencies:
     - field.storage.paragraph.field_service_list_description
     - paragraphs.paragraphs_type.service_list
   module:
-    - allowed_formats
     - text
 id: paragraph.service_list.field_service_list_description
 field_name: field_service_list_description

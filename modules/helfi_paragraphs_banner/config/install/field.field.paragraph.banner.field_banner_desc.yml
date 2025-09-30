@@ -6,7 +6,6 @@ dependencies:
     - field.storage.paragraph.field_banner_desc
     - paragraphs.paragraphs_type.banner
   module:
-    - allowed_formats
     - text
 id: paragraph.banner.field_banner_desc
 field_name: field_banner_desc

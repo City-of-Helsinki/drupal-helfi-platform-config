@@ -6,7 +6,6 @@ dependencies:
     - field.storage.paragraph.field_org_chart_desc
     - paragraphs.paragraphs_type.org_chart
   module:
-    - allowed_formats
     - helfi_paragraphs_org_chart
     - text
 third_party_settings: { }

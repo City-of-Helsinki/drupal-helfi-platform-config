@@ -6,7 +6,6 @@ dependencies:
     - field.storage.paragraph.field_unit_search_description
     - paragraphs.paragraphs_type.unit_search
   module:
-    - allowed_formats
     - text
 id: paragraph.unit_search.field_unit_search_description
 field_name: field_unit_search_description

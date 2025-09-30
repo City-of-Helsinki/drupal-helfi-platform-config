@@ -6,7 +6,6 @@ dependencies:
     - field.storage.paragraph.field_hero_desc
     - paragraphs.paragraphs_type.hero
   module:
-    - allowed_formats
     - text
 id: paragraph.hero.field_hero_desc
 field_name: field_hero_desc
