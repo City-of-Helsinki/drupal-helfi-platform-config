@@ -31,8 +31,8 @@ export async function fetchJsonApiRequest<T>(
 }
 
 /**
- * Makes a GET request to the specified endpoint and
- * returns the JSON response.
+ * Make a GET request to the specified endpoint and
+ * return the JSON response.
  */
 export async function fetchRequest<T>(
   request: APIRequestContext,
