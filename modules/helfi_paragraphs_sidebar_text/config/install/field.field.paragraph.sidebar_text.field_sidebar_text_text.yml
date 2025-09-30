@@ -6,12 +6,7 @@ dependencies:
     - field.storage.paragraph.field_sidebar_text_text
     - paragraphs.paragraphs_type.sidebar_text
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: paragraph.sidebar_text.field_sidebar_text_text
 field_name: field_sidebar_text_text
 entity_type: paragraph
@@ -23,5 +18,6 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - minimal
 field_type: text_long
