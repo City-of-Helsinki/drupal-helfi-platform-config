@@ -7,7 +7,6 @@ dependencies:
     - paragraphs.paragraphs_type.banner
   module:
     - text
-    - allowed_formats
 id: paragraph.banner.field_banner_desc
 field_name: field_banner_desc
 entity_type: paragraph

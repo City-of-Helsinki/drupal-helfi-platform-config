@@ -6,11 +6,7 @@ dependencies:
     - field.storage.paragraph.field_hero_desc
     - paragraphs.paragraphs_type.hero
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: paragraph.hero.field_hero_desc
 field_name: field_hero_desc
 entity_type: paragraph
