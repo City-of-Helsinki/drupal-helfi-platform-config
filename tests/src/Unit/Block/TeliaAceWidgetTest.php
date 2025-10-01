@@ -31,11 +31,12 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->teliaAceWidget = new TeliaAceWidget(
+    $this->teliaAceWidget = new class (
       [],
       'telia_ace_widget',
       ['provider' => 'helfi_platform_config']
-    );
+    ) extends TeliaAceWidget {
+    };
 
     // Set the translation service for StringTranslationTrait.
     $this->teliaAceWidget->setStringTranslation($this->stringTranslation);

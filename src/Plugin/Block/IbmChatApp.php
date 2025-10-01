@@ -16,7 +16,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   id: "ibm_chat_app",
   admin_label: new TranslatableMarkup("IBM Chat App"),
 )]
-final class IbmChatApp extends BlockBase {
+class IbmChatApp extends BlockBase {
 
   /**
    * {@inheritdoc}

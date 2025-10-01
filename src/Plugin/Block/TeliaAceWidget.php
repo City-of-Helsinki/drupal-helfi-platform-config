@@ -17,7 +17,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   id: "telia_ace_widget",
   admin_label: new TranslatableMarkup("Telia ACE Widget"),
 )]
-final class TeliaAceWidget extends BlockBase {
+class TeliaAceWidget extends BlockBase {
 
   /**
    * URL for Telia ACE SDK script.

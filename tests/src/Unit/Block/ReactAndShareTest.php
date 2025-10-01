@@ -6,7 +6,6 @@ namespace Drupal\Tests\helfi_platform_config\Unit\Plugin\Block;
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\State\StateInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -38,11 +37,6 @@ class ReactAndShareTest extends UnitTestCase {
    * @var \Drupal\Core\State\StateInterface|MockObject
    */
   private StateInterface|MockObject $state;
-
-  /**
-   * The mock module handler.
-   */
-  private ModuleHandlerInterface&MockObject $moduleHandler;
 
   /**
    * The block instance being tested.

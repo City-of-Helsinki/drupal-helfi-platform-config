@@ -27,11 +27,12 @@ class IbmChatAppTest extends BlockUnitTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->ibmChatApp = new IbmChatApp(
+    $this->ibmChatApp = new class (
       [],
       'ibm_chat_app',
-      ['provider' => 'helfi_platform_config'],
-    );
+      ['provider' => 'helfi_platform_config']
+    ) extends IbmChatApp {
+    };
 
     // Set the translation service for StringTranslationTrait.
     $this->ibmChatApp->setStringTranslation($this->stringTranslation);
