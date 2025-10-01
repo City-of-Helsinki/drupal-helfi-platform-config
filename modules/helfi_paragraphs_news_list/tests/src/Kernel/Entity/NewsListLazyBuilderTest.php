@@ -48,7 +48,7 @@ class NewsListLazyBuilderTest extends KernelTestBase {
           ],
         ]),
       );
-    $this->container->set('helfi_paragraphs_news_list.elastic_client', $client->reveal());
+    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client->reveal());
     $sut = $this->container->get(NewsListLazyBuilder::class);
     assert($sut instanceof NewsListLazyBuilder);
 

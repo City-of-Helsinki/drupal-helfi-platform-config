@@ -43,7 +43,7 @@ The AI API accepts raw text only. Drupal content must be converted to UTF-8 enco
 `TextConverterManager`.
 
 ```php
-$raw_text = \Drupal::service(\Drupal\helfi_recommendations\TextConverter\TextConverterManager::class)
+$raw_text = \Drupal::service(\Drupal\helfi_platform_config\TextConverter\TextConverterManager::class)
   ->convert(MyEntity::load(123));
 ```
 

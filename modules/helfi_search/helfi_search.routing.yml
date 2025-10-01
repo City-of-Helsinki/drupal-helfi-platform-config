@@ -1,0 +1,9 @@
+helfi_search.test_form:
+  path: '/admin/config/search/helfi-search/test'
+  defaults:
+    _form: '\Drupal\helfi_search\Form\SearchTestForm'
+    _title: 'Search Embeddings Test'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+  options:
+    _admin_route: TRUE

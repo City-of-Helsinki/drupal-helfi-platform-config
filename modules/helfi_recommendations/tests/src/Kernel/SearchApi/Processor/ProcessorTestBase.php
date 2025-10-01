@@ -46,6 +46,8 @@ class ProcessorTestBase extends EntityKernelTestBase {
     'taxonomy',
     'language',
     'helfi_recommendations',
+    'helfi_platform_config',
+    'config_rewrite',
     'search_api',
     'elasticsearch_connector',
     'helfi_api_base',

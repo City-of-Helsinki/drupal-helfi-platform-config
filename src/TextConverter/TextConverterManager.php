@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_recommendations\TextConverter;
+namespace Drupal\helfi_platform_config\TextConverter;
 
 use Drupal\Core\Entity\EntityInterface;
 
@@ -28,7 +28,7 @@ final class TextConverterManager {
   /**
    * Adds a text converter.
    *
-   * @param \Drupal\helfi_recommendations\TextConverter\TextConverterInterface $textConverter
+   * @param \Drupal\helfi_platform_config\TextConverter\TextConverterInterface $textConverter
    *   The text converter.
    * @param int $priority
    *   Text converter priority.
@@ -44,7 +44,7 @@ final class TextConverterManager {
   }
 
   /**
-   * Convert given entity to text.
+   * Convert a given entity to text.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   Entity to convert.
@@ -53,7 +53,7 @@ final class TextConverterManager {
    *   Text output or NULL if no suitable converter exists.
    */
   public function convert(EntityInterface $entity) : ?string {
-    // Use first applicable converter.
+    // Use the first applicable converter.
     foreach ($this->getTextConverters() as $converter) {
       if ($converter->applies($entity)) {
         return $converter->convert($entity);
@@ -64,9 +64,9 @@ final class TextConverterManager {
   }
 
   /**
-   * Gets sorted list of text converters.
+   * Gets a sorted list of text converters.
    *
-   * @return \Drupal\helfi_recommendations\TextConverter\TextConverterInterface[]
+   * @return \Drupal\helfi_platform_config\TextConverter\TextConverterInterface[]
    *   Text converters sorted according to priority.
    */
   private function getTextConverters() : array {

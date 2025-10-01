@@ -17,22 +17,7 @@ services:
 
   Drupal\helfi_recommendations\Client\ApiClient : ~
 
-  Drupal\helfi_recommendations\TextConverter\TextConverterManager:
-    tags:
-      - { name: service_collector, call: add, tag: helfi_recommendations.text_converter }
-
-  Drupal\helfi_recommendations\TextConverter\RenderTextConverter:
-    tags:
-      - { name: helfi_recommendations.text_converter, priority: -1 }
-
   Drupal\helfi_recommendations\EventSubscriber\SearchApiSubscriber: ~
-
-  helfi_recommendations.elastic_client_factory:
-    class: Drupal\helfi_recommendations\ElasticClientBuilder
-
-  helfi_recommendations.elastic_client:
-    class: Elastic\Elasticsearch\Client
-    factory: ['@helfi_recommendations.elastic_client_factory', 'create']
 
   Drupal\helfi_recommendations\RecommendationsLazyBuilderInterface: '@Drupal\helfi_recommendations\RecommendationsLazyBuilder'
   Drupal\helfi_recommendations\RecommendationsLazyBuilder: ~

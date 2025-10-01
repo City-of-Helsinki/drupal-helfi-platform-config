@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_recommendations\Unit\TextConverter;
+namespace Drupal\Tests\helfi_platform_config\Unit\TextConverter;
 
 use Drupal\Core\Render\Markup;
-use Drupal\helfi_recommendations\TextConverter\Document;
+use Drupal\helfi_platform_config\TextConverter\Document;
 use Drupal\Tests\UnitTestCase;
 
 /**
