@@ -45,11 +45,11 @@ class SearchTestForm extends FormBase {
   const string INDEX_NAME = 'embeddings';
 
   public function __construct(
-    protected readonly EmbeddingsModelInterface $embeddingsModel,
-    protected readonly TokenUsageTracker $tokenUsageTracker,
-    protected readonly LanguageManagerInterface $languageManager,
+    protected EmbeddingsModelInterface $embeddingsModel,
+    protected TokenUsageTracker $tokenUsageTracker,
+    protected LanguageManagerInterface $languageManager,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
-    protected readonly Client $elasticClient,
+    protected Client $elasticClient,
   ) {
   }
 
