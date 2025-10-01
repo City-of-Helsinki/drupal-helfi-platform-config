@@ -23,6 +23,11 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
    */
   const string API_VERSION = '2024-10-21';
 
+  /**
+   * Max input length.
+   */
+  const int MAX_INPUT_LENGTH = 8000;
+
   public function __construct(
     private readonly ClientInterface $client,
     private readonly ConfigFactoryInterface $configFactory,
@@ -41,6 +46,10 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     $baseUrl = $config->get('openai_base_url');
     $model = $config->get('openai_model');
 
+    if (!is_array($input)) {
+      $input = [$input];
+    }
+
     if (empty($apiKey) || empty($baseUrl) || empty($model)) {
       throw new EmbeddingsModelException('OpenAI API key not configured');
     }
@@ -56,7 +65,8 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
         ],
         'json' => [
           'model' => $model,
-          'input' => $input,
+          // Truncate long input.
+          'input' => array_map(static fn ($text) => substr($text, 0, self::MAX_INPUT_LENGTH), $input),
         ],
       ]);
 
