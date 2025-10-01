@@ -67,7 +67,7 @@ class SearchTestForm extends FormBase {
     $form['search_query'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Query'),
-      '#description' => $this->t('Enter a search query to generate embeddings for testing.'),
+      '#description' => $this->t('Enter a search query.'),
       '#required' => TRUE,
       '#maxlength' => 500,
     ];
