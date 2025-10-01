@@ -33,11 +33,6 @@ class IbmChatAppTest extends BlockUnitTestBase {
       ['provider' => 'helfi_platform_config'],
     );
 
-    // Inject the mock module handler using reflection.
-    $reflection = new \ReflectionClass($this->ibmChatApp);
-    $property = $reflection->getProperty('moduleHandler');
-    $property->setValue($this->ibmChatApp, $this->moduleHandler);
-
     // Set the translation service for StringTranslationTrait.
     $this->ibmChatApp->setStringTranslation($this->stringTranslation);
   }
@@ -125,27 +120,6 @@ class IbmChatAppTest extends BlockUnitTestBase {
 
     // Run the build method.
     $this->assertEquals($expected, $this->ibmChatApp->build());
-  }
-
-  /**
-   * Tests that CSP directives are added to the block.
-   *
-   * @covers ::build
-   */
-  public function testBuildAddsCspDirectives(): void {
-    $this->ibmChatApp->setConfiguration([
-      'hostname' => 'https://www.example.com',
-      'engagementId' => '12345',
-      'tenantId' => 'tenantID',
-      'assistantId' => 'assistantID',
-    ]);
-
-    $this->moduleHandler->method('moduleExists')
-      ->with('csp')
-      ->willReturn(TRUE);
-
-    $build = $this->ibmChatApp->build();
-    $this->assertArrayHasKey('csp', $build['ibm_chat_app']['#attached']);
   }
 
 }

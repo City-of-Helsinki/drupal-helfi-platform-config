@@ -84,6 +84,73 @@ class CspEventSubscriber implements EventSubscriberInterface {
       'style-src-elem',
     ]);
 
+    // Block 'ibm_chat_app'.
+    $policy->fallbackAwareAppendIfEnabled('connect-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('font-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('frame-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-ibm.eu-de.mybluemix.net',
+      'https://coh-chat-app-prod-ibm.eu-de.mybluemix.net',
+      'https://coh-chat-app-test.eu-de.mybluemix.net',
+      'https://coh-chat-app-dev.eu-de.mybluemix.net',
+      'https://coh-chat-app-prod.eu-de.mybluemix.net',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('img-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('script-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('style-src', [
+      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
+      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+    ]);
+
+    // Block 'react_and_share'.
+    $policy->fallbackAwareAppendIfEnabled('connect-src', [
+      'https://*.reactandshare.com',
+      'https://*.askem.com',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('img-src', [
+      'https://*.reactandshare.com',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('script-src', [
+      'https://*.reactandshare.com',
+      'https://*.askem.com',
+    ]);
+
+    // Block 'telia_ace_widget'.
+    $policy->fallbackAwareAppendIfEnabled('connect-src', [
+      'https://hel.humany.net',
+      'https://wds.ace.teliacompany.com',
+      'https://chat.ace.teliacompany.net',
+      'https://api.ace.teliacompany.net',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('font-src', [
+      'https://hel.humany.net',
+      'https://ace-knowledge-cdn.teliacompany.net',
+      'https://makasiini.hel.ninja',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('frame-src', [
+      'https://wds.ace.teliacompany.com',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('script-src', [
+      'https://wds.ace.teliacompany.com',
+    ]);
+    $policy->fallbackAwareAppendIfEnabled('style-src', [
+      'https://hel.humany.net',
+      'https://wds.ace.teliacompany.com',
+    ]);
+
     // Allow access to Elasticsearch proxy.
     $proxy_url = $this->configFactory->get('elastic_proxy.settings')?->get('elastic_proxy_url');
     if ($proxy_url) {

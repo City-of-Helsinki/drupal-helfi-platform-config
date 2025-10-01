@@ -66,7 +66,6 @@ class ReactAndShareTest extends UnitTestCase {
 
     $this->languageManager = $this->createMock(ConfigurableLanguageManagerInterface::class);
     $this->state = $this->createMock(StateInterface::class);
-    $this->moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $this->stringTranslation = $this->createMock('Drupal\Core\StringTranslation\TranslationInterface');
 
     $this->reactAndShareBlock = new ReactAndShare(
@@ -81,8 +80,6 @@ class ReactAndShareTest extends UnitTestCase {
     $property->setValue($this->reactAndShareBlock, $this->languageManager);
     $stateProperty = $reflection->getProperty('state');
     $stateProperty->setValue($this->reactAndShareBlock, $this->state);
-    $moduleHandlerproperty = $reflection->getProperty('moduleHandler');
-    $moduleHandlerproperty->setValue($this->reactAndShareBlock, $this->moduleHandler);
 
     // Ensure translation works within the block.
     $this->reactAndShareBlock->setStringTranslation($this->createMock(TranslationInterface::class));
@@ -150,37 +147,6 @@ class ReactAndShareTest extends UnitTestCase {
     ];
 
     $this->assertEquals($expected, $this->reactAndShareBlock->build());
-  }
-
-  /**
-   * Tests that CSP directives are added to the block.
-   *
-   * @covers ::build
-   */
-  public function testBuildAddsCspDirectives(): void {
-    $language = $this->createMock(LanguageInterface::class);
-    $language->method('getId')->willReturn('fi');
-
-    $this->languageManager->method('getCurrentLanguage')
-      ->with(LanguageInterface::TYPE_CONTENT)
-      ->willReturn($language);
-
-    // Set a fake API key environment variable.
-    putenv('REACT_AND_SHARE_APIKEY_FI=fake-api-key');
-
-    $configMock = $this->createMock(Config::class);
-    $configMock->method('get')->with('name')->willReturn('Test Site');
-
-    $this->languageManager->method('getLanguageConfigOverride')
-      ->with('fi', 'system.site')
-      ->willReturn($configMock);
-
-    $this->moduleHandler->method('moduleExists')
-      ->with('csp')
-      ->willReturn(TRUE);
-
-    $build = $this->reactAndShareBlock->build();
-    $this->assertArrayHasKey('csp', $build['react_and_share']['#attached']);
   }
 
 }

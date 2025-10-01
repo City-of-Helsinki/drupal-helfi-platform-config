@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
+use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
@@ -15,7 +16,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   id: "ibm_chat_app",
   admin_label: new TranslatableMarkup("IBM Chat App"),
 )]
-final class IbmChatApp extends ChatBlockBase {
+final class IbmChatApp extends BlockBase {
 
   /**
    * {@inheritdoc}
@@ -101,41 +102,6 @@ final class IbmChatApp extends ChatBlockBase {
         ],
       ],
     ];
-
-    if ($this->moduleHandler->moduleExists('csp')) {
-      // Content-Security-Policy headers needed for this block.
-      $build['ibm_chat_app']['#attached']['csp'] = [
-        'connect-src' => [
-          $hostname,
-          'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-        ],
-        'font-src' => [
-          $hostname,
-          'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-        ],
-        'frame-src' => [
-          $hostname,
-          'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-          'https://coh-chat-app-ibm.eu-de.mybluemix.net',
-          'https://coh-chat-app-prod-ibm.eu-de.mybluemix.net',
-          'https://coh-chat-app-test.eu-de.mybluemix.net',
-          'https://coh-chat-app-dev.eu-de.mybluemix.net',
-          'https://coh-chat-app-prod.eu-de.mybluemix.net',
-        ],
-        'img-src' => [
-          $hostname,
-          'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-        ],
-        'script-src' => [
-          $hostname,
-          'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-        ],
-        'style-src' => [
-          $hostname,
-          'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-        ],
-      ];
-    }
 
     return $build;
   }
