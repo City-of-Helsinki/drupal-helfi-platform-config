@@ -14,8 +14,9 @@ const reactApps = {
 
 // Vanilla JS files.
 const jsFiles = {
-  autocomplete: 'assets/js/autocomplete.js'
-}
+  autocomplete: 'assets/js/autocomplete.js',
+  header_id_injector: 'assets/js/header_id_injector.js',
+};
 
 // SCSS files.
 const styles = [

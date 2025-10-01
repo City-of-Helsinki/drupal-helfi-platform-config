@@ -117,9 +117,9 @@ function helfi_toc_preprocess_page(array &$variables) : void {
   /** @var \Drupal\Core\Routing\AdminContext $admin_context */
   $admin_context = \Drupal::service('router.admin_context');
 
-  // Attach table of contents JS to every non-admin page.
+  // Attach header id injector JS to every non-admin page.
   if (!$admin_context->isAdminRoute()) {
-    $variables['#attached']['library'][] = 'helfi_toc/table_of_contents';
+    $variables['#attached']['library'][] = 'helfi_platform_config/header_id_injector';
   }
 }
 
