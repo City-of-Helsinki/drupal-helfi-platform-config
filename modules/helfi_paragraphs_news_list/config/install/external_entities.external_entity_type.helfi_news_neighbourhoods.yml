@@ -1,4 +1,4 @@
-uuid: 2d4aee18-cd16-4e50-b1fd-a5d1caa0e656
+uuid: f8c73069-d90f-40f7-b09d-4881ef8a98b5
 langcode: en
 status: true
 dependencies:
@@ -7,12 +7,15 @@ dependencies:
 id: helfi_news_neighbourhoods
 label: 'Helfi: News neighbourhoods'
 label_plural: 'Helfi: News neighbourhoods'
+base_path: helfi_news_neighbourhoods
 description: 'Retrieves news neighbourhoods taxonomy terms from Helfi'
 content_class: Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term
 read_only: true
 debug_level: 0
-generate_aliases: false
 field_mappers:
+  default_langcode:
+    id: null
+    config: {  }
   id:
     id: generic
     config:
@@ -28,14 +31,32 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  uuid:
+  langcode:
+    id: null
+    config: {  }
+  location:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: '$._source.uuid[0]'
+            mapping: $._source.field_location
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  tid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.tid[0]'
             required_field: false
             main_property: true
             data_processors:
@@ -58,35 +79,14 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  location:
+  uuid:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: '$._source.field_location'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  langcode:
-    id: null
-    config: {  }
-  default_langcode:
-    id: null
-    config: {  }
-  tid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$._source.tid[0]'
+            mapping: '$._source.uuid[0]'
             required_field: false
             main_property: true
             data_processors:
@@ -107,4 +107,4 @@ persistent_cache_max_age: 86400
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
-inherits_annotation_fields: false
+annotation_inherited_fields: {  }

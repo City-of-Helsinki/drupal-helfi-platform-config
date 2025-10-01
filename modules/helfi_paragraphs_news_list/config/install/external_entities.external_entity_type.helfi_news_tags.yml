@@ -1,4 +1,4 @@
-uuid: 12da4807-d6f4-4a1c-a59a-92e3f5c419b4
+uuid: b42c089f-8805-44db-b3e2-f7b5a5fa19b1
 langcode: en
 status: true
 dependencies:
@@ -7,12 +7,15 @@ dependencies:
 id: helfi_news_tags
 label: 'Helfi: News tags'
 label_plural: 'Helfi: News tags'
+base_path: helfi_news_tags
 description: 'Retrieves news tags taxonomy terms from Helfi'
 content_class: Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term
 read_only: true
 debug_level: 0
-generate_aliases: false
 field_mappers:
+  default_langcode:
+    id: null
+    config: {  }
   id:
     id: generic
     config:
@@ -28,14 +31,17 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  uuid:
+  langcode:
+    id: null
+    config: {  }
+  tid:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: '$._source.uuid[0]'
+            mapping: '$._source.tid[0]'
             required_field: false
             main_property: true
             data_processors:
@@ -58,20 +64,14 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  langcode:
-    id: null
-    config: {  }
-  default_langcode:
-    id: null
-    config: {  }
-  tid:
+  uuid:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: '$._source.tid[0]'
+            mapping: '$._source.uuid[0]'
             required_field: false
             main_property: true
             data_processors:
@@ -92,4 +92,4 @@ persistent_cache_max_age: 86400
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
-inherits_annotation_fields: false
+annotation_inherited_fields: {  }

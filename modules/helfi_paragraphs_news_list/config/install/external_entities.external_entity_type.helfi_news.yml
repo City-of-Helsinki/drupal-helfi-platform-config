@@ -1,4 +1,4 @@
-uuid: 191a9a9d-7a09-4e4d-847f-8fd93b3fa315
+uuid: d59ab83a-4cdb-4262-a2b5-e1b8d82630eb
 langcode: en
 status: true
 dependencies:
@@ -7,93 +7,15 @@ dependencies:
 id: helfi_news
 label: 'Helfi: News'
 label_plural: 'Helfi: News'
+base_path: helfi_news
 description: ''
 content_class: Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News
 read_only: true
 debug_level: 0
-generate_aliases: false
 field_mappers:
-  id:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$._source.uuid_langcode[0]'
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  uuid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$._source.uuid[0]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  title:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$._source.title[0]'
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  langcode:
-    id: null
-    config: {  }
   default_langcode:
     id: null
     config: {  }
-  tags:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$._source.field_news_item_tags[*]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  tags_uuid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$._source.news_tags_uuid[*]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
   groups:
     id: generic
     config:
@@ -124,6 +46,24 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.uuid_langcode[0]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  langcode:
+    id: null
+    config: {  }
   neighbourhoods:
     id: generic
     config:
@@ -199,6 +139,66 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+  tags:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.field_news_item_tags[*]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  tags_uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.news_tags_uuid[*]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.title[0]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.uuid[0]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
 field_mapping_notes: ''
 data_aggregator:
   id: single
@@ -212,4 +212,4 @@ persistent_cache_max_age: 1800
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
-inherits_annotation_fields: false
+annotation_inherited_fields: {  }
