@@ -7,6 +7,7 @@ namespace Drupal\helfi_search\OpenAI;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\MissingConfigurationException;
 use Drupal\helfi_search\OpenAI\DTO\Response;
 use Drupal\helfi_search\TokenUsageTracker;
 use GuzzleHttp\ClientInterface;
@@ -51,7 +52,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     }
 
     if (empty($apiKey) || empty($baseUrl) || empty($model)) {
-      throw new EmbeddingsModelException('OpenAI API key not configured');
+      throw new MissingConfigurationException('OpenAI API key not configured');
     }
 
     try {
