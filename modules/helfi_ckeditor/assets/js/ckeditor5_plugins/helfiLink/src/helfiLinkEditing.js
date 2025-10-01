@@ -28,8 +28,10 @@ export default class HelfiLinkEditing extends Plugin {
   }
 
   init() {
-    Object.keys(formElements).forEach(modelName => {
-      if (!formElements[modelName].machineName) { return; }
+    Object.keys(formElements).forEach((modelName) => {
+      if (!formElements[modelName].machineName) {
+        return;
+      }
 
       // Create conversions for model <-> view.
       this._convertAttribute(modelName, formElements[modelName].viewAttribute);
@@ -60,7 +62,7 @@ export default class HelfiLinkEditing extends Plugin {
       view: 'a',
       model: {
         key: 'linkHref',
-        value: viewElement => {
+        value: (viewElement) => {
           // Check if the view element has a 'href' attribute.
           if (!viewElement.hasAttribute('href')) return null;
 
@@ -71,10 +73,11 @@ export default class HelfiLinkEditing extends Plugin {
           href = sanitizeSafeLinks(href);
 
           return href
-            ? href.trim()
-              .replace(/^%20+/, '') // Remove leading %20
-              .replace(/%20+$/, '') // Remove trailing %20
-              .trim()
+            ? href
+                .trim()
+                .replace(/^%20+/, '') // Remove leading %20
+                .replace(/%20+$/, '') // Remove trailing %20
+                .trim()
             : null;
         },
       },
@@ -93,7 +96,9 @@ export default class HelfiLinkEditing extends Plugin {
     const { editor } = this;
 
     // Nothing to be done if there are no viewAttribute.
-    if (!viewAttribute) { return; }
+    if (!viewAttribute) {
+      return;
+    }
 
     // Add current model as an allowed attribute for '$text' nodes.
     editor.model.schema.extend('$text', { allowAttributes: modelName });
@@ -138,17 +143,19 @@ export default class HelfiLinkEditing extends Plugin {
         },
         model: {
           key: modelName,
-          value: (viewElement) => !!(viewElement.hasAttribute(viewAttributeKey) &&
-            viewElement.getAttribute(viewAttributeKey) === viewAttributeValue)
+          value: (viewElement) =>
+            !!(
+              viewElement.hasAttribute(viewAttributeKey) &&
+              viewElement.getAttribute(viewAttributeKey) === viewAttributeValue
+            ),
         },
       });
-    }
-    else if (modelName === 'linkIsExternal' || modelName === 'linkProtocol') {
+    } else if (modelName === 'linkIsExternal' || modelName === 'linkProtocol') {
       editor.conversion.for('upcast').elementToAttribute({
         view: 'a',
         model: {
           key: modelName,
-          value: viewElement => {
+          value: (viewElement) => {
             // Check if the view element has an 'href' attribute.
             if (!viewElement.hasAttribute('href')) {
               return null; // No 'href' attribute, so return null.
@@ -181,20 +188,19 @@ export default class HelfiLinkEditing extends Plugin {
         },
         converterPriority: 'high', // Set the converter priority.
       });
-    }
-    else {
+    } else {
       // View (DOM / Data) --> Model.
       editor.conversion.for('upcast').elementToAttribute({
         view: {
           name: 'a',
           attributes: {
-            [ viewAttribute ]: true
-          }
+            [viewAttribute]: true,
+          },
         },
         model: {
           key: modelName,
-          value: viewElement => viewElement.getAttribute(viewAttribute)
-        }
+          value: (viewElement) => viewElement.getAttribute(viewAttribute),
+        },
       });
     }
   }
@@ -214,49 +220,50 @@ export default class HelfiLinkEditing extends Plugin {
 
     // Make sure all changes are in a single undo step.
     // Cancel the original unlink first in the high priority.
-    unlinkCommand.on('execute', evt => {
-      if (isUnlinkingInProgress) {
-        return;
-      }
+    unlinkCommand.on(
+      'execute',
+      (evt) => {
+        if (isUnlinkingInProgress) {
+          return;
+        }
 
-      evt.stop();
+        evt.stop();
 
-      // This single block wraps all changes that should be in a single undo step.
-      model.change(() => {
-        // Now, in this single "undo block" let the unlink command flow naturally.
-        isUnlinkingInProgress = true;
+        // This single block wraps all changes that should be in a single undo step.
+        model.change(() => {
+          // Now, in this single "undo block" let the unlink command flow naturally.
+          isUnlinkingInProgress = true;
 
-        // Do the unlinking within a single undo step.
-        editor.execute('unlink');
+          // Do the unlinking within a single undo step.
+          editor.execute('unlink');
 
-        // Let's make sure the next unlinking will also be handled.
-        isUnlinkingInProgress = false;
+          // Let's make sure the next unlinking will also be handled.
+          isUnlinkingInProgress = false;
 
-        // The actual integration that removes the attribute.
-        model.change(writer => {
-          let ranges;
+          // The actual integration that removes the attribute.
+          model.change((writer) => {
+            let ranges;
 
-          // Get ranges from collapsed selection.
-          if (selection.isCollapsed) {
-            ranges = [ findAttributeRange(
-              selection.getFirstPosition(),
-              modelName,
-              selection.getAttribute(modelName),
-              model
-            ) ];
-          }
-          // Get ranges from selected elements.
-          else {
-            ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
-          }
+            // Get ranges from collapsed selection.
+            if (selection.isCollapsed) {
+              ranges = [
+                findAttributeRange(selection.getFirstPosition(), modelName, selection.getAttribute(modelName), model),
+              ];
+            }
+            // Get ranges from selected elements.
+            else {
+              ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
+            }
 
-          // Remove the attribute from specified ranges.
-          if (Array.isArray(ranges)) {
-            ranges.forEach(range => writer.removeAttribute(modelName, range));
-          }
+            // Remove the attribute from specified ranges.
+            if (Array.isArray(ranges)) {
+              ranges.forEach((range) => writer.removeAttribute(modelName, range));
+            }
+          });
         });
-      });
-    }, { priority: 'high' });
+      },
+      { priority: 'high' },
+    );
   }
 
   /**
@@ -331,8 +338,8 @@ export default class HelfiLinkEditing extends Plugin {
      */
     const convertVariants = (classes) => {
       const parts = classes.split(' '); // Split the string by spaces
-      const variantFound = parts.find(part => part.startsWith('hds-button--'));
-      const hdsButtonFound = parts.find(part => part.endsWith('hds-button'));
+      const variantFound = parts.find((part) => part.startsWith('hds-button--'));
+      const hdsButtonFound = parts.find((part) => part.endsWith('hds-button'));
 
       if (variantFound) {
         return variantFound.replace('hds-button--', '');
@@ -370,9 +377,7 @@ export default class HelfiLinkEditing extends Plugin {
       view: { name: 'a' },
       model: (viewElement) => {
         const helfiButtonLabel = Array.from(viewElement.getChildren()).find(
-          child =>
-            child.name === 'span' &&
-            child.hasClass('hds-button__label')
+          (child) => child.name === 'span' && child.hasClass('hds-button__label'),
         );
 
         // Check if current anchor has a hds-button__label span and convert it
@@ -387,7 +392,7 @@ export default class HelfiLinkEditing extends Plugin {
           }
 
           // Convert possible icon span to data-hds-icon-start.
-          anchorChildren.forEach(child => {
+          anchorChildren.forEach((child) => {
             if (child.name === 'span' && child.hasClass('hel-icon')) {
               const icon = convertIcons(child.getClassNames());
               if (icon) {
@@ -397,45 +402,36 @@ export default class HelfiLinkEditing extends Plugin {
           });
 
           // Add the former span hds-button__label contents to anchor.
-          Array.from(helfiButtonLabel.getChildren()).forEach(child => {
+          Array.from(helfiButtonLabel.getChildren()).forEach((child) => {
             viewElement._appendChild(child);
           });
         }
 
         // Check if there are obsolete <span> elements inside the anchor
         // and clear them as well.
-        const orphanedSpan = Array.from(viewElement.getChildren()).find(
-          element => {
-            // Check only an existence of span elements.
-            if (element.name && element.name === 'span') {
-
-              // Let only language attributes pass,
-              // otherwise return the element.
-              if (
-                element.getAttribute('dir') ||
-                element.getAttribute('lang')
-              ) {
-                return false;
-              }
-              return element;
+        const orphanedSpan = Array.from(viewElement.getChildren()).find((element) => {
+          // Check only an existence of span elements.
+          if (element.name && element.name === 'span') {
+            // Let only language attributes pass,
+            // otherwise return the element.
+            if (element.getAttribute('dir') || element.getAttribute('lang')) {
+              return false;
             }
-            return false;
+            return element;
           }
-        );
+          return false;
+        });
 
         // Remove the orphaned <span> and insert its children to the <a>.
         if (orphanedSpan) {
           viewElement._removeChildren(orphanedSpan.index, 1);
-          Array.from(orphanedSpan.getChildren()).forEach(child => {
+          Array.from(orphanedSpan.getChildren()).forEach((child) => {
             viewElement._appendChild(child);
           });
         }
 
         // Remove obsolete data-protocol attributes.
-        if (
-          viewElement.hasAttribute('data-protocol') &&
-          viewElement.getAttribute('data-protocol').startsWith('http')
-        ) {
+        if (viewElement.hasAttribute('data-protocol') && viewElement.getAttribute('data-protocol').startsWith('http')) {
           viewElement._removeAttribute('data-protocol');
         }
         return viewElement;
@@ -447,7 +443,7 @@ export default class HelfiLinkEditing extends Plugin {
     editor.conversion.for('upcast').attributeToAttribute({
       view: {
         name: 'a',
-        key: 'data-design'
+        key: 'data-design',
       },
       model: {
         key: 'linkVariant',
@@ -467,15 +463,15 @@ export default class HelfiLinkEditing extends Plugin {
             match = null;
           }
           return match;
-        }
-      }
+        },
+      },
     });
 
     // Convert CKE4 data-design attribute to linkButton model.
     editor.conversion.for('upcast').attributeToAttribute({
       view: {
         name: 'a',
-        key: 'data-design'
+        key: 'data-design',
       },
       model: {
         key: 'linkButton',
@@ -490,8 +486,8 @@ export default class HelfiLinkEditing extends Plugin {
             }
           }
           return match ? 'button' : false;
-        }
-      }
+        },
+      },
     });
 
     // Convert CKE4 "hds-button" class attribute to linkButton model.
@@ -499,29 +495,27 @@ export default class HelfiLinkEditing extends Plugin {
       view: {
         name: 'a',
         key: 'class',
-        value: 'hds-button'
+        value: 'hds-button',
       },
       model: {
         key: 'linkButton',
         value: 'button',
-      }
+      },
     });
 
     // Convert data-protocol attribute to linkProtocol model.
     editor.conversion.for('upcast').attributeToAttribute({
       view: {
         name: 'a',
-        key: 'data-protocol'
+        key: 'data-protocol',
       },
       model: {
         key: 'linkProtocol',
         value: (viewElement) => {
           // If protocol is http or https, remove it as we don't need them.
-          const handleProtocol = (protocol) => (
-            protocol === 'https' || protocol === 'http'
-          ) ? false : protocol;
+          const handleProtocol = (protocol) => (protocol === 'https' || protocol === 'http' ? false : protocol);
           return handleProtocol(viewElement.getAttribute('data-protocol'));
-        }
+        },
       },
       converterPriority: 'highest',
     });
@@ -534,7 +528,7 @@ export default class HelfiLinkEditing extends Plugin {
       },
       model: {
         key: 'linkIcon',
-      }
+      },
     });
   }
 
@@ -548,139 +542,141 @@ export default class HelfiLinkEditing extends Plugin {
     const linkCommand = editor.commands.get('link');
     let helfiLinkCommandExecuting = false;
 
-    linkCommand.on('execute', (evt, args) => {
-      // Custom handling is only required if an attribute was passed
-      // into editor.execute('link', ...).
-      if (args.length < 3) return;
+    linkCommand.on(
+      'execute',
+      (evt, args) => {
+        // Custom handling is only required if an attribute was passed
+        // into editor.execute('link', ...).
+        if (args.length < 3) return;
 
-      if (helfiLinkCommandExecuting) {
-        helfiLinkCommandExecuting = false;
-        return;
-      }
-
-      // If the additional attribute was passed, we stop the default execution
-      // of the LinkCommand. We're going to create Model#change() block for undo
-      // and execute the LinkCommand together with setting the attribute.
-      evt.stop();
-
-      // Prevent infinite recursion by keeping records of when link command
-      // is being executed by this function.
-      helfiLinkCommandExecuting = true;
-
-
-      const { model } = editor;
-
-      // The arguments on linkCommand.execute() are: href, attributes, .
-      // We need to trim the href value.
-      const hrefValue = args[0];
-      let trimmedHref = hrefValue;
-
-      if (hrefValue) {
-        // Trim the href value before and after %20.
-        trimmedHref = hrefValue.trim()
-          .replace(/^%20+/, '') // Remove leading %20
-          .replace(/%20+$/, '') // Remove trailing %20
-          .trim();
-
-        // Sanitize the href value for safe links.
-        trimmedHref = sanitizeSafeLinks(trimmedHref);
-
-        // Remove leading and trailing spaces, parentheses and hyphens.
-        // This is used for tel: numbers.
-        const linkProtocol = parseProtocol(trimmedHref);
-        if (linkProtocol === 'tel') {
-          trimmedHref = trimmedHref.replace(/[\s()-]/g, '');
+        if (helfiLinkCommandExecuting) {
+          helfiLinkCommandExecuting = false;
+          return;
         }
 
-        // Replace the href with trimmed href.
-        args[0] = trimmedHref;
-      }
+        // If the additional attribute was passed, we stop the default execution
+        // of the LinkCommand. We're going to create Model#change() block for undo
+        // and execute the LinkCommand together with setting the attribute.
+        evt.stop();
 
-      // The attributes are always the second value of arguments.
-      const attributeValues = args[1];
+        // Prevent infinite recursion by keeping records of when link command
+        // is being executed by this function.
+        helfiLinkCommandExecuting = true;
 
-      // Before executing the helfiLink plugin, execute the link command.
-      // The displayedTextInput might have changed and thus the selection
-      // range could have also changed.
-      model.change(() => {
-        editor.execute('link', ...args);
-      });
+        const { model } = editor;
 
-      // The linkCommand.execute() might execute other plugins which will alter
-      // the same anchor element. For example, the linkit plugin.
-      // Wrap the selection writer to a try catch to catch any errors.
-      try {
-        // Create a new "transparent" batch, which groups changes that should
-        // not be added to the undo stack. This is useful for programmatic
-        // changes that the user shouldn't be able to undo, like the
-        // custom internal attribute updates.
-        const transparentBatch = editor.model.createBatch({ isUndoable: false });
+        // The arguments on linkCommand.execute() are: href, attributes, .
+        // We need to trim the href value.
+        const hrefValue = args[0];
+        let trimmedHref = hrefValue;
 
-        // Use `enqueueChange('transparent')` to safely schedule attribute
-        // changes after the link command has completed and the view
-        // has been updated.
-        // This avoids errors like `cannot-change-view-tree` that can occur
-        // when modifying the model or view immediately after a changing the
-        // selection range or changing the element structure.
-        editor.model.enqueueChange(transparentBatch, writer => {
-          const currentSelection = editor.model.document.selection;
+        if (hrefValue) {
+          // Trim the href value before and after %20.
+          trimmedHref = hrefValue
+            .trim()
+            .replace(/^%20+/, '') // Remove leading %20
+            .replace(/%20+$/, '') // Remove trailing %20
+            .trim();
 
-          modelNames.forEach(modelName => {
-            // Check if the selection is collapsed, meaning the user has placed
-            // the cursor at a single point without selecting any text.
-            if (currentSelection.isCollapsed) {
+          // Sanitize the href value for safe links.
+          trimmedHref = sanitizeSafeLinks(trimmedHref);
 
-              // In this case, we need to find the link element surrounding
-              // the cursor and apply attributes to that single node instead
-              // of a range.
-              const position = currentSelection.getFirstPosition();
-              const node = position.textNode || position.nodeAfter || position.nodeBefore;
-              if (!node) return;
+          // Remove leading and trailing spaces, parentheses and hyphens.
+          // This is used for tel: numbers.
+          const linkProtocol = parseProtocol(trimmedHref);
+          if (linkProtocol === 'tel') {
+            trimmedHref = trimmedHref.replace(/[\s()-]/g, '');
+          }
 
-              const range = writer.createRangeOn(node);
+          // Replace the href with trimmed href.
+          args[0] = trimmedHref;
+        }
 
-              if (attributeValues[modelName]) {
-                writer.setAttribute(modelName, attributeValues[modelName], range);
-              } else {
-                writer.removeAttribute(modelName, range);
-              }
+        // The attributes are always the second value of arguments.
+        const attributeValues = args[1];
 
-              // Remove the temporary attribute from the selection itself.
-              // This prevents CKEditor from applying the attribute to any new
-              // content the user types after the link, which would
-              // unintentionally carry over the custom attribute.
-              writer.removeSelectionAttribute(modelName);
+        // Before executing the helfiLink plugin, execute the link command.
+        // The displayedTextInput might have changed and thus the selection
+        // range could have also changed.
+        model.change(() => {
+          editor.execute('link', ...args);
+        });
 
-              // Move the selection to the newly modified range.
-              // This ensures the cursor is placed inside or on the link with
-              // the updated attributes, keeping the editor state consistent.
-              writer.setSelection(range);
-            }
-            // Selection not collapsed means the user has selected a range
-            // in the document. F.e. selected a word or a sentence.
-            else {
-              const ranges = model.schema.getValidRanges(currentSelection.getRanges(), modelName);
-              ranges.forEach(range => {
+        // The linkCommand.execute() might execute other plugins which will alter
+        // the same anchor element. For example, the linkit plugin.
+        // Wrap the selection writer to a try catch to catch any errors.
+        try {
+          // Create a new "transparent" batch, which groups changes that should
+          // not be added to the undo stack. This is useful for programmatic
+          // changes that the user shouldn't be able to undo, like the
+          // custom internal attribute updates.
+          const transparentBatch = editor.model.createBatch({ isUndoable: false });
+
+          // Use `enqueueChange('transparent')` to safely schedule attribute
+          // changes after the link command has completed and the view
+          // has been updated.
+          // This avoids errors like `cannot-change-view-tree` that can occur
+          // when modifying the model or view immediately after a changing the
+          // selection range or changing the element structure.
+          editor.model.enqueueChange(transparentBatch, (writer) => {
+            const currentSelection = editor.model.document.selection;
+
+            modelNames.forEach((modelName) => {
+              // Check if the selection is collapsed, meaning the user has placed
+              // the cursor at a single point without selecting any text.
+              if (currentSelection.isCollapsed) {
+                // In this case, we need to find the link element surrounding
+                // the cursor and apply attributes to that single node instead
+                // of a range.
+                const position = currentSelection.getFirstPosition();
+                const node = position.textNode || position.nodeAfter || position.nodeBefore;
+                if (!node) return;
+
+                const range = writer.createRangeOn(node);
+
                 if (attributeValues[modelName]) {
                   writer.setAttribute(modelName, attributeValues[modelName], range);
                 } else {
                   writer.removeAttribute(modelName, range);
                 }
-              });
-            }
+
+                // Remove the temporary attribute from the selection itself.
+                // This prevents CKEditor from applying the attribute to any new
+                // content the user types after the link, which would
+                // unintentionally carry over the custom attribute.
+                writer.removeSelectionAttribute(modelName);
+
+                // Move the selection to the newly modified range.
+                // This ensures the cursor is placed inside or on the link with
+                // the updated attributes, keeping the editor state consistent.
+                writer.setSelection(range);
+              }
+              // Selection not collapsed means the user has selected a range
+              // in the document. F.e. selected a word or a sentence.
+              else {
+                const ranges = model.schema.getValidRanges(currentSelection.getRanges(), modelName);
+                ranges.forEach((range) => {
+                  if (attributeValues[modelName]) {
+                    writer.setAttribute(modelName, attributeValues[modelName], range);
+                  } else {
+                    writer.removeAttribute(modelName, range);
+                  }
+                });
+              }
+            });
+            helfiLinkCommandExecuting = false;
           });
-          helfiLinkCommandExecuting = false;
-        });
-      }
-      // If an error occurs, stop the execution.
-      // CKEditorError: Cannot read properties of null (reading 'dataset').
-      catch (error) {
-        evt.stop();
-      }
-      // Set the priority to match the linkit plugin. If it's higher, linkit
-      // plugin will trigger an error because the selection range has changed
-      // in the middle of code execution. If it's lower, helfiLink plugin will
-      // not be executed properly.
-    }, { priority: 'high' });
+        } catch (error) {
+          // If an error occurs, stop the execution.
+          // CKEditorError: Cannot read properties of null (reading 'dataset').
+          evt.stop();
+        }
+        // Set the priority to match the linkit plugin. If it's higher, linkit
+        // plugin will trigger an error because the selection range has changed
+        // in the middle of code execution. If it's lower, helfiLink plugin will
+        // not be executed properly.
+      },
+      { priority: 'high' },
+    );
   }
 }

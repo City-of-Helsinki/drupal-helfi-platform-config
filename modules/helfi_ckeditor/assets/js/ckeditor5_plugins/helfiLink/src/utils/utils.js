@@ -32,10 +32,7 @@ export const isUrlExternal = (string, domains) => {
   }
 
   const host = url.hostname;
-  return !domains.some(domain => (
-    (domain.startsWith('*.') && host.endsWith(domain.slice(2))) ||
-    domain === host
-  ));
+  return !domains.some((domain) => (domain.startsWith('*.') && host.endsWith(domain.slice(2))) || domain === host);
 };
 
 /**
@@ -44,10 +41,10 @@ export const isUrlExternal = (string, domains) => {
  * @param {string} url The URL as string.
  * @return {string|boolean} The protocol as a string or false.
  */
-export const parseProtocol = url => {
+export const parseProtocol = (url) => {
   try {
     const parsedURL = new URL(url);
-    return (parsedURL.protocol === 'tel:' || parsedURL.protocol === 'mailto:')
+    return parsedURL.protocol === 'tel:' || parsedURL.protocol === 'mailto:'
       ? parsedURL.protocol.replace(':', '')
       : false;
   } catch (_) {
@@ -61,12 +58,12 @@ export const parseProtocol = url => {
  * @param {string} url The URL as string.
  * @return {string} The sanitized URL as a string or original URL.
  */
-export const sanitizeSafeLinks = url => {
+export const sanitizeSafeLinks = (url) => {
   if (!url.includes('safelinks.protection.outlook.com')) {
     return url;
   }
   const matches = url.match(/(?<=\?url=).*?(?=&data=)/);
-  return (matches) ? decodeURIComponent(matches[0]) : url;
+  return matches ? decodeURIComponent(matches[0]) : url;
 };
 
 /**

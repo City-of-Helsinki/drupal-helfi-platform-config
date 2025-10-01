@@ -34,7 +34,6 @@ function createQuote(writer, quoteText, author) {
 }
 
 export default class HelfiQuoteCommand extends Command {
-
   /**
    * Executes the command.
    * Insert <helfiQuote>*</helfiQuote> at the current selection position
@@ -46,8 +45,10 @@ export default class HelfiQuoteCommand extends Command {
   execute({ quoteText, author }) {
     const { model } = this.editor;
 
-    model.change(writer => {
-      if (!quoteText || quoteText.trim() === '') { return; }
+    model.change((writer) => {
+      if (!quoteText || quoteText.trim() === '') {
+        return;
+      }
       model.insertContent(createQuote(writer, quoteText, author));
     });
   }
@@ -62,10 +63,7 @@ export default class HelfiQuoteCommand extends Command {
     // Determine if the cursor (selection) is in a position where adding a
     // helfiQuote is permitted. This is based on the schema of the model(s)
     // currently containing the cursor.
-    const allowedIn = model.schema.findAllowedParent(
-      selection.getFirstPosition(),
-      'helfiQuote',
-    );
+    const allowedIn = model.schema.findAllowedParent(selection.getFirstPosition(), 'helfiQuote');
 
     // If the cursor is not in a location where a helfiQuote can be added,
     // return null so the quote toolbar button cannot be clicked.
@@ -75,5 +73,4 @@ export default class HelfiQuoteCommand extends Command {
     // new quote.
     // this.value = this._getValueFromFirstAllowedNode();
   }
-
 }

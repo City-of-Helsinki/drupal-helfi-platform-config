@@ -5,7 +5,6 @@ import { getCode } from 'ckeditor5/src/utils';
  * The HelfiLink base view class.
  */
 export default class HelfiLinkBaseView extends View {
-
   /**
    * @inheritDoc
    */
@@ -63,14 +62,12 @@ export default class HelfiLinkBaseView extends View {
 
       attributes: {
         id: bind.to('id'),
-        class: [
-          'ck-helfi-link-select-list',
-        ],
+        class: ['ck-helfi-link-select-list'],
         'data-placeholder': this.options.label,
         autocomplete: 'off',
       },
       on: {
-        keydown: bind.to(evt => {
+        keydown: bind.to((evt) => {
           // Need to check target. Otherwise, we would handle space press on
           // input[type=text] and it would change checked property
           // twice due to default browser handling kicking in too.
@@ -80,7 +77,6 @@ export default class HelfiLinkBaseView extends View {
         }),
       },
     });
-
   }
 
   /**

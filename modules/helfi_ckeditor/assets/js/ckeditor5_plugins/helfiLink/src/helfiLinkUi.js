@@ -3,10 +3,7 @@
  */
 
 import { Plugin } from 'ckeditor5/src/core';
-import {
-  createLabeledInputText,
-  LabeledFieldView,
-} from 'ckeditor5/src/ui';
+import { createLabeledInputText, LabeledFieldView } from 'ckeditor5/src/ui';
 
 import { Collection } from 'ckeditor5/src/utils';
 import HelfiCheckBoxView from './ui/helfiCheckBoxView';
@@ -18,7 +15,6 @@ import HelfiLinkIconView from './ui/helfiLinkIconView';
 import { isUrlExternal, parseProtocol, addViewClass } from './utils/utils';
 
 export default class HelfiLinkUi extends Plugin {
-
   constructor(editor) {
     super(editor);
     this.editor = editor;
@@ -42,84 +38,81 @@ export default class HelfiLinkUi extends Plugin {
     // Copy the same solution from LinkUI as pointed out on
     // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and
     // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.
-    this.editor.plugins
-      .get('ContextualBalloon')
-      .on('change:visibleView', (evt, propertyName, newValue, oldValue) => {
+    this.editor.plugins.get('ContextualBalloon').on('change:visibleView', (evt, propertyName, newValue, oldValue) => {
+      // Get the LinkUI form view.
+      this.linkFormView = this.editor.plugins.get('LinkUI').formView;
 
-        // Get the LinkUI form view.
-        this.linkFormView = this.editor.plugins.get('LinkUI').formView;
+      // Check that we're handling the last linkFormView.
+      // The 'set:visibleView' will trigger twice as we need to set
+      // the contextual balloon classes in _addContextualBalloonClass().
+      if (newValue === oldValue || newValue !== this.linkFormView || !this.helfiContextualBalloonInitialized) {
+        return;
+      }
 
-        // Check that we're handling the last linkFormView.
-        // The 'set:visibleView' will trigger twice as we need to set
-        // the contextual balloon classes in _addContextualBalloonClass().
-        if (
-          newValue === oldValue ||
-          newValue !== this.linkFormView ||
-          !this.helfiContextualBalloonInitialized
-        ) {
+      // Add custom fields from formElements.
+      const models = Object.keys(this.formElements).reverse();
+
+      // Iterate through formElements and create fields accordingly.
+      models.forEach((modelName) => {
+        // Skip form elements without machine names.
+        if (!this.formElements[modelName].machineName) {
           return;
         }
 
-        // Add custom fields from formElements.
-        const models = Object.keys(this.formElements).reverse();
+        // Create form fields.
+        const formField = this._createFormField(modelName);
 
-        // Iterate through formElements and create fields accordingly.
-        models.forEach(modelName => {
-          // Skip form elements without machine names.
-          if (!this.formElements[modelName].machineName) { return; }
+        // If form field is marked as part of advanced settings,
+        // add it to advancedChildren object.
+        if (
+          this.formElements[modelName].group &&
+          this.formElements[modelName].group === 'advanced' &&
+          typeof formField !== 'undefined'
+        ) {
+          this.advancedChildren.add(formField);
+        }
+      });
 
-          // Create form fields.
-          const formField = this._createFormField(modelName);
+      // Move all fields with group:advanced setting to under advanced
+      // settings accordion.
+      this._createAdvancedSettingsAccordion();
 
-          // If form field is marked as part of advanced settings,
-          // add it to advancedChildren object.
-          if (
-            this.formElements[modelName].group &&
-            this.formElements[modelName].group === 'advanced' &&
-            typeof formField !== 'undefined'
-          ) {
-            this.advancedChildren.add(formField);
-          }
-        });
-
-        // Move all fields with group:advanced setting to under advanced
-        // settings accordion.
-        this._createAdvancedSettingsAccordion();
-
-        // Iterate through formElements and load data from LinkCommand plugin
-        // to each form field. This needs to be run after the
-        // _createAdvancedSettingsAccordion() as TomSelect library requires
-        // rendered markup to attach itself to.
-        models.forEach(modelName => {
-          // Skip form elements without machine names.
-          if (!this.formElements[modelName].machineName) { return; }
-
-          // Load existing data into form field.
-          this._handleDataLoadingIntoFormField(modelName);
-        });
-
-        // Add a descriptive text to URL input field.
-        if (!this.linkFormView.urlInputView.infoText) {
-          this.linkFormView.urlInputView.infoText = Drupal.t(
-            'Start typing to find content.',
-            {},
-            { context: 'CKEditor5 Helfi Link plugin' }
-          );
+      // Iterate through formElements and load data from LinkCommand plugin
+      // to each form field. This needs to be run after the
+      // _createAdvancedSettingsAccordion() as TomSelect library requires
+      // rendered markup to attach itself to.
+      models.forEach((modelName) => {
+        // Skip form elements without machine names.
+        if (!this.formElements[modelName].machineName) {
+          return;
         }
 
-        // Add logic to checkboxes.
-        this._handleCheckboxes();
-
-        // Move the submit button row from inside urlInputView
-        // to the bottom of the dialog.
-        this._moveSubmitButtonToBottom();
-
-        // Reorder all fields in the desired layout.
-        this._reorderFormFields();
-
-        // Handle form field submit.
-        this._handleFormFieldSubmit(models);
+        // Load existing data into form field.
+        this._handleDataLoadingIntoFormField(modelName);
       });
+
+      // Add a descriptive text to URL input field.
+      if (!this.linkFormView.urlInputView.infoText) {
+        this.linkFormView.urlInputView.infoText = Drupal.t(
+          'Start typing to find content.',
+          {},
+          { context: 'CKEditor5 Helfi Link plugin' },
+        );
+      }
+
+      // Add logic to checkboxes.
+      this._handleCheckboxes();
+
+      // Move the submit button row from inside urlInputView
+      // to the bottom of the dialog.
+      this._moveSubmitButtonToBottom();
+
+      // Reorder all fields in the desired layout.
+      this._reorderFormFields();
+
+      // Handle form field submit.
+      this._handleFormFieldSubmit(models);
+    });
   }
 
   /**
@@ -136,37 +129,35 @@ export default class HelfiLinkUi extends Plugin {
     // Copy the same solution from LinkUI as pointed out on
     // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and
     // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.
-    editor.plugins
-      .get('ContextualBalloon')
-      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
-        // Add a wrapper classes for the link form view.
-        if (newValue === oldValue || newValue !== this.linkFormView) {
-          return;
-        }
+    editor.plugins.get('ContextualBalloon').on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
+      // Add a wrapper classes for the link form view.
+      if (newValue === oldValue || newValue !== this.linkFormView) {
+        return;
+      }
 
-        const contextualBalloonPlugin = this.editor.plugins.get('ContextualBalloon');
+      const contextualBalloonPlugin = this.editor.plugins.get('ContextualBalloon');
 
-        if (
-          !contextualBalloonPlugin.hasView(this.linkFormView) ||
-          contextualBalloonPlugin.view.element.classList.contains('helfi-contextual-balloon')
-        ) {
-          return;
-        }
+      if (
+        !contextualBalloonPlugin.hasView(this.linkFormView) ||
+        contextualBalloonPlugin.view.element.classList.contains('helfi-contextual-balloon')
+      ) {
+        return;
+      }
 
-        this.linkFormView.template.attributes.class.push('helfi-link-form');
-        this.linkFormView.template.attributes.class.push('ck-reset_all-excluded');
+      this.linkFormView.template.attributes.class.push('helfi-link-form');
+      this.linkFormView.template.attributes.class.push('ck-reset_all-excluded');
 
-        // There should be an easier way to add classes to contextual balloon
-        // plugin than removing and adding the view with custom settings.
-        contextualBalloonPlugin.remove(newValue);
-        contextualBalloonPlugin.add({
-          view: this.linkFormView,
-          position: contextualBalloonPlugin.getPositionOptions(),
-          balloonClassName: 'helfi-contextual-balloon',
-          withArrow: false,
-        });
-        this.helfiContextualBalloonInitialized = true;
+      // There should be an easier way to add classes to contextual balloon
+      // plugin than removing and adding the view with custom settings.
+      contextualBalloonPlugin.remove(newValue);
+      contextualBalloonPlugin.add({
+        view: this.linkFormView,
+        position: contextualBalloonPlugin.getPositionOptions(),
+        balloonClassName: 'helfi-contextual-balloon',
+        withArrow: false,
       });
+      this.helfiContextualBalloonInitialized = true;
+    });
   }
 
   /**
@@ -373,7 +364,7 @@ export default class HelfiLinkUi extends Plugin {
           // window confirmation checkbox values based on the value
           // of the element's linkNewWindowConfirm model. The link new window
           // confirmation gets its value from <a target=_blank> attribute.
-          const isChecked = !!(linkCommand.linkNewWindowConfirm);
+          const isChecked = !!linkCommand.linkNewWindowConfirm;
 
           // Set initial value of current "link new window" and
           // "link new window confirmation" based on isChecked value.
@@ -388,7 +379,7 @@ export default class HelfiLinkUi extends Plugin {
           // Initialize TomSelect for current select list.
           this.linkFormView[modelName].renderTomSelect(
             this.linkFormView[modelName].element,
-            options?.selectListOptions
+            options?.selectListOptions,
           );
 
           // Add the default value for link icon.
@@ -419,7 +410,6 @@ export default class HelfiLinkUi extends Plugin {
 
           // Add the default value for link variant.
           if (modelName === 'linkVariant') {
-
             // It was decided to remove "primary" variable from anchor tag and
             // attach "primary" button styles to data-hds-component variable.
             // Add the "primary" as default value if
@@ -512,129 +502,138 @@ export default class HelfiLinkUi extends Plugin {
 
     // Listen to linkFormView submit and inject form field values to
     // linkCommand arguments.
-    this.listenTo(this.linkFormView, 'submit', (evt) => {
-      // Check for Link URL existence.
-      if (!this.linkFormView.urlInputView?.fieldView?.element?.value) {
-        this.linkFormView.urlInputView.errorText = Drupal.t(
-          'The link URL field cannot be empty.',
-          {},
-          { context: 'CKEditor5 Helfi Link plugin' }
-        );
-        evt.stop();
-      }
+    this.listenTo(
+      this.linkFormView,
+      'submit',
+      (evt) => {
+        // Check for Link URL existence.
+        if (!this.linkFormView.urlInputView?.fieldView?.element?.value) {
+          this.linkFormView.urlInputView.errorText = Drupal.t(
+            'The link URL field cannot be empty.',
+            {},
+            { context: 'CKEditor5 Helfi Link plugin' },
+          );
+          evt.stop();
+        }
 
-      // Get whitelisted domains.
-      const { whiteListedDomains } = this.editor.config.get('link');
+        // Get whitelisted domains.
+        const { whiteListedDomains } = this.editor.config.get('link');
 
-      // Get current href value of the link.
-      const href = this.linkFormView.urlInputView?.fieldView?.element?.value;
+        // Get current href value of the link.
+        const href = this.linkFormView.urlInputView?.fieldView?.element?.value;
 
-      // Massage values for the link conversions.
-      const values = models.reduce((state, model) => {
-        switch (model) {
-          case 'linkVariant': {
-            const selectedValue = this.linkFormView?.[model]?.tomSelect.getValue();
+        // Massage values for the link conversions.
+        const values = models.reduce((state, model) => {
+          switch (model) {
+            case 'linkVariant': {
+              const selectedValue = this.linkFormView?.[model]?.tomSelect.getValue();
 
-            // Return current state if link design has not been selected or
-            // link design is "link".
-            if (!selectedValue || selectedValue === 'link') {
-              return state;
-            }
+              // Return current state if link design has not been selected or
+              // link design is "link".
+              if (!selectedValue || selectedValue === 'link') {
+                return state;
+              }
 
-            // Set linkButton model variable if the link design is "primary".
-            // Return the state as we don't want to print out
-            // data-hds-variant="primary" to the anchor tag.
-            if (selectedValue === 'primary') {
+              // Set linkButton model variable if the link design is "primary".
+              // Return the state as we don't want to print out
+              // data-hds-variant="primary" to the anchor tag.
+              if (selectedValue === 'primary') {
+                state.linkButton = 'button';
+                return state;
+              }
+
+              // Set current selection to the state and set "button" as the
+              // linkButton model value.
+              state[model] = selectedValue;
               state.linkButton = 'button';
-              return state;
-            }
-
-            // Set current selection to the state and set "button" as the
-            // linkButton model value.
-            state[model] = selectedValue;
-            state.linkButton = 'button';
-            break;
-          }
-
-          case 'linkIcon':
-            state[model] = this.linkFormView?.[model]?.tomSelect.getValue();
-            break;
-
-          case 'linkProtocol':
-            if (!whiteListedDomains || !href || href.startsWith('#')) { break; }
-
-            if (parseProtocol(href)) {
-              state[model] = parseProtocol(href);
-            }
-            break;
-
-          case 'linkIsExternal':
-            if (!whiteListedDomains || !href || href.startsWith('#')) { break; }
-
-            if (!parseProtocol(href) && isUrlExternal(href, whiteListedDomains)) {
-              state[model] = isUrlExternal(href, whiteListedDomains);
               break;
             }
-            break;
 
-          default:
-            state[model] = this.linkFormView?.[model]?.fieldView?.element?.value ?? '';
+            case 'linkIcon':
+              state[model] = this.linkFormView?.[model]?.tomSelect.getValue();
+              break;
+
+            case 'linkProtocol':
+              if (!whiteListedDomains || !href || href.startsWith('#')) {
+                break;
+              }
+
+              if (parseProtocol(href)) {
+                state[model] = parseProtocol(href);
+              }
+              break;
+
+            case 'linkIsExternal':
+              if (!whiteListedDomains || !href || href.startsWith('#')) {
+                break;
+              }
+
+              if (!parseProtocol(href) && isUrlExternal(href, whiteListedDomains)) {
+                state[model] = isUrlExternal(href, whiteListedDomains);
+                break;
+              }
+              break;
+
+            default:
+              state[model] = this.linkFormView?.[model]?.fieldView?.element?.value ?? '';
+          }
+
+          if (this.formElements[model].type === 'checkbox') {
+            state[model] = this.linkFormView?.[model]?.checkboxInputView?.element?.checked;
+          }
+
+          return state;
+        }, {});
+
+        // Explain the link logic to user if they are trying to add link id to
+        // a collapsed selection.
+        if (selection.isCollapsed && !this.linkFormView.urlInputView?.fieldView?.element?.value && values.linkId) {
+          this.linkFormView.urlInputView.errorText = Drupal.t(
+            'When there is no selection, the link URL must be provided. To add a link without a URL, first select text in the editor and then proceed with adding the link.',
+            {},
+            { context: 'CKEditor5 Helfi Link plugin' },
+          );
+          evt.stop();
         }
 
-        if (this.formElements[model].type === 'checkbox') {
-          state[model] = this.linkFormView?.[model]?.checkboxInputView?.element?.checked;
+        // Double-check if either of the checkbox values is not checked and
+        // set both to false accordingly.
+        if (!values.linkNewWindowConfirm || !values.linkNewWindow) {
+          values.linkNewWindowConfirm = false;
+          values.linkNewWindow = false;
+
+          // Trigger the change event by clicking the element.
+          if (this.linkFormView.linkNewWindowConfirm.checkboxInputView.element.checked) {
+            this.linkFormView.linkNewWindowConfirm.checkboxInputView.element.click();
+          }
+          // Trigger the change event by clicking the element.
+          if (this.linkFormView.linkNewWindow.checkboxInputView.element.checked) {
+            this.linkFormView.linkNewWindow.checkboxInputView.element.click();
+          }
         }
 
-        return state;
-      }, {});
+        const decoratorsArgIndex = 1;
 
-      // Explain the link logic to user if they are trying to add link id to
-      // a collapsed selection.
-      if (
-        selection.isCollapsed &&
-        !this.linkFormView.urlInputView?.fieldView?.element?.value &&
-        values.linkId
-      ) {
-        this.linkFormView.urlInputView.errorText = Drupal.t(
-          'When there is no selection, the link URL must be provided. To add a link without a URL, first select text in the editor and then proceed with adding the link.',
-          {},
-          { context: 'CKEditor5 Helfi Link plugin' }
+        // Stop the execution of the link command caused by closing the form.
+        // Inject the attribute values.
+        linkCommand.once(
+          'execute',
+          (execEvt, args) => {
+            // Assume decorators is the second argument provided to the
+            // linkCommand.execute() call.
+            if (!(typeof args[decoratorsArgIndex] === 'object')) {
+              // This is either an object or null because decorators are optional.
+              args[decoratorsArgIndex] = values;
+              return;
+            }
+            // An object exists, so we need to merge the values.
+            Object.assign(args[decoratorsArgIndex], values);
+          },
+          { priority: 'highest' },
         );
-        evt.stop();
-      }
-
-      // Double-check if either of the checkbox values is not checked and
-      // set both to false accordingly.
-      if (!values.linkNewWindowConfirm || !values.linkNewWindow) {
-        values.linkNewWindowConfirm = false;
-        values.linkNewWindow = false;
-
-        // Trigger the change event by clicking the element.
-        if (this.linkFormView.linkNewWindowConfirm.checkboxInputView.element.checked) {
-          this.linkFormView.linkNewWindowConfirm.checkboxInputView.element.click();
-        }
-        // Trigger the change event by clicking the element.
-        if (this.linkFormView.linkNewWindow.checkboxInputView.element.checked) {
-          this.linkFormView.linkNewWindow.checkboxInputView.element.click();
-        }
-      }
-
-      const decoratorsArgIndex = 1;
-
-      // Stop the execution of the link command caused by closing the form.
-      // Inject the attribute values.
-      linkCommand.once('execute', (execEvt, args) => {
-        // Assume decorators is the second argument provided to the
-        // linkCommand.execute() call.
-        if (!(typeof args[decoratorsArgIndex] === 'object')) {
-          // This is either an object or null because decorators are optional.
-          args[decoratorsArgIndex] = values;
-          return;
-        }
-        // An object exists, so we need to merge the values.
-        Object.assign(args[decoratorsArgIndex], values);
-      }, { priority: 'highest' });
-    }, { priority: 'high' });
+      },
+      { priority: 'high' },
+    );
   }
 
   /**
@@ -648,8 +647,8 @@ export default class HelfiLinkUi extends Plugin {
       return;
     }
 
-    const submitRow = urlInputView.children.find(view =>
-      view.element?.classList.contains('ck-form__row_with-submit')
+    const submitRow = urlInputView.children.find((view) =>
+      view.element?.classList.contains('ck-form__row_with-submit'),
     );
 
     if (!submitRow) {
@@ -681,9 +680,7 @@ export default class HelfiLinkUi extends Plugin {
     } = this.linkFormView;
 
     // Resolve actual views by type or element match.
-    const headerView = children.find(view =>
-      view.template?.attributes?.class?.includes('ck-form__header')
-    );
+    const headerView = children.find((view) => view.template?.attributes?.class?.includes('ck-form__header'));
 
     // Add custom classes to link plugin elements.
     const newClasses = [
@@ -709,17 +706,16 @@ export default class HelfiLinkUi extends Plugin {
 
     // Clear and re-add in correct order
     children.clear();
-    ordered.forEach(view => {
+    ordered.forEach((view) => {
       children.add(view);
     });
 
     // Re-add anything that wasn’t explicitly reordered
     const movedViews = new Set(ordered);
     children._items
-      .filter(view => !movedViews.has(view))
-      .forEach(view => {
+      .filter((view) => !movedViews.has(view))
+      .forEach((view) => {
         children.add(view);
       });
   }
-
 }

@@ -22,59 +22,65 @@ export default class HelfiTable extends Plugin {
 
     // Override ckeditor5-table downcast converter for figure element.
     // The only difference of is the `tabindex` attribute.
-    const downcastTable = (options = {}) => (table, { writer }) => {
-      const headingRows = table.getAttribute('headingRows') || 0;
-      const tableSections = [];
+    const downcastTable =
+      (options = {}) =>
+      (table, { writer }) => {
+        const headingRows = table.getAttribute('headingRows') || 0;
+        const tableSections = [];
 
-      // Table head slot.
-      if (headingRows > 0) {
-        tableSections.push(
-          writer.createContainerElement('thead', null,
-            writer.createSlot(element => element.is('element', 'tableRow') && element.index < headingRows)
-          )
-        );
-      }
+        // Table head slot.
+        if (headingRows > 0) {
+          tableSections.push(
+            writer.createContainerElement(
+              'thead',
+              null,
+              writer.createSlot((element) => element.is('element', 'tableRow') && element.index < headingRows),
+            ),
+          );
+        }
 
-      // Table body slot.
-      if (headingRows < tableUtils.getRows(table)) {
-        tableSections.push(
-          writer.createContainerElement('tbody', null,
-            writer.createSlot(element => element.is('element', 'tableRow') && element.index >= headingRows)
-          )
-        );
-      }
+        // Table body slot.
+        if (headingRows < tableUtils.getRows(table)) {
+          tableSections.push(
+            writer.createContainerElement(
+              'tbody',
+              null,
+              writer.createSlot((element) => element.is('element', 'tableRow') && element.index >= headingRows),
+            ),
+          );
+        }
 
-      // Figure element.
-      const figureElement = writer.createContainerElement('figure', { class: 'table', 'tabindex': 0  }, [
-        // Table with proper sections (thead, tbody).
-        writer.createContainerElement('table', null, tableSections),
+        // Figure element.
+        const figureElement = writer.createContainerElement('figure', { class: 'table', tabindex: 0 }, [
+          // Table with proper sections (thead, tbody).
+          writer.createContainerElement('table', null, tableSections),
 
-        // Slot for the rest (for example caption).
-        writer.createSlot(element => !element.is('element', 'tableRow'))
-      ]);
+          // Slot for the rest (for example caption).
+          writer.createSlot((element) => !element.is('element', 'tableRow')),
+        ]);
 
-      const toTableWidget = (viewElement) => {
-        writer.setCustomProperty('table', true, viewElement);
-        return toWidget(viewElement, writer, { hasSelectionHandle: true });
+        const toTableWidget = (viewElement) => {
+          writer.setCustomProperty('table', true, viewElement);
+          return toWidget(viewElement, writer, { hasSelectionHandle: true });
+        };
+        return options.asWidget ? toTableWidget(figureElement) : figureElement;
       };
-      return options.asWidget ? toTableWidget(figureElement) : figureElement;
-    };
 
     conversion.for('editingDowncast').elementToStructure({
       model: {
         name: 'table',
-        attributes: [ 'headingRows' ]
+        attributes: ['headingRows'],
       },
       view: downcastTable({ asWidget: true }),
-      converterPriority: 'high'
+      converterPriority: 'high',
     });
     conversion.for('dataDowncast').elementToStructure({
       model: {
         name: 'table',
-        attributes: [ 'headingRows' ]
+        attributes: ['headingRows'],
       },
       view: downcastTable(),
-      converterPriority: 'high'
+      converterPriority: 'high',
     });
   }
 }

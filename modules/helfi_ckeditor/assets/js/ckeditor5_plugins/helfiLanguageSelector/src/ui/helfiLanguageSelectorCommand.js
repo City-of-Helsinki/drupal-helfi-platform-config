@@ -6,7 +6,6 @@ import { Command } from 'ckeditor5/src/core';
 import { stringifyLanguageAttribute } from '../utils/utils';
 
 export default class HelfiLanguageSelectorCommand extends Command {
-
   /**
    * Executes the command. Applies the attribute to the selection or removes it from the selection.
    *
@@ -22,7 +21,7 @@ export default class HelfiLanguageSelectorCommand extends Command {
     const { selection } = doc;
     const value = languageCode ? stringifyLanguageAttribute(languageCode, textDirection) : false;
 
-    model.change(writer => {
+    model.change((writer) => {
       const firstPosition = selection.getFirstPosition();
       const node = firstPosition.textNode || firstPosition.nodeBefore;
 
@@ -40,7 +39,7 @@ export default class HelfiLanguageSelectorCommand extends Command {
           // Remove the helfiLanguageSelector attributes from current selection.
           writer.removeSelectionAttribute('helfiLanguageSelector');
         }
-      // When there is a selection range selected.
+        // When there is a selection range selected.
       } else {
         const ranges = model.schema.getValidRanges(selection.getRanges(), 'helfiLanguageSelector');
         let range = ranges.next();
