@@ -5,7 +5,7 @@ import { styles, builds } from '@ckeditor/ckeditor5-dev-utils';
 import TerserPlugin from 'terser-webpack-plugin';
 import FriendlyErrorsWebpackPlugin from '@nuxt/friendly-errors-webpack-plugin';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
-import glob from 'glob';
+import { glob } from 'glob';
 import { fileURLToPath } from 'url';
 
 // Convert `import.meta.url` to `__dirname` equivalent
@@ -82,9 +82,10 @@ getDirectories('./assets/js/ckeditor5_plugins').forEach((dir) => {
 });
 
 // Handle non-CKE5 plugin entry points
-const NonCKEPluginEntries = () => {
+const NonCKEPluginEntries = async () => {
   let entries = {};
-  glob.sync('./assets/js/*.js', { ignore: ['./assets/**/*.min.*'] }).forEach((item) => {
+  const jsFiles = await glob('./assets/js/*.js', {ignore: ['./assets/**/*.min.*']});
+  jsFiles.forEach((item) => {
     entries[path.parse(item).name] = item;
   });
   return entries;
