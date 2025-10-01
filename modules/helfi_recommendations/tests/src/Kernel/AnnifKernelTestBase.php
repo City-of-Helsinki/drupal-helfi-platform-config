@@ -24,6 +24,8 @@ abstract class AnnifKernelTestBase extends EntityKernelTestBase {
     'language',
     'helfi_api_base',
     'helfi_recommendations',
+    'helfi_platform_config',
+    'config_rewrite',
     'search_api',
     'elasticsearch_connector',
   ];

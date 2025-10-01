@@ -7,7 +7,6 @@ dependencies:
     - paragraphs.paragraphs_type.chart
   module:
     - text
-    - allowed_formats
 id: paragraph.chart.field_chart_description
 field_name: field_chart_description
 entity_type: paragraph

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_recommendations\Unit\TextConverter;
+namespace Drupal\Tests\helfi_platform_config\Unit\TextConverter;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\helfi_recommendations\TextConverter\TextConverterInterface;
-use Drupal\helfi_recommendations\TextConverter\TextConverterManager;
+use Drupal\helfi_platform_config\TextConverter\TextConverterInterface;
+use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

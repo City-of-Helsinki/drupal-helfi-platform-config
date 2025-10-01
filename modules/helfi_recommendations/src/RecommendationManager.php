@@ -61,7 +61,8 @@ class RecommendationManager implements RecommendationManagerInterface {
     private readonly LoggerInterface $logger,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
-    #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
+    #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
+    private readonly Client $elasticClient,
     private readonly CacheTagInvalidatorInterface $cacheTagInvalidator,
     private readonly StateInterface $state,
     TranslationInterface $stringTranslation,

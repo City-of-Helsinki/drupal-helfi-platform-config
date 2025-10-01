@@ -30,6 +30,7 @@ class TopicSuggestionsMetaTagTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'helfi_user_roles',
     'helfi_recommendations',
   ];
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations\Client;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\helfi_recommendations\TextConverter\TextConverterManager;
+use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
@@ -29,7 +29,7 @@ final class ApiClient {
    *
    * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
-   * @param \Drupal\helfi_recommendations\TextConverter\TextConverterManager $textConverter
+   * @param \Drupal\helfi_platform_config\TextConverter\TextConverterManager $textConverter
    *   The text converter.
    */
   public function __construct(

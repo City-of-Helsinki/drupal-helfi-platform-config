@@ -42,7 +42,7 @@ abstract class ElasticExternalEntityBase extends RestClient {
     $plugin_definition,
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->client = $container->get('helfi_paragraphs_news_list.elastic_client');
+    $instance->client = $container->get('helfi_platform_config.etusivu_elastic_client');
 
     return $instance;
   }

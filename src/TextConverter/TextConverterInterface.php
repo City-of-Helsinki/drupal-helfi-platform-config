@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_recommendations\TextConverter;
+namespace Drupal\helfi_platform_config\TextConverter;
 
 use Drupal\Core\Entity\EntityInterface;
 

@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for the helfi_search module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_schema().
+ */
+function helfi_search_schema(): array {
+  $schema = [];
+
+  $schema['helfi_search_token_usage'] = [
+    'description' => 'Tracks token usage for OpenAI models.',
+    'fields' => [
+      'model_name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => 'The model name.',
+      ],
+      'total_tokens' => [
+        'type' => 'int',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Total tokens consumed by this model.',
+      ],
+    ],
+    'primary key' => ['model_name'],
+  ];
+
+  return $schema;
+}

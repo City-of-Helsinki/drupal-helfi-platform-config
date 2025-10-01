@@ -1,6 +1,6 @@
 name: 'HELfi Etusivu Entities'
 type: module
-core_version_requirement: ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - external_entities:external_entities
   - publication_date:publication_date

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_recommendations\TextConverter;
+namespace Drupal\helfi_platform_config\TextConverter;
 
 use Drupal\Component\Render\MarkupInterface;
 use Masterminds\HTML5;
@@ -19,12 +19,6 @@ final class Document {
    */
   private ?\DOMDocument $document = NULL;
 
-  /**
-   * Constructs a new instance.
-   *
-   * @param \Drupal\Component\Render\MarkupInterface $markup
-   *   The markup.
-   */
   public function __construct(private readonly MarkupInterface $markup) {
   }
 

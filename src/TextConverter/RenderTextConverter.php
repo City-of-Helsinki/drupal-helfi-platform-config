@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_recommendations\TextConverter;
+namespace Drupal\helfi_platform_config\TextConverter;
 
 use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -15,20 +15,8 @@ use Drupal\Core\Render\RendererInterface;
  */
 final class RenderTextConverter implements TextConverterInterface {
 
-  public const TEXT_CONVERTER_VIEW_MODE = 'text_converter';
+  public const string TEXT_CONVERTER_VIEW_MODE = 'text_converter';
 
-  /**
-   * Constructs a new instance.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityDisplayRepositoryInterface $displayRepository
-   *   The entity display repository.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
-   *   The module handler.
-   */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EntityDisplayRepositoryInterface $displayRepository,
