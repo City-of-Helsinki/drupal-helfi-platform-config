@@ -80,6 +80,7 @@
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/helfi_media_map": "*",
         "drupal/default_content": ">2.0.0-alpha2",
+        "drupal/external_entity": "<3.0.0-beta6",
         "drush/drush": "<12"
     },
     "extra": {

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_etusivu_entities\Unit;
+namespace Drupal\Tests\helfi_etusivu_entities\Kernel\Plugin\Block;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
@@ -16,42 +15,20 @@ use Drupal\node\NodeInterface;
  *
  * @group helfi_platform_config
  */
-class AnnouncementsBlockTest extends EntityKernelTestBase {
+class AnnouncementsBlockTest extends BlockTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_api_base',
-    'helfi_platform_config',
-    'node',
-    'link',
-    'language',
-    'allowed_formats',
-    'select2',
-    'content_translation',
-    'text',
-    'options',
-    'menu_ui',
-    'scheduler',
-    'config_rewrite',
     'helfi_node_announcement',
-    'external_entities',
-    'helfi_etusivu_entities',
   ];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
-    parent::setUp();
-
-    $this->installEntitySchema('node');
-    $this->installConfig([
-      'node',
-      'helfi_node_announcement',
-      'helfi_etusivu_entities',
-    ]);
+  protected function setUp(array $modules = []): void {
+    parent::setUp(['helfi_node_announcement']);
   }
 
   /**
