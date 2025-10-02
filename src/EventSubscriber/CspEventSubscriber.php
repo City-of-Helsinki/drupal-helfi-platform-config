@@ -85,48 +85,32 @@ class CspEventSubscriber implements EventSubscriberInterface {
     ]);
 
     // Block 'ibm_chat_app'.
-    $policy->fallbackAwareAppendIfEnabled('connect-src', [
+    $ibm_chat_app_common_domains = [
       'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
       'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-    ]);
-    $policy->fallbackAwareAppendIfEnabled('font-src', [
-      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
-      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-    ]);
+    ];
+    $policy->fallbackAwareAppendIfEnabled('connect-src', $ibm_chat_app_common_domains);
+    $policy->fallbackAwareAppendIfEnabled('font-src', $ibm_chat_app_common_domains);
     $policy->fallbackAwareAppendIfEnabled('frame-src', [
-      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
-      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
+      ...$ibm_chat_app_common_domains,
       'https://coh-chat-app-ibm.eu-de.mybluemix.net',
       'https://coh-chat-app-prod-ibm.eu-de.mybluemix.net',
       'https://coh-chat-app-test.eu-de.mybluemix.net',
       'https://coh-chat-app-dev.eu-de.mybluemix.net',
       'https://coh-chat-app-prod.eu-de.mybluemix.net',
     ]);
-    $policy->fallbackAwareAppendIfEnabled('img-src', [
-      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
-      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-    ]);
-    $policy->fallbackAwareAppendIfEnabled('script-src', [
-      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
-      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-    ]);
-    $policy->fallbackAwareAppendIfEnabled('style-src', [
-      'https://coh-chat-app-prod.ow6i4n9pdzm.eu-de.codeengine.appdomain.cloud',
-      'https://coh-chat-app-test.mo1wrhhyog0.eu-de.codeengine.appdomain.cloud',
-    ]);
+    $policy->fallbackAwareAppendIfEnabled('img-src', $ibm_chat_app_common_domains);
+    $policy->fallbackAwareAppendIfEnabled('script-src', $ibm_chat_app_common_domains);
+    $policy->fallbackAwareAppendIfEnabled('style-src', $ibm_chat_app_common_domains);
 
     // Block 'react_and_share'.
-    $policy->fallbackAwareAppendIfEnabled('connect-src', [
+    $react_and_share_common_domains = [
       'https://*.reactandshare.com',
       'https://*.askem.com',
-    ]);
-    $policy->fallbackAwareAppendIfEnabled('img-src', [
-      'https://*.reactandshare.com',
-    ]);
-    $policy->fallbackAwareAppendIfEnabled('script-src', [
-      'https://*.reactandshare.com',
-      'https://*.askem.com',
-    ]);
+    ];
+    $policy->fallbackAwareAppendIfEnabled('connect-src', $react_and_share_common_domains);
+    $policy->fallbackAwareAppendIfEnabled('img-src', $react_and_share_common_domains);
+    $policy->fallbackAwareAppendIfEnabled('script-src', $react_and_share_common_domains);
 
     // Block 'telia_ace_widget'.
     $policy->fallbackAwareAppendIfEnabled('connect-src', [
