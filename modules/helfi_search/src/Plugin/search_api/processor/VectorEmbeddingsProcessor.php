@@ -6,6 +6,7 @@ namespace Drupal\helfi_search\Plugin\search_api\processor;
 
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\MissingConfigurationException;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
@@ -103,7 +104,13 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
       }
     }
 
-    $results = $this->embeddingModel->batchGetEmbedding($textConversion);
+    try {
+      $results = $this->embeddingModel->batchGetEmbedding($textConversion);
+    }
+    catch (MissingConfigurationException) {
+      // Skips all items.
+      $results = [];
+    }
 
     foreach ($results as $key => $vector) {
       if (!$item = $items[$key]) {

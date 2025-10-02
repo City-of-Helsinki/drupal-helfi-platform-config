@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\OpenAI;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\MissingConfigurationException;
 use Drupal\helfi_search\OpenAI\DTO\Response;
 use Drupal\helfi_search\TokenUsageTracker;
 use GuzzleHttp\ClientInterface;
@@ -22,6 +24,11 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
    * API version.
    */
   const string API_VERSION = '2024-10-21';
+
+  /**
+   * Max input length.
+   */
+  const int MAX_INPUT_LENGTH = 8000;
 
   public function __construct(
     private readonly ClientInterface $client,
@@ -42,8 +49,16 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     $model = $config->get('openai_model');
 
     if (empty($apiKey) || empty($baseUrl) || empty($model)) {
-      throw new EmbeddingsModelException('OpenAI API key not configured');
+      throw new MissingConfigurationException('OpenAI API key not configured');
     }
+
+    if (!is_array($input)) {
+      $input = [$input];
+    }
+
+    // Truncate long strings.
+    // @todo we should experiment with chunking.
+    $input = array_map(static fn ($item) => Unicode::truncate($item, self::MAX_INPUT_LENGTH, TRUE), $input);
 
     try {
       $response = $this->client->request('POST', $baseUrl . '/embeddings', [
