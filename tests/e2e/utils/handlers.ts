@@ -1,5 +1,5 @@
-import { Page } from "@playwright/test";
-import { logger } from "./logger";
+import type { Page } from '@playwright/test';
+import { logger } from './logger';
 
 /**
  * Handles cookie consent banner acceptance.
@@ -14,7 +14,7 @@ const cookieHandler = async (page: Page) => {
     // Wait for the cookie banner to appear in the DOM.
     await page.waitForSelector('.hds-cc--banner', {
       state: 'attached',
-      timeout: 5000
+      timeout: 5000,
     });
 
     // Locate and wait for the accept all cookies button.
@@ -25,7 +25,7 @@ const cookieHandler = async (page: Page) => {
     await agreeButton.click();
   } catch (error) {
     // Log if no cookie banner is found.
-    logger('No cookie banner found.');
+    logger(`No cookie banner found: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 
@@ -38,20 +38,18 @@ const cookieHandler = async (page: Page) => {
 const dialogHandler = async (page: Page) => {
   try {
     // Set 'helfi_no_survey' cookie to disable survey dialog
-    await page.context().addCookies([{
-      name: 'helfi_no_survey',
-      value: '1',
-      domain: (new URL(page.url())).hostname,
-      path: '/',
-      httpOnly: false
-    }]);
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    logger(`Failed to set survey cookie: ${errorMessage}`);
+    await page.context().addCookies([
+      {
+        name: 'helfi_no_survey',
+        value: '1',
+        domain: new URL(page.url()).hostname,
+        path: '/',
+        httpOnly: false,
+      },
+    ]);
+  } catch (error) {
+    logger(`Failed to set survey cookie: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 };
 
-export {
-  cookieHandler,
-  dialogHandler,
-};
+export { cookieHandler, dialogHandler };

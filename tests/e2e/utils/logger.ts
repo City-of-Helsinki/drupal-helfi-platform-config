@@ -10,7 +10,7 @@
  * // With additional parameters
  * logger('User logged in:', { id: 123, name: 'Test User' });
  */
-const logger = (message: string, ...parameters: any[]): void => {
+const logger = (message: string, ...parameters: unknown[]): void => {
   // Only log messages if debug mode is explicitly enabled.
   if (process.env.APP_DEBUG === 'TRUE') {
     // Handle both simple messages and messages with additional parameters.
@@ -22,6 +22,4 @@ const logger = (message: string, ...parameters: any[]): void => {
   }
 };
 
-export {
-  logger
-};
+export { logger };

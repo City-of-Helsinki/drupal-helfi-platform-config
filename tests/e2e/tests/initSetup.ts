@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import {cookieHandler, dialogHandler} from '../utils/handlers';
+import { cookieHandler, dialogHandler } from '../utils/handlers';
 
 test('Smoke test', async ({ page }) => {
   await page.goto('/fi/');

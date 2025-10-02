@@ -1,5 +1,5 @@
-import path from 'node:path';
 import os from 'node:os';
+import path from 'node:path';
 
 /**
  * Gets the filesystem path for storing Playwright's authentication state.
@@ -19,9 +19,6 @@ import os from 'node:os';
  *   Typical output: '/tmp/storageState.json' or similar
  */
 export const getStorageStatePath = (): string => {
-  const dir = process.env.STORAGE_STATE_DIR ||
-              process.env.XDG_RUNTIME_DIR ||
-              process.env.TMPDIR ||
-              os.tmpdir();
+  const dir = process.env.STORAGE_STATE_DIR || process.env.XDG_RUNTIME_DIR || process.env.TMPDIR || os.tmpdir();
   return path.resolve(dir, 'storageState.json');
 };

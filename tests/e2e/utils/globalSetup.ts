@@ -1,8 +1,8 @@
-import { FullConfig, chromium } from '@playwright/test';
+import fs from 'node:fs';
+import path from 'node:path';
+import { chromium, type FullConfig } from '@playwright/test';
 import { cookieHandler, dialogHandler } from './handlers';
-import { getStorageStatePath } from "./storagePath";
-import fs from 'fs';
-import path from 'path';
+import { getStorageStatePath } from './storagePath';
 
 /**
  * Global setup function that runs once before all tests.
