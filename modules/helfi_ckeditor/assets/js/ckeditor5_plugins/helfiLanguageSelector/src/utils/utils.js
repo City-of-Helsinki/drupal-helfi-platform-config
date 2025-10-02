@@ -13,7 +13,7 @@ import { getLanguageDirection } from 'ckeditor5/src/utils';
  */
 export function stringifyLanguageAttribute(languageCode, textDirection) {
   textDirection = textDirection || getLanguageDirection(languageCode);
-  return `${ languageCode }:${ textDirection }`;
+  return `${languageCode}:${textDirection}`;
 }
 
 /**
@@ -26,7 +26,7 @@ export function stringifyLanguageAttribute(languageCode, textDirection) {
  * * textDirection - The language text direction.
  */
 export function parseLanguageAttribute(str) {
-  const [ languageCode, textDirection ] = str.split(':');
+  const [languageCode, textDirection] = str.split(':');
   return { languageCode, textDirection };
 }
 

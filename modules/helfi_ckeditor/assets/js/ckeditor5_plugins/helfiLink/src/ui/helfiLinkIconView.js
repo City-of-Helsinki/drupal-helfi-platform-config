@@ -4,7 +4,6 @@ import HelfiLinkBaseView from './helfiLinkBaseView';
  * The HelfiLink details view class.
  */
 export default class HelfiLinkIconView extends HelfiLinkBaseView {
-
   /**
    * Render function for the Tom Select library.
    *
@@ -14,7 +13,6 @@ export default class HelfiLinkIconView extends HelfiLinkBaseView {
   renderTomSelect(element) {
     // Render the <select> element.
     if (!this.tomSelect && element) {
-
       const defaultConfig = super.selectListDefaultOptions();
 
       // The template for the Tom Select options and selected items.
@@ -32,13 +30,13 @@ export default class HelfiLinkIconView extends HelfiLinkBaseView {
           dropdown_input: {},
           remove_button: {
             title: 'Remove this item',
-          }
+          },
         },
         valueField: 'icon',
         searchField: ['name'],
-        options: Object.keys(this.loadedIcons).map(icon => ({
+        options: Object.keys(this.loadedIcons).map((icon) => ({
           icon,
-          name: this.loadedIcons[icon]
+          name: this.loadedIcons[icon],
         })),
         // Custom rendering functions for options and items
         render: {
@@ -51,5 +49,4 @@ export default class HelfiLinkIconView extends HelfiLinkBaseView {
       this.tomSelect = new TomSelect(this.element, settings);
     }
   }
-
 }

@@ -5,7 +5,6 @@ import { FocusTracker } from 'ckeditor5/src/utils';
  * The textareaView class.
  */
 export default class TextareaView extends View {
-
   /**
    * @inheritDoc
    */
@@ -29,9 +28,7 @@ export default class TextareaView extends View {
     this.setTemplate({
       tag: 'div',
       attributes: {
-        class: [
-          'ck-helfi-textarea',
-        ],
+        class: ['ck-helfi-textarea'],
       },
       children: this.children,
     });
@@ -93,8 +90,8 @@ export default class TextareaView extends View {
             this.fire('input', ...args);
             this._updateValue();
           }),
-          change: bind.to(this._updateValue.bind(this))
-        }
+          change: bind.to(this._updateValue.bind(this)),
+        },
       });
 
       textareaView.bind('isFocused').to(labeledFieldView, 'isFocused');
@@ -120,7 +117,7 @@ export default class TextareaView extends View {
    * @param {any} value The value to be added to the textarea element.
    */
   _setDomElementValue(value) {
-    this.element.value = (!value && value !== 0) ? '' : value;
+    this.element.value = !value && value !== 0 ? '' : value;
     this.textArea.fieldView.element.value = this.element.value;
   }
 
@@ -128,9 +125,7 @@ export default class TextareaView extends View {
    * Updates the isEmpty property value on demand.
    */
   _updateValue() {
-    this.value = this.textArea.fieldView.element.value
-      ? this.textArea.fieldView.element.value
-      : false;
+    this.value = this.textArea.fieldView.element.value ? this.textArea.fieldView.element.value : false;
     this.isEmpty = !this.value;
   }
 
@@ -143,5 +138,4 @@ export default class TextareaView extends View {
     this.isEmpty = !value;
     this._setDomElementValue(value);
   }
-
 }

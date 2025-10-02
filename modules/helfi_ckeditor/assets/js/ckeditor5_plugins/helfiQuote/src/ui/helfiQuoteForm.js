@@ -1,19 +1,12 @@
-import {
-  ButtonView,
-  createLabeledInputText,
-  LabeledFieldView,
-  submitHandler,
-  View
-} from 'ckeditor5/src/ui';
+import { ButtonView, createLabeledInputText, LabeledFieldView, submitHandler, View } from 'ckeditor5/src/ui';
 import { KeystrokeHandler } from 'ckeditor5/src/utils';
-import { IconCheck, IconCancel  } from '@ckeditor/ckeditor5-icons';
+import { IconCheck, IconCancel } from '@ckeditor/ckeditor5-icons';
 import TextareaView from './helfiTextareaView';
 
 /**
  * The textareaView class.
  */
 export default class HelfiQuoteForm extends View {
-
   /**
    * @inheritDoc
    */
@@ -29,7 +22,7 @@ export default class HelfiQuoteForm extends View {
     this.saveButtonView = this._createButton(
       Drupal.t('Save', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
       IconCheck,
-      'ck-button-save'
+      'ck-button-save',
     );
     this.saveButtonView.type = 'submit';
 
@@ -37,7 +30,7 @@ export default class HelfiQuoteForm extends View {
       Drupal.t('Cancel', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
       IconCancel,
       'ck-button-cancel',
-      'cancel'
+      'cancel',
     );
 
     this.keystrokes = new KeystrokeHandler();
@@ -47,13 +40,13 @@ export default class HelfiQuoteForm extends View {
       tag: 'form',
 
       attributes: {
-        class: [ 'ck', 'ck-helfi-quote-form' ],
+        class: ['ck', 'ck-helfi-quote-form'],
 
         // https://github.com/ckeditor/ckeditor5-link/issues/90
-        tabindex: '-1'
+        tabindex: '-1',
       },
 
-      children: this.children
+      children: this.children,
     });
   }
 
@@ -64,7 +57,7 @@ export default class HelfiQuoteForm extends View {
     super.render();
 
     submitHandler({
-      view: this
+      view: this,
     });
 
     this.children.add(this.textAreaView);
@@ -116,13 +109,13 @@ export default class HelfiQuoteForm extends View {
     button.set({
       label,
       icon,
-      tooltip: true
+      tooltip: true,
     });
 
     button.extendTemplate({
       attributes: {
-        class: className
-      }
+        class: className,
+      },
     });
 
     if (eventName) {
@@ -131,6 +124,4 @@ export default class HelfiQuoteForm extends View {
 
     return button;
   }
-
-
 }

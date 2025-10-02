@@ -19,9 +19,6 @@ export default class HelfiQuote extends Plugin {
   // extend `Plugin`, but these are not seen as individual plugins by CKEditor5.
   // CKEditor 5 will only discover the plugins explicitly exported in index.js.
   static get requires() {
-    return [
-      HelfiQuoteEditing,
-      HelfiQuoteUi
-    ];
+    return [HelfiQuoteEditing, HelfiQuoteUi];
   }
 }

@@ -21,5 +21,4 @@ export default class HelfiLink extends Plugin {
   static get requires() {
     return [HelfiLinkEditing, HelfiLinkUi];
   }
-
 }

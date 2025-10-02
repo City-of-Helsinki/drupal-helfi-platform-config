@@ -18,10 +18,6 @@ export default class HelfiLanguageSelector extends Plugin {
   // extend `Plugin`, but these are not seen as individual plugins by CKEditor5.
   // CKEditor 5 will only discover the plugins explicitly exported in index.js.
   static get requires() {
-    return [
-      HelfiLanguageSelectorEditing,
-      HelfiLanguageSelectorUi
-    ];
+    return [HelfiLanguageSelectorEditing, HelfiLanguageSelectorUi];
   }
-
 }

@@ -16,7 +16,7 @@ import HelfiLanguageSelectorCommand from './ui/helfiLanguageSelectorCommand';
  */
 export default class HelfiLanguageSelectorEditing extends Plugin {
   static get requires() {
-    return [ Widget ];
+    return [Widget];
   }
 
   /**
@@ -43,7 +43,7 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
     // Add helfiLanguageSelector model as an allowed attribute for '$text' nodes.
     editor.model.schema.extend('$text', { allowAttributes: 'helfiLanguageSelector' });
     editor.model.schema.setAttributeProperties('helfiLanguageSelector', {
-      copyOnEnter: true
+      copyOnEnter: true,
     });
 
     // Define 'upcast' converter for helfiLanguageSelector lang attribute.
@@ -60,15 +60,14 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
             return;
           }
 
-
           const textDirection = viewElement.getAttribute('dir') ?? '';
           return stringifyLanguageAttribute(languageCode.toLowerCase(), textDirection.toLowerCase());
-        }
+        },
       },
       view: {
         name: 'span',
-        attributes: { lang: /[\s\S]+/ }
-      }
+        attributes: { lang: /[\s\S]+/ },
+      },
     });
 
     // Define 'upcast' converter for helfiLanguageSelector dir attribute.
@@ -85,19 +84,18 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
             return;
           }
           return viewElement.getAttribute('dir') ?? '';
-        }
+        },
       },
       view: {
         name: 'span',
-        attributes: { dir: /[\s\S]+/ }
-      }
+        attributes: { dir: /[\s\S]+/ },
+      },
     });
 
     // Define 'downcast' converter for helfiLanguageSelector.
     conversion.for('downcast').attributeToElement({
       model: 'helfiLanguageSelector',
       view: (attributeValue, { writer }, data) => {
-
         if (!attributeValue) {
           return;
         }
@@ -110,17 +108,13 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
 
         return writer.createAttributeElement('span', {
           lang: languageCode,
-          dir: textDirection
+          dir: textDirection,
         });
-      }
+      },
     });
 
     // Add helfiLanguageSelectorCommand.
-    editor.commands.add(
-      'helfiLanguageSelectorCommand',
-      new HelfiLanguageSelectorCommand(editor),
-    );
-
+    editor.commands.add('helfiLanguageSelectorCommand', new HelfiLanguageSelectorCommand(editor));
   }
 
   /**
@@ -152,5 +146,4 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
 
     return languageCode;
   }
-
 }
