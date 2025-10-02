@@ -21,12 +21,15 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:headed:slow": "SLOWMO=true npx playwright test --headed",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json && biome check --fix utils/ tests/",
+    "lint:js": "biome lint --fix utils/ tests/",
+    "format:js": "biome format --fix utils/ tests/"
   },
   "directories": {
     "test": "tests"
   },
   "peerDependencies": {
+    "@biomejs/biome": "^2.2.4",
     "@dotenvx/dotenvx": "^1.15.0",
     "@playwright/test": "^1.55.1",
     "@types/node": "^24.5.2",
@@ -34,6 +37,7 @@
     "ts-node": "^10.9.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.2.4",
     "@dotenvx/dotenvx": "^1.15.0",
     "@playwright/test": "^1.55.1",
     "@types/node": "^24.5.2",
