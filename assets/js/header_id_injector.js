@@ -1,10 +1,13 @@
-((Drupal) => {
+((Drupal, once, drupalSettings) => {
   Drupal.HeaderIdInjector = {
     // List of reserved ids.
     reservedIds: [],
 
     // List of anchors.
     anchors: [],
+
+    // Injected headings for the use of TOC.
+    injectedHeadings: [],
 
     // Exclude elements from the injector that are not content:
     // e.g. TOC, sidebar, cookie compliance banner etc.
@@ -116,5 +119,73 @@
       'z': '[źžżзζزဇზｚ]',
       'zh': '[жჟژ]',
     }),
+
+    injectIds: (content) => {
+      // Remove loading text and noscript element.
+      let name = content.textContent
+        .toLowerCase()
+        .trim();
+
+      // To ensure backwards compatibility, this is done only to "other" languages.
+      if (!Drupal.HeaderIdInjector.mainLanguages().includes(drupalSettings.path.currentLanguage)) {
+        Object.keys(Drupal.HeaderIdInjector.localeConversions()).forEach((swap) => {
+          name = name.replace(new RegExp(Drupal.HeaderIdInjector.localeConversions()[swap], 'g'), swap);
+        });
+      }
+      else {
+        name = name
+          .replace(/ä/gi, 'a')
+          .replace(/ö/gi, 'o')
+          .replace(/å/gi, 'a');
+      }
+
+      name = name
+        // Replace any remaining non-word character including whitespace with '-'.
+        // This leaves only characters matching [A-Za-z0-9-_] to the name.
+        .replace(/\W/g, '-')
+        // Use underscore at the end of the string: 'example-1' -> 'example_1'.
+        .replace(/-(\d+)$/g, '_$1');
+
+      let nodeName = content.nodeName.toLowerCase();
+      if (nodeName === 'button') {
+        nodeName = content.parentElement.nodeName.toLowerCase();
+      }
+
+      const anchorName = content.id
+        ? content.id
+        : Drupal.HeaderIdInjector.findAvailableId(name, 0);
+
+      Drupal.HeaderIdInjector.anchors.push(anchorName);
+
+      // Create anchor links.
+      content.setAttribute('id', anchorName);
+      content.setAttribute('tabindex', '-1');  // Set tabindex to -1 to avoid issues with screen readers.
+
+      return {
+        nodeName,
+        anchorName,
+      };
+    }
   };
-})(Drupal);
+
+  // Attach table of contents.
+  Drupal.behaviors.headerIdInjector = {
+    attach: function attach() {
+      const mainContent = document.querySelector('main.layout-main-wrapper');
+      const reservedElems = document.querySelectorAll('[id]');
+
+      reservedElems.forEach(function(elem) {
+        Drupal.HeaderIdInjector.reservedIds.push(elem.id);
+      });
+
+      once('header-id-injector', Drupal.HeaderIdInjector.titleComponents().join(','), mainContent)
+        .forEach((content) => {
+          const { nodeName, anchorName } = Drupal.HeaderIdInjector.injectIds(content);
+
+          Drupal.HeaderIdInjector.injectedHeadings.push({ nodeName, anchorName, content });
+        }
+      );
+    }
+  };
+
+})(Drupal, once, drupalSettings);

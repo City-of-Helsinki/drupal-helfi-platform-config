@@ -53,3 +53,7 @@ header_id_injector:
   js:
     dist/js/header_id_injector.min.js: { minified: true }
   version: 1.0.0
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once

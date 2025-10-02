@@ -113,25 +113,15 @@ function helfi_toc_apply_form_theme(array &$form) : void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function helfi_toc_preprocess_page(array &$variables) : void {
-  /** @var \Drupal\Core\Routing\AdminContext $admin_context */
-  $admin_context = \Drupal::service('router.admin_context');
-
-  // Attach header id injector JS to every non-admin page.
-  if (!$admin_context->isAdminRoute()) {
-    $variables['#attached']['library'][] = 'helfi_platform_config/header_id_injector';
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
 function helfi_toc_preprocess_field__toc_enabled(&$variables) : void {
   $entity = $variables['element']['#object'];
 
   if ($entity instanceof ContentEntityInterface) {
     $variables['toc_enabled'] = (bool) $entity->get('toc_enabled')->value;
     $variables['toc_title'] = t('On this page');
+  }
+
+  if ($entity->get('toc_enabled')->value === "1") {
     $variables['#attached']['library'][] = 'helfi_toc/table_of_contents';
   }
 }
