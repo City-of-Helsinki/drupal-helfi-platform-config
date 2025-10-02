@@ -207,10 +207,15 @@ class CspEventSubscriber implements EventSubscriberInterface {
     catch (\InvalidArgumentException) {
     }
     if ($current_site instanceof Project && $current_site->getName() !== Project::ETUSIVU) {
-      $environment = $this->environmentResolver->getEnvironment(
-        Project::ETUSIVU,
-        $this->environmentResolver->getActiveEnvironmentName()
-      );
+      $environment = NULL;
+      try {
+        $environment = $this->environmentResolver->getEnvironment(
+          Project::ETUSIVU,
+          $this->environmentResolver->getActiveEnvironmentName()
+        );
+      }
+      catch (\InvalidArgumentException) {
+      }
       if ($environment instanceof Environment && $environment->getEnvironment() === EnvironmentEnum::Local) {
         $policy->fallbackAwareAppendIfEnabled('script-src', $environment->getBaseUrl());
         $policy->fallbackAwareAppendIfEnabled('style-src', $environment->getBaseUrl());
