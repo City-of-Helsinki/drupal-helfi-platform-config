@@ -590,5 +590,6 @@ function helfi_platform_config_preprocess_page(array &$variables) : void {
   // Attach header id injector JS to every non-admin page.
   if (!$admin_context->isAdminRoute()) {
     $variables['#attached']['library'][] = 'helfi_platform_config/header_id_injector';
+    $variables['#attached']['library'][] = 'helfi_platform_config/header_anchor_buttons';
   }
 }

@@ -165,7 +165,7 @@
         nodeName,
         anchorName,
       };
-    }
+    },
   };
 
   // Attach table of contents.
@@ -181,7 +181,6 @@
       once('header-id-injector', Drupal.HeaderIdInjector.titleComponents().join(','), mainContent)
         .forEach((content) => {
           const { nodeName, anchorName } = Drupal.HeaderIdInjector.injectIds(content);
-
           Drupal.HeaderIdInjector.injectedHeadings.push({ nodeName, anchorName, content });
         }
       );

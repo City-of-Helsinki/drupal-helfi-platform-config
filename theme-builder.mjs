@@ -16,6 +16,7 @@ const reactApps = {
 const jsFiles = {
   autocomplete: 'assets/js/autocomplete.js',
   header_id_injector: 'assets/js/header_id_injector.js',
+  header_anchor_buttons: 'assets/js/header_anchor_buttons.js',
 };
 
 // SCSS files.

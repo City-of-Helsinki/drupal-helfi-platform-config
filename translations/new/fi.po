@@ -508,3 +508,15 @@ msgstr "Käytä nykyistä sijaintia"
 msgctxt "Location autocomplete"
 msgid "We couldn\'t retrieve your current location. Try entering an address."
 msgstr "Nykyisen sijainnin käyttö ei onnistunut. Kokeile kirjoittaa osoite."
+
+msgctxt "Anchor link"
+msgid "Copy link to header @name."
+msgstr "Kopio linkki otsikkoon @name."
+
+msgctxt "Anchor link"
+msgid "Link to header @name copied."
+msgstr "Linkki kopioitu otsikkoon @name."
+
+msgctxt "Anchor link"
+msgid "Failed to copy link header @name."
+msgstr "Linkin kopiointi otsikkoon @name epäonnistui."
