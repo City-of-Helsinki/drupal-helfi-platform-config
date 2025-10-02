@@ -1,8 +1,19 @@
 import { type APIRequestContext, expect, request as playwrightRequest } from '@playwright/test';
 
 /**
- * Create a new API context and make a request
- * to the JSON:API endpoint.
+ * Type definition for the JSON:API response structure
+ */
+export type JsonApiResponse<T> = {
+  data: T[];
+};
+
+/**
+ * Make a request to a Drupal JSON:API endpoint
+ * @template T - The type of the data items in the response
+ * @param baseURL - The base URL of the Drupal site
+ * @param endpoint - The JSON:API endpoint (e.g., '/jsonapi/node/article')
+ * @param params - Optional query parameters
+ * @returns A promise that resolves to the JSON:API response data
  */
 export async function fetchJsonApiRequest<T>(
   baseURL: string,
