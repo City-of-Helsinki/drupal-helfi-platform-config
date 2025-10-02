@@ -123,28 +123,6 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
   /**
    * {@inheritdoc}
    */
-  public function preSave(): void {
-    $entity = $this->entity;
-    assert($entity instanceof SuggestedTopicsInterface);
-
-    // Overwrite published status if parent entity is not published.
-    // Content recommendation should never give unpublished entities
-    // as a result.
-    $parent = $this->getEntity();
-    if ($parent instanceof EntityPublishedInterface && !$parent->isPublished()) {
-      $entity->setUnpublished();
-    }
-
-    parent::preSave();
-
-    if (!$this->entity->isNew()) {
-      $this->entity->save();
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function postSave($update) {
     // If the entity is new, set the parent entity data on the target entity.
     if (!$update) {

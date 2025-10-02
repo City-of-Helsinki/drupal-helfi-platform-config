@@ -48,10 +48,10 @@ class SuggestedTopicsReferenceKernelTest extends AnnifKernelTestBase {
       $field->published = TRUE;
       $this->assertTrue($entity->isPublished());
 
+      // Parent node status should not reflect to the referenced entity.
       $node->setUnpublished();
       $node->save();
-
-      $this->assertFalse(SuggestedTopics::load($entity->id())->isPublished());
+      $this->assertTrue(SuggestedTopics::load($entity->id())->isPublished());
     }
   }
 
