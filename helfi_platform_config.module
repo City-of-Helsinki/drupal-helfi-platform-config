@@ -587,9 +587,17 @@ function helfi_platform_config_preprocess_page(array &$variables) : void {
   /** @var \Drupal\Core\Routing\AdminContext $admin_context */
   $admin_context = \Drupal::service('router.admin_context');
 
-  // Attach header id injector JS to every non-admin page.
-  if (!$admin_context->isAdminRoute()) {
-    $variables['#attached']['library'][] = 'helfi_platform_config/header_id_injector';
+  // Don't add header id injector or anchor buttons to admin routes.
+  if ($admin_context->isAdminRoute()) {
+    return;
+  }
+
+  $variables['#attached']['library'][] = 'helfi_platform_config/header_id_injector';
+
+  // Add the header anchor buttons only to editors at this point before
+  // the feature has been thoroughly tested for accessibility.
+  $user = Drupal::currentUser();
+  if ($user->isAuthenticated() && $user->hasPermission('administer nodes')) {
     $variables['#attached']['library'][] = 'helfi_platform_config/header_anchor_buttons';
   }
 }
