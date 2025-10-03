@@ -1,3 +1,11 @@
+/**
+ * Header ID Injector
+ *
+ * This javascript injects unique ID-attributes to the assigned headings
+ * built from the header-elements text. This library should be active on
+ * all except admin routes.
+ */
+
 ((Drupal, once, drupalSettings) => {
   Drupal.HeaderIdInjector = {
     // List of reserved ids.

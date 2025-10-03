@@ -1,3 +1,11 @@
+/**
+ * Header anchor buttons
+ *
+ * Anchor buttons are small buttons next to selected headers that you can click
+ * and get an anchor link copied to your clipboard. The functionality depends on the
+ * header_id_injector.js.
+ */
+
 ((Drupal, once) => {
   Drupal.HeaderAnchorButtons = {
     rgbToHex: (rgbColor) => {

@@ -1,3 +1,10 @@
+/**
+ * Table of Contents
+ *
+ * Functionality that compiles dynamically a list of h2-level headers
+ * from the page that it is enabled to. Depends on the header_id_injector.js.
+ */
+
 ((Drupal, once) => {
   // Global table of contents object.
   Drupal.tableOfContents = {
