@@ -6,10 +6,10 @@ namespace Drupal\Tests\helfi_platform_config\Unit\Plugin\Block;
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\State\StateInterface;
-use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\helfi_platform_config\Plugin\Block\ReactAndShare;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\Tests\UnitTestCase;
