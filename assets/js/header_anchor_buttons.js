@@ -72,7 +72,7 @@
               { '@name': copiedAnchor },
               { context: 'Anchor link' }
             );
-            setTimeout(() => content.removeChild(liveRegion), 3000);
+            setTimeout(() => content.removeChild(liveRegion), 7000);
             setTimeout(() => anchorLinkButton.classList.remove('header-anchor-button--success'), 3000);
           })
           .catch(err => {
@@ -83,7 +83,7 @@
               { '@name': copiedAnchor },
               { context: 'Anchor link' }
             );
-            setTimeout(() => content.removeChild(liveRegion), 3000);
+            setTimeout(() => content.removeChild(liveRegion), 7000);
             setTimeout(() => anchorLinkButton.classList.remove('header-anchor-button--error'), 3000);
             console.error('Failed to copy:', err);
           });
