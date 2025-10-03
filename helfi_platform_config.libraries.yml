@@ -48,3 +48,21 @@ location_autocomplete:
     - core/drupal
     - core/drupalSettings
     - core/once
+
+header_id_injector:
+  js:
+    dist/js/header_id_injector.min.js: { minified: true }
+  version: 1.0.0
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+header_anchor_buttons:
+  js:
+    dist/js/header_anchor_buttons.min.js: { minified: true }
+  version: 1.0.0
+  dependencies:
+    - helfi_platform_config/header_id_injector
+    - core/drupal
+    - core/once
