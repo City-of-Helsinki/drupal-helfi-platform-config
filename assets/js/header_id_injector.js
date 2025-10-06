@@ -176,7 +176,7 @@
     },
   };
 
-  // Attach table of contents.
+  // Attach header id injections.
   Drupal.behaviors.headerIdInjector = {
     attach: function attach() {
       const mainContent = document.querySelector('main.layout-main-wrapper');
