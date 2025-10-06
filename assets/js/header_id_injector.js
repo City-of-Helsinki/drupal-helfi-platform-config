@@ -176,22 +176,37 @@
     },
   };
 
-  // Attach header id injections.
+  // Heading ID injector.
   Drupal.behaviors.headerIdInjector = {
-    attach: function attach() {
-      const mainContent = document.querySelector('main.layout-main-wrapper');
-      const reservedElems = document.querySelectorAll('[id]');
+    attach: function attach(context) {
+      // Prevent running multiple times on the main document.
+      if (window.headerIdInjectorInitialized && context === document) {
+        return;
+      }
 
-      reservedElems.forEach(function(elem) {
+      // Find the main content wrapper element.
+      const mainContent = context.querySelector('main.layout-main-wrapper');
+
+      // If no main content exists, stop execution.
+      if (!mainContent) {
+        return;
+      }
+
+      // Collect all elements that already have an ID to avoid conflicts.
+      const reservedElems = context.querySelectorAll('[id]');
+      reservedElems.forEach((elem) => {
         Drupal.HeaderIdInjector.reservedIds.push(elem.id);
       });
 
+      // Inject IDs into headings and store info about each injected heading.
       once('header-id-injector', Drupal.HeaderIdInjector.titleComponents().join(','), mainContent)
         .forEach((content) => {
           const { nodeName, anchorName } = Drupal.HeaderIdInjector.injectIds(content);
           Drupal.HeaderIdInjector.injectedHeadings.push({ nodeName, anchorName, content });
-        }
-      );
+        });
+
+      // Mark as initialized so it won't re-run unnecessarily.
+      window.headerIdInjectorInitialized = true;
     }
   };
 
