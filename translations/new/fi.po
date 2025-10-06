@@ -510,13 +510,13 @@ msgid "We couldn\'t retrieve your current location. Try entering an address."
 msgstr "Nykyisen sijainnin käyttö ei onnistunut. Kokeile kirjoittaa osoite."
 
 msgctxt "Anchor link"
-msgid "Copy link to header @name."
+msgid "Copy link to heading @name."
 msgstr "Kopio linkki otsikkoon @name."
 
 msgctxt "Anchor link"
-msgid "Link to header @name copied."
+msgid "Link to heading @name copied."
 msgstr "Linkki kopioitu otsikkoon @name."
 
 msgctxt "Anchor link"
-msgid "Failed to copy link header @name."
+msgid "Failed to copy link heading @name."
 msgstr "Linkin kopiointi otsikkoon @name epäonnistui."

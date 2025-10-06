@@ -592,12 +592,12 @@ function helfi_platform_config_preprocess_page(array &$variables) : void {
     return;
   }
 
-  $variables['#attached']['library'][] = 'helfi_platform_config/header_id_injector';
+  $variables['#attached']['library'][] = 'helfi_platform_config/heading_id_injector';
 
   // Add the header anchor buttons only to editors at this point before
   // the feature has been thoroughly tested for accessibility.
   $user = Drupal::currentUser();
   if ($user->isAuthenticated() && $user->hasPermission('administer nodes')) {
-    $variables['#attached']['library'][] = 'helfi_platform_config/header_anchor_buttons';
+    $variables['#attached']['library'][] = 'helfi_platform_config/heading_anchor_buttons';
   }
 }

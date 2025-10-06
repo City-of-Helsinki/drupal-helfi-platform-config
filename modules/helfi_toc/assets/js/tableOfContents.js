@@ -1,8 +1,8 @@
 /**
  * Table of Contents
  *
- * Functionality that compiles dynamically a list of h2-level headers
- * from the page that it is enabled to. Depends on the header_id_injector.js.
+ * Functionality that compiles dynamically a list of h2-level headings
+ * from the page that it is enabled to. Depends on the headingIdInjector.js.
  */
 
 ((Drupal, once) => {
@@ -28,8 +28,8 @@
       const tableOfContentsList = document.querySelector('#helfi-toc-table-of-contents-list > ul');
 
       // Craft table of contents.
-      if (tableOfContentsList && Drupal.HeaderIdInjector.injectedHeadings) {
-        Drupal.HeaderIdInjector.injectedHeadings.forEach(({ nodeName, anchorName, content }) => {
+      if (tableOfContentsList && Drupal.HeadingIdInjector.injectedHeadings) {
+        Drupal.HeadingIdInjector.injectedHeadings.forEach(({ nodeName, anchorName, content }) => {
           once('toc-builder', content).forEach(() => {
             if (nodeName === 'h2') {
               const listItem = document.createElement('li');

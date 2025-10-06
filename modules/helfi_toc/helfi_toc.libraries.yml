@@ -5,4 +5,4 @@ table_of_contents:
   dependencies:
     - core/drupal
     - core/once
-    - helfi_platform_config/header_id_injector
+    - helfi_platform_config/heading_id_injector

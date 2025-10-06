@@ -1,13 +1,13 @@
 /**
- * Header ID Injector
+ * Heading ID Injector
  *
  * This javascript injects unique ID-attributes to the assigned headings
- * built from the header-elements text. This library should be active on
+ * built from the heading-elements text. This library should be active on
  * all except admin routes.
  */
 
 ((Drupal, once, drupalSettings) => {
-  Drupal.HeaderIdInjector = {
+  Drupal.HeadingIdInjector = {
     // List of reserved ids.
     reservedIds: [],
 
@@ -23,7 +23,7 @@
       ':not(.hide-from-table-of-contents *)',
 
     // List of heading tags with exclusions.
-    titleComponents: (exclusions = Drupal.HeaderIdInjector.exclusions()) => [
+    titleComponents: (exclusions = Drupal.HeadingIdInjector.exclusions()) => [
       `h2${exclusions}`,
       `h3${exclusions}`,
       `h4${exclusions}`,
@@ -40,16 +40,16 @@
         newName += `-${count}`;
       }
 
-      if (Drupal.HeaderIdInjector.reservedIds.includes(newName)) {
-        return Drupal.HeaderIdInjector.findAvailableId(name, count + 1);
+      if (Drupal.HeadingIdInjector.reservedIds.includes(newName)) {
+        return Drupal.HeadingIdInjector.findAvailableId(name, count + 1);
       }
 
-      if (Drupal.HeaderIdInjector.anchors.includes(newName)) {
+      if (Drupal.HeadingIdInjector.anchors.includes(newName)) {
         // When reserved heading is visible on page, lets start counting from 2 instead of 1
         if (count === 0) {
           count += 1;
         }
-        return Drupal.HeaderIdInjector.findAvailableId(name, count + 1);
+        return Drupal.HeadingIdInjector.findAvailableId(name, count + 1);
       }
       return newName;
     },
@@ -135,9 +135,9 @@
         .trim();
 
       // To ensure backwards compatibility, this is done only to "other" languages.
-      if (!Drupal.HeaderIdInjector.mainLanguages().includes(drupalSettings.path.currentLanguage)) {
-        Object.keys(Drupal.HeaderIdInjector.localeConversions()).forEach((swap) => {
-          name = name.replace(new RegExp(Drupal.HeaderIdInjector.localeConversions()[swap], 'g'), swap);
+      if (!Drupal.HeadingIdInjector.mainLanguages().includes(drupalSettings.path.currentLanguage)) {
+        Object.keys(Drupal.HeadingIdInjector.localeConversions()).forEach((swap) => {
+          name = name.replace(new RegExp(Drupal.HeadingIdInjector.localeConversions()[swap], 'g'), swap);
         });
       }
       else {
@@ -161,9 +161,9 @@
 
       const anchorName = content.id
         ? content.id
-        : Drupal.HeaderIdInjector.findAvailableId(name, 0);
+        : Drupal.HeadingIdInjector.findAvailableId(name, 0);
 
-      Drupal.HeaderIdInjector.anchors.push(anchorName);
+      Drupal.HeadingIdInjector.anchors.push(anchorName);
 
       // Create anchor links.
       content.setAttribute('id', anchorName);
@@ -177,10 +177,10 @@
   };
 
   // Heading ID injector.
-  Drupal.behaviors.headerIdInjector = {
+  Drupal.behaviors.headingIdInjector = {
     attach: function attach(context) {
       // Prevent running multiple times on the main document.
-      if (window.headerIdInjectorInitialized && context === document) {
+      if (window.headingIdInjectorInitialized && context === document) {
         return;
       }
 
@@ -195,18 +195,18 @@
       // Collect all elements that already have an ID to avoid conflicts.
       const reservedElems = context.querySelectorAll('[id]');
       reservedElems.forEach((elem) => {
-        Drupal.HeaderIdInjector.reservedIds.push(elem.id);
+        Drupal.HeadingIdInjector.reservedIds.push(elem.id);
       });
 
       // Inject IDs into headings and store info about each injected heading.
-      once('header-id-injector', Drupal.HeaderIdInjector.titleComponents().join(','), mainContent)
+      once('heading-id-injector', Drupal.HeadingIdInjector.titleComponents().join(','), mainContent)
         .forEach((content) => {
-          const { nodeName, anchorName } = Drupal.HeaderIdInjector.injectIds(content);
-          Drupal.HeaderIdInjector.injectedHeadings.push({ nodeName, anchorName, content });
+          const { nodeName, anchorName } = Drupal.HeadingIdInjector.injectIds(content);
+          Drupal.HeadingIdInjector.injectedHeadings.push({ nodeName, anchorName, content });
         });
 
       // Mark as initialized so it won't re-run unnecessarily.
-      window.headerIdInjectorInitialized = true;
+      window.headingIdInjectorInitialized = true;
     }
   };
 

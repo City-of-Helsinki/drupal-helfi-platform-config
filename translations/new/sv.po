@@ -68,13 +68,13 @@ msgid "We couldn\'t retrieve your current location. Try entering an address."
 msgstr "Kunde inte använda din position. Prova att skriva in en adress."
 
 msgctxt "Anchor link"
-msgid "Copy link to header @name."
+msgid "Copy link to heading @name."
 msgstr "Kopiera länk till rubrik @name."
 
 msgctxt "Anchor link"
-msgid "Link to header @name copied."
+msgid "Link to heading @name copied."
 msgstr "Länk till rubrik @name kopierad."
 
 msgctxt "Anchor link"
-msgid "Failed to copy link header @name."
+msgid "Failed to copy link heading @name."
 msgstr "Kunde inte kopiera länk till rubrik @name."
