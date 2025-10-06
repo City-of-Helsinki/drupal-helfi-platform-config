@@ -579,3 +579,25 @@ function helfi_platform_config_preprocess_html(&$variables): void {
     $variables['#attached']['drupalSettings']['matomo_site_id'] = $matomo_site_id;
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_platform_config_preprocess_page(array &$variables) : void {
+  /** @var \Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  // Don't add heading id injector or anchor buttons to admin routes.
+  if ($admin_context->isAdminRoute()) {
+    return;
+  }
+
+  $variables['#attached']['library'][] = 'helfi_platform_config/heading_id_injector';
+
+  // Add the heading anchor buttons only to editors at this point before
+  // the feature has been thoroughly tested for accessibility.
+  $user = Drupal::currentUser();
+  if ($user->isAuthenticated() && $user->hasPermission('administer nodes')) {
+    $variables['#attached']['library'][] = 'helfi_platform_config/heading_anchor_buttons';
+  }
+}
