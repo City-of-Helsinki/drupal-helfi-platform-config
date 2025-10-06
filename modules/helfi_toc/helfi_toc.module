@@ -116,12 +116,13 @@ function helfi_toc_apply_form_theme(array &$form) : void {
 function helfi_toc_preprocess_field__toc_enabled(&$variables) : void {
   $entity = $variables['element']['#object'];
 
-  if ($entity instanceof ContentEntityInterface) {
-    $variables['toc_enabled'] = (bool) $entity->get('toc_enabled')->value;
-    $variables['toc_title'] = t('On this page');
+  if (!$entity instanceof ContentEntityInterface) {
+    return;
   }
 
-  if ($entity->get('toc_enabled')->value === "1") {
+  $variables['toc_enabled'] = (bool) $entity->get('toc_enabled')->value;
+  $variables['toc_title'] = t('On this page');
+  if ($variables['toc_enabled']) {
     $variables['#attached']['library'][] = 'helfi_toc/table_of_contents';
   }
 }
