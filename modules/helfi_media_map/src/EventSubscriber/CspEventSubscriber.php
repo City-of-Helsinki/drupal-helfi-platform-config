@@ -4,30 +4,16 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_media_map\EventSubscriber;
 
-use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
 use Drupal\helfi_media_map\Plugin\media\Source\Map;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\helfi_platform_config\EventSubscriber\CspSubscriberBase;
 
 /**
  * Event subscriber for CSP policy alteration.
  *
  * @package Drupal\helfi_media_map\EventSubscriber
  */
-class CspEventSubscriber implements EventSubscriberInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getSubscribedEvents(): array {
-    $events = [];
-
-    if (class_exists(CspEvents::class)) {
-      $events[CspEvents::POLICY_ALTER] = 'policyAlter';
-    }
-
-    return $events;
-  }
+class CspEventSubscriber extends CspSubscriberBase {
 
   /**
    * Alter CSP policies.

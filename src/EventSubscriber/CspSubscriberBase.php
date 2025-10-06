@@ -24,6 +24,7 @@ abstract class CspSubscriberBase implements EventSubscriberInterface {
   const FRAME_SRC = [];
   const IMG_SRC = [];
   const MEDIA_SRC = [];
+  const OBJECT_SRC = [];
   const SCRIPT_SRC = [];
   const STYLE_SRC = [];
 
@@ -85,6 +86,9 @@ abstract class CspSubscriberBase implements EventSubscriberInterface {
     }
     if (!empty(static::MEDIA_SRC)) {
       $policy->fallbackAwareAppendIfEnabled('media-src', static::MEDIA_SRC);
+    }
+    if (!empty(static::OBJECT_SRC)) {
+      $policy->fallbackAwareAppendIfEnabled('object-src', static::OBJECT_SRC);
     }
     if (!empty(static::SCRIPT_SRC)) {
       $policy->fallbackAwareAppendIfEnabled('script-src', static::SCRIPT_SRC);

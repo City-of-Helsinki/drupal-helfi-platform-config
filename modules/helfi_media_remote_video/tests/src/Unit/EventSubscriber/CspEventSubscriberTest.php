@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_media_remote_video\Unit;
 
-use DG\BypassFinals;
-use Drupal\csp\Csp;
-use Drupal\csp\CspEvents;
-use Drupal\csp\Event\PolicyAlterEvent;
 use Drupal\helfi_media_remote_video\EventSubscriber\CspEventSubscriber;
-use Drupal\Tests\UnitTestCase;
+use Drupal\Tests\helfi_platform_config\Unit\EventSubscriber\CspEventSubscriberTestBase;
 use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Unit tests for CspEventSubscriber.
@@ -20,52 +14,19 @@ use Prophecy\Prophecy\ObjectProphecy;
  * @group helfi_media_remote_video
  * @coversDefaultClass \Drupal\helfi_media_remote_video\EventSubscriber\CspEventSubscriber
  */
-class CspEventSubscriberTest extends UnitTestCase {
-
-  use ProphecyTrait;
-
-  /**
-   * The CspEventSubscriber.
-   *
-   * @var \Drupal\helfi_media_remote_video\EventSubscriber\CspEventSubscriber
-   */
-  protected CspEventSubscriber $cspEventSubscriber;
-
-  /**
-   * The Event.
-   *
-   * @var \Prophecy\Prophecy\ObjectProphecy
-   */
-  protected ObjectProphecy $event;
-
-  /**
-   * The Csp policy.
-   *
-   * @var \Prophecy\Prophecy\ObjectProphecy
-   */
-  protected ObjectProphecy $policy;
+class CspEventSubscriberTest extends CspEventSubscriberTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-    BypassFinals::enable();
 
-    $this->event = $this->prophesize(PolicyAlterEvent::class);
-    $this->policy = $this->prophesize(Csp::class);
-    $this->event->getPolicy()->willReturn($this->policy->reveal());
-
-    $this->cspEventSubscriber = new CspEventSubscriber();
-  }
-
-  /**
-   * Tests the getSubscribedEvents method.
-   *
-   * @covers ::getSubscribedEvents
-   */
-  public function testGetSubscribedEvents(): void {
-    $this->assertEquals([CspEvents::POLICY_ALTER => 'policyAlter'], CspEventSubscriber::getSubscribedEvents());
+    $this->eventSubscriber = new CspEventSubscriber(
+      $this->environmentResolver->reveal(),
+      $this->configFactory->reveal(),
+      $this->moduleHandler->reveal(),
+    );
   }
 
   /**
@@ -78,7 +39,7 @@ class CspEventSubscriberTest extends UnitTestCase {
     $this->policy->fallbackAwareAppendIfEnabled('frame-src', Argument::Any())->shouldBeCalled();
     $this->policy->fallbackAwareAppendIfEnabled('object-src', Argument::Any())->shouldBeCalled();
 
-    $this->cspEventSubscriber->policyAlter($this->event->reveal());
+    $this->eventSubscriber->policyAlter($this->event->reveal());
   }
 
 }

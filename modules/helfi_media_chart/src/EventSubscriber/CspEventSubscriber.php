@@ -4,40 +4,20 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_media_chart\EventSubscriber;
 
-use Drupal\csp\CspEvents;
-use Drupal\csp\Event\PolicyAlterEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\helfi_platform_config\EventSubscriber\CspSubscriberBase;
 
 /**
  * Event subscriber for CSP policy alteration.
  *
  * @package Drupal\helfi_media_chart\EventSubscriber
  */
-class CspEventSubscriber implements EventSubscriberInterface {
+class CspEventSubscriber extends CspSubscriberBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function getSubscribedEvents(): array {
-    $events = [];
-
-    if (class_exists(CspEvents::class)) {
-      $events[CspEvents::POLICY_ALTER] = 'policyAlter';
-    }
-
-    return $events;
-  }
-
-  /**
-   * Alter CSP policies.
-   *
-   * @param \Drupal\csp\Event\PolicyAlterEvent $event
-   *   The policy alter event.
-   */
-  public function policyAlter(PolicyAlterEvent $event): void {
-    $policy = $event->getPolicy();
-    $policy->fallbackAwareAppendIfEnabled('frame-src', ['https://*.powerbi.com']);
-    $policy->fallbackAwareAppendIfEnabled('object-src', ['https://*.powerbi.com']);
-  }
+  const FRAME_SRC = [
+    'https://*.powerbi.com',
+  ];
+  const OBJECT_SRC = [
+    'https://*.powerbi.com',
+  ];
 
 }
