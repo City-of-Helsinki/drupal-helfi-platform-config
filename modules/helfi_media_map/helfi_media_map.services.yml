@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  Drupal\helfi_media_map\EventSubscriber\CspEventSubscriber:
+    class: Drupal\helfi_media_map\EventSubscriber\CspEventSubscriber

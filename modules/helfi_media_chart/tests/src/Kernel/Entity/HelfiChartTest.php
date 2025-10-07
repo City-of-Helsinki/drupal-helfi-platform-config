@@ -19,6 +19,7 @@ class HelfiChartTest extends HelfiMediaKernelTestBase {
    */
   protected static $modules = [
     'allowed_formats',
+    'helfi_api_base',
     'helfi_media_chart',
     'language',
     'text',
