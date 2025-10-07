@@ -5,6 +5,7 @@ dependencies:
   - external_entities:external_entities
   - publication_date:publication_date
   - helfi_api_base:helfi_api_base
+  - helfi_ckeditor:helfi_ckeditor
   - helfi_platform_config:helfi_platform_config
   - helfi_platform_config:helfi_node_announcement
   - helfi_platform_config:helfi_node_survey

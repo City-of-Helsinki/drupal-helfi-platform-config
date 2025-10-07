@@ -160,8 +160,9 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
         'uuid' => $announcement->get('uuid')->value,
         'type' => 'announcement',
         'langcode' => $announcement->get('langcode')->value,
-        'body' => Xss::filter($announcement->get('body')->value),
-        'title' => Xss::filter($announcement->get('title')->value),
+        // Run body through 'minimal' text filter.
+        'body' => ['value' => $announcement->get('body')->value, 'format' => 'minimal'],
+        'title' => $announcement->get('title')->value,
         'status' => $announcement->get('status')->value,
         'field_announcement_title' => $announcement->get('announcement_assistive_technology_close_button_title')->value,
         'field_announcement_type' => $announcement->get('announcement_type')->value,
