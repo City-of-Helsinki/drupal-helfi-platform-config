@@ -24,8 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "add_properties" = 0,
  *     "alter_items" = 0,
  *   },
- *   locked = true,
- *   hidden = true,
  * )
  */
 final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
