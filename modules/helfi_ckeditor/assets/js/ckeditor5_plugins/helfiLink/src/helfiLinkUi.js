@@ -38,7 +38,7 @@ export default class HelfiLinkUi extends Plugin {
     // Copy the same solution from LinkUI as pointed out on
     // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and
     // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.
-    this.editor.plugins.get('ContextualBalloon').on('change:visibleView', (evt, propertyName, newValue, oldValue) => {
+    this.editor.plugins.get('ContextualBalloon').on('change:visibleView', (_evt, _propertyName, newValue, oldValue) => {
       // Get the LinkUI form view.
       this.linkFormView = this.editor.plugins.get('LinkUI').formView;
 
@@ -101,7 +101,7 @@ export default class HelfiLinkUi extends Plugin {
       }
 
       // Add logic to checkboxes.
-      this._handleCheckboxes();
+      this._handleNewWindowCheckboxes();
 
       // Move the submit button row from inside urlInputView
       // to the bottom of the dialog.
@@ -326,7 +326,12 @@ export default class HelfiLinkUi extends Plugin {
 
       // Bind isChecked values of checkboxInputViews to the linkCommand.
       if (options.type === 'checkbox') {
+        // First set up the binding to the command.
         this.linkFormView[modelName].checkboxInputView.bind('isChecked').to(linkCommand, modelName);
+
+        // Then explicitly set the initial state based on the model.
+        const isChecked = !!linkCommand[modelName];
+        this.linkFormView[modelName].updateChecked(isChecked);
       }
 
       // Bind field values of LabeledFieldViews to the linkCommand.
@@ -455,7 +460,7 @@ export default class HelfiLinkUi extends Plugin {
    * Handle link new window and link new window confirmation checkboxes
    * when user is checking/unchecking them.
    */
-  _handleCheckboxes() {
+  _handleNewWindowCheckboxes() {
     if (
       !this.formElements.linkNewWindowConfirm ||
       !this.formElements.linkNewWindow ||
@@ -476,7 +481,7 @@ export default class HelfiLinkUi extends Plugin {
     }
 
     // Handle link new window and link new window confirmation checkbox linkages.
-    this.linkFormView.linkNewWindow.on('change:isChecked', (evt, name, value) => {
+    this.linkFormView.linkNewWindow.on('change:isChecked', (_evt, _name, value) => {
       // Whenever the link new window checkbox is clicked, we want to ask
       // confirmation from the user. Uncheck the confirmation checkbox.
       this.linkFormView?.linkNewWindowConfirm.updateChecked(false);
@@ -618,7 +623,7 @@ export default class HelfiLinkUi extends Plugin {
         // Inject the attribute values.
         linkCommand.once(
           'execute',
-          (execEvt, args) => {
+          (_evt, args) => {
             // Assume decorators is the second argument provided to the
             // linkCommand.execute() call.
             if (!(typeof args[decoratorsArgIndex] === 'object')) {

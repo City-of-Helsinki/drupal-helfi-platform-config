@@ -107,6 +107,9 @@
             "drupal/diff": {
                 "Revision overview form problem (https://www.drupal.org/i/3390329)": "./public/modules/contrib/helfi_platform_config/patches/diff_8.x_1.3_revision_overview_form.patch"
             },
+            "drupal/linkit": {
+                "[#UHF-12355] Split links problem on collapsed selection (https://www.drupal.org/i/3534699)": "./public/modules/contrib/helfi_platform_config/patches/linkit-3540235-split-links-diff-mr143.patch"
+            },
             "drupal/paragraphs": {
                 "https://www.drupal.org/project/paragraphs/issues/2904705#comment-13836790": "https://www.drupal.org/files/issues/2020-09-25/2904705-115.patch",
                 "[#UHF-2059] Enhancements for the Admin UI": "./public/modules/contrib/helfi_platform_config/patches/helfi_customizations_for_paragraphs_widget_8.x-1.12.patch",

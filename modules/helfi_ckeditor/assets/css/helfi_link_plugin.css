@@ -71,6 +71,7 @@
   "save-button back-button";
   padding: 0 0 1rem;
   row-gap: 0.8rem;
+  max-width: 100%;
   width: 100%;
 }
 
@@ -109,6 +110,7 @@
 
 /* Link form save button */
 .ck.ck-link-form.helfi-link-form .helfi-link-save-button {
+  border-radius: 0.5rem !important;
   background-color: #0072c6;
   color: #fff;
   grid-area: save-button;
