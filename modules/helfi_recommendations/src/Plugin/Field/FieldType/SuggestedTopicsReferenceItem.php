@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_recommendations\Plugin\Field\FieldType;
 
-use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Field\Attribute\FieldType;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
