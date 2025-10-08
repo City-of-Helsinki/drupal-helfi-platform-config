@@ -257,7 +257,9 @@ export default class HelfiLinkEditing extends Plugin {
 
             // Remove the attribute from specified ranges.
             if (Array.isArray(ranges)) {
-              ranges.forEach((range) => writer.removeAttribute(modelName, range));
+              ranges.forEach((range) => {
+                writer.removeAttribute(modelName, range);
+              });
             }
           });
         });
