@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\field\Entity\FieldStorageConfig;
+
 /**
  * UHF-9088: Updated config translations for helfi_paragraphs_content_cards.
  */

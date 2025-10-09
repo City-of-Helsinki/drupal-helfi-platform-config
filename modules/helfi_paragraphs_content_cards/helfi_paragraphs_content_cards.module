@@ -40,8 +40,6 @@ function helfi_paragraphs_content_cards_allowed_values(FieldStorageDefinitionInt
   $designs = [
     'small-cards' => t('Small cards'),
     'large-cards' => t('Large cards'),
-    'small-cards-grey' => t('Small cards, grey background'),
-    'large-cards-grey' => t('Large cards, grey background'),
   ];
   /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
   $moduleHandler = Drupal::service('module_handler');
