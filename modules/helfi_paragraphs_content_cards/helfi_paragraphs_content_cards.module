@@ -44,7 +44,7 @@ function helfi_paragraphs_content_cards_allowed_values(FieldStorageDefinitionInt
   /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
   $moduleHandler = Drupal::service('module_handler');
 
-  // Let other modules alter the CKEditor link dialog form validation.
+  // Let other modules alter the content cards design form validation.
   $moduleHandler->alter('hook_helfi_content_cards_design_alter', $designs);
   return $designs;
 }
