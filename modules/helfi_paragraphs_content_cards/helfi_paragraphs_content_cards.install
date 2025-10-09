@@ -14,3 +14,18 @@ function helfi_paragraphs_content_cards_update_9001() : void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_paragraphs_content_cards');
 }
+
+
+/**
+ * UHF-8982 Change the content cards design field to use allowed_values_function.
+ */
+function helfi_paragraphs_content_cards_update_9002(): void {
+  try {
+    $field_content_cards_design = FieldStorageConfig::loadByName('paragraph', 'field_content_cards_design');
+    $field_content_cards_design->setSetting('allowed_values_function','helfi_paragraphs_content_cards_allowed_values' );
+    $field_content_cards_design->save();
+  } catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
+    // We know the database values are different what we are trying to write there, but we are only replacing the values
+    // with a allowed_values_function.
+  }
+}

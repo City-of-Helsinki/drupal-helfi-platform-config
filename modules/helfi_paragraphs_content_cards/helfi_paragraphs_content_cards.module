@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_paragraphs_content_cards\Entity\ContentCards;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
@@ -26,4 +28,25 @@ function helfi_paragraphs_content_cards_entity_bundle_info_alter(array &$bundles
   if (isset($bundles['paragraph']['content_cards'])) {
     $bundles['paragraph']['content_cards']['class'] = ContentCards::class;
   }
+}
+
+/**
+ * Hero design values
+ *
+ * @return int[]
+ *   Values to select.
+ */
+function helfi_paragraphs_content_cards_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL) : array {
+  $designs = [
+    'small-cards' => t('Small cards'),
+    'large-cards' => t('Large cards'),
+    'small-cards-grey' => t('Small cards, grey background'),
+    'large-cards-grey' => t('Large cards, grey background'),
+  ];
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = Drupal::service('module_handler');
+
+  // Let other modules alter the CKEditor link dialog form validation.
+  $moduleHandler->alter('hook_helfi_content_cards_design_alter', $designs);
+  return $designs;
 }

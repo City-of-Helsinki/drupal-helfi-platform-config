@@ -10,20 +10,8 @@ field_name: field_content_cards_design
 entity_type: paragraph
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: small-cards
-      label: 'Small cards'
-    -
-      value: large-cards
-      label: 'Large cards'
-    -
-      value: small-cards-grey
-      label: 'Small cards, grey background'
-    -
-      value: large-cards-grey
-      label: 'Large cards, grey background'
-  allowed_values_function: ''
+  allowed_values: { }
+  allowed_values_function: helfi_paragraphs_content_cards_allowed_values
 module: options
 locked: false
 cardinality: 1
