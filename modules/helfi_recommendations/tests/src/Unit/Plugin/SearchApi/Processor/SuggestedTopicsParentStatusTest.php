@@ -21,8 +21,6 @@ use Drupal\helfi_recommendations\Entity\SuggestedTopics;
  * Tests the "Suggested topics parent status" processor.
  *
  * @group helfi_recommendations
- *
- * @var \Drupal\helfi_recommendations\Plugin\search_api\processor\SuggestedTopicsParentStatus
  */
 class SuggestedTopicsParentStatusTest extends UnitTestCase {
 
