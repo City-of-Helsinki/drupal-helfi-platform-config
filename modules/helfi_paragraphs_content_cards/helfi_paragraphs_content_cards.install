@@ -18,11 +18,11 @@ function helfi_paragraphs_content_cards_update_9001() : void {
 }
 
 /**
- * UHF-8982 Remove grey background options from content cards and change options to use allowed_values_function.
+ * UHF-8982 Remove grey options, change to use allowed_values_function.
  */
 function helfi_paragraphs_content_cards_update_9002(): void {
   try {
-     $old_rows = \Drupal::database()
+    $old_rows = \Drupal::database()
       ->select('paragraph__field_content_cards_design')
       ->fields('paragraph__field_content_cards_design')
       ->condition('bundle', 'content_cards')
@@ -62,16 +62,18 @@ function helfi_paragraphs_content_cards_update_9002(): void {
         ->condition('revision_id', $values['revision_id'])
         ->execute();
     }
-  } catch (\Exception $e) {
+  }
+  catch (\Exception $e) {
     \Drupal::messenger()->addMessage(t('Transforming old content cards design values failed.'));
     return;
   }
   try {
     $field_content_cards_design = FieldStorageConfig::loadByName('paragraph', 'field_content_cards_design');
-    $field_content_cards_design->setSetting('allowed_values_function','helfi_paragraphs_content_cards_allowed_values' );
+    $field_content_cards_design->setSetting('allowed_values_function', 'helfi_paragraphs_content_cards_allowed_values');
     $field_content_cards_design->save();
-  } catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
-    // We know the database values are different what we are trying to write there, but we are only replacing the values
-    // with a allowed_values_function.
+  }
+  catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
+    // We know the database values are different what we are trying to write,
+    // but we are only replacing the values with a allowed_values_function.
   }
 }
