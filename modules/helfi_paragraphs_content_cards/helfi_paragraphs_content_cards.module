@@ -27,3 +27,22 @@ function helfi_paragraphs_content_cards_entity_bundle_info_alter(array &$bundles
     $bundles['paragraph']['content_cards']['class'] = ContentCards::class;
   }
 }
+
+/**
+ * Content cards design values.
+ *
+ * @return array
+ *   Values to select.
+ */
+function helfi_paragraphs_content_cards_allowed_values() : array {
+  $designs = [
+    'small-cards' => t('Small cards', [], ['context' => 'Content cards design']),
+    'large-cards' => t('Large cards', [], ['context' => 'Content cards design']),
+  ];
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = Drupal::service('module_handler');
+
+  // Let other modules alter the content cards design form validation.
+  $moduleHandler->alter('hook_helfi_content_cards_design_alter', $designs);
+  return $designs;
+}
