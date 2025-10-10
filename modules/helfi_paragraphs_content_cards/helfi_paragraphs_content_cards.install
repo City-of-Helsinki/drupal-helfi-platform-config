@@ -70,7 +70,7 @@ function helfi_paragraphs_content_cards_update_9002(): void {
   }
   try {
     $field_content_cards_design = FieldStorageConfig::loadByName('paragraph', 'field_content_cards_design');
-    $field_content_cards_design->setSetting('allowed_values', '{ }');
+    $field_content_cards_design->setSetting('allowed_values', []);
     $field_content_cards_design->setSetting('allowed_values_function', 'helfi_paragraphs_content_cards_allowed_values');
     $field_content_cards_design->save();
   }
