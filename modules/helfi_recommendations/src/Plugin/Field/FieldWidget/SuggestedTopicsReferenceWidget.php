@@ -70,7 +70,8 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
     assert($entity instanceof SuggestedTopicsInterface);
 
     // Set the entity this field belongs to as the parent entity.
-    $entity->setParentEntity($items->getEntity());
+    $parent_entity = $items->getEntity();
+    $entity->setParentEntity($parent_entity);
 
     $element['entity'] = [
       '#type' => 'value',
@@ -99,6 +100,9 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#title' => $this->getFieldPropertyDefinition($field, 'instances')->getLabel(),
       '#options' => $this->recommendationManager->getAllowedInstances(),
       '#description' => $this->t('Select the instances that should be used for recommendations. If no instances are selected, recommendations will be shown from all instances.', options: ['context' => 'helfi_recommendations']),
+      // News content suggestions are always fetched from etusivu instance,
+      // so no need to select instances for them.
+      '#access' => !in_array($parent_entity->bundle(), ['news_item', 'news_article']),
     ];
 
     $element['content_types'] = [
@@ -107,6 +111,9 @@ final class SuggestedTopicsReferenceWidget extends WidgetBase {
       '#title' => $this->getFieldPropertyDefinition($field, 'content_types')->getLabel(),
       '#options' => $this->recommendationManager->getAllowedContentTypesAndBundles(),
       '#description' => $this->t('Select the content types that should be used for recommendations. If no content types are selected, recommendations will be shown from all content types.', options: ['context' => 'helfi_recommendations']),
+      // News content suggestions will only show other news content types,
+      // so no need to select content types for them.
+      '#access' => !in_array($parent_entity->bundle(), ['news_item', 'news_article']),
     ];
 
     // Generated keywords.

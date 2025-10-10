@@ -15,6 +15,7 @@ use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
@@ -286,6 +287,10 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   Array of enabled instances.
    */
   private function getEnabledInstances(ContentEntityInterface $entity): array {
+    // News content suggestions are always fetched from etusivu instance.
+    if (in_array($entity->bundle(), ['news_item', 'news_article'])) {
+      return [Project::ETUSIVU];
+    }
     return $this->getOptions($entity, 'instances');
   }
 
@@ -299,6 +304,10 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   Array of enabled content types and bundles.
    */
   private function getEnabledContentTypesAndBundles(ContentEntityInterface $entity): array {
+    // News content suggestions will only show other news content types.
+    if (in_array($entity->bundle(), ['news_item', 'news_article'])) {
+      return ['node|news_article', 'node|news_item'];
+    }
     return $this->getOptions($entity, 'content_types');
   }
 
