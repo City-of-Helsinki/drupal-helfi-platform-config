@@ -10,7 +10,7 @@ field_name: field_has_hero
 entity_type: node
 bundle: page
 label: Hero
-description: 'Check this box if you want to use hero-block on the standard page. If you choose this the hero title field will define the heading level 1 title for the page.'
+description: 'Select to use a hero component. The hero component is not recommended for a standard page. Selecting it hides the sidebar navigation.'
 required: false
 translatable: true
 default_value:
