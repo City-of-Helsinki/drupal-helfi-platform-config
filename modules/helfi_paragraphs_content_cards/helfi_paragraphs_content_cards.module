@@ -7,8 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\helfi_paragraphs_content_cards\Entity\ContentCards;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
@@ -36,7 +34,7 @@ function helfi_paragraphs_content_cards_entity_bundle_info_alter(array &$bundles
  * @return int[]
  *   Values to select.
  */
-function helfi_paragraphs_content_cards_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL) : array {
+function helfi_paragraphs_content_cards_allowed_values() : array {
   $designs = [
     'small-cards' => t('Small cards'),
     'large-cards' => t('Large cards'),
