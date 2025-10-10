@@ -9,6 +9,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -62,6 +63,33 @@ class SuggestedTopics extends ContentEntityBase implements SuggestedTopicsInterf
     $this->set('parent_instance', $project);
 
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getParentEntity(): ?EntityInterface {
+    $parent_id = $this->get('parent_id')->value;
+    $parent_type = $this->get('parent_type')->value;
+
+    if (!$parent_id || !$parent_type) {
+      return NULL;
+    }
+
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
+    $entityTypeManager = \Drupal::service('entity_type.manager');
+
+    try {
+      $parent = $entityTypeManager->getStorage($parent_type)->load($parent_id);
+      if (!$parent) {
+        return NULL;
+      }
+
+      return $parent;
+    }
+    catch (PluginException) {
+      return NULL;
+    }
   }
 
   /**

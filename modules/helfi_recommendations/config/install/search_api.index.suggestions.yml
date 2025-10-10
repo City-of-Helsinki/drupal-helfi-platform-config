@@ -136,6 +136,7 @@ processor_settings:
   rendered_item: {  }
   scored_reference: {  }
   scored_reference_parent: {  }
+  suggested_topics_parent_status: {  }
   uuid_langcode: {  }
 tracker_settings:
   default:
