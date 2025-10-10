@@ -75,6 +75,6 @@ function helfi_paragraphs_content_cards_update_9002(): void {
   }
   catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
     // We know the database values are different what we are trying to write,
-    // but we are only replacing the values with a allowed_values_function.
+    // but we are only replacing the values with an allowed_values_function.
   }
 }
