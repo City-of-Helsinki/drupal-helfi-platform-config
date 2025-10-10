@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\helfi_paragraphs_content_cards\Entity\ContentCards;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
@@ -29,17 +30,17 @@ function helfi_paragraphs_content_cards_entity_bundle_info_alter(array &$bundles
 }
 
 /**
- * Hero design values.
+ * Content cards design values.
  *
- * @return int[]
+ * @return array
  *   Values to select.
  */
 function helfi_paragraphs_content_cards_allowed_values() : array {
   $designs = [
-    'small-cards' => t('Small cards'),
-    'large-cards' => t('Large cards'),
+    'small-cards' => t('Small cards', [], ['context' => 'Content cards design']),
+    'large-cards' => t('Large cards', [], ['context' => 'Content cards design']),
   ];
-  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  /** @var ModuleHandlerInterface $moduleHandler */
   $moduleHandler = Drupal::service('module_handler');
 
   // Let other modules alter the content cards design form validation.

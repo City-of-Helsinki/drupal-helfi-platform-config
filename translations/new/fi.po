@@ -520,3 +520,11 @@ msgstr "Linkki kopioitu otsikkoon @name."
 msgctxt "Anchor link"
 msgid "Failed to copy link heading @name."
 msgstr "Linkin kopiointi otsikkoon @name epäonnistui."
+
+msgctxt "Content cards design"
+msgid "Small cards"
+msgstr "Pienet kortit"
+
+msgctxt "Content cards design"
+msgid "Large cards"
+msgstr "Suuret kortit"
