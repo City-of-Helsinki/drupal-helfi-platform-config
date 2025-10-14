@@ -12,6 +12,14 @@ targetEntityType: helfi_news_neighbourhoods
 bundle: helfi_news_neighbourhoods
 mode: default
 content:
+  status:
+    label: hidden
+    type: string
+    region: content
+    weight: 1
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   title:
     type: string
     label: hidden
@@ -21,5 +29,6 @@ content:
     weight: 0
     region: content
 hidden:
+  langcode: true
   search_api_excerpt: true
   tid: true

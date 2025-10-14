@@ -61,6 +61,14 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
+  status:
+    label: hidden
+    type: string
+    region: content
+    weight: 6
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   title:
     type: string
     label: hidden
