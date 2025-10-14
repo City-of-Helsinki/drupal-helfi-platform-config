@@ -344,6 +344,16 @@ msgstr "Lisää uudelleenohjaus"
 msgid "Note: links open in the current window."
 msgstr "Huom: Linkit aukeavat samaan ikkunaan."
 
+# scheduler
+msgid "%title is scheduled to be published @publish_time and unpublished @unpublish_time."
+msgstr "%title on ajastettu julkaistumaan @publish_time ja ei-julkiseksi @unpublish_time."
+
+msgid "%title is scheduled to be published @publish_time."
+msgstr "%title on ajastettu julkaistumaan @publish_time."
+
+msgid "%title is scheduled to be unpublished @unpublish_time."
+msgstr "%title on ajastettu ei-julkiseksi @unpublish_time."
+
 # simple_sitemap
 msgid "always"
 msgstr "aina"
