@@ -13,50 +13,6 @@ content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
 debug_level: 0
 field_mappers:
-  default_langcode:
-    id: null
-    config: {  }
-  end_time:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.end_time
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  external_link:
-    id: generic
-    config:
-      property_mappings:
-        uri:
-          id: jsonpath
-          config:
-            mapping: $.external_link
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-        title:
-          id: jsonpath
-          config:
-            mapping: $.clean_title
-            required_field: false
-            main_property: false
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
   id:
     id: generic
     config:
@@ -72,9 +28,39 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  langcode:
-    id: null
-    config: {  }
+      debug_level: 0
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.title
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
   main_image:
     id: generic
     config:
@@ -101,6 +87,7 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+      debug_level: 0
   start_time:
     id: generic
     config:
@@ -116,29 +103,15 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  title:
+      debug_level: 0
+  end_time:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: $.title
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  uuid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.id
+            mapping: $.end_time
             required_field: false
             main_property: true
             data_processors:
@@ -146,6 +119,40 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+      debug_level: 0
+  external_link:
+    id: generic
+    config:
+      property_mappings:
+        uri:
+          id: jsonpath
+          config:
+            mapping: $.external_link
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+        title:
+          id: jsonpath
+          config:
+            mapping: $.clean_title
+            required_field: false
+            main_property: false
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  default_langcode:
+    id: null
+    config: {  }
+  langcode:
+    id: null
+    config: {  }
 field_mapping_notes: ''
 data_aggregator:
   id: single
