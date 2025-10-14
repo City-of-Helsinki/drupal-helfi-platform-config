@@ -78,3 +78,13 @@ msgstr "Länk till rubrik @name kopierad."
 msgctxt "Anchor link"
 msgid "Failed to copy link heading @name."
 msgstr "Kunde inte kopiera länk till rubrik @name."
+
+# scheduler
+msgid "%title is scheduled to be published @publish_time and unpublished @unpublish_time."
+msgstr "%title är schemalagd att publiceras @publish_time och att bli opublicerad @unpublish_time."
+
+msgid "%title is scheduled to be published @publish_time."
+msgstr "%title är schemalagd att publiceras @publish_time."
+
+msgid "%title is scheduled to be unpublished @unpublish_time."
+msgstr "%title är schemalagd att bli opublicerad @unpublish_time."
