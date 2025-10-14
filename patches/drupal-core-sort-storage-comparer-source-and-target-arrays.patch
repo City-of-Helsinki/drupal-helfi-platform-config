@@ -1,5 +1,5 @@
 diff --git a/lib/Drupal/Core/Config/StorageComparer.php b/lib/Drupal/Core/Config/StorageComparer.php
-index 820fe041fc..4974e80e41 100644
+index 820fe041fc..3323c6d65e 100644
 --- a/lib/Drupal/Core/Config/StorageComparer.php
 +++ b/lib/Drupal/Core/Config/StorageComparer.php
 @@ -299,6 +299,15 @@ class StorageComparer implements StorageComparerInterface {
@@ -11,14 +11,14 @@ index 820fe041fc..4974e80e41 100644
 +      // detected. This does not affect the export process, as all
 +      // configuration is always exported in full.
 +      if (is_array($source_data) && is_array($target_data)) {
-+        $source_data = $this->ksortRecursive($source_data);
-+        $target_data = $this->ksortRecursive($target_data);
++        $this->ksortRecursive($source_data);
++        $this->ksortRecursive($target_data);
 +      }
 +
        if ($source_data !== $target_data) {
          if (isset($source_data['uuid']) && $source_data['uuid'] !== $target_data['uuid']) {
            // The entity has the same file as an existing entity but the UUIDs do
-@@ -321,6 +330,21 @@ class StorageComparer implements StorageComparerInterface {
+@@ -321,6 +330,22 @@ class StorageComparer implements StorageComparerInterface {
      }
    }
  
@@ -27,14 +27,15 @@ index 820fe041fc..4974e80e41 100644
 +   *
 +   * @param array $array
 +   *   Array to sort.
-+   * @return array
-+   *   Sorted array.
 +   */
-+  protected function ksortRecursive(array $array): array {
++  protected function ksortRecursive(array &$array): void {
 +    ksort($array);
-+    return array_map(function ($value) {
-+      return is_array($value) ? $this->ksortRecursive($value) : $value;
-+    }, $array);
++    foreach ($array as &$value) {
++      if (is_array($value)) {
++        $this->ksortRecursive($value);
++      }
++    }
++    unset($value);
 +  }
 +
    /**
