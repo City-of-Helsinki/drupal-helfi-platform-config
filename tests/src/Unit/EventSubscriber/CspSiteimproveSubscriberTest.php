@@ -50,7 +50,8 @@ class CspSiteimproveSubscriberTest extends CspEventSubscriberTestBase {
   public function testAppendDirectiveValuesWhenModuleIsNotEnabled(): void {
     $this->moduleHandler->moduleExists('siteimprove')->willReturn(FALSE);
 
-    $this->policy->fallbackAwareAppendIfEnabled(Argument::any(), Argument::any())->shouldNotBeCalled();
+    $this->policy->fallbackAwareAppendIfEnabled('connect-src', Argument::any())->shouldBeCalled();
+    $this->policy->fallbackAwareAppendIfEnabled('frame-src', Argument::any())->shouldBeCalled();
 
     $this->eventSubscriber->policyAlter($this->event->reveal());
   }
