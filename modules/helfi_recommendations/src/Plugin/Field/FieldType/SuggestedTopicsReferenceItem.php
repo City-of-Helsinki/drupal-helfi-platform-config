@@ -122,6 +122,26 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
   /**
    * {@inheritdoc}
    */
+  public function preSave(): void {
+    parent::preSave();
+
+    // The 'published'-property in this field is computed and synced from/to
+    // the 'status'-property of the referenced 'suggested topics'-entity.
+    // Changing that field value will change the published status of the
+    // referenced entity, so the entity needs to be saved at the end.
+    // The above parent::preSave() will take care of this when the entity is
+    // new.
+    //
+    // @see \Drupal\helfi_recommendations\TypedData\ComputedReferencePublishedStatus::getValue().
+    // @see \Drupal\helfi_recommendations\TypedData\ComputedReferencePublishedStatus::setValue().
+    if (!$this->entity->isNew()) {
+      $this->entity->save();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function postSave($update) {
     // If the entity is new, set the parent entity data on the target entity.
     if (!$update) {
