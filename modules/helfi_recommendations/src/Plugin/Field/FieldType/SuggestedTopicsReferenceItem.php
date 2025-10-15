@@ -123,6 +123,8 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
    * {@inheritdoc}
    */
   public function preSave(): void {
+    parent::preSave();
+
     if (!$this->entity->isNew()) {
       $this->entity->save();
     }
