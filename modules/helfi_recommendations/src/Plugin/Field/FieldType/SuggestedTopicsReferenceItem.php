@@ -122,6 +122,15 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
   /**
    * {@inheritdoc}
    */
+  public function preSave(): void {
+    if (!$this->entity->isNew()) {
+      $this->entity->save();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function postSave($update) {
     // If the entity is new, set the parent entity data on the target entity.
     if (!$update) {
