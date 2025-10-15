@@ -125,6 +125,11 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
   public function preSave(): void {
     parent::preSave();
 
+    // The 'published'-property in this field is computed and synced with the
+    // 'status'-property of the referenced suggested topics'-entity, so changing
+    // that field value will change the published status of the referenced entity,
+    // so the entity needs to be saved at the end. The above parent::preSave()
+    // will take care of this when the entity is new.
     if (!$this->entity->isNew()) {
       $this->entity->save();
     }
