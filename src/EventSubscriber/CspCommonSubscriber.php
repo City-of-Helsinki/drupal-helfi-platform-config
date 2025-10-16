@@ -54,6 +54,7 @@ class CspCommonSubscriber extends CspSubscriberBase {
   const SCRIPT_SRC = [
     'blob:',
     'https://*.hel.fi',
+    'https://unpkg.com',
   ];
   const STYLE_SRC = [
     'https://*.hel.fi',
