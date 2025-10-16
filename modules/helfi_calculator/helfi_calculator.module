@@ -10,34 +10,63 @@ declare(strict_types=1);
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
- * Implements template_preprocess_paragraph().
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An array of elements to display in view mode.
- *   - paragraph: The paragraph object.
- *   - view_mode: View mode; e.g., 'full', 'teaser'...
+ * Implements hook_preprocess_paragraph__calculator().
  */
-function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
-  // Get calculator data without applying module overrides for the calculators.
-  $config = \Drupal::configFactory()->getEditable('helfi_calculator.settings');
-  $calculator_settings = $config->getOriginal('calculators', FALSE);
-  $active = [];
-  foreach ($calculator_settings as $key => $value) {
-    $variables['#attached']['drupalSettings'][$key] = $value['json'];
-    if ($value['active']) {
-      $active[] = $key;
-    }
+function helfi_calculator_preprocess_paragraph__calculator(array &$variables): void {
+  $paragraph = $variables['paragraph'];
+
+  if (!$paragraph->hasField('field_calculator') || $paragraph->get('field_calculator')->isEmpty()) {
+    return;
   }
 
-  $selected_calculator = $variables['paragraph']->get('field_calculator')->value;
-  $variables['is_active'] = in_array($selected_calculator, $active);
+  // Map library names to JS filenames.
+  $valid_calculators = [
+    'home_care_service_voucher' => 'homeCareServiceVoucher',
+    'home_care_client_fee' => 'homeCareClientFee',
+    'early_childhood_education_fee' => 'earlyChildhoodEducationFee',
+    'continuous_housing_service_voucher' => 'continuousHousingServiceVoucher',
+    'families_home_services_client_fee' => 'familiesHomeServicesClientFee',
+    'helsinki_benefit_amount_estimate' => 'helsinkiBenefitAmountEstimate',
+  ];
+
+  // Get the calculator name from the field.
+  $calculator_name = $paragraph->get('field_calculator')->value;
+
+  // Check if the calculator name is valid, return if not.
+  if (isset($valid_calculators[$calculator_name])) {
+    $js_function_name = $valid_calculators[$calculator_name];
+  }
+  else {
+    $variables['is_active'] = FALSE;
+    return;
+  }
+
+  // Attach the specific calculator library and necessary config.
+  if ($js_function_name && $calculator_name) {
+    $variables['#attached']['library'][] = "helfi_calculator/$calculator_name";
+    $variables['attributes']['id'] = "helfi-calc-{$paragraph->id()}";
+
+    // Get calculator settings from config.
+    $config = \Drupal::config('helfi_calculator.settings');
+    $calculator_settings = $config->get('calculators', []);
+
+    // Pass necessary settings to the frontend.
+    $variables['#attached']['drupalSettings']['helfiCalculator'][$paragraph->id()] = [
+      'calculatorType' => $js_function_name,
+      'settings' => $calculator_settings[$calculator_name] ?? [],
+    ];
+
+    // Set the calculator as active.
+    $variables['is_active'] = TRUE;
+  } else {
+    $variables['is_active'] = FALSE;
+  }
 }
 
 /**
  * Implements hook_helfi_paragraph_types().
  */
-function helfi_calculator_helfi_paragraph_types() : array {
+function helfi_calculator_helfi_paragraph_types(): array {
   $types = [
     'field_content' => [
       'calculator' => 19,
@@ -59,8 +88,8 @@ function helfi_calculator_helfi_paragraph_types() : array {
 /**
  * Implements hook_config_ignore_settings_alter().
  */
-function helfi_calculator_config_ignore_settings_alter(array &$settings) {
+function helfi_calculator_config_ignore_settings_alter(array &$settings): void {
   if (!in_array('helfi_calculator.settings', $settings)) {
-    array_push($settings, 'helfi_calculator.settings');
+    $settings[] = 'helfi_calculator.settings';
   }
 }
