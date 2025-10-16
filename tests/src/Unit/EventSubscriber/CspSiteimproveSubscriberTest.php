@@ -37,6 +37,7 @@ class CspSiteimproveSubscriberTest extends CspEventSubscriberTestBase {
     $this->moduleHandler->moduleExists('siteimprove')->willReturn(TRUE);
 
     $this->policy->fallbackAwareAppendIfEnabled('connect-src', Argument::any())->shouldBeCalled();
+    $this->policy->fallbackAwareAppendIfEnabled('script-src', Argument::any())->shouldBeCalled();
     $this->policy->fallbackAwareAppendIfEnabled('frame-src', Argument::any())->shouldBeCalled();
 
     $this->eventSubscriber->policyAlter($this->event->reveal());
@@ -51,6 +52,7 @@ class CspSiteimproveSubscriberTest extends CspEventSubscriberTestBase {
     $this->moduleHandler->moduleExists('siteimprove')->willReturn(FALSE);
 
     $this->policy->fallbackAwareAppendIfEnabled('connect-src', Argument::any())->shouldBeCalled();
+    $this->policy->fallbackAwareAppendIfEnabled('script-src', Argument::any())->shouldBeCalled();
     $this->policy->fallbackAwareAppendIfEnabled('frame-src', Argument::any())->shouldBeCalled();
 
     $this->eventSubscriber->policyAlter($this->event->reveal());
