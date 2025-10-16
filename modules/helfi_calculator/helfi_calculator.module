@@ -7,7 +7,17 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_calculator\Entity\Calculator;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_calculator_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['calculator'])) {
+    $bundles['paragraph']['calculator']['class'] = Chart::class;
+  }
+}
 
 /**
  * Implements hook_preprocess_paragraph__calculator().
