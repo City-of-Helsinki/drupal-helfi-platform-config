@@ -1,0 +1,26 @@
+{
+  "name": "helfi_calculator",
+  "description": "Asset builder configuration for helfi_calcultar",
+  "author": "Druid",
+  "license": "MIT",
+  "repository": "github:City-of-Helsinki/drupal-helfi-platform-config",
+  "scripts": {
+    "dev": "node theme-builder.mjs --watch --dev",
+    "build": "npm run lint -s && node theme-builder.mjs",
+    "preinstall": "npx update-browserslist-db@latest",
+    "postinstall": "npm --prefix ../../../../../themes/contrib/hdbt install --no-audit --progress=false",
+    "lint:js": "eslint --fix src/js/ --no-error-on-unmatched-pattern",
+    "lint": "npm-run-all --parallel lint:js -s"
+  },
+  "dependencies": {
+    "@biomejs/biome": "^2.2.4",
+    "@hdbt/theme-builder": "file:../../../../../themes/contrib/hdbt/theme-builder",
+    "mustache": "^4.2.0",
+    "npm-run-all2": "^8.0.4"
+  },
+  "browserslist": [
+    "last 3 major versions",
+    "> 1%",
+    "not dead"
+  ]
+}
