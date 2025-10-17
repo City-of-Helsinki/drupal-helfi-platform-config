@@ -48,6 +48,9 @@ services:
   Drupal\helfi_platform_config\EventSubscriber\CspSiteimproveSubscriber:
     class: Drupal\helfi_platform_config\EventSubscriber\CspSiteimproveSubscriber
 
+  Drupal\helfi_platform_config\EventSubscriber\CspSentrySubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspSentrySubscriber
+
   Drupal\helfi_platform_config\EventSubscriber\CspSocialMediaSubscriber:
     class: Drupal\helfi_platform_config\EventSubscriber\CspSocialMediaSubscriber
 
