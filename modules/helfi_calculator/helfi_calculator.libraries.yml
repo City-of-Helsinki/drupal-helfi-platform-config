@@ -1,0 +1,69 @@
+# Base calculator library with common dependencies.
+helfi_calculator.base:
+  version: 1.0.0
+  js:
+    dist/js/helfiCalculatorBase.min.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+# Calculator loader library.
+helfi_calculator.loader:
+  version: 1.0.0
+  js:
+    dist/js/helfiCalculatorLoader.min.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - helfi_calculator/helfi_calculator.base
+
+# Individual calculator libraries.
+continuous_housing_service_voucher:
+  version: 1.0.0
+  js:
+    dist/js/continuousHousingServiceVoucher.min.js: {}
+  dependencies:
+    - core/drupal
+    - helfi_calculator/helfi_calculator.base
+
+early_childhood_education_fee:
+  version: 1.0.0
+  js:
+    dist/js/earlyChildhoodEducationFee.min.js: {}
+  dependencies:
+    - core/drupal
+    - helfi_calculator/helfi_calculator.base
+
+families_home_services_client_fee:
+  version: 1.0.0
+  js:
+    dist/js/familiesHomeServicesClientFee.min.js: {}
+  dependencies:
+    - core/drupal
+    - helfi_calculator/helfi_calculator.base
+
+helsinki_benefit_amount_estimate:
+  version: 1.0.0
+  js:
+    dist/js/helsinkiBenefitAmountEstimate.min.js: {}
+  dependencies:
+    - core/drupal
+    - helfi_calculator/helfi_calculator.base
+
+home_care_client_fee:
+  version: 1.0.0
+  js:
+    dist/js/homeCareClientFee.min.js: {}
+  dependencies:
+    - core/drupal
+    - helfi_calculator/helfi_calculator.base
+
+home_care_service_voucher:
+  version: 1.0.0
+  js:
+    dist/js/homeCareServiceVoucher.min.js: {}
+  dependencies:
+    - core/drupal
+    - helfi_calculator/helfi_calculator.base

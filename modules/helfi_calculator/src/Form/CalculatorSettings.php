@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class CalculatorSettings extends ConfigFormBase {
 
-  const CALCULATOR_SETTINGS_CONFIGURATION = 'helfi_calculator.settings';
+  const string CALCULATOR_SETTINGS_CONFIGURATION = 'helfi_calculator.settings';
 
   /**
    * The configurable language manager.
