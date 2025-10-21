@@ -197,5 +197,6 @@ class FamiliesHomeServicesClientFee {
   }
 }
 
-window.helfi_calculator = window.helfi_calculator || {};
-window.helfi_calculator.familiesHomeServicesClientFee = (id, settings) => new FamiliesHomeServicesClientFee(id, settings);
+window.helfiCalculator = window.helfiCalculator || {};
+window.helfiCalculator.families_home_services_client_fee = (id, settings) =>
+  new FamiliesHomeServicesClientFee(id, settings);

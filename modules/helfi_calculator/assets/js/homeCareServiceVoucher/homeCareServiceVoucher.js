@@ -6,7 +6,7 @@ class HomeCareServiceVoucher {
   constructor(id, settings) {
     this.id = id;
     const parsedSettings = JSON.parse(settings);
-    const homeCareClientFeeSettings = JSON.parse(drupalSettings.homeCareClientFee);
+    const homeCareClientFeeSettings = JSON.parse(drupalSettings?.helfiCalculator.home_care_client_fee);
 
     // Expecting settings to follow this JSON format:
     /*
@@ -292,7 +292,7 @@ class HomeCareServiceVoucher {
     };
 
     // Prepare calculator for translations
-    this.calculator = window.HelfiCalculator({ name: 'homeCareServiceVoucher', translations });
+    this.calculator = window.helfiCalculator({ name: 'homeCareServiceVoucher', translations });
 
     // Create shortcut for translations
     this.t = (key, value) => this.calculator.translate(key, value);
@@ -308,6 +308,5 @@ class HomeCareServiceVoucher {
     });
   }
 }
-
-window.helfi_calculator = window.helfi_calculator || {};
-window.helfi_calculator.homeCareServiceVoucher = (id, settings) => new HomeCareServiceVoucher(id, settings);
+window.helfiCalculator = window.helfiCalculator || {};
+window.helfiCalculator.home_care_service_voucher = (id, settings) => new HomeCareServiceVoucher(id, settings);

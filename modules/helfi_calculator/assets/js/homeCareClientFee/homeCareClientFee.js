@@ -499,7 +499,7 @@ class HomeCareClientFee {
     };
 
     // Prepare calculator for translations
-    this.calculator = window.HelfiCalculator({ name: 'homeCareClientFee', translations });
+    this.calculator = window.helfiCalculator({ name: 'homeCareClientFee', translations });
 
     // Create shortcut for translations
     this.t = (key, value) => this.calculator.translate(key, value);
@@ -516,7 +516,7 @@ class HomeCareClientFee {
   }
 }
 
-window.helfi_calculator = window.helfi_calculator || {};
-window.helfi_calculator.homeCareClientFee = (id, settings) => new HomeCareClientFee(id, settings);
+window.helfiCalculator = window.helfiCalculator || {};
+window.helfiCalculator.home_care_client_fee = (id, settings) => new HomeCareClientFee(id, settings);
 
 export default HomeCareClientFee.calculateClientFee;

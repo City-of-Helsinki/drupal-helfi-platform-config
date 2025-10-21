@@ -276,7 +276,7 @@ class HelsinkiBenefitAmountEstimate {
     };
 
     // Prepare calculator for translations
-    this.calculator = window.HelfiCalculator({ name: 'helsinkiBenefitAmountEstimate', translations });
+    this.calculator = window.helfiCalculator({ name: 'helsinkiBenefitAmountEstimate', translations });
 
     // Create shortcut for translations
     this.t = (key, value) => this.calculator.translate(key, value);
@@ -293,5 +293,6 @@ class HelsinkiBenefitAmountEstimate {
   }
 }
 
-window.helfi_calculator = window.helfi_calculator || {};
-window.helfi_calculator.helsinkiBenefitAmountEstimate = (id, settings) => new HelsinkiBenefitAmountEstimate(id, settings);
+window.helfiCalculator = window.helfiCalculator || {};
+window.helfiCalculator.helsinki_benefit_amount_estimate = (id, settings) =>
+  new HelsinkiBenefitAmountEstimate(id, settings);

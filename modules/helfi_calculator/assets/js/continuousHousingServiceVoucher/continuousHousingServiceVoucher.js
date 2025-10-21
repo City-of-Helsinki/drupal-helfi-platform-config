@@ -178,7 +178,7 @@ class ContinuousHousingServiceVoucher {
     };
 
     // Prepare calculator for translations
-    this.calculator = window.HelfiCalculator({ name: 'homeCareClientFee', translations });
+    this.calculator = window.helfiCalculator({ name: 'homeCareClientFee', translations });
 
     // Create shortcut for translations
     this.t = (key, value) => this.calculator.translate(key, value);
@@ -195,5 +195,6 @@ class ContinuousHousingServiceVoucher {
   }
 }
 
-window.helfi_calculator = window.helfi_calculator || {};
-window.helfi_calculator.continuousHousingServiceVoucher = (id, settings) => new ContinuousHousingServiceVoucher(id, settings);
+window.helfiCalculator = window.helfiCalculator || {};
+window.helfiCalculator.continuous_housing_service_voucher = (id, settings) =>
+  new ContinuousHousingServiceVoucher(id, settings);

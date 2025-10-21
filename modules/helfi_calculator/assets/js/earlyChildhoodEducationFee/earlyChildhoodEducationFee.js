@@ -572,7 +572,7 @@ class EarlyChildhoodEducationFee {
     };
 
     // Prepare calculator for translations
-    this.calculator = window.HelfiCalculator({ name: 'earlyChildhoodEducationFee', translations });
+    this.calculator = window.helfiCalculator({ name: 'earlyChildhoodEducationFee', translations });
 
     // Create shortcut for translations
     this.t = (key, value) => this.calculator.translate(key, value);
@@ -593,5 +593,5 @@ class EarlyChildhoodEducationFee {
   }
 }
 
-window.helfi_calculator = window.helfi_calculator || {};
-window.helfi_calculator.earlyChildhoodEducationFee = (id, settings) => new EarlyChildhoodEducationFee(id, settings);
+window.helfiCalculator = window.helfiCalculator || {};
+window.helfiCalculator.early_childhood_education_fee = (id, settings) => new EarlyChildhoodEducationFee(id, settings);
