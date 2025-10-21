@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { buildAll, watchAndBuild } from '@hdbt/theme-builder/builder';
 import { globSync } from 'glob';
 
@@ -10,12 +10,11 @@ const outDir = path.resolve(__dirname, 'dist');
 
 // Vanilla JS files.
 const jsFiles = globSync('./assets/js/**/*.js', {
-  ignore: [
-    'assets/js/**/tests/**',
-  ],
-}).reduce((acc, file) => ({
-  ...acc, [path.parse(file).name]: file
-}), {});
+  ignore: ['assets/js/**/tests/**'],
+}).reduce((acc, file) => {
+  acc[path.parse(file).name] = file;
+  return acc;
+}, {});
 
 // SCSS files.
 const styles = [
@@ -24,8 +23,6 @@ const styles = [
 // Static files.
 const staticFiles = [
 ];
-
-console.log(outDir);
 
 // Builder configurations.
 const reactConfig = { reactApps: {}, isDev, outDir };

@@ -6,15 +6,17 @@
   "repository": "github:City-of-Helsinki/drupal-helfi-platform-config",
   "scripts": {
     "dev": "node theme-builder.mjs --watch --dev",
-    "build": "npm run lint -s && node theme-builder.mjs",
+    "build": "biome check --fix assets/js/ && node theme-builder.mjs",
     "preinstall": "npx update-browserslist-db@latest",
     "postinstall": "npm --prefix ../../../../../themes/contrib/hdbt install --no-audit --progress=false",
-    "lint:js": "eslint --fix src/js/ --no-error-on-unmatched-pattern",
+    "lint:js": "biome lint --fix assets/js/",
+    "format:js": "biome format --fix assets/js/",
     "lint": "npm-run-all --parallel lint:js -s"
   },
   "dependencies": {
     "@biomejs/biome": "^2.2.4",
     "@hdbt/theme-builder": "file:../../../../../themes/contrib/hdbt/theme-builder",
+    "glob": "^11.0.0",
     "mustache": "^4.2.0",
     "npm-run-all2": "^8.0.4"
   },
