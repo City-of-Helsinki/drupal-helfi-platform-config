@@ -5,15 +5,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hel.fi Calculators</title>
-  <link rel="stylesheet" media="all" href="../../../dist/css/styles.min.css">
-  <link rel="stylesheet" media="all" href="../../../dist/css/hdbt-icons.css">
+  <link rel="stylesheet" media="all" href="../../../../../../../themes/contrib/hdbt/dist/css/styles.min.css">
+  <!-- Note! Some of the icons do not work! -->
+  <link rel="stylesheet" media="all" href="../../../../../../../themes/contrib/hdbt/dist/css/hdbt-icons.css">
   <script>
-    // Simulate Drupal environment
-    var drupalSettings = {};
+    // Simulate Drupal environment.
+    let drupalSettings = {};
     drupalSettings.path = {};
     drupalSettings.path.currentLanguage = 'fi';
-
-    drupalSettings.homeCareServiceVoucher = `
+    drupalSettings.helfiCalculator = {};
+    drupalSettings.helfiCalculator.home_care_service_voucher = `
 {
   "increase_percentage": 20,
   "voucher_limits": {
@@ -45,7 +46,7 @@
   "voucher_divisor": 60
 }
     `;
-    drupalSettings.homeCareClientFee = `
+    drupalSettings.helfiCalculator.home_care_client_fee = `
 {
   "household_size": {
     "1": {
@@ -185,7 +186,7 @@
   }
 }
 `;
-    drupalSettings.continuousHousingServiceVoucher = `
+    drupalSettings.helfiCalculator.continuous_housing_service_voucher = `
 {
   "voucher_from_net_income": {
     "0": 3300,
@@ -219,7 +220,7 @@
   }
 }
 `;
-    drupalSettings.familiesHomeServicesClientFee = `
+    drupalSettings.helfiCalculator.families_home_services_client_fee = `
 {
   "income_limit": {
     "1": 598,
@@ -277,7 +278,7 @@
   }
 }
 `;
-    drupalSettings.earlyChildhoodEducationFee = `
+    drupalSettings.helfiCalculator.early_childhood_education_fee = `
 {
   "family_size_income_limits": {
     "2": {
@@ -339,14 +340,12 @@
   }
 }
 `;
-
   </script>
-  <script src="../../../dist/js/helfi_calculator.min.js"></script>
+  <script src="../../dist/js/helfiCalculatorBase.min.js"></script>
 </head>
 
-<body>
+<body class="wrapper">
   <div class="paragraph-content components components--upper">
-
     <script>
       function setValues(formSelector, data, expectedResults) {
         const elem = document.querySelector('#'+formSelector);
@@ -370,33 +369,33 @@
           }
         }
 
-        if(expectedResults){
+        if (expectedResults) {
           let errors = [];
           const resultSelectors = Object.keys(expectedResults);
           for (let i = 0; i < resultSelectors.length; i++) {
             const resultSelector = resultSelectors[i];
             const expectedValue = expectedResults[resultSelector];
             const calculatedElem = elem.querySelector(resultSelector);
-            if(calculatedElem){
+            if (calculatedElem) {
               const calculatedValue = calculatedElem.innerText;
               if(calculatedValue !== expectedValue){
                 errors.push(`Checking value ${i+1}: ${expectedValue} ≠ ${calculatedValue}`);
               }
-            }else{
+            }
+            else{
               errors.push(`Could not find element number ${i + 1}: ${resultSelector}`);
             }
           }
-          if(errors.length === 0){
+          if (errors.length === 0) {
             console.info('No errors were found');
-          }else{
+          }
+          else {
             console.error(errors.join('\n'));
-            // alert(errors.join('\n'));
           }
         }
       }
     </script>
 
-<!-- - ->
     <script>
       // window.onload = () => {
       //   document.querySelector("#preset_1").click();
@@ -421,24 +420,17 @@
       <div class="component__container">
         <h2 class="component__title">Laske arvio varhaiskasvatusmaksusta</h2>
         <div class="component__content helfi-calculator">
-          <noscript>
-            <div class="component__needs-js">
-              <p>Sorry, as we do not send your data anywhere from this calculator to keep your data safe, it needs Javascript to work. Please enable Javascript in your browser to use this calculator.</p>
-            </div>
-          </noscript>
           <div id="helfi_calc_1025838706"></div>
-          <script src="../../../dist/js/earlyChildhoodEducationFee.min.js"></script>
+          <script src="../../dist/js/earlyChildhoodEducationFee.min.js"></script>
           <script>
-            document.addEventListener('DOMContentLoaded', (event) => {
-              const clean = window.helfi_calculator.earlyChildhoodEducationFee('helfi_calc_1025838706', drupalSettings.earlyChildhoodEducationFee);
+            document.addEventListener('DOMContentLoaded', () => {
+              const clean = window.helfiCalculator.early_childhood_education_fee('helfi_calc_1025838706', drupalSettings.helfiCalculator.early_childhood_education_fee);
             });
           </script>
         </div>
       </div>
     </div>
-<!-- -->
 
-<!-- -->
     <script>
       // window.onload = () => {
       //   document.querySelector("#preset_3").click();
@@ -447,7 +439,6 @@
       //   }, 600);
       // }
     </script>
-    <!-- -- >
     <button id="preset_3" onclick="setValues('helfi_calc_1700329077',{
       '#household_size_helfi_calc_1700329077': 1,
       '#gross_income_per_month_helfi_calc_1700329077': 1300,
@@ -455,7 +446,6 @@
       '#service_provider_price_helfi_calc_1700329077': 36,
       'input.hds-button--primary': true
     })">household size=1, income=1300, usage=40, price=36, voucher: 29.85, payment: 213.6, city pays:1194, addition to voucher:246</button>
-    <!-- -->
 
     <!-- These tests came from context experts -->
     <button onclick="setValues('helfi_calc_1700329077',{
@@ -506,23 +496,17 @@
       <div class="component__container">
         <h2 class="component__title">Laske arvio kotihoidon palvelusetelistä</h2>
         <div class="component__content helfi-calculator">
-          <noscript>
-            <div class="component__needs-js">
-              <p>Sorry, as we do not send your data anywhere from this calculator to keep your data safe, it needs Javascript to work. Please enable Javascript in your browser to use this calculator.</p>
-            </div>
-          </noscript>
           <div id="helfi_calc_1700329077"></div>
-          <script src="../../../dist/js/homeCareServiceVoucher.min.js"></script>
+          <script src="../../dist/js/homeCareServiceVoucher.min.js"></script>
           <script>
             document.addEventListener('DOMContentLoaded', (event) => {
-              const clean = window.helfi_calculator.homeCareServiceVoucher('helfi_calc_1700329077', drupalSettings.homeCareServiceVoucher);
+              const clean = window.helfiCalculator.home_care_service_voucher('helfi_calc_1700329077', drupalSettings.helfiCalculator.home_care_service_voucher);
             });
           </script>
         </div>
       </div>
     </div>
 
- <!-- -->
     <script>
       // window.onload = () => {
       //   document.querySelector("#preset_2").click();
@@ -545,134 +529,128 @@
 
     <!-- These tests came from context experts -->
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 1,
-          '#gross_income_per_month_helfi_calc_1655485697': 4300,
-          '#monthly_usage_helfi_calc_1655485697': 12,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '444,24',
-        })">Test 1 = 444,24€</button>
+      '#household_size_helfi_calc_1655485697': 1,
+      '#gross_income_per_month_helfi_calc_1655485697': 4300,
+      '#monthly_usage_helfi_calc_1655485697': 12,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '444,24',
+    })">Test 1 = 444,24€</button>
 
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 1,
-          '#gross_income_per_month_helfi_calc_1655485697': 2000,
-          '#monthly_usage_helfi_calc_1655485697': 24,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '308,44',
-        })">Test 2 = 308,44€</button>
+      '#household_size_helfi_calc_1655485697': 1,
+      '#gross_income_per_month_helfi_calc_1655485697': 2000,
+      '#monthly_usage_helfi_calc_1655485697': 24,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '308,44',
+    })">Test 2 = 308,44€</button>
 
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 1,
-          '#gross_income_per_month_helfi_calc_1655485697': 3000,
-          '#monthly_usage_helfi_calc_1655485697': 40,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '720,60',
-        })">Test 3 = 720,60€</button>
+      '#household_size_helfi_calc_1655485697': 1,
+      '#gross_income_per_month_helfi_calc_1655485697': 3000,
+      '#monthly_usage_helfi_calc_1655485697': 40,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '720,60',
+    })">Test 3 = 720,60€</button>
 
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 2,
-          '#gross_income_per_month_helfi_calc_1655485697': 3200,
-          '#monthly_usage_helfi_calc_1655485697': 24,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '377,46',
-        })">Test 4 = 377,46€</button>
+      '#household_size_helfi_calc_1655485697': 2,
+      '#gross_income_per_month_helfi_calc_1655485697': 3200,
+      '#monthly_usage_helfi_calc_1655485697': 24,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '377,46',
+    })">Test 4 = 377,46€</button>
 
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 2,
-          '#gross_income_per_month_helfi_calc_1655485697': 6000,
-          '#monthly_usage_helfi_calc_1655485697': 80,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '979,40',
-        })">Test 5 = 979,40€</button>
+      '#household_size_helfi_calc_1655485697': 2,
+      '#gross_income_per_month_helfi_calc_1655485697': 6000,
+      '#monthly_usage_helfi_calc_1655485697': 80,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '979,40',
+    })">Test 5 = 979,40€</button>
 
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 3,
-          '#gross_income_per_month_helfi_calc_1655485697': 4500,
-          '#monthly_usage_helfi_calc_1655485697': 24,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '443,04',
-        })">Test 6 = 443,04€</button>
+      '#household_size_helfi_calc_1655485697': 3,
+      '#gross_income_per_month_helfi_calc_1655485697': 4500,
+      '#monthly_usage_helfi_calc_1655485697': 24,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '443,04',
+    })">Test 6 = 443,04€</button>
 
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 7,
-          '#gross_income_per_month_helfi_calc_1655485697': 5000,
-          '#monthly_usage_helfi_calc_1655485697': 24,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '150,12',
-        })">Test 7 = 150,12€</button>
+      '#household_size_helfi_calc_1655485697': 7,
+      '#gross_income_per_month_helfi_calc_1655485697': 5000,
+      '#monthly_usage_helfi_calc_1655485697': 24,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '150,12',
+    })">Test 7 = 150,12€</button>
 
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 2,
-          '#gross_income_per_month_helfi_calc_1655485697': 1100,
-          '#monthly_usage_helfi_calc_1655485697': 14,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '0,00',
-        })">Test 8 = 0,00€</button>
+      '#household_size_helfi_calc_1655485697': 2,
+      '#gross_income_per_month_helfi_calc_1655485697': 1100,
+      '#monthly_usage_helfi_calc_1655485697': 14,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '0,00',
+    })">Test 8 = 0,00€</button>
 
     <button onclick="setValues('helfi_calc_1655485697',{
-          '#household_size_helfi_calc_1655485697': 2,
-          '#gross_income_per_month_helfi_calc_1655485697': 4700,
-          '#monthly_usage_helfi_calc_1655485697': 3,
-          '#safetyphone_2_helfi_calc_1655485697': true,
-          '#shopping_service_2_helfi_calc_1655485697': true,
-          '#meal_service_2_helfi_calc_1655485697': true,
-          'input.hds-button--primary': true
-        },{
-          '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '119,66',
-        })">Test 9 = 119,66€</button>
+      '#household_size_helfi_calc_1655485697': 2,
+      '#gross_income_per_month_helfi_calc_1655485697': 4700,
+      '#monthly_usage_helfi_calc_1655485697': 3,
+      '#safetyphone_2_helfi_calc_1655485697': true,
+      '#shopping_service_2_helfi_calc_1655485697': true,
+      '#meal_service_2_helfi_calc_1655485697': true,
+      'input.hds-button--primary': true
+    },{
+      '#receipt_helfi_calc_1655485697 .helfi-calculator__receipt-total__value': '119,66',
+    })">Test 9 = 119,66€</button>
 
     <div class="component component--helfi-calculator">
       <div class="component__container">
         <h2 class="component__title">Laske arvio asiakasmaksusta</h2>
         <div class="component__content helfi-calculator">
-          <noscript>
-            <div class="component__needs-js">
-              <p>Sorry, as we do not send your data anywhere from this calculator to keep your data safe, it needs Javascript to work. Please enable Javascript in your browser to use this calculator.</p>
-            </div>
-          </noscript>
           <div id="helfi_calc_1655485697"></div>
-          <script src="../../../dist/js/homeCareClientFee.min.js"></script>
+          <script src="../../dist/js/homeCareClientFee.min.js"></script>
           <script>
-            document.addEventListener('DOMContentLoaded', (event) => {
-              const clean = window.helfi_calculator.homeCareClientFee('helfi_calc_1655485697', drupalSettings.homeCareClientFee);
+            document.addEventListener('DOMContentLoaded', () => {
+              const clean = window.helfiCalculator.home_care_client_fee('helfi_calc_1655485697', drupalSettings.helfiCalculator.home_care_client_fee);
             });
           </script>
         </div>
       </div>
     </div>
-<!-- -->
-<!-- -->
+
     <script>
       // window.onload = () => {
       //   document.querySelector("#preset_4").click();
@@ -682,64 +660,64 @@
       // }
     </script>
     <button id="preset_4" onclick="setValues('helfi_calc_1655488697',{
-          '#net_income_per_month_helfi_calc_1655488697': 1291.66,
-          '#service_provider_price_helfi_calc_1655488697': 3200,
-          'input.hds-button--primary': true
-        })">Debug</button>
+      '#net_income_per_month_helfi_calc_1655488697': 1291.66,
+      '#service_provider_price_helfi_calc_1655488697': 3200,
+      'input.hds-button--primary': true
+    })">Debug</button>
     <div class="component component--helfi-calculator">
       <div class="component__container">
         <h2 class="component__title">Laske arvio palveluasumisen palvelusetelistä</h2>
         <div class="component__content helfi-calculator">
-          <noscript>
-            <div class="component__needs-js">
-              <p>Sorry, as we do not send your data anywhere from this calculator to keep your data safe, it needs Javascript to work. Please enable Javascript in your browser to use this calculator.</p>
-            </div>
-          </noscript>
           <div id="helfi_calc_1655488697"></div>
-          <script src="../../../dist/js/continuousHousingServiceVoucher.min.js"></script>
+          <script src="../../dist/js/continuousHousingServiceVoucher.min.js"></script>
           <script>
-            document.addEventListener('DOMContentLoaded', (event) => {
-              const clean = window.helfi_calculator.continuousHousingServiceVoucher('helfi_calc_1655488697', drupalSettings.continuousHousingServiceVoucher);
+            document.addEventListener('DOMContentLoaded', () => {
+              const clean = window.helfiCalculator.continuous_housing_service_voucher('helfi_calc_1655488697', drupalSettings.helfiCalculator.continuous_housing_service_voucher);
             });
           </script>
         </div>
       </div>
     </div>
-<!-- -->
-<!-- -->
-<script>
+
+    <script>
       // window.onload = () => {
       //   document.querySelector("#preset_5").click();
       //   window.setTimeout(( , document.body.scrollHeight);
       //   }, 600);
       // }
-</script>
-<button id="preset_5" onclick="setValues('helfi_calc_2655488697',{
-          '#household_size_helfi_calc_2655488697': 4,
-          '#gross_income_per_month_helfi_calc_2655488697': 2500,
-          '#monthly_usage_helfi_calc_2655488697': 10,
-          'input.hds-button--primary': true
-        })">Debug</button>
-<div class="component component--helfi-calculator">
-  <div class="component__container">
-    <h2 class="component__title">Täytä tiedot asiakasmaksun arvioimiseksi</h2>
-    <div class="component__content helfi-calculator">
-      <noscript>
-        <div class="component__needs-js">
-          <p>Sorry, as we do not send your data anywhere from this calculator to keep your data safe, it needs Javascript to work. Please enable Javascript in your browser to use this calculator.</p>
+    </script>
+    <button id="preset_5" onclick="setValues('helfi_calc_2655488697',{
+      '#household_size_helfi_calc_2655488697': 4,
+      '#gross_income_per_month_helfi_calc_2655488697': 2500,
+      '#monthly_usage_helfi_calc_2655488697': 10,
+      'input.hds-button--primary': true
+    })">Debug</button>
+
+          <div id="helfi-calculator-95d2f0d6-75ab-4134-a057-41b54c5759e7" class="js-helfi-calculator" data-calculator="home_care_service_voucher" data-settings-key="helfi-calculator-95d2f0d6-75ab-4134-a057-41b54c5759e7" data-once="helfi-calculator">
+            <div class="visually-hidden" aria-live="polite" aria-atomic="true" id="aria_live_helfi-calculator-95d2f0d6-75ab-4134-a057-41b54c5759e7"></div>
+            <div class="helfi-calculator-disclaimer">
+              Pakolliset kentät on merkitty tähdellä
+              <span class="visually-hidden">ja saavutettavalla tekstillä </span>
+
+              <span class="visually-hidden">(Pakollinen kenttä)</span><span aria-hidden="true" class="helfi-calculator-required">*</span>.
+              Huomioithan, että laskuriin antamiasi tietoja ei tallenneta eikä lähetetä eteenpäin. Jos muutat laskurin tietoja, muista painaa "Laske arvio" uudelleen.
+            </div>
+            <div class="helfi-calculator-notification helfi-calculator-notification--error" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="component component--helfi-calculator">
+      <div class="component__container">
+        <h2 class="component__title">Täytä tiedot asiakasmaksun arvioimiseksi</h2>
+        <div class="component__content helfi-calculator">
+          <div id="helfi_calc_2655488697"></div>
+          <script src="../../dist/js/familiesHomeServicesClientFee.min.js"></script>
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              const clean = window.helfiCalculator.families_home_services_client_fee('helfi_calc_2655488697', drupalSettings.helfiCalculator.families_home_services_client_fee);
+            });
+          </script>
         </div>
-      </noscript>
-      <div id="helfi_calc_2655488697"></div>
-      <script src="../../../dist/js/familiesHomeServicesClientFee.min.js"></script>
-      <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-          const clean = window.helfi_calculator.familiesHomeServicesClientFee('helfi_calc_2655488697', drupalSettings.familiesHomeServicesClientFee);
-        });
-      </script>
+      </div>
     </div>
-  </div>
-</div>
-<!-- -->
   </div>
 </body>
 </html>
