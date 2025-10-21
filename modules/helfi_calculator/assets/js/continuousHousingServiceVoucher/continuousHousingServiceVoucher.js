@@ -70,7 +70,6 @@ class ContinuousHousingServiceVoucher {
       // const netIncomePerMonthRaw = this.calculator.getFieldValue('gross_income_per_month');
       const serviceProviderPrice = Number(this.calculator.getFieldValue('service_provider_price')) * (365 / 12);
 
-
       // Calculate results.
 
       const voucherValue = this.calculator.getMinimumRange(netIncomePerMonth, parsedSettings.voucher_from_net_income);
