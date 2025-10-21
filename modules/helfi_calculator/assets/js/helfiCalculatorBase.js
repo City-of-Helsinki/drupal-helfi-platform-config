@@ -1,25 +1,44 @@
 import globalTranslations from './_globalTranslations';
-import Mustache from 'mustache';
 
-// Use webpack.ProvidePlugin or similar if you need to make Mustache globally available
-if (typeof window !== 'undefined') {
-  window.Mustache = Mustache;
-}
+const Mustache = require('mustache');
 
+/**
+ * Base class for calculators.
+ */
 class HelfiCalculator {
   constructor({ name, translations }) {
     this.name = name;
     this.templates = null;
     this.id = null;
-
-
     this.translations = { ...globalTranslations, ...translations };
   }
 
+  /**
+   * Shortcut for translate.
+   *
+   * @param key
+   *   The key.
+   * @param values
+   *   The values to replace in the translation.
+   *
+   * @returns {*|string}
+   *   Returns the translated string.
+   */
   t(key, values) {
     return this.translate(key, values);
   }
 
+  /**
+   * Translate a string.
+   *
+   * @param key
+   *   The key.
+   * @param values
+   *   The values to replace in translation.
+   *
+   * @returns {*|string}
+   *   Returns the translated string.
+   */
   translate(key, values) {
     if (!this.translations) {
       throw new Error('Translations are missing');
@@ -51,17 +70,38 @@ class HelfiCalculator {
     return `Missing translation: ${key}:${lang}`;
   }
 
+  /**
+   * Parse settings JSON.
+   *
+   * @param settings
+   *   Settings JSON to parse.
+   *
+   * @returns {*}
+   *   Returns parsed settings.
+   */
   parseSettings(settings) {
     let parsed;
     try {
       parsed = JSON.parse(settings);
     } catch (e) {
-      console.error(`Problem with ${this.name} settings:`, settings);
+      console.error(`Unable to parse the ${this.name} settings:`, settings);
       throw e;
     }
     return parsed;
   }
 
+  /**
+   * Get a DOM element by ID with the calculator's ID as suffix.
+   *
+   * @param {string} elemID
+   *   The base ID of the element to find.
+   *
+   * @returns {HTMLElement}
+   *   The found DOM element.
+   *
+   * @throws {Error}
+   *   If the element is not found.
+   */
   getElement(elemID) {
     const elem = document.querySelector(`#${elemID}_${this.id}`);
     if (!elem) {
@@ -71,22 +111,36 @@ class HelfiCalculator {
     return elem;
   }
 
+  /**
+   * Render a Mustache template with the given data.
+   *
+   * @param {string} template
+   *   The Mustache template string.
+   * @param {Object} partialData
+   *   The data to render the template with.
+   *
+   * @returns {string}
+   *   The rendered HTML.
+   */
   getPartialRender(template, partialData) {
     this.preprocessData(partialData);
-
-    // console.log('template:', template);
-    // console.log('preprocessed:', partialData);
-    // console.log('partials:', this.templates.partials);
-
-    return Mustache.render(
-      template,
-      partialData,
-      this.templates.partials,
-    );
+    return Mustache.render(template, partialData, this.templates.partials);
   }
 
-  // Finds the smallest matching value >= key from object
-  // eslint-disable-next-line class-methods-use-this
+  /**
+   * Find the smallest matching value >= key in the range object.
+   *
+   * @param {number} value
+   *   The value to find the range for.
+   * @param {Object} range
+   *   The range object with numeric keys.
+   *
+   * @returns {*}
+   *   The value from the range that matches the smallest key >= value.
+   *
+   * @throws {Error}
+   *   If no matching range is found.
+   */
   getMinimumRange(value, range) {
     const rangeKeys = Object.keys(range).reverse();
     for (let i = 0; i < rangeKeys.length; i++) {
@@ -96,57 +150,96 @@ class HelfiCalculator {
       }
     }
     throw new Error(`Minimum range not found for ${value} from ${range}`);
-  };
+  }
 
-  // Clamps value within min-max range
-  // eslint-disable-next-line class-methods-use-this
+  /**
+   * Clamp a value between a minimum and maximum.
+   *
+   * @param {number} min
+   *   The minimum allowed value.
+   * @param {number} value
+   *   The value to clamp.
+   * @param {number} max
+   *   The maximum allowed value.
+   *
+   * @returns {number}
+   *   The clamped value.
+   */
   clamp(min, value, max) {
     return Math.max(min, Math.min(value, max));
-  };
+  }
 
-  // Format number as string with two decimal points, used with screen reader texts as computers handle . better than , as separator.
-  // eslint-disable-next-line class-methods-use-this
+  /**
+   * Format a number as a string with exactly two decimal places.
+   *
+   * @param {number} num
+   *   The number to format.
+   *
+   * @returns {string}
+   *   The formatted number as a string with exactly two decimal places.
+   */
   formatEuroCents(num) {
-    // Round the number to two decimal places
     num = `${Math.round(num * 100) / 100}`;
-
-    // Pad the number with zeros if necessary
     const decimalPos = num.indexOf('.');
     if (decimalPos === -1) {
       num += '.00';
     } else if (num.length - decimalPos === 2) {
       num += '0';
     }
-
     return num;
   }
 
-  // Format number as string with Finnish euro cents style
+  /**
+   * Format a number as a string with Finnish euro cents style.
+   *
+   * @param {number} num
+   *   The number to format.
+   *
+   * @returns {string}
+   *   The formatted number with comma as decimal separator.
+   */
   formatFinnishEuroCents(num) {
     return this.formatEuroCents(num).replace('.', ',');
   }
 
+  /**
+   * Preprocess the data before rendering templates.
+   *
+   * @param {Object} obj
+   *   The data object to preprocess.
+   */
   preprocessData(obj) {
     const keys = Object.keys(obj);
     for (let i = 0; i < keys.length; i++) {
       const value = obj[keys[i]];
       if (typeof value === 'object' && value !== null) {
         this.preprocessData(value);
-        if (!value.hasOwnProperty('items')) {
+        if (!Object.hasOwn(value, 'items')) {
           value.items = null;
         }
-        if (!value.hasOwnProperty('group')) {
+        if (!Object.hasOwn(value, 'group')) {
           value.group = null;
         }
-        if (!value.hasOwnProperty('dynamic_area')) {
+        if (!Object.hasOwn(value, 'dynamic_area')) {
           value.dynamic_area = null;
         }
       } else if (typeof value === 'number') {
-        obj[keys[i]] += ''; // convert numeric values to strings so that mustache does not think 0 === false and skip it.
+        // Convert numeric values to strings so that
+        // the mustache does not think 0 === false and skip it.
+        obj[keys[i]] += '';
       }
     }
   }
 
+  /**
+   * Get the value of a form field.
+   *
+   * @param {string} elemID
+   *   The ID of the form field.
+   *
+   * @returns {string|number}
+   *   The field value, or null if empty.
+   */
   getFieldValue(elemID) {
     const elem = document.querySelector(`#${elemID}_${this.id}`);
     if (!elem) {
@@ -166,8 +259,7 @@ class HelfiCalculator {
     }
 
     if (elem.dataset?.type === 'input_integer' || elem.dataset?.type === 'input_float') {
-
-      // Check that required input has value
+      // Check that required input has value.
       if (elem.value === 'undefined' || elem.value === '') {
         return null;
       }
@@ -189,11 +281,22 @@ class HelfiCalculator {
 
       return elemValue;
     }
-
   }
 
+  /**
+   * Get an error message for a form field.
+   *
+   * @param {string} elemID
+   *   The ID of the form field.
+   * @param {string} translationKey
+   *   The translation key for the error message.
+   * @param {Object} translationParams
+   *   Parameters for the translation.
+   *
+   * @returns {string}
+   *   The translated error message.
+   */
   getError(elemID, translationKey, translationParams) {
-
     const elem = document.querySelector(`#${elemID}_${this.id}`);
     if (!elem) {
       throw new Error(`Element #${elemID}_${this.id} missing from ${this.name} at validateBasics`);
@@ -225,8 +328,16 @@ class HelfiCalculator {
     return [errorWithLink];
   }
 
+  /**
+   * Validate basic form field requirements.
+   *
+   * @param {string} elemID
+   *   The ID of the form field to validate.
+   *
+   * @returns {Array}
+   *   Array of error messages, empty if valid.
+   */
   validateBasics(elemID) {
-
     const elem = document.querySelector(`#${elemID}_${this.id}`);
     if (!elem) {
       throw new Error(`Element #${elemID}_${this.id} missing from ${this.name} at validateBasics`);
@@ -239,15 +350,14 @@ class HelfiCalculator {
       }
     }
 
-    // Check number inputs
+    // Check number inputs.
     if (elem.dataset?.type === 'input_integer' || elem.dataset?.type === 'input_float') {
-
-      // Optional empty inputs can be ignored
+      // Optional empty inputs can be ignored.
       if (!elem.dataset.required && (typeof elem.value === 'undefined' || elem.value === '')) {
         return [];
       }
 
-      // Check that required input has value
+      // Check that required input has value.
       if (elem.value === 'undefined' || elem.value === '') {
         return this.getError(elemID, 'enter_value');
       }
@@ -259,29 +369,32 @@ class HelfiCalculator {
         elemValue = elemValue.replaceAll(regex, '');
       }
 
-      // Check if it's an integer number
+      // Check if it's an integer number.
       const integerRegex = /^-?([1-9][0-9]*|0)$/;
       if (elem.dataset.type === 'input_integer' && !integerRegex.test(elemValue)) {
         return this.getError(elemID, 'must_be_whole_number');
       }
 
-      // Check if it's a decimal number or integer
+      // Check if it's a decimal number or integer.
       const floatRegex = /^-?([1-9][0-9]*|0)(\.[0-9]+)?$/;
       if (elem.dataset.type === 'input_float' && !floatRegex.test(elemValue)) {
         return this.getError(elemID, 'must_be_number');
       }
 
-      // If both bounds are set
+      // If both bounds are set.
       if (typeof elem.dataset.min !== 'undefined' && typeof elem.dataset.max !== 'undefined') {
-        if (Number.parseFloat(elem.dataset.min) > Number.parseFloat(elemValue) || elemValue > Number.parseFloat(elem.dataset.max)) {
+        if (
+          Number.parseFloat(elem.dataset.min) > Number.parseFloat(elemValue) ||
+          elemValue > Number.parseFloat(elem.dataset.max)
+        ) {
           return this.getError(elemID, 'min_or_max_out_of_bounds', { min: elem.dataset.min, max: elem.dataset.max });
         }
-        // Less than min
+        // Less than min.
       } else if (typeof elem.dataset.min !== 'undefined') {
         if (Number.parseFloat(elem.dataset.min) > Number.parseFloat(elemValue)) {
           return this.getError(elemID, 'min_out_of_bounds', { min: elem.dataset.min });
         }
-        // More than max
+        // More than max.
       } else if (typeof elem.dataset.max !== 'undefined') {
         if (Number.parseFloat(elemValue) > Number.parseFloat(elem.dataset.max)) {
           return this.getError(elemID, 'max_out_of_bounds', { max: elem.dataset.max });
@@ -291,31 +404,65 @@ class HelfiCalculator {
     return [];
   }
 
-
+  /**
+   * Hide a form group by ID.
+   *
+   * @param {string} id
+   *   The ID of the group to hide.
+   */
   hideGroup(id) {
     const elem = document.querySelector(`#${id}_${this.id}:not([data-hide-group='true'])`);
-    if (elem && elem.dataset) {
+    if (elem?.dataset) {
       elem.dataset.hideGroup = true;
     }
   }
 
+  /**
+   * Show a form group by ID.
+   *
+   * @param {string} id
+   *   The ID of the group to show.
+   */
   showGroup(id) {
     const elem = document.querySelector(`#${id}_${this.id}[data-hide-group='true']`);
-    if (elem && elem.dataset) {
+    if (elem?.dataset) {
       elem.dataset.hideGroup = false;
     }
   }
 
+  /**
+   * Show text in an ARIA live region.
+   *
+   * @param {string} text
+   *   The text to announce to screen readers.
+   */
   showAriaLiveText(text) {
     const ariaLiveElem = document.getElementById(`aria_live_${this.id}`);
     ariaLiveElem.innerText = text;
-    // console.log('setting aria_live to:', text);
     window.setTimeout(() => {
       ariaLiveElem.innerText = '';
-      // console.log('clearing aria_live');
     }, 1000);
   }
 
+  /**
+   * Renders a notification message in the UI.
+   *
+   * @static
+   * @param {HTMLElement} element
+   *   The DOM element where the notification will be rendered.
+   * @param {string} notificationClass
+   *   CSS class(es) for the notification type (e.g., 'hds-notification--error').
+   * @param {string} notificationIcon
+   *   The icon identifier to display in the notification.
+   * @param {Object} result
+   *   The result object containing the notification content.
+   * @param {string|Array} result.message
+   *   The message to display (can be a string or array of strings).
+   * @param {string} result.title
+   *   The title of the notification.
+   * @param {string} notificationAriaLabel
+   *   The ARIA label for the notification section.
+   */
   static renderNotification(element, notificationClass, notificationIcon, result, notificationAriaLabel) {
     let { message } = result;
     if (Array.isArray(result.message) && result.message.length > 1) {
@@ -334,6 +481,25 @@ class HelfiCalculator {
       </section>`;
   }
 
+  /**
+   * Renders a receipt notification in the UI and scrolls it into view.
+   *
+   * @static
+   * @param {HTMLElement} element
+   *   The DOM element where the receipt will be rendered.
+   * @param {string} notificationClass
+   *   CSS class(es) for the receipt notification type.
+   * @param {string} notificationIcon
+   *   The icon identifier to display in the receipt.
+   * @param {Object} result
+   *   The result object containing the receipt content.
+   * @param {string|Array} result.message
+   *   The message to display (can be a string or array of strings).
+   * @param {string} result.title
+   *   The title of the receipt.
+   * @param {string} notificationAriaLabel
+   *   The ARIA label for the receipt section.
+   */
   static renderReceipt(element, notificationClass, notificationIcon, result, notificationAriaLabel) {
     let { message } = result;
     if (Array.isArray(result.message) && result.message.length > 1) {
@@ -356,7 +522,12 @@ class HelfiCalculator {
     element.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  /**
+   * Set focus to the receipt heading.
+   *
+   * @param {HTMLElement} element
+   *   The receipt container element.
+   */
   focusReceiptHeading(element) {
     const titleElem = element.querySelector('h2');
     titleElem.setAttribute('tabindex', '0');
@@ -364,10 +535,24 @@ class HelfiCalculator {
     titleElem.setAttribute('tabindex', '-1');
   }
 
+  /**
+   * Render the calculator result or error.
+   *
+   * @param {Object} result
+   *   The result object containing either receipt or error information.
+   */
   renderResult(result) {
     if (result.error) {
-      HelfiCalculator.renderNotification(document.querySelector(`#${this.id} .helfi-calculator-notification--error`), 'hds-notification--error', 'error-fill', result.error, this.translate('notification_aria_label_for_error'));
-      const titleElem = document.querySelector(`#${this.id} .helfi-calculator-notification--error .hds-notification__label`);
+      HelfiCalculator.renderNotification(
+        document.querySelector(`#${this.id} .helfi-calculator-notification--error`),
+        'hds-notification--error',
+        'error-fill',
+        result.error,
+        this.translate('notification_aria_label_for_error'),
+      );
+      const titleElem = document.querySelector(
+        `#${this.id} .helfi-calculator-notification--error .hds-notification__label`,
+      );
       titleElem.setAttribute('tabindex', '0');
       titleElem.focus();
       titleElem.scrollIntoViewIfNeeded();
@@ -382,14 +567,31 @@ class HelfiCalculator {
       const element = document.querySelector(`#${this.id} .helfi-calculator-notification--result`);
       element.innerHTML = result.receipt;
       element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }); // Scroll receipt into view while it's animating.
-      window.setTimeout(() => { this.focusReceiptHeading(element); }, this.receiptOpenMs + 10); // Add 10ms after animation so that title is in place when focusing into it.
+      window.setTimeout(() => {
+        this.focusReceiptHeading(element);
+      }, this.receiptOpenMs + 10); // Add 10ms after animation so that title is in place when focusing into it.
     } else if (result.alert) {
-      HelfiCalculator.renderNotification(document.querySelector(`#${this.id} .helfi-calculator-notification--result`), 'hds-notification--alert', 'alert-circle-fill', result.alert, this.translate('notification_aria_label_for_alert'));
+      HelfiCalculator.renderNotification(
+        document.querySelector(`#${this.id} .helfi-calculator-notification--result`),
+        'hds-notification--alert',
+        'alert-circle-fill',
+        result.alert,
+        this.translate('notification_aria_label_for_alert'),
+      );
     } else if (result.info) {
-      HelfiCalculator.renderReceipt(document.querySelector(`#${this.id} .helfi-calculator-notification--result`), 'hds-notification--info', 'info-circle-fill', result.info, this.translate('notification_aria_label_for_info'));
+      HelfiCalculator.renderReceipt(
+        document.querySelector(`#${this.id} .helfi-calculator-notification--result`),
+        'hds-notification--info',
+        'info-circle-fill',
+        result.info,
+        this.translate('notification_aria_label_for_info'),
+      );
     }
   }
 
+  /**
+   * Clear the current result display.
+   */
   clearResult() {
     document.querySelector(`#${this.id} .helfi-calculator-notification--error`).innerHTML = '';
     document.querySelector(`#${this.id} .helfi-calculator-notification--result`).innerHTML = '';
@@ -401,9 +603,20 @@ class HelfiCalculator {
     Object.values(errorsMessages).forEach((errorMessage) => {
       errorMessage.innerHTML = '';
     });
-    // this.init(this.initParams);
   }
 
+  /**
+   * Initialize the calculator.
+   *
+   * @param {Object} params
+   *   The initialization parameters.
+   * @param {string} params.id
+   *   The ID for the calculator instance.
+   * @param {Object} params.formData
+   *   The form data for the calculator.
+   * @param {Object} params.eventHandlers
+   *   Event handlers for the calculator form.
+   */
   init({ id, formData, eventHandlers }) {
     this.initParams = { id, formData, eventHandlers };
     this.id = id;
@@ -568,7 +781,7 @@ class HelfiCalculator {
             {{>label}}
             <div class="hds-text-input__input-wrapper">
               <input
-                type="text"${''/* We can not use numeric here, nor can we use inputmode decimal https://design-system.service.gov.uk/components/text-input/#asking-for-decimal-numbers */}
+                type="text"
                 data-type="input_float"
                 id="{{id}}_{{form_id}}"
                 name="{{id}}"
@@ -698,17 +911,13 @@ class HelfiCalculator {
             {{/has_details}}
           </div>
         `,
-      }
+      },
     };
 
     this.preprocessData(formData);
     const processedData = formData;
 
-    const render = Mustache.render(
-      this.templates.form,
-      processedData,
-      this.templates.partials,
-    );
+    const render = Mustache.render(this.templates.form, processedData, this.templates.partials);
 
     document.getElementById(this.id).innerHTML = render;
 
@@ -716,39 +925,14 @@ class HelfiCalculator {
     for (let i = 0; i < events.length; i++) {
       const event = events[i];
       document.getElementById(id).addEventListener(event, eventHandlers[event]);
-      // console.log('Started waiting for', event, '-events');
     }
   }
 }
 
-// Export the HelfiCalculator class for use in other modules
-export default HelfiCalculator;
-
-// Initialize calculators using Drupal behaviors
-((Drupal, drupalSettings, once) => {
-  Drupal.behaviors.helfiCalculator = {
-    attach: function (context, settings) {
-      once('helfi-calculator-init', '.helfi-calculator__init', context).forEach((element) => {
-        try {
-          const calculatorName = element.dataset.calculator;
-          const container = element.closest('.helfi-calculator');
-          const containerId = container ? container.querySelector('.helfi-calculator__container')?.id : null;
-          const calculatorSettings = JSON.parse(element.dataset.settings || '{}');
-
-          if (!containerId) {
-            console.error('Could not find calculator container');
-            return;
-          }
-
-          if (window.helfi_calculator && window.helfi_calculator[calculatorName]) {
-            window.helfi_calculator[calculatorName](containerId, calculatorSettings);
-          } else {
-            console.error(`Calculator ${calculatorName} not found or not properly initialized`);
-          }
-        } catch (error) {
-          console.error('Error initializing calculator:', error);
-        }
-      });
-    }
-  };
-})(Drupal, drupalSettings, once);
+/**
+ * Initialize the calculator.
+ *
+ * @param {Object} translations
+ *   The translations for the calculator.
+ */
+window.helfiCalculator = (translations) => new HelfiCalculator(translations);
