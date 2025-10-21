@@ -1,16 +1,16 @@
 import { test } from '@playwright/test';
 import {
-  selectPaySubsidyPercentageOption1,
-  selectPaySubsidyPercentageOption2,
   checkAssociationHasBusinessActivities,
-  selectCompanyTypeBusiness,
+  clickResultsButton,
+  expectResult,
+  fillMonthlyPay,
+  fillVacationMoney,
   selectCompanyTypeAssociation,
+  selectCompanyTypeBusiness,
   selectPaySubsidyGranted,
   selectPaySubsidyNotGranted,
-  clickResultsButton,
-  fillVacationMoney,
-  fillMonthlyPay,
-  expectResult,
+  selectPaySubsidyPercentageOption1,
+  selectPaySubsidyPercentageOption2,
 } from '../fixtures/input';
 
 const TEST_CASES = [
@@ -63,17 +63,14 @@ const TEST_CASES = [
 
 test.slow();
 test.describe.configure({ mode: 'parallel' });
-test.beforeEach(async({ page }) => {
-  await page.goto(
-    'http://localhost:3001/src/js/calculator/helsinkiBenefitAmountEstimate/helsinki-benefit-test.html',
-  );
+test.beforeEach(async ({ page }) => {
+  await page.goto('http://localhost:3001/src/js/calculator/helsinkiBenefitAmountEstimate/helsinki-benefit-test.html');
 });
-
 
 TEST_CASES.forEach((testCase) => {
   test.describe(testCase.NAME, () => {
     test.describe('Business', () => {
-      test('Fill in form and check results (none)', async({ page }) => {
+      test('Fill in form and check results (none)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeBusiness(page);
@@ -82,7 +79,7 @@ TEST_CASES.forEach((testCase) => {
         expectResult(page, testCase.BUSINESS_ACTIVITIES.NONE);
       });
 
-      test('Fill in form and check results (50)', async({ page }) => {
+      test('Fill in form and check results (50)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeBusiness(page);
@@ -92,7 +89,7 @@ TEST_CASES.forEach((testCase) => {
         expectResult(page, testCase.BUSINESS_ACTIVITIES['50']);
       });
 
-      test('Fill in form and check results (70)', async({ page }) => {
+      test('Fill in form and check results (70)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeBusiness(page);
@@ -104,7 +101,7 @@ TEST_CASES.forEach((testCase) => {
     });
 
     test.describe('Association: business', () => {
-      test('Fill in form and check results (none)', async({ page }) => {
+      test('Fill in form and check results (none)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeAssociation(page);
@@ -114,7 +111,7 @@ TEST_CASES.forEach((testCase) => {
         expectResult(page, testCase.BUSINESS_ACTIVITIES.NONE);
       });
 
-      test('Fill in form and check results (50)', async({ page }) => {
+      test('Fill in form and check results (50)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeAssociation(page);
@@ -125,7 +122,7 @@ TEST_CASES.forEach((testCase) => {
         expectResult(page, testCase.BUSINESS_ACTIVITIES['50']);
       });
 
-      test('Fill in form and check results (70)', async({ page }) => {
+      test('Fill in form and check results (70)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeAssociation(page);
@@ -138,7 +135,7 @@ TEST_CASES.forEach((testCase) => {
     });
 
     test.describe('Association', () => {
-      test('Fill in form and check results (none)', async({ page }) => {
+      test('Fill in form and check results (none)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeAssociation(page);
@@ -147,7 +144,7 @@ TEST_CASES.forEach((testCase) => {
         expectResult(page, testCase.ASSOCIATION.NONE);
       });
 
-      test('[Association] Fill in form and check results (50)', async({ page }) => {
+      test('[Association] Fill in form and check results (50)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeAssociation(page);
@@ -157,7 +154,7 @@ TEST_CASES.forEach((testCase) => {
         expectResult(page, testCase.ASSOCIATION['50']);
       });
 
-      test('[Association] Fill in form and check results (70)', async({ page }) => {
+      test('[Association] Fill in form and check results (70)', async ({ page }) => {
         await fillMonthlyPay(page, testCase.MONTLY_PAY);
         await fillVacationMoney(page, testCase.VACATION_MONEY);
         await selectCompanyTypeAssociation(page);

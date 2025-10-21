@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 // eslint-disable-next-line import/no-relative-packages
 import translations from '../../_translations';
 

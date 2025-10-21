@@ -17,7 +17,7 @@ const config = {
       use: {
         ...devices['Desktop Firefox'],
         baseURL: 'http://localhost:3001/src/js/calculator/helsinkiBenefitAmountEstimate/helsinki-benefit-test.html',
-},
+      },
       testMatch: [/tests\/.*spec\.js/],
     },
   ],
