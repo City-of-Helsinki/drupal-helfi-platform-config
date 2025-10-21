@@ -1,6 +1,6 @@
 # Hel.fi Calculator
 
-A module that provides configurable calculator functionality for various financial calculations in Calculator paragraphs.
+Helfi Calculator provides configurable calculator functionality for various financial calculations that can be added to the site via Calculator paragraphs.
 
 ## Features
 
@@ -40,9 +40,7 @@ A module that provides configurable calculator functionality for various financi
 
 ## Architecture
 
-The Helfi Calculator module lets you add calculators to the site using a custom Calculator paragraph. Calculator settings are defined as a JSON and managed through Drupal’s configuration API, but they are not stored in the repository. 
-Each calculator is placed in its own folder, containing separate files for logic, forms, and translations. The correct components are then loaded automatically based on the selected calculator type. All calculators share a common JavaScript base class (HelfiCalculatorBase).
-Translations are loaded directly from the JSON files in the calculator’s folder instead of Drupal’s translation system. 
+The Helfi Calculator module adds calculators to the site using a custom Calculator paragraph. Calculator settings are defined as JSON and managed through Drupal’s configuration API, but they are not stored in the repository. Each calculator is placed in its own folder with separate files for logic, forms, and translations. All calculators share a common JavaScript base class (HelfiCalculatorBase). The correct libraries are loaded automatically based on the selected calculator type. Translations are loaded directly from the JSON files in the calculator’s folder instead of Drupal’s translation system.
 
 ## Creating a New Calculator
 
