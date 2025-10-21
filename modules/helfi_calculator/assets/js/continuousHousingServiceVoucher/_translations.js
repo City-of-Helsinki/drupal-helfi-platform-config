@@ -1,5 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
-
 const translations = {
   net_income_per_month: {
     fi: 'Hakijan nettotulot kuukaudessa',

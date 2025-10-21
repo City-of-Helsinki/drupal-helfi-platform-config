@@ -3,7 +3,6 @@ import translations from './_translations';
 
 class HomeCareClientFee {
   // Separate function for calculating client fee, so that it can be used in homeCareServiceVoucher.js too
-  // eslint-disable-next-line class-methods-use-this
   static calculateClientFee(
     householdSize,
     grossIncomePerMonth,

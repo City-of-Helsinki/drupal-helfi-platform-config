@@ -1,5 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
-
 const translations = {
   household_size: {
     fi: 'Talouden koko',

@@ -1,5 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
-
 const translations = {
   family_info: {
     fi: 'Perheen tiedot',

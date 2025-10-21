@@ -1,8 +1,6 @@
 import { expect, test } from '@playwright/test';
-// eslint-disable-next-line import/no-relative-packages
 import translations from '../../_translations';
 
-// eslint-disable-next-line no-template-curly-in-string
 const replaceValue = '${value}';
 const PAY_SUBSIDY_PERCENTAGES = ['50', '70'];
 
