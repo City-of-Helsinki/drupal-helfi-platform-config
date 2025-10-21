@@ -41,52 +41,42 @@ function helfi_calculator_theme() {
 function helfi_calculator_preprocess_paragraph__calculator(array &$variables): void {
   $paragraph = $variables['paragraph'];
 
-  if (!$paragraph->hasField('field_calculator') || $paragraph->get('field_calculator')->isEmpty()) {
+  if (!$paragraph instanceof Calculator) {
     return;
   }
 
-  // Map library names to JS filenames.
-  $valid_calculators = [
-    'home_care_service_voucher' => 'homeCareServiceVoucher',
-    'home_care_client_fee' => 'homeCareClientFee',
-    'early_childhood_education_fee' => 'earlyChildhoodEducationFee',
-    'continuous_housing_service_voucher' => 'continuousHousingServiceVoucher',
-    'families_home_services_client_fee' => 'familiesHomeServicesClientFee',
-    'helsinki_benefit_amount_estimate' => 'helsinkiBenefitAmountEstimate',
+  // Load all calculators and attach the configuration data to drupalSettings.
+  $calculators = Drupal::config('helfi_calculator.settings')->get('calculators') ?? [];
+  $calculator_settings = $calculators[$paragraph->getCalculatorName()] ?? NULL;
+
+  foreach ($calculators as $calculator => $data) {
+    $variables['#attached']['drupalSettings']['helfiCalculator'][$calculator] = $data['json'];
+  }
+
+  // Check if the current calculator is active and return if not.
+  $variables['is_active'] = !empty($calculator_settings['active']);
+  if (!$variables['is_active']) {
+    return;
+  }
+
+  // Attach base libraries.
+  foreach ($paragraph->getBaseLibraries() as $library) {
+    $variables['#attached']['library'][] = $library;
+  }
+
+  // Attach the active calculator library and settings.
+  $variables['#attached']['library'][] = $paragraph->getCalculatorLibraryName();
+  $variables['#attached']['drupalSettings']['helfiCalculator'][$paragraph->getCalculatorInstanceId()] = [
+    'id' => $paragraph->getCalculatorInstanceId(),
+    'type' => $paragraph->getCalculatorName(),
+    'data' => $calculator_settings['json'] ?? '{}',
   ];
 
-  // Get the calculator name from the field.
-  $calculator_name = $paragraph->get('field_calculator')->value;
+  // Set id for Twig.
+  $variables['helfi_calculator_id'] = $paragraph->getCalculatorInstanceId();
 
-  // Check if the calculator name is valid, return if not.
-  if (isset($valid_calculators[$calculator_name])) {
-    $js_function_name = $valid_calculators[$calculator_name];
-  }
-  else {
-    $variables['is_active'] = FALSE;
-    return;
-  }
-
-  // Attach the specific calculator library and necessary config.
-  if ($js_function_name && $calculator_name) {
-    $variables['#attached']['library'][] = "helfi_calculator/$calculator_name";
-    $variables['attributes']['id'] = "helfi-calc-{$paragraph->id()}";
-
-    // Get calculator settings from config.
-    $config = \Drupal::config('helfi_calculator.settings');
-    $calculator_settings = $config->get('calculators', []);
-
-    // Pass necessary settings to the frontend.
-    $variables['#attached']['drupalSettings']['helfiCalculator'][$paragraph->id()] = [
-      'calculatorType' => $js_function_name,
-      'settings' => $calculator_settings[$calculator_name] ?? [],
-    ];
-
-    // Set the calculator as active.
-    $variables['is_active'] = TRUE;
-  } else {
-    $variables['is_active'] = FALSE;
-  }
+  // Cache invalidation on settings change.
+  $variables['#cache']['tags'][] = 'config:helfi_calculator.settings';
 }
 
 /**
