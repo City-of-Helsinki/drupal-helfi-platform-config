@@ -20,6 +20,22 @@ function helfi_calculator_entity_bundle_info_alter(array &$bundles): void {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function helfi_calculator_theme() {
+  return [
+    'paragraph__calculator' => [
+      'base hook' => 'paragraph',
+      'variables' => [
+        'paragraph' => NULL,
+        'view_mode' => 'full',
+        'is_active' => FALSE,
+      ],
+    ],
+  ];
+}
+
+/**
  * Implements hook_preprocess_paragraph__calculator().
  */
 function helfi_calculator_preprocess_paragraph__calculator(array &$variables): void {
