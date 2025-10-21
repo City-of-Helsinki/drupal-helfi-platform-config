@@ -42,23 +42,23 @@ function getFormData(id, t, { firstPerWeekPrice }) {
         heading: {
           text: t('living_at_home_heading'),
           level: 3,
-        }
+        },
       },
       {
         paragraph: {
           text: t('living_at_home_paragraph'),
-        }
+        },
       },
       {
         heading: {
           text: t('safetyphone_heading'),
           level: 4,
-        }
+        },
       },
       {
         paragraph: {
           text: t('safetyphone_paragraph'),
-        }
+        },
       },
       {
         radio: {
@@ -90,7 +90,7 @@ function getFormData(id, t, { firstPerWeekPrice }) {
               paragraph: {
                 text: t('safetyphone_emergency_visit_explanation'),
                 class: 'hdbt-helper-text',
-              }
+              },
             },
           ],
         },
@@ -99,12 +99,12 @@ function getFormData(id, t, { firstPerWeekPrice }) {
         heading: {
           text: t('shopping_service_heading'),
           level: 4,
-        }
+        },
       },
       {
         paragraph: {
           text: t('shopping_service_paragraph'),
-        }
+        },
       },
       {
         radio: {
@@ -132,12 +132,12 @@ function getFormData(id, t, { firstPerWeekPrice }) {
         heading: {
           text: t('meal_service_heading'),
           level: 4,
-        }
+        },
       },
       {
         paragraph: {
           text: t('meal_service_paragraph'),
-        }
+        },
       },
       {
         radio: {
@@ -180,7 +180,7 @@ function getFormData(id, t, { firstPerWeekPrice }) {
           ],
         },
       },
-    ]
+    ],
   };
 }
 

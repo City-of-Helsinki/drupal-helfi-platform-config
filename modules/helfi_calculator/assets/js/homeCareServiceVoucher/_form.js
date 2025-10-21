@@ -50,7 +50,7 @@ function getFormData(id, t) {
           helper_text: t('service_provider_price_explanation'),
         },
       },
-    ]
+    ],
   };
 }
 

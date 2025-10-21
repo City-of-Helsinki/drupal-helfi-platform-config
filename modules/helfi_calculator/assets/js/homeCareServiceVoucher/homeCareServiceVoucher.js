@@ -1,6 +1,6 @@
+import calculateClientFee from '../homeCareClientFee/homeCareClientFee';
 import form from './_form';
 import translations from './_translations';
-import calculateClientFee from '../homeCareClientFee/homeCareClientFee';
 
 class HomeCareServiceVoucher {
   constructor(id, settings) {
@@ -47,7 +47,6 @@ class HomeCareServiceVoucher {
     const update = () => {};
 
     function getLimits(householdSize, voucherSettings, feeSettings, calculator) {
-
       // gross income limit is calculated using homeCareClientFee settings
       // Currently we have values up until 6 person household sizes, this way it's configurable.
       const feeHousehold = calculator.getMinimumRange(householdSize, feeSettings.household_size);
@@ -59,7 +58,6 @@ class HomeCareServiceVoucher {
       if (feeDiff > 0) {
         feeMultipliedLimit = feeDiff * feeSettings.household_size_beyond_defined_multiplier_euro;
       }
-
 
       // percent limit is calculated using voucher settings
       // Currently we have values up until 6 person household sizes, this way it's configurable.
@@ -94,7 +92,7 @@ class HomeCareServiceVoucher {
         return {
           error: {
             title: this.t('missing_input'),
-            message: errorMessages
+            message: errorMessages,
           },
         };
       }
@@ -118,25 +116,24 @@ class HomeCareServiceVoucher {
       // 7. Calculate what the payment would be as service bought from city instead of private company with voucher
 
       // 1. Get limits based on household size
-      const {
-        limit,
-        percent,
-      } = getLimits(householdSize, parsedSettings, homeCareClientFeeSettings, this.calculator);
+      const { limit, percent } = getLimits(householdSize, parsedSettings, homeCareClientFeeSettings, this.calculator);
 
       const deductedIncome = grossIncomePerMonth - limit;
 
       // 3. [Excel B20] Calculate voucher value and clamp it between min and max, then round it to two decimals (cents) as rounded value is used in further math.
-      const voucher = Math.round(
-        (
+      const voucher =
+        Math.round(
           // If gross income has been given, calculate the value, otherwise use minimum voucher value
-          (grossIncomePerMonthRaw !== null) ?
-            this.calculator.clamp(
-              parsedSettings.voucher_limits.min,
-              (parsedSettings.voucher_limits.old_max - (deductedIncome * (percent / 100) / parsedSettings.voucher_divisor)) * ((100 + parsedSettings.increase_percentage) / 100),
-              parsedSettings.voucher_limits.max
-            ) :
-            parsedSettings.voucher_limits.min
-        ) * 100) / 100;
+          (grossIncomePerMonthRaw !== null
+            ? this.calculator.clamp(
+                parsedSettings.voucher_limits.min,
+                (parsedSettings.voucher_limits.old_max -
+                  (deductedIncome * (percent / 100)) / parsedSettings.voucher_divisor) *
+                  ((100 + parsedSettings.increase_percentage) / 100),
+                parsedSettings.voucher_limits.max,
+              )
+            : parsedSettings.voucher_limits.min) * 100,
+        ) / 100;
 
       // 4. [Excel B22] Calculate how much city will pay with vouchers per month
       const paymentByCity = monthlyUsage * voucher;
@@ -179,7 +176,7 @@ class HomeCareServiceVoucher {
         {
           title: this.t('receipt_additional_details'),
           text: null,
-        }
+        },
       ];
 
       if (grossIncomePerMonthRaw === null) {
@@ -193,31 +190,39 @@ class HomeCareServiceVoucher {
           title: this.t('receipt_homecare_total'),
           has_details: false,
           details: [],
-          sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(monthlyUsage * serviceProviderPrice) }),
-          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(monthlyUsage * serviceProviderPrice) }),
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(monthlyUsage * serviceProviderPrice),
+          }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+            value: this.calculator.formatEuroCents(monthlyUsage * serviceProviderPrice),
+          }),
         },
         {
           title: this.t('receipt_city_pays_to_provider'),
           has_details: false,
           details: [],
-          sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(paymentByCity) }),
-          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(paymentByCity) }),
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(paymentByCity),
+          }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+            value: this.calculator.formatEuroCents(paymentByCity),
+          }),
         },
         {
           title: this.t('receipt_voucher_value'),
           has_details: false,
           details: [],
           sum: this.t('receipt_subtotal_euros_per_hour', { value: this.calculator.formatFinnishEuroCents(voucher) }),
-          sum_screenreader: this.t('receipt_subtotal_euros_per_hour_screenreader', { value: this.calculator.formatEuroCents(voucher) }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_hour_screenreader', {
+            value: this.calculator.formatEuroCents(voucher),
+          }),
         },
       );
 
-      additionalDetails.push(
-        {
-          title: null,
-          text: this.t('receipt_included_homecare'),
-        }
-      );
+      additionalDetails.push({
+        title: null,
+        text: this.t('receipt_included_homecare'),
+      });
 
       const receiptData = {
         id: this.id,
@@ -240,8 +245,12 @@ class HomeCareServiceVoucher {
                 title: this.t('receipt_when_done_by_city'),
                 has_details: false,
                 details: [],
-                sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(cityHomeCarePayment) }),
-                sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(cityHomeCarePayment) }),
+                sum: this.t('receipt_subtotal_euros_per_month', {
+                  value: this.calculator.formatFinnishEuroCents(cityHomeCarePayment),
+                }),
+                sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+                  value: this.calculator.formatEuroCents(cityHomeCarePayment),
+                }),
               },
             ],
             additional_details: null,
@@ -249,14 +258,13 @@ class HomeCareServiceVoucher {
         ],
       };
 
-      const receipt = this.calculator.getPartialRender(
-        '{{>receipt}}',
-        receiptData,
-      );
+      const receipt = this.calculator.getPartialRender('{{>receipt}}', receiptData);
 
       return {
         receipt,
-        ariaLive: this.t('receipt_aria_live', { payment: this.calculator.formatEuroCents(totalPaymentToProviderByClient) }),
+        ariaLive: this.t('receipt_aria_live', {
+          payment: this.calculator.formatEuroCents(totalPaymentToProviderByClient),
+        }),
       };
     };
 

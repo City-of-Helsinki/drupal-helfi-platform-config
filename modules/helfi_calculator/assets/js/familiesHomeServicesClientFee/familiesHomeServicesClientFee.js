@@ -84,7 +84,7 @@ class FamiliesHomeServicesClientFee {
         return {
           error: {
             title: this.t('missing_input'),
-            message: errorMessages
+            message: errorMessages,
           },
         };
       }
@@ -96,9 +96,7 @@ class FamiliesHomeServicesClientFee {
       const grossIncomePerMonthRaw = this.calculator.getFieldValue('gross_income_per_month');
       const monthlyUsage = Number(this.calculator.getFieldValue('monthly_usage'));
 
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // Calculate results
+      // Calculate results:
       // 1. Get income limit
       // 2. Get max payment and payment percent
       // 3. Assume that user has not given income details, use max value
@@ -120,7 +118,7 @@ class FamiliesHomeServicesClientFee {
       }
 
       // 5. Clamp payment between 0 and max payment, round to even eurocents
-      payment = this.calculator.clamp(0, Math.round(payment * 100)/100, max);
+      payment = this.calculator.clamp(0, Math.round(payment * 100) / 100, max);
 
       // console.log(
       //   '\n householdSize', householdSize,
@@ -153,10 +151,7 @@ class FamiliesHomeServicesClientFee {
         },
       };
 
-      const receipt = this.calculator.getPartialRender(
-        '{{>receipt}}',
-        receiptData,
-      );
+      const receipt = this.calculator.getPartialRender('{{>receipt}}', receiptData);
 
       return {
         receipt,
@@ -185,7 +180,7 @@ class FamiliesHomeServicesClientFee {
     };
 
     // Prepare calculator for translations
-    this.calculator = window.HelfiCalculator({ name: 'familiesHomeServicesClientFee', translations });
+    this.calculator = window.helfiCalculator({ name: 'familiesHomeServicesClientFee', translations });
 
     // Create shortcut for translations
     this.t = (key, value) => this.calculator.translate(key, value);

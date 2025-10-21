@@ -70,10 +70,8 @@ class EarlyChildhoodEducationFee {
     }
     */
 
-
     // Form content
     const getFormData = () => form.getFormData(this.id, this.t);
-
 
     const updateChild = (childNumber) => {
       const daycareTypeForChild = this.calculator.getFieldValue(`daycare_type_for_child_${childNumber}`);
@@ -119,7 +117,7 @@ class EarlyChildhoodEducationFee {
       const slots = this.calculator.getElement('slots_nth_child');
       for (let i = 0; i < slots.children.length; i++) {
         const child = slots.children[i];
-        if (child.dataset && child.dataset.slotNumber) {
+        if (child.dataset?.slotNumber) {
           updateChild(child.dataset.slotNumber);
         }
       }
@@ -158,23 +156,25 @@ class EarlyChildhoodEducationFee {
       const childData = {
         daycareType: this.calculator.getFieldValue(`daycare_type_for_child_${childNumber}`),
         daycareTypeData: {
-          '1': {
+          1: {
             careTime: this.calculator.getFieldValue(`daycare_type_1_${childNumber}_group_caretime`),
             freeDays: this.calculator.getFieldValue(`daycare_type_1_${childNumber}_free_days`),
           },
-          '2': {
+          2: {
             careTime: this.calculator.getFieldValue(`daycare_type_2_${childNumber}_group_caretime`),
             freeDays: this.calculator.getFieldValue(`daycare_type_2_${childNumber}_free_days`),
           },
-          '3': {
+          3: {
             careTime: this.calculator.getFieldValue(`daycare_type_3_${childNumber}_group_caretime`),
             freeDays: this.calculator.getFieldValue(`daycare_type_3_${childNumber}_free_days`),
           },
-          '4': {
+          4: {
             careTime: this.calculator.getFieldValue(`daycare_type_4_${childNumber}_group_caretime`),
-            roundTheClockCareWithPreschool: this.calculator.getFieldValue(`daycare_type_4_${childNumber}_has_preschool`),
+            roundTheClockCareWithPreschool: this.calculator.getFieldValue(
+              `daycare_type_4_${childNumber}_has_preschool`,
+            ),
           },
-        }
+        },
       };
       return childData;
     };
@@ -191,8 +191,12 @@ class EarlyChildhoodEducationFee {
       const diff = householdSize - maxDefinedLimitNum;
       if (diff > 0) {
         return {
-          min: diff * incomeSettings.family_size_beyond_defined_multiplier_euro + incomeSettings.family_size_income_limits[`${maxDefinedLimitNum}`].min,
-          max: diff * incomeSettings.family_size_beyond_defined_multiplier_euro + incomeSettings.family_size_income_limits[`${maxDefinedLimitNum}`].max,
+          min:
+            diff * incomeSettings.family_size_beyond_defined_multiplier_euro +
+            incomeSettings.family_size_income_limits[`${maxDefinedLimitNum}`].min,
+          max:
+            diff * incomeSettings.family_size_beyond_defined_multiplier_euro +
+            incomeSettings.family_size_income_limits[`${maxDefinedLimitNum}`].max,
         };
       }
       throw new Error(`Income limits error for householdSize ${householdSize}`);
@@ -203,38 +207,38 @@ class EarlyChildhoodEducationFee {
 
       // As the form has only numbers in its type and discounts come from verbose json settings, lets map them together
       const daycareTypeMap = {
-        '1': {
+        1: {
           type: 'early_education_on_weekdays',
           careTime: {
-            '1': 'over_7_hours_percentage',
-            '2': 'over_5_and_at_most_7_hours_percentage',
-            '3': 'at_most_5_hours_percentage',
+            1: 'over_7_hours_percentage',
+            2: 'over_5_and_at_most_7_hours_percentage',
+            3: 'at_most_5_hours_percentage',
           },
         },
-        '2': {
+        2: {
           type: 'for_5_year_old',
           careTime: {
-            '1': 'over_7_hours_percentage',
-            '2': 'over_5_and_at_most_7_hours_percentage',
-            '3': 'over_4_and_at_most_5_hours_percentage',
-            '4': 'at_most_4_hours_percentage',
+            1: 'over_7_hours_percentage',
+            2: 'over_5_and_at_most_7_hours_percentage',
+            3: 'over_4_and_at_most_5_hours_percentage',
+            4: 'at_most_4_hours_percentage',
           },
         },
-        '3': {
+        3: {
           type: 'for_6_year_old',
           careTime: {
-            '1': 'over_7_hours_percentage',
-            '2': 'from_7_to_8_hours_percentage',
-            '3': 'over_5_and_at_most_7_hours_percentage',
-            '4': 'at_most_5_hours_percentage',
+            1: 'over_7_hours_percentage',
+            2: 'from_7_to_8_hours_percentage',
+            3: 'over_5_and_at_most_7_hours_percentage',
+            4: 'at_most_5_hours_percentage',
           },
         },
-        '4': {
+        4: {
           type: 'round_the_clock_care',
           careTime: {
-            '1': 'from_161_hours_percentage',
-            '2': 'from_101_to_160_hours_percentage',
-            '3': 'from_61_to_100_hours_percentage',
+            1: 'from_161_hours_percentage',
+            2: 'from_101_to_160_hours_percentage',
+            3: 'from_61_to_100_hours_percentage',
           },
         },
       };
@@ -242,7 +246,10 @@ class EarlyChildhoodEducationFee {
       let hasRoundTheClockCareWithPreschool = false;
 
       // If the type is round the clock care and the child is in preschool, apply bigger discount
-      if (daycareTypeKey === 'round_the_clock_care' && child.daycareTypeData[child.daycareType].roundTheClockCareWithPreschool) {
+      if (
+        daycareTypeKey === 'round_the_clock_care' &&
+        child.daycareTypeData[child.daycareType].roundTheClockCareWithPreschool
+      ) {
         daycareTypeKey = 'round_the_clock_care_with_preschool';
         hasRoundTheClockCareWithPreschool = true;
       }
@@ -258,7 +265,7 @@ class EarlyChildhoodEducationFee {
 
       // If the free days are within 4-12 days, there's a discount based on day count.
       if (freeDaysNum >= 4 && freeDaysNum <= 12) {
-        freeDayMultiplier = (100 - (Number(discounts.free_day_percentage) * Number(freeDays))) / 100;
+        freeDayMultiplier = (100 - Number(discounts.free_day_percentage) * Number(freeDays)) / 100;
       }
 
       const totalMultiplier = carePaymentMultiplier * freeDayMultiplier;
@@ -275,8 +282,17 @@ class EarlyChildhoodEducationFee {
 
       // If there are more than one child, minimum household minimum size grows too.
       const slots = this.calculator.getElement('slots_nth_child');
-      if (this.calculator.getFieldValue('household_size') !== null && slots.children.length && slots.children.length + 2 > Number(this.calculator.getFieldValue('household_size'))) {
-        errorMessages.push(...this.calculator.getError('household_size', 'household_size_is_too_small_for_child_count', { minValue: slots.children.length + 2, childCount: slots.children.length + 1 }));
+      if (
+        this.calculator.getFieldValue('household_size') !== null &&
+        slots.children.length &&
+        slots.children.length + 2 > Number(this.calculator.getFieldValue('household_size'))
+      ) {
+        errorMessages.push(
+          ...this.calculator.getError('household_size', 'household_size_is_too_small_for_child_count', {
+            minValue: slots.children.length + 2,
+            childCount: slots.children.length + 1,
+          }),
+        );
       }
 
       errorMessages.push(...this.calculator.validateBasics('gross_income_per_month'));
@@ -287,7 +303,7 @@ class EarlyChildhoodEducationFee {
       // Check other children
       for (let i = 0; i < slots.children.length; i++) {
         const child = slots.children[i];
-        if (child.dataset && child.dataset.slotNumber) {
+        if (child.dataset?.slotNumber) {
           errorMessages.push(...validateChildBasics(child.dataset.slotNumber));
         }
       }
@@ -297,7 +313,7 @@ class EarlyChildhoodEducationFee {
         return {
           error: {
             title: this.t('missing_input'),
-            message: errorMessages
+            message: errorMessages,
           },
         };
       }
@@ -315,7 +331,7 @@ class EarlyChildhoodEducationFee {
       // Get values for other children
       for (let i = 0; i < slots.children.length; i++) {
         const child = slots.children[i];
-        if (child.dataset && child.dataset.slotNumber) {
+        if (child.dataset?.slotNumber) {
           const childNumber = child.dataset.slotNumber;
           children.push(getChildData(childNumber));
         }
@@ -374,12 +390,22 @@ class EarlyChildhoodEducationFee {
             children[i].payment = children[i].discounts.totalMultiplier * paymentForYoungest;
             break;
           case 1: // Second youngest child gets sibling discount for second youngest
-            children[i].payment = children[i].discounts.totalMultiplier * paymentForYoungest * (Number(parsedSettings.child_2_percent) / 100);
-            siblingDiscount.push(this.t('second_youngest_child_sibling_discount', { discount: parsedSettings.child_2_percent }));
+            children[i].payment =
+              children[i].discounts.totalMultiplier *
+              paymentForYoungest *
+              (Number(parsedSettings.child_2_percent) / 100);
+            siblingDiscount.push(
+              this.t('second_youngest_child_sibling_discount', { discount: parsedSettings.child_2_percent }),
+            );
             break;
           default: // All other children get even bigger discount
-            children[i].payment = children[i].discounts.totalMultiplier * paymentForYoungest * (Number(parsedSettings.child_n_percent) / 100);
-            siblingDiscount.push(this.t('nth_youngest_child_sibling_discount', { discount: parsedSettings.child_n_percent }));
+            children[i].payment =
+              children[i].discounts.totalMultiplier *
+              paymentForYoungest *
+              (Number(parsedSettings.child_n_percent) / 100);
+            siblingDiscount.push(
+              this.t('nth_youngest_child_sibling_discount', { discount: parsedSettings.child_n_percent }),
+            );
             break;
         }
         children[i].paymentRounded = Math.round(children[i].payment);
@@ -397,11 +423,13 @@ class EarlyChildhoodEducationFee {
         const careTypeAndcareTime = `${this.t(`daycare_type_${daycareType}`)}: ${this.t(`daycare_type_${daycareType}_caretime_${careTime}`)}`;
 
         const subtotal = {
-          title: (i === 0) ? this.t('youngest_child_title') : this.t('nth_child_title'),
+          title: i === 0 ? this.t('youngest_child_title') : this.t('nth_child_title'),
           has_details: true,
           details: [careTypeAndcareTime].concat(siblingDiscount),
           sum: this.t('receipt_subtotal_euros_per_month', { value: children[i].paymentRounded }),
-          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: children[i].paymentRounded }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+            value: children[i].paymentRounded,
+          }),
         };
         if (freeDays && Number(freeDays) > 0) {
           let freeDaysNote = `${this.t('daycare_free_days')}: ${freeDays}`;
@@ -411,7 +439,11 @@ class EarlyChildhoodEducationFee {
           subtotal.details.push(freeDaysNote);
         }
         if (paymentWasRoundedDown) {
-          subtotal.details.push(this.t('receipt_family_estimated_payment_explanation_min', { minimum_payment_euro: parsedSettings.minimum_payment_euro }));
+          subtotal.details.push(
+            this.t('receipt_family_estimated_payment_explanation_min', {
+              minimum_payment_euro: parsedSettings.minimum_payment_euro,
+            }),
+          );
         }
         if (hasRoundTheClockCareWithPreschool) {
           subtotal.details.push(this.t('daycare_has_preschool'));
@@ -432,7 +464,10 @@ class EarlyChildhoodEducationFee {
       // If total sum is below minimum payment limit, round it to 0 and tell user about it.
       if (sum < parsedSettings.minimum_payment_euro) {
         sum = 0;
-        totalExplanation = this.t('receipt_family_estimated_payment_explanation_min', { minimum_payment_euro: parsedSettings.minimum_payment_euro }) + totalExplanation;
+        totalExplanation =
+          this.t('receipt_family_estimated_payment_explanation_min', {
+            minimum_payment_euro: parsedSettings.minimum_payment_euro,
+          }) + totalExplanation;
       }
       totalExplanation += this.t('receipt_family_estimated_payment_explanation');
 
@@ -451,10 +486,7 @@ class EarlyChildhoodEducationFee {
         },
       };
 
-      const receipt = this.calculator.getPartialRender(
-        '{{>receipt}}',
-        receiptData,
-      );
+      const receipt = this.calculator.getPartialRender('{{>receipt}}', receiptData);
 
       return {
         receipt,
@@ -537,7 +569,6 @@ class EarlyChildhoodEducationFee {
 
       // Focus the first dynamic item in new child for accessibility.
       newChildElem.querySelector('input').focus();
-
     };
 
     // Prepare calculator for translations

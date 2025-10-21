@@ -6,26 +6,24 @@ class HelsinkiBenefitAmountEstimate {
     this.id = id;
     const config = JSON.parse(settings);
 
-    const checkConfiguration =  () => {
+    const checkConfiguration = () => {
       const NEEDED_CONFIG_KEYS = [
         'HELSINKI_BENEFIT_MAX_AMOUNT_WITH_PAY_SUBSIDY',
         'HELSINKI_BENEFIT_MAX_AMOUNT_WITHOUT_PAY_SUBSIDY',
         'PAY_SUBSIDY_PERCENTAGES',
         'PAY_SUBSIDY_AMOUNT_MAX_LIMIT',
         'STATE_AID_PERCENTAGES',
-        'SALARY_OTHER_EXPENSES_PERCENTAGE'
+        'SALARY_OTHER_EXPENSES_PERCENTAGE',
       ];
-      if(!NEEDED_CONFIG_KEYS.every((setting) =>
-          Object.keys(config).includes(setting)
-      )) {
+      if (!NEEDED_CONFIG_KEYS.every((setting) => Object.keys(config).includes(setting))) {
         console.error('Missing Drupal settings. Calculator won´t work!');
       }
 
-      if(config.PAY_SUBSIDY_PERCENTAGES[0] !== 0) {
+      if (config.PAY_SUBSIDY_PERCENTAGES[0] !== 0) {
         console.error('First index of setting PAY_SUBSIDY_PERCENTAGES must be 0!');
       }
 
-      if(config.PAY_SUBSIDY_AMOUNT_MAX_LIMIT[0] !== 999999) {
+      if (config.PAY_SUBSIDY_AMOUNT_MAX_LIMIT[0] !== 999999) {
         console.error('First index of setting PAY_SUBSIDY_AMOUNT_MAX_LIMIT must be 999999!');
       }
     };
@@ -34,17 +32,14 @@ class HelsinkiBenefitAmountEstimate {
 
     const getFormData = () => form.getFormData(this.id, this.t, config);
 
-    const isEmployeeAssociation = () =>
-      this.calculator.getFieldValue('company_type') === 'association';
+    const isEmployeeAssociation = () => this.calculator.getFieldValue('company_type') === 'association';
 
-    const isEmployeeBusiness = () =>
-      this.calculator.getFieldValue('company_type') === 'business';
+    const isEmployeeBusiness = () => this.calculator.getFieldValue('company_type') === 'business';
 
     const hasBusinessActivities = () =>
       isEmployeeAssociation() && this.calculator.getFieldValue('association_has_business_activities');
 
-    const getMonthlyPay = () =>
-      parseInt(this.calculator.getFieldValue('monthly_pay'), 10);
+    const getMonthlyPay = () => parseInt(this.calculator.getFieldValue('monthly_pay'), 10);
 
     const getVacationMoney = () => {
       const vacationMoney = parseInt(this.calculator.getFieldValue('vacation_money'), 10);
@@ -55,27 +50,24 @@ class HelsinkiBenefitAmountEstimate {
       this.calculator.getElement('vacation_money').dataset.max = Math.floor(getMonthlyPay() / 2 / 11);
     };
 
-    const getOtherExpenses = () =>
-      config.SALARY_OTHER_EXPENSES_PERCENTAGE * getMonthlyPay();
+    const getOtherExpenses = () => config.SALARY_OTHER_EXPENSES_PERCENTAGE * getMonthlyPay();
 
     const getSalaryWithExpenses = () =>
-      [
-        getMonthlyPay(),
-        getVacationMoney(),
-      ].reduce(
+      [getMonthlyPay(), getVacationMoney()].reduce(
         (acc, value) => parseInt(acc, 10) + parseInt(value, 10),
-        getOtherExpenses()
+        getOtherExpenses(),
       );
 
     const isPaySubsidyGranted = () =>
       this.calculator.getFieldValue('pay_subsidy_granted') === 'pay_subsidy_granted_true';
 
-    const getPaySubsidyPercentageOption = () =>
-      this.calculator.getFieldValue('pay_subsidy_percentage') || 0;
+    const getPaySubsidyPercentageOption = () => this.calculator.getFieldValue('pay_subsidy_percentage') || 0;
 
     const getPaySubsidyPercentage = () => {
       const valuePaySubsidyPercentage = getPaySubsidyPercentageOption();
-      return isPaySubsidyGranted() ? config.PAY_SUBSIDY_PERCENTAGES[valuePaySubsidyPercentage] : config.PAY_SUBSIDY_PERCENTAGES[0];
+      return isPaySubsidyGranted()
+        ? config.PAY_SUBSIDY_PERCENTAGES[valuePaySubsidyPercentage]
+        : config.PAY_SUBSIDY_PERCENTAGES[0];
     };
 
     const getPaySubsidyAmount = () => {
@@ -92,33 +84,33 @@ class HelsinkiBenefitAmountEstimate {
     const getStateAidPercentage = () => {
       const paySubsidyPercentage = getPaySubsidyPercentage();
       // Associations with business activities are treated like businesses
-      if(isEmployeeBusiness() || hasBusinessActivities()) {
+      if (isEmployeeBusiness() || hasBusinessActivities()) {
         // No pay subsidy, get lower state aid percentage
-        if(!isPaySubsidyGranted()) {
+        if (!isPaySubsidyGranted()) {
           return config.STATE_AID_PERCENTAGES[1];
         }
-        if(paySubsidyPercentage === config.PAY_SUBSIDY_PERCENTAGES[1]){
+        if (paySubsidyPercentage === config.PAY_SUBSIDY_PERCENTAGES[1]) {
           return config.STATE_AID_PERCENTAGES[1];
         }
-        if(paySubsidyPercentage === config.PAY_SUBSIDY_PERCENTAGES[2]){
+        if (paySubsidyPercentage === config.PAY_SUBSIDY_PERCENTAGES[2]) {
           return config.STATE_AID_PERCENTAGES[2];
-        };
+        }
       }
       // Associations always get the highest state aid percentage
       return config.STATE_AID_PERCENTAGES[0];
     };
 
-    const getStateAidAmount = () =>
-      getStateAidPercentage() * getSalaryWithExpenses();
+    const getStateAidAmount = () => getStateAidPercentage() * getSalaryWithExpenses();
 
-    const getHelsinkiBenefitAmount = () =>
-      getStateAidAmount() - getPaySubsidyAmount();
+    const getHelsinkiBenefitAmount = () => getStateAidAmount() - getPaySubsidyAmount();
 
     const togglePaySubsidyPercentageGroup = (showPercentageGroup = false) => {
       if (showPercentageGroup) {
         this.calculator.showGroup('pay_subsidy_granted_group');
         // Pre-select the first radio button for percentage option if pay subsidy is selected
-        if (!this.calculator.getElement('pay_subsidy_percentage').querySelectorAll('input[type="radio"]:checked').length) {
+        if (
+          !this.calculator.getElement('pay_subsidy_percentage').querySelectorAll('input[type="radio"]:checked').length
+        ) {
           this.calculator.getElement('pay_subsidy_percentage_1').checked = true;
         }
       } else {
@@ -128,8 +120,7 @@ class HelsinkiBenefitAmountEstimate {
       }
     };
 
-    const formatCurrency = (number) =>
-      this.calculator.formatFinnishEuroCents(number);
+    const formatCurrency = (number) => this.calculator.formatFinnishEuroCents(number);
 
     const debugUpdate = () => {
       if (process.env.NODE_ENV === 'development') {
@@ -146,10 +137,10 @@ class HelsinkiBenefitAmountEstimate {
           paySubsidyPercentage: getPaySubsidyPercentage(),
           stateAidPercentage: getStateAidPercentage(),
           stateAidAmount: getStateAidAmount(),
-          helsinkiBenefitAmount: getHelsinkiBenefitAmount()
+          helsinkiBenefitAmount: getHelsinkiBenefitAmount(),
         };
         console.debug('\n\n###################');
-        Object.keys(data).forEach(key => {
+        Object.keys(data).forEach((key) => {
           const value = data[key];
           console.debug(key, value);
         });
@@ -181,7 +172,7 @@ class HelsinkiBenefitAmountEstimate {
       errorMessages.push(...this.calculator.validateBasics('pay_subsidy_granted'));
 
       // Pay subsidy percentage is only required when pay subsidy is granted
-      if(isPaySubsidyGranted()) {
+      if (isPaySubsidyGranted()) {
         errorMessages.push(...this.calculator.validateBasics('pay_subsidy_percentage'));
       }
 
@@ -189,7 +180,7 @@ class HelsinkiBenefitAmountEstimate {
         return {
           error: {
             title: this.t('missing_input'),
-            message: errorMessages
+            message: errorMessages,
           },
         };
       }
@@ -199,8 +190,8 @@ class HelsinkiBenefitAmountEstimate {
         return {
           error: {
             title: this.t('error_calculation_title'),
-            message: this.t('error_calculation_message')
-          }
+            message: this.t('error_calculation_message'),
+          },
         };
       }
 
@@ -210,14 +201,16 @@ class HelsinkiBenefitAmountEstimate {
         details: [
           this.t('subtotal_details_1', { value: formatCurrency(getMonthlyPay()) }),
           this.t('subtotal_details_2', { value: formatCurrency(getVacationMoney()) }),
-          this.t('subtotal_details_3', { value: formatCurrency(getOtherExpenses()), percentage: config.SALARY_OTHER_EXPENSES_PERCENTAGE * 100 }),
+          this.t('subtotal_details_3', {
+            value: formatCurrency(getOtherExpenses()),
+            percentage: config.SALARY_OTHER_EXPENSES_PERCENTAGE * 100,
+          }),
         ],
       };
 
-      if(isPaySubsidyGranted()) {
+      if (isPaySubsidyGranted()) {
         subtotals.details.push(this.t('subtotal_details_4', { value: getPaySubsidyPercentage() * 100 }));
       }
-
 
       const receiptData = {
         id: this.id,
@@ -225,12 +218,15 @@ class HelsinkiBenefitAmountEstimate {
         total_prefix: this.t('total_prefix'),
         // Total value is always at least zero but no more than HELSINKI_BENEFIT_MAX_AMOUNT_W...
         total_value: formatCurrency(
-          Math.max(0,
+          Math.max(
+            0,
             Math.min(
               helsinkiBenefitResult,
-              isPaySubsidyGranted() ?
-                config.HELSINKI_BENEFIT_MAX_AMOUNT_WITH_PAY_SUBSIDY : config.HELSINKI_BENEFIT_MAX_AMOUNT_WITHOUT_PAY_SUBSIDY)
-          )
+              isPaySubsidyGranted()
+                ? config.HELSINKI_BENEFIT_MAX_AMOUNT_WITH_PAY_SUBSIDY
+                : config.HELSINKI_BENEFIT_MAX_AMOUNT_WITHOUT_PAY_SUBSIDY,
+            ),
+          ),
         ),
         total_suffix: this.t('total_suffix'),
         total_explanation: this.t('total_explanation'),
@@ -245,25 +241,18 @@ class HelsinkiBenefitAmountEstimate {
             subtotals: {
               title: this.t('additional_details_title'),
               has_details: true,
-              details: [
-                this.t('additional_details_text_1'),
-                this.t('additional_details_text_2'),
-              ]
-            }
-          }
+              details: [this.t('additional_details_text_1'), this.t('additional_details_text_2')],
+            },
+          },
         ],
       };
 
-      const receipt = this.calculator.getPartialRender(
-        '{{>receipt}}',
-        receiptData,
-      );
+      const receipt = this.calculator.getPartialRender('{{>receipt}}', receiptData);
 
       return {
         receipt,
         ariaLive: this.t('receipt_aria_live', { payment: 1234 }),
       };
-
     };
 
     const eventHandlers = {

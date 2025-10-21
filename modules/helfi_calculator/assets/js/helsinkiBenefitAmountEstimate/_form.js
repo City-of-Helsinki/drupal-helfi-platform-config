@@ -7,7 +7,7 @@ function getFormData(id, t, config) {
         heading: {
           text: t('heading_employer'),
           level: 3,
-        }
+        },
       },
       {
         radio: {
@@ -38,15 +38,14 @@ function getFormData(id, t, config) {
           items: [
             {
               paragraph: {
-                text: ''
-              }
+                text: '',
+              },
             },
             {
               checkbox: {
                 id: 'association_has_business_activities',
                 label: t('label_association_has_business_activities'),
                 helper_text: t('helper_text_association_has_business_activities'),
-
               },
             },
           ],
@@ -56,7 +55,7 @@ function getFormData(id, t, config) {
         heading: {
           text: t('heading_employee'),
           level: 3,
-        }
+        },
       },
       {
         input_integer: {
@@ -88,12 +87,12 @@ function getFormData(id, t, config) {
         heading: {
           text: t('heading_pay_subsidy_information'),
           level: 3,
-        }
+        },
       },
       {
         paragraph: {
-          text: t('text_pay_subsidy_information')
-        }
+          text: t('text_pay_subsidy_information'),
+        },
       },
       {
         radio: {
@@ -113,8 +112,8 @@ function getFormData(id, t, config) {
               label: t('label_pay_subsidy_true'),
               value: 'pay_subsidy_granted_true',
             },
-          ]
-        }
+          ],
+        },
       },
       {
         group: {
@@ -131,13 +130,13 @@ function getFormData(id, t, config) {
                   {
                     name: 'pay_subsidy_percentage',
                     item_id: 'pay_subsidy_percentage_1',
-                    label: t('label_pay_subsidy_percentage_1', {value: config.PAY_SUBSIDY_PERCENTAGES[1] * 100}),
+                    label: t('label_pay_subsidy_percentage_1', { value: config.PAY_SUBSIDY_PERCENTAGES[1] * 100 }),
                     value: 1,
                   },
                   {
                     name: 'pay_subsidy_percentage',
                     item_id: 'pay_subsidy_percentage_2',
-                    label: t('label_pay_subsidy_percentage_2', {value: config.PAY_SUBSIDY_PERCENTAGES[2] * 100}),
+                    label: t('label_pay_subsidy_percentage_2', { value: config.PAY_SUBSIDY_PERCENTAGES[2] * 100 }),
                     value: 2,
                   },
                 ],
@@ -146,7 +145,7 @@ function getFormData(id, t, config) {
           ],
         },
       },
-    ]
+    ],
   };
 }
 

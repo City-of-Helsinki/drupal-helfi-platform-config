@@ -14,12 +14,12 @@ const translations = {
   gross_income_per_month: {
     fi: 'Perheen bruttotulot kuukaudessa',
     sv: 'Familjens bruttoinkomster per månad',
-    en: 'Family\'s gross income per month',
+    en: "Family's gross income per month",
   },
   gross_income_per_month_explanation: {
     fi: 'Koko perheen yhteenlasketut ansio- ja pääomatulot sekä etuudet ennen verojen vähentämistä. Jos jätät kentän tyhjäksi, lasketaan arvio korkeimman maksun mukaisesti.',
     sv: 'Hela familjens sammanlagda förvärvs- och kapitalinkomster samt förmåner före skatteavdrag. Om du lämnar fältet tomt beräknas bedömningen enligt den högsta avgiften.',
-    en: 'The whole family\'s total income from earnings, capital income and benefits before taxes. If you leave the field blank, the estimate will be calculated using the highest fee.',
+    en: "The whole family's total income from earnings, capital income and benefits before taxes. If you leave the field blank, the estimate will be calculated using the highest fee.",
   },
   monthly_usage: {
     fi: 'Palvelutunteja kuukaudessa',

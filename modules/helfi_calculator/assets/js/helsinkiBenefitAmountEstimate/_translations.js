@@ -151,7 +151,7 @@ const translations = {
     sv: 'Lönesubventionen som beviljats för anställningen täcker ${value} % av lönekostnaderna.',
     en: 'The pay subsidy granted for the employment covers ${value} % of the salary costs.',
   },
-  additional_details_title:{
+  additional_details_title: {
     fi: 'Lisähuomiot',
     sv: 'Ytterligare anmärkningar',
     en: 'Additional information',
@@ -164,18 +164,18 @@ const translations = {
   additional_details_text_2: {
     fi: 'Laskuri ei tue tapausta, jossa palkkatuen määrä on 100 prosenttia työntekijän palkkakustannuksista 65 prosentin työajalla.',
     sv: 'Beräknaren stöder inte fall där lönesubventionen är 100 procent av anställningskostnaderna vid 65 procents arbetstid.',
-    en: 'The calculator does not support cases where the pay subsidy amount is 100 percent of the employee\'s salary costs with 65 percent working time.',
+    en: "The calculator does not support cases where the pay subsidy amount is 100 percent of the employee's salary costs with 65 percent working time.",
   },
-  error_calculation_title:{
+  error_calculation_title: {
     fi: 'Laskenta epäonnistui.',
     sv: 'Uppskattningen misslyckades.',
     en: 'Calculation failed.',
   },
-  error_calculation_message:{
+  error_calculation_message: {
     fi: 'Ole hyvä ja tarkista syöttämäsi tiedot.',
     sv: 'Var god och kontrollera de uppgifter du angett.',
     en: 'Please check the information you have entered.',
-  }
+  },
 };
 
 export default translations;

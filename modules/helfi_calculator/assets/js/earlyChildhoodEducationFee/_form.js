@@ -1,4 +1,3 @@
-
 // The following getFormData uses dynamic children, so we need to define them first.
 const dynamicChildData = (childNumber, t) => {
   const child = {
@@ -7,9 +6,9 @@ const dynamicChildData = (childNumber, t) => {
     items: [
       {
         legend: {
-          text: (childNumber === 1) ? t('youngest_child_title') : t('nth_child_title', { childNumber }),
+          text: childNumber === 1 ? t('youngest_child_title') : t('nth_child_title', { childNumber }),
           level: 4,
-        }
+        },
       },
       {
         radio: {
@@ -52,7 +51,7 @@ const dynamicChildData = (childNumber, t) => {
             {
               paragraph: {
                 text: t('daycare_type_1_explanation'),
-              }
+              },
             },
             {
               radio: {
@@ -104,7 +103,7 @@ const dynamicChildData = (childNumber, t) => {
             {
               paragraph: {
                 text: t('daycare_type_2_explanation'),
-              }
+              },
             },
             {
               radio: {
@@ -162,7 +161,7 @@ const dynamicChildData = (childNumber, t) => {
             {
               paragraph: {
                 text: t('daycare_type_3_explanation'),
-              }
+              },
             },
             {
               radio: {
@@ -220,7 +219,7 @@ const dynamicChildData = (childNumber, t) => {
             {
               paragraph: {
                 text: t('daycare_type_4_explanation'),
-              }
+              },
             },
             {
               radio: {
@@ -253,7 +252,7 @@ const dynamicChildData = (childNumber, t) => {
               checkbox: {
                 id: `daycare_type_4_${childNumber}_has_preschool`,
                 label: t('daycare_has_preschool'),
-              }
+              },
             },
           ],
         },
@@ -275,7 +274,7 @@ function getFormData(id, t) {
         heading: {
           text: t('family_info'),
           level: 3,
-        }
+        },
       },
       {
         input_integer: {
@@ -304,19 +303,17 @@ function getFormData(id, t) {
         heading: {
           text: t('child_info'),
           level: 3,
-        }
+        },
       },
       {
         paragraph: {
           text: t('child_info_paragraph'),
-        }
+        },
       },
       {
         dynamic_area: {
           id: 'first_child',
-          dynamic_slots: [
-            dynamicChildData(1, t),
-          ],
+          dynamic_slots: [dynamicChildData(1, t)],
         },
       },
       {
@@ -332,7 +329,7 @@ function getFormData(id, t) {
       {
         hr: {},
       },
-    ]
+    ],
   };
 }
 

@@ -1,5 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
-
 const globalTranslations = {
   has_required_fields: {
     fi: 'Pakolliset kentät on merkitty tähdellä ${required}.',

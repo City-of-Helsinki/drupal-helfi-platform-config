@@ -2,7 +2,6 @@ import form from './_form';
 import translations from './_translations';
 
 class HomeCareClientFee {
-
   // Separate function for calculating client fee, so that it can be used in homeCareServiceVoucher.js too
   // eslint-disable-next-line class-methods-use-this
   static calculateClientFee(
@@ -14,7 +13,6 @@ class HomeCareClientFee {
     calculatorSettings,
     printDebug = false,
   ) {
-
     // Finds the smallest matching value >= key from object
     function getMinimumRange(value, range) {
       const rangeKeys = Object.keys(range).reverse();
@@ -58,10 +56,10 @@ class HomeCareClientFee {
 
     if (printDebug) {
       console.debug(
-        `maximumPayment\t${  maximumPayment}`,
-        `\ngrossIncomeLimit\t${  grossIncomeLimit}`,
-        `\npaymentPercentage\t${  paymentPercentage}`,
-        `\nreferencePayment\t${  referencePayment}`,
+        `maximumPayment\t${maximumPayment}`,
+        `\ngrossIncomeLimit\t${grossIncomeLimit}`,
+        `\npaymentPercentage\t${paymentPercentage}`,
+        `\nreferencePayment\t${referencePayment}`,
       );
     }
 
@@ -214,9 +212,10 @@ class HomeCareClientFee {
     };
     // */
     // Form content
-    const getFormData = () => form.getFormData(this.id, this.t, {
-      firstPerWeekPrice: parsedSettings.shopping_service_prices.first_per_week,
-    });
+    const getFormData = () =>
+      form.getFormData(this.id, this.t, {
+        firstPerWeekPrice: parsedSettings.shopping_service_prices.first_per_week,
+      });
 
     const update = () => {
       const fields = [
@@ -255,7 +254,7 @@ class HomeCareClientFee {
         return {
           error: {
             title: this.t('missing_input'),
-            message: errorMessages
+            message: errorMessages,
           },
         };
       }
@@ -270,7 +269,6 @@ class HomeCareClientFee {
       const shoppingService = this.calculator.getFieldValue('shopping_service');
       // Meal service is set earlier
       const mealServicePerWeek = Number(this.calculator.getFieldValue('meal_service_per_week'));
-
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // Calculate results
@@ -306,7 +304,9 @@ class HomeCareClientFee {
         has_details: false,
         details: [],
         sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(payment) }),
-        sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(payment) }),
+        sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+          value: this.calculator.formatEuroCents(payment),
+        }),
       };
 
       if (householdSize >= 2) {
@@ -324,20 +324,22 @@ class HomeCareClientFee {
         const householdSizeRange = this.calculator.getMinimumRange(householdSize, parsedSettings.safetyphone_limits);
 
         // If the user has not entered a value to income field, we'll calculate the value as max.
-        const calculatedIncomePerMonth = (grossIncomePerMonthRaw === null) ? Infinity : grossIncomePerMonth;
+        const calculatedIncomePerMonth = grossIncomePerMonthRaw === null ? Infinity : grossIncomePerMonth;
         // Get the payment based on income and found range.
         safetyphonePayment = this.calculator.getMinimumRange(calculatedIncomePerMonth, householdSizeRange);
 
         // Add details to receipt
-        subtotals.push(
-          {
-            title: this.t('safetyphone_heading'),
-            has_details: false,
-            details: [],
-            sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(safetyphonePayment) }),
-            sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(safetyphonePayment) }),
-          }
-        );
+        subtotals.push({
+          title: this.t('safetyphone_heading'),
+          has_details: false,
+          details: [],
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(safetyphonePayment),
+          }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+            value: this.calculator.formatEuroCents(safetyphonePayment),
+          }),
+        });
       }
 
       // 6. If shopping service is selected, calculate value for it.
@@ -363,11 +365,17 @@ class HomeCareClientFee {
               delivery_count_per_month: shoppingServicePerWeek * 4,
             }),
             this.t('receipt_shopping_service_explanation', {
-              first_per_week: this.calculator.formatFinnishEuroCents(parsedSettings.shopping_service_prices.first_per_week),
-            })
+              first_per_week: this.calculator.formatFinnishEuroCents(
+                parsedSettings.shopping_service_prices.first_per_week,
+              ),
+            }),
           ],
-          sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(shoppingPaymentPerMonth) }),
-          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(shoppingPaymentPerMonth) }),
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(shoppingPaymentPerMonth),
+          }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+            value: this.calculator.formatEuroCents(shoppingPaymentPerMonth),
+          }),
         });
       }
 
@@ -378,7 +386,6 @@ class HomeCareClientFee {
       if (mealService === '1') {
         // Calculate meal price
         mealPaymentPerWeek = mealServicePerWeek * parsedSettings.meal_service_prices.lunch;
-
 
         // Delivery price is based on meal amount per week, either 1 or 2 deliveries
         if (mealServicePerWeek <= parsedSettings.meal_service_prices.max_meals_for_single_delivery_per_week) {
@@ -391,44 +398,44 @@ class HomeCareClientFee {
         mealPaymentPerMonth = mealPaymentPerWeek * 4;
 
         // Add details to receipt
-        subtotals.push(
-          {
-            title: this.t('meal_service_heading'),
-            has_details: true,
-            details: [
-              this.t(
-                (mealServicePerWeek === 1) ?
-                  'receipt_meal_service_count_single' :
-                  'receipt_meal_service_count_multiple',
-                {
-                  meals_per_week: mealServicePerWeek,
-                  meals_per_month: mealServicePerWeek * 4,
-                }
-              ),
-              this.t('receipt_meal_service_price', {
-                meal_service_price: this.calculator.formatFinnishEuroCents(parsedSettings.meal_service_prices.lunch),
-                meal_deliveries_per_week: deliveriesPerWeek,
-                meal_deliveries_per_month: deliveriesPerWeek * 4,
-              }),
-              this.t(`receipt_meal_service_${deliveriesPerWeek}_delivery_price`, {
-                meal_service_delivery_price: this.calculator.formatFinnishEuroCents(parsedSettings.meal_service_prices.delivery),
-              }),
-            ],
-            sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(mealPaymentPerMonth) }),
-            sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(mealPaymentPerMonth) }),
-          }
-        );
-        additionalDetails.push(
-          {
-            title: this.t('receipt_additional_details'),
-            text: this.t('receipt_meal_service_menumat_notice',
+        subtotals.push({
+          title: this.t('meal_service_heading'),
+          has_details: true,
+          details: [
+            this.t(
+              mealServicePerWeek === 1 ? 'receipt_meal_service_count_single' : 'receipt_meal_service_count_multiple',
               {
-                menumat_price: this.calculator.formatFinnishEuroCents(parsedSettings.meal_service_prices.menumat.lunch),
-                menumat_device_price: this.calculator.formatFinnishEuroCents(parsedSettings.meal_service_prices.menumat.device_per_day),
-              }
-            )
-          }
-        );
+                meals_per_week: mealServicePerWeek,
+                meals_per_month: mealServicePerWeek * 4,
+              },
+            ),
+            this.t('receipt_meal_service_price', {
+              meal_service_price: this.calculator.formatFinnishEuroCents(parsedSettings.meal_service_prices.lunch),
+              meal_deliveries_per_week: deliveriesPerWeek,
+              meal_deliveries_per_month: deliveriesPerWeek * 4,
+            }),
+            this.t(`receipt_meal_service_${deliveriesPerWeek}_delivery_price`, {
+              meal_service_delivery_price: this.calculator.formatFinnishEuroCents(
+                parsedSettings.meal_service_prices.delivery,
+              ),
+            }),
+          ],
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(mealPaymentPerMonth),
+          }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+            value: this.calculator.formatEuroCents(mealPaymentPerMonth),
+          }),
+        });
+        additionalDetails.push({
+          title: this.t('receipt_additional_details'),
+          text: this.t('receipt_meal_service_menumat_notice', {
+            menumat_price: this.calculator.formatFinnishEuroCents(parsedSettings.meal_service_prices.menumat.lunch),
+            menumat_device_price: this.calculator.formatFinnishEuroCents(
+              parsedSettings.meal_service_prices.menumat.device_per_day,
+            ),
+          }),
+        });
       }
 
       // console.log(
@@ -460,10 +467,7 @@ class HomeCareClientFee {
         },
       };
 
-      const receipt = this.calculator.getPartialRender(
-        '{{>receipt}}',
-        receiptData,
-      );
+      const receipt = this.calculator.getPartialRender('{{>receipt}}', receiptData);
 
       return {
         receipt,

@@ -44,8 +44,7 @@ class ContinuousHousingServiceVoucher {
     // Form content
     const getFormData = () => form.getFormData(this.id, this.t);
 
-    const update = () => {
-    };
+    const update = () => {};
 
     const validate = () => {
       const errorMessages = [];
@@ -60,7 +59,7 @@ class ContinuousHousingServiceVoucher {
         return {
           error: {
             title: this.t('missing_input'),
-            message: errorMessages
+            message: errorMessages,
           },
         };
       }
@@ -72,8 +71,7 @@ class ContinuousHousingServiceVoucher {
       const serviceProviderPrice = Number(this.calculator.getFieldValue('service_provider_price')) * (365 / 12);
 
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // Calculate results
+      // Calculate results.
 
       const voucherValue = this.calculator.getMinimumRange(netIncomePerMonth, parsedSettings.voucher_from_net_income);
       const selfPayment = Math.max(0, serviceProviderPrice - voucherValue);
@@ -93,15 +91,23 @@ class ContinuousHousingServiceVoucher {
           title: this.t('receipt_subtotal_full_price'),
           has_details: false,
           details: [],
-          sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(serviceProviderPrice) }),
-          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(serviceProviderPrice) }),
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(serviceProviderPrice),
+          }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+            value: this.calculator.formatEuroCents(serviceProviderPrice),
+          }),
         },
         {
           title: this.t('receipt_subtotal_city_price'),
           has_details: false,
           details: [],
-          sum: this.t('receipt_subtotal_euros_per_month', { value: this.calculator.formatFinnishEuroCents(voucherValue) }),
-          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', { value: this.calculator.formatEuroCents(voucherValue) }),
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(voucherValue),
+          }),
+          sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
+            value: this.calculator.formatEuroCents(voucherValue),
+          }),
         },
       );
 
@@ -112,7 +118,12 @@ class ContinuousHousingServiceVoucher {
         },
         {
           title: null,
-          text: this.t('receipt_additional_details_1', { link: this.t('link', { link: this.t('receipt_additional_details_1_link'), url: this.t('receipt_additional_details_1_url') }) }),
+          text: this.t('receipt_additional_details_1', {
+            link: this.t('link', {
+              link: this.t('receipt_additional_details_1_link'),
+              url: this.t('receipt_additional_details_1_url'),
+            }),
+          }),
         },
         {
           title: null,
@@ -135,10 +146,7 @@ class ContinuousHousingServiceVoucher {
         },
       };
 
-      const receipt = this.calculator.getPartialRender(
-        '{{>receipt}}',
-        receiptData,
-      );
+      const receipt = this.calculator.getPartialRender('{{>receipt}}', receiptData);
 
       return {
         receipt,

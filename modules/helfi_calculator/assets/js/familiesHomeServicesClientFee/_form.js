@@ -39,7 +39,7 @@ function getFormData(id, t) {
           helper_text: t('monthly_usage_explanation'),
         },
       },
-    ]
+    ],
   };
 }
 

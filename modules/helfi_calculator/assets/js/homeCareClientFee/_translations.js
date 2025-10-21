@@ -14,12 +14,12 @@ const translations = {
   gross_income_per_month: {
     fi: 'Talouden bruttotulot kuukaudessa',
     sv: 'Hushållets bruttoinkomster per månad',
-    en: 'Household\'s gross income per month',
+    en: "Household's gross income per month",
   },
   gross_income_per_month_explanation: {
     fi: 'Koko talouden yhteenlasketut ansio- ja pääomatulot ennen verojen vähentämistä. Tuloihin lasketaan palkka, eläke-, vuokra- ja korkotulot sekä eläkkeensaajan hoitotuki. Jos jätät kentän tyhjäksi, lasketaan arvio korkeimman maksun mukaisesti.',
     sv: 'Hela hushållets sammanlagda förvärvs- och kapitalinkomster före skatteavdrag. I inkomsterna ingår lön, pensions-, hyres och ränteinkomster samt vårdbidrag för pensionstagare. Om du lämnar fältet tomt beräknas bedömningen enligt den högsta avgiften.',
-    en: 'The entire household\'s combined income from earnings and capital income before taxes. Income includes salary, wages, pension, rental and interest income as well as care allowance for pensioners. If you leave the field blank, the estimate will be calculated using the highest fee.',
+    en: "The entire household's combined income from earnings and capital income before taxes. Income includes salary, wages, pension, rental and interest income as well as care allowance for pensioners. If you leave the field blank, the estimate will be calculated using the highest fee.",
   },
   monthly_usage: {
     fi: 'Kotihoidon tuntimäärä kuukaudessa',
@@ -139,7 +139,7 @@ const translations = {
   receipt_family_empty_income: {
     fi: 'Arvio on laskettu korkeimman maksun mukaisesti, koska et täyttänyt laskuriin talouden kuukausituloja. ',
     sv: 'Bedömningen har beräknats enligt den högsta avgiften, eftersom du inte fyllde i hushållets månadsinkomster i räknaren. ',
-    en: 'Since you did not enter the household\'s monthly income in the calculator, the estimate was calculated using the highest fee. ',
+    en: "Since you did not enter the household's monthly income in the calculator, the estimate was calculated using the highest fee. ",
   },
   receipt_family_estimated_payment_explanation: {
     fi: 'Tämä arvio on suuntaa antava. Tarkka arvo lasketaan kotihoidon päätökseen.',

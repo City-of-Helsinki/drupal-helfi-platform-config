@@ -1,4 +1,3 @@
-
 /* eslint-disable no-template-curly-in-string */
 
 const translations = {
@@ -15,12 +14,12 @@ const translations = {
   gross_income_per_month: {
     fi: 'Talouden bruttotulot kuukaudessa',
     sv: 'Hushållets bruttoinkomster per månad',
-    en: 'Household\'s gross income per month',
+    en: "Household's gross income per month",
   },
   gross_income_per_month_explanation: {
     fi: 'Koko talouden yhteenlasketut ansio- ja pääomatulot ennen verojen vähentämistä. Tuloihin lasketaan palkka, eläke-, vuokra- ja korkotulot sekä eläkkeensaajan hoitotuki. Jos jätät kentän tyhjäksi, lasketaan arvio korkeimman tulorajan mukaisesti.',
     sv: 'Hela hushållets sammanlagda förvärvs- och kapitalinkomster före skatteavdrag. I inkomsterna ingår lön, pensions-, hyres och ränteinkomster samt vårdbidrag för pensionstagare. Om du lämnar fältet tomt beräknas bedömningen enligt den högsta inkomstgränsen.',
-    en: 'The entire household\'s combined income from earnings and capital income before taxes. Income includes salary, wages, pension, rental and interest income as well as care allowance for pensioners. If you leave the field blank, the estimate will be calculated using the highest income threshold.',
+    en: "The entire household's combined income from earnings and capital income before taxes. Income includes salary, wages, pension, rental and interest income as well as care allowance for pensioners. If you leave the field blank, the estimate will be calculated using the highest income threshold.",
   },
   monthly_usage: {
     fi: 'Kotihoidon tuntimäärä kuukaudessa',
@@ -35,12 +34,12 @@ const translations = {
   service_provider_price: {
     fi: 'Palveluntuottajan tuntihinta',
     sv: 'Serviceproducentens timpris',
-    en: 'Service provider\'s hourly rate',
+    en: "Service provider's hourly rate",
   },
   service_provider_price_explanation: {
     fi: 'Valitsemasi palveluntuottajan tuntihinta kotihoidon palveluista.',
     sv: 'Timpris för den serviceproducent som du väljer för hemvård.',
-    en: 'The service provider\'s hourly rate for the home care services of your choice.',
+    en: "The service provider's hourly rate for the home care services of your choice.",
   },
 
   receipt_estimate_of_payment: {
@@ -61,7 +60,7 @@ const translations = {
   receipt_family_empty_income: {
     fi: 'Arvio on laskettu korkeimman maksun mukaisesti, koska et täyttänyt laskuriin talouden kuukausituloja. ',
     sv: 'Bedömningen har beräknats enligt den högsta avgiften eftersom du inte fyllde i hushållets månadsinkomster i räknaren. ',
-    en: 'Since you did not enter the household\'s monthly income in the calculator, the estimate was calculated using the highest fee. ',
+    en: "Since you did not enter the household's monthly income in the calculator, the estimate was calculated using the highest fee. ",
   },
   receipt_family_estimated_payment_explanation: {
     fi: 'Tämä arvio on suuntaa antava. Tarkka arvo lasketaan kotihoidon päätökseen.',
@@ -106,7 +105,7 @@ const translations = {
   receipt_voucher_value: {
     fi: 'Palvelusetelisi arvo',
     sv: 'Värde på din servicesedel',
-    en: 'Your service voucher\'s value',
+    en: "Your service voucher's value",
   },
   receipt_client_self_payment: {
     fi: 'Omavastuuosuus eli sinulle maksettavaksi jäävä asiakasmaksu',
@@ -126,12 +125,12 @@ const translations = {
   receipt_estimate_if_done_by_city: {
     fi: 'Arvio kaupungin kotihoidon asiakasmaksusta:',
     sv: 'Bedömning av klientavgiften för stadens hemvård:',
-    en: 'Estimated client fee of the city\'s home care:',
+    en: "Estimated client fee of the city's home care:",
   },
   receipt_when_done_by_city: {
     fi: 'Kaupungin kotihoidon tuottamana palvelu maksaisi',
     sv: 'Om staden producerade tjänsten skulle den kosta',
-    en: 'Provided by the city\'s home care, the service would cost',
+    en: "Provided by the city's home care, the service would cost",
   },
   receipt_aria_live: {
     fi: 'Omavastuuosuus eli sinulle maksettavaksi jäävä asiakasmaksu on ${payment} euroa kuukaudessa, lue lisätietoja lomakkeen alta.',
