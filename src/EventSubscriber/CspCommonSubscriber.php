@@ -52,6 +52,7 @@ class CspCommonSubscriber extends CspSubscriberBase {
     'data:',
   ];
   const SCRIPT_SRC = [
+    'blob:',
     'https://*.hel.fi',
   ];
   const STYLE_SRC = [

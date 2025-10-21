@@ -13,13 +13,14 @@ namespace Drupal\helfi_platform_config\EventSubscriber;
  */
 class CspSiteimproveSubscriber extends CspSubscriberBase {
 
-  const MODULE_DEPENDENCY = 'siteimprove';
-  const CONNECT_SRC = [
+  const COMMON_SRC = [
+    'https://siteimprove.com',
     'https://*.siteimprove.com',
-  ];
-  const FRAME_SRC = [
-    'https://*.siteimprove.com',
+    'https://siteimproveanalytics.com',
     'https://*.siteimproveanalytics.com',
   ];
+  const CONNECT_SRC = self::COMMON_SRC;
+  const SCRIPT_SRC = self::COMMON_SRC;
+  const FRAME_SRC = self::COMMON_SRC;
 
 }
