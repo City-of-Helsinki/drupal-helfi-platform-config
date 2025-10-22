@@ -48,10 +48,8 @@ final class ClientBuilder {
         $service->getAddress(),
       ])
       ->setHttpClientOptions([
-        'client' => [
-          'timeout' => $timeout,
-          'connect_timeout' => $connectTimeout,
-        ],
+        'timeout' => $timeout,
+        'connect_timeout' => $connectTimeout,
       ])
       ->build();
   }
