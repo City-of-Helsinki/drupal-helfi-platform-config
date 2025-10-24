@@ -19,7 +19,9 @@ use Drupal\search_api\Processor\ProcessorProperty;
  *   description = @Translation("Adds channels for a TPR service to the index"),
  *   stages = {
  *     "add_properties" = 0,
- *   }
+ *   },
+ *   locked = true,
+ *   hidden = true,
  * )
  */
 class ChannelsForService extends ProcessorPluginBase {
@@ -37,6 +39,14 @@ class ChannelsForService extends ProcessorPluginBase {
         'label' => $this->t('Channels for service'),
         'description' => $this->t('Indexes channels for a TPR service to the index'),
         'type' => 'object',
+        'nested_properties' => [
+          'id' => [
+            'type' => 'keyword',
+          ],
+          'label' => [
+            'type' => 'text',
+          ],
+        ],
         'processor_id' => $this->getPluginId(),
       ];
 

@@ -10,7 +10,7 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Drupal\tpr\ContentTranslationStatus;
+use Drupal\helfi_tpr\Entity\Unit;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,7 +22,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Adds units for a TPR service to the index"),
  *   stages = {
  *     "add_properties" = 0,
- *   }
+ *   },
+ *   locked = true,
+ *   hidden = true,
  * )
  */
 class UnitsForService extends ProcessorPluginBase {
@@ -57,6 +59,22 @@ class UnitsForService extends ProcessorPluginBase {
         'description' => $this->t('Indexes units for a TPR service to the index'),
         'type' => 'object',
         'processor_id' => $this->getPluginId(),
+        'nested_properties' => [
+          'name' => ['type' => 'text'],
+          'name_override' => ['type' => 'text'],
+          'address' => [
+            'properties' => [
+              // Only properties defined here will be indexed from the address
+              // field.
+              'address_line1' => ['type' => 'text'],
+              'address_line2' => ['type' => 'text'],
+              'postal_code' => ['type' => 'keyword'],
+              'locality' => ['type' => 'text'],
+              'country_code' => ['type' => 'keyword'],
+            ],
+          ],
+          'location' => ['type' => 'geo_point'],
+        ],
       ];
 
       $properties['units_for_service'] = new ProcessorProperty($definition);
@@ -86,11 +104,13 @@ class UnitsForService extends ProcessorPluginBase {
       $translation = $unit->getTranslation($language);
 
       $indexableValue[] = [
-        'name' => $translation->label(),
+        'name' => $translation->get('name')->value,
         'name_override' => $translation->get('name_override')->value,
-        'address' => $translation->get('address')->getValue()[0],
-        'latitude' => $translation->get('latitude')->value,
-        'longitude' => $translation->get('longitude')->value,
+        'address' => $this->getAddressValue($translation),
+        'location' => [
+          'lat' => $translation->get('latitude')->value,
+          'lon' => $translation->get('longitude')->value,
+        ],
       ];
     }
 
@@ -104,6 +124,24 @@ class UnitsForService extends ProcessorPluginBase {
     foreach ($itemFields as $itemField) {
       $itemField->addValue(array_values($indexableValue));
     }
+  }
+
+  /**
+   * Get address value from unit entity.
+   *
+   * @param \Drupal\tpr\Entity\Unit $unit
+   *   The unit translation.
+   *
+   * @return array
+   *   The address value.
+   */
+  private function getAddressValue(Unit $unit): array {
+    $definiton = $this->getPropertyDefinitions();
+    $address_definition = $definiton['units_for_service']['nested_properties']['address']['properties'];
+    $field_value = current($unit->get('address')->getValue());
+
+    // Only return properties that are defined in the address definition.
+    return array_intersect_key($field_value, $address_definition);
   }
 
 }
