@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\helfi_react_search\SupportsServiceIndexTrait;
+use Drupal\helfi_tpr\Entity\Channel;
+use Drupal\helfi_tpr\Entity\ErrandService;
+use Drupal\helfi_tpr\Entity\Service;
 use Drupal\search_api\Datasource\DatasourceInterface;
+use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
@@ -27,6 +32,26 @@ use Drupal\search_api\Processor\ProcessorProperty;
 class ChannelsForService extends ProcessorPluginBase {
 
   use SupportsServiceIndexTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function supportsIndex(IndexInterface $index) {
+    foreach ($index->getDatasources() as $datasource) {
+      $entity_type_id = $datasource->getEntityTypeId();
+
+      if (!$entity_type_id) {
+        continue;
+      }
+
+      // We support services.
+      if ($entity_type_id === 'tpr_service') {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
 
   /**
    * {@inheritdoc}
@@ -58,19 +83,36 @@ class ChannelsForService extends ProcessorPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * The relation path to channels is service -> errand_services -> channels.
    */
   public function addFieldValues(ItemInterface $item): void {
     $object = $item->getOriginalObject()->getValue();
+    assert($object instanceof Service);
     $language = $item->getLanguage();
     $indexableValue = [];
 
-    $errand_services = $object->get('errand_services')->referencedEntities();
+    // Get all errand services for the service.
+    $errand_services_field = $object->get('errand_services');
+    assert($errand_services_field instanceof EntityReferenceFieldItemListInterface);
+    $errand_services = $errand_services_field->referencedEntities();
+
     foreach ($errand_services as $errand_service) {
-      $channels = $errand_service->get('channels')->referencedEntities();
+      assert($errand_service instanceof ErrandService);
+
+      // Get all channels for the errand service.
+      $channels_field = $errand_service->get('channels');
+      assert($channels_field instanceof EntityReferenceFieldItemListInterface);
+      $channels = $channels_field->referencedEntities();
+
       foreach ($channels as $channel) {
+        assert($channel instanceof Channel);
+
         $translation = $channel->getTranslation($language);
         $type_id = $translation->get('type')->value;
         $type_label = $translation->get('type_string')->value;
+
+        // Add channel type and label to the index.
         $indexableValue[$type_id] = [
           'id' => $type_id,
           'label' => $type_label,

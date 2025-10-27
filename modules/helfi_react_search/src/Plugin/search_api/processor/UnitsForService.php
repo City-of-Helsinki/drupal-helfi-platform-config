@@ -7,10 +7,12 @@ namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_react_search\SupportsServiceIndexTrait;
 use Drupal\search_api\Datasource\DatasourceInterface;
+use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 use Drupal\helfi_tpr\Entity\Unit;
+use Drupal\helfi_tpr\Entity\Service;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -45,6 +47,25 @@ class UnitsForService extends ProcessorPluginBase {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->entityTypeManager = $container->get('entity_type.manager');
     return $instance;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function supportsIndex(IndexInterface $index) {
+    foreach ($index->getDatasources() as $datasource) {
+      $entity_type_id = $datasource->getEntityTypeId();
+      if (!$entity_type_id) {
+        continue;
+      }
+
+      // We support services.
+      if ($entity_type_id === 'tpr_service') {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
   /**
@@ -88,6 +109,7 @@ class UnitsForService extends ProcessorPluginBase {
    */
   public function addFieldValues(ItemInterface $item): void {
     $object = $item->getOriginalObject()->getValue();
+    assert($object instanceof Service);
     $language = $item->getLanguage();
     $indexableValue = [];
 
@@ -99,8 +121,8 @@ class UnitsForService extends ProcessorPluginBase {
       ->execute();
 
     foreach ($units as $unit_id) {
-      /** @var \Drupal\tpr\Entity\Unit $unit */
       $unit = $this->entityTypeManager->getStorage('tpr_unit')->load($unit_id);
+      assert($unit instanceof Unit);
       $translation = $unit->getTranslation($language);
 
       $indexableValue[] = [

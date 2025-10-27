@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_hyte_search;
 
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_tpr\Entity\Channel;
@@ -102,7 +103,9 @@ class TrackingHelper implements TrackingHelperInterface {
   public function trackUnitUpdate(Unit $unit) {
     // Unit data is indexed with tpr services in hyte index, so we need to
     // reindex all services this Unit relates to.
-    $services = $unit->get('services')->referencedEntities();
+    $services_field = $unit->get('services');
+    assert($services_field instanceof EntityReferenceFieldItemListInterface);
+    $services = $services_field->referencedEntities();
     $this->updateIndexedItems($services);
   }
 
