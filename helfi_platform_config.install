@@ -540,3 +540,25 @@ function helfi_platform_config_update_9401(): void {
     }
   }
 }
+
+/**
+ * UHF-12041: Enable helfi_hyte_search module on selected instances.
+ */
+function helfi_platform_config_update_9402(): void {
+  try {
+    $project = \Drupal::service('helfi_api_base.environment_resolver')
+      ->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    // No need to proceed.
+    return;
+  }
+
+  $module_handler = \Drupal::moduleHandler();
+  if ($project->hasRole(ProjectRoleEnum::Core) && $module_handler->moduleExists('helfi_tpr')) {
+    if (!$module_handler->moduleExists('helfi_hyte_search')) {
+      $module_installer = \Drupal::service('module_installer');
+      $module_installer->install(['helfi_hyte_search']);
+    }
+  }
+}
