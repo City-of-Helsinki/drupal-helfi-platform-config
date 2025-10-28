@@ -36,26 +36,6 @@ class ChannelsForService extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public static function supportsIndex(IndexInterface $index) {
-    foreach ($index->getDatasources() as $datasource) {
-      $entity_type_id = $datasource->getEntityTypeId();
-
-      if (!$entity_type_id) {
-        continue;
-      }
-
-      // We support services.
-      if ($entity_type_id === 'tpr_service') {
-        return TRUE;
-      }
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getPropertyDefinitions(?DataSourceInterface $datasource = NULL): array {
     $properties = [];
 
