@@ -6,7 +6,6 @@ dependencies:
     - search_api.server.etusivu
   module:
     - helfi_react_search
-    - helfi_recommendations
     - helfi_tpr
 id: hyte
 name: Hyte
