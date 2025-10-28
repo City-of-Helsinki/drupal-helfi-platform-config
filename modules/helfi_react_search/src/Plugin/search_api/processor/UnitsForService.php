@@ -151,7 +151,7 @@ class UnitsForService extends ProcessorPluginBase {
   /**
    * Get address value from unit entity.
    *
-   * @param \Drupal\tpr\Entity\Unit $unit
+   * @param \Drupal\helfi_tpr\Entity\Unit $unit
    *   The unit translation.
    *
    * @return array
