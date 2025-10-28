@@ -10,7 +10,6 @@ use Drupal\helfi_tpr\Entity\Channel;
 use Drupal\helfi_tpr\Entity\ErrandService;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\search_api\Datasource\DatasourceInterface;
-use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
