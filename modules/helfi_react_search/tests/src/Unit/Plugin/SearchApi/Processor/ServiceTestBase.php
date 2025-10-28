@@ -21,7 +21,7 @@ abstract class ServiceTestBase extends UnitTestCase {
   /**
    * The processor to be tested.
    *
-   * @var \Drupal\helfi_react_search\Plugin\search_api\processor\ChannelsForService
+   * @var \Drupal\search_api\Processor\ProcessorPluginBase
    */
   protected $processor;
 

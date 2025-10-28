@@ -60,8 +60,6 @@ class SearchApiSubscriberTest extends UnitTestCase {
 
   /**
    * Tests the getSubscribedEvents method.
-   *
-   * @covers ::getSubscribedEvents
    */
   public function testGetSubscribedEvents(): void {
     $this->assertEquals([
@@ -72,8 +70,6 @@ class SearchApiSubscriberTest extends UnitTestCase {
 
   /**
    * Tests the alterFieldMapping method with nested properties.
-   *
-   * @covers ::alterFieldMapping
    */
   public function testAlterFieldMappingNestedProperties(): void {
     $this->field->getDataDefinition()->willReturn(['nested_properties' => ['nested_property' => 'nested_property_value']]);
@@ -85,8 +81,6 @@ class SearchApiSubscriberTest extends UnitTestCase {
 
   /**
    * Tests the alterFieldMapping method exception handling.
-   *
-   * @covers ::alterFieldMapping
    */
   public function testAlterFieldMappingExceptionHandling(): void {
     $this->field->getDataDefinition()->willThrow(new SearchApiException('Test exception'));
@@ -99,8 +93,6 @@ class SearchApiSubscriberTest extends UnitTestCase {
 
   /**
    * Tests the alterFieldMapping method with empty nested properties.
-   *
-   * @covers ::alterFieldMapping
    */
   public function testAlterFieldMappingEmptyNestedProperties(): void {
     $this->field->getDataDefinition()->willReturn([]);

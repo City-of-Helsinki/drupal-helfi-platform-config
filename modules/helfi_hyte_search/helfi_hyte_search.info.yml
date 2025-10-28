@@ -7,3 +7,5 @@ dependencies:
   - 'drupal:elasticsearch_connector'
   - 'helfi_platform_config:helfi_platform_config'
   - 'helfi_tpr:helfi_tpr'
+  - 'helfi_react_search:helfi_react_search'
+  - 'helfi_recommendations:helfi_recommendations'
