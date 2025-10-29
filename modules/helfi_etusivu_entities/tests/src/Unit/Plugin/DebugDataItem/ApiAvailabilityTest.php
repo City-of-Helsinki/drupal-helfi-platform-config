@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_navigation\Unit\Plugin\DebugData;
+namespace Drupal\Tests\helfi_navigation\Unit\Plugin\DebugDataItem;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;

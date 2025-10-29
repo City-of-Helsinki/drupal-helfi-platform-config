@@ -2,39 +2,46 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_etusivu_entities\Plugin\DebugDataItem;
+namespace Drupal\helfi_paragraphs_news_list\Plugin\DebugDataItem;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ServiceEnum;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Debug data client for Etusivu JSON:API connection.
+ * Debug data client.
  *
- * This is used to ensure the current instance has access to
- * API used by Etusivu entities, such as Surveys and Announcements.
+ * This is used to ensure the current instance has access to the News list
+ * API.
  */
-abstract class ApiAvailabilityBase extends DebugDataItemPluginBase implements SupportsValidityChecksInterface, ContainerFactoryPluginInterface {
+#[DebugDataItem(
+  id: 'news_list',
+  title: new TranslatableMarkup('News list'),
+)]
+final class NewsApiAvailability extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, SupportsValidityChecksInterface {
 
   /**
    * The HTTP Client.
    *
    * @var \GuzzleHttp\ClientInterface
    */
-  protected ClientInterface $client;
+  private ClientInterface $client;
 
   /**
    * The environment resolver service.
    *
    * @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
    */
-  protected EnvironmentResolverInterface $environmentResolver;
+  private EnvironmentResolverInterface $environmentResolver;
 
   /**
    * {@inheritdoc}
@@ -44,48 +51,32 @@ abstract class ApiAvailabilityBase extends DebugDataItemPluginBase implements Su
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ): static {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
+  ): self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->client = $container->get(ClientInterface::class);
     $instance->environmentResolver = $container->get(EnvironmentResolverInterface::class);
     return $instance;
   }
 
   /**
-   * Gets the base path for API request.
-   *
-   * @return string
-   *   The base path.
-   */
-  abstract protected function getBasePath(): string;
-
-  /**
    * {@inheritdoc}
    */
-  public function check() : bool {
+  public function check(): bool {
     try {
       $environment = $this->environmentResolver
         ->getEnvironment(Project::ETUSIVU, $this->environmentResolver->getActiveEnvironmentName());
-    }
-    catch (\InvalidArgumentException) {
-      return FALSE;
-    }
 
-    $uri = vsprintf('%s/jsonapi/%s', [
-      // Use internal address to bypass Varnish cache.
-      $environment->getInternalAddress('fi'),
-      ltrim($this->getBasePath(), '/'),
-    ]);
+      $uri = $environment->getService(ServiceEnum::ElasticProxy)
+        ->address
+        ->getAddress();
 
-    try {
       $content = $this->client->request('GET', $uri);
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
 
-      return !empty($json['meta']);
+      return !empty($json['version']);
     }
-    catch (GuzzleException) {
+    catch (\InvalidArgumentException | GuzzleException) {
     }
-
     return FALSE;
   }
 
