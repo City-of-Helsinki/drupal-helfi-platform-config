@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_etusivu_entities\Plugin\DebugDataItem;
 
+use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
@@ -12,7 +13,6 @@ use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Debug data client for Etusivu JSON:API connection.
@@ -22,33 +22,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class ApiAvailabilityBase extends DebugDataItemPluginBase implements SupportsValidityChecksInterface, ContainerFactoryPluginInterface {
 
-  /**
-   * The HTTP Client.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected ClientInterface $client;
+  use AutowiredInstanceTrait;
 
-  /**
-   * The environment resolver service.
-   *
-   * @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
-   */
-  protected EnvironmentResolverInterface $environmentResolver;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(
-    ContainerInterface $container,
+  public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ): static {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
-    $instance->client = $container->get(ClientInterface::class);
-    $instance->environmentResolver = $container->get(EnvironmentResolverInterface::class);
-    return $instance;
+    private readonly EnvironmentResolverInterface $environmentResolver,
+    private readonly ClientInterface $client,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**

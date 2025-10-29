@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list\Plugin\DebugDataItem;
 
+use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Attribute\DebugDataItem;
@@ -15,7 +16,6 @@ use Drupal\helfi_api_base\Environment\ServiceEnum;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Debug data client.
@@ -29,33 +29,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 )]
 final class NewsApiAvailability extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, SupportsValidityChecksInterface {
 
-  /**
-   * The HTTP Client.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  private ClientInterface $client;
+  use AutowiredInstanceTrait;
 
-  /**
-   * The environment resolver service.
-   *
-   * @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
-   */
-  private EnvironmentResolverInterface $environmentResolver;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(
-    ContainerInterface $container,
+  public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ): self {
-    $instance = new self($configuration, $plugin_id, $plugin_definition);
-    $instance->client = $container->get(ClientInterface::class);
-    $instance->environmentResolver = $container->get(EnvironmentResolverInterface::class);
-    return $instance;
+    private readonly EnvironmentResolverInterface $environmentResolver,
+    private readonly ClientInterface $client,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
