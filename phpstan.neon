@@ -12,9 +12,7 @@ parameters:
   ignoreErrors:
     -
       message: '#^Unsafe usage of new static#'
-      paths:
-       - src/Plugin/Block/ContentBlockBase.php
-       - modules/helfi_etusivu_entities/src/Plugin/DebugDataItem/ApiAvailabilityBase.php
+      path: src/Plugin/Block/ContentBlockBase.php
     -
       message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead#'
       path: modules/helfi_ckeditor/src/Plugin/CKEditor5Plugin/HelfiLink.php
