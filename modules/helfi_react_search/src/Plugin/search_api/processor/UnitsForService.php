@@ -144,8 +144,8 @@ class UnitsForService extends ProcessorPluginBase {
    *   The address value.
    */
   private function getAddressValue(Unit $unit): array {
-    $definiton = $this->getPropertyDefinitions();
-    $address_definition = $definiton['units_for_service']['nested_properties']['address']['properties'];
+    $definition = $this->getPropertyDefinitions();
+    $address_definition = $definition['units_for_service']['nested_properties']['address']['properties'];
     $field_value = current($unit->get('address')->getValue());
 
     // Only return properties that are defined in the address definition.
