@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Hooks for helfi_hyte_search module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\helfi_hyte_search\TrackingHelper;
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * @see \Drupal\helfi_hyte_search\TrackingHelper::trackTprUpdate()
+ */
+function helfi_hyte_search_entity_insert(EntityInterface $entity): void {
+  \Drupal::getContainer()->get(TrackingHelper::class)
+    ->trackTprUpdate($entity, TRUE);
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * @see \Drupal\helfi_hyte_search\TrackingHelper::trackTprUpdate()
+ */
+function helfi_hyte_search_entity_update(EntityInterface $entity): void {
+  \Drupal::getContainer()->get(TrackingHelper::class)
+    ->trackTprUpdate($entity, FALSE);
+}
+
+/**
+ * Implements hook_entity_delete().
+ *
+ * @see \Drupal\helfi_hyte_search\TrackingHelper::trackTprUpdate()
+ */
+function helfi_hyte_search_entity_delete(EntityInterface $entity): void {
+  \Drupal::getContainer()->get(TrackingHelper::class)
+    ->trackTprUpdate($entity, FALSE);
+}
