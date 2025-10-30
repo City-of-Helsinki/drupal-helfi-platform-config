@@ -10,12 +10,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\Exception\ElasticsearchException;
-use Elastic\Transport\Exception\NoNodeAvailableException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Utils;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Drupal\helfi_recommendations\RecommendationManagerInterface;
 
 /**
  * Debug data client.
@@ -35,8 +30,7 @@ final class ApiAvailability extends DebugDataItemPluginBase implements Container
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
-    private readonly Client $client,
+    private readonly RecommendationManagerInterface $manager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -45,15 +39,7 @@ final class ApiAvailability extends DebugDataItemPluginBase implements Container
    * {@inheritdoc}
    */
   public function check() : bool {
-    try {
-      $info = $this->client->info();
-      $data = Utils::jsonDecode($info->getBody()->getContents(), TRUE);
-
-      return !empty($data['version']);
-    }
-    catch (NoNodeAvailableException | GuzzleException | ElasticsearchException) {
-    }
-    return FALSE;
+    return $this->manager->ping();
   }
 
 }

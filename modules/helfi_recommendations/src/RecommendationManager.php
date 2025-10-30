@@ -23,14 +23,14 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Elastic\Elasticsearch\Client;
 
 /**
- * The recommendation manager.
+ * The recommendation managerplat.
  */
 class RecommendationManager implements RecommendationManagerInterface {
 
   use StringTranslationTrait;
 
-  const INDEX_NAME = 'suggestions';
-  const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
+  public const INDEX_NAME = 'suggestions';
+  public const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
 
   /**
    * The recommendations.
@@ -69,6 +69,22 @@ class RecommendationManager implements RecommendationManagerInterface {
     TranslationInterface $stringTranslation,
   ) {
     $this->stringTranslation = $stringTranslation;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function ping(): bool {
+    try {
+      // Check if the index exists or not.
+      $response = $this->elasticClient->indices()->exists([
+        'index' => self::INDEX_NAME,
+      ]);
+      return $response->getStatusCode() === 200;
+    }
+    catch (ElasticsearchException | TransportException) {
+    }
+    return FALSE;
   }
 
   /**

@@ -5,17 +5,14 @@ declare(strict_types=1);
 namespace Drupal\helfi_paragraphs_news_list\Plugin\DebugDataItem;
 
 use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_api_base\Environment\ServiceEnum;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Utils;
+use Drupal\helfi_paragraphs_news_list\ElasticExternalEntityBase;
 
 /**
  * Debug data client.
@@ -29,14 +26,20 @@ use GuzzleHttp\Utils;
 )]
 final class NewsApiAvailability extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, SupportsValidityChecksInterface {
 
+  public const array ENTITY_TYPES = [
+    'helfi_news',
+    'helfi_news_groups',
+    'helfi_news_neighbourhoods',
+    'helfi_news_tags',
+  ];
+
   use AutowiredInstanceTrait;
 
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private readonly EnvironmentResolverInterface $environmentResolver,
-    private readonly ClientInterface $client,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -45,22 +48,21 @@ final class NewsApiAvailability extends DebugDataItemPluginBase implements Conta
    * {@inheritdoc}
    */
   public function check(): bool {
-    try {
-      $environment = $this->environmentResolver
-        ->getEnvironment(Project::ETUSIVU, $this->environmentResolver->getActiveEnvironmentName());
+    foreach (self::ENTITY_TYPES as $entityType) {
+      $storage = $this->entityTypeManager->getStorage($entityType);
+      assert($storage instanceof ExternalEntityStorageInterface);
 
-      $uri = $environment->getService(ServiceEnum::ElasticProxy)
-        ->address
-        ->getAddress();
+      $client = $storage->getExternalEntityType()
+        ->getDataAggregator()
+        ->getStorageClient(0);
 
-      $content = $this->client->request('GET', $uri);
-      $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
+      assert($client instanceof ElasticExternalEntityBase);
 
-      return !empty($json['version']);
+      if (!$client->ping()) {
+        return FALSE;
+      }
     }
-    catch (\InvalidArgumentException | GuzzleException) {
-    }
-    return FALSE;
+    return TRUE;
   }
 
 }
