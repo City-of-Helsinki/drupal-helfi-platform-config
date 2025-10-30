@@ -43,6 +43,11 @@ class ChannelsForService extends ProcessorPluginBase {
         'label' => $this->t('Channels for service'),
         'description' => $this->t('Indexes channels for a TPR service to the index'),
         'type' => 'object',
+        // Custom property that allows configuring subfield properties for
+        // object-type (nested) fields. Theses properties should use the
+        // Elasticsearch type definitions directly as there's no mapping from
+        // the Search API field type to the Elasticsearch type for these.
+        // @see SearchApiSubscriber::alterFieldMapping()
         'nested_properties' => [
           'id' => [
             'type' => 'keyword',

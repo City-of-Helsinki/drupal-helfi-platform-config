@@ -37,6 +37,9 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
    *   The mapping field types event.
    */
   public function mapFieldTypes(MappingFieldTypesEvent $event): void {
+    // Make sure object field type from elasticsearch_connector has correct
+    // mapping. Without this the field configuration form will not allow adding
+    // any object-type fields.
     $mapping = &$event->getFieldTypeMapping();
     $mapping['object'] = 'object';
   }
@@ -67,6 +70,8 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
       return;
     }
 
+    // These are custom properties that allow configuring subfield properties
+    // for object-type (nested) fields.
     $param['properties'] = $dataDefinition['nested_properties'];
     $event->setParam($param);
   }

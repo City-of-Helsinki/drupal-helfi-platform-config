@@ -60,6 +60,11 @@ class UnitsForService extends ProcessorPluginBase {
         'description' => $this->t('Indexes units for a TPR service to the index'),
         'type' => 'object',
         'processor_id' => $this->getPluginId(),
+        // Custom property that allows configuring subfield properties for
+        // object-type (nested) fields. Theses properties should use the
+        // Elasticsearch type definitions directly as there's no mapping from
+        // the Search API field type to the Elasticsearch type for these.
+        // @see SearchApiSubscriber::alterFieldMapping()
         'nested_properties' => [
           'name' => ['type' => 'text'],
           'name_override' => ['type' => 'text'],
@@ -67,6 +72,7 @@ class UnitsForService extends ProcessorPluginBase {
             'properties' => [
               // Only properties defined here will be indexed from the address
               // field.
+              // @see self::getAddressValue().
               'address_line1' => ['type' => 'text'],
               'address_line2' => ['type' => 'text'],
               'postal_code' => ['type' => 'keyword'],
