@@ -34,29 +34,6 @@ final class SearchApiIndex extends DebugDataItemPluginBase implements ContainerF
   }
 
   /**
-   * Resolve return value based on index status.
-   *
-   * @param int $indexed
-   *   Amount of up-to-date items in index.
-   * @param int $total
-   *   Maximum number of items in index.
-   *
-   * @return string
-   *   Status.
-   */
-  private function resolveResult(int $indexed, int $total): string {
-    if ($indexed == 0 || $total == 0) {
-      return 'indexing or index rebuild required';
-    }
-
-    if ($indexed === $total) {
-      return 'Index up to date';
-    }
-
-    return "$indexed/$total";
-  }
-
-  /**
    * {@inheritDoc}
    */
   public function check(): bool {
