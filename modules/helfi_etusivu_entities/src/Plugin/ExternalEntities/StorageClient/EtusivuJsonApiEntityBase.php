@@ -18,6 +18,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Query;
+use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -172,7 +173,9 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
     }
 
     try {
-      $content = $this->client->request('GET', $uri);
+      $content = $this->client->request('GET', $uri, [
+        RequestOptions::TIMEOUT => 5,
+      ]);
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
       $data = $json['data'];
 
