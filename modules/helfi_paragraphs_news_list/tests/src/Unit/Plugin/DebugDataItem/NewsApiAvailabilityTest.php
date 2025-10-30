@@ -20,7 +20,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \Drupal\helfi_paragraphs_news_list\Plugin\DebugDataItem\NewsApiAvailability
- * @group helfi_navigation
+ * @group helfi_paragraphs_news_list
  */
 class NewsApiAvailabilityTest extends UnitTestCase {
 
