@@ -12,6 +12,14 @@ use Drupal\Core\Entity\ContentEntityInterface;
 interface RecommendationManagerInterface {
 
   /**
+   * Checks if the API is responding.
+   *
+   * @return bool
+   *   TRUE if the API responds, FALSE if not.
+   */
+  public function ping(): bool;
+
+  /**
    * Check if recommendations should be shown.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity

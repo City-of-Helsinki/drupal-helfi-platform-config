@@ -95,6 +95,25 @@ abstract class ElasticExternalEntityBase extends RestClient {
   }
 
   /**
+   * Checks whether the API responds or not.
+   *
+   * @return bool
+   *   TRUE if API responds, FALSE if not.
+   */
+  public function ping() : bool {
+    try {
+      // Check if the index exists or not.
+      $response = $this->client->indices()->exists([
+        'index' => $this->index,
+      ]);
+      return $response->getStatusCode() === 200;
+    }
+    catch (ElasticsearchException | TransportException) {
+    }
+    return FALSE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function loadMultiple(?array $ids = NULL) : array {
