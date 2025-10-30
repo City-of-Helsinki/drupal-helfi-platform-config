@@ -67,12 +67,16 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
   public function lazyBuild(bool $useRemoteEntities): array {
     try {
       $local = $this->getLocalEntities();
-      $remote = $this->getExternalEntityStorage('helfi_surveys')
-        ->loadMultiple();
 
+      $remote = [];
       // Some non-core instances might want to show only local entities.
       // Block configuration allows disabling the remote entities.
-      $remote = $useRemoteEntities && $remote ? $this->handleRemoteEntities($remote) : [];
+      if ($useRemoteEntities) {
+        $remote = $this->getExternalEntityStorage('helfi_surveys')
+          ->loadMultiple();
+
+        $remote = $this->handleRemoteEntities($remote);
+      }
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
