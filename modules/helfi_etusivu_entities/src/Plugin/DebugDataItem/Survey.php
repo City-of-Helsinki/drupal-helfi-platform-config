@@ -11,7 +11,7 @@ use Drupal\helfi_api_base\Attribute\DebugDataItem;
  * Debug data client.
  *
  * This is used to ensure the current instance has access to
- * API used by Etusivu entities, such as Surveys and Announcements.
+ * API used by Surveys.
  */
 #[DebugDataItem(
   id: 'etusivu_entities_survey',
