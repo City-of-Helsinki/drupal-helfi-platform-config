@@ -1,0 +1,28 @@
+uuid: 7bc87338-58bd-417f-9450-2c287c60574f
+langcode: en
+status: true
+dependencies:
+  module:
+    - external_entities
+id: helfi_surveys.helfi_surveys.default
+targetEntityType: helfi_surveys
+bundle: helfi_surveys
+mode: default
+content:
+  title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  body: true
+  langcode: true
+  published_at: true
+  search_api_excerpt: true
+  status: true
+  survey_link_text: true
+  survey_link_url: true
+  unpublish_on: true
