@@ -9,6 +9,8 @@ dependencies:
     - external_entities
     - imagecache_external
     - linkit
+_core:
+  default_config_hash: 1wzq7XGUNG5bXQhvkfPiJelLE7svLU-4HItYt4gASRg
 id: linkedevents_event.linkedevents_event.default
 targetEntityType: linkedevents_event
 bundle: linkedevents_event
@@ -37,9 +39,11 @@ content:
     weight: 4
     region: content
   langcode:
-    type: string
+    type: language
     label: hidden
-    settings: {  }
+    settings:
+      link_to_entity: false
+      native_language: false
     third_party_settings: {  }
     weight: 5
     region: content
@@ -61,14 +65,6 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  status:
-    label: hidden
-    type: string
-    region: content
-    weight: 6
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   title:
     type: string
     label: hidden
@@ -79,3 +75,4 @@ content:
     region: content
 hidden:
   search_api_excerpt: true
+  status: true

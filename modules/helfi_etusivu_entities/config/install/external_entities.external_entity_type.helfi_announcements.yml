@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - helfi_etusivu_entities
+_core:
+  default_config_hash: vgbtD6tlgImVGdNdbB_q4C7M4kj4G85Uc2GFarU0I_I
 id: helfi_announcements
 label: 'Helfi: Announcements'
 label_plural: 'Helfi: Announcements'
@@ -13,141 +15,14 @@ content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
 debug_level: 0
 field_mappers:
-  id:
+  announcement_assistive_technology_close_button_title:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: $.id
-            required_field: true
-            main_property: true
-            data_processors:
-              - id: default
-                config: { }
-            description: ''
-      debug_level: 0
-  uuid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.id
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-      debug_level: 0
-  title:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$.attributes["title"]'
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-      debug_level: 0
-  status:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$.attributes["status"]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-      debug_level: 0
-  published_at:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$.attributes["published_at"]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-      debug_level: 0
-  unpublish_on:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$.attributes["unpublish_on"]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-      debug_level: 0
-  body:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$.attributes["body"]["value"]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-      debug_level: 0
-  notification:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$.attributes["notification"]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-      debug_level: 0
-  announcement_type:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$.attributes["field_announcement_type"]'
+            mapping: '$.attributes["field_announcement_title"]'
             required_field: false
             main_property: true
             data_processors:
@@ -188,14 +63,14 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  announcement_assistive_technology_close_button_title:
+  announcement_type:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: '$.attributes["field_announcement_title"]'
+            mapping: '$.attributes["field_announcement_type"]'
             required_field: false
             main_property: true
             data_processors:
@@ -204,17 +79,14 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  default_langcode:
-    id: null
-    config: {  }
-  langcode:
+  body:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: '$.attributes["langcode"]'
+            mapping: '$.attributes["body"]["value"]'
             required_field: false
             main_property: true
             data_processors:
@@ -222,6 +94,119 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+      debug_level: 0
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  notification:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["notification"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  published_at:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["published_at"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  status:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["status"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["title"]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  unpublish_on:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$.attributes["unpublish_on"]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
 field_mapping_notes: ''
 data_aggregator:
   id: single
@@ -231,8 +216,10 @@ data_aggregator:
         id: helfi_announcements
         config: {  }
 data_aggregator_notes: ''
+language_settings: {  }
 persistent_cache_max_age: -1
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
 annotation_inherited_fields: {  }
+locks: {  }

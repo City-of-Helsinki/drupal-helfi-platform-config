@@ -1,9 +1,11 @@
-uuid: 622688ce-c7fb-470f-aadb-bb26db300eec
+uuid: 9809b058-7142-49c7-a0e4-50f6723b698f
 langcode: en
 status: true
 dependencies:
   module:
     - helfi_paragraphs_news_list
+_core:
+  default_config_hash: uNdYHETRcoSuh6vXeZKu6r1ol63GZlhYBwQbhnftYiE
 id: helfi_news_groups
 label: 'Helfi: News groups'
 label_plural: 'Helfi: News groups'
@@ -29,14 +31,14 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  uuid:
+  tid:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: '$._source.uuid[0]'
+            mapping: '$._source.tid[0]'
             required_field: false
             main_property: true
             data_processors:
@@ -61,14 +63,14 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  tid:
+  uuid:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: '$._source.tid[0]'
+            mapping: '$._source.uuid[0]'
             required_field: false
             main_property: true
             data_processors:
@@ -77,12 +79,6 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  default_langcode:
-    id: null
-    config: {  }
-  langcode:
-    id: null
-    config: {  }
 field_mapping_notes: ''
 data_aggregator:
   id: single
@@ -92,8 +88,10 @@ data_aggregator:
         id: helfi_news_groups
         config: {  }
 data_aggregator_notes: ''
+language_settings: {  }
 persistent_cache_max_age: 86400
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
 annotation_inherited_fields: {  }
+locks: {  }

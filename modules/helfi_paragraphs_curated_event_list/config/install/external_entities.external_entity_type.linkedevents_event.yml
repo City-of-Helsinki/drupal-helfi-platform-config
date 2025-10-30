@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - helfi_paragraphs_curated_event_list
+_core:
+  default_config_hash: '-_R0SxE0Xi3WKxYGB6UJc5QSExb8-DTEfTX-jmFEfsc'
 id: linkedevents_event
 label: 'LinkedEvents: Event'
 label_plural: 'LinkedEvents: Events'
@@ -13,30 +15,14 @@ content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
 debug_level: 0
 field_mappers:
-  id:
+  end_time:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: $.id
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-      debug_level: 0
-  uuid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.id
+            mapping: $.end_time
             required_field: false
             main_property: true
             data_processors:
@@ -45,14 +31,41 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  title:
+  external_link:
+    id: generic
+    config:
+      property_mappings:
+        uri:
+          id: jsonpath
+          config:
+            mapping: $.external_link
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+        title:
+          id: jsonpath
+          config:
+            mapping: $.clean_title
+            required_field: false
+            main_property: false
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  id:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: $.title
+            mapping: $.id
             required_field: true
             main_property: true
             data_processors:
@@ -104,15 +117,15 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  end_time:
+  title:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: $.end_time
-            required_field: false
+            mapping: $.title
+            required_field: true
             main_property: true
             data_processors:
               -
@@ -120,14 +133,14 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  external_link:
+  uuid:
     id: generic
     config:
       property_mappings:
-        uri:
+        value:
           id: jsonpath
           config:
-            mapping: $.external_link
+            mapping: $.id
             required_field: false
             main_property: true
             data_processors:
@@ -135,24 +148,7 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-        title:
-          id: jsonpath
-          config:
-            mapping: $.clean_title
-            required_field: false
-            main_property: false
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
       debug_level: 0
-  default_langcode:
-    id: null
-    config: {  }
-  langcode:
-    id: null
-    config: {  }
 field_mapping_notes: ''
 data_aggregator:
   id: single
@@ -162,8 +158,10 @@ data_aggregator:
         id: linkedevents_events
         config: {  }
 data_aggregator_notes: ''
+language_settings: {  }
 persistent_cache_max_age: 0
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
 annotation_inherited_fields: {  }
+locks: {  }
