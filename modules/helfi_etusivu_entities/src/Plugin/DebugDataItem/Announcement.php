@@ -22,8 +22,8 @@ final class Announcement extends ApiAvailabilityBase {
   /**
    * {@inheritdoc}
    */
-  protected function getBasePath(): string {
-    return 'node/announcement';
+  protected function getEntityTypeId(): string {
+    return 'helfi_announcements';
   }
 
 }

@@ -95,6 +95,33 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
   }
 
   /**
+   * Checks whether the API responds or not.
+   *
+   * @return bool
+   *   TRUE if API responds, FALSE if not.
+   */
+  public function ping(): bool {
+    $uri = $this->getUri([], 'fi');
+
+    try {
+      $content = $this->client->request('GET', $uri);
+      $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
+    }
+    catch (GuzzleException) {
+      return FALSE;
+    }
+    return !empty($json['meta']);
+  }
+
+  /**
+   * Gets the API endpoint.
+   *
+   * @return string
+   *   The API endpoint.
+   */
+  abstract protected function getApiEndpoint(): string;
+
+  /**
    * {@inheritdoc}
    */
   public function loadMultiple(?array $ids = NULL) : array {
@@ -134,14 +161,31 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
   }
 
   /**
+   * Gets the URI for given langauge and query parameters.
+   *
+   * @param array $parameters
+   *   The query parameters.
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return string
+   *   The URI.
+   */
+  protected function getUri(array $parameters, string $langcode): string {
+    return vsprintf('%s/jsonapi%s?%s', [
+      $this->environment->getInternalAddress($langcode),
+      $this->getApiEndpoint(),
+      Query::build($parameters),
+    ]);
+  }
+
+  /**
    * Creates a request against JSON:API.
    *
    * JSON:API responses are cached with custom cache tags to increase main
    * request performance. These caches are invalidated with pubsub service
    * whenever remote entities in etusivu instance are changed.
    *
-   * @param string $endpoint
-   *   The jsonapi endpoint.
    * @param array $parameters
    *   The query parameters.
    * @param string $langcode
@@ -152,7 +196,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
    *
    * @see \helfi_etusivu_invalidate_external_caches()
    */
-  protected function request(string $endpoint, array $parameters, string $langcode) : array {
+  protected function request(array $parameters, string $langcode) : array {
     if (!$this->environment) {
       return [];
     }
@@ -161,11 +205,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
       $langcode = $this->defaultLanguageResolver->getFallbackLanguage();
     }
 
-    $uri = vsprintf('%s/jsonapi%s?%s', [
-      $this->environment->getInternalAddress($langcode),
-      $endpoint,
-      Query::build($parameters),
-    ]);
+    $uri = $this->getUri($parameters, $langcode);
 
     if ($cache = $this->cache->get($uri)) {
       return $cache->data;

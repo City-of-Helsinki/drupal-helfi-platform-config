@@ -22,8 +22,8 @@ final class Survey extends ApiAvailabilityBase {
   /**
    * {@inheritdoc}
    */
-  protected function getBasePath(): string {
-    return 'node/survey';
+  protected function getEntityTypeId(): string {
+    return 'helfi_surveys';
   }
 
 }
