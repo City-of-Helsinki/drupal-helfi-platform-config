@@ -1,4 +1,4 @@
-uuid: e96b21c4-ffb8-401b-8149-483f01ff58cf
+uuid: b99ea6b3-b99b-4caa-9fbf-d8c641c08411
 langcode: en
 status: true
 dependencies:
@@ -7,6 +7,8 @@ dependencies:
   module:
     - external_entities
     - imagecache_external
+_core:
+  default_config_hash: klytQ3foRw-U-DR81h087vLE--W2lsOuhk6Y5N_tiqI
 id: helfi_hearings.helfi_hearings.default
 targetEntityType: helfi_hearings
 bundle: helfi_hearings
@@ -102,13 +104,13 @@ content:
     weight: 0
     region: content
   status:
-    label: hidden
     type: string
-    region: content
-    weight: 2
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 2
+    region: content
   title:
     type: string
     label: hidden
@@ -127,3 +129,4 @@ content:
     region: content
 hidden:
   abstract: true
+  search_api_excerpt: true

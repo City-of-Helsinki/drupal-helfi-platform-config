@@ -1,0 +1,39 @@
+uuid: 50616b3b-7ae4-4518-b9a8-49a0e993b795
+langcode: en
+status: true
+dependencies:
+  module:
+    - external_entities
+id: helfi_hearings.helfi_hearings.default
+targetEntityType: helfi_hearings
+bundle: helfi_hearings
+mode: default
+content:
+  status:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  abstract: true
+  close_at: true
+  comments: true
+  count: true
+  created_at: true
+  existing_translations: true
+  langcode: true
+  main_image_title: true
+  open_at: true
+  organization: true
+  slug: true
+  url: true
