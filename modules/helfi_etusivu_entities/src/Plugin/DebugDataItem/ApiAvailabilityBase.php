@@ -18,7 +18,7 @@ use GuzzleHttp\Utils;
  * Debug data client for Etusivu JSON:API connection.
  *
  * This is used to ensure the current instance has access to
- * API used by Etusivu entities, such as Surveys and Announcements.
+ * the API used by Etusivu entities.
  */
 abstract class ApiAvailabilityBase extends DebugDataItemPluginBase implements SupportsValidityChecksInterface, ContainerFactoryPluginInterface {
 
