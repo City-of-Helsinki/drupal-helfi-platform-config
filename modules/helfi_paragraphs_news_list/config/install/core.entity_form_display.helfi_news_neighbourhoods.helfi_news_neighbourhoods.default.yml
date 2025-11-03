@@ -7,8 +7,6 @@ dependencies:
   enforced:
     config:
       - external_entities.external_entity_type.helfi_news_neighbourhoods
-_core:
-  default_config_hash: E2JXaoNs2Vzd2tfaK-I8vmnGevJioaI-wZY7WZPa_ec
 id: helfi_news_neighbourhoods.helfi_news_neighbourhoods.default
 targetEntityType: helfi_news_neighbourhoods
 bundle: helfi_news_neighbourhoods

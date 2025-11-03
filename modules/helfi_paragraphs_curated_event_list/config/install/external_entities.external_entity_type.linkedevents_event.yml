@@ -4,8 +4,6 @@ status: true
 dependencies:
   module:
     - helfi_paragraphs_curated_event_list
-_core:
-  default_config_hash: '-_R0SxE0Xi3WKxYGB6UJc5QSExb8-DTEfTX-jmFEfsc'
 id: linkedevents_event
 label: 'LinkedEvents: Event'
 label_plural: 'LinkedEvents: Events'

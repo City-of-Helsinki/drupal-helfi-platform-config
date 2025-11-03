@@ -9,8 +9,6 @@ dependencies:
     - external_entities
     - imagecache_external
     - linkit
-_core:
-  default_config_hash: 1wzq7XGUNG5bXQhvkfPiJelLE7svLU-4HItYt4gASRg
 id: linkedevents_event.linkedevents_event.default
 targetEntityType: linkedevents_event
 bundle: linkedevents_event

@@ -4,8 +4,6 @@ status: true
 dependencies:
   module:
     - helfi_paragraphs_hearings
-_core:
-  default_config_hash: PWXsGWnWdHtv0vt5toMgyTGxjTLaQnXPYffAE6FpQGA
 id: helfi_hearings
 label: 'Helfi: Hearing'
 label_plural: 'Helfi: Hearing'

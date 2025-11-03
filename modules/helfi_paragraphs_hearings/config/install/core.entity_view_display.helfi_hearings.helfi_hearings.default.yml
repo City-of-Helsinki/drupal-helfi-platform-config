@@ -7,8 +7,6 @@ dependencies:
   module:
     - external_entities
     - imagecache_external
-_core:
-  default_config_hash: klytQ3foRw-U-DR81h087vLE--W2lsOuhk6Y5N_tiqI
 id: helfi_hearings.helfi_hearings.default
 targetEntityType: helfi_hearings
 bundle: helfi_hearings

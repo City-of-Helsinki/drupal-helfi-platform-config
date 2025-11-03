@@ -7,8 +7,6 @@ dependencies:
   enforced:
     config:
       - external_entities.external_entity_type.helfi_news_tags
-_core:
-  default_config_hash: 606cm95vIdyZeSTuboeyU5cM4cAp47u9IFJOqoFPjoQ
 id: helfi_news_tags.helfi_news_tags.default
 targetEntityType: helfi_news_tags
 bundle: helfi_news_tags

@@ -4,8 +4,6 @@ status: true
 dependencies:
   module:
     - helfi_paragraphs_news_list
-_core:
-  default_config_hash: G4cl4_5wwBivGYMN4JyjBbcBq-kSzsXAT2U1fk9L2Xk
 id: helfi_news_neighbourhoods
 label: 'Helfi: News neighbourhoods'
 label_plural: 'Helfi: News neighbourhoods'

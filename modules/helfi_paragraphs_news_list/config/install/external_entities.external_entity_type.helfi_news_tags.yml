@@ -4,8 +4,6 @@ status: true
 dependencies:
   module:
     - helfi_paragraphs_news_list
-_core:
-  default_config_hash: jr8pArhRxBfmo3wM_uliSOQoqfG0jE1mPoRJE8XqWeE
 id: helfi_news_tags
 label: 'Helfi: News tags'
 label_plural: 'Helfi: News tags'

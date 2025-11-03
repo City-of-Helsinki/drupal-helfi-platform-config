@@ -4,8 +4,6 @@ status: true
 dependencies:
   module:
     - helfi_etusivu_entities
-_core:
-  default_config_hash: vgbtD6tlgImVGdNdbB_q4C7M4kj4G85Uc2GFarU0I_I
 id: helfi_announcements
 label: 'Helfi: Announcements'
 label_plural: 'Helfi: Announcements'
