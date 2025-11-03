@@ -7,6 +7,9 @@ dependencies:
   module:
     - external_entities
     - imagecache_external
+  enforced:
+    config:
+      - external_entities.external_entity_type.helfi_hearings
 id: helfi_hearings.helfi_hearings.default
 targetEntityType: helfi_hearings
 bundle: helfi_hearings

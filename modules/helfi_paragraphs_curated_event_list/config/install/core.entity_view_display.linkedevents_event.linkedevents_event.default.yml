@@ -9,6 +9,9 @@ dependencies:
     - external_entities
     - imagecache_external
     - linkit
+  enforced:
+    config:
+      - external_entities.external_entity_type.linkedevents_event
 id: linkedevents_event.linkedevents_event.default
 targetEntityType: linkedevents_event
 bundle: linkedevents_event

@@ -4,7 +4,9 @@ status: true
 dependencies:
   module:
     - external_entities
-    - helfi_etusivu_entities
+  enforced:
+    config:
+      - external_entities.external_entity_type.helfi_surveys
 id: helfi_surveys.helfi_surveys.default
 targetEntityType: helfi_surveys
 bundle: helfi_surveys

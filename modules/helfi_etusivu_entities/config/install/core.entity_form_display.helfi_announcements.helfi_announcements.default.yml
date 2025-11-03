@@ -4,7 +4,9 @@ status: true
 dependencies:
   module:
     - external_entities
-    - helfi_etusivu_entities
+  enforced:
+    config:
+      - external_entities.external_entity_type.helfi_announcements
 id: helfi_announcements.helfi_announcements.default
 targetEntityType: helfi_announcements
 bundle: helfi_announcements
