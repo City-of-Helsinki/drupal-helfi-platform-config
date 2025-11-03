@@ -1,4 +1,4 @@
-uuid: 8cdbdb79-0afd-4c2a-9eac-286984c02eff
+uuid: 9c7194f0-392a-45f7-887c-2616ee9762e1
 langcode: en
 status: true
 dependencies:
@@ -12,25 +12,30 @@ targetEntityType: helfi_news
 bundle: helfi_news
 mode: default
 content:
-  title:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
+  langcode:
+    type: language_select
     weight: 0
     region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
 hidden:
-  groups: true
-  groups_uuid: true
-  langcode: true
-  neighbourhoods: true
-  neighbourhoods_uuid: true
   node_url: true
   published_at: true
-  search_api_excerpt: true
   search_api_language: true
   short_title: true
-  status: true
-  tags: true
-  tags_uuid: true
