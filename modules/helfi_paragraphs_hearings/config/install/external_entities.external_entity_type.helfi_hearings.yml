@@ -255,6 +255,24 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
+  default_langcode:
+    id: null
+    config: {  }
+  langcode:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.langcode
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
 field_mapping_notes: ''
 data_aggregator:
   id: single

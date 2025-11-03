@@ -93,6 +93,12 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
+  default_langcode:
+    id: null
+    config: {  }
+  langcode:
+    id: null
+    config: {  }
 field_mapping_notes: ''
 data_aggregator:
   id: single
