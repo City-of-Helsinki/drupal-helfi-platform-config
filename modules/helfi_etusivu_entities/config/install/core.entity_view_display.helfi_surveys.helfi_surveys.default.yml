@@ -1,4 +1,4 @@
-uuid: f8d0f0da-4aff-436c-a4b8-4df8c6ee82f8
+uuid: 7bc87338-58bd-417f-9450-2c287c60574f
 langcode: en
 status: true
 dependencies:
@@ -6,22 +6,26 @@ dependencies:
     - external_entities
   enforced:
     config:
-      - external_entities.external_entity_type.helfi_news_neighbourhoods
-id: helfi_news_neighbourhoods.helfi_news_neighbourhoods.default
-targetEntityType: helfi_news_neighbourhoods
-bundle: helfi_news_neighbourhoods
+      - external_entities.external_entity_type.helfi_surveys
+id: helfi_surveys.helfi_surveys.default
+targetEntityType: helfi_surveys
+bundle: helfi_surveys
 mode: default
 content:
   title:
     type: string
-    label: hidden
+    label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
+  body: true
   langcode: true
+  published_at: true
   search_api_excerpt: true
   status: true
-  tid: true
+  survey_link_text: true
+  survey_link_url: true
+  unpublish_on: true
