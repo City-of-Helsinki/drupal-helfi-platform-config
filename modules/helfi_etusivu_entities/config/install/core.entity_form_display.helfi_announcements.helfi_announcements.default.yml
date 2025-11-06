@@ -1,0 +1,33 @@
+uuid: a707bada-5ec0-4df8-965a-353f66810567
+langcode: en
+status: true
+dependencies:
+  module:
+    - external_entities
+  enforced:
+    config:
+      - external_entities.external_entity_type.helfi_announcements
+id: helfi_announcements.helfi_announcements.default
+targetEntityType: helfi_announcements
+bundle: helfi_announcements
+mode: default
+content:
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  announcement_assistive_technology_close_button_title: true
+  announcement_link_text: true
+  announcement_link_url: true
+  announcement_type: true
+  body: true
+  langcode: true
+  notification: true
+  published_at: true
+  status: true
+  unpublish_on: true

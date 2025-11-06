@@ -79,18 +79,21 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
       $local = $this->getLocalEntities();
 
       $remote = [];
-      if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
-        $remote = $this->useMockResponse();
-      }
-      else {
-        $remote = $this
-          ->getExternalEntityStorage('helfi_announcements')
-          ->loadMultiple();
-      }
 
       // Some non-core instances might want to show only local entities.
       // Block configuration allows disabling the remote entities.
-      $remote = $useRemoteEntities && $remote ? $this->handleRemoteEntities($remote) : [];
+      if ($useRemoteEntities) {
+        if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
+          $remote = $this->useMockResponse();
+        }
+        else {
+          $remote = $this
+            ->getExternalEntityStorage('helfi_announcements')
+            ->loadMultiple();
+        }
+
+        $remote = $this->handleRemoteEntities($remote);
+      }
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);

@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  Drupal\helfi_hyte_search\TrackingHelper: ~
