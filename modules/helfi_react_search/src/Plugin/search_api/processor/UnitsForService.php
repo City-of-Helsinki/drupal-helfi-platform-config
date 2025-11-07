@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldItemInterface;
 use Drupal\helfi_react_search\SupportsServiceIndexTrait;
+use Drupal\helfi_tpr\Entity\Unit;
+use Drupal\helfi_tpr\Entity\Service;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\media\MediaInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Drupal\helfi_tpr\Entity\Unit;
-use Drupal\helfi_tpr\Entity\Service;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -31,6 +34,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UnitsForService extends ProcessorPluginBase {
 
   use SupportsServiceIndexTrait;
+
+  const IMAGE_STYLES = [
+    '1.5_1022w_682h_LQ',
+  ];
 
   /**
    * The entity type manager.
@@ -81,6 +88,15 @@ class UnitsForService extends ProcessorPluginBase {
             ],
           ],
           'location' => ['type' => 'geo_point'],
+          'image' => [
+            'properties' => [
+              'variants' => ['type' => 'object'],
+              'alt' => ['type' => 'text'],
+              'photographer' => ['type' => 'text'],
+              'title' => ['type' => 'text'],
+              'url' => ['type' => 'keyword'],
+            ],
+          ],
         ],
       ];
 
@@ -119,6 +135,7 @@ class UnitsForService extends ProcessorPluginBase {
           'lat' => $translation->get('latitude')->value,
           'lon' => $translation->get('longitude')->value,
         ],
+        'image' => $this->getImageValue($translation),
       ];
     }
 
@@ -150,6 +167,46 @@ class UnitsForService extends ProcessorPluginBase {
 
     // Only return properties that are defined in the address definition.
     return array_intersect_key($field_value, $address_definition);
+  }
+
+  /**
+   * Get image value from unit entity.
+   *
+   * @param \Drupal\helfi_tpr_config\Entity\Unit $unit
+   *   The unit translation.
+   *
+   * @return array
+   *   The image value.
+   */
+  private function getImageValue(Unit $unit): array {
+    $imagePath = $unit->getPictureUri();
+    if (!$imagePath) {
+      return [];
+    }
+
+    $variants = [];
+    foreach (self::IMAGE_STYLES as $styleName) {
+      $imageStyle = ImageStyle::load($styleName);
+      $imageUri = $imageStyle->buildUri($imagePath);
+
+      if (!file_exists($imageUri)) {
+        $imageStyle->createDerivative($imagePath, $imageUri);
+      }
+
+      $url = $imageStyle->buildUrl($imagePath);
+      $variants[$styleName] = $url;
+    }
+
+    $media = $unit->get('picture_url_override')->entity;
+    $image = $media instanceof MediaInterface ? $media->get('field_media_image') : NULL;
+
+    return [
+      'variants' => $variants,
+      'alt' => $image instanceof FieldItemInterface ? $image->alt : NULL,
+      'photographer' => $media instanceof MediaInterface ? $media->get('field_photographer')->value : NULL,
+      'title' => $image instanceof FieldItemInterface ? $image->title : NULL,
+      'url' => array_first($variants),
+    ];
   }
 
 }

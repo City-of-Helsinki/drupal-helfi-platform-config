@@ -52,11 +52,15 @@ class ServiceProcessorTestBase extends EntityKernelTestBase {
     'elasticsearch_connector',
     'helfi_api_base',
     'helfi_tpr',
+    'helfi_tpr_config',
     'menu_link_content',
     'link',
     'media',
     'address',
     'telephone',
+    'imagecache_external',
+    'image',
+    'file',
   ];
 
   /**
