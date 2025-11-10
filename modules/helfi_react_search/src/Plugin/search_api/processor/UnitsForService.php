@@ -6,10 +6,12 @@ namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemInterface;
+use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
 use Drupal\helfi_react_search\SupportsServiceIndexTrait;
 use Drupal\helfi_tpr\Entity\Unit;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\media\MediaInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -198,13 +200,14 @@ class UnitsForService extends ProcessorPluginBase {
     }
 
     $media = $unit->get('picture_url_override')->entity;
-    $image = $media instanceof MediaInterface ? $media->get('field_media_image') : NULL;
+    $imageFieldItemList = $media instanceof MediaInterface ? $media->get('field_media_image') : NULL;
+    $image = $imageFieldItemList instanceof FileFieldItemList ? $imageFieldItemList->first() : NULL;
 
     return [
       'variants' => $variants,
-      'alt' => $image instanceof FieldItemInterface ? $image->alt : NULL,
+      'alt' => $image instanceof ImageItem ? $image->alt : NULL,
       'photographer' => $media instanceof MediaInterface ? $media->get('field_photographer')->value : NULL,
-      'title' => $image instanceof FieldItemInterface ? $image->title : NULL,
+      'title' => $image instanceof ImageItem ? $image->title : NULL,
       'url' => array_first($variants),
     ];
   }
