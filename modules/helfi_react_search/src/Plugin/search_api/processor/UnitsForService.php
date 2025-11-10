@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Field\FieldItemInterface;
 use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
 use Drupal\helfi_react_search\SupportsServiceIndexTrait;
 use Drupal\helfi_tpr\Entity\Unit;
