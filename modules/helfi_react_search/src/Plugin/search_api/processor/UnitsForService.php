@@ -10,7 +10,6 @@ use Drupal\helfi_react_search\SupportsServiceIndexTrait;
 use Drupal\helfi_tpr\Entity\Unit;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\media\MediaInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -200,13 +199,13 @@ class UnitsForService extends ProcessorPluginBase {
 
     $media = $unit->get('picture_url_override')->entity;
     $imageFieldItemList = $media instanceof MediaInterface ? $media->get('field_media_image') : NULL;
-    $image = $imageFieldItemList instanceof FileFieldItemList ? $imageFieldItemList->first() : NULL;
+    $imageValue = $imageFieldItemList instanceof FileFieldItemList ? $imageFieldItemList->getValue() : NULL;
 
     return [
       'variants' => $variants,
-      'alt' => $image instanceof ImageItem ? $image->alt : NULL,
+      'alt' => $imageValue[0]['alt'] ?? NULL,
       'photographer' => $media instanceof MediaInterface ? $media->get('field_photographer')->value : NULL,
-      'title' => $image instanceof ImageItem ? $image->title : NULL,
+      'title' => $imageValue[0]['title'] ?? NULL,
       'url' => array_first($variants),
     ];
   }
