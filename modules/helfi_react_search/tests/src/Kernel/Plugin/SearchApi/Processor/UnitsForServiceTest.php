@@ -158,6 +158,8 @@ class UnitsForServiceTest extends ServiceProcessorTestBase {
    * Tests that field values are added correctly.
    *
    * @covers ::addFieldValues
+   * @covers ::getImageValue
+   * @covers ::getAddressValue
    */
   public function testAddFieldValues() : void {
     // Extract field values and check the values.
