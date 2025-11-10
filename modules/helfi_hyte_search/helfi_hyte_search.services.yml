@@ -4,3 +4,4 @@ services:
     autowire: true
 
   Drupal\helfi_hyte_search\TrackingHelper: ~
+  Drupal\helfi_hyte_search\EventSubscriber\SearchApiSubscriber: ~
