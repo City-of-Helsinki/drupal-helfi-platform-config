@@ -52,7 +52,7 @@ field_settings:
     label: 'Name synonyms'
     datasource_id: 'entity:tpr_service'
     property_path: name_synonyms
-    type: text
+    type: comma_separated_string
     dependencies:
       module:
         - helfi_tpr
@@ -79,6 +79,27 @@ processor_settings:
   district_image_absolute_url: {  }
   entity_status: {  }
   entity_type: {  }
+  html_filter:
+    weights:
+      preprocess_index: -15
+      preprocess_query: -15
+    all_fields: false
+    fields:
+      - description
+      - description_summary
+      - name
+      - name_override
+    title: false
+    alt: false
+    tags:
+      b: 2.0
+      em: 1.5
+      h1: 5.0
+      h2: 3.0
+      h3: 2.0
+      strong: 2.0
+      u: 1.5
+  is_hyte_service: {  }
   language_with_fallback: {  }
   project_execution_schedule: {  }
   project_image_absolute_url: {  }
