@@ -78,9 +78,9 @@ class Hero extends Paragraph implements ParagraphInterface {
     try {
       $image_author = $image->get('field_photographer')->first()->getString();
       return $this->t(
-        'Image: @image_author',
-        ['@image_author' => $image_author],
-        ['context' => 'Helfi Paragraphs Hero']
+        'Photo: <span translate="no">@photographer</span>',
+        ['@photographer' => $image_author],
+        ['context' => 'Image photographer', 'html' => TRUE]
       );
     }
     catch (MissingDataException $e) {
