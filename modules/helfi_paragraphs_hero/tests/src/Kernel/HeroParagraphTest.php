@@ -92,9 +92,9 @@ class HeroParagraphTest extends KernelTestBase {
       'Image author is returned as TranslatableMarkup.'
     );
     $this->assertEquals(
-      'Image: Ken Smith',
+      'Photo: <span translate="no">Ken Smith</span>',
       $image_author->render(),
-      'Image author text is correctly returned.'
+      'Photo author text is correctly returned.'
     );
   }
 
