@@ -63,7 +63,10 @@ export default class HelfiQuoteCommand extends Command {
     // Determine if the cursor (selection) is in a position where adding a
     // helfiQuote is permitted. This is based on the schema of the model(s)
     // currently containing the cursor.
-    const allowedIn = model.schema.findAllowedParent(selection.getFirstPosition(), 'helfiQuote');
+    const allowedIn = model.schema.findAllowedParent(
+      selection.getFirstPosition(),
+      'helfiQuote',
+    );
 
     // If the cursor is not in a location where a helfiQuote can be added,
     // return null so the quote toolbar button cannot be clicked.

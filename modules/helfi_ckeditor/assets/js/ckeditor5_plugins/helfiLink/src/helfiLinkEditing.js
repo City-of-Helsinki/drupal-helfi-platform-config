@@ -2,10 +2,10 @@
  * @file A view to model and model to view converters for HelfiLink.
  */
 import { Plugin } from 'ckeditor5/src/core';
-import { Widget } from 'ckeditor5/src/widget';
 import { findAttributeRange } from 'ckeditor5/src/typing';
-import { isUrlExternal, parseProtocol, sanitizeSafeLinks } from './utils/utils';
+import { Widget } from 'ckeditor5/src/widget';
 import formElements from './formElements';
+import { isUrlExternal, parseProtocol, sanitizeSafeLinks } from './utils/utils';
 
 /**
  * CKEditor 5 plugins do not work directly with the DOM. They are defined as
@@ -112,13 +112,18 @@ export default class HelfiLinkEditing extends Plugin {
 
         // Create attribute values based on the type of view attributes types.
         if (modelAttributeValue && typeof viewAttribute === 'object') {
-          attributeValues[Object.keys(viewAttribute)] = viewAttribute[Object.keys(viewAttribute)];
+          attributeValues[Object.keys(viewAttribute)] =
+            viewAttribute[Object.keys(viewAttribute)];
         } else {
           attributeValues[viewAttribute] = modelAttributeValue;
         }
 
         // Create the anchor element with the current attributes.
-        const linkViewElement = writer.createAttributeElement('a', attributeValues, { priority: 5 });
+        const linkViewElement = writer.createAttributeElement(
+          'a',
+          attributeValues,
+          { priority: 5 },
+        );
 
         // Without it the isLinkElement() will not recognize the link
         // and the UI will not show up when the user clicks a link.
@@ -135,21 +140,20 @@ export default class HelfiLinkEditing extends Plugin {
 
       // Convert attributes for upcast.
       // View (DOM / Data) --> Model.
-      editor.conversion.for('upcast').attributeToAttribute({
-        view: {
-          name: 'a',
-          key: viewAttributeKey,
-          value: viewAttributeValue,
-        },
-        model: {
-          key: modelName,
-          value: (viewElement) =>
-            !!(
-              viewElement.hasAttribute(viewAttributeKey) &&
-              viewElement.getAttribute(viewAttributeKey) === viewAttributeValue
-            ),
-        },
-      });
+      editor.conversion
+        .for('upcast')
+        .attributeToAttribute({
+          view: { name: 'a', key: viewAttributeKey, value: viewAttributeValue },
+          model: {
+            key: modelName,
+            value: (viewElement) =>
+              !!(
+                viewElement.hasAttribute(viewAttributeKey) &&
+                viewElement.getAttribute(viewAttributeKey) ===
+                  viewAttributeValue
+              ),
+          },
+        });
     } else if (modelName === 'linkIsExternal' || modelName === 'linkProtocol') {
       editor.conversion.for('upcast').elementToAttribute({
         view: 'a',
@@ -169,7 +173,11 @@ export default class HelfiLinkEditing extends Plugin {
 
             // Return if 'whiteListedDomains' is not defined, href is empty or
             // href value starts with '#'.
-            if (!whiteListedDomains || !hrefValue || hrefValue.startsWith('#')) {
+            if (
+              !whiteListedDomains ||
+              !hrefValue ||
+              hrefValue.startsWith('#')
+            ) {
               return null;
             }
 
@@ -190,18 +198,15 @@ export default class HelfiLinkEditing extends Plugin {
       });
     } else {
       // View (DOM / Data) --> Model.
-      editor.conversion.for('upcast').elementToAttribute({
-        view: {
-          name: 'a',
-          attributes: {
-            [viewAttribute]: true,
+      editor.conversion
+        .for('upcast')
+        .elementToAttribute({
+          view: { name: 'a', attributes: { [viewAttribute]: true } },
+          model: {
+            key: modelName,
+            value: (viewElement) => viewElement.getAttribute(viewAttribute),
           },
-        },
-        model: {
-          key: modelName,
-          value: (viewElement) => viewElement.getAttribute(viewAttribute),
-        },
-      });
+        });
     }
   }
 
@@ -247,12 +252,20 @@ export default class HelfiLinkEditing extends Plugin {
             // Get ranges from collapsed selection.
             if (selection.isCollapsed) {
               ranges = [
-                findAttributeRange(selection.getFirstPosition(), modelName, selection.getAttribute(modelName), model),
+                findAttributeRange(
+                  selection.getFirstPosition(),
+                  modelName,
+                  selection.getAttribute(modelName),
+                  model,
+                ),
               ];
             }
             // Get ranges from selected elements.
             else {
-              ranges = model.schema.getValidRanges(selection.getRanges(), modelName);
+              ranges = model.schema.getValidRanges(
+                selection.getRanges(),
+                modelName,
+              );
             }
 
             // Remove the attribute from specified ranges.
@@ -340,7 +353,9 @@ export default class HelfiLinkEditing extends Plugin {
      */
     const convertVariants = (classes) => {
       const parts = classes.split(' '); // Split the string by spaces
-      const variantFound = parts.find((part) => part.startsWith('hds-button--'));
+      const variantFound = parts.find((part) =>
+        part.startsWith('hds-button--'),
+      );
       const hdsButtonFound = parts.find((part) => part.endsWith('hds-button'));
 
       if (variantFound) {
@@ -365,7 +380,7 @@ export default class HelfiLinkEditing extends Plugin {
       let next = items.next();
       while (!next.done) {
         const item = next.value;
-        if (item && item.startsWith('hel-icon--')) {
+        if (item?.startsWith('hel-icon--')) {
           icon = item.replace('hel-icon--', '');
           break;
         }
@@ -379,7 +394,8 @@ export default class HelfiLinkEditing extends Plugin {
       view: { name: 'a' },
       model: (viewElement) => {
         const helfiButtonLabel = Array.from(viewElement.getChildren()).find(
-          (child) => child.name === 'span' && child.hasClass('hds-button__label'),
+          (child) =>
+            child.name === 'span' && child.hasClass('hds-button__label'),
         );
 
         // Check if current anchor has a hds-button__label span and convert it
@@ -411,18 +427,20 @@ export default class HelfiLinkEditing extends Plugin {
 
         // Check if there are obsolete <span> elements inside the anchor
         // and clear them as well.
-        const orphanedSpan = Array.from(viewElement.getChildren()).find((element) => {
-          // Check only an existence of span elements.
-          if (element.name && element.name === 'span') {
-            // Let only language attributes pass,
-            // otherwise return the element.
-            if (element.getAttribute('dir') || element.getAttribute('lang')) {
-              return false;
+        const orphanedSpan = Array.from(viewElement.getChildren()).find(
+          (element) => {
+            // Check only an existence of span elements.
+            if (element.name && element.name === 'span') {
+              // Let only language attributes pass,
+              // otherwise return the element.
+              if (element.getAttribute('dir') || element.getAttribute('lang')) {
+                return false;
+              }
+              return element;
             }
-            return element;
-          }
-          return false;
-        });
+            return false;
+          },
+        );
 
         // Remove the orphaned <span> and insert its children to the <a>.
         if (orphanedSpan) {
@@ -433,7 +451,10 @@ export default class HelfiLinkEditing extends Plugin {
         }
 
         // Remove obsolete data-protocol attributes.
-        if (viewElement.hasAttribute('data-protocol') && viewElement.getAttribute('data-protocol').startsWith('http')) {
+        if (
+          viewElement.hasAttribute('data-protocol') &&
+          viewElement.getAttribute('data-protocol').startsWith('http')
+        ) {
           viewElement._removeAttribute('data-protocol');
         }
         return viewElement;
@@ -443,10 +464,7 @@ export default class HelfiLinkEditing extends Plugin {
 
     // Convert CKE4 data-design attribute to linkVariant model.
     editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-design',
-      },
+      view: { name: 'a', key: 'data-design' },
       model: {
         key: 'linkVariant',
         value: (viewElement) => {
@@ -471,10 +489,7 @@ export default class HelfiLinkEditing extends Plugin {
 
     // Convert CKE4 data-design attribute to linkButton model.
     editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-design',
-      },
+      view: { name: 'a', key: 'data-design' },
       model: {
         key: 'linkButton',
         value: (viewElement) => {
@@ -493,29 +508,22 @@ export default class HelfiLinkEditing extends Plugin {
     });
 
     // Convert CKE4 "hds-button" class attribute to linkButton model.
-    editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'class',
-        value: 'hds-button',
-      },
-      model: {
-        key: 'linkButton',
-        value: 'button',
-      },
-    });
+    editor.conversion
+      .for('upcast')
+      .attributeToAttribute({
+        view: { name: 'a', key: 'class', value: 'hds-button' },
+        model: { key: 'linkButton', value: 'button' },
+      });
 
     // Convert data-protocol attribute to linkProtocol model.
     editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-protocol',
-      },
+      view: { name: 'a', key: 'data-protocol' },
       model: {
         key: 'linkProtocol',
         value: (viewElement) => {
           // If protocol is http or https, remove it as we don't need them.
-          const handleProtocol = (protocol) => (protocol === 'https' || protocol === 'http' ? false : protocol);
+          const handleProtocol = (protocol) =>
+            protocol === 'https' || protocol === 'http' ? false : protocol;
           return handleProtocol(viewElement.getAttribute('data-protocol'));
         },
       },
@@ -523,15 +531,12 @@ export default class HelfiLinkEditing extends Plugin {
     });
 
     // Convert data-selected-icon attribute to linkIcon model.
-    editor.conversion.for('upcast').attributeToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-selected-icon',
-      },
-      model: {
-        key: 'linkIcon',
-      },
-    });
+    editor.conversion
+      .for('upcast')
+      .attributeToAttribute({
+        view: { name: 'a', key: 'data-selected-icon' },
+        model: { key: 'linkIcon' },
+      });
   }
 
   /**
@@ -612,7 +617,9 @@ export default class HelfiLinkEditing extends Plugin {
           // not be added to the undo stack. This is useful for programmatic
           // changes that the user shouldn't be able to undo, like the
           // custom internal attribute updates.
-          const transparentBatch = editor.model.createBatch({ isUndoable: false });
+          const transparentBatch = editor.model.createBatch({
+            isUndoable: false,
+          });
 
           // Use `enqueueChange('transparent')` to safely schedule attribute
           // changes after the link command has completed and the view
@@ -631,13 +638,20 @@ export default class HelfiLinkEditing extends Plugin {
                 // the cursor and apply attributes to that single node instead
                 // of a range.
                 const position = currentSelection.getFirstPosition();
-                const node = position.textNode || position.nodeAfter || position.nodeBefore;
+                const node =
+                  position.textNode ||
+                  position.nodeAfter ||
+                  position.nodeBefore;
                 if (!node) return;
 
                 const range = writer.createRangeOn(node);
 
                 if (attributeValues[modelName]) {
-                  writer.setAttribute(modelName, attributeValues[modelName], range);
+                  writer.setAttribute(
+                    modelName,
+                    attributeValues[modelName],
+                    range,
+                  );
                 } else {
                   writer.removeAttribute(modelName, range);
                 }
@@ -656,10 +670,17 @@ export default class HelfiLinkEditing extends Plugin {
               // Selection not collapsed means the user has selected a range
               // in the document. F.e. selected a word or a sentence.
               else {
-                const ranges = model.schema.getValidRanges(currentSelection.getRanges(), modelName);
+                const ranges = model.schema.getValidRanges(
+                  currentSelection.getRanges(),
+                  modelName,
+                );
                 ranges.forEach((range) => {
                   if (attributeValues[modelName]) {
-                    writer.setAttribute(modelName, attributeValues[modelName], range);
+                    writer.setAttribute(
+                      modelName,
+                      attributeValues[modelName],
+                      range,
+                    );
                   } else {
                     writer.removeAttribute(modelName, range);
                   }
@@ -668,7 +689,7 @@ export default class HelfiLinkEditing extends Plugin {
             });
             helfiLinkCommandExecuting = false;
           });
-        } catch (error) {
+        } catch (_error) {
           // If an error occurs, stop the execution.
           // CKEditorError: Cannot read properties of null (reading 'dataset').
           evt.stop();
