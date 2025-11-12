@@ -66,10 +66,10 @@ class Hero extends Paragraph implements ParagraphInterface {
   /**
    * Get the image author if any.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|false
-   *   The image author as a translatable markup or false.
+   * @return string|false
+   *   The image author as a string or false.
    */
-  public function getImageAuthor(): TranslatableMarkup|FALSE {
+  public function getImageAuthor(): string|FALSE {
     $image = $this->getImage();
     if (!$image || $image->get('field_photographer')->isEmpty()) {
       return FALSE;
@@ -77,11 +77,7 @@ class Hero extends Paragraph implements ParagraphInterface {
 
     try {
       $image_author = $image->get('field_photographer')->first()->getString();
-      return $this->t(
-        'Photo: <span translate="no">@photographer</span>',
-        ['@photographer' => $image_author],
-        ['context' => 'Image photographer', 'html' => TRUE]
-      );
+      return $image_author;
     }
     catch (MissingDataException $e) {
       return FALSE;
