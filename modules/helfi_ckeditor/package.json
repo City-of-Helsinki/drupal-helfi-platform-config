@@ -4,12 +4,12 @@
   "description": "Helfi specific enhancements to CKEditor5 plugins.",
   "scripts": {
     "watch": "webpack --mode development --watch",
-    "build": "webpack && $npm_execpath run format:js",
+    "build": "npm run format:js --loglevel=silent && npm run lint:js --loglevel=silent && webpack",
     "lint:js": "biome lint assets/js/ckeditor5_plugins/",
     "format:js": "biome format --write assets/js/ckeditor5_plugins/"
   },
   "dependencies": {
-    "@biomejs/biome": "^2.2.4",
+    "@biomejs/biome": "^2.3.4",
     "@ckeditor/ckeditor5-core": "^45.2.0",
     "@ckeditor/ckeditor5-dev-translations": "^53.2.0",
     "@ckeditor/ckeditor5-dev-utils": "^53.2.0",
