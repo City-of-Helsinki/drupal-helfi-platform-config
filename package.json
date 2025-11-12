@@ -6,20 +6,17 @@
   "repository": "github:City-of-Helsinki/drupal-helfi-platform-config",
   "scripts": {
     "dev": "node theme-builder.mjs --watch --dev",
-    "build": "npm run lint -s && node theme-builder.mjs",
+    "build": "npm run format:js --loglevel=silent && npm run lint --loglevel=silent && node theme-builder.mjs",
     "preinstall": "npx update-browserslist-db@latest",
-    "postinstall": "npm --prefix ../../../themes/contrib/hdbt install --no-audit --progress=false",
-    "lint:js": "eslint --fix src/js/ --no-error-on-unmatched-pattern",
+    "postinstall": "npm --prefix ../../../themes/contrib/hdbt install --no-audit --progress=false --loglevel=silent",
+    "lint:js": "biome lint assets/js/",
+    "format:js": "biome format --write assets/js/",
     "lint": "npm-run-all --parallel lint:js -s"
   },
   "dependencies": {
-    "@babel/core": "^7.23.2",
+    "@biomejs/biome": "^2.2.4",
     "@drupal/autocomplete": "^0.0.2",
     "@hdbt/theme-builder": "file:../../../themes/contrib/hdbt/theme-builder",
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^10.0.0",
-    "eslint-plugin-jsdoc": "^51.0.0",
     "npm-run-all2": "^8.0.4"
   },
   "browserslist": [
