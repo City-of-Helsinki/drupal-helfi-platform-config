@@ -7,7 +7,6 @@ namespace Drupal\helfi_paragraphs_hero\Entity;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\media\Entity\Media;
 use Drupal\paragraphs\Entity\Paragraph;
