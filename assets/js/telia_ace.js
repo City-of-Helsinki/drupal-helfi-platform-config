@@ -1,5 +1,4 @@
-// eslint-disable-next-line func-names
-(function (Drupal, drupalSettings) {
+((Drupal, drupalSettings) => {
   Drupal.behaviors.telia_ace = {
     attach: function attach() {
       setTimeout(() => {
@@ -11,8 +10,7 @@
         let chatSettings = {};
         try {
           chatSettings = new ChatSettings(drupalSettings.telia_ace_data ?? {});
-        }
-        catch (e) {
+        } catch (e) {
           console.error(e);
           return;
         }
@@ -21,7 +19,7 @@
         new TeliaAceWidget(chatSettings);
         drupalSettings.telia_ace_data.initialized = true;
       });
-    }
+    },
   };
 })(Drupal, drupalSettings);
 
@@ -56,11 +54,11 @@ class TeliaAceWidget {
       chatLoaded: false,
       chatOpened: false,
       chatInitialized: false,
-      busy: false
+      busy: false,
     };
 
     const button = this.createChatButton();
-    button.addEventListener('click', this.firstClickCallback, {once: true});
+    button.addEventListener('click', this.firstClickCallback, { once: true });
     this.render();
   }
 
@@ -85,7 +83,7 @@ class TeliaAceWidget {
     this.customChatButton = button;
 
     return button;
-  }
+  };
 
   /**
    * User clicks chat button for the first time.
@@ -109,7 +107,7 @@ class TeliaAceWidget {
 
     this.state.chatLoading = true;
     this.render();
-  }
+  };
 
   /**
    * Open button click event callback.
@@ -117,18 +115,22 @@ class TeliaAceWidget {
   openCallback = () => {
     this.state.chatOpened = true;
     this.openChat(true);
-    this.closeButton.addEventListener('click', this.closeCallback, {once: true});
+    this.closeButton.addEventListener('click', this.closeCallback, {
+      once: true,
+    });
     this.render();
-  }
+  };
 
   /**
    * Close button click event callback.
    */
   closeCallback = () => {
     this.state.chatOpened = false;
-    this.customChatButton.addEventListener('click', this.openChat, {once: true})
+    this.customChatButton.addEventListener('click', this.openChat, {
+      once: true,
+    });
     this.render();
-  }
+  };
 
   /**
    * Open the chat after the chat has been loaded.
@@ -137,7 +139,11 @@ class TeliaAceWidget {
    */
   openChat = (openWidget) => {
     const widgetInitialized = setInterval(() => {
-      if(typeof window.humany !== 'undefined' && typeof window.humany.widgets !== 'undefined' && window.humany.widgets.find(this.static.chatId)){
+      if (
+        typeof window.humany !== 'undefined' &&
+        typeof window.humany.widgets !== 'undefined' &&
+        window.humany.widgets.find(this.static.chatId)
+      ) {
         if (openWidget) {
           const widget = window.humany.widgets.find(this.static.chatId);
           widget.activate();
@@ -152,9 +158,8 @@ class TeliaAceWidget {
         this.render();
         clearInterval(widgetInitialized);
       }
-
     }, 100);
-  }
+  };
 
   /**
    * Render and rerender the chat element.
@@ -163,9 +168,9 @@ class TeliaAceWidget {
    * It changes the button texts and visibility.
    */
   render = () => {
-    const label =  this.state.chatLoading ?
-      Drupal.t('Loading chat...', {}, {context: 'Telia ACE chat'}) :
-      this.static.chatTitle;
+    const label = this.state.chatLoading
+      ? Drupal.t('Loading chat...', {}, { context: 'Telia ACE chat' })
+      : this.static.chatTitle;
 
     const element = document.getElementById(this.static.selector);
     if (!element) {
@@ -185,14 +190,14 @@ class TeliaAceWidget {
     // Hide and show the button based on this.state
     element.classList.toggle('loading', this.state.chatLoading);
     element.classList.toggle('hidden', this.state.chatOpened);
-  }
+  };
 
   /**
    * Check if cookies has been accepted.
    */
   cookieCheck = () => {
     return Drupal.cookieConsent.getConsentStatus(['chat']);
-  }
+  };
 
   /**
    * Set the chat acceptance if chat-button is clicked.
@@ -200,7 +205,7 @@ class TeliaAceWidget {
   cookieSet = () => {
     if (Drupal.cookieConsent.getConsentStatus(['chat'])) return;
     Drupal.cookieConsent.setAcceptedCategories(['chat']);
-  }
+  };
 
   /**
    * Onload-callback.
@@ -213,7 +218,8 @@ class TeliaAceWidget {
     const loaded = setInterval(() => {
       // The close button seems to be the best way to figure out
       // if the chat has actually ready to be used.
-      const humany_widget = document.getElementsByClassName('humany-trigger')[0];
+      const humany_widget =
+        document.getElementsByClassName('humany-trigger')[0];
       let close = null;
       if (!humany_widget) {
         return;
@@ -226,13 +232,14 @@ class TeliaAceWidget {
         this.state.chatLoaded = true;
         this.state.chatOpened = true;
 
-        this.closeButton.addEventListener('click', this.closeCallback, {once: true});
+        this.closeButton.addEventListener('click', this.closeCallback, {
+          once: true,
+        });
         this.openChat(true);
         clearInterval(loaded);
       }
     }, 100);
-  }
-
+  };
 }
 
 /**
@@ -242,21 +249,17 @@ class TeliaAceWidget {
  */
 class ChatSettings {
   constructor(settings) {
-    const requiredSettings = [
-      'chat_title',
-      'chat_id',
-      'script_url'
-    ];
+    const requiredSettings = ['chat_title', 'chat_id', 'script_url'];
 
     // Check that the required settings exist.
-    requiredSettings.forEach(value => {
-      if (!settings.hasOwnProperty(value) || !settings[value]) {
+    requiredSettings.forEach((value) => {
+      if (!Object.hasOwn(settings, value) || !settings[value]) {
         throw new Error(`Missing expected ace chat setting ${value}`);
       }
     });
 
-    this.chat_title = settings.chat_title
-    this.chat_id = settings.chat_id
-    this.script_url = settings.script_url
+    this.chat_title = settings.chat_title;
+    this.chat_id = settings.chat_id;
+    this.script_url = settings.script_url;
   }
 }

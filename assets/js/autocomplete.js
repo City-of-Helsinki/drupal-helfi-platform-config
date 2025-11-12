@@ -1,4 +1,8 @@
-const LOCATION_OPTION = Drupal.t('Use current Location', {}, { context: 'Location autocomplete' });
+const LOCATION_OPTION = Drupal.t(
+  'Use current Location',
+  {},
+  { context: 'Location autocomplete' },
+);
 const API_URL = 'https://api.hel.fi/servicemap/v2/address/';
 const LOCATION_LOADING = 'location-loading';
 
@@ -37,24 +41,27 @@ const getTranslation = (fullName) => {
    *
    * @param {HTMLSelectElement} element Select element.
    */
-  const init = element => {
+  const init = (element) => {
     // eslint-disable-next-line no-undef
     if (!A11yAutocomplete) {
-      throw new Error('A11yAutocomplete object not found. Make sure the library is loaded.');
+      throw new Error(
+        'A11yAutocomplete object not found. Make sure the library is loaded.',
+      );
     }
 
-
     // Dont add 'Use current location' option if location not available
-    let defaultOptions = 'geolocation' in navigator ? [{
-      label: locationOptionLabel,
-      value: LOCATION_OPTION,
-      index: 0,
-      // minCharAssistiveHint doesn't seem to work when there is always one item.
-      item: {
-        label: LOCATION_OPTION,
-        value: LOCATION_OPTION,
-      }
-    }] : [];
+    let defaultOptions =
+      'geolocation' in navigator
+        ? [
+            {
+              label: locationOptionLabel,
+              value: LOCATION_OPTION,
+              index: 0,
+              // minCharAssistiveHint doesn't seem to work when there is always one item.
+              item: { label: LOCATION_OPTION, value: LOCATION_OPTION },
+            },
+          ]
+        : [];
 
     const parent = element.closest('.hds-text-input');
 
@@ -65,7 +72,11 @@ const getTranslation = (fullName) => {
       parent.classList.add('hds-text-input--invalid');
       const errorSpan = document.createElement('span');
       errorSpan.classList.add('hds-text-input__error-text');
-      errorSpan.textContent = Drupal.t('We couldn\'t retrieve your current location. Try entering an address.', {}, { context: 'Location autocomplete' });
+      errorSpan.textContent = Drupal.t(
+        "We couldn't retrieve your current location. Try entering an address.",
+        {},
+        { context: 'Location autocomplete' },
+      );
       parent.appendChild(errorSpan);
 
       // Remove automatic location from default options
@@ -80,12 +91,36 @@ const getTranslation = (fullName) => {
       parent.querySelector('.hds-text-input__error-text')?.remove();
     };
 
-    const minCharAssistiveHint = Drupal.t('Type @count or more characters for results', {}, { context: 'Location autocomplete' });
-    const inputAssistiveHint = Drupal.t('When autocomplete results are available use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures.', {}, { context: 'Location autocomplete' });
-    const noResultsAssistiveHint = Drupal.t('No address suggestions were found', {}, { context: 'Location autocomplete' });
-    const someResultsAssistiveHint = Drupal.t('There are @count results available.', {}, { context: 'Location autocomplete' });
-    const oneResultAssistiveHint = Drupal.t('There is one result available.', {}, { context: 'Location autocomplete' });
-    const highlightedAssistiveHint = Drupal.t('@selectedItem @position of @count is highlighted', {}, { context: 'Location autocomplete' });
+    const minCharAssistiveHint = Drupal.t(
+      'Type @count or more characters for results',
+      {},
+      { context: 'Location autocomplete' },
+    );
+    const inputAssistiveHint = Drupal.t(
+      'When autocomplete results are available use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures.',
+      {},
+      { context: 'Location autocomplete' },
+    );
+    const noResultsAssistiveHint = Drupal.t(
+      'No address suggestions were found',
+      {},
+      { context: 'Location autocomplete' },
+    );
+    const someResultsAssistiveHint = Drupal.t(
+      'There are @count results available.',
+      {},
+      { context: 'Location autocomplete' },
+    );
+    const oneResultAssistiveHint = Drupal.t(
+      'There is one result available.',
+      {},
+      { context: 'Location autocomplete' },
+    );
+    const highlightedAssistiveHint = Drupal.t(
+      '@selectedItem @position of @count is highlighted',
+      {},
+      { context: 'Location autocomplete' },
+    );
 
     // Set by '#autocomplete_route_name'.
     const autocompleteRoute = element.dataset.autocompletePath;
@@ -103,7 +138,7 @@ const getTranslation = (fullName) => {
       noResultsAssistiveHint,
       oneResultAssistiveHint,
       someResultsAssistiveHint,
-      source: async(searchTerm, results) => {
+      source: async (searchTerm, results) => {
         if (searchTerm.length < 3) {
           return results(defaultOptions);
         }
@@ -118,8 +153,7 @@ const getTranslation = (fullName) => {
 
           const data = await response.json();
           results(defaultOptions.concat(data));
-        }
-        catch (e) {
+        } catch (e) {
           if (e.name === 'AbortError') {
             return;
           }
@@ -156,31 +190,31 @@ const getTranslation = (fullName) => {
 
       event.preventDefault();
       setLoading(element, autocompleteInstance, true);
-      navigator.geolocation.getCurrentPosition(async(position) => {
-        const { coords: { latitude, longitude } } = position;
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const {
+            coords: { latitude, longitude },
+          } = position;
 
-        const params = new URLSearchParams({
-          lat: latitude,
-          lon: longitude,
-        });
-        const reqUrl = new URL(API_URL);
-        reqUrl.search = params.toString();
+          const params = new URLSearchParams({ lat: latitude, lon: longitude });
+          const reqUrl = new URL(API_URL);
+          reqUrl.search = params.toString();
 
-        try {
-          const response = await fetch(reqUrl.toString());
-          const json = await response.json();
-          event.target.value = getTranslation(json.results[0].full_name);
-        }
-        catch(e) {
+          try {
+            const response = await fetch(reqUrl.toString());
+            const json = await response.json();
+            event.target.value = getTranslation(json.results[0].full_name);
+          } catch (_e) {
+            displayLocationError();
+          } finally {
+            setLoading(false);
+          }
+        },
+        () => {
           displayLocationError();
-        }
-        finally {
           setLoading(false);
-        }
-      }, () => {
-        displayLocationError();
-        setLoading(false);
-      });
+        },
+      );
     });
 
     // Opens the dropdown on focus when input is empty

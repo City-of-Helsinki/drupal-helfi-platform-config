@@ -19,8 +19,7 @@
 
     // Exclude elements from the injector that are not content:
     // e.g. TOC, sidebar, cookie compliance banner etc.
-    exclusions: () => '' +
-      ':not(.hide-from-table-of-contents *)',
+    exclusions: () => '' + ':not(.hide-from-table-of-contents *)',
 
     // List of heading tags with exclusions.
     titleComponents: (exclusions = Drupal.HeadingIdInjector.exclusions()) => [
@@ -59,92 +58,98 @@
 
     // Locale conversions.
     localeConversions: () => ({
-      '0': '[°₀۰０]',
-      '1': '[¹₁۱１]',
-      '2': '[²₂۲２]',
-      '3': '[³₃۳３]',
-      '4': '[⁴₄۴٤４]',
-      '5': '[⁵₅۵٥５]',
-      '6': '[⁶₆۶٦６]',
-      '7': '[⁷₇۷７]',
-      '8': '[⁸₈۸８]',
-      '9': '[⁹₉۹９]',
-      'a': '[àáảãạăắằẳẵặâấầẩẫậāąåαάἀἁἂἃἄἅἆἇᾀᾁᾂᾃᾄᾅᾆᾇὰᾰᾱᾲᾳᾴᾶᾷаأအာါǻǎªაअاａä]',
-      'aa': '[عआآ]',
-      'ae': '[æǽ]',
-      'ai': '[ऐ]',
-      'b': '[бβبဗბｂब]',
-      'c': '[çćčĉċｃ©]',
-      'ch': '[чჩჭچ]',
-      'd': '[ďðđƌȡɖɗᵭᶁᶑдδدضဍဒდｄᴅᴆ]',
-      'dj': '[ђđ]',
-      'dz': '[џძ]',
-      'e': '[éèẻẽẹêếềểễệëēęěĕėεέἐἑἒἓἔἕὲеёэєəဧေဲეएإئｅ]',
-      'ei': '[ऍ]',
-      'f': '[фφفƒფｆ]',
-      'g': '[ĝğġģгґγဂგگｇ]',
-      'gh': '[غღ]',
-      'gx': '[ĝ]',
-      'h': '[ĥħηήحهဟှჰｈ]',
-      'hx': '[ĥ]',
-      'i': '[íìỉĩịîïīĭįıιίϊΐἰἱἲἳἴἵἶἷὶῐῑῒῖῗіїиဣိီည်ǐიइیｉi̇ϒ]',
-      'ii': '[ई]',
-      'ij': '[ĳ]',
-      'j': '[ĵјჯجｊ]',
-      'jx': '[ĵ]',
-      'k': '[ķĸкκقكကკქکｋ]',
-      'kh': '[хخხ]',
-      'l': '[łľĺļŀлλلလლｌल]',
-      'lj': '[љ]',
-      'm': '[мμمမმｍ]',
-      'n': '[ñńňņŉŋνнنနნｎ]',
-      'nj': '[њ]',
-      'o': '[óòỏõọôốồổỗộơớờởỡợøōőŏοὀὁὂὃὄὅὸόоوθိုǒǿºოओｏöө]',
-      'oe': '[öœؤ]',
-      'oi': '[ऑ]',
-      'oii': '[ऒ]',
-      'p': '[пπပპپｐ]',
-      'ps': '[ψ]',
-      'q': '[ყｑ]',
-      'r': '[ŕřŗрρرრｒ]',
-      's': '[śšşсσșςسصစſსｓŝ]',
-      'sh': '[шშش]',
-      'shch': '[щ]',
-      'ss': '[ß]',
-      'sx': '[ŝ]',
-      't': '[ťţтτțتطဋတŧთტｔ]',
-      'th': '[þϑثذظ]',
-      'ts': '[цცწ]',
-      'u': '[úùủũụưứừửữựûūůűŭųµуဉုူǔǖǘǚǜუउｕўü]',
-      'ue': '[ü]',
-      'uu': '[ऊ]',
-      'v': '[вვϐｖ]',
-      'w': '[ŵωώဝွｗ]',
-      'x': '[χξｘ]',
-      'y': '[ýỳỷỹỵÿŷйыυϋύΰيယｙῠῡὺ]',
-      'ya': '[я]',
-      'yu': '[ю]',
-      'z': '[źžżзζزဇზｚ]',
-      'zh': '[жჟژ]',
+      0: '[°₀۰０]',
+      1: '[¹₁۱１]',
+      2: '[²₂۲２]',
+      3: '[³₃۳３]',
+      4: '[⁴₄۴٤４]',
+      5: '[⁵₅۵٥５]',
+      6: '[⁶₆۶٦６]',
+      7: '[⁷₇۷７]',
+      8: '[⁸₈۸８]',
+      9: '[⁹₉۹９]',
+      a: '[àáảãạăắằẳẵặâấầẩẫậāąåαάἀἁἂἃἄἅἆἇᾀᾁᾂᾃᾄᾅᾆᾇὰᾰᾱᾲᾳᾴᾶᾷаأအာါǻǎªაअاａä]',
+      aa: '[عआآ]',
+      ae: '[æǽ]',
+      ai: '[ऐ]',
+      b: '[бβبဗბｂब]',
+      c: '[çćčĉċｃ©]',
+      ch: '[чჩჭچ]',
+      d: '[ďðđƌȡɖɗᵭᶁᶑдδدضဍဒდｄᴅᴆ]',
+      dj: '[ђđ]',
+      dz: '[џძ]',
+      e: '[éèẻẽẹêếềểễệëēęěĕėεέἐἑἒἓἔἕὲеёэєəဧေဲეएإئｅ]',
+      ei: '[ऍ]',
+      f: '[фφفƒფｆ]',
+      g: '[ĝğġģгґγဂგگｇ]',
+      gh: '[غღ]',
+      gx: '[ĝ]',
+      h: '[ĥħηήحهဟှჰｈ]',
+      hx: '[ĥ]',
+      i: '[íìỉĩịîïīĭįıιίϊΐἰἱἲἳἴἵἶἷὶῐῑῒῖῗіїиဣိီည်ǐიइیｉi̇ϒ]',
+      ii: '[ई]',
+      ij: '[ĳ]',
+      j: '[ĵјჯجｊ]',
+      jx: '[ĵ]',
+      k: '[ķĸкκقكကკქکｋ]',
+      kh: '[хخხ]',
+      l: '[łľĺļŀлλلလლｌल]',
+      lj: '[љ]',
+      m: '[мμمမმｍ]',
+      n: '[ñńňņŉŋνнنနნｎ]',
+      nj: '[њ]',
+      o: '[óòỏõọôốồổỗộơớờởỡợøōőŏοὀὁὂὃὄὅὸόоوθိုǒǿºოओｏöө]',
+      oe: '[öœؤ]',
+      oi: '[ऑ]',
+      oii: '[ऒ]',
+      p: '[пπပპپｐ]',
+      ps: '[ψ]',
+      q: '[ყｑ]',
+      r: '[ŕřŗрρرრｒ]',
+      s: '[śšşсσșςسصစſსｓŝ]',
+      sh: '[шშش]',
+      shch: '[щ]',
+      ss: '[ß]',
+      sx: '[ŝ]',
+      t: '[ťţтτțتطဋတŧთტｔ]',
+      th: '[þϑثذظ]',
+      ts: '[цცწ]',
+      u: '[úùủũụưứừửữựûūůűŭųµуဉုူǔǖǘǚǜუउｕўü]',
+      ue: '[ü]',
+      uu: '[ऊ]',
+      v: '[вვϐｖ]',
+      w: '[ŵωώဝွｗ]',
+      x: '[χξｘ]',
+      y: '[ýỳỷỹỵÿŷйыυϋύΰيယｙῠῡὺ]',
+      ya: '[я]',
+      yu: '[ю]',
+      z: '[źžżзζزဇზｚ]',
+      zh: '[жჟژ]',
     }),
 
     injectIds: (content) => {
       // Remove loading text and noscript element.
-      let name = content.textContent
-        .toLowerCase()
-        .trim();
+      let name = content.textContent.toLowerCase().trim();
 
       // To ensure backwards compatibility, this is done only to "other" languages.
-      if (!Drupal.HeadingIdInjector.mainLanguages().includes(drupalSettings.path.currentLanguage)) {
-        Object.keys(Drupal.HeadingIdInjector.localeConversions()).forEach((swap) => {
-          name = name.replace(new RegExp(Drupal.HeadingIdInjector.localeConversions()[swap], 'g'), swap);
-        });
-      }
-      else {
-        name = name
-          .replace(/ä/gi, 'a')
-          .replace(/ö/gi, 'o')
-          .replace(/å/gi, 'a');
+      if (
+        !Drupal.HeadingIdInjector.mainLanguages().includes(
+          drupalSettings.path.currentLanguage,
+        )
+      ) {
+        Object.keys(Drupal.HeadingIdInjector.localeConversions()).forEach(
+          (swap) => {
+            name = name.replace(
+              new RegExp(
+                Drupal.HeadingIdInjector.localeConversions()[swap],
+                'g',
+              ),
+              swap,
+            );
+          },
+        );
+      } else {
+        name = name.replace(/ä/gi, 'a').replace(/ö/gi, 'o').replace(/å/gi, 'a');
       }
 
       name = name
@@ -167,12 +172,9 @@
 
       // Create anchor links.
       content.setAttribute('id', anchorName);
-      content.setAttribute('tabindex', '-1');  // Set tabindex to -1 to avoid issues with screen readers.
+      content.setAttribute('tabindex', '-1'); // Set tabindex to -1 to avoid issues with screen readers.
 
-      return {
-        nodeName,
-        anchorName,
-      };
+      return { nodeName, anchorName };
     },
   };
 
@@ -199,15 +201,22 @@
       });
 
       // Inject IDs into headings and store info about each injected heading.
-      once('heading-id-injector', Drupal.HeadingIdInjector.titleComponents().join(','), mainContent)
-        .forEach((content) => {
-          const { nodeName, anchorName } = Drupal.HeadingIdInjector.injectIds(content);
-          Drupal.HeadingIdInjector.injectedHeadings.push({ nodeName, anchorName, content });
+      once(
+        'heading-id-injector',
+        Drupal.HeadingIdInjector.titleComponents().join(','),
+        mainContent,
+      ).forEach((content) => {
+        const { nodeName, anchorName } =
+          Drupal.HeadingIdInjector.injectIds(content);
+        Drupal.HeadingIdInjector.injectedHeadings.push({
+          nodeName,
+          anchorName,
+          content,
         });
+      });
 
       // Mark as initialized so it won't re-run unnecessarily.
       window.headingIdInjectorInitialized = true;
-    }
+    },
   };
-
 })(Drupal, once, drupalSettings);
