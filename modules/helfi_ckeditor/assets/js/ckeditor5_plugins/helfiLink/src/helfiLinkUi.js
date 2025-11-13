@@ -83,6 +83,21 @@ export default class HelfiLinkUi extends Plugin {
         // settings accordion.
         this._createAdvancedSettingsAccordion();
 
+        // When editing an existing link, check if it has target="_blank"
+        // and update the link command's state to reflect whether
+        // the link should open in a new window.
+        const linkCommand = this.editor.commands.get('link');
+        const editingExisting = this._isEditingExistingLink();
+
+        if (editingExisting) {
+          const anchor = this._getSelectedAnchorFromView();
+          const isBlank = !!(
+            anchor && anchor.getAttribute('target') === '_blank'
+          );
+          linkCommand.linkNewWindow = isBlank;
+          linkCommand.linkNewWindowConfirm = isBlank;
+        }
+
         // Iterate through formElements and load data from LinkCommand plugin
         // to each form field. This needs to be run after the
         // _createAdvancedSettingsAccordion() as TomSelect library requires
@@ -97,6 +112,21 @@ export default class HelfiLinkUi extends Plugin {
           this._handleDataLoadingIntoFormField(modelName);
         });
 
+        // When creating a new link, ensure both new window checkboxes
+        // are unchecked and hidden by default.
+        if (!editingExisting) {
+          linkCommand.linkNewWindow = false;
+          linkCommand.linkNewWindowConfirm = false;
+
+          if (this.linkFormView.linkNewWindow) {
+            this.linkFormView.linkNewWindow.updateChecked(false);
+          }
+          if (this.linkFormView.linkNewWindowConfirm) {
+            this.linkFormView.linkNewWindowConfirm.updateChecked(false);
+            this.linkFormView.linkNewWindowConfirm.updateVisibility(false);
+          }
+        }
+
         // Add a descriptive text to URL input field.
         if (!this.linkFormView.urlInputView.infoText) {
           this.linkFormView.urlInputView.infoText = Drupal.t(
@@ -108,6 +138,15 @@ export default class HelfiLinkUi extends Plugin {
 
         // Add logic to checkboxes.
         this._handleNewWindowCheckboxes();
+
+        // Open advanced settings if any advanced child has a truthy value.
+        if (this._hasAdvancedNonDefault(models)) {
+          this._openAdvancedSettings();
+        }
+
+        // Set up auto-opening of the advanced section
+        // when any advanced field is modified.
+        this._bindAdvancedAutOpenFor(models);
 
         // Move the submit button row from inside urlInputView
         // to the bottom of the dialog.
@@ -171,6 +210,43 @@ export default class HelfiLinkUi extends Plugin {
         });
         this.helfiContextualBalloonInitialized = true;
       });
+  }
+
+  /**
+   * Determines if we're currently editing an existing link.
+   *
+   * An existing link is determined by checking if the link command
+   * has a value or if the current selection has a link attribute.
+   *
+   * @return {boolean} True if we're editing an existing link.
+   */
+  _isEditingExistingLink() {
+    const linkCommand = this.editor.commands.get('link');
+    if (linkCommand?.value) {
+      return true;
+    }
+    return this.editor.model.document.selection.hasAttribute('linkHref');
+  }
+
+  /**
+   * Returns the anchor element at the current selection in the editing view.
+   *
+   * @return {Node} The anchor element or null.
+   */
+  _getSelectedAnchorFromView() {
+    const view = this.editor.editing.view;
+    const selection = view.document.selection;
+    const pos = selection.getFirstPosition();
+    if (!pos) {
+      return null;
+    }
+
+    const chain = pos.getAncestors();
+    const anchor = chain
+      .slice()
+      .reverse()
+      .find((n) => n.is?.('element', 'a'));
+    return anchor || null;
   }
 
   /**
@@ -404,19 +480,17 @@ export default class HelfiLinkUi extends Plugin {
 
         // Bind isChecked values of checkboxInputViews to the linkCommand.
         case 'checkbox': {
-          // Set the link new window checkbox initial value and the link new
-          // window confirmation checkbox values based on the value
-          // of the element's linkNewWindowConfirm model. The link new window
-          // confirmation gets its value from <a target=_blank> attribute.
-          const isChecked = !!linkCommand.linkNewWindowConfirm;
-
-          // Set initial value of current "link new window" and
-          // "link new window confirmation" based on isChecked value.
+          // Initialize each checkbox from its own model key.
+          const isChecked = !!linkCommand[modelName];
           this.linkFormView[modelName].updateChecked(isChecked);
-          if (this.linkFormView.linkNewWindowConfirm) {
-            this.linkFormView.linkNewWindowConfirm.updateVisibility(isChecked);
+
+          // The linkNewWindowConfirm checkbox visibility follows linkNewWindow.
+          if (modelName === 'linkNewWindowConfirm') {
+            this.linkFormView.linkNewWindowConfirm.updateVisibility(
+              !!linkCommand.linkNewWindow,
+            );
           }
-          break;
+          return;
         }
 
         case 'select':
@@ -553,6 +627,92 @@ export default class HelfiLinkUi extends Plugin {
         this.linkFormView?.linkNewWindowConfirm.updateVisibility(value);
       },
     );
+  }
+
+  /**
+   * Opens the advanced settings section by updating the UI state.
+   */
+  _openAdvancedSettings() {
+    if (!this.linkFormView?.advancedSettings) return;
+    const d = this.linkFormView.advancedSettings;
+    d.set({ isOpen: true });
+    if (d.element) d.element.open = true;
+    const s = d.detailsSummary?.element;
+    if (s) {
+      s.ariaExpanded = true;
+      s.ariaPressed = true;
+    }
+  }
+
+  /**
+   * Checks if any advanced field has a non-default value.
+   *
+   * @param {Array} models - The list of form field models to check.
+   * @return {boolean} True if any advanced field has a non-default value.
+   */
+  _hasAdvancedNonDefault(models) {
+    const linkCommand = this.editor.commands.get('link');
+    return models.some((model) => {
+      const opts = this.formElements[model];
+      if (!opts || opts.group !== 'advanced') return false;
+
+      // Decide "non-default" per field type.
+      switch (opts.type) {
+        case 'checkbox':
+          return !!linkCommand[model]; // default = false
+        case 'select': {
+          const v = this.linkFormView?.[model]?.tomSelect?.getValue();
+          return !!(Array.isArray(v) ? v.length : v); // default = empty
+        }
+        case 'input': {
+          // Prefer actual input value (already loaded), fallback to command prop.
+          const v =
+            this.linkFormView?.[model]?.fieldView?.element?.value ??
+            linkCommand[model];
+          return !!(v && String(v).trim());
+        }
+        default:
+          return false;
+      }
+    });
+  }
+
+  /**
+   * Sets up event listeners to automatically open the advanced section
+   * when any advanced field is modified by the user.
+   *
+   * @param {Array} models - The list of form field models to monitor.
+   */
+  _bindAdvancedAutOpenFor(models) {
+    models
+      .filter((m) => this.formElements[m]?.group === 'advanced')
+      .forEach((m) => {
+        const view = this.linkFormView?.[m];
+        if (!view) return;
+
+        // Checkbox
+        if (view.checkboxInputView) {
+          view.checkboxInputView.on('change:isChecked', (_e, _n, val) => {
+            if (val) this._openAdvancedSettings();
+          });
+          return;
+        }
+
+        // Select (TomSelect)
+        if (view.tomSelect) {
+          view.tomSelect.on('item_add', () => this._openAdvancedSettings());
+          return;
+        }
+
+        // Text input
+        if (view.fieldView?.element) {
+          // CKEditor view doesn't emit DOM 'input', but the element does.
+          view.fieldView.element.addEventListener('input', () => {
+            const v = view.fieldView.element.value;
+            if (v && String(v).trim()) this._openAdvancedSettings();
+          });
+        }
+      });
   }
 
   /**
