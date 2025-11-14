@@ -265,6 +265,13 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     foreach (['en' => 1, 'fi' => 2, 'ar' => 3] as $index) {
       // Select the example text and choose a language for it.
       $this->selectTextInsideElement('.ck-content p:nth-of-type(' . $index . ')');
+
+      // Skip English as it is the original language and therefore there is no
+      // lang-attribute. CKEditor removes the default language attribute.
+      if ($index === 1) {
+        continue;
+      }
+
       $this->unSelectLanguage();
       $non_translated_paragraph = $assert_session->waitForElementVisible('css', '.ck-editor__main>.ck-content p:nth-of-type(' . $index . ')');
       $this->assertNotNull($non_translated_paragraph);
@@ -377,7 +384,7 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     // Check that the language selection dialog field is visible and click it.
     $remove_language = $assert_session->waitForElementVisible('css', '.helfi-language-selector a.remove');
     $this->assertTrue($remove_language->isVisible(), 'The language remove button is not visible.');
-    $remove_language->click();
+    $this->getSession()->executeScript('document.querySelector(".helfi-language-selector a.remove").click();');
   }
 
   /**
