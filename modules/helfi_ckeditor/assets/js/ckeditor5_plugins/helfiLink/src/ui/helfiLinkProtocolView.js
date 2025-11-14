@@ -18,10 +18,10 @@ export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
 
       // The template for the Tom Select options and selected items.
       const renderTemplate = (item, sanitizeOutput) => `
-          <span style="align-items: center; display: flex; height: 100%;">
-            <span class="hel-icon--name" style="margin-left: 8px;">${sanitizeOutput(item.title)}</span>
-          </span>
-        `;
+        <span style="align-items: center; display: flex; height: 100%;">
+          <span class="hel-icon--name" style="margin-left: 8px;">${sanitizeOutput(item.title)}</span>
+        </span>
+      `;
 
       // Settings for the Tom Select.
       const settings = {
