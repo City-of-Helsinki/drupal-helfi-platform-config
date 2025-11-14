@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ckeditor\FunctionalJavascript;
 
+use Drupal\Core\Url;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
 use Drupal\user\Entity\User;
@@ -78,7 +79,7 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     $test_url = $test_url_protocol . $test_url_address;
 
     // Initialize the CKEditor with a suitable markup.
-    $this->initializeEditor('');
+    $edit_url = $this->initializeEditor('');
 
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
@@ -370,9 +371,12 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
    * @param string $content
    *   The content to be edited.
    *
+   * @return \Drupal\Core\Url $edit_url
+   *   The edit URL of the created node.
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
-  protected function initializeEditor(string $content): void {
+  protected function initializeEditor(string $content): Url {
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
 
@@ -392,6 +396,7 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
 
     // Wait for CKEditor to load.
     $this->waitForEditor();
+    return $edit_url;
   }
 
 }
