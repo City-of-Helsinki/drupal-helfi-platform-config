@@ -60,7 +60,10 @@ export default class HelfiDetailsView extends View {
 
       attributes: {
         id: bind.to('id'),
-        class: ['ck-helfi-link-details', bind.if('isOpen', 'ck-is-open', (isOpen) => isOpen)],
+        class: [
+          'ck-helfi-link-details',
+          bind.if('isOpen', 'ck-is-open', (isOpen) => isOpen),
+        ],
         open: bind.if('isOpen'),
       },
 
@@ -105,11 +108,7 @@ export default class HelfiDetailsView extends View {
         class: ['ck-helfi-link-details__summary'],
         tabindex: 0,
       },
-      children: [
-        {
-          text: this.bindTemplate.to('label'),
-        },
-      ],
+      children: [{ text: this.bindTemplate.to('label') }],
     });
     return detailsSummaryView;
   }

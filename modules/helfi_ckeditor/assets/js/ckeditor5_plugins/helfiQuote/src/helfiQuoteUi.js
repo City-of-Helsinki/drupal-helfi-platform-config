@@ -17,7 +17,11 @@ export default class HelfiQuoteUi extends Plugin {
 
   init() {
     const { editor } = this;
-    const defaultTitle = Drupal.t('Add a quote', {}, { context: 'CKEditor5 Helfi Quote plugin' });
+    const defaultTitle = Drupal.t(
+      'Add a quote',
+      {},
+      { context: 'CKEditor5 Helfi Quote plugin' },
+    );
 
     // Register the helfiQuote toolbar button.
     editor.ui.componentFactory.add('helfiQuote', (locale) => {
@@ -35,13 +39,13 @@ export default class HelfiQuoteUi extends Plugin {
 
       // Rebind the state of the button to quoteCommand isEnabled observable.
       this.dropdownView.buttonView.unbind('isEnabled');
-      this.dropdownView.buttonView.bind('isEnabled').to(quoteCommand, 'isEnabled');
+      this.dropdownView.buttonView
+        .bind('isEnabled')
+        .to(quoteCommand, 'isEnabled');
 
       // Add class for the dropdown view.
       this.dropdownView.extendTemplate({
-        attributes: {
-          class: ['helfi-quote'],
-        },
+        attributes: { class: ['helfi-quote'] },
       });
 
       // Add custom classes for the dropdown panel view.
@@ -63,8 +67,11 @@ export default class HelfiQuoteUi extends Plugin {
 
         // Execute link command after clicking the "Save" button.
         this.listenTo(this.quoteFormView, 'submit', () => {
-          const quoteText = this.quoteFormView.textAreaView.textArea.fieldView.element.value || false;
-          const author = this.quoteFormView.authorInputView.fieldView.element.value || false;
+          const quoteText =
+            this.quoteFormView.textAreaView.textArea.fieldView.element.value ||
+            false;
+          const author =
+            this.quoteFormView.authorInputView.fieldView.element.value || false;
           quoteCommand.execute({ quoteText, author });
           this._closeFormView();
         });
@@ -75,7 +82,7 @@ export default class HelfiQuoteUi extends Plugin {
         });
 
         // Close the panel on esc key press when the **form has focus**.
-        this.quoteFormView.keystrokes.set('Esc', (data, cancel) => {
+        this.quoteFormView.keystrokes.set('Esc', (_data, cancel) => {
           this._closeFormView();
           cancel();
         });
@@ -122,12 +129,20 @@ export default class HelfiQuoteUi extends Plugin {
           while (!currentItem.done) {
             const item = currentItem.value;
             if (item.data) {
-              if (item.textNode?.parent?.name === 'helfiQuoteText' || item.textNode?.parent?.name === 'paragraph') {
-                this.quoteFormView.textAreaView.updateValueBasedOnSelection(item.data);
+              if (
+                item.textNode?.parent?.name === 'helfiQuoteText' ||
+                item.textNode?.parent?.name === 'paragraph'
+              ) {
+                this.quoteFormView.textAreaView.updateValueBasedOnSelection(
+                  item.data,
+                );
               }
-              this.quoteFormView.authorInputView.isEmpty = item.textNode?.parent?.name !== 'helfiQuoteFooterCite';
+              this.quoteFormView.authorInputView.isEmpty =
+                item.textNode?.parent?.name !== 'helfiQuoteFooterCite';
               this.quoteFormView.authorInputView.fieldView.element.value =
-                item.textNode?.parent?.name === 'helfiQuoteFooterCite' ? item.data : '';
+                item.textNode?.parent?.name === 'helfiQuoteFooterCite'
+                  ? item.data
+                  : '';
 
               this.quoteFormView.focus();
             }

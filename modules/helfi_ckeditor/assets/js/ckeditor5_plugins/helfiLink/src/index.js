@@ -8,6 +8,4 @@
 
 import HelfiLink from './helfiLink';
 
-export default {
-  HelfiLink,
-};
+export default { HelfiLink };

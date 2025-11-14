@@ -8,6 +8,4 @@
 
 import HelfiQuote from './helfiQuote';
 
-export default {
-  HelfiQuote,
-};
+export default { HelfiQuote };

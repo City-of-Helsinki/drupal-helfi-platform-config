@@ -1,4 +1,10 @@
-import { ButtonView, createLabeledInputText, LabeledFieldView, submitHandler, View } from 'ckeditor5/src/ui';
+import {
+  ButtonView,
+  createLabeledInputText,
+  LabeledFieldView,
+  submitHandler,
+  View,
+} from 'ckeditor5/src/ui';
 import { KeystrokeHandler } from 'ckeditor5/src/utils';
 import { IconCheck, IconCancel } from '@ckeditor/ckeditor5-icons';
 import TextareaView from './helfiTextareaView';
@@ -16,8 +22,15 @@ export default class HelfiQuoteForm extends View {
     this.editor = editor;
     this.textAreaView = new TextareaView(locale, editor);
 
-    this.authorInputView = new LabeledFieldView(editor.locale, createLabeledInputText);
-    this.authorInputView.label = Drupal.t('Source / author', {}, { context: 'CKEditor5 Helfi Quote plugin' });
+    this.authorInputView = new LabeledFieldView(
+      editor.locale,
+      createLabeledInputText,
+    );
+    this.authorInputView.label = Drupal.t(
+      'Source / author',
+      {},
+      { context: 'CKEditor5 Helfi Quote plugin' },
+    );
 
     this.saveButtonView = this._createButton(
       Drupal.t('Save', {}, { context: 'CKEditor5 Helfi Quote plugin' }),
@@ -56,9 +69,7 @@ export default class HelfiQuoteForm extends View {
   render() {
     super.render();
 
-    submitHandler({
-      view: this,
-    });
+    submitHandler({ view: this });
 
     this.children.add(this.textAreaView);
     this.children.add(this.authorInputView);
@@ -106,17 +117,9 @@ export default class HelfiQuoteForm extends View {
   _createButton(label, icon, className, eventName = false) {
     const button = new ButtonView(this.locale);
 
-    button.set({
-      label,
-      icon,
-      tooltip: true,
-    });
+    button.set({ label, icon, tooltip: true });
 
-    button.extendTemplate({
-      attributes: {
-        class: className,
-      },
-    });
+    button.extendTemplate({ attributes: { class: className } });
 
     if (eventName) {
       button.delegate('execute').to(this, eventName);

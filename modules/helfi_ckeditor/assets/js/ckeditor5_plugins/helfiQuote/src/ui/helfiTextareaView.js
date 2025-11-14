@@ -11,7 +11,11 @@ export default class TextareaView extends View {
   constructor(locale, editor) {
     super(locale, editor);
 
-    this.textAreaLabel = Drupal.t('Quotation', {}, { context: 'CKEditor5 Helfi Quote plugin' });
+    this.textAreaLabel = Drupal.t(
+      'Quotation',
+      {},
+      { context: 'CKEditor5 Helfi Quote plugin' },
+    );
 
     this.set('value', undefined);
     this.set('id', undefined);
@@ -27,9 +31,7 @@ export default class TextareaView extends View {
 
     this.setTemplate({
       tag: 'div',
-      attributes: {
-        class: ['ck-helfi-textarea'],
-      },
+      attributes: { class: ['ck-helfi-textarea'] },
       children: this.children,
     });
   }
@@ -65,39 +67,42 @@ export default class TextareaView extends View {
   _createTextareaView(locale) {
     const bind = this.bindTemplate;
 
-    const labeledTextareaView = new LabeledFieldView(locale, (labeledFieldView, viewUid) => {
-      const textareaView = new View(labeledFieldView.locale);
+    const labeledTextareaView = new LabeledFieldView(
+      locale,
+      (labeledFieldView, viewUid) => {
+        const textareaView = new View(labeledFieldView.locale);
 
-      /**
-       *  <textarea id="{id}" name="{id}>{placeholder}</textarea>
-       */
-      textareaView.setTemplate({
-        tag: 'textarea',
-        attributes: {
-          rows: 5,
-          cols: 40,
-          id: viewUid,
-          class: [
-            'ck',
-            'ck-input',
-            'ck-helfi-textarea',
-            bind.if('isEmpty', 'ck-input_is-empty'),
-            bind.if('isFocused', 'ck-input_focused'),
-          ],
-        },
-        on: {
-          input: bind.to((...args) => {
-            this.fire('input', ...args);
-            this._updateValue();
-          }),
-          change: bind.to(this._updateValue.bind(this)),
-        },
-      });
+        /**
+         *  <textarea id="{id}" name="{id}>{placeholder}</textarea>
+         */
+        textareaView.setTemplate({
+          tag: 'textarea',
+          attributes: {
+            rows: 5,
+            cols: 40,
+            id: viewUid,
+            class: [
+              'ck',
+              'ck-input',
+              'ck-helfi-textarea',
+              bind.if('isEmpty', 'ck-input_is-empty'),
+              bind.if('isFocused', 'ck-input_focused'),
+            ],
+          },
+          on: {
+            input: bind.to((...args) => {
+              this.fire('input', ...args);
+              this._updateValue();
+            }),
+            change: bind.to(this._updateValue.bind(this)),
+          },
+        });
 
-      textareaView.bind('isFocused').to(labeledFieldView, 'isFocused');
-      labeledFieldView.bind('isFocused').to(textareaView, 'isFocused');
-      return textareaView;
-    });
+        textareaView.bind('isFocused').to(labeledFieldView, 'isFocused');
+        labeledFieldView.bind('isFocused').to(textareaView, 'isFocused');
+        return textareaView;
+      },
+    );
 
     labeledTextareaView.label = this.textAreaLabel;
 
@@ -125,7 +130,9 @@ export default class TextareaView extends View {
    * Updates the isEmpty property value on demand.
    */
   _updateValue() {
-    this.value = this.textArea.fieldView.element.value ? this.textArea.fieldView.element.value : false;
+    this.value = this.textArea.fieldView.element.value
+      ? this.textArea.fieldView.element.value
+      : false;
     this.isEmpty = !this.value;
   }
 
