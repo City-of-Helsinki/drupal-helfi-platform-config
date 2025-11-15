@@ -86,15 +86,14 @@ class HeroParagraphTest extends KernelTestBase {
     ]);
 
     $image_author = $hero_paragraph->getImageAuthor();
-    $this->assertInstanceOf(
-      '\Drupal\Core\StringTranslation\TranslatableMarkup',
+    $this->assertIsString(
       $image_author,
-      'Image author is returned as TranslatableMarkup.'
+      'Image author is returned as string.'
     );
     $this->assertEquals(
-      'Image: Ken Smith',
-      $image_author->render(),
-      'Image author text is correctly returned.'
+      'Ken Smith',
+      $image_author,
+      'Photo author text is correctly returned.'
     );
   }
 

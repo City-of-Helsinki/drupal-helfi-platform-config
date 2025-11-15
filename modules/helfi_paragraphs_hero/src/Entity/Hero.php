@@ -7,7 +7,6 @@ namespace Drupal\helfi_paragraphs_hero\Entity;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\media\Entity\Media;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -66,10 +65,10 @@ class Hero extends Paragraph implements ParagraphInterface {
   /**
    * Get the image author if any.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|false
-   *   The image author as a translatable markup or false.
+   * @return string|false
+   *   The image author as a string or false.
    */
-  public function getImageAuthor(): TranslatableMarkup|FALSE {
+  public function getImageAuthor(): string|FALSE {
     $image = $this->getImage();
     if (!$image || $image->get('field_photographer')->isEmpty()) {
       return FALSE;
@@ -77,11 +76,7 @@ class Hero extends Paragraph implements ParagraphInterface {
 
     try {
       $image_author = $image->get('field_photographer')->first()->getString();
-      return $this->t(
-        'Image: @image_author',
-        ['@image_author' => $image_author],
-        ['context' => 'Helfi Paragraphs Hero']
-      );
+      return $image_author;
     }
     catch (MissingDataException $e) {
       return FALSE;

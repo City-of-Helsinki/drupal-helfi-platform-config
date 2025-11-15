@@ -15,7 +15,3 @@ msgstr "Kuva alhaalla"
 
 msgid "Diagonal"
 msgstr "Diagonaalinen"
-
-msgctxt "Helfi Paragraphs Hero"
-msgid "Image: @image_author"
-msgstr "Kuva: @image_author"
