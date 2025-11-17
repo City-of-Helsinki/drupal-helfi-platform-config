@@ -15,7 +15,3 @@ msgstr "Bild justerad ner"
 
 msgid "Diagonal"
 msgstr "Diagonal"
-
-msgctxt "Helfi Paragraphs Hero"
-msgid "Image: @image_author"
-msgstr "Bild: @image_author"
