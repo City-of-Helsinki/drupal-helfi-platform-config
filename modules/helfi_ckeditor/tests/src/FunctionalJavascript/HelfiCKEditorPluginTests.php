@@ -393,7 +393,7 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
    * @param string $content
    *   The content to be edited.
    *
-   * @return \Drupal\Core\Url $edit_url
+   * @return \Drupal\Core\Url
    *   The edit URL of the created node.
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
