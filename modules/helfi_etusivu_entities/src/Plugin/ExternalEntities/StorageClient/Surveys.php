@@ -25,6 +25,13 @@ final class Surveys extends EtusivuJsonApiEntityBase {
   /**
    * {@inheritdoc}
    */
+  protected function getApiEndpoint(): string {
+    return '/node/survey';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function query(
     array $parameters = [],
     array $sorts = [],
@@ -43,7 +50,7 @@ final class Surveys extends EtusivuJsonApiEntityBase {
     $query += $this->queryLimits($start, 1);
     $query += $this->queryDefaultLangcode();
 
-    return $this->request("/node/survey", $query, $query['filter[langcode]']);
+    return $this->request($query, $query['filter[langcode]']);
   }
 
 }

@@ -112,3 +112,16 @@ function hdbt_admin_tools_update_9009(): void {
   // Remove the default frontpage view.
   $config_factory->getEditable('hdbt_admin_tools.cookie_consent_intro')->delete();
 }
+
+/**
+ * UHF-12206: Install editoria11y module, if it's not installed.
+ */
+function hdbt_admin_tools_update_9010(): void {
+  $module = 'editoria11y';
+  if (!Drupal::moduleHandler()->moduleExists($module)) {
+    $module_installer = Drupal::service('module_installer');
+    $module_installer->install([$module]);
+    $config_installer = Drupal::service('config.installer');
+    $config_installer->installDefaultConfig('module', $module);
+  }
+}

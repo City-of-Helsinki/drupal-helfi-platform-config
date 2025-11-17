@@ -4,7 +4,6 @@ import HelfiLinkBaseView from './helfiLinkBaseView';
  * The HelfiLink details view class.
  */
 export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
-
   /**
    * Render function for the Tom Select library.
    *
@@ -15,7 +14,6 @@ export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
   renderTomSelect(element, options) {
     // Render the <select> element.
     if (!this.tomSelect && element) {
-
       const defaultConfig = super.selectListDefaultOptions();
 
       // The template for the Tom Select options and selected items.
@@ -28,9 +26,9 @@ export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
       // Settings for the Tom Select.
       const settings = {
         ...defaultConfig,
-        options: Object.keys(options).map(option => ({
+        options: Object.keys(options).map((option) => ({
           option,
-          title: options[option]
+          title: options[option],
         })),
         // Custom rendering functions for options and items
         render: {
@@ -42,5 +40,4 @@ export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
       this.tomSelect = new TomSelect(this.element, settings);
     }
   }
-
 }

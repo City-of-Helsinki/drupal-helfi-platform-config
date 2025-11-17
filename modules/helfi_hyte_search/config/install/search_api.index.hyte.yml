@@ -1,0 +1,119 @@
+uuid: 47820606-6a51-48b6-b9de-57e7793d9959
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.server.etusivu
+  module:
+    - helfi_react_search
+    - helfi_tpr
+id: hyte
+name: Hyte
+description: ''
+read_only: false
+field_settings:
+  channels:
+    label: 'Channels for service'
+    property_path: channels_for_service
+    type: object
+  description:
+    label: 'Description » Processed text'
+    datasource_id: 'entity:tpr_service'
+    property_path: 'description:processed'
+    type: text
+    dependencies:
+      module:
+        - helfi_tpr
+  description_summary:
+    label: 'Description » Processed summary'
+    datasource_id: 'entity:tpr_service'
+    property_path: 'description:summary_processed'
+    type: text
+    dependencies:
+      module:
+        - helfi_tpr
+  name:
+    label: Name
+    datasource_id: 'entity:tpr_service'
+    property_path: name
+    type: text
+    dependencies:
+      module:
+        - helfi_tpr
+  name_override:
+    label: 'Override: Name'
+    datasource_id: 'entity:tpr_service'
+    property_path: name_override
+    type: text
+    dependencies:
+      module:
+        - helfi_tpr
+  name_synonyms:
+    label: 'Name synonyms'
+    datasource_id: 'entity:tpr_service'
+    property_path: name_synonyms
+    type: comma_separated_string
+    dependencies:
+      module:
+        - helfi_tpr
+  units:
+    label: 'Units for service'
+    property_path: units_for_service
+    type: object
+  url:
+    label: URI
+    property_path: search_api_url
+    type: string
+    configuration:
+      absolute: true
+datasource_settings:
+  'entity:tpr_service':
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  channels_for_service: {  }
+  custom_value: {  }
+  district_image_absolute_url: {  }
+  entity_status: {  }
+  entity_type: {  }
+  html_filter:
+    weights:
+      preprocess_index: -15
+      preprocess_query: -15
+    all_fields: false
+    fields:
+      - description
+      - description_summary
+      - name
+      - name_override
+    title: false
+    alt: false
+    tags:
+      b: 2.0
+      em: 1.5
+      h1: 5.0
+      h2: 3.0
+      h3: 2.0
+      strong: 2.0
+      u: 1.5
+  is_hyte_service: {  }
+  language_with_fallback: {  }
+  project_execution_schedule: {  }
+  project_image_absolute_url: {  }
+  project_plan_schedule: {  }
+  rendered_item: {  }
+  scored_reference: {  }
+  scored_reference_parent: {  }
+  units_for_service: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 50
+  delete_on_fail: true
+  index_directly: true
+  track_changes_in_references: true
+server: etusivu

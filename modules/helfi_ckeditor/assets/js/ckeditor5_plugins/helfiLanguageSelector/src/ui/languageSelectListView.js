@@ -5,7 +5,6 @@ import { getCode } from 'ckeditor5/src/utils';
  * The LanguageSelectListView class.
  */
 export default class LanguageSelectListView extends View {
-
   /**
    * @inheritDoc
    */
@@ -24,15 +23,12 @@ export default class LanguageSelectListView extends View {
       tag: 'select',
       attributes: {
         id: bind.to('id'),
-        class: [
-          'ck-helfi-select-list',
-          bind.if('isOpen', 'ck-is-open', isOpen => isOpen)
-        ],
+        class: ['ck-helfi-select-list', bind.if('isOpen', 'ck-is-open', (isOpen) => isOpen)],
         open: bind.if('isOpen'),
         placeholder: t('Select language'),
       },
       on: {
-        keydown: bind.to(evt => {
+        keydown: bind.to((evt) => {
           // Need to check target. Otherwise, we would handle space press on
           // input[type=text] and it would change checked property
           // twice due to default browser handling kicking in too.
@@ -50,5 +46,4 @@ export default class LanguageSelectListView extends View {
   focus() {
     this.element.focus();
   }
-
 }

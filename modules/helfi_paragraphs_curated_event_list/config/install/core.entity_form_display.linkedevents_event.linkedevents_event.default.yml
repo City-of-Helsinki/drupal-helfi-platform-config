@@ -1,0 +1,39 @@
+uuid: 7fbe3bab-8c95-4c12-b8a6-1d793cb69b84
+langcode: en
+status: true
+dependencies:
+  module:
+    - external_entities
+  enforced:
+    config:
+      - external_entities.external_entity_type.linkedevents_event
+id: linkedevents_event.linkedevents_event.default
+targetEntityType: linkedevents_event
+bundle: linkedevents_event
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 0
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  end_time: true
+  start_time: true

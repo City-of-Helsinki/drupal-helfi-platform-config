@@ -124,6 +124,7 @@ class SiteSettings extends ConfigFormBase {
       'beat' => $this->t('Beat'),
       'pulse' => $this->t('Pulse'),
       'basic' => $this->t('Basic motif'),
+      'calm' => $this->t('Calm'),
     ];
 
     $form['site_settings']['koro'] = [
@@ -216,6 +217,7 @@ class SiteSettings extends ConfigFormBase {
       'summer' => t('Summer'),
       'suomenlinna' => t('Suomenlinna'),
       'tram' => t('Tram'),
+      'fog' => t('Fog'),
     ];
   }
 

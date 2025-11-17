@@ -7,37 +7,82 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_calculator\Entity\Calculator;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
- * Implements template_preprocess_paragraph().
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An array of elements to display in view mode.
- *   - paragraph: The paragraph object.
- *   - view_mode: View mode; e.g., 'full', 'teaser'...
+ * Implements hook_entity_bundle_info_alter().
  */
-function helfi_calculator_preprocess_paragraph__calculator(array &$variables) {
-  // Get calculator data without applying module overrides for the calculators.
-  $config = \Drupal::configFactory()->getEditable('helfi_calculator.settings');
-  $calculator_settings = $config->getOriginal('calculators', FALSE);
-  $active = [];
-  foreach ($calculator_settings as $key => $value) {
-    $variables['#attached']['drupalSettings'][$key] = $value['json'];
-    if ($value['active']) {
-      $active[] = $key;
-    }
+function helfi_calculator_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['calculator'])) {
+    $bundles['paragraph']['calculator']['class'] = Calculator::class;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_calculator_theme() {
+  return [
+    'paragraph__calculator' => [
+      'base hook' => 'paragraph',
+      'variables' => [
+        'paragraph' => NULL,
+        'view_mode' => 'full',
+        'is_active' => FALSE,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_paragraph__calculator().
+ */
+function helfi_calculator_preprocess_paragraph__calculator(array &$variables): void {
+  $paragraph = $variables['paragraph'];
+
+  if (!$paragraph instanceof Calculator) {
+    return;
   }
 
-  $selected_calculator = $variables['paragraph']->get('field_calculator')->value;
-  $variables['is_active'] = in_array($selected_calculator, $active);
+  // Load all calculators and attach the configuration data to drupalSettings.
+  $calculators = Drupal::config('helfi_calculator.settings')->get('calculators') ?? [];
+  $calculator_settings = $calculators[$paragraph->getCalculatorName()] ?? NULL;
+
+  foreach ($calculators as $calculator => $data) {
+    $variables['#attached']['drupalSettings']['helfiCalculator'][$calculator] = $data['json'];
+  }
+
+  // Check if the current calculator is active and return if not.
+  $variables['is_active'] = !empty($calculator_settings['active']);
+  if (!$variables['is_active']) {
+    return;
+  }
+
+  // Attach base libraries.
+  foreach ($paragraph->getBaseLibraries() as $library) {
+    $variables['#attached']['library'][] = $library;
+  }
+
+  // Attach the active calculator library and settings.
+  $variables['#attached']['library'][] = $paragraph->getCalculatorLibraryName();
+  $variables['#attached']['drupalSettings']['helfiCalculator'][$paragraph->getCalculatorInstanceId()] = [
+    'id' => $paragraph->getCalculatorInstanceId(),
+    'type' => $paragraph->getCalculatorName(),
+    'data' => $calculator_settings['json'] ?? '{}',
+  ];
+
+  // Set id for Twig.
+  $variables['helfi_calculator_id'] = $paragraph->getCalculatorInstanceId();
+
+  // Cache invalidation on settings change.
+  $variables['#cache']['tags'][] = 'config:helfi_calculator.settings';
 }
 
 /**
  * Implements hook_helfi_paragraph_types().
  */
-function helfi_calculator_helfi_paragraph_types() : array {
+function helfi_calculator_helfi_paragraph_types(): array {
   $types = [
     'field_content' => [
       'calculator' => 19,
@@ -59,8 +104,8 @@ function helfi_calculator_helfi_paragraph_types() : array {
 /**
  * Implements hook_config_ignore_settings_alter().
  */
-function helfi_calculator_config_ignore_settings_alter(array &$settings) {
+function helfi_calculator_config_ignore_settings_alter(array &$settings): void {
   if (!in_array('helfi_calculator.settings', $settings)) {
-    array_push($settings, 'helfi_calculator.settings');
+    $settings[] = 'helfi_calculator.settings';
   }
 }

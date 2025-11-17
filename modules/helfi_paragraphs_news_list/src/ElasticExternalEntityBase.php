@@ -42,7 +42,7 @@ abstract class ElasticExternalEntityBase extends RestClient {
     $plugin_definition,
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->client = $container->get('helfi_paragraphs_news_list.elastic_client');
+    $instance->client = $container->get('helfi_platform_config.etusivu_elastic_client');
 
     return $instance;
   }
@@ -92,6 +92,25 @@ abstract class ElasticExternalEntityBase extends RestClient {
       Error::logException($this->logger, $e);
     }
     return [];
+  }
+
+  /**
+   * Checks whether the API responds or not.
+   *
+   * @return bool
+   *   TRUE if API responds, FALSE if not.
+   */
+  public function ping() : bool {
+    try {
+      // Check if the index exists or not.
+      $response = $this->client->indices()->exists([
+        'index' => $this->index,
+      ]);
+      return $response->getStatusCode() === 200;
+    }
+    catch (ElasticsearchException | TransportException) {
+    }
+    return FALSE;
   }
 
   /**

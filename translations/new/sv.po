@@ -66,3 +66,25 @@ msgstr "Använd aktuell plats"
 msgctxt "Location autocomplete"
 msgid "We couldn\'t retrieve your current location. Try entering an address."
 msgstr "Kunde inte använda din position. Prova att skriva in en adress."
+
+msgctxt "Anchor link"
+msgid "Copy link to heading @name."
+msgstr "Kopiera länk till rubrik @name."
+
+msgctxt "Anchor link"
+msgid "Link to heading @name copied."
+msgstr "Länk till rubrik @name kopierad."
+
+msgctxt "Anchor link"
+msgid "Failed to copy link heading @name."
+msgstr "Kunde inte kopiera länk till rubrik @name."
+
+# scheduler
+msgid "%title is scheduled to be published @publish_time and unpublished @unpublish_time."
+msgstr "%title är schemalagd att publiceras @publish_time och att bli opublicerad @unpublish_time."
+
+msgid "%title is scheduled to be published @publish_time."
+msgstr "%title är schemalagd att publiceras @publish_time."
+
+msgid "%title is scheduled to be unpublished @unpublish_time."
+msgstr "%title är schemalagd att bli opublicerad @unpublish_time."

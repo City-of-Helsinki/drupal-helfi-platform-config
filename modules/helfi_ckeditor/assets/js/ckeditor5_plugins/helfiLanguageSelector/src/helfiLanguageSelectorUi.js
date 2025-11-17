@@ -16,7 +16,9 @@ import translationWarmer from './utils/translationWarmer';
  * @return {*} Returns the language code if found.
  */
 function getCommandValue(languageAttribute) {
-  if (!languageAttribute) { return; }
+  if (!languageAttribute) {
+    return;
+  }
   const { languageCode } = parseLanguageAttribute(languageAttribute);
   if (languageCode) {
     return languageCode;
@@ -24,7 +26,6 @@ function getCommandValue(languageAttribute) {
 }
 
 export default class HelfiLanguageSelectorUi extends Plugin {
-
   constructor(editor) {
     super(editor);
     this.editor = editor;
@@ -43,7 +44,6 @@ export default class HelfiLanguageSelectorUi extends Plugin {
 
     // Register the helfiLanguageSelector toolbar button.
     editor.ui.componentFactory.add('helfiLanguageSelector', (locale) => {
-
       // Create the dropdown view.
       const dropdownView = createDropdown(locale);
 
@@ -57,18 +57,15 @@ export default class HelfiLanguageSelectorUi extends Plugin {
       // Add class for the dropdown view.
       dropdownView.extendTemplate({
         attributes: {
-          class: [ 'helfi-language-selector']
-        }
+          class: ['helfi-language-selector'],
+        },
       });
 
       // Add custom classes for the dropdown panel view.
       dropdownView.panelView.extendTemplate({
         attributes: {
-          class: [
-            'helfi-language-selector__dropdown-panel',
-            'ck-reset_all-excluded',
-          ]
-        }
+          class: ['helfi-language-selector__dropdown-panel', 'ck-reset_all-excluded'],
+        },
       });
 
       let selectListView;
@@ -76,14 +73,10 @@ export default class HelfiLanguageSelectorUi extends Plugin {
       const languageCommand = this.editor.commands.get('helfiLanguageSelectorCommand');
 
       dropdownView.on('change:isOpen', () => {
-
         if (tomSelect?.options) {
           // Set current language as the selected language in tomSelect.
-          if (
-            languageCommand.value &&
-            !tomSelect.items.includes(getCommandValue(languageCommand.value))
-          ) {
-            tomSelect.setValue([ getCommandValue(languageCommand.value) ], true);
+          if (languageCommand.value && !tomSelect.items.includes(getCommandValue(languageCommand.value))) {
+            tomSelect.setValue([getCommandValue(languageCommand.value)], true);
           }
           // Clear the selections in case there is no current language.
           else if (!languageCommand.value && tomSelect.items.length > 0) {
@@ -116,17 +109,15 @@ export default class HelfiLanguageSelectorUi extends Plugin {
           plugins: {
             remove_button: {
               title: removeTitle,
-            }
+            },
           },
           valueField: 'languageCode',
           labelField: 'title',
           searchField: 'title',
           sortField: 'title',
           maxOptions: null,
-          items: [ getCommandValue(languageCommand.value) ],
-          options: [
-            this.languageList.map((language) => ({ ...language, title: t(language.title) })),
-          ],
+          items: [getCommandValue(languageCommand.value)],
+          options: [this.languageList.map((language) => ({ ...language, title: t(language.title) }))],
           create: false,
           // Custom rendering functions for options and items
           render: {
@@ -138,16 +129,15 @@ export default class HelfiLanguageSelectorUi extends Plugin {
             if (languageCommand.value !== languageCode) {
               languageCommand.execute({
                 languageCode,
-                textDirection: this.languageList.find(
-                  (language) => language.languageCode === languageCode
-                ).textDirection,
+                textDirection: this.languageList.find((language) => language.languageCode === languageCode)
+                  .textDirection,
               });
               editor.editing.view.focus();
             }
           },
           // If the language selection has been removed,
           // execute the language command.
-          onItemRemove: () =>  {
+          onItemRemove: () => {
             if (languageCommand.value) {
               languageCommand.execute({
                 languageCode: false,
@@ -164,5 +154,4 @@ export default class HelfiLanguageSelectorUi extends Plugin {
       return dropdownView;
     });
   }
-
 }

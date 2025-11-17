@@ -34,7 +34,7 @@ abstract class StorageClientTestBase extends KernelTestBase {
    *   The storage.
    */
   public function getSut(Client $client) : ExternalEntityStorage {
-    $this->container->set('helfi_paragraphs_news_list.elastic_client', $client);
+    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
     $storage = $this->container->get(EntityTypeManagerInterface::class)
       ->getStorage($this->getStorageName());
     $this->assertInstanceOf(ExternalEntityStorage::class, $storage);

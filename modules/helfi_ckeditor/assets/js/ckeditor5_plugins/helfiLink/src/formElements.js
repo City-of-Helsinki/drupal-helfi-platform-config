@@ -42,12 +42,16 @@ const formElements = {
   },
   linkNewWindowConfirm: {
     label: Drupal.t('The link meets the accessibility requirements', {}, { context: 'CKEditor5 Helfi Link plugin' }),
-    description: Drupal.t('I have made sure that the description of this link clearly states that it will open in a new tab. <a href="@wcag-techniques" target="_blank">See WCAG 3.2.5 accessibility requirement (the link opens in a new tab).</a>', {
-      '@wcag-techniques': 'https://www.w3.org/WAI/WCAG21/Techniques/general/G200.html',
-    }, { context: 'CKEditor5 Helfi Link plugin' }),
+    description: Drupal.t(
+      'I have made sure that the description of this link clearly states that it will open in a new tab. <a href="@wcag-techniques" target="_blank">See WCAG 3.2.5 accessibility requirement (the link opens in a new tab).</a>',
+      {
+        '@wcag-techniques': 'https://www.w3.org/WAI/WCAG21/Techniques/general/G200.html',
+      },
+      { context: 'CKEditor5 Helfi Link plugin' },
+    ),
     machineName: 'link-new-window-confirm',
     viewAttribute: {
-      'target': '_blank',
+      target: '_blank',
     },
     type: 'checkbox',
     group: 'advanced',

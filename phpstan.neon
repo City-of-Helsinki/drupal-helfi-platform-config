@@ -29,6 +29,10 @@ parameters:
       path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
       reportUnmatched: false
     -
+      message: '#^Call to an undefined method Drupal\\Core\\Entity\\ContentEntityInterface::getOriginal\(\).#'
+      path: modules/helfi_search/src/Plugin/search_api/datasource/UuidContentEntityTrackingManager.php
+      reportUnmatched: false
+    -
       message: '#^Call to an undefined method Drupal\\Core\\Entity\\EntityInterface::getFileUri\(\).#'
       path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
       reportUnmatched: false

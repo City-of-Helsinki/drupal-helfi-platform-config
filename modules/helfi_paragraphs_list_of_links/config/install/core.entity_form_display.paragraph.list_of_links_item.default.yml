@@ -1,17 +1,18 @@
-uuid: 335471c0-9a5d-46e1-9c40-0ad828305b78
+uuid: 8a7d4f00-b1d1-4b3e-923e-2e444a0803ed
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - linkit
   config:
     - field.field.paragraph.list_of_links_item.field_list_of_links_desc
     - field.field.paragraph.list_of_links_item.field_list_of_links_image
     - field.field.paragraph.list_of_links_item.field_list_of_links_link
     - paragraphs.paragraphs_type.list_of_links_item
   module:
+    - helfi_platform_config
     - media_library
+  enforced:
+    module:
+      - linkit
 id: paragraph.list_of_links_item.default
 targetEntityType: paragraph
 bundle: list_of_links_item
@@ -33,10 +34,12 @@ content:
       media_types: {  }
     third_party_settings: {  }
   field_list_of_links_link:
-    type: link_target_field_widget
+    type: helfi_linkit
     weight: 1
     region: content
     settings:
+      placeholder_url: ''
+      placeholder_title: ''
       linkit_profile: helfi
       linkit_auto_link_text: false
     third_party_settings: {  }

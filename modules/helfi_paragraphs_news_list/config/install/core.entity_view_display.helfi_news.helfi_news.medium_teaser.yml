@@ -23,10 +23,14 @@ content:
 hidden:
   groups: true
   groups_uuid: true
+  langcode: true
   neighbourhoods: true
   neighbourhoods_uuid: true
   node_url: true
   published_at: true
+  search_api_excerpt: true
+  search_api_language: true
   short_title: true
+  status: true
   tags: true
   tags_uuid: true

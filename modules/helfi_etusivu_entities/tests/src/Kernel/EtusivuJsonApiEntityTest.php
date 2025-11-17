@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_etusivu_entities\Unit;
+namespace Drupal\Tests\helfi_etusivu_entities\Kernel;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Surveys;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -35,6 +36,7 @@ class EtusivuJsonApiEntityTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'user',
     'helfi_api_base',
     'external_entities',
     'helfi_etusivu_entities',
@@ -45,6 +47,14 @@ class EtusivuJsonApiEntityTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+
+    // Triggers rebuilding routes.
+    // https://www.drupal.org/project/external_entities/issues/3549828.
+    $this->container
+      ->get(RouteProviderInterface::class)
+      ->getAllRoutes();
+
+    $this->installEntitySchema('user');
 
     $this->installConfig(['helfi_etusivu_entities']);
     $this->setActiveProject(Project::ETUSIVU, $this->environment);

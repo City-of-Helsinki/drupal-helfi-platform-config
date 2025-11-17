@@ -35,6 +35,7 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'helfi_api_base',
     'helfi_media_remote_video',
     'oembed_providers',
   ];

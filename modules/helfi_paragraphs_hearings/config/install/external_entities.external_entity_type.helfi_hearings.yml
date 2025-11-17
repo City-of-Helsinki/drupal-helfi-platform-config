@@ -7,12 +7,108 @@ dependencies:
 id: helfi_hearings
 label: 'Helfi: Hearing'
 label_plural: 'Helfi: Hearing'
+base_path: helfi_hearings
 description: 'Helfi hearings from hearing api.'
 content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
 debug_level: 0
-generate_aliases: false
 field_mappers:
+  abstract:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.abstract
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  close_at:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.close_at
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  comments:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.n_comments
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  count:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.count
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  created_at:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.created_at
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  existing_translations:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.existing_translations
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
   id:
     id: generic
     config:
@@ -28,54 +124,7 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  uuid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.id
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  title:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.title
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  langcode:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.langcode
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  default_langcode:
-    id: null
-    config: {  }
+      debug_level: 0
   main_image:
     id: generic
     config:
@@ -93,111 +142,7 @@ field_mappers:
             description: ''
         title:
           id: ''
-  close_at:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.close_at
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  created_at:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.created_at
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  open_at:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.open_at
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  slug:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.slug
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  comments:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.n_comments
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  organization:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.organization
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  abstract:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.abstract
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
+      debug_level: 0
   main_image_title:
     id: generic
     config:
@@ -213,6 +158,71 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+      debug_level: 0
+  open_at:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.open_at
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  organization:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.organization
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  slug:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.slug
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.title
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
   url:
     id: generic
     config:
@@ -228,14 +238,15 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  count:
+      debug_level: 0
+  uuid:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: $.count
+            mapping: $.id
             required_field: false
             main_property: true
             data_processors:
@@ -243,14 +254,18 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  existing_translations:
+      debug_level: 0
+  default_langcode:
+    id: null
+    config: {  }
+  langcode:
     id: generic
     config:
       property_mappings:
         value:
           id: jsonpath
           config:
-            mapping: $.existing_translations
+            mapping: $.langcode
             required_field: false
             main_property: true
             data_processors:
@@ -267,8 +282,10 @@ data_aggregator:
         id: helfi_hearings
         config: {  }
 data_aggregator_notes: ''
+language_settings: {  }
 persistent_cache_max_age: 3600
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
-inherits_annotation_fields: false
+annotation_inherited_fields: {  }
+locks: {  }

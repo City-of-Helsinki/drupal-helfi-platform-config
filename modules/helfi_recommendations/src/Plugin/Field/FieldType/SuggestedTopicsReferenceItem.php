@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_recommendations\Plugin\Field\FieldType;
 
-use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Field\Attribute\FieldType;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -124,19 +123,17 @@ final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
    * {@inheritdoc}
    */
   public function preSave(): void {
-    $entity = $this->entity;
-    assert($entity instanceof SuggestedTopicsInterface);
-
-    // Overwrite published status if parent entity is not published.
-    // Content recommendation should never give unpublished entities
-    // as a result.
-    $parent = $this->getEntity();
-    if ($parent instanceof EntityPublishedInterface && !$parent->isPublished()) {
-      $entity->setUnpublished();
-    }
-
     parent::preSave();
 
+    // The 'published'-property in this field is computed and synced from/to
+    // the 'status'-property of the referenced 'suggested topics'-entity.
+    // Changing that field value will change the published status of the
+    // referenced entity, so the entity needs to be saved at the end.
+    // The above parent::preSave() will take care of this when the entity is
+    // new.
+    //
+    // @see \Drupal\helfi_recommendations\TypedData\ComputedReferencePublishedStatus::getValue().
+    // @see \Drupal\helfi_recommendations\TypedData\ComputedReferencePublishedStatus::setValue().
     if (!$this->entity->isNew()) {
       $this->entity->save();
     }

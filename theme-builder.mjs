@@ -4,7 +4,7 @@ import { buildAll, watchAndBuild } from '@hdbt/theme-builder/builder';
 const __dirname = path.resolve();
 const isDev = process.argv.includes('--dev');
 const isWatch = process.argv.includes('--watch');
-const watchPaths = ['src/js', 'src/scss'];
+const watchPaths = ['assets/js', 'assets/scss'];
 const outDir = path.resolve(__dirname, 'dist');
 
 // React apps.
@@ -14,8 +14,10 @@ const reactApps = {
 
 // Vanilla JS files.
 const jsFiles = {
-  autocomplete: 'assets/js/autocomplete.js'
-}
+  autocomplete: 'assets/js/autocomplete.js',
+  headingIdInjector: 'assets/js/headingIdInjector.js',
+  headingAnchorButtons: 'assets/js/headingAnchorButtons.js',
+};
 
 // SCSS files.
 const styles = [

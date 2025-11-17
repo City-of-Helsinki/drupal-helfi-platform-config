@@ -39,4 +39,12 @@ interface SuggestedTopicsInterface extends ContentEntityInterface, EntityPublish
    */
   public function setParentEntity(EntityInterface $parent): self;
 
+  /**
+   * Get the parent entity of the item.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The parent entity or NULL if not set.
+   */
+  public function getParentEntity(): ?EntityInterface;
+
 }

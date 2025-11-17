@@ -7,104 +7,12 @@ dependencies:
 id: linkedevents_event
 label: 'LinkedEvents: Event'
 label_plural: 'LinkedEvents: Events'
+base_path: linkedevents_event
 description: 'Event entities from https://api.hel.fi/linkedevents.'
 content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
 debug_level: 0
-generate_aliases: false
 field_mappers:
-  id:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.id
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  uuid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.id
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  title:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.title
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  langcode:
-    id: null
-    config: {  }
-  default_langcode:
-    id: null
-    config: {  }
-  main_image:
-    id: generic
-    config:
-      property_mappings:
-        uri:
-          id: jsonpath
-          config:
-            mapping: '$.images[0].url'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-        title:
-          id: jsonpath
-          config:
-            mapping: '$.images[0].alt_text'
-            required_field: false
-            main_property: false
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  start_time:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: $.start_time
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
   end_time:
     id: generic
     config:
@@ -120,6 +28,7 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+      debug_level: 0
   external_link:
     id: generic
     config:
@@ -146,6 +55,104 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+      debug_level: 0
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  main_image:
+    id: generic
+    config:
+      property_mappings:
+        uri:
+          id: jsonpath
+          config:
+            mapping: '$.images[0].url'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+        title:
+          id: jsonpath
+          config:
+            mapping: '$.images[0].alt_text'
+            required_field: false
+            main_property: false
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  start_time:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.start_time
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.title
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $.id
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  default_langcode:
+    id: null
+    config: {  }
+  langcode:
+    id: null
+    config: {  }
 field_mapping_notes: ''
 data_aggregator:
   id: single
@@ -155,8 +162,10 @@ data_aggregator:
         id: linkedevents_events
         config: {  }
 data_aggregator_notes: ''
+language_settings: {  }
 persistent_cache_max_age: 0
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
-inherits_annotation_fields: false
+annotation_inherited_fields: {  }
+locks: {  }

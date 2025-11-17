@@ -113,13 +113,13 @@ export default class HelfiCheckBoxView extends View {
         class: [
           'form-type--checkbox',
           'helfi-link-checkbox',
-          bind.if('isVisible', 'is-hidden', value => !value),
+          bind.if('isVisible', 'is-hidden', (value) => !value),
           bind.to('class'),
         ],
       },
 
       on: {
-        keydown: bind.to(evt => {
+        keydown: bind.to((evt) => {
           // Need to check target. Otherwise, we would handle space press on
           // input[type=text] and it would change checked property twice due
           // to default browser handling kicking in too.
@@ -128,7 +128,7 @@ export default class HelfiCheckBoxView extends View {
           }
         }),
       },
-      children: this.children
+      children: this.children,
     });
   }
 
@@ -164,13 +164,13 @@ export default class HelfiCheckBoxView extends View {
       attributes: {
         type: 'checkbox',
         id: bind.to('id'),
-        'checked': bind.if('isChecked'),
+        checked: bind.if('isChecked'),
       },
       on: {
-        change: bind.to(evt => {
+        change: bind.to((evt) => {
           this.isChecked = evt.target.checked;
-        })
-      }
+        }),
+      },
     });
 
     return checkboxInputView;
@@ -194,18 +194,14 @@ export default class HelfiCheckBoxView extends View {
     checkboxSpanToggleView.setTemplate({
       tag: 'span',
       attributes: {
-        class: [
-          'checkbox-toggle',
-        ],
+        class: ['checkbox-toggle'],
         id: bind.to('id'),
       },
       children: [
         {
           tag: 'span',
           attributes: {
-            class: [
-              'checkbox-toggle__inner'
-            ],
+            class: ['checkbox-toggle__inner'],
           },
         },
       ],
@@ -226,14 +222,14 @@ export default class HelfiCheckBoxView extends View {
       tag: 'label',
 
       attributes: {
-        for: this.bindTemplate.to('id')
+        for: this.bindTemplate.to('id'),
       },
 
       children: [
         {
-          text: this.bindTemplate.to('label')
-        }
-      ]
+          text: this.bindTemplate.to('label'),
+        },
+      ],
     });
 
     return labelView;

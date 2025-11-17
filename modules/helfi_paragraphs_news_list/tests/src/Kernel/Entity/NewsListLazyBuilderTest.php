@@ -48,7 +48,7 @@ class NewsListLazyBuilderTest extends KernelTestBase {
           ],
         ]),
       );
-    $this->container->set('helfi_paragraphs_news_list.elastic_client', $client->reveal());
+    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client->reveal());
     $sut = $this->container->get(NewsListLazyBuilder::class);
     assert($sut instanceof NewsListLazyBuilder);
 
@@ -81,7 +81,11 @@ class NewsListLazyBuilderTest extends KernelTestBase {
     $this->assertEquals([
       'helfi_news_view',
       'helfi_news:123',
+      'config:external_entities.external_entity_type.helfi_news',
+      'external_entity_type_values:helfi_news',
       'paragraph:' . $paragraph->id(),
+      'external_entity_type_values',
+      'entity_field_info',
     ], $build[0]['#cache']['tags']);
   }
 

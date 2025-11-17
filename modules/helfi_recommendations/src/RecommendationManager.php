@@ -15,6 +15,7 @@ use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
 use Psr\Log\LoggerInterface;
@@ -22,14 +23,14 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Elastic\Elasticsearch\Client;
 
 /**
- * The recommendation manager.
+ * The recommendation managerplat.
  */
 class RecommendationManager implements RecommendationManagerInterface {
 
   use StringTranslationTrait;
 
-  const INDEX_NAME = 'suggestions';
-  const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
+  public const INDEX_NAME = 'suggestions';
+  public const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
 
   /**
    * The recommendations.
@@ -61,12 +62,29 @@ class RecommendationManager implements RecommendationManagerInterface {
     private readonly LoggerInterface $logger,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly TopicsManagerInterface $topicsManager,
-    #[Autowire(service: 'helfi_recommendations.elastic_client')] private Client $elasticClient,
+    #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
+    private readonly Client $elasticClient,
     private readonly CacheTagInvalidatorInterface $cacheTagInvalidator,
     private readonly StateInterface $state,
     TranslationInterface $stringTranslation,
   ) {
     $this->stringTranslation = $stringTranslation;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function ping(): bool {
+    try {
+      // Check if the index exists or not.
+      $response = $this->elasticClient->indices()->exists([
+        'index' => self::INDEX_NAME,
+      ]);
+      return $response->getStatusCode() === 200;
+    }
+    catch (ElasticsearchException | TransportException) {
+    }
+    return FALSE;
   }
 
   /**
@@ -285,6 +303,10 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   Array of enabled instances.
    */
   private function getEnabledInstances(ContentEntityInterface $entity): array {
+    // News content suggestions are always fetched from etusivu instance.
+    if (in_array($entity->bundle(), ['news_item', 'news_article'])) {
+      return [Project::ETUSIVU];
+    }
     return $this->getOptions($entity, 'instances');
   }
 
@@ -298,6 +320,10 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   Array of enabled content types and bundles.
    */
   private function getEnabledContentTypesAndBundles(ContentEntityInterface $entity): array {
+    // News content suggestions will only show other news content types.
+    if (in_array($entity->bundle(), ['news_item', 'news_article'])) {
+      return ['node|news_article', 'node|news_item'];
+    }
     return $this->getOptions($entity, 'content_types');
   }
 

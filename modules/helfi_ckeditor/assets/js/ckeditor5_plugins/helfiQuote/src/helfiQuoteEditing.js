@@ -29,7 +29,7 @@ import HelfiQuoteCommand from './ui/helfiQuoteCommand';
  */
 export default class HelfiQuoteEditing extends Plugin {
   static get requires() {
-    return [ Widget ];
+    return [Widget];
   }
 
   init() {
@@ -39,10 +39,7 @@ export default class HelfiQuoteEditing extends Plugin {
     this._defineConverters();
 
     // Add helfiQuoteCommand.
-    editor.commands.add(
-      'helfiQuoteCommand',
-      new HelfiQuoteCommand(editor),
-    );
+    editor.commands.add('helfiQuoteCommand', new HelfiQuoteCommand(editor));
   }
 
   /**
@@ -66,7 +63,6 @@ export default class HelfiQuoteEditing extends Plugin {
    * markup.
    */
   _defineSchema() {
-
     const { schema } = this.editor.model;
 
     schema.register('helfiQuote', {
@@ -75,7 +71,7 @@ export default class HelfiQuoteEditing extends Plugin {
       // Allow in places where other blocks are allowed.
       allowWhere: '$block',
       // Allow only helfiQuoteText and helfiQuoteFooter as direct children.
-      allowChildren: [ 'helfiQuoteText', 'helfiQuoteFooter' ],
+      allowChildren: ['helfiQuoteText', 'helfiQuoteFooter'],
     });
 
     schema.register('helfiQuoteText', {
@@ -97,7 +93,7 @@ export default class HelfiQuoteEditing extends Plugin {
       // Allow content that is allowed in blocks (e.g. text with attributes).
       allowContentOf: '$block',
       // Allow only helfiQuoteFooterCite as direct children.
-      allowChildren: [ 'helfiQuoteFooterCite' ]
+      allowChildren: ['helfiQuoteFooterCite'],
     });
 
     schema.register('helfiQuoteFooterCite', {
@@ -126,20 +122,18 @@ export default class HelfiQuoteEditing extends Plugin {
     // editor. These trigger when an editor instance loads.
     const convertUpcast = (modelName, viewName, attribute = '') => {
       const variants = {
-        'dataAttributes': {
+        dataAttributes: {
           name: viewName,
           attributes: {
             [attribute]: '',
-          }
+          },
         },
-        'classes': {
+        classes: {
           name: viewName,
-          classes: [
-            attribute,
-          ]
+          classes: [attribute],
         },
       };
-      Object.keys(variants).forEach(variant => {
+      Object.keys(variants).forEach((variant) => {
         const upcastView = variants[variant];
         conversion.for('upcast').elementToElement({
           view: upcastView,
@@ -189,8 +183,7 @@ export default class HelfiQuoteEditing extends Plugin {
       // These trigger when content is saved.
       conversion.for('dataDowncast').elementToElement({
         model,
-        view: (modelElement, { writer: viewWriter }) =>
-          viewWriter[converterFunction](elementType, attributes),
+        view: (modelElement, { writer: viewWriter }) => viewWriter[converterFunction](elementType, attributes),
       });
 
       // Editing Downcast Converters. These render the content to the user for
@@ -201,9 +194,7 @@ export default class HelfiQuoteEditing extends Plugin {
         model,
         view: (modelElement, { writer: viewWriter }) => {
           const element = viewWriter[converterFunction](elementType, attributes);
-          return container
-            ? toWidget(element, viewWriter)
-            : toWidgetEditable(element, viewWriter);
+          return container ? toWidget(element, viewWriter) : toWidgetEditable(element, viewWriter);
         },
       });
     };

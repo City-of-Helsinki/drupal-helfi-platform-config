@@ -7,11 +7,11 @@ dependencies:
 id: helfi_news_neighbourhoods
 label: 'Helfi: News neighbourhoods'
 label_plural: 'Helfi: News neighbourhoods'
+base_path: helfi_news_neighbourhoods
 description: 'Retrieves news neighbourhoods taxonomy terms from Helfi'
 content_class: Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term
 read_only: true
 debug_level: 0
-generate_aliases: false
 field_mappers:
   id:
     id: generic
@@ -28,36 +28,7 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  uuid:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$._source.uuid[0]'
-            required_field: false
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
-  title:
-    id: generic
-    config:
-      property_mappings:
-        value:
-          id: jsonpath
-          config:
-            mapping: '$._source.name[0]'
-            required_field: true
-            main_property: true
-            data_processors:
-              -
-                id: default
-                config: {  }
-            description: ''
+      debug_level: 0
   location:
     id: generic
     config:
@@ -65,7 +36,7 @@ field_mappers:
         value:
           id: jsonpath
           config:
-            mapping: '$._source.field_location'
+            mapping: $._source.field_location
             required_field: false
             main_property: true
             data_processors:
@@ -73,12 +44,7 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
-  langcode:
-    id: null
-    config: {  }
-  default_langcode:
-    id: null
-    config: {  }
+      debug_level: 0
   tid:
     id: generic
     config:
@@ -94,6 +60,45 @@ field_mappers:
                 id: default
                 config: {  }
             description: ''
+      debug_level: 0
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.name[0]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.uuid[0]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config: {  }
+            description: ''
+      debug_level: 0
+  default_langcode:
+    id: null
+    config: {  }
+  langcode:
+    id: null
+    config: {  }
 field_mapping_notes: ''
 data_aggregator:
   id: single
@@ -103,8 +108,10 @@ data_aggregator:
         id: helfi_news_neighbourhoods
         config: {  }
 data_aggregator_notes: ''
+language_settings: {  }
 persistent_cache_max_age: 86400
 annotation_entity_type_id: null
 annotation_bundle_id: null
 annotation_field_name: null
-inherits_annotation_fields: false
+annotation_inherited_fields: {  }
+locks: {  }

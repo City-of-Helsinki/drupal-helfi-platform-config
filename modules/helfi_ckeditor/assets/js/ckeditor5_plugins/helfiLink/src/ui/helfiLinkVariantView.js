@@ -4,7 +4,6 @@ import HelfiLinkBaseView from './helfiLinkBaseView';
  * The HelfiLink details view class.
  */
 export default class HelfiLinkVariantView extends HelfiLinkBaseView {
-
   /**
    * Render function for the Tom Select library.
    *
@@ -30,11 +29,11 @@ export default class HelfiLinkVariantView extends HelfiLinkBaseView {
           dropdown_input: {},
           remove_button: {
             title: 'Remove this item',
-          }
+          },
         },
-        options: Object.keys(options).map(option => ({
+        options: Object.keys(options).map((option) => ({
           option,
-          title: options[option]
+          title: options[option],
         })),
         // Custom rendering functions for options and items
         render: {
@@ -47,5 +46,4 @@ export default class HelfiLinkVariantView extends HelfiLinkBaseView {
       this.tomSelect = new TomSelect(this.element, settings);
     }
   }
-
 }

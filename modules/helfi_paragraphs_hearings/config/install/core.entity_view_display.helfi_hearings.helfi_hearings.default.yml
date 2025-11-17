@@ -7,6 +7,9 @@ dependencies:
   module:
     - external_entities
     - imagecache_external
+  enforced:
+    config:
+      - external_entities.external_entity_type.helfi_hearings
 id: helfi_hearings.helfi_hearings.default
 targetEntityType: helfi_hearings
 bundle: helfi_hearings
@@ -101,6 +104,14 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  status:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
   title:
     type: string
     label: hidden
@@ -119,3 +130,4 @@ content:
     region: content
 hidden:
   abstract: true
+  search_api_excerpt: true

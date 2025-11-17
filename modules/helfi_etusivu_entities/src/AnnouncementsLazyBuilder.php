@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_etusivu_entities;
 
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -80,18 +79,21 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
       $local = $this->getLocalEntities();
 
       $remote = [];
-      if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
-        $remote = $this->useMockResponse();
-      }
-      else {
-        $remote = $this
-          ->getExternalEntityStorage('helfi_announcements')
-          ->loadMultiple();
-      }
 
       // Some non-core instances might want to show only local entities.
       // Block configuration allows disabling the remote entities.
-      $remote = $useRemoteEntities && $remote ? $this->handleRemoteEntities($remote) : [];
+      if ($useRemoteEntities) {
+        if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
+          $remote = $this->useMockResponse();
+        }
+        else {
+          $remote = $this
+            ->getExternalEntityStorage('helfi_announcements')
+            ->loadMultiple();
+        }
+
+        $remote = $this->handleRemoteEntities($remote);
+      }
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
@@ -160,8 +162,9 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
         'uuid' => $announcement->get('uuid')->value,
         'type' => 'announcement',
         'langcode' => $announcement->get('langcode')->value,
-        'body' => Xss::filter($announcement->get('body')->value),
-        'title' => Xss::filter($announcement->get('title')->value),
+        // Run body through 'minimal' text filter.
+        'body' => ['value' => $announcement->get('body')->value, 'format' => 'minimal'],
+        'title' => $announcement->get('title')->value,
         'status' => $announcement->get('status')->value,
         'field_announcement_title' => $announcement->get('announcement_assistive_technology_close_button_title')->value,
         'field_announcement_type' => $announcement->get('announcement_type')->value,

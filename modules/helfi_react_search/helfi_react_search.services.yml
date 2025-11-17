@@ -5,3 +5,4 @@ services:
 
   Drupal\helfi_react_search\LinkedEvents: ~
   Drupal\helfi_react_search\EventListUpdateHelper: ~
+  Drupal\helfi_react_search\EventSubscriber\SearchApiSubscriber: ~

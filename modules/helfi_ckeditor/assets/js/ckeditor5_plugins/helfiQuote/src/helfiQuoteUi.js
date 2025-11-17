@@ -7,7 +7,6 @@ import icon from '../../../../icons/helfiQuote.svg';
 import HelfiQuoteForm from './ui/helfiQuoteForm';
 
 export default class HelfiQuoteUi extends Plugin {
-
   constructor(editor) {
     super(editor);
     this.editor = editor;
@@ -41,25 +40,23 @@ export default class HelfiQuoteUi extends Plugin {
       // Add class for the dropdown view.
       this.dropdownView.extendTemplate({
         attributes: {
-          class: [ 'helfi-quote']
-        }
+          class: ['helfi-quote'],
+        },
       });
 
       // Add custom classes for the dropdown panel view.
       this.dropdownView.panelView.extendTemplate({
         attributes: {
-          class: [
-            'helfi-quote__dropdown-panel',
-            'ck-reset_all-excluded',
-          ]
-        }
+          class: ['helfi-quote__dropdown-panel', 'ck-reset_all-excluded'],
+        },
       });
 
       // Act on when dropdownView is opened.
       this.dropdownView.on('change:isOpen', () => {
-
         // No need to reinitialize the select list view.
-        if (this.quoteFormView) { return; }
+        if (this.quoteFormView) {
+          return;
+        }
 
         // Initialize the quoteFormView.
         this.quoteFormView = new HelfiQuoteForm(locale, this.editor);
@@ -101,7 +98,6 @@ export default class HelfiQuoteUi extends Plugin {
 
       return this.dropdownView;
     });
-
   }
 
   /**
@@ -126,14 +122,12 @@ export default class HelfiQuoteUi extends Plugin {
           while (!currentItem.done) {
             const item = currentItem.value;
             if (item.data) {
-              if (
-                item.textNode?.parent?.name === 'helfiQuoteText' ||
-                item.textNode?.parent?.name === 'paragraph'
-              ) {
+              if (item.textNode?.parent?.name === 'helfiQuoteText' || item.textNode?.parent?.name === 'paragraph') {
                 this.quoteFormView.textAreaView.updateValueBasedOnSelection(item.data);
               }
               this.quoteFormView.authorInputView.isEmpty = item.textNode?.parent?.name !== 'helfiQuoteFooterCite';
-              this.quoteFormView.authorInputView.fieldView.element.value = item.textNode?.parent?.name === 'helfiQuoteFooterCite' ? item.data : '';
+              this.quoteFormView.authorInputView.fieldView.element.value =
+                item.textNode?.parent?.name === 'helfiQuoteFooterCite' ? item.data : '';
 
               this.quoteFormView.focus();
             }
@@ -141,8 +135,7 @@ export default class HelfiQuoteUi extends Plugin {
           }
           range = ranges.next();
         }
-      }
-      else {
+      } else {
         this.quoteFormView.textAreaView.updateValueBasedOnSelection();
         this.quoteFormView.authorInputView.isEmpty = true;
         this.quoteFormView.authorInputView.fieldView.element.value = '';
@@ -161,5 +154,4 @@ export default class HelfiQuoteUi extends Plugin {
       this.dropdownView.isOpen = false;
     }
   }
-
 }

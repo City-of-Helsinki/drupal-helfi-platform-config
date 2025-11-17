@@ -23,6 +23,13 @@ final class Announcements extends EtusivuJsonApiEntityBase {
   /**
    * {@inheritdoc}
    */
+  protected function getApiEndpoint(): string {
+    return '/node/announcement';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function query(
     array $parameters = [],
     array $sorts = [],
@@ -39,7 +46,7 @@ final class Announcements extends EtusivuJsonApiEntityBase {
     $query += $this->queryLimits($start, $length);
     $query += $this->queryDefaultLangcode();
 
-    return $this->request("/node/announcement", $query, $query['filter[langcode]']);
+    return $this->request($query, $query['filter[langcode]']);
   }
 
 }

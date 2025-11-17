@@ -24,8 +24,35 @@ services:
     class: Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber
     arguments: []
 
-  Drupal\helfi_platform_config\EventSubscriber\CspEventSubscriber:
-    class: Drupal\helfi_platform_config\EventSubscriber\CspEventSubscriber
+  Drupal\helfi_platform_config\EventSubscriber\CspCleanSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspCleanSubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspIbmChatAppSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspIbmChatAppSubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspReactAndShareSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspReactAndShareSubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspTeliaAceWidgetSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspTeliaAceWidgetSubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspElasticProxySubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspElasticProxySubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspCommonSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspCommonSubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspLocalDevSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspLocalDevSubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspSiteimproveSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspSiteimproveSubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspSentrySubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspSentrySubscriber
+
+  Drupal\helfi_platform_config\EventSubscriber\CspSocialMediaSubscriber:
+    class: Drupal\helfi_platform_config\EventSubscriber\CspSocialMediaSubscriber
 
   Drupal\helfi_platform_config\EntityVersionMatcher: '@helfi_platform_config.entity_version_matcher'
   helfi_platform_config.entity_version_matcher:
@@ -80,3 +107,18 @@ services:
       - { name: helfi_platform_config.og_image_builder, priority: -100 }
 
   Drupal\helfi_platform_config\RedirectCleaner: ~
+
+  # Client builder factory for etusivu elastic search.
+  Drupal\helfi_platform_config\ClientBuilder: ~
+  helfi_platform_config.etusivu_elastic_client:
+    class: Elastic\Elasticsearch\Client
+    factory: ['@Drupal\helfi_platform_config\ClientBuilder', 'create']
+
+
+  Drupal\helfi_platform_config\TextConverter\TextConverterManager:
+    tags:
+      - { name: service_collector, call: add, tag: helfi_platform_config.text_converter }
+
+  Drupal\helfi_platform_config\TextConverter\RenderTextConverter:
+    tags:
+      - { name: helfi_platform_config.text_converter, priority: -1 }

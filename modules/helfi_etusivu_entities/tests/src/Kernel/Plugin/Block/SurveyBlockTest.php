@@ -2,55 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_etusivu_entities\Unit;
+namespace Drupal\Tests\helfi_etusivu_entities\Kernel\Plugin\Block;
 
 use Drupal\helfi_etusivu_entities\Plugin\Block\SurveyBlock;
 use Drupal\helfi_etusivu_entities\SurveyLazyBuilder;
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
  * Tests Survey blocks.
  *
  * @group helfi_platform_config
  */
-class SurveyBlockTest extends EntityKernelTestBase {
+class SurveyBlockTest extends BlockTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_api_base',
-    'helfi_platform_config',
-    'node',
-    'link',
-    'language',
-    'allowed_formats',
-    'select2',
-    'content_translation',
-    'text',
-    'options',
-    'menu_ui',
-    'scheduler',
-    'config_rewrite',
     'helfi_node_survey',
-    'external_entities',
-    'helfi_etusivu_entities',
     'publication_date',
   ];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
-    parent::setUp();
-
-    $this->installEntitySchema('node');
-
-    $this->installConfig([
-      'node',
-      'helfi_node_survey',
-      'helfi_etusivu_entities',
-    ]);
+  protected function setUp(array $modules = []): void {
+    parent::setUp(['helfi_node_survey']);
   }
 
   /**

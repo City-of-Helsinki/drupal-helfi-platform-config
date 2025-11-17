@@ -1,0 +1,10 @@
+name: 'Helfi Search'
+type: module
+core_version_requirement: ^10 || ^11
+dependencies:
+  - search_api:search_api
+  - elasticsearch_connector:elasticsearch_connector
+  - helfi_api_base:helfi_api_base
+  - helfi_platform_config:helfi_platform_config
+'interface translation project': helfi_search
+'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_search/translations/%language.po
