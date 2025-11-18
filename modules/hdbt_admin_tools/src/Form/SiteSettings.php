@@ -36,7 +36,7 @@ class SiteSettings extends ConfigFormBase {
   public function __construct(
     ConfigFactoryInterface $config_factory,
     TypedConfigManagerInterface $typed_config_manager,
-    #[Autowire(service: '@language_manager')] protected ConfigurableLanguageManagerInterface $languageManager,
+    #[Autowire(service: 'language_manager')] protected ConfigurableLanguageManagerInterface $languageManager,
   ) {
     parent::__construct($config_factory, $typed_config_manager);
   }
