@@ -105,10 +105,10 @@ index 00000000000..a7b0c7f411b
 +
 +}
 diff --git a/core/lib/Drupal/Core/Plugin/PluginBase.php b/core/lib/Drupal/Core/Plugin/PluginBase.php
-index 5407dc09b5b..1b77b627ae9 100644
+index 5407dc09b5b..ddec5e852d7 100644
 --- a/core/lib/Drupal/Core/Plugin/PluginBase.php
 +++ b/core/lib/Drupal/Core/Plugin/PluginBase.php
-@@ -3,6 +3,7 @@
+@@ -3,9 +3,11 @@
  namespace Drupal\Core\Plugin;
  
  use Drupal\Component\Plugin\PluginBase as ComponentPluginBase;
@@ -116,7 +116,11 @@ index 5407dc09b5b..1b77b627ae9 100644
  use Drupal\Core\Messenger\MessengerTrait;
  use Drupal\Core\StringTranslation\StringTranslationTrait;
  use Drupal\Core\DependencyInjection\DependencySerializationTrait;
-@@ -13,6 +14,7 @@
++use Symfony\Component\DependencyInjection\ContainerInterface;
+ 
+ /**
+  * Base class for plugins supporting metadata inspection and translation.
+@@ -13,8 +15,20 @@
   * @ingroup plugin_api
   */
  abstract class PluginBase extends ComponentPluginBase {
@@ -124,3 +128,16 @@ index 5407dc09b5b..1b77b627ae9 100644
    use StringTranslationTrait;
    use DependencySerializationTrait;
    use MessengerTrait;
+ 
++  /**
++   * Instantiates a new instance of the implementing class using autowiring.
++   *
++   * @see \Drupal\Core\Plugin\ContainerFactoryPluginInterface
++   *
++   * @return static
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
++    return static::createInstanceAutowired($container, $configuration, $plugin_id, $plugin_definition);
++  }
++
+ }
