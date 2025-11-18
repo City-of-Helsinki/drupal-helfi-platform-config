@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ckeditor\FunctionalJavascript;
 
+use Drupal\Core\Url;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
 use Drupal\user\Entity\User;
@@ -78,7 +79,7 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     $test_url = $test_url_protocol . $test_url_address;
 
     // Initialize the CKEditor with a suitable markup.
-    $this->initializeEditor('');
+    $edit_url = $this->initializeEditor('');
 
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
@@ -95,7 +96,8 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     $protocol_field->click();
 
     // Choose https protocol.
-    $protocol_select_list = $balloon->find('css', 'div.ck-helfi-link-select-list');
+    $assert_session->waitForElementVisible('css', 'div.ts-wrapper.ck-helfi-link-select-list.protocol');
+    $protocol_select_list = $balloon->find('css', 'div.ts-wrapper.ck-helfi-link-select-list.protocol');
     $https_selection = $protocol_select_list->find('css', 'span[data-value="https"]');
     $this->assertTrue($https_selection->isVisible(), 'HTTPS selection is not visible.');
     $https_selection->click();
@@ -104,11 +106,7 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     $this->assertFalse($protocol_field->isVisible(), 'Protocol field is not visible.');
 
     // Find the href field.
-    // Note. There is no class for the field which indicates that it is a link
-    // field, so we'll use the only input text field css class as a target as
-    // there is no other text fields in the CKEditor balloon.
-    $link_field = $balloon->find('css', '.ck-input-text');
-
+    $link_field = $balloon->find('css', '.helfi-link-url-input .ck-input');
     // Check that there is a value in the href field,
     // set by the protocol selection.
     $this->assertNotEmpty($link_field);
@@ -125,81 +123,99 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     $details = $assert_session->waitForElementVisible('css', 'details.ck-helfi-link-details');
     $details->find('css', '.ck-helfi-link-details__summary')->click();
 
-    // Select the "open the link in new window" option and confirm it.
+    // Select the "open the link in new window" option. Check that the initial
+    // value is not checked, and check it.
     $link_new_window = $details->find('css', '.helfi-link--link-new-window');
     $this->assertTrue($link_new_window->isVisible(), 'Link new window is visible.');
-    $details->find('css', 'input#link-new-window')->check();
+    $input_new_window = $assert_session->waitForElementVisible('css', 'input#link-new-window');
+    $this->assertFalse($input_new_window->isChecked());
+    $input_new_window->check();
 
+    // Do the same for the window confirmed option.
     $link_new_window_confirmed = $details->find('css', '.helfi-link--link-new-window-confirm');
     $this->assertTrue($link_new_window_confirmed->isVisible(), 'Link new window confirmed is visible.');
-    $details->find('css', 'input#link-new-window-confirm')->check();
+    $input_new_window_confirm = $assert_session->waitForElementVisible('css', 'input#link-new-window-confirm');
+    $this->assertFalse($input_new_window_confirm->isChecked());
+    $input_new_window_confirm->check();
 
     // Open the select list of styles and click it to make the options visible.
-    $button_selection_select_list = $details->find('css', 'div.ck-helfi-link-select-list');
+    $assert_session->waitForElementVisible('css', 'div.ts-wrapper.ck-helfi-link-select-list.variant');
+    $button_selection_select_list = $details->find('css', 'div.ts-wrapper.ck-helfi-link-select-list.variant');
     $ts_control = $button_selection_select_list->find('css', '#variant-ts-control');
     $this->assertTrue($ts_control->isVisible(), 'Controls are visible.');
     $ts_control->click();
 
     // Select the primary button style.
-    $primary_button = $button_selection_select_list->find('css', 'span[data-value="primary"]');
-    $this->assertTrue($primary_button->isVisible(), 'Primary button is visible.');
+    $primary_button = $assert_session->waitForElementVisible('css', 'span[data-value="primary"]');
+    $this->assertNotNull($primary_button, 'Primary button should be visible');
     $primary_button->click();
 
     // Save the link.
-    $balloon->pressButton('Save');
+    $balloon->pressButton('Insert');
 
-    // Assert balloon was closed by pressing its "Save" button.
+    // Assert the balloon was closed by pressing its "Insert" button.
     $this->assertTrue($assert_session->waitForElementRemoved('css', '.ck-button-save'));
 
     // Check for Link plugin existence.
     $this->assertEditorButtonEnabled('Link');
 
-    // Make sure all attributes are populated.
+    // Make sure all link attributes are populated.
     $linkit_link = $assert_session->waitForElementVisible('css', '.ck-content a');
     $this->assertNotNull($linkit_link);
-    $this->assertSame($test_url, $linkit_link->getAttribute('href'));
+    $this->assertSame("$test_url/", $linkit_link->getAttribute('href'));
     $this->assertSame('button', $linkit_link->getAttribute('data-hds-component'));
     $this->assertSame('_blank', $linkit_link->getAttribute('target'));
-    $this->assertSame($test_url, $linkit_link->getText());
+    $this->assertSame("$test_url/", $linkit_link->getText());
 
-    // Test to remove all attributes and check that they are removed.
-    $linkit_link->click();
+    // Save the node.
+    $page = $this->getSession()->getPage();
+    $page->pressButton('Save');
 
-    // Open the link action balloon and click "Edit link".
-    $link_action_balloon = $this->assertVisibleBalloon('.ck-link-actions');
-    $link_action_balloon->pressButton('Edit link');
+    // Check that the link is visible in the node.
+    $link = $assert_session->waitForElementVisible('css', 'article p > a');
+    $this->assertNotNull($link);
+    $this->assertSame("$test_url/", $link->getAttribute('href'));
+    $this->assertSame('button', $link->getAttribute('data-hds-component'));
+    $this->assertSame('_blank', $link->getAttribute('target'));
+    $this->assertSame("$test_url/", $link->getText());
+
+    // Edit the node again.
+    $this->drupalGet($edit_url);
+    $this->waitForEditor();
+
+    // Focus the editable area first.
+    $content_area = $assert_session->waitForElementVisible('css', '.ck-editor__editable');
+    $content_area->click();
+
+    // Click on the link and then click on "Edit link".
+    $assert_session->waitForElementVisible('css', '.ck-content a');
+    $content_area->find('css', 'a')->click();
+    $edit_link = $assert_session->waitForElementVisible('xpath', "//button[span[text()='Edit link']]");
+    $edit_link->click();
+    $assert_session->waitForElementVisible('css', '.ck-body-wrapper .ck-link-toolbar');
 
     // Check that the CKEditor 5 balloon (dialog) is visible.
     $balloon = $this->assertVisibleBalloon('.ck-link-form');
 
-    // Check that there is a value in the href field.
-    $link_field = $balloon->find('css', '.ck-input-text');
-    $this->assertNotEmpty($link_field);
+    // Check that the link has correct values set.
+    $link_text = $balloon->find('css', '.helfi-link-text-input input');
+    $link_url = $balloon->find('css', '.helfi-link-url-input input');
 
-    // Override the href field value with a #test value.
-    $link_field->setValue('#test');
+    // Check that the link has correct values set.
+    $this->assertSame("$test_url/", $link_text->getValue());
+    $this->assertSame("$test_url/", $link_url->getValue());
+    $this->assertTrue($balloon->find('css', '#link-new-window')->isChecked());
+    $this->assertTrue($balloon->find('css', '#link-new-window-confirm')->isChecked());
+    $this->assertSame($balloon->find('css', '.ts-wrapper.ck-helfi-link-select-list span.item')->getAttribute('data-value'), 'primary');
 
-    // Open the details summary and remove the previously selected options.
-    $edit_details = $assert_session->waitForElementVisible('css', 'details.ck-helfi-link-details');
-    $edit_details->find('css', '.ck-helfi-link-details__summary')->click();
-    $details->find('css', 'input#link-new-window')->uncheck();
-    $details->find('css', 'input#link-new-window-confirm')->uncheck();
+    // Change the link values to default values and save the link.
+    $link_url->setValue('#test');
+    $link_text->setValue('#test');
+    $this->getSession()->executeScript('document.getElementById("link-new-window").click();');
+    $this->getSession()->executeScript('document.querySelector("span[data-value=link]").click();');
+    $this->getSession()->executeScript('document.querySelector("button.helfi-link-save-button").click();');
 
-    // Open the select list of styles and click it to make the options visible.
-    $button_selection_select_list = $details->find('css', 'div.ck-helfi-link-select-list');
-    $ts_control = $button_selection_select_list->find('css', '#variant-ts-control');
-    $this->assertTrue($ts_control->isVisible(), 'Controls are visible.');
-    $ts_control->click();
-
-    // Select the normal link style.
-    $link_button = $button_selection_select_list->find('css', 'span[data-value="link"]');
-    $this->assertTrue($link_button->isVisible(), 'Normal link option is visible.');
-    $link_button->click();
-
-    // Save the link.
-    $balloon->pressButton('Save');
-
-    // Assert that the link has correct attributes.
+    // Check that the modified link has correct attributes.
     $linkit_link = $assert_session->waitForElementVisible('css', '.ck-content a');
     $this->assertNotNull($linkit_link);
     $this->assertSame('#test', $linkit_link->getAttribute('href'));
@@ -249,6 +265,13 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     foreach (['en' => 1, 'fi' => 2, 'ar' => 3] as $index) {
       // Select the example text and choose a language for it.
       $this->selectTextInsideElement('.ck-content p:nth-of-type(' . $index . ')');
+
+      // Skip English as it is the original language and therefore there is no
+      // lang-attribute. CKEditor removes the default language attribute.
+      if ($index === 1) {
+        continue;
+      }
+
       $this->unSelectLanguage();
       $non_translated_paragraph = $assert_session->waitForElementVisible('css', '.ck-editor__main>.ck-content p:nth-of-type(' . $index . ')');
       $this->assertNotNull($non_translated_paragraph);
@@ -361,7 +384,7 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
     // Check that the language selection dialog field is visible and click it.
     $remove_language = $assert_session->waitForElementVisible('css', '.helfi-language-selector a.remove');
     $this->assertTrue($remove_language->isVisible(), 'The language remove button is not visible.');
-    $remove_language->click();
+    $this->getSession()->executeScript('document.querySelector(".helfi-language-selector a.remove").click();');
   }
 
   /**
@@ -370,9 +393,12 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
    * @param string $content
    *   The content to be edited.
    *
+   * @return \Drupal\Core\Url
+   *   The edit URL of the created node.
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
-  protected function initializeEditor(string $content): void {
+  protected function initializeEditor(string $content): Url {
     /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
     $assert_session = $this->assertSession();
 
@@ -392,6 +418,7 @@ class HelfiCKEditorPluginTests extends WebDriverTestBase {
 
     // Wait for CKEditor to load.
     $this->waitForEditor();
+    return $edit_url;
   }
 
 }

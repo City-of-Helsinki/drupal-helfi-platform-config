@@ -375,3 +375,7 @@ select.tomselected.is-hidden + .ts-wrapper {
 .ck-powered-by {
   display: none;
 }
+
+.is-hidden {
+  display: none;
+}
