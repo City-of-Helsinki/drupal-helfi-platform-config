@@ -17,19 +17,18 @@ export default class HelfiLinkVariantView extends HelfiLinkBaseView {
       const defaultConfig = super.selectListDefaultOptions();
 
       // The template for the Tom Select options and selected items.
-      const renderTemplate = (item, escape) => `
-          <span style="align-items: center; display: flex; height: 100%;">
-            <span class="hel-icon--name" style="margin-left: 8px;">${escape(item.title)}</span>
-          </span>
-        `;
+      const renderTemplate = (item, sanitizeOutput) => `
+        <span style="align-items: center; display: flex; height: 100%;">
+          <span class="hel-icon--name" style="margin-left: 8px;">${sanitizeOutput(item.title)}</span>
+        </span>
+      `;
+
       // Settings for the Tom Select.
       const settings = {
         ...defaultConfig,
         plugins: {
           dropdown_input: {},
-          remove_button: {
-            title: 'Remove this item',
-          },
+          remove_button: { title: 'Remove this item' },
         },
         options: Object.keys(options).map((option) => ({
           option,
@@ -37,8 +36,9 @@ export default class HelfiLinkVariantView extends HelfiLinkBaseView {
         })),
         // Custom rendering functions for options and items
         render: {
-          option: (item, escape) => renderTemplate(item, escape),
-          item: (item, escape) => renderTemplate(item, escape),
+          option: (item, sanitizeOutput) =>
+            renderTemplate(item, sanitizeOutput),
+          item: (item, sanitizeOutput) => renderTemplate(item, sanitizeOutput),
         },
       };
 

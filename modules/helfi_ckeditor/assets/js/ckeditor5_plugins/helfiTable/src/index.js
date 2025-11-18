@@ -8,6 +8,4 @@
 
 import HelfiTable from './helfiTable';
 
-export default {
-  HelfiTable,
-};
+export default { HelfiTable };

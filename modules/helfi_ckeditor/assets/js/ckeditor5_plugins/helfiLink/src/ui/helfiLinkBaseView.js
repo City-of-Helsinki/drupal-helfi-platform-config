@@ -62,7 +62,7 @@ export default class HelfiLinkBaseView extends View {
 
       attributes: {
         id: bind.to('id'),
-        class: ['ck-helfi-link-select-list'],
+        class: ['ck-helfi-link-select-list', this.options.machineName],
         'data-placeholder': this.options.label,
         autocomplete: 'off',
       },
