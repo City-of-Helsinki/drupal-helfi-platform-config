@@ -145,8 +145,9 @@
    */
   Drupal.behaviors.tableOfContents = {
     attach(context) {
-      // Only run on full page loads, not on AJAX updates.
-      if (context !== document) {
+      // Only run once when the full document is loaded, not during AJAX updates
+      // or if the table of contents has already been initialized.
+      if (window.tableOfContentsInitialized && context === document) {
         return;
       }
 
@@ -174,6 +175,9 @@
         tocListElement: tableOfContentsList,
         headings,
       });
+
+      // Set a flag to indicate that the table of contents has been initialized.
+      window.tableOfContentsInitialized = true;
     },
   };
 })(Drupal, once);
