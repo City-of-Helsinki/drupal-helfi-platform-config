@@ -87,9 +87,9 @@ class TableOfContentsTest extends WebDriverTestBase {
   }
 
   /**
-   * Tests CKEditor 5 custom plugins.
+   * Tests table of contents javascript functionalities.
    */
-  public function testHelfiPlugins(): void {
+  public function testTableOfContents(): void {
     $this->testTocEnabled();
     $this->testTocDisabled();
   }
