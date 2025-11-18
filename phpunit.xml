@@ -63,10 +63,6 @@
       <directory>./modules/*/tests/src/FunctionalJavascript</directory>
     </testsuite>
   </testsuites>
-  <listeners>
-    <listener class="\Drupal\Tests\Listeners\DrupalListener">
-    </listener>
-  </listeners>
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">./modules/*/src</directory>
