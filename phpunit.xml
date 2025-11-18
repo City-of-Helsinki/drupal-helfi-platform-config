@@ -25,13 +25,6 @@
   <extensions>
     <!-- Functional tests HTML output logging. -->
     <bootstrap class="Drupal\TestTools\Extension\HtmlLogging\HtmlOutputLogger">
-      <!-- The directory where the browser output will be stored. If a relative
-        path is specified, it will be relative to the current working directory
-        of the process running the PHPUnit CLI. In CI environments, this can be
-        overridden by the value set for the "BROWSERTEST_OUTPUT_DIRECTORY"
-        environment variable.
-      -->
-      <parameter name="outputDirectory" value="sites/simpletest/browser_output"/>
       <!-- By default browser tests print the individual links in the test run
         report. To avoid overcrowding the output in CI environments, you can
         set the "verbose" parameter or the "BROWSERTEST_OUTPUT_VERBOSE"
