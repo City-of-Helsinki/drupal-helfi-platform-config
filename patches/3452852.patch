@@ -1,22 +1,788 @@
+From 73b848dd63cc3af74459d73df8439d1c87d9c9b5 Mon Sep 17 00:00:00 2001
+From: dpi <pro@danielph.in>
+Date: Thu, 6 Jun 2024 12:01:30 +0800
+Subject: [PATCH 01/24] the feature
+
+---
+ .../AutowirePluginTrait.php                   | 52 +++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+ create mode 100644 core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
+new file mode 100644
+index 000000000000..efad653667df
+--- /dev/null
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
+@@ -0,0 +1,52 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Core\DependencyInjection;
++
++use Symfony\Component\DependencyInjection\Attribute\Autowire;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
++
++/**
++ * Allows plugins extending ContainerFactoryPluginInterface to use autowiring.
++ *
++ * @see \Drupal\Core\Plugin\ContainerFactoryPluginInterface
++ */
++trait AutowirePluginTrait {
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
++    if (!method_exists(static::class, '__construct')) {
++      return new static($container, $configuration, $plugin_id, $plugin_definition);
++    }
++
++    $args = [];
++    $constructor = new \ReflectionMethod(static::class, '__construct');
++    foreach ($constructor->getParameters() as $parameter) {
++      $args[$parameter->getName()] = match ($parameter->getName()) {
++        'configuration' => $configuration,
++        // Allow constructor to use either snake_case or camelCase.
++        'plugin_id', 'pluginId' => $plugin_id,
++        'plugin_definition', 'pluginDefinition' => $plugin_definition,
++        default => (static function () use ($container, $parameter) {
++          $service = ltrim((string) $parameter->getType(), '?');
++          foreach ($parameter->getAttributes(Autowire::class) as $attribute) {
++            $service = (string) $attribute->newInstance()->value;
++          }
++
++          if (!$container->has($service)) {
++            throw new AutowiringFailedException($service, sprintf('Cannot autowire service "%s": argument "$%s" of method "%s::_construct()", you should configure its value explicitly.', $service, $parameter->getName(), static::class));
++          }
++
++          return $container->get($service);
++        })(),
++      };
++    }
++
++    return new static(...$args);
++  }
++
++}
+--
+GitLab
+
+
+From 6fed8002d6342bd80aff926df0df3c3706c8e07b Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Thu, 22 Aug 2024 14:46:37 +0100
+Subject: [PATCH 02/24] Fix compatibility.
+
+---
+ .../lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
+index efad653667df..776f42da012d 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
+@@ -18,7 +18,7 @@ trait AutowirePluginTrait {
+   /**
+    * {@inheritdoc}
+    */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+     if (!method_exists(static::class, '__construct')) {
+       return new static($container, $configuration, $plugin_id, $plugin_definition);
+     }
+--
+GitLab
+
+
+From 04733a30c2b56ff91b50df3982adceb9de3768ae Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Thu, 22 Aug 2024 14:47:16 +0100
+Subject: [PATCH 03/24] Enable autowiring by omitting create().
+
+---
+ core/modules/views/src/Plugin/views/PluginBase.php | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/core/modules/views/src/Plugin/views/PluginBase.php b/core/modules/views/src/Plugin/views/PluginBase.php
+index fd7d3d0262c2..98c0409a7781 100644
+--- a/core/modules/views/src/Plugin/views/PluginBase.php
++++ b/core/modules/views/src/Plugin/views/PluginBase.php
+@@ -4,6 +4,7 @@
+
+ use Drupal\Component\Plugin\DependentPluginInterface;
+ use Drupal\Component\Utility\Xss;
++use Drupal\Core\DependencyInjection\AutowirePluginTrait;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+@@ -13,7 +14,6 @@
+ use Drupal\Core\StringTranslation\TranslatableMarkup;
+ use Drupal\views\Plugin\views\display\DisplayPluginBase;
+ use Drupal\views\ViewExecutable;
+-use Symfony\Component\DependencyInjection\ContainerInterface;
+
+ /**
+  * Base class for any views plugin types.
+@@ -39,6 +39,8 @@
+  */
+ abstract class PluginBase extends ComponentPluginBase implements ContainerFactoryPluginInterface, ViewsPluginInterface, DependentPluginInterface, TrustedCallbackInterface {
+
++  use AutowirePluginTrait;
++
+   /**
+    * Include negotiated languages when listing languages.
+    *
+@@ -127,13 +129,6 @@ public function __construct(array $configuration, $plugin_id, $plugin_definition
+     $this->definition = $plugin_definition + $configuration;
+   }
+
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    return new static($configuration, $plugin_id, $plugin_definition);
+-  }
+-
+   /**
+    * {@inheritdoc}
+    */
+--
+GitLab
+
+
+From 6c4a30dfb82513f6689a24d6298c8e122c6e8ceb Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Thu, 22 Aug 2024 14:49:17 +0100
+Subject: [PATCH 04/24] Autowire Views display plugins.
+
+---
+ .../views/src/Plugin/views/display/Block.php      | 14 --------------
+ .../src/Plugin/views/display/EntityReference.php  | 13 -------------
+ .../views/src/Plugin/views/display/Feed.php       | 15 ---------------
+ .../src/Plugin/views/display/PathPluginBase.php   | 14 --------------
+ 4 files changed, 56 deletions(-)
+
+diff --git a/core/modules/views/src/Plugin/views/display/Block.php b/core/modules/views/src/Plugin/views/display/Block.php
+index 5692ee1df013..155d0e6a93a4 100644
+--- a/core/modules/views/src/Plugin/views/display/Block.php
++++ b/core/modules/views/src/Plugin/views/display/Block.php
+@@ -11,7 +11,6 @@
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\views\Attribute\ViewsDisplay;
+ use Drupal\views\Plugin\Block\ViewsBlock;
+-use Symfony\Component\DependencyInjection\ContainerInterface;
+
+ /**
+  * The plugin that handles a block.
+@@ -75,19 +74,6 @@ public function __construct(array $configuration, $plugin_id, $plugin_definition
+     $this->blockManager = $block_manager;
+   }
+
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    return new static(
+-      $configuration,
+-      $plugin_id,
+-      $plugin_definition,
+-      $container->get('entity_type.manager'),
+-      $container->get('plugin.manager.block')
+-    );
+-  }
+-
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/core/modules/views/src/Plugin/views/display/EntityReference.php b/core/modules/views/src/Plugin/views/display/EntityReference.php
+index 177e478b19f9..938aab2579b4 100644
+--- a/core/modules/views/src/Plugin/views/display/EntityReference.php
++++ b/core/modules/views/src/Plugin/views/display/EntityReference.php
+@@ -5,7 +5,6 @@
+ use Drupal\Core\Database\Connection;
+ use Drupal\Core\StringTranslation\TranslatableMarkup;
+ use Drupal\views\Attribute\ViewsDisplay;
+-use Symfony\Component\DependencyInjection\ContainerInterface;
+
+ /**
+  * The plugin that handles an EntityReference display.
+@@ -73,18 +72,6 @@ public function __construct(array $configuration, $plugin_id, $plugin_definition
+     $this->connection = $connection;
+   }
+
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    return new static(
+-      $configuration,
+-      $plugin_id,
+-      $plugin_definition,
+-      $container->get('database')
+-    );
+-  }
+-
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/core/modules/views/src/Plugin/views/display/Feed.php b/core/modules/views/src/Plugin/views/display/Feed.php
+index e153656452cf..25725e22e2ea 100644
+--- a/core/modules/views/src/Plugin/views/display/Feed.php
++++ b/core/modules/views/src/Plugin/views/display/Feed.php
+@@ -12,7 +12,6 @@
+ use Drupal\views\Attribute\ViewsDisplay;
+ use Drupal\views\ViewExecutable;
+ use Drupal\views\Views;
+-use Symfony\Component\DependencyInjection\ContainerInterface;
+ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+ /**
+@@ -72,20 +71,6 @@ public function __construct(array $configuration, $plugin_id, $plugin_definition
+     $this->renderer = $renderer;
+   }
+
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    return new static(
+-      $configuration,
+-      $plugin_id,
+-      $plugin_definition,
+-      $container->get('router.route_provider'),
+-      $container->get('state'),
+-      $container->get('renderer')
+-    );
+-  }
+-
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/core/modules/views/src/Plugin/views/display/PathPluginBase.php b/core/modules/views/src/Plugin/views/display/PathPluginBase.php
+index 214b1e1026d5..52b7a5fdce2b 100644
+--- a/core/modules/views/src/Plugin/views/display/PathPluginBase.php
++++ b/core/modules/views/src/Plugin/views/display/PathPluginBase.php
+@@ -11,7 +11,6 @@
+ use Drupal\Core\Routing\RouteProviderInterface;
+ use Drupal\Core\Url;
+ use Drupal\views\Views;
+-use Symfony\Component\DependencyInjection\ContainerInterface;
+ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+ use Symfony\Component\Routing\Route;
+@@ -59,19 +58,6 @@ public function __construct(array $configuration, $plugin_id, $plugin_definition
+     $this->state = $state;
+   }
+
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    return new static(
+-      $configuration,
+-      $plugin_id,
+-      $plugin_definition,
+-      $container->get('router.route_provider'),
+-      $container->get('state')
+-    );
+-  }
+-
+   /**
+    * {@inheritdoc}
+    */
+--
+GitLab
+
+
+From 4c38a1c87877ccc2999eaa4eff1bcd2e09f18104 Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Thu, 22 Aug 2024 14:56:28 +0100
+Subject: [PATCH 05/24] Simplify AutowirePluginTrait based on AutowireTrait.
+
+---
+ .../AutowirePluginTrait.php                   | 41 ++++++++-----------
+ 1 file changed, 16 insertions(+), 25 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
+index 776f42da012d..3840ced60eef 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
+@@ -19,31 +19,22 @@ trait AutowirePluginTrait {
+    * {@inheritdoc}
+    */
+   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    if (!method_exists(static::class, '__construct')) {
+-      return new static($container, $configuration, $plugin_id, $plugin_definition);
+-    }
+-
+-    $args = [];
+-    $constructor = new \ReflectionMethod(static::class, '__construct');
+-    foreach ($constructor->getParameters() as $parameter) {
+-      $args[$parameter->getName()] = match ($parameter->getName()) {
+-        'configuration' => $configuration,
+-        // Allow constructor to use either snake_case or camelCase.
+-        'plugin_id', 'pluginId' => $plugin_id,
+-        'plugin_definition', 'pluginDefinition' => $plugin_definition,
+-        default => (static function () use ($container, $parameter) {
+-          $service = ltrim((string) $parameter->getType(), '?');
+-          foreach ($parameter->getAttributes(Autowire::class) as $attribute) {
+-            $service = (string) $attribute->newInstance()->value;
+-          }
+-
+-          if (!$container->has($service)) {
+-            throw new AutowiringFailedException($service, sprintf('Cannot autowire service "%s": argument "$%s" of method "%s::_construct()", you should configure its value explicitly.', $service, $parameter->getName(), static::class));
+-          }
+-
+-          return $container->get($service);
+-        })(),
+-      };
++    $args = [$configuration, $plugin_id, $plugin_definition];
++
++    if (method_exists(static::class, '__construct')) {
++      $constructor = new \ReflectionMethod(static::class, '__construct');
++      foreach (array_slice($constructor->getParameters(), 3) as $parameter) {
++        $service = ltrim((string) $parameter->getType(), '?');
++        foreach ($parameter->getAttributes(Autowire::class) as $attribute) {
++          $service = (string) $attribute->newInstance()->value;
++        }
++
++        if (!$container->has($service)) {
++          throw new AutowiringFailedException($service, sprintf('Cannot autowire service "%s": argument "$%s" of method "%s::_construct()", you should configure its value explicitly.', $service, $parameter->getName(), static::class));
++        }
++
++        $args[] = $container->get($service);
++      }
+     }
+
+     return new static(...$args);
+--
+GitLab
+
+
+From 3e6eeffb17b08ddef8eb03dd3d94a0b05be3bb8d Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Thu, 22 Aug 2024 15:34:53 +0100
+Subject: [PATCH 06/24] Autowire PluginBase.
+
+---
+ core/lib/Drupal/Core/Plugin/PluginBase.php     |  2 ++
+ .../block_content/block_content.services.yml   |  1 +
+ .../src/Plugin/Block/BlockContentBlock.php     | 18 ------------------
+ .../views/src/Plugin/views/PluginBase.php      |  3 ---
+ 4 files changed, 3 insertions(+), 21 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Plugin/PluginBase.php b/core/lib/Drupal/Core/Plugin/PluginBase.php
+index 5407dc09b5b9..94935e864def 100644
+--- a/core/lib/Drupal/Core/Plugin/PluginBase.php
++++ b/core/lib/Drupal/Core/Plugin/PluginBase.php
+@@ -3,6 +3,7 @@
+ namespace Drupal\Core\Plugin;
+
+ use Drupal\Component\Plugin\PluginBase as ComponentPluginBase;
++use Drupal\Core\DependencyInjection\AutowirePluginTrait;
+ use Drupal\Core\Messenger\MessengerTrait;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+@@ -13,6 +14,7 @@
+  * @ingroup plugin_api
+  */
+ abstract class PluginBase extends ComponentPluginBase {
++  use AutowirePluginTrait;
+   use StringTranslationTrait;
+   use DependencySerializationTrait;
+   use MessengerTrait;
+diff --git a/core/modules/block_content/block_content.services.yml b/core/modules/block_content/block_content.services.yml
+index 2e1355089ed9..a59a0643b0f1 100644
+--- a/core/modules/block_content/block_content.services.yml
++++ b/core/modules/block_content/block_content.services.yml
+@@ -31,6 +31,7 @@ services:
+     arguments: ['@cache.bootstrap', '@lock', '@entity_type.manager']
+     tags:
+       - { name: needs_destruction }
++  Drupal\block_content\BlockContentUuidLookup: '@block_content.uuid_lookup'
+   block_content.bc_subscriber:
+     class: Drupal\block_content\Routing\RouteSubscriber
+     arguments: ['@entity_type.manager', '@module_handler']
+diff --git a/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php b/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
+index 131a56b516f8..dc7877729594 100644
+--- a/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
++++ b/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
+@@ -15,7 +15,6 @@
+ use Drupal\Core\Routing\UrlGeneratorInterface;
+ use Drupal\Core\Session\AccountInterface;
+ use Drupal\Core\StringTranslation\TranslatableMarkup;
+-use Symfony\Component\DependencyInjection\ContainerInterface;
+
+ /**
+  * Defines a generic block type.
+@@ -110,23 +109,6 @@ public function __construct(array $configuration, $plugin_id, $plugin_definition
+     $this->entityDisplayRepository = $entity_display_repository;
+   }
+
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    return new static(
+-      $configuration,
+-      $plugin_id,
+-      $plugin_definition,
+-      $container->get('plugin.manager.block'),
+-      $container->get('entity_type.manager'),
+-      $container->get('current_user'),
+-      $container->get('url_generator'),
+-      $container->get('block_content.uuid_lookup'),
+-      $container->get('entity_display.repository')
+-    );
+-  }
+-
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/core/modules/views/src/Plugin/views/PluginBase.php b/core/modules/views/src/Plugin/views/PluginBase.php
+index 98c0409a7781..cd7dd72b6e29 100644
+--- a/core/modules/views/src/Plugin/views/PluginBase.php
++++ b/core/modules/views/src/Plugin/views/PluginBase.php
+@@ -4,7 +4,6 @@
+
+ use Drupal\Component\Plugin\DependentPluginInterface;
+ use Drupal\Component\Utility\Xss;
+-use Drupal\Core\DependencyInjection\AutowirePluginTrait;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+@@ -39,8 +38,6 @@
+  */
+ abstract class PluginBase extends ComponentPluginBase implements ContainerFactoryPluginInterface, ViewsPluginInterface, DependentPluginInterface, TrustedCallbackInterface {
+
+-  use AutowirePluginTrait;
+-
+   /**
+    * Include negotiated languages when listing languages.
+    *
+--
+GitLab
+
+
+From 9f4cafdd75c8e00ae21b183ecb67b2ebfb1b0aff Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Thu, 22 Aug 2024 15:37:46 +0100
+Subject: [PATCH 07/24] Use attribute to prove that it works.
+
+---
+ .../block_content/block_content.services.yml       |  1 -
+ .../src/Plugin/Block/BlockContentBlock.php         | 14 +++++++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/core/modules/block_content/block_content.services.yml b/core/modules/block_content/block_content.services.yml
+index a59a0643b0f1..2e1355089ed9 100644
+--- a/core/modules/block_content/block_content.services.yml
++++ b/core/modules/block_content/block_content.services.yml
+@@ -31,7 +31,6 @@ services:
+     arguments: ['@cache.bootstrap', '@lock', '@entity_type.manager']
+     tags:
+       - { name: needs_destruction }
+-  Drupal\block_content\BlockContentUuidLookup: '@block_content.uuid_lookup'
+   block_content.bc_subscriber:
+     class: Drupal\block_content\Routing\RouteSubscriber
+     arguments: ['@entity_type.manager', '@module_handler']
+diff --git a/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php b/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
+index dc7877729594..08ae4780f72e 100644
+--- a/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
++++ b/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
+@@ -15,6 +15,7 @@
+ use Drupal\Core\Routing\UrlGeneratorInterface;
+ use Drupal\Core\Session\AccountInterface;
+ use Drupal\Core\StringTranslation\TranslatableMarkup;
++use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
+ /**
+  * Defines a generic block type.
+@@ -98,7 +99,18 @@ class BlockContentBlock extends BlockBase implements ContainerFactoryPluginInter
+    * @param \Drupal\Core\Entity\EntityDisplayRepositoryInterface $entity_display_repository
+    *   The entity display repository.
+    */
+-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BlockManagerInterface $block_manager, EntityTypeManagerInterface $entity_type_manager, AccountInterface $account, UrlGeneratorInterface $url_generator, BlockContentUuidLookup $uuid_lookup, EntityDisplayRepositoryInterface $entity_display_repository) {
++  public function __construct(
++    array $configuration,
++    $plugin_id,
++    $plugin_definition,
++    BlockManagerInterface $block_manager,
++    EntityTypeManagerInterface $entity_type_manager,
++    AccountInterface $account,
++    UrlGeneratorInterface $url_generator,
++    #[Autowire(service: 'block_content.uuid_lookup')]
++    BlockContentUuidLookup $uuid_lookup,
++    EntityDisplayRepositoryInterface $entity_display_repository,
++  ) {
+     parent::__construct($configuration, $plugin_id, $plugin_definition);
+
+     $this->blockManager = $block_manager;
+--
+GitLab
+
+
+From 13648760895db6ec955bd90cef8f9fa53cd29533 Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Thu, 22 Aug 2024 15:57:22 +0100
+Subject: [PATCH 08/24] Fix MenuLinkMock.
+
+---
+ core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php b/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
+index 2275ef3ffe11..0d8f6336e779 100644
+--- a/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
++++ b/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
+@@ -45,7 +45,7 @@ class MenuLinkMock extends MenuLinkBase {
+   /**
+    * Create an instance from a definition with at least id, title, route_name.
+    */
+-  public static function create($definition) {
++  public static function create($definition, $configuration = NULL, $plugin_id = NULL, $plugin_definition = NULL) {
+     return new static([], $definition['id'], $definition + static::$defaults);
+   }
+
+--
+GitLab
+
+
+From 694de263e88153514a5fc0b1b190a771b3d42c37 Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Fri, 11 Oct 2024 23:04:09 +0100
+Subject: [PATCH 09/24] Add test coverage.
+
+---
+ .../src/Plugin/Block/AutowireBlock.php        | 43 +++++++++++++++++++
+ .../src/Plugin/Block/AutowireErrorBlock.php   | 41 ++++++++++++++++++
+ .../Core/Block/AutowireBlockTest.php          | 41 ++++++++++++++++++
+ 3 files changed, 125 insertions(+)
+ create mode 100644 core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireBlock.php
+ create mode 100644 core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireErrorBlock.php
+ create mode 100644 core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
+
+diff --git a/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireBlock.php b/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireBlock.php
+new file mode 100644
+index 000000000000..e774a5576469
+--- /dev/null
++++ b/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireBlock.php
+@@ -0,0 +1,43 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\autowire_test\Plugin\Block;
++
++use Drupal\Core\Block\BlockBase;
++use Drupal\Core\Block\Attribute\Block;
++use Drupal\Core\Lock\LockBackendInterface;
++use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
++use Drupal\Core\StringTranslation\TranslatableMarkup;
++use Symfony\Component\DependencyInjection\Attribute\Autowire;
++
++/**
++ * Provides a block that can be autowired.
++ */
++#[Block(
++  id: "autowire",
++  admin_label: new TranslatableMarkup("Autowire error")
++)]
++class AutowireBlock extends BlockBase implements ContainerFactoryPluginInterface {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function __construct(
++    array $configuration,
++    $plugin_id,
++    $plugin_definition,
++    #[Autowire(service: 'lock')]
++    protected LockBackendInterface $lock,
++  ) {
++    parent::__construct($configuration, $plugin_id, $plugin_definition);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function build() {
++    return [];
++  }
++
++}
+diff --git a/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireErrorBlock.php b/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireErrorBlock.php
+new file mode 100644
+index 000000000000..70170f2d297f
+--- /dev/null
++++ b/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireErrorBlock.php
+@@ -0,0 +1,41 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\autowire_test\Plugin\Block;
++
++use Drupal\Core\Block\BlockBase;
++use Drupal\Core\Block\Attribute\Block;
++use Drupal\Core\Lock\LockBackendInterface;
++use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
++use Drupal\Core\StringTranslation\TranslatableMarkup;
++
++/**
++ * Provides a block that cannot be autowired.
++ */
++#[Block(
++  id: "autowire_error",
++  admin_label: new TranslatableMarkup("Autowire error")
++)]
++class AutowireErrorBlock extends BlockBase implements ContainerFactoryPluginInterface {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function __construct(
++    array $configuration,
++    $plugin_id,
++    $plugin_definition,
++    protected LockBackendInterface $lock,
++  ) {
++    parent::__construct($configuration, $plugin_id, $plugin_definition);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function build() {
++    return [];
++  }
++
++}
+diff --git a/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php b/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
+new file mode 100644
+index 000000000000..db2da3f11dbe
+--- /dev/null
++++ b/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
+@@ -0,0 +1,41 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\KernelTests\Core\Block;
++
++use Drupal\autowire_test\Plugin\Block\AutowireBlock;
++use Drupal\KernelTests\KernelTestBase;
++use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
++
++/**
++ * Tests that blocks can be autowired.
++ *
++ * @group block
++ */
++class AutowireBlockTest extends KernelTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = ['system', 'block', 'autowire_test'];
++
++  /**
++   * Tests that autowire errors are handled correctly.
++   */
++  public function testAutowireBlock(): void {
++    $block = \Drupal::service('plugin.manager.block')->createInstance('autowire');
++    $this->assertInstanceOf(AutowireBlock::class, $block);
++  }
++
++  /**
++   * Tests that autowire errors are handled correctly.
++   */
++  public function testAutowireError(): void {
++    $this->expectException(AutowiringFailedException::class);
++    $this->expectExceptionMessage('Cannot autowire service "Drupal\Core\Lock\LockBackendInterface": argument "$lock" of method "Drupal\autowire_test\Plugin\Block\AutowireErrorBlock::_construct()", you should configure its value explicitly.');
++
++    \Drupal::service('plugin.manager.block')->createInstance('autowire_error');
++  }
++
++}
+--
+GitLab
+
+
+From 87a9c278dcb4632a001adb13e8beb5bb06b29647 Mon Sep 17 00:00:00 2001
+From: Dave Long <dave@longwaveconsulting.com>
+Date: Fri, 11 Oct 2024 23:33:10 +0100
+Subject: [PATCH 10/24] Refactor AutowireTrait to be reusable.
+
+---
+ ...inTrait.php => AutowireArgumentsTrait.php} | 21 ++++++++------
+ .../DependencyInjection/AutowireTrait.php     | 28 ++-----------------
+ core/lib/Drupal/Core/Plugin/PluginBase.php    | 15 ++++++++--
+ 3 files changed, 28 insertions(+), 36 deletions(-)
+ rename core/lib/Drupal/Core/DependencyInjection/{AutowirePluginTrait.php => AutowireArgumentsTrait.php} (63%)
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+similarity index 63%
+rename from core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
+rename to core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+index 3840ced60eef..6344dd750c59 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowirePluginTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+@@ -9,21 +9,24 @@
+ use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
+
+ /**
+- * Allows plugins extending ContainerFactoryPluginInterface to use autowiring.
+- *
+- * @see \Drupal\Core\Plugin\ContainerFactoryPluginInterface
++ * Defines a base trait for automatically wiring dependency arguments.
+  */
+-trait AutowirePluginTrait {
++trait AutowireArgumentsTrait {
+
+   /**
+-   * {@inheritdoc}
++   * Instantiates a new instance of the implementing class using autowiring.
++   *
++   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
++   *   The service container this instance should use.
++   * @param ...$args
++   *   Any predefined arguments to pass to the constructor.
++   *
++   * @return static
+    */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    $args = [$configuration, $plugin_id, $plugin_definition];
+-
++  public static function autowireArguments(ContainerInterface $container, ...$args) {
+     if (method_exists(static::class, '__construct')) {
+       $constructor = new \ReflectionMethod(static::class, '__construct');
+-      foreach (array_slice($constructor->getParameters(), 3) as $parameter) {
++      foreach (array_slice($constructor->getParameters(), count($args)) as $parameter) {
+         $service = ltrim((string) $parameter->getType(), '?');
+         foreach ($parameter->getAttributes(Autowire::class) as $attribute) {
+           $service = (string) $attribute->newInstance()->value;
 diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
-index a0824c65f17..82c61646a24 100644
+index a0824c65f17f..62f9ae467094 100644
 --- a/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
 +++ b/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
 @@ -2,9 +2,7 @@
- 
+
  namespace Drupal\Core\DependencyInjection;
- 
+
 -use Symfony\Component\DependencyInjection\Attribute\Autowire;
  use Symfony\Component\DependencyInjection\ContainerInterface;
 -use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
- 
+
  /**
   * Defines a trait for automatically wiring dependencies from the container.
 @@ -14,6 +12,8 @@
   */
  trait AutowireTrait {
- 
-+  use AutowiredInstanceTrait;
+
++  use AutowireArgumentsTrait;
 +
    /**
     * Instantiates a new instance of the implementing class using autowiring.
@@ -48,100 +814,1057 @@ index a0824c65f17..82c61646a24 100644
 -    }
 -
 -    return new static(...$args);
-+    return static::createInstanceAutowired($container);
++    return static::autowireArguments($container);
    }
- 
+
  }
-diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php
-new file mode 100644
-index 00000000000..a7b0c7f411b
---- /dev/null
-+++ b/core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php
-@@ -0,0 +1,50 @@
-+<?php
-+
-+declare(strict_types=1);
-+
-+namespace Drupal\Core\DependencyInjection;
-+
-+use Symfony\Component\DependencyInjection\Attribute\Autowire;
-+use Symfony\Component\DependencyInjection\ContainerInterface;
-+use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
-+
-+/**
-+ * Defines a base trait for automatically wiring dependency arguments.
-+ */
-+trait AutowiredInstanceTrait {
-+
-+  /**
-+   * Instantiates a new instance of the implementing class using autowiring.
-+   *
-+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-+   *   The service container this instance should use.
-+   * @param mixed ...$args
-+   *   Any predefined arguments to pass to the constructor.
-+   *
-+   * @return static
-+   */
-+  public static function createInstanceAutowired(ContainerInterface $container, mixed ...$args): static {
-+    if (method_exists(static::class, '__construct')) {
-+      $constructor = new \ReflectionMethod(static::class, '__construct');
-+      foreach (array_slice($constructor->getParameters(), count($args)) as $parameter) {
-+        $service = ltrim((string) $parameter->getType(), '?');
-+        foreach ($parameter->getAttributes(Autowire::class) as $attribute) {
-+          $service = (string) $attribute->newInstance()->value;
-+        }
-+
-+        if (!$container->has($service)) {
-+          if ($parameter->allowsNull()) {
-+            $args[] = NULL;
-+            continue;
-+          }
-+          throw new AutowiringFailedException($service, sprintf('Cannot autowire service "%s": argument "$%s" of method "%s::_construct()", you should configure its value explicitly.', $service, $parameter->getName(), static::class));
-+        }
-+
-+        $args[] = $container->get($service);
-+      }
-+    }
-+
-+    return new static(...$args);
-+  }
-+
-+}
 diff --git a/core/lib/Drupal/Core/Plugin/PluginBase.php b/core/lib/Drupal/Core/Plugin/PluginBase.php
-index 5407dc09b5b..ddec5e852d7 100644
+index 94935e864def..b6f9a3eb1aec 100644
 --- a/core/lib/Drupal/Core/Plugin/PluginBase.php
 +++ b/core/lib/Drupal/Core/Plugin/PluginBase.php
-@@ -3,9 +3,11 @@
+@@ -3,10 +3,11 @@
  namespace Drupal\Core\Plugin;
- 
+
  use Drupal\Component\Plugin\PluginBase as ComponentPluginBase;
-+use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
+-use Drupal\Core\DependencyInjection\AutowirePluginTrait;
++use Drupal\Core\DependencyInjection\AutowireArgumentsTrait;
  use Drupal\Core\Messenger\MessengerTrait;
  use Drupal\Core\StringTranslation\StringTranslationTrait;
  use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 +use Symfony\Component\DependencyInjection\ContainerInterface;
- 
+
  /**
   * Base class for plugins supporting metadata inspection and translation.
-@@ -13,8 +15,20 @@
+@@ -14,9 +15,19 @@
   * @ingroup plugin_api
   */
  abstract class PluginBase extends ComponentPluginBase {
-+  use AutowiredInstanceTrait;
+-  use AutowirePluginTrait;
++
++  use AutowireArgumentsTrait;
    use StringTranslationTrait;
    use DependencySerializationTrait;
    use MessengerTrait;
- 
+
 +  /**
 +   * Instantiates a new instance of the implementing class using autowiring.
 +   *
 +   * @see \Drupal\Core\Plugin\ContainerFactoryPluginInterface
-+   *
-+   * @return static
 +   */
 +  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-+    return static::createInstanceAutowired($container, $configuration, $plugin_id, $plugin_definition);
++    return static::autowireArguments($container, $configuration, $plugin_id, $plugin_definition);
 +  }
 +
  }
+--
+GitLab
+
+
+From 88b8f367ed5cee96f30faa0eb7163ade6a4942ec Mon Sep 17 00:00:00 2001
+From: Michael Strelan <mstrelan@gmail.com>
+Date: Mon, 14 Oct 2024 08:21:41 +1000
+Subject: [PATCH 11/24] Implement ContainerFactoryPluginInterface
+
+---
+ core/lib/Drupal/Core/Plugin/PluginBase.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/lib/Drupal/Core/Plugin/PluginBase.php b/core/lib/Drupal/Core/Plugin/PluginBase.php
+index b6f9a3eb1aec..6a12c8407cce 100644
+--- a/core/lib/Drupal/Core/Plugin/PluginBase.php
++++ b/core/lib/Drupal/Core/Plugin/PluginBase.php
+@@ -14,7 +14,7 @@
+  *
+  * @ingroup plugin_api
+  */
+-abstract class PluginBase extends ComponentPluginBase {
++abstract class PluginBase extends ComponentPluginBase implements ContainerFactoryPluginInterface {
+
+   use AutowireArgumentsTrait;
+   use StringTranslationTrait;
+--
+GitLab
+
+
+From f79273fe4dbe52bec5ad327cf3724eecf336b723 Mon Sep 17 00:00:00 2001
+From: Michael Strelan <mstrelan@gmail.com>
+Date: Mon, 14 Oct 2024 20:07:58 +1000
+Subject: [PATCH 12/24] Revert "Implement ContainerFactoryPluginInterface"
+
+This reverts commit 412c3b977e69173901af913b6fc9ecb57ae2c611.
+---
+ core/lib/Drupal/Core/Plugin/PluginBase.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/lib/Drupal/Core/Plugin/PluginBase.php b/core/lib/Drupal/Core/Plugin/PluginBase.php
+index 6a12c8407cce..b6f9a3eb1aec 100644
+--- a/core/lib/Drupal/Core/Plugin/PluginBase.php
++++ b/core/lib/Drupal/Core/Plugin/PluginBase.php
+@@ -14,7 +14,7 @@
+  *
+  * @ingroup plugin_api
+  */
+-abstract class PluginBase extends ComponentPluginBase implements ContainerFactoryPluginInterface {
++abstract class PluginBase extends ComponentPluginBase {
+
+   use AutowireArgumentsTrait;
+   use StringTranslationTrait;
+--
+GitLab
+
+
+From f55f8461acf648ee88a23fddeb5e004c76dd650d Mon Sep 17 00:00:00 2001
+From: Michael Strelan <mstrelan@gmail.com>
+Date: Mon, 14 Oct 2024 20:21:47 +1000
+Subject: [PATCH 13/24] Alternative
+
+---
+ core/lib/Drupal/Core/Plugin/PluginBase.php | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/core/lib/Drupal/Core/Plugin/PluginBase.php b/core/lib/Drupal/Core/Plugin/PluginBase.php
+index b6f9a3eb1aec..6505c03f92c4 100644
+--- a/core/lib/Drupal/Core/Plugin/PluginBase.php
++++ b/core/lib/Drupal/Core/Plugin/PluginBase.php
+@@ -25,6 +25,8 @@ abstract class PluginBase extends ComponentPluginBase {
+    * Instantiates a new instance of the implementing class using autowiring.
+    *
+    * @see \Drupal\Core\Plugin\ContainerFactoryPluginInterface
++   *
++   * @return static
+    */
+   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+     return static::autowireArguments($container, $configuration, $plugin_id, $plugin_definition);
+--
+GitLab
+
+
+From a14a4c567ddb16985c62d6b23f359c4f99871c43 Mon Sep 17 00:00:00 2001
+From: shalini_jha <shalini.jha@qed42.com>
+Date: Tue, 14 Jan 2025 17:49:04 +0530
+Subject: [PATCH 14/24] Pipeline baseline fixes
+
+---
+ core/.phpstan-baseline.php | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/core/.phpstan-baseline.php b/core/.phpstan-baseline.php
+index 43308b20b2fa..6300f4c08aaf 100644
+--- a/core/.phpstan-baseline.php
++++ b/core/.phpstan-baseline.php
+@@ -49978,12 +49978,6 @@
+ 	'count' => 1,
+ 	'path' => __DIR__ . '/tests/Drupal/Tests/Core/Menu/LocalTaskIntegrationTestBase.php',
+ ];
+-$ignoreErrors[] = [
+-	'message' => '#^Method Drupal\\\\Tests\\\\Core\\\\Menu\\\\MenuLinkMock\\:\\:create\\(\\) has no return type specified\\.$#',
+-	'identifier' => 'missingType.return',
+-	'count' => 1,
+-	'path' => __DIR__ . '/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php',
+-];
+ $ignoreErrors[] = [
+ 	'message' => '#^Method Drupal\\\\Tests\\\\Core\\\\Menu\\\\MenuTreeParametersTest\\:\\:providerTestSetMinDepth\\(\\) has no return type specified\\.$#',
+ 	'identifier' => 'missingType.return',
+--
+GitLab
+
+
+From d5d951419f84571160748e178c28d27ebd6be58f Mon Sep 17 00:00:00 2001
+From: Daniel Veza <daniel.veza@previousnext.com.au>
+Date: Mon, 25 Aug 2025 10:13:10 +1000
+Subject: [PATCH 15/24] Bring in AutowireTrait changes from #3464426
+
+---
+ .../Core/DependencyInjection/AutowireArgumentsTrait.php       | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+index 6344dd750c59..52907bf39912 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+@@ -33,6 +33,10 @@ public static function autowireArguments(ContainerInterface $container, ...$args
+         }
+
+         if (!$container->has($service)) {
++          if ($parameter->allowsNull()) {
++            $args[] = NULL;
++            continue;
++          }
+           throw new AutowiringFailedException($service, sprintf('Cannot autowire service "%s": argument "$%s" of method "%s::_construct()", you should configure its value explicitly.', $service, $parameter->getName(), static::class));
+         }
+
+--
+GitLab
+
+
+From 2a3a73562a6cce9b2904b4e1daf51f36ddba4a80 Mon Sep 17 00:00:00 2001
+From: Daniel Veza <daniel.veza@previousnext.com.au>
+Date: Mon, 25 Aug 2025 10:21:12 +1000
+Subject: [PATCH 16/24] Add param type for autowired arguments
+
+---
+ .../Core/DependencyInjection/AutowireArgumentsTrait.php       | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+index 52907bf39912..d5bebec5c249 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+@@ -18,12 +18,12 @@ trait AutowireArgumentsTrait {
+    *
+    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+    *   The service container this instance should use.
+-   * @param ...$args
++   * @param mixed ...$args
+    *   Any predefined arguments to pass to the constructor.
+    *
+    * @return static
+    */
+-  public static function autowireArguments(ContainerInterface $container, ...$args) {
++  public static function autowireArguments(ContainerInterface $container, mixed ...$args) {
+     if (method_exists(static::class, '__construct')) {
+       $constructor = new \ReflectionMethod(static::class, '__construct');
+       foreach (array_slice($constructor->getParameters(), count($args)) as $parameter) {
+--
+GitLab
+
+
+From d01cc3b75cbb781961611964607d328c8e8e61ac Mon Sep 17 00:00:00 2001
+From: Daniel Veza <daniel.veza@previousnext.com.au>
+Date: Tue, 2 Sep 2025 13:22:39 +1000
+Subject: [PATCH 17/24] MR feedback
+
+---
+ .../Core/DependencyInjection/AutowireArgumentsTrait.php  | 2 +-
+ .../autowire_test/src/Plugin/Block/AutowireBlock.php     | 9 ++++++++-
+ .../Drupal/KernelTests/Core/Block/AutowireBlockTest.php  | 4 +++-
+ 3 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+index d5bebec5c249..242aa22cce13 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+@@ -23,7 +23,7 @@ trait AutowireArgumentsTrait {
+    *
+    * @return static
+    */
+-  public static function autowireArguments(ContainerInterface $container, mixed ...$args) {
++  public static function autowireArguments(ContainerInterface $container, mixed ...$args): static {
+     if (method_exists(static::class, '__construct')) {
+       $constructor = new \ReflectionMethod(static::class, '__construct');
+       foreach (array_slice($constructor->getParameters(), count($args)) as $parameter) {
+diff --git a/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireBlock.php b/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireBlock.php
+index e774a5576469..e3121336e50d 100644
+--- a/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireBlock.php
++++ b/core/modules/system/tests/modules/autowire_test/src/Plugin/Block/AutowireBlock.php
+@@ -16,7 +16,7 @@
+  */
+ #[Block(
+   id: "autowire",
+-  admin_label: new TranslatableMarkup("Autowire error")
++  admin_label: new TranslatableMarkup("Autowire block")
+ )]
+ class AutowireBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+@@ -40,4 +40,11 @@ public function build() {
+     return [];
+   }
+
++  /**
++   * Gets the lock service.
++   */
++  public function getLock(): LockBackendInterface {
++    return $this->lock;
++  }
++
+ }
+diff --git a/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php b/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
+index db2da3f11dbe..e0a37e68967d 100644
+--- a/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
++++ b/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
+@@ -5,6 +5,7 @@
+ namespace Drupal\KernelTests\Core\Block;
+
+ use Drupal\autowire_test\Plugin\Block\AutowireBlock;
++use Drupal\Core\Lock\LockBackendInterface;
+ use Drupal\KernelTests\KernelTestBase;
+ use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
+
+@@ -21,11 +22,12 @@ class AutowireBlockTest extends KernelTestBase {
+   protected static $modules = ['system', 'block', 'autowire_test'];
+
+   /**
+-   * Tests that autowire errors are handled correctly.
++   * Tests blocks with autowiring are created successfully.
+    */
+   public function testAutowireBlock(): void {
+     $block = \Drupal::service('plugin.manager.block')->createInstance('autowire');
+     $this->assertInstanceOf(AutowireBlock::class, $block);
++    $this->assertInstanceOf(LockBackendInterface::class, $block->getLock());
+   }
+
+   /**
+--
+GitLab
+
+
+From a046dd71b4c688273c8f85db0fbd0ca634ebe5b9 Mon Sep 17 00:00:00 2001
+From: Daniel Veza <daniel.veza@previousnext.com.au>
+Date: Wed, 3 Sep 2025 08:07:00 +1000
+Subject: [PATCH 18/24] Rename MenuLinkMock::create to MenuLinkMock::createMock
+
+---
+ .../src/Kernel/NavigationMenuBlockTest.php    | 40 ++++++++--------
+ .../src/Kernel/NavigationMenuMarkupTest.php   |  6 +--
+ ...NavigationMenuLinkTreeManipulatorsTest.php | 46 +++++++++----------
+ .../src/Kernel/Block/SystemMenuBlockTest.php  | 16 +++----
+ .../tests/src/Unit/Menu/MenuLinkTreeTest.php  | 14 +++---
+ .../Core/Menu/MenuLinkTreeTest.php            | 20 ++++----
+ .../DefaultMenuLinkTreeManipulatorsTest.php   | 30 ++++++------
+ .../Tests/Core/Menu/MenuActiveTrailTest.php   |  6 +--
+ .../Drupal/Tests/Core/Menu/MenuLinkMock.php   |  2 +-
+ .../Core/Menu/MenuLinkTreeElementTest.php     |  6 +--
+ 10 files changed, 93 insertions(+), 93 deletions(-)
+
+diff --git a/core/modules/navigation/tests/src/Kernel/NavigationMenuBlockTest.php b/core/modules/navigation/tests/src/Kernel/NavigationMenuBlockTest.php
+index 5ef7d7157fcc..506ce9043964 100644
+--- a/core/modules/navigation/tests/src/Kernel/NavigationMenuBlockTest.php
++++ b/core/modules/navigation/tests/src/Kernel/NavigationMenuBlockTest.php
+@@ -173,26 +173,26 @@ protected function setUp(): void {
+     // With link 6 being the only external link.
+     // phpcs:disable
+     $links = [
+-      1 => MenuLinkMock::create(['id' => 'test.example1', 'route_name' => '<nolink>', 'title' => 'title 1', 'parent' => '', 'weight' => 0]),
+-      2 => MenuLinkMock::create(['id' => 'test.example2', 'route_name' => 'example2', 'title' => 'title 2', 'parent' => '', 'route_parameters' => ['foo' => 'bar'], 'weight' => 1]),
+-      3 => MenuLinkMock::create(['id' => 'test.example3', 'route_name' => '<nolink>', 'title' => 'title 3', 'parent' => 'test.example2', 'weight' => 2]),
+-      4 => MenuLinkMock::create(['id' => 'test.example4', 'route_name' => 'example4', 'title' => 'title 4', 'parent' => 'test.example3', 'weight' => 3]),
+-      5 => MenuLinkMock::create(['id' => 'test.example5', 'route_name' => '<button>', 'title' => 'title 5', 'parent' => '', 'expanded' => TRUE, 'weight' => 4]),
+-      6 => MenuLinkMock::create(['id' => 'test.example6', 'route_name' => '', 'url' => 'https://www.drupal.org/', 'title' => 'title 6', 'parent' => '', 'weight' => 5, 'options' => ['attributes' => ['target' => '_blank', 'class' => ['external-link']]]]),
+-      7 => MenuLinkMock::create(['id' => 'test.example7', 'route_name' => '<button>', 'title' => 'title 7', 'parent' => 'test.example5', 'weight' => 6]),
+-      8 => MenuLinkMock::create(['id' => 'test.example8', 'route_name' => '<nolink>', 'title' => 'title 8', 'parent' => '', 'weight' => 7]),
+-      9 => MenuLinkMock::create(['id' => 'test.example9', 'route_name' => 'example9', 'title' => 'title 9', 'parent' => 'test.example4', 'weight' => 7]),
+-      10 => MenuLinkMock::create(['id' => 'test.example10', 'route_name' => '<nolink>', 'title' => 'title 10', 'parent' => 'test.example7', 'weight' => 7]),
+-      11 => MenuLinkMock::create(['id' => 'test.example11', 'route_name' => 'example11', 'title' => 'title 11', 'parent' => 'test.example8', 'weight' => 7]),
+-      12 => MenuLinkMock::create(['id' => 'test.example12', 'route_name' => '<button>', 'title' => 'title 12', 'parent' => 'test.example11', 'weight' => 7]),
+-      13 => MenuLinkMock::create(['id' => 'test.example13', 'route_name' => 'example13', 'title' => 'title 13', 'parent' => '', 'weight' => 8]),
+-      14 => MenuLinkMock::create(['id' => 'test.example14', 'route_name' => 'example14', 'title' => 'title 14', 'parent' => 'test.example13', 'weight' => 8]),
+-      15 => MenuLinkMock::create(['id' => 'test.example15', 'route_name' => 'example15', 'title' => 'title 15', 'parent' => 'test.example14', 'weight' => 8]),
+-      16 => MenuLinkMock::create(['id' => 'test.example16', 'route_name' => 'example16', 'title' => 'title 16', 'parent' => '', 'weight' => 9]),
+-      17 => MenuLinkMock::create(['id' => 'test.example17', 'route_name' => 'example17', 'title' => 'title 17', 'parent' => 'test.example16', 'weight' => 9]),
+-      18 => MenuLinkMock::create(['id' => 'test.example18', 'route_name' => 'example18', 'title' => 'title 18', 'parent' => 'test.example17', 'weight' => 9, 'enabled' => FALSE]),
+-      19 => MenuLinkMock::create(['id' => 'test.example19', 'route_name' => 'example19', 'title' => 'title 19', 'parent' => 'test.example17', 'weight' => 9]),
+-      20 => MenuLinkMock::create(['id' => 'test.example20', 'route_name' => 'example17', 'title' => 'title 20', 'parent' => 'test.example17', 'weight' => 9]),
++      1 => MenuLinkMock::createMock(['id' => 'test.example1', 'route_name' => '<nolink>', 'title' => 'title 1', 'parent' => '', 'weight' => 0]),
++      2 => MenuLinkMock::createMock(['id' => 'test.example2', 'route_name' => 'example2', 'title' => 'title 2', 'parent' => '', 'route_parameters' => ['foo' => 'bar'], 'weight' => 1]),
++      3 => MenuLinkMock::createMock(['id' => 'test.example3', 'route_name' => '<nolink>', 'title' => 'title 3', 'parent' => 'test.example2', 'weight' => 2]),
++      4 => MenuLinkMock::createMock(['id' => 'test.example4', 'route_name' => 'example4', 'title' => 'title 4', 'parent' => 'test.example3', 'weight' => 3]),
++      5 => MenuLinkMock::createMock(['id' => 'test.example5', 'route_name' => '<button>', 'title' => 'title 5', 'parent' => '', 'expanded' => TRUE, 'weight' => 4]),
++      6 => MenuLinkMock::createMock(['id' => 'test.example6', 'route_name' => '', 'url' => 'https://www.drupal.org/', 'title' => 'title 6', 'parent' => '', 'weight' => 5, 'options' => ['attributes' => ['target' => '_blank', 'class' => ['external-link']]]]),
++      7 => MenuLinkMock::createMock(['id' => 'test.example7', 'route_name' => '<button>', 'title' => 'title 7', 'parent' => 'test.example5', 'weight' => 6]),
++      8 => MenuLinkMock::createMock(['id' => 'test.example8', 'route_name' => '<nolink>', 'title' => 'title 8', 'parent' => '', 'weight' => 7]),
++      9 => MenuLinkMock::createMock(['id' => 'test.example9', 'route_name' => 'example9', 'title' => 'title 9', 'parent' => 'test.example4', 'weight' => 7]),
++      10 => MenuLinkMock::createMock(['id' => 'test.example10', 'route_name' => '<nolink>', 'title' => 'title 10', 'parent' => 'test.example7', 'weight' => 7]),
++      11 => MenuLinkMock::createMock(['id' => 'test.example11', 'route_name' => 'example11', 'title' => 'title 11', 'parent' => 'test.example8', 'weight' => 7]),
++      12 => MenuLinkMock::createMock(['id' => 'test.example12', 'route_name' => '<button>', 'title' => 'title 12', 'parent' => 'test.example11', 'weight' => 7]),
++      13 => MenuLinkMock::createMock(['id' => 'test.example13', 'route_name' => 'example13', 'title' => 'title 13', 'parent' => '', 'weight' => 8]),
++      14 => MenuLinkMock::createMock(['id' => 'test.example14', 'route_name' => 'example14', 'title' => 'title 14', 'parent' => 'test.example13', 'weight' => 8]),
++      15 => MenuLinkMock::createMock(['id' => 'test.example15', 'route_name' => 'example15', 'title' => 'title 15', 'parent' => 'test.example14', 'weight' => 8]),
++      16 => MenuLinkMock::createMock(['id' => 'test.example16', 'route_name' => 'example16', 'title' => 'title 16', 'parent' => '', 'weight' => 9]),
++      17 => MenuLinkMock::createMock(['id' => 'test.example17', 'route_name' => 'example17', 'title' => 'title 17', 'parent' => 'test.example16', 'weight' => 9]),
++      18 => MenuLinkMock::createMock(['id' => 'test.example18', 'route_name' => 'example18', 'title' => 'title 18', 'parent' => 'test.example17', 'weight' => 9, 'enabled' => FALSE]),
++      19 => MenuLinkMock::createMock(['id' => 'test.example19', 'route_name' => 'example19', 'title' => 'title 19', 'parent' => 'test.example17', 'weight' => 9]),
++      20 => MenuLinkMock::createMock(['id' => 'test.example20', 'route_name' => 'example17', 'title' => 'title 20', 'parent' => 'test.example17', 'weight' => 9]),
+     ];
+     // phpcs:enable
+     foreach ($links as $instance) {
+diff --git a/core/modules/navigation/tests/src/Kernel/NavigationMenuMarkupTest.php b/core/modules/navigation/tests/src/Kernel/NavigationMenuMarkupTest.php
+index db54ce31b7d4..7a412aea12a2 100644
+--- a/core/modules/navigation/tests/src/Kernel/NavigationMenuMarkupTest.php
++++ b/core/modules/navigation/tests/src/Kernel/NavigationMenuMarkupTest.php
+@@ -117,9 +117,9 @@ protected function setUp(): void {
+     //   - 3
+     // phpcs:disable
+     $links = [
+-      1 => MenuLinkMock::create(['id' => 'test.example1', 'route_name' => 'example1', 'title' => 'title 1', 'parent' => '', 'weight' => 0]),
+-      2 => MenuLinkMock::create(['id' => 'test.example2', 'route_name' => 'example2', 'title' => 'Another title', 'parent' => '', 'route_parameters' => ['foo' => 'bar'], 'weight' => 1]),
+-      3 => MenuLinkMock::create(['id' => 'test.example3', 'route_name' => 'example3', 'title' => 'Nested menu link', 'parent' => 'test.example2', 'weight' => 2]),
++      1 => MenuLinkMock::createMock(['id' => 'test.example1', 'route_name' => 'example1', 'title' => 'title 1', 'parent' => '', 'weight' => 0]),
++      2 => MenuLinkMock::createMock(['id' => 'test.example2', 'route_name' => 'example2', 'title' => 'Another title', 'parent' => '', 'route_parameters' => ['foo' => 'bar'], 'weight' => 1]),
++      3 => MenuLinkMock::createMock(['id' => 'test.example3', 'route_name' => 'example3', 'title' => 'Nested menu link', 'parent' => 'test.example2', 'weight' => 2]),
+     ];
+     // phpcs:enable
+     foreach ($links as $instance) {
+diff --git a/core/modules/navigation/tests/src/Unit/NavigationMenuLinkTreeManipulatorsTest.php b/core/modules/navigation/tests/src/Unit/NavigationMenuLinkTreeManipulatorsTest.php
+index 9cafa752fd2f..fa99bfb794c0 100644
+--- a/core/modules/navigation/tests/src/Unit/NavigationMenuLinkTreeManipulatorsTest.php
++++ b/core/modules/navigation/tests/src/Unit/NavigationMenuLinkTreeManipulatorsTest.php
+@@ -122,141 +122,141 @@ public function testAddSecondLevelOverviewLinks(): void {
+    */
+   protected function mockTree(): array {
+     $links = [
+-      1 => MenuLinkMock::create([
++      1 => MenuLinkMock::createMock([
+         'id' => 'test.example1',
+         'route_name' => 'example1',
+         'title' => 'foo',
+         'parent' => '',
+       ]),
+-      2 => MenuLinkMock::create([
++      2 => MenuLinkMock::createMock([
+         'id' => 'test.example2',
+         'route_name' => 'example2',
+         'title' => 'foo',
+         'parent' => '',
+       ]),
+-      3 => MenuLinkMock::create([
++      3 => MenuLinkMock::createMock([
+         'id' => 'test.example3',
+         'route_name' => 'example3',
+         'title' => 'baz',
+         'parent' => 'test.example2',
+       ]),
+-      4 => MenuLinkMock::create([
++      4 => MenuLinkMock::createMock([
+         'id' => 'test.example4',
+         'route_name' => 'example4',
+         'title' => 'qux',
+         'parent' => 'test.example3',
+       ]),
+-      5 => MenuLinkMock::create([
++      5 => MenuLinkMock::createMock([
+         'id' => 'test.example5',
+         'route_name' => 'example5',
+         'title' => 'title5',
+         'parent' => '',
+       ]),
+-      6 => MenuLinkMock::create([
++      6 => MenuLinkMock::createMock([
+         'id' => 'test.example6',
+         'route_name' => '',
+         'url' => 'https://www.drupal.org/',
+         'title' => 'bar_bar',
+         'parent' => 'test.example5',
+       ]),
+-      7 => MenuLinkMock::create([
++      7 => MenuLinkMock::createMock([
+         'id' => 'test.example7',
+         'route_name' => 'example7',
+         'title' => 'title7',
+         'parent' => 'test.example6',
+       ]),
+-      8 => MenuLinkMock::create([
++      8 => MenuLinkMock::createMock([
+         'id' => 'test.example8',
+         'route_name' => 'example8',
+         'title' => 'title8',
+         'parent' => '',
+       ]),
+-      9 => MenuLinkMock::create([
++      9 => MenuLinkMock::createMock([
+         'id' => 'test.example9',
+         'route_name' => 'child_list',
+         'title' => 'title9',
+         'parent' => 'test.example8',
+       ]),
+-      10 => MenuLinkMock::create([
++      10 => MenuLinkMock::createMock([
+         'id' => 'test.example10',
+         'route_name' => 'example9',
+         'title' => 'title10',
+         'parent' => 'test.example9',
+       ]),
+-      11 => MenuLinkMock::create([
++      11 => MenuLinkMock::createMock([
+         'id' => 'test.example11',
+         'route_name' => 'example11',
+         'title' => 'title11',
+         'parent' => '',
+       ]),
+-      12 => MenuLinkMock::create([
++      12 => MenuLinkMock::createMock([
+         'id' => 'test.example12',
+         'route_name' => 'example12',
+         'title' => 'title12',
+         'parent' => 'text.example11',
+       ]),
+-      13 => MenuLinkMock::create([
++      13 => MenuLinkMock::createMock([
+         'id' => 'test.example13',
+         'route_name' => 'example13',
+         'title' => 'title13',
+         'parent' => '',
+       ]),
+-      14 => MenuLinkMock::create([
++      14 => MenuLinkMock::createMock([
+         'id' => 'test.example14',
+         'route_name' => '<nolink>',
+         'title' => 'title14',
+         'parent' => 'text.example13',
+       ]),
+-      15 => MenuLinkMock::create([
++      15 => MenuLinkMock::createMock([
+         'id' => 'test.example15',
+         'route_name' => 'example15',
+         'title' => 'title15',
+         'parent' => 'text.example14',
+       ]),
+-      16 => MenuLinkMock::create([
++      16 => MenuLinkMock::createMock([
+         'id' => 'test.example16',
+         'route_name' => 'example16',
+         'title' => 'title16',
+         'parent' => '',
+       ]),
+-      17 => MenuLinkMock::create([
++      17 => MenuLinkMock::createMock([
+         'id' => 'test.example17',
+         'route_name' => '<button>',
+         'title' => 'title17',
+         'parent' => 'text.example16',
+       ]),
+-      18 => MenuLinkMock::create([
++      18 => MenuLinkMock::createMock([
+         'id' => 'test.example18',
+         'route_name' => 'example18',
+         'title' => 'title18',
+         'parent' => 'text.example17',
+       ]),
+-      19 => MenuLinkMock::create([
++      19 => MenuLinkMock::createMock([
+         'id' => 'test.example19',
+         'route_name' => 'example19',
+         'title' => 'title19',
+         'parent' => '',
+       ]),
+-      20 => MenuLinkMock::create([
++      20 => MenuLinkMock::createMock([
+         'id' => 'test.example20',
+         'route_name' => 'example20',
+         'title' => 'title20',
+         'parent' => 'test.example19',
+       ]),
+-      21 => MenuLinkMock::create([
++      21 => MenuLinkMock::createMock([
+         'id' => 'test.example21',
+         'route_name' => 'example21',
+         'title' => 'title21',
+         'parent' => 'test.example20',
+         'enabled' => FALSE,
+       ]),
+-      22 => MenuLinkMock::create([
++      22 => MenuLinkMock::createMock([
+         'id' => 'test.example22',
+         'route_name' => 'no_access',
+         'title' => 'title22',
+         'parent' => 'test.example20',
+       ]),
+-      23 => MenuLinkMock::create([
++      23 => MenuLinkMock::createMock([
+         'id' => 'test.example23',
+         'route_name' => 'example20',
+         'title' => 'title23',
+diff --git a/core/modules/system/tests/src/Kernel/Block/SystemMenuBlockTest.php b/core/modules/system/tests/src/Kernel/Block/SystemMenuBlockTest.php
+index 7e7638aacf77..ae6ad76f4e9f 100644
+--- a/core/modules/system/tests/src/Kernel/Block/SystemMenuBlockTest.php
++++ b/core/modules/system/tests/src/Kernel/Block/SystemMenuBlockTest.php
+@@ -136,14 +136,14 @@ protected function setUp(): void {
+     // - 8
+     // With link 6 being the only external link.
+     $links = [
+-      1 => MenuLinkMock::create([
++      1 => MenuLinkMock::createMock([
+         'id' => 'test.example1',
+         'route_name' => 'example1',
+         'title' => 'foo',
+         'parent' => '',
+         'weight' => 0,
+       ]),
+-      2 => MenuLinkMock::create([
++      2 => MenuLinkMock::createMock([
+         'id' => 'test.example2',
+         'route_name' => 'example2',
+         'title' => 'bar',
+@@ -151,21 +151,21 @@ protected function setUp(): void {
+         'route_parameters' => ['foo' => 'bar'],
+         'weight' => 1,
+       ]),
+-      3 => MenuLinkMock::create([
++      3 => MenuLinkMock::createMock([
+         'id' => 'test.example3',
+         'route_name' => 'example3',
+         'title' => 'baz',
+         'parent' => 'test.example2',
+         'weight' => 2,
+       ]),
+-      4 => MenuLinkMock::create([
++      4 => MenuLinkMock::createMock([
+         'id' => 'test.example4',
+         'route_name' => 'example4',
+         'title' => 'qux',
+         'parent' => 'test.example3',
+         'weight' => 3,
+       ]),
+-      5 => MenuLinkMock::create([
++      5 => MenuLinkMock::createMock([
+         'id' => 'test.example5',
+         'route_name' => 'example5',
+         'title' => 'title5',
+@@ -173,7 +173,7 @@ protected function setUp(): void {
+         'expanded' => TRUE,
+         'weight' => 4,
+       ]),
+-      6 => MenuLinkMock::create([
++      6 => MenuLinkMock::createMock([
+         'id' => 'test.example6',
+         'route_name' => '',
+         'url' => 'https://www.drupal.org/',
+@@ -181,14 +181,14 @@ protected function setUp(): void {
+         'parent' => '',
+         'weight' => 5,
+       ]),
+-      7 => MenuLinkMock::create([
++      7 => MenuLinkMock::createMock([
+         'id' => 'test.example7',
+         'route_name' => 'example7',
+         'title' => 'title7',
+         'parent' => 'test.example5',
+         'weight' => 6,
+       ]),
+-      8 => MenuLinkMock::create([
++      8 => MenuLinkMock::createMock([
+         'id' => 'test.example8',
+         'route_name' => 'example8',
+         'title' => 'title8',
+diff --git a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php b/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
+index 9de6d94f4544..6cb099e0675a 100644
+--- a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
++++ b/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
+@@ -180,12 +180,12 @@ public static function providerTestBuildCacheability() {
+     $cache_defaults = ['cache_max_age' => Cache::PERMANENT, 'cache_tags' => []];
+     $links_scenarios = [
+       [
+-        MenuLinkMock::create([
++        MenuLinkMock::createMock([
+           'id' => 'test.example1',
+           'route_name' => 'example1',
+           'title' => 'Example 1',
+         ]),
+-        MenuLinkMock::create([
++        MenuLinkMock::createMock([
+           'id' => 'test.example2',
+           'route_name' => 'example1',
+           'title' => 'Example 2',
+@@ -193,13 +193,13 @@ public static function providerTestBuildCacheability() {
+         ]),
+       ],
+       [
+-        MenuLinkMock::create([
++        MenuLinkMock::createMock([
+           'id' => 'test.example1',
+           'route_name' => 'example1',
+           'title' => 'Example 1',
+           'metadata' => ['cache_contexts' => ['foo']] + $cache_defaults,
+         ]),
+-        MenuLinkMock::create([
++        MenuLinkMock::createMock([
+           'id' => 'test.example2',
+           'route_name' => 'example1',
+           'title' => 'Example 2',
+@@ -267,17 +267,17 @@ public static function providerTestBuildCacheability() {
+         ];
+
+         // Multi-level tree.
+-        $multi_level_root_a = MenuLinkMock::create([
++        $multi_level_root_a = MenuLinkMock::createMock([
+           'id' => 'test.root_a',
+           'route_name' => 'root_a',
+           'title' => 'Root A',
+         ]);
+-        $multi_level_root_b = MenuLinkMock::create([
++        $multi_level_root_b = MenuLinkMock::createMock([
+           'id' => 'test.root_b',
+           'route_name' => 'root_b',
+           'title' => 'Root B',
+         ]);
+-        $multi_level_parent_c = MenuLinkMock::create([
++        $multi_level_parent_c = MenuLinkMock::createMock([
+           'id' => 'test.parent_c',
+           'route_name' => 'parent_c',
+           'title' => 'Parent C',
+diff --git a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php b/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
+index 168090815397..2822485a95ff 100644
+--- a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
++++ b/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
+@@ -102,14 +102,14 @@ public function testCreateLinksInMenu(): void {
+     // With link 6 being the only external link.
+
+     $links = [
+-      1 => MenuLinkMock::create(['id' => 'test.example1', 'route_name' => 'example1', 'title' => 'foo', 'parent' => '']),
+-      2 => MenuLinkMock::create(['id' => 'test.example2', 'route_name' => 'example2', 'title' => 'bar', 'parent' => 'test.example1', 'route_parameters' => ['foo' => 'bar']]),
+-      3 => MenuLinkMock::create(['id' => 'test.example3', 'route_name' => 'example3', 'title' => 'baz', 'parent' => 'test.example2', 'route_parameters' => ['baz' => 'qux']]),
+-      4 => MenuLinkMock::create(['id' => 'test.example4', 'route_name' => 'example4', 'title' => 'qux', 'parent' => 'test.example3']),
+-      5 => MenuLinkMock::create(['id' => 'test.example5', 'route_name' => 'example5', 'title' => 'title5', 'parent' => '']),
+-      6 => MenuLinkMock::create(['id' => 'test.example6', 'route_name' => '', 'url' => 'https://www.drupal.org/', 'title' => 'bar_bar', 'parent' => '']),
+-      7 => MenuLinkMock::create(['id' => 'test.example7', 'route_name' => 'example7', 'title' => 'title7', 'parent' => '']),
+-      8 => MenuLinkMock::create(['id' => 'test.example8', 'route_name' => 'example8', 'title' => 'title8', 'parent' => '']),
++      1 => MenuLinkMock::createMock(['id' => 'test.example1', 'route_name' => 'example1', 'title' => 'foo', 'parent' => '']),
++      2 => MenuLinkMock::createMock(['id' => 'test.example2', 'route_name' => 'example2', 'title' => 'bar', 'parent' => 'test.example1', 'route_parameters' => ['foo' => 'bar']]),
++      3 => MenuLinkMock::createMock(['id' => 'test.example3', 'route_name' => 'example3', 'title' => 'baz', 'parent' => 'test.example2', 'route_parameters' => ['baz' => 'qux']]),
++      4 => MenuLinkMock::createMock(['id' => 'test.example4', 'route_name' => 'example4', 'title' => 'qux', 'parent' => 'test.example3']),
++      5 => MenuLinkMock::createMock(['id' => 'test.example5', 'route_name' => 'example5', 'title' => 'title5', 'parent' => '']),
++      6 => MenuLinkMock::createMock(['id' => 'test.example6', 'route_name' => '', 'url' => 'https://www.drupal.org/', 'title' => 'bar_bar', 'parent' => '']),
++      7 => MenuLinkMock::createMock(['id' => 'test.example7', 'route_name' => 'example7', 'title' => 'title7', 'parent' => '']),
++      8 => MenuLinkMock::createMock(['id' => 'test.example8', 'route_name' => 'example8', 'title' => 'title8', 'parent' => '']),
+     ];
+     foreach ($links as $instance) {
+       $this->menuLinkManager->addDefinition($instance->getPluginId(), $instance->getPluginDefinition());
+@@ -142,8 +142,8 @@ public function testCreateLinksInMenu(): void {
+   public function testUserLoginAndUserLogoutLinks(): void {
+     $account_switcher = $this->container->get('account_switcher');
+
+-    $login_menu_link = MenuLinkMock::create(['id' => 'user_login_example', 'route_name' => 'user.login']);
+-    $logout_menu_link = MenuLinkMock::create(['id' => 'user_logout_example', 'route_name' => 'user.logout']);
++    $login_menu_link = MenuLinkMock::createMock(['id' => 'user_login_example', 'route_name' => 'user.login']);
++    $logout_menu_link = MenuLinkMock::createMock(['id' => 'user_logout_example', 'route_name' => 'user.logout']);
+
+     $this->menuLinkManager->addDefinition($login_menu_link->getPluginId(), $login_menu_link->getPluginDefinition());
+     $this->menuLinkManager->addDefinition($logout_menu_link->getPluginId(), $logout_menu_link->getPluginDefinition());
+diff --git a/core/tests/Drupal/Tests/Core/Menu/DefaultMenuLinkTreeManipulatorsTest.php b/core/tests/Drupal/Tests/Core/Menu/DefaultMenuLinkTreeManipulatorsTest.php
+index 9a146feba9b1..6b807c88af51 100644
+--- a/core/tests/Drupal/Tests/Core/Menu/DefaultMenuLinkTreeManipulatorsTest.php
++++ b/core/tests/Drupal/Tests/Core/Menu/DefaultMenuLinkTreeManipulatorsTest.php
+@@ -120,15 +120,15 @@ protected function setUp(): void {
+    */
+   protected function mockTree(): void {
+     $this->links = [
+-      1 => MenuLinkMock::create(['id' => 'test.example1', 'route_name' => 'example1', 'title' => 'foo', 'parent' => '']),
+-      2 => MenuLinkMock::create(['id' => 'test.example2', 'route_name' => 'example2', 'title' => 'bar', 'parent' => 'test.example1', 'route_parameters' => ['foo' => 'bar']]),
+-      3 => MenuLinkMock::create(['id' => 'test.example3', 'route_name' => 'example3', 'title' => 'baz', 'parent' => 'test.example2', 'route_parameters' => ['baz' => 'qux']]),
+-      4 => MenuLinkMock::create(['id' => 'test.example4', 'route_name' => 'example4', 'title' => 'qux', 'parent' => 'test.example3']),
+-      5 => MenuLinkMock::create(['id' => 'test.example5', 'route_name' => 'example5', 'title' => 'title5', 'parent' => '']),
+-      6 => MenuLinkMock::create(['id' => 'test.example6', 'route_name' => '', 'url' => 'https://www.drupal.org/', 'title' => 'bar_bar', 'parent' => '']),
+-      7 => MenuLinkMock::create(['id' => 'test.example7', 'route_name' => 'example7', 'title' => 'title7', 'parent' => '']),
+-      8 => MenuLinkMock::create(['id' => 'test.example8', 'route_name' => 'example8', 'title' => 'title8', 'parent' => '']),
+-      9 => DynamicMenuLinkMock::create(['id' => 'test.example9', 'parent' => ''])->setCurrentUser($this->currentUser),
++      1 => MenuLinkMock::createMock(['id' => 'test.example1', 'route_name' => 'example1', 'title' => 'foo', 'parent' => '']),
++      2 => MenuLinkMock::createMock(['id' => 'test.example2', 'route_name' => 'example2', 'title' => 'bar', 'parent' => 'test.example1', 'route_parameters' => ['foo' => 'bar']]),
++      3 => MenuLinkMock::createMock(['id' => 'test.example3', 'route_name' => 'example3', 'title' => 'baz', 'parent' => 'test.example2', 'route_parameters' => ['baz' => 'qux']]),
++      4 => MenuLinkMock::createMock(['id' => 'test.example4', 'route_name' => 'example4', 'title' => 'qux', 'parent' => 'test.example3']),
++      5 => MenuLinkMock::createMock(['id' => 'test.example5', 'route_name' => 'example5', 'title' => 'title5', 'parent' => '']),
++      6 => MenuLinkMock::createMock(['id' => 'test.example6', 'route_name' => '', 'url' => 'https://www.drupal.org/', 'title' => 'bar_bar', 'parent' => '']),
++      7 => MenuLinkMock::createMock(['id' => 'test.example7', 'route_name' => 'example7', 'title' => 'title7', 'parent' => '']),
++      8 => MenuLinkMock::createMock(['id' => 'test.example8', 'route_name' => 'example8', 'title' => 'title8', 'parent' => '']),
++      9 => DynamicMenuLinkMock::createMock(['id' => 'test.example9', 'parent' => ''])->setCurrentUser($this->currentUser),
+     ];
+     $this->originalTree = [];
+     $this->originalTree[1] = new MenuLinkTreeElement($this->links[1], FALSE, 1, FALSE, []);
+@@ -298,12 +298,12 @@ public function testFlatten(): void {
+    */
+   public function testCheckNodeAccess(): void {
+     $links = [
+-      1 => MenuLinkMock::create(['id' => 'node.1', 'route_name' => 'entity.node.canonical', 'title' => 'foo', 'parent' => '', 'route_parameters' => ['node' => 1]]),
+-      2 => MenuLinkMock::create(['id' => 'node.2', 'route_name' => 'entity.node.canonical', 'title' => 'bar', 'parent' => '', 'route_parameters' => ['node' => 2]]),
+-      3 => MenuLinkMock::create(['id' => 'node.3', 'route_name' => 'entity.node.canonical', 'title' => 'baz', 'parent' => 'node.2', 'route_parameters' => ['node' => 3]]),
+-      4 => MenuLinkMock::create(['id' => 'node.4', 'route_name' => 'entity.node.canonical', 'title' => 'qux', 'parent' => 'node.3', 'route_parameters' => ['node' => 4]]),
+-      5 => MenuLinkMock::create(['id' => 'test.1', 'route_name' => 'test_route', 'title' => 'qux', 'parent' => '']),
+-      6 => MenuLinkMock::create(['id' => 'test.2', 'route_name' => 'test_route', 'title' => 'qux', 'parent' => 'test.1']),
++      1 => MenuLinkMock::createMock(['id' => 'node.1', 'route_name' => 'entity.node.canonical', 'title' => 'foo', 'parent' => '', 'route_parameters' => ['node' => 1]]),
++      2 => MenuLinkMock::createMock(['id' => 'node.2', 'route_name' => 'entity.node.canonical', 'title' => 'bar', 'parent' => '', 'route_parameters' => ['node' => 2]]),
++      3 => MenuLinkMock::createMock(['id' => 'node.3', 'route_name' => 'entity.node.canonical', 'title' => 'baz', 'parent' => 'node.2', 'route_parameters' => ['node' => 3]]),
++      4 => MenuLinkMock::createMock(['id' => 'node.4', 'route_name' => 'entity.node.canonical', 'title' => 'qux', 'parent' => 'node.3', 'route_parameters' => ['node' => 4]]),
++      5 => MenuLinkMock::createMock(['id' => 'test.1', 'route_name' => 'test_route', 'title' => 'qux', 'parent' => '']),
++      6 => MenuLinkMock::createMock(['id' => 'test.2', 'route_name' => 'test_route', 'title' => 'qux', 'parent' => 'test.1']),
+     ];
+     $tree = [];
+     $tree[1] = new MenuLinkTreeElement($links[1], FALSE, 1, FALSE, []);
+diff --git a/core/tests/Drupal/Tests/Core/Menu/MenuActiveTrailTest.php b/core/tests/Drupal/Tests/Core/Menu/MenuActiveTrailTest.php
+index 023e32e529f9..356f36276bbd 100644
+--- a/core/tests/Drupal/Tests/Core/Menu/MenuActiveTrailTest.php
++++ b/core/tests/Drupal/Tests/Core/Menu/MenuActiveTrailTest.php
+@@ -126,8 +126,8 @@ public static function provider() {
+     $request->attributes->set(RouteObjectInterface::ROUTE_OBJECT, $mock_route);
+     $request->attributes->set('_raw_variables', new InputBag([]));
+
+-    $link_1 = MenuLinkMock::create(['id' => 'baby_llama_link_1', 'route_name' => 'baby_llama', 'title' => 'Baby llama', 'parent' => 'mama_llama_link']);
+-    $link_2 = MenuLinkMock::create(['id' => 'baby_llama_link_2', 'route_name' => 'baby_llama', 'title' => 'Baby llama', 'parent' => 'papa_llama_link']);
++    $link_1 = MenuLinkMock::createMock(['id' => 'baby_llama_link_1', 'route_name' => 'baby_llama', 'title' => 'Baby llama', 'parent' => 'mama_llama_link']);
++    $link_2 = MenuLinkMock::createMock(['id' => 'baby_llama_link_2', 'route_name' => 'baby_llama', 'title' => 'Baby llama', 'parent' => 'papa_llama_link']);
+
+     // @see \Drupal\Core\Menu\MenuLinkManagerInterface::getParentIds()
+     $link_1_parent_ids = ['baby_llama_link_1', 'mama_llama_link', ''];
+@@ -197,7 +197,7 @@ public function testGetActiveLinkReturnsFrontPageLinkAtTheFrontPage(): void {
+       ->willReturn(TRUE);
+
+     // Make 'link_1' route to have no links and the '<front>' route to have a link.
+-    $home_link = MenuLinkMock::create(['id' => 'home_link', 'route_name' => 'home_link', 'title' => 'Home', 'parent' => NULL]);
++    $home_link = MenuLinkMock::createMock(['id' => 'home_link', 'route_name' => 'home_link', 'title' => 'Home', 'parent' => NULL]);
+     $this->menuLinkManager
+       ->method('loadLinksByRoute')
+       ->willReturnCallback(function ($route_name) use ($home_link) {
+diff --git a/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php b/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
+index 0d8f6336e779..97b7644a22a4 100644
+--- a/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
++++ b/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
+@@ -45,7 +45,7 @@ class MenuLinkMock extends MenuLinkBase {
+   /**
+    * Create an instance from a definition with at least id, title, route_name.
+    */
+-  public static function create($definition, $configuration = NULL, $plugin_id = NULL, $plugin_definition = NULL) {
++  public static function createMock($definition) {
+     return new static([], $definition['id'], $definition + static::$defaults);
+   }
+
+diff --git a/core/tests/Drupal/Tests/Core/Menu/MenuLinkTreeElementTest.php b/core/tests/Drupal/Tests/Core/Menu/MenuLinkTreeElementTest.php
+index a3f13a5ce000..a9b75b7e45da 100644
+--- a/core/tests/Drupal/Tests/Core/Menu/MenuLinkTreeElementTest.php
++++ b/core/tests/Drupal/Tests/Core/Menu/MenuLinkTreeElementTest.php
+@@ -22,7 +22,7 @@ class MenuLinkTreeElementTest extends UnitTestCase {
+    * @legacy-covers ::__construct
+    */
+   public function testConstruction(): void {
+-    $link = MenuLinkMock::create(['id' => 'test']);
++    $link = MenuLinkMock::createMock(['id' => 'test']);
+     $item = new MenuLinkTreeElement($link, FALSE, 3, FALSE, []);
+     $this->assertSame($link, $item->link);
+     $this->assertFalse($item->hasChildren);
+@@ -37,8 +37,8 @@ public function testConstruction(): void {
+    * @legacy-covers ::count
+    */
+   public function testCount(): void {
+-    $link_1 = MenuLinkMock::create(['id' => 'test_1']);
+-    $link_2 = MenuLinkMock::create(['id' => 'test_2']);
++    $link_1 = MenuLinkMock::createMock(['id' => 'test_1']);
++    $link_2 = MenuLinkMock::createMock(['id' => 'test_2']);
+     $child_item = new MenuLinkTreeElement($link_2, FALSE, 2, FALSE, []);
+     $parent_item = new MenuLinkTreeElement($link_1, FALSE, 2, FALSE, [$child_item]);
+     $this->assertSame(1, $child_item->count());
+--
+GitLab
+
+
+From a73f89aeae77cc50af0a4ab2c44c978edfc06288 Mon Sep 17 00:00:00 2001
+From: Daniel Veza <daniel.veza@previousnext.com.au>
+Date: Wed, 3 Sep 2025 08:23:10 +1000
+Subject: [PATCH 19/24] Lint
+
+---
+ core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php b/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
+index 97b7644a22a4..4520649ce742 100644
+--- a/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
++++ b/core/tests/Drupal/Tests/Core/Menu/MenuLinkMock.php
+@@ -45,7 +45,7 @@ class MenuLinkMock extends MenuLinkBase {
+   /**
+    * Create an instance from a definition with at least id, title, route_name.
+    */
+-  public static function createMock($definition) {
++  public static function createMock($definition): static {
+     return new static([], $definition['id'], $definition + static::$defaults);
+   }
+
+--
+GitLab
+
+
+From 9b80d0df722fd91e86ee4c191f75783712660b8e Mon Sep 17 00:00:00 2001
+From: Daniel Veza <daniel.veza@previousnext.com.au>
+Date: Fri, 5 Sep 2025 08:29:18 +1000
+Subject: [PATCH 20/24] Add an autowire alias for block_content.uuid_lookup
+
+---
+ core/modules/block_content/block_content.services.yml            | 1 +
+ .../modules/block_content/src/Plugin/Block/BlockContentBlock.php | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/modules/block_content/block_content.services.yml b/core/modules/block_content/block_content.services.yml
+index 2e1355089ed9..a59a0643b0f1 100644
+--- a/core/modules/block_content/block_content.services.yml
++++ b/core/modules/block_content/block_content.services.yml
+@@ -31,6 +31,7 @@ services:
+     arguments: ['@cache.bootstrap', '@lock', '@entity_type.manager']
+     tags:
+       - { name: needs_destruction }
++  Drupal\block_content\BlockContentUuidLookup: '@block_content.uuid_lookup'
+   block_content.bc_subscriber:
+     class: Drupal\block_content\Routing\RouteSubscriber
+     arguments: ['@entity_type.manager', '@module_handler']
+diff --git a/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php b/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
+index 08ae4780f72e..a8413fece9e3 100644
+--- a/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
++++ b/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
+@@ -107,7 +107,6 @@ public function __construct(
+     EntityTypeManagerInterface $entity_type_manager,
+     AccountInterface $account,
+     UrlGeneratorInterface $url_generator,
+-    #[Autowire(service: 'block_content.uuid_lookup')]
+     BlockContentUuidLookup $uuid_lookup,
+     EntityDisplayRepositoryInterface $entity_display_repository,
+   ) {
+--
+GitLab
+
+
+From 1bdb4d563a68eb8b55761c78498eeb9943b50ff0 Mon Sep 17 00:00:00 2001
+From: Daniel Veza <daniel.veza@previousnext.com.au>
+Date: Fri, 5 Sep 2025 08:36:16 +1000
+Subject: [PATCH 21/24] Remove unneeded use after changes
+
+---
+ .../modules/block_content/src/Plugin/Block/BlockContentBlock.php | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php b/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
+index a8413fece9e3..7bfa2b0cf011 100644
+--- a/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
++++ b/core/modules/block_content/src/Plugin/Block/BlockContentBlock.php
+@@ -15,7 +15,6 @@
+ use Drupal\Core\Routing\UrlGeneratorInterface;
+ use Drupal\Core\Session\AccountInterface;
+ use Drupal\Core\StringTranslation\TranslatableMarkup;
+-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
+ /**
+  * Defines a generic block type.
+--
+GitLab
+
+
+From 5d6bd6b3b0155f3d8d6bd4393bda5f4dd064342e Mon Sep 17 00:00:00 2001
+From: Ted Cooper <elc@784944.no-reply.drupal.org>
+Date: Thu, 11 Sep 2025 11:28:08 +1000
+Subject: [PATCH 22/24] Rename trait and method as per #54
+
+---
+ ...{AutowireArgumentsTrait.php => AutowiredInstanceTrait.php} | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+ rename core/lib/Drupal/Core/DependencyInjection/{AutowireArgumentsTrait.php => AutowiredInstanceTrait.php} (92%)
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php
+similarity index 92%
+rename from core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
+rename to core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php
+index 242aa22cce13..a7b0c7f411b0 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowireArgumentsTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php
+@@ -11,7 +11,7 @@
+ /**
+  * Defines a base trait for automatically wiring dependency arguments.
+  */
+-trait AutowireArgumentsTrait {
++trait AutowiredInstanceTrait {
+
+   /**
+    * Instantiates a new instance of the implementing class using autowiring.
+@@ -23,7 +23,7 @@ trait AutowireArgumentsTrait {
+    *
+    * @return static
+    */
+-  public static function autowireArguments(ContainerInterface $container, mixed ...$args): static {
++  public static function createInstanceAutowired(ContainerInterface $container, mixed ...$args): static {
+     if (method_exists(static::class, '__construct')) {
+       $constructor = new \ReflectionMethod(static::class, '__construct');
+       foreach (array_slice($constructor->getParameters(), count($args)) as $parameter) {
+--
+GitLab
+
+
+From 92e6b55acb66ec88a5219e2191b85501baa19148 Mon Sep 17 00:00:00 2001
+From: Ted Cooper <elc@784944.no-reply.drupal.org>
+Date: Thu, 11 Sep 2025 11:31:11 +1000
+Subject: [PATCH 23/24] Update trait and method names in use.
+
+---
+ core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php | 4 ++--
+ core/lib/Drupal/Core/Plugin/PluginBase.php                 | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
+index 62f9ae467094..82c61646a24d 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
+@@ -12,7 +12,7 @@
+  */
+ trait AutowireTrait {
+
+-  use AutowireArgumentsTrait;
++  use AutowiredInstanceTrait;
+
+   /**
+    * Instantiates a new instance of the implementing class using autowiring.
+@@ -23,7 +23,7 @@ trait AutowireTrait {
+    * @return static
+    */
+   public static function create(ContainerInterface $container) {
+-    return static::autowireArguments($container);
++    return static::createInstanceAutowired($container);
+   }
+
+ }
+diff --git a/core/lib/Drupal/Core/Plugin/PluginBase.php b/core/lib/Drupal/Core/Plugin/PluginBase.php
+index 6505c03f92c4..9ac6a9143831 100644
+--- a/core/lib/Drupal/Core/Plugin/PluginBase.php
++++ b/core/lib/Drupal/Core/Plugin/PluginBase.php
+@@ -3,7 +3,7 @@
+ namespace Drupal\Core\Plugin;
+
+ use Drupal\Component\Plugin\PluginBase as ComponentPluginBase;
+-use Drupal\Core\DependencyInjection\AutowireArgumentsTrait;
++use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
+ use Drupal\Core\Messenger\MessengerTrait;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+@@ -16,7 +16,7 @@
+  */
+ abstract class PluginBase extends ComponentPluginBase {
+
+-  use AutowireArgumentsTrait;
++  use AutowiredInstanceTrait;
+   use StringTranslationTrait;
+   use DependencySerializationTrait;
+   use MessengerTrait;
+@@ -29,7 +29,7 @@ abstract class PluginBase extends ComponentPluginBase {
+    * @return static
+    */
+   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+-    return static::autowireArguments($container, $configuration, $plugin_id, $plugin_definition);
++    return static::createInstanceAutowired($container, $configuration, $plugin_id, $plugin_definition);
+   }
+
+ }
+--
+GitLab
+
+
+From c3c2be2bb45c5db82a4843523ebbab184365502f Mon Sep 17 00:00:00 2001
+From: Ted Cooper <elc@784944.no-reply.drupal.org>
+Date: Sun, 21 Sep 2025 22:08:26 +1000
+Subject: [PATCH 24/24] Use PHPUnit Group Attribute.
+
+---
+ .../tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php b/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
+index e0a37e68967d..35591f6d17e0 100644
+--- a/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
++++ b/core/tests/Drupal/KernelTests/Core/Block/AutowireBlockTest.php
+@@ -7,13 +7,13 @@
+ use Drupal\autowire_test\Plugin\Block\AutowireBlock;
+ use Drupal\Core\Lock\LockBackendInterface;
+ use Drupal\KernelTests\KernelTestBase;
++use PHPUnit\Framework\Attributes\Group;
+ use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
+
+ /**
+  * Tests that blocks can be autowired.
+- *
+- * @group block
+  */
++#[Group('block')]
+ class AutowireBlockTest extends KernelTestBase {
+
+   /**
+--
+GitLab
