@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
          colors="true"
-         cacheResultFile=".phpunit.cache/test-results"
-         executionOrder="depends,defects"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
-         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
-         stopOnFailure="true"
          failOnRisky="true"
          failOnWarning="true"
-         verbose="true">
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         cacheResult="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         cacheDirectory=".phpunit.cache">
   <php>
     <!-- Set error reporting to E_ALL. -->
     <ini name="error_reporting" value="32767"/>
@@ -22,6 +22,25 @@
     <env name="DTT_API_URL" value="http://chromium:9222"/>
     <env name="DTT_BASE_URL" value="https://app"/>
   </php>
+  <extensions>
+    <!-- Functional tests HTML output logging. -->
+    <bootstrap class="Drupal\TestTools\Extension\HtmlLogging\HtmlOutputLogger">
+      <!-- The directory where the browser output will be stored. If a relative
+        path is specified, it will be relative to the current working directory
+        of the process running the PHPUnit CLI. In CI environments, this can be
+        overridden by the value set for the "BROWSERTEST_OUTPUT_DIRECTORY"
+        environment variable.
+      -->
+      <parameter name="outputDirectory" value="sites/simpletest/browser_output"/>
+      <!-- By default browser tests print the individual links in the test run
+        report. To avoid overcrowding the output in CI environments, you can
+        set the "verbose" parameter or the "BROWSERTEST_OUTPUT_VERBOSE"
+        environment variable to "false". In GitLabCI, the output is saved
+        anyway as an artifact that can be browsed or downloaded from Gitlab.
+      -->
+      <parameter name="verbose" value="true"/>
+    </bootstrap>
+  </extensions>
   <testsuites>
     <testsuite name="unit">
       <directory>./tests/src/Unit</directory>
