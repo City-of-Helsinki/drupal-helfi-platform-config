@@ -13,8 +13,9 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\language\Config\LanguageConfigOverride;
+use Drupal\language\ConfigurableLanguageManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Site settings.
@@ -35,7 +36,7 @@ class SiteSettings extends ConfigFormBase {
   public function __construct(
     ConfigFactoryInterface $config_factory,
     TypedConfigManagerInterface $typed_config_manager,
-    protected LanguageManagerInterface $languageManager,
+    #[Autowire(service: '@language_manager')] protected ConfigurableLanguageManagerInterface $languageManager,
   ) {
     parent::__construct($config_factory, $typed_config_manager);
   }
