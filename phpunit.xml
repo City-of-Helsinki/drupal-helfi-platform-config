@@ -56,12 +56,13 @@
       <directory>./modules/*/tests/src/FunctionalJavascript</directory>
     </testsuite>
   </testsuites>
-  <coverage processUncoveredFiles="true">
+  <source ignoreSuppressionOfDeprecations="true">
     <include>
-      <directory suffix=".php">./modules/*/src</directory>
-      <file>./modules/*/*.module</file>
-      <directory suffix=".php">./src</directory>
-      <file>./*.module</file>
+      <directory>./</directory>
     </include>
-  </coverage>
+    <exclude>
+      <directory>./tests</directory>
+      <directory>./modules/*/tests</directory>
+    </exclude>
+  </source>
 </phpunit>
