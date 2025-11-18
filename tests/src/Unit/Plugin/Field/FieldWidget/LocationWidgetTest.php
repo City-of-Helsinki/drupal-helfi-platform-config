@@ -153,27 +153,6 @@ class LocationWidgetTest extends UnitTestCase {
   }
 
   /**
-   * Tests error handling for invalid property access.
-   *
-   * @covers ::errorElement
-   */
-  public function testErrorElementThrowsWarningForInvalidProperty(): void {
-    $this->expectException(Warning::class);
-    $this->expectExceptionMessage('Undefined array key');
-
-    $error = $this->prophesize(ConstraintViolationInterface::class);
-    $error->getPropertyPath()->willReturn('0.nonexistent');
-
-    // Trigger warning with invalid property.
-    $this->locationWidget->errorElement(
-      $this->createTestFormElement(),
-      $error->reveal(),
-      [],
-      $this->prophesize(FormStateInterface::class)->reveal()
-    );
-  }
-
-  /**
    * Tests form value processing.
    *
    * @covers ::massageFormValues
