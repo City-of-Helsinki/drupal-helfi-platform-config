@@ -8,6 +8,4 @@
 
 import HelfiLanguageSelector from './helfiLanguageSelector';
 
-export default {
-  HelfiLanguageSelector,
-};
+export default { HelfiLanguageSelector };

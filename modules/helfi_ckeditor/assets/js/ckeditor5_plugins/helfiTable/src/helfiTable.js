@@ -34,7 +34,11 @@ export default class HelfiTable extends Plugin {
             writer.createContainerElement(
               'thead',
               null,
-              writer.createSlot((element) => element.is('element', 'tableRow') && element.index < headingRows),
+              writer.createSlot(
+                (element) =>
+                  element.is('element', 'tableRow') &&
+                  element.index < headingRows,
+              ),
             ),
           );
         }
@@ -45,19 +49,27 @@ export default class HelfiTable extends Plugin {
             writer.createContainerElement(
               'tbody',
               null,
-              writer.createSlot((element) => element.is('element', 'tableRow') && element.index >= headingRows),
+              writer.createSlot(
+                (element) =>
+                  element.is('element', 'tableRow') &&
+                  element.index >= headingRows,
+              ),
             ),
           );
         }
 
         // Figure element.
-        const figureElement = writer.createContainerElement('figure', { class: 'table', tabindex: 0 }, [
-          // Table with proper sections (thead, tbody).
-          writer.createContainerElement('table', null, tableSections),
+        const figureElement = writer.createContainerElement(
+          'figure',
+          { class: 'table', tabindex: 0 },
+          [
+            // Table with proper sections (thead, tbody).
+            writer.createContainerElement('table', null, tableSections),
 
-          // Slot for the rest (for example caption).
-          writer.createSlot((element) => !element.is('element', 'tableRow')),
-        ]);
+            // Slot for the rest (for example caption).
+            writer.createSlot((element) => !element.is('element', 'tableRow')),
+          ],
+        );
 
         const toTableWidget = (viewElement) => {
           writer.setCustomProperty('table', true, viewElement);
@@ -66,21 +78,19 @@ export default class HelfiTable extends Plugin {
         return options.asWidget ? toTableWidget(figureElement) : figureElement;
       };
 
-    conversion.for('editingDowncast').elementToStructure({
-      model: {
-        name: 'table',
-        attributes: ['headingRows'],
-      },
-      view: downcastTable({ asWidget: true }),
-      converterPriority: 'high',
-    });
-    conversion.for('dataDowncast').elementToStructure({
-      model: {
-        name: 'table',
-        attributes: ['headingRows'],
-      },
-      view: downcastTable(),
-      converterPriority: 'high',
-    });
+    conversion
+      .for('editingDowncast')
+      .elementToStructure({
+        model: { name: 'table', attributes: ['headingRows'] },
+        view: downcastTable({ asWidget: true }),
+        converterPriority: 'high',
+      });
+    conversion
+      .for('dataDowncast')
+      .elementToStructure({
+        model: { name: 'table', attributes: ['headingRows'] },
+        view: downcastTable(),
+        converterPriority: 'high',
+      });
   }
 }

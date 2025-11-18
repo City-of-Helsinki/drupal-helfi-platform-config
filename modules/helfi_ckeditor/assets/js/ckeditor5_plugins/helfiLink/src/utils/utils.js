@@ -32,7 +32,11 @@ export const isUrlExternal = (string, domains) => {
   }
 
   const host = url.hostname;
-  return !domains.some((domain) => (domain.startsWith('*.') && host.endsWith(domain.slice(2))) || domain === host);
+  return !domains.some(
+    (domain) =>
+      (domain.startsWith('*.') && host.endsWith(domain.slice(2))) ||
+      domain === host,
+  );
 };
 
 /**
