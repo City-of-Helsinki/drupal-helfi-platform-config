@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config;
 
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\search_api\Entity\Index as SearchApiIndex;
 
 /**
  * The multisite search helper service.
  */
 final class MultisiteSearch {
 
-  const MULTISITE_INDEXES = [
-    'hyte',
-  ];
   const PREFIX_SUFFIX = 'site_';
   const PREFIX_SEPARATOR = '/';
 
@@ -38,7 +36,8 @@ final class MultisiteSearch {
    *   True if index is multisite, false otherwise.
    */
   public function isMultisiteIndex(string $index): bool {
-    return in_array($index, self::MULTISITE_INDEXES);
+    $indexEntity = SearchApiIndex::load($index);
+    return (bool) $indexEntity && $indexEntity->getOption('helfi_platform_config_multisite');
   }
 
   /**
@@ -85,7 +84,7 @@ final class MultisiteSearch {
    *   True if id has any instance specific prefix, false otherwise.
    */
   public function hasAnyInstancePrefix(string $id): bool {
-    return preg_match('/^' . self::PREFIX_SUFFIX . '\w+' . preg_quote(self::PREFIX_SEPARATOR, '/') . '/', $id) === 1;
+    return preg_match('/^' . self::PREFIX_SUFFIX . '\S+' . preg_quote(self::PREFIX_SEPARATOR, '/') . '/', $id) === 1;
   }
 
   /**
