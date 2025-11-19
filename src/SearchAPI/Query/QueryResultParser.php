@@ -15,10 +15,6 @@ use Drupal\elasticsearch_connector\SearchAPI\Query\SpellCheckResultParser;
  */
 class QueryResultParser extends ElasticsearchConnectorQueryResultParser {
 
-  const MULTISITE_INDEXES = [
-    'hyte',
-  ];
-
   /**
    * Creates a new QueryResultParser.
    *
