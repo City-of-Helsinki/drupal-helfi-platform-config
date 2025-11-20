@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @coversDefaultClass \Drupal\helfi_ckeditor\Plugin\CKEditor5Plugin\HelfiLanguageSelector
+ * @group helfi_ckeditor
  */
 final class HelfiLanguageSelectorTest extends TestCase {
 

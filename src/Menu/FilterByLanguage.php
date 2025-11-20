@@ -56,7 +56,7 @@ final class FilterByLanguage implements EventSubscriberInterface {
     if (!$this->adminContext->isAdminRoute()) {
       return;
     }
-    $manipulators = &$event->getManipulators();
+    $manipulators = $event->getManipulators();
 
     $menuName = NULL;
     foreach ($event->getTree() as $item) {
@@ -75,6 +75,7 @@ final class FilterByLanguage implements EventSubscriberInterface {
       'callable' => 'menu_block_current_language_tree_manipulator::filterLanguages',
       'args' => [['menu_link_content']],
     ];
+    $event->setManipulators($manipulators);
   }
 
   /**
@@ -82,7 +83,7 @@ final class FilterByLanguage implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() : array {
     return [
-      'menu.link_tree.alter_manipulators' => [
+      MenuLinkTreeManipulatorsAlterEvent::class => [
         ['filter'],
       ],
     ];

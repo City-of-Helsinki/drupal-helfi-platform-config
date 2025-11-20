@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_recommendations\Unit;
+namespace Drupal\Tests\helfi_recommendations\Unit\Commands;
 
 use DG\BypassFinals;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;

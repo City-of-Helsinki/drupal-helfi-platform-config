@@ -13,6 +13,8 @@ use Drupal\path_alias\Entity\PathAlias;
 
 /**
  * Tests custom redirect entity.
+ *
+ * @group helfi_platform_config
  */
 class RedirectEntityTest extends KernelTestBase {
 

@@ -18,6 +18,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Unit tests for SearchApiSubscriber.
+ *
+ * @group helfi_react_search
  */
 class SearchApiSubscriberTest extends UnitTestCase {
 

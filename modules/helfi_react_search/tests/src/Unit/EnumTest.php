@@ -12,6 +12,8 @@ use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests enum classes.
+ *
+ * @group helfi_react_search
  */
 class EnumTest extends UnitTestCase {
 

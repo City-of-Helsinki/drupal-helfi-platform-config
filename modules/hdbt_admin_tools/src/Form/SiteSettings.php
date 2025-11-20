@@ -4,35 +4,27 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Form;
 
-/**
- * @file
- * Contains Drupal\hdbt_admin_tools\Form\SiteSettings.
- */
-
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\Config;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Config\TypedConfigManagerInterface;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\Config\LanguageConfigOverride;
 use Drupal\language\ConfigurableLanguageManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Site settings.
  */
 class SiteSettings extends ConfigFormBase {
 
-  const SITE_SETTINGS_CONFIGURATION = 'hdbt_admin_tools.site_settings';
+  use AutowireTrait;
 
-  /**
-   * The configurable language manager.
-   *
-   * @var \Drupal\language\ConfigurableLanguageManagerInterface
-   */
-  protected ConfigurableLanguageManagerInterface $languageManager;
+  const SITE_SETTINGS_CONFIGURATION = 'hdbt_admin_tools.site_settings';
 
   /**
    * The configuration name.
@@ -41,22 +33,12 @@ class SiteSettings extends ConfigFormBase {
    */
   protected string $configName = self::SITE_SETTINGS_CONFIGURATION;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(ConfigFactoryInterface $config_factory, ConfigurableLanguageManagerInterface $language_manager) {
-    parent::__construct($config_factory);
-    $this->languageManager = $language_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): self {
-    return new self(
-      $container->get('config.factory'),
-      $container->get('language_manager')
-    );
+  public function __construct(
+    ConfigFactoryInterface $config_factory,
+    TypedConfigManagerInterface $typed_config_manager,
+    #[Autowire(service: 'language_manager')] protected ConfigurableLanguageManagerInterface $languageManager,
+  ) {
+    parent::__construct($config_factory, $typed_config_manager);
   }
 
   /**

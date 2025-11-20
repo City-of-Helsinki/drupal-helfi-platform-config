@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
          colors="true"
-         cacheResultFile=".phpunit.cache/test-results"
-         executionOrder="depends,defects"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
-         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
-         stopOnFailure="true"
          failOnRisky="true"
          failOnWarning="true"
-         verbose="true">
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         cacheResult="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         cacheDirectory=".phpunit.cache">
   <php>
     <!-- Set error reporting to E_ALL. -->
     <ini name="error_reporting" value="32767"/>
@@ -21,7 +21,20 @@
     <env name="DTT_MINK_DRIVER_ARGS" value='["chrome", {"browserName":"chrome", "goog:chromeOptions":{"w3c": true, "args":["--no-sandbox","--ignore-certificate-errors", "--allow-insecure-localhost", "--headless", "--dns-prefetch-disable"]}}, "http://chromium:4444"]'/>    <env name="DTT_API_OPTIONS" value='{"socketTimeout": 360, "domWaitTimeout": 3600000}' />
     <env name="DTT_API_URL" value="http://chromium:9222"/>
     <env name="DTT_BASE_URL" value="https://app"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value=".deprecation-ignore.txt" />
   </php>
+  <extensions>
+    <!-- Functional tests HTML output logging. -->
+    <bootstrap class="Drupal\TestTools\Extension\HtmlLogging\HtmlOutputLogger">
+      <!-- By default browser tests print the individual links in the test run
+        report. To avoid overcrowding the output in CI environments, you can
+        set the "verbose" parameter or the "BROWSERTEST_OUTPUT_VERBOSE"
+        environment variable to "false". In GitLabCI, the output is saved
+        anyway as an artifact that can be browsed or downloaded from Gitlab.
+      -->
+      <parameter name="verbose" value="true"/>
+    </bootstrap>
+  </extensions>
   <testsuites>
     <testsuite name="unit">
       <directory>./tests/src/Unit</directory>
@@ -30,6 +43,10 @@
     <testsuite name="existing-site">
       <directory>./tests/src/ExistingSite</directory>
       <directory>./modules/*/tests/src/ExistingSite</directory>
+    </testsuite>
+    <testsuite name="existing-site-javascript">
+      <directory>./tests/src/ExistingSiteJavascript</directory>
+      <directory>./modules/*/tests/src/ExistingSiteJavascript</directory>
     </testsuite>
     <testsuite name="kernel">
       <directory>./tests/src/Kernel</directory>
@@ -44,16 +61,13 @@
       <directory>./modules/*/tests/src/FunctionalJavascript</directory>
     </testsuite>
   </testsuites>
-  <listeners>
-    <listener class="\Drupal\Tests\Listeners\DrupalListener">
-    </listener>
-  </listeners>
-  <coverage processUncoveredFiles="true">
+  <source ignoreSuppressionOfDeprecations="true">
     <include>
-      <directory suffix=".php">./modules/*/src</directory>
-      <file>./modules/*/*.module</file>
-      <directory suffix=".php">./src</directory>
-      <file>./*.module</file>
+      <directory>./</directory>
     </include>
-  </coverage>
+    <exclude>
+      <directory>./tests</directory>
+      <directory>./modules/*/tests</directory>
+    </exclude>
+  </source>
 </phpunit>

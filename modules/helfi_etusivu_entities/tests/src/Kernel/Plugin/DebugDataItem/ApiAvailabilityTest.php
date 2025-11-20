@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_etusivu_entities\Kernel\Plugin\DebugData;
+namespace Drupal\Tests\helfi_etusivu_entities\Kernel\Plugin\DebugDataItem;
 
 use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
@@ -16,7 +16,7 @@ use GuzzleHttp\Psr7\Response;
 
 /**
  * @coversDefaultClass \Drupal\helfi_etusivu_entities\Plugin\DebugDataItem\ApiAvailabilityBase
- * @group helfi_paragraphs_news_list
+ * @group helfi_etusivu_entities
  */
 class ApiAvailabilityTest extends KernelTestBase {
 

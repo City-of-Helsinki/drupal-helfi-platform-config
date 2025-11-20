@@ -18,6 +18,7 @@ use GuzzleHttp\Psr7\Response;
  * Kernel tests for LinkedEventsAutocompleteController.
  *
  * @see \Drupal\helfi_react_search\Controller\LinkedEventsAutocompleteController
+ * @group helfi_react_search
  */
 final class AutocompleteControllerTest extends KernelTestBase {
 
