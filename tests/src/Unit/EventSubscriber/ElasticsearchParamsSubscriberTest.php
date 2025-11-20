@@ -117,7 +117,7 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
    */
   public function testPrefixItemIdsWhenIndexIsMultisite(): void {
     $this->multisiteSearch->isMultisiteIndex('test_index')->willReturn(TRUE);
-    $this->event->setParams($this->expectedParams)->shouldBeCalled(1);
+    $this->event->setParams($this->expectedParams)->shouldBeCalled();
     $this->eventSubscriber->prefixItemIds($this->event->reveal());
   }
 
