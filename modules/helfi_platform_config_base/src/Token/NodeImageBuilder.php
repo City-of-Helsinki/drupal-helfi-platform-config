@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config_base\Token;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\file\FileInterface;
+use Drupal\helfi_paragraphs_hero\Entity\Hero;
 use Drupal\helfi_platform_config\Token\OGImageBuilderInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
@@ -64,6 +65,20 @@ class NodeImageBuilder implements OGImageBuilderInterface {
     ) {
       // If the node has an image, use that.
       $file = $node->field_image->entity->field_media_image->entity;
+      assert($file instanceof FileInterface);
+      return $file;
+    }
+    elseif (
+      $node->hasField('field_hero') &&
+      isset($node->field_hero->entity) &&
+      $node->field_hero->entity instanceof Hero &&
+      $node->field_hero->entity->hasField('field_hero_image') &&
+      isset($node->field_hero->entity->field_hero_image->entity) &&
+      $node->field_hero->entity->field_hero_image->entity instanceof MediaInterface &&
+      $node->field_hero->entity->field_hero_image->entity->hasField('field_media_image')
+    ) {
+      // If the node has a hero paragraph and the hero has an image, use that.
+      $file = $node->field_hero->entity->field_hero_image->entity->field_media_image->entity;
       assert($file instanceof FileInterface);
       return $file;
     }
