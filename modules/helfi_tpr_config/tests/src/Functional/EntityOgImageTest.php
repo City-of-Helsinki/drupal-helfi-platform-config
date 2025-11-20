@@ -12,6 +12,8 @@ use Drupal\media\Entity\Media;
 
 /**
  * Tests default og image.
+ *
+ * @group helfi_tpr_config
  */
 class EntityOgImageTest extends BrowserTestBase {
 

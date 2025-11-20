@@ -12,6 +12,8 @@ use Drupal\KernelTests\KernelTestBase;
 
 /**
  * Tests location autocomplete element.
+ *
+ * @group helfi_platform_config
  */
 class LocationAutocompleteTest extends KernelTestBase {
 

@@ -9,6 +9,8 @@ use Drupal\KernelTests\KernelTestBase;
 
 /**
  * Tests AddressSearch override.
+ *
+ * @group helfi_tpr_config
  */
 class AddressSearchTest extends KernelTestBase {
 
