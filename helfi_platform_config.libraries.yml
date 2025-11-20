@@ -35,14 +35,14 @@ tom_select:
       assets/css/tom_select.css: {}
 
 a11y_autocomplete:
+  version: 1.0.0
   js:
     dist/js/a11y-autocomplete.min.js: { minified: true }
-  version: 1.0.0
 
 location_autocomplete:
+  version: 1.0.3
   js:
     dist/js/autocomplete.min.js: { minified: true }
-  version: 1.0.3
   dependencies:
     - helfi_platform_config/a11y_autocomplete
     - core/drupal
@@ -50,18 +50,18 @@ location_autocomplete:
     - core/once
 
 heading_id_injector:
+  version: 1.0.0
   js:
     dist/js/headingIdInjector.min.js: { minified: true }
-  version: 1.0.0
   dependencies:
     - core/drupal
     - core/drupalSettings
     - core/once
 
 heading_anchor_buttons:
+  version: 1.0.0
   js:
     dist/js/headingAnchorButtons.min.js: { minified: true }
-  version: 1.0.0
   dependencies:
     - helfi_platform_config/heading_id_injector
     - core/drupal
