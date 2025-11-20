@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
-use DG\BypassFinals;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\helfi_platform_config\MultisiteSearch;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 
 /**
  * Tests MultisiteSearch service.
  */
 class MultisiteSearchTest extends KernelTestBase {
 
-  use ProphecyTrait;
+  use EnvironmentResolverTrait;
 
   /**
    * The multisitesearch index used for this test.
@@ -49,7 +48,6 @@ class MultisiteSearchTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
-    BypassFinals::enable();
     parent::setUp();
 
     $this->installEntitySchema('search_api_task');
@@ -84,7 +82,7 @@ class MultisiteSearchTest extends KernelTestBase {
     ]);
     $this->singleSiteSearchIndex->save();
 
-    $this->multisiteSearch = new MultisiteSearch($this->container->get(EnvironmentResolverInterface::class));
+    $this->multisiteSearch = new MultisiteSearch($this->getEnvironmentResolver('test_project', EnvironmentEnum::Local));
   }
 
   /**
