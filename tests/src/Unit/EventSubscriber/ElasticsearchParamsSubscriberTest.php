@@ -99,8 +99,6 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
 
   /**
    * Tests the getSubscribedEvents method.
-   *
-   * @covers ::getSubscribedEvents
    */
   public function testGetSubscribedEvents(): void {
     $this->assertEquals([
@@ -112,7 +110,6 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
   /**
    * Tests the prefixItemIds method when index is multisite.
    *
-   * @covers ::prefixItemIds
    * @covers ::alterItemId
    */
   public function testPrefixItemIdsWhenIndexIsMultisite(): void {
@@ -124,7 +121,6 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
   /**
    * Tests the prefixItemIds method when index is not multisite.
    *
-   * @covers ::prefixItemIds
    * @covers ::alterItemId
    */
   public function testPrefixItemIdsWhenIndexIsNotMultisite(): void {
