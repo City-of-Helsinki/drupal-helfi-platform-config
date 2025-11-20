@@ -13,6 +13,8 @@ use Drupal\KernelTests\KernelTestBase;
 
 /**
  * Tests linked events widget.
+ *
+ * @group helfi_react_search
  */
 class LinkedEventsSelect2WidgetTest extends KernelTestBase {
 

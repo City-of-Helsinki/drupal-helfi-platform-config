@@ -14,7 +14,7 @@ use Drupal\user\Entity\Role;
 /**
  * Tests blocks.
  *
- * @group helfi_platform_config
+ * @group helfi_etusivu_entities
  */
 final class LocalEntitiesTest extends BrowserTestBase {
 

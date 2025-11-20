@@ -17,6 +17,8 @@ use GuzzleHttp\Psr7\Response;
 
 /**
  * Tests org chart storage.
+ *
+ * @group helfi_paragraphs_org_chart
  */
 class OrgChartImporterTest extends UnitTestCase {
 

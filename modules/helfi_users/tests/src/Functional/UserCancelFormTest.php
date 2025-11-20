@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_platform_config\Functional;
+namespace Drupal\Tests\helfi_users\Functional;
 
 use Drupal\Tests\helfi_api_base\Functional\BrowserTestBase;
 
 /**
  * Tests user cancel method form.
  *
- * @group helfi_platform_config
+ * @group helfi_users
  */
 class UserCancelFormTest extends BrowserTestBase {
 

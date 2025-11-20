@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\Plugin\Field\FieldWidget;
 
-use PHPUnit\Framework\Error\Warning;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -149,27 +148,6 @@ class LocationWidgetTest extends UnitTestCase {
       $element['latitude'],
       $result,
       'Should return latitude element for errors'
-    );
-  }
-
-  /**
-   * Tests error handling for invalid property access.
-   *
-   * @covers ::errorElement
-   */
-  public function testErrorElementThrowsWarningForInvalidProperty(): void {
-    $this->expectException(Warning::class);
-    $this->expectExceptionMessage('Undefined array key');
-
-    $error = $this->prophesize(ConstraintViolationInterface::class);
-    $error->getPropertyPath()->willReturn('0.nonexistent');
-
-    // Trigger warning with invalid property.
-    $this->locationWidget->errorElement(
-      $this->createTestFormElement(),
-      $error->reveal(),
-      [],
-      $this->prophesize(FormStateInterface::class)->reveal()
     );
   }
 

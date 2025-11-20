@@ -1,5 +1,5 @@
 diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
-index a0824c65f17..82c61646a24 100644
+index 617699bda15..82c61646a24 100644
 --- a/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
 +++ b/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
 @@ -2,9 +2,7 @@
@@ -21,7 +21,7 @@ index a0824c65f17..82c61646a24 100644
    /**
     * Instantiates a new instance of the implementing class using autowiring.
     *
-@@ -23,29 +23,7 @@ trait AutowireTrait {
+@@ -23,25 +23,7 @@ trait AutowireTrait {
     * @return static
     */
    public static function create(ContainerInterface $container) {
@@ -36,10 +36,6 @@ index a0824c65f17..82c61646a24 100644
 -        }
 -
 -        if (!$container->has($service)) {
--          if ($parameter->allowsNull()) {
--            $args[] = NULL;
--            continue;
--          }
 -          throw new AutowiringFailedException($service, sprintf('Cannot autowire service "%s": argument "$%s" of method "%s::_construct()", you should configure its value explicitly.', $service, $parameter->getName(), static::class));
 -        }
 -

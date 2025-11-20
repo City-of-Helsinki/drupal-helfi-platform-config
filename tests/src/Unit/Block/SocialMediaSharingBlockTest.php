@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_platform_config\Unit\Plugin\Block;
+namespace Drupal\Tests\helfi_platform_config\Unit\Block;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\Config;

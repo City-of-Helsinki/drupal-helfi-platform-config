@@ -11,6 +11,8 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * Tests Helfi admin tools module.
+ *
+ * @group hdbt_admin_tools
  */
 class ListControllerTest extends KernelTestBase {
 

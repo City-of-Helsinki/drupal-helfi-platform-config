@@ -42,7 +42,9 @@ class ConfigurationTest extends ExistingSiteBase {
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
     $moduleInstaller = $this->container->get('module_installer');
     // Make sure all submodules are enabled.
-    $moduleInstaller->install($this->getSubModules());
+    foreach ($this->getSubModules() as $module) {
+      $moduleInstaller->install([$module]);
+    }
   }
 
   /**

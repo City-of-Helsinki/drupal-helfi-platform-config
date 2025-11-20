@@ -15,6 +15,8 @@ use Drush\Commands\DrushCommands;
 
 /**
  * Tests ConfigUpdater.
+ *
+ * @group helfi_platform_config
  */
 class ConfigUpdaterTest extends KernelTestBase {
 
