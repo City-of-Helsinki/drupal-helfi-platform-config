@@ -71,7 +71,8 @@ final class MultisiteSearch {
    *   True if id string has current instance specific prefix, false otherwise.
    */
   public function hasCurrentInstancePrefix(string $id): bool {
-    return strpos($id, $this->getInstanceIndexPrefix()) === 0;
+    $prefix = $this->getInstanceIndexPrefix();
+    return $prefix && strpos($id, $prefix) === 0;
   }
 
   /**
@@ -96,7 +97,8 @@ final class MultisiteSearch {
       return $id;
     }
 
-    return $this->getInstanceIndexPrefix() . $id;
+    $prefix = $this->getInstanceIndexPrefix();
+    return $prefix ? $prefix . $id : $id;
   }
 
 }
