@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ['8.4']
-    uses: city-of-helsinki/drupal-gh-actions/.github/workflows/module-tests.yml@UHF-11502
+    uses: city-of-helsinki/drupal-gh-actions/.github/workflows/module-tests.yml@main
     with:
       php_version: ${{ matrix.php-versions }}
     secrets:
