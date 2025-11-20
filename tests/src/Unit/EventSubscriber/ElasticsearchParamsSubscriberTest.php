@@ -80,7 +80,7 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
         ],
         [
           'delete' => [
-          '_id' => 'has_prefix_item_1_to_delete',
+            '_id' => 'has_prefix_item_1_to_delete',
           ],
         ],
       ],
