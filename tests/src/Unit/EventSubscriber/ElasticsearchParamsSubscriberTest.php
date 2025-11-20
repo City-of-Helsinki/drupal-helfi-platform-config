@@ -109,8 +109,6 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
 
   /**
    * Tests the prefixItemIds method when index is multisite.
-   *
-   * @covers ::alterItemId
    */
   public function testPrefixItemIdsWhenIndexIsMultisite(): void {
     $this->multisiteSearch->isMultisiteIndex('test_index')->willReturn(TRUE);
@@ -120,8 +118,6 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
 
   /**
    * Tests the prefixItemIds method when index is not multisite.
-   *
-   * @covers ::alterItemId
    */
   public function testPrefixItemIdsWhenIndexIsNotMultisite(): void {
     $this->multisiteSearch->isMultisiteIndex('test_index')->willReturn(FALSE);
