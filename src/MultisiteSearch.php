@@ -51,7 +51,7 @@ final class MultisiteSearch {
 
     try {
       $project = $this->environmentResolver->getActiveProject();
-      $prefix = $project->name;
+      $prefix = $project->getName();
     }
     catch (\InvalidArgumentException) {
       // No project found, so no prefix.

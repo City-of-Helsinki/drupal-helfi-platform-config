@@ -7,7 +7,6 @@ namespace Drupal\helfi_platform_config;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigRewriter;
-use Drupal\helfi_platform_config\MultisiteSearch;
 use Drupal\helfi_platform_config\SearchAPI\Query\QueryResultParser;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -27,7 +26,8 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
       $definition->setClass(ConfigRewriter::class);
     }
 
-    // Replace the default Elasticsearch Connector query result parser with our own.
+    // Replace the default Elasticsearch Connector query result parser with
+    // our own.
     if ($container->hasDefinition('elasticsearch_connector.query_result_parser')) {
       $definition = $container->getDefinition('elasticsearch_connector.query_result_parser');
       $definition->setClass(QueryResultParser::class);
