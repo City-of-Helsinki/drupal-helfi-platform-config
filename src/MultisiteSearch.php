@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Drupal\search_api\Entity\Index as SearchApiIndex;
 
 /**
  * The multisite search helper service.
@@ -20,9 +20,12 @@ final class MultisiteSearch {
    *
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   The environment resolver.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
   public function __construct(
     private readonly EnvironmentResolverInterface $environmentResolver,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
@@ -36,8 +39,14 @@ final class MultisiteSearch {
    *   True if index is multisite, false otherwise.
    */
   public function isMultisiteIndex(string $index): bool {
-    $indexEntity = SearchApiIndex::load($index);
-    return (bool) $indexEntity && $indexEntity->getOption('helfi_platform_config_multisite');
+    try {
+      /** @var \Drupal\search_api\Entity\Index|null $indexEntity */
+      $indexEntity = $this->entityTypeManager->getStorage('search_api_index')->load($index);
+      return (bool) $indexEntity && $indexEntity->getOption('helfi_platform_config_multisite');
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
   /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\helfi_platform_config\MultisiteSearch;
@@ -14,7 +14,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 /**
  * Tests MultisiteSearch service.
  */
-class MultisiteSearchTest extends KernelTestBase {
+class MultisiteSearchTest extends EntityKernelTestBase {
 
   use EnvironmentResolverTrait;
 
@@ -82,7 +82,7 @@ class MultisiteSearchTest extends KernelTestBase {
     ]);
     $this->singleSiteSearchIndex->save();
 
-    $this->multisiteSearch = new MultisiteSearch($this->getEnvironmentResolver('test_project', EnvironmentEnum::Local));
+    $this->multisiteSearch = new MultisiteSearch($this->getEnvironmentResolver('test_project', EnvironmentEnum::Local), $this->entityTypeManager);
   }
 
   /**
