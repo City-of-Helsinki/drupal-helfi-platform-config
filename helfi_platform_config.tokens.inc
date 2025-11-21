@@ -28,7 +28,10 @@ function helfi_platform_config_token_info() : array {
     'name' => t('Page title suffix'),
     'description' => t('Official suffix for page title.'),
   ];
-
+  $info['tokens']['node']['display-title'] = [
+    'name' => t('Display title'),
+    'description' => t('Display title will try to use the hero paragraph title if it exists. If not, it will use the node title.'),
+  ];
   $info['tokens']['node']['lead-in'] = [
     'name' => t('Lead in'),
     'description' => t(
