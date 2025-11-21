@@ -14,6 +14,7 @@ This repository holds configuration for the Hel.fi platform.
 - [Redirects](/documentation/redirects.md)
 - [Users](/modules/helfi_users/README.md)
 - [Recommendations](./modules/helfi_recommendations/README.md)
+- [Search API](./documentation/search-api.md)
 
 ## Contact
 
