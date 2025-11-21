@@ -13,5 +13,6 @@ tags:
   og_description: '[node:lead-in]'
   og_updated_time: '[node:changed:html_datetime]'
   og_url: '[current-page:url:absolute]'
+  twitter_cards_title: '[node:display-title] | [site:page-title-suffix]'
   twitter_cards_image: '[node:shareable-image]'
   og_image: '[node:shareable-image]'
