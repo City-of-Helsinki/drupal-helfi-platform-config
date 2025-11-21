@@ -10,6 +10,9 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
+use Prophecy\Prophecy\ObjectProphecy;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\search_api\IndexInterface;
 
 /**
  * Tests the MultisiteSearch service.
@@ -25,12 +28,20 @@ class MultisiteSearchTest extends UnitTestCase {
   protected MultisiteSearch $multisiteSearch;
 
   /**
+   * The mocked entity type manager.
+   */
+  protected ObjectProphecy $entityTypeManager;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
 
-    $this->multisiteSearch = new MultisiteSearch($this->getEnvironmentResolver(Project::ETUSIVU, EnvironmentEnum::Local));
+    $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
+    $this->entityTypeManager->getStorage('search_api_index')->willReturn($this->prophesize(IndexInterface::class)->reveal());
+
+    $this->multisiteSearch = new MultisiteSearch($this->getEnvironmentResolver(Project::ETUSIVU, EnvironmentEnum::Local), $this->entityTypeManager->reveal());
   }
 
   /**
@@ -44,7 +55,7 @@ class MultisiteSearchTest extends UnitTestCase {
    * Tests the getInstanceIndexPrefix method with unknown project.
    */
   public function testGetInstanceIndexPrefixWithUnknownProject(): void {
-    $multisiteSearch = new MultisiteSearch($this->getEnvironmentResolver());
+    $multisiteSearch = new MultisiteSearch($this->getEnvironmentResolver(), $this->entityTypeManager->reveal());
     $this->assertNull($multisiteSearch->getInstanceIndexPrefix());
   }
 
