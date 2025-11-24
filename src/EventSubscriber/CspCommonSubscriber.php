@@ -72,7 +72,7 @@ class CspCommonSubscriber extends CspSubscriberBase {
   public function policyAlter(PolicyAlterEvent $event): void {
     parent::policyAlter($event);
 
-    // Inline script hashes that can not be easliy added
+    // Inline script hashes that can not be easily added
     // elsewhere.
     $inline_scripts = [
       // BigPipe no-JS cookie.
