@@ -4,5 +4,4 @@ status: true
 dependencies: {  }
 id: node__landing_page
 label: 'Content: Landing page'
-tags:
-  description: '[node:field_hero:entity:field_hero_desc]'
+tags: {  }

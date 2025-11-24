@@ -10,7 +10,7 @@ field_name: field_hero_title
 entity_type: paragraph
 bundle: hero
 label: 'Hero heading'
-description: "If a hero is used on the page, this heading will be used as the page's main heading."
+description: "The hero title and the page title must be the same. The hero title is used as the page’s metadata title, which appears in search results. The page title is used in the page URL. You can edit the metadata title in the page’s meta settings."
 required: true
 translatable: false
 default_value: {  }
