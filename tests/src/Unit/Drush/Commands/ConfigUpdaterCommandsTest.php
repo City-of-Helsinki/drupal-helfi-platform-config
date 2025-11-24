@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_platform_config\Unit;
+namespace Drupal\Tests\helfi_platform_config\Unit\Drush\Commands;
 
 use DG\BypassFinals;
 use Drupal\Core\Extension\Extension;

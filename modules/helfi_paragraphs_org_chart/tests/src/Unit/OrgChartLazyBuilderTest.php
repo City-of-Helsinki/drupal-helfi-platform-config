@@ -18,6 +18,8 @@ use GuzzleHttp\Psr7\Response;
 
 /**
  * Unit tests for lazy builder.
+ *
+ * @group helfi_paragraphs_org_chart
  */
 class OrgChartLazyBuilderTest extends UnitTestCase {
 

@@ -13,6 +13,8 @@ use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Tests event list bundle class.
+ *
+ * @group helfi_react_search
  */
 class EventListTest extends KernelTestBase {
 

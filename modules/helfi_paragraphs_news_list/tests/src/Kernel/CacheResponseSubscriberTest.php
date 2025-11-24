@@ -9,12 +9,17 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Render\HtmlResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber;
+use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTrait;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
  * Tests the CacheResponseSubscriber.
+ *
+ * @group helfi_paragraph_news_list
  */
 class CacheResponseSubscriberTest extends KernelTestBase {
+
+  use PropertyTrait;
 
   /**
    * Tests the handling of empty news list cache.

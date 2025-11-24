@@ -13,6 +13,8 @@ use GuzzleHttp\Psr7\Response;
 
 /**
  * Event list update helper test.
+ *
+ * @group helfi_react_search
  */
 class EventListUpdateHelperTest extends KernelTestBase {
 

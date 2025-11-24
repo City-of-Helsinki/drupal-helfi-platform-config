@@ -12,6 +12,8 @@ use Drupal\user\UserInterface;
 
 /**
  * Tests for reassigning node revisions when canceling users.
+ *
+ * @group helfi_users
  */
 class UserCancelNodeRevisionsTest extends KernelTestBase {
 

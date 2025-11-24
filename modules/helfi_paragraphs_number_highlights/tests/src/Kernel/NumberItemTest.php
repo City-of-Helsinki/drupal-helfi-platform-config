@@ -14,6 +14,8 @@ use Drupal\Tests\field\Kernel\FieldKernelTestBase;
 
 /**
  * Tests the number numbers_item field type.
+ *
+ * @group helfi_paragraphs_number_highlights
  */
 class NumberItemTest extends FieldKernelTestBase {
 
