@@ -27,7 +27,7 @@ class CspElasticProxySubscriberTest extends CspEventSubscriberTestBase {
   /**
    * The event class to test.
    */
-  protected string $eventClass = CspElasticProxySubscriber::class;
+  protected ?string $eventClass = CspElasticProxySubscriber::class;
 
   /**
    * {@inheritdoc}

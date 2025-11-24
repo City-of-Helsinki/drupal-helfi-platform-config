@@ -41,6 +41,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
       $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const CONNECT_SRC = ['https://example.com'];
       const FONT_SRC = ['https://example.com'];
@@ -74,6 +75,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
       $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const CONNECT_SRC = ['https://example.com'];
       const SCRIPT_SRC = ['https://example.com'];
@@ -103,6 +105,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
       $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const MODULE_DEPENDENCY = 'test_module';
       const CONNECT_SRC = ['https://example.com'];
@@ -127,6 +130,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
       $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const MODULE_DEPENDENCY = 'test_module';
       const CONNECT_SRC = ['https://example.com'];

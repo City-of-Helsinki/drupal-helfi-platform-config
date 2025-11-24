@@ -76,7 +76,7 @@ abstract class CspEventSubscriberTestBase extends UnitTestCase {
   /**
    * The event class to test.
    */
-  protected string $eventClass;
+  protected ?string $eventClass = NULL;
 
   /**
    * {@inheritdoc}

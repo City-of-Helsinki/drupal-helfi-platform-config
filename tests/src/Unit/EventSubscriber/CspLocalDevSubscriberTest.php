@@ -34,6 +34,11 @@ class CspLocalDevSubscriberTest extends CspEventSubscriberTestBase {
   protected ObjectProphecy $project;
 
   /**
+   * The event class to test.
+   */
+  protected ?string $eventClass = CspLocalDevSubscriber::class;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -46,13 +51,6 @@ class CspLocalDevSubscriberTest extends CspEventSubscriberTestBase {
     $this->environmentResolver->getEnvironment(Argument::any(), Argument::any())->willReturn($this->environment->reveal());
     $this->environment->getEnvironment()->willReturn(EnvironmentEnum::Local);
     $this->environment->getBaseUrl()->willReturn('https://local.example.com');
-
-    $this->eventSubscriber = new CspLocalDevSubscriber(
-      $this->environmentResolver->reveal(),
-      $this->configFactory->reveal(),
-      $this->moduleHandler->reveal(),
-      $this->policyHelper->reveal(),
-    );
   }
 
   /**

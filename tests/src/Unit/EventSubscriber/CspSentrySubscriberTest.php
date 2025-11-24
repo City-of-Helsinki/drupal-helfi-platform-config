@@ -18,7 +18,7 @@ class CspSentrySubscriberTest extends CspEventSubscriberTestBase {
   /**
    * The event class to test.
    */
-  protected string $eventClass = CspSentrySubscriber::class;
+  protected ?string $eventClass = CspSentrySubscriber::class;
 
   /**
    * Tests policy alteration with Sentry DSN.

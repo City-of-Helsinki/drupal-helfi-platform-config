@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 
 use Drupal\helfi_platform_config\EventSubscriber\CspCleanSubscriber;
+use Drupal\csp\CspEvents;
 use Drupal\Core\Config\ImmutableConfig;
 use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\Argument;
 
 /**
  * Unit tests for CspCleanSubscriber.
@@ -26,7 +28,7 @@ class CspCleanSubscriberTest extends CspEventSubscriberTestBase {
   /**
    * The event class to test.
    */
-  protected string $eventClass = CspCleanSubscriber::class;
+  protected ?string $eventClass = CspCleanSubscriber::class;
 
   /**
    * {@inheritdoc}
@@ -35,11 +37,18 @@ class CspCleanSubscriberTest extends CspEventSubscriberTestBase {
     parent::setUp();
 
     $this->cspConfig = $this->prophesize(ImmutableConfig::class);
-    $this->cspConfig->get('script-src-elem')->willReturn(NULL);
-    $this->cspConfig->get('style-src-elem')->willReturn(NULL);
-    $this->policy->hasDirective('script-src-elem')->willReturn(FALSE);
-    $this->policy->hasDirective('style-src-elem')->willReturn(FALSE);
+    $this->cspConfig->get(Argument::any())->willReturn(NULL);
+    $this->policy->hasDirective(Argument::any())->willReturn(FALSE);
     $this->configFactory->get('csp.settings')->willReturn($this->cspConfig->reveal());
+  }
+
+  /**
+   * Tests the getSubscribedEvents method.
+   *
+   * @covers ::getSubscribedEvents
+   */
+  public function testGetSubscribedEvents(): void {
+    $this->assertEquals([CspEvents::POLICY_ALTER => ['policyAlter', -100]], $this->eventSubscriber->getSubscribedEvents());
   }
 
   /**
