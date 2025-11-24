@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
+use Drupal\csp\PolicyHelper;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -37,11 +38,14 @@ abstract class CspSubscriberBase implements EventSubscriberInterface {
    *   The config factory.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   The module handler.
+   * @param \Drupal\csp\PolicyHelper $cspHelper
+   *   The CSP helper.
    */
   public function __construct(
     protected readonly EnvironmentResolverInterface $environmentResolver,
     protected readonly ConfigFactoryInterface $configFactory,
     protected readonly ModuleHandlerInterface $moduleHandler,
+    protected readonly PolicyHelper $cspHelper,
   ) {
   }
 

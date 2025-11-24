@@ -8,6 +8,7 @@ use DG\BypassFinals;
 use Drupal\csp\Csp;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
+use Drupal\csp\PolicyHelper;
 use Drupal\helfi_platform_config\EventSubscriber\CspSubscriberBase;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\Tests\UnitTestCase;
@@ -59,11 +60,23 @@ abstract class CspEventSubscriberTestBase extends UnitTestCase {
   protected ObjectProphecy $moduleHandler;
 
   /**
+   * The PolicyHelper.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $policyHelper;
+
+  /**
    * The EventSubscriber to test.
    *
    * @var \Drupal\helfi_platform_config\EventSubscriber\CspSubscriberBase
    */
   protected CspSubscriberBase $eventSubscriber;
+
+  /**
+   * The event class to test.
+   */
+  protected string $eventClass;
 
   /**
    * {@inheritdoc}
@@ -79,6 +92,16 @@ abstract class CspEventSubscriberTestBase extends UnitTestCase {
     $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
     $this->configFactory = $this->prophesize(ConfigFactoryInterface::class);
     $this->moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
+    $this->policyHelper = $this->prophesize(PolicyHelper::class);
+
+    if ($this->eventClass) {
+      $this->eventSubscriber = new $this->eventClass(
+        $this->environmentResolver->reveal(),
+        $this->configFactory->reveal(),
+        $this->moduleHandler->reveal(),
+        $this->policyHelper->reveal(),
+      );
+    }
   }
 
   /**

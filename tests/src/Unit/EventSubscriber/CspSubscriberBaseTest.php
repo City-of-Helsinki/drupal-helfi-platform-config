@@ -25,6 +25,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
       $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {};
 
     $this->assertEquals([CspEvents::POLICY_ALTER => 'policyAlter'], $this->eventSubscriber->getSubscribedEvents());

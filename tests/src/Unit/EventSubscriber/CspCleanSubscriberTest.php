@@ -24,6 +24,11 @@ class CspCleanSubscriberTest extends CspEventSubscriberTestBase {
   protected ObjectProphecy $cspConfig;
 
   /**
+   * The event class to test.
+   */
+  protected string $eventClass = CspCleanSubscriber::class;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -35,12 +40,6 @@ class CspCleanSubscriberTest extends CspEventSubscriberTestBase {
     $this->policy->hasDirective('script-src-elem')->willReturn(FALSE);
     $this->policy->hasDirective('style-src-elem')->willReturn(FALSE);
     $this->configFactory->get('csp.settings')->willReturn($this->cspConfig->reveal());
-
-    $this->eventSubscriber = new CspCleanSubscriber(
-      $this->environmentResolver->reveal(),
-      $this->configFactory->reveal(),
-      $this->moduleHandler->reveal(),
-    );
   }
 
   /**

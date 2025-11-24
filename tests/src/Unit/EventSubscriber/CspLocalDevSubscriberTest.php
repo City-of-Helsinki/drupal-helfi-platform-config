@@ -51,6 +51,7 @@ class CspLocalDevSubscriberTest extends CspEventSubscriberTestBase {
       $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
+      $this->policyHelper->reveal(),
     );
   }
 

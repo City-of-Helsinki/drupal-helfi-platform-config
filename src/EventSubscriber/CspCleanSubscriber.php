@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\EventSubscriber;
 
 use Drupal\csp\Event\PolicyAlterEvent;
+use Drupal\csp\CspEvents;
 
 /**
  * Event subscriber for CSP policy alteration.
@@ -22,23 +23,34 @@ class CspCleanSubscriber extends CspSubscriberBase {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  public static function getSubscribedEvents(): array {
+    $events = [];
+
+    if (class_exists(CspEvents::class)) {
+      // Run after other CSP policy alter subscribers.
+      $events[CspEvents::POLICY_ALTER] = ['policyAlter', -100];
+    }
+
+    return $events;
+  }
+
+  /**
    * Alter CSP policies.
    *
    * @param \Drupal\csp\Event\PolicyAlterEvent $event
    *   The policy alter event.
    */
   public function policyAlter(PolicyAlterEvent $event): void {
-    $policy = $event->getPolicy();
-    $cspConfig = $this->configFactory->get('csp.settings');
-
     // Some directives are auto added even if disabled in config.
     // Let's make sure config is respected here.
-    if (!$cspConfig->get('script-src-elem') && $policy->hasDirective('script-src-elem')) {
-      $policy->removeDirective('script-src-elem');
-    }
-    if (!$cspConfig->get('style-src-elem') && $policy->hasDirective('style-src-elem')) {
-      $policy->removeDirective('style-src-elem');
-    }
+    $this->removeDisallowedDirectives($event, [
+      'script-src-elem',
+      'style-src-elem',
+      'script-src-attr',
+      'style-src-attr',
+    ]);
 
     // Clean up bad directive values.
     $this->cleanDirectiveValues($event, [
@@ -47,6 +59,24 @@ class CspCleanSubscriber extends CspSubscriberBase {
       'style-src',
       'style-src-elem',
     ]);
+  }
+
+  /**
+   * Remove directives that are not allowed by the CSP policy.
+   *
+   * @param \Drupal\csp\Event\PolicyAlterEvent $event
+   *   The policy alter event.
+   * @param string[] $directives
+   *   The directives to remove.
+   */
+  protected function removeDisallowedDirectives(PolicyAlterEvent $event, array $directives): void {
+    $policy = $event->getPolicy();
+    $cspConfig = $this->configFactory->get('csp.settings');
+    foreach ($directives as $directive) {
+      if (!$cspConfig->get($directive) && $policy->hasDirective($directive)) {
+        $policy->removeDirective($directive);
+      }
+    }
   }
 
   /**
