@@ -74,11 +74,14 @@ class CspCommonSubscriber extends CspSubscriberBase {
 
     // Inline script hashes that can not be easily added
     // elsewhere.
-    $inline_scripts = [
+    $inline_scripts = [];
+
+    if ($this->moduleHandler->moduleExists('big_pipe')) {
       // BigPipe no-JS cookie.
       // @see big_pipe_page_attachments().
-      'document.cookie = "' . BigPipeStrategy::NOJS_COOKIE . '=1; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"',
-    ];
+      $inline_scripts[] = 'document.cookie = "' . BigPipeStrategy::NOJS_COOKIE . '=1; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"';
+    }
+
     foreach ($inline_scripts as $inline_script) {
       $hash = Csp::calculateHash($inline_script);
       $this->cspHelper->appendHash($event->getPolicy(), 'script', 'elem', ['unsafe-inline'], $hash);
