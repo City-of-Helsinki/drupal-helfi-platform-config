@@ -32,9 +32,23 @@ class JsInliner {
   }
 
   /**
-   * Get the inline javascript for a given library and name.
+   * Reset internal storage.
    */
-  public function getInline(string $extension, $name) {
+  public function reset(): void {
+    $this->store = [];
+  }
+
+  /**
+   * Get the inline javascript for a given library.
+   *
+   * @param string $extension
+   *   The extension name. Usually the module or theme name.
+   * @param string $name
+   *   The library name.
+   *
+   * @return string|null
+   */
+  public function getInline(string $extension, string $name): ?string {
     // Store for multiple calls within the same request.
     if (isset($this->store[$extension][$name])) {
       return $this->store[$extension][$name];
