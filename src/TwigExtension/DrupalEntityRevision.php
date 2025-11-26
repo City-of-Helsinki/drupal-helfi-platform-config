@@ -17,7 +17,7 @@ class DrupalEntityRevision extends AbstractExtension {
   /**
    * {@inheritdoc}
    */
-  public function getFunctions() {
+  public function getFunctions(): array {
     return [
       new TwigFunction('drupal_entity_revision', [$this, 'entityRevision']),
     ];
