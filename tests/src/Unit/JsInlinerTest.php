@@ -105,4 +105,24 @@ class JsInlinerTest extends UnitTestCase {
     $this->assertEquals('test-data-from-cache', $data3);
   }
 
+  /**
+   * Tests the getInline method with a non-existent library.
+   */
+  public function testGetInlineWithNonExistentLibrary(): void {
+    $this->libraryDiscovery->getLibraryByName('test', 'non-existent-library')->willReturn(FALSE);
+
+    $this->assertNull($this->inliner->getInline('test', 'non-existent-library'));
+  }
+
+  /**
+   * Tests the getInline method with an exception thrown by the js optimizer.
+   */
+  public function testGetInlineWithExceptionThrownByJsOptimizer(): void {
+    $this->jsOptimizer->optimize(Argument::any())->willThrow(new \Exception('Test exception'));
+    $this->cache->get(Argument::any())->willReturn(FALSE);
+    $this->cache->set(Argument::any(), Argument::is(''))->shouldBeCalled();
+
+    $this->assertNull($this->inliner->getInline('test', 'test-library'));
+  }
+
 }

@@ -74,6 +74,7 @@ class CspCleanSubscriberTest extends CspEventSubscriberTestBase {
    * Tests cleaning of disabled directives.
    *
    * @covers ::policyAlter
+   * @covers ::removeDisallowedDirectives
    */
   public function testCleanDisabledDirectives(): void {
     foreach ([

@@ -54,13 +54,7 @@ class JsInliner {
       return $this->store[$extension][$name];
     }
 
-    try {
-      $library = $this->libraryDiscovery->getLibraryByName($extension, $name);
-    }
-    catch (\Exception $e) {
-      $library = FALSE;
-    }
-
+    $library = $this->libraryDiscovery->getLibraryByName($extension, $name);
     if (!$library || empty($library['js'])) {
       return NULL;
     }
@@ -87,7 +81,7 @@ class JsInliner {
     $this->store[$extension][$name] = $data;
     $this->cache->set($cid, $data);
 
-    return $data;
+    return $data ? $data : NULL;
   }
 
 }
