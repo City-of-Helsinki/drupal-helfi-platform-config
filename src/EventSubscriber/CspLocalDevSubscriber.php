@@ -32,12 +32,13 @@ class CspLocalDevSubscriber extends CspSubscriberBase {
     // domains are different, so frontpage domain needs to be added to allow
     // proper behavior for things like the cookie banner.
     try {
-      $current_site = $this->environmentResolver->getActiveProject();
+      $environmentResolver = $this->handlers->get('environmentResolver');
+      $current_site = $environmentResolver->getActiveProject();
 
       if ($current_site instanceof Project && $current_site->getName() !== Project::ETUSIVU) {
-        $environment = $this->environmentResolver->getEnvironment(
+        $environment = $environmentResolver->getEnvironment(
           Project::ETUSIVU,
-          $this->environmentResolver->getActiveEnvironmentName()
+          $environmentResolver->getActiveEnvironmentName()
         );
 
         if ($environment instanceof Environment && $environment->getEnvironment() === EnvironmentEnum::Local) {

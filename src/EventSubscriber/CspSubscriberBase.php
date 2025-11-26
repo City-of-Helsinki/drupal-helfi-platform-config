@@ -10,6 +10,8 @@ use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
 use Drupal\csp\PolicyHelper;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -32,20 +34,21 @@ abstract class CspSubscriberBase implements EventSubscriberInterface {
   /**
    * Constructor.
    *
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
-   *   The environment resolver.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   The module handler.
-   * @param \Drupal\csp\PolicyHelper $cspHelper
-   *   The CSP helper.
+   * @param \Psr\Container\ContainerInterface $handlers
+   *   The autowire container.
    */
   public function __construct(
-    protected readonly EnvironmentResolverInterface $environmentResolver,
     protected readonly ConfigFactoryInterface $configFactory,
     protected readonly ModuleHandlerInterface $moduleHandler,
-    protected readonly PolicyHelper $cspHelper,
+    #[AutowireLocator([
+      'environmentResolver' => '?' . EnvironmentResolverInterface::class,
+      'cspHelper' => '?' . PolicyHelper::class,
+    ])]
+    protected readonly ContainerInterface $handlers,
   ) {
   }
 

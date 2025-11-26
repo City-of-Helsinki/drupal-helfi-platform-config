@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 
 use DG\BypassFinals;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\csp\Csp;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
@@ -14,8 +16,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Base class for Csp EventSubscriber tests.
@@ -67,6 +68,13 @@ abstract class CspEventSubscriberTestBase extends UnitTestCase {
   protected ObjectProphecy $policyHelper;
 
   /**
+   * The mocked autowire handler container.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $handlers;
+
+  /**
    * The EventSubscriber to test.
    *
    * @var \Drupal\helfi_platform_config\EventSubscriber\CspSubscriberBase
@@ -94,12 +102,15 @@ abstract class CspEventSubscriberTestBase extends UnitTestCase {
     $this->moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
     $this->policyHelper = $this->prophesize(PolicyHelper::class);
 
+    $this->handlers = $this->prophesize(ContainerInterface::class);
+    $this->handlers->get('environmentResolver')->willReturn($this->environmentResolver->reveal());
+    $this->handlers->get('cspHelper')->willReturn($this->policyHelper->reveal());
+
     if ($this->eventClass) {
       $this->eventSubscriber = new $this->eventClass(
-        $this->environmentResolver->reveal(),
         $this->configFactory->reveal(),
         $this->moduleHandler->reveal(),
-        $this->policyHelper->reveal(),
+        $this->handlers->reveal(),
       );
     }
   }

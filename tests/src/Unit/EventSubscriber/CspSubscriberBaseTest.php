@@ -22,10 +22,9 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
    */
   public function testGetSubscribedEvents(): void {
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->policyHelper->reveal(),
+      $this->handlers->reveal(),
     ) extends CspSubscriberBase {};
 
     $this->assertEquals([CspEvents::POLICY_ALTER => 'policyAlter'], $this->eventSubscriber->getSubscribedEvents());
@@ -38,10 +37,9 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
    */
   public function testPolicyAlterWithAllDirectives(): void {
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->policyHelper->reveal(),
+      $this->handlers->reveal(),
     ) extends CspSubscriberBase {
       const CONNECT_SRC = ['https://example.com'];
       const FONT_SRC = ['https://example.com'];
@@ -72,10 +70,9 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
    */
   public function testPolicyAlterWithSomeDirectives(): void {
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->policyHelper->reveal(),
+      $this->handlers->reveal(),
     ) extends CspSubscriberBase {
       const CONNECT_SRC = ['https://example.com'];
       const SCRIPT_SRC = ['https://example.com'];
@@ -102,10 +99,9 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->moduleHandler->moduleExists('test_module')->willReturn(TRUE);
 
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->policyHelper->reveal(),
+      $this->handlers->reveal(),
     ) extends CspSubscriberBase {
       const MODULE_DEPENDENCY = 'test_module';
       const CONNECT_SRC = ['https://example.com'];
@@ -127,10 +123,9 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->moduleHandler->moduleExists('test_module')->willReturn(FALSE);
 
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->policyHelper->reveal(),
+      $this->handlers->reveal(),
     ) extends CspSubscriberBase {
       const MODULE_DEPENDENCY = 'test_module';
       const CONNECT_SRC = ['https://example.com'];
