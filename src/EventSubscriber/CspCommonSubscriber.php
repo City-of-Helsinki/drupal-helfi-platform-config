@@ -84,7 +84,7 @@ class CspCommonSubscriber extends CspSubscriberBase {
 
     foreach ($inline_scripts as $inline_script) {
       $hash = Csp::calculateHash($inline_script);
-      $this->handlers->get('cspHelper')->appendHash($event->getPolicy(), 'script', 'elem', ['unsafe-inline'], $hash);
+      $this->policyHelper->appendHash($event->getPolicy(), 'script', 'elem', ['unsafe-inline'], $hash);
     }
   }
 

@@ -24,7 +24,8 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->handlers->reveal(),
+      $this->environmentResolver->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {};
 
     $this->assertEquals([CspEvents::POLICY_ALTER => 'policyAlter'], $this->eventSubscriber->getSubscribedEvents());
@@ -39,7 +40,8 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->handlers->reveal(),
+      $this->environmentResolver->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const CONNECT_SRC = ['https://example.com'];
       const FONT_SRC = ['https://example.com'];
@@ -72,7 +74,8 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->handlers->reveal(),
+      $this->environmentResolver->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const CONNECT_SRC = ['https://example.com'];
       const SCRIPT_SRC = ['https://example.com'];
@@ -101,7 +104,8 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->handlers->reveal(),
+      $this->environmentResolver->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const MODULE_DEPENDENCY = 'test_module';
       const CONNECT_SRC = ['https://example.com'];
@@ -125,7 +129,8 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->handlers->reveal(),
+      $this->environmentResolver->reveal(),
+      $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const MODULE_DEPENDENCY = 'test_module';
       const CONNECT_SRC = ['https://example.com'];
