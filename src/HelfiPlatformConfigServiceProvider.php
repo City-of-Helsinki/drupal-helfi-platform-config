@@ -49,33 +49,44 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
    * {@inheritdoc}
    */
   public function register(ContainerBuilder $container) : void {
+    self::registerCspEventSubscribers($container, [
+      CspCleanSubscriber::class,
+      CspIbmChatAppSubscriber::class,
+      CspReactAndShareSubscriber::class,
+      CspTeliaAceWidgetSubscriber::class,
+      CspElasticProxySubscriber::class,
+      CspCommonSubscriber::class,
+      CspLocalDevSubscriber::class,
+      CspSiteimproveSubscriber::class,
+      CspSentrySubscriber::class,
+      CspSocialMediaSubscriber::class,
+    ]);
+  }
+
+  /**
+   * Register CSP event subscribers.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+   *   The container builder.
+   * @param array $event_subscribers
+   *   The event subscribers to register.
+   */
+  public static function registerCspEventSubscribers(ContainerBuilder $container, array $event_subscribers): void {
     // We cannot use the module handler as the container is not yet compiled.
     // @see \Drupal\Core\DrupalKernel::compileContainer()
     $modules = $container->getParameter('container.modules');
 
-    // Register CSP event subscribers only if the csp module is enabled.
-    if (isset($modules['csp'])) {
-      $event_subscribers = [
-        CspCleanSubscriber::class,
-        CspIbmChatAppSubscriber::class,
-        CspReactAndShareSubscriber::class,
-        CspTeliaAceWidgetSubscriber::class,
-        CspElasticProxySubscriber::class,
-        CspCommonSubscriber::class,
-        CspLocalDevSubscriber::class,
-        CspSiteimproveSubscriber::class,
-        CspSentrySubscriber::class,
-        CspSocialMediaSubscriber::class,
-      ];
+    if (!isset($modules['csp'])) {
+      return;
+    }
 
-      foreach ($event_subscribers as $event_subscriber) {
-        $container->register($event_subscriber, $event_subscriber)
-          ->addTag('event_subscriber')
-          ->addArgument(new Reference('config.factory'))
-          ->addArgument(new Reference('module_handler'))
-          ->addArgument(new Reference('helfi_api_base.environment_resolver'))
-          ->addArgument(new Reference('csp.policy_helper'));
-      }
+    foreach ($event_subscribers as $event_subscriber) {
+      $container->register($event_subscriber, $event_subscriber)
+        ->addTag('event_subscriber')
+        ->addArgument(new Reference('config.factory'))
+        ->addArgument(new Reference('module_handler'))
+        ->addArgument(new Reference('helfi_api_base.environment_resolver'))
+        ->addArgument(new Reference('csp.policy_helper'));
     }
   }
 
