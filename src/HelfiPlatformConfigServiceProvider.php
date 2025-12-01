@@ -66,7 +66,7 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
   /**
    * Register CSP event subscribers.
    *
-   * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+   * @param \Drupal\Core\DependencyInjection\ContainerBuilder $container
    *   The container builder.
    * @param array $event_subscribers
    *   The event subscribers to register.
