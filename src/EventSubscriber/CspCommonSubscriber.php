@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\EventSubscriber;
 
+use Drupal\csp\Event\PolicyAlterEvent;
+use Drupal\big_pipe\Render\Placeholder\BigPipeStrategy;
+use Drupal\csp\Csp;
+
 /**
  * Event subscriber for CSP policy alteration.
  *
@@ -58,5 +62,30 @@ class CspCommonSubscriber extends CspSubscriberBase {
   const STYLE_SRC = [
     'https://*.hel.fi',
   ];
+
+  /**
+   * Alter CSP policies.
+   *
+   * @param \Drupal\csp\Event\PolicyAlterEvent $event
+   *   The policy alter event.
+   */
+  public function policyAlter(PolicyAlterEvent $event): void {
+    parent::policyAlter($event);
+
+    // Inline script hashes that can not be easily added
+    // elsewhere.
+    $inline_scripts = [];
+
+    if ($this->moduleHandler->moduleExists('big_pipe')) {
+      // BigPipe no-JS cookie.
+      // @see big_pipe_page_attachments().
+      $inline_scripts[] = 'document.cookie = "' . BigPipeStrategy::NOJS_COOKIE . '=1; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"';
+    }
+
+    foreach ($inline_scripts as $inline_script) {
+      $hash = Csp::calculateHash($inline_script);
+      $this->policyHelper->appendHash($event->getPolicy(), 'script', 'elem', ['unsafe-inline'], $hash);
+    }
+  }
 
 }
