@@ -1,8 +1,8 @@
 diff --git a/core/core.services.yml b/core/core.services.yml
-index 4a2b3f831a..03f04f59db 100644
+index 8b9d1119c300..b297e440824e 100644
 --- a/core/core.services.yml
 +++ b/core/core.services.yml
-@@ -860,7 +860,7 @@ services:
+@@ -814,7 +814,7 @@ services:
    Drupal\Core\Menu\MenuLinkManagerInterface: '@plugin.manager.menu.link'
    menu.link_tree:
      class: Drupal\Core\Menu\MenuLinkTree
@@ -12,7 +12,7 @@ index 4a2b3f831a..03f04f59db 100644
    menu.default_tree_manipulators:
      class: Drupal\Core\Menu\DefaultMenuLinkTreeManipulators
 diff --git a/core/lib/Drupal/Core/Menu/MenuLinkBase.php b/core/lib/Drupal/Core/Menu/MenuLinkBase.php
-index 7757f45159..6ef381f6e1 100644
+index 7757f451593a..6ef381f6e1b0 100644
 --- a/core/lib/Drupal/Core/Menu/MenuLinkBase.php
 +++ b/core/lib/Drupal/Core/Menu/MenuLinkBase.php
 @@ -3,7 +3,7 @@
@@ -24,7 +24,7 @@ index 7757f45159..6ef381f6e1 100644
  use Drupal\Core\Plugin\PluginBase;
  use Drupal\Core\Url;
 
-@@ -12,6 +12,8 @@ use Drupal\Core\Url;
+@@ -12,6 +12,8 @@
   */
  abstract class MenuLinkBase extends PluginBase implements MenuLinkInterface {
 
@@ -33,7 +33,7 @@ index 7757f45159..6ef381f6e1 100644
    /**
     * The list of definition values where an override is allowed.
     *
-@@ -209,25 +211,4 @@ abstract class MenuLinkBase extends PluginBase implements MenuLinkInterface {
+@@ -209,25 +211,4 @@ public function deleteLink() {
      throw new PluginException("Menu link plugin with ID '{$this->getPluginId()}' does not support deletion");
    }
 
@@ -60,10 +60,10 @@ index 7757f45159..6ef381f6e1 100644
 -
  }
 diff --git a/core/lib/Drupal/Core/Menu/MenuLinkInterface.php b/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
-index 0699aef361..4a420627fc 100644
+index 0699aef361d9..4a420627fcf1 100644
 --- a/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
 +++ b/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
-@@ -4,13 +4,13 @@ namespace Drupal\Core\Menu;
+@@ -4,13 +4,13 @@
 
  use Drupal\Component\Plugin\PluginInspectionInterface;
  use Drupal\Component\Plugin\DerivativeInspectionInterface;
@@ -80,10 +80,10 @@ index 0699aef361..4a420627fc 100644
    /**
     * Returns the weight of the menu link.
 diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTree.php b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
-index 0d2035055b..45049f0138 100644
+index 0d2035055bb6..528f171733e3 100644
 --- a/core/lib/Drupal/Core/Menu/MenuLinkTree.php
 +++ b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
-@@ -9,6 +9,7 @@ use Drupal\Core\Routing\PreloadableRouteProviderInterface;
+@@ -9,6 +9,7 @@
  use Drupal\Core\Routing\RouteProviderInterface;
  use Drupal\Core\Template\Attribute;
  use Drupal\Core\Utility\CallableResolver;
@@ -100,33 +100,60 @@ index 0d2035055b..45049f0138 100644
     */
    public function __construct(
      protected MenuTreeStorageInterface $treeStorage,
-@@ -35,7 +38,12 @@ class MenuLinkTree implements MenuLinkTreeInterface {
+@@ -35,7 +38,12 @@ public function __construct(
      protected RouteProviderInterface $routeProvider,
      protected MenuActiveTrailInterface $menuActiveTrail,
      protected CallableResolver $callableResolver,
 +    protected ?EventDispatcherInterface $eventDispatcher = NULL,
    ) {
 +    if ($eventDispatcher === NULL) {
-+      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.4.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
++      @trigger_error('The event_dispatcher service must be passed to ' . __NAMESPACE__ . '\MenuLinkTree::__construct(). It was added in drupal:11.1.0 and will be required before drupal:12.0.0.', E_USER_DEPRECATED);
 +      $this->eventDispatcher = \Drupal::service('event_dispatcher');
 +    }
    }
 
    /**
-@@ -102,7 +110,9 @@ class MenuLinkTree implements MenuLinkTreeInterface {
+@@ -102,6 +110,7 @@ protected function createInstances(array $data_tree) {
     * {@inheritdoc}
     */
    public function transform(array $tree, array $manipulators) {
--    foreach ($manipulators as $manipulator) {
-+    $event = new MenuLinkTreeManipulatorsAlterEvent($tree, $manipulators, $this);
-+    $this->eventDispatcher->dispatch($event);
-+    foreach ($event->getManipulators() as $manipulator) {
++    $this->eventDispatcher->dispatch(new MenuLinkTreeManipulatorsAlterEvent($tree, $manipulators, $this), MenuLinkTreeEvents::ALTER_MANIPULATORS);
+     foreach ($manipulators as $manipulator) {
        $callable = $this->callableResolver->getCallableFromDefinition($manipulator['callable']);
        // Prepare the arguments for the menu tree manipulator callable; the first
-       // argument is always the menu link tree.
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
+new file mode 100644
+index 000000000000..c72f39f38d22
+--- /dev/null
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
+@@ -0,0 +1,24 @@
++<?php
++
++namespace Drupal\Core\Menu;
++
++/**
++ * Defines events for the menu link tree system.
++ *
++ * @see \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent
++ */
++final class MenuLinkTreeEvents {
++
++  /**
++   * Name of the event fired during menu link tree manipulator collection.
++   *
++   * This event allows modules to modify menu tree manipulators. The event
++   * listener method receives a \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent instance.
++   *
++   * @Event
++   *
++   * @see \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent
++   */
++  const ALTER_MANIPULATORS = 'menu.link_tree.alter_manipulators';
++
++}
 diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
 new file mode 100644
-index 0000000000..f681d1b977
+index 000000000000..f681d1b977cd
 --- /dev/null
 +++ b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
 @@ -0,0 +1,89 @@
@@ -219,93 +246,14 @@ index 0000000000..f681d1b977
 +  }
 +
 +}
-diff --git a/core/modules/navigation/navigation.services.yml b/core/modules/navigation/navigation.services.yml
-index 69415698fa..b1f6994bee 100644
---- a/core/modules/navigation/navigation.services.yml
-+++ b/core/modules/navigation/navigation.services.yml
-@@ -1,6 +1,3 @@
--parameters:
--  navigation.skip_procedural_hook_scan: true
--
- services:
-   _defaults:
-     autoconfigure: true
-@@ -12,13 +9,12 @@ services:
-         '@module_handler',
-         '@current_route_match',
-         '@plugin.manager.menu.local_task',
-+        '@entity_type.manager',
-         '@image.factory',
-         '@file_url_generator',
-         '@plugin.manager.layout_builder.section_storage',
-         '@request_stack',
--        '@extension.list.module',
--        '@current_user',
--        '@navigation.entity_route_helper',
-+        '@extension.list.module'
-       ]
-   Drupal\navigation\NavigationRenderer: '@navigation.renderer'
-
-@@ -31,23 +27,10 @@ services:
-         '@router.route_provider',
-         '@menu.active_trail',
-         '@callable_resolver',
--        '@module_handler',
--      ]
--
--  navigation.entity_route_helper:
--    class: Drupal\navigation\EntityRouteHelper
--    arguments:
--      [
--        '@current_route_match',
--        '@entity_type.manager',
--        '@cache.discovery',
-+        '@event_dispatcher',
-       ]
--  Drupal\navigation\EntityRouteHelper: '@navigation.entity_route_helper'
--
--  plugin.manager.top_bar_item:
--    class: Drupal\navigation\TopBarItemManager
--    parent: default_plugin_manager
--  Drupal\navigation\TopBarItemManagerInterface: '@plugin.manager.top_bar_item'
-
--  Drupal\navigation\Menu\NavigationMenuLinkTreeManipulators:
--    autowire: true
-+  navigation.user_lazy_builder:
-+    class: Drupal\navigation\UserLazyBuilder
-+    arguments: ['@module_handler', '@current_user']
-+  Drupal\navigation\UserLazyBuilders: '@navigation.user_lazy_builder'
 diff --git a/core/modules/system/tests/modules/menu_test/menu_test.routing.yml b/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
-index d9f611164c..579d71bb80 100644
+index 4f3c9e28b1c5..bf544f10d441 100644
 --- a/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
 +++ b/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
-@@ -585,6 +585,54 @@ menu_test.breadcrumb3:
+@@ -577,3 +577,27 @@ menu_test.breadcrumb3:
+     _title: 'Normal title'
    requirements:
      _access: 'TRUE'
-
-+menu_test.manipulator1:
-+  path: '/menu-test/manipulators/1'
-+  defaults:
-+    _controller: '\Drupal\menu_test\Controller\MenuTestController::menuTestCallback'
-+    _title: 'Link 1'
-+  requirements:
-+    _access: 'TRUE'
-+
-+menu_test.manipulator2:
-+  path: '/menu-test/manipulators/2'
-+  defaults:
-+    _controller: '\Drupal\menu_test\Controller\MenuTestController::menuTestCallback'
-+    _title: 'Link 2'
-+  requirements:
-+    _access: 'TRUE'
-+
-+menu_test.manipulator3:
-+  path: '/menu-test/manipulators/3'
-+  defaults:
-+    _controller: '\Drupal\menu_test\Controller\MenuTestController::menuTestCallback'
-+    _title: 'Link 1'
-+  requirements:
-+    _access: 'TRUE'
 +
 +menu_test.manipulator1:
 +  path: '/menu-test/manipulators/1'
@@ -330,15 +278,11 @@ index d9f611164c..579d71bb80 100644
 +    _title: 'Link 1'
 +  requirements:
 +    _access: 'TRUE'
-+
- menu_test.skippable-breadcrumb:
-   path: '/menu-test/skippable-breadcrumb'
-   defaults:
 diff --git a/core/modules/system/tests/modules/menu_test/menu_test.services.yml b/core/modules/system/tests/modules/menu_test/menu_test.services.yml
-index e1a0aa059b..26f944b760 100644
+index e1a0aa059bce..759dd1a5b589 100644
 --- a/core/modules/system/tests/modules/menu_test/menu_test.services.yml
 +++ b/core/modules/system/tests/modules/menu_test/menu_test.services.yml
-@@ -9,3 +9,13 @@ services:
+@@ -9,3 +9,8 @@ services:
      arguments: ['@request_stack']
      tags:
        - { name: access_check, applies_to: _menu_test_session_access }
@@ -347,16 +291,112 @@ index e1a0aa059b..26f944b760 100644
 +    class: Drupal\menu_test\EventSubscriber\MenuLinkTreeEventSubscriber
 +    tags:
 +      - { name: event_subscriber }
+diff --git a/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php b/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
+new file mode 100644
+index 000000000000..7133785d3d51
+--- /dev/null
++++ b/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
+@@ -0,0 +1,36 @@
++<?php
 +
-+  menu_test.event_subscriber.menu_link_tree:
-+    class: Drupal\menu_test\EventSubscriber\MenuLinkTreeEventSubscriber
-+    tags:
-+      - { name: event_subscriber }
++namespace Drupal\menu_test\EventSubscriber;
++
++use Drupal\Core\Menu\MenuLinkTreeEvents;
++use Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent;
++use Drupal\menu_test\MenuLinkManipulators;
++use Symfony\Component\EventDispatcher\EventSubscriberInterface;
++
++/**
++ * Menu tree subscriber for menu tree manipulator events.
++ */
++class MenuLinkTreeEventSubscriber implements EventSubscriberInterface {
++
++  /**
++   * Add our test menu link manipulators.
++   *
++   * @param \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent $event
++   *   The event.
++   */
++  public static function alterMenuLinkManipulators(MenuLinkTreeManipulatorsAlterEvent $event) {
++    $manipulators = &$event->getManipulators();
++    // Append the test menu link manipulator.
++    $manipulators[] = ['callable' => MenuLinkManipulators::getTestManipulator()];
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function getSubscribedEvents() {
++    return [
++      MenuLinkTreeEvents::ALTER_MANIPULATORS => ['alterMenuLinkManipulators'],
++    ];
++  }
++
++}
+diff --git a/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php b/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php
+new file mode 100644
+index 000000000000..fd3d08c68ae1
+--- /dev/null
++++ b/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php
+@@ -0,0 +1,53 @@
++<?php
++
++namespace Drupal\menu_test;
++
++use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++
++/**
++ * A menu manipulator.
++ */
++class MenuLinkManipulators implements ContainerInjectionInterface {
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container) {
++    return new static();
++  }
++
++  /**
++   * Add the class menu-test-link to certain links.
++   *
++   * @param \Drupal\Core\Menu\MenuLinkTreeElement[] $tree
++   *   The menu tree.
++   *
++   * @return array
++   *   The menu manipulators.
++   */
++  public function testManipulator(array $tree) {
++    foreach ($tree as $key => $element) {
++      $link = $tree[$key]->link;
++      $url = $link->getUrlObject();
++      if ($url->isRouted()) {
++        $manipulators = ['menu_test.manipulator2', 'menu_test.manipulator3'];
++        if (in_array($url->getRouteName(), $manipulators)) {
++          $tree[$key]->options['attributes']['class'][] = 'menu-test-link';
++        }
++      }
++    }
++    return $tree;
++  }
++
++  /**
++   * Gets the name of menu manipulator.
++   *
++   * @return string
++   *   The manipulator name.
++   */
++  public static function getTestManipulator() {
++    return self::class . ":testManipulator";
++  }
++
++}
 diff --git a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php b/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
-index 6cb099e067..38240f29ed 100644
+index da1865e0fefe..37976cac1703 100644
 --- a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
 +++ b/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
-@@ -43,7 +43,8 @@ class MenuLinkTreeTest extends UnitTestCase {
+@@ -39,7 +39,8 @@ protected function setUp(): void {
        $this->createMock('\Drupal\Core\Menu\MenuLinkManagerInterface'),
        $this->createMock('\Drupal\Core\Routing\RouteProviderInterface'),
        $this->createMock('\Drupal\Core\Menu\MenuActiveTrailInterface'),
@@ -367,20 +407,20 @@ index 6cb099e067..38240f29ed 100644
 
      $cache_contexts_manager = $this->getMockBuilder('Drupal\Core\Cache\Context\CacheContextsManager')
 diff --git a/core/modules/toolbar/toolbar.services.yml b/core/modules/toolbar/toolbar.services.yml
-index ec4345bd82..61d1e67e6d 100644
+index ee89f222c28c..05f813718637 100644
 --- a/core/modules/toolbar/toolbar.services.yml
 +++ b/core/modules/toolbar/toolbar.services.yml
-@@ -16,4 +16,4 @@ services:
+@@ -13,4 +13,4 @@ services:
        - { name: page_cache_request_policy }
    toolbar.menu_tree:
      class: Drupal\toolbar\Menu\ToolbarMenuLinkTree
 -    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver']
 +    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver', '@event_dispatcher']
 diff --git a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php b/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
-index 1e13609709..d9cdc73ac9 100644
+index ee7b5c02d2f0..1735a83d4951 100644
 --- a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
 +++ b/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
-@@ -242,4 +242,94 @@ class MenuLinkTreeTest extends KernelTestBase {
+@@ -174,4 +174,49 @@ public function testUserLoginAndUserLogoutLinks(): void {
      $this->assertSame(['user_logout_example'], $get_accessible_links());
    }
 
@@ -389,64 +429,19 @@ index 1e13609709..d9cdc73ac9 100644
 +   */
 +  public function testMenuManipulatorAlter(): void {
 +    $links = [
-+      1 => MenuLinkMock::createMock([
++      1 => MenuLinkMock::create([
 +        'id' => 'test.link1',
 +        'route_name' => 'menu_test.manipulator1',
 +        'title' => 'Link 1',
 +        'parent' => '',
 +      ]),
-+      2 => MenuLinkMock::createMock([
++      2 => MenuLinkMock::create([
 +        'id' => 'test.link2',
 +        'route_name' => 'menu_test.manipulator2',
 +        'title' => 'Link 2',
 +        'parent' => '',
 +      ]),
-+      3 => MenuLinkMock::createMock([
-+        'id' => 'test.link3',
-+        'route_name' => 'menu_test.manipulator3',
-+        'title' => 'Link 3',
-+        'parent' => '',
-+      ]),
-+    ];
-+    foreach ($links as $instance) {
-+      $this->menuLinkManager->addDefinition($instance->getPluginId(),
-+        $instance->getPluginDefinition());
-+    }
-+    $parameters = new MenuTreeParameters();
-+    $tree = $this->linkTree->load('mock', $parameters);
-+    $manipulators = [
-+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
-+    ];
-+    $tree = $this->linkTree->transform($tree, $manipulators);
-+
-+    $this->assertCount(3, $tree);
-+    /** @var \Drupal\Core\Menu\MenuLinkTreeElement[] $tree */
-+    list($link1, $link2, $link3) = array_values($tree);
-+
-+    // Check that the correct links have an additional class.
-+    $this->assertNotContains('menu-test-link', $link1->options['attributes']['class'] ?? []);
-+    $this->assertContains('menu-test-link', $link2->options['attributes']['class'] ?? []);
-+    $this->assertContains('menu-test-link', $link3->options['attributes']['class'] ?? []);
-+  }
-+
-+  /**
-+   * Tests menu link manipulator alter events.
-+   */
-+  public function testMenuManipulatorAlter(): void {
-+    $links = [
-+      1 => MenuLinkMock::createMock([
-+        'id' => 'test.link1',
-+        'route_name' => 'menu_test.manipulator1',
-+        'title' => 'Link 1',
-+        'parent' => '',
-+      ]),
-+      2 => MenuLinkMock::createMock([
-+        'id' => 'test.link2',
-+        'route_name' => 'menu_test.manipulator2',
-+        'title' => 'Link 2',
-+        'parent' => '',
-+      ]),
-+      3 => MenuLinkMock::createMock([
++      3 => MenuLinkMock::create([
 +        'id' => 'test.link3',
 +        'route_name' => 'menu_test.manipulator3',
 +        'title' => 'Link 3',
@@ -475,3 +470,644 @@ index 1e13609709..d9cdc73ac9 100644
 +  }
 +
  }
+--
+GitLab
+
+
+From edfc9192c7d994e5ced9863f52188b5f907e7062 Mon Sep 17 00:00:00 2001
+From: Adam Bramley <adam.bramley@previousnext.com.au>
+Date: Fri, 26 Jul 2024 10:53:26 +1000
+Subject: [PATCH 02/14] Lint
+
+---
+ core/lib/Drupal/Core/Menu/MenuLinkTree.php                      | 2 +-
+ .../lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTree.php b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+index 528f171733e3..49565d4dbb83 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTree.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+@@ -41,7 +41,7 @@ public function __construct(
+     protected ?EventDispatcherInterface $eventDispatcher = NULL,
+   ) {
+     if ($eventDispatcher === NULL) {
+-      @trigger_error('The event_dispatcher service must be passed to ' . __NAMESPACE__ . '\MenuLinkTree::__construct(). It was added in drupal:11.1.0 and will be required before drupal:12.0.0.', E_USER_DEPRECATED);
++      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.1.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
+       $this->eventDispatcher = \Drupal::service('event_dispatcher');
+     }
+   }
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+index f681d1b977cd..495c41c2481e 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+@@ -44,7 +44,7 @@ public function __construct(array $tree, array &$manipulators, MenuLinkTreeInter
+     $this->tree = $tree;
+     $this->manipulators = &$manipulators;
+     $this->menuLinkTree = $menuLinkTree;
+-   }
++  }
+
+   /**
+    * The MenuLinkElement tree.
+--
+GitLab
+
+
+From 1df070bcb07aa533a8afd1faec1687632413f45a Mon Sep 17 00:00:00 2001
+From: Adam Bramley <adam.bramley@previousnext.com.au>
+Date: Fri, 26 Jul 2024 11:06:01 +1000
+Subject: [PATCH 03/14] Return types
+
+---
+ .../src/EventSubscriber/MenuLinkTreeEventSubscriber.php       | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php b/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
+index 7133785d3d51..adf50cd81238 100644
+--- a/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
++++ b/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
+@@ -18,7 +18,7 @@ class MenuLinkTreeEventSubscriber implements EventSubscriberInterface {
+    * @param \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent $event
+    *   The event.
+    */
+-  public static function alterMenuLinkManipulators(MenuLinkTreeManipulatorsAlterEvent $event) {
++  public static function alterMenuLinkManipulators(MenuLinkTreeManipulatorsAlterEvent $event): void {
+     $manipulators = &$event->getManipulators();
+     // Append the test menu link manipulator.
+     $manipulators[] = ['callable' => MenuLinkManipulators::getTestManipulator()];
+@@ -27,7 +27,7 @@ public static function alterMenuLinkManipulators(MenuLinkTreeManipulatorsAlterEv
+   /**
+    * {@inheritdoc}
+    */
+-  public static function getSubscribedEvents() {
++  public static function getSubscribedEvents(): array {
+     return [
+       MenuLinkTreeEvents::ALTER_MANIPULATORS => ['alterMenuLinkManipulators'],
+     ];
+--
+GitLab
+
+
+From 0bdd8c36878d3902355ce679601c07d9d7f8e645 Mon Sep 17 00:00:00 2001
+From: Adam Bramley <adam.bramley@previousnext.com.au>
+Date: Mon, 29 Jul 2024 09:54:35 +1000
+Subject: [PATCH 04/14] Add new dep to child service in navigation module
+
+---
+ core/modules/navigation/navigation.services.yml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/core/modules/navigation/navigation.services.yml b/core/modules/navigation/navigation.services.yml
+index 6c5ca8462d9e..b1f6994beef4 100644
+--- a/core/modules/navigation/navigation.services.yml
++++ b/core/modules/navigation/navigation.services.yml
+@@ -27,6 +27,7 @@ services:
+         '@router.route_provider',
+         '@menu.active_trail',
+         '@callable_resolver',
++        '@event_dispatcher',
+       ]
+
+   navigation.user_lazy_builder:
+--
+GitLab
+
+
+From aaa0cfe5cd80d8669e22644e60e9cb522f6d87e7 Mon Sep 17 00:00:00 2001
+From: Adam Bramley <adam.bramley@previousnext.com.au>
+Date: Fri, 2 Aug 2024 08:50:43 +1000
+Subject: [PATCH 05/14] Strict types, constructor promo, minor tidy ups
+
+---
+ .../Drupal/Core/Menu/MenuLinkTreeEvents.php   |  2 ++
+ .../MenuLinkTreeManipulatorsAlterEvent.php    | 34 +++++--------------
+ .../MenuLinkTreeEventSubscriber.php           |  7 ++--
+ .../menu_test/src/MenuLinkManipulators.php    | 23 +++----------
+ 4 files changed, 19 insertions(+), 47 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
+index c72f39f38d22..aba4176289b5 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
+@@ -1,5 +1,7 @@
+ <?php
+
++declare(strict_types=1);
++
+ namespace Drupal\Core\Menu;
+
+ /**
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+index 495c41c2481e..f8ba5d3dd43b 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+@@ -1,5 +1,7 @@
+ <?php
+
++declare(strict_types=1);
++
+ namespace Drupal\Core\Menu;
+
+ use Drupal\Component\EventDispatcher\Event;
+@@ -9,27 +11,6 @@
+  */
+ class MenuLinkTreeManipulatorsAlterEvent extends Event {
+
+-  /**
+-   * The menu tree to manipulate.
+-   *
+-   * @var \Drupal\Core\Menu\MenuLinkTreeElement[]
+-   */
+-  protected $tree;
+-
+-  /**
+-   * The menu link tree manipulators.
+-   *
+-   * @var array
+-   */
+-  protected $manipulators;
+-
+-  /**
+-   * The menu link tree.
+-   *
+-   * @var \Drupal\Core\Menu\MenuLinkTreeInterface
+-   */
+-  protected $menuLinkTree;
+-
+   /**
+    * MenuLinkTreeManipulatorsAlterEvent constructor.
+    *
+@@ -40,10 +21,11 @@ class MenuLinkTreeManipulatorsAlterEvent extends Event {
+    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuLinkTree
+    *   The menu link tree.
+    */
+-  public function __construct(array $tree, array &$manipulators, MenuLinkTreeInterface $menuLinkTree) {
+-    $this->tree = $tree;
+-    $this->manipulators = &$manipulators;
+-    $this->menuLinkTree = $menuLinkTree;
++  public function __construct(
++    protected array $tree,
++    protected array $manipulators,
++    protected MenuLinkTreeInterface $menuLinkTree,
++  ) {
+   }
+
+   /**
+@@ -62,7 +44,7 @@ public function getTree(): array {
+    * @return array
+    *   The menu tree manipulators.
+    */
+-  public function &getManipulators(): array {
++  public function getManipulators(): array {
+     return $this->manipulators;
+   }
+
+diff --git a/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php b/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
+index adf50cd81238..da7079a4c022 100644
+--- a/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
++++ b/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
+@@ -1,5 +1,7 @@
+ <?php
+
++declare(strict_types=1);
++
+ namespace Drupal\menu_test\EventSubscriber;
+
+ use Drupal\Core\Menu\MenuLinkTreeEvents;
+@@ -19,9 +21,10 @@ class MenuLinkTreeEventSubscriber implements EventSubscriberInterface {
+    *   The event.
+    */
+   public static function alterMenuLinkManipulators(MenuLinkTreeManipulatorsAlterEvent $event): void {
+-    $manipulators = &$event->getManipulators();
++    $manipulators = $event->getManipulators();
+     // Append the test menu link manipulator.
+-    $manipulators[] = ['callable' => MenuLinkManipulators::getTestManipulator()];
++    $manipulators[] = ['callable' => MenuLinkManipulators::class . ':testManipulator'];
++    $event->setManipulators($manipulators);
+   }
+
+   /**
+diff --git a/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php b/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php
+index fd3d08c68ae1..542a955de1db 100644
+--- a/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php
++++ b/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php
+@@ -1,5 +1,7 @@
+ <?php
+
++declare(strict_types=1);
++
+ namespace Drupal\menu_test;
+
+ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+@@ -8,14 +10,7 @@
+ /**
+  * A menu manipulator.
+  */
+-class MenuLinkManipulators implements ContainerInjectionInterface {
+-
+-  /**
+-   * {@inheritdoc}
+-   */
+-  public static function create(ContainerInterface $container) {
+-    return new static();
+-  }
++final class MenuLinkManipulators {
+
+   /**
+    * Add the class menu-test-link to certain links.
+@@ -26,7 +21,7 @@ public static function create(ContainerInterface $container) {
+    * @return array
+    *   The menu manipulators.
+    */
+-  public function testManipulator(array $tree) {
++  public function testManipulator(array $tree): array {
+     foreach ($tree as $key => $element) {
+       $link = $tree[$key]->link;
+       $url = $link->getUrlObject();
+@@ -40,14 +35,4 @@ public function testManipulator(array $tree) {
+     return $tree;
+   }
+
+-  /**
+-   * Gets the name of menu manipulator.
+-   *
+-   * @return string
+-   *   The manipulator name.
+-   */
+-  public static function getTestManipulator() {
+-    return self::class . ":testManipulator";
+-  }
+-
+ }
+--
+GitLab
+
+
+From 48e1b3a87d18c5771bf7f7bbbe9e6985d2548392 Mon Sep 17 00:00:00 2001
+From: Adam Bramley <adam.bramley@previousnext.com.au>
+Date: Fri, 2 Aug 2024 09:01:26 +1000
+Subject: [PATCH 06/14] Unused use
+
+---
+ .../tests/modules/menu_test/src/MenuLinkManipulators.php       | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php b/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php
+index 542a955de1db..a36703d68341 100644
+--- a/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php
++++ b/core/modules/system/tests/modules/menu_test/src/MenuLinkManipulators.php
+@@ -4,9 +4,6 @@
+
+ namespace Drupal\menu_test;
+
+-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+-use Symfony\Component\DependencyInjection\ContainerInterface;
+-
+ /**
+  * A menu manipulator.
+  */
+--
+GitLab
+
+
+From 195f95b42b232669708a7c8b987eaa655c68f115 Mon Sep 17 00:00:00 2001
+From: Eduardo Morales <eduardo.morales@metadrop.net>
+Date: Fri, 6 Sep 2024 12:29:10 +0200
+Subject: [PATCH 07/14] Issue #3091246 by malcolm_p, eduardo morales alberti,
+ joachim, tunic: Allow MenuLinkTree manipulators to be altered
+
+---
+ core/lib/Drupal/Core/Menu/MenuLinkTree.php | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTree.php b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+index 49565d4dbb83..38f4bf77a32d 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTree.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+@@ -110,8 +110,9 @@ protected function createInstances(array $data_tree) {
+    * {@inheritdoc}
+    */
+   public function transform(array $tree, array $manipulators) {
+-    $this->eventDispatcher->dispatch(new MenuLinkTreeManipulatorsAlterEvent($tree, $manipulators, $this), MenuLinkTreeEvents::ALTER_MANIPULATORS);
+-    foreach ($manipulators as $manipulator) {
++    $event = new MenuLinkTreeManipulatorsAlterEvent($tree, $manipulators, $this);
++    $this->eventDispatcher->dispatch($event, MenuLinkTreeEvents::ALTER_MANIPULATORS);
++    foreach ($event->getManipulators() as $manipulator) {
+       $callable = $this->callableResolver->getCallableFromDefinition($manipulator['callable']);
+       // Prepare the arguments for the menu tree manipulator callable; the first
+       // argument is always the menu link tree.
+--
+GitLab
+
+
+From eb4b9faaecb35b564d271d966dcd9e21a77efaf1 Mon Sep 17 00:00:00 2001
+From: Eduardo Morales <eduardo.morales@metadrop.net>
+Date: Mon, 21 Jul 2025 11:20:03 +0200
+Subject: [PATCH 08/14] Issue #3091246: Allow MenuLinkTree manipulators to be
+ altered
+
+---
+ core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php            | 3 ++-
+ core/modules/navigation/src/Menu/NavigationMenuLinkTree.php | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
+index aba4176289b5..7d90b2a9a83f 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
+@@ -15,7 +15,8 @@ final class MenuLinkTreeEvents {
+    * Name of the event fired during menu link tree manipulator collection.
+    *
+    * This event allows modules to modify menu tree manipulators. The event
+-   * listener method receives a \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent instance.
++   * listener method receives a
++   * \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent instance.
+    *
+    * @Event
+    *
+diff --git a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+index f3699b12a9e2..0112871bf3f7 100644
+--- a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
++++ b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+@@ -38,7 +38,7 @@ final class NavigationMenuLinkTree extends MenuLinkTree {
+    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
+    *   The module handler.
+    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
+-   * The event dispatcher.
++   *   The event dispatcher.
+    */
+   public function __construct(
+     MenuTreeStorageInterface $treeStorage,
+--
+GitLab
+
+
+From 18fb951f1cfe55990489b23d8fba721f2d1b944f Mon Sep 17 00:00:00 2001
+From: Eduardo Morales <eduardo.morales@metadrop.net>
+Date: Mon, 21 Jul 2025 11:51:34 +0200
+Subject: [PATCH 09/14] Issue #3091246: Allow MenuLinkTree manipulators to be
+ altered
+
+---
+ core/lib/Drupal/Core/Menu/MenuLinkTree.php    |  2 +-
+ .../Drupal/Core/Menu/MenuLinkTreeEvents.php   | 27 -------------------
+ .../MenuLinkTreeEventSubscriber.php           |  3 +--
+ 3 files changed, 2 insertions(+), 30 deletions(-)
+ delete mode 100644 core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
+
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTree.php b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+index 38f4bf77a32d..a3b892277ecc 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTree.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+@@ -111,7 +111,7 @@ protected function createInstances(array $data_tree) {
+    */
+   public function transform(array $tree, array $manipulators) {
+     $event = new MenuLinkTreeManipulatorsAlterEvent($tree, $manipulators, $this);
+-    $this->eventDispatcher->dispatch($event, MenuLinkTreeEvents::ALTER_MANIPULATORS);
++    $this->eventDispatcher->dispatch($event);
+     foreach ($event->getManipulators() as $manipulator) {
+       $callable = $this->callableResolver->getCallableFromDefinition($manipulator['callable']);
+       // Prepare the arguments for the menu tree manipulator callable; the first
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
+deleted file mode 100644
+index 7d90b2a9a83f..000000000000
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTreeEvents.php
++++ /dev/null
+@@ -1,27 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace Drupal\Core\Menu;
+-
+-/**
+- * Defines events for the menu link tree system.
+- *
+- * @see \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent
+- */
+-final class MenuLinkTreeEvents {
+-
+-  /**
+-   * Name of the event fired during menu link tree manipulator collection.
+-   *
+-   * This event allows modules to modify menu tree manipulators. The event
+-   * listener method receives a
+-   * \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent instance.
+-   *
+-   * @Event
+-   *
+-   * @see \Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent
+-   */
+-  const ALTER_MANIPULATORS = 'menu.link_tree.alter_manipulators';
+-
+-}
+diff --git a/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php b/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
+index da7079a4c022..e4e62615e9da 100644
+--- a/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
++++ b/core/modules/system/tests/modules/menu_test/src/EventSubscriber/MenuLinkTreeEventSubscriber.php
+@@ -4,7 +4,6 @@
+
+ namespace Drupal\menu_test\EventSubscriber;
+
+-use Drupal\Core\Menu\MenuLinkTreeEvents;
+ use Drupal\Core\Menu\MenuLinkTreeManipulatorsAlterEvent;
+ use Drupal\menu_test\MenuLinkManipulators;
+ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+@@ -32,7 +31,7 @@ public static function alterMenuLinkManipulators(MenuLinkTreeManipulatorsAlterEv
+    */
+   public static function getSubscribedEvents(): array {
+     return [
+-      MenuLinkTreeEvents::ALTER_MANIPULATORS => ['alterMenuLinkManipulators'],
++      MenuLinkTreeManipulatorsAlterEvent::class => ['alterMenuLinkManipulators'],
+     ];
+   }
+
+--
+GitLab
+
+
+From ca0e44941c9c4a1df6eb9834be78208a59718dc2 Mon Sep 17 00:00:00 2001
+From: sleitner <38752-sleitner@users.noreply.drupalcode.org>
+Date: Wed, 22 Oct 2025 19:44:51 +0000
+Subject: [PATCH 10/14] Remove constructor parameter comments
+
+---
+ .../Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php   | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+index f8ba5d3dd43b..d659b93326ab 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+@@ -11,16 +11,6 @@
+  */
+ class MenuLinkTreeManipulatorsAlterEvent extends Event {
+
+-  /**
+-   * MenuLinkTreeManipulatorsAlterEvent constructor.
+-   *
+-   * @param \Drupal\Core\Menu\MenuLinkTreeElement[] $tree
+-   *   The menu tree to manipulate.
+-   * @param array $manipulators
+-   *   The menu link tree manipulators.
+-   * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuLinkTree
+-   *   The menu link tree.
+-   */
+   public function __construct(
+     protected array $tree,
+     protected array $manipulators,
+--
+GitLab
+
+
+From d5670bfa817009b74393786cfb130b16ed063b77 Mon Sep 17 00:00:00 2001
+From: sleitner <38752-sleitner@users.noreply.drupalcode.org>
+Date: Wed, 22 Oct 2025 19:48:32 +0000
+Subject: [PATCH 11/14] phpstan createMock
+
+---
+ .../tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php b/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
+index 15cb3ef32549..88fa93d8dafa 100644
+--- a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
++++ b/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
+@@ -181,19 +181,19 @@ public function testUserLoginAndUserLogoutLinks(): void {
+    */
+   public function testMenuManipulatorAlter(): void {
+     $links = [
+-      1 => MenuLinkMock::create([
++      1 => MenuLinkMock::createMock([
+         'id' => 'test.link1',
+         'route_name' => 'menu_test.manipulator1',
+         'title' => 'Link 1',
+         'parent' => '',
+       ]),
+-      2 => MenuLinkMock::create([
++      2 => MenuLinkMock::createMock([
+         'id' => 'test.link2',
+         'route_name' => 'menu_test.manipulator2',
+         'title' => 'Link 2',
+         'parent' => '',
+       ]),
+-      3 => MenuLinkMock::create([
++      3 => MenuLinkMock::createMock([
+         'id' => 'test.link3',
+         'route_name' => 'menu_test.manipulator3',
+         'title' => 'Link 3',
+--
+GitLab
+
+
+From 98ea69572c5da895549554d1bd1d00f79bd35d71 Mon Sep 17 00:00:00 2001
+From: sleitner <38752-sleitner@users.noreply.drupalcode.org>
+Date: Wed, 22 Oct 2025 20:12:53 +0000
+Subject: [PATCH 12/14] Changed deprecated in drupal:11.3.0
+
+---
+ core/lib/Drupal/Core/Menu/MenuLinkTree.php                  | 2 +-
+ core/modules/navigation/src/Menu/NavigationMenuLinkTree.php | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTree.php b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+index a3b892277ecc..269b5ed7e194 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTree.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+@@ -41,7 +41,7 @@ public function __construct(
+     protected ?EventDispatcherInterface $eventDispatcher = NULL,
+   ) {
+     if ($eventDispatcher === NULL) {
+-      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.1.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
++      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.3.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
+       $this->eventDispatcher = \Drupal::service('event_dispatcher');
+     }
+   }
+diff --git a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+index 0112871bf3f7..0f0704d543db 100644
+--- a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
++++ b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+@@ -52,7 +52,7 @@ public function __construct(
+     parent::__construct($treeStorage, $menuLinkManager, $routeProvider, $menuActiveTrail, $callableResolver);
+
+     if ($eventDispatcher === NULL) {
+-      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.1.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
++      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.3.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
+       $this->eventDispatcher = \Drupal::service('event_dispatcher');
+     }
+   }
+--
+GitLab
+
+
+From 94b39e8623ded969fb917367754f1fc0cbf13c27 Mon Sep 17 00:00:00 2001
+From: sleitner <38752-sleitner@users.noreply.drupalcode.org>
+Date: Wed, 22 Oct 2025 20:41:41 +0000
+Subject: [PATCH 13/14] parse the eventDispatcher to parent constructor
+
+---
+ core/modules/navigation/src/Menu/NavigationMenuLinkTree.php | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+index 0f0704d543db..ab06e9b968f3 100644
+--- a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
++++ b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+@@ -49,12 +49,11 @@ public function __construct(
+     protected ModuleHandlerInterface $moduleHandler,
+     protected ?EventDispatcherInterface $eventDispatcher = NULL,
+   ) {
+-    parent::__construct($treeStorage, $menuLinkManager, $routeProvider, $menuActiveTrail, $callableResolver);
+-
+     if ($eventDispatcher === NULL) {
+       @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.3.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
+-      $this->eventDispatcher = \Drupal::service('event_dispatcher');
++      $eventDispatcher = \Drupal::service('event_dispatcher');
+     }
++    parent::__construct($treeStorage, $menuLinkManager, $routeProvider, $menuActiveTrail, $callableResolver, $eventDispatcher);
+   }
+
+   /**
+--
+GitLab
+
+
+From 5b6bdff78abb37dd7583916f0ba8e35dd3a9dbba Mon Sep 17 00:00:00 2001
+From: sleitner <38752-sleitner@users.noreply.drupalcode.org>
+Date: Sun, 30 Nov 2025 19:53:30 +0000
+Subject: [PATCH 14/14] 11.3 to 11.4
+
+---
+ core/lib/Drupal/Core/Menu/MenuLinkTree.php                  | 2 +-
+ core/modules/navigation/src/Menu/NavigationMenuLinkTree.php | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTree.php b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+index 269b5ed7e194..45049f0138a8 100644
+--- a/core/lib/Drupal/Core/Menu/MenuLinkTree.php
++++ b/core/lib/Drupal/Core/Menu/MenuLinkTree.php
+@@ -41,7 +41,7 @@ public function __construct(
+     protected ?EventDispatcherInterface $eventDispatcher = NULL,
+   ) {
+     if ($eventDispatcher === NULL) {
+-      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.3.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
++      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.4.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
+       $this->eventDispatcher = \Drupal::service('event_dispatcher');
+     }
+   }
+diff --git a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+index ab06e9b968f3..cd0adc4ce8a7 100644
+--- a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
++++ b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
+@@ -50,7 +50,7 @@ public function __construct(
+     protected ?EventDispatcherInterface $eventDispatcher = NULL,
+   ) {
+     if ($eventDispatcher === NULL) {
+-      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.3.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
++      @trigger_error('Calling ' . __METHOD__ . '() without the $eventDispatcher argument is deprecated in drupal:11.4.0 and will be required in drupal:12.0.0. See https://www.drupal.org/node/3463907', E_USER_DEPRECATED);
+       $eventDispatcher = \Drupal::service('event_dispatcher');
+     }
+     parent::__construct($treeStorage, $menuLinkManager, $routeProvider, $menuActiveTrail, $callableResolver, $eventDispatcher);
+--
+GitLab
