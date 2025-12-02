@@ -14,7 +14,7 @@ use Drupal\user\Entity\User;
  *
  * @group helfi_ckeditor
  */
-class HelfiCKEditorPluginTests extends WebDriverTestBase {
+class HelfiCKEditorPluginTest extends WebDriverTestBase {
 
   use CKEditor5TestTrait;
 
