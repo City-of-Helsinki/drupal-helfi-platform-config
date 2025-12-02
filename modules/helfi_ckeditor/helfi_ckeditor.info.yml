@@ -11,3 +11,4 @@ dependencies:
   - linkit:linkit
 'interface translation project': helfi_ckeditor
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_ckeditor/translations/%language.po
+container_rebuild_required: true
