@@ -1,0 +1,48 @@
+diff --git a/core/includes/common.inc b/core/includes/common.inc
+index 9c60a811ce3..26e0c648bf3 100644
+--- a/core/includes/common.inc
++++ b/core/includes/common.inc
+@@ -460,6 +460,10 @@ function drupal_flush_all_caches($kernel = NULL): void {
+
+   // Reload modules.
+   \Drupal::moduleHandler()->reload();
++  // Update config language if rebuilding without a request, e.g. via drush.
++  /** @var \Drupal\Core\Language\LanguageManagerInterface $language_manager */
++  $language_manager = \Drupal::service('language_manager');
++  $language_manager->setConfigOverrideLanguage($language_manager->getCurrentLanguage());
+
+   // Rebuild all information based on new module data.
+   \Drupal::moduleHandler()->invokeAll('rebuild');
+diff --git a/core/lib/Drupal/Core/Entity/EntityFieldManager.php b/core/lib/Drupal/Core/Entity/EntityFieldManager.php
+index d3d020df329..2df2084cacf 100644
+--- a/core/lib/Drupal/Core/Entity/EntityFieldManager.php
++++ b/core/lib/Drupal/Core/Entity/EntityFieldManager.php
+@@ -186,22 +186,20 @@ public function __construct(EntityTypeManagerInterface $entity_type_manager, Ent
+    */
+   public function getBaseFieldDefinitions($entity_type_id) {
+     // Check the static cache.
+-    if (!isset($this->baseFieldDefinitions[$entity_type_id])) {
++    $language = $this->languageManager->getCurrentLanguage()->getId();
++    if (!isset($this->baseFieldDefinitions[$entity_type_id][$language])) {
+       // Not prepared, try to load from cache.
+       $cid = 'entity_base_field_definitions:' . $entity_type_id . ':' . $this->languageManager->getCurrentLanguage()->getId();
+       if ($cache = $this->cacheGet($cid)) {
+-        $this->baseFieldDefinitions[$entity_type_id] = $cache->data;
++        $this->baseFieldDefinitions[$entity_type_id][$language] = $cache->data;
+       }
+       else {
+         // Rebuild the definitions and put it into the cache.
+-        $this->baseFieldDefinitions[$entity_type_id] = $this->buildBaseFieldDefinitions($entity_type_id);
+-        $this->cacheSet($cid, $this->baseFieldDefinitions[$entity_type_id], Cache::PERMANENT, [
+-          'entity_types',
+-          'entity_field_info',
+-        ]);
++        $this->baseFieldDefinitions[$entity_type_id][$language] = $this->buildBaseFieldDefinitions($entity_type_id);
++        $this->cacheSet($cid, $this->baseFieldDefinitions[$entity_type_id][$language], Cache::PERMANENT, ['entity_types', 'entity_field_info']);
+       }
+     }
+-    return $this->baseFieldDefinitions[$entity_type_id];
++    return $this->baseFieldDefinitions[$entity_type_id][$language];
+   }
+
+   /**
