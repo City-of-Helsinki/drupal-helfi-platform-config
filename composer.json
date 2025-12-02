@@ -72,10 +72,11 @@
     },
     "conflict": {
         "drupal/core": "<10.5",
-        "drupal/redirect": "<1.12",
         "drupal/core-composer-scaffold": "<10.5",
-        "drupal/helfi_media_map": "*",
         "drupal/external_entity": "<3.0.0-beta6",
+        "drupal/gin_toolbar": "<3.0",
+        "drupal/helfi_media_map": "*",
+        "drupal/redirect": "<1.12",
         "drush/drush": "<12"
     },
     "extra": {
