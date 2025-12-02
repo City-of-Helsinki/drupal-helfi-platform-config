@@ -28,7 +28,7 @@
         "drupal/focal_point": "^2.0",
         "drupal/jquery_ui": "^1.6",
         "drupal/jquery_ui_draggable": "^2.0",
-        "drupal/gin_toolbar": "^2.1",
+        "drupal/gin_toolbar": "^3.0",
         "drupal/helfi_api_base": "*",
         "drupal/helfi_tpr": "*",
         "drupal/image_style_quality": "^1.4",
