@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "require": {
         "ext-curl": "*",
-        "drupal/core": "^11.2",
+        "drupal/core": "^11",
         "drupal/action": "^0.2",
         "drupal/admin_toolbar": "^3.0",
         "drupal/allowed_formats": "^3.0",
@@ -28,7 +28,7 @@
         "drupal/focal_point": "^2.0",
         "drupal/jquery_ui": "^1.6",
         "drupal/jquery_ui_draggable": "^2.0",
-        "drupal/gin_toolbar": "^3.0",
+        "drupal/gin_toolbar": "^2.0 || ^3.0",
         "drupal/helfi_api_base": "*",
         "drupal/helfi_tpr": "*",
         "drupal/image_style_quality": "^1.4",
