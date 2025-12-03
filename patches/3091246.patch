@@ -59,7 +59,7 @@ index 7757f45159..6ef381f6e1 100644
 -  }
 -
  }
-diff --git a/core/lib/Drupal/Core/Menu/MenuLinkInterface.php bcore//lib/Drupal/Core/Menu/MenuLinkInterface.php
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkInterface.php b/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
 index 0699aef361..4a420627fc 100644
 --- a/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
 +++ b/core/lib/Drupal/Core/Menu/MenuLinkInterface.php
@@ -124,7 +124,7 @@ index 0d2035055b..45049f0138 100644
        $callable = $this->callableResolver->getCallableFromDefinition($manipulator['callable']);
        // Prepare the arguments for the menu tree manipulator callable; the first
        // argument is always the menu link tree.
-diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php bcore//lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
+diff --git a/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php b/core/lib/Drupal/Core/Menu/MenuLinkTreeManipulatorsAlterEvent.php
 new file mode 100644
 index 0000000000..d659b93326
 --- /dev/null
@@ -203,7 +203,7 @@ index 925efe58a4..3d6df4fd4e 100644
        ]
 
    navigation.entity_route_helper:
-diff --git a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php bcore//modules/navigation/src/Menu/NavigationMenuLinkTree.php
+diff --git a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
 index 68ce42fc02..cd0adc4ce8 100644
 --- a/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
 +++ b/core/modules/navigation/src/Menu/NavigationMenuLinkTree.php
@@ -239,7 +239,7 @@ index 68ce42fc02..cd0adc4ce8 100644
    }
 
    /**
-diff --git a/core/modules/system/tests/modules/menu_test/menu_test.routing.yml bcore//modules/system/tests/modules/menu_test/menu_test.routing.yml
+diff --git a/core/modules/system/tests/modules/menu_test/menu_test.routing.yml b/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
 index d9f611164c..622850104a 100644
 --- a/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
 +++ b/core/modules/system/tests/modules/menu_test/menu_test.routing.yml
@@ -274,7 +274,7 @@ index d9f611164c..622850104a 100644
  menu_test.skippable-breadcrumb:
    path: '/menu-test/skippable-breadcrumb'
    defaults:
-diff --git a/core/modules/system/tests/modules/menu_test/menu_test.services.yml bcore//modules/system/tests/modules/menu_test/menu_test.services.yml
+diff --git a/core/modules/system/tests/modules/menu_test/menu_test.services.yml b/core/modules/system/tests/modules/menu_test/menu_test.services.yml
 index e1a0aa059b..759dd1a5b5 100644
 --- a/core/modules/system/tests/modules/menu_test/menu_test.services.yml
 +++ b/core/modules/system/tests/modules/menu_test/menu_test.services.yml
@@ -287,7 +287,7 @@ index e1a0aa059b..759dd1a5b5 100644
 +    class: Drupal\menu_test\EventSubscriber\MenuLinkTreeEventSubscriber
 +    tags:
 +      - { name: event_subscriber }
-diff --git a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php bcore//modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
+diff --git a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php b/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
 index 51a9bd0e38..35b036c4b9 100644
 --- a/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
 +++ b/core/modules/system/tests/src/Unit/Menu/MenuLinkTreeTest.php
@@ -301,7 +301,7 @@ index 51a9bd0e38..35b036c4b9 100644
      );
 
      $cache_contexts_manager = $this->getMockBuilder('Drupal\Core\Cache\Context\CacheContextsManager')
-diff --git a/core/modules/toolbar/toolbar.services.yml bcore//modules/toolbar/toolbar.services.yml
+diff --git a/core/modules/toolbar/toolbar.services.yml b/core/modules/toolbar/toolbar.services.yml
 index 67a1b07191..db08c0e763 100644
 --- a/core/modules/toolbar/toolbar.services.yml
 +++ b/core/modules/toolbar/toolbar.services.yml
@@ -311,7 +311,7 @@ index 67a1b07191..db08c0e763 100644
      class: Drupal\toolbar\Menu\ToolbarMenuLinkTree
 -    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver']
 +    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@callable_resolver', '@event_dispatcher']
-diff --git a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php bcore//tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
+diff --git a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php b/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
 index ee7b5c02d2..f3d67e57e4 100644
 --- a/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php
 +++ b/core/tests/Drupal/KernelTests/Core/Menu/MenuLinkTreeTest.php

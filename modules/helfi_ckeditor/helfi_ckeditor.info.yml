@@ -1,6 +1,7 @@
 name: 'HELfi: ckeditor'
 type: module
 core_version_requirement: '^10 || ^11'
+container_rebuild_required: true
 dependencies:
   - drupal:ckeditor5
   - drupal:ckeditor5_paste_filter

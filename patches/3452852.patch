@@ -1,0 +1,147 @@
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
+index a0824c65f1..82c61646a2 100644
+--- a/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowireTrait.php
+@@ -2,9 +2,7 @@
+
+ namespace Drupal\Core\DependencyInjection;
+
+-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+-use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
+
+ /**
+  * Defines a trait for automatically wiring dependencies from the container.
+@@ -14,6 +12,8 @@ use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
+  */
+ trait AutowireTrait {
+
++  use AutowiredInstanceTrait;
++
+   /**
+    * Instantiates a new instance of the implementing class using autowiring.
+    *
+@@ -23,29 +23,7 @@ trait AutowireTrait {
+    * @return static
+    */
+   public static function create(ContainerInterface $container) {
+-    $args = [];
+-
+-    if (method_exists(static::class, '__construct')) {
+-      $constructor = new \ReflectionMethod(static::class, '__construct');
+-      foreach ($constructor->getParameters() as $parameter) {
+-        $service = ltrim((string) $parameter->getType(), '?');
+-        foreach ($parameter->getAttributes(Autowire::class) as $attribute) {
+-          $service = (string) $attribute->newInstance()->value;
+-        }
+-
+-        if (!$container->has($service)) {
+-          if ($parameter->allowsNull()) {
+-            $args[] = NULL;
+-            continue;
+-          }
+-          throw new AutowiringFailedException($service, sprintf('Cannot autowire service "%s": argument "$%s" of method "%s::_construct()", you should configure its value explicitly.', $service, $parameter->getName(), static::class));
+-        }
+-
+-        $args[] = $container->get($service);
+-      }
+-    }
+-
+-    return new static(...$args);
++    return static::createInstanceAutowired($container);
+   }
+
+ }
+diff --git a/core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php b/core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php
+new file mode 100644
+index 0000000000..a7b0c7f411
+--- /dev/null
++++ b/core/lib/Drupal/Core/DependencyInjection/AutowiredInstanceTrait.php
+@@ -0,0 +1,50 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Core\DependencyInjection;
++
++use Symfony\Component\DependencyInjection\Attribute\Autowire;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
++
++/**
++ * Defines a base trait for automatically wiring dependency arguments.
++ */
++trait AutowiredInstanceTrait {
++
++  /**
++   * Instantiates a new instance of the implementing class using autowiring.
++   *
++   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
++   *   The service container this instance should use.
++   * @param mixed ...$args
++   *   Any predefined arguments to pass to the constructor.
++   *
++   * @return static
++   */
++  public static function createInstanceAutowired(ContainerInterface $container, mixed ...$args): static {
++    if (method_exists(static::class, '__construct')) {
++      $constructor = new \ReflectionMethod(static::class, '__construct');
++      foreach (array_slice($constructor->getParameters(), count($args)) as $parameter) {
++        $service = ltrim((string) $parameter->getType(), '?');
++        foreach ($parameter->getAttributes(Autowire::class) as $attribute) {
++          $service = (string) $attribute->newInstance()->value;
++        }
++
++        if (!$container->has($service)) {
++          if ($parameter->allowsNull()) {
++            $args[] = NULL;
++            continue;
++          }
++          throw new AutowiringFailedException($service, sprintf('Cannot autowire service "%s": argument "$%s" of method "%s::_construct()", you should configure its value explicitly.', $service, $parameter->getName(), static::class));
++        }
++
++        $args[] = $container->get($service);
++      }
++    }
++
++    return new static(...$args);
++  }
++
++}
+diff --git a/core/lib/Drupal/Core/Plugin/PluginBase.php b/core/lib/Drupal/Core/Plugin/PluginBase.php
+index 5407dc09b5..ddec5e852d 100644
+--- a/core/lib/Drupal/Core/Plugin/PluginBase.php
++++ b/core/lib/Drupal/Core/Plugin/PluginBase.php
+@@ -3,9 +3,11 @@
+ namespace Drupal\Core\Plugin;
+
+ use Drupal\Component\Plugin\PluginBase as ComponentPluginBase;
++use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
+ use Drupal\Core\Messenger\MessengerTrait;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ use Drupal\Core\DependencyInjection\DependencySerializationTrait;
++use Symfony\Component\DependencyInjection\ContainerInterface;
+
+ /**
+  * Base class for plugins supporting metadata inspection and translation.
+@@ -13,8 +15,20 @@ use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+  * @ingroup plugin_api
+  */
+ abstract class PluginBase extends ComponentPluginBase {
++  use AutowiredInstanceTrait;
+   use StringTranslationTrait;
+   use DependencySerializationTrait;
+   use MessengerTrait;
+
++  /**
++   * Instantiates a new instance of the implementing class using autowiring.
++   *
++   * @see \Drupal\Core\Plugin\ContainerFactoryPluginInterface
++   *
++   * @return static
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
++    return static::createInstanceAutowired($container, $configuration, $plugin_id, $plugin_definition);
++  }
++
+ }
