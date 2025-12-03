@@ -2,6 +2,7 @@ name: 'Helfi admin tools'
 type: module
 description: 'Performs alterations to hdbt and hdbt admin related content.'
 core_version_requirement: ^10 || ^11
+container_rebuild_required: true
 dependencies:
   - admin_toolbar:admin_toolbar
   - admin_toolbar_tools:admin_toolbar_tools
