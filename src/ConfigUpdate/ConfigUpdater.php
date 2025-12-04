@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\config_rewrite\ConfigRewriterInterface;
-use Drupal\helfi_platform_config\Hook\ModuleHooks;
 
 /**
  * A helper class to deal with config updates.

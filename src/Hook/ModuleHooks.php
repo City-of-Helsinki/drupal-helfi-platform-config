@@ -7,10 +7,8 @@ namespace Drupal\helfi_platform_config\Hook;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
-use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
  * Module hook implementations for modules.
