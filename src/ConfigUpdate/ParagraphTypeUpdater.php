@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\field\FieldConfigInterface;
 
 /**
  * Handles updates to paragraph type configurations.
@@ -47,7 +48,9 @@ class ParagraphTypeUpdater {
       }
 
       // Save the field to trigger re-build of target_bundles.
-      $field->save();
+      if ($field instanceof FieldConfigInterface) {
+        $field->save();
+      }
     }
   }
 
