@@ -23,15 +23,12 @@ class ModuleHooks {
   }
 
   /**
-   * Implements hook_modules_installed().
+   * Implements hook_module_preinstall().
    */
-  #[Hook('modules_installed')]
-  public function modulesInstalled(array $modules, bool $is_syncing): void {
+  #[Hook('module_preinstall')]
+  public function modulePreinstall(string $module, bool $is_syncing): void {
 
-    if (
-      $is_syncing ||
-      !in_array('helfi_image_styles', $modules)
-    ) {
+    if ($is_syncing || $module !== 'helfi_image_styles') {
       return;
     }
 
