@@ -82,7 +82,6 @@
         "patches": {
             "drupal/core": {
                 "[#3452852]: Add create() factory method with autowired parameters to PluginBase": "./public/modules/contrib/helfi_platform_config/patches/3452852.patch",
-                "[#2348931]: Use native MySQL statement preparation via PDO": "./public/modules/contrib/helfi_platform_config/patches/2348931.patch",
                 "[#UHF-181] Hide untranslated menu links (https://www.drupal.org/project/drupal/issues/3091246)": "./public/modules/contrib/helfi_platform_config/patches/3091246.patch",
                 "[#UHF-3812] Ajax exposed filters not working for multiple instances of the same Views block placed on one page (https://www.drupal.org/project/drupal/issues/3163299)": "https://www.drupal.org/files/issues/2023-05-07/3163299-104-D10.patch",
                 "[#UHF-4325] Strip whitespaces from twig debug comments": "./public/modules/contrib/helfi_platform_config/patches/drupal_core_strip_debug_mode_whitespaces_10.3.x.patch",
