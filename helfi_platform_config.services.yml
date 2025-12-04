@@ -73,6 +73,11 @@ services:
       - '@module_handler'
       - '@entity_type.manager'
 
+  Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater: '@helfi_platform_config.paragraph_type_updater'
+  helfi_platform_config.paragraph_type_updater:
+    class: Drupal\helfi_platform_config\Paragraph\ParagraphTypeUpdater
+    arguments: ['@module_handler', '@entity_field.manager']
+
   helfi_platform_config.term_route_subscriber:
     class: Drupal\helfi_platform_config\Routing\TermRouteSubscriber
 

@@ -34,13 +34,15 @@ final class ConfigUpdater {
    *   The module handler.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater $paragraphTypeUpdater
+   *   The paragraph type updater.
    */
   public function __construct(
     private ConfigInstallerInterface $configInstaller,
     private ConfigRewriterInterface $configRewriter,
     private ModuleHandlerInterface $moduleHandler,
     private EntityTypeManagerInterface $entityTypeManager,
-    private ModuleHooks $moduleHooks,
+    private ParagraphTypeUpdater $paragraphTypeUpdater,
   ) {
     $this->skipUpdate = Settings::get('is_azure', FALSE);
   }
@@ -81,7 +83,7 @@ final class ConfigUpdater {
     $this->updatePermissions($permissions ?? []);
 
     // Update all paragraph field handlers.
-    $this->moduleHooks->updateParagraphTargetTypes();
+    $this->paragraphTypeUpdater->updateParagraphTargetTypes();
   }
 
 }
