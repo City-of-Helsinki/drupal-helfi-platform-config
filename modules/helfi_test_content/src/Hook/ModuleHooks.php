@@ -37,7 +37,6 @@ class ModuleHooks {
       // Install instance specific test content if the helfi_test_content has
       // been installed.
       if (array_key_exists('helfi_custom_test_content', $this->moduleExtensionList->getList())) {
-        /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
         $this->moduleInstaller->install(['helfi_custom_test_content']);
       }
 
