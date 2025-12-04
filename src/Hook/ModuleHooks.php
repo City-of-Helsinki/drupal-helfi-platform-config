@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
+use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 
 /**
  * Module hook implementations for modules.
