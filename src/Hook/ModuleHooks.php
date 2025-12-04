@@ -51,7 +51,7 @@ class ModuleHooks {
   /**
    * Invokes all helfi_paragraph_types hooks and updates field configurations.
    */
-  protected function updateParagraphTargetTypes(): void {
+  public function updateParagraphTargetTypes(): void {
     $paragraphTypes = $this->moduleHandler->invokeAll('helfi_paragraph_types');
 
     foreach ($paragraphTypes as $type) {

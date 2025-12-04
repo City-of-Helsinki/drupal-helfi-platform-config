@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\config_rewrite\ConfigRewriterInterface;
+use Drupal\helfi_platform_config\Hook\ModuleHooks;
 
 /**
  * A helper class to deal with config updates.
@@ -39,6 +40,7 @@ final class ConfigUpdater {
     private ConfigRewriterInterface $configRewriter,
     private ModuleHandlerInterface $moduleHandler,
     private EntityTypeManagerInterface $entityTypeManager,
+    private ModuleHooks $moduleHooks,
   ) {
     $this->skipUpdate = Settings::get('is_azure', FALSE);
   }
@@ -79,7 +81,7 @@ final class ConfigUpdater {
     $this->updatePermissions($permissions ?? []);
 
     // Update all paragraph field handlers.
-    helfi_platform_config_update_paragraph_target_types();
+    $this->moduleHooks->updateParagraphTargetTypes();
   }
 
 }
