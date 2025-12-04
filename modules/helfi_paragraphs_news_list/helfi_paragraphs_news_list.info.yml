@@ -2,6 +2,7 @@ name: 'HELfi Paragraphs: News list'
 type: module
 package: Custom
 core_version_requirement: ^10 || ^11
+container_rebuild_required: true
 dependencies:
   - allowed_formats:allowed_formats
   - drupal:entity

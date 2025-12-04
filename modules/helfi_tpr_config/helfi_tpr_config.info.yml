@@ -1,6 +1,7 @@
 name: 'HELfi TPR configuration'
 type: module
 core_version_requirement: '^10 || ^11'
+container_rebuild_required: true
 package: HELfi
 dependencies:
   - 'allowed_formats:allowed_formats'
