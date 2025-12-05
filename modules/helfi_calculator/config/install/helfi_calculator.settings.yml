@@ -24,3 +24,7 @@ calculators:
     label: 'Helsinki benefit amount estimate'
     active: false
     json: '{}'
+  communal_and_supported_housing_fee:
+    label: 'Communal and supported housing fee'
+    active: false
+    json: '{}'
