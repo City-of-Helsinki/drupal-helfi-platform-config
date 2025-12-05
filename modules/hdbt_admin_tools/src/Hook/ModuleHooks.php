@@ -41,7 +41,7 @@ class ModuleHooks {
       'helfi_tpr_config',
     ];
 
-    if (!in_array($moduleList, $modules)) {
+    if (!array_intersect($moduleList, $modules)) {
       return;
     }
 
