@@ -2,3 +2,4 @@ name: 'HDBT cookie banner test module'
 type: module
 package: Custom
 core_version_requirement: ^10 || ^11
+container_rebuild_required: true

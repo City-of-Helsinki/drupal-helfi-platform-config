@@ -10,28 +10,6 @@ declare(strict_types=1);
 use Drupal\Component\Utility\UrlHelper;
 
 /**
- * Implements hook_modules_installed().
- */
-function helfi_image_styles_modules_installed(array $modules) : void {
-  if (
-    \Drupal::isConfigSyncing() ||
-    !in_array('helfi_image_styles', $modules)
-  ) {
-    return;
-  }
-
-  /** @var \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList */
-  $moduleExtensionList = Drupal::service('extension.list.module');
-  $allModules = $moduleExtensionList->getList();
-
-  if (array_key_exists('imagemagick', $allModules)) {
-    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
-    $moduleInstaller = Drupal::service('module_installer');
-    $moduleInstaller->install(['imagemagick']);
-  }
-}
-
-/**
  * Implements hook_og_image_uri_alter().
  *
  * @see \Drupal\helfi_platform_config\Token\OGImageManager::buildUrl()

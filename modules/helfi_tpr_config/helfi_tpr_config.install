@@ -149,13 +149,6 @@ function helfi_tpr_config_update_9049(): void {
 }
 
 /**
- * UHF-8936 Update tpr_unit to include map and text paragraphs in lower content.
- */
-function helfi_tpr_config_update_9051(): void {
-  helfi_platform_config_update_paragraph_target_types();
-}
-
-/**
  * UHF-9249: Add a long description field for filling missing data.
  */
 function helfi_tpr_config_update_9052() : void {

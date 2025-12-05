@@ -14,7 +14,6 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
@@ -28,7 +27,6 @@ use Drupal\block\Entity\Block;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
-use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
@@ -45,29 +43,6 @@ function helfi_platform_config_entity_type_build(array &$entity_types): void {
       'custom' => 'is_custom',
     ]);
   }
-}
-
-/**
- * Implements hook_modules_installed().
- */
-function helfi_platform_config_modules_installed(array $modules, bool $is_syncing) : void {
-  if ($is_syncing) {
-    return;
-  }
-  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-  $moduleHandler = Drupal::service('module_handler');
-  if ($moduleHandler->moduleExists('locale')) {
-    locale_system_set_config_langcodes();
-  }
-
-  foreach ($modules as $module) {
-    $permissions = $moduleHandler->invoke($module, 'platform_config_grant_permissions');
-
-    \Drupal::service(ConfigUpdater::class)
-      ->updatePermissions($permissions ?? []);
-  }
-
-  helfi_platform_config_update_paragraph_target_types();
 }
 
 /**
@@ -139,45 +114,6 @@ function helfi_platform_config_rebuild_handler_settings(
     ];
   }
   $field->setSetting('handler_settings', $handlerSettings);
-}
-
-/**
- * Invokes all helfi_paragraph_types hooks and updates the field configuration.
- */
-function helfi_platform_config_update_paragraph_target_types() : void {
-  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-  $moduleHandler = Drupal::service('module_handler');
-  $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
-
-  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
-  $entityFieldManager = Drupal::service('entity_field.manager');
-
-  foreach ($paragraphTypes as $type) {
-    if (!$type instanceof ParagraphTypeCollection) {
-      throw new LogicException(
-        sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
-      );
-    }
-    if (!$definitions = $entityFieldManager->getFieldDefinitions($type->entityType, $type->bundle)) {
-      continue;
-    }
-    if (!isset($definitions[$type->field])) {
-      continue;
-    }
-    $field = $definitions[$type->field];
-
-    // Base fields use BaseFieldDefinition instances while configurable fields
-    // use FieldConfig instances. Save the BaseFieldOverride to trigger
-    // re-build of target_bundles.
-    if ($field instanceof BaseFieldDefinition) {
-      $field = $field->getConfig($type->bundle);
-    }
-
-    // Save the field to trigger re-build of target_bundles.
-    // @see helfi_platform_config_field_config_presave().
-    // @see helfi_platform_config_base_field_override_presave().
-    $field->save();
-  }
 }
 
 /**

@@ -7,9 +7,9 @@ namespace Drupal\Tests\helfi_platform_config\Unit;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
-use Drupal\Tests\token\Kernel\UnitTest;
 use Drupal\helfi_platform_config\Token\OGImageBuilderInterface;
 use Drupal\helfi_platform_config\Token\OGImageManager;
+use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -20,7 +20,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  * @coversDefaultClass \Drupal\helfi_platform_config\Token\OGImageManager
  * @group helfi_platform_config
  */
-class OGImageManagerTest extends UnitTest {
+class OGImageManagerTest extends UnitTestCase {
 
   use ProphecyTrait;
 
