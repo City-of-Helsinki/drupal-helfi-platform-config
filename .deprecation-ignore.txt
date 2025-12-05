@@ -2,3 +2,4 @@
 # deprecated code.
 # See https://www.drupal.org/node/3285162 for more details.
 %Drupal\\config_ignore\\Form\\IgnoreSettingsForm::buildForm(): Implicitly marking parameter \$request as nullable is deprecated, the explicit nullable type must be used instead%
+%Since symfony/validator 7.4: Support for evaluating options in the base Constraint class is deprecated. Initialize properties in the constructor of .* instead.%
