@@ -203,7 +203,6 @@ class CommunalAndSupportedHousingFee {
       // 3. Assume that user has not given income details, use max value
       // 4. If user has given income details, calculate based on that
       // 5. Add extras (safety phone and bracelet, grocery delivery service, meal service)
-      // 6. Clamp payment between 0 and max payment, round to even eurocents
 
       // 1. Get income limit
       const incomeLimit = parsedSettings.income_limit[householdSize];
@@ -219,6 +218,13 @@ class CommunalAndSupportedHousingFee {
       if (grossIncomePerMonthRaw !== null) {
         communal_and_supported_housing_payment = (grossIncomePerMonth - incomeLimit) * (percentForHouseholdSize / 100);
       }
+
+      // Clamp payment between 0 and max payment, round to even eurocents
+      communal_and_supported_housing_payment = this.calculator.clamp(
+        0,
+        Math.round(communal_and_supported_housing_payment * 100) / 100,
+        max,
+      );
 
       const subtotals = [];
       let total_payment = communal_and_supported_housing_payment;
@@ -332,9 +338,6 @@ class CommunalAndSupportedHousingFee {
           }),
         });
       }
-
-      // 6. Clamp payment between 0 and max payment, round to even eurocents
-      total_payment = this.calculator.clamp(0, Math.round(total_payment * 100) / 100, max);
 
       // Create receipt
       const receiptData = {
