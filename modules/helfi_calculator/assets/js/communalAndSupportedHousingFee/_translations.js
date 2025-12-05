@@ -65,7 +65,7 @@ const translations = {
     en: 'No',
   },
   label_safety_phone_and_bracelet_true: {
-    fi: 'Kyllä, laske arvioon',
+    fi: 'Kyllä, laske arvioon.',
     sv: 'Ja, inkludera i bedömningen.',
     en: 'Yes, include them in the estimate.',
   },
@@ -80,9 +80,9 @@ const translations = {
     en: 'The grocery delivery service delivers the groceries that you order through the service to your door. The price of the grocery delivery service includes the collection and delivery of the groceries once a week.',
   },
   label_grocery_delivery_service: {
-    fi: 'Laske arvioon ruokakaupan kotiinkuljetuspalvelu',
-    sv: 'Inkludera matbutikens hemleveranstjänst i bedömningen',
-    en: 'Include the grocery store home delivery service in the estimate',
+    fi: 'Laske arvioon kauppapalvelu',
+    sv: 'Inkludera butiksservicen i bedömningen',
+    en: 'Include the grocery delivery service in the estimate',
   },
   helper_grocery_delivery_service: {
     fi: 'Yksi toimitus viikossa maksaa ${per_delivery} euroa.',
@@ -95,7 +95,7 @@ const translations = {
     en: 'No',
   },
   label_grocery_delivery_service_true: {
-    fi: 'Kyllä, laske arvioon',
+    fi: 'Kyllä, laske arvioon.',
     sv: 'Ja, inkludera i bedömningen.',
     en: 'Yes, include them in the estimate.',
   },
