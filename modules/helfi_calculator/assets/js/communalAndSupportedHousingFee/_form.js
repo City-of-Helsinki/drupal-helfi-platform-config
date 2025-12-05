@@ -65,14 +65,6 @@ function getFormData(id, t, parsedSettings) {
         radio: {
           id: 'safety_phone_and_bracelet',
           label: t('label_safety_phone_and_bracelet'),
-          helper_text: t('helper_safety_phone_and_bracelet', {
-            price_per_visit_low_income: parsedSettings.safety_phone_and_bracelet_true.price_per_visit_low_income,
-            price_per_visit_high_income: parsedSettings.safety_phone_and_bracelet_true.price_per_visit_high_income,
-            max_price_per_month_low_income:
-              parsedSettings.safety_phone_and_bracelet_true.max_price_per_month_low_income,
-            max_price_per_month_high_income:
-              parsedSettings.safety_phone_and_bracelet_true.max_price_per_month_high_income,
-          }),
           required: true,
           radio_items: [
             {
@@ -86,6 +78,28 @@ function getFormData(id, t, parsedSettings) {
               item_id: 'safety_phone_and_bracelet_false',
               label: t('label_safety_phone_and_bracelet_false'),
               value: false,
+            },
+          ],
+        },
+      },
+      {
+        group: {
+          id: 'safetyphone_group',
+          hide_group: true,
+          items: [
+            {
+              paragraph: {
+                text: t('helper_safety_phone_and_bracelet', {
+                  price_per_visit_low_income: parsedSettings.safety_phone_and_bracelet_true.price_per_visit_low_income,
+                  price_per_visit_high_income:
+                    parsedSettings.safety_phone_and_bracelet_true.price_per_visit_high_income,
+                  max_price_per_month_low_income:
+                    parsedSettings.safety_phone_and_bracelet_true.max_price_per_month_low_income,
+                  max_price_per_month_high_income:
+                    parsedSettings.safety_phone_and_bracelet_true.max_price_per_month_high_income,
+                }),
+                class: 'hdbt-helper-text',
+              },
             },
           ],
         },

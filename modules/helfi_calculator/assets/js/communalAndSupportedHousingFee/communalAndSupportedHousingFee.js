@@ -163,7 +163,17 @@ class CommunalAndSupportedHousingFee {
     // Form content
     const getFormData = () => form.getFormData(this.id, this.t, parsedSettings);
 
-    // const update = () => {};
+    const update = () => {
+      const fields = [{ field: 'safety_phone_and_bracelet', group: 'safetyphone_group' }];
+
+      fields.forEach(({ field, group }) => {
+        if (this.calculator.getFieldValue(field) === 'true') {
+          this.calculator.showGroup(group);
+        } else {
+          this.calculator.hideGroup(group);
+        }
+      });
+    };
 
     const validate = () => {
       const errorMessages = [];
@@ -371,14 +381,14 @@ class CommunalAndSupportedHousingFee {
         const result = validate();
         this.calculator.renderResult(result);
       },
-      // keydown: () => {
-      //   update();
-      // },
-      // change: () => {
-      //   update();
-      // },
+      keydown: () => {
+        update();
+      },
+      change: () => {
+        update();
+      },
       reset: () => {
-        // window.setTimeout(update, 1);
+        window.setTimeout(update, 1);
         this.calculator.clearResult();
         this.calculator.showAriaLiveText(this.t('reset_aria_live'));
       },
