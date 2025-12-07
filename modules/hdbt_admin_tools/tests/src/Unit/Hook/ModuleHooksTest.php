@@ -6,6 +6,7 @@ namespace Drupal\Tests\hdbt_admin_tools\Unit\Hook;
 
 use Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\hdbt_admin_tools\Hook\ModuleHooks;
 use Drupal\Tests\UnitTestCase;
@@ -20,9 +21,7 @@ final class ModuleHooksTest extends UnitTestCase {
   /**
    * Tests modulesInstalled() behavior with different inputs.
    *
-   * @covers ::__construct
    * @covers ::modulesInstalled
-   *
    * @dataProvider providerModulesInstalled
    */
   public function testModulesInstalled(
@@ -33,6 +32,16 @@ final class ModuleHooksTest extends UnitTestCase {
   ): void {
     $entityDefinitionUpdateManager = $this->createMock(EntityDefinitionUpdateManagerInterface::class);
     $entityFieldManager = $this->createMock(EntityFieldManagerInterface::class);
+    $entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
+
+    // Mock entity type definitions
+    $entityTypeManager
+      ->method('hasDefinition')
+      ->willReturnMap([
+        ['node', true],
+        ['tpr_unit', true],
+        ['tpr_service', true],
+      ]);
 
     if ($hasFieldDefinitions) {
       $colorPaletteDefinition = $this->createMock(FieldStorageDefinitionInterface::class);
@@ -40,10 +49,12 @@ final class ModuleHooksTest extends UnitTestCase {
 
       $entityFieldManager
         ->method('getFieldDefinitions')
-        ->willReturn([
-          'color_palette' => $colorPaletteDefinition,
-          'hide_sidebar_navigation' => $hideSidebarDefinition,
-        ]);
+        ->willReturnCallback(function ($entityType) use ($colorPaletteDefinition, $hideSidebarDefinition) {
+          return [
+            'color_palette' => $colorPaletteDefinition,
+            'hide_sidebar_navigation' => $hideSidebarDefinition,
+          ];
+        });
     }
     else {
       $entityFieldManager
@@ -55,7 +66,7 @@ final class ModuleHooksTest extends UnitTestCase {
       ->expects($this->exactly($expectedInstallCalls))
       ->method('installFieldStorageDefinition');
 
-    $sut = new ModuleHooks($entityDefinitionUpdateManager, $entityFieldManager);
+    $sut = new ModuleHooks($entityDefinitionUpdateManager, $entityFieldManager, $entityTypeManager);
     $sut->modulesInstalled($modules, $is_syncing);
   }
 
