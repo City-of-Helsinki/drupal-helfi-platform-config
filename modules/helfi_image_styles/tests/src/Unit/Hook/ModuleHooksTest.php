@@ -19,9 +19,6 @@ final class ModuleHooksTest extends UnitTestCase {
   /**
    * Tests modulePreinstall() behavior with different inputs.
    *
-   * @covers ::__construct
-   * @covers ::modulePreinstall
-   *
    * @dataProvider providerModulePreinstall
    */
   public function testModulePreinstall(

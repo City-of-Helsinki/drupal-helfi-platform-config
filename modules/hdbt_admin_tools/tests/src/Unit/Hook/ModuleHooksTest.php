@@ -21,7 +21,6 @@ final class ModuleHooksTest extends UnitTestCase {
   /**
    * Tests modulesInstalled() behavior with different inputs.
    *
-   * @covers ::modulesInstalled
    * @dataProvider providerModulesInstalled
    */
   public function testModulesInstalled(
