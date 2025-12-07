@@ -34,13 +34,13 @@ final class ModuleHooksTest extends UnitTestCase {
     $entityFieldManager = $this->createMock(EntityFieldManagerInterface::class);
     $entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
 
-    // Mock entity type definitions
+    // Mock entity type definitions.
     $entityTypeManager
       ->method('hasDefinition')
       ->willReturnMap([
-        ['node', true],
-        ['tpr_unit', true],
-        ['tpr_service', true],
+        ['node', TRUE],
+        ['tpr_unit', TRUE],
+        ['tpr_service', TRUE],
       ]);
 
     if ($hasFieldDefinitions) {
