@@ -119,8 +119,6 @@ final class ModuleHooksTest extends UnitTestCase {
 
   /**
    * Tests that permissions returned by invoke() are passed to ConfigUpdater.
-   *
-   * @covers ::modulesInstalled
    */
   public function testModulesInstalledPassesPermissionsToConfigUpdater(): void {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
