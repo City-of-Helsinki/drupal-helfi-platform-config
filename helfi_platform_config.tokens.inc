@@ -37,6 +37,10 @@ function helfi_platform_config_token_info() : array {
       'Lead in will try to use the hero paragraph description if it exists. If not, it will use the node lead in field.'
     ),
   ];
+  $info['tokens']['helfi_multisite_node']['parent_instance'] = [
+    'name' => t('Parent instance'),
+    'description' => t('Parent instance of the node.'),
+  ];
   return $info;
 }
 
@@ -145,6 +149,14 @@ function helfi_platform_config_tokens(
               $replacements[$original] = $lead_in_text;
             }
           }
+
+        }
+        break;
+
+      // Handle parent instance.
+      case 'parent_instance':
+        if (!empty($data['helfi_multisite_node'])) {
+          $replacements[$original] = $data['helfi_multisite_node']->get('parent_instance')->value;
         }
         break;
 
