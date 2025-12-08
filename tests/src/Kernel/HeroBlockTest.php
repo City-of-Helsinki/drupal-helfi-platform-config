@@ -10,6 +10,7 @@ use Drupal\block\Entity\Block;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -44,9 +45,8 @@ class HeroBlockTest extends EntityKernelTestBase {
 
   /**
    * Test block access.
-   *
-   * @dataProvider getTestNodes
    */
+  #[DataProvider('getTestNodes')]
   public function testBlockAccess(array $values, bool $showHero) {
     $hero = Block::create([
       'id' => $this->randomMachineName(),
@@ -85,7 +85,7 @@ class HeroBlockTest extends EntityKernelTestBase {
    * @return array[]
    *   The data.
    */
-  public function getTestNodes() : array {
+  public static function getTestNodes() : array {
     return [
       [
         // Has no hero field.

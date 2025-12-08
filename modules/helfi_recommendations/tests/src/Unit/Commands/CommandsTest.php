@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_recommendations\Unit\Commands;
 
-use DG\BypassFinals;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_recommendations\Drush\Commands\Commands;
 use Drupal\helfi_recommendations\ReferenceUpdater;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
-use Drupal\helfi_recommendations\TopicsManager;
+use Drupal\helfi_recommendations\TopicsManagerInterface;
 use Drupal\node\NodeStorage;
 use Drupal\Tests\UnitTestCase;
 use Drush\Commands\DrushCommands;
@@ -33,15 +32,6 @@ class CommandsTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-
-    BypassFinals::enable();
-  }
-
-  /**
    * Gets the SUT.
    *
    * @param \Drupal\Core\Database\Connection|null $connection
@@ -50,7 +40,7 @@ class CommandsTest extends UnitTestCase {
    *   The entity type manager.
    * @param \Drupal\helfi_platform_config\TextConverter\TextConverterManager|null $textConverter
    *   The text converter.
-   * @param \Drupal\helfi_recommendations\TopicsManager|null $topicsManager
+   * @param \Drupal\helfi_recommendations\TopicsManagerInterface|null $topicsManager
    *   The topics manager.
    * @param \Drupal\helfi_recommendations\ReferenceUpdater|null $referenceUpdater
    *   The reference updated.
@@ -64,7 +54,7 @@ class CommandsTest extends UnitTestCase {
     ?Connection $connection = NULL,
     ?EntityTypeManagerInterface $entityTypeManager = NULL,
     ?TextConverterManager $textConverter = NULL,
-    ?TopicsManager $topicsManager = NULL,
+    ?TopicsManagerInterface $topicsManager = NULL,
     ?ReferenceUpdater $referenceUpdater = NULL,
     ?ObjectProphecy $io = NULL,
   ) : Commands {
@@ -78,7 +68,7 @@ class CommandsTest extends UnitTestCase {
       $textConverter = new TextConverterManager();
     }
     if (!$topicsManager) {
-      $topicsManager = $this->prophesize(TopicsManager::class)->reveal();
+      $topicsManager = $this->prophesize(TopicsManagerInterface::class)->reveal();
     }
     if (!$referenceUpdater) {
       $referenceUpdater = $this->prophesize(ReferenceUpdater::class)->reveal();

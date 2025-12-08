@@ -13,7 +13,7 @@ use Drupal\config_rewrite\ConfigRewriterInterface;
 /**
  * A helper class to deal with config updates.
  */
-final class ConfigUpdater {
+final class ConfigUpdater implements ConfigUpdaterInterface {
 
   /**
    * Whether to skip update tasks.
@@ -47,10 +47,7 @@ final class ConfigUpdater {
   }
 
   /**
-   * Updates role permissions.
-   *
-   * @param array $permissionMap
-   *   The role => permissions map.
+   * {@inheritdoc}
    */
   public function updatePermissions(array $permissionMap) : void {
     foreach ($permissionMap as $rid => $permissions) {
@@ -63,10 +60,7 @@ final class ConfigUpdater {
   }
 
   /**
-   * Re-import all configuration for given module.
-   *
-   * @param string $module
-   *   The module.
+   * {@inheritdoc}
    */
   public function update(string $module) : void {
     // These hooks should only be run on CI/local machine since the

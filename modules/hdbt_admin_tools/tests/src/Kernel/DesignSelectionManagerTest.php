@@ -6,6 +6,7 @@ namespace Drupal\Tests\hdbt_admin_tools\Kernel\Controller;
 
 use Drupal\hdbt_admin_tools\DesignSelectionManager;
 use Drupal\KernelTests\KernelTestBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Design selection manager.
@@ -23,9 +24,8 @@ class DesignSelectionManagerTest extends KernelTestBase {
 
   /**
    * Tests getImages().
-   *
-   * @dataProvider getImagesData
    */
+  #[DataProvider('getImagesData')]
   public function testGetImages(string $fieldName, array $selections, array $expected): void {
     /** @var \Drupal\hdbt_admin_tools\DesignSelectionManager $service */
     $service = $this->container->get(DesignSelectionManager::class);
@@ -39,7 +39,7 @@ class DesignSelectionManagerTest extends KernelTestBase {
    * @return array[]
    *   The data.
    */
-  public function getImagesData() : array {
+  public static function getImagesData() : array {
     $basePath = '/modules/contrib/helfi_platform_config/modules/hdbt_admin_tools/assets/images';
     return [
       [

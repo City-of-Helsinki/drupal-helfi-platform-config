@@ -17,7 +17,7 @@ use Drupal\Core\Utility\Error;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\helfi_recommendations\Client\ApiClient;
 use Drupal\helfi_recommendations\ReferenceUpdater;
-use Drupal\helfi_recommendations\TopicsManager;
+use Drupal\helfi_recommendations\TopicsManagerInterface;
 use Drush\Attributes\Argument;
 use Drush\Attributes\Command;
 use Drush\Attributes\Option;
@@ -34,25 +34,11 @@ final class Commands extends DrushCommands {
   use StringTranslationTrait;
   use DependencySerializationTrait;
 
-  /**
-   * Constructs a new instance.
-   *
-   * @param \Drupal\Core\Database\Connection $connection
-   *   The connection service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   * @param \Drupal\helfi_platform_config\TextConverter\TextConverterManager $textConverter
-   *   The text converter.
-   * @param \Drupal\helfi_recommendations\TopicsManager $topicsManager
-   *   The keyword generator.
-   * @param \Drupal\helfi_recommendations\ReferenceUpdater $referenceManager
-   *   The reference manager.
-   */
   public function __construct(
     private readonly Connection $connection,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly TextConverterManager $textConverter,
-    private readonly TopicsManager $topicsManager,
+    private readonly TopicsManagerInterface $topicsManager,
     private readonly ReferenceUpdater $referenceManager,
   ) {
     parent::__construct();

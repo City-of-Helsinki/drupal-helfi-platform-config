@@ -9,6 +9,7 @@ use Drupal\helfi_react_search\Enum\CourseCategory;
 use Drupal\helfi_react_search\Enum\EventCategory;
 use Drupal\helfi_react_search\Enum\EventListCategoryInterface;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests enum classes.
@@ -22,9 +23,8 @@ class EnumTest extends UnitTestCase {
    *
    * @param class-string $class
    *   Enum class.
-   *
-   * @dataProvider dataProvider
    */
+  #[DataProvider('dataProvider')]
   public function testEnum(string $class) {
     $this->assertTrue(enum_exists($class));
 
@@ -38,7 +38,7 @@ class EnumTest extends UnitTestCase {
   /**
    * Data provider for the test.
    */
-  protected function dataProvider(): array {
+  public static function dataProvider(): array {
     return [
       [EventCategory::class],
       [CourseCategory::class],

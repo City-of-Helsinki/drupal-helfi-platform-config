@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_media_chart\Unit;
 
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_media_chart\UrlParserTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests UrlParserTrait.
@@ -19,10 +20,10 @@ class UrlParserTraitTest extends UnitTestCase {
   /**
    * Tests chart provider URLs.
    *
-   * @dataProvider getTestChartUrlData
    * @covers \Drupal\helfi_media_chart\UrlParserTrait::mediaUrlToUri
    * @covers \Drupal\helfi_media_chart\UrlParserTrait::assertMediaLink
    */
+  #[DataProvider('getTestChartUrlData')]
   public function testChartUrl(string $expected) : void {
     $this->assertEquals($expected, (string) $this->mediaUrlToUri($expected));
   }
@@ -33,7 +34,7 @@ class UrlParserTraitTest extends UnitTestCase {
    * @return array
    *   The test data.
    */
-  public function getTestChartUrlData() : array {
+  public static function getTestChartUrlData() : array {
     return [
       [
         'https://app.powerbi.com/view?r=eyJrIjoiYjE5OTFhMmEtMWYzNC00YjY2LTllODMtMzhhZDRiNTJiMDQ5IiwidCI6IjNmZWI2YmMxLWQ3MjItNDcyNi05NjZjLTViNThiNjRkZjc1MiIsImMiOjh9',
