@@ -132,3 +132,9 @@ services:
   Drupal\helfi_platform_config\HeadingSlugger: ~
   Drupal\helfi_platform_config\HeadingIdInjector: ~
   Drupal\helfi_platform_config\EventSubscriber\HeadingIdResponseSubscriber: ~
+
+  Drupal\helfi_platform_config\PathProcessor\OutboundPathProcessor:
+    class: Drupal\helfi_platform_config\PathProcessor\OutboundPathProcessor
+    tags:
+      - { name: path_processor_outbound, priority: 250 }
+
