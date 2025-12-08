@@ -16,6 +16,7 @@ use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\helfi_platform_config\Plugin\Field\FieldWidget\HelfiLinkitWidget;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\Core\Entity\EntityRepositoryInterface;
@@ -84,12 +85,12 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
   /**
    * Test the massageFormValues method.
    *
-   * @dataProvider massageFormValuesData
    * @covers ::convertToUri
    * @covers ::create
    * @covers ::massageFormValues
    * @covers ::sanitizeSafeLink
    */
+  #[DataProvider('massageFormValuesData')]
   public function testMassageFormValues(string $uri, string $expected): void {
     $massagedValues = $this->widget->massageFormValues(
       [['uri' => $uri, 'attributes' => []]],
@@ -106,7 +107,7 @@ class HelfiLinkitWidgetTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function massageFormValuesData(): array {
+  public static function massageFormValuesData(): array {
     return [
       ['https://helfi-etusivu.docker.so/fi/node/232', 'https://helfi-etusivu.docker.so/fi/node/232'],
       [

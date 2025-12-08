@@ -37,7 +37,7 @@ class CspCleanSubscriberTest extends CspEventSubscriberTestBase {
     $this->configFactory->get('csp.settings')->willReturn($this->cspConfig->reveal());
 
     $this->eventSubscriber = new CspCleanSubscriber(
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
     );

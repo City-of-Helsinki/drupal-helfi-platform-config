@@ -6,7 +6,7 @@ namespace Drupal\helfi_platform_config\Drush\Commands;
 
 use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
+use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drush\Attributes\Command;
 use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
@@ -20,7 +20,7 @@ final class ConfigUpdaterCommands extends DrushCommands {
   use AutowireTrait;
 
   public function __construct(
-    private ConfigUpdater $configUpdater,
+    private ConfigUpdaterInterface $configUpdater,
     #[Autowire(service: 'config_rewrite.config_rewriter')] private ConfigRewriterInterface $configRewriter,
     private ModuleHandlerInterface $moduleHandler,
   ) {
