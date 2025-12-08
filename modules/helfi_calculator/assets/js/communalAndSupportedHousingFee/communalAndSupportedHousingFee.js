@@ -222,22 +222,22 @@ class CommunalAndSupportedHousingFee {
       const percentForHouseholdSize = percent[householdSize];
 
       // 3. Assume that user has not given income details, use max value
-      let communal_and_supported_housing_payment = max;
+      let communalAndSupportedHousingPayment = max;
 
       // 4. If user has given income details, calculate based on that
       if (grossIncomePerMonthRaw !== null) {
-        communal_and_supported_housing_payment = (grossIncomePerMonth - incomeLimit) * (percentForHouseholdSize / 100);
+        communalAndSupportedHousingPayment = (grossIncomePerMonth - incomeLimit) * (percentForHouseholdSize / 100);
       }
 
       // Clamp payment between 0 and max payment, round to even eurocents
-      communal_and_supported_housing_payment = this.calculator.clamp(
+      communalAndSupportedHousingPayment = this.calculator.clamp(
         0,
-        Math.round(communal_and_supported_housing_payment * 100) / 100,
+        Math.round(communalAndSupportedHousingPayment * 100) / 100,
         max,
       );
 
       const subtotals = [];
-      let total_payment = communal_and_supported_housing_payment;
+      let totalPayment = communalAndSupportedHousingPayment;
 
       //Helper function to transform string to float
       const transformToFloat = (string) => {
@@ -247,45 +247,45 @@ class CommunalAndSupportedHousingFee {
         return string;
       };
 
-      if (communal_and_supported_housing_payment) {
+      if (communalAndSupportedHousingPayment) {
         subtotals.push({
           title: this.t('communal_and_supported_housing_payment'),
           has_details: false,
           details: [],
           sum: this.t('receipt_subtotal_euros_per_month', {
-            value: this.calculator.formatFinnishEuroCents(communal_and_supported_housing_payment),
+            value: this.calculator.formatFinnishEuroCents(communalAndSupportedHousingPayment),
           }),
           sum_screenreader: this.t('receipt_subtotal_euros_per_month', {
-            value: this.calculator.formatEuroCents(communal_and_supported_housing_payment),
+            value: this.calculator.formatEuroCents(communalAndSupportedHousingPayment),
           }),
         });
       }
 
       // 5. Add safety phone and bracelet payment
       if (safetyPhoneAndBracelet === 'true') {
-        let safety_phone_and_bracelet_payment = 0;
+        let safetyPhoneAndBraceletPayment = 0;
         if (householdSize === 1) {
           if (grossIncomePerMonth <= parsedSettings.safety_phone_and_bracelet_true.single_income_limit) {
-            safety_phone_and_bracelet_payment = transformToFloat(
+            safetyPhoneAndBraceletPayment = transformToFloat(
               parsedSettings.safety_phone_and_bracelet_true.single_low_income,
             );
           } else {
-            safety_phone_and_bracelet_payment = transformToFloat(
+            safetyPhoneAndBraceletPayment = transformToFloat(
               parsedSettings.safety_phone_and_bracelet_true.single_high_income,
             );
           }
         } else {
           if (grossIncomePerMonth <= parsedSettings.safety_phone_and_bracelet_true.couple_income_limit) {
-            safety_phone_and_bracelet_payment = transformToFloat(
+            safetyPhoneAndBraceletPayment = transformToFloat(
               parsedSettings.safety_phone_and_bracelet_true.couple_low_income,
             );
           } else {
-            safety_phone_and_bracelet_payment = transformToFloat(
+            safetyPhoneAndBraceletPayment = transformToFloat(
               parsedSettings.safety_phone_and_bracelet_true.couple_high_income,
             );
           }
         }
-        total_payment += safety_phone_and_bracelet_payment;
+        totalPayment += safetyPhoneAndBraceletPayment;
         subtotals.push({
           title: this.t('safety_phone_and_bracelet_payment'),
           has_details: true,
@@ -300,15 +300,15 @@ class CommunalAndSupportedHousingFee {
             }),
           ],
           sum: this.t('receipt_subtotal_euros_per_month', {
-            value: this.calculator.formatFinnishEuroCents(safety_phone_and_bracelet_payment),
+            value: this.calculator.formatFinnishEuroCents(safetyPhoneAndBraceletPayment),
           }),
         });
       }
 
       // 5. Add grocery delivery service payment
       if (groceryDeliveryService === 'true') {
-        const grocery_payment = transformToFloat(parsedSettings.grocery_delivery_service.price_per_month);
-        total_payment += grocery_payment;
+        const groceryPayment = transformToFloat(parsedSettings.grocery_delivery_service.price_per_month);
+        totalPayment += groceryPayment;
         subtotals.push({
           title: this.t('grocery_delivery_service_payment'),
           has_details: true,
@@ -319,32 +319,32 @@ class CommunalAndSupportedHousingFee {
             }),
           ],
           sum: this.t('receipt_subtotal_euros_per_month', {
-            value: this.calculator.formatFinnishEuroCents(grocery_payment),
+            value: this.calculator.formatFinnishEuroCents(groceryPayment),
           }),
           sum_screenreader: this.t('receipt_subtotal_euros_per_month', {
-            value: this.calculator.formatEuroCents(grocery_payment),
+            value: this.calculator.formatEuroCents(groceryPayment),
           }),
         });
       }
 
       // 5. Add meal service payment
       if (mealService !== 'false') {
-        let meal_service_payment = 0;
+        let mealServicePayment = 0;
         if (mealService === 'full_service') {
-          meal_service_payment = transformToFloat(parsedSettings.meal_service_true_full_service);
+          mealServicePayment = transformToFloat(parsedSettings.meal_service_true_full_service);
         } else if (mealService === 'partial_service') {
-          meal_service_payment = transformToFloat(parsedSettings.meal_service_true_partial_service);
+          mealServicePayment = transformToFloat(parsedSettings.meal_service_true_partial_service);
         }
-        total_payment += meal_service_payment;
+        totalPayment += mealServicePayment;
         subtotals.push({
           title: this.t('meal_service_payment'),
           has_details: false,
           details: [],
           sum: this.t('receipt_subtotal_euros_per_month', {
-            value: this.calculator.formatFinnishEuroCents(meal_service_payment),
+            value: this.calculator.formatFinnishEuroCents(mealServicePayment),
           }),
           sum_screenreader: this.t('receipt_subtotal_euros_per_month', {
-            value: this.calculator.formatEuroCents(meal_service_payment),
+            value: this.calculator.formatEuroCents(mealServicePayment),
           }),
         });
       }
@@ -354,7 +354,7 @@ class CommunalAndSupportedHousingFee {
         id: this.id,
         title: this.t('receipt_estimate_of_payment'),
         total_prefix: this.t('receipt_estimated_payment_prefix'),
-        total_value: this.calculator.formatFinnishEuroCents(total_payment),
+        total_value: this.calculator.formatFinnishEuroCents(totalPayment),
         total_suffix: this.t('receipt_estimated_payment_suffix'),
         total_explanation: this.t('receipt_estimated_payment_explanation'),
         hr: true,
@@ -370,7 +370,7 @@ class CommunalAndSupportedHousingFee {
 
       return {
         receipt,
-        ariaLive: this.t('receipt_aria_live', { total_payment }),
+        ariaLive: this.t('receipt_aria_live', { totalPayment }),
       };
     };
 
