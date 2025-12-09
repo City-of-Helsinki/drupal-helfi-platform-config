@@ -36,6 +36,7 @@ abstract class StorageClientTestBase extends KernelTestBase {
    *   The history container.
    */
   protected function assertHttpHistoryContainer(array $expected, array $container): void {
+    $this->assertCount(1, $container);
     $this->assertInstanceOf(Request::class, $container[0]['request']);
     /** @var \GuzzleHttp\Psr7\Request $request */
     $request = $container[0]['request'];
