@@ -12,17 +12,12 @@ use Drupal\Core\Url;
  */
 final class MultisiteNode extends ExternalEntity {
 
-  public function toUrl($rel = NULL, array $options = []) {
-    return parent::toUrl($rel, $options);
-
-    // if ($options['path_processing'] === FALSE) {
-    //   return parent::toUrl($rel, $options);
-    // }
-    
-    $url = $this->get('node_url')->value;
-    return Url::fromUri($url);
-  }
-
+  /**
+   * Get the external URL of the multisite node.
+   *
+   * @return \Drupal\Core\Url
+   *   The external URL.
+   */
   public function getExternalUrl() {
     $url = $this->get('node_url')->value;
     return Url::fromUri($url);
