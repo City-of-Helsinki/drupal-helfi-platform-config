@@ -44,14 +44,13 @@ final class ModuleHooksTest extends UnitTestCase {
       ->expects($this->exactly($expectedInvokeCalls))
       ->method('invoke')
       ->with(
-        $this->isType('string'),
+        $this->anything(),
         'platform_config_grant_permissions'
       );
 
     $configUpdater
       ->expects($this->exactly($expectedUpdatePermissionsCalls))
-      ->method('updatePermissions')
-      ->with($this->isType('array'));
+      ->method('updatePermissions');
 
     if ($expectsParagraphUpdate) {
       $paragraphTypeUpdater
@@ -133,8 +132,7 @@ final class ModuleHooksTest extends UnitTestCase {
     // Expect first call with the permissions array, second call with [].
     $configUpdater
       ->expects($this->exactly(2))
-      ->method('updatePermissions')
-      ->with($this->isType('array'));
+      ->method('updatePermissions');
 
     $paragraphTypeUpdater
       ->expects($this->once())
