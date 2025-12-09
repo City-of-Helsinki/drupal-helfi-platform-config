@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\hdbt_admin_tools\Hook\ModuleHooks;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the module hooks.
@@ -20,9 +21,8 @@ final class ModuleHooksTest extends UnitTestCase {
 
   /**
    * Tests modulesInstalled() behavior with different inputs.
-   *
-   * @dataProvider providerModulesInstalled
    */
+  #[DataProvider('providerModulesInstalled')]
   public function testModulesInstalled(
     array $modules,
     bool $is_syncing,

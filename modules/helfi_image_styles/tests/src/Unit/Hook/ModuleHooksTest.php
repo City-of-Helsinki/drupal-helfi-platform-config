@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\helfi_image_styles\Hook\ModuleHooks;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the module hooks.
@@ -18,9 +19,8 @@ final class ModuleHooksTest extends UnitTestCase {
 
   /**
    * Tests modulePreinstall() behavior with different inputs.
-   *
-   * @dataProvider providerModulePreinstall
    */
+  #[DataProvider('providerModulePreinstall')]
   public function testModulePreinstall(
     string $module,
     bool $isSyncing,
