@@ -10,6 +10,7 @@ use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 use Drupal\helfi_platform_config\Hook\ModuleHooks;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Tests the module hooks.
@@ -44,14 +45,14 @@ final class ModuleHooksTest extends UnitTestCase {
       ->expects($this->exactly($expectedInvokeCalls))
       ->method('invoke')
       ->with(
-        $this->isType('string'),
+        new IsType('string'),
         'platform_config_grant_permissions'
       );
 
     $configUpdater
       ->expects($this->exactly($expectedUpdatePermissionsCalls))
       ->method('updatePermissions')
-      ->with($this->isType('array'));
+      ->with(new IsType('array'));
 
     if ($expectsParagraphUpdate) {
       $paragraphTypeUpdater
@@ -134,7 +135,7 @@ final class ModuleHooksTest extends UnitTestCase {
     $configUpdater
       ->expects($this->exactly(2))
       ->method('updatePermissions')
-      ->with($this->isType('array'));
+      ->with(new IsType('array'));
 
     $paragraphTypeUpdater
       ->expects($this->once())
