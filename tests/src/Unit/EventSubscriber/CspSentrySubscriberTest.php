@@ -22,7 +22,7 @@ class CspSentrySubscriberTest extends CspEventSubscriberTestBase {
     parent::setUp();
 
     $this->eventSubscriber = new CspSentrySubscriber(
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
     );

@@ -35,7 +35,7 @@ class CspElasticProxySubscriberTest extends CspEventSubscriberTestBase {
     $this->configFactory->get('elastic_proxy.settings')->willReturn($this->elasticProxyConfig->reveal());
 
     $this->eventSubscriber = new CspElasticProxySubscriber(
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
     );
