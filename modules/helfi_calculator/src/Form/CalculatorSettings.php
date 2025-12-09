@@ -80,6 +80,7 @@ class CalculatorSettings extends ConfigFormBase {
       );
       if (
         !empty($configuration->get('calculators')) &&
+        isset($configuration->get('calculators')[$calculator]) &&
         array_key_exists('label', $configuration->get('calculators')[$calculator])
       ) {
         return $configuration->get('calculators')[$calculator]['label'];
