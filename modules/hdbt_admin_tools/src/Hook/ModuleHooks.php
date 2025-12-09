@@ -7,6 +7,7 @@ namespace Drupal\hdbt_admin_tools\Hook;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 
@@ -20,6 +21,7 @@ class ModuleHooks {
   public function __construct(
     private readonly EntityDefinitionUpdateManagerInterface $entityDefinitionUpdateManager,
     private readonly EntityFieldManagerInterface $entityFieldManager,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
@@ -41,7 +43,7 @@ class ModuleHooks {
       'helfi_tpr_config',
     ];
 
-    if (!in_array($moduleList, $modules)) {
+    if (!array_intersect($moduleList, $modules)) {
       return;
     }
 
@@ -57,6 +59,11 @@ class ModuleHooks {
     ];
 
     foreach ($entityTypes as $entityType) {
+      // Skip entity types that are not defined.
+      if (!$this->entityTypeManager->hasDefinition($entityType)) {
+        continue;
+      }
+
       foreach ($fields as $field) {
         $fieldDefinitions = $this->entityFieldManager->getFieldDefinitions($entityType, $entityType);
 
