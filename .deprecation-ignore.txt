@@ -42,3 +42,8 @@
 
 # Symfony 7.3.
 %Since symfony/validator 7.3: Passing an array of options to configure the "[^"]+" constraint is deprecated, use named arguments instead.%
+
+# Symfony 7.4
+%Since symfony/validator 7.4: Support for evaluating options in the base Constraint class is deprecated. Initialize properties in the constructor of .* instead.%
+
+%Drupal\\config_ignore\\Form\\IgnoreSettingsForm::buildForm(): Implicitly marking parameter \$request as nullable is deprecated, the explicit nullable type must be used instead%
