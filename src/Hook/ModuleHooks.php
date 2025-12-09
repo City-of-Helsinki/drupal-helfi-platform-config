@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
+use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 
 /**
@@ -20,7 +21,7 @@ class ModuleHooks {
 
   public function __construct(
     private readonly ModuleHandlerInterface $moduleHandler,
-    private readonly ConfigUpdater $configUpdater,
+    private readonly ConfigUpdaterInterface $configUpdater,
     private readonly EntityFieldManagerInterface $entityFieldManager,
     private readonly ParagraphTypeUpdater $paragraphTypeUpdater,
   ) {

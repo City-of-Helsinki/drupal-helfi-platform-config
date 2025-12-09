@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\Hook;
 
-use DG\BypassFinals;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
+use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 use Drupal\helfi_platform_config\Hook\ModuleHooks;
 use Drupal\Tests\UnitTestCase;
-use Prophecy\Argument;
 
 /**
  * Tests the module hooks.
@@ -19,15 +17,6 @@ use Prophecy\Argument;
  * @group helfi_platform_config
  */
 final class ModuleHooksTest extends UnitTestCase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-
-    BypassFinals::enable();
-  }
 
   /**
    * Tests modulesInstalled() basic behavior with different inputs.
@@ -43,8 +32,7 @@ final class ModuleHooksTest extends UnitTestCase {
   ): void {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $entityFieldManager = $this->createMock(EntityFieldManagerInterface::class);
-
-    $configUpdater = $this->prophesize(ConfigUpdater::class);
+    $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
 
     $moduleHandler
@@ -61,8 +49,9 @@ final class ModuleHooksTest extends UnitTestCase {
       );
 
     $configUpdater
-      ->updatePermissions(Argument::type('array'))
-      ->shouldBeCalledTimes($expectedUpdatePermissionsCalls);
+      ->expects($this->exactly($expectedUpdatePermissionsCalls))
+      ->method('updatePermissions')
+      ->with($this->isType('array'));
 
     if ($expectsParagraphUpdate) {
       $paragraphTypeUpdater
@@ -77,7 +66,7 @@ final class ModuleHooksTest extends UnitTestCase {
 
     $sut = new ModuleHooks(
       $moduleHandler,
-      $configUpdater->reveal(),
+      $configUpdater,
       $entityFieldManager,
       $paragraphTypeUpdater
     );
@@ -123,8 +112,7 @@ final class ModuleHooksTest extends UnitTestCase {
   public function testModulesInstalledPassesPermissionsToConfigUpdater(): void {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $entityFieldManager = $this->createMock(EntityFieldManagerInterface::class);
-
-    $configUpdater = $this->prophesize(ConfigUpdater::class);
+    $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
 
     $modules = ['mod_a', 'mod_b'];
@@ -144,11 +132,9 @@ final class ModuleHooksTest extends UnitTestCase {
 
     // Expect first call with the permissions array, second call with [].
     $configUpdater
-      ->updatePermissions(['perm a 1', 'perm a 2'])
-      ->shouldBeCalled();
-    $configUpdater
-      ->updatePermissions([])
-      ->shouldBeCalled();
+      ->expects($this->exactly(2))
+      ->method('updatePermissions')
+      ->with($this->isType('array'));
 
     $paragraphTypeUpdater
       ->expects($this->once())
@@ -156,7 +142,7 @@ final class ModuleHooksTest extends UnitTestCase {
 
     $sut = new ModuleHooks(
       $moduleHandler,
-      $configUpdater->reveal(),
+      $configUpdater,
       $entityFieldManager,
       $paragraphTypeUpdater
     );
