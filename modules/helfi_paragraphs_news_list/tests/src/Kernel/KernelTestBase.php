@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel;
 
-use DG\BypassFinals;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
 use Elastic\Elasticsearch\Response\Elasticsearch;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Kernel test base for news feed list tests.
@@ -39,9 +39,6 @@ abstract class KernelTestBase extends CoreKernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
-    // https://github.com/elastic/elasticsearch-php/issues/1227.
-    BypassFinals::enable();
-
     parent::setUp();
 
     // Triggers rebuilding routes.
@@ -66,12 +63,17 @@ abstract class KernelTestBase extends CoreKernelTestBase {
    * Mocks elasticsearch response.
    *
    * @param array $response
-   *   Response as an array.
+   *   The response.
    */
-  protected function createElasticsearchResponse(array $response): Elasticsearch {
-    $mock = $this->prophesize(Elasticsearch::class);
-    $mock->asArray()->willReturn($response);
-    return $mock->reveal();
+  protected function createElasticsearchResponse(array $response): Response {
+    return new Response(
+      200,
+      [
+        Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME,
+        'Content-Type' => 'application/json',
+      ],
+      json_encode($response),
+    );
   }
 
 }

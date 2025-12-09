@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\ExternalEntityStorage;
 
 use Drupal\external_entities\Entity\Query\External\Query;
-use Elastic\Elasticsearch\Client;
 
 /**
  * Tests news tags storage client.
@@ -32,39 +31,34 @@ class NewsNeighbourhoodsStorageClientTest extends TermStorageClientTestBase {
    * Tests geo_distance sorting.
    */
   public function testGeoDistanceQuery(): void {
-    $client = $this->prophesize(Client::class);
     // Test geo distance sort.
-    $client->search([
-      'index' => 'news_terms',
-      'body' => [
-        'sort' => [
-          [
-            '_geo_distance' => [
-              'field_location' => [
-                'lat' => 48.8584,
-                'lon' => 2.2945,
-              ],
-              'unit' => 'km',
-              'order' => 'asc',
-              'distance_type' => 'plane',
-              'mode' => 'min',
-              'ignore_unmapped' => FALSE,
+    $expected = [
+      'sort' => [
+        [
+          '_geo_distance' => [
+            'field_location' => [
+              'lat' => 48.8584,
+              'lon' => 2.2945,
             ],
-          ],
-        ],
-        'query' => [
-          'bool' => [
-            'must' => [
-              ['term' => ['vid' => $this->getVid()]],
-            ],
+            'unit' => 'km',
+            'order' => 'asc',
+            'distance_type' => 'plane',
+            'mode' => 'min',
+            'ignore_unmapped' => FALSE,
           ],
         ],
       ],
-    ])
-      ->shouldBeCalled()
-      ->willReturn($this->createElasticsearchResponse([]));
+      'query' => [
+        'bool' => [
+          'must' => [
+            ['term' => ['vid' => $this->getVid()]],
+          ],
+        ],
+      ],
+    ];
 
-    $query = $this->getSut($client->reveal())
+    $container = [];
+    $query = $this->getSut($container, [$this->createElasticsearchResponse([])])
       ->getQuery();
 
     $this->assertInstanceOf(Query::class, $query);
@@ -95,6 +89,7 @@ class NewsNeighbourhoodsStorageClientTest extends TermStorageClientTestBase {
     );
 
     $query->accessCheck(FALSE)->execute();
+    $this->assertHttpHistoryContainer($expected, $container);
   }
 
 }

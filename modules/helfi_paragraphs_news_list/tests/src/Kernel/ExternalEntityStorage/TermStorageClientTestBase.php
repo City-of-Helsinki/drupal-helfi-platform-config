@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\ExternalEntityStorage;
 
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term;
-use Elastic\Elasticsearch\Client;
-use Prophecy\Argument;
 
 /**
  * A base class for term storage tests.
@@ -25,10 +23,10 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
    * Tests load multiple.
    */
   public function testLoadMultiple() : void {
-    $client = $this->prophesize(Client::class);
-    $client->search(Argument::any())
-      ->shouldBeCalled()
-      ->willReturn($this->createElasticsearchResponse([]), $this->createElasticsearchResponse([
+    $container = [];
+    $responses = [
+      $this->createElasticsearchResponse([]),
+      $this->createElasticsearchResponse([
         'hits' => [
           'hits' => [
             // Working item.
@@ -48,10 +46,9 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
             ],
           ],
         ],
-      ]));
-    $client->search(Argument::any())
-      ->shouldBeCalled();
-    $sut = $this->getSut($client->reveal());
+      ]),
+    ];
+    $sut = $this->getSut($container, $responses);
     $this->assertEmpty($sut->loadMultiple([123]));
 
     $values = $sut->loadMultiple([321, 321]);
@@ -69,102 +66,93 @@ abstract class TermStorageClientTestBase extends StorageClientTestBase {
    * Test the query.
    */
   public function testQuery(): void {
-    $client = $this->prophesize(Client::class);
-    $client->search([
-      'index' => 'news_terms',
-      'body' => [
-        'sort' => [],
-        'query' => [
-          'bool' => [
-            'must' => [
-              ['term' => ['vid' => $this->getVid()]],
-            ],
+    $expected = [
+      'sort' => [],
+      'query' => [
+        'bool' => [
+          'must' => [
+            ['term' => ['vid' => $this->getVid()]],
           ],
         ],
       ],
-    ])
-      ->shouldBeCalled()
-      ->willReturn($this->createElasticsearchResponse([]));
+    ];
 
-    $this->getSut($client->reveal())
+    $container = [];
+    $this->getSut($container, [$this->createElasticsearchResponse([])])
       ->getQuery()
       ->accessCheck(FALSE)
       ->execute();
+
+    $this->assertHttpHistoryContainer($expected, $container);
   }
 
   /**
    * Test the sort query.
    */
   public function testSort(): void {
-    $client = $this->prophesize(Client::class);
-    $client->search([
-      'index' => 'news_terms',
-      'body' => [
-        'sort' => [
-          'name' => ['order' => 'desc'],
-        ],
-        'query' => [
-          'bool' => [
-            'must' => [
-              ['term' => ['vid' => $this->getVid()]],
-            ],
+    $expected = [
+      'sort' => [
+        'name' => ['order' => 'desc'],
+      ],
+      'query' => [
+        'bool' => [
+          'must' => [
+            ['term' => ['vid' => $this->getVid()]],
           ],
         ],
       ],
-    ])
-      ->shouldBeCalled()
-      ->willReturn($this->createElasticsearchResponse([]));
+    ];
 
-    $this->getSut($client->reveal())
+    $container = [];
+    $this->getSut($container, [$this->createElasticsearchResponse([])])
       ->getQuery()
       ->accessCheck(FALSE)
       ->sort('title', 'DESC')
       ->execute();
+
+    $this->assertHttpHistoryContainer($expected, $container);
   }
 
   /**
    * Test filter query.
    */
   public function testFilter(): void {
-    $client = $this->prophesize(Client::class);
-    $client->search([
-      'index' => 'news_terms',
-      'body' => [
-        'sort' => [],
-        'query' => [
-          'bool' => [
-            'must' => [
-              ['term' => ['name' => 'value']],
-              [
-                'bool' => [
-                  'should' => [
-                    ['term' => ['tid' => 1]],
-                    ['term' => ['tid' => 2]],
-                    ['term' => ['tid' => 3]],
-                  ],
+    $expected = [
+      'sort' => [],
+      'query' => [
+        'bool' => [
+          'must' => [
+            ['term' => ['name' => 'value']],
+            [
+              'bool' => [
+                'should' => [
+                  ['term' => ['tid' => 1]],
+                  ['term' => ['tid' => 2]],
+                  ['term' => ['tid' => 3]],
                 ],
               ],
-              [
-                'regexp' => [
-                  'name' => ['value' => 'test.*', 'case_insensitive' => TRUE],
-                ],
-              ],
-              ['term' => ['vid' => $this->getVid()]],
             ],
+            [
+              'regexp' => [
+                'name' => ['value' => 'test.*', 'case_insensitive' => TRUE],
+              ],
+            ],
+            ['term' => ['vid' => $this->getVid()]],
           ],
         ],
       ],
-    ])
-      ->shouldBeCalled()
-      ->willReturn($this->createElasticsearchResponse([]));
+    ];
 
-    $this->getSut($client->reveal())
+    $container = [];
+    $this->getSut($container, [$this->createElasticsearchResponse([])])
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('title', 'value')
       ->condition('tid', [1, 2, 3], 'IN')
       ->condition('title', 'test', 'CONTAINS')
       ->execute();
+
+    $this->assertHttpHistoryContainer($expected, $container);
   }
 
 }

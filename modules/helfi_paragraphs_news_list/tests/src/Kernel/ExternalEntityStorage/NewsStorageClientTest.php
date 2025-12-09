@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\ExternalEntityStorage;
 
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
-use Elastic\Elasticsearch\Client;
-use Prophecy\Argument;
 
 /**
  * Tests news storage client.
@@ -26,41 +24,37 @@ class NewsStorageClientTest extends StorageClientTestBase {
    * Tests load multiple.
    */
   public function testLoadMultiple() : void {
-    $client = $this->prophesize(Client::class);
-    $client->search(Argument::any())
-      ->shouldBeCalled()
-      ->willReturn(
-        $this->createElasticsearchResponse([]),
-        $this->createElasticsearchResponse([
+    $container = [];
+    $responses = [
+      $this->createElasticsearchResponse([]),
+      $this->createElasticsearchResponse([
+        'hits' => [
           'hits' => [
-            'hits' => [
-              // Working item.
-              [
-                '_source' => [
-                  'uuid_langcode' => ['123'],
-                  'uuid' => ['uuid-123'],
-                  'title' => ['test title'],
-                  'field_news_groups' => ['Test groups'],
-                  'field_news_item_tags' => ['Test tag'],
-                  'field_news_neighbourhoods' => ['Test neighbourhood'],
-                  'url' => ['https://localhost'],
-                  'published_at' => [1234567],
-                  'short_title' => ['test shorttitle'],
-                ],
+            // Working item.
+            [
+              '_source' => [
+                'uuid_langcode' => ['123'],
+                'uuid' => ['uuid-123'],
+                'title' => ['test title'],
+                'field_news_groups' => ['Test groups'],
+                'field_news_item_tags' => ['Test tag'],
+                'field_news_neighbourhoods' => ['Test neighbourhood'],
+                'url' => ['https://localhost'],
+                'published_at' => [1234567],
+                'short_title' => ['test shorttitle'],
               ],
-              // Missing uuid_langcode field.
-              [
-                '_source' => [
-                  'uuid' => 'uuid-321',
-                ],
+            ],
+            // Missing uuid_langcode field.
+            [
+              '_source' => [
+                'uuid' => 'uuid-321',
               ],
             ],
           ],
-        ]),
-      );
-    $client->search(Argument::any())
-      ->shouldBeCalled();
-    $sut = $this->getSut($client->reveal());
+        ],
+      ]),
+    ];
+    $sut = $this->getSut($container, $responses);
     $this->assertEmpty($sut->loadMultiple([123]));
 
     $values = $sut->loadMultiple([321, 321]);
@@ -80,87 +74,81 @@ class NewsStorageClientTest extends StorageClientTestBase {
    * Test the query.
    */
   public function testQuery(): void {
-    $client = $this->prophesize(Client::class);
     // Test no filters or sorts.
-    $client->search([
-      'index' => 'news',
-      'body' => [
-        'sort' => [],
-        'query' => [],
-      ],
-    ])
-      ->shouldBeCalled()
-      ->willReturn($this->createElasticsearchResponse([]));
+    $expected = [
+      'sort' => [],
+      'query' => [],
+    ];
 
-    $this->getSut($client->reveal())->getQuery()->accessCheck(FALSE)->execute();
+    $container = [];
+    $this->getSut($container, [$this->createElasticsearchResponse([])])
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->execute();
+
+    $this->assertHttpHistoryContainer($expected, $container);
   }
 
   /**
    * Test the sort query.
    */
   public function testSort(): void {
-    $client = $this->prophesize(Client::class);
-    $client->search([
-      'index' => 'news',
-      'body' => [
-        'sort' => [
-          'title' => ['order' => 'desc'],
-        ],
-        'query' => [],
+    $expected = [
+      'sort' => [
+        'title' => ['order' => 'desc'],
       ],
-    ])
-      ->shouldBeCalled()
-      ->willReturn($this->createElasticsearchResponse([]));
+      'query' => [],
+    ];
 
-    $this->getSut($client->reveal())
+    $container = [];
+    $this->getSut($container, [$this->createElasticsearchResponse([])])
       ->getQuery()
       ->accessCheck(FALSE)
       ->sort('title', 'DESC')
       ->execute();
+
+    $this->assertHttpHistoryContainer($expected, $container);
   }
 
   /**
    * Test the filter query.
    */
   public function testFilter(): void {
-    $client = $this->prophesize(Client::class);
-    $client->search([
-      'index' => 'news',
-      'body' => [
-        'sort' => [],
-        'query' => [
-          'bool' => [
-            'must' => [
-              ['term' => ['title' => 'value']],
-              [
-                'bool' => [
-                  'should' => [
-                    ['term' => ['news_groups' => 'group1']],
-                    ['term' => ['news_groups' => 'group2']],
-                    ['term' => ['news_groups' => 'group3']],
-                  ],
+    $expected = [
+      'sort' => [],
+      'query' => [
+        'bool' => [
+          'must' => [
+            ['term' => ['title' => 'value']],
+            [
+              'bool' => [
+                'should' => [
+                  ['term' => ['news_groups' => 'group1']],
+                  ['term' => ['news_groups' => 'group2']],
+                  ['term' => ['news_groups' => 'group3']],
                 ],
               ],
-              [
-                'regexp' => [
-                  'title' => ['value' => 'test.*', 'case_insensitive' => TRUE],
-                ],
+            ],
+            [
+              'regexp' => [
+                'title' => ['value' => 'test.*', 'case_insensitive' => TRUE],
               ],
             ],
           ],
         ],
       ],
-    ])
-      ->shouldBeCalled()
-      ->willReturn($this->createElasticsearchResponse([]));
+    ];
 
-    $this->getSut($client->reveal())
+    $container = [];
+    $this->getSut($container, [$this->createElasticsearchResponse([])])
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('title', 'value')
       ->condition('news_groups', ['group1', 'group2', 'group3'], 'IN')
       ->condition('title', 'test', 'CONTAINS')
       ->execute();
+
+    $this->assertHttpHistoryContainer($expected, $container);
   }
 
 }
