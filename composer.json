@@ -77,7 +77,7 @@
         "drupal/helfi_media_map": "*",
         "drupal/external_entity": "<3.0.0-beta6",
         "drush/drush": "<12",
-        "phpunit/phpunit": "<11"
+        "phpunit/phpunit": ">=11"
     },
     "extra": {
         "patches": {
