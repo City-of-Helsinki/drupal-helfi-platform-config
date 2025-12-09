@@ -8,6 +8,7 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Tests\search_api\Unit\Processor\TestItemsTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Base class for service processor tests.
@@ -67,9 +68,8 @@ abstract class ServiceTestBase extends UnitTestCase {
    *   all of them.
    * @param bool $expected
    *   Whether the processor is supposed to support that index.
-   *
-   * @dataProvider supportsIndexDataProvider
    */
+  #[DataProvider('supportsIndexDataProvider')]
   public function testSupportsIndex(?array $datasource_ids, bool $expected): void {
     if ($datasource_ids !== NULL) {
       $datasource_ids = array_flip($datasource_ids);

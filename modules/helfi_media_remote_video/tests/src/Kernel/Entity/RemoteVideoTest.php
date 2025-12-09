@@ -16,6 +16,7 @@ use Drupal\Tests\helfi_media\Kernel\HelfiMediaKernelTestBase;
 use Drupal\media\OEmbed\Provider;
 use Drupal\media\OEmbed\UrlResolverInterface;
 use Drupal\Tests\media\Traits\OEmbedTestTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +54,7 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
   /**
    * Test data for remote video bundle class.
    */
-  protected function remoteVideoDataProvider() : array {
+  public static function remoteVideoDataProvider() : array {
     return [
       'nonexistent' => [
         'name' => 'nonexistent',
@@ -123,9 +124,8 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
    *
    * @throws \Drupal\media\OEmbed\ProviderException
    * @throws \Drupal\media\OEmbed\ResourceException
-   *
-   * @dataProvider remoteVideoDataProvider
    */
+  #[DataProvider('remoteVideoDataProvider')]
   public function testRemoteVideoBundle(string $name, string $type, string $url, string $title, string $service_url, string $provider, string $embed_url): void {
     // Default values.
     $max_width = 1280;
