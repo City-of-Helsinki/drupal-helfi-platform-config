@@ -10,7 +10,9 @@ use Drupal\Core\Render\HtmlResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber;
 use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Tests the CacheResponseSubscriber.
@@ -47,15 +49,19 @@ class CacheResponseSubscriberTest extends KernelTestBase {
       ->willReturn($response)
       ->shouldBeCalled();
 
-    $event = $this->prophesize(ResponseEvent::class);
-    $event->getResponse()->willReturn($response->reveal());
+    $event = new ResponseEvent(
+      $this->container->get(HttpKernelInterface::class),
+      new Request(),
+      HttpKernelInterface::MAIN_REQUEST,
+      $response->reveal(),
+    );
 
     $sut = new CacheResponseSubscriber(
       $time->reveal(),
       $account->reveal(),
     );
 
-    $sut->onKernelResponse($event->reveal());
+    $sut->onKernelResponse($event);
   }
 
   /**
@@ -82,15 +88,18 @@ class CacheResponseSubscriberTest extends KernelTestBase {
     $response->setExpires(new \DateTime('@' . (1234567890 + CacheResponseSubscriber::EMPTY_LIST_MAX_AGE)))
       ->shouldNotBeCalled();
 
-    $event = $this->prophesize(ResponseEvent::class);
-    $event->getResponse()->willReturn($response->reveal());
+    $event = new ResponseEvent(
+      $this->container->get(HttpKernelInterface::class),
+      new Request(),
+      HttpKernelInterface::MAIN_REQUEST,
+      $response->reveal(),
+    );
 
     $sut = new CacheResponseSubscriber(
       $time->reveal(),
       $account->reveal(),
     );
-
-    $sut->onKernelResponse($event->reveal());
+    $sut->onKernelResponse($event);
   }
 
 }
