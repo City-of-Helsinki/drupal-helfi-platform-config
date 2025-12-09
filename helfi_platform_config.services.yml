@@ -98,8 +98,3 @@ services:
       - { name: helfi_platform_config.text_converter, priority: -1 }
 
   Drupal\helfi_platform_config\JsInliner: ~
-
-  Drupal\helfi_platform_config\PathProcessor\OutboundPathProcessor:
-    class: Drupal\helfi_platform_config\PathProcessor\OutboundPathProcessor
-    tags:
-      - { name: path_processor_outbound, priority: 250 }
