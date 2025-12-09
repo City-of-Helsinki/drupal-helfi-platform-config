@@ -48,7 +48,10 @@ function helfi_calculator_add_new_calculator(string $id, string $label_en, strin
     $config->set('calculators', $calculators)
       ->save();
 
-    $config_fi = Drupal::languageManager()->getLanguageConfigOverride(
+    /** @var \Drupal\language\ConfigurableLanguageManagerInterface $language_manager */
+    $language_manager = \Drupal::languageManager();
+
+    $config_fi = $language_manager->getLanguageConfigOverride(
       'fi',
       'helfi_calculator.settings'
     );
