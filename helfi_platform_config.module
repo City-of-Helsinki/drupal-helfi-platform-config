@@ -16,6 +16,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Hook\Attribute\LegacyModuleImplementsAlter;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -119,6 +120,7 @@ function helfi_platform_config_rebuild_handler_settings(
 /**
  * Implements hook_module_implements_alter().
  */
+#[LegacyModuleImplementsAlter]
 function helfi_platform_config_module_implements_alter(&$implementations, $hook) : void {
   if ($hook == 'modules_installed') {
     if (isset($implementations['locale'])) {

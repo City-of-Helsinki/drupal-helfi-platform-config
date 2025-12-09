@@ -15,7 +15,7 @@ class HeroConstraintValidator extends ConstraintValidator {
   /**
    * {@inheritdoc}
    */
-  public function validate(mixed $value, Constraint $constraint) {
+  public function validate(mixed $value, Constraint $constraint): void {
     assert($constraint instanceof HeroConstraint);
     $parent = $value->getEntity();
 
