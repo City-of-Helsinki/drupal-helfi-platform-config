@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\Hook;
 
-use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
@@ -108,7 +107,6 @@ final class ModuleHooksTest extends UnitTestCase {
    */
   public function testModulesInstalledPassesPermissionsToConfigUpdater(): void {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
-    $entityFieldManager = $this->createMock(EntityFieldManagerInterface::class);
     $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
 
