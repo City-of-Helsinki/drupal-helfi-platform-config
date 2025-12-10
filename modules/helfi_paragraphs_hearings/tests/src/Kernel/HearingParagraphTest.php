@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
+use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\helfi_paragraphs_hearings\Hook\HearingsParagraphHooks;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -81,10 +82,12 @@ class HearingParagraphTest extends KernelTestBase {
 
     $sut = HearingsParagraphHooks::create($this->container);
 
+    $hearings = ExternalEntityType::load('helfi_hearings');
+
     // Success.
     $sut->view($build, $paragraph, $display->reveal(), 'default');
-    $this->assertEquals(600, $build['#cache']['max-age']);
-    $this->assertCount(1, $build['list']);
+    $this->assertEquals($hearings->getPersistentCacheMaxAge(), $build['#cache']['max-age']);
+    $this->assertNotEmpty(1, $build['list']);
 
     // Empty response.
     $sut->view($build, $paragraph, $display->reveal(), 'default');

@@ -46,23 +46,21 @@ class HearingsParagraphHooks {
 
       $cache = new CacheableMetadata();
 
-      // Fetch hearings every 10 minutes.
-      $cache->setCacheMaxAge(600);
-
       if (!$entities) {
         // Retries request every minute if no hearings are found.
         $cache->setCacheMaxAge(60);
       }
 
-      $cache->applyTo($build);
-
       foreach ($entities as $item) {
-        $item->addCacheableDependency($entity);
+        // See 'persistent_cache_max_age' for the external entity type.
+        $cache->addCacheableDependency($item);
 
         $build['list'][] = $this->entityTypeManager
           ->getViewBuilder('helfi_hearings')
           ->view($item);
       }
+
+      $cache->applyTo($build);
     }
   }
 
