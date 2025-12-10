@@ -31,7 +31,6 @@ final class ModuleHooksTest extends UnitTestCase {
     bool $expectsParagraphUpdate,
   ): void {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
-    $entityFieldManager = $this->createMock(EntityFieldManagerInterface::class);
     $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
 
@@ -66,7 +65,6 @@ final class ModuleHooksTest extends UnitTestCase {
     $sut = new ModuleHooks(
       $moduleHandler,
       $configUpdater,
-      $entityFieldManager,
       $paragraphTypeUpdater
     );
 
@@ -141,7 +139,6 @@ final class ModuleHooksTest extends UnitTestCase {
     $sut = new ModuleHooks(
       $moduleHandler,
       $configUpdater,
-      $entityFieldManager,
       $paragraphTypeUpdater
     );
 
