@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 
+use DG\BypassFinals;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\csp\Csp;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\Project;
+use Drupal\csp\PolicyHelper;
 use Drupal\helfi_platform_config\EventSubscriber\CspSubscriberBase;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**
  * Base class for Csp EventSubscriber tests.
@@ -24,12 +23,13 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 abstract class CspEventSubscriberTestBase extends UnitTestCase {
 
   use ProphecyTrait;
-  use EnvironmentResolverTrait;
 
   /**
    * The EnvironmentResolverInterface.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
    */
-  protected EnvironmentResolverInterface $environmentResolver;
+  protected ObjectProphecy $environmentResolver;
 
   /**
    * The Event.
@@ -60,6 +60,13 @@ abstract class CspEventSubscriberTestBase extends UnitTestCase {
   protected ObjectProphecy $moduleHandler;
 
   /**
+   * The PolicyHelper.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $policyHelper;
+
+  /**
    * The EventSubscriber to test.
    *
    * @var \Drupal\helfi_platform_config\EventSubscriber\CspSubscriberBase
@@ -67,18 +74,34 @@ abstract class CspEventSubscriberTestBase extends UnitTestCase {
   protected CspSubscriberBase $eventSubscriber;
 
   /**
+   * The event class to test.
+   */
+  protected ?string $eventClass = NULL;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
+    BypassFinals::enable();
 
     $this->event = $this->prophesize(PolicyAlterEvent::class);
     $this->policy = $this->prophesize(Csp::class);
     $this->event->getPolicy()->willReturn($this->policy->reveal());
 
-    $this->environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local->value);
+    $this->environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
     $this->configFactory = $this->prophesize(ConfigFactoryInterface::class);
     $this->moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
+    $this->policyHelper = $this->prophesize(PolicyHelper::class);
+
+    if ($this->eventClass) {
+      $this->eventSubscriber = new $this->eventClass(
+        $this->configFactory->reveal(),
+        $this->moduleHandler->reveal(),
+        $this->environmentResolver->reveal(),
+        $this->policyHelper->reveal(),
+      );
+    }
   }
 
   /**

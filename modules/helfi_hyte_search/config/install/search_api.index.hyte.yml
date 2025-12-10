@@ -114,4 +114,5 @@ options:
   delete_on_fail: true
   index_directly: true
   track_changes_in_references: true
+  helfi_platform_config_multisite: true
 server: etusivu

@@ -33,6 +33,7 @@ use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\RedirectCleaner;
 use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\search_api\IndexInterface;
 
 /**
  * Implements hook_entity_type_build().
@@ -471,6 +472,14 @@ function helfi_platform_config_config_schema_info_alter(array &$definitions) : v
   if (isset($definitions['social_media.item.email'])) {
     $definitions['social_media.item.email']['mapping']['text']['translation context'] = 'Social media: email';
   }
+
+  // Add multisite index option to search api index schema.
+  if (isset($definitions['search_api.index.*'])) {
+    $definitions['search_api.index.*']['mapping']['options']['mapping']['helfi_platform_config_multisite'] = [
+      'type' => 'boolean',
+      'label' => 'Multisite index',
+    ];
+  }
 }
 
 /**
@@ -497,6 +506,24 @@ function helfi_platform_config_form_alter(&$form, FormStateInterface $form_state
       ];
     }
   }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for "search_api_index_form".
+ */
+function helfi_platform_config_form_search_api_index_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $formObject = $form_state->getFormObject();
+  assert($formObject instanceof EntityFormInterface);
+  $index = $formObject->getEntity();
+  assert($index instanceof IndexInterface);
+
+  // Add an index option to enable site specific item id prefix.
+  $form['options']['helfi_platform_config_multisite'] = [
+    '#type' => 'checkbox',
+    '#title' => new TranslatableMarkup('Multisite index'),
+    '#description' => new TranslatableMarkup('Enabling this option will add a site specific prefix to all item ids, based on environment resolver site name, to avoid collapsing id values.'),
+    '#default_value' => $index->getOption('helfi_platform_config_multisite'),
+  ];
 }
 
 /**

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 
 use Drupal\helfi_platform_config\EventSubscriber\CspLocalDevSubscriber;
+use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_platform_config\EventSubscriber\CspSentrySubscriber;
+use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Argument;
 
 /**
@@ -19,16 +20,37 @@ use Prophecy\Argument;
 class CspLocalDevSubscriberTest extends CspEventSubscriberTestBase {
 
   /**
+   * The Environment.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $environment;
+
+  /**
+   * The Project.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy
+   */
+  protected ObjectProphecy $project;
+
+  /**
+   * The event class to test.
+   */
+  protected ?string $eventClass = CspLocalDevSubscriber::class;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
 
-    $this->eventSubscriber = new CspSentrySubscriber(
-      $this->environmentResolver,
-      $this->configFactory->reveal(),
-      $this->moduleHandler->reveal(),
-    );
+    $this->environment = $this->prophesize(Environment::class);
+    $this->project = $this->prophesize(Project::class);
+    $this->environmentResolver->getActiveEnvironmentName()->willReturn(EnvironmentEnum::Local->value);
+    $this->environmentResolver->getActiveProject()->willReturn($this->project->reveal());
+    $this->environmentResolver->getEnvironment(Argument::any(), Argument::any())->willReturn($this->environment->reveal());
+    $this->environment->getEnvironment()->willReturn(EnvironmentEnum::Local);
+    $this->environment->getBaseUrl()->willReturn('https://local.example.com');
   }
 
   /**
@@ -37,22 +59,17 @@ class CspLocalDevSubscriberTest extends CspEventSubscriberTestBase {
    * @covers ::policyAlter
    */
   public function testPolicyAlterWithLocalEnvironment(): void {
-    $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local->value);
-    $eventSubscriber = new CspLocalDevSubscriber(
-      $environmentResolver,
-      $this->configFactory->reveal(),
-      $this->moduleHandler->reveal(),
-    );
+    $this->project->getName()->willReturn(Project::ASUMINEN);
 
     foreach ([
       'script-src',
       'connect-src',
       'style-src',
     ] as $directive) {
-      $this->policy->fallbackAwareAppendIfEnabled($directive, 'https://helfi-etusivu.docker.so')->shouldBeCalled();
+      $this->policy->fallbackAwareAppendIfEnabled($directive, 'https://local.example.com')->shouldBeCalled();
     }
 
-    $eventSubscriber->policyAlter($this->event->reveal());
+    $this->eventSubscriber->policyAlter($this->event->reveal());
   }
 
   /**
@@ -61,16 +78,11 @@ class CspLocalDevSubscriberTest extends CspEventSubscriberTestBase {
    * @covers ::policyAlter
    */
   public function testPolicyAlterWithEtusivu(): void {
-    $environmentResolver = $this->getEnvironmentResolver(Project::ETUSIVU, EnvironmentEnum::Local->value);
-    $eventSubscriber = new CspLocalDevSubscriber(
-      $environmentResolver,
-      $this->configFactory->reveal(),
-      $this->moduleHandler->reveal(),
-    );
+    $this->project->getName()->willReturn(Project::ETUSIVU);
 
     $this->policy->fallbackAwareAppendIfEnabled(Argument::any(), Argument::any())->shouldNotBeCalled();
 
-    $eventSubscriber->policyAlter($this->event->reveal());
+    $this->eventSubscriber->policyAlter($this->event->reveal());
   }
 
   /**
@@ -79,16 +91,12 @@ class CspLocalDevSubscriberTest extends CspEventSubscriberTestBase {
    * @covers ::policyAlter
    */
   public function testPolicyAlterWithNotLocalEnvironment(): void {
-    $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Test->value);
-    $eventSubscriber = new CspLocalDevSubscriber(
-      $environmentResolver,
-      $this->configFactory->reveal(),
-      $this->moduleHandler->reveal(),
-    );
+    $this->project->getName()->willReturn(Project::ETUSIVU);
+    $this->environment->getEnvironment()->willReturn(EnvironmentEnum::Test);
 
     $this->policy->fallbackAwareAppendIfEnabled(Argument::any(), Argument::any())->shouldNotBeCalled();
 
-    $eventSubscriber->policyAlter($this->event->reveal());
+    $this->eventSubscriber->policyAlter($this->event->reveal());
   }
 
 }

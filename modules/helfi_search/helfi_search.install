@@ -35,3 +35,56 @@ function helfi_search_schema(): array {
 
   return $schema;
 }
+
+/**
+ * Update the embeddings index datasources and enable multisite option.
+ */
+function helfi_search_update_8001() {
+  $config = \Drupal::configFactory()->getEditable('search_api.index.embeddings');
+
+  // Do not run the update if the config didn't exist yet.
+  if ($config->isNew()) {
+    return;
+  }
+
+  // Change all uuid-datasources to regular entity datasources.
+  $datasource_settings = $config->get('datasource_settings');
+  foreach ($datasource_settings as $datasource_id => $datasource_setting_value) {
+    if (str_starts_with($datasource_id, 'uuid_entity:')) {
+      $new_datasource_id = str_replace('uuid_entity:', 'entity:', $datasource_id);
+      $datasource_settings[$new_datasource_id] = $datasource_setting_value;
+      unset($datasource_settings[$datasource_id]);
+    }
+  }
+  $config->set('datasource_settings', $datasource_settings);
+
+  // Enable multisite option.
+  $options = $config->get('options');
+  $options['helfi_platform_config_multisite'] = TRUE;
+  $config->set('options', $options);
+
+  $config->save();
+}
+
+/**
+ * Update embeddings index fields.
+ */
+function helfi_search_update_8002() {
+  $config = \Drupal::configFactory()->getEditable('search_api.index.embeddings');
+
+  // Do not run the update if the config didn't exist yet.
+  if ($config->isNew()) {
+    return;
+  }
+
+  // Update fields that are still trying to use the old uuid_entity datasource.
+  $field_settings = $config->get('field_settings');
+  foreach ($field_settings as $field_id => $field_value) {
+    if (isset($field_value['datasource_id']) && str_starts_with($field_value['datasource_id'], 'uuid_entity:')) {
+      $field_settings[$field_id]['datasource_id'] = str_replace('uuid_entity:', 'entity:', $field_value['datasource_id']);
+    }
+  }
+  $config->set('field_settings', $field_settings);
+
+  $config->save();
+}

@@ -32,3 +32,45 @@ function helfi_calculator_install(bool $is_syncing) : void {
   $config->set('ignored_config_entities', $ignored)
     ->save();
 }
+
+/**
+ * Helper function to add new calculator to calculator settings.
+ */
+function helfi_calculator_add_new_calculator(string $id, string $label_en, string $label_fi) : void {
+  $config = Drupal::configFactory()->getEditable('helfi_calculator.settings');
+  $calculators = $config->get('calculators') ?? [];
+  if (!array_key_exists($id, $calculators)) {
+    $calculators[$id] = [
+      'label' => $label_en,
+      'active' => FALSE,
+      'json' => '{}',
+    ];
+    $config->set('calculators', $calculators)
+      ->save();
+
+    /** @var \Drupal\language\ConfigurableLanguageManagerInterface $language_manager */
+    $language_manager = \Drupal::languageManager();
+
+    $config_fi = $language_manager->getLanguageConfigOverride(
+      'fi',
+      'helfi_calculator.settings'
+    );
+    $calculators_fi = $config_fi->get('calculators') ?? [];
+    $calculators_fi[$id] = [
+      'label' => $label_fi,
+    ];
+    $config_fi->set('calculators', $calculators_fi)
+      ->save();
+  }
+}
+
+/**
+ * UHF-11878 Add new calculator to calculator settings.
+ */
+function helfi_calculator_update_9001() : void {
+  helfi_calculator_add_new_calculator(
+    'communal_and_supported_housing_fee',
+    'Communal and supported housing fee',
+    'Yhteisöllisen ja tuetun asumisen asiakasmaksun laskuri'
+  );
+}

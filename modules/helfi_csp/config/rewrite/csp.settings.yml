@@ -16,7 +16,6 @@ enforce:
       flags:
         - report-sample
         - unsafe-inline
-        - unsafe-eval
         - wasm-unsafe-eval
     style-src:
       base: self

@@ -66,6 +66,32 @@ function helfi_toc_form_tpr_service_form_alter(&$form) : void {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function helfi_toc_theme(): array {
+  $module_path = \Drupal::service('extension.list.module')
+    ->getPath('helfi_toc');
+
+  return [
+    'field__toc_enabled' => [
+      'base hook' => 'field',
+      'render element' => 'element',
+      'template' => 'field--toc-enabled',
+      'path' => "$module_path/templates",
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_field_alter().
+ */
+function helfi_toc_theme_suggestions_field_alter(array &$suggestions, array $variables): void {
+  if (($variables['element']['#field_name'] ?? NULL) === 'toc_enabled') {
+    $suggestions[] = 'field__toc_enabled';
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function helfi_toc_form_tpr_unit_form_alter(&$form) : void {

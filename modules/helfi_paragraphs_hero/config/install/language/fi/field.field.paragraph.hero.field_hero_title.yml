@@ -1,2 +1,2 @@
 label: 'Heron otsikko'
-description: 'Heron otsikon ja sivun otsikon pitää olla sama. Herossa käytetään heron otsikkoa mutta metatiedoissa ja URL-osoitteessa sivun otsikkoa.'
+description: 'Heron otsikon ja sivun otsikon pitää olla sama. Heron otsikkoa käytetään sivun metatietojen titlenä, joka näkyy hakutuloksissa. Sivun otsikkoa käytetään sivun URL-osoitteessa. Metatietojen titleä on mahdollista muokata sivun metatunnisteista.'

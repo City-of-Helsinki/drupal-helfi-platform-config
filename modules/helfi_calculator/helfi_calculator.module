@@ -46,7 +46,9 @@ function helfi_calculator_preprocess_paragraph__calculator(array &$variables): v
   }
 
   // Load all calculators and attach the configuration data to drupalSettings.
-  $calculators = Drupal::config('helfi_calculator.settings')->get('calculators') ?? [];
+  $calculators = Drupal::service('config.factory')
+    ->getEditable('helfi_calculator.settings')
+    ->getOriginal('calculators', FALSE) ?? [];
   $calculator_settings = $calculators[$paragraph->getCalculatorName()] ?? NULL;
 
   foreach ($calculators as $calculator => $data) {

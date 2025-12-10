@@ -47,7 +47,9 @@ The Helfi Calculator module adds calculators to the site using a custom Calculat
 1. Create a new JavaScript file in `assets/js/yourCalculator/yourCalculator.js` and add the minified path to `helfi_calculator.libraries.yml`
 2. Extend the `HelfiCalculator` class and add the _form and _translations files to `assets/js/yourCalculator/`. See examples from other calculators
 3. Add the calculator to the `calculators` array in `helfi_calculator.settings.yml`
-4. Register the calculator in Drupal configuration by adding calculator settings to to the configuration via `/admin/tools/calculator-settings` configuration form. An example of the JSON can be found in example-calc.html or helsinki-benefit-test.html.
+4. Add translation for the calculator title in `fi/helfi_caclulator.settings.yml`
+5. Add update hook to add the new calculator, use helper function `helfi_calculator_add_new_calculator`
+6. Register the calculator in Drupal configuration by adding calculator settings to the configuration via `/admin/tools/calculator-settings` configuration form. An example of the JSON can be found in example-calc.html, helsinki-benefit-test.html or in the calculators own js file.
 
 ## Known Issues
 

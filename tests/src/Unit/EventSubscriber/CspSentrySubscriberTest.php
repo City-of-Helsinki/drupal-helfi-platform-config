@@ -16,17 +16,9 @@ use Prophecy\Argument;
 class CspSentrySubscriberTest extends CspEventSubscriberTestBase {
 
   /**
-   * {@inheritdoc}
+   * The event class to test.
    */
-  protected function setUp(): void {
-    parent::setUp();
-
-    $this->eventSubscriber = new CspSentrySubscriber(
-      $this->environmentResolver,
-      $this->configFactory->reveal(),
-      $this->moduleHandler->reveal(),
-    );
-  }
+  protected ?string $eventClass = CspSentrySubscriber::class;
 
   /**
    * Tests policy alteration with Sentry DSN.

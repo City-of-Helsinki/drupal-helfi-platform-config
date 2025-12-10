@@ -25,6 +25,11 @@ class CspElasticProxySubscriberTest extends CspEventSubscriberTestBase {
   protected ObjectProphecy $elasticProxyConfig;
 
   /**
+   * The event class to test.
+   */
+  protected ?string $eventClass = CspElasticProxySubscriber::class;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -33,12 +38,6 @@ class CspElasticProxySubscriberTest extends CspEventSubscriberTestBase {
     $this->elasticProxyConfig = $this->prophesize(ImmutableConfig::class);
     $this->elasticProxyConfig->get('elastic_proxy_url')->willReturn('');
     $this->configFactory->get('elastic_proxy.settings')->willReturn($this->elasticProxyConfig->reveal());
-
-    $this->eventSubscriber = new CspElasticProxySubscriber(
-      $this->environmentResolver,
-      $this->configFactory->reveal(),
-      $this->moduleHandler->reveal(),
-    );
   }
 
   /**
