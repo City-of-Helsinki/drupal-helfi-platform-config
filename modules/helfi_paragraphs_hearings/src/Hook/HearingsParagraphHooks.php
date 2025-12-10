@@ -15,12 +15,15 @@ use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\paragraphs\ParagraphInterface;
 
+/**
+ * Hooks for helfi_paragraphs_hearings module.
+ */
 class HearingsParagraphHooks {
 
   use AutowireTrait;
 
   public function __construct(
-    private readonly EntityTypeManagerInterface $entityTypeManager
+    private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
@@ -68,7 +71,7 @@ class HearingsParagraphHooks {
    * Implements hook_entity_extra_field_info().
    */
   #[Hook('entity_extra_field_info')]
-  public static function entity_extra_field_info() : array {
+  public static function entityExtraFieldInfo() : array {
     $extra = [];
     $extra['paragraph']['hearings']['display']['list'] = [
       'label' => new TranslatableMarkup('List of hearings'),
@@ -86,7 +89,7 @@ class HearingsParagraphHooks {
    * Implements hook_helfi_paragraph_types().
    */
   #[Hook('helfi_paragraph_types')]
-  public static function helfi_paragraph_types() : array {
+  public static function helfiParagraphTypes() : array {
     $types = [
       'field_content' => [
         'hearings' => 14,
@@ -106,7 +109,7 @@ class HearingsParagraphHooks {
    * Implements hook_entity_bundle_field_info_alter().
    */
   #[Hook('entity_bundle_field_info_alter')]
-  public static  function entity_bundle_field_info_alter(
+  public static function entityBundleFieldInfoAlter(
     &$fields,
     EntityTypeInterface $entity_type,
     $bundle,

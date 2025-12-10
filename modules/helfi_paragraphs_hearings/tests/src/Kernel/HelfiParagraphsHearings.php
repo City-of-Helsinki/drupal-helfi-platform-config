@@ -16,7 +16,7 @@ use GuzzleHttp\Psr7\Response;
 /**
  * Tests hearing paragraph.
  */
-class HearingParagraphTest extends KernelTestBase {
+class HelfiParagraphsHearings extends KernelTestBase {
 
   use ApiTestTrait;
 
@@ -43,8 +43,7 @@ class HearingParagraphTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void
-  {
+  protected function setUp(): void {
     parent::setUp();
 
     // Triggers rebuilding routes.
@@ -87,7 +86,7 @@ class HearingParagraphTest extends KernelTestBase {
     // Success.
     $sut->view($build, $paragraph, $display->reveal(), 'default');
     $this->assertEquals($hearings->getPersistentCacheMaxAge(), $build['#cache']['max-age']);
-    $this->assertNotEmpty(1, $build['list']);
+    $this->assertNotEmpty($build['list'] ?? []);
 
     // Empty response.
     $sut->view($build, $paragraph, $display->reveal(), 'default');
