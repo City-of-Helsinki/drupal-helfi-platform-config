@@ -10,6 +10,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\helfi_calculator\Entity\Calculator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Calculator paragraph entity.
@@ -100,9 +101,8 @@ final class CalculatorParagraphTest extends KernelTestBase {
 
   /**
    * Test the getters.
-   *
-   * @dataProvider knownCalculatorProvider
    */
+  #[DataProvider('knownCalculatorProvider')]
   public function testGetters(string $machine_name): void {
     $paragraph = $this->createCalculatorParagraph($machine_name);
 
@@ -117,9 +117,8 @@ final class CalculatorParagraphTest extends KernelTestBase {
 
   /**
    * Test the getCalculatorLibraryName() for known calculators.
-   *
-   * @dataProvider knownCalculatorProvider
    */
+  #[DataProvider('knownCalculatorProvider')]
   public function testLibraryNamesForKnownCalculators(string $machine_name): void {
     $paragraph = $this->createCalculatorParagraph($machine_name);
     $this->assertSame('helfi_calculator/' . $machine_name, $paragraph->getCalculatorLibraryName());

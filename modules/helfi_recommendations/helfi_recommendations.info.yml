@@ -6,6 +6,7 @@ dependencies:
   - drupal:path
   - drupal:text
   - drupal:language
+  - drupal:node
   - helfi_platform_config:helfi_platform_config
   - helfi_api_base:helfi_api_base
   - readonly_field_widget:readonly_field_widget

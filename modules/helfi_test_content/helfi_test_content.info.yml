@@ -2,6 +2,7 @@ name: 'HELfi Platform test content'
 type: module
 core_version_requirement: ^10 || ^11
 package: HELfi
+container_rebuild_required: true
 dependencies:
   - default_content:default_content
   - helfi_platform_config:hdbt_cookie_banner

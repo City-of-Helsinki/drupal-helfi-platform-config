@@ -13,7 +13,7 @@ use Drupal\config_rewrite\ConfigRewriterInterface;
 /**
  * A helper class to deal with config updates.
  */
-final class ConfigUpdater {
+final class ConfigUpdater implements ConfigUpdaterInterface {
 
   /**
    * Whether to skip update tasks.
@@ -33,21 +33,21 @@ final class ConfigUpdater {
    *   The module handler.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater $paragraphTypeUpdater
+   *   The paragraph type updater.
    */
   public function __construct(
     private ConfigInstallerInterface $configInstaller,
     private ConfigRewriterInterface $configRewriter,
     private ModuleHandlerInterface $moduleHandler,
     private EntityTypeManagerInterface $entityTypeManager,
+    private ParagraphTypeUpdater $paragraphTypeUpdater,
   ) {
     $this->skipUpdate = Settings::get('is_azure', FALSE);
   }
 
   /**
-   * Updates role permissions.
-   *
-   * @param array $permissionMap
-   *   The role => permissions map.
+   * {@inheritdoc}
    */
   public function updatePermissions(array $permissionMap) : void {
     foreach ($permissionMap as $rid => $permissions) {
@@ -60,10 +60,7 @@ final class ConfigUpdater {
   }
 
   /**
-   * Re-import all configuration for given module.
-   *
-   * @param string $module
-   *   The module.
+   * {@inheritdoc}
    */
   public function update(string $module) : void {
     // These hooks should only be run on CI/local machine since the
@@ -79,7 +76,7 @@ final class ConfigUpdater {
     $this->updatePermissions($permissions ?? []);
 
     // Update all paragraph field handlers.
-    helfi_platform_config_update_paragraph_target_types();
+    $this->paragraphTypeUpdater->updateParagraphTargetTypes();
   }
 
 }

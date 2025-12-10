@@ -3,6 +3,7 @@ type: module
 description: 'Integrates Hel.fi user roles module with TFA'
 package: Custom
 core_version_requirement: ^10 || ^11
+container_rebuild_required: true
 dependencies:
   - helfi_user_roles:helfi_user_roles
   - real_aes:real_aes

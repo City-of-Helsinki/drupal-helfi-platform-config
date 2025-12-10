@@ -64,6 +64,7 @@ services:
     tags:
       - { name: twig.extension }
 
+  Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface: '@helfi_platform_config.config_update_helper'
   Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater: '@helfi_platform_config.config_update_helper'
   helfi_platform_config.config_update_helper:
     class: Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater
@@ -72,6 +73,11 @@ services:
       - '@config_rewrite.config_rewriter'
       - '@module_handler'
       - '@entity_type.manager'
+
+  Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater: '@helfi_platform_config.paragraph_type_updater'
+  helfi_platform_config.paragraph_type_updater:
+    class: Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater
+    arguments: ['@module_handler', '@entity_field.manager']
 
   helfi_platform_config.term_route_subscriber:
     class: Drupal\helfi_platform_config\Routing\TermRouteSubscriber

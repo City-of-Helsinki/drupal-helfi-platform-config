@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\Drush\Commands;
 
-use DG\BypassFinals;
 use Drupal\Core\Extension\Extension;
 use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
+use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\Drush\Commands\ConfigUpdaterCommands;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
@@ -27,27 +26,18 @@ class ConfigUpdaterCommandsTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-
-    BypassFinals::enable();
-  }
-
-  /**
    * Gets the SUT.
    *
    * @return \Drupal\helfi_platform_config\Drush\Commands\ConfigUpdaterCommands
    *   The SUT.
    */
   private function getSut(
-    ?ConfigUpdater $configUpdater = NULL,
+    ?ConfigUpdaterInterface $configUpdater = NULL,
     ?ConfigRewriterInterface $configRewriter = NULL,
     ?ModuleHandlerInterface $moduleHandler = NULL,
   ) : ConfigUpdaterCommands {
     if (!$configUpdater) {
-      $configUpdater = $this->prophesize(ConfigUpdater::class)->reveal();
+      $configUpdater = $this->prophesize(ConfigUpdaterInterface::class)->reveal();
     }
     if (!$configRewriter) {
       $configRewriter = $this->prophesize(ConfigRewriterInterface::class)->reveal();
@@ -80,7 +70,7 @@ class ConfigUpdaterCommandsTest extends UnitTestCase {
       ->shouldBeCalled()
       ->willReturn($module->reveal());
 
-    $configUpdater = $this->prophesize(ConfigUpdater::class);
+    $configUpdater = $this->prophesize(ConfigUpdaterInterface::class);
     $configUpdater->update('helfi_platform_config')
       ->shouldBeCalled();
     $configUpdater->update(Argument::any())

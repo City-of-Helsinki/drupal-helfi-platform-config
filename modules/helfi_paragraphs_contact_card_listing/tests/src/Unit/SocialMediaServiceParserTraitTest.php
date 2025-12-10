@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_paragraphs_contact_card_listing\Unit;
 
 use Drupal\helfi_paragraphs_contact_card_listing\SocialMediaServiceParserTrait;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the SocialMediaServiceParserTrait.
@@ -47,7 +48,7 @@ class SocialMediaServiceParserTraitTest extends UnitTestCase {
    * @return array
    *   Returns test data as an array.
    */
-  public function socialMediaDataProvider(): array {
+  public static function socialMediaDataProvider(): array {
     return [
       ['https://www.facebook.com/user', 'Facebook', 'facebook', 'https://www.facebook.com/user'],
       ['https://twitter.com/user', 'X', 'twitter', 'https://twitter.com/user'],
@@ -62,9 +63,8 @@ class SocialMediaServiceParserTraitTest extends UnitTestCase {
 
   /**
    * Tests processing social media domain.
-   *
-   * @dataProvider socialMediaDataProvider
    */
+  #[DataProvider('socialMediaDataProvider')]
   public function testProcessSocialMediaDomain(?string $input, ?string $expectedName, string $expectedIcon, ?string $expectedUrl): void {
     $result = $this->testClass->publicProcessSocialMediaDomain($input);
 

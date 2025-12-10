@@ -19,7 +19,7 @@ use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
  *
  * @see \Drupal\radioactivity\RadioactivityReferenceUpdater
  */
-final class ReferenceUpdater {
+class ReferenceUpdater {
 
   /**
    * Cached list of suggested_topics_reference fields.

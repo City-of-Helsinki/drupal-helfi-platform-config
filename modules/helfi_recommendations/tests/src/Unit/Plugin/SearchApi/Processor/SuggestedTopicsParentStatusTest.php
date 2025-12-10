@@ -16,6 +16,7 @@ use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Tests\search_api\Unit\Processor\TestItemsTrait;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the "Suggested topics parent status" processor.
@@ -76,9 +77,8 @@ class SuggestedTopicsParentStatusTest extends UnitTestCase {
    *   all of them.
    * @param bool $expected
    *   Whether the processor is supposed to support that index.
-   *
-   * @dataProvider supportsIndexDataProvider
    */
+  #[DataProvider('supportsIndexDataProvider')]
   public function testSupportsIndex(?array $datasource_ids, bool $expected): void {
     if ($datasource_ids !== NULL) {
       $datasource_ids = array_flip($datasource_ids);

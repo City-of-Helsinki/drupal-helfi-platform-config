@@ -22,7 +22,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
    */
   public function testGetSubscribedEvents(): void {
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
     ) extends CspSubscriberBase {};
@@ -37,7 +37,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
    */
   public function testPolicyAlterWithAllDirectives(): void {
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
     ) extends CspSubscriberBase {
@@ -70,7 +70,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
    */
   public function testPolicyAlterWithSomeDirectives(): void {
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
     ) extends CspSubscriberBase {
@@ -99,7 +99,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->moduleHandler->moduleExists('test_module')->willReturn(TRUE);
 
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
     ) extends CspSubscriberBase {
@@ -123,7 +123,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->moduleHandler->moduleExists('test_module')->willReturn(FALSE);
 
     $this->eventSubscriber = new class (
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
     ) extends CspSubscriberBase {

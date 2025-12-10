@@ -2,8 +2,6 @@ uuid: 47820606-6a51-48b6-b9de-57e7793d9959
 langcode: en
 status: true
 dependencies:
-  config:
-    - search_api.server.etusivu
   module:
     - helfi_react_search
     - helfi_tpr

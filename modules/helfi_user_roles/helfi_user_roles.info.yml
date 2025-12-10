@@ -1,6 +1,7 @@
 name: 'HELfi User: Roles'
 type: module
 core_version_requirement: '^10 || ^11'
+container_rebuild_required: true
 dependencies:
   - drupal:user
   - helfi_platform_config:helfi_platform_config

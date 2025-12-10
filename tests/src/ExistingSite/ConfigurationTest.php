@@ -7,6 +7,9 @@ namespace Drupal\Tests\helfi_platform_config\ExistingSite;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
@@ -38,13 +41,25 @@ class ConfigurationTest extends ExistingSiteBase {
 
     $this->extensionList = $this->container->get('extension.list.module');
     $this->typedConfigManager = $this->container->get('config.typed');
+  }
+
+  /**
+   * Installs all modules one by one.
+   */
+  #[RunInSeparateProcess]
+  #[DataProvider('getSubModules')]
+  public function testModuleInstallation(string $module) : void {
+    // Suppress risky test warning if no exception was thrown.
+    // These are run as separate tests, so each installation is isolated
+    // and gets to use all available memory. Installing all modules in a
+    // test causes OOM errors.
+    // This is an ExistingSite test, so all tests that are run after
+    // this one have all the modules installed.
+    $this->expectNotToPerformAssertions();
 
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
     $moduleInstaller = $this->container->get('module_installer');
-    // Make sure all submodules are enabled.
-    foreach ($this->getSubModules() as $module) {
-      $moduleInstaller->install([$module]);
-    }
+    $moduleInstaller->install([$module]);
   }
 
   /**
@@ -53,8 +68,10 @@ class ConfigurationTest extends ExistingSiteBase {
    * @return array
    *   The submodules list.
    */
-  private function getSubModules() : array {
-    $path = $this->extensionList->getPath('helfi_platform_config');
+  public static function getSubModules() : array {
+    // Get module path without Drupal services since data providers run before
+    // Drupal is bootstrapped. Go up 3 directories from the test file location.
+    $path = dirname(__DIR__, 3);
 
     $modules = [];
     /** @var \DirectoryIterator $item */
@@ -64,7 +81,8 @@ class ConfigurationTest extends ExistingSiteBase {
       }
       $modules[] = $item->getBasename();
     }
-    return $modules;
+
+    return array_map(static fn ($module) => [$module], $modules);
   }
 
   /**
@@ -117,8 +135,9 @@ class ConfigurationTest extends ExistingSiteBase {
   /**
    * Asserts module configuration.
    */
+  #[Depends('testModuleInstallation')]
   public function testModuleConfiguration() : void {
-    foreach ($this->getSubModules() as $module) {
+    foreach (self::getSubModules() as [$module]) {
       $this->assertModuleUuids($module);
     }
   }
@@ -126,6 +145,7 @@ class ConfigurationTest extends ExistingSiteBase {
   /**
    * Makes sure configuration does not contain '_core' key.
    */
+  #[Depends('testModuleInstallation')]
   public function testModuleCoreKey() : void {
     $folder = $this->extensionList->getPath('helfi_platform_config');
     $iterator = new \RecursiveIteratorIterator(

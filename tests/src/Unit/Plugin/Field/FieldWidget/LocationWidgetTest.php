@@ -9,6 +9,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_platform_config\Plugin\Field\FieldWidget\LocationWidget;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
@@ -24,35 +25,6 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  * @group helfi_platform_config
  */
 class LocationWidgetTest extends UnitTestCase {
-
-  /**
-   * The LocationWidget instance under test.
-   *
-   * @var \Drupal\helfi_platform_config\Plugin\Field\FieldWidget\LocationWidget
-   */
-  protected $locationWidget;
-
-  /**
-   * The mocked field definition.
-   *
-   * @var \Drupal\Core\Field\FieldDefinitionInterface|\Prophecy\Prophecy\ObjectProphecy
-   */
-  protected $fieldDefinition;
-
-  /**
-   * Sets up the test environment.
-   */
-  protected function setUp(): void {
-    parent::setUp();
-    $this->fieldDefinition = $this->prophesize(FieldDefinitionInterface::class);
-    $this->locationWidget = new LocationWidget(
-      'location',
-      [],
-      $this->fieldDefinition->reveal(),
-      [],
-      []
-    );
-  }
 
   /**
    * Creates a test form element with latitude and longitude fields.
@@ -95,7 +67,16 @@ class LocationWidgetTest extends UnitTestCase {
     $form = [];
     $element = [];
 
-    $result = $this->locationWidget->formElement(
+    $fieldDefinition = $this->prophesize(FieldDefinitionInterface::class);
+    $locationWidget = new LocationWidget(
+      'location',
+      [],
+      $fieldDefinition->reveal(),
+      [],
+      []
+    );
+
+    $result = $locationWidget->formElement(
       $items->reveal(),
       $delta,
       $element,
@@ -136,7 +117,16 @@ class LocationWidgetTest extends UnitTestCase {
     $error = $this->prophesize(ConstraintViolationInterface::class);
     $error->getPropertyPath()->willReturn('0.latitude');
 
-    $result = $this->locationWidget->errorElement(
+    $fieldDefinition = $this->prophesize(FieldDefinitionInterface::class);
+    $locationWidget = new LocationWidget(
+      'location',
+      [],
+      $fieldDefinition->reveal(),
+      [],
+      []
+    );
+
+    $result = $locationWidget->errorElement(
       $element,
       $error->reveal(),
       [],
@@ -155,13 +145,22 @@ class LocationWidgetTest extends UnitTestCase {
    * Tests form value processing.
    *
    * @covers ::massageFormValues
-   * @dataProvider massageFormValuesProvider
    */
+  #[DataProvider('massageFormValuesProvider')]
   public function testMassageFormValues(array $input, array $expected): void {
     $form = [];
     $form_state = $this->prophesize(FormStateInterface::class)->reveal();
 
-    $result = $this->locationWidget->massageFormValues($input, $form, $form_state);
+    $fieldDefinition = $this->prophesize(FieldDefinitionInterface::class);
+    $locationWidget = new LocationWidget(
+      'location',
+      [],
+      $fieldDefinition->reveal(),
+      [],
+      []
+    );
+
+    $result = $locationWidget->massageFormValues($input, $form, $form_state);
     $this->assertEquals($expected, $result);
   }
 
@@ -173,7 +172,7 @@ class LocationWidgetTest extends UnitTestCase {
    *
    * @phpstan-return array<string, array{input: array, expected: array}>
    */
-  public function massageFormValuesProvider(): array {
+  public static function massageFormValuesProvider(): array {
     return [
       'empty values become null' => [
         'input' => [

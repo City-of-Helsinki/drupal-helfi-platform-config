@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\helfi_tpr\Entity\Service;
@@ -85,6 +86,21 @@ function helfi_recommendations_set_text_converter_view_display(string $entity_ty
   $bundle_info = \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type);
   if (!isset($bundle_info[$content_type])) {
     return;
+  }
+
+  // Create view mode if it doesn't exist yet.
+  $viewMode = EntityViewMode::load("$entity_type.text_converter");
+  if (!$viewMode) {
+    $viewMode = EntityViewMode::create([
+      'id' => "$entity_type.text_converter",
+      'label' => 'Text converter',
+      'description' => 'Used to convert pages to text that is fed to recommendation engine.',
+      'targetEntityType' => $entity_type,
+      'status' => TRUE,
+      'cache' => TRUE,
+    ]);
+
+    $viewMode->save();
   }
 
   $storage = \Drupal::entityTypeManager()->getStorage('entity_view_display');

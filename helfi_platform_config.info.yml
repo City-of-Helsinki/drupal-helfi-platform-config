@@ -1,5 +1,6 @@
 name: HELfi platform config
 type: module
+container_rebuild_required: true
 package: Custom
 core_version_requirement: ^10 || ^11
 dependencies:

@@ -19,10 +19,10 @@ final class ValidHelfiChartLinkConstraintValidator extends ConstraintValidator {
   /**
    * {@inheritdoc}
    */
-  public function validate($item, Constraint $constraint) {
+  public function validate($value, Constraint $constraint): void {
     assert($constraint instanceof ValidHelfiChartLinkConstraint);
-    foreach ($item->getValue() as $value) {
-      ['uri' => $uri] = $value;
+    foreach ($value->getValue() as $item) {
+      ['uri' => $uri] = $item;
 
       try {
         $this->mediaUrlToUri($uri);
