@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_hearings\Hook;
 
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -12,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\helfi_paragraphs_hearings\LazyBuilder;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -35,35 +35,17 @@ class HearingsParagraphHooks {
     array &$build,
     ParagraphInterface $entity,
     EntityViewDisplayInterface $display,
-    string $view_mode,
   ): void {
     if ($entity->bundle() !== 'hearings') {
       return;
     }
 
     if ($display->getComponent('list')) {
-      $storage = $this->entityTypeManager
-        ->getStorage('helfi_hearings');
-
-      $entities = $storage->loadMultiple();
-
-      $cache = new CacheableMetadata();
-
-      if (!$entities) {
-        // Retries request every minute if no hearings are found.
-        $cache->setCacheMaxAge(60);
-      }
-
-      foreach ($entities as $item) {
-        // See 'persistent_cache_max_age' for the external entity type.
-        $cache->addCacheableDependency($item);
-
-        $build['list'][] = $this->entityTypeManager
-          ->getViewBuilder('helfi_hearings')
-          ->view($item);
-      }
-
-      $cache->applyTo($build);
+      $build['list'] = [
+        '#lazy_builder' => [LazyBuilder::class . '::lazyBuild', []],
+        '#create_placeholder' => TRUE,
+        '#lazy_builder_preview' => ['#markup' => ''],
+      ];
     }
   }
 
