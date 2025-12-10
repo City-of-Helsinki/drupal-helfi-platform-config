@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -49,6 +50,18 @@ function helfi_paragraphs_hearings_paragraph_view(
       ->getStorage('helfi_hearings');
 
     $entities = $storage->loadMultiple();
+
+    $cache = new CacheableMetadata();
+
+    // Fetch hearings every 10 minutes.
+    $cache->setCacheMaxAge(600);
+
+    if (!$entities) {
+      // Retries request every minute if no hearings are found.
+      $cache->setCacheMaxAge(60);
+    }
+
+    $cache->applyTo($build);
 
     foreach ($entities as $item) {
       $item->addCacheableDependency($entity);
