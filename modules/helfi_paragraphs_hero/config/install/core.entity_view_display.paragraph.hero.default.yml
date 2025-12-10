@@ -11,7 +11,7 @@ dependencies:
     - field.field.paragraph.hero.field_hero_title
     - paragraphs.paragraphs_type.hero
   module:
-    - link
+    - linkit
     - options
     - text
 id: paragraph.hero.default
@@ -43,14 +43,15 @@ content:
     weight: 0
     region: content
   field_hero_link:
-    type: link
+    type: linkit
     label: hidden
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
+      rel: '0'
+      target: '0'
+      linkit_profile: helfi
     third_party_settings: {  }
     weight: 3
     region: content
