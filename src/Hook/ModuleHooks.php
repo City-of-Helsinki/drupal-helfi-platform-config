@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Hook;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
@@ -21,7 +20,6 @@ class ModuleHooks {
   public function __construct(
     private readonly ModuleHandlerInterface $moduleHandler,
     private readonly ConfigUpdaterInterface $configUpdater,
-    private readonly EntityFieldManagerInterface $entityFieldManager,
     private readonly ParagraphTypeUpdater $paragraphTypeUpdater,
   ) {
   }
