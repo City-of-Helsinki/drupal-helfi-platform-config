@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Drupal\Tests\helfi_paragraphs_hearings\Kernel;
+
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
@@ -16,7 +18,7 @@ use GuzzleHttp\Psr7\Response;
 /**
  * Tests hearing paragraph.
  */
-class HelfiParagraphsHearings extends KernelTestBase {
+class HooksTest extends KernelTestBase {
 
   use ApiTestTrait;
 
