@@ -67,3 +67,11 @@ home_care_service_voucher:
   dependencies:
     - core/drupal
     - helfi_calculator/helfi_calculator.base
+
+communal_and_supported_housing_fee:
+  version: 1.0.0
+  js:
+    dist/js/communalAndSupportedHousingFee.min.js: {}
+  dependencies:
+    - core/drupal
+    - helfi_calculator/helfi_calculator.base

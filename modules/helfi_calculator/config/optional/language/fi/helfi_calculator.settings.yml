@@ -11,3 +11,5 @@ calculators:
     label: 'Varhaiskasvatusmaksun laskuri'
   helsinki_benefit_amount_estimate:
     label: 'Helsinki-lisän arviolaskuri'
+  communal_and_supported_housing_fee:
+    label: 'Yhteisöllisen ja tuetun asumisen asiakasmaksun laskuri'
