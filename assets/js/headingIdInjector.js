@@ -132,22 +132,10 @@
       let name = content.textContent.toLowerCase().trim();
 
       // To ensure backwards compatibility, this is done only to "other" languages.
-      if (
-        !Drupal.HeadingIdInjector.mainLanguages().includes(
-          drupalSettings.path.currentLanguage,
-        )
-      ) {
-        Object.keys(Drupal.HeadingIdInjector.localeConversions()).forEach(
-          (swap) => {
-            name = name.replace(
-              new RegExp(
-                Drupal.HeadingIdInjector.localeConversions()[swap],
-                'g',
-              ),
-              swap,
-            );
-          },
-        );
+      if (!Drupal.HeadingIdInjector.mainLanguages().includes(drupalSettings.path.currentLanguage)) {
+        Object.keys(Drupal.HeadingIdInjector.localeConversions()).forEach((swap) => {
+          name = name.replace(new RegExp(Drupal.HeadingIdInjector.localeConversions()[swap], 'g'), swap);
+        });
       } else {
         name = name.replace(/ä/gi, 'a').replace(/ö/gi, 'o').replace(/å/gi, 'a');
       }
@@ -164,9 +152,7 @@
         nodeName = content.parentElement.nodeName.toLowerCase();
       }
 
-      const anchorName = content.id
-        ? content.id
-        : Drupal.HeadingIdInjector.findAvailableId(name, 0);
+      const anchorName = content.id ? content.id : Drupal.HeadingIdInjector.findAvailableId(name, 0);
 
       Drupal.HeadingIdInjector.anchors.push(anchorName);
 
@@ -201,19 +187,12 @@
       });
 
       // Inject IDs into headings and store info about each injected heading.
-      once(
-        'heading-id-injector',
-        Drupal.HeadingIdInjector.titleComponents().join(','),
-        mainContent,
-      ).forEach((content) => {
-        const { nodeName, anchorName } =
-          Drupal.HeadingIdInjector.injectIds(content);
-        Drupal.HeadingIdInjector.injectedHeadings.push({
-          nodeName,
-          anchorName,
-          content,
-        });
-      });
+      once('heading-id-injector', Drupal.HeadingIdInjector.titleComponents().join(','), mainContent).forEach(
+        (content) => {
+          const { nodeName, anchorName } = Drupal.HeadingIdInjector.injectIds(content);
+          Drupal.HeadingIdInjector.injectedHeadings.push({ nodeName, anchorName, content });
+        },
+      );
 
       // Mark as initialized so it won't re-run unnecessarily.
       window.headingIdInjectorInitialized = true;
