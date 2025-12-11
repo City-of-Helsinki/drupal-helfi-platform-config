@@ -15,7 +15,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - helfi_platform_config
-    - link
+    - linkit
     - user
 id: node.news_item.default
 targetEntityType: node
@@ -55,7 +55,7 @@ content:
     weight: 8
     region: content
   field_news_item_links_link:
-    type: link
+    type: linkit
     label: hidden
     settings:
       trim_length: 255
@@ -63,6 +63,7 @@ content:
       url_plain: false
       rel: '0'
       target: '0'
+      linkit_profile: helfi
     third_party_settings: {  }
     weight: 7
     region: content

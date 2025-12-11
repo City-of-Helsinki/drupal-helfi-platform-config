@@ -11,9 +11,9 @@ dependencies:
     - field.field.paragraph.banner.field_icon
     - paragraphs.paragraphs_type.banner
   module:
-    - link
-    - options
     - hdbt_admin_tools
+    - linkit
+    - options
     - text
 id: paragraph.banner.default
 targetEntityType: paragraph
@@ -35,14 +35,15 @@ content:
     weight: 3
     region: content
   field_banner_link:
-    type: link
+    type: linkit
     label: hidden
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
+      rel: '0'
+      target: '0'
+      linkit_profile: helfi
     third_party_settings: {  }
     weight: 2
     region: content
