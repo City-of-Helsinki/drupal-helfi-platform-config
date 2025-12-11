@@ -1,8 +1,4 @@
-const LOCATION_OPTION = Drupal.t(
-  'Use current Location',
-  {},
-  { context: 'Location autocomplete' },
-);
+const LOCATION_OPTION = Drupal.t('Use current Location', {}, { context: 'Location autocomplete' });
 const API_URL = 'https://api.hel.fi/servicemap/v2/address/';
 const LOCATION_LOADING = 'location-loading';
 
@@ -44,9 +40,7 @@ const getTranslation = (fullName) => {
   const init = (element) => {
     // eslint-disable-next-line no-undef
     if (!A11yAutocomplete) {
-      throw new Error(
-        'A11yAutocomplete object not found. Make sure the library is loaded.',
-      );
+      throw new Error('A11yAutocomplete object not found. Make sure the library is loaded.');
     }
 
     // Dont add 'Use current location' option if location not available
@@ -111,11 +105,7 @@ const getTranslation = (fullName) => {
       {},
       { context: 'Location autocomplete' },
     );
-    const oneResultAssistiveHint = Drupal.t(
-      'There is one result available.',
-      {},
-      { context: 'Location autocomplete' },
-    );
+    const oneResultAssistiveHint = Drupal.t('There is one result available.', {}, { context: 'Location autocomplete' });
     const highlightedAssistiveHint = Drupal.t(
       '@selectedItem @position of @count is highlighted',
       {},
@@ -127,10 +117,7 @@ const getTranslation = (fullName) => {
 
     // eslint-disable-next-line no-undef
     const autocomplete = A11yAutocomplete(element, {
-      classes: {
-        inputLoading: 'loading',
-        wrapper: 'helfi-location-autocomplete',
-      },
+      classes: { inputLoading: 'loading', wrapper: 'helfi-location-autocomplete' },
       highlightedAssistiveHint,
       inputAssistiveHint,
       minCharAssistiveHint,
@@ -147,9 +134,7 @@ const getTranslation = (fullName) => {
           abortController.abort();
           abortController = new AbortController();
 
-          const response = await fetch(`${autocompleteRoute}?q=${searchTerm}`, {
-            signal: abortController.signal,
-          });
+          const response = await fetch(`${autocompleteRoute}?q=${searchTerm}`, { signal: abortController.signal });
 
           const data = await response.json();
           results(defaultOptions.concat(data));
@@ -245,11 +230,7 @@ const getTranslation = (fullName) => {
 
   Drupal.behaviors.helfi_location_autocomplete = {
     attach(context) {
-      once(
-        'a11y_autocomplete_element',
-        '[data-helfi-location-autocomplete]',
-        context,
-      ).forEach(init);
+      once('a11y_autocomplete_element', '[data-helfi-location-autocomplete]', context).forEach(init);
     },
   };
 })(Drupal, once);

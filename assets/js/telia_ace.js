@@ -115,9 +115,7 @@ class TeliaAceWidget {
   openCallback = () => {
     this.state.chatOpened = true;
     this.openChat(true);
-    this.closeButton.addEventListener('click', this.closeCallback, {
-      once: true,
-    });
+    this.closeButton.addEventListener('click', this.closeCallback, { once: true });
     this.render();
   };
 
@@ -126,9 +124,7 @@ class TeliaAceWidget {
    */
   closeCallback = () => {
     this.state.chatOpened = false;
-    this.customChatButton.addEventListener('click', this.openChat, {
-      once: true,
-    });
+    this.customChatButton.addEventListener('click', this.openChat, { once: true });
     this.render();
   };
 
@@ -149,12 +145,7 @@ class TeliaAceWidget {
           widget.activate();
           widget.invoke('show');
         }
-        this.state = {
-          ...this.state,
-          chatLoading: false,
-          chatOpened: true,
-          busy: false,
-        };
+        this.state = { ...this.state, chatLoading: false, chatOpened: true, busy: false };
         this.render();
         clearInterval(widgetInitialized);
       }
@@ -218,8 +209,7 @@ class TeliaAceWidget {
     const loaded = setInterval(() => {
       // The close button seems to be the best way to figure out
       // if the chat has actually ready to be used.
-      const humany_widget =
-        document.getElementsByClassName('humany-trigger')[0];
+      const humany_widget = document.getElementsByClassName('humany-trigger')[0];
       let close = null;
       if (!humany_widget) {
         return;
@@ -232,9 +222,7 @@ class TeliaAceWidget {
         this.state.chatLoaded = true;
         this.state.chatOpened = true;
 
-        this.closeButton.addEventListener('click', this.closeCallback, {
-          once: true,
-        });
+        this.closeButton.addEventListener('click', this.closeCallback, { once: true });
         this.openChat(true);
         clearInterval(loaded);
       }

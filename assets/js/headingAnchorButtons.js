@@ -25,9 +25,7 @@
 
       // Collect all direct text nodes inside the heading.
       const textNodes = Array.from(content.childNodes).filter(
-        (node) =>
-          node.nodeType === Node.TEXT_NODE &&
-          node.textContent.trim().length > 0,
+        (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0,
       );
 
       // Move those text nodes into a span.
@@ -48,19 +46,13 @@
       const anchorLinkButton = document.createElement('button');
       anchorLinkButton.classList.add('heading-anchor-button');
 
-      if (
-        Drupal.HeadingAnchorButtons.rgbToHex(anchorStyle.color) === '#ffffff'
-      ) {
+      if (Drupal.HeadingAnchorButtons.rgbToHex(anchorStyle.color) === '#ffffff') {
         anchorLinkButton.classList.add('heading-anchor-button--white');
       }
 
       anchorLinkButton.setAttribute(
         'aria-label',
-        Drupal.t(
-          'Copy link to heading @name.',
-          { '@name': copiedAnchor },
-          { context: 'Anchor link' },
-        ),
+        Drupal.t('Copy link to heading @name.', { '@name': copiedAnchor }, { context: 'Anchor link' }),
       );
 
       // ARIA live region for the messages.
@@ -83,13 +75,7 @@
               { context: 'Anchor link' },
             );
             setTimeout(() => content.removeChild(liveRegion), 7000);
-            setTimeout(
-              () =>
-                anchorLinkButton.classList.remove(
-                  'heading-anchor-button--success',
-                ),
-              3000,
-            );
+            setTimeout(() => anchorLinkButton.classList.remove('heading-anchor-button--success'), 3000);
           })
           .catch((err) => {
             anchorLinkButton.classList.add('heading-anchor-button--error');
@@ -100,13 +86,7 @@
               { context: 'Anchor link' },
             );
             setTimeout(() => content.removeChild(liveRegion), 7000);
-            setTimeout(
-              () =>
-                anchorLinkButton.classList.remove(
-                  'heading-anchor-button--error',
-                ),
-              3000,
-            );
+            setTimeout(() => anchorLinkButton.classList.remove('heading-anchor-button--error'), 3000);
             console.error('Failed to copy:', err);
           });
       });
