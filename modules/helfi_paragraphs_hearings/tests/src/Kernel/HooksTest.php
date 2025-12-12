@@ -86,16 +86,16 @@ class HooksTest extends KernelTestBase {
     $hearings = ExternalEntityType::load('helfi_hearings');
 
     // Success.
-    $sut->view($build, $paragraph, $display->reveal(), 'default');
+    $sut->view($build, $paragraph, $display->reveal());
     $this->assertEquals($hearings->getPersistentCacheMaxAge(), $build['#cache']['max-age']);
     $this->assertNotEmpty($build['list'] ?? []);
 
     // Empty response.
-    $sut->view($build, $paragraph, $display->reveal(), 'default');
+    $sut->view($build, $paragraph, $display->reveal());
     $this->assertEquals(60, $build['#cache']['max-age']);
 
     // Server failure.
-    $sut->view($build, $paragraph, $display->reveal(), 'default');
+    $sut->view($build, $paragraph, $display->reveal());
     $this->assertEquals(60, $build['#cache']['max-age']);
   }
 

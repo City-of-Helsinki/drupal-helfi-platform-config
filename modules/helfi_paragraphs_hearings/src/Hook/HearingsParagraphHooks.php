@@ -35,7 +35,6 @@ class HearingsParagraphHooks {
     array &$build,
     ParagraphInterface $entity,
     EntityViewDisplayInterface $display,
-    string $view_mode,
   ): void {
     if ($entity->bundle() !== 'hearings') {
       return;
