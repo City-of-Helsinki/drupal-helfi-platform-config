@@ -8,7 +8,7 @@ dependencies:
     - field.field.paragraph.list_of_links_item.field_list_of_links_link
     - paragraphs.paragraphs_type.list_of_links_item
   module:
-    - link
+    - linkit
 id: paragraph.list_of_links_item.default
 targetEntityType: paragraph
 bundle: list_of_links_item
@@ -32,7 +32,7 @@ content:
     weight: 0
     region: content
   field_list_of_links_link:
-    type: link
+    type: linkit
     label: hidden
     settings:
       trim_length: 255
@@ -40,6 +40,7 @@ content:
       url_plain: false
       rel: '0'
       target: '0'
+      linkit_profile: helfi
     third_party_settings: {  }
     weight: 1
     region: content

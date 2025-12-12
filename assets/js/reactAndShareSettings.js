@@ -1,12 +1,7 @@
 (($, Drupal, drupalSettings) => {
   let loadReactAndShare = () => {
     if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
-      window.askem = {
-        settings: {
-          apiKey: drupalSettings.reactAndShareApiKey,
-          disableFonts: true,
-        },
-      };
+      window.askem = { settings: { apiKey: drupalSettings.reactAndShareApiKey, disableFonts: true } };
 
       if (drupalSettings.siteName !== undefined) {
         window.askem.settings.categories = [drupalSettings.siteName];
@@ -25,10 +20,7 @@
 
         errorTracker[errorKey].count++;
 
-        if (
-          errorTracker[errorKey].count === 1 ||
-          errorTracker[errorKey].count % errorFrequency === 0
-        ) {
+        if (errorTracker[errorKey].count === 1 || errorTracker[errorKey].count % errorFrequency === 0) {
           Sentry.captureException(error);
         }
       }
@@ -39,7 +31,7 @@
         const _err = new Error(`Askem script failed to load: ${src}`);
 
         // reportToSentryThrottled(src, err);
-        console.log('error reporting works');
+        console.warn('error reporting works');
       }
 
       const scriptElement = document.createElement('script');
