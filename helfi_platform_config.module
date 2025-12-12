@@ -35,6 +35,37 @@ use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\RedirectCleaner;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\search_api\IndexInterface;
+use Drupal\helfi_platform_config\Entity\ExternalEntity\MultisiteNode;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\entity\BundleFieldDefinition;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_platform_config_entity_bundle_info_alter(array &$bundles) : void {
+  if (isset($bundles['helfi_multisite_node']['helfi_multisite_node'])) {
+    $bundles['helfi_multisite_node']['helfi_multisite_node']['class'] = MultisiteNode::class;
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function helfi_platform_config_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, $bundle) : void {
+  if ($entity_type->id() === 'helfi_multisite_node') {
+    $additionalFields = [
+      'node_url' => new TranslatableMarkup('Node URL'),
+      'parent_instance' => new TranslatableMarkup('Parent instance'),
+    ];
+    foreach ($additionalFields as $field_name => $field_label) {
+      $fields[$field_name] = BundleFieldDefinition::create('string')
+        ->setName($field_name)
+        ->setLabel($field_label)
+        ->setDisplayConfigurable('view', TRUE)
+        ->setDisplayConfigurable('form', TRUE);
+    }
+  }
+}
 
 /**
  * Implements hook_entity_type_build().
