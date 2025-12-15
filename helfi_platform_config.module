@@ -14,7 +14,6 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
-use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\LegacyModuleImplementsAlter;
 use Drupal\Core\Language\LanguageInterface;
@@ -28,11 +27,9 @@ use Drupal\block\Entity\Block;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
-use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\RedirectCleaner;
-use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\search_api\IndexInterface;
 
 /**
@@ -45,77 +42,6 @@ function helfi_platform_config_entity_type_build(array &$entity_types): void {
       'custom' => 'is_custom',
     ]);
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function helfi_platform_config_base_field_override_presave(
-  FieldConfigBase $field,
-) : void {
-  if ($field->get('entity_type') !== 'paragraphs_library_item') {
-    return;
-  }
-  helfi_platform_config_rebuild_handler_settings($field);
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function helfi_platform_config_field_config_presave(
-  FieldConfigBase $field,
-) : void {
-  helfi_platform_config_rebuild_handler_settings($field);
-}
-
-/**
- * Rebuild field handler settings target bundles after saving fields.
- *
- * @param \Drupal\Core\Field\FieldConfigBase $field
- *   Base field override or field config.
- */
-function helfi_platform_config_rebuild_handler_settings(
-  FieldConfigBase $field,
-): void {
-  if (
-    \Drupal::isConfigSyncing() ||
-    $field->isSyncing() ||
-    $field->getType() !== 'entity_reference_revisions'
-  ) {
-    return;
-  }
-
-  $collection = [];
-  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-  $moduleHandler = Drupal::service('module_handler');
-  $paragraphTypes = $moduleHandler->invokeAll('helfi_paragraph_types');
-
-  foreach ($paragraphTypes as $type) {
-    if (!$type instanceof ParagraphTypeCollection) {
-      throw new LogicException(
-        sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
-      );
-    }
-
-    if (!ParagraphsType::load($type->paragraph)) {
-      continue;
-    }
-    $collection[$type->entityType][$type->bundle][$type->field][] = $type;
-  }
-  if (!isset($collection[$field->getTargetEntityTypeId()][$field->getTargetBundle()][$field->getName()])) {
-    return;
-  }
-  $paragraphTypes = $collection[$field->getTargetEntityTypeId()][$field->getTargetBundle()][$field->getName()];
-  $handlerSettings = $field->getSetting('handler_settings');
-
-  foreach ($paragraphTypes as $type) {
-    $handlerSettings['target_bundles'][$type->paragraph] = $type->paragraph;
-    $handlerSettings['target_bundles_drag_drop'][$type->paragraph] = [
-      'weight' => $type->weight,
-      'enabled' => TRUE,
-    ];
-  }
-  $field->setSetting('handler_settings', $handlerSettings);
 }
 
 /**
