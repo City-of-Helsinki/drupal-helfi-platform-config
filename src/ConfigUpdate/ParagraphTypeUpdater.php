@@ -46,7 +46,8 @@ class ParagraphTypeUpdater {
       }
 
       // Save the field to trigger re-build of target_bundles.
-      // @see \Drupal\helfi_platform_config\Hook\EntityHooks.
+      // @see Drupal\helfi_platform_config\Hook\EntityHooks::baseFieldOverridePresave()
+      // @see Drupal\helfi_platform_config\Hook\EntityHooks::fieldConfigPresave()
       $field->save();
     }
   }
