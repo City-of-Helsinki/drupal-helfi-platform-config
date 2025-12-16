@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_platform_config\Kernel;
+namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
 use Drupal\Core\Field\Entity\BaseFieldOverride;
 use Drupal\KernelTests\KernelTestBase;
