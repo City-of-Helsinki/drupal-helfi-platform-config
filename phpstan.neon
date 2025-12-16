@@ -45,3 +45,6 @@ parameters:
     -
       message: '#^Call to an undefined method Drupal\\Core\\TypedData\\TypedDataInterface::getTarget\(\).#'
       path: helfi_platform_config.tokens.inc
+    -
+      message: '#^Call to an undefined method Drupal\\Core\\Field\\FieldDefinitionInterface::save\(\).#'
+      path: src/ConfigUpdate/ParagraphTypeUpdater.php
