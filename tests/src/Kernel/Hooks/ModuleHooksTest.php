@@ -33,8 +33,7 @@ final class ModuleHooksTest extends KernelTestBase {
   }
 
   /**
-   * Tests that permissions and paragraph targets are updated
-   * when modules are installed.
+   * Tests modules installed hook.
    */
   public function testModulesInstalledUpdatesEverything(): void {
     // Tests that permissions and paragraph targets are updated
@@ -60,7 +59,6 @@ final class ModuleHooksTest extends KernelTestBase {
         }
       );
 
-    // Assertions
     $configUpdater->expects($this->exactly(2))
       ->method('updatePermissions')
       ->willReturnCallback(
@@ -72,7 +70,6 @@ final class ModuleHooksTest extends KernelTestBase {
     $paragraphTypeUpdater->expects($this->once())
       ->method('updateParagraphTargetTypes');
 
-    // Execute
     $sut = new ModuleHooks(
       $moduleHandler,
       $configUpdater,
@@ -80,7 +77,6 @@ final class ModuleHooksTest extends KernelTestBase {
     );
     $sut->modulesInstalled($modules, FALSE);
 
-    // Verify
     $this->assertSame($expectedPermissions, $receivedPermissions);
   }
 
