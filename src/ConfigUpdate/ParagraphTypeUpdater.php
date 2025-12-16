@@ -46,8 +46,7 @@ class ParagraphTypeUpdater {
       }
 
       // Save the field to trigger re-build of target_bundles.
-      // @see helfi_platform_config_field_config_presave().
-      // @see helfi_platform_config_base_field_override_presave().
+      // @see \Drupal\helfi_platform_config\Hook\EntityHooks.
       $field->save();
     }
   }
