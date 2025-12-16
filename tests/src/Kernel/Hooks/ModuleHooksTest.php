@@ -36,8 +36,9 @@ final class ModuleHooksTest extends KernelTestBase {
    * Tests that permissions and paragraph targets are updated
    * when modules are installed.
    */
-  public function testModulesInstalledUpdatesEverything(): void
-  {
+  public function testModulesInstalledUpdatesEverything(): void {
+    // Tests that permissions and paragraph targets are updated
+    // when modules are installed.
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
@@ -45,7 +46,6 @@ final class ModuleHooksTest extends KernelTestBase {
     $modules = ['module_a', 'module_b'];
     $expectedPermissions = [['access content', 'administer nodes'], []];
 
-    // Configure mocks
     $moduleHandler->method('moduleExists')
       ->with('locale')
       ->willReturn(TRUE);
