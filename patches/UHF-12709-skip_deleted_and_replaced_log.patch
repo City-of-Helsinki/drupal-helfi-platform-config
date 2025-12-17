@@ -1,0 +1,16 @@
+diff --git a/core/lib/Drupal/Core/Config/ConfigImporter.php b/core/lib/Drupal/Core/Config/ConfigImporter.php
+index 3b30c2d99f3..88e99afcdf1 100644
+--- a/core/lib/Drupal/Core/Config/ConfigImporter.php
++++ b/core/lib/Drupal/Core/Config/ConfigImporter.php
+@@ -985,11 +985,9 @@ protected function checkOp($collection, $op, $name) {
+             $entity_type = $this->configManager->getEntityTypeManager()->getDefinition($entity_type_id);
+             $entity = $entity_storage->load($entity_storage->getIDFromConfigName($name, $entity_type->getConfigPrefix()));
+             $entity->delete();
+-            $this->logError($this->t('Deleted and replaced configuration entity "@name"', ['@name' => $name]));
+           }
+           else {
+             $this->storageComparer->getTargetStorage($collection)->delete($name);
+-            $this->logError($this->t('Deleted and replaced configuration "@name"', ['@name' => $name]));
+           }
+           return TRUE;
+         }
