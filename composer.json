@@ -28,7 +28,7 @@
         "drupal/focal_point": "^2.0",
         "drupal/jquery_ui": "^1.6",
         "drupal/jquery_ui_draggable": "^2.0",
-        "drupal/gin_toolbar": "^2.0 || ^3.0",
+        "drupal/gin_toolbar": "^3.0",
         "drupal/helfi_api_base": "*",
         "drupal/helfi_tpr": "*",
         "drupal/image_style_quality": "^1.4",
@@ -67,15 +67,7 @@
         "league/uri": "^6.0",
         "php": "^8.1"
     },
-    "require-dev": {
-        "dg/bypass-finals": "^1.0"
-    },
     "conflict": {
-        "drupal/core": "<10.5",
-        "drupal/redirect": "<1.12",
-        "drupal/core-composer-scaffold": "<10.5",
-        "drupal/helfi_media_map": "*",
-        "drupal/external_entity": "<3.0.0-beta6",
         "drush/drush": "<12",
         "phpunit/phpunit": ">=11"
     },
