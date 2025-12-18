@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "require": {
         "ext-curl": "*",
-        "drupal/core": "^11",
+        "drupal/core": "^11.2",
         "drupal/action": "^0.2",
         "drupal/admin_toolbar": "^3.0",
         "drupal/allowed_formats": "^3.0",
@@ -68,7 +68,6 @@
         "php": "^8.1"
     },
     "conflict": {
-        "drupal/core": ">11.3",
         "drush/drush": "<12",
         "phpunit/phpunit": ">=11"
     },
