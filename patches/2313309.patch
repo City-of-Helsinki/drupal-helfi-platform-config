@@ -1,8 +1,27 @@
 diff --git a/core/.phpstan-baseline.php b/core/.phpstan-baseline.php
-index 04186ecca58168e539cce14f7e7e83bb78b23c5a..a25bba5a24684aa936b05e40b2d8d01d8242d5fc 100644
+index 5d8b47583aeabc4a788d504a0d76ea14345186c1..137b3a951ddc80c0964effc557525039c636c60d 100644
 --- a/core/.phpstan-baseline.php
 +++ b/core/.phpstan-baseline.php
-@@ -15175,6 +15175,18 @@
+@@ -15109,6 +15109,18 @@
+ 	'count' => 1,
+ 	'path' => __DIR__ . '/modules/contextual/src/Plugin/views/field/ContextualLinks.php',
+ ];
++$ignoreErrors[] = [
++	'message' => '#^Method Drupal\\\\Tests\\\\contextual\\\\Functional\\\\LanguageAdministrationPagesLanguageTest\\:\\:clickContextualLink\\(\\) has no return type specified\\.$#',
++	'identifier' => 'missingType.return',
++	'count' => 1,
++	'path' => __DIR__ . '/modules/contextual/tests/src/Functional/LanguageAdministrationPagesLanguageTest.php',
++];
++$ignoreErrors[] = [
++	'message' => '#^Method Drupal\\\\Tests\\\\contextual\\\\Functional\\\\LanguageAdministrationPagesLanguageTest\\:\\:toggleContextualTriggerVisibility\\(\\) has no return type specified\\.$#',
++	'identifier' => 'missingType.return',
++	'count' => 1,
++	'path' => __DIR__ . '/modules/contextual/tests/src/Functional/LanguageAdministrationPagesLanguageTest.php',
++];
+ $ignoreErrors[] = [
+ 	'message' => '#^Method Drupal\\\\Tests\\\\contextual\\\\FunctionalJavascript\\\\ContextualLinksTest\\:\\:clickContextualLink\\(\\) has no return type specified\\.$#',
+ 	'identifier' => 'missingType.return',
+@@ -15121,6 +15133,18 @@
  	'count' => 1,
  	'path' => __DIR__ . '/modules/contextual/tests/src/FunctionalJavascript/ContextualLinksTest.php',
  ];
@@ -10,22 +29,22 @@ index 04186ecca58168e539cce14f7e7e83bb78b23c5a..a25bba5a24684aa936b05e40b2d8d01d
 +	'message' => '#^Method Drupal\\\\Tests\\\\contextual\\\\FunctionalJavascript\\\\ContextualTranslationTest\\:\\:clickContextualLink\\(\\) has no return type specified\\.$#',
 +	'identifier' => 'missingType.return',
 +	'count' => 1,
-+	'path' => __DIR__ . '/modules/contextual/tests/src/FunctionalJavascript/ContextualLinkClickTrait.php',
++	'path' => __DIR__ . '/modules/contextual/tests/src/FunctionalJavascript/ContextualTranslationTest.php',
 +];
 +$ignoreErrors[] = [
 +	'message' => '#^Method Drupal\\\\Tests\\\\contextual\\\\FunctionalJavascript\\\\ContextualTranslationTest\\:\\:toggleContextualTriggerVisibility\\(\\) has no return type specified\\.$#',
 +	'identifier' => 'missingType.return',
 +	'count' => 1,
-+	'path' => __DIR__ . '/modules/contextual/tests/src/FunctionalJavascript/ContextualLinkClickTrait.php',
++	'path' => __DIR__ . '/modules/contextual/tests/src/FunctionalJavascript/ContextualTranslationTest.php',
 +];
  $ignoreErrors[] = [
  	'message' => '#^Method Drupal\\\\datetime\\\\DateTimeComputed\\:\\:setValue\\(\\) has no return type specified\\.$#',
  	'identifier' => 'missingType.return',
 diff --git a/core/core.services.yml b/core/core.services.yml
-index 8c1269274aec7e9ca816648ac9c37bb628c338c0..0c6898b5a8d83b03157db322678961731d39a70f 100644
+index bcc3fff81e6e62247f4a57d526facf55a2b17c28..d3d216e2914e02f99ffc474344a1258ac3d363b7 100644
 --- a/core/core.services.yml
 +++ b/core/core.services.yml
-@@ -180,6 +180,11 @@ services:
+@@ -193,6 +193,11 @@ services:
      arguments: ['@current_user']
      tags:
        - { name: cache.context}
@@ -39,7 +58,7 @@ index 8c1269274aec7e9ca816648ac9c37bb628c338c0..0c6898b5a8d83b03157db32267896173
      arguments: ['@current_user', '@user_permissions_hash_generator']
 diff --git a/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php b/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php
 new file mode 100644
-index 0000000000000000000000000000000000000000..6bfd20ea20d1037cb409744664efdb0aefc33825
+index 0000000000000000000000000000000000000000..647257a0ae60e1ab5280f6c2cef840d534cecbd5
 --- /dev/null
 +++ b/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php
 @@ -0,0 +1,44 @@
@@ -76,7 +95,7 @@ index 0000000000000000000000000000000000000000..6bfd20ea20d1037cb409744664efdb0a
 +   * {@inheritdoc}
 +   */
 +  public function getContext(): string {
-+    return $this->currentUser->getPreferredAdminLangcode();
++    return $this->currentUser->getPreferredAdminLangcode(FALSE);
 +  }
 +
 +  /**
@@ -88,7 +107,7 @@ index 0000000000000000000000000000000000000000..6bfd20ea20d1037cb409744664efdb0a
 +
 +}
 diff --git a/core/lib/Drupal/Core/Language/LanguageManager.php b/core/lib/Drupal/Core/Language/LanguageManager.php
-index a774bd5d7d00ab981d895579d4200a2236dd67c0..2a80f1b6f11caef8db3b8f3167d967a3c396abcd 100644
+index 1f812b7c2c98197e70fbc99863a797c54388ac35..cbe1961c2aa2144e4bfaffc8dcecc21702f0b032 100644
 --- a/core/lib/Drupal/Core/Language/LanguageManager.php
 +++ b/core/lib/Drupal/Core/Language/LanguageManager.php
 @@ -444,4 +444,12 @@ protected function filterLanguages(array $languages, $flags = LanguageInterface:
@@ -129,10 +148,28 @@ index 270e8920f5d5fb774af71d64c3c8ac39136f5b31..6339102c170cfbb02a2ccb0a78553dfc
 +
  }
 diff --git a/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php b/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
-index aede08a4cf290f1d0b12581f56c9e3da882f0a31..bb8dbcdc8f12617252a642ea752f77bb504ac840 100644
+index c59014eaee11f1ee09dc9db03546a2a91a7b4821..34952def9053b4a2b29448d2638a207fd369d591 100644
 --- a/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
 +++ b/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
-@@ -389,9 +389,9 @@ public function testBlockContextualLinks(): void {
+@@ -364,7 +364,7 @@ public function testBlockEmptyRendering(): void {
+       'http_response',
+       'rendered',
+     ]));
+-    $this->assertCacheContexts(['url.query_args:_wrapper_format']);
++    $this->assertCacheContexts(['url.query_args:_wrapper_format', 'user.admin_language']);
+ 
+     // Hide the header on empty results.
+     $display = &$view->getDisplay('block_1');
+@@ -411,7 +411,7 @@ public function testBlockEmptyRendering(): void {
+       'http_response',
+       'rendered',
+     ]));
+-    $this->assertCacheContexts(['url.query_args:_wrapper_format']);
++    $this->assertCacheContexts(['url.query_args:_wrapper_format', 'user.admin_language']);
+   }
+ 
+   /**
+@@ -427,9 +427,9 @@ public function testBlockContextualLinks(): void {
      $cached_block = $this->drupalPlaceBlock('views_block:test_view_block-block_1');
      $this->drupalGet('test-page');
  
@@ -145,10 +182,10 @@ index aede08a4cf290f1d0b12581f56c9e3da882f0a31..bb8dbcdc8f12617252a642ea752f77bb
      // @see \Drupal\contextual\Tests\ContextualDynamicContextTest:assertContextualLinkPlaceHolder()
      // Check existence of the contextual link placeholders.
 diff --git a/core/modules/block_content/tests/src/Functional/BlockContentContextualLinksTest.php b/core/modules/block_content/tests/src/Functional/BlockContentContextualLinksTest.php
-index c01a2ff07707d151a81d4522874ac4addad4535c..ea4a710abaa6a21270be32bd1d864baf701d8ce8 100644
+index 4bbd99068243e055dfed37cfbfd44ffbe5c7c81d..f645454b3b0ce95962bd497bd250e08b847159d1 100644
 --- a/core/modules/block_content/tests/src/Functional/BlockContentContextualLinksTest.php
 +++ b/core/modules/block_content/tests/src/Functional/BlockContentContextualLinksTest.php
-@@ -38,7 +38,7 @@ public function testBlockContentContextualLinks(): void {
+@@ -41,7 +41,7 @@ public function testBlockContentContextualLinks(): void {
      $this->drupalLogin($user);
  
      $this->drupalGet('<front>');
@@ -186,12 +223,218 @@ index 8daec06c8ee56586c0481c95cb3c2db94ebed667..b645290a529ad69cf5e13c33cd18ce05
      $metadata = UrlHelper::buildQuery($args['metadata']);
      $ids[] = "{$group}:{$route_parameters}:{$metadata}";
    }
+diff --git a/core/modules/contextual/src/Hook/ContextualThemeHooks.php b/core/modules/contextual/src/Hook/ContextualThemeHooks.php
+index 7d873196b431f3db8e89bd973b38f5f13ea4da8c..2cd5689f66bed60a6a29d06429566c7e15e87e00 100644
+--- a/core/modules/contextual/src/Hook/ContextualThemeHooks.php
++++ b/core/modules/contextual/src/Hook/ContextualThemeHooks.php
+@@ -37,6 +37,7 @@ public function preprocess(&$variables, $hook, $info): void {
+ 
+     if (isset($element) && is_array($element) && !empty($element['#contextual_links'])) {
+       $variables['#cache']['contexts'][] = 'user.permissions';
++      $variables['#cache']['contexts'][] = 'user.admin_language';
+       if ($this->currentUser->hasPermission('access contextual links')) {
+         // Mark this element as potentially having contextual links attached to
+         // it.
+diff --git a/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php b/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php
+index a5dbdc46c0dd80a48e4118630e444fe3f46ddc55..f85a9602790c0e61014926682e6d67af45765ea4 100644
+--- a/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php
++++ b/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php
+@@ -103,10 +103,10 @@ public function testDifferentPermissions(): void {
+     // Now, on the front page, all article nodes should have contextual links
+     // placeholders, as should the view that contains them.
+     $ids = [
+-      'node:node=' . $node1->id() . ':changed=' . $node1->getChangedTime() . '&langcode=en',
+-      'node:node=' . $node2->id() . ':changed=' . $node2->getChangedTime() . '&langcode=en',
+-      'node:node=' . $node3->id() . ':changed=' . $node3->getChangedTime() . '&langcode=en',
+-      'entity.view.edit_form:view=frontpage:location=page&name=frontpage&display_id=page_1&langcode=en',
++      'node:node=' . $node1->id() . ':changed=' . $node1->getChangedTime() . '&langcode=en&admin_langcode=en',
++      'node:node=' . $node2->id() . ':changed=' . $node2->getChangedTime() . '&langcode=en&admin_langcode=en',
++      'node:node=' . $node3->id() . ':changed=' . $node3->getChangedTime() . '&langcode=en&admin_langcode=en',
++      'entity.view.edit_form:view=frontpage:location=page&name=frontpage&display_id=page_1&langcode=en&admin_langcode=en',
+     ];
+ 
+     // Editor user: can access contextual links and can edit articles.
+@@ -130,7 +130,7 @@ public function testDifferentPermissions(): void {
+       'title' => $this->randomString(),
+       'promote' => TRUE,
+     ])->save();
+-    $id = 'node:node=' . $node3->id() . ':changed=' . $node3->getChangedTime() . '&langcode=it';
++    $id = 'node:node=' . $node3->id() . ':changed=' . $node3->getChangedTime() . '&langcode=it&admin_langcode=en';
+     $this->drupalGet('node', ['language' => ConfigurableLanguage::createFromLangcode('it')]);
+     $this->assertContextualLinkPlaceHolder($id);
+ 
+@@ -184,7 +184,7 @@ public function testTokenProtection(): void {
+ 
+     // Now, on the front page, all article nodes should have contextual links
+     // placeholders, as should the view that contains them.
+-    $id = 'node:node=' . $node1->id() . ':changed=' . $node1->getChangedTime() . '&langcode=en';
++    $id = 'node:node=' . $node1->id() . ':changed=' . $node1->getChangedTime() . '&langcode=en&admin_langcode=en';
+ 
+     // Editor user: can access contextual links and can edit articles.
+     $this->drupalGet('node');
+diff --git a/core/modules/contextual/tests/src/Functional/LanguageAdministrationPagesLanguageTest.php b/core/modules/contextual/tests/src/Functional/LanguageAdministrationPagesLanguageTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..cdab3c62c40e280c5310c6a49a3ac6d483ae5f90
+--- /dev/null
++++ b/core/modules/contextual/tests/src/Functional/LanguageAdministrationPagesLanguageTest.php
+@@ -0,0 +1,151 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\contextual\Functional;
++
++use Drupal\language\Entity\ConfigurableLanguage;
++use Drupal\Tests\BrowserTestBase;
++use Drupal\node\NodeInterface;
++use Drupal\Tests\contextual\FunctionalJavascript\ContextualLinkClickTrait;
++use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
++use Drupal\Tests\node\Traits\NodeCreationTrait;
++use Drupal\user\UserInterface;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++
++/**
++ * Tests administration pages language.
++ */
++#[Group('language')]
++#[RunTestsInSeparateProcesses]
++class LanguageAdministrationPagesLanguageTest extends BrowserTestBase {
++
++  use ContentTypeCreationTrait {
++    createContentType as drupalCreateContentType;
++  }
++  use ContextualLinkClickTrait;
++  use NodeCreationTrait {
++    createNode as drupalCreateNode;
++  }
++
++  /**
++   * Admin user.
++   */
++  protected UserInterface $admin;
++
++  /**
++   * Test node.
++   */
++  protected NodeInterface $node;
++
++  /**
++   * Block ID.
++   */
++  protected array $blockId;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'language',
++    'locale',
++    'content_translation',
++    'block',
++    'node',
++    'contextual',
++    'toolbar',
++    'system_test',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $defaultTheme = 'stark';
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++    // User to manage languages.
++    $this->admin = $this->drupalCreateUser([], NULL, TRUE);
++    $this->drupalLogin($this->admin);
++
++    // Create FR.
++    ConfigurableLanguage::createFromLangcode('fr')->save();
++
++    // Set language detection to URL and browser detection.
++    $this->drupalGet('/admin/config/regional/language/detection');
++    $this->submitForm([
++      'language_interface[enabled][language-url]' => TRUE,
++      'language_interface[enabled][language-user-admin]' => TRUE,
++      'language_content[configurable]' => TRUE,
++      'language_content[enabled][language-url]' => TRUE,
++      'language_content[enabled][language-interface]' => FALSE,
++    ], 'Save settings');
++
++    // Set prefixes to en and fr.
++    $this->drupalGet('/admin/config/regional/language/detection/url');
++    $this->submitForm([
++      'prefix[en]' => 'en',
++      'prefix[fr]' => 'fr',
++    ], 'Save configuration');
++
++    // Create a node type.
++    $this->drupalCreateContentType([
++      'type' => 'page',
++      'name' => 'Basic page',
++    ]);
++    $this->node = $this->drupalCreateNode([
++      'type' => 'page',
++      'title' => 'New page',
++    ]);
++
++    $this->drupalGet('/admin/config/regional/content-language');
++    $edit = [
++      'entity_types[node]' => TRUE,
++      'settings[node][page][translatable]' => TRUE,
++    ];
++    $this->submitForm($edit, 'Save configuration');
++
++    $local_tasks_block = $this->drupalPlaceBlock('local_tasks_block');
++    $page_title_block = $this->drupalPlaceBlock('page_title_block');
++    $this->blockId['local_tasks_block'] = $local_tasks_block->id();
++    $this->blockId['page_title_block'] = $page_title_block->id();
++
++    $this->drupalGet('/node/' . $this->node->id() . '/translations/add/en/fr');
++    $edit = [
++      'title[0][value]' => 'Nouvelle page',
++    ];
++    $this->submitForm($edit, 'Save (this translation)');
++  }
++
++  /**
++   * Tests administration pages language.
++   */
++  public function testLanguageAdministrationPagesLanguage(): void {
++    $local_tasks_block_prefix = '//div[contains(@data-contextual-id, "block:block=' . $this->blockId['local_tasks_block'];
++    $page_title_block_prefix = '//div[contains(@data-contextual-id, "block:block=' . $this->blockId['page_title_block'];
++
++    $this->drupalGet('/node/' . $this->node->id());
++    $this->assertSession()->elementsCount('xpath', $local_tasks_block_prefix . ':langcode=en&admin_langcode=en")]', 1);
++    $this->assertSession()->elementsCount('xpath', $page_title_block_prefix . ':langcode=en&admin_langcode=en")]', 1);
++
++    $this->drupalGet('/fr/node/' . $this->node->id());
++    $this->assertSession()->elementsCount('xpath', $local_tasks_block_prefix . ':langcode=fr&admin_langcode=en")]', 1);
++    $this->assertSession()->elementsCount('xpath', $page_title_block_prefix . ':langcode=fr&admin_langcode=en")]', 1);
++
++    $this->drupalGet('/user/' . $this->admin->id() . '/edit');
++    $this->submitForm(['preferred_admin_langcode' => 'fr'], 'Save');
++    // drupal_flush_all_caches($this->kernel);.
++    $this->drupalGet('/node/' . $this->node->id());
++    $this->assertSession()->elementsCount('xpath', $local_tasks_block_prefix . ':langcode=en&admin_langcode=fr")]', 1);
++    $this->assertSession()->elementsCount('xpath', $page_title_block_prefix . ':langcode=en&admin_langcode=fr")]', 1);
++
++    $this->drupalGet('/fr/node/' . $this->node->id());
++    $this->assertSession()->elementsCount('xpath', $local_tasks_block_prefix . ':langcode=fr&admin_langcode=fr")]', 1);
++    $this->assertSession()->elementsCount('xpath', $page_title_block_prefix . ':langcode=fr&admin_langcode=fr")]', 1);
++  }
++
++}
 diff --git a/core/modules/contextual/tests/src/FunctionalJavascript/ContextualTranslationTest.php b/core/modules/contextual/tests/src/FunctionalJavascript/ContextualTranslationTest.php
 new file mode 100644
-index 0000000000000000000000000000000000000000..0e4c36f58b02584b08a629e23650756205486030
+index 0000000000000000000000000000000000000000..675d176aab4b5bd7cf16f550d9b0d7092fd1beff
 --- /dev/null
 +++ b/core/modules/contextual/tests/src/FunctionalJavascript/ContextualTranslationTest.php
-@@ -0,0 +1,122 @@
+@@ -0,0 +1,124 @@
 +<?php
 +
 +declare(strict_types=1);
@@ -203,12 +446,14 @@ index 0000000000000000000000000000000000000000..0e4c36f58b02584b08a629e236507562
 +use Drupal\language\Entity\ConfigurableLanguage;
 +use Drupal\locale\StringStorageInterface;
 +use Drupal\user\UserInterface;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 +
 +/**
 + * Tests contextual link translation.
-+ *
-+ * @group contextual
 + */
++#[Group('contextual')]
++#[RunTestsInSeparateProcesses]
 +class ContextualTranslationTest extends WebDriverTestBase {
 +
 +  use ContextualLinkClickTrait;
@@ -315,10 +560,10 @@ index 0000000000000000000000000000000000000000..0e4c36f58b02584b08a629e236507562
 +
 +}
 diff --git a/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php b/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
-index e4e93336a0ce5165a6b7b02317db0c0710912138..8a63d043f283bb57d2647bba2efa8e7647465711 100644
+index f2b13940ad73e4895464b7275181638776f944b2..2a4d2036476e40e323a97cd24dd38fa87f42b235 100644
 --- a/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
 +++ b/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
-@@ -33,10 +33,10 @@ public static function contextualLinksDataProvider(): array {
+@@ -37,10 +37,10 @@ public static function contextualLinksDataProvider(): array {
            'route_parameters' => [
              'node' => '14031991',
            ],
@@ -328,10 +573,10 @@ index e4e93336a0ce5165a6b7b02317db0c0710912138..8a63d043f283bb57d2647bba2efa8e76
        ],
 -      'node:node=14031991:langcode=en',
 +      'node:node=14031991:langcode=en&admin_langcode=en',
+       'olivero',
      ];
  
-     $tests['one group, multiple dynamic path arguments, no metadata'] = [
-@@ -47,10 +47,10 @@ public static function contextualLinksDataProvider(): array {
+@@ -52,10 +52,10 @@ public static function contextualLinksDataProvider(): array {
              'key' => 'baz',
              1 => 'qux',
            ],
@@ -341,10 +586,10 @@ index e4e93336a0ce5165a6b7b02317db0c0710912138..8a63d043f283bb57d2647bba2efa8e76
        ],
 -      'foo:0=bar&key=baz&1=qux:langcode=en',
 +      'foo:0=bar&key=baz&1=qux:langcode=en&admin_langcode=en',
+       'claro',
      ];
  
-     $tests['one group, one dynamic path argument, metadata'] = [
-@@ -63,10 +63,11 @@ public static function contextualLinksDataProvider(): array {
+@@ -69,10 +69,11 @@ public static function contextualLinksDataProvider(): array {
              'location' => 'page',
              'display' => 'page_1',
              'langcode' => 'en',
@@ -354,10 +599,10 @@ index e4e93336a0ce5165a6b7b02317db0c0710912138..8a63d043f283bb57d2647bba2efa8e76
        ],
 -      'views_ui_edit:view=frontpage:location=page&display=page_1&langcode=en',
 +      'views_ui_edit:view=frontpage:location=page&display=page_1&langcode=en&admin_langcode=en',
+       'olivero',
      ];
  
-     $tests['multiple groups, multiple dynamic path arguments'] = [
-@@ -75,7 +76,7 @@ public static function contextualLinksDataProvider(): array {
+@@ -82,7 +83,7 @@ public static function contextualLinksDataProvider(): array {
            'route_parameters' => [
              'node' => '14031991',
            ],
@@ -366,7 +611,7 @@ index e4e93336a0ce5165a6b7b02317db0c0710912138..8a63d043f283bb57d2647bba2efa8e76
          ],
          'foo' => [
            'route_parameters' => [
-@@ -83,14 +84,14 @@ public static function contextualLinksDataProvider(): array {
+@@ -90,14 +91,14 @@ public static function contextualLinksDataProvider(): array {
              'key' => 'baz',
              1 => 'qux',
            ],
@@ -381,14 +626,14 @@ index e4e93336a0ce5165a6b7b02317db0c0710912138..8a63d043f283bb57d2647bba2efa8e76
        ],
 -      'node:node=14031991:langcode=en|foo:0=bar&key=baz&1=qux:langcode=en|edge:0=20011988:langcode=en',
 +      'node:node=14031991:langcode=en&admin_langcode=en|foo:0=bar&key=baz&1=qux:langcode=en&admin_langcode=en|edge:0=20011988:langcode=en&admin_langcode=en',
+       'claro',
      ];
  
-     return $tests;
 diff --git a/core/modules/language/language.services.yml b/core/modules/language/language.services.yml
-index c4a2fcc81f65e74930ba2025e49dce4a32ec1cd0..1a40c849dc538198d2843bf30e962d5571a1bb50 100644
+index 7904eabe505d6a83ad1ad6743e992b08d699d915..1763cc1567544724a6767870d037edb0905aa148 100644
 --- a/core/modules/language/language.services.yml
 +++ b/core/modules/language/language.services.yml
-@@ -29,3 +29,5 @@ services:
+@@ -30,3 +30,5 @@ services:
      tags:
        - { name: paramconverter }
      lazy: true
@@ -528,7 +773,7 @@ index 0dc53e7c76de3908e6e7598be34e90b5fc72af98..359613f503b02d66603ba28d92c1f53b
     * {@inheritdoc}
     */
 diff --git a/core/modules/language/src/Hook/LanguageHooks.php b/core/modules/language/src/Hook/LanguageHooks.php
-index 3135d8c06a6e953139765fd2090325fc392ef025..b55ddd62df12d1a148845d390aea7ed045289bfa 100644
+index edb93d49268bad1e8ed928d5c9c02ab52f7c2542..d779508b0c2b7f81e39bb48cef996734dbb36687 100644
 --- a/core/modules/language/src/Hook/LanguageHooks.php
 +++ b/core/modules/language/src/Hook/LanguageHooks.php
 @@ -17,6 +17,7 @@
@@ -539,7 +784,7 @@ index 3135d8c06a6e953139765fd2090325fc392ef025..b55ddd62df12d1a148845d390aea7ed0
  use Drupal\language\Entity\ContentLanguageSettings;
  use Drupal\Core\Language\LanguageInterface;
  use Drupal\Core\Url;
-@@ -188,6 +189,14 @@ public function elementInfoAlter(&$type): void {
+@@ -171,6 +172,14 @@ public function elementInfoAlter(&$type): void {
        $type['language_select']['#theme_wrappers'] = array_merge($type['language_select']['#theme_wrappers'], ['form_element']);
        $type['language_select']['#languages'] = LanguageInterface::STATE_CONFIGURABLE;
        $type['language_select']['#multiple'] = FALSE;
@@ -554,11 +799,68 @@ index 3135d8c06a6e953139765fd2090325fc392ef025..b55ddd62df12d1a148845d390aea7ed0
      }
    }
  
+diff --git a/core/modules/navigation/tests/src/FunctionalJavascript/PerformanceTest.php b/core/modules/navigation/tests/src/FunctionalJavascript/PerformanceTest.php
+index 43a27f6b91d7ae96617f259bdfbc0f36096d4d30..c85bfacbc8baa981564d8b532a2c117665afe104 100644
+--- a/core/modules/navigation/tests/src/FunctionalJavascript/PerformanceTest.php
++++ b/core/modules/navigation/tests/src/FunctionalJavascript/PerformanceTest.php
+@@ -76,14 +76,14 @@ public function testLogin(): void {
+ 
+     $expected = [
+       'QueryCount' => 4,
+-      'CacheGetCount' => 45,
++      'CacheGetCount' => 50,
+       'CacheGetCountByBin' => [
+         'config' => 10,
+         'data' => 4,
+         'discovery' => 9,
+         'bootstrap' => 8,
+         'dynamic_page_cache' => 1,
+-        'render' => 12,
++        'render' => 17,
+         'menu' => 1,
+       ],
+       'CacheSetCount' => 2,
+diff --git a/core/modules/node/tests/src/Functional/Views/FrontPageTest.php b/core/modules/node/tests/src/Functional/Views/FrontPageTest.php
+index d4019c5c0a88cb1d0b7d7acaf4129230d57a9b01..a520213b44530db51a537c85a34885c5819aa437 100644
+--- a/core/modules/node/tests/src/Functional/Views/FrontPageTest.php
++++ b/core/modules/node/tests/src/Functional/Views/FrontPageTest.php
+@@ -320,6 +320,9 @@ protected function doTestFrontPageViewCacheTags($do_assert_views_caches): void {
+       $do_assert_views_caches,
+       $first_page_output_cache_tags
+     );
++    $cache_contexts = Cache::mergeContexts($cache_contexts, [
++      'user.admin_language',
++    ]);
+     $this->assertPageCacheContextsAndTags(
+       Url::fromRoute('view.frontpage.page_1'),
+       $cache_contexts,
+diff --git a/core/modules/system/tests/src/Functional/System/ThemeTest.php b/core/modules/system/tests/src/Functional/System/ThemeTest.php
+index a85cc04a50066203df39314e6d43fcf72b206ad1..8a08c8afca8fac931388321619257f5ec6f74849 100644
+--- a/core/modules/system/tests/src/Functional/System/ThemeTest.php
++++ b/core/modules/system/tests/src/Functional/System/ThemeTest.php
+@@ -443,7 +443,7 @@ public function testSwitchDefaultTheme(): void {
+     // Install Olivero and set it as the default theme.
+     $theme_installer->install(['olivero']);
+     $this->drupalGet('admin/appearance');
+-    $this->clickLink('Set as default');
++    $this->click('A[title="Set Olivero as default theme"]');
+     $this->assertEquals('olivero', $this->config('system.theme')->get('default'));
+ 
+     // Test the default theme on the secondary links (blocks admin page).
+@@ -453,7 +453,7 @@ public function testSwitchDefaultTheme(): void {
+     // cleared.
+     $this->drupalGet('admin/appearance');
+     // Stark is the first 'Set as default' link.
+-    $this->clickLink('Set as default');
++    $this->click('A[title="Set Stark as default theme"]');
+     $this->drupalGet('admin/structure/block');
+     $this->assertSession()->pageTextContains('Stark');
+   }
 diff --git a/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php b/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php
-index e0341c3451d8b57e1e874ae12286fbb9ff11b3a2..9003ff739924b1e40781260376ed77f28e3fbbde 100644
+index 7833619b031b595d77cf68143011e7d815ac3fda..3a8b13d948684948792f494251680e4a78a49862 100644
 --- a/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php
 +++ b/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php
-@@ -70,49 +70,108 @@ public function testToolbarClasses(): void {
+@@ -72,49 +72,108 @@ public function testToolbarClasses(): void {
      // Visit a page that has the string on it so it can be translated.
      $this->drupalGet($langcode . '/admin/structure');
  
@@ -692,7 +994,7 @@ index e0341c3451d8b57e1e874ae12286fbb9ff11b3a2..9003ff739924b1e40781260376ed77f2
  
  }
 diff --git a/core/modules/user/src/ToolbarLinkBuilder.php b/core/modules/user/src/ToolbarLinkBuilder.php
-index 8d989b339e5232f7c8fc2bd3975509671f19191c..fbedb5764f25b0c2d1b116df6e03bc4d276ecea9 100644
+index 8d989b339e5232f7c8fc2bd3975509671f19191c..9166d96a03dee8bda69f16754864afe1e879a2ba 100644
 --- a/core/modules/user/src/ToolbarLinkBuilder.php
 +++ b/core/modules/user/src/ToolbarLinkBuilder.php
 @@ -2,10 +2,12 @@
@@ -734,7 +1036,7 @@ index 8d989b339e5232f7c8fc2bd3975509671f19191c..fbedb5764f25b0c2d1b116df6e03bc4d
 +    protected ?ModuleHandlerInterface $moduleHandler = NULL,
 +  ) {
 +    if ($this->moduleHandler === NULL) {
-+      @trigger_error('Calling ' . __METHOD__ . ' without the $moduleHandler argument is deprecated in drupal:11.2.0 and it will be required in drupal:12.0.0. See https://www.drupal.org/node/3455774', E_USER_DEPRECATED);
++      @trigger_error('Calling ' . __METHOD__ . ' without the $moduleHandler argument is deprecated in drupal:11.4.0 and it will be required in drupal:12.0.0. See https://www.drupal.org/node/3455774', E_USER_DEPRECATED);
 +      $this->moduleHandler = \Drupal::service('module_handler');
 +    }
    }
@@ -753,7 +1055,7 @@ index 8d989b339e5232f7c8fc2bd3975509671f19191c..fbedb5764f25b0c2d1b116df6e03bc4d
    }
  
 diff --git a/core/modules/user/tests/src/Unit/ToolbarLinkBuilderTest.php b/core/modules/user/tests/src/Unit/ToolbarLinkBuilderTest.php
-index 5945580a844f1fa64668a575eac118c471467de3..c76912d517e86b96678fdf79e5f4a39f4bba19b2 100644
+index be3f9dc38b0ce2e5d51f21c2c93a601c313ba938..9fbb5546bf34622e057dc977652b71555fbd6566 100644
 --- a/core/modules/user/tests/src/Unit/ToolbarLinkBuilderTest.php
 +++ b/core/modules/user/tests/src/Unit/ToolbarLinkBuilderTest.php
 @@ -4,6 +4,7 @@
@@ -764,7 +1066,7 @@ index 5945580a844f1fa64668a575eac118c471467de3..c76912d517e86b96678fdf79e5f4a39f
  use Drupal\Core\Session\AccountProxyInterface;
  use Drupal\Tests\UnitTestCase;
  use Drupal\user\ToolbarLinkBuilder;
-@@ -25,7 +26,8 @@ public function testRenderDisplayName(): void {
+@@ -26,7 +27,8 @@ public function testRenderDisplayName(): void {
      $account = $this->prophesize(AccountProxyInterface::class);
      $display_name = 'Something suspicious that should be #plain_text, not #markup';
      $account->getDisplayName()->willReturn($display_name);
@@ -788,10 +1090,10 @@ index 4d9a0b273367d540a34a6feb29bbade8c019e966..4118aff19f07d714937c818b71caae8c
    user.flood_control:
      class: Drupal\user\UserFloodControl
 diff --git a/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php b/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php
-index 24e12e2c46075d1bbad72e87c4d1cf3f6630658e..e08687cdd4680a37c76b1d411dfe6b85dc76ba2e 100644
+index 838f4e46457f496c297252dc1206c0b1fbe8bf0c..4e5e5ad18fcb2325d1932087e6a150b48aac17fc 100644
 --- a/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php
 +++ b/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php
-@@ -134,7 +134,7 @@ public function testPageContextualLinks(): void {
+@@ -136,7 +136,7 @@ public function testPageContextualLinks(): void {
      $element = $this->getSession()->getPage()->find('css', $selector);
      $element->find('css', '.contextual button')->press();
  
@@ -800,3 +1102,220 @@ index 24e12e2c46075d1bbad72e87c4d1cf3f6630658e..e08687cdd4680a37c76b1d411dfe6b85
      $contextual_container = $page->find('css', '[data-contextual-id="' . $contextual_container_id . '"]');
      $this->assertNotEmpty($contextual_container);
  
+diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
+index 6b456c2c04649e727defee7164dce8f2741744cd..4ade13e03ff2bae292cdce747da64d8b84c40608 100644
+--- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
++++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
+@@ -74,7 +74,7 @@ protected function doTestFrontPageAuthenticatedWarmCache(): void {
+       'CacheSetCount' => 0,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+-      'CacheTagLookupQueryCount' => 5,
++      'CacheTagLookupQueryCount' => 4,
+       'ScriptCount' => 1,
+       'ScriptBytes' => 13150,
+       'StylesheetCount' => 2,
+@@ -141,7 +141,7 @@ protected function doTestNodePageAdministrator(): void {
+         'render' => 39,
+         'menu' => 24,
+       ],
+-      'CacheSetCount' => 341,
++      'CacheSetCount' => 349,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+       'CacheTagLookupQueryCount' => 32,
+diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
+index e615f861e22551fc1c523a9512bce8f3fc500941..ded7099ccc634bf1168213b8888185b32f43323d 100644
+--- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
++++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
+@@ -54,7 +54,7 @@ protected function testFrontPageColdCache(): void {
+     $expected = [
+       'QueryCount' => 245,
+       'CacheGetCount' => 316,
+-      'CacheSetCount' => 315,
++      'CacheSetCount' => 326,
+       'CacheDeleteCount' => 0,
+       'CacheTagLookupQueryCount' => 27,
+       'CacheTagInvalidationCount' => 0,
+@@ -123,8 +123,8 @@ protected function testFrontPageCoolCache(): void {
+ 
+     $expected = [
+       'QueryCount' => 80,
+-      'CacheGetCount' => 181,
+-      'CacheSetCount' => 79,
++      'CacheGetCount' => 182,
++      'CacheSetCount' => 87,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+       'CacheTagLookupQueryCount' => 23,
+diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
+index 05179856992481e212b07f567e989bc5a36bf840..aba96324e28dc9e71f83f01294b793d12821a33d 100644
+--- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
++++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
+@@ -56,7 +56,7 @@ protected function testNodePageColdCache(): void {
+ 
+     $expected = [
+       'QueryCount' => 260,
+-      'CacheSetCount' => 299,
++      'CacheSetCount' => 307,
+       'CacheDeleteCount' => 0,
+       'CacheTagLookupQueryCount' => 26,
+       'CacheTagInvalidationCount' => 0,
+@@ -118,8 +118,8 @@ protected function testNodePageCoolCache(): void {
+ 
+     $expected = [
+       'QueryCount' => 91,
+-      'CacheGetCount' => 173,
+-      'CacheSetCount' => 61,
++      'CacheGetCount' => 174,
++      'CacheSetCount' => 66,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+       'CacheTagLookupQueryCount' => 22,
+@@ -232,7 +232,7 @@ protected function testNodePageWarmCache(): void {
+ 
+     $expected = [
+       'QueryCount' => 73,
+-      'CacheGetCount' => 168,
++      'CacheGetCount' => 169,
+       'CacheGetCountByBin' => [
+         'page' => 1,
+         'config' => 34,
+@@ -241,11 +241,11 @@ protected function testNodePageWarmCache(): void {
+         'data' => 6,
+         'entity' => 21,
+         'dynamic_page_cache' => 1,
+-        'render' => 21,
++        'render' => 22,
+         'default' => 3,
+         'menu' => 2,
+       ],
+-      'CacheSetCount' => 42,
++      'CacheSetCount' => 47,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+       'CacheTagLookupQueryCount' => 22,
+diff --git a/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php b/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
+index c5847a00a15e4c718d4c36093c8a189187665d7d..6c3ad5384bc2f9330cb2573796115fffccff1078 100644
+--- a/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
++++ b/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
+@@ -135,7 +135,7 @@ protected function testAnonymous(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+     $expected = [
+       'QueryCount' => 39,
+-      'CacheGetCount' => 97,
++      'CacheGetCount' => 102,
+       'CacheGetCountByBin' => [
+         'page' => 1,
+         'config' => 20,
+@@ -143,12 +143,12 @@ protected function testAnonymous(): void {
+         'discovery' => 37,
+         'bootstrap' => 10,
+         'dynamic_page_cache' => 1,
+-        'render' => 13,
++        'render' => 18,
+         'default' => 5,
+         'entity' => 2,
+         'menu' => 3,
+       ],
+-      'CacheSetCount' => 45,
++      'CacheSetCount' => 48,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+       'CacheTagLookupQueryCount' => 15,
+@@ -233,11 +233,11 @@ protected function testAnonymous(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+     $expected = [
+       'QueryCount' => 10,
+-      'CacheGetCount' => 71,
+-      'CacheSetCount' => 16,
++      'CacheGetCount' => 77,
++      'CacheSetCount' => 17,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+-      'CacheTagLookupQueryCount' => 13,
++      'CacheTagLookupQueryCount' => 12,
+       'CacheTagGroupedLookups' => [
+         [
+           'route_match',
+@@ -278,8 +278,10 @@ protected function testAnonymous(): void {
+           'config:block_list',
+           'http_response',
+         ],
+-        ['config:system.menu.main'],
+-        ['config:system.menu.account'],
++        [
++          'config:system.menu.account',
++          'config:system.menu.main',
++        ],
+         ['config:user.role.anonymous'],
+       ],
+       'StylesheetCount' => 1,
+@@ -312,11 +314,11 @@ protected function testAnonymous(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+     $expected = [
+       'QueryCount' => 12,
+-      'CacheGetCount' => 57,
+-      'CacheSetCount' => 16,
++      'CacheGetCount' => 62,
++      'CacheSetCount' => 18,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+-      'CacheTagLookupQueryCount' => 12,
++      'CacheTagLookupQueryCount' => 11,
+       'StylesheetCount' => 1,
+       'StylesheetBytes' => 1150,
+     ];
+@@ -357,7 +359,7 @@ protected function testCacheInvalidation(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+     $expected = [
+       'QueryCount' => 3,
+-      'CacheGetCount' => 67,
++      'CacheGetCount' => 72,
+       'CacheGetCountByBin' => [
+         'page' => 1,
+         'config' => 11,
+@@ -365,7 +367,7 @@ protected function testCacheInvalidation(): void {
+         'discovery' => 21,
+         'bootstrap' => 8,
+         'dynamic_page_cache' => 2,
+-        'render' => 14,
++        'render' => 19,
+         'default' => 3,
+         'entity' => 1,
+         'menu' => 1,
+@@ -487,11 +489,11 @@ protected function testLogin(): void {
+       'StylesheetBytes' => 1429,
+       'StylesheetCount' => 1,
+       'QueryCount' => 17,
+-      'CacheGetCount' => 73,
++      'CacheGetCount' => 79,
+       'CacheSetCount' => 1,
+       'CacheDeleteCount' => 1,
+       'CacheTagInvalidationCount' => 0,
+-      'CacheTagLookupQueryCount' => 13,
++      'CacheTagLookupQueryCount' => 12,
+       'CacheTagGroupedLookups' => [
+         // Form submission and login.
+         [
+@@ -533,10 +535,10 @@ protected function testLogin(): void {
+         ['config:block.block.stark_messages'],
+         ['config:block.block.stark_help'],
+         ['config:block.block.stark_powered'],
+-        ['config:block.block.stark_main_menu'],
+         [
+           'config:block.block.stark_account_menu',
+           'config:block.block.stark_breadcrumbs',
++          'config:block.block.stark_main_menu',
+           'config:block.block.stark_primary_admin_actions',
+         ],
+         [
+@@ -596,7 +598,7 @@ protected function testLoginBlock(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+     $expected = [
+       'QueryCount' => 18,
+-      'CacheGetCount' => 105,
++      'CacheGetCount' => 110,
+       'CacheSetCount' => 1,
+       'CacheDeleteCount' => 1,
+       'CacheTagInvalidationCount' => 0,
