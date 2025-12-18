@@ -68,6 +68,7 @@
         "php": "^8.1"
     },
     "conflict": {
+        "drupal/core": ">11.3",
         "drush/drush": "<12",
         "phpunit/phpunit": ">=11"
     },
