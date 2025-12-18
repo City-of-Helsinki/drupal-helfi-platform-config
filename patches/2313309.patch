@@ -1,8 +1,8 @@
 diff --git a/core/.phpstan-baseline.php b/core/.phpstan-baseline.php
-index 5d8b47583aeabc4a788d504a0d76ea14345186c1..137b3a951ddc80c0964effc557525039c636c60d 100644
+index 2424e78b6089086e3766f11f13054bdf1f4da399..457d24ebb5654d347a05f4198c3fc24593be9dc2 100644
 --- a/core/.phpstan-baseline.php
 +++ b/core/.phpstan-baseline.php
-@@ -15109,6 +15109,18 @@
+@@ -15073,6 +15073,18 @@
  	'count' => 1,
  	'path' => __DIR__ . '/modules/contextual/src/Plugin/views/field/ContextualLinks.php',
  ];
@@ -21,7 +21,7 @@ index 5d8b47583aeabc4a788d504a0d76ea14345186c1..137b3a951ddc80c0964effc557525039
  $ignoreErrors[] = [
  	'message' => '#^Method Drupal\\\\Tests\\\\contextual\\\\FunctionalJavascript\\\\ContextualLinksTest\\:\\:clickContextualLink\\(\\) has no return type specified\\.$#',
  	'identifier' => 'missingType.return',
-@@ -15121,6 +15133,18 @@
+@@ -15085,6 +15097,18 @@
  	'count' => 1,
  	'path' => __DIR__ . '/modules/contextual/tests/src/FunctionalJavascript/ContextualLinksTest.php',
  ];
@@ -1077,10 +1077,10 @@ index be3f9dc38b0ce2e5d51f21c2c93a601c313ba938..9fbb5546bf34622e057dc977652b7155
      $this->assertSame($expected, $toolbar_link_builder->renderDisplayName());
    }
 diff --git a/core/modules/user/user.services.yml b/core/modules/user/user.services.yml
-index 4d9a0b273367d540a34a6feb29bbade8c019e966..4118aff19f07d714937c818b71caae8c88248528 100644
+index 7cd90fb0e6bf97e9806815c0b4e9e9c92181f686..c204e646362b07b09f5deea8fe864f3f47391d9a 100644
 --- a/core/modules/user/user.services.yml
 +++ b/core/modules/user/user.services.yml
-@@ -60,7 +60,7 @@ services:
+@@ -61,7 +61,7 @@ services:
        - { name: 'context_provider' }
    user.toolbar_link_builder:
      class: Drupal\user\ToolbarLinkBuilder
