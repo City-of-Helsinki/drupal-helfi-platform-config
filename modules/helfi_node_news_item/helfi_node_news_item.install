@@ -7,8 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Database\Database;
-
 /**
  * UHF-10555: Removed references to media display that is no longer used.
  */
