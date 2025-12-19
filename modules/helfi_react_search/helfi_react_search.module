@@ -7,12 +7,9 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Hook\Attribute\LegacyHook;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\Enum\CourseCategory;
 use Drupal\helfi_react_search\Enum\EventCategory;
-use Drupal\helfi_react_search\Hook\ReactSearchHooks;
 
 /**
  * Event list type allowed values.
