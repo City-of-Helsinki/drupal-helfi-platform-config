@@ -9,10 +9,13 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_react_search\Entity\EventList;
 
+/**
+ * ReactSearch hook-class.
+ */
 final class ReactSearchHooks {
 
   public function __construct(
-    private readonly ConfigFactoryInterface $configFactory
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
   }
 

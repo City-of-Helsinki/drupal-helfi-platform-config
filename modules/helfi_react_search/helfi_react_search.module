@@ -95,7 +95,7 @@ function helfi_react_search_theme(): array {
 #[LegacyHook]
 function helfi_react_search_field_widget_single_element_paragraphs_form_alter(array &$element, FormStateInterface $form_state, array $context): void {
   \Drupal::service(ReactSearchHooks::class)
-    ->fieldWidgetSingleElementParagraphsFormAlter($element, $form_state,$context);
+    ->fieldWidgetSingleElementParagraphsFormAlter($element, $form_state, $context);
 }
 
 /**
