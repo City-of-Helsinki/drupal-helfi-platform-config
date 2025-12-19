@@ -9,6 +9,9 @@ use Drupal\helfi_react_search\Hook\ReactSearchHooks;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\UnitTestCase;
 
+/**
+ * ReactSearch -hook class tests.
+ */
 final class ReactSearchHooksTest extends UnitTestCase {
 
   /**
@@ -87,7 +90,7 @@ final class ReactSearchHooksTest extends UnitTestCase {
 
     $variables = [
       'name' => 'something_field_api_url',
-      'description' => ['content' => ['#items' => [1,2,3]]],
+      'description' => ['content' => ['#items' => [1, 2, 3]]],
     ];
     $reactHooksClass->preprocessFormElement($variables);
     $this->assertNotEmpty($variables['description']['content']);
