@@ -31,6 +31,8 @@ final class ReactSearchHooks {
 
   /**
    * Implements hook_preprocess_paragraph().
+   *
+   * Allow React search -paragraphs to request elasticsearch & sentry.
    */
   #[Hook('preprocess_paragraph')]
   public function preprocessParagraph(array &$variables): void {
