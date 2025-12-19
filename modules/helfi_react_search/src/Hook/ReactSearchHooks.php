@@ -38,6 +38,7 @@ final class ReactSearchHooks {
       'ploughing_schedule',
       'health_station_search',
       'maternity_and_child_health_clini',
+      'event_list',
     ];
 
     $config = $this->configFactory->get('elastic_proxy.settings');
