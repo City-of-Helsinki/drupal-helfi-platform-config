@@ -81,7 +81,7 @@
                 "[#UHF-7008] Add multilingual support for caching basefield definitions (https://www.drupal.org/project/drupal/issues/3114824)": "./public/modules/contrib/helfi_platform_config/patches/3114824.patch",
                 "[#UHF-7008] Admin toolbar and contextual links should always be rendered in the admin language (https://www.drupal.org/project/drupal/issues/2313309)": "./public/modules/contrib/helfi_platform_config/patches/2313309.patch",
                 "[#UHF-9690] Allow updating lists when switching from allowed values to allowed values function (https://www.drupal.org/i/2873353)": "https://www.drupal.org/files/issues/2025-06-27/allow-allowed-values-function-update-2873353-20.patch",
-                "[#UHF-9952, #UHF-9980] Duplicate <br /> tags (https://www.drupal.org/i/3083786)": "./patches/3083786.patch",
+                "[#UHF-9952, #UHF-9980] Duplicate <br /> tags (https://www.drupal.org/i/3083786)": "./public/modules/contrib/helfi_platform_config/patches/3083786.patch",
                 "[#UHF-11025] Status message templates missing theme when bigpipe is enabled (https://www.drupal.org/i/3396318)": "./public/modules/contrib/helfi_platform_config/patches/3396318.patch",
                 "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch"
             },
