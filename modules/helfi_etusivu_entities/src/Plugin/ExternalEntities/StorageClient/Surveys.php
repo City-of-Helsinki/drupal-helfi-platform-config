@@ -35,8 +35,9 @@ final class Surveys extends EtusivuJsonApiEntityBase {
   public function query(
     array $parameters = [],
     array $sorts = [],
-    $start = NULL,
-    $length = NULL,
+    ?int $start = NULL,
+    ?int $length = NULL,
+    array &$unhandled_filters = [],
   ) : array {
     $query = [
       'fields[node--survey]' => 'id,langcode,status,published_at,unpublish_on,title,body,field_survey_link',
