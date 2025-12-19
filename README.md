@@ -13,6 +13,7 @@ This repository holds configuration for the Hel.fi platform.
 - [JSON:API remote entities](/modules/helfi_etusivu_entities/README.md)
 - [Redirects](/documentation/redirects.md)
 - [Users](/modules/helfi_users/README.md)
+- [News item](/modules/helfi_node_news_item/README.md)
 - [Recommendations](./modules/helfi_recommendations/README.md)
 - [Search API](./documentation/search-api.md)
 

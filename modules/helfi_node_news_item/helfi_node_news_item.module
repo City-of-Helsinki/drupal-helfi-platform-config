@@ -7,7 +7,11 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_platform_config_grant_permissions().
@@ -88,4 +92,65 @@ function helfi_node_news_item_helfi_paragraph_types() : array {
     }
   }
   return $enabled;
+}
+
+/**
+ * Get the changed_at bundle field definition.
+ */
+function _helfi_node_news_item_changed_at_field(): BundleFieldDefinition {
+  return BundleFieldDefinition::create('timestamp')
+    ->setName('changed_at')
+    ->setLabel(t('Content changed on'))
+    ->setDescription(t('Timestamp of when content was last changed via form.'))
+    ->setTargetEntityTypeId('node')
+    ->setTargetBundle('news_item')
+    ->setRevisionable(TRUE)
+    ->setTranslatable(TRUE)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', FALSE);
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ *
+ * Adds a 'changed_at' field to news_item nodes.
+ */
+function helfi_node_news_item_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
+  if ($entity_type->id() === 'node' && $bundle === 'news_item') {
+    $fields['changed_at'] = _helfi_node_news_item_changed_at_field();
+  }
+}
+
+/**
+ * Implements hook_entity_field_storage_info().
+ */
+function helfi_node_news_item_entity_field_storage_info(EntityTypeInterface $entity_type): array {
+  if ($entity_type->id() === 'node') {
+    return ['changed_at' => _helfi_node_news_item_changed_at_field()];
+  }
+  return [];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_form.
+ *
+ * Adds submit handler to update changed_at field on form saves.
+ */
+function helfi_node_news_item_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  if (!str_contains($form_id, 'news_item')) {
+    return;
+  }
+
+  array_unshift($form['actions']['submit']['#submit'], '_helfi_node_news_item_update_changed_at');
+}
+
+/**
+ * Submit handler to update changed_at field for news_item nodes.
+ */
+function _helfi_node_news_item_update_changed_at($form, FormStateInterface $form_state): void {
+  $node = $form_state->getFormObject()->getEntity();
+
+  if ($node instanceof NodeInterface && $node->bundle() === 'news_item') {
+    $node->set('changed_at', \Drupal::time()->getRequestTime());
+  }
 }
