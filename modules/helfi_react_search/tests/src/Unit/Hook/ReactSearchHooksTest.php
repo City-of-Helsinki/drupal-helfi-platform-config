@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_react_search\Unit\Hook;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\helfi_react_search\Hook\ReactSearchHooks;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -13,9 +12,6 @@ use Drupal\Tests\UnitTestCase;
 final class ReactSearchHooksTest extends UnitTestCase {
 
   public function testPreprocessParagraph(): void {
-
-    // $configFactory = $this->createMock(ConfigFactoryInterface::class);
-
     $elasticProxyConfig = $this->prophesize(ImmutableConfig::class);
     $elasticProxyConfig->get('elastic_proxy_url')->willReturn('anything');
 
@@ -61,5 +57,33 @@ final class ReactSearchHooksTest extends UnitTestCase {
       'Sentry dsn react should be set.'
     );
   }
+
+  public function testTheme(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $this->assertIsArray($reactHooksClass->theme());
+  }
+
+  public function testPreprocessFormElement(): void {
+    $variables = [];
+
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $reactHooksClass->preprocessFormElement($variables);
+    $this->assertFalse(isset($variables['description']['content']['#items']));
+
+    $variables = [
+      'name' => 'something_field_api_url',
+      'description' => ['content' => ['#items' => [1,2,3]]],
+    ];
+    $reactHooksClass->preprocessFormElement($variables);
+    $this->assertNotEmpty($variables['description']['content']);
+  }
+
+
 
 }
