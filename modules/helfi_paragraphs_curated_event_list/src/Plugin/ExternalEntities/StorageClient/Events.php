@@ -81,8 +81,9 @@ class Events extends RestClient {
   public function query(
     array $parameters = [],
     array $sorts = [],
-    $start = NULL,
-    $length = NULL,
+    ?int $start = NULL,
+    ?int $length = NULL,
+    array &$unhandled_filters = [],
   ) : array {
     $langcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)

@@ -33,8 +33,9 @@ final class Announcements extends EtusivuJsonApiEntityBase {
   public function query(
     array $parameters = [],
     array $sorts = [],
-    $start = NULL,
-    $length = NULL,
+    ?int $start = NULL,
+    ?int $length = NULL,
+    array &$unhandled_filters = [],
   ) : array {
     $query = [
       'fields[node--announcements]' => 'id',
