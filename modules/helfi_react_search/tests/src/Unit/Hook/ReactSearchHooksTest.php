@@ -93,6 +93,4 @@ final class ReactSearchHooksTest extends UnitTestCase {
     $this->assertNotEmpty($variables['description']['content']);
   }
 
-
-
 }
