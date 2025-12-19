@@ -11,6 +11,9 @@ use Drupal\Tests\UnitTestCase;
 
 final class ReactSearchHooksTest extends UnitTestCase {
 
+  /**
+   * Test hook_preprocess_paragraph().
+   */
   public function testPreprocessParagraph(): void {
     $elasticProxyConfig = $this->prophesize(ImmutableConfig::class);
     $elasticProxyConfig->get('elastic_proxy_url')->willReturn('anything');
@@ -58,6 +61,9 @@ final class ReactSearchHooksTest extends UnitTestCase {
     );
   }
 
+  /**
+   * Test hook_theme().
+   */
   public function testTheme(): void {
     $reactHooksClass = new ReactSearchHooks(
       $this->getConfigFactoryStub([])
@@ -66,6 +72,9 @@ final class ReactSearchHooksTest extends UnitTestCase {
     $this->assertIsArray($reactHooksClass->theme());
   }
 
+  /**
+   * Test hook_preprocess_form_element().
+   */
   public function testPreprocessFormElement(): void {
     $variables = [];
 
