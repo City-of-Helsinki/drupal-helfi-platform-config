@@ -68,7 +68,8 @@
         "php": "^8.1"
     },
     "conflict": {
-        "drush/drush": "<12"
+        "drush/drush": "<12",
+        "drupal/external_entities": "<3.0.0-beta7"
     },
     "extra": {
         "patches": {
