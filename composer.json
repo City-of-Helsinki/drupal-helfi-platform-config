@@ -76,7 +76,7 @@
     "conflict": {
         "drupal/core": "<10.5",
         "drupal/redirect": "<1.12",
-        "drupal/core-composer-scaffold": "<10.5",
+        "drupal/core-composer-scaffold":  "<10.5 || >=11",
         "drupal/ctools": "<3.11 || ^4.0.1",
         "drupal/helfi_media_map": "*",
         "drupal/default_content": ">2.0.0-alpha2",
