@@ -16,6 +16,16 @@ helfi_platform_config.redirect_cleaner:
   mapping:
     enable:
       type: boolean
+      label: 'Enable redirect cleaner'
+    expire_after:
+      type: string
+      label: 'Expire after'
+      description: 'Relative strtotime() string, e.g. "-6 months" or "-1 year"'
+    action:
+      type: string
+      label: 'Action'
+      description: 'Cleanup action: "unpublish" or "delete"'
+
 
 # Default value.
 field.value.location:
