@@ -262,38 +262,38 @@ class RedirectCleanerTest extends UnitTestCase {
   }
 
   /**
-   * Tests unpublishExpiredRedirects() when the feature is disabled.
+   * Tests cleanExpiredRedirects() when the feature is disabled.
    *
    * Verifies that the method exits early and does not interact with entity
    * storage when the redirect cleanup feature is disabled.
    *
    * This test validates behavior when the feature is not active.
    *
-   * @covers ::unpublishExpiredRedirects
+   * @covers ::cleanExpiredRedirects
    * @covers ::isEnabled
    */
-  public function testUnpublishExpiredRedirectsFeatureDisabled(): void {
+  public function testCleanExpiredRedirectsFeatureDisabled(): void {
     // Setup configuration mock to disable the redirect cleaner feature.
     $this->setupConfigMock(FALSE);
     // Ensure that entity storage is not accessed when the feature is disabled.
     $this->entityTypeManager->expects($this->never())
       ->method('getStorage');
     // Call the method to confirm it exits early due to the disabled feature.
-    $this->cleaner->unpublishExpiredRedirects();
+    $this->cleaner->cleanExpiredRedirects();
   }
 
   /**
-   * Tests unpublishExpiredRedirects() when there are no redirects to process.
+   * Tests cleanExpiredRedirects() when there are no redirects to process.
    *
    * Verifies that the method handles an empty result set from the query
    * gracefully, without attempting to load or process any entities.
    *
    * This test confirms behavior with no data to process.
    *
-   * @covers ::unpublishExpiredRedirects
+   * @covers ::cleanExpiredRedirects
    * @covers ::isEnabled
    */
-  public function testUnpublishExpiredRedirectsNoRedirects(): void {
+  public function testCleanExpiredRedirectsNoRedirects(): void {
     // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(TRUE);
     // Mock the entity query to return an empty result set, simulating no
@@ -331,21 +331,21 @@ class RedirectCleanerTest extends UnitTestCase {
     $this->logger->expects($this->never())
       ->method('info');
     // Call the method to test handling of an empty redirect list.
-    $this->cleaner->unpublishExpiredRedirects();
+    $this->cleaner->cleanExpiredRedirects();
   }
 
   /**
-   * Tests unpublishExpiredRedirects() successful unpublishing of redirects.
+   * Tests cleanExpiredRedirects() successful unpublishing of redirects.
    *
    * Verifies that the method correctly identifies expired redirects,
    * unpublishes them, saves the changes, and logs the action appropriately.
    *
    * This test validates successful unpublishing workflow.
    *
-   * @covers ::unpublishExpiredRedirects
+   * @covers ::cleanExpiredRedirects
    * @covers ::isEnabled
    */
-  public function testUnpublishExpiredRedirectsSuccess(): void {
+  public function testCleanExpiredRedirectsSuccess(): void {
     // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(TRUE);
     // Mock the entity query to return a single redirect ID.
@@ -404,21 +404,21 @@ class RedirectCleanerTest extends UnitTestCase {
       );
 
     // Call the method to test successful unpublishing of a redirect.
-    $this->cleaner->unpublishExpiredRedirects();
+    $this->cleaner->cleanExpiredRedirects();
   }
 
   /**
-   * Tests unpublishExpiredRedirects() with a save operation exception.
+   * Tests cleanExpiredRedirects() with a save operation exception.
    *
    * Verifies that the method throws an exception if saving a redirect after
    * unpublishing fails, ensuring errors are not silently ignored.
    *
    * This test confirms error handling during entity save operations.
    *
-   * @covers ::unpublishExpiredRedirects
+   * @covers ::cleanExpiredRedirects
    * @covers ::isEnabled
    */
-  public function testUnpublishExpiredRedirectsSaveException(): void {
+  public function testCleanExpiredRedirectsSaveException(): void {
     // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(TRUE);
     // Mock the entity query to return a single redirect ID.
@@ -473,11 +473,11 @@ class RedirectCleanerTest extends UnitTestCase {
     $this->expectExceptionMessage('Save failed');
 
     // Call the method to test behavior when saving a redirect fails.
-    $this->cleaner->unpublishExpiredRedirects();
+    $this->cleaner->cleanExpiredRedirects();
   }
 
   /**
-   * Tests unpublishExpiredRedirects() with multiple redirects in range.
+   * Tests cleanExpiredRedirects() with multiple redirects in range.
    *
    * Verifies that the method can handle multiple redirects up to the
    * configured range limit, unpublishing each one, saving changes, and
@@ -485,7 +485,7 @@ class RedirectCleanerTest extends UnitTestCase {
    *
    * This test validates batch processing within defined limits.
    *
-   * @covers ::unpublishExpiredRedirects
+   * @covers ::cleanExpiredRedirects
    * @covers ::isEnabled
    */
   public function testProcessMultipleRedirectsWithinRange(): void {
@@ -580,11 +580,11 @@ class RedirectCleanerTest extends UnitTestCase {
       });
 
     // Call the method to test processing multiple redirects within the range.
-    $this->cleaner->unpublishExpiredRedirects();
+    $this->cleaner->cleanExpiredRedirects();
   }
 
   /**
-   * Tests unpublishExpiredRedirects() with InvalidPluginDefinitionException.
+   * Tests cleanExpiredRedirects() with InvalidPluginDefinitionException.
    *
    * Verifies that the method handles an InvalidPluginDefinitionException,
    * indicating a configuration issue with the redirect entity type, by
@@ -592,10 +592,10 @@ class RedirectCleanerTest extends UnitTestCase {
    *
    * This test confirms exception handling for plugin definition issues.
    *
-   * @covers ::unpublishExpiredRedirects
+   * @covers ::cleanExpiredRedirects
    * @covers ::isEnabled
    */
-  public function testUnpublishExpiredRedirectsInvalidPluginDefinitionException(): void {
+  public function testCleanExpiredRedirectsInvalidPluginDefinitionException(): void {
     // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(TRUE);
     // Simulate an InvalidPluginDefinitionException when getting storage.
@@ -608,11 +608,11 @@ class RedirectCleanerTest extends UnitTestCase {
       ->method('info');
 
     // Call the method to test early exit due to the invalid plugin definition.
-    $this->cleaner->unpublishExpiredRedirects();
+    $this->cleaner->cleanExpiredRedirects();
   }
 
   /**
-   * Tests unpublishExpiredRedirects() without redirect module installed.
+   * Tests cleanExpiredRedirects() without redirect module installed.
    *
    * Verifies that the method handles a PluginNotFoundException, indicating
    * the redirect module is not installed, by exiting early without logging
@@ -620,10 +620,10 @@ class RedirectCleanerTest extends UnitTestCase {
    *
    * This test confirms behavior when required modules are missing.
    *
-   * @covers ::unpublishExpiredRedirects
+   * @covers ::cleanExpiredRedirects
    * @covers ::isEnabled
    */
-  public function testUnpublishExpiredRedirectsRedirectModuleNotInstalled(): void {
+  public function testCleanExpiredRedirectsRedirectModuleNotInstalled(): void {
     // Enable the redirect cleaner feature in the configuration.
     $this->setupConfigMock(TRUE);
     // Simulate a PluginNotFoundException when attempting to get storage.
@@ -636,7 +636,7 @@ class RedirectCleanerTest extends UnitTestCase {
       ->method('info');
 
     // Call the method to test early exit due to the missing module.
-    $this->cleaner->unpublishExpiredRedirects();
+    $this->cleaner->cleanExpiredRedirects();
   }
 
 }
