@@ -129,7 +129,7 @@ final class ReactSearchHooksTest extends UnitTestCase {
     $this->assertTrue(isset($element['subform']['field_event_list_category_hobby']));
     $this->assertTrue(isset($element['subform']['field_event_location']));
     $this->assertTrue(isset($element['subform']['field_remote_events']));
-    // Check one of the values
+    // Check one of the values.
     $this->assertTrue(
       $element['subform']['field_event_location']['#states']['disabled'][0][':input[name="event_list[0][subform][field_remote_events][value]"]']['checked']
     );
