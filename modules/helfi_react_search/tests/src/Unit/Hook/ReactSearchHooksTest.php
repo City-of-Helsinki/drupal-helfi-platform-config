@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_react_search\Unit\Hook;
 
 use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemList;
+use Drupal\Core\Form\FormState;
+use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
 use Drupal\helfi_react_search\Hook\ReactSearchHooks;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\UnitTestCase;
@@ -94,6 +98,41 @@ final class ReactSearchHooksTest extends UnitTestCase {
     ];
     $reactHooksClass->preprocessFormElement($variables);
     $this->assertNotEmpty($variables['description']['content']);
+  }
+
+  /**
+   * Test hook_field_widget_single_element_paragraphs_form_alter().
+   */
+  public function testFieldWidgetSingleElementParagraphAlter(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $element = [
+      '#paragraph_type' => 'event_list',
+      '#delta' => 0,
+    ];
+    $formState = new FormState();
+    $items = $this->createMock(EntityReferenceRevisionsFieldItemList::class);
+    $items->method('getName')->willReturn('event_list');
+    $items = FieldItemList::createInstance(
+      $this->createMock(FieldDefinitionInterface::class),
+      'event_list',
+      NULL,
+    );
+    $context = ['items' => $items];
+
+    $reactHooksClass->fieldWidgetSingleElementParagraphsFormAlter($element, $formState, $context);
+
+    // These should have been added by the hook.
+    $this->assertTrue(isset($element['subform']['field_event_list_category_event']));
+    $this->assertTrue(isset($element['subform']['field_event_list_category_hobby']));
+    $this->assertTrue(isset($element['subform']['field_event_location']));
+    $this->assertTrue(isset($element['subform']['field_remote_events']));
+    // Check one of the values
+    $this->assertTrue(
+      $element['subform']['field_event_location']['#states']['disabled'][0][':input[name="event_list[0][subform][field_remote_events][value]"]']['checked']
+    );
   }
 
 }

@@ -81,6 +81,9 @@ final class ReactSearchHooks {
 
   /**
    * Implements field_widget_single_element_paragraphs_form_alter().
+   *
+   * Set `#states` keys to paragraph form inputs.
+   * Some fields need to be hidden depending on form selections.
    */
   #[Hook('field_widget_single_element_paragraphs_form_alter')]
   public function fieldWidgetSingleElementParagraphsFormAlter(array &$element, FormStateInterface $form_state, array $context): void {
