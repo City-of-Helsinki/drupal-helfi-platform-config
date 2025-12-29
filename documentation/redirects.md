@@ -19,7 +19,7 @@ that are older than a configured age. The cleanup behavior is configurable:
   - `unpublish`, which disables the redirect by unpublishing it
   - `delete`, which deletes the redirect entity permanently
 
-By default, expired non-custom redirects are **unpublished after one year**.
+By default, expired non-custom redirects are **unpublished after six months**.
 
 ### Enabling the feature
 

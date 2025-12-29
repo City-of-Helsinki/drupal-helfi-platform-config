@@ -19,7 +19,7 @@ class RedirectCleaner {
 
   public const string ACTION_UNPUBLISH = 'unpublish';
   public const string ACTION_DELETE = 'delete';
-  private const string DEFAULT_EXPIRE_AFTER = '-1 year';
+  private const string DEFAULT_EXPIRE_AFTER = '-6 months';
   private const string DEFAULT_ACTION = self::ACTION_UNPUBLISH;
 
   /**
