@@ -1,4 +1,4 @@
-(function (Drupal, drupalSettings) {
+(function (Drupal, drupalSettings, once) {
   Drupal.behaviors.cookieBannerAdminUi = {
     attach: function attach() {
 
@@ -299,4 +299,24 @@
       window.onload = initialize;
     }
   };
-})(Drupal, drupalSettings);
+
+  /**
+   * Disables every input created by the JSON editor.
+   */
+  Drupal.behaviors.cookieBannerDisableEditorInputs = {
+    attach(context) {
+      once('cookieBannerDisableEditorInputs', 'form#hdbt-cookie-banner', context)
+        .forEach((form) => {
+          // Disable every input created by the JSON editor,
+          // so PHP doesn't receive them and get the max input vars error.
+          form.addEventListener('submit', () => {
+            form
+              .querySelectorAll('.json_editor input, .json_editor select, .json_editor textarea, .json_editor button')
+              .forEach((el) => {
+                el.disabled = true;
+              });
+          });
+        });
+    },
+  };
+})(Drupal, drupalSettings, once);
