@@ -97,6 +97,9 @@
             "drupal/diff": {
                 "Revision overview form problem (https://www.drupal.org/i/3390329)": "./public/modules/contrib/helfi_platform_config/patches/diff_8.x_1.3_revision_overview_form.patch"
             },
+            "drupal/flysystem": {
+                "[#3525203] Remove duplicated Add content button (https://www.drupal.org/i/3525203)": "./public/modules/contrib/helfi_platform_config/patches/3525203.patch"
+            },
             "drupal/gin_toolbar": {
                 "[#3552735] Dialog library causing Drupal CSS aggregation to link to non-existent CSS file": "./public/modules/contrib/helfi_platform_config/patches/3552735.patch"
             },
