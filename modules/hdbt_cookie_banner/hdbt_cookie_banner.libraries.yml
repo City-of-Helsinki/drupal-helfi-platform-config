@@ -31,7 +31,7 @@ json_editor:
     - hdbt_cookie_banner/bootstrap
 
 cookie_banner_admin_ui:
-  version: 1.0.0
+  version: 1.0.1
   js:
     assets/js/cookie-banner-admin-ui.js: { preprocess: false }
   css:
@@ -40,6 +40,7 @@ cookie_banner_admin_ui:
   dependencies:
     - core/drupal
     - core/drupalSettings
+    - core/once
     - hdbt_cookie_banner/json_editor
 
 hdbt_cookie_banner:
