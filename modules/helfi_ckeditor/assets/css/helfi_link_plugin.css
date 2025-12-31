@@ -57,6 +57,8 @@
  */
 
 /* Helfi link form */
+.ck.ck-form.ck-link-form.ck-vertical-form.helfi-link-form,
+.ck.ck-form.ck-link-form.ck-responsive-form.helfi-link-form,
 .ck.ck-form.ck-link-form.helfi-link-form {
   column-gap: 1rem;
   display: grid;
