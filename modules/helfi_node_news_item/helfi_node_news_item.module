@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\entity\BundleFieldDefinition;
@@ -148,7 +149,13 @@ function helfi_node_news_item_form_node_form_alter(&$form, FormStateInterface $f
  * Submit handler to update changed_at field for news_item nodes.
  */
 function _helfi_node_news_item_update_changed_at($form, FormStateInterface $form_state): void {
-  $node = $form_state->getFormObject()->getEntity();
+  $form_object = $form_state->getFormObject();
+
+  if (!$form_object instanceof EntityFormInterface) {
+    return;
+  }
+
+  $node = $form_object->getEntity();
 
   if ($node instanceof NodeInterface && $node->bundle() === 'news_item') {
     $node->set('changed_at', \Drupal::time()->getRequestTime());
