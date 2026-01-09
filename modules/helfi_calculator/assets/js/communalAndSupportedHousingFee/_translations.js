@@ -150,7 +150,7 @@ const translations = {
     en: 'euros per month.',
   },
   receipt_estimated_payment_explanation: {
-    fi: 'Tämä arvio on suuntaa antava. Tarkka arvo lasketaan yhteisöllisen ja tuetun asumisen asiakasmaksupäätökseen. Tämä arvio ei ole viranomaisen tekemä virallinen asiakasmaksupäätös. ',
+    fi: 'Tämä arvio on suuntaa antava. Tarkka arvo lasketaan yhteisöllisen ja tuetun asumisen asiakasmaksupäätökseen. Tämä arvio ei ole viranomaisen tekemä virallinen asiakasmaksupäätös.',
     sv: 'Denna bedömning är riktgivande. Det exakta värdet räknas för klientavgiftsbeslutet om gemenskapligt boende och stödboende. Denna uppskattning är inte myndighetens officiella klientavgiftsbeslut.',
     en: 'This estimate is indicative only. The exact value will be calculated for the communal and supported housing client fee decision. This estimate is not an official client fee decision made by an authority.',
   },
