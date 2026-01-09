@@ -21,3 +21,66 @@ function helfi_node_news_item_update_9006(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_node_news_item');
 }
+
+/**
+ * UHF-10893: Add changed_at field to news_item.
+ */
+function helfi_node_news_item_update_9007(): void {
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_storage_definition = _helfi_node_news_item_changed_at_field();
+
+  $entity_definition_update_manager->installFieldStorageDefinition(
+    'changed_at',
+    'node',
+    'helfi_node_news_item',
+    $field_storage_definition
+  );
+}
+
+/**
+ * UHF-10893: Populate changed_at field from changed for existing news_item.
+ */
+function helfi_node_news_item_update_9008(&$sandbox): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  if (!isset($sandbox['total'])) {
+    $sandbox['total'] = $storage->getQuery()
+      ->condition('type', 'news_item')
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['last_id'] = 0;
+  }
+
+  $nids = $storage->getQuery()
+    ->condition('type', 'news_item')
+    ->condition('nid', $sandbox['last_id'], '>')
+    ->accessCheck(FALSE)
+    ->sort('nid')
+    ->range(0, 50)
+    ->execute();
+
+  if (empty($nids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  $nodes = $storage->loadMultiple($nids);
+
+  foreach ($nodes as $node) {
+    $sandbox['current']++;
+    $sandbox['last_id'] = $node->id();
+
+    if (!$node->get('changed_at')->isEmpty()) {
+      continue;
+    }
+
+    $node->set('changed_at', $node->getChangedTime());
+    $node->save();
+  }
+
+  $sandbox['#finished'] = $sandbox['total'] > 0
+    ? $sandbox['current'] / $sandbox['total']
+    : 1;
+}
