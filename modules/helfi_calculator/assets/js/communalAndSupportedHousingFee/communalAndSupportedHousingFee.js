@@ -10,12 +10,12 @@ class CommunalAndSupportedHousingFee {
     /*
     const parsedSettings = {
       "income_limit": {
-        "1": 653,
-        "2": 1205,
-        "3": 1891,
-        "4": 2338,
-        "5": 2830,
-        "6": 3251
+        "1": 699,
+        "2": 1290,
+        "3": 2025,
+        "4": 2503,
+        "5": 3030,
+        "6": 3481
       },
       "monthly_usage": {
         "0": {
@@ -247,7 +247,7 @@ class CommunalAndSupportedHousingFee {
         return string;
       };
 
-      if (communalAndSupportedHousingPayment) {
+      if (communalAndSupportedHousingPayment >= 0) {
         subtotals.push({
           title: this.t('communal_and_supported_housing_payment'),
           has_details: false,
@@ -303,6 +303,11 @@ class CommunalAndSupportedHousingFee {
             value: this.calculator.formatFinnishEuroCents(safetyPhoneAndBraceletPayment),
           }),
         });
+      } else {
+        subtotals.push({
+          title: this.t('no_safety_phone_and_bracelet_payment'),
+          has_details: false,
+        });
       }
 
       // 5. Add grocery delivery service payment
@@ -325,6 +330,11 @@ class CommunalAndSupportedHousingFee {
             value: this.calculator.formatEuroCents(groceryPayment),
           }),
         });
+      } else {
+        subtotals.push({
+          title: this.t('no_grocery_delivery_service_payment'),
+          has_details: false,
+        });
       }
 
       // 5. Add meal service payment
@@ -346,6 +356,11 @@ class CommunalAndSupportedHousingFee {
           sum_screenreader: this.t('receipt_subtotal_euros_per_month', {
             value: this.calculator.formatEuroCents(mealServicePayment),
           }),
+        });
+      } else {
+        subtotals.push({
+          title: this.t('no_meal_service_payment'),
+          has_details: false,
         });
       }
 
