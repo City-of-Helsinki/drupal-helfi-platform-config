@@ -77,7 +77,7 @@ const translations = {
   grocery_delivery_service_paragraph: {
     fi: 'Kauppapalvelussa tilaamasi ruokaostokset toimitetaan kotiovellesi. Tämän laskurin kauppapalvelun hintaan kuuluu yksi ruokaostosten keräily ja toimitus viikossa. Kauppapalvelua voit tilata halutessasi useammankin kerran viikossa.',
     sv: 'Butiksservicen levererar de livsmedelsinköp som du beställer till din dörr. I denna räknare för butiksservicen ingår priset för samling och leverans av livsmedelsinköp en gång i veckan. Om du vill kan du beställa butiksservicen mer än en gång i veckan.',
-    en: 'The grocery delivery service delivers the groceries that you order through the service to your door. In this fee calculator, the price of the grocery delivery service includes the collection and delivery of the groceries once a week. You can order grocery delivery services more than once a week.',
+    en: 'The grocery delivery service delivers the groceries that you order through the service to your door. In this fee calculator, the price of the grocery delivery service includes the collection and delivery of the groceries once a week. You can order grocery delivery services more than once a week.',
   },
   label_grocery_delivery_service: {
     fi: 'Laske arvioon kauppapalvelu',
@@ -107,7 +107,7 @@ const translations = {
   meal_service_paragraph: {
     fi: 'Ateriapalvelusta sinulta peritään ateriamaksu joko täysihoidosta (aamupala, lounas, välipala, päivällinen, iltapala) tai puolihoidosta (puolet päivän aterioista; esim. aamupala, lounas ja välipala).',
     sv: 'För måltidsservicen debiteras du en avgift för antingen helpension (frukost, lunch, mellanmål, middag, kvällsmål) eller halvpension (hälften av dagens måltider; t.ex. frukost, lunch och mellanmål).',
-    en: 'In the meal service, you will be charged a meal fee either for full-board (breakfast, lunch, afternoon snack, dinner, evening snack) or for half-board (half of the daily meals, i.e. breakfast, lunch and afternoon snack).',
+    en: 'In the meal service, you will be charged a meal fee either for full-board (breakfast, lunch, afternoon snack, dinner, evening snack) or for half-board (half of the daily meals, e.g. breakfast, lunch and afternoon snack).',
   },
   label_meal_service: {
     fi: 'Laske arvioon ateriapalvelu',
@@ -150,7 +150,7 @@ const translations = {
     en: 'euros per month.',
   },
   receipt_estimated_payment_explanation: {
-    fi: 'Tämä arvio on suuntaa antava. Tarkka arvo lasketaan yhteisöllisen ja tuetun asumisen asiakasmaksupäätökseen. Tämä arvio ei ole viranomaisen tekemä virallinen asiakasmaksupäätös.',
+    fi: 'Tämä arvio on suuntaa antava. Tarkka arvo lasketaan yhteisöllisen ja tuetun asumisen asiakasmaksupäätökseen. Tämä arvio ei ole viranomaisen tekemä virallinen asiakasmaksupäätös. ',
     sv: 'Denna bedömning är riktgivande. Det exakta värdet räknas för klientavgiftsbeslutet om gemenskapligt boende och stödboende. Denna uppskattning är inte myndighetens officiella klientavgiftsbeslut.',
     en: 'This estimate is indicative only. The exact value will be calculated for the communal and supported housing client fee decision. This estimate is not an official client fee decision made by an authority.',
   },
