@@ -634,26 +634,29 @@ export default class HelfiLinkEditing extends Plugin {
               // Check if the selection is collapsed, meaning the user has placed
               // the cursor at a single point without selecting any text.
               if (currentSelection.isCollapsed) {
-                // In this case, we need to find the link element surrounding
-                // the cursor and apply attributes to that single node instead
-                // of a range.
-                const position = currentSelection.getFirstPosition();
-                const node =
-                  position.textNode ||
-                  position.nodeAfter ||
-                  position.nodeBefore;
-                if (!node) return;
+                // Apply custom attributes only when the caret is inside a link.
+                const linkHref = currentSelection.getAttribute('linkHref');
+                if (!linkHref) {
+                  writer.removeSelectionAttribute(modelName);
+                  return;
+                }
 
-                const range = writer.createRangeOn(node);
+                // Apply attributes to the whole link range.
+                const linkRange = findAttributeRange(
+                  currentSelection.getFirstPosition(),
+                  'linkHref',
+                  linkHref,
+                  editor.model,
+                );
 
                 if (attributeValues[modelName]) {
                   writer.setAttribute(
                     modelName,
                     attributeValues[modelName],
-                    range,
+                    linkRange,
                   );
                 } else {
-                  writer.removeAttribute(modelName, range);
+                  writer.removeAttribute(modelName, linkRange);
                 }
 
                 // Remove the temporary attribute from the selection itself.
@@ -662,10 +665,8 @@ export default class HelfiLinkEditing extends Plugin {
                 // unintentionally carry over the custom attribute.
                 writer.removeSelectionAttribute(modelName);
 
-                // Move the selection to the newly modified range.
-                // This ensures the cursor is placed inside or on the link with
-                // the updated attributes, keeping the editor state consistent.
-                writer.setSelection(range);
+                // Exit the current iteration.
+                return;
               }
               // Selection not collapsed means the user has selected a range
               // in the document. F.e. selected a word or a sentence.
