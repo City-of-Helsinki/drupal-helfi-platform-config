@@ -208,6 +208,49 @@ export default class HelfiLinkEditing extends Plugin {
           },
         });
     }
+
+    // Handle the "data-is-external" attribute from HTML.
+    if (modelName === 'linkIsExternal') {
+      editor.conversion.for('upcast').attributeToAttribute({
+        view: { name: 'a', key: 'data-is-external' },
+        model: {
+          key: 'linkIsExternal',
+          value: (viewElement) => {
+            const v = viewElement.getAttribute('data-is-external');
+            return v === 'true' || v === true ? true : null;
+          },
+        },
+        converterPriority: 'high',
+      });
+
+      // This is only used if the attribute was not present in the HTML.
+      editor.conversion.for('upcast').elementToAttribute({
+        view: 'a',
+        model: {
+          key: 'linkIsExternal',
+          value: (viewElement) => {
+            // Cannot determine external status without a href.
+            if (!viewElement.hasAttribute('href')) {
+              return null;
+            }
+
+            const hrefValue = viewElement.getAttribute('href');
+            const { whiteListedDomains } = this.editor.config.get('link');
+
+            // Skip computation if configuration is missing, href is empty,
+            // or the link is an in-page anchor.
+            if (!whiteListedDomains || !hrefValue || hrefValue.startsWith('#')) {
+              return null;
+            }
+
+            // Mark link as external only if it points outside whitelisted domains.
+            return isUrlExternal(hrefValue, whiteListedDomains) ? true : null;
+          },
+        },
+        // Lower priority so it does not override an explicit HTML attribute.
+        converterPriority: 'low',
+      });
+    }
   }
 
   /**
