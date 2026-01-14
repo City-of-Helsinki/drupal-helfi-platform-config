@@ -3,6 +3,7 @@
  */
 
 import { Plugin } from 'ckeditor5/src/core';
+import { findAttributeRange } from 'ckeditor5/src/typing';
 import { createLabeledInputText, LabeledFieldView } from 'ckeditor5/src/ui';
 
 import { Collection } from 'ckeditor5/src/utils';
@@ -90,12 +91,7 @@ export default class HelfiLinkUi extends Plugin {
         const editingExisting = this._isEditingExistingLink();
 
         if (editingExisting) {
-          const anchor = this._getSelectedAnchorFromView();
-          const isBlank = !!(
-            anchor && anchor.getAttribute('target') === '_blank'
-          );
-          linkCommand.linkNewWindow = isBlank;
-          linkCommand.linkNewWindowConfirm = isBlank;
+          this._syncNewWindowCheckboxesFromModel();
         }
 
         // Iterate through formElements and load data from LinkCommand plugin
@@ -627,6 +623,62 @@ export default class HelfiLinkUi extends Plugin {
         this.linkFormView?.linkNewWindowConfirm.updateVisibility(value);
       },
     );
+  }
+
+  /**
+   * Sync "open in new window" checkboxes from the model.
+   */
+  _syncNewWindowCheckboxesFromModel() {
+    if (
+      !this.linkFormView?.linkNewWindow ||
+      !this.linkFormView?.linkNewWindowConfirm
+    ) {
+      return;
+    }
+
+    const { editor } = this;
+    const linkCommand = editor.commands.get('link');
+    const selection = editor.model.document.selection;
+    const linkHref = selection.getAttribute('linkHref');
+
+    if (!linkHref) {
+      linkCommand.linkNewWindow = false;
+      linkCommand.linkNewWindowConfirm = false;
+      this.linkFormView.linkNewWindow.updateChecked(false);
+      this.linkFormView.linkNewWindowConfirm.updateChecked(false);
+      this.linkFormView.linkNewWindowConfirm.updateVisibility(false);
+      return;
+    }
+
+    // Get the current caret position from the model selection and find the
+    // full model range that represents the link text.
+    const position = selection.getFirstPosition();
+    const linkRange = findAttributeRange(
+      position,
+      'linkHref',
+      linkHref,
+      editor.model,
+    );
+
+    const items = Array.from(linkRange.getItems());
+
+    const hasTargetBlank = items.some((item) => {
+      // Skip non-text model items.
+      if (!item.is?.('$textProxy') && !item.is?.('$text')) {
+        return false;
+      }
+      return (
+        item.getAttribute('linkTarget') === '_blank' ||
+        item.getAttribute('linkNewWindow') === true
+      );
+    });
+
+    linkCommand.linkNewWindow = hasTargetBlank;
+    linkCommand.linkNewWindowConfirm = hasTargetBlank;
+
+    this.linkFormView.linkNewWindow.updateChecked(hasTargetBlank);
+    this.linkFormView.linkNewWindowConfirm.updateChecked(hasTargetBlank);
+    this.linkFormView.linkNewWindowConfirm.updateVisibility(hasTargetBlank);
   }
 
   /**
