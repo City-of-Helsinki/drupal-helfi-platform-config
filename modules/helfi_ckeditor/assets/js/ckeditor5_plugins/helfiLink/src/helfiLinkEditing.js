@@ -5,7 +5,12 @@ import { Plugin } from 'ckeditor5/src/core';
 import { findAttributeRange } from 'ckeditor5/src/typing';
 import { Widget } from 'ckeditor5/src/widget';
 import formElements from './formElements';
-import { isUrlExternal, parseProtocol, sanitizeSafeLinks } from './utils/utils';
+import {
+  isUrlExternal,
+  parseProtocol,
+  sanitizeSafeLinks,
+  shouldApplyModelAttribute,
+} from './utils/utils';
 
 /**
  * CKEditor 5 plugins do not work directly with the DOM. They are defined as
@@ -239,7 +244,11 @@ export default class HelfiLinkEditing extends Plugin {
 
             // Skip computation if configuration is missing, href is empty,
             // or the link is an in-page anchor.
-            if (!whiteListedDomains || !hrefValue || hrefValue.startsWith('#')) {
+            if (
+              !whiteListedDomains ||
+              !hrefValue ||
+              hrefValue.startsWith('#')
+            ) {
               return null;
             }
 
@@ -677,8 +686,27 @@ export default class HelfiLinkEditing extends Plugin {
               // Check if the selection is collapsed, meaning the user has placed
               // the cursor at a single point without selecting any text.
               if (currentSelection.isCollapsed) {
-                // Apply custom attributes only when the caret is inside a link.
-                const linkHref = currentSelection.getAttribute('linkHref');
+                // A collapsed selection should normally have a position, but during
+                // certain editor updates it may be temporarily unavailable.
+                // Clear the selection attribute and exit safely.
+                const position = currentSelection.getFirstPosition();
+                if (!position) {
+                  writer.removeSelectionAttribute(modelName);
+                  return;
+                }
+
+                // Resolve the linkHref when the caret is at the edge of a link.
+                const candidateNode =
+                  position.textNode ||
+                  position.nodeBefore ||
+                  position.nodeAfter;
+
+                const linkHref =
+                  currentSelection.getAttribute('linkHref') ||
+                  candidateNode?.getAttribute?.('linkHref');
+
+                // If the caret is not inside a link, there's no link range to update.
+                // Clear any temporary selection attribute and exit early.
                 if (!linkHref) {
                   writer.removeSelectionAttribute(modelName);
                   return;
@@ -686,29 +714,31 @@ export default class HelfiLinkEditing extends Plugin {
 
                 // Apply attributes to the whole link range.
                 const linkRange = findAttributeRange(
-                  currentSelection.getFirstPosition(),
+                  position,
                   'linkHref',
                   linkHref,
                   editor.model,
                 );
 
-                if (attributeValues[modelName]) {
-                  writer.setAttribute(
-                    modelName,
-                    attributeValues[modelName],
-                    linkRange,
-                  );
+                const rawValue = attributeValues[modelName];
+                const expectsBoolean =
+                  modelName === 'linkIsExternal' ||
+                  modelName === 'linkNewWindow' ||
+                  modelName === 'linkNewWindowConfirm' ||
+                  modelName === 'linkButton';
+
+                // Decide whether the attribute should be applied to the link.
+                // String-based attributes are only set when
+                // they contain a non-empty value.
+                if (shouldApplyModelAttribute(rawValue, expectsBoolean)) {
+                  writer.setAttribute(modelName, rawValue, linkRange);
                 } else {
                   writer.removeAttribute(modelName, linkRange);
                 }
 
-                // Remove the temporary attribute from the selection itself.
-                // This prevents CKEditor from applying the attribute to any new
-                // content the user types after the link, which would
-                // unintentionally carry over the custom attribute.
+                // Always clean selection attribute,
+                // so it doesn't stick to newly typed text.
                 writer.removeSelectionAttribute(modelName);
-
-                // Exit the current iteration.
                 return;
               }
               // Selection not collapsed means the user has selected a range
