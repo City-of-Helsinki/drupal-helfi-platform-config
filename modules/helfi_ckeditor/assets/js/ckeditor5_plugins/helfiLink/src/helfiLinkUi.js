@@ -225,27 +225,6 @@ export default class HelfiLinkUi extends Plugin {
   }
 
   /**
-   * Returns the anchor element at the current selection in the editing view.
-   *
-   * @return {Node} The anchor element or null.
-   */
-  _getSelectedAnchorFromView() {
-    const view = this.editor.editing.view;
-    const selection = view.document.selection;
-    const pos = selection.getFirstPosition();
-    if (!pos) {
-      return null;
-    }
-
-    const chain = pos.getAncestors();
-    const anchor = chain
-      .slice()
-      .reverse()
-      .find((n) => n.is?.('element', 'a'));
-    return anchor || null;
-  }
-
-  /**
    * Create select list for protocol selection field.
    *
    * @param {string} modelName The model name.
@@ -669,7 +648,7 @@ export default class HelfiLinkUi extends Plugin {
       }
       return (
         item.getAttribute('linkTarget') === '_blank' ||
-        item.getAttribute('linkNewWindow') === true
+        item.getAttribute('linkNewWindowConfirm') === true
       );
     });
 
