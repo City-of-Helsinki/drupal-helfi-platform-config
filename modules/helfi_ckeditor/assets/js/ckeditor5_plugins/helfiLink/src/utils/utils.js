@@ -89,3 +89,28 @@ export const addViewClass = (view, className) => {
 
   return view;
 };
+
+/**
+ * Determine whether a model attribute value should be applied.
+ *
+ * Boolean-style attributes are applied when the value is truthy.
+ * String-style attributes are applied only when the value is a
+ * meaningful string (not null, empty, false, or boolean true).
+ *
+ * @param {*} value The raw model attribute value.
+ * @param {boolean} expectsBoolean Whether the attribute is boolean-style.
+ * @return {boolean} TRUE if the attribute should be set, FALSE otherwise.
+ */
+export const shouldApplyModelAttribute = (value, expectsBoolean) => {
+  if (expectsBoolean) {
+    return !!value;
+  }
+
+  return (
+    value !== null &&
+    value !== undefined &&
+    value !== '' &&
+    value !== false &&
+    value !== true
+  );
+};
