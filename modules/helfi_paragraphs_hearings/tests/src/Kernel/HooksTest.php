@@ -29,6 +29,7 @@ class HooksTest extends KernelTestBase {
     'breakpoint',
     'paragraphs',
     'external_entities',
+    'entity_reference_revisions',
     'helfi_platform_config',
     'config_rewrite',
     'helfi_api_base',
