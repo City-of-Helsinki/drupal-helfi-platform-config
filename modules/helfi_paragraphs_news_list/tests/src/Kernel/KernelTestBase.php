@@ -6,13 +6,14 @@ namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel;
 
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
-use Elastic\Elasticsearch\Response\Elasticsearch;
-use GuzzleHttp\Psr7\Response;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
 
 /**
  * Kernel test base for news feed list tests.
  */
 abstract class KernelTestBase extends CoreKernelTestBase {
+
+  use ElasticTrait;
 
   /**
    * {@inheritdoc}
@@ -57,23 +58,6 @@ abstract class KernelTestBase extends CoreKernelTestBase {
     $this->installEntitySchema('helfi_news_groups');
     $this->installEntitySchema('helfi_news_neighbourhoods');
     $this->installConfig('paragraphs');
-  }
-
-  /**
-   * Mocks elasticsearch response.
-   *
-   * @param array $response
-   *   The response.
-   */
-  protected function createElasticsearchResponse(array $response): Response {
-    return new Response(
-      200,
-      [
-        Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME,
-        'Content-Type' => 'application/json',
-      ],
-      json_encode($response),
-    );
   }
 
 }
