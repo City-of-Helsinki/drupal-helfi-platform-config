@@ -24,7 +24,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {};
 
@@ -40,7 +40,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const CONNECT_SRC = ['https://example.com'];
@@ -74,7 +74,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const CONNECT_SRC = ['https://example.com'];
@@ -104,7 +104,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const MODULE_DEPENDENCY = 'test_module';
@@ -129,7 +129,7 @@ class CspSubscriberBaseTest extends CspEventSubscriberTestBase {
     $this->eventSubscriber = new class (
       $this->configFactory->reveal(),
       $this->moduleHandler->reveal(),
-      $this->environmentResolver->reveal(),
+      $this->environmentResolver,
       $this->policyHelper->reveal(),
     ) extends CspSubscriberBase {
       const MODULE_DEPENDENCY = 'test_module';

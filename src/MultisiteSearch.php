@@ -10,7 +10,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 /**
  * The multisite search helper service.
  */
-final class MultisiteSearch {
+class MultisiteSearch {
 
   const PREFIX_SUFFIX = 'site_';
   const PREFIX_SEPARATOR = '/';
