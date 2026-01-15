@@ -50,6 +50,15 @@ field.value.location:
       type: float
       label: longitude
 
+# Default value for geo_shape field.
+field.value.geo_shape:
+  type: mapping
+  label: 'Geo Shape'
+  mapping:
+    value:
+      type: string
+      label: 'GeoJSON geometry'
+
 # Schema for the Helfi Linkit widget.
 field.widget.settings.helfi_linkit:
   type: field.widget.settings.link_default
