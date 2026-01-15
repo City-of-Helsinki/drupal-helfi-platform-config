@@ -69,7 +69,6 @@
     },
     "conflict": {
         "drush/drush": "<12",
-        "phpunit/phpunit": ">=11",
         "drupal/external_entities": "<3.0.0-beta7"
     },
     "extra": {
