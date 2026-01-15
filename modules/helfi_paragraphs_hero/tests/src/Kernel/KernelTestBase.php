@@ -16,6 +16,7 @@ class KernelTestBase extends CoreKernelTestBase {
    */
   protected static $modules = [
     'allowed_formats',
+    'brekapoint',
     'content_translation',
     'crop',
     'entity',

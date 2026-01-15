@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_paragraphs_org_chart\Kernel;
+namespace Drupal\Tests\helfi_paragraphs_org_chart\Kernel\Entity;
 
 use Drupal\helfi_paragraphs_org_chart\Entity\OrgChart;
 use Drupal\KernelTests\KernelTestBase;
@@ -21,9 +21,11 @@ class OrgChartParagraphTest extends KernelTestBase {
    */
   protected static $modules = [
     'allowed_formats',
+    'entity_reference_revisions',
     'field',
     'file',
     'helfi_api_base',
+    'user',
     'helfi_paragraphs_org_chart',
     'options',
     'paragraphs',

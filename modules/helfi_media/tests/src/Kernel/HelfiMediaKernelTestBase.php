@@ -26,6 +26,7 @@ class HelfiMediaKernelTestBase extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'breakpoint',
     'content_translation',
     'crop',
     'datetime',

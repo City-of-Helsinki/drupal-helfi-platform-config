@@ -26,6 +26,7 @@ class HooksTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'breakpoint',
     'paragraphs',
     'external_entities',
     'helfi_platform_config',
