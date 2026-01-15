@@ -5,7 +5,12 @@ import { Plugin } from 'ckeditor5/src/core';
 import { findAttributeRange } from 'ckeditor5/src/typing';
 import { Widget } from 'ckeditor5/src/widget';
 import formElements from './formElements';
-import { isUrlExternal, parseProtocol, sanitizeSafeLinks } from './utils/utils';
+import {
+  isUrlExternal,
+  parseProtocol,
+  sanitizeSafeLinks,
+  shouldApplyModelAttribute,
+} from './utils/utils';
 
 /**
  * CKEditor 5 plugins do not work directly with the DOM. They are defined as
@@ -207,6 +212,53 @@ export default class HelfiLinkEditing extends Plugin {
             value: (viewElement) => viewElement.getAttribute(viewAttribute),
           },
         });
+    }
+
+    // Handle the "data-is-external" attribute from HTML.
+    if (modelName === 'linkIsExternal') {
+      editor.conversion.for('upcast').attributeToAttribute({
+        view: { name: 'a', key: 'data-is-external' },
+        model: {
+          key: 'linkIsExternal',
+          value: (viewElement) => {
+            const v = viewElement.getAttribute('data-is-external');
+            return v === 'true' || v === true ? true : null;
+          },
+        },
+        converterPriority: 'high',
+      });
+
+      // This is only used if the attribute was not present in the HTML.
+      editor.conversion.for('upcast').elementToAttribute({
+        view: 'a',
+        model: {
+          key: 'linkIsExternal',
+          value: (viewElement) => {
+            // Cannot determine external status without a href.
+            if (!viewElement.hasAttribute('href')) {
+              return null;
+            }
+
+            const hrefValue = viewElement.getAttribute('href');
+            const { whiteListedDomains } = this.editor.config.get('link');
+
+            // Skip computation if configuration is missing, href is empty,
+            // or the link is an in-page anchor.
+            if (
+              !whiteListedDomains ||
+              !hrefValue ||
+              hrefValue.startsWith('#')
+            ) {
+              return null;
+            }
+
+            // Mark link as external only if it points outside whitelisted domains.
+            return isUrlExternal(hrefValue, whiteListedDomains) ? true : null;
+          },
+        },
+        // Lower priority so it does not override an explicit HTML attribute.
+        converterPriority: 'low',
+      });
     }
   }
 
@@ -634,38 +686,60 @@ export default class HelfiLinkEditing extends Plugin {
               // Check if the selection is collapsed, meaning the user has placed
               // the cursor at a single point without selecting any text.
               if (currentSelection.isCollapsed) {
-                // In this case, we need to find the link element surrounding
-                // the cursor and apply attributes to that single node instead
-                // of a range.
+                // A collapsed selection should normally have a position, but during
+                // certain editor updates it may be temporarily unavailable.
+                // Clear the selection attribute and exit safely.
                 const position = currentSelection.getFirstPosition();
-                const node =
-                  position.textNode ||
-                  position.nodeAfter ||
-                  position.nodeBefore;
-                if (!node) return;
-
-                const range = writer.createRangeOn(node);
-
-                if (attributeValues[modelName]) {
-                  writer.setAttribute(
-                    modelName,
-                    attributeValues[modelName],
-                    range,
-                  );
-                } else {
-                  writer.removeAttribute(modelName, range);
+                if (!position) {
+                  writer.removeSelectionAttribute(modelName);
+                  return;
                 }
 
-                // Remove the temporary attribute from the selection itself.
-                // This prevents CKEditor from applying the attribute to any new
-                // content the user types after the link, which would
-                // unintentionally carry over the custom attribute.
-                writer.removeSelectionAttribute(modelName);
+                // Resolve the linkHref when the caret is at the edge of a link.
+                const candidateNode =
+                  position.textNode ||
+                  position.nodeBefore ||
+                  position.nodeAfter;
 
-                // Move the selection to the newly modified range.
-                // This ensures the cursor is placed inside or on the link with
-                // the updated attributes, keeping the editor state consistent.
-                writer.setSelection(range);
+                const linkHref =
+                  currentSelection.getAttribute('linkHref') ||
+                  candidateNode?.getAttribute?.('linkHref');
+
+                // If the caret is not inside a link, there's no link range to update.
+                // Clear any temporary selection attribute and exit early.
+                if (!linkHref) {
+                  writer.removeSelectionAttribute(modelName);
+                  return;
+                }
+
+                // Apply attributes to the whole link range.
+                const linkRange = findAttributeRange(
+                  position,
+                  'linkHref',
+                  linkHref,
+                  editor.model,
+                );
+
+                const rawValue = attributeValues[modelName];
+                const expectsBoolean =
+                  modelName === 'linkIsExternal' ||
+                  modelName === 'linkNewWindow' ||
+                  modelName === 'linkNewWindowConfirm' ||
+                  modelName === 'linkButton';
+
+                // Decide whether the attribute should be applied to the link.
+                // String-based attributes are only set when
+                // they contain a non-empty value.
+                if (shouldApplyModelAttribute(rawValue, expectsBoolean)) {
+                  writer.setAttribute(modelName, rawValue, linkRange);
+                } else {
+                  writer.removeAttribute(modelName, linkRange);
+                }
+
+                // Always clean selection attribute,
+                // so it doesn't stick to newly typed text.
+                writer.removeSelectionAttribute(modelName);
+                return;
               }
               // Selection not collapsed means the user has selected a range
               // in the document. F.e. selected a word or a sentence.
