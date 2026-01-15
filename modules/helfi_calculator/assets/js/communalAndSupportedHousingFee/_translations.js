@@ -40,19 +40,19 @@ const translations = {
     en: 'You can include services supporting living at home. The support services are subject to a fee.',
   },
   safety_phone_and_bracelet_heading: {
-    fi: 'Turvapuhelin ja turvaranneke',
-    sv: 'Trygghetstelefon och säkerhetsarmband',
-    en: 'Safety phone and bracelet',
+    fi: 'Hälytyskutsupalvelu',
+    sv: 'Alarmtjänst',
+    en: 'Alarm call service',
   },
   safety_phone_and_bracelet_paragraph: {
-    fi: 'Turvapuhelinpalveluun kuuluu turvapuhelin ja turvaranneke, joilla saat tarvittaessa apua ympäri vuorokauden. Turvapuhelinpalvelun maksut riippuvat talouden tuloista.',
-    sv: 'I trygghetstelefontjänsten ingår en trygghetstelefon och ett säkerhetsarmband genom vilka du vid behov får hjälp dygnet runt. Avgifterna för säkerhetstelefontjänsten beror på hushållets inkomster.',
-    en: 'The safety phone service includes a safety phone and a safety bracelet to call for help around the clock. The charges for the safety phone service depend on the income of the household.',
+    fi: 'Hälytyskutsupalvelun kautta saat tarvittaessa apua ympäri vuorokauden. Palvelu sisältää hälytyskutsun, turvarannekkeen ja tarvittaessa ovihälyttimen. Palvelun maksut riippuvat talouden tuloista.',
+    sv: 'Med alarmtjänsten kan du få hjälp dygnet runt vid behov. Tjänsten inkluderar larmanrop, säkerhetsarmband och, om nödvändigt, ett dörrlarm. Avgifterna för tjänsten beror på hushållets inkomster.',
+    en: 'Through the alarm call service, you can get help around the clock if necessary. The service includes an alarm call, a security bracelet and, if necessary, a door alarm. The charges for the service depend on the income of your household.',
   },
   label_safety_phone_and_bracelet: {
-    fi: 'Laske arvioon turvapuhelin ja turvaranneke',
-    sv: 'Inkludera en trygghetstelefon och ett säkerhetsarmband i bedömningen',
-    en: 'Include the safety phone and safety bracelet in the estimate',
+    fi: 'Laske arvioon hälytyskutsupalvelu',
+    sv: 'Inkludera alarmtjänst i bedömningen',
+    en: 'Include the alarm call service in the estimate',
   },
   helper_safety_phone_and_bracelet: {
     fi: 'Huomiothan, että turvapalveluiden hälytyskäynti maksaa ${price_per_visit_low_income} € tai ${price_per_visit_high_income} € kerta tulorajoistasi riippuen. Kuukausittain laskutamme enintään 5 hälytyskäyntiä eli tulorajoistasi riippuen enintään ${max_price_per_month_low_income} € tai ${max_price_per_month_high_income} € kuukaudessa.',
@@ -75,9 +75,9 @@ const translations = {
     en: 'Grocery delivery service',
   },
   grocery_delivery_service_paragraph: {
-    fi: 'Kauppapalvelussa tilaamasi ruokaostokset toimitetaan kotiovellesi. Kauppapalvelun hintaan kuuluu yksi ruokaostosten keräily ja toimitus viikossa.',
-    sv: 'Butiksservicen levererar de livsmedelsinköp som du beställer till din dörr. I priset för butiksservicen ingår samling och leverans av livsmedelsinköp en gång i veckan.',
-    en: 'The grocery delivery service delivers the groceries that you order through the service to your door. The price of the grocery delivery service includes the collection and delivery of the groceries once a week.',
+    fi: 'Kauppapalvelussa tilaamasi ruokaostokset toimitetaan kotiovellesi. Tämän laskurin kauppapalvelun hintaan kuuluu yksi ruokaostosten keräily ja toimitus viikossa. Kauppapalvelua voit tilata halutessasi useammankin kerran viikossa.',
+    sv: 'Butiksservicen levererar de livsmedelsinköp som du beställer till din dörr. I denna räknare för butiksservicen ingår priset för samling och leverans av livsmedelsinköp en gång i veckan. Om du vill kan du beställa butiksservicen mer än en gång i veckan.',
+    en: 'The grocery delivery service delivers the groceries that you order through the service to your door. In this fee calculator, the price of the grocery delivery service includes the collection and delivery of the groceries once a week. You can order grocery delivery services more than once a week.',
   },
   label_grocery_delivery_service: {
     fi: 'Laske arvioon kauppapalvelu',
@@ -105,9 +105,9 @@ const translations = {
     en: 'Meal service',
   },
   meal_service_paragraph: {
-    fi: 'Ateriapalvelussa kotiisi kuljetetaan valmiita lounasaterioita, jotka voit itse lämmittää. Ateriapalvelun hintaan kuuluu lounasaterian hinta ja kuljetusmaksu.',
-    sv: 'I måltidstjänsten levereras färdiga lunchmåltider hem till dig, som du själv kan värma upp. I priset för måltidstjänsten ingår priset för lunchmåltiderna och leveransavgiften.',
-    en: 'The meal service transports to your home ready-made lunch meals, which you can heat up yourself. The price of the meal service includes the price of a lunch meal and a delivery fee.',
+    fi: 'Ateriapalvelusta sinulta peritään ateriamaksu joko täysihoidosta (aamupala, lounas, välipala, päivällinen, iltapala) tai puolihoidosta (puolet päivän aterioista; esim. aamupala, lounas ja välipala).',
+    sv: 'För måltidsservicen debiteras du en avgift för antingen helpension (frukost, lunch, mellanmål, middag, kvällsmål) eller halvpension (hälften av dagens måltider; t.ex. frukost, lunch och mellanmål).',
+    en: 'In the meal service, you will be charged a meal fee either for full-board (breakfast, lunch, afternoon snack, dinner, evening snack) or for half-board (half of the daily meals, e.g. breakfast, lunch and afternoon snack).',
   },
   label_meal_service: {
     fi: 'Laske arvioon ateriapalvelu',
@@ -150,9 +150,9 @@ const translations = {
     en: 'euros per month.',
   },
   receipt_estimated_payment_explanation: {
-    fi: 'Tämä arvio on suuntaa antava. Tarkka arvo lasketaan yhteisöllisen ja tuetun asumisen päätökseen.',
-    sv: 'Denna bedömning är riktgivande. Det exakta värdet beräknas för beslutet om gemenskapligt boende och stödboende.',
-    en: 'This estimate is indicative only. The exact value will be calculated for the communal and supported housing decision.',
+    fi: 'Tämä arvio on suuntaa antava. Tarkka arvo lasketaan yhteisöllisen ja tuetun asumisen asiakasmaksupäätökseen. Tämä arvio ei ole viranomaisen tekemä virallinen asiakasmaksupäätös.',
+    sv: 'Denna bedömning är riktgivande. Det exakta värdet räknas för klientavgiftsbeslutet om gemenskapligt boende och stödboende. Denna uppskattning är inte myndighetens officiella klientavgiftsbeslut.',
+    en: 'This estimate is indicative only. The exact value will be calculated for the communal and supported housing client fee decision. This estimate is not an official client fee decision made by an authority.',
   },
   receipt_estimate_of_payment_breakdown_title: {
     fi: 'Arvio muodostuu seuraavista tiedoista:',
@@ -175,14 +175,29 @@ const translations = {
     en: '${value} €/month',
   },
   safety_phone_and_bracelet_payment: {
-    fi: 'Turvapuhelin ja turvaranneke',
-    sv: 'Trygghetstelefon och säkerhetsarmband',
-    en: 'Safety phone and bracelet',
+    fi: 'Hälytyskutsupalvelu',
+    sv: 'Alarmtjänst',
+    en: 'Alarm call service',
+  },
+  no_safety_phone_and_bracelet_payment: {
+    fi: 'Ei hälytyskutsupalvelua',
+    sv: 'Inga alarmtjänster',
+    en: 'No alarm call service',
   },
   grocery_delivery_service_payment: {
     fi: 'Kauppapalvelu',
     sv: 'Butiksservice',
     en: 'Grocery delivery service',
+  },
+  no_grocery_delivery_service_payment: {
+    fi: 'Ei kauppapalvelua',
+    sv: 'Inga butiksservice',
+    en: 'No grocery delivery service',
+  },
+  no_meal_service_payment: {
+    fi: 'Ei ateriapalvelua',
+    sv: 'Inga måltidstjänster',
+    en: 'No meal service',
   },
   meal_service_payment: {
     fi: 'Ateriapalvelu',

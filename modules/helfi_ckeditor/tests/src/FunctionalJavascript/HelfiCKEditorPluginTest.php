@@ -221,6 +221,36 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     $this->assertSame('#test', $linkit_link->getAttribute('href'));
     $this->assertNotSame('button', $linkit_link->getAttribute('data-hds-component'));
     $this->assertNotSame('_blank', $linkit_link->getAttribute('target'));
+
+    // Test the anchor duplication bug.
+    $initial_content = '<p>Some text <a href="https://some-domain.com?something=true">with a link</a>. Another sentence.</p>';
+    $handled_content = '<p>Some text <a href="https://some-domain.com?something=true" data-is-external="true">with a link</a>. Another sentence.</p>';
+    $edit_url = $this->initializeEditor($initial_content);
+
+    /** @var \Drupal\FunctionalJavascriptTests\WebDriverWebAssert $assert_session */
+    $assert_session = $this->assertSession();
+    $this->drupalGet($edit_url);
+    $this->waitForEditor();
+
+    // Focus the editable area first.
+    $content_area = $assert_session->waitForElementVisible('css', '.ck-editor__editable');
+    $content_area->click();
+
+    // Click on the link and then click on "Edit link".
+    $assert_session->waitForElementVisible('css', '.ck-content a');
+    $content_area->find('css', 'a')->click();
+    $edit_link = $assert_session->waitForElementVisible('xpath', "//button[span[text()='Edit link']]");
+    $edit_link->click();
+    $assert_session->waitForElementVisible('css', '.ck-body-wrapper .ck-link-toolbar');
+
+    // Check that the CKEditor 5 balloon (dialog) is visible.
+    $balloon = $this->assertVisibleBalloon('.ck-link-form');
+
+    // Save the link.
+    $balloon->pressButton('Update');
+
+    // Make sure the anchor tag duplication doesn't happen.
+    $this->assertSame($handled_content, $this->getEditorDataAsHtmlString());
   }
 
   /**

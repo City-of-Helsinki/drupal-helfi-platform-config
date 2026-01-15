@@ -66,3 +66,9 @@ msgstr "Evästeasetussivun sisältö"
 msgctxt "hdbt cookie banner"
 msgid "Site settings must be valid JSON"
 msgstr "Sivuston asetukset kentän sisällön tulee olla kelvollista JSON:a"
+
+msgid "Cookie banner settings"
+msgstr "Hallinnoi evästeasetuksia"
+
+msgid "Administer hdbt cookie banner"
+msgstr "Hallinnoi evästeasetuksia"
