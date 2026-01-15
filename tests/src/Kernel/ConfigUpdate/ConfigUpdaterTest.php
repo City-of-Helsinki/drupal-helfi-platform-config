@@ -28,6 +28,8 @@ class ConfigUpdaterTest extends KernelTestBase {
   protected static $modules = [
     'system',
     'config_rewrite',
+    'field',
+    'text',
     'user',
     'helfi_platform_config',
     'helfi_user_roles',
@@ -48,7 +50,13 @@ class ConfigUpdaterTest extends KernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('user');
-    $this->installConfig(['user', 'helfi_user_roles', 'csp', 'locale', 'language']);
+    $this->installConfig([
+      'user',
+      'helfi_user_roles',
+      'csp',
+      'locale',
+      'language',
+    ]);
     // Create a new user to make sure we don't accidentally get all
     // permissions later due to user being uid 1.
     $this->createUser();

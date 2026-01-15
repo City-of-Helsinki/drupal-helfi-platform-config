@@ -6,7 +6,7 @@ core_version_requirement: ^10 || ^11
 dependencies:
   - drupal:language
   - drupal:views
-  - drupal:node
+  - drupal:node_storage_body_field
   - helfi_platform_config:helfi_platform_config
   - helfi_api_base:helfi_api_base
   - config_rewrite:config_rewrite
