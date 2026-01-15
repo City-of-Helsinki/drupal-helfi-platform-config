@@ -27,7 +27,7 @@ class JsInliner {
     private JsOptimizer $jsOptimizer,
     private LibraryDiscoveryInterface $libraryDiscovery,
     #[Autowire(service: 'cache.default')]
-    private CacheBackendInterface $cache
+    private CacheBackendInterface $cache,
   ) {
   }
 
@@ -47,6 +47,7 @@ class JsInliner {
    *   The library name.
    *
    * @return string|null
+   *   The inlined js or null.
    */
   public function getInline(string $extension, string $name): ?string {
     // Store for multiple calls within the same request.
