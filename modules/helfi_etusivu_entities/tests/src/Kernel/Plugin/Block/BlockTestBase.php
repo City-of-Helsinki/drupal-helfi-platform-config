@@ -48,6 +48,7 @@ abstract class BlockTestBase extends EntityKernelTestBase {
     $this->installEntitySchema('node');
     $this->installConfig(array_merge([
       'node',
+      'helfi_platform_config',
       'helfi_etusivu_entities',
     ], $modules));
   }
