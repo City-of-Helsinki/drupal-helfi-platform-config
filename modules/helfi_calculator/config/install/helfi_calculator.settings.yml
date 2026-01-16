@@ -28,3 +28,7 @@ calculators:
     label: 'Communal and supported housing fee'
     active: false
     json: '{}'
+  long_term_institutional_care_fee:
+    label: 'Long term institutional care fee'
+    active: false
+    json: '{}'

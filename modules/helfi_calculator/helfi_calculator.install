@@ -74,3 +74,14 @@ function helfi_calculator_update_9001() : void {
     'Yhteisöllisen ja tuetun asumisen asiakasmaksun laskuri'
   );
 }
+
+/**
+ * UHF-11877 Add long term institutional care calculator to calculator settings.
+ */
+function helfi_calculator_update_9002() : void {
+  helfi_calculator_add_new_calculator(
+    'long_term_institutional_care_fee',
+    'Long term institutional care fee',
+    'Pitkäaikaisen laitoshoidon asiakasmaksun laskuri'
+  );
+}
