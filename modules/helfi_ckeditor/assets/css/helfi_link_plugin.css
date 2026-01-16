@@ -104,6 +104,13 @@
   margin: 0 1rem !important;
 }
 
+/* Link form URL field - linkit autocomplete */
+.ck.ck-link-form.helfi-link-form > .helfi-link-url-input .ui-autocomplete {
+  /* linkit autocomplete should be floating */
+  position: absolute;
+}
+
+
 /* Link form advanced settings */
 .ck.ck-link-form.helfi-link-form > .ck-helfi-link-details {
   grid-area: advanced-settings;
