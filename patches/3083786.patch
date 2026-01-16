@@ -1,0 +1,46 @@
+diff --git a/core/modules/filter/filter.module b/core/modules/filter/filter.module
+index 9eec4e2e5493223fdab9c7558e606a524e3e2481..b4fa9771dde8a5762bc521aaaa60398dbd496a93 100644
+--- a/core/modules/filter/filter.module
++++ b/core/modules/filter/filter.module
+@@ -699,10 +699,17 @@ function _filter_autop($text) {
+       $chunk = preg_replace('|<p>\s*</p>\n?|', '', $chunk);
+       $chunk = preg_replace('!<p>\s*(</?' . $block . '[^>]*>)!', "$1", $chunk);
+       $chunk = preg_replace('!(</?' . $block . '[^>]*>)\s*</p>!', "$1", $chunk);
+-      // Make line breaks.
+-      $chunk = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $chunk);
+-      $chunk = preg_replace('!(</?' . $block . '[^>]*>)\s*<br />!', "$1", $chunk);
+-      $chunk = preg_replace('!<br />(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)!', '$1', $chunk);
++      // Make line breaks
++      $chunk = preg_replace_callback('|(<br[^>]*>)?\s*\n|', function ($matches) {
++        // Preserve existing break tags with attributes.
++        if (isset($matches[1])) {
++          return $matches[1] . "\n";
++        }
++        // Otherwise create new break tag.
++        return "<br />\n";
++      }, $chunk);
++      $chunk = preg_replace('!(</?' . $block . '[^>]*>)\s*<br[^>]*>!', "$1", $chunk);
++      $chunk = preg_replace('!<br[^>]*>(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)!', '$1', $chunk);
+       $chunk = preg_replace('/&([^#])(?![A-Za-z0-9]{1,8};)/', '&amp;$1', $chunk);
+     }
+     $output .= $chunk;
+diff --git a/core/modules/filter/tests/src/Kernel/FilterKernelTest.php b/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
+index 0d789f0bce84170470c9f1fd10c16b369274e015..ef8ee5ea140c61fb6f98ebef1aeb3ac5a1a8756c 100644
+--- a/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
++++ b/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
+@@ -488,6 +488,15 @@ public function testLineBreakFilter(): void {
+       '<drupal-media data-caption=" " data-entity-type="media" data-entity-uuid="dbb16f97-cd11-4357-acde-cd09e19e312b"></drupal-media>' => [
+         '<p><drupal-media data-caption=" " data-entity-type="media" data-entity-uuid="dbb16f97-cd11-4357-acde-cd09e19e312b"></drupal-media></p>' => FALSE,
+       ],
++      // Bug 3083786, duplicate br tags after a line ending in a break tag that
++      // doesn't exactly match <br />
++      'aaa<br>
++      bbb<br class="ccc" />
++      ddd<br/>' => [
++        "<p>aaa<br>\n" => TRUE,
++        "bbb<br class=\"ccc\" />\n" => TRUE,
++        "ddd</p>" => TRUE,
++      ],
+     ];
+     // cSpell:enable
+     $this->assertFilteredString($filter, $tests);

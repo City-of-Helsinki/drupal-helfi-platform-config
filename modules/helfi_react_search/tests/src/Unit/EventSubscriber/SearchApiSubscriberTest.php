@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_react_search\Unit\EventSubscriber;
 
-use DG\BypassFinals;
 use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Drupal\elasticsearch_connector\Event\SupportsDataTypeEvent;
 use Drupal\helfi_react_search\EventSubscriber\SearchApiSubscriber;
@@ -58,7 +57,6 @@ class SearchApiSubscriberTest extends UnitTestCase {
    */
   protected function setUp(): void {
     parent::setUp();
-    BypassFinals::enable();
 
     $this->field = $this->prophesize(Field::class);
     $this->field->getType()->willReturn('string');

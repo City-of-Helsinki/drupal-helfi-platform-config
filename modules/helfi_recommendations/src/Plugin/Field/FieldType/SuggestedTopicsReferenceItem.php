@@ -30,7 +30,7 @@ use Drupal\helfi_recommendations\TypedData\ComputedReferencePublishedStatus;
   default_formatter: "entity_reference_label",
   list_class: EntityReferenceFieldItemList::class,
 )]
-final class SuggestedTopicsReferenceItem extends EntityReferenceItem {
+class SuggestedTopicsReferenceItem extends EntityReferenceItem {
 
   /**
    * {@inheritdoc}

@@ -31,19 +31,22 @@ class EventListUpdateHelperTest extends KernelTestBase {
     'options',
     'link',
     'file',
+    'entity_reference_revisions',
     'system',
     'hdbt_admin_tools',
     'readonly_field_widget',
     'text',
+    'user',
     'select2',
   ];
 
   /**
    * {@inheritdoc}
    */
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
+    $this->installEntitySchema('user');
     $this->installEntitySchema('paragraph');
     $this->installConfig('helfi_react_search');
   }

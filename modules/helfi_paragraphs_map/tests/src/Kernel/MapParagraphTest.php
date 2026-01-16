@@ -21,6 +21,7 @@ class MapParagraphTest extends KernelTestBase {
    */
   protected static $modules = [
     'allowed_formats',
+    'breakpoint',
     'content_translation',
     'crop',
     'entity_reference_revisions',

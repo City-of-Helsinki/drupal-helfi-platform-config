@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_recommendations\Kernel\Field;
 
-use DG\BypassFinals;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -89,7 +88,6 @@ class SuggestedTopicsReferenceWidgetKernelTest extends AnnifKernelTestBase {
    * {@inheritdoc}
    */
   public function setUp(): void {
-    BypassFinals::enable();
     parent::setUp();
 
     $this->recommendationManager = $this->prophesize(RecommendationManagerInterface::class);

@@ -57,7 +57,7 @@ class NewsStorageClientTest extends StorageClientTestBase {
     $sut = $this->getSut($container, $responses);
     $this->assertEmpty($sut->loadMultiple([123]));
 
-    $values = $sut->loadMultiple([321, 321]);
+    $values = $sut->loadMultiple([123, 321]);
     $this->assertCount(1, $values);
     $entity = $values[123];
 

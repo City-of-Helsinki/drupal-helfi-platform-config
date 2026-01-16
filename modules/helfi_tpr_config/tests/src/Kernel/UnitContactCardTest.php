@@ -26,6 +26,7 @@ class UnitContactCardTest extends KernelTestBase {
   protected static $modules = [
     'address',
     'allowed_formats',
+    'breakpoint',
     'content_translation',
     'entity_reference_revisions',
     'field',

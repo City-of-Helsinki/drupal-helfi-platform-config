@@ -92,12 +92,14 @@ class JsInlinerTest extends UnitTestCase {
 
     // Second call:
     // - We manually clear the internal storage; should call cache get.
-    // - Cache returns cached data; should return cached data and not call js optimizer or cache set.
+    // - Cache returns cached data; should return cached data and not call js
+    // optimizer or cache set.
     $this->inliner->reset();
     $data2 = $this->inliner->getInline('test', 'test-library');
 
     // Third call:
-    // - Data returned from internal storage; should not call cache get, js optimizer or cache set.
+    // - Data returned from internal storage; should not call cache get, js
+    // optimizer or cache set.
     $data3 = $this->inliner->getInline('test', 'test-library');
 
     $this->assertEquals('test-data', $data1);

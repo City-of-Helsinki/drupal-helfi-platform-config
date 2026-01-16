@@ -21,6 +21,9 @@ class AnnouncementNodeTest extends KernelTestBase {
     'allowed_formats',
     'content_translation',
     'field',
+    'config_rewrite',
+    'helfi_api_base',
+    'helfi_platform_config',
     'helfi_node_announcement',
     'language',
     'link',
@@ -41,7 +44,7 @@ class AnnouncementNodeTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
     $this->installEntitySchema('node');
-    $this->installConfig(['system', 'node', 'helfi_node_announcement']);
+    $this->installConfig(['system', 'node', 'helfi_platform_config', 'helfi_node_announcement']);
     $this->installSchema('node', ['node_access']);
   }
 

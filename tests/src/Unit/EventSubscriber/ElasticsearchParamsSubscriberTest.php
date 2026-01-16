@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 
-use DG\BypassFinals;
 use Drupal\elasticsearch_connector\Event\BaseParamsEvent;
 use Drupal\elasticsearch_connector\Event\DeleteParamsEvent;
 use Drupal\elasticsearch_connector\Event\IndexParamsEvent;
@@ -54,7 +53,6 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
-    BypassFinals::enable();
     parent::setUp();
 
     $params = [
