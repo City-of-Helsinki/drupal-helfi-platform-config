@@ -29,14 +29,15 @@
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "single",
-      "jsxQuoteStyle": "single",
-      "semicolons": "always",
-      "expand": "never",
-      "quoteProperties": "asNeeded",
-      "trailingCommas": "all",
       "attributePosition": "auto",
-      "bracketSpacing": true
+      "bracketSpacing": true,
+      "expand": "auto",
+      "jsxQuoteStyle": "single",
+      "lineWidth": 120,
+      "quoteProperties": "asNeeded",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all"
     }
   }
 }
