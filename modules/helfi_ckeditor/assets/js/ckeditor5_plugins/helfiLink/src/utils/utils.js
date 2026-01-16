@@ -32,11 +32,7 @@ export const isUrlExternal = (string, domains) => {
   }
 
   const host = url.hostname;
-  return !domains.some(
-    (domain) =>
-      (domain.startsWith('*.') && host.endsWith(domain.slice(2))) ||
-      domain === host,
-  );
+  return !domains.some((domain) => (domain.startsWith('*.') && host.endsWith(domain.slice(2))) || domain === host);
 };
 
 /**
@@ -106,11 +102,5 @@ export const shouldApplyModelAttribute = (value, expectsBoolean) => {
     return !!value;
   }
 
-  return (
-    value !== null &&
-    value !== undefined &&
-    value !== '' &&
-    value !== false &&
-    value !== true
-  );
+  return value !== null && value !== undefined && value !== '' && value !== false && value !== true;
 };

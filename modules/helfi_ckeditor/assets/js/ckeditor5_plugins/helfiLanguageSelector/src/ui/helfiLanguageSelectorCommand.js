@@ -19,9 +19,7 @@ export default class HelfiLanguageSelectorCommand extends Command {
     const { model } = this.editor;
     const doc = model.document;
     const { selection } = doc;
-    const value = languageCode
-      ? stringifyLanguageAttribute(languageCode, textDirection)
-      : false;
+    const value = languageCode ? stringifyLanguageAttribute(languageCode, textDirection) : false;
 
     model.change((writer) => {
       const firstPosition = selection.getFirstPosition();
@@ -36,20 +34,14 @@ export default class HelfiLanguageSelectorCommand extends Command {
           // If there is no value, we should remove the helfiLanguageSelector
           // attributes. If there is node found, remove the attributes from the
           // whole node surrounding the selection.
-          writer.removeAttribute(
-            'helfiLanguageSelector',
-            writer.createRangeOn(node),
-          );
+          writer.removeAttribute('helfiLanguageSelector', writer.createRangeOn(node));
         } else {
           // Remove the helfiLanguageSelector attributes from current selection.
           writer.removeSelectionAttribute('helfiLanguageSelector');
         }
         // When there is a selection range selected.
       } else {
-        const ranges = model.schema.getValidRanges(
-          selection.getRanges(),
-          'helfiLanguageSelector',
-        );
+        const ranges = model.schema.getValidRanges(selection.getRanges(), 'helfiLanguageSelector');
         let range = ranges.next();
 
         while (!range.done) {
@@ -77,10 +69,7 @@ export default class HelfiLanguageSelectorCommand extends Command {
     const { selection } = model.document;
 
     this.value = this._getValueFromFirstAllowedNode();
-    this.isEnabled = model.schema.checkAttributeInSelection(
-      selection,
-      'helfiLanguageSelector',
-    );
+    this.isEnabled = model.schema.checkAttributeInSelection(selection, 'helfiLanguageSelector');
   }
 
   /**
