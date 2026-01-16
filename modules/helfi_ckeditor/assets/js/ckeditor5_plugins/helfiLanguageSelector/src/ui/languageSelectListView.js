@@ -23,10 +23,7 @@ export default class LanguageSelectListView extends View {
       tag: 'select',
       attributes: {
         id: bind.to('id'),
-        class: [
-          'ck-helfi-select-list',
-          bind.if('isOpen', 'ck-is-open', (isOpen) => isOpen),
-        ],
+        class: ['ck-helfi-select-list', bind.if('isOpen', 'ck-is-open', (isOpen) => isOpen)],
         open: bind.if('isOpen'),
         placeholder: t('Select language'),
       },

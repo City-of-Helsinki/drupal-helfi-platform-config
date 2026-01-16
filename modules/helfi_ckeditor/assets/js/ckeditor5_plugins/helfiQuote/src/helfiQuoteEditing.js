@@ -127,9 +127,7 @@ export default class HelfiQuoteEditing extends Plugin {
       };
       Object.keys(variants).forEach((variant) => {
         const upcastView = variants[variant];
-        conversion
-          .for('upcast')
-          .elementToElement({ view: upcastView, model: modelName });
+        conversion.for('upcast').elementToElement({ view: upcastView, model: modelName });
       });
     };
 
@@ -168,24 +166,14 @@ export default class HelfiQuoteEditing extends Plugin {
     convertUpcast('helfiQuoteFooterCite', 'cite');
 
     // Downcast Converters: converts stored model data into HTML.
-    const convertDowncast = (
-      model,
-      elementType,
-      attributes = {},
-      container = false,
-    ) => {
-      const converterFunction = container
-        ? 'createContainerElement'
-        : 'createEditableElement';
+    const convertDowncast = (model, elementType, attributes = {}, container = false) => {
+      const converterFunction = container ? 'createContainerElement' : 'createEditableElement';
 
       // These trigger when content is saved.
-      conversion
-        .for('dataDowncast')
-        .elementToElement({
-          model,
-          view: (_modelElement, { writer: viewWriter }) =>
-            viewWriter[converterFunction](elementType, attributes),
-        });
+      conversion.for('dataDowncast').elementToElement({
+        model,
+        view: (_modelElement, { writer: viewWriter }) => viewWriter[converterFunction](elementType, attributes),
+      });
 
       // Editing Downcast Converters. These render the content to the user for
       // editing, i.e. this determines what gets seen in the editor. These trigger
@@ -194,30 +182,18 @@ export default class HelfiQuoteEditing extends Plugin {
       conversion.for('editingDowncast').elementToElement({
         model,
         view: (_modelElement, { writer: viewWriter }) => {
-          const element = viewWriter[converterFunction](
-            elementType,
-            attributes,
-          );
-          return container
-            ? toWidget(element, viewWriter)
-            : toWidgetEditable(element, viewWriter);
+          const element = viewWriter[converterFunction](elementType, attributes);
+          return container ? toWidget(element, viewWriter) : toWidgetEditable(element, viewWriter);
         },
       });
     };
 
     // Convert the <helfiQuote> model into a <blockquote> container element.
-    convertDowncast(
-      'helfiQuote',
-      'blockquote',
-      { 'data-helfi-quote': '' },
-      true,
-    );
+    convertDowncast('helfiQuote', 'blockquote', { 'data-helfi-quote': '' }, true);
     // Convert the <helfiQuoteText> model into an editable <p> element.
     convertDowncast('helfiQuoteText', 'p', { 'data-helfi-quote-text': '' });
     // Convert the <helfiQuoteFooter> model into a container <footer> element.
-    convertDowncast('helfiQuoteFooter', 'footer', {
-      'data-helfi-quote-author': '',
-    });
+    convertDowncast('helfiQuoteFooter', 'footer', { 'data-helfi-quote-author': '' });
     // Convert the <helfiQuoteFooterCite> model into an editable <cite> element.
     convertDowncast('helfiQuoteFooterCite', 'cite');
   }

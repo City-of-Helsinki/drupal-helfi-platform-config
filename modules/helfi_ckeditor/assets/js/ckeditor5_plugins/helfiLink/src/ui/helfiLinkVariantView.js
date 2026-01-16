@@ -26,18 +26,11 @@ export default class HelfiLinkVariantView extends HelfiLinkBaseView {
       // Settings for the Tom Select.
       const settings = {
         ...defaultConfig,
-        plugins: {
-          dropdown_input: {},
-          remove_button: { title: 'Remove this item' },
-        },
-        options: Object.keys(options).map((option) => ({
-          option,
-          title: options[option],
-        })),
+        plugins: { dropdown_input: {}, remove_button: { title: 'Remove this item' } },
+        options: Object.keys(options).map((option) => ({ option, title: options[option] })),
         // Custom rendering functions for options and items
         render: {
-          option: (item, sanitizeOutput) =>
-            renderTemplate(item, sanitizeOutput),
+          option: (item, sanitizeOutput) => renderTemplate(item, sanitizeOutput),
           item: (item, sanitizeOutput) => renderTemplate(item, sanitizeOutput),
         },
       };

@@ -3,11 +3,7 @@
  */
 import { Plugin } from 'ckeditor5/src/core';
 import { Widget } from 'ckeditor5/src/widget';
-import {
-  stringifyLanguageAttribute,
-  parseLanguageAttribute,
-  simplifyLangCode,
-} from './utils/utils';
+import { stringifyLanguageAttribute, parseLanguageAttribute, simplifyLangCode } from './utils/utils';
 import HelfiLanguageSelectorCommand from './ui/helfiLanguageSelectorCommand';
 
 /**
@@ -33,9 +29,7 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
   constructor(editor) {
     super(editor);
     this.editor = editor;
-    this.helfiLanguageSelectorConfig = this.editor.config.get(
-      'helfiLanguageSelector',
-    );
+    this.helfiLanguageSelectorConfig = this.editor.config.get('helfiLanguageSelector');
     this.currentLanguage = this.helfiLanguageSelectorConfig?.current_language;
   }
 
@@ -47,12 +41,8 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
     const { conversion } = this.editor;
 
     // Add helfiLanguageSelector model as an allowed attribute for '$text' nodes.
-    editor.model.schema.extend('$text', {
-      allowAttributes: 'helfiLanguageSelector',
-    });
-    editor.model.schema.setAttributeProperties('helfiLanguageSelector', {
-      copyOnEnter: true,
-    });
+    editor.model.schema.extend('$text', { allowAttributes: 'helfiLanguageSelector' });
+    editor.model.schema.setAttributeProperties('helfiLanguageSelector', { copyOnEnter: true });
 
     // Define 'upcast' converter for helfiLanguageSelector lang attribute.
     conversion.for('upcast').elementToAttribute({
@@ -69,10 +59,7 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
           }
 
           const textDirection = viewElement.getAttribute('dir') ?? '';
-          return stringifyLanguageAttribute(
-            languageCode.toLowerCase(),
-            textDirection.toLowerCase(),
-          );
+          return stringifyLanguageAttribute(languageCode.toLowerCase(), textDirection.toLowerCase());
         },
       },
       view: { name: 'span', attributes: { lang: /[\s\S]+/ } },
@@ -109,21 +96,14 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
           return;
         }
 
-        const { languageCode, textDirection } =
-          parseLanguageAttribute(attributeValue);
+        const { languageCode, textDirection } = parseLanguageAttribute(attributeValue);
 
-        return writer.createAttributeElement('span', {
-          lang: languageCode,
-          dir: textDirection,
-        });
+        return writer.createAttributeElement('span', { lang: languageCode, dir: textDirection });
       },
     });
 
     // Add helfiLanguageSelectorCommand.
-    editor.commands.add(
-      'helfiLanguageSelectorCommand',
-      new HelfiLanguageSelectorCommand(editor),
-    );
+    editor.commands.add('helfiLanguageSelectorCommand', new HelfiLanguageSelectorCommand(editor));
   }
 
   /**

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -21,17 +21,23 @@
       "style": { "noUnusedTemplateLiteral": "warn", "useImportType": "warn" }
     }
   },
-  "formatter": { "enabled": true, "expand": "never", "useEditorconfig": true },
+  "formatter": {
+    "enabled": true,
+    "expand": "auto",
+    "lineWidth": 120,
+    "useEditorconfig": true
+  },
   "javascript": {
     "formatter": {
-      "quoteStyle": "single",
-      "jsxQuoteStyle": "single",
-      "semicolons": "always",
-      "expand": "never",
-      "quoteProperties": "asNeeded",
-      "trailingCommas": "all",
       "attributePosition": "auto",
-      "bracketSpacing": true
+      "bracketSpacing": true,
+      "expand": "auto",
+      "jsxQuoteStyle": "single",
+      "lineWidth": 120,
+      "quoteProperties": "asNeeded",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all"
     }
   }
 }

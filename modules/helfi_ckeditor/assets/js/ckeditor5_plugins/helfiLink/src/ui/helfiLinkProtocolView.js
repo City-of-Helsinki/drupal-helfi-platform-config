@@ -26,14 +26,10 @@ export default class HelfiLinkProtocolView extends HelfiLinkBaseView {
       // Settings for the Tom Select.
       const settings = {
         ...defaultConfig,
-        options: Object.keys(options).map((option) => ({
-          option,
-          title: options[option],
-        })),
+        options: Object.keys(options).map((option) => ({ option, title: options[option] })),
         // Custom rendering functions for options and items
         render: {
-          option: (item, sanitizeOutput) =>
-            renderTemplate(item, sanitizeOutput),
+          option: (item, sanitizeOutput) => renderTemplate(item, sanitizeOutput),
           item: (item, sanitizeOutput) => renderTemplate(item, sanitizeOutput),
         },
       };

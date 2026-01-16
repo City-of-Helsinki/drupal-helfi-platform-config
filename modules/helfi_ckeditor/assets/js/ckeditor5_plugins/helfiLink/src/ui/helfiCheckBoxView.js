@@ -161,11 +161,7 @@ export default class HelfiCheckBoxView extends View {
 
     checkboxInputView.setTemplate({
       tag: 'input',
-      attributes: {
-        type: 'checkbox',
-        id: bind.to('id'),
-        checked: bind.if('isChecked'),
-      },
+      attributes: { type: 'checkbox', id: bind.to('id'), checked: bind.if('isChecked') },
       on: {
         change: bind.to((evt) => {
           this.isChecked = evt.target.checked;
@@ -194,9 +190,7 @@ export default class HelfiCheckBoxView extends View {
     checkboxSpanToggleView.setTemplate({
       tag: 'span',
       attributes: { class: ['checkbox-toggle'], id: bind.to('id') },
-      children: [
-        { tag: 'span', attributes: { class: ['checkbox-toggle__inner'] } },
-      ],
+      children: [{ tag: 'span', attributes: { class: ['checkbox-toggle__inner'] } }],
     });
 
     return checkboxSpanToggleView;

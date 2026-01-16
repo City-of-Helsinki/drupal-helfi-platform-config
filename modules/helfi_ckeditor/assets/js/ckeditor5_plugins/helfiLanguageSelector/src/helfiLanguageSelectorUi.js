@@ -30,9 +30,7 @@ export default class HelfiLanguageSelectorUi extends Plugin {
     super(editor);
     this.editor = editor;
     this.advancedChildren = new Collection();
-    this.helfiLanguageSelectorConfig = this.editor.config.get(
-      'helfiLanguageSelector',
-    );
+    this.helfiLanguageSelectorConfig = this.editor.config.get('helfiLanguageSelector');
     this.languageList = this.helfiLanguageSelectorConfig?.language_list;
     this.updateSelection = false;
     translationWarmer(editor.locale);
@@ -53,33 +51,21 @@ export default class HelfiLanguageSelectorUi extends Plugin {
       dropdownView.buttonView.set({ label: defaultTitle, icon, tooltip: true });
 
       // Add class for the dropdown view.
-      dropdownView.extendTemplate({
-        attributes: { class: ['helfi-language-selector'] },
-      });
+      dropdownView.extendTemplate({ attributes: { class: ['helfi-language-selector'] } });
 
       // Add custom classes for the dropdown panel view.
       dropdownView.panelView.extendTemplate({
-        attributes: {
-          class: [
-            'helfi-language-selector__dropdown-panel',
-            'ck-reset_all-excluded',
-          ],
-        },
+        attributes: { class: ['helfi-language-selector__dropdown-panel', 'ck-reset_all-excluded'] },
       });
 
       let selectListView;
       let tomSelect;
-      const languageCommand = this.editor.commands.get(
-        'helfiLanguageSelectorCommand',
-      );
+      const languageCommand = this.editor.commands.get('helfiLanguageSelectorCommand');
 
       dropdownView.on('change:isOpen', () => {
         if (tomSelect?.options) {
           // Set current language as the selected language in tomSelect.
-          if (
-            languageCommand.value &&
-            !tomSelect.items.includes(getCommandValue(languageCommand.value))
-          ) {
+          if (languageCommand.value && !tomSelect.items.includes(getCommandValue(languageCommand.value))) {
             tomSelect.setValue([getCommandValue(languageCommand.value)], true);
           }
           // Clear the selections in case there is no current language.
@@ -117,28 +103,20 @@ export default class HelfiLanguageSelectorUi extends Plugin {
           sortField: 'title',
           maxOptions: null,
           items: [getCommandValue(languageCommand.value)],
-          options: [
-            this.languageList.map((language) => ({
-              ...language,
-              title: t(language.title),
-            })),
-          ],
+          options: [this.languageList.map((language) => ({ ...language, title: t(language.title) }))],
           create: false,
           // Custom rendering functions for options and items
           render: {
-            option: (item, sanitizeOutput) =>
-              renderTemplate(item, sanitizeOutput),
-            item: (item, sanitizeOutput) =>
-              renderTemplate(item, sanitizeOutput),
+            option: (item, sanitizeOutput) => renderTemplate(item, sanitizeOutput),
+            item: (item, sanitizeOutput) => renderTemplate(item, sanitizeOutput),
           },
           // If the language selection has changed, execute the language command.
           onItemAdd: (languageCode) => {
             if (languageCommand.value !== languageCode) {
               languageCommand.execute({
                 languageCode,
-                textDirection: this.languageList.find(
-                  (language) => language.languageCode === languageCode,
-                ).textDirection,
+                textDirection: this.languageList.find((language) => language.languageCode === languageCode)
+                  .textDirection,
               });
               editor.editing.view.focus();
             }
