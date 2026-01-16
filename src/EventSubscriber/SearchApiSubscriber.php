@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\EventSubscriber;
 
+use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Drupal\elasticsearch_connector\Event\SupportsDataTypeEvent;
 use Drupal\search_api\Event\MappingFieldTypesEvent;
 use Drupal\search_api\Event\SearchApiEvents;
@@ -30,6 +31,11 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
       $events[SupportsDataTypeEvent::class] = 'onSupportsDataType';
     }
 
+    // Subscribe to elasticsearch_connector's FieldMappingEvent.
+    if (class_exists(FieldMappingEvent::class)) {
+      $events[FieldMappingEvent::class] = 'onFieldMapping';
+    }
+
     return $events;
   }
 
@@ -48,6 +54,16 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
   public function onSupportsDataType(SupportsDataTypeEvent $event): void {
     if ($event->getType() === 'geo_shape') {
       $event->setIsSupported(TRUE);
+    }
+  }
+
+  /**
+   * Map geo_shape field to Elasticsearch geo_shape type.
+   */
+  public function onFieldMapping(FieldMappingEvent $event): void {
+    $field = $event->getField();
+    if ($field->getType() === 'geo_shape') {
+      $event->setParam(['type' => 'geo_shape']);
     }
   }
 
