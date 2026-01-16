@@ -112,56 +112,140 @@ class RedirectEntityTest extends KernelTestBase {
   }
 
   /**
-   * Tests redirect cleaner.
+   * Tests redirect cleaner with unpublish action.
    */
-  public function testRedirectCleaner(): void {
+  public function testRedirectCleanerUnpublishAction(): void {
     $storage = $this->container->get(EntityTypeManagerInterface::class)
       ->getStorage('redirect');
 
+    $expireAfter = '-6 months';
+    $expirationTimestamp = strtotime($expireAfter);
+    $this->assertNotFalse($expirationTimestamp);
+
     $tests = [
       [
+        'redirect_source' => 'source/unpublish/0',
         'enabled' => 1,
         'is_custom' => 1,
         'created' => strtotime('-1 year'),
       ],
       [
+        'redirect_source' => 'source/unpublish/1',
         'enabled' => 1,
         'is_custom' => 0,
         'created' => strtotime('-1 year'),
       ],
       [
+        'redirect_source' => 'source/unpublish/2',
         'enabled' => 1,
         'is_custom' => 0,
         'created' => strtotime('now'),
       ],
     ];
 
-    foreach ($tests as $id => $test) {
+    foreach ($tests as $test) {
       $redirect = $storage->create([
-        'redirect_source' => "source/$id",
+        'redirect_source' => $test['redirect_source'],
         'redirect_redirect' => '/destination',
         'status_code' => 301,
-      ] + $test);
-
+        'enabled' => $test['enabled'],
+        'is_custom' => $test['is_custom'],
+        'created' => $test['created'],
+      ]);
       $redirect->save();
     }
 
-    // Enable the service.
-    $this->config('helfi_platform_config.redirect_cleaner')->set('enable', TRUE)->save();
+    // Enable the service + configure expiration + action.
+    $this->config('helfi_platform_config.redirect_cleaner')
+      ->set('enable', TRUE)
+      ->set('expire_after', $expireAfter)
+      ->set('action', RedirectCleaner::ACTION_UNPUBLISH)
+      ->save();
 
     $cleaner = $this->container->get(RedirectCleaner::class);
-    $cleaner->unpublishExpiredRedirects();
+    $cleaner->cleanExpiredRedirects();
 
-    foreach ($tests as $id => $test) {
-      $redirects = $storage->loadByProperties(['redirect_source' => "source/$id"]);
+    foreach ($tests as $test) {
+      $redirects = $storage->loadByProperties(['redirect_source' => $test['redirect_source']]);
       $redirect = reset($redirects);
 
+      $this->assertNotFalse($redirect);
       $this->assertInstanceOf(EntityPublishedInterface::class, $redirect);
 
-      $this->assertEquals(
-        $test['is_custom'] || $test['created'] > strtotime('-6 months'),
-        $redirect->isPublished()
-      );
+      $shouldRemainPublished = $test['is_custom'] || $test['created'] > $expirationTimestamp;
+      $this->assertEquals($shouldRemainPublished, $redirect->isPublished());
+    }
+  }
+
+  /**
+   * Tests redirect cleaner with delete action.
+   */
+  public function testRedirectCleanerDeleteAction(): void {
+    $storage = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('redirect');
+
+    $expireAfter = '-6 months';
+    $expirationTimestamp = strtotime($expireAfter);
+    $this->assertNotFalse($expirationTimestamp);
+
+    $tests = [
+      [
+        'redirect_source' => 'source/delete/0',
+        'enabled' => 1,
+        'is_custom' => 1,
+        'created' => strtotime('-1 year'),
+      ],
+      [
+        'redirect_source' => 'source/delete/1',
+        'enabled' => 1,
+        'is_custom' => 0,
+        'created' => strtotime('-1 year'),
+      ],
+      [
+        'redirect_source' => 'source/delete/2',
+        'enabled' => 1,
+        'is_custom' => 0,
+        'created' => strtotime('now'),
+      ],
+    ];
+
+    foreach ($tests as $test) {
+      $redirect = $storage->create([
+        'redirect_source' => $test['redirect_source'],
+        'redirect_redirect' => '/destination',
+        'status_code' => 301,
+        'enabled' => $test['enabled'],
+        'is_custom' => $test['is_custom'],
+        'created' => $test['created'],
+      ]);
+      $redirect->save();
+    }
+
+    // Enable the service + configure expiration + action.
+    $this->config('helfi_platform_config.redirect_cleaner')
+      ->set('enable', TRUE)
+      ->set('expire_after', $expireAfter)
+      ->set('action', RedirectCleaner::ACTION_DELETE)
+      ->save();
+
+    $cleaner = $this->container->get(RedirectCleaner::class);
+    $cleaner->cleanExpiredRedirects();
+
+    foreach ($tests as $test) {
+      $redirects = $storage->loadByProperties(['redirect_source' => $test['redirect_source']]);
+
+      $shouldBeDeleted = !$test['is_custom'] && $test['created'] < $expirationTimestamp;
+      if ($shouldBeDeleted) {
+        $this->assertEmpty($redirects);
+        continue;
+      }
+
+      $redirect = reset($redirects);
+      $this->assertNotFalse($redirect);
+      $this->assertInstanceOf(EntityPublishedInterface::class, $redirect);
+
+      // Delete action should not unpublish the remaining ones.
+      $this->assertTrue($redirect->isPublished());
     }
   }
 
