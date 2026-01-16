@@ -9,9 +9,8 @@ jobs:
     strategy:
       matrix:
         php-versions: ['8.4']
-    uses: city-of-helsinki/drupal-gh-actions/.github/workflows/module-tests.yml@UHF-12582
+    uses: city-of-helsinki/drupal-gh-actions/.github/workflows/module-tests.yml@main
     with:
       php_version: ${{ matrix.php-versions }}
-      platform_branch: 'UHF-12582'
     secrets:
       sonarcloud_token: ${{ secrets.SONAR_TOKEN }}
