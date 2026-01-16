@@ -4,6 +4,7 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
+         bootstrap="/app/public/core/tests/bootstrap.php"
          failOnRisky="true"
          failOnWarning="true"
          failOnDeprecation="false"
@@ -25,7 +26,6 @@
     <env name="SYMFONY_DEPRECATIONS_HELPER" value="ignoreFile=/app/public/modules/contrib/helfi_platform_config/.deprecation-ignore.txt" />
   </php>
   <extensions>
-    <!-- Functional tests HTML output logging. -->
     <bootstrap class="Drupal\TestTools\Extension\HtmlLogging\HtmlOutputLogger">
       <!-- By default browser tests print the individual links in the test run
         report. To avoid overcrowding the output in CI environments, you can

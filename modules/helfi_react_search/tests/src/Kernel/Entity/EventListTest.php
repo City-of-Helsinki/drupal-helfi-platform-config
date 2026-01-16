@@ -24,6 +24,8 @@ class EventListTest extends KernelTestBase {
   protected static $modules = [
     'helfi_react_search',
     'helfi_api_base',
+    'entity_reference_revisions',
+    'user',
     'paragraphs',
     'field',
     'options',

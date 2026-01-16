@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ckeditor\FunctionalJavascript;
 
+use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Url;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
@@ -449,6 +450,24 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     // Wait for CKEditor to load.
     $this->waitForEditor();
     return $edit_url;
+  }
+
+  /**
+   * Asserts a particular balloon is visible.
+   *
+   * @param string $balloon_content_selector
+   *   A CSS selector.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The asserted balloon.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  protected function assertVisibleBalloon(string $balloon_content_selector): NodeElement {
+    $this->assertSession()->elementExists('css', '.ck-balloon-panel_visible');
+    $selector = ".ck-balloon-panel_visible .ck-balloon-rotator__content > .ck$balloon_content_selector";
+    $this->assertSession()->elementExists('css', $selector);
+    return $this->getSession()->getPage()->find('css', $selector);
   }
 
 }

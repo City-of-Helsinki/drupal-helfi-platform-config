@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\SearchAPI\Query;
 
-use DG\BypassFinals;
 use Drupal\elasticsearch_connector\SearchAPI\Query\FacetResultParser;
 use Drupal\elasticsearch_connector\SearchAPI\Query\SpellCheckResultParser;
 use Drupal\helfi_platform_config\MultisiteSearch;
@@ -22,14 +21,6 @@ use Prophecy\Argument;
  * Tests the QueryResultParser class.
  */
 class QueryResultParserTest extends UnitTestCase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    BypassFinals::enable();
-    parent::setUp();
-  }
 
   /**
    * Tests the parseResult method.

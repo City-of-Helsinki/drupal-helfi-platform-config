@@ -16,6 +16,7 @@ class KernelTestBase extends CoreKernelTestBase {
    */
   protected static $modules = [
     'allowed_formats',
+    'breakpoint',
     'content_translation',
     'crop',
     'entity',
@@ -24,6 +25,7 @@ class KernelTestBase extends CoreKernelTestBase {
     'filter',
     'focal_point',
     'hdbt_admin_tools',
+    'entity_reference_revisions',
     'helfi_media',
     'helfi_paragraphs_hero',
     'image',

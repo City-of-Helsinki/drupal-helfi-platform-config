@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_recommendations\Kernel;
 
-use DG\BypassFinals;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
@@ -16,11 +15,11 @@ use Drupal\helfi_recommendations\Entity\SuggestedTopics;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\Response\Elasticsearch;
-use Prophecy\Argument;
+use Elastic\Elasticsearch\ClientBuilder;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -34,6 +33,8 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
   use EnvironmentResolverTrait;
   use NodeCreationTrait;
   use ProphecyTrait;
+  use ApiTestTrait;
+  use ElasticTrait;
 
   /**
    * Test environment.
@@ -56,9 +57,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
    * {@inheritdoc}
    */
   public function setUp(): void {
-    // https://github.com/elastic/elasticsearch-php/issues/1227.
-    BypassFinals::enable();
-
     parent::setUp();
     $this->setActiveProject(Project::ETUSIVU, $this->environment);
 
@@ -161,7 +159,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $parentTitleEn = $this->randomString();
     $parentTitleSv = $this->randomString();
 
-    $recommendationManager = $this->getSut([
+    $response = $this->createElasticsearchResponse([
       'hits' => [
         'hits' => [
           [
@@ -179,6 +177,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
         ],
       ],
     ]);
+    $recommendationManager = $this->getSut([$response, $response]);
 
     // Test recommendations in Finnish.
     $recommendations = $recommendationManager->getRecommendations($nodeSource);
@@ -221,11 +220,14 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     ]);
     $nodeSource->save();
 
-    $recommendationManager = $this->getSut([
-      'hits' => [
-        'hits' => [],
-      ],
-    ]);
+    $responses = [
+      $this->createElasticsearchResponse([
+        'hits' => [
+          'hits' => [],
+        ],
+      ]),
+    ];
+    $recommendationManager = $this->getSut($responses);
 
     // Test recommendations with empty results.
     $recommendations = $recommendationManager->getRecommendations($nodeSource);
@@ -263,8 +265,8 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $resultUUID = $this->randomString();
     $resultTitle = $this->randomString();
     $resultUrl = $this->randomString();
-    $recommendationManager = $this->getSut(
-      [
+    $responses = [
+      $this->createElasticsearchResponse([
         'hits' => [
           'hits' => [
             [
@@ -280,8 +282,9 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
             ],
           ],
         ],
-      ],
-    );
+      ]),
+    ];
+    $recommendationManager = $this->getSut($responses);
 
     $recommendations = $recommendationManager->getRecommendations($nodeSource);
     $this->assertEquals($resultTitle, $recommendations[0]['title']);
@@ -292,31 +295,28 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
   /**
    * Gets service under test.
    *
-   * @param array $elasticData
+   * @param array $responses
    *   The elasticsearch mock data.
    *
    * @return \Drupal\helfi_recommendations\RecommendationManager
    *   The service under test.
    */
   private function getSut(
-    array $elasticData = [],
+    array $responses = [],
   ): RecommendationManager {
     $loggerChannel = $this->prophesize(LoggerChannelInterface::class);
 
-    $elasticResponse = $this->prophesize(Elasticsearch::class);
-    $elasticResponse->asArray()->willReturn($elasticData);
-
-    $elasticsearchClient = $this->prophesize(Client::class);
-    $elasticsearchClient->search(Argument::any())->willReturn($elasticResponse->reveal());
-
-    $cacheTagInvalidator = $this->prophesize(CacheTagInvalidator::class);
+    $mock = $this->createMockHttpClient($responses);
+    $client = ClientBuilder::create()
+      ->setHttpClient($mock)
+      ->build();
 
     return new RecommendationManager(
       $loggerChannel->reveal(),
       $this->container->get(EnvironmentResolverInterface::class),
       $this->container->get(TopicsManagerInterface::class),
-      $elasticsearchClient->reveal(),
-      $cacheTagInvalidator->reveal(),
+      $client,
+      $this->container->get(CacheTagInvalidator::class),
       $this->container->get('state'),
       $this->container->get('string_translation'),
     );
