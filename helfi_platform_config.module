@@ -458,7 +458,7 @@ function helfi_platform_config_form_search_api_index_form_alter(&$form, FormStat
 function helfi_platform_config_cron(): void {
   /** @var \Drupal\helfi_platform_config\RedirectCleaner $cleaner */
   $cleaner = \Drupal::service(RedirectCleaner::class);
-  $cleaner->unpublishExpiredRedirects();
+  $cleaner->cleanExpiredRedirects();
 }
 
 /**
