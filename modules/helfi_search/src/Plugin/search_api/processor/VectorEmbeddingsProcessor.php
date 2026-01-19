@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Plugin\search_api\processor;
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\PluginFormInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\MissingConfigurationException;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
+use Drupal\search_api\Item\ItemInterface;
+use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 use Drupal\search_api\SearchApiException;
@@ -15,18 +21,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a processor for vector search.
- *
- * @SearchApiProcessor(
- *   id = "helfi_search_embeddings",
- *   label = @Translation("Vector embeddings"),
- *   description = @Translation("Adds vector embeddings to index."),
- *   stages = {
- *     "add_properties" = 0,
- *     "alter_items" = 0,
- *   },
- * )
  */
-final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
+#[SearchApiProcessor(
+  id: "helfi_search_embeddings",
+  label: new TranslatableMarkup("Vector embeddings"),
+  description: new TranslatableMarkup("Adds vector embeddings to index."),
+  stages: [
+    "add_properties" => 0,
+    "alter_items" => 0,
+  ],
+)]
+final class VectorEmbeddingsProcessor extends ProcessorPluginBase implements PluginFormInterface {
+
+  use PluginFormTrait;
 
   /**
    * Text converter manager.
@@ -46,6 +53,37 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
     $processor->textConverterManager = $container->get(TextConverterManager::class);
     $processor->embeddingModel = $container->get(EmbeddingsModelInterface::class);
     return $processor;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration(): array {
+    return [
+      'skip_embeddings_bundles' => [],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
+    $options = [];
+    foreach ($this->index->getDatasources() as $datasource_id => $datasource) {
+      foreach ($datasource->getBundles() as $bundle => $bundle_label) {
+        $options["$datasource_id:$bundle"] = $datasource->label() . ' » ' . $bundle_label;
+      }
+    }
+
+    $form['skip_embeddings_bundles'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Index without embeddings'),
+      '#description' => $this->t('Selected bundles will be indexed without vector embeddings. Items of these types will not be removed if embedding generation fails.'),
+      '#options' => $options,
+      '#default_value' => $this->configuration['skip_embeddings_bundles'],
+    ];
+
+    return $form;
   }
 
   /**
@@ -87,8 +125,14 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
    */
   private function processBatch(array &$items, array $batch) : void {
     $textConversion = [];
+    $skipEmbeddings = [];
 
     foreach ($batch as $key => $item) {
+      if ($this->shouldSkipEmbeddings($item)) {
+        $skipEmbeddings[$key] = TRUE;
+        continue;
+      }
+
       try {
         /** @var \Drupal\Core\Entity\EntityInterface $entity */
         $entity = $item->getOriginalObject()->getValue();
@@ -123,10 +167,28 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
       }
     }
 
-    // Skip items that did not produce any results.
-    foreach (array_diff_key($batch, $results) as $key => $item) {
+    // Skip items that did not produce any results, except those configured
+    // to be indexed without embeddings.
+    foreach (array_diff_key($batch, $results, $skipEmbeddings) as $key => $item) {
       unset($items[$key]);
     }
+  }
+
+  /**
+   * Check if an item should skip embedding generation.
+   *
+   * @param \Drupal\search_api\Item\ItemInterface $item
+   *   The search item.
+   *
+   * @return bool
+   *   TRUE if embeddings should be skipped for this item.
+   */
+  private function shouldSkipEmbeddings(ItemInterface $item): bool {
+    $datasource_id = $item->getDatasourceId();
+    $bundle = $item->getDatasource()->getItemBundle($item->getOriginalObject());
+    $key = "$datasource_id:$bundle";
+
+    return !empty($this->configuration['skip_embeddings_bundles'][$key]);
   }
 
 }

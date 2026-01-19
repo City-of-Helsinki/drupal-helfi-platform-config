@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 /**
  * Service collector for text converters.
  */
-final class TextConverterManager {
+class TextConverterManager {
 
   /**
    * Text converters.
