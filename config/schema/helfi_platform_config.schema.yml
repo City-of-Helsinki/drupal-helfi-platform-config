@@ -17,6 +17,17 @@ helfi_platform_config.redirect_cleaner:
     enable:
       type: boolean
 
+helfi_platform_config.e2e_test_users:
+  type: config_object
+  mapping:
+    users:
+      type: sequence
+      sequence:
+        type: mapping
+        mapping:
+          username:
+            type: string
+
 # Default value.
 field.value.location:
   type: mapping
