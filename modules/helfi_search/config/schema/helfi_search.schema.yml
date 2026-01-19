@@ -15,12 +15,3 @@ helfi_search.settings:
       label: 'OpenAI model'
       description: 'OpenAI embedding model to use (defaults to text-embedding-3-small if not set)'
 
-plugin.plugin_configuration.search_api_processor.helfi_search_embeddings:
-  type: search_api.default_processor_configuration
-  mapping:
-    skip_embeddings_bundles:
-      type: sequence
-      label: 'Bundles to index without embeddings'
-      sequence:
-        type: string
-        label: 'Datasource and bundle ID'

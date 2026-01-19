@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
 
+use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use Drupal\search_api\Item\Field;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\search_api\Kernel\Processor\ProcessorTestBase;
 use PHPUnit\Framework\Attributes\Group;
@@ -39,6 +41,13 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     NodeType::create([
       'type' => 'test_node_bundle_2',
     ])->save();
+
+    $embeddings = new Field($this->index, 'embeddings');
+    $embeddings->setPropertyPath('embeddings');
+    $embeddings->setType('string');
+    $embeddings->setLabel('Vector embeddings');
+    $this->index->addField($embeddings);
+    $this->index->save();
   }
 
   /**
@@ -56,17 +65,42 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       ],
     ]);
 
-    $this->processor->setConfiguration([
-      'skip_embeddings_bundles' => [
-        'entity:node:test_node_bundle_1' => 'entity:node:test_node_bundle_1',
+    $this->processor->alterIndexedItems($items);
+
+    // All items are removed since the text converter is not configured.
+    $this->assertCount(0, $items);
+
+    $model = $this->prophesize(EmbeddingsModelInterface::class);
+    $model
+      ->batchGetEmbedding([])
+      ->willReturn([
+          [1, 2, 3],
+      ]);
+
+    $this->container->set(EmbeddingsModelInterface::class, $model->reveal());
+
+    $this->processor = \Drupal::getContainer()
+      ->get('search_api.plugin_helper')
+      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
+
+    $items = $this->createNodeItems([
+      [
+        'title' => 'Test',
+        'type' => 'test_node_bundle_1',
+      ],
+      [
+        'title' => 'Test',
+        'type' => 'test_node_bundle_2',
       ],
     ]);
 
     $this->processor->alterIndexedItems($items);
 
-    // One item is removed, and the other should be
-    // skipped, since the text converter is not configured.
+    // Embedding was generated for one item.
     $this->assertCount(1, $items);
+
+    // Vector was assed to the fields.
+    $this->assertEquals(["1", "2", "3"], array_first($items)->getFields()['embeddings']->getValues());
   }
 
   /**
@@ -78,7 +112,6 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       $node = Node::create($node);
       $node->save();
 
-      // Test field value on node.
       $id = Utility::createCombinedId('entity:node', $node->id() . ':en');
       $items[] = $this->container
         ->get('search_api.fields_helper')
