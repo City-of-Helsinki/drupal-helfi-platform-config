@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Plugin\search_api\processor;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\MissingConfigurationException;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
@@ -15,17 +17,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a processor for vector search.
- *
- * @SearchApiProcessor(
- *   id = "helfi_search_embeddings",
- *   label = @Translation("Vector embeddings"),
- *   description = @Translation("Adds vector embeddings to index."),
- *   stages = {
- *     "add_properties" = 0,
- *     "alter_items" = 0,
- *   },
- * )
  */
+#[SearchApiProcessor(
+  id: "helfi_search_embeddings",
+  label: new TranslatableMarkup("Vector embeddings"),
+  description: new TranslatableMarkup("Adds vector embeddings to index."),
+  stages: [
+    "add_properties" => 0,
+    "alter_items" => 0,
+  ],
+)]
 final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
   /**
@@ -123,7 +124,8 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
       }
     }
 
-    // Skip items that did not produce any results.
+    // Skip items that did not produce any results, except those configured
+    // to be indexed without embeddings.
     foreach (array_diff_key($batch, $results) as $key => $item) {
       unset($items[$key]);
     }
