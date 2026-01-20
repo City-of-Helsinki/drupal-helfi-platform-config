@@ -12,9 +12,9 @@ class LongtermInstitutionalCareFee {
     const parsedSettings = {
       "payment_percentage_high": 0.85,
       "payment_percentage_low": 0.425,
-      "minimum_funds": 122.00,
+      "minimum_funds": 131.00,
       "basic_amount": 539.55,
-      "minimum_funds_spouse": 715.00,
+      "minimum_funds_spouse": 724.55,
       "maximum_payment_social_welfare_act": 7656.00,
       "maximum_payment_other": 12045.00
     };
@@ -49,6 +49,19 @@ class LongtermInstitutionalCareFee {
       errorMessages.push(...this.calculator.validateBasics('maintenance_payments'));
       errorMessages.push(...this.calculator.validateBasics('has_spouse'));
 
+      const hasSpouse = this.calculator.getFieldValue('has_spouse');
+
+      if (hasSpouse === 'true') {
+        errorMessages.push(...this.calculator.validateBasics('spouse_earned_income'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_client_benefits'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_capital_income'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_annual_forest_income'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_guardianship_fees'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_client_foreclosure'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_compensation_or_life_annuity'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_maintenance_payments'));
+      }
+
       if (errorMessages.length) {
         return {
           error: {
@@ -73,8 +86,6 @@ class LongtermInstitutionalCareFee {
       const clientForeclosure = Number(this.calculator.getFieldValue('client_foreclosure'));
       const compensationOrLifeAnnuity = Number(this.calculator.getFieldValue('compensation_or_life_annuity'));
       const maintenancePayments = Number(this.calculator.getFieldValue('maintenance_payments'));
-
-      const hasSpouse = this.calculator.getFieldValue('has_spouse');
 
       // Spouse income
       const spouseEarnedIncome = Number(this.calculator.getFieldValue('spouse_earned_income'));
@@ -144,6 +155,7 @@ class LongtermInstitutionalCareFee {
         disposableAmountCombined = clientNetIncome + spouseNetIncome - totalPayment;
         if (disposableAmount < parsedSettings.minimum_funds) {
           totalPayment = clientNetIncome - parsedSettings.minimum_funds;
+          disposableAmount = parsedSettings.minimum_funds;
         }
       } else {
         const combinedIncome = clientNetIncome + spouseNetIncome;
@@ -152,6 +164,8 @@ class LongtermInstitutionalCareFee {
         disposableAmountCombined = combinedIncome - totalPayment;
         if (disposableAmount < parsedSettings.minimum_funds_spouse) {
           totalPayment = combinedIncome - parsedSettings.minimum_funds_spouse;
+          disposableAmount = parsedSettings.minimum_funds;
+          disposableAmountCombined = parsedSettings.minimum_funds_spouse;
         }
       }
 
@@ -163,40 +177,64 @@ class LongtermInstitutionalCareFee {
       subtotals.push({
         title: this.t('subtotal_total_income_client'),
         has_details: false,
-        sum: this.calculator.formatFinnishEuroCents(totalIncomeClient),
+        sum: this.t('receipt_subtotal_euros_per_month', {
+          value: this.calculator.formatFinnishEuroCents(totalIncomeClient),
+        }),
       });
 
       subtotals.push({
         title: this.t('subtotal_total_deductions_client'),
         has_details: false,
-        sum: this.calculator.formatFinnishEuroCents(totalDeductionsClient),
+        sum: this.t('receipt_subtotal_euros_per_month', {
+          value: this.calculator.formatFinnishEuroCents(totalDeductionsClient),
+        }),
       });
 
       if (hasSpouse === 'true') {
         subtotals.push({
           title: this.t('subtotal_total_income_spouse'),
           has_details: false,
-          sum: this.calculator.formatFinnishEuroCents(totalIncomeSpouse),
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(totalIncomeSpouse),
+          }),
         });
 
         subtotals.push({
           title: this.t('subtotal_total_deductions_spouse'),
           has_details: false,
-          sum: this.calculator.formatFinnishEuroCents(totalDeductionsSpouse),
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(totalDeductionsSpouse),
+          }),
         });
       }
 
-      subtotals.push({
-        title: this.t('subtotal_minimum_disposable_amount'),
-        has_details: false,
-        sum: this.calculator.formatFinnishEuroCents(disposableAmount),
-      });
-
-      if (hasSpouse === 'true') {
+      if (paymentPercentage === parsedSettings.payment_percentage_high) {
         subtotals.push({
-          title: this.t('subtotal_minimum_disposable_amount_with_spouse'),
+          title: this.t('subtotal_minimum_disposable_amount'),
           has_details: false,
-          sum: this.calculator.formatFinnishEuroCents(disposableAmountCombined),
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(disposableAmount),
+          }),
+        });
+      }
+
+      if (hasSpouse === 'true' && paymentPercentage === parsedSettings.payment_percentage_low) {
+        subtotals.push({
+          title: this.t('subtotal_minimum_disposable_amount_with_spouse', {
+            amount: disposableAmountCombined,
+            secondAmount: 0,
+          }),
+          has_details: true,
+          details: [
+            this.t('subtotal_minimum_disposable_amount_with_spouse_details', {
+              disposable_amount: this.calculator.formatFinnishEuroCents(disposableAmountCombined),
+              minimum_funds: this.calculator.formatFinnishEuroCents(parsedSettings.minimum_funds),
+              basic_amount: this.calculator.formatFinnishEuroCents(parsedSettings.basic_amount),
+            }),
+          ],
+          sum: this.t('receipt_subtotal_euros_per_month', {
+            value: this.calculator.formatFinnishEuroCents(disposableAmountCombined),
+          }),
         });
       }
 

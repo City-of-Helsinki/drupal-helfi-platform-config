@@ -105,9 +105,9 @@ const translations = {
     en: 'The client’s total monthly child maintenance payments.',
   },
   label_has_spouse: {
-    fi: 'Onko sinulla puoliso',
-    sv: 'Har du en make eller maka',
-    en: 'Do you have a spouse',
+    fi: 'Onko asiakkaalla puolisoa?',
+    sv: 'Är klienten gift?',
+    en: 'Does the client have a spouse?',
   },
   label_yes: {
     fi: 'Kyllä',
@@ -119,40 +119,80 @@ const translations = {
     sv: 'Nej',
     en: 'No',
   },
+  spouse_earned_income: {
+    fi: 'Puolison ansiotulot',
+    sv: 'Makens förvärvsinkomster',
+    en: "Spouse's earned income",
+  },
   spouse_earned_income_explanation: {
     fi: 'Yhteenlasketut palkkatulot, ammatinharjoittamisesta tai yritystoiminnasta saadut tulot tai omaishoidon tuet ennen verojen vähentämistä kuukaudessa.',
     sv: 'Sammanlagda månatliga löneinkomster, inkomster från yrkesutövning eller näringsverksamhet eller stöd för närståendevård före skatt.',
     en: 'Total monthly wages, income from self-employment or business activities, or informal care support, before tax.',
+  },
+  spouse_client_benefits: {
+    fi: 'Puolison etuudet',
+    sv: 'Makens förmåner',
+    en: "Spouse's benefits",
   },
   spouse_client_benefits_explanation: {
     fi: 'Yhteenlaskettu työeläke, kansaneläke, perhe-eläke, takuueläke, ulkomaan eläke, ansiosidonnaiset työttömyyspäivärahat ja työmarkkinatuki, sairauspäivärahat, veroista vapaat tulot, opintoraha tai aikuiskoulutustuki, eläkettä saavan hoitotuki, lasten kotihoidon tuki, elatusapu tai -tuki, vammaistuki ja päivärahat (esim. sairaus-, työttömyys- tai vanhempainrahat) ennen verojen vähentämistä kuukaudessa.',
     sv: 'Sammanlagd arbetspension, folkpension, familjepension, garantipension, utländska pensioner, inkomstrelaterad arbetslöshetsdagpenning och arbetsmarknadsstöd, sjukdagpenning, skattefria inkomster, studiestöd, vårdbidrag för pensionstagare, hemvårdsstöd för barn, underhållsbidrag eller -stöd, handikappbidrag och dagpenningar (för sjukdom eller föräldraledighet, per månad före skatt.',
     en: 'Total monthly amounts of the spouse’s earnings-related pension, national pension, survivors’ pension, guarantee pension, foreign pension, earnings-related unemployment benefits and labour market subsidy, sickness allowance, tax-exempt income, student financial aid or adult education allowance, care allowance for pensioners, child home care allowance, maintenance payments or support, disability allowance, and daily allowances (e.g., sickness, unemployment, or parental allowances) before tax.',
   },
+  spouse_capital_income: {
+    fi: 'Puolison pääomatulot',
+    sv: 'Makens kapitalinkomster',
+    en: "Spouse's capital income",
+  },
   spouse_capital_income_explanation: {
     fi: 'Yhteenlasketut osinko-, vuokra- tai korkotulot, elinkorot ja muut pääomatulot ennen verojen vähentämistä kuukaudessa. Pääomatulon määrän voi tarkistaa edellisvuoden verotuspäätöksestä.',
     sv: 'Sammanlagda dividendinkomster, hyresinkomster eller ränteinkomster, livränta och övriga kapitalinkomster per månad, före avdrag. Kapitalinkomsterna kan ses på beskattningsbeslutet från det föregående skatteåret.',
     en: 'Total monthly amounts of the above capital income, before tax. The amount can be checked in the previous year’s tax decision.',
+  },
+  spouse_annual_forest_income: {
+    fi: 'Puolison metsän vuotuinen tuotto',
+    sv: 'Makens årliga avkastning på skog',
+    en: "Spouse's annual forest income",
   },
   spouse_annual_forest_income_explanation: {
     fi: 'Metsäomistuksien yhteenlaskettu vuotuinen tuotto ennen verojen vähentämistä vuodessa. Metsän keskimääräisen tuoton voi tarkastaa verottajan sivuilta aluekohtaisesti.',
     sv: 'Den genomsnittliga årliga avkastningen på skogsegendom, före skatter. På Skatteförvaltningens webbplats kan man kolla den genomsnittliga avkastningen på skog enligt område.',
     en: 'Total annual forest income before tax. The average regional forest yield can be checked on the Tax Administration’s website.',
   },
+  spouse_guardianship_fees: {
+    fi: 'Puolison edunvalvontamaksut',
+    sv: 'Makens intressebevakningsavgift',
+    en: "Spouse's guardianship fees",
+  },
   spouse_guardianship_fees_explanation: {
     fi: 'Yhteenlasketut edunvalvojan palkkion perusmaksu ja edunvalvontavaltuutetun palkkiot kuukaudessa.',
     sv: 'Avgift för intressebevakarens arvode och intressebevakningsombudets arvode per månad.',
     en: 'Total monthly basic fee charged by the guardian and fees charged by an authorised representative.',
+  },
+  spouse_client_foreclosure: {
+    fi: 'Puolison ulosmittaus',
+    sv: 'Makens utmätning',
+    en: "Spouse's foreclosure",
   },
   spouse_client_foreclosure_explanation: {
     fi: 'Ulosmittauksen määrä kuukaudessa.	',
     sv: 'Belopp som utmäts per månad.',
     en: 'Monthly amount of foreclosure.',
   },
+  spouse_compensation_or_life_annuity: {
+    fi: 'Puolison hyvitys tai syytinki',
+    sv: 'Makens gottgörelse eller sytning',
+    en: "Spouse's compensation or life annuity",
+  },
   spouse_compensation_or_life_annuity_explanation: {
     fi: 'Avopuolisoiden yhteistalouden purkamisesta annetussa laissa tarkoitettu hyvitys tai syytinki kuukaudessa.',
     sv: 'Månatlig gottgörelse eller sytning som avses i lagen om upplösning av sambors gemensamma hushåll.',
     en: 'Monthly compensation or life annuity under the same Act.',
+  },
+  spouse_maintenance_payments: {
+    fi: 'Puolison elatusapu',
+    sv: 'Makens underhållsbidrag',
+    en: "Spouse's maintenance payments",
   },
   spouse_maintenance_payments_explanation: {
     fi: 'Suoritettavan elatusavun yhteenlaskettu määrä kuukaudessa.',
@@ -216,18 +256,23 @@ const translations = {
   },
   receipt_estimate_of_payment_breakdown_title: {
     fi: 'Arvio koostuu seuraavista tiedoista:',
-    sv: 'The estimate is based on the following information:',
-    en: 'Uppskattningen grundar sig på följande uppgifter:',
+    sv: 'Uppskattningen grundar sig på följande uppgifter:',
+    en: 'The estimate is based on the following information:',
   },
   subtotal_minimum_disposable_amount: {
     fi: 'Asiakkaalle jäävä vähimmäiskäyttövara',
-    sv: 'Client’s remaining minimum disposable amount',
-    en: 'Minimibelopp för klientens disponibla medel',
+    sv: 'Minimibelopp för klientens disponibla medel',
+    en: 'Client’s remaining minimum disposable amount',
   },
   subtotal_minimum_disposable_amount_with_spouse: {
-    fi: 'Puolison kanssa yhteensä',
-    sv: 'Combined with spouse, where applicable',
-    en: 'Tillsammans med maken',
+    fi: 'Yhteinen käyttövara',
+    sv: 'Tillsammans med maken',
+    en: 'Combined with spouse',
+  },
+  subtotal_minimum_disposable_amount_with_spouse_details: {
+    fi: 'Asiakkaalle ja puolisolle jäävä yhteinen käyttövara ${disposable_amount} euroa kuukaudessa, josta ${minimum_funds} euroa on vähimmäiskäyttövara ja ${basic_amount} euroa toimeentulotuen perusosa.',
+    sv: 'Asiakkaalle ja puolisolle jäävä yhteinen käyttövara ${disposable_amount} euroa kuukaudessa, josta ${minimum_funds} euroa on vähimmäiskäyttövara ja ${basic_amount} euroa toimeentulotuen perusosa.',
+    en: 'Asiakkaalle ja puolisolle jäävä yhteinen käyttövara ${disposable_amount} euroa kuukaudessa, josta ${minimum_funds} euroa on vähimmäiskäyttövara ja ${basic_amount} euroa toimeentulotuen perusosa.',
   },
   additional_detail_spouse_higher_income: {
     fi: 'Asiakkaan tulot ovat pienemmät tai yhtä suuret kuin puolisolla, jolloin asiakasmaksu on 85 % asiakkaan nettokuukausituloista, joihin on tehty lainmukaiset vähennykset.',
@@ -248,6 +293,11 @@ const translations = {
     fi: 'Asiakasmaksu on sosiaalihuoltolain enimmäismaksun mukainen.',
     sv: 'Klientavgiften i enlighet med den maxavgift som avses i socialvårdslagen.',
     en: 'The fee corresponds to the maximum fee under the Social Welfare Act.',
+  },
+  receipt_subtotal_euros_per_month: {
+    fi: '${value} €/kk',
+    sv: '${value} euro/månad',
+    en: '${value} €/month',
   },
 };
 
