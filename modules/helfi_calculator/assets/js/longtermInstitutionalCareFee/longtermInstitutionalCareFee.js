@@ -20,7 +20,7 @@ class LongtermInstitutionalCareFee {
     };
     // */
     // Form content
-    const getFormData = () => form.getFormData(this.id, this.t, parsedSettings);
+    const getFormData = () => form.getFormData(this.id, this.t);
 
     const update = () => {
       const fields = [{ field: 'has_spouse', group: 'spouse_income_group' }];
