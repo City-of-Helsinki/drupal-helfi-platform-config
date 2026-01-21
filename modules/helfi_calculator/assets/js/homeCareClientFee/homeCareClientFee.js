@@ -72,142 +72,137 @@ class HomeCareClientFee {
     // Expecting settings to follow this JSON format:
     /*
     const parsedSettings = {
-      household_size: {
-        '1': {
-          gross_income_limit: 598,
-          monthly_usage_percentage: {
-            '0': 4,
-            '5': 8,
-            '9': 12,
-            '13': 16,
-            '17': 20,
-            '21': 22,
-            '25': 24,
-            '29': 26,
-            '33': 28,
-            '37': 30,
-            '41': 35,
-          },
+      "household_size": {
+        "1": {
+          "gross_income_limit": 653,
+          "monthly_usage_percentage": {
+            "0": 8,
+            "5": 10,
+            "9": 17,
+            "13": 21,
+            "17": 24,
+            "21": 26,
+            "25": 28,
+            "29": 30,
+            "33": 32,
+            "37": 34,
+            "41": 35
+          }
         },
-        '2': {
-          gross_income_limit: 1103,
-          monthly_usage_percentage: {
-            '0': 4,
-            '5': 7,
-            '9': 10,
-            '13': 12,
-            '17': 16,
-            '21': 18,
-            '25': 20,
-            '29': 20,
-            '33': 20,
-            '37': 20,
-            '41': 20,
-          },
+        "2": {
+          "gross_income_limit": 1205,
+          "monthly_usage_percentage": {
+            "0": 7,
+            "5": 8,
+            "9": 14,
+            "13": 17,
+            "17": 20,
+            "21": 22,
+            "25": 24,
+            "29": 24,
+            "33": 24,
+            "37": 24,
+            "41": 24
+          }
         },
-        '3': {
-          gross_income_limit: 1731,
-          monthly_usage_percentage: {
-            '0': 4,
-            '5': 6,
-            '9': 9,
-            '13': 11,
-            '17': 14,
-            '21': 16,
-            '25': 16,
-            '29': 16,
-            '33': 16,
-            '37': 16,
-            '41': 16,
-          },
+        "3": {
+          "gross_income_limit": 1891,
+          "monthly_usage_percentage": {
+            "0": 6,
+            "5": 7,
+            "9": 12,
+            "13": 14,
+            "17": 16,
+            "21": 18,
+            "25": 19,
+            "29": 19,
+            "33": 19,
+            "37": 19,
+            "41": 19
+          }
         },
-        '4': {
-          gross_income_limit: 2140,
-          monthly_usage_percentage: {
-            '0': 4,
-            '5': 6,
-            '9': 9,
-            '13': 11,
-            '17': 12,
-            '21': 12,
-            '25': 12,
-            '29': 12,
-            '33': 12,
-            '37': 12,
-            '41': 12,
-          },
+        "4": {
+          "gross_income_limit": 2338,
+          "monthly_usage_percentage": {
+            "0": 6,
+            "5": 7,
+            "9": 12,
+            "13": 14,
+            "17": 16,
+            "21": 16,
+            "25": 16,
+            "29": 16,
+            "33": 16,
+            "37": 16,
+            "41": 16
+          }
         },
-        '5': {
-          gross_income_limit: 2591,
-          monthly_usage_percentage: {
-            '0': 4,
-            '5': 6,
-            '9': 9,
-            '13': 10,
-            '17': 10,
-            '21': 10,
-            '25': 10,
-            '29': 10,
-            '33': 10,
-            '37': 10,
-            '41': 10,
-          },
+        "5": {
+          "gross_income_limit": 2830,
+          "monthly_usage_percentage": {
+            "0": 6,
+            "5": 7,
+            "9": 12,
+            "13": 14,
+            "17": 14,
+            "21": 14,
+            "25": 14,
+            "29": 14,
+            "33": 14,
+            "37": 14,
+            "41": 14
+          }
         },
-        '6': {
-          gross_income_limit: 2976,
-          monthly_usage_percentage: {
-            '0': 4,
-            '5': 6,
-            '9': 8,
-            '13': 9,
-            '17': 9,
-            '21': 9,
-            '25': 9,
-            '29': 9,
-            '33': 9,
-            '37': 9,
-            '41': 9,
-          },
-        },
-      },
-      household_size_beyond_defined_multiplier_euro: 356,
-      monthly_usage_max_payment: {
-        '0': 119.66,
-        '5': 538.47,
-        '9': 1017.12,
-        '13': 1495.76,
-        '17': 1974.40,
-        '21': 2453.05,
-        '25': 2931.69,
-        '29': 3410.33,
-        '33': 3888.98,
-        '37': 4367.62,
-        '41': 4906.10,
-      },
-      safetyphone_limits: {
-        '1': {
-          '0': 0,
-          '1138.01': 34.55,
-          '1707.01': 54,
-        },
-        '2': {
-          '0': 0,
-          '1138.01': 34.55,
-          '2101.01': 54,
-        },
-      },
-      shopping_service_prices: {
-        first_per_week: 9.37,
-      },
-      meal_service_prices: {
-        lunch: 3.9,
-        delivery: 7,
-        max_meals_for_single_delivery_per_week: 3,
-        menumat: {
-          lunch: 6.4,
-          device_per_day: 2.36,
+        "6": {
+          "gross_income_limit": 3251,
+          "monthly_usage_percentage": {
+            "0": 6,
+            "5": 7,
+            "9": 12,
+            "13": 12,
+            "17": 12,
+            "21": 12,
+            "25": 12,
+            "29": 12,
+            "33": 12,
+            "37": 12,
+            "41": 12
+          }
         }
       },
+      "household_size_beyond_defined_multiplier_euro": 389,
+      "monthly_usage_max_payment": {
+        "0": 119.66,
+        "5": 538.47,
+        "9": 1017.12,
+        "13": 1495.76,
+        "17": 1974.4,
+        "21": 2453.05,
+        "25": 2931.69,
+        "29": 3410.33,
+        "33": 3888.98,
+        "37": 4367.62,
+        "41": 4906.1
+      },
+      "safetyphone_limits": {
+        "1": {
+          "0": 35.68,
+          "1489.01": 71.36
+          },
+        "2": {
+          "0": 35.68,
+          "2198.01": 71.36
+        }
+      },
+      "shopping_service_prices": {
+        "first_per_week": 10.40,
+        "others_per_week": 11.35
+      },
+      "meal_service_prices": {
+        "lunch": 5.25,
+        "delivery": 7.4,
+        "max_meals_for_single_delivery_per_week": 3
+      }
     };
     // */
     // Form content
@@ -393,7 +388,6 @@ class HomeCareClientFee {
           deliveriesPerWeek = 2;
         }
 
-        mealPaymentPerWeek += deliveriesPerWeek * parsedSettings.meal_service_prices.delivery;
         mealPaymentPerMonth = mealPaymentPerWeek * 4;
 
         // Add details to receipt
@@ -413,26 +407,13 @@ class HomeCareClientFee {
               meal_deliveries_per_week: deliveriesPerWeek,
               meal_deliveries_per_month: deliveriesPerWeek * 4,
             }),
-            this.t(`receipt_meal_service_${deliveriesPerWeek}_delivery_price`, {
-              meal_service_delivery_price: this.calculator.formatFinnishEuroCents(
-                parsedSettings.meal_service_prices.delivery,
-              ),
-            }),
+            this.t('receipt_meal_service_delivery_price'),
           ],
           sum: this.t('receipt_subtotal_euros_per_month', {
             value: this.calculator.formatFinnishEuroCents(mealPaymentPerMonth),
           }),
           sum_screenreader: this.t('receipt_subtotal_euros_per_month_screenreader', {
             value: this.calculator.formatEuroCents(mealPaymentPerMonth),
-          }),
-        });
-        additionalDetails.push({
-          title: this.t('receipt_additional_details'),
-          text: this.t('receipt_meal_service_menumat_notice', {
-            menumat_price: this.calculator.formatFinnishEuroCents(parsedSettings.meal_service_prices.menumat.lunch),
-            menumat_device_price: this.calculator.formatFinnishEuroCents(
-              parsedSettings.meal_service_prices.menumat.device_per_day,
-            ),
           }),
         });
       }
