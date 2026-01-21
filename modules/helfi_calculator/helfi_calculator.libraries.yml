@@ -75,3 +75,11 @@ communal_and_supported_housing_fee:
   dependencies:
     - core/drupal
     - helfi_calculator/helfi_calculator.base
+
+long_term_institutional_care_fee:
+  version: 1.0.0
+  js:
+    dist/js/longtermInstitutionalCareFee.min.js: {}
+  dependencies:
+    - core/drupal
+    - helfi_calculator/helfi_calculator.base
