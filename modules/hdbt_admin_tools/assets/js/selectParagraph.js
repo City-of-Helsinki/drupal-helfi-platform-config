@@ -23,10 +23,15 @@
             const { images } = drupalSettings.selectParagraph;
 
             const inputSubmit = button.querySelector('input[type="submit"]');
-            const wrapper = document.createElement('div');
-            wrapper.classList.add('select-paragraph__wrapper');
-            inputSubmit.parentNode.insertBefore(wrapper, inputSubmit);
-            wrapper.appendChild(inputSubmit);
+
+            let wrapper = inputSubmit.closest('.select-paragraph__wrapper');
+            if (!wrapper) {
+              // Only create wrapper if it doesn't exist.
+              wrapper = document.createElement('div');
+              wrapper.classList.add('select-paragraph__wrapper');
+              inputSubmit.parentNode.insertBefore(wrapper, inputSubmit);
+              wrapper.appendChild(inputSubmit);
+            }
 
             if (typeof images !== 'undefined' && image in images) {
               const thumbnail = document.createElement('img');
