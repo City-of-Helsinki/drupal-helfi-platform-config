@@ -200,7 +200,6 @@ class HomeCareClientFee {
       },
       "meal_service_prices": {
         "lunch": 5.25,
-        "delivery": 7.4,
         "max_meals_for_single_delivery_per_week": 3
       }
     };
@@ -208,7 +207,9 @@ class HomeCareClientFee {
     // Form content
     const getFormData = () =>
       form.getFormData(this.id, this.t, {
-        firstPerWeekPrice: parsedSettings.shopping_service_prices.first_per_week,
+        firstPerWeekPrice: this.calculator.formatFinnishEuroCents(
+          parsedSettings.shopping_service_prices.first_per_week,
+        ),
       });
 
     const update = () => {
