@@ -49,7 +49,7 @@ content:
     weight: 1
     region: content
     settings: {  }
-    third_party_settings: {  }  
+    third_party_settings: {  }
 hidden:
   created: true
   status: true
