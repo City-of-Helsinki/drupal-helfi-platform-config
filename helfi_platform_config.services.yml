@@ -26,8 +26,6 @@ services:
 
   Drupal\helfi_platform_config\EventSubscriber\ElasticsearchParamsSubscriber: ~
 
-  Drupal\helfi_platform_config\EventSubscriber\FieldMappingSubscriber: ~
-
   Drupal\helfi_platform_config\EntityVersionMatcher: '@helfi_platform_config.entity_version_matcher'
   helfi_platform_config.entity_version_matcher:
     class: Drupal\helfi_platform_config\EntityVersionMatcher
