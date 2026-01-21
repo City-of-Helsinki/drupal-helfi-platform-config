@@ -29,7 +29,7 @@ select_design:
     - helfi_platform_config/tom_select
 
 select_paragraph:
-  version: 1.x
+  version: 1.0
   js:
     assets/js/selectParagraph.js: {}
   dependencies:
