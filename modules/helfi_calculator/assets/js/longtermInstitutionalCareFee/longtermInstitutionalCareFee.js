@@ -240,6 +240,11 @@ class LongtermInstitutionalCareFee {
 
       const additionalDetails = [];
 
+      additionalDetails.push({
+        title: this.t('receipt_additional_details'),
+        text: null,
+      });
+
       if (paymentPercentage === parsedSettings.payment_percentage_high) {
         additionalDetails.push({
           title: null,

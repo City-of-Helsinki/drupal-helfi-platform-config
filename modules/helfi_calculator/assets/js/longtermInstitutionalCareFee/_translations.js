@@ -299,6 +299,11 @@ const translations = {
     sv: '${value} euro/månad',
     en: '${value} €/month',
   },
+  receipt_additional_details: {
+    fi: 'Lisähuomiot:',
+    sv: 'Ytterligare anmärkningar:',
+    en: 'Additional remarks:',
+  },
 };
 
 export default translations;
