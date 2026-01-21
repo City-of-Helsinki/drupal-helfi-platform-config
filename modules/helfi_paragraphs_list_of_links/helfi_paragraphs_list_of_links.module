@@ -38,7 +38,8 @@ function helfi_paragraphs_list_of_links_entity_update(EntityInterface $entity) {
   // #UHF-9534 Prevent paragraph from maintaining useless reference to media.
   if (
     !$entity instanceof ParagraphInterface ||
-    $entity->getType() != 'list_of_links'
+    $entity->getType() !== 'list_of_links' ||
+    !$entity->hasField('field_list_of_links_links')
   ) {
     return;
   }
