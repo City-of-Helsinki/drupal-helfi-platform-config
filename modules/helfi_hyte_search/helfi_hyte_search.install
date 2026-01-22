@@ -22,7 +22,7 @@ function helfi_hyte_search_install($is_syncing) : void {
   $etusivu_server_settings = $config_factory->getEditable('search_api.server.etusivu');
   if ($etusivu_server_settings->get('status') === FALSE) {
     $etusivu_server_settings
-    ->set('status', TRUE)
-    ->save();
+      ->set('status', TRUE)
+      ->save();
   }
 }
