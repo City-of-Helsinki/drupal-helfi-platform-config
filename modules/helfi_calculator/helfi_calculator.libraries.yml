@@ -61,7 +61,7 @@ home_care_client_fee:
     - helfi_calculator/helfi_calculator.base
 
 home_care_service_voucher:
-  version: 1.0.0
+  version: 1.0.1
   js:
     dist/js/homeCareServiceVoucher.min.js: {}
   dependencies:
