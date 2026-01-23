@@ -135,9 +135,12 @@ class HomeCareServiceVoucher {
             : parsedSettings.voucher_limits.min) * 100,
         ) / 100;
 
-      // 4. [Excel B22] Calculate how much city will pay with vouchers per month
-      const paymentByCity = monthlyUsage * voucher;
-
+      // 4. [Excel B22] Calculate how much city will pay with vouchers per month.
+      // City pays at most the provider's actual total cost.
+      // If voucher value exceeds provider price, city payment must be capped to total service cost.
+      const totalServiceCost = monthlyUsage * serviceProviderPrice;
+      const paymentByCityRaw = monthlyUsage * voucher;
+      const paymentByCity = Math.round(Math.min(paymentByCityRaw, totalServiceCost) * 100) / 100;
       // 5. [Excel B23] Calculate voucher self payment (omavastuu) part (min 0)
       const totalPaymentToProviderByClient = Math.max(0, serviceProviderPrice - voucher) * monthlyUsage;
 
