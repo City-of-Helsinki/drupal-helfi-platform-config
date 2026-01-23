@@ -27,11 +27,22 @@ class SearchApiIndexItemTest extends UnitTestCase {
    */
   public function testCheck() : void {
     $server = $this->prophesize(ServerInterface::class);
-    $server->isAvailable()->willReturn(TRUE, FALSE);
+    $server->status()
+      ->shouldBeCalled()
+      ->willReturn(TRUE);
+    $server->isAvailable()
+      ->shouldBeCalled()
+      ->willReturn(TRUE, FALSE);
+
+    $disabledServer = $this->prophesize(ServerInterface::class);
+    $disabledServer->status()
+      ->shouldBeCalled()
+      ->willReturn(FALSE);
 
     $serverStorage = $this->prophesize(SearchApiConfigEntityStorage::class);
     $serverStorage->loadMultiple()->willReturn([
       $server->reveal(),
+      $disabledServer->reveal(),
     ]);
     $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $entityTypeManager->getStorage('search_api_server')

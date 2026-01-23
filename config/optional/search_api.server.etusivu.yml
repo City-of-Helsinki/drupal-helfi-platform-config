@@ -1,6 +1,6 @@
 uuid: 549707e6-3487-4a87-a2d2-a543e3f8d911
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - elasticsearch_connector
