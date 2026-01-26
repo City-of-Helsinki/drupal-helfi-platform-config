@@ -44,6 +44,11 @@ final class SearchApiIndex extends DebugDataItemPluginBase implements ContainerF
     foreach ($servers as $server) {
       assert($server instanceof Server);
 
+      // Skip disabled servers.
+      if (!$server->status()) {
+        continue;
+      }
+
       if (!$server->isAvailable()) {
         return FALSE;
       }
