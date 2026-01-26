@@ -254,10 +254,16 @@ class LongtermAssistedLivingFee {
         text: null,
       });
 
-      if (paymentPercentage === parsedSettings.payment_percentage_high) {
+      if (paymentPercentage === parsedSettings.payment_percentage_high && hasSpouse === 'true') {
         additionalDetails.push({
           title: null,
           text: this.t('additional_detail_spouse_higher_income'),
+        });
+      }
+      if (paymentPercentage === parsedSettings.payment_percentage_high && hasSpouse === 'false') {
+        additionalDetails.push({
+          title: null,
+          text: this.t('additional_detail_no_spouse_higher_income'),
         });
       } else {
         additionalDetails.push({
@@ -266,12 +272,14 @@ class LongtermAssistedLivingFee {
         });
       }
 
-      additionalDetails.push({
-        title: null,
-        text: this.t('additional_detail_forest_income', {
-          maximumPayment: this.calculator.formatFinnishEuroCents(maximumPayment),
-        }),
-      });
+      if (annualForestIncome > 0 || spouseAnnualForestIncome > 0) {
+        additionalDetails.push({
+          title: null,
+          text: this.t('additional_detail_forest_income', {
+            maximumPayment: this.calculator.formatFinnishEuroCents(maximumPayment),
+          }),
+        });
+      }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -279,6 +279,11 @@ const translations = {
     sv: 'Klientens inkomster är mindre än eller lika stora som makans varmed klientavgiften är 85 % av klientens sammanlagda nettoinkomster per månad, med de avdrag som föreskrivs i lag.',
     en: 'The client’s income is lower than or equal to the spouse’s, in which case the fee is 85% of the client’s net monthly income after statutory deductions.',
   },
+  additional_detail_no_spouse_higher_income: {
+    fi: 'Asiakasmaksu on 85 % asiakkaan nettokuukausituloista, joihin on tehty lainmukaiset vähennykset.',
+    sv: 'Klientavgiften är 85 % av klientens sammanlagda nettoinkomster per månad, med de avdrag som föreskrivs i lag.',
+    en: 'The fee is 85% of the client’s net monthly income after statutory deductions.',
+  },
   additional_detail_lower_income: {
     fi: 'Asiakkaan tulot ovat suuremmat kuin puolisolla, jolloin asiakasmaksu on 42,5 % asiakkaan ja puolison yhteenlasketuista nettokuukausituloista, joihin on tehty lainmukaiset vähennykset.',
     sv: 'Alternativt: Klientens inkomster är större än makans varmed klientavgiften är 42,5 % av klientens och makans sammanlagda nettoinkomster per månad, med de avdrag som föreskrivs i lag.',
