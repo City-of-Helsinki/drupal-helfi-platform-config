@@ -1,7 +1,7 @@
 import form from './_form';
 import translations from './_translations';
 
-class LongtermInstitutionalCareFee {
+class LongtermAssistedLivingFee {
   constructor(id, settings) {
     this.id = id;
 
@@ -12,11 +12,11 @@ class LongtermInstitutionalCareFee {
     const parsedSettings = {
       "payment_percentage_high": 0.85,
       "payment_percentage_low": 0.425,
-      "minimum_funds": 131.00,
-      "basic_amount": 539.55,
-      "minimum_funds_spouse": 724.55,
-      "maximum_payment_social_welfare_act": 7656.00,
-      "maximum_payment_other": 12045.00
+      "minimum_funds": 195.00,
+      "basic_amount": 593.55,
+      "minimum_funds_spouse": 788.55,
+      "maximum_payment": 3044.00,
+      "reimbursed_medication_costs": "52.76"
     };
     // */
     // Form content
@@ -38,7 +38,6 @@ class LongtermInstitutionalCareFee {
       const errorMessages = [];
 
       // Validate required fields
-      errorMessages.push(...this.calculator.validateBasics('social_welfare_act'));
       errorMessages.push(...this.calculator.validateBasics('earned_income'));
       errorMessages.push(...this.calculator.validateBasics('client_benefits'));
       errorMessages.push(...this.calculator.validateBasics('capital_income'));
@@ -47,6 +46,8 @@ class LongtermInstitutionalCareFee {
       errorMessages.push(...this.calculator.validateBasics('client_foreclosure'));
       errorMessages.push(...this.calculator.validateBasics('compensation_or_life_annuity'));
       errorMessages.push(...this.calculator.validateBasics('maintenance_payments'));
+      errorMessages.push(...this.calculator.validateBasics('medication_costs'));
+      errorMessages.push(...this.calculator.validateBasics('share_of_housing_costs'));
       errorMessages.push(...this.calculator.validateBasics('has_spouse'));
 
       const hasSpouse = this.calculator.getFieldValue('has_spouse');
@@ -60,6 +61,8 @@ class LongtermInstitutionalCareFee {
         errorMessages.push(...this.calculator.validateBasics('spouse_client_foreclosure'));
         errorMessages.push(...this.calculator.validateBasics('spouse_compensation_or_life_annuity'));
         errorMessages.push(...this.calculator.validateBasics('spouse_maintenance_payments'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_medication_costs'));
+        errorMessages.push(...this.calculator.validateBasics('spouse_share_of_housing_costs'));
       }
 
       if (errorMessages.length) {
@@ -73,7 +76,6 @@ class LongtermInstitutionalCareFee {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // Get field values for calculating.
-      const socialWelfareAct = this.calculator.getFieldValue('social_welfare_act');
 
       // Client income
       const earnedIncome = Number(this.calculator.getFieldValue('earned_income'));
@@ -86,6 +88,8 @@ class LongtermInstitutionalCareFee {
       const clientForeclosure = Number(this.calculator.getFieldValue('client_foreclosure'));
       const compensationOrLifeAnnuity = Number(this.calculator.getFieldValue('compensation_or_life_annuity'));
       const maintenancePayments = Number(this.calculator.getFieldValue('maintenance_payments'));
+      const medicationCosts = Number(this.calculator.getFieldValue('medication_costs'));
+      const shareOfHousingCosts = Number(this.calculator.getFieldValue('share_of_housing_costs'));
 
       // Spouse income
       const spouseEarnedIncome = Number(this.calculator.getFieldValue('spouse_earned_income'));
@@ -100,6 +104,8 @@ class LongtermInstitutionalCareFee {
         this.calculator.getFieldValue('spouse_compensation_or_life_annuity'),
       );
       const spouseMaintenancePayments = Number(this.calculator.getFieldValue('spouse_maintenance_payments'));
+      const spouseMedicationCosts = Number(this.calculator.getFieldValue('spouse_medication_costs'));
+      const spouseShareOfHousingCosts = Number(this.calculator.getFieldValue('spouse_share_of_housing_costs'));
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // Calculate results:
@@ -112,7 +118,13 @@ class LongtermInstitutionalCareFee {
       //1. Total income for client
       const totalIncomeClient = earnedIncome + clientBenefits + capitalIncome + annualForestIncomeActual;
       const totalDeductionsClient =
-        guardianshipFees + clientForeclosure + compensationOrLifeAnnuity + maintenancePayments;
+        guardianshipFees +
+        clientForeclosure +
+        compensationOrLifeAnnuity +
+        maintenancePayments +
+        medicationCosts +
+        shareOfHousingCosts +
+        Number(parsedSettings.reimbursed_medication_costs);
       const clientNetIncome = totalIncomeClient - totalDeductionsClient;
 
       //1. Total income for spouse
@@ -126,7 +138,9 @@ class LongtermInstitutionalCareFee {
           ? spouseGuardianshipFees +
             spouseClientForeclosure +
             spouseCompensationOrLifeAnnuity +
-            spouseMaintenancePayments
+            spouseMaintenancePayments +
+            spouseMedicationCosts +
+            spouseShareOfHousingCosts
           : 0;
       const spouseNetIncome = totalIncomeSpouse - totalDeductionsSpouse;
 
@@ -139,11 +153,7 @@ class LongtermInstitutionalCareFee {
         paymentPercentage = parsedSettings.payment_percentage_low;
       }
 
-      if (socialWelfareAct === 'true') {
-        maximumPayment = parsedSettings.maximum_payment_social_welfare_act;
-      } else {
-        maximumPayment = parsedSettings.maximum_payment_other;
-      }
+      maximumPayment = parsedSettings.maximum_payment;
 
       let totalPayment = 0;
       let disposableAmount = 0;
@@ -152,7 +162,6 @@ class LongtermInstitutionalCareFee {
       if (paymentPercentage === parsedSettings.payment_percentage_high) {
         totalPayment = clientNetIncome * paymentPercentage;
         disposableAmount = clientNetIncome - totalPayment;
-        disposableAmountCombined = clientNetIncome + spouseNetIncome - totalPayment;
         if (disposableAmount < parsedSettings.minimum_funds) {
           totalPayment = clientNetIncome - parsedSettings.minimum_funds;
           disposableAmount = parsedSettings.minimum_funds;
@@ -271,13 +280,6 @@ class LongtermInstitutionalCareFee {
         });
       }
 
-      additionalDetails.push({
-        title: null,
-        text: this.t('additional_detail_social_welfare_act', {
-          maximumPayment: this.calculator.formatFinnishEuroCents(maximumPayment),
-        }),
-      });
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       // Create receipt
@@ -328,7 +330,7 @@ class LongtermInstitutionalCareFee {
 
     // Initialize calculator
     this.calculator = window.helfiCalculator({
-      name: 'LongtermInstitutionalCareFee',
+      name: 'longtermAssistedLivingFee',
       translations,
     });
 
@@ -349,5 +351,4 @@ class LongtermInstitutionalCareFee {
 
 // Expose to global scope
 window.helfiCalculator = window.helfiCalculator || {};
-window.helfiCalculator.long_term_institutional_care_fee = (id, settings) =>
-  new LongtermInstitutionalCareFee(id, settings);
+window.helfiCalculator.long_term_assisted_living_fee = (id, settings) => new LongtermAssistedLivingFee(id, settings);

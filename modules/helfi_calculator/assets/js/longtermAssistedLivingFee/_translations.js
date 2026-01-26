@@ -1,19 +1,4 @@
 const translations = {
-  social_welfare_act_heading: {
-    fi: 'Sosiaalihuoltolain mukaisuus',
-    sv: 'Tillämpning av socialvårdslagen',
-    en: 'Compliance with the Social Welfare Act',
-  },
-  social_welfare_act_paragraph: {
-    fi: 'Sosiaalihuoltolain mukaisuus vaikuttaa palvelusta perittävään enimmäismaksuun. Voit tarkistaa asian palvelupäätöksestä.',
-    sv: 'Tillämpning av socialvårdslagen påverkar den maximala avgift som kan debiteras för en tjänst. Du kan se detta på servicebeslutet.',
-    en: 'Compliance with the Social Welfare Act affects the maximum fee charged for the service. You can check this in your service decision.',
-  },
-  label_social_welfare_act: {
-    fi: 'Kyseessä on sosiaalihuoltolain mukainen palvelu',
-    sv: 'Det gäller en service som avses i socialvårdslagen',
-    en: 'This service is provided under the Social Welfare Act',
-  },
   net_income_heading: {
     fi: 'Nettotulot',
     sv: 'Nettoinkomster',
@@ -103,6 +88,26 @@ const translations = {
     fi: 'Asiakkaan maksaman elatusavun yhteenlaskettu määrä kuukaudessa.',
     sv: 'Totalbeloppet underhållsbidrag som klienten betalar månatligen.',
     en: 'The client’s total monthly child maintenance payments.',
+  },
+  medication_costs: {
+    fi: 'Lääkekulut',
+    sv: 'Läkemedelsutgifter',
+    en: 'Medication costs',
+  },
+  medication_costs_explanation: {
+    fi: 'Keskimääräiset kulut muista kuin SV-korvattavista lääkkeistä, kliinisistä ravintovalmisteista ja perusvoiteista.',
+    sv: 'Genomsnittskostnad för läkemedel som inte ersätts med stöd av sjukförsäkringslagen, kliniska näringspreparat och baskrämer.',
+    en: 'Average costs of medicines not reimbursed under the Finnish Health Insurance Act, clinical nutritional supplements, and basic ointments.',
+  },
+  share_of_housing_costs: {
+    fi: 'Asumiskulujen omavastuu',
+    sv: 'Självrisk för boendekostnader',
+    en: "Client's share of housing costs",
+  },
+  share_of_housing_costs_explanation: {
+    fi: 'Asumispalvelun vuokra, josta vähennetty Kelan asumistuki.',
+    sv: 'Hyra för boendeservice varifrån FPA:s bostadsbidrag dragits av.',
+    en: 'The rent for the assisted living service, minus any housing allowance from Kela.',
   },
   label_has_spouse: {
     fi: 'Onko asiakkaalla puolisoa?',
@@ -199,6 +204,26 @@ const translations = {
     sv: 'Totalbeloppet underhållsbidrag som betalas månatligen.',
     en: 'Total monthly child maintenance payments paid.',
   },
+  spouse_medication_costs: {
+    fi: 'Puolison lääkekulut',
+    sv: 'Makens läkemedelsutgifter',
+    en: "Spouse's medication costs",
+  },
+  spouse_medication_costs_explanation: {
+    fi: 'Keskimääräiset kulut muista kuin SV-korvattavista lääkkeistä, kliinisistä ravintovalmisteista ja perusvoiteista.',
+    sv: 'Genomsnittskostnad för läkemedel som inte ersätts med stöd av sjukförsäkringslagen, kliniska näringspreparat och baskrämer.',
+    en: 'Average costs of medicines not reimbursed under the Finnish Health Insurance Act, clinical nutritional supplements, and basic ointments.',
+  },
+  spouse_share_of_housing_costs: {
+    fi: 'Puolison asumiskulujen omavastuu',
+    sv: 'Makens självrisk för boendekostnader',
+    en: "Spouse's share of housing costs",
+  },
+  spouse_share_of_housing_costs_explanation: {
+    fi: 'Asumispalvelun vuokra, josta vähennetty Kelan asumistuki.',
+    sv: 'Hyra för boendeservice varifrån FPA:s bostadsbidrag dragits av.',
+    en: 'The rent for the assisted living service, minus any housing allowance from Kela.',
+  },
   subtotal_total_income_client: {
     fi: 'Asiakkaan nettotulot',
     sv: 'Klientens nettoinkomster',
@@ -293,11 +318,6 @@ const translations = {
     fi: 'Metsätulo huomioidaan 90-prosenttisesti.',
     sv: 'Skogsinkomster beaktas till 90 procent.',
     en: 'Forest income is taken into account at 90%.',
-  },
-  additional_detail_social_welfare_act: {
-    fi: 'Asiakasmaksu on sosiaalihuoltolain enimmäismaksun mukainen.',
-    sv: 'Klientavgiften i enlighet med den maxavgift som avses i socialvårdslagen.',
-    en: 'The fee corresponds to the maximum fee under the Social Welfare Act.',
   },
   receipt_subtotal_euros_per_month: {
     fi: '${value} €/kk',

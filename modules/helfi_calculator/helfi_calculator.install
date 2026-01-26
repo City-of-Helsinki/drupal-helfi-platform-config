@@ -85,3 +85,14 @@ function helfi_calculator_update_9002() : void {
     'Pitkäaikaisen laitoshoidon asiakasmaksun laskuri'
   );
 }
+
+/**
+ * UHF-12491 Add long term assisted living to calculator settings.
+ */
+function helfi_calculator_update_9003() : void {
+  helfi_calculator_add_new_calculator(
+    'long_term_assisted_living_fee',
+    'Long term 24-hour assisted living fee',
+    'Pitkäaikaisen ympärivuorokautisen palveluasumisen asiakasmaksun laskuri'
+  );
+}
