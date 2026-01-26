@@ -250,8 +250,7 @@ class LongtermInstitutionalCareFee {
           title: null,
           text: this.t('additional_detail_spouse_higher_income'),
         });
-      }
-      if (paymentPercentage === parsedSettings.payment_percentage_high && hasSpouse === 'false') {
+      } else if (paymentPercentage === parsedSettings.payment_percentage_high && hasSpouse === 'false') {
         additionalDetails.push({
           title: null,
           text: this.t('additional_detail_no_spouse_higher_income'),
