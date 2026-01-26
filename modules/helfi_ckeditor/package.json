@@ -15,6 +15,9 @@
       "diff": "^8.0.3, dependency of ckeditor5-dev"
     }
   ],
+  "overrides": {
+    "diff": "^8.0.3"
+  },
   "dependencies": {
     "@biomejs/biome": "^2.3.4",
     "@ckeditor/ckeditor5-core": "^47.3.0",
@@ -22,7 +25,6 @@
     "@ckeditor/ckeditor5-dev-utils": "^53.2.0",
     "@ckeditor/ckeditor5-icons": "^47.3.0",
     "@nuxt/friendly-errors-webpack-plugin": "^2.5.1",
-    "diff": "^8.0.3",
     "ckeditor5": "~35.1.0",
     "css-loader": "^6.8.1",
     "raw-loader": "^4.0.2",

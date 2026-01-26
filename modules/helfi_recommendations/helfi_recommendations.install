@@ -66,6 +66,15 @@ function helfi_recommendations_install($is_syncing) : void {
       'field_sidebar_content',
     ]);
   }
+
+  // Enable etusivu search_api server.
+  $config_factory = \Drupal::configFactory();
+  $etusivu_server_settings = $config_factory->getEditable('search_api.server.etusivu');
+  if ($etusivu_server_settings->get('status') === FALSE) {
+    $etusivu_server_settings
+      ->set('status', TRUE)
+      ->save();
+  }
 }
 
 /**

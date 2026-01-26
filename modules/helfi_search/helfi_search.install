@@ -37,6 +37,26 @@ function helfi_search_schema(): array {
 }
 
 /**
+ * Implements hook_install().
+ */
+function helfi_search_install($is_syncing) : void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  // Enable etusivu search_api server.
+  $config_factory = \Drupal::configFactory();
+  $etusivu_server_settings = $config_factory->getEditable('search_api.server.etusivu');
+  if ($etusivu_server_settings->get('status') === FALSE) {
+    $etusivu_server_settings
+      ->set('status', TRUE)
+      ->save();
+  }
+}
+
+/**
  * Update the embeddings index datasources and enable multisite option.
  */
 function helfi_search_update_8001() {
