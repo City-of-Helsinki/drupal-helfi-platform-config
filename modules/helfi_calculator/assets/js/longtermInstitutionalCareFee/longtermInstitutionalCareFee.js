@@ -162,7 +162,7 @@ class LongtermInstitutionalCareFee {
         totalPayment = combinedIncome * paymentPercentage;
         disposableAmount = clientNetIncome - totalPayment;
         disposableAmountCombined = combinedIncome - totalPayment;
-        if (disposableAmount < parsedSettings.minimum_funds_spouse) {
+        if (disposableAmountCombined < parsedSettings.minimum_funds_spouse) {
           totalPayment = combinedIncome - parsedSettings.minimum_funds_spouse;
           disposableAmount = parsedSettings.minimum_funds;
           disposableAmountCombined = parsedSettings.minimum_funds_spouse;

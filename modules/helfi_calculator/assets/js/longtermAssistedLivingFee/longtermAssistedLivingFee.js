@@ -12,7 +12,7 @@ class LongtermAssistedLivingFee {
     const parsedSettings = {
       "payment_percentage_high": 0.85,
       "payment_percentage_low": 0.425,
-      "minimum_funds": 191.00,
+      "minimum_funds": 195.00,
       "basic_amount": 593.55,
       "minimum_funds_spouse": 788.55,
       "maximum_payment": 3044.00,
@@ -162,7 +162,6 @@ class LongtermAssistedLivingFee {
       if (paymentPercentage === parsedSettings.payment_percentage_high) {
         totalPayment = clientNetIncome * paymentPercentage;
         disposableAmount = clientNetIncome - totalPayment;
-        disposableAmountCombined = clientNetIncome + spouseNetIncome - totalPayment;
         if (disposableAmount < parsedSettings.minimum_funds) {
           totalPayment = clientNetIncome - parsedSettings.minimum_funds;
           disposableAmount = parsedSettings.minimum_funds;
@@ -172,7 +171,7 @@ class LongtermAssistedLivingFee {
         totalPayment = combinedIncome * paymentPercentage;
         disposableAmount = clientNetIncome - totalPayment;
         disposableAmountCombined = combinedIncome - totalPayment;
-        if (disposableAmount < parsedSettings.minimum_funds_spouse) {
+        if (disposableAmountCombined < parsedSettings.minimum_funds_spouse) {
           totalPayment = combinedIncome - parsedSettings.minimum_funds_spouse;
           disposableAmount = parsedSettings.minimum_funds;
           disposableAmountCombined = parsedSettings.minimum_funds_spouse;
