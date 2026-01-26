@@ -133,7 +133,7 @@ class LongtermInstitutionalCareFee {
       let paymentPercentage = 0;
       let maximumPayment = 0;
 
-      if (totalIncomeClient <= totalIncomeSpouse) {
+      if (totalIncomeClient <= totalIncomeSpouse || hasSpouse === 'false') {
         paymentPercentage = parsedSettings.payment_percentage_high;
       } else {
         paymentPercentage = parsedSettings.payment_percentage_low;

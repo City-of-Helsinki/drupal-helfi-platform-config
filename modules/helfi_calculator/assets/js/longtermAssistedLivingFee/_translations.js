@@ -296,8 +296,8 @@ const translations = {
   },
   subtotal_minimum_disposable_amount_with_spouse_details: {
     fi: 'Asiakkaalle ja puolisolle jäävä yhteinen käyttövara ${disposable_amount} euroa kuukaudessa, josta ${minimum_funds} euroa on vähimmäiskäyttövara ja ${basic_amount} euroa toimeentulotuen perusosa.',
-    sv: 'Asiakkaalle ja puolisolle jäävä yhteinen käyttövara ${disposable_amount} euroa kuukaudessa, josta ${minimum_funds} euroa on vähimmäiskäyttövara ja ${basic_amount} euroa toimeentulotuen perusosa.',
-    en: 'Asiakkaalle ja puolisolle jäävä yhteinen käyttövara ${disposable_amount} euroa kuukaudessa, josta ${minimum_funds} euroa on vähimmäiskäyttövara ja ${basic_amount} euroa toimeentulotuen perusosa.',
+    sv: 'Den gemensamma reserven som lämnas för klient och make/maka är ${disposable_amount} euro per månad, varav ${minimum_funds} euro är minimibeloppet och ${basic_amount} euro är utkomststödets grunddel.',
+    en: 'The joint reserve left for the client and spouse  is EUR ${disposable_amount} euros per month, of which EUR ${minimum_funds} is the minimum amount of disposable funds and EUR ${basic_amount} is the basic amount of social assistance.',
   },
   additional_detail_spouse_higher_income: {
     fi: 'Asiakkaan tulot ovat pienemmät tai yhtä suuret kuin puolisolla, jolloin asiakasmaksu on 85 % asiakkaan nettokuukausituloista, joihin on tehty lainmukaiset vähennykset.',

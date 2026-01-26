@@ -87,7 +87,7 @@ function helfi_calculator_update_9002() : void {
 }
 
 /**
- * UHF-12491 Add long term institutional care calculator to calculator settings.
+ * UHF-12491 Add long term assisted living to calculator settings.
  */
 function helfi_calculator_update_9003() : void {
   helfi_calculator_add_new_calculator(
