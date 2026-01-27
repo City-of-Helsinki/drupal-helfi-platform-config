@@ -7,13 +7,13 @@ namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
-use Drupal\helfi_platform_config\Hook\ModuleHooks;
+use Drupal\helfi_platform_config\Hook\PlatformConfigHooks;
 use Drupal\KernelTests\KernelTestBase;
 
 /**
- * Tests hook_modules_installed() implementation.
+ * Tests hook implementations.
  */
-final class ModuleHooksTest extends KernelTestBase {
+final class PlatformConfigHooksTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -70,7 +70,7 @@ final class ModuleHooksTest extends KernelTestBase {
     $paragraphTypeUpdater->expects($this->once())
       ->method('updateParagraphTargetTypes');
 
-    $sut = new ModuleHooks(
+    $sut = new PlatformConfigHooks(
       $moduleHandler,
       $configUpdater,
       $paragraphTypeUpdater,
@@ -78,6 +78,46 @@ final class ModuleHooksTest extends KernelTestBase {
     $sut->modulesInstalled($modules, FALSE);
 
     $this->assertSame($expectedPermissions, $receivedPermissions);
+  }
+
+  /**
+   * Tests hook_page_attachments() behavior depending on raven module existence.
+   *
+   * @dataProvider pageAttachmentsProvider
+   */
+  public function testPageAttachments(bool $ravenExists, array $expectedLibraries): void {
+    $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
+    $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
+    $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
+
+    $moduleHandler->expects($this->once())
+      ->method('moduleExists')
+      ->with('raven')
+      ->willReturn($ravenExists);
+
+    $sut = new PlatformConfigHooks(
+      $moduleHandler,
+      $configUpdater,
+      $paragraphTypeUpdater,
+    );
+
+    $page = [];
+    $sut->pageAttachments($page);
+
+    $this->assertSame(
+      $expectedLibraries,
+      $page['#attached']['library'] ?? []
+    );
+  }
+
+  /**
+   * Data provider for testPageAttachments().
+   */
+  public static function pageAttachmentsProvider(): array {
+    return [
+      'raven installed' => [TRUE, ['helfi_platform_config/sentry_ignore']],
+      'raven missing' => [FALSE, []],
+    ];
   }
 
 }

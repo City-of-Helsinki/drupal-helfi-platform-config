@@ -11,9 +11,9 @@ use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 
 /**
- * Module hook implementations for modules.
+ * Hook implementations for platform config module.
  */
-class ModuleHooks {
+class PlatformConfigHooks {
 
   use AutowireTrait;
 
@@ -44,6 +44,19 @@ class ModuleHooks {
     }
 
     $this->paragraphTypeUpdater->updateParagraphTargetTypes();
+  }
+
+  /**
+   * Implements hook_page_attachments().
+   */
+  #[Hook('page_attachments')]
+  public function pageAttachments(array &$page): void {
+    if (!$this->moduleHandler->moduleExists('raven')) {
+      return;
+    }
+
+    // Add sentry_ignore library.
+    $page['#attached']['library'][] = 'helfi_platform_config/sentry_ignore';
   }
 
 }

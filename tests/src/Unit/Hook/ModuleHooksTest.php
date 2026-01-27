@@ -7,7 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Unit\Hook;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
-use Drupal\helfi_platform_config\Hook\ModuleHooks;
+use Drupal\helfi_platform_config\Hook\PlatformConfigHooks;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -61,7 +61,7 @@ final class ModuleHooksTest extends UnitTestCase {
         ->method('updateParagraphTargetTypes');
     }
 
-    $sut = new ModuleHooks(
+    $sut = new PlatformConfigHooks(
       $moduleHandler,
       $configUpdater,
       $paragraphTypeUpdater
@@ -134,7 +134,7 @@ final class ModuleHooksTest extends UnitTestCase {
       ->expects($this->once())
       ->method('updateParagraphTargetTypes');
 
-    $sut = new ModuleHooks(
+    $sut = new PlatformConfigHooks(
       $moduleHandler,
       $configUpdater,
       $paragraphTypeUpdater
