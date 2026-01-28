@@ -12,9 +12,27 @@
   const options = drupalSettings.raven.options || {};
   const previousBeforeSend = options.beforeSend;
 
-  // List of errors to ignore.
+  /**
+   * Safari is more aggressive than other browsers when it comes to network
+   * and privacy enforcement, which can cause third-party requests to fail and
+   * surface as "TypeError: Load failed".
+   *
+   * Common causes:
+   * - Stricter CORS enforcement
+   * - Blocking of third-party endpoints
+   * - Blocking redirects across tracking-related domains
+   * - Cancelled requests during page navigation
+   * - Silent request failures that later surface as "Load failed"
+   *
+   * This behaviour is typical of Safari/WebKit and does not usually
+   * indicate a bug in the application code, but floods the Sentry with these
+   * errors.
+   */
+  const safariLoadFailed = { type: 'TypeError', value: 'Load failed' };
+
+  // List of error types and values to ignore.
   const errorMatchers = [
-    { type: 'TypeError', value: 'Load failed' },
+    safariLoadFailed,
     // Add more combinations here if needed:
     // { type: 'TypeError', value: 'Failed to fetch' },
   ];
@@ -44,7 +62,7 @@
    * @returns {*|null}
    */
   drupalSettings.raven.options.beforeSend = (event, hint) => {
-    // Do not send "Load failed" errors to Sentry.
+    // Do not send errors that match the configured errorMatchers to Sentry.
     if (isLoadFailedError(event)) {
       return null;
     }
