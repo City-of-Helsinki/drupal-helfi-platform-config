@@ -246,6 +246,9 @@ function helfi_ckeditor_update_11001(): void {
   // Search and replace following data.
   $data_to_be_converted = [
     'target="_blank"' => '',
+    'class="hds-button hds-button--primary" ' => '',
+    'class="hds-button hds-button--secondary" ' => '',
+    'class="hds-button hds-button--supplementary" ' => '',
   ];
 
   $count = 0;
