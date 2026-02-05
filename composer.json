@@ -46,7 +46,7 @@
         "drupal/pathauto": "^1.8",
         "drupal/publication_date": "^3.0",
         "drupal/real_aes": "^2.6",
-        "drupal/readonly_field_widget": "^2.0",
+        "drupal/readonly_field_widget": "^1.0 || ^2.0",
         "drupal/redirect": "^1.12",
         "drupal/role_delegation": "^1.1",
         "drupal/scheduler": "^2.0",
