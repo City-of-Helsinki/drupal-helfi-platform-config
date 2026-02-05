@@ -85,9 +85,7 @@
                 "[#UHF-9690] Allow updating lists when switching from allowed values to allowed values function (https://www.drupal.org/i/2873353)": "https://www.drupal.org/files/issues/2025-06-27/allow-allowed-values-function-update-2873353-20.patch",
                 "[#UHF-9952, #UHF-9980] Duplicate <br /> tags (https://www.drupal.org/i/3083786)": "./public/modules/contrib/helfi_platform_config/patches/3083786.patch",
                 "[#UHF-11025] Status message templates missing theme when bigpipe is enabled (https://www.drupal.org/i/3396318)": "./public/modules/contrib/helfi_platform_config/patches/3396318.patch",
-                "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch",
-                "[#UHF-12709] BigPipe placeholders with identical IDs are not all replaced (https://www.drupal.org/i/3564880)": "https://www.drupal.org/files/issues/2025-12-29/bigpipe.patch",
-                "[#UHF-12709] ThemeRegistry::getGlobalPreprocess() WSOD (https://www.drupal.org/i/3564510)": "https://www.drupal.org/files/issues/2025-12-22/drupal-prevent-function-null-return-3564510-2.patch"
+                "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch"
             },
             "drupal/csp": {
                 "[#UHF-11973] Allow installing csp in an install hook": "./public/modules/contrib/helfi_platform_config/patches/csp-uhf-11973.patch"
