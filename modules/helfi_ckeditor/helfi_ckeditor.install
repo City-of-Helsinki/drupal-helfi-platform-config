@@ -238,13 +238,17 @@ function helfi_ckeditor_update_9009(): void {
 /**
  * UHF-12624 Remove anchor target="_blank" attribute from long text fields.
  */
-function helfi_ckeditor_update_9010(): void {
+function helfi_ckeditor_update_11001(): void {
   $entity_type_manager = Drupal::entityTypeManager();
   $field_storage = $entity_type_manager->getStorage('field_config');
+  $connection = Drupal::database();
 
   // Search and replace following data.
   $data_to_be_converted = [
     'target="_blank"' => '',
+    'class="hds-button hds-button--primary" ' => '',
+    'class="hds-button hds-button--secondary" ' => '',
+    'class="hds-button hds-button--supplementary" ' => '',
   ];
 
   $count = 0;
@@ -263,25 +267,31 @@ function helfi_ckeditor_update_9010(): void {
       /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
       $table_mapping = $storage->getTableMapping();
 
-      // Get current field's table name and column.
-      $table_name = $table_mapping->getDedicatedDataTableName($field_storage_definition);
+      // Get affected tables and columns.
+      $tables = [];
+      $tables[] = $table_mapping->getDedicatedDataTableName($field_storage_definition);
+      $tables[] = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
       $column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
 
       // Go through our data array, treat array key as data to search for
-      // and array value as replacement. Use sql replace to replace the data.
-      foreach ($data_to_be_converted as $old => $new) {
-        $update = Drupal::database()->update($table_name);
-        $update->expression(
-          $column,
-          "REPLACE($column, :old_value, :new_value)",
-          [
-            ':old_value' => $old,
-            ':new_value' => $new,
-          ]
-        );
-        // Note! The execution will return every row, even the ones which data
-        // was not affected.
-        $count += $update->execute();
+      // and array value as replacement. Use SQL replace to replace the data
+      // if the data contains the search string.
+      foreach ($tables as $table_name) {
+        foreach ($data_to_be_converted as $old => $new) {
+          $update = $connection->update($table_name);
+          $update->condition($column, '%' . $connection->escapeLike($old) . '%', 'LIKE');
+          $update->expression(
+            $column,
+            "REPLACE($column, :old_value, :new_value)",
+            [
+              ':old_value' => $old,
+              ':new_value' => $new,
+            ]
+          );
+          // Note! The execution will return every row, even the ones which data
+          // was not affected.
+          $count += $update->execute();
+        }
       }
     }
   }
