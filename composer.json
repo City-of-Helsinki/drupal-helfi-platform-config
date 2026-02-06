@@ -18,7 +18,7 @@
         "drupal/crop": "^2.1",
         "drupal/csp": "^2.2",
         "drupal/default_content": "^2.0.0",
-        "drupal/diff": "^2.0",
+        "drupal/diff": "^1.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editoria11y": "^2.0",
         "drupal/elasticsearch_connector": "^8.0@alpha",
@@ -86,6 +86,9 @@
                 "[#UHF-9952, #UHF-9980] Duplicate <br /> tags (https://www.drupal.org/i/3083786)": "./public/modules/contrib/helfi_platform_config/patches/3083786.patch",
                 "[#UHF-11025] Status message templates missing theme when bigpipe is enabled (https://www.drupal.org/i/3396318)": "./public/modules/contrib/helfi_platform_config/patches/3396318.patch",
                 "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch"
+            },
+            "drupal/diff": {
+                "Revision overview form problem (https://www.drupal.org/i/3390329)": "./public/modules/contrib/helfi_platform_config/patches/diff_8.x_1.3_revision_overview_form.patch"
             },
             "drupal/csp": {
                 "[#UHF-11973] Allow installing csp in an install hook": "./public/modules/contrib/helfi_platform_config/patches/csp-uhf-11973.patch"
