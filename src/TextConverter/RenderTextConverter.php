@@ -28,7 +28,11 @@ final class RenderTextConverter implements TextConverterInterface {
   /**
    * {@inheritDoc}
    */
-  public function applies(EntityInterface $entity): bool {
+  public function applies(EntityInterface $entity, Strategy $strategy): bool {
+    if ($strategy !== Strategy::Default) {
+      return FALSE;
+    }
+
     // This converter matches entities that have
     // text_converter display enabled.
     $viewModes = $this
@@ -41,7 +45,7 @@ final class RenderTextConverter implements TextConverterInterface {
   /**
    * {@inheritDoc}
    */
-  public function convert(EntityInterface $entity): string {
+  public function convert(EntityInterface $entity, Strategy $strategy): string {
     $builder = $this
       ->entityTypeManager
       ->getViewBuilder($entity->getEntityTypeId());

@@ -21,21 +21,25 @@ interface TextConverterInterface {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   Entity to convert.
+   * @param \Drupal\helfi_platform_config\TextConverter\Strategy $strategy
+   *   Conversion strategy.
    *
    * @return bool
    *   TRUE if this converter applies to given entity.
    */
-  public function applies(EntityInterface $entity) : bool;
+  public function applies(EntityInterface $entity, Strategy $strategy) : bool;
 
   /**
    * Converts given entity to raw text.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   Entity to convert.
+   * @param \Drupal\helfi_platform_config\TextConverter\Strategy $strategy
+   *   Conversion strategy.
    *
    * @return string
    *   Entity converted to text.
    */
-  public function convert(EntityInterface $entity) : string;
+  public function convert(EntityInterface $entity, Strategy $strategy) : string;
 
 }

@@ -27,18 +27,18 @@ class TextConverterManagerTest extends UnitTestCase {
     $converter1 = $this->prophesize(TextConverterInterface::class);
     $converter2 = $this->prophesize(TextConverterInterface::class);
 
-    $converter1->applies(Argument::any())
+    $converter1->applies(Argument::any(), Argument::any())
       ->shouldBeCalled()
       ->willReturn(TRUE);
 
-    $converter1->convert(Argument::any())
+    $converter1->convert(Argument::any(), Argument::any())
       ->shouldBeCalled()
       ->willReturn("Hello, world");
 
-    $converter2->applies(Argument::any())
+    $converter2->applies(Argument::any(), Argument::any())
       ->shouldNotBeCalled();
 
-    $converter2->convert(Argument::any())
+    $converter2->convert(Argument::any(), Argument::any())
       ->shouldNotBeCalled();
 
     $sut = new TextConverterManager();
@@ -56,11 +56,11 @@ class TextConverterManagerTest extends UnitTestCase {
   public function testConverterFallback() : void {
     $converter = $this->prophesize(TextConverterInterface::class);
 
-    $converter->applies(Argument::any())
+    $converter->applies(Argument::any(), Argument::any())
       ->shouldBeCalled()
       ->willReturn(FALSE);
 
-    $converter->convert(Argument::any())
+    $converter->convert(Argument::any(), Argument::any())
       ->shouldNotBeCalled();
 
     $sut = new TextConverterManager();

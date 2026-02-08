@@ -48,15 +48,17 @@ class TextConverterManager {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   Entity to convert.
+   * @param \Drupal\helfi_platform_config\TextConverter\Strategy $strategy
+   *   Conversion strategy.
    *
    * @return string|null
    *   Text output or NULL if no suitable converter exists.
    */
-  public function convert(EntityInterface $entity) : ?string {
+  public function convert(EntityInterface $entity, Strategy $strategy = Strategy::Default) : ?string {
     // Use the first applicable converter.
     foreach ($this->getTextConverters() as $converter) {
-      if ($converter->applies($entity)) {
-        return $converter->convert($entity);
+      if ($converter->applies($entity, $strategy)) {
+        return $converter->convert($entity, $strategy);
       }
     }
 
