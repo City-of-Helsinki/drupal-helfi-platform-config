@@ -17,6 +17,7 @@ use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -27,7 +28,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
   name: 'helfi:text-converter',
   description: 'Preview text conversion result.',
 )]
-class TextConverterCommands extends Command {
+final class TextConverterCommands extends Command {
 
   use AutowireTrait;
 
@@ -47,6 +48,7 @@ class TextConverterCommands extends Command {
    *   The exit code.
    */
   public function __invoke(
+    InputInterface $input,
     OutputInterface $output,
     #[Argument(description: 'Entity type')]
     string $entity_type,
@@ -56,6 +58,8 @@ class TextConverterCommands extends Command {
     string $language = 'fi',
     #[Option(description: 'Text conversion strategy')]
     Strategy $strategy = Strategy::Default,
+    #[Option(description: 'Split text into chunks by heading level')]
+    bool $chunk = FALSE,
   ) : int {
     try {
       $entity = $this->entityTypeManager
@@ -74,14 +78,30 @@ class TextConverterCommands extends Command {
         $entity = $entity->getTranslation($language);
       }
 
-      if ($content = $this->textConverter->convert($entity, $strategy)) {
-        $output->writeln($content);
+      if ($chunk) {
+        $chunks = $this->textConverter->chunk($entity, $strategy);
+
+        if (empty($chunks)) {
+          $output->writeln("Failed to find text converter for $entity_type:$id");
+          return self::FAILURE;
+        }
+
+        foreach ($chunks as $i => $text) {
+          $output->writeln("=========================================");
+          $output->writeln("| Chunk $i");
+          $output->writeln("=========================================");
+          $output->writeln($text);
+        }
 
         return self::SUCCESS;
       }
-      else {
-        $output->writeln("Failed to find text converter for $entity_type:$id");
+
+      if ($content = $this->textConverter->convert($entity, $strategy)) {
+        $output->writeln($content);
+        return self::SUCCESS;
       }
+
+      $output->writeln("Failed to find text converter for $entity_type:$id");
     }
     catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
       Error::logException($this->logger, $e);

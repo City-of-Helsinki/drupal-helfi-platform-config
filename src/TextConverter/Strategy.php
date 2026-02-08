@@ -7,6 +7,7 @@ namespace Drupal\helfi_platform_config\TextConverter;
 /**
  * Text conversion strategy.
  */
-enum Strategy {
-  case Default;
+enum Strategy: string {
+  case Default = 'default';
+  case Markdown = 'markdown';
 }
