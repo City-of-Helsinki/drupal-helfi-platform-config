@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_recommendations\Drush\Commands;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Batch\BatchBuilder;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Utility\Error;
-use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\helfi_recommendations\Client\ApiClient;
 use Drupal\helfi_recommendations\ReferenceUpdater;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
@@ -37,7 +32,6 @@ final class Commands extends DrushCommands {
   public function __construct(
     private readonly Connection $connection,
     private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly TextConverterManager $textConverter,
     private readonly TopicsManagerInterface $topicsManager,
     private readonly ReferenceUpdater $referenceManager,
   ) {
@@ -131,60 +125,6 @@ final class Commands extends DrushCommands {
       $context['message'] = $this->t('An error occurred during processing: @message', ['@message' => $e->getMessage()]);
       $context['finished'] = 1;
     }
-  }
-
-  /**
-   * Preview entity text conversion result.
-   *
-   * @param string $entity_type
-   *   The entity type.
-   * @param string $id
-   *   The entity id.
-   * @param array $options
-   *   Command options.
-   *
-   * @return int
-   *   The exit code.
-   */
-  #[Command(name: 'helfi:recommendations:preview-text')]
-  #[Argument(name: 'entity_type', description: 'Entity type')]
-  #[Argument(name: 'id', description: 'Entity id')]
-  #[Option(name: 'language', description: 'Entity language', suggestedValues: ['fi', 'sv', 'en'])]
-  #[Usage(name: 'drush helfi:recommendations:preview-text node 123', description: 'Preview node with id 123.')]
-  #[Usage(name: 'drush helfi:recommendations:preview-text node 123 --language sv', description: 'Preview swedish translation of node 123.')]
-  public function preview(string $entity_type, string $id, array $options = ['language' => NULL]) : int {
-    try {
-      $entity = $this->entityTypeManager
-        ->getStorage($entity_type)
-        ->load($id);
-
-      if (!$entity) {
-        $this->io()->error("Failed to load $entity_type:$id");
-        return self::EXIT_FAILURE;
-      }
-
-      if (
-        !empty($options['language']) &&
-        $entity instanceof TranslatableInterface &&
-        $entity->hasTranslation($options['language'])
-      ) {
-        $entity = $entity->getTranslation($options['language']);
-      }
-
-      if ($content = $this->textConverter->convert($entity)) {
-        $this->io()->text($content);
-
-        return DrushCommands::EXIT_SUCCESS;
-      }
-      else {
-        $this->io()->error("Failed to find text converter for $entity_type:$id");
-      }
-    }
-    catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
-      Error::logException($this->logger(), $e);
-    }
-
-    return DrushCommands::EXIT_FAILURE;
   }
 
   /**
