@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\Plugin\search_api\processor;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_platform_config\TextConverter\Strategy;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\MissingConfigurationException;
@@ -87,15 +88,20 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
    *   Batch of entities.
    */
   private function processBatch(array &$items, array $batch) : void {
-    $textConversion = [];
+    // Collect chunks for each entity. Each entity may produce multiple chunks.
+    $chunkBatch = [];
+    $entityKeys = [];
 
     foreach ($batch as $key => $item) {
       try {
         /** @var \Drupal\Core\Entity\EntityInterface $entity */
         $entity = $item->getOriginalObject()->getValue();
 
-        if ($text = $this->textConverterManager->convert($entity)) {
-          $textConversion[$key] = $text;
+        $chunks = $this->textConverterManager->chunk($entity, Strategy::Markdown);
+        foreach ($chunks as $chunkIndex => $chunk) {
+          $chunkKey = "$key:$chunkIndex";
+          $chunkBatch[$chunkKey] = $chunk;
+          $entityKeys[$chunkKey] = $key;
         }
       }
       catch (SearchApiException) {
@@ -104,14 +110,24 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
     }
 
     try {
-      $results = $this->embeddingModel->batchGetEmbedding($textConversion);
+      $results = $this->embeddingModel->batchGetEmbedding($chunkBatch);
     }
     catch (MissingConfigurationException) {
       // Skips all items.
       $results = [];
     }
 
-    foreach ($results as $key => $vector) {
+    // Group results by entity key.
+    $entityResults = [];
+    foreach ($results as $chunkKey => $vector) {
+      $entityKey = $entityKeys[$chunkKey];
+      $entityResults[$entityKey][] = [
+        'vector' => $vector,
+        'content' => $chunkBatch[$chunkKey],
+      ];
+    }
+
+    foreach ($entityResults as $key => $embeddings) {
       if (!$item = $items[$key]) {
         throw new \LogicException("Item should exists");
       }
@@ -120,13 +136,15 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         ->filterForPropertyPath($item->getFields(), NULL, 'embeddings');
 
       foreach ($fields as $field) {
-        array_map(fn(mixed $value) => $field->addValue($value), $vector);
+        foreach ($embeddings as $embedding) {
+          $field->addValue($embedding);
+        }
       }
     }
 
     // Skip items that did not produce any results, except those configured
     // to be indexed without embeddings.
-    foreach (array_diff_key($batch, $results) as $key => $item) {
+    foreach (array_diff_key($batch, $entityResults) as $key => $item) {
       unset($items[$key]);
     }
   }
