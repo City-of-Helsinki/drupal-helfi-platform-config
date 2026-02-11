@@ -36,4 +36,3 @@ dependencies:
   - helfi_react_search:helfi_react_search
   - helfi_user_roles:helfi_user_roles
   - publication_date:publication_date
-  - stomp:stomp
