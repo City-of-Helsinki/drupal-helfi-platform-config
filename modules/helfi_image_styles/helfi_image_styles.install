@@ -93,3 +93,13 @@ function helfi_image_styles_update_9007(): void {
   $config_factory->getEditable('image.style.1.5_649w_433h')->delete();
   $config_factory->getEditable('image.style.1.5_1298w_866h_LQ')->delete();
 }
+
+/**
+ * UHF-12863: Make sure imagemagick version 7 is used.
+ */
+function helfi_image_styles_update_9008(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('imagemagick.settings')
+    ->set('imagemagick_version', 'v7')
+    ->save();
+}
