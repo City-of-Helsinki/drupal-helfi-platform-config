@@ -51,7 +51,18 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
    */
   public function mapElasticFields(FieldMappingEvent $event): void {
     if ($event->getField()->getType() === 'embeddings') {
-      $event->setParam(['type' => 'dense_vector']);
+      $event->setParam([
+        'type' => 'nested',
+        'properties' => [
+          'vector' => [
+            'type' => 'dense_vector',
+          ],
+          'content' => [
+            'type' => 'text',
+            'index' => FALSE,
+          ],
+        ],
+      ]);
     }
   }
 
