@@ -1,7 +1,7 @@
 react_and_share:
-  version: 1.0.0
+  version: 1.0.1
   js:
-    assets/js/reactAndShareSettings.js: {}
+    dist/js/reactAndShareSettings.min.js: { minified: true }
   dependencies:
     - core/drupal
     - core/drupalSettings
