@@ -1,7 +1,7 @@
 react_and_share:
-  version: 1.0.0
+  version: 1.0.1
   js:
-    assets/js/reactAndShareSettings.js: {}
+    dist/js/reactAndShareSettings.min.js: { minified: true }
   dependencies:
     - core/drupal
     - core/drupalSettings
@@ -40,7 +40,7 @@ a11y_autocomplete:
     dist/js/a11y-autocomplete.min.js: { minified: true }
 
 location_autocomplete:
-  version: 1.0.3
+  version: 1.0.4
   js:
     dist/js/autocomplete.min.js: { minified: true }
   dependencies:
@@ -50,7 +50,7 @@ location_autocomplete:
     - core/once
 
 heading_id_injector:
-  version: 1.0.0
+  version: 1.0.1
   js:
     dist/js/headingIdInjector.min.js: { minified: true }
   dependencies:
@@ -59,7 +59,7 @@ heading_id_injector:
     - core/once
 
 heading_anchor_buttons:
-  version: 1.0.0
+  version: 1.0.1
   js:
     dist/js/headingAnchorButtons.min.js: { minified: true }
   dependencies:
@@ -68,7 +68,7 @@ heading_anchor_buttons:
     - core/once
 
 sentry_ignore:
-  version: 1.0.0
+  version: 1.0.1
   js:
     dist/js/sentryIgnore.min.js: { minified: true }
   dependencies:

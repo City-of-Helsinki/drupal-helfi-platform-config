@@ -1,20 +1,25 @@
-'use strict';
-
 ((Drupal) => {
 
   // Global cookie consent status object.
   Drupal.cookieConsent = {
     initialized: () => {
-      return window && window.hds && window.hds.cookieConsent;
+      return window?.hds?.cookieConsent;
     },
-    loadFunction: (loadFunction) => {
-      if (typeof loadFunction === 'function') {
-        window.addEventListener('hds-cookie-consent-ready', loadFunction);
+    loadFunction: (callback) => {
+      if (typeof callback !== 'function') return;
+
+      if (Drupal.cookieConsent.initialized()) {
+        callback();
+        return;
       }
+
+      window.addEventListener('hds-cookie-consent-ready', callback, {
+        once: true,
+      });
     },
     getConsentStatus: (categories) => {
-      return Drupal.cookieConsent.initialized() &&
-        window.hds.cookieConsent.getConsentStatus(categories);
+      if (!Drupal.cookieConsent.initialized()) return null;
+      return window.hds.cookieConsent.getConsentStatus(categories);
     },
     setAcceptedCategories: (categories) => {
       if (Drupal.cookieConsent.initialized()) {
@@ -24,7 +29,7 @@
   };
 
   Drupal.behaviors.hdbt_cookie_banner = {
-    attach: function (context, settings) {
+    attach: (context, settings) => {
       // Run only once for the full document.
       if (context !== document || window.hdsCookieConsentInitialized) {
         return;
@@ -52,15 +57,36 @@
 
       // A click event for opening the cookie consent banner from correct groups.
       window.hdsCookieConsentClickEvent = function hdsCookieConsentClickEvent(event, element) {
-        const groups = element.getAttribute('data-cookie-consent-groups')
-          .split(',')
-          .map(group => group.trim());
+        // Check if the element exists and has the getAttribute method.
+        if (!element || typeof element.getAttribute !== 'function') return;
 
+        // Get the groups from the data attribute.
+        const rawGroups = element.getAttribute('data-cookie-consent-groups');
+        if (!rawGroups) return;
+
+        // Split the groups by comma and trim whitespace.
+        const groups = rawGroups
+          .split(',')
+          .map((group) => group.trim())
+          .filter(Boolean);
+
+        // Check if the groups are valid.
+        if (groups.length === 0) return;
+
+        // Check if the cookie consent is initialized.
         if (
-          Drupal.cookieConsent.initialized() &&
-          typeof window.hds.cookieConsent.openBanner === 'function'
+          !Drupal.cookieConsent?.initialized?.() ||
+          !window.hds?.cookieConsent ||
+          typeof window.hds.cookieConsent.openBanner !== 'function'
         ) {
-          window.hds.cookieConsent.openBanner(groups);
+          return;
+        }
+
+        // Open the cookie consent banner with selected groups.
+        window.hds.cookieConsent.openBanner(groups);
+
+        // Prevent default action if the event is provided.
+        if (event && typeof event.preventDefault === 'function') {
           event.preventDefault();
         }
       };

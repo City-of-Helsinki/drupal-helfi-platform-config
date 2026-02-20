@@ -30,9 +30,16 @@
    */
   const safariLoadFailed = { type: 'TypeError', value: 'Load failed' };
 
+  /**
+   * Third-party code sometimes assumes WebCrypto is available and crashes with:
+   * "Cannot read properties of undefined (reading 'digest')".
+   */
+  const webCryptoDigestUndefined = { type: 'TypeError', value: "reading 'digest'" };
+
   // List of error types and values to ignore.
   const errorMatchers = [
     safariLoadFailed,
+    webCryptoDigestUndefined,
     // Add more combinations here if needed:
     // { type: 'TypeError', value: 'Failed to fetch' },
   ];
@@ -50,7 +57,12 @@
     const exceptions = event?.exception?.values || [];
 
     return exceptions.some((exception) =>
-      errorMatchers.some((matcher) => exception?.type === matcher.type && exception?.value === matcher.value),
+      errorMatchers.some(
+        (matcher) =>
+          exception?.type === matcher.type &&
+          typeof exception?.value === 'string' &&
+          exception.value.includes(matcher.value),
+      ),
     );
   };
 

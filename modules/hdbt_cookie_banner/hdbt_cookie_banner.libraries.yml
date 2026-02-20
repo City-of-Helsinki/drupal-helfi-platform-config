@@ -38,7 +38,7 @@ cookie_banner_admin_ui:
     - hdbt_cookie_banner/json_editor
 
 hdbt_cookie_banner:
-  version: 1.0.1
+  version: 1.0.2
   header: true
   js:
     # The weight needs to be as low as drupal.init.js, which is -17.
@@ -46,6 +46,7 @@ hdbt_cookie_banner:
   dependencies:
     - core/drupal
     - core/drupalSettings
+    - hdbt_cookie_banner/hds_cookie_consent
 
 # The original hds-cookie-consent.min.js has been altered to include the
 # following changes:
@@ -53,7 +54,7 @@ hdbt_cookie_banner:
 # - Added data-nosnippet attribute to div.hds-cc__target to prevent Google
 #   using cookie banner texts in their search result snippets.
 hds_cookie_consent:
-  version: 1.0.1
+  version: 1.0.2
   header: true
   js:
     assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false }
