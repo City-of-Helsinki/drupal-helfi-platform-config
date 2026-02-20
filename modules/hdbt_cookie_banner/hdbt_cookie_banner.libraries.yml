@@ -46,6 +46,7 @@ hdbt_cookie_banner:
   dependencies:
     - core/drupal
     - core/drupalSettings
+    - hdbt_cookie_banner/hds_cookie_consent
 
 # The original hds-cookie-consent.min.js has been altered to include the
 # following changes:
