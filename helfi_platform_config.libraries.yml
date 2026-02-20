@@ -68,7 +68,7 @@ heading_anchor_buttons:
     - core/once
 
 sentry_ignore:
-  version: 1.0.0
+  version: 1.0.1
   js:
     dist/js/sentryIgnore.min.js: { minified: true }
   dependencies:
