@@ -27,6 +27,7 @@ settings:
       properties:
         reversed: false
         startIndex: true
+        styles: false
       multiBlock: true
     ckeditor5_paste_filter_pasteFilter:
       enabled: true
@@ -125,6 +126,11 @@ settings:
           enabled: true
           weight: 18
           search: '<a name="[^"]*">(.*?)<\/a>'
+          replace: $1
+        -
+          enabled: true
+          weight: 19
+          search: '(<a\b[^>]*?)\s+target\s*=\s*("_blank"|_blank)'
           replace: $1
     ckeditor5_sourceEditing:
       allowed_tags:
