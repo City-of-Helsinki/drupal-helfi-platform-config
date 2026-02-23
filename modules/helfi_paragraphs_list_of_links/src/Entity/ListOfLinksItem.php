@@ -20,8 +20,8 @@ class ListOfLinksItem extends Paragraph implements ParagraphInterface {
    */
   public function getDesign(): string {
     return $this->getParentEntity()
-      ->get('field_list_of_links_design')
-      ->value;
+      ?->get('field_list_of_links_design')
+      ?->value ?? 'without-image';
   }
 
   /**
