@@ -1,15 +1,12 @@
 {
   "name": "hdbt-cookie-banner-admin-ui",
   "description": "Admin UI libraries for the HDBT cookie banner.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
-    "copy-json-editor": "copyfiles -f \"node_modules/@json-editor/json-editor/dist/jsoneditor.js\" assets/js/",
+    "copy-json-editor": "cp node_modules/@json-editor/json-editor/dist/jsoneditor.js assets/js/",
     "postinstall": "npm run copy-json-editor"
   },
   "dependencies": {
     "@json-editor/json-editor": "^2.15.1"
-  },
-  "devDependencies": {
-    "copyfiles": "^2.4.1"
   }
 }
