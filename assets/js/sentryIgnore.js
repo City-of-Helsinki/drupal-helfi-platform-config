@@ -36,10 +36,23 @@
    */
   const webCryptoDigestUndefined = { type: 'TypeError', value: "reading 'digest'" };
 
+  /**
+   * Safari and WebKit-based browsers restrict access to Web Storage.
+   * When a script attempts to access sessionStorage, localStorage,
+   * IndexedDB or CacheStorage in a restricted environment, the browser may
+   * throw: "SecurityError: The operation is insecure."
+   *
+   * Common causes are private / incognito browsing modes and third-party iframe
+   * contexts. This typically does not indicate a bug in the application code
+   * itself, but rather a platform-level restriction.
+   */
+  const insecureOperation = { type: 'SecurityError', value: 'The operation is insecure.' };
+
   // List of error types and values to ignore.
   const errorMatchers = [
     safariLoadFailed,
     webCryptoDigestUndefined,
+    insecureOperation,
     // Add more combinations here if needed:
     // { type: 'TypeError', value: 'Failed to fetch' },
   ];
