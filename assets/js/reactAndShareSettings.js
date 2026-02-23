@@ -34,6 +34,26 @@
         console.warn('error reporting works');
       }
 
+      // Prevent Sentry noise from Askem's internal failed fetches in Safari.
+      // Askem can emit unhandled promise rejections like
+      // "TypeError: Load failed (feedback.askem.com)" when its API calls fail.
+      if (drupalSettings.askemMonitoringEnabled && !window.__askemUnhandledRejectionHandlerInstalled) {
+        window.__askemUnhandledRejectionHandlerInstalled = true;
+
+        window.addEventListener('unhandledrejection', (event) => {
+          const reason = event.reason;
+          const reasonText = (typeof reason === 'string' ? reason : reason?.message) ?? '';
+
+          const isAskemLoadFailed =
+            reasonText.includes('Load failed') &&
+            (reasonText.includes('feedback.askem.com') || reasonText.includes('askem.com'));
+
+          if (isAskemLoadFailed) {
+            event.preventDefault();
+          }
+        });
+      }
+
       const scriptElement = document.createElement('script');
       scriptElement.crossOrigin = 'anonymous';
       scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';

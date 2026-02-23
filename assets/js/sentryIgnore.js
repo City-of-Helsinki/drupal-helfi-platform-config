@@ -30,9 +30,29 @@
    */
   const safariLoadFailed = { type: 'TypeError', value: 'Load failed' };
 
+  /**
+   * Third-party code sometimes assumes WebCrypto is available and crashes with:
+   * "Cannot read properties of undefined (reading 'digest')".
+   */
+  const webCryptoDigestUndefined = { type: 'TypeError', value: "reading 'digest'" };
+
+  /**
+   * Safari and WebKit-based browsers restrict access to Web Storage.
+   * When a script attempts to access sessionStorage, localStorage,
+   * IndexedDB or CacheStorage in a restricted environment, the browser may
+   * throw: "SecurityError: The operation is insecure."
+   *
+   * Common causes are private / incognito browsing modes and third-party iframe
+   * contexts. This typically does not indicate a bug in the application code
+   * itself, but rather a platform-level restriction.
+   */
+  const insecureOperation = { type: 'SecurityError', value: 'The operation is insecure.' };
+
   // List of error types and values to ignore.
   const errorMatchers = [
     safariLoadFailed,
+    webCryptoDigestUndefined,
+    insecureOperation,
     // Add more combinations here if needed:
     // { type: 'TypeError', value: 'Failed to fetch' },
   ];
@@ -50,7 +70,12 @@
     const exceptions = event?.exception?.values || [];
 
     return exceptions.some((exception) =>
-      errorMatchers.some((matcher) => exception?.type === matcher.type && exception?.value === matcher.value),
+      errorMatchers.some(
+        (matcher) =>
+          exception?.type === matcher.type &&
+          typeof exception?.value === 'string' &&
+          exception.value.includes(matcher.value),
+      ),
     );
   };
 
