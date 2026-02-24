@@ -37,6 +37,22 @@
   const webCryptoDigestUndefined = { type: 'TypeError', value: "reading 'digest'" };
 
   /**
+   * Some third-party scripts are designed to run inside hybrid mobile
+   * applications (f.e. snapchat), where a native bridge object is injected
+   * into the global scope via WKWebView or Android WebView.
+   *
+   * When such code attempts to access a bridge object like
+   * `SCDynimacBridge` in a normal browser environment where it has not
+   * been injected, the browser throws:
+   *   "ReferenceError: Can't find variable: SCDynimacBridge"
+   *
+   * In standard web browser contexts this typically does not indicate
+   * a defect in the application itself, but rather an environmental
+   * mismatch.
+   */
+  const missingMobileBridge = { type: 'ReferenceError', value: "Can't find variable: SCDynimacBridge" };
+
+  /**
    * Safari and WebKit-based browsers restrict access to Web Storage.
    * When a script attempts to access sessionStorage, localStorage,
    * IndexedDB or CacheStorage in a restricted environment, the browser may
@@ -48,11 +64,23 @@
    */
   const insecureOperation = { type: 'SecurityError', value: 'The operation is insecure.' };
 
+  /**
+   * In some browsers the Web Storage API may be unavailable or disabled.
+   * When a script attempts to access localStorage or indexedDB in such
+   * contexts, the browser may throw:
+   *   "ReferenceError: Can't find variable:"
+   */
+  const localStorageUnavailable = { type: 'ReferenceError', value: "Can't find variable: localStorage" };
+  const indexedDBUnavailable = { type: 'ReferenceError', value: "Can't find variable: indexedDB" };
+
   // List of error types and values to ignore.
   const errorMatchers = [
     safariLoadFailed,
     webCryptoDigestUndefined,
     insecureOperation,
+    missingMobileBridge,
+    localStorageUnavailable,
+    indexedDBUnavailable,
     // Add more combinations here if needed:
     // { type: 'TypeError', value: 'Failed to fetch' },
   ];
