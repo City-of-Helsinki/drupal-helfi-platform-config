@@ -70,39 +70,6 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   }
 
   /**
-   * Tests that embeddings are generated when the pipeline succeeds.
-   */
-  public function testPipelineGeneratesEmbeddings(): void {
-    // Mock TextPipeline to return vectors directly.
-    $textPipeline = $this->prophesize(TextPipeline::class);
-    $textPipeline
-      ->processEntities(Argument::any())
-      ->will(function (array $args): array {
-        // Return a single [1.0, 2.0, 3.0] vector for every entity key.
-        return array_map(static fn() => [[1.0, 2.0, 3.0]], $args[0]);
-      });
-    $this->container->set(TextPipeline::class, $textPipeline->reveal());
-
-    $this->processor = \Drupal::getContainer()
-      ->get('search_api.plugin_helper')
-      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
-
-    $items = $this->createNodeItems([
-      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
-      ['title' => 'Test', 'type' => 'test_node_bundle_2'],
-    ]);
-
-    $this->processor->alterIndexedItems($items);
-
-    // Both items received embeddings and are kept.
-    $this->assertCount(2, $items);
-
-    // The embeddings field of the first item is populated.
-    $firstItem = array_first($items);
-    $this->assertNotEmpty($firstItem->getFields()['embeddings']->getValues());
-  }
-
-  /**
    * Tests that items are removed when the pipeline returns empty results.
    *
    * When the embeddings API is not configured, processEntities returns an

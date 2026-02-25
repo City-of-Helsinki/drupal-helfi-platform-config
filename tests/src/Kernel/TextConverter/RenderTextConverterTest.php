@@ -8,7 +8,6 @@ use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\helfi_platform_config\TextConverter\RenderTextConverter;
-use Drupal\helfi_platform_config\TextConverter\Strategy;
 use Drupal\helfi_platform_config\TextConverter\TextConverterInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
@@ -65,7 +64,7 @@ class RenderTextConverterTest extends EntityKernelTestBase {
     $renderTextConverter = $this->container->get(RenderTextConverter::class);
     $this->assertInstanceOf(TextConverterInterface::class, $renderTextConverter);
 
-    $this->assertFalse($renderTextConverter->applies($node, Strategy::Default));
+    $this->assertFalse($renderTextConverter->applies($node));
 
     // Create text_converter view mode for nodes.
     EntityViewMode::create([
@@ -82,9 +81,9 @@ class RenderTextConverterTest extends EntityKernelTestBase {
       'status' => TRUE,
     ])->save();
 
-    $this->assertTrue($renderTextConverter->applies($node, Strategy::Default));
+    $this->assertTrue($renderTextConverter->applies($node));
 
-    $this->assertStringContainsString($title, $renderTextConverter->convert($node, Strategy::Default));
+    $this->assertStringContainsString($title, $renderTextConverter->convert($node));
   }
 
 }
