@@ -64,14 +64,6 @@ function helfi_platform_config_base_update_9001() : void {
 }
 
 /**
- * Enable STOMP module.
- */
-function helfi_platform_config_base_update_9002() : void {
-  $module_installer = Drupal::service('module_installer');
-  $module_installer->install(['stomp']);
-}
-
-/**
  * UHF-9511 Uninstall content_liftup paragraph.
  */
 function helfi_platform_config_base_update_9003() : void {
@@ -203,4 +195,13 @@ function helfi_platform_config_base_update_9007() : void {
     \Drupal::service('helfi_platform_config.config_update_helper')
       ->update($module);
   }
+}
+
+/**
+ * Disable STOMP module.
+ */
+function helfi_platform_config_base_update_9008() : void {
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = Drupal::service('module_installer');
+  $module_installer->uninstall(['stomp']);
 }

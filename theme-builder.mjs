@@ -17,6 +17,7 @@ const jsFiles = {
   autocomplete: 'assets/js/autocomplete.js',
   headingIdInjector: 'assets/js/headingIdInjector.js',
   headingAnchorButtons: 'assets/js/headingAnchorButtons.js',
+  reactAndShareSettings: 'assets/js/reactAndShareSettings.js',
   sentryIgnore: 'assets/js/sentryIgnore.js',
 };
 

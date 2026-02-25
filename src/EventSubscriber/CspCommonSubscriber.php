@@ -19,6 +19,7 @@ class CspCommonSubscriber extends CspSubscriberBase {
 
   const CONNECT_SRC = [
     'https://*.hel.fi',
+    'https://*.hel.ninja',
   ];
   const FONT_SRC = [
     'https://*.hel.fi',

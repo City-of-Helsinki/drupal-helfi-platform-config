@@ -7,8 +7,11 @@
 
 declare(strict_types=1);
 
+use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\linkit\Entity\Profile;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -210,4 +213,78 @@ function helfi_tpr_config_update_9079(): void {
     // Uninstall the field storage definition.
     \Drupal::entityDefinitionUpdateManager()->uninstallFieldStorageDefinition($fieldStorageDefinition);
   }
+}
+
+/**
+ * UHF-12809: Publish selected HYTE services.
+ */
+function helfi_tpr_config_update_11001(&$sandbox): ?FormattableMarkup {
+  $skip = new FormattableMarkup('Skipped helfi_tpr_config_update_11001().', []);
+  $modulePath = Drupal::service(ModuleExtensionList::class)->getPath('helfi_tpr_config');
+  $json = file_get_contents($modulePath . '/assets/hyte_services.json');
+
+  // Load a list of services from HYTE services JSON.
+  $services = json_decode($json, TRUE);
+
+  if (empty($services)) {
+    return $skip;
+  }
+
+  // Get current project.
+  try {
+    $project = Drupal::service(EnvironmentResolverInterface::class)
+      ->getActiveProject()
+      ->getName();
+  }
+  catch (\InvalidArgumentException) {
+    return $skip;
+  }
+
+  // Bail if current project is not found from the HYTE services JSON.
+  if (empty($project) || !array_key_exists($project, $services)) {
+    return $skip;
+  }
+
+  if (!isset($sandbox['current'])) {
+    $sandbox['current'] = 0;
+    $sandbox['total'] = count($services[$project]);
+    $sandbox['processed'] = 0;
+  }
+
+  $storage = Drupal::entityTypeManager()->getStorage('tpr_service');
+  $serviceIds = $services[$project];
+  $batchSize = 50;
+  $batchEnd = min($sandbox['current'] + $batchSize, $sandbox['total']);
+
+  // Process current batch.
+  for ($i = $sandbox['current']; $i < $batchEnd; $i++) {
+    $id = $serviceIds[$i];
+    /** @var \Drupal\helfi_tpr_config\Entity\Service $tprService */
+    $tprService = $storage->load($id);
+
+    if ($tprService) {
+      foreach ($tprService->getTranslationLanguages() as $language) {
+        /** @var \Drupal\helfi_tpr_config\Entity\Service $translation */
+        $translation = $tprService->getTranslation($language->getId());
+        $translation->setPublished()->save();
+      }
+      $sandbox['processed']++;
+    }
+  }
+
+  // Update progress.
+  $sandbox['current'] = $batchEnd;
+  $sandbox['#finished'] = $sandbox['current'] / $sandbox['total'];
+
+  // Return progress message if not finished.
+  if ($sandbox['#finished'] < 1) {
+    return new FormattableMarkup('Processed @processed/@total TPR services...', [
+      '@processed' => $sandbox['processed'],
+      '@total' => $sandbox['total'],
+    ]);
+  }
+
+  return new FormattableMarkup('Published @num TPR services.', [
+    '@num' => $sandbox['processed'],
+  ]);
 }

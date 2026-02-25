@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\block\Entity\Block;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -155,7 +156,7 @@ function helfi_recommendations_set_text_converter_view_display(string $entity_ty
  *   The block configurations.
  */
 function helfi_recommendations_get_block_configurations(string $theme) : array {
-  $blocks = [
+  return [
     'block' => [
       'id' => 'helfirecommendationsblock',
       'plugin' => 'helfi_recommendations',
@@ -166,7 +167,7 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
         'label_display' => FALSE,
         'provider' => 'helfi_recommendations',
       ],
-      'weight' => 1,
+      'weight' => 10,
       'visibility' => [
         'language' => [
           'id' => 'language',
@@ -198,8 +199,6 @@ function helfi_recommendations_get_block_configurations(string $theme) : array {
       ],
     ],
   ];
-
-  return $blocks;
 }
 
 /**
@@ -346,4 +345,13 @@ function helfi_recommendations_update_10005(&$sandbox) : void {
     $sandbox['#finished'] = TRUE;
   }
 
+}
+
+/**
+ * UHF-12723: Allow adding blocks before recommendations block.
+ */
+function helfi_recommendations_update_11001() : void {
+  Block::load('helfirecommendationsblock')
+    ->setWeight(10)
+    ->save();
 }

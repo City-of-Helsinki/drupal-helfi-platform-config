@@ -1,3 +1,19 @@
+react_search.settings:
+  type: config_object
+  label: 'React search settings'
+  mapping:
+    sentry_dsn_react:
+      type: string
+      label: 'Sentry DSN for React'
+
+elastic_proxy.settings:
+  type: config_object
+  label: 'Elastic proxy settings'
+  mapping:
+    elastic_proxy_url:
+      type: string
+      label: 'Elastic proxy URL'
+
 field.widget.settings.linked_events_select2:
   type: field.widget.settings.select2
   label: 'Linked events Select2 widget'

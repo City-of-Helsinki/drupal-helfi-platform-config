@@ -12,11 +12,13 @@
     "The following packages were updated manually.",
     "Remove this section once the dependencies have been updated in their respective upstream packages.",
     {
-      "diff": "^8.0.3, dependency of ckeditor5-dev"
+      "diff": "^8.0.3, dependency of ckeditor5-dev",
+      "minimatch": ">=10.2.1, dependency of ckeditor5-dev-utils"
     }
   ],
   "overrides": {
-    "diff": "^8.0.3"
+    "diff": "^8.0.3",
+    "minimatch": "^10.2.1"
   },
   "dependencies": {
     "@biomejs/biome": "^2.3.4",
