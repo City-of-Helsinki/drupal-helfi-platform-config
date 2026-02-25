@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\search_api\Entity\Index;
+
 /**
  * Implements hook_schema().
  */
@@ -107,4 +109,18 @@ function helfi_search_update_8002() {
   $config->set('field_settings', $field_settings);
 
   $config->save();
+}
+
+/**
+ * Decrease embeddings index batch size to 20 items per cron run.
+ */
+function helfi_search_update_8003(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $index->setOption('cron_limit', 20);
+  $index->save();
 }

@@ -57,7 +57,7 @@ class TextConverterCommandsTest extends UnitTestCase {
   }
 
   /**
-   * Make sure process command exits gracefully when text converter is not found.
+   * Make sure process command exits gracefully if text converter is not found.
    */
   public function testPreviewNotSupported() : void {
     $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
