@@ -1,4 +1,4 @@
-function getFormData(id, t, parsedSettings) {
+function getFormData(id, t, parsedSettings, formatFinnishEuroCents) {
   return {
     form_id: id,
     has_required_fields: true,
@@ -25,6 +25,21 @@ function getFormData(id, t, parsedSettings) {
           required: false, // If user does not enter this value, we calculate with max limits
           strip: '[€eE ]',
           helper_text: t('gross_income_per_month_explanation'),
+        },
+      },
+      {
+        input_float: {
+          id: 'guardianship_fees',
+          label: t('guardianship_fees'),
+          unit: t('unit_euro'),
+          min: 0,
+          max: parsedSettings.guardianship_fee,
+          size: 20,
+          required: false,
+          strip: '[€eE ]',
+          helper_text: t('guardianship_fees_explanation', {
+            guardianship_fee: formatFinnishEuroCents(parsedSettings.guardianship_fee),
+          }),
         },
       },
       {

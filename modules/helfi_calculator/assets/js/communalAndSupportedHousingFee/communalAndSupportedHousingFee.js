@@ -161,7 +161,8 @@ class CommunalAndSupportedHousingFee {
     };
     // */
     // Form content
-    const getFormData = () => form.getFormData(this.id, this.t, parsedSettings);
+    const getFormData = () =>
+      form.getFormData(this.id, this.t, parsedSettings, this.calculator.formatFinnishEuroCents.bind(this.calculator));
 
     const update = () => {
       const fields = [{ field: 'safety_phone_and_bracelet', group: 'safetyphone_group' }];
@@ -182,6 +183,7 @@ class CommunalAndSupportedHousingFee {
       // Validate basics from form
       errorMessages.push(...this.calculator.validateBasics('household_size'));
       errorMessages.push(...this.calculator.validateBasics('gross_income_per_month'));
+      errorMessages.push(...this.calculator.validateBasics('guardianship_fees'));
       errorMessages.push(...this.calculator.validateBasics('monthly_usage'));
       errorMessages.push(...this.calculator.validateBasics('safety_phone_and_bracelet'));
       errorMessages.push(...this.calculator.validateBasics('grocery_delivery_service'));
@@ -203,6 +205,8 @@ class CommunalAndSupportedHousingFee {
       const grossIncomePerMonth = Number(this.calculator.getFieldValue('gross_income_per_month'));
       const grossIncomePerMonthRaw = this.calculator.getFieldValue('gross_income_per_month');
       const monthlyUsage = Number(this.calculator.getFieldValue('monthly_usage'));
+      const guardianshipFeesRaw = this.calculator.getFieldValue('guardianship_fees');
+      const guardianshipFees = Number(this.calculator.getFieldValue('guardianship_fees'));
       const safetyPhoneAndBracelet = this.calculator.getFieldValue('safety_phone_and_bracelet');
       const groceryDeliveryService = this.calculator.getFieldValue('grocery_delivery_service');
       const mealService = this.calculator.getFieldValue('meal_service');
@@ -226,7 +230,13 @@ class CommunalAndSupportedHousingFee {
 
       // 4. If user has given income details, calculate based on that
       if (grossIncomePerMonthRaw !== null) {
-        communalAndSupportedHousingPayment = (grossIncomePerMonth - incomeLimit) * (percentForHouseholdSize / 100);
+        if (guardianshipFeesRaw !== null) {
+          // If user has given guardianship fees, we subtract them from gross income before calculating payment
+          communalAndSupportedHousingPayment =
+            (grossIncomePerMonth - guardianshipFees - incomeLimit) * (percentForHouseholdSize / 100);
+        } else {
+          communalAndSupportedHousingPayment = (grossIncomePerMonth - incomeLimit) * (percentForHouseholdSize / 100);
+        }
       }
 
       // Clamp payment between 0 and max payment, round to even eurocents

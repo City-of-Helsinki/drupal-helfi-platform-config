@@ -1,8 +1,13 @@
-function getFormData(id, t) {
+function getFormData(id, t, parsedSettings, formatFinnishEuroCents) {
   return {
     form_id: id,
     has_required_fields: true,
     items: [
+      {
+        paragraph: {
+          text: t('calculator_instructions'),
+        },
+      },
       {
         heading: {
           text: t('net_income_heading'),
@@ -69,10 +74,13 @@ function getFormData(id, t) {
           label: t('guardianship_fees'),
           unit: t('unit_euro'),
           min: 0,
+          max: parsedSettings.guardianship_fee,
           size: 20,
           required: false,
           strip: '[€eE ]',
-          helper_text: t('guardianship_fees_explanation'),
+          helper_text: t('guardianship_fees_explanation', {
+            guardianship_fee: formatFinnishEuroCents(parsedSettings.guardianship_fee),
+          }),
         },
       },
       {
@@ -232,10 +240,13 @@ function getFormData(id, t) {
                 label: t('spouse_guardianship_fees'),
                 unit: t('unit_euro'),
                 min: 0,
+                max: parsedSettings.guardianship_fee,
                 size: 20,
                 required: false,
                 strip: '[€eE ]',
-                helper_text: t('spouse_guardianship_fees_explanation'),
+                helper_text: t('spouse_guardianship_fees_explanation', {
+                  guardianship_fee: formatFinnishEuroCents(parsedSettings.guardianship_fee),
+                }),
               },
             },
 

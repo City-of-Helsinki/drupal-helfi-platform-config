@@ -20,7 +20,8 @@ class LongtermAssistedLivingFee {
     };
     // */
     // Form content
-    const getFormData = () => form.getFormData(this.id, this.t);
+    const getFormData = () =>
+      form.getFormData(this.id, this.t, parsedSettings, this.calculator.formatFinnishEuroCents.bind(this.calculator));
 
     const update = () => {
       const fields = [{ field: 'has_spouse', group: 'spouse_income_group' }];
