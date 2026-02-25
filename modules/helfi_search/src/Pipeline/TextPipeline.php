@@ -76,7 +76,7 @@ class TextPipeline implements LoggerAwareInterface {
    * @param array<string, \Drupal\Core\Entity\EntityInterface> $entities
    *   Entities keyed by an arbitrary string identifier.
    *
-   * @return array<string, array{'vector': array<float[]>, 'chunk': \Drupal\helfi_search\Pipeline\Chunk}>
+   * @return array<string, array{'vector': float[], 'content': string}[]>
    *   Embedding vectors keyed by the same identifiers. Each value is an array
    *   of vectors (one per chunk). Keys with no results are omitted.
    */

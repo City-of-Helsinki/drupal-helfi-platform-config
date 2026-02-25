@@ -12,6 +12,7 @@ use Drupal\helfi_recommendations\TopicsManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Drush\Commands\DrushCommands;
 use Drush\Style\DrushStyle;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Input\InputInterface;

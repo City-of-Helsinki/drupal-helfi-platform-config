@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_platform_config\Unit\Drush\Commands;
+namespace Drupal\Tests\helfi_search\Unit\Drush\Commands;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\helfi_platform_config\Drush\Commands\TextConverterCommands;
-use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
+use Drupal\helfi_search\Drush\Commands\TextPipelineCommands;
+use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeStorage;
 use Drupal\Tests\UnitTestCase;
-use Drush\Commands\DrushCommands;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Tests for TextConverterCommands.
+ * Tests for TextPipelineCommands.
  */
 class TextConverterCommandsTest extends UnitTestCase {
 
@@ -32,10 +33,11 @@ class TextConverterCommandsTest extends UnitTestCase {
       ->shouldBeCalled()
       ->willThrow(new PluginNotFoundException('node'));
     $sut = $this->getSut(entityTypeManager: $entityTypeManager->reveal());
+    $input = $this->prophesize(InputInterface::class);
     $output = $this->prophesize(OutputInterface::class);
 
-    $result = $sut($output->reveal(), 'node', '1');
-    $this->assertEquals(DrushCommands::EXIT_FAILURE, $result);
+    $result = $sut($input->reveal(), $output->reveal(), 'node', '1');
+    $this->assertEquals(Command::FAILURE, $result);
   }
 
   /**
@@ -49,15 +51,16 @@ class TextConverterCommandsTest extends UnitTestCase {
       ->willReturn(NULL);
     $entityTypeManager->getStorage('node')->willReturn($nodeStorage->reveal());
     $sut = $this->getSut(entityTypeManager: $entityTypeManager->reveal());
+    $input = $this->prophesize(InputInterface::class);
     $output = $this->prophesize(OutputInterface::class);
     $output->writeln('Entity node:1 not found.')->shouldBeCalled();
 
-    $result = $sut($output->reveal(), 'node', '1');
-    $this->assertEquals(DrushCommands::EXIT_FAILURE, $result);
+    $result = $sut($input->reveal(), $output->reveal(), 'node', '1');
+    $this->assertEquals(Command::FAILURE, $result);
   }
 
   /**
-   * Make sure process command exits gracefully if text converter is not found.
+   * Make sure command exits gracefully when pipeline returns no results.
    */
   public function testPreviewNotSupported() : void {
     $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
@@ -67,12 +70,21 @@ class TextConverterCommandsTest extends UnitTestCase {
       ->shouldBeCalled()
       ->willReturn($node->reveal());
     $entityTypeManager->getStorage('node')->willReturn($nodeStorage->reveal());
-    $sut = $this->getSut(entityTypeManager: $entityTypeManager->reveal());
+
+    $textPipeline = $this->prophesize(TextPipeline::class);
+    $textPipeline->processEntities([$node->reveal()])
+      ->willReturn([]);
+
+    $sut = $this->getSut(
+      entityTypeManager: $entityTypeManager->reveal(),
+      textPipeline: $textPipeline->reveal(),
+    );
+    $input = $this->prophesize(InputInterface::class);
     $output = $this->prophesize(OutputInterface::class);
     $output->writeln('Failed to find text converter for node:1')->shouldBeCalled();
 
-    $result = $sut($output->reveal(), 'node', '1');
-    $this->assertEquals(DrushCommands::EXIT_FAILURE, $result);
+    $result = $sut($input->reveal(), $output->reveal(), 'node', '1');
+    $this->assertEquals(Command::FAILURE, $result);
   }
 
   /**
@@ -80,18 +92,19 @@ class TextConverterCommandsTest extends UnitTestCase {
    */
   private function getSut(
     ?EntityTypeManagerInterface $entityTypeManager = NULL,
-    ?TextConverterManager $textConverter = NULL,
-  ) : TextConverterCommands {
+    ?TextPipeline $textPipeline = NULL,
+  ) : TextPipelineCommands {
     if (!$entityTypeManager) {
       $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class)->reveal();
     }
-    if (!$textConverter) {
-      $textConverter = new TextConverterManager();
+
+    if (!$textPipeline) {
+      $textPipeline = $this->prophesize(TextPipeline::class)->reveal();
     }
 
     $logger = $this->prophesize(LoggerInterface::class);
 
-    return new TextConverterCommands($entityTypeManager, $textConverter, $logger->reveal());
+    return new TextPipelineCommands($entityTypeManager, $textPipeline, $logger->reveal());
   }
 
 }

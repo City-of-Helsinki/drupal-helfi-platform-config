@@ -21,13 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
- * Provides drush commands for debugging text conversion.
+ * Provides drush commands for debugging text pipeline.
  */
 #[AsCommand(
-  name: 'helfi:text-converter',
+  name: 'helfi:text-pipeline',
   description: 'Preview text conversion result.',
 )]
-final class TextConverterCommands extends Command {
+final class TextPipelineCommands extends Command {
 
   use AutowireTrait;
 
