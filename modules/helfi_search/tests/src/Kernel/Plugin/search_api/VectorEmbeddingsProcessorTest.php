@@ -11,12 +11,14 @@ use Drupal\search_api\Item\Field;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\search_api\Kernel\Processor\ProcessorTestBase;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\Argument;
 
 /**
  * Tests for search api plugin.
  */
 #[Group('helfi_search')]
+#[RunTestsInSeparateProcesses]
 class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
 
   /**

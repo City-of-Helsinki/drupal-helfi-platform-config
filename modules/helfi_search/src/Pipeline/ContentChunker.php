@@ -85,7 +85,7 @@ class ContentChunker {
   private function splitByHeadings(string $markdown): array {
     // Split and capture the delimiter groups: hash chars and heading text.
     $parts = preg_split(
-      '/^(#{1,3})\s+(.+)\n$/m',
+      '/^(#{1,3})\s+(.+)\n$/mu',
       $markdown,
       flags: PREG_SPLIT_DELIM_CAPTURE,
     );

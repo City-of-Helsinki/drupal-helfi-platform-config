@@ -74,12 +74,12 @@ class ContentChunkerTest extends UnitTestCase {
       '',
       '## Section B',
       '',
-      str_repeat('Content B. ', 50),
+      str_repeat('Content B. ', 300),
     ]);
 
     $chunks = $this->getSut()->chunk($markdown);
 
-    $this->assertGreaterThanOrEqual(2, count($chunks));
+    $this->assertEquals(5, count($chunks));
 
     $titles = array_column(array_map(fn(Chunk $c) => $c->context, $chunks), 'title');
     $this->assertContains('Subsection One', $titles);
