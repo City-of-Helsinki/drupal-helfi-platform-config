@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_platform_config\Drush\Commands;
+namespace Drupal\helfi_search\Drush\Commands;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_platform_config\TextConverter\Strategy;
-use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
+use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drush\Commands\AutowireTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\Argument;
@@ -34,8 +33,8 @@ final class TextConverterCommands extends Command {
 
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly TextConverterManager $textConverter,
-    #[Autowire(service: 'logger.channel.helfi_platform_config')]
+    private readonly TextPipeline $textPipeline,
+    #[Autowire(service: 'logger.channel.helfi_search')]
     private readonly LoggerInterface $logger,
   ) {
     parent::__construct();
@@ -56,10 +55,6 @@ final class TextConverterCommands extends Command {
     string $id,
     #[Option(description: 'Entity language', suggestedValues: ['fi', 'sv', 'en'])]
     string $language = 'fi',
-    #[Option(description: 'Text conversion strategy')]
-    Strategy $strategy = Strategy::Default,
-    #[Option(description: 'Split text into chunks by heading level')]
-    bool $chunk = FALSE,
   ) : int {
     try {
       $entity = $this->entityTypeManager
@@ -78,30 +73,21 @@ final class TextConverterCommands extends Command {
         $entity = $entity->getTranslation($language);
       }
 
-      if ($chunk) {
-        $chunks = $this->textConverter->chunk($entity, $strategy);
+      $results = $this->textPipeline->processEntities([$entity]);
 
-        if (empty($chunks)) {
-          $output->writeln("Failed to find text converter for $entity_type:$id");
-          return self::FAILURE;
-        }
-
-        foreach ($chunks as $i => $text) {
-          $output->writeln("=========================================");
-          $output->writeln("| Chunk $i");
-          $output->writeln("=========================================");
-          $output->writeln($text);
-        }
-
-        return self::SUCCESS;
+      if (empty($results)) {
+        $output->writeln("Failed to find text converter for $entity_type:$id");
+        return self::FAILURE;
       }
 
-      if ($content = $this->textConverter->convert($entity, $strategy)) {
-        $output->writeln($content);
-        return self::SUCCESS;
+      foreach ($results as $chunks) {
+        foreach ($chunks as $chunk) {
+          $output->writeln($chunk['content']);
+          $output->writeln("=========================================");
+        }
       }
 
-      $output->writeln("Failed to find text converter for $entity_type:$id");
+      return self::SUCCESS;
     }
     catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
       Error::logException($this->logger, $e);

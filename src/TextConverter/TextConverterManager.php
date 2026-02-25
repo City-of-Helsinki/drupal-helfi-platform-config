@@ -48,46 +48,19 @@ class TextConverterManager {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   Entity to convert.
-   * @param \Drupal\helfi_platform_config\TextConverter\Strategy $strategy
-   *   Conversion strategy.
    *
    * @return string|null
    *   Text output or NULL if no suitable converter exists.
    */
-  public function convert(EntityInterface $entity, Strategy $strategy = Strategy::Default) : ?string {
+  public function convert(EntityInterface $entity) : ?string {
     // Use the first applicable converter.
     foreach ($this->getTextConverters() as $converter) {
-      if ($converter->applies($entity, $strategy)) {
-        return $converter->convert($entity, $strategy);
+      if ($converter->applies($entity)) {
+        return $converter->convert($entity);
       }
     }
 
     return NULL;
-  }
-
-  /**
-   * Convert a given entity to text chunks.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   Entity to convert.
-   * @param \Drupal\helfi_platform_config\TextConverter\Strategy $strategy
-   *   Conversion strategy.
-   * @param int $headerLevel
-   *   The heading level to split on (e.g. 2 for ##).
-   * @param string[] $context
-   *   Additional context lines to prepend to every chunk.
-   *
-   * @return string[]
-   *   Text chunks or empty array if no suitable converter exists.
-   */
-  public function chunk(EntityInterface $entity, Strategy $strategy = Strategy::Markdown, int $headerLevel = 2, array $context = []): array {
-    foreach ($this->getTextConverters() as $converter) {
-      if ($converter->applies($entity, $strategy)) {
-        return $converter->chunk($entity, $strategy, $headerLevel, $context);
-      }
-    }
-
-    return [];
   }
 
   /**

@@ -103,8 +103,4 @@ services:
     tags:
       - { name: helfi_platform_config.text_converter, priority: -1 }
 
-  Drupal\helfi_platform_config\TextConverter\MarkdownTextConverter:
-    tags:
-      - { name: helfi_platform_config.text_converter, priority: -1 }
-
   Drupal\helfi_platform_config\JsInliner: ~

@@ -9,42 +9,26 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Render\RendererInterface;
-use League\HTMLToMarkdown\HtmlConverter;
 
 /**
  * Coverts entity to text by rendering it and then stripping html tags.
  */
-readonly class RenderTextConverter implements TextConverterInterface {
+final class RenderTextConverter implements TextConverterInterface {
 
-  /**
-   * The Drupal view mode that is used for text conversion.
-   */
   public const string TEXT_CONVERTER_VIEW_MODE = 'text_converter';
 
-  /**
-   * Strategies that this converter supports.
-   */
-  public const array STRATEGIES = [
-    Strategy::Default,
-    Strategy::Markdown,
-  ];
-
   public function __construct(
-    private EntityTypeManagerInterface $entityTypeManager,
-    private EntityDisplayRepositoryInterface $displayRepository,
-    private RendererInterface $renderer,
-    private ModuleHandlerInterface $moduleHandler,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly EntityDisplayRepositoryInterface $displayRepository,
+    private readonly RendererInterface $renderer,
+    private readonly ModuleHandlerInterface $moduleHandler,
   ) {
   }
 
   /**
    * {@inheritDoc}
    */
-  public function applies(EntityInterface $entity, Strategy $strategy): bool {
-    if (!in_array($strategy, static::STRATEGIES)) {
-      return FALSE;
-    }
-
+  public function applies(EntityInterface $entity): bool {
     // This converter matches entities that have
     // text_converter display enabled.
     $viewModes = $this
@@ -57,46 +41,7 @@ readonly class RenderTextConverter implements TextConverterInterface {
   /**
    * {@inheritDoc}
    */
-  public function convert(EntityInterface $entity, Strategy $strategy): string {
-    $document = $this->renderEntity($entity);
-
-    if ($strategy === Strategy::Markdown) {
-      $converter = new HtmlConverter([
-        'strip_tags' => TRUE,
-        'remove_nodes' => '',
-        'header_style' => 'atx',
-      ]);
-
-      return $this->cleanNewlines($converter->convert((string) $document));
-    }
-
-    if ($strategy === Strategy::Default) {
-      // Strip HTML tags, entities and excessive newlines.
-      return $this->cleanNewlines(html_entity_decode(strip_tags((string) $document)));
-    }
-
-    throw new \InvalidArgumentException("Unknown strategy");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function chunk(EntityInterface $entity, Strategy $strategy, int $headerLevel = 2, array $context = []): array {
-    $text = $this->convert($entity, $strategy);
-    return [$text];
-  }
-
-  /**
-   * Clean up excessive newlines.
-   */
-  protected function cleanNewlines(string $html): string {
-    return trim(preg_replace("/\n\s*\n\s*/u", "\n\n", $html));
-  }
-
-  /**
-   * Render entity as HTML.
-   */
-  protected function renderEntity(EntityInterface $entity): Document {
+  public function convert(EntityInterface $entity): string {
     $builder = $this
       ->entityTypeManager
       ->getViewBuilder($entity->getEntityTypeId());
@@ -114,7 +59,8 @@ readonly class RenderTextConverter implements TextConverterInterface {
       $entity
     );
 
-    return $document;
+    // Strip HTML tags, entities and excessive newlines.
+    return trim(preg_replace("/\n\s*/u", "\n", html_entity_decode(strip_tags((string) $document))));
   }
 
 }

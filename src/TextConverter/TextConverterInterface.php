@@ -21,42 +21,21 @@ interface TextConverterInterface {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   Entity to convert.
-   * @param \Drupal\helfi_platform_config\TextConverter\Strategy $strategy
-   *   Conversion strategy.
    *
    * @return bool
    *   TRUE if this converter applies to given entity.
    */
-  public function applies(EntityInterface $entity, Strategy $strategy) : bool;
+  public function applies(EntityInterface $entity) : bool;
 
   /**
    * Converts given entity to raw text.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   Entity to convert.
-   * @param \Drupal\helfi_platform_config\TextConverter\Strategy $strategy
-   *   Conversion strategy.
    *
    * @return string
    *   Entity converted to text.
    */
-  public function convert(EntityInterface $entity, Strategy $strategy) : string;
-
-  /**
-   * Converts given entity to text chunks.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   Entity to convert.
-   * @param \Drupal\helfi_platform_config\TextConverter\Strategy $strategy
-   *   Conversion strategy.
-   * @param int $headerLevel
-   *   The heading level to split on (e.g. 2 for ##).
-   * @param string[] $context
-   *   Additional context lines to prepend to every chunk.
-   *
-   * @return string[]
-   *   Entity text split into chunks.
-   */
-  public function chunk(EntityInterface $entity, Strategy $strategy, int $headerLevel = 2, array $context = []): array;
+  public function convert(EntityInterface $entity) : string;
 
 }
