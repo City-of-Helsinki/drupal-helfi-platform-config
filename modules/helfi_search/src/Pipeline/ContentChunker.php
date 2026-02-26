@@ -62,6 +62,19 @@ class ContentChunker {
       // The section's own heading is the last context entry (if any).
       $parent = array_last($stack);
 
+      $body = trim($body);
+
+      // If the section has no body (heading immediately followed by another
+      // heading), track it in the stack as a parent but don't emit a chunk.
+      if ($title && empty($body)) {
+        $text = sprintf("%s %s", str_repeat('#', $level), $title);
+        $stack[$level] = new Chunk($text, $parent, [
+          'title' => $title,
+          'level' => $level,
+        ]);
+        continue;
+      }
+
       foreach ($this->recursiveSplit($body) as $subText) {
         // Add current title to each chunk.
         $text = $title ? sprintf("%s %s\n%s", str_repeat('#', $level), $title, $subText) : $subText;
@@ -91,7 +104,7 @@ class ContentChunker {
     );
 
     if ($parts === FALSE) {
-      throw new \InvalidArgumentException('Invalid markdown string');
+      throw new PipelineException('Invalid markdown string');
     }
 
     $sections = [];

@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\Pipeline;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Masterminds\HTML5;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
 /**
  * Extracts HTML from an entity's canonical URL via HTTP request.
@@ -21,9 +20,7 @@ use Psr\Log\LoggerAwareTrait;
  *
  * Varnish caching should make this efficient for already-cached pages.
  */
-class HtmlExtractor implements LoggerAwareInterface {
-
-  use LoggerAwareTrait;
+class HtmlExtractor {
 
   public function __construct(
     private readonly ClientInterface $httpClient,
@@ -40,11 +37,16 @@ class HtmlExtractor implements LoggerAwareInterface {
    * @return \DOMDocument
    *   Parsed HTML document.
    *
-   * @throws \GuzzleHttp\Exception\GuzzleException
+   * @throws \Drupal\helfi_search\Pipeline\PipelineException
    *   When the HTTP request fails.
    */
   public function extract(EntityInterface $entity): \DOMDocument {
-    $url = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    try {
+      $url = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    }
+    catch (EntityMalformedException $e) {
+      throw new PipelineException($e->getMessage(), previous: $e);
+    }
 
     try {
       $response = $this->httpClient->request('GET', $url, [
@@ -62,11 +64,7 @@ class HtmlExtractor implements LoggerAwareInterface {
       return $html5->loadHTML((string) $response->getBody());
     }
     catch (GuzzleException $e) {
-      $this->logger?->error('Failed to extract HTML from @url: @message', [
-        '@url' => $url,
-        '@message' => $e->getMessage(),
-      ]);
-      throw $e;
+      throw new PipelineException($e->getMessage(), previous: $e);
     }
   }
 

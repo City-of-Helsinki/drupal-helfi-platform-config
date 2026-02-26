@@ -22,7 +22,8 @@ class HtmlCleaner {
    * Exact CSS classes to remove.
    */
   private const array REMOVE_CLASSES = [
-    'is-hidden', 'visually-hidden', 'skip-link',
+    'is-hidden', 'visually-hidden', 'skip-link', 'table-of-contents',
+    'component--recommendations', 'component--map',
   ];
 
   /**

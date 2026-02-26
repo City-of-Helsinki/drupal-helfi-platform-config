@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
 
+use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -54,21 +55,18 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   }
 
   /**
-   * Tests that items are removed when the pipeline returns no results.
+   * Tests that extraction failure propagates as PipelineException.
    *
    * In a kernel test there is no HTTP server, so the real TextPipeline fails
-   * during HTML extraction and processEntities returns an empty array.
+   * during HTML extraction.
    */
-  public function testItemsRemovedWhenExtractionFails(): void {
+  public function testExtractionFailureThrowsPipelineException(): void {
     $items = $this->createNodeItems([
       ['title' => 'Test', 'type' => 'test_node_bundle_1'],
-      ['title' => 'Test', 'type' => 'test_node_bundle_2'],
     ]);
 
+    $this->expectException(PipelineException::class);
     $this->processor->alterIndexedItems($items);
-
-    // All items are removed since the pipeline fails (no HTTP server).
-    $this->assertCount(0, $items);
   }
 
   /**

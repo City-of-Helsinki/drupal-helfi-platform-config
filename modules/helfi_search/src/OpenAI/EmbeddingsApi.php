@@ -57,7 +57,6 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     }
 
     // Truncate long strings.
-    // @todo we should experiment with chunking.
     $input = array_map(static fn ($item) => Unicode::truncate($item, self::MAX_INPUT_LENGTH, TRUE), $input);
 
     try {
@@ -75,16 +74,16 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
         ],
       ]);
 
-      $body = Utils::jsonDecode($response->getBody()->getContents(), TRUE);
+      $body = Utils::jsonDecode($response->getBody()->getContents());
 
-      if (!isset($body['data']) || !is_array($body['data'])) {
+      if (!isset($body->data) || !is_array($body->data)) {
         throw new EmbeddingsModelException('Invalid response format from OpenAI API');
       }
 
       $response = new Response(
-        $body['model'],
-        array_column($body['data'], 'embedding'),
-        $body['usage']['total_tokens'] ?? 0
+        $body->model,
+        array_column($body->data, 'embedding'),
+        $body->usage->total_tokens ?? 0
       );
 
       // Track token usage.

@@ -21,7 +21,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   description: new TranslatableMarkup("Adds vector embeddings to index."),
   stages: [
     "add_properties" => 0,
-    "alter_items" => 0,
+    // This should be called after alter plugins that filter items.
+    "alter_items" => 999,
   ],
 )]
 final class VectorEmbeddingsProcessor extends ProcessorPluginBase {

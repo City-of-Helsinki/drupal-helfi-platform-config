@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\Pipeline;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Utility\Error;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
 /**
  * Converts Drupal entities into vector embeddings.
@@ -29,9 +26,7 @@ use Psr\Log\LoggerAwareTrait;
  * - MetadataComposer: Which entity metadata is prepended to each chunk.
  * - EmbeddingsModelInterface: Which embedding model/provider is used.
  */
-class TextPipeline implements LoggerAwareInterface {
-
-  use LoggerAwareTrait;
+class TextPipeline {
 
   public function __construct(
     private readonly HtmlExtractor $htmlExtractor,
@@ -55,8 +50,8 @@ class TextPipeline implements LoggerAwareInterface {
    * @return string[]
    *   Chunks, ready for embedding.
    *
-   * @throws \GuzzleHttp\Exception\GuzzleException
-   *   When HTML extraction fails.
+   * @throws \Drupal\helfi_search\Pipeline\PipelineException
+   *   When a pipeline stage fails.
    */
   private function process(EntityInterface $entity): array {
     $doc = $this->htmlExtractor->extract($entity);
@@ -70,34 +65,27 @@ class TextPipeline implements LoggerAwareInterface {
   /**
    * Process entities through the full pipeline and return embeddings.
    *
-   * Entities that fail text processing are logged and skipped. If no entities
-   * produce text, or the embedding API call fails, an empty array is returned.
-   *
    * @param array<string, \Drupal\Core\Entity\EntityInterface> $entities
    *   Entities keyed by an arbitrary string identifier.
    *
    * @return array<string, array{'vector': float[], 'content': string}[]>
    *   Embedding vectors keyed by the same identifiers. Each value is an array
    *   of vectors (one per chunk). Keys with no results are omitted.
+   *
+   * @throws \Drupal\helfi_search\Pipeline\PipelineException
+   *   When the pipeline fails.
    */
   public function processEntities(array $entities): array {
     $textsForEmbedding = [];
     $entityChunkMap = [];
 
     foreach ($entities as $key => $entity) {
-      try {
-        $chunks = $this->process($entity);
+      $chunks = $this->process($entity);
 
-        foreach ($chunks as $chunkIndex => $chunk) {
-          $flatKey = $key . ':' . $chunkIndex;
-          $textsForEmbedding[$flatKey] = $chunk;
-          $entityChunkMap[$key][] = $flatKey;
-        }
-      }
-      catch (\Throwable $e) {
-        if ($this->logger) {
-          Error::logException($this->logger, $e);
-        }
+      foreach ($chunks as $chunkIndex => $chunk) {
+        $flatKey = $key . ':' . $chunkIndex;
+        $textsForEmbedding[$flatKey] = $chunk;
+        $entityChunkMap[$key][] = $flatKey;
       }
     }
 
@@ -109,11 +97,7 @@ class TextPipeline implements LoggerAwareInterface {
       $embeddings = $this->embeddingsModel->batchGetEmbedding($textsForEmbedding);
     }
     catch (EmbeddingsModelException $e) {
-      if ($this->logger) {
-        Error::logException($this->logger, $e);
-      }
-
-      return [];
+      throw new PipelineException($e->getMessage(), previous: $e);
     }
 
     $results = [];

@@ -112,20 +112,6 @@ function helfi_search_update_8002() {
 }
 
 /**
- * Decrease embeddings index batch size to 20 items per cron run.
- */
-function helfi_search_update_8003(): void {
-  $index = Index::load('embeddings');
-
-  if (!$index) {
-    return;
-  }
-
-  $index->setOption('cron_limit', 20);
-  $index->save();
-}
-
-/**
  * Add new processors and TPR datasources to the embeddings index.
  */
 function helfi_search_update_8004(): void {
@@ -151,5 +137,19 @@ function helfi_search_update_8004(): void {
     }
   }
 
+  $index->save();
+}
+
+/**
+ * Decrease embeddings index batch size per cron run.
+ */
+function helfi_search_update_11001(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $index->setOption('cron_limit', 5);
   $index->save();
 }

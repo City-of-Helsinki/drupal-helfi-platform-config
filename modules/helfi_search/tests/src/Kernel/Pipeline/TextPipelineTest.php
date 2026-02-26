@@ -12,6 +12,7 @@ use Drupal\helfi_search\Pipeline\HtmlExtractor;
 use Drupal\helfi_search\Pipeline\MarkdownConverter;
 use Drupal\helfi_search\Pipeline\MetadataComposer;
 use Drupal\helfi_search\Pipeline\TextNormalizer;
+use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Entity\NodeType;
@@ -95,33 +96,22 @@ class TextPipelineTest extends KernelTestBase {
   }
 
   /**
-   * Tests that a failing entity is skipped while others succeed.
+   * Tests that a failing entity causes the whole pipeline to fail.
    */
-  public function testSkipsFailedEntityAndProcessesOthers(): void {
+  public function testFailingEntityFailsPipeline(): void {
     $pipeline = $this->getSut(
-      [
-        new TransferException('Connection error'),
-        new Response(body: '<html><body><p>Content.</p></body></html>'),
-      ],
+      [new TransferException('Connection error')],
       $this->mockEmbeddingsModel([0.5, 0.6])->reveal(),
     );
 
-    $node1 = $this->createNode([
+    $node = $this->createNode([
       'title' => 'Fails',
       'type' => 'page',
     ]);
-    $node2 = $this->createNode([
-      'title' => 'Works',
-      'type' => 'page',
-    ]);
 
-    $results = $pipeline->processEntities([
-      'fail' => $node1,
-      'ok' => $node2,
-    ]);
-
-    $this->assertArrayNotHasKey('fail', $results);
-    $this->assertArrayHasKey('ok', $results);
+    $this->expectException(PipelineException::class);
+    $this->expectExceptionMessage('Connection error');
+    $pipeline->processEntities(['fail' => $node]);
   }
 
   /**
