@@ -114,7 +114,7 @@ function helfi_search_update_8002() {
 /**
  * Add new processors and TPR datasources to the embeddings index.
  */
-function helfi_search_update_8004(): void {
+function helfi_search_update_11000(): void {
   $index = Index::load('embeddings');
 
   if (!$index) {
@@ -141,7 +141,7 @@ function helfi_search_update_8004(): void {
 }
 
 /**
- * Decrease embeddings index batch size per cron run.
+ * Replace node-specific title field with entity label processor field.
  */
 function helfi_search_update_11001(): void {
   $index = Index::load('embeddings');
@@ -150,6 +150,45 @@ function helfi_search_update_11001(): void {
     return;
   }
 
-  $index->setOption('cron_limit', 5);
+  // Remove the old node-specific title field.
+  if ($index->getField('title')) {
+    $index->removeField('title');
+  }
+
+  // Add the entity label field backed by the new processor.
+  if (!$index->getField('label')) {
+    /** @var \Drupal\search_api\Utility\PluginHelperInterface $pluginHelper */
+    $pluginHelper = \Drupal::service('search_api.plugin_helper');
+
+    // Enable the helfi_entity_label processor.
+    if (!$index->isValidProcessor('helfi_entity_label')) {
+      $processor = $pluginHelper->createProcessorPlugin($index, 'helfi_entity_label');
+      $index->addProcessor($processor);
+    }
+
+    $field = \Drupal::getContainer()
+      ->get('search_api.fields_helper')
+      ->createField($index, 'label', [
+        'label' => 'Entity label',
+        'property_path' => 'helfi_entity_label',
+        'type' => 'string',
+      ]);
+    $index->addField($field);
+  }
+
+  $index->save();
+}
+
+/**
+ * Decrease embeddings index batch size per cron run.
+ */
+function helfi_search_update_11002(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $index->setOption('cron_limit', 1);
   $index->save();
 }
