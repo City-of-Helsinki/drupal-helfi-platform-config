@@ -81,7 +81,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
       }
 
       $response = new Response(
-        $body->model,
+        $body->model ?? '',
         array_column($body->data, 'embedding'),
         $body->usage->total_tokens ?? 0
       );
