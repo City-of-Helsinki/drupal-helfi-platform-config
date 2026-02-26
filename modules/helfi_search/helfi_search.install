@@ -124,3 +124,32 @@ function helfi_search_update_8003(): void {
   $index->setOption('cron_limit', 20);
   $index->save();
 }
+
+/**
+ * Add new processors and TPR datasources to the embeddings index.
+ */
+function helfi_search_update_8004(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $moduleHandler = \Drupal::moduleHandler();
+  /** @var \Drupal\search_api\Utility\PluginHelperInterface $pluginHelper */
+  $pluginHelper = \Drupal::service('search_api.plugin_helper');
+
+  // Add TPR datasources if helfi_tpr module is installed.
+  if ($moduleHandler->moduleExists('helfi_tpr')) {
+    $tpr_datasources = ['entity:tpr_service', 'entity:tpr_unit'];
+
+    foreach ($tpr_datasources as $datasource_id) {
+      if (!$index->isValidDatasource($datasource_id)) {
+        $datasource = $pluginHelper->createDatasourcePlugin($index, $datasource_id);
+        $index->addDatasource($datasource);
+      }
+    }
+  }
+
+  $index->save();
+}
