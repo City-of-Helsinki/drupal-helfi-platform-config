@@ -112,12 +112,14 @@ class SearchTestForm extends FormBase {
         if (!empty($result['search_results'])) {
           $rows = [];
           foreach ($result['search_results'] as $hit) {
+            $excerpt = mb_strimwidth($hit['content'], 0, 200, '...');
+
             $rows[] = [
               'score' => number_format($hit['score'], 4),
-              'id' => htmlspecialchars($hit['id']),
               'entity_type' => htmlspecialchars($hit['entity_type']),
               'url' => $hit['url'] ? Link::fromTextAndUrl(htmlspecialchars($hit['title']), Url::fromUserInput($hit['url'])) : '-',
               'language' => htmlspecialchars($hit['language']),
+              'content' => htmlspecialchars($excerpt),
             ];
           }
 
@@ -125,10 +127,10 @@ class SearchTestForm extends FormBase {
             '#type' => 'table',
             '#header' => [
               $this->t('Score'),
-              $this->t('ID'),
               $this->t('Entity Type'),
               $this->t('URL'),
               $this->t('Language'),
+              $this->t('Content'),
             ],
             '#rows' => $rows,
             '#empty' => $this->t('No similar documents found.'),
@@ -185,21 +187,29 @@ class SearchTestForm extends FormBase {
         'index' => self::INDEX_NAME,
         'body' => [
           'knn' => [
-            'field' => 'embeddings',
+            'field' => 'embeddings.vector',
             'query_vector' => $embeddings,
             'k' => 10,
             'num_candidates' => 100,
+            "inner_hits" => [
+              "_source" => FALSE,
+              "fields" => [
+                "embeddings.content",
+              ],
+              "size" => 1,
+            ],
             'filter' => [
               'term' => [
                 'search_api_language' => $currentLanguage,
               ],
             ],
           ],
+          "size" => 10,
           '_source' => [
             'id',
             'entity_type',
             'url',
-            'title',
+            'label',
             'search_api_language',
             'search_api_datasource',
           ],
@@ -210,14 +220,17 @@ class SearchTestForm extends FormBase {
       $search_results = [];
       if (isset($results['hits']['hits'])) {
         foreach ($results['hits']['hits'] as $hit) {
+          $content = $hit['inner_hits']['embeddings']['hits']['hits'][0]['fields']['embeddings'][0]['content'][0] ?? '';
+
           $search_results[] = [
             'id' => $hit['_id'],
             'score' => $hit['_score'] ?? 0,
             'entity_type' => array_first($hit['_source']['entity_type'] ?? []),
             'url' => array_first($hit['_source']['url'] ?? []),
-            'title' => array_first($hit['_source']['title'] ?? []),
+            'title' => array_first($hit['_source']['label'] ?? []),
             'language' => array_first($hit['_source']['search_api_language'] ?? []),
             'datasource' => array_first($hit['_source']['search_api_datasource'] ?? []),
+            'content' => $content,
           ];
         }
       }

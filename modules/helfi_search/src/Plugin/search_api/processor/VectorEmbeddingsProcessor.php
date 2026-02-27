@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\Plugin\search_api\processor;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
-use Drupal\helfi_search\EmbeddingsModelInterface;
-use Drupal\helfi_search\MissingConfigurationException;
+use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Drupal\search_api\SearchApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -24,35 +21,30 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   description: new TranslatableMarkup("Adds vector embeddings to index."),
   stages: [
     "add_properties" => 0,
-    "alter_items" => 0,
+    // This should be called after alter plugins that filter items.
+    "alter_items" => 999,
   ],
 )]
 final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
   /**
-   * Text converter manager.
+   * Text pipeline.
    */
-  private TextConverterManager $textConverterManager;
-
-  /**
-   * Embeddings model.
-   */
-  private EmbeddingsModelInterface $embeddingModel;
+  private TextPipeline $textPipeline;
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $processor->textConverterManager = $container->get(TextConverterManager::class);
-    $processor->embeddingModel = $container->get(EmbeddingsModelInterface::class);
+    $processor->textPipeline = $container->get(TextPipeline::class);
     return $processor;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL) : array {
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL): array {
     $properties = [];
 
     if (!$datasource) {
@@ -70,64 +62,30 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
   /**
    * {@inheritDoc}
    *
-   * Process field values in batches.
+   * Process items in batches of 25 through the text-to-vector pipeline.
    */
-  public function alterIndexedItems(array &$items) : void {
+  public function alterIndexedItems(array &$items): void {
     foreach (array_chunk($items, 25, TRUE) as $batch) {
-      $this->processBatch($items, $batch);
-    }
-  }
+      $entities = array_map(static fn ($item) => $item->getOriginalObject()->getValue(), $batch);
 
-  /**
-   * Process batch of items.
-   *
-   * @param \Drupal\search_api\Item\ItemInterface[] &$items
-   *   All items.
-   * @param \Drupal\search_api\Item\ItemInterface[] $batch
-   *   Batch of entities.
-   */
-  private function processBatch(array &$items, array $batch) : void {
-    $textConversion = [];
+      $results = $this->textPipeline->processEntities($entities);
 
-    foreach ($batch as $key => $item) {
-      try {
-        /** @var \Drupal\Core\Entity\EntityInterface $entity */
-        $entity = $item->getOriginalObject()->getValue();
+      // Assign embeddings to items that got results.
+      foreach ($results as $key => $embeddings) {
+        $fields = $this->getFieldsHelper()
+          ->filterForPropertyPath($items[$key]->getFields(), NULL, 'embeddings');
 
-        if ($text = $this->textConverterManager->convert($entity)) {
-          $textConversion[$key] = $text;
+        foreach ($fields as $field) {
+          foreach ($embeddings as $embedding) {
+            $field->addValue($embedding);
+          }
         }
       }
-      catch (SearchApiException) {
-        continue;
+
+      // Remove items that produce no results.
+      foreach (array_diff_key($batch, $results) as $key => $item) {
+        unset($items[$key]);
       }
-    }
-
-    try {
-      $results = $this->embeddingModel->batchGetEmbedding($textConversion);
-    }
-    catch (MissingConfigurationException) {
-      // Skips all items.
-      $results = [];
-    }
-
-    foreach ($results as $key => $vector) {
-      if (!$item = $items[$key]) {
-        throw new \LogicException("Item should exists");
-      }
-
-      $fields = $this->getFieldsHelper()
-        ->filterForPropertyPath($item->getFields(), NULL, 'embeddings');
-
-      foreach ($fields as $field) {
-        array_map(fn(mixed $value) => $field->addValue($value), $vector);
-      }
-    }
-
-    // Skip items that did not produce any results, except those configured
-    // to be indexed without embeddings.
-    foreach (array_diff_key($batch, $results) as $key => $item) {
-      unset($items[$key]);
     }
   }
 

@@ -12,6 +12,12 @@ services:
   Drupal\helfi_search\EmbeddingsModelInterface:
     class: Drupal\helfi_search\OpenAI\EmbeddingsApi
 
+  Drupal\helfi_search\Pipeline\HtmlExtractor: ~
+  Drupal\helfi_search\Pipeline\HtmlCleaner: ~
+  Drupal\helfi_search\Pipeline\MarkdownConverter: ~
+  Drupal\helfi_search\Pipeline\TextNormalizer: ~
+  Drupal\helfi_search\Pipeline\ContentChunker: ~
+  Drupal\helfi_search\Pipeline\MetadataComposer: ~
+  Drupal\helfi_search\Pipeline\TextPipeline: ~
+
   Drupal\helfi_search\EventSubscriber\SearchApiSubscriber: ~
-  Drupal\helfi_search\Plugin\search_api\datasource\UuidContentEntityTrackingManager:
-    arguments: ['@entity_type.manager', '@language_manager', '@search_api.task_manager']
