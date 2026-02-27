@@ -63,11 +63,46 @@ class HtmlCleaner {
   }
 
   /**
+   * Check whether a node is inside a heading element (h1–h6).
+   */
+  private function isInsideHeading(\DOMNode $node): bool {
+    $parent = $node->parentNode;
+    while ($parent) {
+      if ($parent instanceof \DOMElement && preg_match('/^h[1-6]$/i', $parent->tagName)) {
+        return TRUE;
+      }
+      $parent = $parent->parentNode;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Replace a node with its children, preserving their content.
+   */
+  private function unwrapNode(\DOMNode $node): void {
+    $parent = $node->parentNode;
+    if (!$parent) {
+      return;
+    }
+    while ($node->firstChild) {
+      $parent->insertBefore($node->firstChild, $node);
+    }
+    $parent->removeChild($node);
+  }
+
+  /**
    * Remove non-content tags and elements with boilerplate CSS classes.
    */
   private function removeNonContentElements(\DOMDocument $doc): void {
     foreach (self::REMOVE_TAGS as $tag) {
-      $this->removeNodeList($doc->getElementsByTagName($tag));
+      foreach (iterator_to_array($doc->getElementsByTagName($tag)) as $node) {
+        if ($this->isInsideHeading($node)) {
+          $this->unwrapNode($node);
+        }
+        else {
+          $node->parentNode?->removeChild($node);
+        }
+      }
     }
 
     // Uses the whitespace-boundary trick: pad @class with spaces so that
