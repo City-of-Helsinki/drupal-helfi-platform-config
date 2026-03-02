@@ -53,18 +53,6 @@
   const missingMobileBridge = { type: 'ReferenceError', value: "Can't find variable: SCDynimacBridge" };
 
   /**
-   * Safari and WebKit-based browsers restrict access to Web Storage.
-   * When a script attempts to access sessionStorage, localStorage,
-   * IndexedDB or CacheStorage in a restricted environment, the browser may
-   * throw: "SecurityError: The operation is insecure."
-   *
-   * Common causes are private / incognito browsing modes and third-party iframe
-   * contexts. This typically does not indicate a bug in the application code
-   * itself, but rather a platform-level restriction.
-   */
-  const insecureOperation = { type: 'SecurityError', value: 'The operation is insecure.' };
-
-  /**
    * In some browsers the Web Storage API may be unavailable or disabled.
    * When a script attempts to access localStorage or indexedDB in such
    * contexts, the browser may throw:
@@ -77,7 +65,6 @@
   const errorMatchers = [
     safariLoadFailed,
     webCryptoDigestUndefined,
-    insecureOperation,
     missingMobileBridge,
     localStorageUnavailable,
     indexedDBUnavailable,
@@ -129,7 +116,7 @@
    * @return {boolean}
    *   TRUE if the event should be dropped.
    */
-  const isLoadFailedError = (event) => {
+  const isListedError = (event) => {
     const exceptions = event?.exception?.values || [];
 
     return exceptions.some((exception) =>
@@ -151,7 +138,7 @@
    */
   drupalSettings.raven.options.beforeSend = (event, hint) => {
     // Do not send errors that match the configured errorMatchers to Sentry.
-    if (isLoadFailedError(event) || isCookieConsentInsecureOperation(event)) {
+    if (isListedError(event) || isCookieConsentInsecureOperation(event)) {
       return null;
     }
 
