@@ -14,4 +14,3 @@ helfi_search.settings:
       type: string
       label: 'OpenAI model'
       description: 'OpenAI embedding model to use (defaults to text-embedding-3-small if not set)'
-

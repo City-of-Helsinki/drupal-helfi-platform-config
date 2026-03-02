@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
 
-use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\Pipeline\PipelineException;
+use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\search_api\Item\Field;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\search_api\Kernel\Processor\ProcessorTestBase;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Prophecy\Argument;
 
 /**
  * Tests for search api plugin.
  */
 #[Group('helfi_search')]
+#[RunTestsInSeparateProcesses]
 class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
 
   /**
@@ -51,56 +55,46 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   }
 
   /**
-   * Tests skip configuration.
+   * Tests that extraction failure propagates as PipelineException.
+   *
+   * In a kernel test there is no HTTP server, so the real TextPipeline fails
+   * during HTML extraction.
    */
-  public function testSkipConfiguration() {
+  public function testExtractionFailureThrowsPipelineException(): void {
     $items = $this->createNodeItems([
-      [
-        'title' => 'Test',
-        'type' => 'test_node_bundle_1',
-      ],
-      [
-        'title' => 'Test',
-        'type' => 'test_node_bundle_2',
-      ],
+      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
     ]);
 
+    $this->expectException(PipelineException::class);
     $this->processor->alterIndexedItems($items);
+  }
 
-    // All items are removed since the text converter is not configured.
-    $this->assertCount(0, $items);
-
-    $model = $this->prophesize(EmbeddingsModelInterface::class);
-    $model
-      ->batchGetEmbedding([])
-      ->willReturn([
-          [1, 2, 3],
-      ]);
-
-    $this->container->set(EmbeddingsModelInterface::class, $model->reveal());
+  /**
+   * Tests that items are removed when the pipeline returns empty results.
+   *
+   * When the embeddings API is not configured, processEntities returns an
+   * empty array and all items should be removed.
+   */
+  public function testItemsRemovedWhenModelNotConfigured(): void {
+    // Mock TextPipeline to return empty (simulates API config failure).
+    $textPipeline = $this->prophesize(TextPipeline::class);
+    $textPipeline
+      ->processEntities(Argument::any())
+      ->willReturn([]);
+    $this->container->set(TextPipeline::class, $textPipeline->reveal());
 
     $this->processor = \Drupal::getContainer()
       ->get('search_api.plugin_helper')
       ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
 
     $items = $this->createNodeItems([
-      [
-        'title' => 'Test',
-        'type' => 'test_node_bundle_1',
-      ],
-      [
-        'title' => 'Test',
-        'type' => 'test_node_bundle_2',
-      ],
+      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
     ]);
 
     $this->processor->alterIndexedItems($items);
 
-    // Embedding was generated for one item.
-    $this->assertCount(1, $items);
-
-    // Vector was assed to the fields.
-    $this->assertEquals(["1", "2", "3"], array_first($items)->getFields()['embeddings']->getValues());
+    // Item is removed because pipeline returned no results.
+    $this->assertCount(0, $items);
   }
 
   /**
