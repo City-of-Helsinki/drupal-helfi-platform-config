@@ -1,4 +1,9 @@
 const translations = {
+  calculator_instructions: {
+    fi: 'Täytä laskuriin nettotulosi ja vähennystietoja siltä osin kuin niitä sinulla on ilmoitettavana.',
+    sv: 'Lämna dina uppgifter om inkomster och avdrag i räknaren, såvitt du har sådana.',
+    en: 'Fill in your net income and any deductible items in the calculator, where applicable.',
+  },
   social_welfare_act_heading: {
     fi: 'Sosiaalihuoltolain mukaisuus',
     sv: 'Tillämpning av socialvårdslagen',
@@ -25,9 +30,9 @@ const translations = {
     en: 'Earned income',
   },
   earned_income_explanation: {
-    fi: 'Asiakkaan yhteenlasketut palkkatulot, ammatinharjoittamisesta tai yritystoiminnasta saadut tulot tai omaishoidon tuet ennen verojen vähentämistä kuukaudessa.',
-    sv: 'Klientens sammanlagda månatliga löneinkomster, inkomster från yrkesutövning eller näringsverksamhet eller stöd för närståendevård före skatt.',
-    en: "The client's total monthly wages, income from self-employment or business activities, or informal care support, before tax.",
+    fi: 'Asiakkaan yhteenlasketut palkkatulot, ammatinharjoittamisesta tai yritystoiminnasta saadut tulot tai omaishoidon tuet verojen vähentämisen jälkeen (nettotulot) kuukaudessa.',
+    sv: 'Klientens sammanlagda månatliga löneinkomster, inkomster från yrkesutövning eller näringsverksamhet eller stöd för närståendevård efter skatt (nettoinkomster) per månad.',
+    en: "The client's total monthly wages, income from self-employment or business activities, or informal care support, after taxes (net income) per month.",
   },
   client_benefits: {
     fi: 'Etuudet',
@@ -35,9 +40,9 @@ const translations = {
     en: 'Benefits',
   },
   client_benefits_explanation: {
-    fi: 'Asiakkaan yhteenlaskettu työeläke, kansaneläke, perhe-eläke, takuueläke, ulkomaan eläke, ansiosidonnaiset työttömyyspäivärahat ja työmarkkinatuki, sairauspäivärahat, veroista vapaat tulot, opintoraha tai aikuiskoulutustuki, eläkettä saavan hoitotuki, lasten kotihoidon tuki, elatusapu tai -tuki, vammaistuki ja päivärahat (esim. sairaus-, työttömyys- tai vanhempainrahat) ennen verojen vähentämistä kuukaudessa.',
-    sv: 'Klientens sammanlagda arbetspension, folkpension, familjepension, garantipension, utländska pensioner, inkomstrelaterade arbetslöshetsdagpenning och arbetsmarknadsstöd, sjukdagpenning, skattefria inkomster, studiestöd, vårdbidrag för pensionstagare, hemvårdsstöd för barn, underhållsbidrag eller -stöd, handikappbidrag och dagpenningar (för sjukdom eller föräldraledighet, per månad före skatt.',
-    en: 'The client’s total monthly earnings-related pension, national pension, survivors’ pension, guarantee pension, foreign pension, earnings-related unemployment benefits and labour market subsidy, sickness allowance, tax-exempt income, student financial aid or adult education allowance, care allowance for pensioners, child home care allowance, maintenance support or maintenance allowance, disability allowance, and daily allowances (e.g. sickness, unemployment or parental allowances) before tax.',
+    fi: 'Asiakkaan yhteenlaskettu työeläke, kansaneläke, perhe-eläke, takuueläke, ulkomaan eläke, ansiosidonnaiset työttömyyspäivärahat ja työmarkkinatuki, sairauspäivärahat, veroista vapaat tulot, opintoraha tai aikuiskoulutustuki, eläkettä saavan hoitotuki, lasten kotihoidon tuki, elatusapu tai -tuki, vammaistuki ja päivärahat (esim. sairaus-, työttömyys- tai vanhempainrahat) verojen vähentämisen jälkeen (nettotulot) kuukaudessa.',
+    sv: 'Klientens sammanlagda arbetspension, folkpension, familjepension, garantipension, utländska pensioner, inkomstrelaterade arbetslöshetsdagpenning och arbetsmarknadsstöd, sjukdagpenning, skattefria inkomster, studiestöd, vårdbidrag för pensionstagare, hemvårdsstöd för barn, underhållsbidrag eller -stöd, handikappbidrag och dagpenningar (för sjukdom eller föräldraledighet) efter skatt (nettoinkomster) per månad.',
+    en: 'The client’s total monthly earnings-related pension, national pension, survivors’ pension, guarantee pension, foreign pension, earnings-related unemployment benefits and labour market subsidy, sickness allowance, tax-exempt income, student financial aid or adult education allowance, care allowance for pensioners, child home care allowance, maintenance support or maintenance allowance, disability allowance, and daily allowances (e.g. sickness, unemployment or parental allowances) after taxes (net income) per month.',
   },
   capital_income: {
     fi: 'Pääomatulot',
@@ -70,9 +75,9 @@ const translations = {
     en: 'Guardianship fees',
   },
   guardianship_fees_explanation: {
-    fi: 'Asiakkaan yhteenlasketut edunvalvojan palkkion perusmaksu ja edunvalvontavaltuutetun palkkiot kuukaudessa.',
-    sv: 'Klientens sammanlagda avgift för intressebevakarens arvode och intressebevakningsombudets arvode per månad.',
-    en: 'The client’s total monthly basic fee charged by the guardian and fees charged by an authorised representative.',
+    fi: 'Asiakkaan yhteenlasketut edunvalvojan palkkion perusmaksu ja edunvalvontavaltuutetun palkkiot kuukaudessa. Edunvalvontamaksu huomioidaan vähennyksenä enintään edunvalvojan palkkion perusmaksun suuruisena. Perusmaksu on ${guardianship_fee} euroa kuukaudessa vuonna 2026.',
+    sv: 'Klientens sammanlagda avgift för intressebevakarens arvode och intressebevakningsombudets arvode per månad. Intressebevakningsavgiften beaktas som avdrag högst till beloppet av intressebevakararvodet. Basavgiften är ${guardianship_fee} euro i månaden under 2026.',
+    en: 'The client’s total monthly basic fee charged by the guardian and fees charged by an authorised representative. The guardianship fee is taken into account as a deduction up to the amount of the guardian’s basic fee. The basic fee is €${guardianship_fee} per month in 2026.',
   },
   client_foreclosure: {
     fi: 'Ulosmittaus',
@@ -125,9 +130,9 @@ const translations = {
     en: "Spouse's earned income",
   },
   spouse_earned_income_explanation: {
-    fi: 'Yhteenlasketut palkkatulot, ammatinharjoittamisesta tai yritystoiminnasta saadut tulot tai omaishoidon tuet ennen verojen vähentämistä kuukaudessa.',
-    sv: 'Sammanlagda månatliga löneinkomster, inkomster från yrkesutövning eller näringsverksamhet eller stöd för närståendevård före skatt.',
-    en: 'Total monthly wages, income from self-employment or business activities, or informal care support, before tax.',
+    fi: 'Yhteenlasketut palkkatulot, ammatinharjoittamisesta tai yritystoiminnasta saadut tulot tai omaishoidon tuet verojen vähentämisen jälkeen (nettotulot) kuukaudessa.',
+    sv: 'Sammanlagda månatliga löneinkomster, inkomster från yrkesutövning eller näringsverksamhet eller stöd för närståendevård efter skatt (nettoinkomster) per månad.',
+    en: 'Total monthly wages, income from self-employment or business activities, or informal care support, after taxes (net income) per month.',
   },
   spouse_client_benefits: {
     fi: 'Puolison etuudet',
@@ -135,9 +140,9 @@ const translations = {
     en: "Spouse's benefits",
   },
   spouse_client_benefits_explanation: {
-    fi: 'Yhteenlaskettu työeläke, kansaneläke, perhe-eläke, takuueläke, ulkomaan eläke, ansiosidonnaiset työttömyyspäivärahat ja työmarkkinatuki, sairauspäivärahat, veroista vapaat tulot, opintoraha tai aikuiskoulutustuki, eläkettä saavan hoitotuki, lasten kotihoidon tuki, elatusapu tai -tuki, vammaistuki ja päivärahat (esim. sairaus-, työttömyys- tai vanhempainrahat) ennen verojen vähentämistä kuukaudessa.',
-    sv: 'Sammanlagd arbetspension, folkpension, familjepension, garantipension, utländska pensioner, inkomstrelaterad arbetslöshetsdagpenning och arbetsmarknadsstöd, sjukdagpenning, skattefria inkomster, studiestöd, vårdbidrag för pensionstagare, hemvårdsstöd för barn, underhållsbidrag eller -stöd, handikappbidrag och dagpenningar (för sjukdom eller föräldraledighet, per månad före skatt.',
-    en: 'Total monthly amounts of the spouse’s earnings-related pension, national pension, survivors’ pension, guarantee pension, foreign pension, earnings-related unemployment benefits and labour market subsidy, sickness allowance, tax-exempt income, student financial aid or adult education allowance, care allowance for pensioners, child home care allowance, maintenance payments or support, disability allowance, and daily allowances (e.g., sickness, unemployment, or parental allowances) before tax.',
+    fi: 'Yhteenlaskettu työeläke, kansaneläke, perhe-eläke, takuueläke, ulkomaan eläke, ansiosidonnaiset työttömyyspäivärahat ja työmarkkinatuki, sairauspäivärahat, veroista vapaat tulot, opintoraha tai aikuiskoulutustuki, eläkettä saavan hoitotuki, lasten kotihoidon tuki, elatusapu tai -tuki, vammaistuki ja päivärahat (esim. sairaus-, työttömyys- tai vanhempainrahat) verojen vähentämisen jälkeen (nettotulot) kuukaudessa.',
+    sv: 'Sammanlagd arbetspension, folkpension, familjepension, garantipension, utländska pensioner, inkomstrelaterad arbetslöshetsdagpenning och arbetsmarknadsstöd, sjukdagpenning, skattefria inkomster, studiestöd, vårdbidrag för pensionstagare, hemvårdsstöd för barn, underhållsbidrag eller -stöd, handikappbidrag och dagpenningar (för sjukdom eller föräldraledighet, efter skatt (nettoinkomster) per månad.',
+    en: 'Total monthly amounts of the spouse’s earnings-related pension, national pension, survivors’ pension, guarantee pension, foreign pension, earnings-related unemployment benefits and labour market subsidy, sickness allowance, tax-exempt income, student financial aid or adult education allowance, care allowance for pensioners, child home care allowance, maintenance payments or support, disability allowance, and daily allowances (e.g., sickness, unemployment, or parental allowances) after taxes (net income) per month.',
   },
   spouse_capital_income: {
     fi: 'Puolison pääomatulot',
@@ -165,9 +170,9 @@ const translations = {
     en: "Spouse's guardianship fees",
   },
   spouse_guardianship_fees_explanation: {
-    fi: 'Yhteenlasketut edunvalvojan palkkion perusmaksu ja edunvalvontavaltuutetun palkkiot kuukaudessa.',
-    sv: 'Avgift för intressebevakarens arvode och intressebevakningsombudets arvode per månad.',
-    en: 'Total monthly basic fee charged by the guardian and fees charged by an authorised representative.',
+    fi: 'Yhteenlasketut edunvalvojan palkkion perusmaksu ja edunvalvontavaltuutetun palkkiot kuukaudessa. Edunvalvontamaksu huomioidaan vähennyksenä enintään edunvalvojan palkkion perusmaksun suuruisena. Perusmaksu on 43,34 euroa kuukaudessa vuonna 2026.',
+    sv: 'Avgift för intressebevakars arvode och intressebevakningsombudets arvode per månad. Intressebevakningsavgiften beaktas som avdrag högst till beloppet av intressebevakararvodet. Basavgiften är 43,34 euro i månaden under 2026.',
+    en: 'Total monthly basic fee charged by the guardian and fees charged by an authorised representative. The guardianship fee is taken into account as a deduction up to the amount of the guardian’s basic fee. The basic fee is €43.34 per month in 2026.',
   },
   spouse_client_foreclosure: {
     fi: 'Puolison ulosmittaus',
@@ -270,9 +275,9 @@ const translations = {
     en: 'Combined with spouse',
   },
   subtotal_minimum_disposable_amount_with_spouse_details: {
-    fi: 'Asiakkaalle ja puolisolle jäävä yhteinen käyttövara ${disposable_amount} euroa kuukaudessa, josta ${minimum_funds} euroa on vähimmäiskäyttövara ja ${basic_amount} euroa toimeentulotuen perusosa.',
-    sv: 'Den gemensamma reserven som lämnas för klient och make/maka är ${disposable_amount} euro per månad, varav ${minimum_funds} euro är minimibeloppet och ${basic_amount} euro är utkomststödets grunddel.',
-    en: 'The joint reserve left for the client and spouse  is EUR ${disposable_amount} euros per month, of which EUR ${minimum_funds} is the minimum amount of disposable funds and EUR ${basic_amount} is the basic amount of social assistance.',
+    fi: 'Asiakkaalle ja puolisolle jäävä yhteinen vähimmäiskäyttövara ${disposable_amount} euroa kuukaudessa, josta ${minimum_funds} euroa on vähimmäiskäyttövara ja ${basic_amount} euroa toimeentulotuen perusosa.',
+    sv: 'Klientens och make/makans gemensamma disponibla medel ska uppgå till minst ${disposable_amount} euro per månad, varav ${minimum_funds} euro är minimibeloppet och ${basic_amount} euro är utkomststödets grunddel.',
+    en: 'The joint minimum reserve left for the client and spouse  is EUR ${disposable_amount} euros per month, of which EUR ${minimum_funds} is the minimum amount of disposable funds and EUR ${basic_amount} is the basic amount of social assistance.',
   },
   additional_detail_spouse_higher_income: {
     fi: 'Asiakkaan tulot ovat pienemmät tai yhtä suuret kuin puolisolla, jolloin asiakasmaksu on 85 % asiakkaan nettokuukausituloista, joihin on tehty lainmukaiset vähennykset.',

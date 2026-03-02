@@ -29,6 +29,16 @@ const translations = {
     sv: 'Du hittar ett antal timmar i servicebeslutet som fattats för dig.',
     en: 'You can find the number of service hours in the service decision made for you.',
   },
+  guardianship_fees: {
+    fi: 'Edunvalvontamaksut',
+    sv: 'Intressebevakningsavgift',
+    en: 'Guardianship fees',
+  },
+  guardianship_fees_explanation: {
+    fi: 'Yhteenlasketut edunvalvojan palkkion perusmaksu ja edunvalvontavaltuutetun palkkiot kuukaudessa. Edunvalvontamaksu huomioidaan vähennyksenä enintään edunvalvojan palkkion perusmaksun suuruisena. Perusmaksu on ${guardianship_fee} euroa kuukaudessa vuonna 2026.',
+    sv: 'Sammanlagda avgift för intressebevakarens arvode och intressebevakningsombudets arvode per månad. Intressebevakningsavgiften beaktas som avdrag högst till beloppet av intressebevakararvodet. Basavgiften är ${guardianship_fee} euro i månaden under 2026.',
+    en: 'Total monthly basic fee charged by the guardian and fees charged by an authorised representative. The guardianship fee is taken into account as a deduction up to the amount of the guardian’s basic fee. The basic fee is €${guardianship_fee} per month in 2026.',
+  },
   supporting_services_heading: {
     fi: 'Kotona asumista tukevat palvelut',
     sv: 'Tjänster som stöder hemmaboende',

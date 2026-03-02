@@ -16,11 +16,13 @@ class LongtermInstitutionalCareFee {
       "basic_amount": 539.55,
       "minimum_funds_spouse": 724.55,
       "maximum_payment_social_welfare_act": 7656.00,
-      "maximum_payment_other": 12045.00
+      "maximum_payment_other": 12045.00,
+      "guardianship_fee": 43.34
     };
     // */
     // Form content
-    const getFormData = () => form.getFormData(this.id, this.t);
+    const getFormData = () =>
+      form.getFormData(this.id, this.t, parsedSettings, this.calculator.formatFinnishEuroCents.bind(this.calculator));
 
     const update = () => {
       const fields = [{ field: 'has_spouse', group: 'spouse_income_group' }];

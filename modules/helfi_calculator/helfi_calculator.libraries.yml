@@ -69,7 +69,7 @@ home_care_service_voucher:
     - helfi_calculator/helfi_calculator.base
 
 communal_and_supported_housing_fee:
-  version: 1.0.0
+  version: 1.0.1
   js:
     dist/js/communalAndSupportedHousingFee.min.js: {}
   dependencies:
@@ -77,7 +77,7 @@ communal_and_supported_housing_fee:
     - helfi_calculator/helfi_calculator.base
 
 long_term_institutional_care_fee:
-  version: 1.0.1
+  version: 1.0.2
   js:
     dist/js/longtermInstitutionalCareFee.min.js: {}
   dependencies:
@@ -85,7 +85,7 @@ long_term_institutional_care_fee:
     - helfi_calculator/helfi_calculator.base
 
 long_term_assisted_living_fee:
-  version: 1.0.0
+  version: 1.0.1
   js:
     dist/js/longtermAssistedLivingFee.min.js: {}
   dependencies:
