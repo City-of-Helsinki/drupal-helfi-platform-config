@@ -17,6 +17,8 @@
    * and privacy enforcement, which can cause third-party requests to fail and
    * surface as "TypeError: Load failed".
    *
+   * Chrome/Edge/Firefox typically throw "TypeError: Failed to fetch".
+   *
    * Common causes:
    * - Stricter CORS enforcement
    * - Blocking of third-party endpoints
@@ -29,6 +31,7 @@
    * errors.
    */
   const safariLoadFailed = { type: 'TypeError', value: 'Load failed' };
+  const failedToFetch = { type: 'TypeError', value: 'Failed to fetch' };
 
   /**
    * Third-party code sometimes assumes WebCrypto is available and crashes with:
@@ -61,13 +64,20 @@
   const localStorageUnavailable = { type: 'ReferenceError', value: "Can't find variable: localStorage" };
   const indexedDBUnavailable = { type: 'ReferenceError', value: "Can't find variable: indexedDB" };
 
+  /**
+   * HeadlessChrome triggers an error with dialog focus-trap.
+   */
+  const focusTrap = { type: 'Error', value: 'Your focus-trap must have at least one container' };
+
   // List of error types and values to ignore.
   const errorMatchers = [
     safariLoadFailed,
+    failedToFetch,
     webCryptoDigestUndefined,
     missingMobileBridge,
     localStorageUnavailable,
     indexedDBUnavailable,
+    focusTrap,
     // Add more combinations here if needed:
     // { type: 'TypeError', value: 'Failed to fetch' },
   ];
