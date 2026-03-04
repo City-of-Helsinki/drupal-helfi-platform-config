@@ -67,7 +67,10 @@
   /**
    * HeadlessChrome triggers an error with dialog focus-trap.
    */
-  const focusTrap = { type: 'Error', value: 'Your focus-trap must have at least one container' };
+  const focusTrap = {
+    type: 'Error',
+    value: 'Your focus-trap must have at least one container with at least one tabbable node in it at all times',
+  };
 
   // List of error types and values to ignore.
   const errorMatchers = [
