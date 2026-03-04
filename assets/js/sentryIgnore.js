@@ -140,6 +140,47 @@
   };
 
   /**
+   * Get cookie value.
+   *
+   * @param {string} name
+   *   Cookie name.
+   *
+   * @return {string|null}
+   *   Cookie value or null.
+   */
+  const getCookie = (name) => {
+    const match = document.cookie
+      .split('; ')
+      .map((row) => row.split('='))
+      .find(([key]) => key === name);
+
+    return match ? match[1] : null;
+  };
+
+  /**
+   * Extract the cookie consent groups from helfi-cookie-consents.
+   *
+   * @return {Object|null}
+   *   The groups object or null.
+   */
+  const getCookieConsentGroups = () => {
+    const cookieValue = getCookie('helfi-cookie-consents');
+
+    if (!cookieValue) {
+      return null;
+    }
+
+    try {
+      const decoded = decodeURIComponent(cookieValue);
+      const parsed = JSON.parse(decoded);
+
+      return parsed?.groups || null;
+    } catch (_error) {
+      return null;
+    }
+  };
+
+  /**
    * Custom beforeSend callback.
    *
    * @param event
@@ -152,7 +193,16 @@
       return null;
     }
 
-    // Delegate to the previous beforeSend callback if one existed.
+    // Add information about accepted cookies.
+    event.breadcrumbs = [
+      ...(event.breadcrumbs || []),
+      {
+        category: 'cookie-consent',
+        level: 'info',
+        data: getCookieConsentGroups() ?? { '': 'No consent given.' },
+      },
+    ];
+
     if (typeof previousBeforeSend === 'function') {
       return previousBeforeSend(event, hint);
     }
