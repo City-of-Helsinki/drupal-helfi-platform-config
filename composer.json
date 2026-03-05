@@ -17,6 +17,7 @@
         "drupal/content_lock": "^3.0",
         "drupal/crop": "^2.1",
         "drupal/csp": "^2.2",
+        "drupal/csp_log": "^1.0",
         "drupal/default_content": "^2.0.0",
         "drupal/diff": "^1.0",
         "drupal/easy_breadcrumb": "^2.0",
@@ -92,6 +93,9 @@
             },
             "drupal/csp": {
                 "[#UHF-11973] Allow installing csp in an install hook": "./public/modules/contrib/helfi_platform_config/patches/csp-uhf-11973.patch"
+            },
+            "drupal/csp_log": {
+                "Route csp_log.settings does not exist upon installation (https://www.drupal.org/i/3557108)": "./public/modules/contrib/helfi_platform_config/patches/csp-log-3557108.patch"
             },
             "drupal/default_content": {
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "./public/modules/contrib/helfi_platform_config/patches/default_content_2.0.0-alpha3-2640734_manual_imports.patch"

@@ -26,5 +26,3 @@ enforce:
       base: none
     frame-ancestors:
       base: self
-  reporting:
-    plugin: none
