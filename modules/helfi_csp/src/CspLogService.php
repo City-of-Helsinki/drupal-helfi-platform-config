@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_csp;
 
 use Drupal\Core\Database\Connection;
@@ -164,13 +166,13 @@ final class CspLogService extends BaseCspLogService {
   protected function isDocumentUriOnCurrentSite(string $documentUri): bool {
     $request = $this->requestStack->getCurrentRequest();
     if (!$request) {
-      return TRUE;
+      return FALSE;
     }
     $currentHost = strtolower($request->getHost());
     $parsed = parse_url($documentUri);
     $documentHost = isset($parsed['host']) ? strtolower($parsed['host']) : '';
     if ($documentHost === '') {
-      return TRUE;
+      return FALSE;
     }
     // Allow same host, and strip optional leading 'www.' for comparison.
     $normalize = function ($host) {
