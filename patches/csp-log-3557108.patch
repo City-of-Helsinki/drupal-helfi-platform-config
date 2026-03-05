@@ -2,7 +2,7 @@ diff --git a/csp_log.info.yml b/csp_log.info.yml
 index f6f928b708ae883c72a1de766788e98caa339385..bf8308f778dd336c2abfe80ee7b5a8d2a9d9cad1 100644
 --- a/csp_log.info.yml
 +++ b/csp_log.info.yml
-@@ -2,4 +2,3 @@ name: 'CSP logging'
+@@ -2,5 +2,4 @@ name: 'CSP logging'
  type: module
  description: 'Provide Content-Security-Policy report endpoint with dedicated logging.'
  core_version_requirement: ^9.2 || ^10 || ^11

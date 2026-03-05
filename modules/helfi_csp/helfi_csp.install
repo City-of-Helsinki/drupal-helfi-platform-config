@@ -7,12 +7,21 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_api_base\Environment\Project;
+
 /**
  * Install csp_log module on frontpage instance.
  */
 function helfi_csp_update_10000() : void {
-  $project = \Drupal::service('helfi_api_base.environment_resolver')->getActiveProject();
-  if ($project->getName() !== 'frontpage') {
+  try {
+    $project = \Drupal::service('helfi_api_base.environment_resolver')
+      ->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    // No need to proceed.
+    return;
+  }
+  if ($project->getName() !== Project::ETUSIVU) {
     return;
   }
 
@@ -22,10 +31,10 @@ function helfi_csp_update_10000() : void {
 
   // Enable csp_log reporting handler.
   $config = \Drupal::configFactory()->getEditable('csp.settings');
-  $config->set('reporting.plugin', 'csp_log');
+  $config->set('enforce.reporting.plugin', 'csp_log');
   // Keep logs for 14 days for now.
   // @todo Make this a lot shorter if we decide to continue this path and
   // create a cron job to process and forward relevant logs to Sentry.
-  $config->set('reporting.options.cleanup', 14);
+  $config->set('enforce.reporting.options.cleanup', 14);
   $config->save();
 }
