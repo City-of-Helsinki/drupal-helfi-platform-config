@@ -161,25 +161,36 @@
   };
 
   /**
-   * Extract the cookie consent groups from helfi-cookie-consents.
+   * Determine cookie consent summary from helfi-cookie-consents.
    *
-   * @return {Object|null}
-   *   The groups object or null.
+   * @return {string}
+   *   Returns "All cookies accepted", "Required cookies accepted",
+   *   or "No consent given".
    */
-  const getCookieConsentGroups = () => {
+  const getCookieConsentSummary = () => {
     const cookieValue = getCookie('helfi-cookie-consents');
 
     if (!cookieValue) {
-      return null;
+      return 'No consent given';
     }
 
     try {
       const decoded = decodeURIComponent(cookieValue);
       const parsed = JSON.parse(decoded);
+      const groups = parsed?.groups;
 
-      return parsed?.groups || null;
+      if (!groups) {
+        return 'No consent given';
+      }
+
+      const requiredGroups = ['essential', 'admin'];
+      const groupKeys = Object.keys(groups);
+      const hasOnlyRequiredGroups =
+        groupKeys.length === requiredGroups.length && groupKeys.every((key) => requiredGroups.includes(key));
+
+      return hasOnlyRequiredGroups ? 'Required cookies accepted' : 'All cookies accepted';
     } catch (_error) {
-      return null;
+      return 'No consent given';
     }
   };
 
@@ -202,7 +213,7 @@
       {
         category: 'cookie-consent',
         level: 'info',
-        data: getCookieConsentGroups() ?? { '': 'No consent given.' },
+        message: getCookieConsentSummary(),
       },
     ];
 
