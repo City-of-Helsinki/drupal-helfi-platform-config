@@ -10,7 +10,7 @@ declare(strict_types=1);
 use Drupal\helfi_api_base\Environment\Project;
 
 /**
- * Install csp_log module on frontpage instance.
+ * Install csp_log module on asuminen instance.
  */
 function helfi_csp_update_10000() : void {
   try {
@@ -21,7 +21,7 @@ function helfi_csp_update_10000() : void {
     // No need to proceed.
     return;
   }
-  if ($project->getName() !== Project::ETUSIVU) {
+  if ($project->getName() !== Project::ASUMINEN) {
     return;
   }
 
