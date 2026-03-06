@@ -11,14 +11,10 @@ declare(strict_types=1);
  * Installs CKEditor5 plugins and extensions.
  */
 function helfi_ckeditor_install_ckeditor5_supportive_plugins() : void {
-  $module_installer = Drupal::service('module_installer');
+  $module_installer = \Drupal::service('module_installer');
 
-  if (!Drupal::moduleHandler()->moduleExists('ckeditor5_paste_filter')) {
+  if (!\Drupal::moduleHandler()->moduleExists('ckeditor5_paste_filter')) {
     $module_installer->install(['ckeditor5_paste_filter']);
-  }
-
-  if (!Drupal::moduleHandler()->moduleExists('nbsp')) {
-    $module_installer->install(['nbsp']);
   }
 }
 
@@ -303,11 +299,4 @@ function helfi_ckeditor_update_11001(): void {
   if ($count > 0) {
     \Drupal::messenger()->addMessage(t('Removed target="_blank" attribute from every anchor tag in CKEditor fields.'));
   }
-}
-
-/**
- * UHF-12769 Install nbsp module.
- */
-function helfi_ckeditor_update_11002(): void {
-  helfi_ckeditor_install_ckeditor5_supportive_plugins();
 }
