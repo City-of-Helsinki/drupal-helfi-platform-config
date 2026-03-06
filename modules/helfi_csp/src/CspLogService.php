@@ -104,7 +104,9 @@ final class CspLogService extends BaseCspLogService {
     }
     if ($this->state->get(self::STATE_RATE_LIMIT_ENABLED, FALSE)) {
       // Acquire with 1s timeout so lock auto-expires; we don't release, so at
-      // most one log per second.
+      // most one log per second from concurrent requests. The lock is released
+      // automatically at the end of the request, so we might get more than one
+      // log per second from sequential requests.
       if (!$this->lock->acquire(self::LOCK_NAME, 1)) {
         return;
       }
