@@ -6,6 +6,8 @@ namespace Drupal\helfi_media_remote_video\Entity;
 
 use Drupal\helfi_media\Entity\MediaEntityBundle;
 use Drupal\media\MediaInterface;
+use Drupal\media\OEmbed\ResourceException;
+use Drupal\media\OEmbed\ResourceFetcherInterface;
 use Drupal\media\OEmbed\UrlResolverInterface;
 
 /**
@@ -35,6 +37,43 @@ class RemoteVideo extends MediaEntityBundle implements MediaInterface {
     catch (\Exception) {
       return NULL;
     }
+  }
+
+  /**
+   * Check if the video is hidden.
+   *
+   * The video can be either deleted or converted to private video in the
+   * video provider.
+   *
+   * @return bool
+   *   Returns TRUE if video is hidden, false otherwise.
+   */
+  public function isHidden(): bool {
+    if (!$this->hasProvider()) {
+      return TRUE;
+    }
+
+    $videoUrl = $this->get('field_media_oembed_video')->value ?? '';
+
+    if (empty($videoUrl)) {
+      return TRUE;
+    }
+
+    /** @var \Drupal\media\OEmbed\UrlResolverInterface $urlResolver */
+    $urlResolver = \Drupal::service(UrlResolverInterface::class);
+
+    /** @var \Drupal\media\OEmbed\ResourceFetcherInterface $resourceFetcher */
+    $resourceFetcher = \Drupal::service(ResourceFetcherInterface::class);
+
+    try {
+      $resource_url = $urlResolver->getResourceUrl($videoUrl);
+      $resourceFetcher->fetchResource($resource_url);
+    }
+    catch (ResourceException $e) {
+      // The resource is hidden.
+      return TRUE;
+    }
+    return FALSE;
   }
 
 }
