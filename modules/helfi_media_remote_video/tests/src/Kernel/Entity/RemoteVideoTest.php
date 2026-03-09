@@ -122,6 +122,7 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
    * @param string $embed_url
    *   The remote video embed URL.
    *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\media\OEmbed\ProviderException
    * @throws \Drupal\media\OEmbed\ResourceException
    */
@@ -237,6 +238,119 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
         'YouTube iframe was converted to use the no-cookie domain.'
       );
     }
+  }
+
+  /**
+   * Test data for hidden remote videos.
+   *
+   * @return array
+   *   The test cases.
+   */
+  public static function hiddenVideoDataProvider(): array {
+    return [
+      'empty_url' => [
+        'url' => '',
+        'providerExists' => FALSE,
+        'resourceHidden' => FALSE,
+        'expected' => TRUE,
+      ],
+      'no_provider' => [
+        'url' => 'https://www.youtube.com/watch?v=random-id',
+        'providerExists' => FALSE,
+        'resourceHidden' => FALSE,
+        'expected' => TRUE,
+      ],
+      'hidden_resource' => [
+        'url' => 'https://www.youtube.com/watch?v=random-id',
+        'providerExists' => TRUE,
+        'resourceHidden' => TRUE,
+        'expected' => TRUE,
+      ],
+      'visible_resource' => [
+        'url' => 'https://www.youtube.com/watch?v=random-id',
+        'providerExists' => TRUE,
+        'resourceHidden' => FALSE,
+        'expected' => FALSE,
+      ],
+    ];
+  }
+
+  /**
+   * Tests hidden state detection for remote videos.
+   *
+   * @param string $url
+   *   The remote video URL.
+   * @param bool $providerExists
+   *   Whether the provider exists.
+   * @param bool $resourceHidden
+   *   Whether the fetched resource should behave as hidden.
+   * @param bool $expected
+   *   The expected hidden state.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\media\OEmbed\ProviderException
+   * @throws \Drupal\media\OEmbed\ResourceException
+   */
+  #[DataProvider('hiddenVideoDataProvider')]
+  public function testIsHidden(string $url, bool $providerExists, bool $resourceHidden, bool $expected): void {
+    $provider = $this->prophesize(Provider::class);
+    $provider->getUrl()->willReturn('https://www.youtube.com/');
+
+    $validResource = $this->createResource([
+      'html' => '<iframe width="1280" height="720" src="https://www.youtube.com/embed/random-id"></iframe>',
+      'title' => 'Youtube video',
+      'thumbnail_url' => '',
+    ], 'Youtube');
+
+    $initialResourceFetcher = $this->prophesize(ResourceFetcherInterface::class);
+    $initialUrlResolver = $this->prophesize(UrlResolverInterface::class);
+
+    if ($url !== '') {
+      $initialUrlResolver->getProviderByUrl($url)->willReturn($provider->reveal());
+      $initialUrlResolver->getResourceUrl($url)->willReturn($url);
+      $initialResourceFetcher->fetchResource($url)->willReturn($validResource);
+    }
+
+    $this->container->set('media.oembed.url_resolver', $initialUrlResolver->reveal());
+    $this->container->set('media.oembed.resource_fetcher', $initialResourceFetcher->reveal());
+
+    /** @var \Drupal\helfi_media_remote_video\Entity\RemoteVideo $media */
+    $media = $this->createMediaEntity([
+      'name' => 'test video',
+      'bundle' => 'remote_video',
+      'field_media_oembed_video' => [
+        'value' => $url,
+        'iframe_title' => 'Test video',
+      ],
+    ]);
+
+    $this->assertInstanceOf(RemoteVideo::class, $media);
+
+    $resourceFetcher = $this->prophesize(ResourceFetcherInterface::class);
+    $urlResolver = $this->prophesize(UrlResolverInterface::class);
+
+    if ($url !== '') {
+      if ($providerExists) {
+        $urlResolver->getResourceUrl($url)->willReturn($url);
+
+        if ($resourceHidden) {
+          $resourceFetcher->fetchResource($url)
+            ->willThrow(new ResourceException('The resource is hidden.', $url));
+        }
+        else {
+          $resourceFetcher->fetchResource($url)->willReturn($validResource);
+        }
+      }
+      else {
+        $urlResolver->getResourceUrl($url)
+          ->willThrow(new ResourceException('No matching provider found.', $url));
+      }
+    }
+
+    $this->container->set('media.oembed.url_resolver', $urlResolver->reveal());
+    $this->container->set('media.oembed.resource_fetcher', $resourceFetcher->reveal());
+
+    $this->assertSame($expected, $media->isHidden());
   }
 
   /**
