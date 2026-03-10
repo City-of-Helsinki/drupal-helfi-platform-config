@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_media_remote_video\Kernel\Entity;
 
 use Drupal\helfi_media_remote_video\Entity\RemoteVideo;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\media\Controller\OEmbedIframeController;
 use Drupal\media\Entity\Media;
 use Drupal\media\OEmbed\Resource;
@@ -16,6 +17,8 @@ use Drupal\Tests\helfi_media\Kernel\HelfiMediaKernelTestBase;
 use Drupal\media\OEmbed\Provider;
 use Drupal\media\OEmbed\UrlResolverInterface;
 use Drupal\Tests\media\Traits\OEmbedTestTrait;
+use Drupal\user\Entity\Role;
+use Drupal\user\Entity\User;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -122,6 +125,7 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
    * @param string $embed_url
    *   The remote video embed URL.
    *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\media\OEmbed\ProviderException
    * @throws \Drupal\media\OEmbed\ResourceException
    */
@@ -237,6 +241,204 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
         'YouTube iframe was converted to use the no-cookie domain.'
       );
     }
+  }
+
+  /**
+   * Test data for hidden remote videos.
+   *
+   * @return array
+   *   The test cases.
+   */
+  public static function hiddenVideoDataProvider(): array {
+    return [
+      'empty_url' => [
+        'url' => '',
+        'providerExists' => FALSE,
+        'resourceHidden' => FALSE,
+        'expected' => TRUE,
+      ],
+      'no_provider' => [
+        'url' => 'https://www.youtube.com/watch?v=random-id',
+        'providerExists' => FALSE,
+        'resourceHidden' => FALSE,
+        'expected' => TRUE,
+      ],
+      'hidden_resource' => [
+        'url' => 'https://www.youtube.com/watch?v=random-id',
+        'providerExists' => TRUE,
+        'resourceHidden' => TRUE,
+        'expected' => TRUE,
+      ],
+      'visible_resource' => [
+        'url' => 'https://www.youtube.com/watch?v=random-id',
+        'providerExists' => TRUE,
+        'resourceHidden' => FALSE,
+        'expected' => FALSE,
+      ],
+    ];
+  }
+
+  /**
+   * Tests hidden state detection for remote videos.
+   *
+   * @param string $url
+   *   The remote video URL.
+   * @param bool $providerExists
+   *   Whether the provider exists.
+   * @param bool $resourceHidden
+   *   Whether the fetched resource should behave as hidden.
+   * @param bool $expected
+   *   The expected hidden state.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\media\OEmbed\ProviderException
+   * @throws \Drupal\media\OEmbed\ResourceException
+   */
+  #[DataProvider('hiddenVideoDataProvider')]
+  public function testIsHidden(string $url, bool $providerExists, bool $resourceHidden, bool $expected): void {
+    $provider = $this->prophesize(Provider::class);
+    $provider->getUrl()->willReturn('https://www.youtube.com/');
+
+    $resource = $this->createResource([
+      'html' => '<iframe width="1280" height="720" src="https://www.youtube.com/embed/random-id"></iframe>',
+      'title' => 'Youtube video',
+      'thumbnail_url' => '',
+    ], 'Youtube');
+
+    $initialResourceFetcher = $this->prophesize(ResourceFetcherInterface::class);
+    $initialUrlResolver = $this->prophesize(UrlResolverInterface::class);
+
+    if ($url !== '') {
+      $initialUrlResolver->getProviderByUrl($url)->willReturn($provider->reveal());
+      $initialUrlResolver->getResourceUrl($url)->willReturn($url);
+      $initialResourceFetcher->fetchResource($url)->willReturn($resource);
+    }
+
+    $this->container->set('media.oembed.url_resolver', $initialUrlResolver->reveal());
+    $this->container->set('media.oembed.resource_fetcher', $initialResourceFetcher->reveal());
+
+    /** @var \Drupal\helfi_media_remote_video\Entity\RemoteVideo $media */
+    $media = $this->createMediaEntity([
+      'name' => 'test video',
+      'bundle' => 'remote_video',
+      'field_media_oembed_video' => [
+        'value' => $url,
+        'iframe_title' => 'Test video',
+      ],
+    ]);
+
+    $this->assertInstanceOf(RemoteVideo::class, $media);
+
+    $resourceFetcher = $this->prophesize(ResourceFetcherInterface::class);
+    $urlResolver = $this->prophesize(UrlResolverInterface::class);
+
+    if ($url !== '') {
+      if ($providerExists) {
+        $urlResolver->getResourceUrl($url)->willReturn($url);
+
+        if ($resourceHidden) {
+          $resourceFetcher->fetchResource($url)
+            ->willThrow(new ResourceException('The resource is hidden.', $url));
+        }
+        else {
+          $resourceFetcher->fetchResource($url)->willReturn($resource);
+        }
+      }
+      else {
+        $urlResolver->getResourceUrl($url)
+          ->willThrow(new ResourceException('No matching provider found.', $url));
+      }
+    }
+
+    $this->container->set('media.oembed.url_resolver', $urlResolver->reveal());
+    $this->container->set('media.oembed.resource_fetcher', $resourceFetcher->reveal());
+
+    $this->assertSame($expected, $media->isHidden());
+  }
+
+  /**
+   * Tests error message when hidden video is accessed by content producer.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\media\OEmbed\ProviderException
+   * @throws \Drupal\media\OEmbed\ResourceException
+   */
+  public function testHiddenVideoErrorMessage(): void {
+    // Mock YouTube provider for video URL.
+    $provider = $this->prophesize(Provider::class);
+    $provider->getUrl()->willReturn('https://www.youtube.com/');
+
+    // Create an oEmbed resource.
+    $validResource = $this->createResource([
+      'html' => '<iframe width="1280" height="720" src="https://www.youtube.com/embed/random-id"></iframe>',
+      'title' => 'Youtube video',
+      'thumbnail_url' => '',
+    ], 'Youtube');
+
+    // Mock services for the media entity creation.
+    $initialResourceFetcher = $this->prophesize(ResourceFetcherInterface::class);
+    $initialUrlResolver = $this->prophesize(UrlResolverInterface::class);
+
+    $url = 'https://www.youtube.com/watch?v=random-id';
+    $initialUrlResolver->getProviderByUrl($url)->willReturn($provider->reveal());
+    $initialUrlResolver->getResourceUrl($url)->willReturn($url);
+    $initialResourceFetcher->fetchResource($url)->willReturn($validResource);
+
+    $this->container->set('media.oembed.url_resolver', $initialUrlResolver->reveal());
+    $this->container->set('media.oembed.resource_fetcher', $initialResourceFetcher->reveal());
+
+    // Create remote video media entity with test URL.
+    /** @var \Drupal\helfi_media_remote_video\Entity\RemoteVideo $media */
+    $media = $this->createMediaEntity([
+      'name' => 'test video',
+      'bundle' => 'remote_video',
+      'field_media_oembed_video' => [
+        'value' => $url,
+        'iframe_title' => 'Test video',
+      ],
+    ]);
+
+    // The media should be an instance of remote video class.
+    $this->assertInstanceOf(RemoteVideo::class, $media);
+
+    $messenger = $this->prophesize(MessengerInterface::class);
+    $messenger->addError(Argument::that(function ($message): bool {
+      $messageString = (string) $message;
+
+      // Check that the message contains expected parts of the error message.
+      return str_contains($messageString, 'The video embed on this page cannot be displayed publicly.') &&
+        str_contains($messageString, 'Please check the video visibility settings from the service provider') &&
+        str_contains($messageString, 'or') &&
+        str_contains($messageString, 'edit the video embed.');
+    }))->shouldBeCalled();
+    $this->container->set('messenger', $messenger->reveal());
+
+    // Mock services to simulate hidden video resource exception.
+    $resourceFetcher = $this->prophesize(ResourceFetcherInterface::class);
+    $urlResolver = $this->prophesize(UrlResolverInterface::class);
+
+    $urlResolver->getResourceUrl($url)->willReturn($url);
+    $resourceFetcher->fetchResource($url)
+      ->willThrow(new ResourceException('The resource is hidden.', $url));
+
+    $this->container->set('media.oembed.url_resolver', $urlResolver->reveal());
+    $this->container->set('media.oembed.resource_fetcher', $resourceFetcher->reveal());
+
+    // Create an editor role with update permissions.
+    $role = Role::create(['id' => 'editor', 'label' => 'Editor']);
+    $role->grantPermission('update any media');
+    $role->save();
+
+    // Create test user with the editor role.
+    $account = User::create(['name' => 'editor', 'status' => 1]);
+    $account->addRole('editor');
+    $account->save();
+
+    // Set current user for permission checks.
+    $this->container->get('current_user')->setAccount($account);
+
+    // Call isHidden() which should trigger the error message.
+    $this->assertTrue($media->isHidden());
   }
 
   /**

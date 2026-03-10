@@ -1,0 +1,16 @@
+msgid ""
+msgstr ""
+
+msgid "The video embed on this page cannot be displayed publicly."
+msgstr "Den externa videon på den här sidan kan inte visas offentligt."
+
+msgid "Please check the video visibility settings from the service provider"
+msgstr "Kontrollera inställningarna för videons synlighet hos din tjänsteleverantör"
+
+msgctxt "Remote video"
+msgid "or"
+msgstr "eller"
+
+msgctxt "Remote video"
+msgid "edit the video embed."
+msgstr "redigera den externa videon."
