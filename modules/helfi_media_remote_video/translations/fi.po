@@ -1,0 +1,16 @@
+msgid ""
+msgstr ""
+
+msgid "The video embed on this page cannot be displayed publicly."
+msgstr "Tällä sivulla olevaa videoupotusta ei voida näyttää julkisesti."
+
+msgid "Please check the video visibility settings from the service provider"
+msgstr "Tarkasta videon näkyvyysasetukset palveluntarjoajalta"
+
+msgctxt "Remote video"
+msgid "or"
+msgstr "tai"
+
+msgctxt "Remote video"
+msgid "edit the video embed."
+msgstr "muokkaa videoupotusta."
