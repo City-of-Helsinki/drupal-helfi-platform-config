@@ -7,3 +7,11 @@ helfi_search.test_form:
     _user_is_logged_in: 'TRUE'
   options:
     _admin_route: TRUE
+
+helfi_search.semantic_search:
+  path: '/api/v1/search'
+  defaults:
+    _controller: '\Drupal\helfi_search\Controller\SearchController::search'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
