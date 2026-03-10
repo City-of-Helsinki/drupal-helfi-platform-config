@@ -12,6 +12,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\ParagraphsType;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the ParagraphCommands Drush command class.
@@ -22,16 +23,14 @@ use Drupal\paragraphs\Entity\ParagraphsType;
  * - Scan and find actual orphaned paragraphs.
  *
  * @coversDefaultClass \Drupal\helfi_platform_config\Drush\Commands\ParagraphCommands
- * @group helfi_platform_config
  */
+#[Group('helfi_platform_config')]
 class ParagraphCommandsTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_platform_config',
-    'helfi_api_base',
     'paragraphs',
     'node',
     'user',
@@ -40,7 +39,6 @@ class ParagraphCommandsTest extends KernelTestBase {
     'text',
     'file',
     'entity_reference_revisions',
-    'config_rewrite',
   ];
 
   /**
