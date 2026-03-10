@@ -172,7 +172,7 @@ class LongtermAssistedLivingFee {
         totalPayment = combinedIncome * paymentPercentage;
         disposableAmount = clientNetIncome - totalPayment;
         disposableAmountCombined = parsedSettings.minimum_funds + parsedSettings.basic_amount;
-        if (disposableAmountCombined < parsedSettings.minimum_funds_spouse) {
+        if (combinedIncome - totalPayment < parsedSettings.minimum_funds_spouse) {
           totalPayment = combinedIncome - parsedSettings.minimum_funds_spouse;
           disposableAmount = parsedSettings.minimum_funds;
         }
