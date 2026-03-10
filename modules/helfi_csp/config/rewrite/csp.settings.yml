@@ -1,4 +1,3 @@
-config_rewrite: replace
 report-only:
   enable: false
   directives: {  }
@@ -26,5 +25,3 @@ enforce:
       base: none
     frame-ancestors:
       base: self
-  reporting:
-    plugin: none
