@@ -73,7 +73,6 @@ class RemoteVideoHooks {
       return;
     }
 
-
     // Collect cache tags from all referencing paragraphs.
     $cacheTags = array_reduce(
       $paragraphs,

@@ -375,7 +375,6 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
       'thumbnail_url' => '',
     ], 'Youtube');
 
-
     // Mock services for the media entity creation.
     $initialResourceFetcher = $this->prophesize(ResourceFetcherInterface::class);
     $initialUrlResolver = $this->prophesize(UrlResolverInterface::class);
