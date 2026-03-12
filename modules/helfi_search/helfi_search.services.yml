@@ -20,4 +20,6 @@ services:
   Drupal\helfi_search\Pipeline\MetadataComposer: ~
   Drupal\helfi_search\Pipeline\TextPipeline: ~
 
+  Drupal\helfi_search\QueryBuilder: ~
+
   Drupal\helfi_search\EventSubscriber\SearchApiSubscriber: ~

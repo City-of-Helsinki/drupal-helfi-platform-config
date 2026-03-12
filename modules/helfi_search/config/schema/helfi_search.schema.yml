@@ -10,7 +10,8 @@ helfi_search.settings:
       type: string
       label: 'OpenAI base URL'
       description: 'Base URL for OpenAI API (defaults to https://api.openai.com/v1 if not set)'
-    openai_model:
-      type: string
-      label: 'OpenAI model'
-      description: 'OpenAI embedding model to use (defaults to text-embedding-3-small if not set)'
+    openai_models:
+      type: sequence
+      label: 'OpenAI embedding models'
+      sequence:
+        type: string

@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\Pipeline;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\helfi_search\EmbeddingsModelException;
-use Drupal\helfi_search\EmbeddingsModelInterface;
 
 /**
- * Converts Drupal entities into vector embeddings.
+ * Converts Drupal entities into text chunks for embedding.
  *
  * Orchestrates the full pipeline: HTML extraction → cleaning → Markdown
  * conversion → normalization → chunking → field composition → embedding.
@@ -35,14 +33,11 @@ class TextPipeline {
     private readonly TextNormalizer $textNormalizer,
     private readonly ContentChunker $contentChunker,
     private readonly MetadataComposer $metadataComposer,
-    private readonly EmbeddingsModelInterface $embeddingsModel,
   ) {
   }
 
   /**
    * Runs text processing pipeline on an entity.
-   *
-   * The entity is converted into text chunks.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to process.
@@ -63,19 +58,18 @@ class TextPipeline {
   }
 
   /**
-   * Process entities through the full pipeline and return embeddings.
+   * Extract text chunks from entities without generating embeddings.
    *
    * @param array<string, \Drupal\Core\Entity\EntityInterface> $entities
    *   Entities keyed by an arbitrary string identifier.
    *
-   * @return array<string, array{'vector': float[], 'content': string}[]>
-   *   Embedding vectors keyed by the same identifiers. Each value is an array
-   *   of vectors (one per chunk). Keys with no results are omitted.
+   * @return \Drupal\helfi_search\Pipeline\TextChunkResult
+   *   The extracted chunks with mapping information.
    *
    * @throws \Drupal\helfi_search\Pipeline\PipelineException
    *   When the pipeline fails.
    */
-  public function processEntities(array $entities): array {
+  public function extractChunks(array $entities): TextChunkResult {
     $textsForEmbedding = [];
     $entityChunkMap = [];
 
@@ -89,30 +83,7 @@ class TextPipeline {
       }
     }
 
-    if (empty($textsForEmbedding)) {
-      return [];
-    }
-
-    try {
-      $embeddings = $this->embeddingsModel->batchGetEmbedding($textsForEmbedding);
-    }
-    catch (EmbeddingsModelException $e) {
-      throw new PipelineException($e->getMessage(), previous: $e);
-    }
-
-    $results = [];
-    foreach ($entityChunkMap as $entityKey => $chunkKeys) {
-      foreach ($chunkKeys as $chunkKey) {
-        if (isset($embeddings[$chunkKey])) {
-          $results[$entityKey][] = [
-            'vector' => $embeddings[$chunkKey],
-            'content' => $textsForEmbedding[$chunkKey],
-          ];
-        }
-      }
-    }
-
-    return $results;
+    return new TextChunkResult($textsForEmbedding, $entityChunkMap);
   }
 
 }

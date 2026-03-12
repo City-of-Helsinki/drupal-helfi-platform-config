@@ -8,14 +8,15 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\helfi_platform_config\RedirectCleaner;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\path_alias\Entity\PathAlias;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests custom redirect entity.
- *
- * @group helfi_platform_config
  */
+#[Group('helfi_platform_config')]
+#[RunTestsInSeparateProcesses]
 class RedirectEntityTest extends KernelTestBase {
 
   /**
@@ -27,9 +28,6 @@ class RedirectEntityTest extends KernelTestBase {
     'system',
     'redirect',
     'path_alias',
-    'config_rewrite',
-    'helfi_platform_config',
-    'helfi_api_base',
   ];
 
   /**

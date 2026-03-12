@@ -11,6 +11,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\QueryBuilder;
 use Drupal\helfi_search\TokenUsageTracker;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
@@ -22,9 +23,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  *
  * This form is meant as a pathfinder for evaluating the search
  * embeddings for Helfi. This should be considered as throwaway code.
- *
- * Some ideas for future improvements:
- *  - Flood protection for search.
  */
 class SearchTestForm extends FormBase {
 
@@ -39,18 +37,24 @@ class SearchTestForm extends FormBase {
 
   use AutowireTrait;
 
-  /**
-   * Elasticsearch index name.
-   */
-  const string INDEX_NAME = 'embeddings';
-
   public function __construct(
     protected EmbeddingsModelInterface $embeddingsModel,
     protected TokenUsageTracker $tokenUsageTracker,
     protected LanguageManagerInterface $languageManager,
+    protected QueryBuilder $queryBuilder,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
     protected Client $elasticClient,
   ) {
+  }
+
+  /**
+   * Get configured models.
+   *
+   * @return string[]
+   *   Model names.
+   */
+  private function getModels(): array {
+    return $this->configFactory()->get('helfi_search.settings')->get('openai_models') ?? [];
   }
 
   /**
@@ -64,6 +68,19 @@ class SearchTestForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
+    $models = $this->getModels();
+
+    if (!empty($models)) {
+      $modelOptions = array_combine($models, $models);
+      $form['model'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Embedding Model'),
+        '#options' => $modelOptions,
+        '#default_value' => $models[0],
+        '#required' => TRUE,
+      ];
+    }
+
     $form['search_query'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Query'),
@@ -112,11 +129,12 @@ class SearchTestForm extends FormBase {
         if (!empty($result['search_results'])) {
           $rows = [];
           foreach ($result['search_results'] as $hit) {
-            $excerpt = mb_strimwidth($hit['content'], 0, 200, '...');
+            $excerpt = mb_strimwidth($hit['content'] ?? '', 0, 200, '...');
 
             $rows[] = [
+              'type' => $hit['type'] ?? 'Semantic',
               'score' => number_format($hit['score'], 4),
-              'entity_type' => htmlspecialchars($hit['entity_type']),
+              'entity_type' => htmlspecialchars($hit['entity_type'] ?? ''),
               'url' => $hit['url'] ? Link::fromTextAndUrl(htmlspecialchars($hit['title']), Url::fromUserInput($hit['url'])) : '-',
               'language' => htmlspecialchars($hit['language']),
               'content' => htmlspecialchars($excerpt),
@@ -126,6 +144,7 @@ class SearchTestForm extends FormBase {
           $form['results']['search_results'] = [
             '#type' => 'table',
             '#header' => [
+              $this->t('Type'),
               $this->t('Score'),
               $this->t('Entity Type'),
               $this->t('URL'),
@@ -174,64 +193,67 @@ class SearchTestForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $query = $form_state->getValue('search_query');
+    $model = $form_state->getValue('model');
+    $models = $this->getModels();
+
+    // Fallback to first configured model if none selected.
+    if (!$model && !empty($models)) {
+      $model = $models[0];
+    }
+
+    if (!$model) {
+      $this->messenger()->addError($this->t('No embedding models configured.'));
+      return;
+    }
 
     try {
       // Generate embeddings for the query.
-      $embeddings = $this->embeddingsModel->getEmbedding($query);
+      $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
 
       // Get current language.
       $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
-      // Perform vector similarity search.
-      $results = $this->elasticClient->search([
-        'index' => self::INDEX_NAME,
+      // Build both queries for msearch.
+      $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE);
+
+      $msearchResponse = $this->elasticClient->msearch([
         'body' => [
-          'knn' => [
-            'field' => 'embeddings.vector',
-            'query_vector' => $embeddings,
-            'k' => 10,
-            'num_candidates' => 100,
-            "inner_hits" => [
-              "_source" => FALSE,
-              "fields" => [
-                "embeddings.content",
-              ],
-              "size" => 1,
-            ],
-            'filter' => [
-              'term' => [
-                'search_api_language' => $currentLanguage,
-              ],
-            ],
-          ],
-          "size" => 10,
-          '_source' => [
-            'id',
-            'entity_type',
-            'url',
-            'label',
-            'search_api_language',
-            'search_api_datasource',
-          ],
+          ['index' => $promotionQuery['index']],
+          $promotionQuery['body'],
+          ['index' => $knnQuery['index']],
+          $knnQuery['body'],
         ],
       ])?->asArray() ?? [];
 
-      // Process search results.
-      $search_results = [];
-      if (isset($results['hits']['hits'])) {
-        foreach ($results['hits']['hits'] as $hit) {
-          $content = $hit['inner_hits']['embeddings']['hits']['hits'][0]['fields']['embeddings'][0]['content'][0] ?? '';
+      $responses = $msearchResponse['responses'] ?? [];
 
+      // Parse promoted results.
+      $promotedUrls = [];
+      $search_results = [];
+
+      if (!isset($responses[0]['error'])) {
+        foreach ($this->queryBuilder->parsePromotionHits($responses[0] ?? []) as $promoted) {
+          $promotedUrls[$promoted['url']] = TRUE;
           $search_results[] = [
-            'id' => $hit['_id'],
-            'score' => $hit['_score'] ?? 0,
-            'entity_type' => array_first($hit['_source']['entity_type'] ?? []),
-            'url' => array_first($hit['_source']['url'] ?? []),
-            'title' => array_first($hit['_source']['label'] ?? []),
-            'language' => array_first($hit['_source']['search_api_language'] ?? []),
-            'datasource' => array_first($hit['_source']['search_api_datasource'] ?? []),
-            'content' => $content,
+            'type' => 'Promoted',
+            'score' => $promoted['score'],
+            'entity_type' => '',
+            'url' => $promoted['url'],
+            'title' => $promoted['title'],
+            'language' => $promoted['language'],
+            'content' => $promoted['description'] ?? '',
           ];
+        }
+      }
+
+      // Parse semantic results, deduplicating by URL.
+      if (!isset($responses[1]['error'])) {
+        foreach ($this->queryBuilder->parseKnnHits($responses[1] ?? [], $model, includeContent: TRUE) as $hit) {
+          if (isset($promotedUrls[$hit['url']])) {
+            continue;
+          }
+          $search_results[] = ['type' => 'Semantic'] + $hit;
         }
       }
 
@@ -239,7 +261,7 @@ class SearchTestForm extends FormBase {
         'query' => $query,
         'embeddings' => $embeddings,
         'search_results' => $search_results,
-        'total_hits' => $results['hits']['total']['value'] ?? 0,
+        'total_hits' => ($responses[1]['hits']['total']['value'] ?? 0) + count($promotedUrls),
       ]);
 
       $this->messenger()->addStatus($this->t('Successfully generated embeddings and found @count similar documents for "@query"', [
