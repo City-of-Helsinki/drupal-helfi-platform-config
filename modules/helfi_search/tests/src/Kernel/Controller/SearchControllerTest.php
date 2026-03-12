@@ -77,21 +77,64 @@ class SearchControllerTest extends KernelTestBase {
 
     $client = ClientBuilder::create()
       ->setHttpClient($this->createMockHttpClient([
-        // Empty response.
+        // Empty response (no promotions, no KNN results).
         $this->createElasticsearchResponse([
-          'hits' => ['hits' => []],
+          'responses' => [
+            ['hits' => ['hits' => []]],
+            ['hits' => ['hits' => []]],
+          ],
         ]),
-        // One results.
+        // Response with promoted and KNN results.
         $this->createElasticsearchResponse([
-          'hits' => [
-            'hits' => [
-              [
-                '_score' => 0.95,
-                '_source' => [
-                  'entity_type' => ['node'],
-                  'url' => ['/fi/test-page'],
-                  'label' => ['Test Page'],
-                  'search_api_language' => ['fi'],
+          'responses' => [
+            [
+              'hits' => [
+                'hits' => [
+                  [
+                    '_score' => 1.2,
+                    '_source' => [
+                      'title' => ['Promoted Result'],
+                      'description' => ['A promoted description'],
+                      'link' => ['/fi/promoted'],
+                      'search_api_language' => ['fi'],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+            [
+              'hits' => [
+                'hits' => [
+                  [
+                    '_score' => 0.95,
+                    '_source' => [
+                      'entity_type' => ['node'],
+                      'url' => ['/fi/test-page'],
+                      'label' => ['Test Page'],
+                      'search_api_language' => ['fi'],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ]),
+        // Promotion sub-query errors, KNN succeeds.
+        $this->createElasticsearchResponse([
+          'responses' => [
+            ['error' => ['type' => 'index_not_found_exception']],
+            [
+              'hits' => [
+                'hits' => [
+                  [
+                    '_score' => 0.80,
+                    '_source' => [
+                      'entity_type' => ['node'],
+                      'url' => ['/fi/fallback'],
+                      'label' => ['Fallback Page'],
+                      'search_api_language' => ['fi'],
+                    ],
+                  ],
                 ],
               ],
             ],
@@ -104,18 +147,26 @@ class SearchControllerTest extends KernelTestBase {
 
     $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
 
+    // Test empty results.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'no results query']);
     $response = $this->processRequest($request);
 
     $this->assertEquals(200, $response->getStatusCode());
     $data = json_decode($response->getContent(), TRUE);
     $this->assertEmpty($data['results']);
+    $this->assertEmpty($data['promoted']);
 
+    // Test with promoted and KNN results.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
     $response = $this->processRequest($request);
 
     $this->assertEquals(200, $response->getStatusCode());
     $data = json_decode($response->getContent(), TRUE);
+    $this->assertCount(1, $data['promoted']);
+    $this->assertEquals('Promoted Result', $data['promoted'][0]['title']);
+    $this->assertEquals('A promoted description', $data['promoted'][0]['description']);
+    $this->assertEquals('/fi/promoted', $data['promoted'][0]['url']);
+    $this->assertEquals('fi', $data['promoted'][0]['language']);
     $this->assertCount(1, $data['results']);
     $this->assertEquals(0.95, $data['results'][0]['score']);
     $this->assertEquals('node', $data['results'][0]['entity_type']);
@@ -123,6 +174,17 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertEquals('Test Page', $data['results'][0]['title']);
     $this->assertEquals('fi', $data['results'][0]['language']);
 
+    // Test promotion error is handled gracefully.
+    $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
+    $response = $this->processRequest($request);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = json_decode($response->getContent(), TRUE);
+    $this->assertEmpty($data['promoted']);
+    $this->assertCount(1, $data['results']);
+    $this->assertEquals('/fi/fallback', $data['results'][0]['url']);
+
+    // Test total ES failure.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
     $response = $this->processRequest($request);
 

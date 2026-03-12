@@ -9,6 +9,7 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\QueryBuilder;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -23,8 +24,6 @@ final class SearchController extends ControllerBase {
 
   use AutowireTrait;
 
-  const string INDEX_NAME = 'embeddings';
-
   const string FLOOD_EVENT = 'helfi_search.semantic_search';
   const int FLOOD_THRESHOLD = 100;
   const int FLOOD_WINDOW = 3600;
@@ -35,6 +34,7 @@ final class SearchController extends ControllerBase {
   public function __construct(
     private readonly EmbeddingsModelInterface $embeddingsModel,
     private readonly FloodInterface $flood,
+    private readonly QueryBuilder $queryBuilder,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
     private readonly Client $elasticClient,
   ) {
@@ -68,42 +68,37 @@ final class SearchController extends ControllerBase {
 
       $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
 
-      $results = $this->elasticClient->search([
-        'index' => self::INDEX_NAME,
+      $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage);
+
+      // Execute both queries in a single HTTP round-trip using
+      // ES Multi Search API. The response order matches the request order:
+      // responses[0] = promoted results, responses[1] = KNN results.
+      $msearchResponse = $this->elasticClient->msearch([
         'body' => [
-          'knn' => [
-            'field' => 'embeddings.vector',
-            'query_vector' => $embeddings,
-            'k' => 10,
-            'num_candidates' => 100,
-            'filter' => [
-              'term' => [
-                'search_api_language' => $currentLanguage,
-              ],
-            ],
-          ],
-          'size' => 10,
-          '_source' => [
-            'entity_type',
-            'url',
-            'label',
-            'search_api_language',
-          ],
+          ['index' => $promotionQuery['index']],
+          $promotionQuery['body'],
+          ['index' => $knnQuery['index']],
+          $knnQuery['body'],
         ],
       ])?->asArray() ?? [];
 
-      $searchResults = [];
-      foreach ($results['hits']['hits'] ?? [] as $hit) {
-        $searchResults[] = [
-          'score' => $hit['_score'] ?? 0,
-          'entity_type' => array_first($hit['_source']['entity_type'] ?? []),
-          'url' => array_first($hit['_source']['url'] ?? []),
-          'title' => array_first($hit['_source']['label'] ?? []),
-          'language' => array_first($hit['_source']['search_api_language'] ?? []),
-        ];
+      $responses = $msearchResponse['responses'] ?? [];
+
+      $promoted = [];
+      if (!isset($responses[0]['error'])) {
+        $promoted = $this->queryBuilder->parsePromotionHits($responses[0] ?? []);
       }
 
-      return new JsonResponse(['results' => $searchResults]);
+      $searchResults = [];
+      if (!isset($responses[1]['error'])) {
+        $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? []);
+      }
+
+      return new JsonResponse([
+        'promoted' => $promoted,
+        'results' => $searchResults,
+      ]);
     }
     catch (EmbeddingsModelException | ElasticsearchException | TransportException) {
       return new JsonResponse(
