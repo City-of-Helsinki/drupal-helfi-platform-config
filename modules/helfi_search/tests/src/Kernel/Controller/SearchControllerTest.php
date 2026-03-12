@@ -47,6 +47,11 @@ class SearchControllerTest extends KernelTestBase {
     $this->installConfig(['system']);
     $this->installEntitySchema('user');
     $this->setUpCurrentUser(permissions: ['access content']);
+
+    // Configure at least one model.
+    $this->config('helfi_search.settings')
+      ->set('openai_models', ['text-embedding-3-small'])
+      ->save();
   }
 
   /**
@@ -70,7 +75,7 @@ class SearchControllerTest extends KernelTestBase {
    */
   public function testSearch(): void {
     $embeddingsModel = $this->prophesize(EmbeddingsModelInterface::class);
-    $embeddingsModel->getEmbedding(Argument::type('string'))
+    $embeddingsModel->getEmbedding(Argument::type('string'), Argument::type('string'))
       ->willReturn(array_fill(0, 3, 0.1));
 
     $this->container->set(EmbeddingsModelInterface::class, $embeddingsModel->reveal());

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search;
 
+use Drupal\helfi_search\OpenAI\EmbeddingsApi;
+
 /**
  * Builds Elasticsearch queries for search features.
  */
@@ -68,20 +70,24 @@ final class QueryBuilder {
    *   The embedding vector.
    * @param string $language
    *   The language code.
+   * @param string $model
+   *   The embedding model name.
    * @param bool $includeInnerHits
    *   Whether to include inner_hits for content extraction.
    *
    * @return array
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, bool $includeInnerHits = FALSE): array {
+  public function buildKnnQuery(array $embeddings, string $language, string $model, bool $includeInnerHits = FALSE): array {
     $language = match($language) {
       "fi", "sv", "en" => $language,
       default => "en",
     };
 
+    $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
+
     $knn = [
-      'field' => 'embeddings.vector',
+      'field' => $fieldPrefix . '.vector',
       'query_vector' => $embeddings,
       'k' => 10,
       'num_candidates' => 100,
@@ -95,7 +101,7 @@ final class QueryBuilder {
     if ($includeInnerHits) {
       $knn['inner_hits'] = [
         '_source' => FALSE,
-        'fields' => ['embeddings.content'],
+        'fields' => [$fieldPrefix . '.content'],
         'size' => 1,
       ];
     }
@@ -120,14 +126,18 @@ final class QueryBuilder {
    *
    * @param array $response
    *   The Elasticsearch response array.
+   * @param string $model
+   *   The embedding model name.
    * @param bool $includeContent
    *   Whether to extract content from inner_hits.
    *
    * @return array
    *   Parsed search results.
    */
-  public function parseKnnHits(array $response, bool $includeContent = FALSE): array {
+  public function parseKnnHits(array $response, string $model, bool $includeContent = FALSE): array {
+    $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
     $results = [];
+
     foreach ($response['hits']['hits'] ?? [] as $hit) {
       $result = [
         'score' => $hit['_score'] ?? 0,
@@ -140,7 +150,7 @@ final class QueryBuilder {
       if ($includeContent) {
         $result['id'] = $hit['_id'];
         $result['datasource'] = array_first($hit['_source']['search_api_datasource'] ?? []);
-        $result['content'] = $hit['inner_hits']['embeddings']['hits']['hits'][0]['fields']['embeddings'][0]['content'][0] ?? '';
+        $result['content'] = $hit['inner_hits'][$fieldPrefix]['hits']['hits'][0]['fields'][$fieldPrefix][0]['content'][0] ?? '';
       }
 
       $results[] = $result;

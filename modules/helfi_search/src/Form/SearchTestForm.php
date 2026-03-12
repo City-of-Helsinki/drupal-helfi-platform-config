@@ -48,6 +48,16 @@ class SearchTestForm extends FormBase {
   }
 
   /**
+   * Get configured models.
+   *
+   * @return string[]
+   *   Model names.
+   */
+  private function getModels(): array {
+    return $this->configFactory()->get('helfi_search.settings')->get('openai_models') ?? [];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId(): string {
@@ -58,6 +68,19 @@ class SearchTestForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
+    $models = $this->getModels();
+
+    if (!empty($models)) {
+      $modelOptions = array_combine($models, $models);
+      $form['model'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Embedding Model'),
+        '#options' => $modelOptions,
+        '#default_value' => $models[0],
+        '#required' => TRUE,
+      ];
+    }
+
     $form['search_query'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Query'),
@@ -170,17 +193,29 @@ class SearchTestForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $query = $form_state->getValue('search_query');
+    $model = $form_state->getValue('model');
+    $models = $this->getModels();
+
+    // Fallback to first configured model if none selected.
+    if (!$model && !empty($models)) {
+      $model = $models[0];
+    }
+
+    if (!$model) {
+      $this->messenger()->addError($this->t('No embedding models configured.'));
+      return;
+    }
 
     try {
       // Generate embeddings for the query.
-      $embeddings = $this->embeddingsModel->getEmbedding($query);
+      $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
 
       // Get current language.
       $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
       // Build both queries for msearch.
       $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, includeInnerHits: TRUE);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE);
 
       $msearchResponse = $this->elasticClient->msearch([
         'body' => [
@@ -214,7 +249,7 @@ class SearchTestForm extends FormBase {
 
       // Parse semantic results, deduplicating by URL.
       if (!isset($responses[1]['error'])) {
-        foreach ($this->queryBuilder->parseKnnHits($responses[1] ?? [], includeContent: TRUE) as $hit) {
+        foreach ($this->queryBuilder->parseKnnHits($responses[1] ?? [], $model, includeContent: TRUE) as $hit) {
           if (isset($promotedUrls[$hit['url']])) {
             continue;
           }

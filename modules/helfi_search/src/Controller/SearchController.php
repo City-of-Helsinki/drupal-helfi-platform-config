@@ -41,6 +41,25 @@ final class SearchController extends ControllerBase {
   }
 
   /**
+   * Get the model to use, from query parameter or first configured.
+   */
+  private function resolveModel(Request $request): ?string {
+    $models = $this->config('helfi_search.settings')->get('openai_models') ?? [];
+
+    if (empty($models)) {
+      return NULL;
+    }
+
+    $requested = $request->query->getString('model');
+
+    if ($requested && in_array($requested, $models, TRUE)) {
+      return $requested;
+    }
+
+    return $models[0];
+  }
+
+  /**
    * Handle semantic search request.
    */
   public function search(Request $request): JsonResponse {
@@ -53,6 +72,15 @@ final class SearchController extends ControllerBase {
       );
     }
 
+    $model = $this->resolveModel($request);
+
+    if (!$model) {
+      return new JsonResponse(
+        ['error' => 'No embedding models configured.'],
+        503,
+      );
+    }
+
     if (!$this->flood->isAllowed(self::FLOOD_EVENT, self::FLOOD_THRESHOLD, self::FLOOD_WINDOW)) {
       return new JsonResponse(
         ['error' => 'Too many requests. Please try again later.'],
@@ -61,7 +89,7 @@ final class SearchController extends ControllerBase {
     }
 
     try {
-      $embeddings = $this->embeddingsModel->getEmbedding($query);
+      $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
 
       // Register flood after the expensive embedding API call.
       $this->flood->register(self::FLOOD_EVENT, self::FLOOD_WINDOW);
@@ -69,7 +97,7 @@ final class SearchController extends ControllerBase {
       $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
 
       $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model);
 
       // Execute both queries in a single HTTP round-trip using
       // ES Multi Search API. The response order matches the request order:
@@ -92,7 +120,7 @@ final class SearchController extends ControllerBase {
 
       $searchResults = [];
       if (!isset($responses[1]['error'])) {
-        $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? []);
+        $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? [], $model);
       }
 
       return new JsonResponse([

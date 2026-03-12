@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_search\Unit\Drush\Commands;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_search\Drush\Commands\TextPipelineCommands;
+use Drupal\helfi_search\Pipeline\TextChunkResult;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeStorage;
@@ -72,8 +73,8 @@ class TextConverterCommandsTest extends UnitTestCase {
     $entityTypeManager->getStorage('node')->willReturn($nodeStorage->reveal());
 
     $textPipeline = $this->prophesize(TextPipeline::class);
-    $textPipeline->processEntities([$node->reveal()])
-      ->willReturn([]);
+    $textPipeline->extractChunks([$node->reveal()])
+      ->willReturn(new TextChunkResult([], []));
 
     $sut = $this->getSut(
       entityTypeManager: $entityTypeManager->reveal(),

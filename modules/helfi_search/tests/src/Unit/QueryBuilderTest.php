@@ -15,6 +15,9 @@ use PHPUnit\Framework\Attributes\Group;
 #[Group('helfi_search')]
 class QueryBuilderTest extends UnitTestCase {
 
+  private const string TEST_MODEL = 'text-embedding-3-small';
+  private const string TEST_MODEL_FIELD = 'embeddings_text_embedding_3_small';
+
   /**
    * Data provider for language field mapping.
    */
@@ -100,10 +103,10 @@ class QueryBuilderTest extends UnitTestCase {
    */
   public function testBuildKnnQuery(): void {
     $vector = [0.1, 0.2, 0.3];
-    $query = (new QueryBuilder())->buildKnnQuery($vector, 'fi');
+    $query = (new QueryBuilder())->buildKnnQuery($vector, 'fi', self::TEST_MODEL);
 
     $this->assertEquals(QueryBuilder::EMBEDDINGS_INDEX, $query['index']);
-    $this->assertEquals('embeddings.vector', $query['body']['knn']['field']);
+    $this->assertEquals(self::TEST_MODEL_FIELD . '.vector', $query['body']['knn']['field']);
     $this->assertEquals($vector, $query['body']['knn']['query_vector']);
     $this->assertEquals(10, $query['body']['knn']['k']);
     $this->assertEquals('fi', $query['body']['knn']['filter']['term']['search_api_language']);
@@ -115,10 +118,10 @@ class QueryBuilderTest extends UnitTestCase {
    * Tests buildKnnQuery with inner hits.
    */
   public function testBuildKnnQueryWithInnerHits(): void {
-    $query = (new QueryBuilder())->buildKnnQuery([0.1], 'sv', includeInnerHits: TRUE);
+    $query = (new QueryBuilder())->buildKnnQuery([0.1], 'sv', self::TEST_MODEL, includeInnerHits: TRUE);
 
     $this->assertArrayHasKey('inner_hits', $query['body']['knn']);
-    $this->assertEquals(['embeddings.content'], $query['body']['knn']['inner_hits']['fields']);
+    $this->assertEquals([self::TEST_MODEL_FIELD . '.content'], $query['body']['knn']['inner_hits']['fields']);
     $this->assertContains('id', $query['body']['_source']);
     $this->assertContains('search_api_datasource', $query['body']['_source']);
   }
@@ -144,7 +147,7 @@ class QueryBuilderTest extends UnitTestCase {
       ],
     ];
 
-    $results = (new QueryBuilder())->parseKnnHits($response);
+    $results = (new QueryBuilder())->parseKnnHits($response, self::TEST_MODEL);
 
     $this->assertCount(1, $results);
     $this->assertEquals(0.95, $results[0]['score']);
@@ -173,12 +176,12 @@ class QueryBuilderTest extends UnitTestCase {
               'search_api_datasource' => ['entity:node'],
             ],
             'inner_hits' => [
-              'embeddings' => [
+              self::TEST_MODEL_FIELD => [
                 'hits' => [
                   'hits' => [
                     [
                       'fields' => [
-                        'embeddings' => [
+                        self::TEST_MODEL_FIELD => [
                           ['content' => ['Some content']],
                         ],
                       ],
@@ -192,7 +195,7 @@ class QueryBuilderTest extends UnitTestCase {
       ],
     ];
 
-    $results = (new QueryBuilder())->parseKnnHits($response, includeContent: TRUE);
+    $results = (new QueryBuilder())->parseKnnHits($response, self::TEST_MODEL, includeContent: TRUE);
 
     $this->assertCount(1, $results);
     $this->assertEquals('doc1', $results[0]['id']);
@@ -204,7 +207,7 @@ class QueryBuilderTest extends UnitTestCase {
    * Tests parseKnnHits with empty response.
    */
   public function testParseKnnHitsEmpty(): void {
-    $this->assertEmpty((new QueryBuilder())->parseKnnHits([]));
+    $this->assertEmpty((new QueryBuilder())->parseKnnHits([], self::TEST_MODEL));
   }
 
 }

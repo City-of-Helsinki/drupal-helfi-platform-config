@@ -73,18 +73,16 @@ final class TextPipelineCommands extends Command {
         $entity = $entity->getTranslation($language);
       }
 
-      $results = $this->textPipeline->processEntities([$entity]);
+      $chunkResult = $this->textPipeline->extractChunks([$entity]);
 
-      if (empty($results)) {
+      if (empty($chunkResult->textsForEmbedding)) {
         $output->writeln("Failed to find text converter for $entity_type:$id");
         return self::FAILURE;
       }
 
-      foreach ($results as $chunks) {
-        foreach ($chunks as $chunk) {
-          $output->writeln($chunk['content']);
-          $output->writeln("=========================================");
-        }
+      foreach ($chunkResult->textsForEmbedding as $chunk) {
+        $output->writeln($chunk);
+        $output->writeln("=========================================");
       }
 
       return self::SUCCESS;
