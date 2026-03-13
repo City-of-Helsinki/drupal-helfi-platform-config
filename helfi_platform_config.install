@@ -551,7 +551,7 @@ function helfi_platform_config_update_11001(): void {
 
   $database = \Drupal::database();
 
-  foreach(['node_field_data', 'node_field_revision'] as $table) {
+  foreach (['node_field_data', 'node_field_revision'] as $table) {
     $database->update($table)
       ->expression('published_at', 'NULL')
       ->condition('published_at', 2147483647)
