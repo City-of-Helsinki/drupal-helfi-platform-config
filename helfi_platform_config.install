@@ -540,3 +540,21 @@ function helfi_platform_config_update_9401(): void {
     }
   }
 }
+
+/**
+ * UHF-12791: Fix legacy 32bit int max value from published_at field.
+ */
+function helfi_platform_config_update_11001(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('publication_date')) {
+    return;
+  }
+
+  $database = \Drupal::database();
+
+  foreach(['node_field_data', 'node_field_revision'] as $table) {
+    $database->update($table)
+      ->expression('published_at', 'NULL')
+      ->condition('published_at', 2147483647)
+      ->execute();
+  }
+}
