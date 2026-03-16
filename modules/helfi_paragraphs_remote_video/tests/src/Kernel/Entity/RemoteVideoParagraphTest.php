@@ -70,7 +70,7 @@ class RemoteVideoParagraphTest extends KernelTestBase {
       'type' => 'string',
     ])->save();
 
-    // Then install the rest of your module configs.
+    // Install the rest of your module configs.
     $this->installConfig([
       'focal_point',
       'media_library',
@@ -81,10 +81,9 @@ class RemoteVideoParagraphTest extends KernelTestBase {
   }
 
   /**
-   * Tests the Remote video paragraph bundle behavior.
+   * Tests setting iframe title to referenced media.
    */
-  public function testRemoteVideoParagraphFieldsAndIframeTitle(): void {
-    // Create a remote_video media entity.
+  public function testSetMediaEntityIframeTitle(): void {
     $media = Media::create([
       'bundle' => 'remote_video',
       'name' => 'Remote video media',
@@ -92,7 +91,7 @@ class RemoteVideoParagraphTest extends KernelTestBase {
     ]);
     $media->save();
 
-    // Create Remote video paragraph with all relevant fields.
+    /** @var \Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo $paragraph */
     $paragraph = ParagraphRemoteVideo::create([
       'type' => 'remote_video',
       'field_remote_video_title' => 'Test title',
@@ -104,19 +103,52 @@ class RemoteVideoParagraphTest extends KernelTestBase {
 
     // Cast to custom Remote video class.
     $this->assertInstanceOf(ParagraphRemoteVideo::class, $paragraph);
+    $this->assertSame($media->id(), $paragraph->getReferencedMediaEntity()?->id());
 
     // Run the iframe title setter method.
     $paragraph->setMediaEntityIframeTitle();
 
-    // Validate field_remote_video_title and
-    // field_remote_video_description values.
-    $this->assertEquals('Test title', $paragraph->get('field_remote_video_title')->value);
-    $this->assertEquals('Test description', $paragraph->get('field_remote_video_description')->value);
+    // Validate remote video title and description values.
+    $this->assertSame('Test title', $paragraph->get('field_remote_video_title')->value);
+    $this->assertSame('Test description', $paragraph->get('field_remote_video_description')->value);
+    $this->assertSame('Test iframe title', $paragraph->getReferencedMediaEntity()?->iframeTitle ?? NULL);
+  }
 
-    // Validate the iframe_title was set on the referenced media entity.
-    $referenced = $paragraph->get('field_remote_video')->referencedEntities();
-    $this->assertNotEmpty($referenced);
-    $this->assertEquals('Test iframe title', $referenced[0]->iframeTitle ?? NULL);
+  /**
+   * Tests hidden video detection when referenced media has no video URL.
+   */
+  public function testIsHiddenVideo(): void {
+    $media = Media::create([
+      'bundle' => 'remote_video',
+      'name' => 'Remote video media',
+      'status' => 1,
+    ]);
+    $media->save();
+
+    /** @var \Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo $paragraph */
+    $paragraph = ParagraphRemoteVideo::create([
+      'type' => 'remote_video',
+      'field_iframe_title' => 'Test iframe title',
+      'field_remote_video' => [
+        ['target_id' => $media->id()],
+      ],
+    ]);
+    $paragraph->save();
+    $this->assertTrue($paragraph->isHiddenVideo());
+  }
+
+  /**
+   * Tests hidden video detection without referenced media.
+   */
+  public function testIsHiddenVideoWithoutReferencedMedia(): void {
+    /** @var \Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo $paragraph */
+    $paragraph = ParagraphRemoteVideo::create([
+      'type' => 'remote_video',
+      'field_iframe_title' => 'Test iframe title',
+    ]);
+    $paragraph->save();
+
+    $this->assertFalse($paragraph->isHiddenVideo());
   }
 
 }

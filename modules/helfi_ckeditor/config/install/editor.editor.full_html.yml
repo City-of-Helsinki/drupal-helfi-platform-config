@@ -150,6 +150,11 @@ settings:
           weight: 19
           search: '(<a\b[^>]*?)\s+target\s*=\s*("_blank"|_blank)'
           replace: $1
+        -
+          enabled: true
+          weight: 20
+          search: '&nbsp;'
+          replace: ' '
     ckeditor5_sourceEditing:
       allowed_tags:
         - '<figure tabindex>'

@@ -17,6 +17,8 @@
    * and privacy enforcement, which can cause third-party requests to fail and
    * surface as "TypeError: Load failed".
    *
+   * Chrome/Edge/Firefox typically throw "TypeError: Failed to fetch".
+   *
    * Common causes:
    * - Stricter CORS enforcement
    * - Blocking of third-party endpoints
@@ -29,6 +31,7 @@
    * errors.
    */
   const safariLoadFailed = { type: 'TypeError', value: 'Load failed' };
+  const failedToFetch = { type: 'TypeError', value: 'Failed to fetch' };
 
   /**
    * Third-party code sometimes assumes WebCrypto is available and crashes with:
@@ -53,18 +56,6 @@
   const missingMobileBridge = { type: 'ReferenceError', value: "Can't find variable: SCDynimacBridge" };
 
   /**
-   * Safari and WebKit-based browsers restrict access to Web Storage.
-   * When a script attempts to access sessionStorage, localStorage,
-   * IndexedDB or CacheStorage in a restricted environment, the browser may
-   * throw: "SecurityError: The operation is insecure."
-   *
-   * Common causes are private / incognito browsing modes and third-party iframe
-   * contexts. This typically does not indicate a bug in the application code
-   * itself, but rather a platform-level restriction.
-   */
-  const insecureOperation = { type: 'SecurityError', value: 'The operation is insecure.' };
-
-  /**
    * In some browsers the Web Storage API may be unavailable or disabled.
    * When a script attempts to access localStorage or indexedDB in such
    * contexts, the browser may throw:
@@ -73,17 +64,61 @@
   const localStorageUnavailable = { type: 'ReferenceError', value: "Can't find variable: localStorage" };
   const indexedDBUnavailable = { type: 'ReferenceError', value: "Can't find variable: indexedDB" };
 
+  /**
+   * HeadlessChrome triggers an error with dialog focus-trap.
+   */
+  const focusTrap = {
+    type: 'Error',
+    value: 'Your focus-trap must have at least one container with at least one tabbable node in it at all times',
+  };
+
   // List of error types and values to ignore.
   const errorMatchers = [
     safariLoadFailed,
+    failedToFetch,
     webCryptoDigestUndefined,
-    insecureOperation,
     missingMobileBridge,
     localStorageUnavailable,
     indexedDBUnavailable,
+    focusTrap,
     // Add more combinations here if needed:
     // { type: 'TypeError', value: 'Failed to fetch' },
   ];
+
+  /**
+   * Checks if the event is the cookie-consent storage SecurityError.
+   *
+   * @todo This should be fixed in HDS cookie consent.
+   * The storage calls should be guarded with try/catch.
+   * The error is thrown when the library tries to read keys from a storage
+   * backend (localStorage, sessionStorage, indexedDB, cacheStorage) in an
+   * environment where the browser blocks that operation (incognito).
+   *
+   * @param {Object} event
+   *   The Sentry event.
+   *
+   * @return {boolean}
+   *   TRUE if the event should be dropped.
+   */
+  const isCookieConsentInsecureOperation = (event) => {
+    const exceptions = event?.exception?.values || [];
+
+    return exceptions.some((exception) => {
+      if (exception?.type !== 'SecurityError') {
+        return false;
+      }
+
+      if (typeof exception?.value !== 'string' || !exception.value.includes('The operation is insecure')) {
+        return false;
+      }
+
+      const frames = exception?.stacktrace?.frames || [];
+      return frames.some((frame) => {
+        const filename = frame?.filename || '';
+        return filename.includes('hds-cookie-consent.min.js') || filename.includes('/hdbt_cookie_banner/');
+      });
+    });
+  };
 
   /**
    * Checks if the event matches to listed errors.
@@ -94,7 +129,7 @@
    * @return {boolean}
    *   TRUE if the event should be dropped.
    */
-  const isLoadFailedError = (event) => {
+  const isListedError = (event) => {
     const exceptions = event?.exception?.values || [];
 
     return exceptions.some((exception) =>
@@ -108,6 +143,58 @@
   };
 
   /**
+   * Get cookie value.
+   *
+   * @param {string} name
+   *   Cookie name.
+   *
+   * @return {string|null}
+   *   Cookie value or null.
+   */
+  const getCookie = (name) => {
+    const match = document.cookie
+      .split('; ')
+      .map((row) => row.split('='))
+      .find(([key]) => key === name);
+
+    return match ? match[1] : null;
+  };
+
+  /**
+   * Determine cookie consent summary from helfi-cookie-consents.
+   *
+   * @return {string}
+   *   Returns "All cookies accepted", "Required cookies accepted",
+   *   or "No consent given".
+   */
+  const getCookieConsentSummary = () => {
+    const cookieValue = getCookie('helfi-cookie-consents');
+
+    if (!cookieValue) {
+      return 'No consent given';
+    }
+
+    try {
+      const decoded = decodeURIComponent(cookieValue);
+      const parsed = JSON.parse(decoded);
+      const groups = parsed?.groups;
+
+      if (!groups) {
+        return 'No consent given';
+      }
+
+      const requiredGroups = ['essential', 'admin'];
+      const groupKeys = Object.keys(groups);
+      const hasOnlyRequiredGroups =
+        groupKeys.length === requiredGroups.length && groupKeys.every((key) => requiredGroups.includes(key));
+
+      return hasOnlyRequiredGroups ? 'Required cookies accepted' : 'All cookies accepted';
+    } catch (_error) {
+      return 'No consent given';
+    }
+  };
+
+  /**
    * Custom beforeSend callback.
    *
    * @param event
@@ -116,11 +203,20 @@
    */
   drupalSettings.raven.options.beforeSend = (event, hint) => {
     // Do not send errors that match the configured errorMatchers to Sentry.
-    if (isLoadFailedError(event)) {
+    if (isListedError(event) || isCookieConsentInsecureOperation(event)) {
       return null;
     }
 
-    // Delegate to the previous beforeSend callback if one existed.
+    // Add information about accepted cookies.
+    event.breadcrumbs = [
+      ...(event.breadcrumbs || []),
+      {
+        category: 'cookie-consent',
+        level: 'info',
+        message: getCookieConsentSummary(),
+      },
+    ];
+
     if (typeof previousBeforeSend === 'function') {
       return previousBeforeSend(event, hint);
     }

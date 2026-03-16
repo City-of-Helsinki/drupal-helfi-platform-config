@@ -13,12 +13,14 @@
     "Remove this section once the dependencies have been updated in their respective upstream packages.",
     {
       "diff": "^8.0.3, dependency of ckeditor5-dev",
-      "minimatch": ">=10.2.1, dependency of ckeditor5-dev-utils"
+      "minimatch": ">=10.2.1, dependency of ckeditor5-dev-utils",
+      "serialize-javascript": "^7.0.3, dependency of ckeditor5-dev-translations"
     }
   ],
   "overrides": {
     "diff": "^8.0.3",
-    "minimatch": "^10.2.1"
+    "minimatch": "^10.2.1",
+    "serialize-javascript": "^7.0.3"
   },
   "dependencies": {
     "@biomejs/biome": "^2.3.4",
