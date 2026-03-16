@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Htmx\Htmx;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
@@ -23,43 +26,18 @@ function helfi_paragraphs_curated_event_list_paragraph_view(
   EntityViewDisplayInterface $display,
   string $view_mode,
 ): void {
-  if ($entity->bundle() !== 'curated_event_list') {
+  if ($entity->bundle() !== 'curated_event_list' || !$display->getComponent('field_events')) {
     return;
   }
+  $htmx = new Htmx();
+  $htmx->get(new Url('helfi_paragraphs_curated_event_list.htmx', ['id' => $entity->id()]))
+    ->trigger('load');
 
-  $selections = $entity->get('field_events')->referencedEntities();
-
-  if (
-    !$display->getComponent('field_events') ||
-    empty($selections)
-  ) {
-    return;
-  }
-
-  $storage = Drupal::entityTypeManager()
-    ->getStorage('linkedevents_event');
-
-  $ids = array_map(function (LinkedEventsEvent $event) {
-    return $event->id();
-  }, $selections);
-
-  /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent[] */
-  $entities = $storage->loadMultiple($ids);
-
-  foreach ($entities as $item) {
-    $item->addCacheableDependency($entity);
-
-    $build[$item->getEventType()][] = Drupal::entityTypeManager()
-      ->getViewBuilder('linkedevents_event')
-      ->view($item);
-  }
-
-  if (
-    isset($build['future_or_ongoing']) &&
-    count($build['future_or_ongoing']) > 3
-  ) {
-    $build['future_or_ongoing'] = array_slice($build['future_or_ongoing'], 0, 3);
-  }
+  $build['events_list'] = [
+    '#theme' => 'helfi_htmx_preview',
+    '#num_items' => 3,
+    '#message' => new TranslatableMarkup('Loading'),
+  ];
 }
 
 /**

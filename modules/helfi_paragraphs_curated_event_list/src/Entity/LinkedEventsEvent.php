@@ -12,34 +12,19 @@ use Drupal\external_entities\Entity\ExternalEntity;
  */
 final class LinkedEventsEvent extends ExternalEntity {
 
-  public const FUTURE_OR_ONGOING = 'future_or_ongoing';
-  public const PAST_EVENTS = 'past_events';
-
   /**
-   * Check if event has ended and return result.
+   * Gets the end time.
    *
-   * @return bool
-   *   The resulting boolean.
+   * @return \Drupal\Core\Datetime\DrupalDateTime|null
+   *   The end time or null.
    */
-  public function hasEnded() : bool {
-    $end_time = $this->get('end_time')?->value;
+  public function getEndTime(): ?DrupalDateTime {
+    $endTime = $this->get('end_time')?->value;
 
-    if (!$end_time) {
-      return FALSE;
+    if (!$endTime) {
+      return NULL;
     }
-
-    $datetime = new DrupalDateTime($end_time);
-    return $datetime->format('U') < time();
-  }
-
-  /**
-   * Returns event type.
-   *
-   * @return string
-   *   Event type string.
-   */
-  public function getEventType() : string {
-    return $this->hasEnded() ? self::PAST_EVENTS : self::FUTURE_OR_ONGOING;
+    return new DrupalDateTime($endTime);
   }
 
 }
