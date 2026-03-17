@@ -1,6 +1,9 @@
 msgid ""
 msgstr ""
 
+msgid "This error message is visible only to logged-in content producers."
+msgstr "Det här felmeddelandet är endast synligt för inloggade innehållsproducenter."
+
 msgid "The video embed on this page cannot be displayed publicly."
 msgstr "Den externa videon på den här sidan kan inte visas offentligt."
 
