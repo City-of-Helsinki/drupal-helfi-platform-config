@@ -30,14 +30,15 @@ function helfi_paragraphs_curated_event_list_paragraph_view(
     return;
   }
   $htmx = new Htmx();
-  $htmx->get(new Url('helfi_paragraphs_curated_event_list.htmx', ['id' => $entity->id()]))
+  $htmx->get(new Url('helfi_paragraphs_curated_event_list.htmx', ['paragraph' => $entity->id()]))
     ->trigger('load');
 
   $build['events_list'] = [
     '#theme' => 'helfi_htmx_preview',
     '#num_items' => 3,
-    '#message' => new TranslatableMarkup('Loading'),
+    '#message' => new TranslatableMarkup('Loading ...'),
   ];
+  $htmx->applyTo($build['events_list']);
 }
 
 /**

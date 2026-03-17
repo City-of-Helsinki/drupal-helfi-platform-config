@@ -3,7 +3,7 @@ helfi_paragraphs_curated_event_list.htmx:
   defaults:
     _controller: '\Drupal\helfi_paragraphs_curated_event_list\Controller\HtmxController::content'
   requirements:
-    _permission: 'access content'
+    _entity_access: 'paragraph.view'
   options:
     _htmx_route: 'TRUE'
     parameters:
