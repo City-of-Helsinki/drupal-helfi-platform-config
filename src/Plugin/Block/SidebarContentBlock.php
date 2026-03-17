@@ -35,7 +35,6 @@ class SidebarContentBlock extends ContentBlockBase {
     if ($entity instanceof Service) {
       $view_builder = $this->entityTypeManager->getViewBuilder('tpr_service');
       $build['sidebar_content']['#computed'] = $view_builder->view($entity);
-      $build['sidebar_content']['#computed']['#theme'] = 'tpr_service_important_links';
     }
 
     // Add the sidebar content paragraphs to render array.

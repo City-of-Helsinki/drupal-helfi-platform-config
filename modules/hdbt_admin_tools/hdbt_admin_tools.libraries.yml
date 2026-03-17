@@ -55,6 +55,11 @@ menu_styles:
        assets/css/menu.css: {}
        assets/css/toolbar_rtl.css: {}
 
+sidebar_content:
+  css:
+    theme:
+       assets/css/sibebar_content.css: {}
+
 site_settings:
   js:
     assets/js/siteSettingsDefaultColor.js: {}

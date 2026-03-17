@@ -17,7 +17,6 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\hdbt_admin_tools\DesignSelectionManager;
 use Drupal\hdbt_admin_tools\Form\SiteSettings;
-use Drupal\helfi_tpr\Entity\Service;
 use Drupal\node\NodeInterface;
 use Drupal\user\UserInterface;
 
@@ -94,6 +93,10 @@ function hdbt_admin_tools_form_node_form_alter(&$form, &$form_state, $form_id): 
   }
   // Custom submit callback.
   $form['actions']['submit']['#submit'][] = 'hdbt_admin_tools_node_form_submit_callback';
+
+  if (is_array($form['#attached']['library'])) {
+    $form['#attached']['library'][] = 'hdbt_admin_tools/sidebar_content';
+  }
 }
 
 /**
@@ -305,21 +308,16 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
   }
 
   // Check if page entity has sidebar content field available and set
-  // "has_sidebar_second" variable accordingly.
+  // "has_deprecated_field_sidebar_content" variable accordingly.
   if (
     $entity->hasField('field_sidebar_content') &&
     !$entity->get('field_sidebar_content')->isEmpty()
   ) {
-    $variables['has_sidebar_second'] = TRUE;
+    $variables['has_deprecated_field_sidebar_content'] = TRUE;
   }
 
   // Enable sidebar second for News item.
   if ($content_type === 'news_item') {
-    $variables['has_sidebar_second'] = TRUE;
-  }
-
-  // Enable sidebar second for TPR service if important links exists.
-  if ($entity instanceof Service && !$entity->get('links')->isEmpty()) {
     $variables['has_sidebar_second'] = TRUE;
   }
 
@@ -481,6 +479,13 @@ function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInt
     if (array_key_exists('field_gallery_item', $fields)) {
       $fields['field_gallery_item']->addConstraint('ImageGallery', []);
     }
+  }
+
+  // Add constraint to check that Hero entity exists when necessary.
+  if (
+    array_key_exists('field_sidebar_content', $fields)
+  ) {
+    $fields['field_sidebar_content']->addConstraint('SidebarContent', []);
   }
 }
 

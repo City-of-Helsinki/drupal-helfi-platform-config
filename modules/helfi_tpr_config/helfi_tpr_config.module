@@ -457,9 +457,6 @@ function helfi_tpr_config_theme() : array {
     'tpr_unit_lower_content' => [
       'render element' => 'elements',
     ],
-    'tpr_service_important_links' => [
-      'render element' => 'elements',
-    ],
     'tpr_service_lower_content' => [
       'render element' => 'elements',
     ],
@@ -514,27 +511,6 @@ function template_preprocess_tpr_unit_lower_content(array &$variables) : void {
   }
   if (isset($variables['elements']['#tpr_unit'])) {
     $variables['entity'] = $variables['elements']['#tpr_unit'];
-  }
-}
-
-/**
- * Prepares variables for tpr_service_important_links templates.
- *
- * Default template: tpr-service-important-links.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An array of elements to display in view mode.
- */
-function template_preprocess_tpr_service_important_links(array &$variables) : void {
-  $variables['view_mode'] = $variables['elements']['#view_mode'];
-
-  // Helpful $content variable for templates.
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
-  if (isset($variables['elements']['#tpr_service'])) {
-    $variables['entity'] = $variables['elements']['#tpr_service'];
   }
 }
 

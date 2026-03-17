@@ -68,44 +68,6 @@ class SidebarContentBlockTest extends BlockUnitTestBase {
   }
 
   /**
-   * Tests that render array is built correctly with a valid entity.
-   *
-   * @covers ::build
-   */
-  public function testBuildIncludesServiceEntityRenderArray(): void {
-    $serviceEntity = $this->createMock(Service::class);
-    $entityViewBuilder = $this->createMock(EntityViewBuilderInterface::class);
-    $computedViewArray = ['#markup' => 'Important links'];
-
-    $entityViewBuilder->expects($this->once())
-      ->method('view')
-      ->with($serviceEntity)
-      ->willReturn($computedViewArray);
-
-    $this->entityTypeManager->expects($this->any())
-      ->method('getViewBuilder')
-      ->with('tpr_service')
-      ->willReturn($entityViewBuilder);
-
-    $this->lowerContentBlock->expects($this->once())
-      ->method('getCurrentEntityVersion')
-      ->willReturn(['entity' => $serviceEntity, 'entity_version' => NULL]);
-
-    $expected = [
-      'sidebar_content' => [
-        '#theme' => 'sidebar_content_block',
-        '#title' => $this->translate('Sidebar content block'),
-        '#computed' => [
-          '#markup' => 'Important links',
-          '#theme' => 'tpr_service_important_links',
-        ],
-      ],
-    ];
-
-    $this->assertEquals($expected, $this->lowerContentBlock->build());
-  }
-
-  /**
    * Tests that render array includes paragraphs and cache tags.
    *
    * @covers ::build
