@@ -80,8 +80,9 @@ class RemoteVideo extends MediaEntityBundle implements MediaInterface {
         $serviceProviderLink = Link::fromTextAndUrl($this->t('Please check the video visibility settings from the service provider'), Url::fromUri($videoUrl))->toString();
         $or = $this->t('or', options: ['context' => 'Remote video']);
         $editLink = Link::createFromRoute($this->t('edit the video embed.', options: ['context' => 'Remote video']), 'entity.media.edit_form', ['media' => $this->id()])->toString();
+        $reminderText = $this->t('This error message is visible only to logged-in content producers.');
         $messenger = \Drupal::service(MessengerInterface::class);
-        $messenger->addError(Markup::create("$warningText $serviceProviderLink $or $editLink"));
+        $messenger->addError(Markup::create("$warningText $serviceProviderLink $or $editLink $reminderText"));
       }
       return TRUE;
     }

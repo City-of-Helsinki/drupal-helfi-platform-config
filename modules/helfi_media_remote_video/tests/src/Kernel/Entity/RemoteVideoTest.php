@@ -409,7 +409,8 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
       return str_contains($messageString, 'The video embed on this page cannot be displayed publicly.') &&
         str_contains($messageString, 'Please check the video visibility settings from the service provider') &&
         str_contains($messageString, 'or') &&
-        str_contains($messageString, 'edit the video embed.');
+        str_contains($messageString, 'edit the video embed.') &&
+        str_contains($messageString, 'This error message is visible only to logged-in content producers.');
     }))->shouldBeCalled();
     $this->container->set('messenger', $messenger->reveal());
 
