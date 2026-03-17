@@ -58,7 +58,7 @@ menu_styles:
 sidebar_content:
   css:
     theme:
-       assets/css/sibebar_content.css: {}
+       assets/css/sidebar_content.css: {}
 
 site_settings:
   js:
