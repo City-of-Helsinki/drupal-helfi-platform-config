@@ -482,7 +482,8 @@ function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInt
     }
   }
 
-  // Add constraint to check that Hero entity exists when necessary.
+  // Add constraint to check if sidebar has content.
+  // @todo UHF-13030 Remove this when the field is removed.
   if (
     array_key_exists('field_sidebar_content', $fields)
   ) {
