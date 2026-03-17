@@ -93,10 +93,6 @@ function hdbt_admin_tools_form_node_form_alter(&$form, &$form_state, $form_id): 
   }
   // Custom submit callback.
   $form['actions']['submit']['#submit'][] = 'hdbt_admin_tools_node_form_submit_callback';
-
-  if (is_array($form['#attached']['library'])) {
-    $form['#attached']['library'][] = 'hdbt_admin_tools/sidebar_content';
-  }
 }
 
 /**
@@ -363,6 +359,8 @@ function hdbt_admin_tools_toolbar_alter(&$items): void {
 
     if (is_array($value['#attached']['library'])) {
       $value['#attached']['library'][] = 'hdbt_admin_tools/menu_styles';
+      // @todo UHF-13030 Remove this when the field is removed.
+      $value['#attached']['library'][] = 'hdbt_admin_tools/sidebar_content';
     }
   }
 }

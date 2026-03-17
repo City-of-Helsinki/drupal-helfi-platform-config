@@ -7,6 +7,7 @@ namespace Drupal\hdbt_admin_tools\Plugin\Validation\Constraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Validates the Sidebar Content constraint.
@@ -14,6 +15,7 @@ use Drupal\Core\Messenger\MessengerInterface;
  * @todo UHF-13030 Remove this when the field is removed.
  */
 class SidebarContentConstraintValidator extends ConstraintValidator {
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
