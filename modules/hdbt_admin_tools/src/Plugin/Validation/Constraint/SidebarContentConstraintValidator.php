@@ -10,6 +10,8 @@ use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * Validates the Sidebar Content constraint.
+ *
+ * @todo UHF-13030 Remove this when the field is removed.
  */
 class SidebarContentConstraintValidator extends ConstraintValidator {
 

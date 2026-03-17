@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraint;
  *   label = @Translation("There shouldn't be any content in the sidebar", context = "Validation"),
  *   type = "entity:paragraph"
  * )
+ *
+ * @todo UHF-13030 Remove this when the field is removed.
  */
 class SidebarContentConstraint extends Constraint {
 
