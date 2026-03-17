@@ -307,8 +307,9 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
     $variables['has_sidebar_first'] = FALSE;
   }
 
-  // Check if page entity has sidebar content field available and set
-  // "has_deprecated_field_sidebar_content" variable accordingly.
+  // Check if page entity has sidebar content field and there's content
+  // in it and set "has_deprecated_field_sidebar_content" variable accordingly.
+  // @todo UHF-13030 Remove this when the field is removed.
   if (
     $entity->hasField('field_sidebar_content') &&
     !$entity->get('field_sidebar_content')->isEmpty()
