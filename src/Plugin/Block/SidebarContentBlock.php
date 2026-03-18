@@ -8,7 +8,6 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
-use Drupal\helfi_tpr\Entity\Service;
 
 /**
  * Provides a 'SidebarContentBlock' block.

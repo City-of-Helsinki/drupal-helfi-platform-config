@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Unit\Block;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_platform_config\Plugin\Block\SidebarContentBlock;
-use Drupal\helfi_tpr\Entity\Service;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
