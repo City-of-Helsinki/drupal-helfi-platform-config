@@ -2,5 +2,3 @@ services:
   _defaults:
     autoconfigure: true
     autowire: true
-
-  Drupal\helfi_paragraphs_curated_event_list\Entity\LazyViewBuilder: ~

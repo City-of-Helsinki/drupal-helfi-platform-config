@@ -58,7 +58,6 @@ abstract class KernelTestBase extends CoreKernelTestBase {
     $this->installEntitySchema('helfi_news_tags');
     $this->installEntitySchema('helfi_news_groups');
     $this->installEntitySchema('helfi_news_neighbourhoods');
-    $this->installConfig('paragraphs');
   }
 
 }

@@ -1,0 +1,253 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\Tests\helfi_paragraphs_curated_event_list\Kernel;
+
+use Drupal\Core\Render\HtmlResponse;
+use Drupal\Core\Routing\RouteProviderInterface;
+use Drupal\Core\Url;
+use Drupal\helfi_paragraphs_curated_event_list\Controller\HtmxController;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\paragraphs\FunctionalJavascript\ParagraphsTestBaseTrait;
+use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\user\Entity\Role;
+use Drupal\user\RoleInterface;
+use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Test;
+
+/**
+ * Tests Curated event list HtmxController.
+ */
+#[Group('helfi_paragraphs_curated_event_list')]
+#[RunTestsInSeparateProcesses]
+class HtmxControllerTest extends KernelTestBase {
+
+  use ApiTestTrait;
+  use ParagraphsTestBaseTrait;
+  use UserCreationTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'system',
+    'helfi_api_base',
+    'config_rewrite',
+    'helfi_platform_config',
+    'entity_reference_revisions',
+    'field',
+    'file',
+    'linkit',
+    'breakpoint',
+    'responsive_image',
+    'link',
+    'datetime',
+    'user',
+    'imagecache_external',
+    'paragraphs',
+    'external_entities',
+    'node',
+    'helfi_paragraphs_curated_event_list',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+
+    // Triggers rebuilding routes.
+    // https://www.drupal.org/project/external_entities/issues/3549828.
+    $this->container
+      ->get(RouteProviderInterface::class)
+      ->getAllRoutes();
+
+    $this->installConfig(['system', 'user', 'paragraphs', 'external_entities']);
+    $this->installEntitySchema('user');
+    $this->installEntitySchema('paragraph');
+    $this->installEntitySchema('paragraphs_type');
+    $this->installEntitySchema('node');
+    $this->installSchema('node', ['node_access']);
+    $this->installConfig('helfi_paragraphs_curated_event_list');
+    $this->installEntitySchema('linkedevents_event');
+
+    $this->addParagraphedContentType('article');
+
+    Role::load(RoleInterface::ANONYMOUS_ID)
+      ->grantPermission('access content')
+      ->save();
+  }
+
+  /**
+   * Creates a HTMX request.
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *   The paragraph to create request for.
+   *
+   * @return \Drupal\Core\Render\HtmlResponse
+   *   The HTML response.
+   */
+  private function createHtmxRequest(ParagraphInterface $paragraph): HtmlResponse {
+    $url = (new Url('helfi_paragraphs_curated_event_list.htmx', ['paragraph' => $paragraph->id()]))
+      ->toString();
+    /** @var \Drupal\Core\Render\HtmlResponse $response */
+    $response = $this->processRequest($this->getMockedRequest($url));
+    return $response;
+  }
+
+  /**
+   * Tests unpublished parent entity.
+   */
+  #[Test]
+  public function testAccessDenied(): void {
+    $client = $this->setupMockHttpClient([
+      new Response(body: json_encode([
+        'data' => [
+          [
+            'id' => 'helsinki:agnjd4b73u',
+            'name' => [
+              'en' => 'Title',
+            ],
+            'start_time' => 'now',
+          ],
+        ],
+      ])),
+    ]);
+    $this->container->set('http_client', $client);
+
+    $paragraph = Paragraph::create([
+      'type' => 'curated_event_list',
+      'field_events' => [
+        ['target_id' => 'helsinki:agnjd4b73u'],
+      ],
+    ]);
+    $paragraph->setPublished();
+    $paragraph->save();
+    $node = Node::create([
+      'title' => 'Events list',
+      'type' => 'article',
+      'field_paragraphs' => [$paragraph],
+    ]);
+    $node->setUnpublished();
+    $node->save();
+
+    $response = $this->createHtmxRequest($paragraph);
+    $this->assertEquals(403, $response->getStatusCode());
+
+    // Entity access is statically cached, make sure it's cleared.
+    // @see \Drupal\Core\Entity\EntityAccessControlHandler::getCache().
+    \Drupal::entityTypeManager()->clearCachedDefinitions();
+
+    // Publish node and make sure we have access to it.
+    $node->setPublished()->save();
+    $response = $this->createHtmxRequest($paragraph);
+    $this->assertEquals(200, $response->getStatusCode());
+  }
+
+  /**
+   * Make sure expired items are not shown.
+   */
+  #[Test]
+  public function testExpiredEntity(): void {
+    $client = $this->setupMockHttpClient([
+      new Response(body: json_encode([
+        'data' => [
+          [
+            'id' => 'helsinki:agnjd4b73u',
+            'name' => [
+              'en' => 'Title',
+            ],
+            'start_time' => 'now',
+            'end_time' => '-1 second',
+          ],
+        ],
+      ])),
+    ]);
+    $this->container->set('http_client', $client);
+
+    $paragraph = Paragraph::create([
+      'type' => 'curated_event_list',
+      'field_events' => [
+        ['target_id' => 'helsinki:agnjd4b73u'],
+      ],
+    ]);
+    $paragraph->save();
+    $node = Node::create([
+      'title' => 'Events list',
+      'type' => 'article',
+      'field_paragraphs' => [$paragraph],
+    ]);
+    $node->setPublished();
+    $node->save();
+
+    $response = $this->createHtmxRequest($paragraph);
+    $cache = $response->getCacheableMetadata();
+    $this->assertEquals(HtmxController::MAX_AGE, $cache->getCacheMaxAge());
+    $this->assertStringContainsString('Recommended events were not found', $response->getContent());
+    $this->assertEquals(200, $response->getStatusCode());
+  }
+
+  /**
+   * Tests response with an expired and an active event.
+   */
+  #[Test]
+  public function testExpiredAndActive(): void {
+    $client = $this->setupMockHttpClient([
+      new Response(body: json_encode([
+        'data' => [
+          [
+            'id' => 'helsinki:321',
+            'name' => [
+              'en' => 'Title expired',
+            ],
+            'start_time' => 'now',
+            'end_time' => '-1 day',
+          ],
+          [
+            'id' => 'helsinki:123',
+            'name' => [
+              'en' => 'Title active',
+            ],
+            'start_time' => 'now',
+            'end_time' => '+1 day',
+          ],
+        ],
+      ])),
+    ]);
+    $this->container->set('http_client', $client);
+
+    $paragraph = Paragraph::create([
+      'type' => 'curated_event_list',
+      'field_events' => [
+        ['target_id' => 'helsinki:321'],
+        ['target_id' => 'helsinki:123'],
+      ],
+    ]);
+    $paragraph->save();
+    $node = Node::create([
+      'title' => 'Events list',
+      'type' => 'article',
+      'field_paragraphs' => [$paragraph],
+    ]);
+    $node->setPublished();
+    $node->save();
+
+    $response = $this->createHtmxRequest($paragraph);
+    $this->assertStringContainsString('Title active', $response->getContent());
+    $this->assertStringNotContainsString('Title expired', $response->getContent());
+    $cache = $response->getCacheableMetadata();
+
+    // Make sure max age is 1d + 5 seconds because that's when the event
+    // ends.
+    $this->assertEquals(86405, $cache->getCacheMaxAge());
+    $this->assertEquals(200, $response->getStatusCode());
+  }
+
+}

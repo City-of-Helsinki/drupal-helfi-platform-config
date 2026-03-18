@@ -18,6 +18,7 @@ class CuratedEventConstraintValidator extends ConstraintValidator {
   public function validate(mixed $value, Constraint $constraint) {
     assert($constraint instanceof CuratedEventConstraint);
 
+    /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent[] $events */
     $events = $value->referencedEntities();
 
     if (empty($events)) {
