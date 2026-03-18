@@ -10,6 +10,7 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
@@ -18,6 +19,22 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @group hdbt_admin_tools
  */
 final class SidebarContentConstraintValidatorTest extends UnitTestCase {
+
+  /**
+   * Tests that create() returns a properly constructed instance.
+   */
+  public function testCreate(): void {
+    $messenger = $this->createMock(MessengerInterface::class);
+
+    $container = $this->createMock(ContainerInterface::class);
+    $container
+      ->method('get')
+      ->with(MessengerInterface::class)
+      ->willReturn($messenger);
+
+    $sut = SidebarContentConstraintValidator::create($container);
+    $this->assertInstanceOf(SidebarContentConstraintValidator::class, $sut);
+  }
 
   /**
    * Tests validate() behavior with different sidebar item counts.
