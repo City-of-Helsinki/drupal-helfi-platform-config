@@ -10,7 +10,6 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
@@ -41,22 +40,16 @@ final class SidebarContentConstraintValidatorTest extends UnitTestCase {
       ->method('translateString')
       ->willReturnCallback(fn($str) => $str->getUntranslatedString());
 
-    $container = new ContainerBuilder();
-    $container->set(MessengerInterface::class, $messenger);
-    \Drupal::setContainer($container);
-
     $context = $this->createMock(ExecutionContextInterface::class);
     $context
       ->expects($this->exactly($expectedViolations))
       ->method('addViolation')
       ->with($constraint->sidebarContentExists);
 
-    $value = $this->getMockBuilder(\stdClass::class)
-      ->addMethods(['count'])
-      ->getMock();
+    $value = $this->createMock(\Countable::class);
     $value->method('count')->willReturn($itemCount);
 
-    $sut = new SidebarContentConstraintValidator();
+    $sut = new SidebarContentConstraintValidator($messenger);
     $sut->setStringTranslation($translation);
     $sut->initialize($context);
     $sut->validate($value, $constraint);
