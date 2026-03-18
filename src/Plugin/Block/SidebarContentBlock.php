@@ -8,7 +8,6 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
-use Drupal\helfi_tpr\Entity\Service;
 
 /**
  * Provides a 'SidebarContentBlock' block.
@@ -30,13 +29,6 @@ class SidebarContentBlock extends ContentBlockBase {
 
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity, 'entity_version' => $entity_version] = $this->getCurrentEntityVersion();
-
-    // Pass the Service entity render array to templates if one exists.
-    if ($entity instanceof Service) {
-      $view_builder = $this->entityTypeManager->getViewBuilder('tpr_service');
-      $build['sidebar_content']['#computed'] = $view_builder->view($entity);
-      $build['sidebar_content']['#computed']['#theme'] = 'tpr_service_important_links';
-    }
 
     // Add the sidebar content paragraphs to render array.
     if (

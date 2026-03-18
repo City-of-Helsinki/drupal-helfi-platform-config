@@ -188,3 +188,6 @@ msgstr "Raitiovaunu"
 
 msgid "Fog"
 msgstr "Sumu"
+
+msgid "The sidebar content area will be removed. Please move the content to the upper or lower content area or remove it."
+msgstr "Sivupalkin sisältöalue tullaan poistamaan. Siirrä sisältö ylemmälle tai alemmalle sisältöalueelle tai poista se."
