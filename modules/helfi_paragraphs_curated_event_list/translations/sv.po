@@ -3,3 +3,7 @@ msgstr ""
 
 msgid "Event %title has ended. Only upcoming or ongoing events are allowed."
 msgstr "Evenemanget %title har avslutats. Endast kommande eller pågående evenemang är tillåtna."
+
+msgctxt "Curated events list loading message"
+msgid "Loading events"
+msgstr "Söker"
