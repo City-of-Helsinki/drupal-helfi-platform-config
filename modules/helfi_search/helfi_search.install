@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 use Drupal\search_api\Entity\Index;
 
 /**
@@ -210,4 +211,60 @@ function helfi_search_update_11003(): void {
   ]);
 
   $config->save();
+}
+
+/**
+ * Increase embeddings index batch size per cron run.
+ */
+function helfi_search_update_11004(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $index->setOption('cron_limit', 5);
+  $index->save();
+}
+
+/**
+ * Add embeddings processor fields to the embeddings index.
+ */
+function helfi_search_update_11005(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  /** @var \Drupal\search_api\Utility\PluginHelperInterface $pluginHelper */
+  $pluginHelper = \Drupal::service('search_api.plugin_helper');
+
+  // Enable the embeddings processor if not already present.
+  if (!$index->isValidProcessor('helfi_search_embeddings')) {
+    $processor = $pluginHelper->createProcessorPlugin($index, 'helfi_search_embeddings');
+    $index->addProcessor($processor);
+  }
+
+  // Add a field for each configured model.
+  $models = \Drupal::config('helfi_search.settings')->get('openai_models') ?? [];
+  $fieldsHelper = \Drupal::getContainer()->get('search_api.fields_helper');
+
+  foreach ($models as $model) {
+    $suffix = EmbeddingsApi::sanitizeModelName($model);
+    $fieldName = 'embeddings_' . $suffix;
+
+    if ($index->getField($fieldName)) {
+      continue;
+    }
+
+    $field = $fieldsHelper->createField($index, $fieldName, [
+      'label' => "Embeddings ($model)",
+      'property_path' => $fieldName,
+      'type' => 'embeddings',
+    ]);
+    $index->addField($field);
+  }
+
+  $index->save();
 }

@@ -60,9 +60,9 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   }
 
   /**
-   * Tests that extraction failure removes items from the batch.
+   * Tests that extraction failure skips the item without removing it.
    */
-  public function testExtractionFailureRemovesItems(): void {
+  public function testExtractionFailureSkipsItem(): void {
     $textPipeline = $this->prophesize(TextPipeline::class);
     $textPipeline
       ->extractChunks(Argument::any())
@@ -77,14 +77,18 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       ['title' => 'Test', 'type' => 'test_node_bundle_1'],
     ]);
 
-    $this->processor->alterIndexedItems($items);
-    $this->assertCount(0, $items);
+    $item = reset($items);
+    $this->processor->addFieldValues($item);
+
+    // Item still exists, just has no embedding field values.
+    $field = $item->getField('embeddings_text_embedding_3_small');
+    $this->assertEmpty($field?->getValues() ?? []);
   }
 
   /**
-   * Tests that items are removed when the pipeline returns empty chunks.
+   * Tests that items have no embeddings when the pipeline returns no chunks.
    */
-  public function testItemsRemovedWhenNoChunks(): void {
+  public function testNoEmbeddingsWhenNoChunks(): void {
     $textPipeline = $this->prophesize(TextPipeline::class);
     $textPipeline
       ->extractChunks(Argument::any())
@@ -99,16 +103,18 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       ['title' => 'Test', 'type' => 'test_node_bundle_1'],
     ]);
 
-    $this->processor->alterIndexedItems($items);
+    $item = reset($items);
+    $this->processor->addFieldValues($item);
 
-    // Item is removed because pipeline returned no chunks.
-    $this->assertCount(0, $items);
+    // Item still exists, just has no embedding field values.
+    $field = $item->getField('embeddings_text_embedding_3_small');
+    $this->assertEmpty($field?->getValues() ?? []);
   }
 
   /**
-   * Tests items are removed when no models are configured.
+   * Tests no error when no models are configured.
    */
-  public function testItemsRemovedWhenNoModels(): void {
+  public function testNoErrorWhenNoModels(): void {
     $this->config('helfi_search.settings')
       ->set('openai_models', [])
       ->save();
@@ -121,11 +127,12 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       ['title' => 'Test', 'type' => 'test_node_bundle_1'],
     ]);
 
-    $originalCount = count($items);
-    $this->processor->alterIndexedItems($items);
+    $item = reset($items);
+    $this->processor->addFieldValues($item);
 
-    // Items are unchanged when no models configured (early return).
-    $this->assertCount($originalCount, $items);
+    // No error thrown, item still exists.
+    $field = $item->getField('embeddings_text_embedding_3_small');
+    $this->assertEmpty($field?->getValues() ?? []);
   }
 
   /**

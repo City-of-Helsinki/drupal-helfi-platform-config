@@ -13,6 +13,7 @@ use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
+use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,11 +27,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   description: new TranslatableMarkup("Adds vector embeddings to index."),
   stages: [
     "add_properties" => 0,
-    // This should be called after alter plugins that filter items.
-    "alter_items" => 999,
   ],
 )]
 final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
+
+  /**
+   * All supported models that have fields in the index.
+   *
+   * Hardcoded because removing or renaming fields breaks search_api.
+   * To enable/disable indexing for a model, use the 'openai_models' config.
+   */
+  private const array SUPPORTED_MODELS = [
+    'text-embedding-3-small',
+    'text-embedding-3-large',
+  ];
 
   /**
    * Text pipeline.
@@ -77,7 +87,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
     $properties = [];
 
     if (!$datasource) {
-      foreach ($this->getModels() as $model) {
+      foreach (self::SUPPORTED_MODELS as $model) {
         $suffix = EmbeddingsApi::sanitizeModelName($model);
         $fieldName = 'embeddings_' . $suffix;
 
@@ -95,90 +105,50 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
   /**
    * {@inheritDoc}
-   *
-   * Process items in batches of 25 through the text-to-vector pipeline.
    */
-  public function alterIndexedItems(array &$items): void {
+  public function addFieldValues(ItemInterface $item): void {
     $models = $this->getModels();
 
     if (empty($models)) {
       return;
     }
 
-    foreach (array_chunk($items, 25, TRUE) as $batch) {
-      $entities = array_map(static fn ($item) => $item->getOriginalObject()->getValue(), $batch);
+    $entity = $item->getOriginalObject()->getValue();
 
-      try {
-        $chunksPerEntity = $this->textPipeline->extractChunks($entities);
-      }
-      catch (PipelineException) {
-        // Remove all items in this batch on pipeline failure.
-        foreach (array_keys($batch) as $key) {
-          unset($items[$key]);
-        }
-        continue;
-      }
+    try {
+      $chunksPerEntity = $this->textPipeline->extractChunks(['item' => $entity]);
+    }
+    catch (PipelineException) {
+      return;
+    }
 
-      // Flatten into a flat key → text map for the embeddings API.
-      $textsForEmbedding = [];
-      foreach ($chunksPerEntity as $entityKey => $chunks) {
-        foreach ($chunks as $chunkIndex => $chunk) {
-          $textsForEmbedding[$entityKey . ':' . $chunkIndex] = $chunk;
-        }
-      }
+    $chunks = $chunksPerEntity['item'] ?? [];
 
-      if (empty($textsForEmbedding)) {
-        foreach (array_keys($batch) as $key) {
-          unset($items[$key]);
-        }
-        continue;
-      }
+    if (empty($chunks)) {
+      return;
+    }
 
-      // Track which entities got at least one result across all models.
-      $entitiesWithResults = [];
+    foreach ($models as $model) {
+      $suffix = EmbeddingsApi::sanitizeModelName($model);
+      $fieldName = 'embeddings_' . $suffix;
 
-      foreach ($models as $model) {
-        $suffix = EmbeddingsApi::sanitizeModelName($model);
-        $fieldName = 'embeddings_' . $suffix;
+      $fields = $this->getFieldsHelper()
+        ->filterForPropertyPath($item->getFields(FALSE), NULL, $fieldName);
 
+      foreach ($chunks as $chunkText) {
         try {
-          $embeddings = $this->embeddingsModel->batchGetEmbedding($textsForEmbedding, $model);
+          $vector = $this->embeddingsModel->getEmbedding($chunkText, $model);
         }
         catch (EmbeddingsModelException) {
           continue;
         }
 
-        // Assemble results per entity.
-        foreach ($chunksPerEntity as $entityKey => $chunks) {
-          $entityEmbeddings = [];
-          foreach ($chunks as $chunkIndex => $chunk) {
-            $flatKey = $entityKey . ':' . $chunkIndex;
-            if (isset($embeddings[$flatKey])) {
-              $entityEmbeddings[] = [
-                'vector' => $embeddings[$flatKey],
-                'content' => $chunk,
-              ];
-            }
-          }
-
-          if (!empty($entityEmbeddings)) {
-            $entitiesWithResults[$entityKey] = TRUE;
-
-            $fields = $this->getFieldsHelper()
-              ->filterForPropertyPath($items[$entityKey]->getFields(), NULL, $fieldName);
-
-            foreach ($fields as $field) {
-              foreach ($entityEmbeddings as $embedding) {
-                $field->addValue($embedding);
-              }
-            }
-          }
+        foreach ($fields as $field) {
+          $field->addValue([
+            'vector' => $vector,
+            'content' => $chunkText,
+          ]);
         }
-      }
-
-      // Remove items that got zero results across ALL models.
-      foreach (array_diff_key($batch, $entitiesWithResults) as $key => $item) {
-        unset($items[$key]);
       }
     }
   }

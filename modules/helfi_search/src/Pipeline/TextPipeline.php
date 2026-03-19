@@ -62,7 +62,7 @@ class TextPipeline {
    * @param array<string, \Drupal\Core\Entity\EntityInterface> $entities
    *   Entities keyed by an arbitrary string identifier.
    *
-   * @return array<string, string[]>
+   * @return array<mixed, string[]>
    *   Entity key → chunk texts.
    *
    * @throws \Drupal\helfi_search\Pipeline\PipelineException
