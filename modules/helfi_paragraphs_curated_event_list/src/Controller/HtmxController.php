@@ -21,7 +21,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 final readonly class HtmxController implements ContainerInjectionInterface {
 
   use AutowireTrait;
-  public const int MAX_AGE = 2628000;
+  public const int MAX_AGE = 3600;
 
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
@@ -47,7 +47,6 @@ final readonly class HtmxController implements ContainerInjectionInterface {
 
     $build = [
       '#cache' => [
-        'max-age' => 3600,
         'contexts' => ['languages:language_content'],
       ],
       'items' => [],
@@ -58,9 +57,6 @@ final readonly class HtmxController implements ContainerInjectionInterface {
     $storage = $this->entityTypeManager->getStorage('linkedevents_event');
     /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent[] $entities */
     $entities = $storage->loadMultiple($ids);
-
-    // Expire in one month by default.
-    $maxAge = self::MAX_AGE;
 
     foreach ($entities as $entity) {
       $entity->addCacheableDependency($paragraph);
@@ -80,8 +76,13 @@ final readonly class HtmxController implements ContainerInjectionInterface {
           'context' => 'Curated events list empty message',
         ]),
       ];
+      // Cache for an hour by default. This is to ensure the block
+      // does not get cached indefinitely in case there are no results.
+      // The max-age should bubble up from ::getCacheMaxAge() of each
+      // entity.
+      // @see \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent
+      $build['#cache']['max-age'] = self::MAX_AGE;
     }
-    $build['#cache']['max-age'] = $maxAge;
 
     return $build;
   }
