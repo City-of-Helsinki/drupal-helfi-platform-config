@@ -49,8 +49,11 @@ helfi_platform_config.clear_site_data:
       type: integer
       label: 'Expire after'
     directives:
-      type: string
+      type: sequence
       label: 'Directives'
+      sequence:
+        type: string
+        label: 'Directive'
 
 # Default value.
 field.value.location:

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Unit\Hook;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\helfi_platform_config\ClearSiteData;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 use Drupal\helfi_platform_config\Hook\PlatformConfigHooks;
@@ -32,6 +33,7 @@ final class ModuleHooksTest extends UnitTestCase {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
+    $clearSiteData = $this->createMock(ClearSiteData::class);
 
     $moduleHandler
       ->method('moduleExists')
@@ -64,7 +66,8 @@ final class ModuleHooksTest extends UnitTestCase {
     $sut = new PlatformConfigHooks(
       $moduleHandler,
       $configUpdater,
-      $paragraphTypeUpdater
+      $paragraphTypeUpdater,
+      $clearSiteData
     );
 
     $sut->modulesInstalled($modules, $is_syncing);
@@ -109,6 +112,7 @@ final class ModuleHooksTest extends UnitTestCase {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
+    $clearSiteData = $this->createMock(ClearSiteData::class);
 
     $modules = ['mod_a', 'mod_b'];
 
@@ -137,7 +141,8 @@ final class ModuleHooksTest extends UnitTestCase {
     $sut = new PlatformConfigHooks(
       $moduleHandler,
       $configUpdater,
-      $paragraphTypeUpdater
+      $paragraphTypeUpdater,
+      $clearSiteData
     );
 
     $sut->modulesInstalled($modules, FALSE);

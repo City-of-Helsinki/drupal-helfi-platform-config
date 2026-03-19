@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\helfi_platform_config\ClearSiteData;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 use Drupal\helfi_platform_config\Hook\PlatformConfigHooks;
@@ -41,6 +42,7 @@ final class PlatformConfigHooksTest extends KernelTestBase {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
+    $clearSiteData = $this->createMock(ClearSiteData::class);
 
     $modules = ['module_a', 'module_b'];
     $expectedPermissions = [['access content', 'administer nodes'], []];
@@ -74,6 +76,7 @@ final class PlatformConfigHooksTest extends KernelTestBase {
       $moduleHandler,
       $configUpdater,
       $paragraphTypeUpdater,
+      $clearSiteData,
     );
     $sut->modulesInstalled($modules, FALSE);
 
@@ -89,6 +92,7 @@ final class PlatformConfigHooksTest extends KernelTestBase {
     $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
     $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
+    $clearSiteData = $this->createMock(ClearSiteData::class);
 
     $moduleHandler->expects($this->once())
       ->method('moduleExists')
@@ -99,6 +103,7 @@ final class PlatformConfigHooksTest extends KernelTestBase {
       $moduleHandler,
       $configUpdater,
       $paragraphTypeUpdater,
+      $clearSiteData,
     );
 
     $page = [];
