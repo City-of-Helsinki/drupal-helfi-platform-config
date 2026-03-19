@@ -38,6 +38,20 @@ helfi_platform_config.e2e_test_users:
           username:
             type: string
 
+helfi_platform_config.clear_site_data:
+  type: config_object
+  label: 'Clear-Site-Data header settings'
+  mapping:
+    enable:
+      type: boolean
+      label: 'Enable Clear-Site-Data header'
+    expire_after:
+      type: integer
+      label: 'Expire after'
+    directives:
+      type: string
+      label: 'Directives'
+
 # Default value.
 field.value.location:
   type: mapping
