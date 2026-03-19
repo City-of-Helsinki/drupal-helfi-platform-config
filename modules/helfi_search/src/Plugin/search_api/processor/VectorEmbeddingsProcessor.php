@@ -65,7 +65,9 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
    *   Model names.
    */
   private function getModels(): array {
-    return $this->configFactory->get('helfi_search.settings')->get('openai_models') ?? [];
+    return $this->configFactory
+      ->get('helfi_search.settings')
+      ->get('openai_models') ?? [];
   }
 
   /**
@@ -107,7 +109,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
       $entities = array_map(static fn ($item) => $item->getOriginalObject()->getValue(), $batch);
 
       try {
-        $chunkResult = $this->textPipeline->extractChunks($entities);
+        $chunksPerEntity = $this->textPipeline->extractChunks($entities);
       }
       catch (PipelineException) {
         // Remove all items in this batch on pipeline failure.
@@ -117,7 +119,15 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         continue;
       }
 
-      if (empty($chunkResult->textsForEmbedding)) {
+      // Flatten into a flat key → text map for the embeddings API.
+      $textsForEmbedding = [];
+      foreach ($chunksPerEntity as $entityKey => $chunks) {
+        foreach ($chunks as $chunkIndex => $chunk) {
+          $textsForEmbedding[$entityKey . ':' . $chunkIndex] = $chunk;
+        }
+      }
+
+      if (empty($textsForEmbedding)) {
         foreach (array_keys($batch) as $key) {
           unset($items[$key]);
         }
@@ -132,20 +142,21 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         $fieldName = 'embeddings_' . $suffix;
 
         try {
-          $embeddings = $this->embeddingsModel->batchGetEmbedding($chunkResult->textsForEmbedding, $model);
+          $embeddings = $this->embeddingsModel->batchGetEmbedding($textsForEmbedding, $model);
         }
         catch (EmbeddingsModelException) {
           continue;
         }
 
         // Assemble results per entity.
-        foreach ($chunkResult->entityChunkMap as $entityKey => $chunkKeys) {
+        foreach ($chunksPerEntity as $entityKey => $chunks) {
           $entityEmbeddings = [];
-          foreach ($chunkKeys as $chunkKey) {
-            if (isset($embeddings[$chunkKey])) {
+          foreach ($chunks as $chunkIndex => $chunk) {
+            $flatKey = $entityKey . ':' . $chunkIndex;
+            if (isset($embeddings[$flatKey])) {
               $entityEmbeddings[] = [
-                'vector' => $embeddings[$chunkKey],
-                'content' => $chunkResult->textsForEmbedding[$chunkKey],
+                'vector' => $embeddings[$flatKey],
+                'content' => $chunk,
               ];
             }
           }

@@ -77,17 +77,13 @@ class TextPipelineTest extends KernelTestBase {
 
     $result = $pipeline->extractChunks(['node-1' => $node]);
 
-    $this->assertNotEmpty($result->textsForEmbedding);
-    $this->assertArrayHasKey('node-1', $result->entityChunkMap);
-    $this->assertCount(1, $result->entityChunkMap['node-1']);
-
-    $firstChunkKey = $result->entityChunkMap['node-1'][0];
-    $this->assertStringContainsString('Helsinki', $result->textsForEmbedding[$firstChunkKey]);
+    $this->assertArrayHasKey('node-1', $result);
+    $this->assertCount(1, $result['node-1']);
+    $this->assertStringContainsString('Helsinki', $result['node-1'][0]);
 
     // Empty input returns empty output.
     $result = $pipeline->extractChunks([]);
-    $this->assertEmpty($result->textsForEmbedding);
-    $this->assertEmpty($result->entityChunkMap);
+    $this->assertEmpty($result);
   }
 
   /**

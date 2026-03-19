@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
 
 use Drupal\helfi_search\Pipeline\PipelineException;
-use Drupal\helfi_search\Pipeline\TextChunkResult;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -89,7 +88,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $textPipeline = $this->prophesize(TextPipeline::class);
     $textPipeline
       ->extractChunks(Argument::any())
-      ->willReturn(new TextChunkResult([], []));
+      ->willReturn([]);
     $this->container->set(TextPipeline::class, $textPipeline->reveal());
 
     $this->processor = \Drupal::getContainer()

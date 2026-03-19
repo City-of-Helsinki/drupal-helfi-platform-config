@@ -63,27 +63,24 @@ class TextPipeline {
    * @param array<string, \Drupal\Core\Entity\EntityInterface> $entities
    *   Entities keyed by an arbitrary string identifier.
    *
-   * @return \Drupal\helfi_search\Pipeline\TextChunkResult
-   *   The extracted chunks with mapping information.
+   * @return array<string, string[]>
+   *   Entity key → chunk texts.
    *
    * @throws \Drupal\helfi_search\Pipeline\PipelineException
    *   When the pipeline fails.
    */
-  public function extractChunks(array $entities): TextChunkResult {
-    $textsForEmbedding = [];
-    $entityChunkMap = [];
+  public function extractChunks(array $entities): array {
+    $result = [];
 
     foreach ($entities as $key => $entity) {
       $chunks = $this->process($entity);
 
-      foreach ($chunks as $chunkIndex => $chunk) {
-        $flatKey = $key . ':' . $chunkIndex;
-        $textsForEmbedding[$flatKey] = $chunk;
-        $entityChunkMap[$key][] = $flatKey;
+      if (!empty($chunks)) {
+        $result[$key] = $chunks;
       }
     }
 
-    return new TextChunkResult($textsForEmbedding, $entityChunkMap);
+    return $result;
   }
 
 }
