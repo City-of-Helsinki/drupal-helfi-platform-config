@@ -199,11 +199,6 @@ class SearchTestForm extends FormBase {
     $model = $form_state->getValue('model');
     $models = $this->getModels();
 
-    // Fallback to first configured model if none selected.
-    if (!$model && !empty($models)) {
-      $model = $models[0];
-    }
-
     if (!$model) {
       $this->messenger()->addError($this->t('No embedding models configured.'));
       return;
