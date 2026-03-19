@@ -15,3 +15,8 @@ helfi_search.settings:
       label: 'OpenAI embedding models'
       sequence:
         type: string
+    openai_model_pricing:
+      type: sequence
+      label: 'Model pricing per million tokens (USD)'
+      sequence:
+        type: float

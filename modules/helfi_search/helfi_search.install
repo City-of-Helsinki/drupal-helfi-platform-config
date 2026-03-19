@@ -192,3 +192,22 @@ function helfi_search_update_11002(): void {
   $index->setOption('cron_limit', 1);
   $index->save();
 }
+
+/**
+ * Enable both OpenAI v3 embedding models and add pricing to config.
+ */
+function helfi_search_update_11003(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  $config->set('openai_models', [
+    'text-embedding-3-small',
+    'text-embedding-3-large',
+  ]);
+
+  $config->set('openai_model_pricing', [
+    'text-embedding-3-small' => 0.02,
+    'text-embedding-3-large' => 0.13,
+  ]);
+
+  $config->save();
+}

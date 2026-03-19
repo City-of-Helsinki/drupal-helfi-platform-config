@@ -26,16 +26,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  */
 class SearchTestForm extends FormBase {
 
-  /**
-   * Map of pricing per million tokens.
-   *
-   * @link https://platform.openai.com/docs/pricing
-   */
-  private const array PRICING_PER_M = [
-    'text-embedding-3-small' => 0.02,
-    'text-embedding-3-large' => 0.13,
-  ];
-
   use AutowireTrait;
 
   public function __construct(
@@ -56,6 +46,16 @@ class SearchTestForm extends FormBase {
    */
   private function getModels(): array {
     return $this->configFactory()->get('helfi_search.settings')->get('openai_models') ?? [];
+  }
+
+  /**
+   * Get model pricing per million tokens from config.
+   *
+   * @return array<string, float>
+   *   Map of model name to price per million tokens.
+   */
+  private function getPricing(): array {
+    return $this->configFactory()->get('helfi_search.settings')->get('openai_model_pricing') ?? [];
   }
 
   /**
@@ -168,10 +168,11 @@ class SearchTestForm extends FormBase {
     ];
 
     $usage_by_model = $this->tokenUsageTracker->getTokenUsage();
+    $pricing = $this->getPricing();
     $items = [];
     foreach ($this->getModels() as $model) {
       $tokens = $usage_by_model[$model] ?? 0;
-      $price = self::PRICING_PER_M[$model] ?? 0;
+      $price = $pricing[$model] ?? 0;
       $items[] = $this->t('@model: @tokens tokens (approximate cost: @price @unit)', [
         '@model' => $model,
         '@tokens' => number_format($tokens),
