@@ -33,6 +33,7 @@ class SearchTestForm extends FormBase {
    */
   private const array PRICING_PER_M = [
     'text-embedding-3-small' => 0.02,
+    'text-embedding-3-large' => 0.13,
   ];
 
   use AutowireTrait;
