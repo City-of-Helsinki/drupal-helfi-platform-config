@@ -1,0 +1,3 @@
+[data-drupal-selector*="edit-field-sidebar-content"] .field-actions {
+  display: none;
+}

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_curated_event_list\Entity;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\external_entities\Entity\ExternalEntity;
 
@@ -12,34 +13,57 @@ use Drupal\external_entities\Entity\ExternalEntity;
  */
 final class LinkedEventsEvent extends ExternalEntity {
 
-  public const FUTURE_OR_ONGOING = 'future_or_ongoing';
-  public const PAST_EVENTS = 'past_events';
-
   /**
-   * Check if event has ended and return result.
+   * Gets the current time.
    *
-   * @return bool
-   *   The resulting boolean.
+   * @return int
+   *   The current time.
    */
-  public function hasEnded() : bool {
-    $end_time = $this->get('end_time')?->value;
-
-    if (!$end_time) {
-      return FALSE;
-    }
-
-    $datetime = new DrupalDateTime($end_time);
-    return $datetime->format('U') < time();
+  private function getCurrentTime(): int {
+    return \Drupal::time()->getCurrentTime();
   }
 
   /**
-   * Returns event type.
+   * Checks if the event has expired.
    *
-   * @return string
-   *   Event type string.
+   * @return bool
+   *   TRUE if event has expired, FALSE if not.
    */
-  public function getEventType() : string {
-    return $this->hasEnded() ? self::PAST_EVENTS : self::FUTURE_OR_ONGOING;
+  public function hasEnded(): bool {
+    if ($endTime = $this->getEndTime()?->getTimestamp()) {
+      return $endTime < $this->getCurrentTime();
+    }
+    return FALSE;
+  }
+
+  /**
+   * Gets the end time.
+   *
+   * @return \Drupal\Core\Datetime\DrupalDateTime|null
+   *   The end time or null.
+   */
+  public function getEndTime(): ?DrupalDateTime {
+    $endTime = $this->get('end_time')?->value;
+
+    if (!$endTime) {
+      return NULL;
+    }
+    // The API returns UTC+0 dates.
+    return new DrupalDateTime($endTime, 'UTC');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheMaxAge(): ?int {
+    // Cache until the event ends + 5 seconds to give it some
+    // buffer.
+    if ($endTime = $this->getEndTime()?->getTimestamp()) {
+      return ($endTime - $this->getCurrentTime()) + 5;
+    }
+    // Cache permanently if event has ended or has no
+    // end time.
+    return Cache::PERMANENT;
   }
 
 }

@@ -5,6 +5,10 @@ container_rebuild_required: true
 dependencies:
   - drupal:link
   - drupal:field
+  - drupal:datetime
+  - drupal:breakpoint
+  - drupal:responsive_image
+  - linkit:linkit
   - external_entities:external_entities
   - helfi_api_base:helfi_api_base
   - helfi_platform_config:helfi_platform_config
