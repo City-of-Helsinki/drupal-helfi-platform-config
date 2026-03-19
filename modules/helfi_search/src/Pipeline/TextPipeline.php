@@ -22,7 +22,6 @@ use Drupal\Core\Entity\EntityInterface;
  * - TextNormalizer: What normalization is applied to the text.
  * - ContentChunker: How long content is split into chunks.
  * - MetadataComposer: Which entity metadata is prepended to each chunk.
- * - EmbeddingsModelInterface: Which embedding model/provider is used.
  */
 class TextPipeline {
 

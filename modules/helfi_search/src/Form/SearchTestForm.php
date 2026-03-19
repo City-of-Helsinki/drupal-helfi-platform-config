@@ -168,21 +168,22 @@ class SearchTestForm extends FormBase {
     ];
 
     $usage_by_model = $this->tokenUsageTracker->getTokenUsage();
-    if ($usage_by_model) {
-      $items = [];
-      foreach ($usage_by_model as $model => $tokens) {
-        $price = self::PRICING_PER_M[$model] ?? 0;
-        $items[] = $this->t('@model: @tokens tokens (approximate cost: @price @unit)', [
-          '@model' => $model,
-          '@tokens' => number_format($tokens),
-          '@price' => $price ? ($tokens / 1000000 * $price) : $this->t('N/A'),
-          '@unit' => '$',
-        ]);
-      }
+    $items = [];
+    foreach ($this->getModels() as $model) {
+      $tokens = $usage_by_model[$model] ?? 0;
+      $price = self::PRICING_PER_M[$model] ?? 0;
+      $items[] = $this->t('@model: @tokens tokens (approximate cost: @price @unit)', [
+        '@model' => $model,
+        '@tokens' => number_format($tokens),
+        '@price' => $price ? ($tokens / 1000000 * $price) : $this->t('N/A'),
+        '@unit' => '$',
+      ]);
+    }
+    if ($items) {
       $form['token_stats']['by_model'] = [
         '#type' => 'item',
         '#title' => $this->t('Usage by Model'),
-        '#markup' => '<ul><li>' . implode('</li><li>', $items) . "" . '</li></ul>',
+        '#markup' => '<ul><li>' . implode('</li><li>', $items) . '</li></ul>',
       ];
     }
 
