@@ -1,0 +1,5 @@
+helfi_search.test_form:
+  title: 'Search Embeddings Test'
+  parent: hdbt_admin_tools.overview
+  route_name: helfi_search.test_form
+  weight: 3
