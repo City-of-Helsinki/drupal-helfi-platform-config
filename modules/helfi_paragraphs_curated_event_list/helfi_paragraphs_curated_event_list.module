@@ -36,9 +36,11 @@ function helfi_paragraphs_curated_event_list_paragraph_view(
   $build['events_list'] = [
     '#theme' => 'helfi_htmx_preview',
     '#num_items' => 3,
-    '#message' => new TranslatableMarkup('Loading events', options: ['context' => 'Curated events list loading message'],),
-    '#wrapper'=> 'ul',
-    '#attributes' => ['class'=> ['curated-event-list__events']],
+    '#message' => new TranslatableMarkup('Loading events', options: [
+      'context' => 'Curated events list loading message',
+    ]),
+    '#wrapper' => 'ul',
+    '#attributes' => ['class' => ['curated-event-list__events']],
   ];
   $htmx->applyTo($build['events_list']);
 }
