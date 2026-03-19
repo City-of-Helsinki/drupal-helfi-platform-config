@@ -46,6 +46,32 @@ class ClearSiteDataSubscriber implements EventSubscriberInterface {
   /**
    * Adds Clear-Site-Data -header to response.
    *
+   * To enable the header, set a configuration like this:
+   *
+   * @code
+   * helfi_platform_config.clear_site_data:
+   *   enable: true
+   *   expire_after: 1773917159
+   *   directives: 'cache,cookies'
+   * @endcode
+   *
+   * The expire_after time is a Unix timestamp.
+   * The directives are a comma-separated list of directives.
+   *
+   * To enable with Drush, run:
+   *
+   * @code
+   * drush config:set helfi_platform_config.clear_site_data enable true
+   * drush config:set helfi_platform_config.clear_site_data expire_after 1773917159
+   * drush config:set helfi_platform_config.clear_site_data directives 'cache,cookies'
+   * @endcode
+   *
+   * If you want to set an expire after time 24 hours from now, you can use:
+   *
+   * @code
+   * drush config:set helfi_platform_config.clear_site_data expire_after $(($(date +%s) + 86400))
+   * @endcode
+   *
    * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The event to respond to.
    */
