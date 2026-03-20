@@ -50,7 +50,7 @@ final class ClearSiteDataCommands extends DrushCommands {
       default: '1',
       required: TRUE,
       validate: function ($value) {
-        if (!is_numeric($value) || $value <= 0 || $value > 24) {
+        if (!is_numeric($value) || $value < ClearSiteData::MIN_EXPIRE_TIME || $value > ClearSiteData::MAX_EXPIRE_TIME) {
           return sprintf(
             'Expiration time must be between %s and %s hours.',
             ClearSiteData::MIN_EXPIRE_TIME,
