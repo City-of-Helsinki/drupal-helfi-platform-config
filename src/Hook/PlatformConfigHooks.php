@@ -9,6 +9,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
+use Drupal\helfi_platform_config\ClearSiteData;
 
 /**
  * Hook implementations for platform config module.
@@ -21,6 +22,7 @@ class PlatformConfigHooks {
     private readonly ModuleHandlerInterface $moduleHandler,
     private readonly ConfigUpdaterInterface $configUpdater,
     private readonly ParagraphTypeUpdater $paragraphTypeUpdater,
+    private readonly ClearSiteData $clearSiteData,
   ) {
   }
 
@@ -57,6 +59,15 @@ class PlatformConfigHooks {
 
     // Add sentry_ignore library.
     $page['#attached']['library'][] = 'helfi_platform_config/sentry_ignore';
+  }
+
+  /**
+   * Implements hook_cron().
+   */
+  #[Hook('cron')]
+  public function cron(): void {
+    // Disable the Clear-Site-Data header if it has expired.
+    $this->clearSiteData->disableIfExpired();
   }
 
 }
