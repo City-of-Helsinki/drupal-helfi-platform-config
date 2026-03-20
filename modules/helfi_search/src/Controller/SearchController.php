@@ -96,8 +96,12 @@ final class SearchController extends ControllerBase {
 
       $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
 
+      $bundles = array_filter(
+        array_map('trim', explode(',', $request->query->getString('bundle'))),
+      ) ?: NULL;
+
       $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles);
 
       // Execute both queries in a single HTTP round-trip using
       // ES Multi Search API. The response order matches the request order:

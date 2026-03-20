@@ -111,7 +111,22 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals(10, $query['body']['knn']['k']);
     $this->assertEquals('fi', $query['body']['knn']['filter']['term']['search_api_language']);
     $this->assertArrayNotHasKey('inner_hits', $query['body']['knn']);
-    $this->assertEquals(['entity_type', 'url', 'label', 'search_api_language'], $query['body']['_source']);
+    $this->assertEquals(['entity_type', 'entity_bundle', 'url', 'label', 'search_api_language'], $query['body']['_source']);
+  }
+
+  /**
+   * Tests buildKnnQuery with bundle filter.
+   */
+  public function testBuildKnnQueryWithBundleFilter(): void {
+    $vector = [0.1, 0.2, 0.3];
+    $bundles = ['news_article', 'page'];
+    $query = (new QueryBuilder())->buildKnnQuery($vector, 'fi', self::TEST_MODEL, bundles: $bundles);
+
+    $filter = $query['body']['knn']['filter'];
+    $this->assertArrayHasKey('bool', $filter);
+    $this->assertCount(2, $filter['bool']['must']);
+    $this->assertEquals('fi', $filter['bool']['must'][0]['term']['search_api_language']);
+    $this->assertEquals($bundles, $filter['bool']['must'][1]['terms']['entity_bundle']);
   }
 
   /**
@@ -138,6 +153,7 @@ class QueryBuilderTest extends UnitTestCase {
             '_score' => 0.95,
             '_source' => [
               'entity_type' => ['node'],
+              'entity_bundle' => ['news_article'],
               'url' => ['/fi/test'],
               'label' => ['Test Page'],
               'search_api_language' => ['fi'],
@@ -152,6 +168,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertCount(1, $results);
     $this->assertEquals(0.95, $results[0]['score']);
     $this->assertEquals('node', $results[0]['entity_type']);
+    $this->assertEquals('news_article', $results[0]['bundle']);
     $this->assertEquals('/fi/test', $results[0]['url']);
     $this->assertEquals('Test Page', $results[0]['title']);
     $this->assertEquals('fi', $results[0]['language']);

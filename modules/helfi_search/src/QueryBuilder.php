@@ -80,7 +80,7 @@ final class QueryBuilder {
    * @return array
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, bool $includeInnerHits = FALSE): array {
+  public function buildKnnQuery(array $embeddings, string $language, string $model, bool $includeInnerHits = FALSE, ?array $bundles = NULL): array {
     $language = match($language) {
       "fi", "sv", "en" => $language,
       default => "en",
@@ -88,16 +88,36 @@ final class QueryBuilder {
 
     $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
 
+    $languageFilter = [
+      'term' => [
+        'search_api_language' => $language,
+      ],
+    ];
+
+    if ($bundles) {
+      $filter = [
+        'bool' => [
+          'must' => [
+            $languageFilter,
+            [
+              'terms' => [
+                'entity_bundle' => $bundles,
+              ],
+            ],
+          ],
+        ],
+      ];
+    }
+    else {
+      $filter = $languageFilter;
+    }
+
     $knn = [
       'field' => $fieldPrefix . '.vector',
       'query_vector' => $embeddings,
       'k' => 10,
       'num_candidates' => 100,
-      'filter' => [
-        'term' => [
-          'search_api_language' => $language,
-        ],
-      ],
+      'filter' => $filter,
     ];
 
     if ($includeInnerHits) {
@@ -108,7 +128,7 @@ final class QueryBuilder {
       ];
     }
 
-    $source = ['entity_type', 'url', 'label', 'search_api_language'];
+    $source = ['entity_type', 'entity_bundle', 'url', 'label', 'search_api_language'];
     if ($includeInnerHits) {
       $source = ['id', ...$source, 'search_api_datasource'];
     }
@@ -144,6 +164,7 @@ final class QueryBuilder {
       $result = [
         'score' => $hit['_score'] ?? 0,
         'entity_type' => array_first($hit['_source']['entity_type'] ?? []),
+        'bundle' => array_first($hit['_source']['entity_bundle'] ?? []),
         'url' => array_first($hit['_source']['url'] ?? []),
         'title' => array_first($hit['_source']['label'] ?? []),
         'language' => array_first($hit['_source']['search_api_language'] ?? []),
