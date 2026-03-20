@@ -7,7 +7,8 @@ namespace Drupal\helfi_platform_config\EventSubscriber;
 /**
  * Event subscriber for CSP policy alteration.
  *
- * CSP directives for 'telia_ace_widget'-block and 'telia_ace_authenticated_widger'-block.
+ * CSP directives for 'telia_ace_widget'-block and
+ * 'telia_ace_authenticated_widger'-block.
  *
  * @package Drupal\helfi_platform_config\EventSubscriber
  */
@@ -19,6 +20,7 @@ class CspTeliaAceWidgetSubscriber extends CspSubscriberBase {
     'https://chat.ace.teliacompany.net',
     'https://api.ace.teliacompany.net',
     'https://widgets.ace.teliacompany.net',
+
   ];
   const FONT_SRC = [
     'https://hel.humany.net',
