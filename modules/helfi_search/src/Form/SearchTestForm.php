@@ -197,7 +197,6 @@ class SearchTestForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $query = $form_state->getValue('search_query');
     $model = $form_state->getValue('model');
-    $models = $this->getModels();
 
     if (!$model) {
       $this->messenger()->addError($this->t('No embedding models configured.'));
