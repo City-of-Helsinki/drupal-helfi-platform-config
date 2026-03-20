@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Plugin\search_api\processor;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
@@ -37,6 +38,13 @@ final class AddEntityLabel extends ProcessorPluginBase {
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
       ]);
+
+      $properties['helfi_entity_bundle'] = new ProcessorProperty([
+        'label' => $this->t('Entity bundle'),
+        'description' => $this->t("The entity's bundle."),
+        'type' => 'string',
+        'processor_id' => $this->getPluginId(),
+      ]);
     }
 
     return $properties;
@@ -47,17 +55,23 @@ final class AddEntityLabel extends ProcessorPluginBase {
    */
   public function addFieldValues(ItemInterface $item): void {
     $entity = $item->getOriginalObject()->getValue();
-    $label = $entity->label();
 
-    if ($label === NULL) {
-      return;
+    if ($label = $entity->label()) {
+      $fields = $this->getFieldsHelper()
+        ->filterForPropertyPath($item->getFields(FALSE), NULL, 'helfi_entity_label');
+
+      foreach ($fields as $field) {
+        $field->addValue($label);
+      }
     }
 
-    $fields = $this->getFieldsHelper()
-      ->filterForPropertyPath($item->getFields(FALSE), NULL, 'helfi_entity_label');
+    if ($entity instanceof ContentEntityInterface) {
+      $fields = $this->getFieldsHelper()
+        ->filterForPropertyPath($item->getFields(FALSE), NULL, 'helfi_entity_bundle');
 
-    foreach ($fields as $field) {
-      $field->addValue($label);
+      foreach ($fields as $field) {
+        $field->addValue($entity->bundle());
+      }
     }
   }
 

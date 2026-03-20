@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
 use Drupal\Core\Field\Entity\BaseFieldOverride;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 
 /**
  * Tests the entity hooks.
@@ -20,13 +20,10 @@ final class EntityHooksTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'config_rewrite',
     'entity_reference_revisions',
     'field',
     'file',
     'filter',
-    'helfi_api_base',
-    'helfi_platform_config',
     'helfi_platform_config_update_test',
     'node',
     'paragraphs',

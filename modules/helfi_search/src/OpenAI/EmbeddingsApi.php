@@ -38,17 +38,23 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
   }
 
   /**
+   * Sanitize model name into a safe field suffix.
+   */
+  public static function sanitizeModelName(string $model): string {
+    return preg_replace('/[^a-z0-9]/', '_', strtolower($model));
+  }
+
+  /**
    * Make request to OpenAI API.
    *
    * @throws \Drupal\helfi_search\EmbeddingsModelException
    */
-  private function makeRequest(string|array $input): Response {
+  private function makeRequest(string|array $input, string $model): Response {
     $config = $this->configFactory->get('helfi_search.settings');
     $apiKey = $config->get('openai_api_key');
     $baseUrl = $config->get('openai_base_url');
-    $model = $config->get('openai_model');
 
-    if (empty($apiKey) || empty($baseUrl) || empty($model)) {
+    if (empty($apiKey) || empty($baseUrl)) {
       throw new MissingConfigurationException('OpenAI API key not configured');
     }
 
@@ -60,7 +66,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     $input = array_map(static fn ($item) => Unicode::truncate($item, self::MAX_INPUT_LENGTH, TRUE), $input);
 
     try {
-      $response = $this->client->request('POST', $baseUrl . '/embeddings', [
+      $response = $this->client->request('POST', str_replace('{model}', $model, $baseUrl) . '/embeddings', [
         'query' => [
           'api-version' => self::API_VERSION,
         ],
@@ -101,14 +107,14 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEmbedding(string $text): array {
-    return array_first($this->makeRequest($text)->embedding) ?? throw new EmbeddingsModelException('No embedding found');
+  public function getEmbedding(string $text, string $model): array {
+    return array_first($this->makeRequest($text, $model)->embedding) ?? throw new EmbeddingsModelException('No embedding found');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function batchGetEmbedding(array $batch): array {
+  public function batchGetEmbedding(array $batch, string $model): array {
     if (empty($batch)) {
       return [];
     }
@@ -117,7 +123,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     // The cheaper requests are run asynchronously. Getting the batch
     // API to work with search_api does not seem trivial.
     // See https://platform.openai.com/docs/guides/batch.
-    $embeddings = $this->makeRequest(array_values($batch))->embedding;
+    $embeddings = $this->makeRequest(array_values($batch), $model)->embedding;
 
     return array_combine(array_keys($batch), $embeddings);
   }

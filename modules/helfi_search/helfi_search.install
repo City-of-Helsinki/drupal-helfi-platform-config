@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 use Drupal\search_api\Entity\Index;
 
 /**
@@ -190,5 +191,105 @@ function helfi_search_update_11002(): void {
   }
 
   $index->setOption('cron_limit', 1);
+  $index->save();
+}
+
+/**
+ * Enable both OpenAI v3 embedding models and add pricing to config.
+ */
+function helfi_search_update_11003(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  $config->set('openai_models', [
+    'text-embedding-3-small',
+    'text-embedding-3-large',
+  ]);
+
+  $config->set('openai_model_pricing', [
+    'text-embedding-3-small' => 0.02,
+    'text-embedding-3-large' => 0.13,
+  ]);
+
+  $config->save();
+}
+
+/**
+ * Increase embeddings index batch size per cron run.
+ */
+function helfi_search_update_11004(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $index->setOption('cron_limit', 5);
+  $index->save();
+}
+
+/**
+ * Add embeddings processor fields to the embeddings index.
+ */
+function helfi_search_update_11005(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  /** @var \Drupal\search_api\Utility\PluginHelperInterface $pluginHelper */
+  $pluginHelper = \Drupal::service('search_api.plugin_helper');
+
+  // Enable the embeddings processor if not already present.
+  if (!$index->isValidProcessor('helfi_search_embeddings')) {
+    $processor = $pluginHelper->createProcessorPlugin($index, 'helfi_search_embeddings');
+    $index->addProcessor($processor);
+  }
+
+  // Add a field for each configured model.
+  $models = \Drupal::config('helfi_search.settings')->get('openai_models') ?? [];
+  $fieldsHelper = \Drupal::getContainer()->get('search_api.fields_helper');
+
+  foreach ($models as $model) {
+    $suffix = EmbeddingsApi::sanitizeModelName($model);
+    $fieldName = 'embeddings_' . $suffix;
+
+    if ($index->getField($fieldName)) {
+      continue;
+    }
+
+    $field = $fieldsHelper->createField($index, $fieldName, [
+      'label' => "Embeddings ($model)",
+      'property_path' => $fieldName,
+      'type' => 'embeddings',
+    ]);
+    $index->addField($field);
+  }
+
+  $index->save();
+}
+
+/**
+ * Add entity bundle field to the embeddings index.
+ */
+function helfi_search_update_11006(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  if ($index->getField('entity_bundle')) {
+    return;
+  }
+
+  $field = \Drupal::getContainer()
+    ->get('search_api.fields_helper')
+    ->createField($index, 'entity_bundle', [
+      'label' => 'Entity bundle',
+      'property_path' => 'helfi_entity_bundle',
+      'type' => 'string',
+    ]);
+  $index->addField($field);
   $index->save();
 }

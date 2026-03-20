@@ -8,22 +8,19 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests location autocomplete element.
- *
- * @group helfi_platform_config
  */
+#[Group('helfi_platform_config')]
 class LocationAutocompleteTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_api_base',
-    'helfi_platform_config',
-    'config_rewrite',
     'system',
   ];
 

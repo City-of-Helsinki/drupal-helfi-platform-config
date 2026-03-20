@@ -46,40 +46,52 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       'type' => 'test_node_bundle_2',
     ])->save();
 
-    $embeddings = new Field($this->index, 'embeddings');
-    $embeddings->setPropertyPath('embeddings');
+    // Configure models.
+    $this->config('helfi_search.settings')
+      ->set('openai_models', ['text-embedding-3-small'])
+      ->save();
+
+    $embeddings = new Field($this->index, 'embeddings_text_embedding_3_small');
+    $embeddings->setPropertyPath('embeddings_text_embedding_3_small');
     $embeddings->setType('string');
-    $embeddings->setLabel('Vector embeddings');
+    $embeddings->setLabel('Vector embeddings (text-embedding-3-small)');
     $this->index->addField($embeddings);
     $this->index->save();
   }
 
   /**
-   * Tests that extraction failure propagates as PipelineException.
-   *
-   * In a kernel test there is no HTTP server, so the real TextPipeline fails
-   * during HTML extraction.
+   * Tests that extraction failure skips the item without removing it.
    */
-  public function testExtractionFailureThrowsPipelineException(): void {
+  public function testExtractionFailureSkipsItem(): void {
+    $textPipeline = $this->prophesize(TextPipeline::class);
+    $textPipeline
+      ->process(Argument::any())
+      ->willThrow(new PipelineException('Extraction failed'));
+    $this->container->set(TextPipeline::class, $textPipeline->reveal());
+
+    $this->processor = \Drupal::getContainer()
+      ->get('search_api.plugin_helper')
+      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
+
     $items = $this->createNodeItems([
       ['title' => 'Test', 'type' => 'test_node_bundle_1'],
     ]);
 
-    $this->expectException(PipelineException::class);
-    $this->processor->alterIndexedItems($items);
+    $item = reset($items);
+    $this->processor->addFieldValues($item);
+
+    // Item still exists, just has no embedding field values.
+    $field = $item->getField('embeddings_text_embedding_3_small');
+    $this->assertEmpty($field?->getValues() ?? []);
   }
 
   /**
-   * Tests that items are removed when the pipeline returns empty results.
-   *
-   * When the embeddings API is not configured, processEntities returns an
-   * empty array and all items should be removed.
+   * Tests that items have no embeddings when the pipeline returns no chunks.
    */
-  public function testItemsRemovedWhenModelNotConfigured(): void {
-    // Mock TextPipeline to return empty (simulates API config failure).
+  public function testNoEmbeddingsWhenNoChunks(): void {
     $textPipeline = $this->prophesize(TextPipeline::class);
     $textPipeline
-      ->processEntities(Argument::any())
+      ->process(Argument::any())
       ->willReturn([]);
     $this->container->set(TextPipeline::class, $textPipeline->reveal());
 
@@ -91,10 +103,36 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       ['title' => 'Test', 'type' => 'test_node_bundle_1'],
     ]);
 
-    $this->processor->alterIndexedItems($items);
+    $item = reset($items);
+    $this->processor->addFieldValues($item);
 
-    // Item is removed because pipeline returned no results.
-    $this->assertCount(0, $items);
+    // Item still exists, just has no embedding field values.
+    $field = $item->getField('embeddings_text_embedding_3_small');
+    $this->assertEmpty($field?->getValues() ?? []);
+  }
+
+  /**
+   * Tests no error when no models are configured.
+   */
+  public function testNoErrorWhenNoModels(): void {
+    $this->config('helfi_search.settings')
+      ->set('openai_models', [])
+      ->save();
+
+    $this->processor = \Drupal::getContainer()
+      ->get('search_api.plugin_helper')
+      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
+
+    $items = $this->createNodeItems([
+      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
+    ]);
+
+    $item = reset($items);
+    $this->processor->addFieldValues($item);
+
+    // No error thrown, item still exists.
+    $field = $item->getField('embeddings_text_embedding_3_small');
+    $this->assertEmpty($field?->getValues() ?? []);
   }
 
   /**
