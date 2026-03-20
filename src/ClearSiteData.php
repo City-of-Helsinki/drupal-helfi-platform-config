@@ -11,7 +11,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 /**
  * The Clear-Site-Data header service.
  */
-final class ClearSiteData {
+class ClearSiteData {
 
   const CONFIG_NAME = 'helfi_platform_config.clear_site_data';
 

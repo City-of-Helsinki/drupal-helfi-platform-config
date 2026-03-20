@@ -10,6 +10,7 @@ use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 use Drupal\helfi_platform_config\Hook\PlatformConfigHooks;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the module hooks.
@@ -19,10 +20,51 @@ use Drupal\Tests\UnitTestCase;
 final class ModuleHooksTest extends UnitTestCase {
 
   /**
-   * Tests modulesInstalled() basic behavior with different inputs.
-   *
-   * @dataProvider providerModulesInstalled
+   * The module handler mock.
    */
+  private ModuleHandlerInterface $moduleHandler;
+
+  /**
+   * The config updater mock.
+   */
+  private ConfigUpdaterInterface $configUpdater;
+
+  /**
+   * The paragraph type updater mock.
+   */
+  private ParagraphTypeUpdater $paragraphTypeUpdater;
+
+  /**
+   * The clear site data mock.
+   */
+  private ClearSiteData $clearSiteData;
+
+  /**
+   * The system under test.
+   */
+  private PlatformConfigHooks $sut;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    $this->moduleHandler = $this->createMock(ModuleHandlerInterface::class);
+    $this->configUpdater = $this->createMock(ConfigUpdaterInterface::class);
+    $this->paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
+    $this->clearSiteData = $this->createMock(ClearSiteData::class);
+    $this->sut = new PlatformConfigHooks(
+      $this->moduleHandler,
+      $this->configUpdater,
+      $this->paragraphTypeUpdater,
+      $this->clearSiteData
+    );
+  }
+
+  /**
+   * Tests modulesInstalled() basic behavior with different inputs.
+   */
+  #[DataProvider('providerModulesInstalled')]
   public function testModulesInstalled(
     array $modules,
     bool $is_syncing,
@@ -30,17 +72,12 @@ final class ModuleHooksTest extends UnitTestCase {
     int $expectedUpdatePermissionsCalls,
     bool $expectsParagraphUpdate,
   ): void {
-    $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
-    $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
-    $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
-    $clearSiteData = $this->createMock(ClearSiteData::class);
-
-    $moduleHandler
+    $this->moduleHandler
       ->method('moduleExists')
       ->with('locale')
       ->willReturn(FALSE);
 
-    $moduleHandler
+    $this->moduleHandler
       ->expects($this->exactly($expectedInvokeCalls))
       ->method('invoke')
       ->with(
@@ -48,29 +85,22 @@ final class ModuleHooksTest extends UnitTestCase {
         'platform_config_grant_permissions'
       );
 
-    $configUpdater
+    $this->configUpdater
       ->expects($this->exactly($expectedUpdatePermissionsCalls))
       ->method('updatePermissions');
 
     if ($expectsParagraphUpdate) {
-      $paragraphTypeUpdater
+      $this->paragraphTypeUpdater
         ->expects($this->once())
         ->method('updateParagraphTargetTypes');
     }
     else {
-      $paragraphTypeUpdater
+      $this->paragraphTypeUpdater
         ->expects($this->never())
         ->method('updateParagraphTargetTypes');
     }
 
-    $sut = new PlatformConfigHooks(
-      $moduleHandler,
-      $configUpdater,
-      $paragraphTypeUpdater,
-      $clearSiteData
-    );
-
-    $sut->modulesInstalled($modules, $is_syncing);
+    $this->sut->modulesInstalled($modules, $is_syncing);
   }
 
   /**
@@ -109,19 +139,14 @@ final class ModuleHooksTest extends UnitTestCase {
    * Tests that permissions returned by invoke() are passed to ConfigUpdater.
    */
   public function testModulesInstalledPassesPermissionsToConfigUpdater(): void {
-    $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
-    $configUpdater = $this->createMock(ConfigUpdaterInterface::class);
-    $paragraphTypeUpdater = $this->createMock(ParagraphTypeUpdater::class);
-    $clearSiteData = $this->createMock(ClearSiteData::class);
-
     $modules = ['mod_a', 'mod_b'];
 
-    $moduleHandler
+    $this->moduleHandler
       ->method('moduleExists')
       ->with('locale')
       ->willReturn(FALSE);
 
-    $moduleHandler
+    $this->moduleHandler
       ->expects($this->exactly(2))
       ->method('invoke')
       ->willReturnMap([
@@ -130,22 +155,26 @@ final class ModuleHooksTest extends UnitTestCase {
       ]);
 
     // Expect first call with the permissions array, second call with [].
-    $configUpdater
+    $this->configUpdater
       ->expects($this->exactly(2))
       ->method('updatePermissions');
 
-    $paragraphTypeUpdater
+    $this->paragraphTypeUpdater
       ->expects($this->once())
       ->method('updateParagraphTargetTypes');
 
-    $sut = new PlatformConfigHooks(
-      $moduleHandler,
-      $configUpdater,
-      $paragraphTypeUpdater,
-      $clearSiteData
-    );
+    $this->sut->modulesInstalled($modules, FALSE);
+  }
 
-    $sut->modulesInstalled($modules, FALSE);
+  /**
+   * Tests cron() basic behavior.
+   */
+  public function testCron(): void {
+    $this->clearSiteData
+      ->expects($this->once())
+      ->method('disableIfExpired');
+
+    $this->sut->cron();
   }
 
 }
