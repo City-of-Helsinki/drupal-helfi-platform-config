@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
