@@ -33,6 +33,7 @@ class CspTeliaAceWidgetSubscriber extends CspSubscriberBase {
   ];
   const SCRIPT_SRC = [
     'https://wds.ace.teliacompany.com',
+    'https://widgets.ace.teliacompany.net',
   ];
   const STYLE_SRC = [
     'https://hel.humany.net',
