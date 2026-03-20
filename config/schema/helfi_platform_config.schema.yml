@@ -47,9 +47,11 @@ helfi_platform_config.clear_site_data:
       label: 'Enable Clear-Site-Data header'
     expire_after:
       type: integer
+      nullable: true
       label: 'Expire after'
     directives:
       type: sequence
+      nullable: true
       label: 'Directives'
       sequence:
         type: string
