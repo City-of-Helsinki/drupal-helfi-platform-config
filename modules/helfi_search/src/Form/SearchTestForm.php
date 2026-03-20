@@ -49,16 +49,6 @@ class SearchTestForm extends FormBase {
   }
 
   /**
-   * Get model pricing per million tokens from config.
-   *
-   * @return array<string, float>
-   *   Map of model name to price per million tokens.
-   */
-  private function getPricing(): array {
-    return $this->configFactory()->get('helfi_search.settings')->get('openai_model_pricing') ?? [];
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function getFormId(): string {
@@ -168,15 +158,13 @@ class SearchTestForm extends FormBase {
     ];
 
     $usage_by_model = $this->tokenUsageTracker->getTokenUsage();
-    $pricing = $this->getPricing();
     $items = [];
     foreach ($this->getModels() as $model) {
       $tokens = $usage_by_model[$model] ?? 0;
-      $price = $pricing[$model] ?? 0;
       $items[] = $this->t('@model: @tokens tokens (approximate cost: @price @unit)', [
         '@model' => $model,
         '@tokens' => number_format($tokens),
-        '@price' => $price ? ($tokens / 1000000 * $price) : $this->t('N/A'),
+        '@price' => $this->tokenUsageTracker->getUsageCost($model, $tokens) ?: $this->t('N/A'),
         '@unit' => '$',
       ]);
     }
