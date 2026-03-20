@@ -268,3 +268,28 @@ function helfi_search_update_11005(): void {
 
   $index->save();
 }
+
+/**
+ * Add entity bundle field to the embeddings index.
+ */
+function helfi_search_update_11006(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  if ($index->getField('entity_bundle')) {
+    return;
+  }
+
+  $field = \Drupal::getContainer()
+    ->get('search_api.fields_helper')
+    ->createField($index, 'entity_bundle', [
+      'label' => 'Entity bundle',
+      'property_path' => 'helfi_entity_bundle',
+      'type' => 'string',
+    ]);
+  $index->addField($field);
+  $index->save();
+}

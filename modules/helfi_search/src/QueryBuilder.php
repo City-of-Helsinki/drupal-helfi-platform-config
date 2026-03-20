@@ -74,6 +74,8 @@ final class QueryBuilder {
    *   The embedding model name.
    * @param bool $includeInnerHits
    *   Whether to include inner_hits for content extraction.
+   * @param array|null $bundles
+   *   Filter only given bundles.
    *
    * @return array
    *   An array with 'index' and 'body' keys for Elasticsearch.
