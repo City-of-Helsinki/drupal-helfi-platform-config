@@ -72,7 +72,7 @@ final class ClearSiteData {
   public function enable(array $directives, int $expire_time = 1) : void {
     $config = $this->configFactory->getEditable(self::CONFIG_NAME);
 
-    $directives_valid = array_filter($directives, fn($directive) => in_array(trim($directive), self::VALID_DIRECTIVES));
+    $directives_valid = array_filter($directives, fn($directive) => in_array($directive, self::VALID_DIRECTIVES));
     if (empty($directives_valid)) {
       throw new \InvalidArgumentException(sprintf(
         'Invalid Clear-Site-Data directives. Valid directives are: %s',
@@ -136,10 +136,6 @@ final class ClearSiteData {
    * Disables the Clear-Site-Data header if it has expired.
    */
   public function disableIfExpired() : void {
-    if (!$this->isEnabled()) {
-      return;
-    }
-
     $expire_after = $this->getActiveExpireAfter();
     if ($expire_after && $expire_after < $this->time->getRequestTime()) {
       $this->disable();
