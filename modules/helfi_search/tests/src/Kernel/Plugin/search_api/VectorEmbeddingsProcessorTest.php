@@ -65,7 +65,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   public function testExtractionFailureSkipsItem(): void {
     $textPipeline = $this->prophesize(TextPipeline::class);
     $textPipeline
-      ->extractChunks(Argument::any())
+      ->process(Argument::any())
       ->willThrow(new PipelineException('Extraction failed'));
     $this->container->set(TextPipeline::class, $textPipeline->reveal());
 
@@ -91,7 +91,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   public function testNoEmbeddingsWhenNoChunks(): void {
     $textPipeline = $this->prophesize(TextPipeline::class);
     $textPipeline
-      ->extractChunks(Argument::any())
+      ->process(Argument::any())
       ->willReturn([]);
     $this->container->set(TextPipeline::class, $textPipeline->reveal());
 

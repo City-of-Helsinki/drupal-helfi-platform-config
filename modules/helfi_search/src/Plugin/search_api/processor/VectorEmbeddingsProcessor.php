@@ -116,37 +116,35 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
     $entity = $item->getOriginalObject()->getValue();
 
     try {
-      $chunksPerEntity = $this->textPipeline->extractChunks(['item' => $entity]);
+      $chunks = $this->textPipeline->process($entity);
     }
     catch (PipelineException) {
       return;
     }
-
-    $chunks = $chunksPerEntity['item'] ?? [];
 
     if (empty($chunks)) {
       return;
     }
 
     foreach ($models as $model) {
+      try {
+        $vectors = $this->embeddingsModel->batchGetEmbedding($chunks, $model);
+      }
+      catch (EmbeddingsModelException) {
+        continue;
+      }
+
       $suffix = EmbeddingsApi::sanitizeModelName($model);
       $fieldName = 'embeddings_' . $suffix;
 
       $fields = $this->getFieldsHelper()
         ->filterForPropertyPath($item->getFields(FALSE), NULL, $fieldName);
 
-      foreach ($chunks as $chunkText) {
-        try {
-          $vector = $this->embeddingsModel->getEmbedding($chunkText, $model);
-        }
-        catch (EmbeddingsModelException) {
-          continue;
-        }
-
+      foreach ($vectors as $index => $vector) {
         foreach ($fields as $field) {
           $field->addValue([
             'vector' => $vector,
-            'content' => $chunkText,
+            'content' => $chunks[$index],
           ]);
         }
       }

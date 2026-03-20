@@ -47,39 +47,13 @@ class TextPipeline {
    * @throws \Drupal\helfi_search\Pipeline\PipelineException
    *   When a pipeline stage fails.
    */
-  private function process(EntityInterface $entity): array {
+  public function process(EntityInterface $entity): array {
     $doc = $this->htmlExtractor->extract($entity);
     $cleanHtml = $this->htmlCleaner->clean($doc);
     $markdown = $this->markdownConverter->convert($cleanHtml);
     $normalized = $this->textNormalizer->normalize($markdown);
     $chunks = $this->contentChunker->chunk($normalized);
     return $this->metadataComposer->compose($entity, $chunks);
-  }
-
-  /**
-   * Extract text chunks from entities without generating embeddings.
-   *
-   * @param array<string, \Drupal\Core\Entity\EntityInterface> $entities
-   *   Entities keyed by an arbitrary string identifier.
-   *
-   * @return array<mixed, string[]>
-   *   Entity key → chunk texts.
-   *
-   * @throws \Drupal\helfi_search\Pipeline\PipelineException
-   *   When the pipeline fails.
-   */
-  public function extractChunks(array $entities): array {
-    $result = [];
-
-    foreach ($entities as $key => $entity) {
-      $chunks = $this->process($entity);
-
-      if (!empty($chunks)) {
-        $result[$key] = $chunks;
-      }
-    }
-
-    return $result;
   }
 
 }

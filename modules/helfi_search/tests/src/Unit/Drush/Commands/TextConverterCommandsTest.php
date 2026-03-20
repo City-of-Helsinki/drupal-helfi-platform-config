@@ -72,7 +72,7 @@ class TextConverterCommandsTest extends UnitTestCase {
     $entityTypeManager->getStorage('node')->willReturn($nodeStorage->reveal());
 
     $textPipeline = $this->prophesize(TextPipeline::class);
-    $textPipeline->extractChunks([$node->reveal()])
+    $textPipeline->process($node->reveal())
       ->willReturn([]);
 
     $sut = $this->getSut(

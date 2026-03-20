@@ -63,9 +63,9 @@ class TextPipelineTest extends KernelTestBase {
   }
 
   /**
-   * Tests extractChunks returns chunks for a single entity.
+   * Tests process returns chunks for a single entity.
    */
-  public function testExtractChunksReturnsChunks(): void {
+  public function testProcessReturnsChunks(): void {
     $pipeline = $this->getSut(
       [new Response(body: '<html><body><h1>Test Article</h1><p>Helsinki</p></body></html>')],
     );
@@ -75,15 +75,10 @@ class TextPipelineTest extends KernelTestBase {
       'type' => 'page',
     ]);
 
-    $result = $pipeline->extractChunks(['node-1' => $node]);
+    $result = $pipeline->process($node);
 
-    $this->assertArrayHasKey('node-1', $result);
-    $this->assertCount(1, $result['node-1']);
-    $this->assertStringContainsString('Helsinki', $result['node-1'][0]);
-
-    // Empty input returns empty output.
-    $result = $pipeline->extractChunks([]);
-    $this->assertEmpty($result);
+    $this->assertCount(1, $result);
+    $this->assertStringContainsString('Helsinki', $result[0]);
   }
 
   /**
@@ -101,7 +96,7 @@ class TextPipelineTest extends KernelTestBase {
 
     $this->expectException(PipelineException::class);
     $this->expectExceptionMessage('Connection error');
-    $pipeline->extractChunks(['fail' => $node]);
+    $pipeline->process($node);
   }
 
   /**
