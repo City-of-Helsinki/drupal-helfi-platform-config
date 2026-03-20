@@ -21,21 +21,29 @@ final class ModuleHooksTest extends UnitTestCase {
 
   /**
    * The module handler mock.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface&\PHPUnit\Framework\MockObject\MockObject
    */
   private ModuleHandlerInterface $moduleHandler;
 
   /**
    * The config updater mock.
+   *
+   * @var \Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface&\PHPUnit\Framework\MockObject\MockObject
    */
   private ConfigUpdaterInterface $configUpdater;
 
   /**
    * The paragraph type updater mock.
+   *
+   * @var \Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater&\PHPUnit\Framework\MockObject\MockObject
    */
   private ParagraphTypeUpdater $paragraphTypeUpdater;
 
   /**
    * The clear site data mock.
+   *
+   * @var \Drupal\helfi_platform_config\ClearSiteData&\PHPUnit\Framework\MockObject\MockObject
    */
   private ClearSiteData $clearSiteData;
 
