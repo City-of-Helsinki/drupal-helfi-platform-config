@@ -66,7 +66,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     $input = array_map(static fn ($item) => Unicode::truncate($item, self::MAX_INPUT_LENGTH, TRUE), $input);
 
     try {
-      $response = $this->client->request('POST', $baseUrl . '/embeddings', [
+      $response = $this->client->request('POST', str_replace('{model}', $model, $baseUrl) . '/embeddings', [
         'query' => [
           'api-version' => self::API_VERSION,
         ],
