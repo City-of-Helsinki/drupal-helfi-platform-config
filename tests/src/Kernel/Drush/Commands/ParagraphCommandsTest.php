@@ -55,8 +55,6 @@ class ParagraphCommandsTest extends KernelTestBase {
 
   /**
    * Tests scanning for orphaned paragraphs with empty database.
-   *
-   * @covers ::scan
    */
   public function testScanEmptyDatabase(): void {
     $entityTypeManager = $this->container->get('entity_type.manager');
@@ -79,8 +77,6 @@ class ParagraphCommandsTest extends KernelTestBase {
 
   /**
    * Tests scanning for orphaned paragraphs when orphans exist.
-   *
-   * @covers ::scan
    */
   public function testScanFindsOrphanedParagraphs(): void {
     ParagraphsType::create([

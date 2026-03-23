@@ -44,8 +44,6 @@ class BlockInstallerTest extends KernelTestBase {
 
   /**
    * Tests successful block installation with valid configuration.
-   *
-   * @covers ::install
    */
   public function testInstallBlockWithValidConfig(): void {
     $block = [
@@ -82,8 +80,6 @@ class BlockInstallerTest extends KernelTestBase {
 
   /**
    * Tests exception thrown for missing required block configuration.
-   *
-   * @covers ::install
    */
   public function testInstallThrowsExceptionForMissingRequiredConfig(): void {
     $block = [
@@ -108,8 +104,6 @@ class BlockInstallerTest extends KernelTestBase {
 
   /**
    * Tests exception thrown for missing required theme variation.
-   *
-   * @covers ::install
    */
   public function testInstallThrowsExceptionForMissingRequiredVariation(): void {
     $block = [
