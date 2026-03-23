@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\Drush\Commands;
 
-use Drush\Commands\DrushCommands;
-use Drush\Style\DrushStyle;
 use Drupal\helfi_platform_config\ClearSiteData;
-use Drupal\helfi_platform_config\Drush\Commands\ClearSiteDataCommands;
+use Drupal\helfi_platform_config\Drush\Commands\ClearSiteDataCommand;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Unit tests for ClearSiteDataCommands.
+ * Unit tests for ClearSiteDataCommand.
  */
-#[CoversClass(ClearSiteDataCommands::class)]
+#[CoversClass(ClearSiteDataCommand::class)]
 #[Group('helfi_platform_config')]
 final class ClearSiteDataCommandsTest extends UnitTestCase {
 
@@ -26,14 +27,14 @@ final class ClearSiteDataCommandsTest extends UnitTestCase {
   private ClearSiteData&MockObject $clearSiteData;
 
   /**
-   * The DrushStyle mock.
+   * The SymfonyStyle mock.
    */
-  private DrushStyle&MockObject $io;
+  private SymfonyStyle&MockObject $io;
 
   /**
    * The system under test.
    */
-  private ClearSiteDataCommands $sut;
+  private ClearSiteDataCommand $sut;
 
   /**
    * {@inheritdoc}
@@ -41,162 +42,270 @@ final class ClearSiteDataCommandsTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
     $this->clearSiteData = $this->createMock(ClearSiteData::class);
-    $this->io = $this->createMock(DrushStyle::class);
-    $this->sut = new ClearSiteDataCommands($this->clearSiteData);
-    $this->injectIo();
+    $this->io = $this->createMock(SymfonyStyle::class);
+    $this->sut = new ClearSiteDataCommand($this->clearSiteData);
   }
 
   /**
-   * Tests disable invokes the service and reports success.
+   * Tests disable invokes the service, reports success, and prints status.
    */
   public function testDisable(): void {
-    $this->io->expects($this->once())
-      ->method('success')
-      ->with('"Clear-Site-Data"-header disabled.');
+    $input = $this->createInput('disable');
 
     $this->clearSiteData
       ->expects($this->once())
       ->method('disable');
 
-    $this->assertSame(DrushCommands::EXIT_SUCCESS, $this->sut->disable());
+    $this->io->expects($this->once())
+      ->method('success')
+      ->with('"Clear-Site-Data"-header disabled successfully.');
+
+    $this->clearSiteData->method('getActiveEnable')->willReturn(FALSE);
+
+    $this->io->expects($this->once())
+      ->method('title')
+      ->with('Current "Clear-Site-Data"-header status:');
+    $this->io->expects($this->once())
+      ->method('listing')
+      ->with(['Enabled: No']);
+
+    $this->assertSame(Command::SUCCESS, ($this->sut)($input, $this->io));
   }
 
   /**
-   * Tests status output when the header is disabled.
+   * Tests status output when the header is disabled in config.
    */
   public function testStatusWhenDisabled(): void {
+    $input = $this->createInput('status');
+
+    $this->clearSiteData->method('getActiveEnable')->willReturn(FALSE);
+
     $this->io->expects($this->once())
-      ->method('info')
-      ->with('"Clear-Site-Data"-header is disabled.');
+      ->method('title')
+      ->with('Current "Clear-Site-Data"-header status:');
+    $this->io->expects($this->once())
+      ->method('listing')
+      ->with(['Enabled: No']);
 
-    $this->clearSiteData->method('isEnabled')->willReturn(FALSE);
-
-    $this->assertSame(DrushCommands::EXIT_SUCCESS, $this->sut->status());
+    $this->assertSame(Command::SUCCESS, ($this->sut)($input, $this->io));
   }
 
   /**
-   * Tests status output when the header is enabled.
+   * Tests status output when the header is enabled and active.
    */
   public function testStatusWhenEnabled(): void {
+    $input = $this->createInput('status');
     $expire = 1_700_000_000;
     $expectedDate = date('Y-m-d H:i:s', $expire);
 
-    $this->io->expects($this->once())
-      ->method('info')
-      ->with(sprintf(
-        '"Clear-Site-Data"-header is enabled with directives: %s and expiration time %s.',
-        implode(',', ['cache', 'cookies']),
-        $expectedDate,
-      ));
-
-    $this->clearSiteData->method('isEnabled')->willReturn(TRUE);
+    $this->clearSiteData->method('getActiveEnable')->willReturn(TRUE);
     $this->clearSiteData->method('getActiveDirectives')->willReturn(['cache', 'cookies']);
     $this->clearSiteData->method('getActiveExpireAfter')->willReturn($expire);
+    $this->clearSiteData->method('isEnabled')->willReturn(TRUE);
 
-    $this->assertSame(DrushCommands::EXIT_SUCCESS, $this->sut->status());
+    $this->io->expects($this->once())
+      ->method('title')
+      ->with('Current "Clear-Site-Data"-header status:');
+    $this->io->expects($this->once())
+      ->method('listing')
+      ->with([
+        'Enabled: Yes',
+        'Directives: cache, cookies',
+        sprintf('Expires after: %s', $expectedDate),
+      ]);
+
+    $this->assertSame(Command::SUCCESS, ($this->sut)($input, $this->io));
   }
 
   /**
-   * Tests enable collects input, enables the header, and prints success.
+   * Tests warning when config says enabled but the header is not active.
+   */
+  public function testStatusWarningWhenEnabledButInactive(): void {
+    $input = $this->createInput('status');
+    $expire = 1_700_000_000;
+    $expectedDate = date('Y-m-d H:i:s', $expire);
+
+    $this->clearSiteData->method('getActiveEnable')->willReturn(TRUE);
+    $this->clearSiteData->method('getActiveDirectives')->willReturn(['cache']);
+    $this->clearSiteData->method('getActiveExpireAfter')->willReturn($expire);
+    $this->clearSiteData->method('isEnabled')->willReturn(FALSE);
+
+    $this->io->expects($this->once())
+      ->method('title')
+      ->with('Current "Clear-Site-Data"-header status:');
+    $this->io->expects($this->once())
+      ->method('warning')
+      ->with('"Clear-Site-Data"-header is enabled, but it might be inactive due to expired TTL or empty directives.');
+
+    $this->io->expects($this->once())
+      ->method('listing')
+      ->with([
+        'Enabled: Yes',
+        'Directives: cache',
+        sprintf('Expires after: %s', $expectedDate),
+      ]);
+
+    $this->assertSame(Command::SUCCESS, ($this->sut)($input, $this->io));
+  }
+
+  /**
+   * Tests enable passes directives and TTL from input, then prints success and status.
    */
   public function testEnable(): void {
     $selected = ['cache', 'storage'];
-    $ttl = '2';
-    $expireAfter = 1_700_000_100;
-
-    $this->io->expects($this->once())
-      ->method('choice')
-      ->with(
-        'Select directives',
-        ClearSiteData::VALID_DIRECTIVES,
-        NULL,
-        TRUE,
-        15,
-        NULL,
-        '',
-        TRUE,
-      )
-      ->willReturn($selected);
-    $this->io->expects($this->once())
-      ->method('ask')
-      ->with(
-        'Give expiration time in hours',
-        '1',
-        NULL,
-        '',
-        TRUE,
-        $this->isInstanceOf(\Closure::class),
-        '',
-      )
-      ->willReturn($ttl);
-    $expectedDate = date('Y-m-d H:i:s', $expireAfter);
-    $this->io->expects($this->once())
-      ->method('success')
-      ->with(sprintf(
-        '"Clear-Site-Data"-header enabled with directives: %s and expiration time: %s hours (%s).',
-        implode(',', $selected),
-        $ttl,
-        $expectedDate,
-      ));
+    $ttl = 2;
+    $input = $this->createInput('enable', $ttl);
 
     $this->clearSiteData
       ->expects($this->once())
       ->method('enable')
-      ->with($selected, 2);
+      ->with($selected, $ttl);
 
-    $this->clearSiteData
-      ->method('getActiveDirectives')
-      ->willReturnOnConsecutiveCalls(NULL, $selected);
-    $this->clearSiteData
-      ->method('getActiveExpireAfter')
-      ->willReturnOnConsecutiveCalls(NULL, $expireAfter);
-
-    $this->assertSame(DrushCommands::EXIT_SUCCESS, $this->sut->enable());
-  }
-
-  /**
-   * Tests ask validation rejects non-numeric and out-of-range values.
-   */
-  public function testEnableAskValidation(): void {
-    $capturedValidate = NULL;
-    $this->io->method('choice')->willReturn(['cache']);
     $this->io->expects($this->once())
-      ->method('ask')
-      ->willReturnCallback(function (
-        $question,
-        $default,
-        $validator,
-        $placeholder,
-        $required,
-        $validate,
-      ) use (&$capturedValidate) {
-        $capturedValidate = $validate;
-        return '1';
-      });
-    $this->io->expects($this->once())->method('success');
+      ->method('success')
+      ->with('"Clear-Site-Data"-header enabled successfully.');
 
-    $this->clearSiteData->method('getActiveDirectives')->willReturnOnConsecutiveCalls(NULL, ['cache']);
-    $this->clearSiteData->method('getActiveExpireAfter')->willReturnOnConsecutiveCalls(NULL, 1_700_000_000);
-    $this->clearSiteData->expects($this->once())->method('enable')->with(['cache'], 1);
+    $expireAfter = 1_700_000_100;
+    $this->clearSiteData->method('getActiveEnable')->willReturn(TRUE);
+    $this->clearSiteData->method('getActiveDirectives')->willReturn($selected);
+    $this->clearSiteData->method('getActiveExpireAfter')->willReturn($expireAfter);
+    $this->clearSiteData->method('isEnabled')->willReturn(TRUE);
 
-    $this->sut->enable();
+    $this->io->expects($this->once())
+      ->method('title')
+      ->with('Current "Clear-Site-Data"-header status:');
+    $this->io->expects($this->once())
+      ->method('listing')
+      ->with([
+        'Enabled: Yes',
+        'Directives: cache, storage',
+        sprintf('Expires after: %s', date('Y-m-d H:i:s', $expireAfter)),
+      ]);
 
-    $this->assertInstanceOf(\Closure::class, $capturedValidate);
-    $error = ($capturedValidate)('abc');
-    $this->assertIsString($error);
-    $error = ($capturedValidate)(ClearSiteData::MIN_EXPIRE_TIME - 1);
-    $this->assertIsString($error);
-    $error = ($capturedValidate)(ClearSiteData::MAX_EXPIRE_TIME + 1);
-    $this->assertIsString($error);
-    $this->assertNull(($capturedValidate)(random_int(ClearSiteData::MIN_EXPIRE_TIME, ClearSiteData::MAX_EXPIRE_TIME)));
+    $this->assertSame(
+      Command::SUCCESS,
+      ($this->sut)($input, $this->io, 'enable', 'cache,storage', $ttl),
+    );
   }
 
   /**
-   * Assigns the DrushStyle mock to the command's IO property.
+   * Tests enable with no directives returns failure.
    */
-  private function injectIo(): void {
-    $property = new \ReflectionProperty(DrushCommands::class, 'io');
-    $property->setValue($this->sut, $this->io);
+  public function testEnableNoDirectives(): void {
+    $input = $this->createInput('enable', 1);
+
+    $this->io->expects($this->once())
+      ->method('error')
+      ->with(sprintf(
+        'No directives provided. Possible values: %s.',
+        implode(', ', ClearSiteData::VALID_DIRECTIVES),
+      ));
+
+    $this->clearSiteData->expects($this->never())->method('enable');
+
+    $this->assertSame(
+      Command::FAILURE,
+      ($this->sut)($input, $this->io, 'enable', '', 1),
+    );
+  }
+
+  /**
+   * Tests invalid operation returns failure.
+   */
+  public function testInvalidOperation(): void {
+    $input = $this->createInput('purge');
+
+    $this->io->expects($this->once())
+      ->method('error')
+      ->with('Invalid operation: purge. Possible values: status, enable, disable.');
+
+    $this->clearSiteData->expects($this->never())->method('disable');
+    $this->clearSiteData->expects($this->never())->method('enable');
+
+    $this->assertSame(Command::FAILURE, ($this->sut)($input, $this->io));
+  }
+
+  /**
+   * Tests invalid directives return failure.
+   */
+  public function testEnableInvalidDirectives(): void {
+    $input = $this->createInput('enable', 1);
+
+    $this->io->expects($this->once())
+      ->method('error')
+      ->with(sprintf(
+        'Invalid directives: not-a-directive. Possible values: %s.',
+        implode(', ', ClearSiteData::VALID_DIRECTIVES),
+      ));
+
+    $this->clearSiteData->expects($this->never())->method('enable');
+
+    $this->assertSame(
+      Command::FAILURE,
+      ($this->sut)($input, $this->io, 'enable', 'not-a-directive', 1),
+    );
+  }
+
+  /**
+   * Tests TTL below minimum returns failure.
+   */
+  public function testEnableTtlTooLow(): void {
+    $input = $this->createInput('enable', ClearSiteData::MIN_EXPIRE_TIME - 1);
+
+    $this->io->expects($this->once())
+      ->method('error')
+      ->with(sprintf(
+        'Invalid TTL: %s. Must be between %s and %s hours.',
+        ClearSiteData::MIN_EXPIRE_TIME - 1,
+        ClearSiteData::MIN_EXPIRE_TIME,
+        ClearSiteData::MAX_EXPIRE_TIME,
+      ));
+
+    $this->clearSiteData->expects($this->never())->method('enable');
+
+    $this->assertSame(
+      Command::FAILURE,
+      ($this->sut)($input, $this->io, 'enable', 'cache', 1),
+    );
+  }
+
+  /**
+   * Tests TTL above maximum returns failure.
+   */
+  public function testEnableTtlTooHigh(): void {
+    $input = $this->createInput('enable', ClearSiteData::MAX_EXPIRE_TIME + 1);
+
+    $this->io->expects($this->once())
+      ->method('error')
+      ->with(sprintf(
+        'Invalid TTL: %s. Must be between %s and %s hours.',
+        ClearSiteData::MAX_EXPIRE_TIME + 1,
+        ClearSiteData::MIN_EXPIRE_TIME,
+        ClearSiteData::MAX_EXPIRE_TIME,
+      ));
+
+    $this->clearSiteData->expects($this->never())->method('enable');
+
+    $this->assertSame(
+      Command::FAILURE,
+      ($this->sut)($input, $this->io, 'enable', 'cache', 1),
+    );
+  }
+
+  /**
+   * Builds an input mock with the given operation and TTL option.
+   *
+   * Directives are passed to the command via the __invoke argument, not input.
+   */
+  private function createInput(string $operation, int $ttl = 1) : InputInterface&MockObject {
+    $input = $this->createMock(InputInterface::class);
+    $input->method('getArgument')
+      ->with('operation')
+      ->willReturn($operation);
+    $input->method('getOption')
+      ->with('ttl')
+      ->willReturn($ttl);
+    return $input;
   }
 
 }

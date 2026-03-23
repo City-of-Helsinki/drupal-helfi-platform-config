@@ -46,7 +46,7 @@ class ClearSiteData {
    */
   public function isEnabled() : bool {
     $config = $this->configFactory->get(self::CONFIG_NAME);
-    $enable = $config->get('enable');
+    $enable = $this->getActiveEnable();
     $directives = $this->getActiveDirectives();
     $expire_after = $this->getActiveExpireAfter();
     $request_time = $this->time->getRequestTime();
@@ -108,6 +108,17 @@ class ClearSiteData {
     $config->set('directives', NULL);
     $config->set('expire_after', NULL);
     $config->save();
+  }
+
+  /**
+   * Get active enable status.
+   *
+   * @return bool
+   *   The active enable status.
+   */
+  public function getActiveEnable() : bool {
+    $config = $this->configFactory->get(self::CONFIG_NAME);
+    return $config->get('enable');
   }
 
   /**

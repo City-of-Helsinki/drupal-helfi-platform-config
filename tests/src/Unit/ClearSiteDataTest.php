@@ -272,6 +272,28 @@ class ClearSiteDataTest extends UnitTestCase {
   }
 
   /**
+   * Tests getActiveEnable() returns the enable flag from config.
+   *
+   * @param bool $enable
+   *   The stored enable value.
+   */
+  #[DataProvider('providerGetActiveEnable')]
+  public function testGetActiveEnableReturnsConfigValue(bool $enable): void {
+    $this->givenImmutableRead(['enable' => $enable]);
+    $this->assertSame($enable, $this->sut()->getActiveEnable());
+  }
+
+  /**
+   * Data provider for getActiveEnable() config values.
+   */
+  public static function providerGetActiveEnable(): array {
+    return [
+      'enabled' => [TRUE],
+      'disabled' => [FALSE],
+    ];
+  }
+
+  /**
    * Tests getActiveDirectives() returns the directives from config.
    */
   public function testGetActiveDirectivesReturnsConfigValue(): void {
