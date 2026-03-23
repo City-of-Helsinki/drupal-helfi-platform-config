@@ -70,3 +70,7 @@ field.widget.settings.helfi_linkit:
     linkit_auto_link_text:
       type: boolean
       label: 'Automatically populate link text from entity label'
+
+plugin.plugin_configuration.search_api_processor.helfi_resolve_link_uri:
+  type: search_api.fields_processor_configuration
+  label: 'Resolve link URI processor configuration'

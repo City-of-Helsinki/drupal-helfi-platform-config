@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Utility\Error;
 use Psr\Log\LoggerInterface;
@@ -18,6 +19,7 @@ class TokenUsageTracker {
     private readonly Connection $database,
     #[Autowire(service: 'logger.channel.helfi_search')]
     private readonly LoggerInterface $logger,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
   }
 
@@ -65,6 +67,28 @@ class TokenUsageTracker {
     }
 
     return array_map(static fn ($row) => (int) $row, $query->execute()->fetchAllKeyed());
+  }
+
+  /**
+   * Calculate cost for a given model and token count.
+   *
+   * @param string $model
+   *   The model name.
+   * @param int $tokens
+   *   Number of tokens.
+   *
+   * @return float|null
+   *   The cost in dollars, or NULL if no pricing is configured for the model.
+   */
+  public function getUsageCost(string $model, int $tokens): ?float {
+    $pricing = $this->configFactory->get('helfi_search.settings')->get('openai_model_pricing') ?? [];
+    $price = $pricing[$model] ?? NULL;
+
+    if ($price === NULL) {
+      return NULL;
+    }
+
+    return $tokens / 1_000_000 * $price;
   }
 
 }

@@ -191,17 +191,25 @@ class ContentChunker {
       else {
         if ($currentParts !== []) {
           $chunks[] = implode($separator, $currentParts);
+        }
 
+        if (strlen($part) > self::DEFAULT_CHUNK_SIZE) {
+          // Part itself is too large — recurse with finer separators.
+          foreach ($this->recursiveSplit($part, $separators) as $sub) {
+            $chunks[] = $sub;
+          }
+          $currentParts = [];
+          $currentLen = 0;
+        }
+        elseif ($currentParts !== []) {
           // Overlap: carry the last part from previous chunk for continuity.
           $lastPart = array_last($currentParts);
           $currentParts = [$lastPart, $part];
           $currentLen = strlen($lastPart) + strlen($separator) + strlen($part);
         }
         else {
-          // Single part is already too large — recurse into it.
-          foreach ($this->recursiveSplit($part, $separators) as $sub) {
-            $chunks[] = $sub;
-          }
+          $currentParts = [$part];
+          $currentLen = strlen($part);
         }
       }
     }

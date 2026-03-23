@@ -7,17 +7,17 @@ namespace Drupal\Tests\helfi_platform_config\Tests\Kernel\ConfigUpdate;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater;
 use Drupal\helfi_platform_config\Drush\Commands\ConfigUpdaterCommands;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\Role;
 use Drupal\user\UserInterface;
 use Drush\Commands\DrushCommands;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests ConfigUpdater.
- *
- * @group helfi_platform_config
  */
+#[Group('helfi_platform_config')]
 class ConfigUpdaterTest extends KernelTestBase {
 
   use UserCreationTrait;
@@ -27,13 +27,10 @@ class ConfigUpdaterTest extends KernelTestBase {
    */
   protected static $modules = [
     'system',
-    'config_rewrite',
     'field',
     'text',
     'user',
-    'helfi_platform_config',
     'helfi_user_roles',
-    'helfi_api_base',
     'csp',
     'entity_reference_revisions',
     'language',

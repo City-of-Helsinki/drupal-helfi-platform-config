@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
+namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\search_api;
 
 use Drupal\node\Entity\Node;
 use Drupal\search_api\Item\Field;
@@ -12,11 +12,11 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests for the AddEntityLabel processor.
+ * Tests for the EntityMetadata processor.
  */
-#[Group('helfi_search')]
+#[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
-class AddEntityLabelTest extends ProcessorTestBase {
+class EntityMetadataTest extends ProcessorTestBase {
 
   /**
    * {@inheritdoc}
@@ -25,7 +25,6 @@ class AddEntityLabelTest extends ProcessorTestBase {
     'helfi_platform_config',
     'config_rewrite',
     'helfi_api_base',
-    'helfi_search',
   ];
 
   /**
@@ -34,11 +33,18 @@ class AddEntityLabelTest extends ProcessorTestBase {
   public function setUp($processor = NULL): void {
     parent::setUp('helfi_entity_label');
 
-    $field = new Field($this->index, 'label');
-    $field->setType('string');
-    $field->setPropertyPath('helfi_entity_label');
-    $field->setLabel('Entity label');
-    $this->index->addField($field);
+    $labelField = new Field($this->index, 'label');
+    $labelField->setType('string');
+    $labelField->setPropertyPath('helfi_entity_label');
+    $labelField->setLabel('Entity label');
+    $this->index->addField($labelField);
+
+    $bundleField = new Field($this->index, 'entity_bundle');
+    $bundleField->setType('string');
+    $bundleField->setPropertyPath('helfi_entity_bundle');
+    $bundleField->setLabel('Entity bundle');
+    $this->index->addField($bundleField);
+
     $this->index->save();
   }
 
@@ -58,6 +64,7 @@ class AddEntityLabelTest extends ProcessorTestBase {
       ->createItemFromObject($this->index, $node->getTypedData(), $id);
 
     $this->assertEquals(['My Test Node'], $item->getField('label')->getValues());
+    $this->assertEquals(['article'], $item->getField('entity_bundle')->getValues());
   }
 
 }

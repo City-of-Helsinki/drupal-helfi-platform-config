@@ -6,7 +6,8 @@ namespace Drupal\Tests\helfi_platform_config\Kernel\Helper;
 
 use Drupal\Core\Config\ConfigException;
 use Drupal\helfi_platform_config\Helper\BlockInstaller;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the BlockInstaller helper class.
@@ -18,17 +19,14 @@ use Drupal\KernelTests\KernelTestBase;
  * - Exception thrown for missing required block configuration.
  *
  * @coversDefaultClass \Drupal\helfi_platform_config\Helper\BlockInstaller
- * @group helfi_platform_config
  */
+#[Group('helfi_platform_config')]
 class BlockInstallerTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_platform_config',
-    'helfi_api_base',
-    'config_rewrite',
     'block',
     'system',
     'user',
@@ -46,8 +44,6 @@ class BlockInstallerTest extends KernelTestBase {
 
   /**
    * Tests successful block installation with valid configuration.
-   *
-   * @covers ::install
    */
   public function testInstallBlockWithValidConfig(): void {
     $block = [
@@ -84,8 +80,6 @@ class BlockInstallerTest extends KernelTestBase {
 
   /**
    * Tests exception thrown for missing required block configuration.
-   *
-   * @covers ::install
    */
   public function testInstallThrowsExceptionForMissingRequiredConfig(): void {
     $block = [
@@ -110,8 +104,6 @@ class BlockInstallerTest extends KernelTestBase {
 
   /**
    * Tests exception thrown for missing required theme variation.
-   *
-   * @covers ::install
    */
   public function testInstallThrowsExceptionForMissingRequiredVariation(): void {
     $block = [

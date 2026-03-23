@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigRewriter;
 use Drupal\helfi_platform_config\HelfiPlatformConfigServiceProvider;
 use Drupal\helfi_platform_config\SearchAPI\Query\QueryResultParser;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests Helfi platform config service provider.
  */
+#[Group('helfi_platform_config')]
+#[RunTestsInSeparateProcesses]
 class HelfiPlatformConfigServiceProviderTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'config_rewrite',
     'elasticsearch_connector',
-    'helfi_api_base',
-    'helfi_platform_config',
     'search_api',
   ];
 

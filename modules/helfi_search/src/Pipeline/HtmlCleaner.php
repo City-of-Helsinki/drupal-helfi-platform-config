@@ -24,6 +24,14 @@ class HtmlCleaner {
   private const array REMOVE_CLASSES = [
     'is-hidden', 'visually-hidden', 'skip-link', 'table-of-contents',
     'component--recommendations', 'component--map',
+    'announcement', "content-tags",
+  ];
+
+  /**
+   * Element IDs to remove.
+   */
+  private const array REMOVE_IDS = [
+    'helfi-survey__container',
   ];
 
   /**
@@ -112,6 +120,13 @@ class HtmlCleaner {
       $elements = $xpath->query(
         '//*[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]'
       );
+      if ($elements) {
+        $this->removeNodeList($elements);
+      }
+    }
+
+    foreach (self::REMOVE_IDS as $id) {
+      $elements = $xpath->query('//*[@id="' . $id . '"]');
       if ($elements) {
         $this->removeNodeList($elements);
       }
