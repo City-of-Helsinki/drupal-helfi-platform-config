@@ -149,7 +149,7 @@ final class ClearSiteDataCommandsTest extends UnitTestCase {
   }
 
   /**
-   * Tests enable passes directives and TTL from input, then prints success and status.
+   * Tests enable passes directives and TTL from input.
    */
   public function testEnable(): void {
     $selected = ['cache', 'storage'];

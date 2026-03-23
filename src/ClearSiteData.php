@@ -45,7 +45,6 @@ class ClearSiteData {
    *   TRUE if the Clear-Site-Data header is enabled, FALSE otherwise.
    */
   public function isEnabled() : bool {
-    $config = $this->configFactory->get(self::CONFIG_NAME);
     $enable = $this->getActiveEnable();
     $directives = $this->getActiveDirectives();
     $expire_after = $this->getActiveExpireAfter();

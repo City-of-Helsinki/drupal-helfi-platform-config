@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_platform_config\Drush\Commands;
 
 use Drupal\helfi_platform_config\ClearSiteData;
 use Drush\Commands\AutowireTrait;
-use Drush\Attributes\Example;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
@@ -12,6 +13,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Provides drush command for managing the Clear-Site-Data header.
+ */
 #[AsCommand(
   name: self::NAME,
   description: 'Manage the Clear-Site-Data header.',
@@ -38,6 +42,23 @@ final class ClearSiteDataCommand {
   ) {
   }
 
+  /**
+   * Executes the command.
+   *
+   * @param \Symfony\Component\Console\Input\InputInterface $input
+   *   The input interface.
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output interface.
+   * @param string $operation
+   *   The operation to perform.
+   * @param string $directives
+   *   A comma separated list of directives to enable.
+   * @param int $ttl
+   *   The expiration time in hours.
+   *
+   * @return int
+   *   The exit code.
+   */
   public function __invoke(
     InputInterface $input,
     SymfonyStyle $io,
@@ -102,7 +123,7 @@ final class ClearSiteDataCommand {
   /**
    * Show the current "Clear-Site-Data"-header status.
    *
-   * @param SymfonyStyle $io
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output interface.
    */
   private function showStatus(SymfonyStyle $io) : void {
@@ -112,7 +133,7 @@ final class ClearSiteDataCommand {
     $enable = $this->clearSiteData->getActiveEnable();
     $values[] = sprintf('Enabled: %s', $enable ? 'Yes' : 'No');
 
-    if ($enable) {  
+    if ($enable) {
       $directives = $this->clearSiteData->getActiveDirectives();
       $expireAfter = $this->clearSiteData->getActiveExpireAfter();
       $values[] = sprintf('Directives: %s', $directives ? implode(', ', $directives) : 'null');
@@ -130,8 +151,12 @@ final class ClearSiteDataCommand {
   /**
    * Enable the "Clear-Site-Data"-header.
    *
-   * @param SymfonyStyle $io
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output interface.
+   * @param array $directives
+   *   An array of directives to enable.
+   * @param int $ttl
+   *   The expiration time in hours.
    */
   private function enable(SymfonyStyle $io, array $directives, int $ttl) : void {
     $this->clearSiteData->enable($directives, $ttl);
@@ -141,7 +166,7 @@ final class ClearSiteDataCommand {
   /**
    * Disable the "Clear-Site-Data"-header.
    *
-   * @param SymfonyStyle $io
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output interface.
    */
   private function disable(SymfonyStyle $io) : void {
