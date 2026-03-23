@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_search\Plugin\search_api\processor;
+namespace Drupal\helfi_platform_config\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -13,17 +13,17 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
- * Adds the entity's label to the indexed data.
+ * Adds the entity's label and bundle to the indexed data.
  */
 #[SearchApiProcessor(
   id: 'helfi_entity_label',
-  label: new TranslatableMarkup('Entity label'),
-  description: new TranslatableMarkup("Adds the entity's label to the indexed data."),
+  label: new TranslatableMarkup('Entity metadata'),
+  description: new TranslatableMarkup("Adds the entity's label and bundle to the indexed data."),
   stages: [
     'add_properties' => 0,
   ],
 )]
-final class AddEntityLabel extends ProcessorPluginBase {
+final class EntityMetadata extends ProcessorPluginBase {
 
   /**
    * {@inheritdoc}

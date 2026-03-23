@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
+namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\search_api;
 
 use Drupal\node\Entity\Node;
 use Drupal\search_api\Item\Field;
@@ -12,11 +12,11 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests for the AddEntityLabel processor.
+ * Tests for the EntityMetadata processor.
  */
-#[Group('helfi_search')]
+#[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
-class AddEntityLabelTest extends ProcessorTestBase {
+class EntityMetadataTest extends ProcessorTestBase {
 
   /**
    * {@inheritdoc}
@@ -25,7 +25,6 @@ class AddEntityLabelTest extends ProcessorTestBase {
     'helfi_platform_config',
     'config_rewrite',
     'helfi_api_base',
-    'helfi_search',
   ];
 
   /**
