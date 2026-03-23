@@ -117,7 +117,7 @@ class ClearSiteData {
    */
   public function getActiveEnable() : bool {
     $config = $this->configFactory->get(self::CONFIG_NAME);
-    return $config->get('enable');
+    return (bool) $config->get('enable');
   }
 
   /**
