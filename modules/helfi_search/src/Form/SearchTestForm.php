@@ -123,10 +123,9 @@ class SearchTestForm extends FormBase {
             $excerpt = mb_strimwidth($hit['content'] ?? '', 0, 200, '...');
 
             $rows[] = [
-              'type' => $hit['type'] ?? 'Semantic',
               'score' => number_format($hit['score'], 4),
               'entity_type' => htmlspecialchars($hit['entity_type'] ?? ''),
-              'url' => $hit['url'] ? Link::fromTextAndUrl(htmlspecialchars($hit['title']), Url::fromUserInput($hit['url'])) : '-',
+              'url' => $hit['url'] ? Link::fromTextAndUrl(htmlspecialchars($hit['title']), Url::fromUri(parse_url($hit['url'], PHP_URL_SCHEME) ? $hit['url'] : 'internal:' . $hit['url'])) : '-',
               'language' => htmlspecialchars($hit['language']),
               'content' => htmlspecialchars($excerpt),
             ];
@@ -135,7 +134,6 @@ class SearchTestForm extends FormBase {
           $form['results']['search_results'] = [
             '#type' => 'table',
             '#header' => [
-              $this->t('Type'),
               $this->t('Score'),
               $this->t('Entity Type'),
               $this->t('URL'),
@@ -221,9 +219,8 @@ class SearchTestForm extends FormBase {
         foreach ($this->queryBuilder->parsePromotionHits($responses[0] ?? []) as $promoted) {
           $promotedUrls[$promoted['url']] = TRUE;
           $search_results[] = [
-            'type' => 'Promoted',
             'score' => $promoted['score'],
-            'entity_type' => '',
+            'entity_type' => 'promotion',
             'url' => $promoted['url'],
             'title' => $promoted['title'],
             'language' => $promoted['language'],
