@@ -112,7 +112,7 @@ final class ClearSiteDataSubscriberTest extends UnitTestCase {
     $this->sut->onResponse($event);
 
     $this->assertTrue($response->headers->has('Clear-Site-Data'));
-    $this->assertSame(['"cache"', '"cookies"'], $response->headers->all('clear-site-data'));
+    $this->assertSame(['"cache","cookies"'], $response->headers->all('clear-site-data'));
   }
 
   /**

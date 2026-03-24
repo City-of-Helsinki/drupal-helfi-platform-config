@@ -54,7 +54,7 @@ class ClearSiteDataSubscriber implements EventSubscriberInterface {
     // @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data#directives
     $directives = array_map(fn($directive) => sprintf('"%s"', $directive), $this->clearSiteData->getActiveDirectives());
 
-    $response->headers->set('Clear-Site-Data', $directives);
+    $response->headers->set('Clear-Site-Data', implode(',', $directives));
     $event->setResponse($response);
   }
 
