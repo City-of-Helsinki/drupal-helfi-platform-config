@@ -135,7 +135,9 @@ const getTranslation = (fullName) => {
             return results(defaultOptions);
           }
 
-          const response = await fetch(`${autocompleteRoute}?q=${searchTerm}`, { signal: abortController.signal });
+          const reqUrl = new URL(autocompleteRoute, window.location.origin);
+          reqUrl.searchParams.set('q', searchTerm);
+          const response = await fetch(reqUrl.toString(), { signal: abortController.signal });
 
           const data = await response.json();
           results(defaultOptions.concat(data));
