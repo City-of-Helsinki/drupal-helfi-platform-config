@@ -117,6 +117,7 @@ const getTranslation = (fullName) => {
 
     // eslint-disable-next-line no-undef
     const autocomplete = A11yAutocomplete(element, {
+      allowRepeatValues: true,
       classes: { inputLoading: 'loading', wrapper: 'helfi-location-autocomplete' },
       highlightedAssistiveHint,
       inputAssistiveHint,
@@ -126,13 +127,13 @@ const getTranslation = (fullName) => {
       oneResultAssistiveHint,
       someResultsAssistiveHint,
       source: async (searchTerm, results) => {
-        if (searchTerm.length < 3) {
-          return results(defaultOptions);
-        }
-
         try {
           abortController.abort();
           abortController = new AbortController();
+
+          if (searchTerm.length < 3) {
+            return results(defaultOptions);
+          }
 
           const response = await fetch(`${autocompleteRoute}?q=${searchTerm}`, { signal: abortController.signal });
 
