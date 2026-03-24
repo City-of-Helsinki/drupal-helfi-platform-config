@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_search\Kernel;
 
 use Drupal\helfi_search\TokenUsageTracker;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 

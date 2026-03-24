@@ -7,6 +7,12 @@ services:
     parent: logger.channel_base
     arguments: ['helfi_search']
 
+  helfi_search.etusivu_elastic_client:
+    class: Elastic\Elasticsearch\Client
+    factory: ['@Drupal\helfi_platform_config\ClientBuilder', 'create']
+    # Increased timeout.
+    arguments: [5]
+
   Drupal\helfi_search\TokenUsageTracker: ~
 
   Drupal\helfi_search\EmbeddingsModelInterface:

@@ -35,7 +35,7 @@ final class SearchController extends ControllerBase {
     private readonly EmbeddingsModelInterface $embeddingsModel,
     private readonly FloodInterface $flood,
     private readonly QueryBuilder $queryBuilder,
-    #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
+    #[Autowire(service: 'helfi_search.etusivu_elastic_client')]
     private readonly Client $elasticClient,
   ) {
   }

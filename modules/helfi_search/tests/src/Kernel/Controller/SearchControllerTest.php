@@ -150,7 +150,7 @@ class SearchControllerTest extends KernelTestBase {
       ]))
       ->build();
 
-    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
+    $this->container->set('helfi_search.etusivu_elastic_client', $client);
 
     // Test empty results.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'no results query']);

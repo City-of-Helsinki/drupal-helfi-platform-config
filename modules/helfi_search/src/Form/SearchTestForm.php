@@ -33,7 +33,7 @@ class SearchTestForm extends FormBase {
     protected TokenUsageTracker $tokenUsageTracker,
     protected LanguageManagerInterface $languageManager,
     protected QueryBuilder $queryBuilder,
-    #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
+    #[Autowire(service: 'helfi_search.etusivu_elastic_client')]
     protected Client $elasticClient,
   ) {
   }
