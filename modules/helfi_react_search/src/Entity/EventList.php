@@ -192,14 +192,21 @@ class EventList extends Paragraph implements ParagraphInterface {
         $query = array_merge($query, $parsed);
       }
       else {
-        $query['all_ongoing_AND'] = $freeText;
+        $query['full_text'] = $freeText;
       }
     }
 
     $query = array_merge($query, $options);
 
-    if (!isset($options['all_ongoing_AND'])) {
-      $query['all_ongoing'] = 'true';
+    // Filter for ongoing events in Helsinki.
+    $query['ongoing'] = 'true';
+    $query['division'] = 'kunta:helsinki';
+
+    // Use full_text instead of all_ongoing_AND.
+    if (isset($query['all_ongoing_AND'])) {
+      $query['full_text'] = $query['full_text'] ?? '';
+      $query['full_text'] .= ' ' . $query['all_ongoing_AND'];
+      unset($query['all_ongoing_AND']);
     }
 
     return Url::fromUri('https://api.hel.fi/linkedevents/v1/event/', [

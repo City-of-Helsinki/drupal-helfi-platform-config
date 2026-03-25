@@ -111,6 +111,7 @@ class EventListTest extends KernelTestBase {
 
     $this->assertInstanceOf(EventList::class, $paragraph);
 
+    $this->testGetApiUrl($paragraph);
     $this->testGetters($paragraph);
     $this->testGetFilterKeywords($paragraph);
     $this->testFilterSettings($paragraph);
@@ -185,6 +186,76 @@ class EventListTest extends KernelTestBase {
     foreach (Filters::cases() as $case) {
       $this->assertTrue($settings[$case->value]);
     }
+  }
+
+  /**
+   * Tests getApiUrl.
+   */
+  private function testGetApiUrl(EventList $paragraph): void {
+    $base = 'https://api.hel.fi/linkedevents/v1/event/';
+    // UrlHelper::buildQuery encodes commas in include/super_event_type and
+    // colons in division; empty keyword/location still appear as
+    // keyword=&location= in the query string.
+    $emptyQuery = 'keyword=&location=&event_type=General&format=json&include=keywords%2Clocation&page=1&page_size=3&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
+    $this->assertSame($base . '?' . $emptyQuery, $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_keywords', [
+      '{"id": "yso:p23", "name": {"en": "Test1"}}',
+    ]);
+    $paragraph->set('field_event_list_place', [
+      '{"id": "tprek:28473", "name": {"en": "Test2"}}',
+    ]);
+    $paragraph->set('field_event_list_type', 'events');
+
+    $eventsQuery = 'keyword=yso%3Ap23&location=tprek%3A28473&event_type=General&format=json&include=keywords%2Clocation&page=1&page_size=3&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
+    $this->assertSame($base . '?' . $eventsQuery, $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_type', 'hobbies');
+    $hobbiesQuery = str_replace('event_type=General', 'event_type=Course', $eventsQuery);
+    $this->assertSame($base . '?' . $hobbiesQuery, $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_type', 'events_and_hobbies');
+    $bothQuery = str_replace('event_type=Course', 'event_type=General%2CCourse', $hobbiesQuery);
+    $this->assertSame($base . '?' . $bothQuery, $paragraph->getApiUrl());
+
+    // Category keywords are merged into the keyword parameter (after paragraph
+    // keywords).
+    $paragraph->set('field_event_list_type', 'events');
+    $paragraph->set('field_event_list_category_event', [EventCategory::Movie->value]);
+    $movieQuery = str_replace(
+      'keyword=yso%3Ap23',
+      'keyword=yso%3Ap23%2Cyso%3Ap1235',
+      $eventsQuery
+    );
+    $this->assertSame($base . '?' . $movieQuery, $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_category_event', []);
+    $paragraph->set('field_event_list_free_text', 'jooga');
+    $eventsWithFullText = str_replace(
+      'language=en&ongoing=true',
+      'language=en&full_text=jooga&ongoing=true',
+      $eventsQuery
+    );
+    $this->assertSame($base . '?' . $eventsWithFullText, $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_free_text', '?publisher=ahjo%3Au021200');
+    $eventsWithPublisher = str_replace(
+      'language=en&ongoing=true',
+      'language=en&publisher=ahjo%3Au021200&ongoing=true',
+      $eventsQuery
+    );
+    $this->assertSame($base . '?' . $eventsWithPublisher, $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_free_text', NULL);
+    $this->assertStringContainsString('custom=value', $paragraph->getApiUrl(['custom' => 'value']));
+
+    $url = $paragraph->getApiUrl(['all_ongoing_AND' => 'swimming']);
+    $this->assertStringContainsString('full_text=%20swimming', $url);
+    $this->assertStringNotContainsString('all_ongoing_AND', $url);
+
+    $paragraph->set('field_event_list_free_text', 'jooga');
+    $url = $paragraph->getApiUrl(['all_ongoing_AND' => 'swimming']);
+    $this->assertStringContainsString('full_text=jooga%20swimming', $url);
   }
 
 }
