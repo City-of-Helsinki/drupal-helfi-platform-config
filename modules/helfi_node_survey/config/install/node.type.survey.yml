@@ -25,7 +25,7 @@ third_party_settings:
 name: Survey
 type: survey
 description: 'Content type for surveys that can be shown on different pages.'
-help: ''
+help: null
 new_revision: true
 preview_mode: 1
 display_submitted: false
