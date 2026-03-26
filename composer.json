@@ -22,7 +22,7 @@
         "drupal/diff": "^1.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editoria11y": "^2.0",
-        "drupal/elasticsearch_connector": "^8.0@alpha",
+        "drupal/elasticsearch_connector": "^9.0@alpha",
         "drupal/entity_browser": "^2.5",
         "drupal/entity_usage": "^2.0@beta",
         "drupal/external_entities": "^3.0",
