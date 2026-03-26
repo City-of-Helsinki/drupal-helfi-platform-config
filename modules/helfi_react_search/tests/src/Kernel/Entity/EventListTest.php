@@ -92,11 +92,31 @@ class EventListTest extends KernelTestBase {
 
     $paragraph->set('field_event_list_free_text', 'jooga');
     $this->assertEquals(
-      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture&keyword=yso%3Ap23&places=tprek%3A28473&text=jooga',
+      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture&keyword=yso%3Ap23&places=tprek%3A28473&fullText=jooga',
       $paragraph->getEventsPublicUrl()
     );
     $this->assertEquals(
-      'https://harrastukset.hel.fi/fi/haku?keyword=yso%3Ap23&places=tprek%3A28473&text=jooga',
+      'https://harrastukset.hel.fi/fi/haku?keyword=yso%3Ap23&places=tprek%3A28473&fullText=jooga',
+      $paragraph->getHobbiesPublicUrl()
+    );
+
+    $paragraph->set('field_event_list_free_text', '?full_text=jooga');
+    $this->assertEquals(
+      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture&keyword=yso%3Ap23&places=tprek%3A28473&fullText=jooga',
+      $paragraph->getEventsPublicUrl()
+    );
+    $this->assertEquals(
+      'https://harrastukset.hel.fi/fi/haku?keyword=yso%3Ap23&places=tprek%3A28473&fullText=jooga',
+      $paragraph->getHobbiesPublicUrl()
+    );
+
+    $paragraph->set('field_event_list_free_text', '?all_ongoing_AND=jooga');
+    $this->assertEquals(
+      'https://tapahtumat.hel.fi/fi/haku?categories=dance%2Cculture&keyword=yso%3Ap23&places=tprek%3A28473&fullText=jooga',
+      $paragraph->getEventsPublicUrl()
+    );
+    $this->assertEquals(
+      'https://harrastukset.hel.fi/fi/haku?keyword=yso%3Ap23&places=tprek%3A28473&fullText=jooga',
       $paragraph->getHobbiesPublicUrl()
     );
   }
@@ -250,7 +270,7 @@ class EventListTest extends KernelTestBase {
     $this->assertStringContainsString('custom=value', $paragraph->getApiUrl(['custom' => 'value']));
 
     $url = $paragraph->getApiUrl(['all_ongoing_AND' => 'swimming']);
-    $this->assertStringContainsString('full_text=%20swimming', $url);
+    $this->assertStringContainsString('full_text=swimming', $url);
     $this->assertStringNotContainsString('all_ongoing_AND', $url);
 
     $paragraph->set('field_event_list_free_text', 'jooga');

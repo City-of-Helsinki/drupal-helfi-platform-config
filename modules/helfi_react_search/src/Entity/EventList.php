@@ -131,7 +131,17 @@ class EventList extends Paragraph implements ParagraphInterface {
         $query = array_merge($query, $parsed);
       }
       else {
-        $query['text'] = $freeText;
+        $query['fullText'] = $freeText;
+      }
+    }
+
+    // Convert Linked Events full text search parameters for tapahtumat.hel.fi
+    // and harrastukset.hel.fi.
+    foreach (['full_text', 'all_ongoing_AND'] as $param) {
+      if (isset($query[$param])) {
+        $query['fullText'] = !empty($query['fullText']) ? $query['fullText'] . ' ' : '';
+        $query['fullText'] .= $query[$param];
+        unset($query[$param]);
       }
     }
 
@@ -204,8 +214,8 @@ class EventList extends Paragraph implements ParagraphInterface {
 
     // Use full_text instead of all_ongoing_AND.
     if (isset($query['all_ongoing_AND'])) {
-      $query['full_text'] = $query['full_text'] ?? '';
-      $query['full_text'] .= ' ' . $query['all_ongoing_AND'];
+      $query['full_text'] = !empty($query['full_text']) ? $query['full_text'] . ' ' : '';
+      $query['full_text'] .= $query['all_ongoing_AND'];
       unset($query['all_ongoing_AND']);
     }
 
