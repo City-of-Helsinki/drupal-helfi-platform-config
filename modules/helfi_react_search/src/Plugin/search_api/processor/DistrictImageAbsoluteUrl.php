@@ -20,8 +20,6 @@ use Drupal\search_api\Attribute\SearchApiProcessor;
   stages: [
     'add_properties' => 0,
   ],
-  locked: TRUE,
-  hidden: TRUE,
 )]
 final class DistrictImageAbsoluteUrl extends MainImageUrlProcessorBase {
 
