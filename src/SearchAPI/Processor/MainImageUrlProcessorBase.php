@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\SearchAPI\Processor;
 
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\file\FileInterface;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\node\NodeInterface;
@@ -12,28 +11,11 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A search-api processor for main image field.
  */
 abstract class MainImageUrlProcessorBase extends ProcessorPluginBase {
-
-  /**
-   * The file url generator service.
-   *
-   * @var \Drupal\Core\File\FileUrlGeneratorInterface
-   */
-  protected FileUrlGeneratorInterface $fileUrlGenerator;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->fileUrlGenerator = $container->get(FileUrlGeneratorInterface::class);
-    return $instance;
-  }
 
   /**
    * Gets the field properties.
@@ -61,13 +43,13 @@ abstract class MainImageUrlProcessorBase extends ProcessorPluginBase {
     $properties = [];
 
     if ($datasource) {
-      $definition = [
-        'label' => $this->t('Main image'),
-        'description' => $this->t('Generate absolute URL for main image'),
+      $fieldProperties = $this->getFieldProperties();
+      $properties[$fieldProperties->imageStyleField] = new ProcessorProperty([
+        'label' => $this->t('Main image: styles'),
+        'description' => $this->t('Main image: an array of image styles'),
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
-      ];
-      $properties[$this->getFieldProperties()->searchApiField] = new ProcessorProperty($definition);
+      ]);
     }
 
     return $properties;
@@ -96,7 +78,18 @@ abstract class MainImageUrlProcessorBase extends ProcessorPluginBase {
     }
     assert($file instanceof FileInterface);
 
-    $imagePath = $file->getFileUri();
+    $this->processFields($item, $file);
+  }
+
+  /**
+   * Processes the image style field.
+   *
+   * @param \Drupal\search_api\Item\ItemInterface $item
+   *   The item to process.
+   * @param \Drupal\file\FileInterface $file
+   *   The file to process.
+   */
+  protected function processFields(ItemInterface $item, FileInterface $file): void {
     $imageStyles = [
       '1.5_304w_203h' => '1248',
       '1.5_294w_196h' => '992',
@@ -112,19 +105,17 @@ abstract class MainImageUrlProcessorBase extends ProcessorPluginBase {
 
     $urls = [];
     foreach ($imageStyles as $styleName => $breakpoint) {
-      $imageStyle = ImageStyle::load($styleName);
-      if ($imageStyle) {
-        $urls[$breakpoint] = $imageStyle->buildUrl($imagePath);
+      if ($imageStyle = ImageStyle::load($styleName)) {
+        $urls[$breakpoint] = $imageStyle->buildUrl($file->getFileUri());
       }
     }
-    $urls['original'] = $this->fileUrlGenerator->generateAbsoluteString($imagePath);
+    $fields = $this
+      ->getFieldsHelper()
+      ->filterForPropertyPath($item->getFields(), 'entity:node', $this->getFieldProperties()->imageStyleField);
 
-    $fields = $this->getFieldsHelper()
-      ->filterForPropertyPath($item->getFields(), 'entity:node', $properties->searchApiField);
     foreach ($fields as $field) {
       $field->addValue(json_encode($urls));
     }
   }
 
 }
-
