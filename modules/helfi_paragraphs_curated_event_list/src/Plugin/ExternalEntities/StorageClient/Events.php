@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_curated_event_list\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
-use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
+use Drupal\external_entities\StorageClient\StorageClientBase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,9 +22,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Retrieves 'events' content from LinkedEvents")
  * )
  */
-class Events extends RestClient {
+class Events extends StorageClientBase {
   protected const API_URL = 'https://api.hel.fi/linkedevents/v1';
-  protected const EVENTS_BASE_URL = 'https://tapahtumat.hel.fi/';
+  protected const EVENTS_BASE_URL = 'https://tapahtumat.hel.fi';
 
   /**
    * The current language service.
@@ -150,30 +151,55 @@ class Events extends RestClient {
 
     $prepared = [];
     foreach ($json['data'] as $event) {
-      if (!isset($event['name'][$langcode])) {
-        $this->logger->error(
-          'Event with id: ' . $event['id'] . ' has no name in language: ' . $langcode
-        );
-
-        continue;
-      }
-
-      $event_url = '/events/';
-      if ($langcode === 'fi') {
-        $event_url = '/tapahtumat/';
-      }
-      elseif ($langcode === 'sv') {
-        $event_url = '/kurser/';
-      }
-
-      $event['clean_title'] = $event['name'][$langcode];
       $start = new \DateTime($event['start_time']);
-      $event['title'] = $event['clean_title'] . ' (' . $start->format('d.m.Y H:i') . ')';
-      $event['external_link'] = self::EVENTS_BASE_URL . $langcode . $event_url . $event['id'];
+
+      // Populate required fields in all supported languages.
+      foreach (['sv' => 'kurser', 'en' => 'events', 'fi' => 'tapahtumat'] as $language => $eventPath) {
+        // Fallback to finnish title.
+        $name = $event[$language] ?? $event['name']['fi'];
+
+        $event['external_link'][$language] = vsprintf('%s/%s/%s/%s', [
+          self::EVENTS_BASE_URL,
+          $language,
+          $eventPath,
+          $event['id'],
+        ]);
+        $event['title'][$language] = $name . ' (' . $start->format('d.m.Y H:i') . ')';
+
+      }
       $prepared[$event['id']] = $event;
     }
 
     return $prepared;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function querySource(
+    array $parameters = [],
+    array $sorts = [],
+    ?int $start = NULL,
+    ?int $length = NULL,
+  ): array {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function transliterateDrupalFilters(
+    array $parameters,
+    array $context = [],
+  ): array {
+    return [];
   }
 
 }

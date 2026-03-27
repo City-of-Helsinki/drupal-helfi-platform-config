@@ -13,6 +13,18 @@ content_class: Drupal\external_entities\Entity\ExternalEntity
 read_only: true
 debug_level: 0
 field_mappers:
+  content_translation_source:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: constant
+          config:
+            mapping: en
+            required_field: false
+            main_property: true
+            description: ''
+      debug_level: 0
   end_time:
     id: generic
     config:
@@ -26,7 +38,9 @@ field_mappers:
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
       debug_level: 0
   external_link:
@@ -36,24 +50,28 @@ field_mappers:
         uri:
           id: jsonpath
           config:
-            mapping: $.external_link
+            mapping: $.external_link.en
             required_field: false
             main_property: true
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
         title:
           id: jsonpath
           config:
-            mapping: $.clean_title
+            mapping: $.name.en
             required_field: false
             main_property: false
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
       debug_level: 0
   id:
@@ -69,7 +87,9 @@ field_mappers:
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
       debug_level: 0
   main_image:
@@ -85,7 +105,9 @@ field_mappers:
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
         title:
           id: jsonpath
@@ -96,7 +118,9 @@ field_mappers:
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
       debug_level: 0
   start_time:
@@ -112,7 +136,9 @@ field_mappers:
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
       debug_level: 0
   title:
@@ -122,13 +148,15 @@ field_mappers:
         value:
           id: jsonpath
           config:
-            mapping: $.title
+            mapping: $.name.en
             required_field: true
             main_property: true
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
       debug_level: 0
   uuid:
@@ -144,15 +172,12 @@ field_mappers:
             data_processors:
               -
                 id: default
-                config: {  }
+                config:
+                  datatype: ''
+                  default: null
             description: ''
       debug_level: 0
-  default_langcode:
-    id: null
-    config: {  }
-  langcode:
-    id: null
-    config: {  }
+field_save_order: null
 field_mapping_notes: ''
 data_aggregator:
   id: single
@@ -162,7 +187,382 @@ data_aggregator:
         id: linkedevents_events
         config: {  }
 data_aggregator_notes: ''
-language_settings: {  }
+language_settings:
+  overrides:
+    fi:
+      field_mappers:
+        content_translation_changed:
+          id: null
+          config: {  }
+        content_translation_created:
+          id: null
+          config: {  }
+        content_translation_outdated:
+          id: null
+          config: {  }
+        content_translation_source:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: constant
+                config:
+                  mapping: en
+                  required_field: false
+                  main_property: true
+                  description: ''
+            debug_level: 0
+        content_translation_status:
+          id: null
+          config: {  }
+        content_translation_uid:
+          id: null
+          config: {  }
+        end_time:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.end_time
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        external_link:
+          id: generic
+          config:
+            property_mappings:
+              uri:
+                id: jsonpath
+                config:
+                  mapping: $.external_link.fi
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+              title:
+                id: jsonpath
+                config:
+                  mapping: $.name.fi
+                  required_field: false
+                  main_property: false
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        id:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.id
+                  required_field: true
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        main_image:
+          id: generic
+          config:
+            property_mappings:
+              uri:
+                id: jsonpath
+                config:
+                  mapping: '$.images[0].url'
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+              title:
+                id: jsonpath
+                config:
+                  mapping: '$.images[0].alt_text'
+                  required_field: false
+                  main_property: false
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        start_time:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.start_time
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        status:
+          id: null
+          config: {  }
+        title:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.name.fi
+                  required_field: true
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        uid:
+          id: null
+          config: {  }
+        uuid:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.id
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+    sv:
+      field_mappers:
+        content_translation_changed:
+          id: null
+          config: {  }
+        content_translation_created:
+          id: null
+          config: {  }
+        content_translation_outdated:
+          id: null
+          config: {  }
+        content_translation_source:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: constant
+                config:
+                  mapping: en
+                  required_field: false
+                  main_property: true
+                  description: ''
+            debug_level: 0
+        content_translation_status:
+          id: null
+          config: {  }
+        content_translation_uid:
+          id: null
+          config: {  }
+        end_time:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.end_time
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        external_link:
+          id: generic
+          config:
+            property_mappings:
+              uri:
+                id: jsonpath
+                config:
+                  mapping: $.external_link.sv
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+              title:
+                id: jsonpath
+                config:
+                  mapping: $.name.sv
+                  required_field: false
+                  main_property: false
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        id:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.id
+                  required_field: true
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        main_image:
+          id: generic
+          config:
+            property_mappings:
+              uri:
+                id: jsonpath
+                config:
+                  mapping: '$.images[0].url'
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+              title:
+                id: jsonpath
+                config:
+                  mapping: '$.images[0].alt_text'
+                  required_field: false
+                  main_property: false
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        start_time:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.start_time
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        status:
+          id: null
+          config: {  }
+        title:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.name.sv
+                  required_field: true
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
+        uid:
+          id: null
+          config: {  }
+        uuid:
+          id: generic
+          config:
+            property_mappings:
+              value:
+                id: jsonpath
+                config:
+                  mapping: $.id
+                  required_field: false
+                  main_property: true
+                  data_processors:
+                    -
+                      id: default
+                      config:
+                        datatype: ''
+                        default: null
+                  description: ''
+            debug_level: 0
 persistent_cache_max_age: 1800
 annotation_entity_type_id: null
 annotation_bundle_id: null

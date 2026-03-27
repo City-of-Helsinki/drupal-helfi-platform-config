@@ -6,11 +6,11 @@ namespace Drupal\helfi_paragraphs_curated_event_list\Controller;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent;
-use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Controller for Curated event list HTMX response.
@@ -25,6 +25,7 @@ final readonly class HtmxController implements ContainerInjectionInterface {
 
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
+    private EntityRepositoryInterface $entityRepository,
     private RendererInterface $renderer,
   ) {
   }
@@ -32,19 +33,13 @@ final readonly class HtmxController implements ContainerInjectionInterface {
   /**
    * A HTMX callback for Curated event list.
    *
-   * @param \Drupal\paragraphs\Entity\Paragraph $paragraph
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *   The paragraph.
    *
    * @return array
    *   A render array of results.
    */
-  public function content(Paragraph $paragraph): array {
-    $selections = $paragraph->get('field_events')->referencedEntities();
-
-    $ids = array_map(function (LinkedEventsEvent $event) {
-      return $event->id();
-    }, $selections);
-
+  public function content(ParagraphInterface $paragraph): array {
     $build = [
       '#cache' => [
         'contexts' => ['languages:language_content'],
@@ -54,9 +49,8 @@ final readonly class HtmxController implements ContainerInjectionInterface {
     $this->renderer->addCacheableDependency($build, $paragraph);
     $this->renderer->addCacheableDependency($build, $paragraph->getParentEntity());
 
-    $storage = $this->entityTypeManager->getStorage('linkedevents_event');
     /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent[] $entities */
-    $entities = $storage->loadMultiple($ids);
+    $entities = $paragraph->get('field_events')->referencedEntities();
 
     foreach ($entities as $entity) {
       $entity->addCacheableDependency($paragraph);
