@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\SearchAPI\Processor;
 
 use Drupal\file\FileInterface;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -71,9 +72,12 @@ abstract class MainImageUrlProcessorBase extends ProcessorPluginBase {
     }
     $properties = $this->getFieldProperties();
 
-    $image = $node->get($properties->entityField)->entity;
+    if (!$image = $node->get($properties->entityField)?->entity) {
+      return;
+    }
+    assert($image instanceof MediaInterface);
 
-    if (!$image || !$image->hasField('field_media_image') || !$file = $image->get('field_media_image')->entity) {
+    if (!$image->hasField('field_media_image') || !$file = $image->get('field_media_image')->entity) {
       return;
     }
     assert($file instanceof FileInterface);
