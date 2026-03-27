@@ -74,7 +74,7 @@ class EventEntityTest extends KernelTestBase {
           [
             'id' => 'helsinki:agnjd4b73u',
             'name' => [
-              'en' => 'Title',
+              'fi' => 'Title',
             ],
             'start_time' => 'now',
             'end_time' => $endTime,
