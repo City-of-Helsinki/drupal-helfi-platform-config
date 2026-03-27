@@ -164,7 +164,7 @@ class HtmxControllerTest extends KernelTestBase {
             'id' => 'helsinki:agnjd4b73u',
             'name' => [
               'en' => 'Title en',
-              'fi' => 'Title fi'
+              'fi' => 'Title fi',
             ],
             'start_time' => 'now',
             'end_time' => '-1 second',
