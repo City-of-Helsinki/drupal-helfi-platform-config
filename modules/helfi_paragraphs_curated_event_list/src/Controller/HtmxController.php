@@ -6,7 +6,6 @@ namespace Drupal\helfi_paragraphs_curated_event_list\Controller;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -25,7 +24,6 @@ final readonly class HtmxController implements ContainerInjectionInterface {
 
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
-    private EntityRepositoryInterface $entityRepository,
     private RendererInterface $renderer,
   ) {
   }
