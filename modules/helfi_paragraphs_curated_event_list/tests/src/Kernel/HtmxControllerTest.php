@@ -113,7 +113,8 @@ class HtmxControllerTest extends KernelTestBase {
           [
             'id' => 'helsinki:agnjd4b73u',
             'name' => [
-              'en' => 'Title',
+              'fi' => 'Title fi',
+              'en' => 'Title en',
             ],
             'start_time' => 'now',
           ],
@@ -162,7 +163,8 @@ class HtmxControllerTest extends KernelTestBase {
           [
             'id' => 'helsinki:agnjd4b73u',
             'name' => [
-              'en' => 'Title',
+              'en' => 'Title en',
+              'fi' => 'Title fi'
             ],
             'start_time' => 'now',
             'end_time' => '-1 second',
@@ -205,7 +207,7 @@ class HtmxControllerTest extends KernelTestBase {
           [
             'id' => 'helsinki:321',
             'name' => [
-              'en' => 'Title expired',
+              'fi' => 'Title expired',
             ],
             'start_time' => 'now',
             'end_time' => '-1 day',
@@ -213,7 +215,7 @@ class HtmxControllerTest extends KernelTestBase {
           [
             'id' => 'helsinki:123',
             'name' => [
-              'en' => 'Title active',
+              'fi' => 'Title active',
             ],
             'start_time' => 'now',
             'end_time' => '+1 day',

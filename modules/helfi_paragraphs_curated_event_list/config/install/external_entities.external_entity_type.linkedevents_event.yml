@@ -148,7 +148,7 @@ field_mappers:
         value:
           id: jsonpath
           config:
-            mapping: $.name.en
+            mapping: $.title.en
             required_field: true
             main_property: true
             data_processors:
@@ -344,7 +344,7 @@ language_settings:
               value:
                 id: jsonpath
                 config:
-                  mapping: $.name.fi
+                  mapping: $.title.fi
                   required_field: true
                   main_property: true
                   data_processors:
@@ -531,7 +531,7 @@ language_settings:
               value:
                 id: jsonpath
                 config:
-                  mapping: $.name.sv
+                  mapping: $.title.sv
                   required_field: true
                   main_property: true
                   data_processors:
