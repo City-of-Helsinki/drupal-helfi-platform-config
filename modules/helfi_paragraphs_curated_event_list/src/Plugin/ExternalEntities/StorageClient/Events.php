@@ -151,22 +151,26 @@ class Events extends StorageClientBase {
 
     $prepared = [];
     foreach ($json['data'] as $event) {
+      if (!isset($event['name'][$langcode])) {
+        continue;
+      }
       $start = new \DateTime($event['start_time']);
 
-      // Populate required fields in all supported languages.
-      foreach (['sv' => 'kurser', 'en' => 'events', 'fi' => 'tapahtumat'] as $language => $eventPath) {
-        // Fallback to finnish title.
-        $name = $event[$language] ?? $event['name']['fi'];
+      $paths = [
+        'sv' => 'kurser',
+        'en' => 'events',
+        'fi' => 'tapahtumat',
+      ];
 
-        $event['external_link'][$language] = vsprintf('%s/%s/%s/%s', [
-          self::EVENTS_BASE_URL,
-          $language,
-          $eventPath,
-          $event['id'],
-        ]);
-        $event['title'][$language] = $name . ' (' . $start->format('d.m.Y H:i') . ')';
+      $event['external_link'] = vsprintf('%s/%s/%s/%s', [
+        self::EVENTS_BASE_URL,
+        $langcode,
+        $paths[$langcode],
+        $event['id'],
+      ]);
+      $event['title'] = $event['name'][$langcode] . ' (' . $start->format('d.m.Y H:i') . ')';
+      $event['name'] = $event['name'][$langcode];
 
-      }
       $prepared[$event['id']] = $event;
     }
 
