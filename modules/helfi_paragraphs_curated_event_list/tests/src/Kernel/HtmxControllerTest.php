@@ -40,6 +40,8 @@ class HtmxControllerTest extends KernelTestBase {
     'system',
     'helfi_api_base',
     'config_rewrite',
+    'language',
+    'content_translation',
     'helfi_platform_config',
     'entity_reference_revisions',
     'field',
@@ -207,7 +209,7 @@ class HtmxControllerTest extends KernelTestBase {
           [
             'id' => 'helsinki:321',
             'name' => [
-              'fi' => 'Title expired',
+              'en' => 'Title expired',
             ],
             'start_time' => 'now',
             'end_time' => '-1 day',
@@ -215,7 +217,7 @@ class HtmxControllerTest extends KernelTestBase {
           [
             'id' => 'helsinki:123',
             'name' => [
-              'fi' => 'Title active',
+              'en' => 'Title active',
             ],
             'start_time' => 'now',
             'end_time' => '+1 day',
