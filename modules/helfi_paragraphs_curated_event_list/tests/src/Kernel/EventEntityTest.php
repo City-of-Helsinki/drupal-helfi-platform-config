@@ -30,6 +30,8 @@ class EventEntityTest extends KernelTestBase {
     'system',
     'helfi_api_base',
     'config_rewrite',
+    'language',
+    'content_translation',
     'helfi_platform_config',
     'entity_reference_revisions',
     'field',
@@ -74,7 +76,7 @@ class EventEntityTest extends KernelTestBase {
           [
             'id' => 'helsinki:agnjd4b73u',
             'name' => [
-              'fi' => 'Title',
+              'en' => 'Title',
             ],
             'start_time' => 'now',
             'end_time' => $endTime,

@@ -13,6 +13,7 @@ use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 use Drupal\Tests\paragraphs\FunctionalJavascript\ParagraphsTestBaseTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\Role;
@@ -32,6 +33,7 @@ class HtmxControllerTest extends KernelTestBase {
   use ApiTestTrait;
   use ParagraphsTestBaseTrait;
   use UserCreationTrait;
+  use LanguageManagerTrait;
 
   /**
    * {@inheritdoc}
@@ -41,6 +43,7 @@ class HtmxControllerTest extends KernelTestBase {
     'helfi_api_base',
     'config_rewrite',
     'language',
+    'helfi_language_negotiator_test',
     'content_translation',
     'helfi_platform_config',
     'entity_reference_revisions',
@@ -82,6 +85,9 @@ class HtmxControllerTest extends KernelTestBase {
 
     $this->addParagraphedContentType('article');
 
+    $this->setupLanguages();
+    \Drupal::service('content_translation.manager')->setEnabled('node', 'article', TRUE);
+
     Role::load(RoleInterface::ANONYMOUS_ID)
       ->grantPermission('access content')
       ->save();
@@ -97,7 +103,10 @@ class HtmxControllerTest extends KernelTestBase {
    *   The HTML response.
    */
   private function createHtmxRequest(ParagraphInterface $paragraph): HtmlResponse {
-    $url = (new Url('helfi_paragraphs_curated_event_list.htmx', ['paragraph' => $paragraph->id()]))
+    $parameters = [
+      'paragraph' => $paragraph->id(),
+    ];
+    $url = (new Url('helfi_paragraphs_curated_event_list.htmx', $parameters))
       ->toString();
     /** @var \Drupal\Core\Render\HtmlResponse $response */
     $response = $this->processRequest($this->getMockedRequest($url));
@@ -252,6 +261,87 @@ class HtmxControllerTest extends KernelTestBase {
     // ends.
     $this->assertEquals(86405, $cache->getCacheMaxAge());
     $this->assertEquals(200, $response->getStatusCode());
+  }
+
+  /**
+   * Tests translation support.
+   */
+  #[Test]
+  public function testTranslation(): void {
+    $enResponse = new Response(body: json_encode([
+      'data' => [
+        [
+          'id' => 'helsinki:123',
+          'name' => [
+            'en' => 'Title en',
+          ],
+          'start_time' => 'now',
+          'end_time' => '+1 day',
+        ],
+      ],
+    ]));
+    $fiResponse = new Response(body: json_encode([
+      'data' => [
+        [
+          'id' => 'helsinki:123',
+          'name' => [
+            'fi' => 'Title fi',
+          ],
+          'start_time' => 'now',
+          'end_time' => '+1 day',
+        ],
+      ],
+    ]));
+    $client = $this->setupMockHttpClient([
+      // Each language is queried three times.
+      $enResponse,
+      $enResponse,
+      $enResponse,
+      $fiResponse,
+      $fiResponse,
+      $fiResponse,
+    ]);
+    $this->container->set('http_client', $client);
+
+    $paragraphs = [];
+
+    foreach (['en', 'fi'] as $langcode) {
+      $paragraphs[$langcode] = Paragraph::create([
+        'type' => 'curated_event_list',
+        'langcode' => $langcode,
+        'field_events' => [
+          ['target_id' => 'helsinki:123'],
+        ],
+      ]);
+      $paragraphs[$langcode]->save();
+    }
+    $node = Node::create([
+      'title' => 'Events list en',
+      'langcode' => 'en',
+      'type' => 'article',
+      'field_paragraphs' => [$paragraphs['en']],
+    ]);
+    $node->setPublished();
+    $node->save();
+
+    $node->addTranslation('fi', [
+      'title' => 'Event list fi',
+      'field_paragraphs' => [$paragraphs['fi']],
+    ]);
+    $node->save();
+
+    foreach (['en', 'fi'] as $langcode) {
+      $this->setOverrideLanguageCode($langcode);
+      $response = $this->createHtmxRequest($paragraphs[$langcode]);
+
+      $this->assertStringContainsString('Title ' . $langcode, $response->getContent());
+      $cache = $response->getCacheableMetadata();
+      $this->assertEquals(200, $response->getStatusCode());
+
+      // Make sure all translations are cached, but running tests can take some
+      // time so give it some leeway.
+      $this->assertTrue($cache->getCacheMaxAge() > 86390);
+    }
   }
 
 }
