@@ -69,7 +69,7 @@ function helfi_media_remote_video_form_alter(&$form, &$form_state, $form_id): vo
 
     // Switch provider names to more understandable format as the true provider
     // for Helsinki-kanava is Icareus Suite.
-    $providers = ['@providers' => 'YouTube, Helsinki-kanava'];
+    $providers = ['@providers' => 'YouTube, Helsinki-kanava, Terveyskylä'];
 
     if (isset($form['field_media_oembed_video']['widget'][0]['value']['#description'])) {
       $form['field_media_oembed_video']['widget'][0]['value']['#description'] = t('Allowed providers: @providers.', $providers);
@@ -227,6 +227,11 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
     return FALSE;
   }
 
+  // Handle Terveyskylä URLs by following the redirect to Icareus player.
+  if (str_contains($video_url, 'urn.terveyskyla.fi/media/')) {
+    return _helfi_media_remote_video_resolve_terveyskyla_url($video_url);
+  }
+
   // Try to convert the URL if it's of form 'player/event/view'.
   if (str_contains($video_url, 'player/event/view')) {
     preg_match('/helsinkikanava.fi\/((?i)[a-z]{2})/', $video_url, $language_matches);
@@ -259,6 +264,48 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
 
   // Return the converted URL.
   return $converted_url;
+}
+
+/**
+ * Resolve a Terveyskylä URN URL to an Icareus player URL.
+ *
+ * Terveyskylä URLs (urn.terveyskyla.fi/media/{id}) redirect (301) to Icareus
+ * player URLs (players.icareus.com/hus/embed/vod/{assetId}). The media ID
+ * differs from the asset ID, so the redirect must be followed. Only the first
+ * redirect is used. Subsequent hops add a locale prefix to the path.
+ *
+ * @param string $video_url
+ *   The Terveyskylä video URL.
+ *
+ * @return string|false
+ *   The resolved Icareus player URL, or FALSE if resolution fails.
+ *
+ * @throws \Exception
+ *   If the URL cannot be resolved.
+ */
+function _helfi_media_remote_video_resolve_terveyskyla_url(string $video_url): string|false {
+  /** @var \GuzzleHttp\ClientInterface $http_client */
+  $http_client = \Drupal::httpClient();
+
+  try {
+    // Don't follow redirects, just capture the Location header from the
+    // initial 301 response.
+    $response = $http_client->request('HEAD', $video_url, [
+      'allow_redirects' => FALSE,
+      'timeout' => 5,
+    ]);
+
+    $location = $response->getHeaderLine('Location');
+
+    if ($location) {
+      return $location;
+    }
+  }
+  catch (\Exception $e) {
+    throw new \Exception('Could not resolve Terveyskylä video URL: ' . $e->getMessage());
+  }
+
+  return FALSE;
 }
 
 /**
