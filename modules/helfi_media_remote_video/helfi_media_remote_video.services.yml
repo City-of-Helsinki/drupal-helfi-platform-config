@@ -1,0 +1,5 @@
+services:
+  Drupal\helfi_media_remote_video\TerveyskylaUrlResolver:
+    autowire: true
+    arguments:
+      $logger: '@logger.channel.default'
