@@ -59,7 +59,7 @@ final class MainImageUrl extends ProcessorPluginBase {
     $properties = [];
 
     if ($datasource) {
-      $properties['main_image_styles'] = new MainImageProperty([
+      $properties['main_image_url'] = new MainImageProperty([
         'label' => $this->t('Main image: URL'),
         'description' => $this->t('Contains the original file properties and image styles.'),
         'type' => 'string',
