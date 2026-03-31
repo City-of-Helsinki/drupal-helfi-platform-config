@@ -5,12 +5,21 @@ dependencies:
   config:
     - core.entity_form_mode.media.media_library
     - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_remote_video_videographer
     - media.type.remote_video
 id: media.remote_video.media_library
 targetEntityType: media
 bundle: remote_video
 mode: media_library
 content:
+  field_remote_video_videographer:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0
@@ -20,7 +29,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -29,5 +38,7 @@ hidden:
   field_media_oembed_video: true
   langcode: true
   path: true
+  publish_on: true
   status: true
   uid: true
+  unpublish_on: true
