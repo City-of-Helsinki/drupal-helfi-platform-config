@@ -63,7 +63,7 @@ field_mappers:
         title:
           id: jsonpath
           config:
-            mapping: $.name.en
+            mapping: $.name
             required_field: false
             main_property: false
             data_processors:
