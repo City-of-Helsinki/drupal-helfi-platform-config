@@ -8,6 +8,8 @@
 declare(strict_types=1);
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\Entity\BaseFieldOverride;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_media_remote_video\Entity\RemoteVideo;
 use Drupal\media\OEmbed\Resource;
@@ -283,4 +285,24 @@ function helfi_media_remote_video_entity_bundle_info_alter(array &$bundles): voi
   if (isset($bundles['media']['remote_video'])) {
     $bundles['media']['remote_video']['class'] = RemoteVideo::class;
   }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function helfi_media_remote_video_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) : array {
+  $fields = [];
+
+  // Switch Helfi Remote Video media type 'name' label to "Administrative title".
+  if (
+    $entity_type->id() == 'media' &&
+    $bundle == 'remote_video' &&
+    !empty($base_field_definitions['name'])
+  ) {
+    $field = BaseFieldOverride::createFromBaseFieldDefinition($base_field_definitions['name'], $bundle);
+    $field->setLabel(t('Administrative title'));
+    $fields['name'] = $field;
+  }
+
+  return $fields;
 }
