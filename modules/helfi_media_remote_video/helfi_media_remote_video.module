@@ -293,7 +293,7 @@ function helfi_media_remote_video_entity_bundle_info_alter(array &$bundles): voi
 function helfi_media_remote_video_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) : array {
   $fields = [];
 
-  // Switch Helfi Remote Video media type 'name' label to "Administrative title".
+  // Switch Helfi Remote Video "name" label to "Administrative title".
   if (
     $entity_type->id() == 'media' &&
     $bundle == 'remote_video' &&

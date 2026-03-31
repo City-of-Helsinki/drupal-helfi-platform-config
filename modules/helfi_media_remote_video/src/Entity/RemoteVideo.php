@@ -102,7 +102,7 @@ class RemoteVideo extends MediaEntityBundle implements MediaInterface {
       ?->first()
       ?->getString();
 
-      return empty($videographer) ? NULL : $videographer;
-    }
+    return empty($videographer) ? NULL : $videographer;
+  }
 
 }
