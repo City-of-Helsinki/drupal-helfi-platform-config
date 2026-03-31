@@ -30,6 +30,8 @@ class EventEntityTest extends KernelTestBase {
     'system',
     'helfi_api_base',
     'config_rewrite',
+    'language',
+    'content_translation',
     'helfi_platform_config',
     'entity_reference_revisions',
     'field',
