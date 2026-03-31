@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\search_api\processor;
 
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\file\FileInterface;
 use Drupal\helfi_platform_config\Plugin\search_api\processor\Property\MainImageProperty;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\MediaInterface;
-use Drupal\node\NodeInterface;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
+use Drupal\search_api\Item\FieldInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A search-api processor for main image field.
@@ -21,12 +24,33 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
 #[SearchApiProcessor(
   id: 'main_image_url',
   label: new TranslatableMarkup('Main image'),
-  description: new TranslatableMarkup('Indexes main image uri in correct image style'),
+  description: new TranslatableMarkup('Indexes Main image and image style URLs'),
   stages: [
     'add_properties' => 0,
   ],
 )]
 final class MainImageUrl extends ProcessorPluginBase {
+
+  /**
+   * The file url generator.
+   *
+   * @var \Drupal\Core\File\FileUrlGeneratorInterface
+   */
+  private FileUrlGeneratorInterface $fileUrlGenerator;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+  ) : self {
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->fileUrlGenerator = $container->get(FileUrlGeneratorInterface::class);
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -35,9 +59,9 @@ final class MainImageUrl extends ProcessorPluginBase {
     $properties = [];
 
     if ($datasource) {
-      $properties['main_image'] = new MainImageProperty([
-        'label' => $this->t('Main image: styles'),
-        'description' => $this->t('Main image: an array of image styles'),
+      $properties['main_image_styles'] = new MainImageProperty([
+        'label' => $this->t('Main image: URL'),
+        'description' => $this->t('Contains the original file properties and image styles.'),
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
       ]);
@@ -49,40 +73,55 @@ final class MainImageUrl extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function addFieldValues(ItemInterface $item) {
-    $dataSourceId = $item->getDataSourceId();
-
-    if ($dataSourceId !== 'entity:node' || !$node = $item->getOriginalObject()->getValue()) {
+  public function addFieldValues(ItemInterface $item): void {
+    if (!($entity = $item->getOriginalObject()?->getValue()) || !$entity instanceof ContentEntityInterface) {
       return;
     }
-    assert($node instanceof NodeInterface);
+    $fields = $this->getFieldsHelper()
+      ->filterForPropertyPath($item->getFields(), NULL, property_path: 'main_image_url');
 
-    return;
-    if (!$image = $node->get($properties->entityField)?->entity) {
-      return;
+    foreach ($fields as $field) {
+      if (!$data = $this->getFieldValue($entity, $field)) {
+        continue;
+      }
+      $field->addValue(json_encode($data));
     }
-    assert($image instanceof MediaInterface);
 
-    if (!$image->hasField('field_media_image') || !$file = $image->get('field_media_image')->entity) {
-      return;
-    }
-    assert($file instanceof FileInterface);
-
-    $this->processFields($item, $file);
   }
 
   /**
-   * Processes the image style field.
+   * Gets the file data for given field and entity.
    *
-   * @param \Drupal\search_api\Item\ItemInterface $item
-   *   The item to process.
-   * @param \Drupal\file\FileInterface $file
-   *   The file to process.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   * @param \Drupal\search_api\Item\FieldInterface $field
+   *   The field to process.
+   *
+   * @return array
+   *   The file data.
    */
-  protected function processFields(
-    ItemInterface $item,
-    FileInterface $file
-  ): void {
+  private function getFieldValue(ContentEntityInterface $entity, FieldInterface $field): array {
+    $fieldName = $field->getConfiguration()['field_name'] ?? NULL;
+
+    if (!$fieldName || !$entity->hasField($fieldName) || !$image = $entity->get($fieldName)?->entity) {
+      return [];
+    }
+    assert($image instanceof MediaInterface);
+
+    if (!$image->hasField('field_media_image') || !$file = $image->get('field_media_image')?->entity) {
+      return [];
+    }
+    assert($file instanceof FileInterface);
+
+    $data = [
+      'original' => [
+        'url' => $this->fileUrlGenerator->generateAbsoluteString($file->getFileUri()),
+        'size' => $file->getSize(),
+        'mime' => $file->getMimeType(),
+      ],
+      'styles' => [],
+    ];
+
     $imageStyles = [
       '1.5_304w_203h' => '1248',
       '1.5_294w_196h' => '992',
@@ -96,24 +135,12 @@ final class MainImageUrl extends ProcessorPluginBase {
       '1.5_1022w_682h_LQ' => '320_2x',
     ];
 
-    $urls = [];
     foreach ($imageStyles as $styleName => $breakpoint) {
       if ($imageStyle = ImageStyle::load($styleName)) {
-        $urls[$breakpoint] = $imageStyle->buildUrl($file->getFileUri());
+        $data['styles'][$breakpoint] = $imageStyle->buildUrl($file->getFileUri());
       }
     }
-    $fields = $this
-      ->getFieldsHelper()
-      ->filterForPropertyPath(
-        $item->getFields(),
-        'entity:node',
-        'main_image_url,'
-      );
-
-    foreach ($fields as $field) {
-      $field->addValue(json_encode($urls));
-    }
+    return $data;
   }
 
 }
-
