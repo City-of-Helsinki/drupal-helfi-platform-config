@@ -19,7 +19,7 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * A search-api processor for main image field.
+ * A search-api processor for Main image media field.
  */
 #[SearchApiProcessor(
   id: 'main_image_url',
@@ -61,7 +61,7 @@ final class MainImageUrl extends ProcessorPluginBase {
     if ($datasource) {
       $properties['main_image_url'] = new MainImageProperty([
         'label' => $this->t('Main image: URL'),
-        'description' => $this->t('Contains the original file properties and image styles.'),
+        'description' => $this->t('Contains the original file properties and image styles for given media image field.'),
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
       ]);
@@ -78,7 +78,7 @@ final class MainImageUrl extends ProcessorPluginBase {
       return;
     }
     $fields = $this->getFieldsHelper()
-      ->filterForPropertyPath($item->getFields(), NULL, property_path: 'main_image_url');
+      ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), property_path: 'main_image_url');
 
     foreach ($fields as $field) {
       if (!$data = $this->getFieldValue($entity, $field)) {
@@ -103,12 +103,12 @@ final class MainImageUrl extends ProcessorPluginBase {
   private function getFieldValue(ContentEntityInterface $entity, FieldInterface $field): array {
     $fieldName = $field->getConfiguration()['field_name'] ?? NULL;
 
-    if (!$fieldName || !$entity->hasField($fieldName) || !$image = $entity->get($fieldName)?->entity) {
+    if (!$fieldName || !$entity->hasField($fieldName) || !$media = $entity->get($fieldName)?->entity) {
       return [];
     }
-    assert($image instanceof MediaInterface);
+    assert($media instanceof MediaInterface);
 
-    if (!$image->hasField('field_media_image') || !$file = $image->get('field_media_image')?->entity) {
+    if (!$media->hasField('field_media_image') || !$file = $media->get('field_media_image')?->entity) {
       return [];
     }
     assert($file instanceof FileInterface);
@@ -137,7 +137,10 @@ final class MainImageUrl extends ProcessorPluginBase {
 
     foreach ($imageStyles as $styleName => $breakpoint) {
       if ($imageStyle = ImageStyle::load($styleName)) {
-        $data['styles'][$breakpoint] = $imageStyle->buildUrl($file->getFileUri());
+        $data['styles'][$breakpoint] = [
+          'breakpoint' => $breakpoint,
+          'url' => $imageStyle->buildUrl($file->getFileUri()),
+        ];
       }
     }
     return $data;
