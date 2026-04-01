@@ -1,0 +1,18 @@
+search_api.property_configuration.main_image_url:
+  type: mapping
+  label: 'Main image URL schema'
+  mapping:
+    field_name:
+      type: string
+    image_styles:
+      type: sequence
+      sequence:
+        type: mapping
+        mapping:
+          id:
+            type: string
+          breakpoint:
+            type: string
+
+
+

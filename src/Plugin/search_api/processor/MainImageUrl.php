@@ -101,9 +101,13 @@ final class MainImageUrl extends ProcessorPluginBase {
    *   The file data.
    */
   private function getFieldValue(ContentEntityInterface $entity, FieldInterface $field): array {
-    $fieldName = $field->getConfiguration()['field_name'] ?? NULL;
+    $configuration = $field->getConfiguration();
 
-    if (!$fieldName || !$entity->hasField($fieldName) || !$media = $entity->get($fieldName)?->entity) {
+    if (!isset($configuration['field_name'], $configuration['image_styles'])) {
+      throw new \LogicException('Missing required "field_name" or "image_styles" configuration.');
+    }
+
+    if (!$entity->hasField($configuration['field_name']) || !$media = $entity->get($configuration['field_name'])?->entity) {
       return [];
     }
     assert($media instanceof MediaInterface);
@@ -122,21 +126,10 @@ final class MainImageUrl extends ProcessorPluginBase {
       'styles' => [],
     ];
 
-    $imageStyles = [
-      '1.5_304w_203h' => '1248',
-      '1.5_294w_196h' => '992',
-      '1.5_220w_147h' => '768',
-      '1.5_176w_118h' => '576',
-      '1.5_511w_341h' => '320',
-      '1.5_608w_406w_LQ' => '1248_2x',
-      '1.5_588w_392h_LQ' => '992_2x',
-      '1.5_440w_294h_LQ' => '768_2x',
-      '1.5_352w_236h_LQ' => '576_2x',
-      '1.5_1022w_682h_LQ' => '320_2x',
-    ];
+    foreach ($configuration['image_styles'] ?? [] as $style) {
+      ['id' => $id, 'breakpoint' => $breakpoint] = $style;
 
-    foreach ($imageStyles as $styleName => $breakpoint) {
-      if ($imageStyle = ImageStyle::load($styleName)) {
+      if ($imageStyle = ImageStyle::load($id)) {
         $data['styles'][] = [
           'breakpoint' => $breakpoint,
           'url' => $imageStyle->buildUrl($file->getFileUri()),
