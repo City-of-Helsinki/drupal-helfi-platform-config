@@ -137,7 +137,7 @@ final class MainImageUrl extends ProcessorPluginBase {
 
     foreach ($imageStyles as $styleName => $breakpoint) {
       if ($imageStyle = ImageStyle::load($styleName)) {
-        $data['styles'][$breakpoint] = [
+        $data['styles'][] = [
           'breakpoint' => $breakpoint,
           'url' => $imageStyle->buildUrl($file->getFileUri()),
         ];
