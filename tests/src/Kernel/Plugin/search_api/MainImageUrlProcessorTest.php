@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\search_api;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
+use Drupal\helfi_platform_config\Plugin\search_api\processor\Property\MainImageProperty;
 use Drupal\media\Entity\Media;
 use Drupal\media\Entity\MediaType;
 use Drupal\node\Entity\Node;
@@ -17,6 +18,7 @@ use Drupal\Tests\search_api\Kernel\Processor\ProcessorTestBase;
 use Drupal\Tests\TestFileCreationTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Tests for the MainImageUrl processor.
@@ -118,8 +120,25 @@ class MainImageUrlProcessorTest extends ProcessorTestBase {
   }
 
   /**
+   * Tests MainImageProperty default configuration.
+   */
+  #[Test]
+  public function testMainImageProperty(): void {
+    $property = new MainImageProperty([]);
+    $defaultConfiguration = $property->defaultConfiguration();
+    $this->assertNull($defaultConfiguration['field_name']);
+    $this->assertNotEmpty($defaultConfiguration['image_styles']);
+
+    foreach ($defaultConfiguration['image_styles'] as $style) {
+      $this->assertArrayHasKey('breakpoint', $style);
+      $this->assertArrayHasKey('id', $style);
+    }
+  }
+
+  /**
    * Tests that the image style data is extracted into the field.
    */
+  #[Test]
   public function testAddFieldValues(): void {
     $file = File::create([
       'uri' => $this->getTestFiles('image')[0]->uri,
