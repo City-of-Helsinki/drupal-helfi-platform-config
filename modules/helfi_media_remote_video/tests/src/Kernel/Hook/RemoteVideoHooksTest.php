@@ -4,21 +4,28 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_media_remote_video\Kernel\Hook;
 
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\media\IFrameMarkup;
-use Drupal\media\MediaInterface;
-use Drupal\helfi_media_remote_video\Hook\RemoteVideoHooks;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
+use Drupal\helfi_media_remote_video\Hook\RemoteVideoHooks;
+use Drupal\helfi_media_remote_video\TerveyskylaUrlResolver;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\media\MediaInterface;
+use Drupal\media\OEmbed\Provider;
 use Drupal\paragraphs\ParagraphInterface;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use GuzzleHttp\Psr7\Response;
 
 /**
- * Tests RemoteVideoHooks preprocess logic.
+ * Tests RemoteVideoHooks oEmbed alter with mock HTTP responses.
+ *
+ * @group helfi_media_remote_video
  */
 final class RemoteVideoHooksTest extends KernelTestBase {
+
+  use ApiTestTrait;
 
   /**
    * {@inheritdoc}
@@ -34,50 +41,93 @@ final class RemoteVideoHooksTest extends KernelTestBase {
   ];
 
   /**
-   * Tests the replacing of YouTube video domain.
+   * Tests that a Terveyskylä URL is resolved via HTTP redirect.
    */
-  public function testReplacingYoutubeDomain(): void {
-    $iframe = '<iframe src="https://www.youtube.com/embed/abc123"></iframe>';
-    $variables = [
-      'media' => IFrameMarkup::create($iframe),
+  public function testOembedAlterResolvesTerveyskylaUrl(): void {
+    $resolvedUrl = 'https://players.icareus.com/hus/embed/vod/278391244?subtitles=sv';
+
+    $this->setupMockHttpClient([
+      new Response(301, ['Location' => $resolvedUrl]),
+    ]);
+
+    $parsed_url = [
+      'path' => 'https://suite.icareus.com/api/oembed',
+      'query' => [
+        'url' => 'https://urn.terveyskyla.fi/media/1395?lang=sv',
+        'maxwidth' => 1264,
+      ],
+      'fragment' => '',
     ];
 
-    RemoteVideoHooks::preprocessMediaOembedIframe($variables);
+    $hooks = $this->container->get(RemoteVideoHooks::class);
+    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('Icareus Suite', 'https://www.helsinkikanava.fi', [['url' => 'https://suite.icareus.com/api/oembed']]));
 
-    $output = $variables['media']->__toString();
-
-    $this->assertStringContainsString(' scrolling="no"></iframe>', $output);
-    $this->assertStringContainsString('youtube-nocookie.com/', $output);
-    $this->assertStringNotContainsString('youtube.com/', $output);
+    $this->assertSame($resolvedUrl, $parsed_url['query']['url']);
   }
 
   /**
-   * Tests adding of the scrolling=no attribute.
+   * Tests that a non-Terveyskylä URL is untouched.
    */
-  public function testAddingScrollingAttribute(): void {
-    $iframe = '<iframe src="https://players.icareus.com/helsinkikanava/embed/vod/123456789"></iframe>';
-    $variables = [
-      'media' => IFrameMarkup::create($iframe),
+  public function testOembedAlterSkipsNonTerveyskylaUrl(): void {
+    $originalUrl = 'https://players.icareus.com/hus/embed/vod/278391244';
+    $parsed_url = [
+      'path' => 'https://suite.icareus.com/api/oembed',
+      'query' => ['url' => $originalUrl],
+      'fragment' => '',
     ];
 
-    RemoteVideoHooks::preprocessMediaOembedIframe($variables);
+    $hooks = $this->container->get(RemoteVideoHooks::class);
+    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('Icareus Suite', 'https://www.helsinkikanava.fi', [['url' => 'https://suite.icareus.com/api/oembed']]));
 
-    $output = $variables['media']->__toString();
+    $this->assertSame($originalUrl, $parsed_url['query']['url']);
 
-    $this->assertStringContainsString(' scrolling="no"></iframe>', $output);
-    $this->assertStringContainsString('players.icareus.com/helsinkikanava', $output);
-    $this->assertStringNotContainsString('youtube-nocookie.com/', $output);
+    $parsed_url = [
+      'path' => 'https://www.youtube.com/oembed',
+      'query' => ['url' => 'https://www.youtube.com/watch?v=abc123'],
+      'fragment' => '',
+    ];
+
+    $hooks = $this->container->get(RemoteVideoHooks::class);
+    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('YouTube', 'https://www.youtube.com', [['url' => 'https://www.youtube.com/oembed']]));
+
+    $this->assertSame('https://www.youtube.com/watch?v=abc123', $parsed_url['query']['url']);
+  }
+
+  /**
+   * Tests that resolution failure leaves URL unchanged.
+   */
+  public function testOembedAlterLeavesUrlOnResolutionFailure(): void {
+    // Return 200 with no Location header (not a redirect).
+    $this->setupMockHttpClient([
+      new Response(200),
+    ]);
+
+    $originalUrl = 'https://urn.terveyskyla.fi/media/1395?lang=sv';
+    $parsed_url = [
+      'path' => 'https://suite.icareus.com/api/oembed',
+      'query' => ['url' => $originalUrl],
+      'fragment' => '',
+    ];
+
+    $hooks = $this->container->get(RemoteVideoHooks::class);
+    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('Icareus Suite', 'https://www.helsinkikanava.fi', [['url' => 'https://suite.icareus.com/api/oembed']]));
+
+    $this->assertSame($originalUrl, $parsed_url['query']['url']);
   }
 
   /**
    * Tests entity update hook for remote video media.
    */
   public function testEntityUpdate(): void {
-    // Mock cache tags invalidator and entity type manager. Create a remote
-    // video hooks instance with the mocked classes.
     $cacheTagsInvalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
     $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
-    $hooks = new RemoteVideoHooks($entityTypeManager->reveal(), $cacheTagsInvalidator->reveal());
+    $terveyskylaResolver = $this->prophesize(TerveyskylaUrlResolver::class);
+    $hooks = new RemoteVideoHooks(
+      $entityTypeManager->reveal(),
+      $cacheTagsInvalidator->reveal(),
+      $terveyskylaResolver->reveal(),
+      \Drupal::requestStack(),
+    );
 
     // Non-media entity should return early.
     $nonMediaEntity = $this->prophesize(EntityInterface::class);

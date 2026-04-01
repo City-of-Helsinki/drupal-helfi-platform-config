@@ -89,4 +89,20 @@ class RemoteVideo extends MediaEntityBundle implements MediaInterface {
     return FALSE;
   }
 
+  /**
+   * Get the videographer of the video.
+   *
+   * @return string|null
+   *   The name of the videographer.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   */
+  public function getVideographer(): ?string {
+    $videographer = (string) $this->get('field_remote_video_videographer')
+      ?->first()
+      ?->getString();
+
+    return empty($videographer) ? NULL : $videographer;
+  }
+
 }

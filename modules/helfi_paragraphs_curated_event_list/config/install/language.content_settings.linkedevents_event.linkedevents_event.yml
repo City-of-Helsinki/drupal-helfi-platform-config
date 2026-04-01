@@ -1,0 +1,15 @@
+uuid: e6f1aa26-79cc-4340-a61a-528b52adfa6f
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_translation
+    - external_entities
+third_party_settings:
+  content_translation:
+    enabled: true
+id: linkedevents_event.linkedevents_event
+target_entity_type_id: linkedevents_event
+target_bundle: linkedevents_event
+default_langcode: site_default
+language_alterable: false
