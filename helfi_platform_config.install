@@ -19,7 +19,6 @@ use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
-use Drupal\helfi_platform_config\Plugin\search_api\processor\MainImageUrl;
 use Drupal\user\Entity\User;
 
 /**
