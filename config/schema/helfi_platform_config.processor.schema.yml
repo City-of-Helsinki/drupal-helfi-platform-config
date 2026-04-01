@@ -13,6 +13,3 @@ search_api.property_configuration.main_image_url:
             type: string
           breakpoint:
             type: string
-
-
-
