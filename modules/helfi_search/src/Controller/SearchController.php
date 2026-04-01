@@ -100,31 +100,40 @@ final class SearchController extends ControllerBase {
         array_map('trim', explode(',', $request->query->getString('bundle'))),
       ) ?: NULL;
 
-      $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
       $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles);
 
-      // Execute both queries in a single HTTP round-trip using
-      // ES Multi Search API. The response order matches the request order:
-      // responses[0] = promoted results, responses[1] = KNN results.
-      $msearchResponse = $this->elasticClient->msearch([
-        'body' => [
-          ['index' => $promotionQuery['index']],
-          $promotionQuery['body'],
-          ['index' => $knnQuery['index']],
-          $knnQuery['body'],
-        ],
-      ])?->asArray() ?? [];
-
-      $responses = $msearchResponse['responses'] ?? [];
-
       $promoted = [];
-      if (!isset($responses[0]['error'])) {
-        $promoted = $this->queryBuilder->parsePromotionHits($responses[0] ?? []);
-      }
-
       $searchResults = [];
-      if (!isset($responses[1]['error'])) {
-        $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? [], $model);
+
+      if ($bundles) {
+        $knnResponse = $this->elasticClient->search([
+          'index' => $knnQuery['index'],
+          'body' => $knnQuery['body'],
+        ])?->asArray() ?? [];
+
+        $searchResults = $this->queryBuilder->parseKnnHits($knnResponse, $model);
+      }
+      else {
+        $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
+
+        $msearchResponse = $this->elasticClient->msearch([
+          'body' => [
+            ['index' => $promotionQuery['index']],
+            $promotionQuery['body'],
+            ['index' => $knnQuery['index']],
+            $knnQuery['body'],
+          ],
+        ])?->asArray() ?? [];
+
+        $responses = $msearchResponse['responses'] ?? [];
+
+        if (!isset($responses[0]['error'])) {
+          $promoted = $this->queryBuilder->parsePromotionHits($responses[0] ?? []);
+        }
+
+        if (!isset($responses[1]['error'])) {
+          $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? [], $model);
+        }
       }
 
       return new JsonResponse([
