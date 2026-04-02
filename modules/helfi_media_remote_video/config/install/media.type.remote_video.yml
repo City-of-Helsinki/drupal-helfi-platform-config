@@ -18,5 +18,6 @@ source_configuration:
   thumbnails_directory: 'public://oembed_thumbnails'
   providers:
     - YouTube
-    - 'Icareus Suite'
+    - 'Helsinki-kanava'
+    - 'Terveyskyla'
 field_map: {  }

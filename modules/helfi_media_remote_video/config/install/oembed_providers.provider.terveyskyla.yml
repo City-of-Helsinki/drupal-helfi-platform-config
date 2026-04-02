@@ -1,0 +1,24 @@
+uuid: 7d547e37-57cc-4e47-a963-2bf4363e00dc
+langcode: en
+status: true
+dependencies: {  }
+id: terveyskyla
+label: 'Terveyskyla'
+provider_url: 'https://terveyskyla.fi/'
+endpoints:
+  -
+    schemes:
+      - 'https://urn.terveyskyla.fi/media/*'
+    url: 'https://suite.icareus.com/api/oembed'
+    discovery: false
+    formats:
+      json: true
+      xml: false
+  -
+    schemes:
+      - 'https://players.icareus.com/hus/embed/vod/*'
+    url: 'https://suite.icareus.com/api/oembed'
+    discovery: false
+    formats:
+      json: true
+      xml: false

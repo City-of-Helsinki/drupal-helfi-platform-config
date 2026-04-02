@@ -101,7 +101,7 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
         'url' => 'https://www.helsinkikanava.fi/fi/web/helsinkikanava/player/vod?assetId=123456',
         'title' => 'Helsinki kanava video',
         'service_url' => 'https://www.helsinkikanava.fi',
-        'provider' => 'Icareus Suite',
+        'provider' => 'Helsinki-kanava',
         'embed_url' => 'https://suite.icareus.com/api/oembed/123456',
       ],
     ];
