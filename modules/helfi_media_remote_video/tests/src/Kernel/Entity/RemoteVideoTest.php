@@ -104,6 +104,15 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
         'provider' => 'Icareus Suite',
         'embed_url' => 'https://suite.icareus.com/api/oembed/123456',
       ],
+      'icareus_suite_terveyskyla' => [
+        'name' => 'icareus_suite',
+        'type' => 'valid',
+        'url' => 'https://urn.terveyskyla.fi/media/1395',
+        'title' => 'Terveyskyla video',
+        'service_url' => 'https://terveyskyla.fi',
+        'provider' => 'Icareus Suite',
+        'embed_url' => 'https://suite.icareus.com/api/oembed/123456',
+      ],
     ];
   }
 
@@ -142,6 +151,7 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
 
     // Set up the mock to return the value what a real provider would return.
     $oembed_provider->getUrl()->willReturn("$service_url/");
+    $oembed_provider->getName()->willReturn($provider);
     $resource_fetcher->fetchResource($url)->willReturn($this->createResource([
       'html' => "<iframe width=\"$max_width\" height=\"$max_height\" src=\"$embed_url\"></iframe>",
       'title' => $name,
