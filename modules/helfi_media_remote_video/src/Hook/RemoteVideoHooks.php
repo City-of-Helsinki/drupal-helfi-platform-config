@@ -94,7 +94,7 @@ class RemoteVideoHooks {
    */
   #[Hook('oembed_resource_url_alter')]
   public function oembedResourceUrlAlter(array &$parsed_url, Provider $provider): void {
-    if ($provider->getName() !== 'Terveyskyla') {
+    if ($provider->getName() !== 'Icareus Suite') {
       return;
     }
 

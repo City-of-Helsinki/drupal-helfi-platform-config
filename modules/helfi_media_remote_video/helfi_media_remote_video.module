@@ -50,9 +50,8 @@ function helfi_media_remote_video_platform_config_grant_permissions() : array {
  * Implements hook_media_source_info_alter().
  */
 function helfi_media_remote_video_media_source_info_alter(array &$sources): void {
-  // Add Helsinki-kanava and Terveyskyla as an available provider.
-  $sources['oembed:video']['providers'][] = 'Helsinki-kanava';
-  $sources['oembed:video']['providers'][] = 'Terveyskyla';
+  // Add Helsinki-kanava (Icareus Suite) as an available provider.
+  $sources['oembed:video']['providers'][] = 'Icareus Suite';
 }
 
 /**
@@ -225,14 +224,14 @@ function _helfi_media_remote_video_remote_video_url_handler(string $video_url): 
   $provider = $url_resolver->getProviderByUrl($video_url);
   $helsinki_kanava_url_pattern = 'https://www.helsinkikanava.fi/*/web/helsinkikanava/player/vod?assetId=*';
 
-  // Terveyskylä URIs are stored as-is and resolved at render time via
-  // hook_oembed_resource_url_alter(). See RemoteVideoHooks.
-  if (str_contains($video_url, 'urn.terveyskyla.fi/media/')) {
+  // Handle only Helsinki-kanava videos (Icareus Suite).
+  if ($provider->getName() !== 'Icareus Suite') {
     return FALSE;
   }
 
-  // Handle only Helsinki-kanava videos (Icareus Suite).
-  if ($provider->getName() !== 'Helsinki-kanava') {
+  // Terveyskylä URIs are stored as-is and resolved at render time via
+  // hook_oembed_resource_url_alter(). See RemoteVideoHooks.
+  if (str_contains($video_url, 'urn.terveyskyla.fi/media/')) {
     return FALSE;
   }
 

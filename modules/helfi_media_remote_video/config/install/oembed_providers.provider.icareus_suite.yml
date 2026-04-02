@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: icareus_suite
-label: 'Helsinki-kanava'
+label: 'Icareus Suite'
 provider_url: 'https://www.helsinkikanava.fi'
 endpoints:
   -
@@ -45,6 +45,22 @@ endpoints:
   -
     schemes:
       - 'https://players.icareus.com/helsinkikanava/embed/vod/*'
+    url: 'https://suite.icareus.com/api/oembed'
+    discovery: false
+    formats:
+      json: true
+      xml: false
+  -
+    schemes:
+      - 'https://urn.terveyskyla.fi/media/*'
+    url: 'https://suite.icareus.com/api/oembed'
+    discovery: false
+    formats:
+      json: true
+      xml: false
+  -
+    schemes:
+      - 'https://players.icareus.com/hus/embed/vod/*'
     url: 'https://suite.icareus.com/api/oembed'
     discovery: false
     formats:

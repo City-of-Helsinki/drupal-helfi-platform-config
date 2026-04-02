@@ -17,14 +17,12 @@ use Drupal\media\OEmbed\Provider;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests RemoteVideoHooks oEmbed alter with mock HTTP responses.
+ *
+ * @group helfi_media_remote_video
  */
-#[Group('helfi_media_remote_video')]
-#[RunTestsInSeparateProcesses]
 final class RemoteVideoHooksTest extends KernelTestBase {
 
   use ApiTestTrait;
@@ -62,7 +60,7 @@ final class RemoteVideoHooksTest extends KernelTestBase {
     ];
 
     $hooks = $this->container->get(RemoteVideoHooks::class);
-    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('Terveyskyla', 'https://terveyskyla.fi', [['url' => 'https://suite.icareus.com/api/oembed']]));
+    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('Icareus Suite', 'https://www.helsinkikanava.fi', [['url' => 'https://suite.icareus.com/api/oembed']]));
 
     $this->assertSame($resolvedUrl, $parsed_url['query']['url']);
   }
@@ -71,6 +69,18 @@ final class RemoteVideoHooksTest extends KernelTestBase {
    * Tests that a non-Terveyskylä URL is untouched.
    */
   public function testOembedAlterSkipsNonTerveyskylaUrl(): void {
+    $originalUrl = 'https://players.icareus.com/hus/embed/vod/278391244';
+    $parsed_url = [
+      'path' => 'https://suite.icareus.com/api/oembed',
+      'query' => ['url' => $originalUrl],
+      'fragment' => '',
+    ];
+
+    $hooks = $this->container->get(RemoteVideoHooks::class);
+    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('Icareus Suite', 'https://www.helsinkikanava.fi', [['url' => 'https://suite.icareus.com/api/oembed']]));
+
+    $this->assertSame($originalUrl, $parsed_url['query']['url']);
+
     $parsed_url = [
       'path' => 'https://www.youtube.com/oembed',
       'query' => ['url' => 'https://www.youtube.com/watch?v=abc123'],
@@ -100,7 +110,7 @@ final class RemoteVideoHooksTest extends KernelTestBase {
     ];
 
     $hooks = $this->container->get(RemoteVideoHooks::class);
-    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('Terveyskyla', 'https://terveyskyla.fi', [['url' => 'https://suite.icareus.com/api/oembed']]));
+    $hooks->oembedResourceUrlAlter($parsed_url, new Provider('Icareus Suite', 'https://www.helsinkikanava.fi', [['url' => 'https://suite.icareus.com/api/oembed']]));
 
     $this->assertSame($originalUrl, $parsed_url['query']['url']);
   }
