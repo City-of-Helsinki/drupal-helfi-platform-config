@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -556,5 +557,23 @@ function helfi_platform_config_update_11001(): void {
       ->expression('published_at', 'NULL')
       ->condition('published_at', 2147483647)
       ->execute();
+  }
+}
+
+/**
+ * UHF-13019: Save all indexes to remove old Main image fields.
+ */
+function helfi_platform_config_update_11002(): void {
+  $entityTypeManager = \Drupal::entityTypeManager();
+
+  try {
+    $storage = $entityTypeManager->getStorage('search_api_index');
+  }
+  catch (PluginNotFoundException) {
+    return;
+  }
+  /** @var \Drupal\search_api\Entity\Index $index */
+  foreach ($storage->loadMultiple() as $index) {
+    $index->save();
   }
 }
