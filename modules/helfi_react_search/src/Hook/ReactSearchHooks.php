@@ -118,23 +118,4 @@ final class ReactSearchHooks {
     }
   }
 
-  /**
-   * Implements hook_preprocess_form_element().
-   */
-  #[Hook('preprocess_form_element')]
-  public function preprocessFormElement(array &$variables): void {
-    if (!isset($variables['name']) || !isset($variables['description'])) {
-      return;
-    }
-
-    // Remove the field_api_url description bullet list item and use
-    // just the first description set in configuration files.
-    if (
-      str_contains($variables['name'], 'field_api_url') &&
-      isset($variables['description']['content']['#items'])
-    ) {
-      $variables['description']['content'] = reset($variables['description']['content']['#items']);
-    }
-  }
-
 }

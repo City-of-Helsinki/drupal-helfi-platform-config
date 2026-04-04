@@ -80,27 +80,6 @@ final class ReactSearchHooksTest extends UnitTestCase {
   }
 
   /**
-   * Test hook_preprocess_form_element().
-   */
-  public function testPreprocessFormElement(): void {
-    $variables = [];
-
-    $reactHooksClass = new ReactSearchHooks(
-      $this->getConfigFactoryStub([])
-    );
-
-    $reactHooksClass->preprocessFormElement($variables);
-    $this->assertFalse(isset($variables['description']['content']['#items']));
-
-    $variables = [
-      'name' => 'something_field_api_url',
-      'description' => ['content' => ['#items' => [1, 2, 3]]],
-    ];
-    $reactHooksClass->preprocessFormElement($variables);
-    $this->assertNotEmpty($variables['description']['content']);
-  }
-
-  /**
    * Test hook_field_widget_single_element_paragraphs_form_alter().
    */
   public function testFieldWidgetSingleElementParagraphAlter(): void {
