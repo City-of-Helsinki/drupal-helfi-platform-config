@@ -438,8 +438,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -480,8 +478,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -525,8 +521,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
           is_grouped: true
           group_info:
             label: 'Status code'
@@ -616,8 +610,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -659,15 +651,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              read_only: '0'
-              content_producer: '0'
-              editor: '0'
-              admin: '0'
-              menu_api: '0'
-              super_administrator: '0'
-              news_producer: '0'
-              survey_editor: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -708,15 +691,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              read_only: '0'
-              content_producer: '0'
-              editor: '0'
-              admin: '0'
-              menu_api: '0'
-              super_administrator: '0'
-              news_producer: '0'
-              survey_editor: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -816,6 +790,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:

@@ -54,7 +54,7 @@ hdbt_cookie_banner:
 # - Added data-nosnippet attribute to div.hds-cc__target to prevent Google
 #   using cookie banner texts in their search result snippets.
 hds_cookie_consent:
-  version: 1.0.2
+  version: 1.0.3
   header: true
   js:
     assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false }

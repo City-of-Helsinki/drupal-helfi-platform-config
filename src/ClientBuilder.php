@@ -27,7 +27,7 @@ final class ClientBuilder {
    * @return \Elastic\Elasticsearch\Client
    *   The client.
    */
-  public function create(int $timeout = 1, int $connectTimeout = 1) : Client {
+  public function create(int $timeout = 5, int $connectTimeout = 1) : Client {
     try {
       $environment = $this->environmentResolver
         ->getEnvironment(Project::ETUSIVU, $this->environmentResolver->getActiveEnvironmentName());

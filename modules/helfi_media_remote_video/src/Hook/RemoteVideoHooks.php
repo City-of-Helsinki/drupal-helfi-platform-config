@@ -10,9 +10,12 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\helfi_media_remote_video\TerveyskylaUrlResolver;
 use Drupal\media\IFrameMarkup;
 use Drupal\media\MediaInterface;
+use Drupal\media\OEmbed\Provider;
 use Drupal\paragraphs\ParagraphInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Hooks for helfi_media_remote_video module.
@@ -24,13 +27,15 @@ class RemoteVideoHooks {
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
+    private readonly TerveyskylaUrlResolver $terveyskylaUrlResolver,
+    private readonly RequestStack $requestStack,
   ) {}
 
   /**
    * Implements hook_preprocess_HOOK().
    */
   #[Hook('preprocess_media_oembed_iframe')]
-  public static function preprocessMediaOembedIframe(array &$variables): void {
+  public function preprocessMediaOembedIframe(array &$variables): void {
     $iframe = $variables['media']->__toString();
 
     // Add scrolling="no" attribute to the inner iframe.
@@ -52,7 +57,60 @@ class RemoteVideoHooks {
       );
     }
 
+    // For Icareus HUS (Terveyskylä) videos, ensure the subtitles parameter
+    // from the source URL is preserved in the embed iframe. The oEmbed API
+    // does not include it in the returned HTML.
+    if (str_contains($iframe, 'players.icareus.com/hus/')) {
+      if ($source_url = $this->requestStack->getCurrentRequest()->query->get('url')) {
+        if ($query = parse_url($source_url, PHP_URL_QUERY)) {
+          parse_str($query, $params);
+          // Support both old content (Icareus URLs with ?subtitles=sv)
+          // and new content (Terveyskylä URIs with ?lang=sv).
+          $subtitlesValue = $params['subtitles'] ?? $params['lang'] ?? NULL;
+          if (!empty($subtitlesValue)) {
+            // Encode to prevent injection of HTML.
+            $subtitles = htmlentities(urlencode($subtitlesValue));
+
+            // Inject the subtitles query parameter into the iframe URL.
+            $iframe = preg_replace_callback(
+              '/(src=["\'])([^"\']*players\.icareus\.com\/hus\/embed\/vod\/[^"\']*)/',
+              static fn(array $m): string => $m[1] . $m[2] . (str_contains($m[2], '?') ? '&' : '?') . 'subtitles=' . $subtitles,
+              $iframe,
+            );
+          }
+        }
+      }
+    }
+
     $variables['media'] = IFrameMarkup::create($iframe);
+  }
+
+  /**
+   * Implements hook_oembed_resource_url_alter().
+   *
+   * Resolves Terveyskylä URN URLs to actual player embed URLs before the
+   * oEmbed resource is fetched. This allows storing the stable URN in the
+   * database while resolving to the current provider at render time.
+   */
+  #[Hook('oembed_resource_url_alter')]
+  public function oembedResourceUrlAlter(array &$parsed_url, Provider $provider): void {
+    if ($provider->getName() !== 'Icareus Suite') {
+      return;
+    }
+
+    $url = $parsed_url['query']['url'] ?? '';
+
+    if (!$this->terveyskylaUrlResolver->isTerveyskylaUrl($url)) {
+      return;
+    }
+
+    $resolved = $this->terveyskylaUrlResolver->resolve($url);
+
+    if ($resolved === NULL) {
+      return;
+    }
+
+    $parsed_url['query']['url'] = $resolved;
   }
 
   /**

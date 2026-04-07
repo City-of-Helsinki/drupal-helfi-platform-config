@@ -20,7 +20,11 @@ use Drupal\media\OEmbed\UrlResolverInterface;
 class RemoteVideo extends MediaEntityBundle implements MediaInterface {
 
   /**
-   * Get the video service provider url.
+   * Returns URL to the video service provider.
+   *
+   * We have multiple providers that use the Icareus suite CDN
+   * for custom video provider. We need an ugly hack here to get
+   * service URL.
    *
    * @return string|null
    *   Url of video service provider.
@@ -34,6 +38,16 @@ class RemoteVideo extends MediaEntityBundle implements MediaInterface {
     $video_url = $this->get('field_media_oembed_video')->value ?? '';
     try {
       $provider = $url_resolver->getProviderByUrl($video_url);
+
+      if (
+        $provider->getName() === 'Icareus Suite' &&
+        str_contains($video_url, 'urn.terveyskyla.fi/media/') ||
+        str_contains($video_url, 'players.icareus.com/hus/')
+      ) {
+        // Icareus URL defaults to helsinkikanava.
+        return 'https://terveyskyla.fi';
+      }
+
       return rtrim($provider->getUrl(), '/');
     }
     // UrlResolverInterface::getProviderByUrl makes
@@ -87,6 +101,22 @@ class RemoteVideo extends MediaEntityBundle implements MediaInterface {
       return TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   * Get the videographer of the video.
+   *
+   * @return string|null
+   *   The name of the videographer.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   */
+  public function getVideographer(): ?string {
+    $videographer = (string) $this->get('field_remote_video_videographer')
+      ?->first()
+      ?->getString();
+
+    return empty($videographer) ? NULL : $videographer;
   }
 
 }
