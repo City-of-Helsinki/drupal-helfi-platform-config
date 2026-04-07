@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_react_search\Entity\EventList;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * ReactSearch hook-class.
@@ -26,6 +27,20 @@ final class ReactSearchHooks {
   public function entityBundleInfoAlter(array &$bundles): void {
     if (isset($bundles['paragraph']['event_list'])) {
       $bundles['paragraph']['event_list']['class'] = EventList::class;
+    }
+  }
+
+  /**
+   * Implements hook_entity_bundle_field_info_alter().
+   */
+  #[Hook('entity_bundle_field_info_alter')]
+  public function entityBundleFieldInfoAlter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
+    if ($entity_type->id() === 'paragraph' && $bundle === 'event_list') {
+      if (isset($fields['field_event_list_free_text'])) {
+        // Add constraint to validate the free text as a LinkedEvents query
+        // string.
+        $fields['field_event_list_free_text']->addConstraint('LinkedEventsQueryString', []);
+      }
     }
   }
 
@@ -115,25 +130,6 @@ final class ReactSearchHooks {
       $element['subform'][$field]['#states'] = [
         $state => [$condition],
       ];
-    }
-  }
-
-  /**
-   * Implements hook_preprocess_form_element().
-   */
-  #[Hook('preprocess_form_element')]
-  public function preprocessFormElement(array &$variables): void {
-    if (!isset($variables['name']) || !isset($variables['description'])) {
-      return;
-    }
-
-    // Remove the field_api_url description bullet list item and use
-    // just the first description set in configuration files.
-    if (
-      str_contains($variables['name'], 'field_api_url') &&
-      isset($variables['description']['content']['#items'])
-    ) {
-      $variables['description']['content'] = reset($variables['description']['content']['#items']);
     }
   }
 

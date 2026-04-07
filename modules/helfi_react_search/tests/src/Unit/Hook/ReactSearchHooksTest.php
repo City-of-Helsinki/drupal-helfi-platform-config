@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_react_search\Unit\Hook;
 
 use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Form\FormState;
@@ -69,6 +70,88 @@ final class ReactSearchHooksTest extends UnitTestCase {
   }
 
   /**
+   * Test hook_entity_bundle_field_info_alter() adds LinkedEvents constraint.
+   */
+  public function testEntityBundleFieldInfoAlterAddsConstraint(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $entityType = $this->createMock(EntityTypeInterface::class);
+    $entityType->method('id')->willReturn('paragraph');
+
+    $fieldDefinition = $this->createMock(FieldDefinitionInterface::class);
+    $fieldDefinition->expects($this->once())
+      ->method('addConstraint')
+      ->with('LinkedEventsQueryString', []);
+
+    $fields = [
+      'field_event_list_free_text' => $fieldDefinition,
+    ];
+
+    $reactHooksClass->entityBundleFieldInfoAlter($fields, $entityType, 'event_list');
+  }
+
+  /**
+   * Test hook_entity_bundle_field_info_alter() skips non-paragraph entities.
+   */
+  public function testEntityBundleFieldInfoAlterSkipsNonParagraph(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $entityType = $this->createMock(EntityTypeInterface::class);
+    $entityType->method('id')->willReturn('node');
+
+    $fieldDefinition = $this->createMock(FieldDefinitionInterface::class);
+    $fieldDefinition->expects($this->never())->method('addConstraint');
+
+    $fields = [
+      'field_event_list_free_text' => $fieldDefinition,
+    ];
+
+    $reactHooksClass->entityBundleFieldInfoAlter($fields, $entityType, 'event_list');
+  }
+
+  /**
+   * Test hook_entity_bundle_field_info_alter() skips non-event_list bundles.
+   */
+  public function testEntityBundleFieldInfoAlterSkipsNonEventListBundle(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $entityType = $this->createMock(EntityTypeInterface::class);
+    $entityType->method('id')->willReturn('paragraph');
+
+    $fieldDefinition = $this->createMock(FieldDefinitionInterface::class);
+    $fieldDefinition->expects($this->never())->method('addConstraint');
+
+    $fields = [
+      'field_event_list_free_text' => $fieldDefinition,
+    ];
+
+    $reactHooksClass->entityBundleFieldInfoAlter($fields, $entityType, 'text');
+  }
+
+  /**
+   * Test hook_entity_bundle_field_info_alter() skips when field is absent.
+   */
+  public function testEntityBundleFieldInfoAlterSkipsWhenFieldAbsent(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $entityType = $this->createMock(EntityTypeInterface::class);
+    $entityType->method('id')->willReturn('paragraph');
+
+    $fields = [];
+    $reactHooksClass->entityBundleFieldInfoAlter($fields, $entityType, 'event_list');
+
+    $this->assertSame([], $fields);
+  }
+
+  /**
    * Test hook_theme().
    */
   public function testTheme(): void {
@@ -77,27 +160,6 @@ final class ReactSearchHooksTest extends UnitTestCase {
     );
 
     $this->assertIsArray($reactHooksClass->theme());
-  }
-
-  /**
-   * Test hook_preprocess_form_element().
-   */
-  public function testPreprocessFormElement(): void {
-    $variables = [];
-
-    $reactHooksClass = new ReactSearchHooks(
-      $this->getConfigFactoryStub([])
-    );
-
-    $reactHooksClass->preprocessFormElement($variables);
-    $this->assertFalse(isset($variables['description']['content']['#items']));
-
-    $variables = [
-      'name' => 'something_field_api_url',
-      'description' => ['content' => ['#items' => [1, 2, 3]]],
-    ];
-    $reactHooksClass->preprocessFormElement($variables);
-    $this->assertNotEmpty($variables['description']['content']);
   }
 
   /**
