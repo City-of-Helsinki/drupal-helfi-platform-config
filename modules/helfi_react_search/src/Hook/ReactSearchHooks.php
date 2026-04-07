@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_react_search\Entity\EventList;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * ReactSearch hook-class.
@@ -26,6 +27,20 @@ final class ReactSearchHooks {
   public function entityBundleInfoAlter(array &$bundles): void {
     if (isset($bundles['paragraph']['event_list'])) {
       $bundles['paragraph']['event_list']['class'] = EventList::class;
+    }
+  }
+
+  /**
+   * Implements hook_entity_bundle_field_info_alter().
+   */
+  #[Hook('entity_bundle_field_info_alter')]
+  public function entityBundleFieldInfoAlter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
+    if ($entity_type->id() === 'paragraph' && $bundle === 'event_list') {
+      if (isset($fields['field_event_list_free_text'])) {
+        // Add constraint to validate the free text as a LinkedEvents query
+        // string.
+        $fields['field_event_list_free_text']->addConstraint('LinkedEventsQueryString', []);
+      }
     }
   }
 

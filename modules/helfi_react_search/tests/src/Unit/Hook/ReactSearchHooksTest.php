@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_react_search\Unit\Hook;
 
 use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Form\FormState;
@@ -66,6 +67,88 @@ final class ReactSearchHooksTest extends UnitTestCase {
       $variables['#attached']['drupalSettings']['helfi_react_search']['sentry_dsn_react'],
       'Sentry dsn react should be set.'
     );
+  }
+
+  /**
+   * Test hook_entity_bundle_field_info_alter() adds LinkedEvents constraint.
+   */
+  public function testEntityBundleFieldInfoAlterAddsConstraint(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $entityType = $this->createMock(EntityTypeInterface::class);
+    $entityType->method('id')->willReturn('paragraph');
+
+    $fieldDefinition = $this->createMock(FieldDefinitionInterface::class);
+    $fieldDefinition->expects($this->once())
+      ->method('addConstraint')
+      ->with('LinkedEventsQueryString', []);
+
+    $fields = [
+      'field_event_list_free_text' => $fieldDefinition,
+    ];
+
+    $reactHooksClass->entityBundleFieldInfoAlter($fields, $entityType, 'event_list');
+  }
+
+  /**
+   * Test hook_entity_bundle_field_info_alter() skips non-paragraph entities.
+   */
+  public function testEntityBundleFieldInfoAlterSkipsNonParagraph(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $entityType = $this->createMock(EntityTypeInterface::class);
+    $entityType->method('id')->willReturn('node');
+
+    $fieldDefinition = $this->createMock(FieldDefinitionInterface::class);
+    $fieldDefinition->expects($this->never())->method('addConstraint');
+
+    $fields = [
+      'field_event_list_free_text' => $fieldDefinition,
+    ];
+
+    $reactHooksClass->entityBundleFieldInfoAlter($fields, $entityType, 'event_list');
+  }
+
+  /**
+   * Test hook_entity_bundle_field_info_alter() skips non-event_list bundles.
+   */
+  public function testEntityBundleFieldInfoAlterSkipsNonEventListBundle(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $entityType = $this->createMock(EntityTypeInterface::class);
+    $entityType->method('id')->willReturn('paragraph');
+
+    $fieldDefinition = $this->createMock(FieldDefinitionInterface::class);
+    $fieldDefinition->expects($this->never())->method('addConstraint');
+
+    $fields = [
+      'field_event_list_free_text' => $fieldDefinition,
+    ];
+
+    $reactHooksClass->entityBundleFieldInfoAlter($fields, $entityType, 'text');
+  }
+
+  /**
+   * Test hook_entity_bundle_field_info_alter() skips when field is absent.
+   */
+  public function testEntityBundleFieldInfoAlterSkipsWhenFieldAbsent(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub([])
+    );
+
+    $entityType = $this->createMock(EntityTypeInterface::class);
+    $entityType->method('id')->willReturn('paragraph');
+
+    $fields = [];
+    $reactHooksClass->entityBundleFieldInfoAlter($fields, $entityType, 'event_list');
+
+    $this->assertSame([], $fields);
   }
 
   /**
