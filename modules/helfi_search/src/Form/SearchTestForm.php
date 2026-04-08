@@ -72,7 +72,7 @@ class SearchTestForm extends FormBase {
         '#type' => 'select',
         '#title' => $this->t('Embedding Model'),
         '#options' => $modelOptions,
-        '#default_value' => $models[0],
+        '#default_value' => array_last($models),
         '#required' => TRUE,
       ];
     }
