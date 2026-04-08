@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 
+use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ServiceEnum;
 use Drupal\helfi_platform_config\EventSubscriber\CspElasticProxySubscriber;
-use Prophecy\Argument;
 use Drupal\Core\Config\ImmutableConfig;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -49,7 +50,10 @@ class CspElasticProxySubscriberTest extends CspEventSubscriberTestBase {
     $url = 'https://elastic-proxy.example.com';
     $this->elasticProxyConfig->get('elastic_proxy_url')->willReturn($url);
 
-    $this->policy->fallbackAwareAppendIfEnabled('connect-src', [$url])->shouldBeCalled();
+    $this->policy->fallbackAwareAppendIfEnabled('connect-src', [
+      $url,
+      $this->getEtusivuElasticProxyUrl(),
+    ])->shouldBeCalled();
 
     $this->eventSubscriber->policyAlter($this->event->reveal());
   }
@@ -57,12 +61,27 @@ class CspElasticProxySubscriberTest extends CspEventSubscriberTestBase {
   /**
    * Tests appending of directive values when elastic proxy URL is not set.
    *
+   * Core sites still get the etusivu elastic proxy URL.
+   *
    * @covers ::policyAlter
    */
   public function testAppendDirectiveValuesWhenModuleIsNotEnabled(): void {
-    $this->policy->fallbackAwareAppendIfEnabled(Argument::any(), Argument::any())->shouldNotBeCalled();
+    $this->policy->fallbackAwareAppendIfEnabled('connect-src', [
+      $this->getEtusivuElasticProxyUrl(),
+    ])->shouldBeCalled();
 
     $this->eventSubscriber->policyAlter($this->event->reveal());
+  }
+
+  /**
+   * Gets the etusivu elastic proxy URL from the environment resolver.
+   */
+  private function getEtusivuElasticProxyUrl(): string {
+    return $this->environmentResolver
+      ->getEnvironment(Project::ETUSIVU, $this->environmentResolver->getActiveEnvironmentName())
+      ->getService(ServiceEnum::PublicElasticProxy)
+      ->address
+      ->getAddress();
   }
 
 }
