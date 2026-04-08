@@ -1,3 +1,4 @@
+config_rewrite: 'replace'
 langcode: en
 status: true
 dependencies:
@@ -80,6 +81,32 @@ display:
           show_multipage_selection_box: default
           show_select_all: default
           selected_actions:
+            -
+              action_id: 'entity:break_lock:tpr_unit'
+              preconfiguration:
+                add_confirmation: false
+                label_override: 'Break lock'
+            -
+              action_id: 'remote_entity:migration_update:tpr_unit'
+              preconfiguration:
+                add_confirmation: false
+                label_override: Update
+            -
+              action_id: views_bulk_edit
+              preconfiguration:
+                add_confirmation: false
+                label_override: 'Modify values'
+                get_bundles_from_results: true
+            -
+              action_id: 'entity:unpublish_action:tpr_unit'
+              preconfiguration:
+                add_confirmation: false
+                label_override: 'Unpublish unit'
+            -
+              action_id: 'entity:publish_action:tpr_unit'
+              preconfiguration:
+                add_confirmation: false
+                label_override: 'Publish unit'
             -
               action_id: 'entity:break_lock:tpr_unit'
               preconfiguration:
@@ -604,7 +631,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
             placeholder: ''
           is_grouped: false
           group_info:
@@ -652,9 +678,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              admin: '0'
-              content_producer: '0'
             reduce: true
           is_grouped: false
           group_info:
@@ -735,6 +758,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
