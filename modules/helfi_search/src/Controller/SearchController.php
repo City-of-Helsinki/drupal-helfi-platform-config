@@ -100,10 +100,15 @@ final class SearchController extends ControllerBase {
         array_map('trim', explode(',', $request->query->getString('bundle'))),
       ) ?: NULL;
 
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles);
+      $page = max(1, $request->query->getInt('page', 1));
+      $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
+      $from = ($page - 1) * $size;
+
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles, size: $size, from: $from);
 
       $promoted = [];
       $searchResults = [];
+      $totalHits = 0;
 
       if ($bundles) {
         $knnResponse = $this->elasticClient->search([
@@ -112,6 +117,7 @@ final class SearchController extends ControllerBase {
         ])?->asArray() ?? [];
 
         $searchResults = $this->queryBuilder->parseKnnHits($knnResponse, $model);
+        $totalHits = $knnResponse['hits']['total']['value'] ?? 0;
       }
       else {
         $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
@@ -133,12 +139,16 @@ final class SearchController extends ControllerBase {
 
         if (!isset($responses[1]['error'])) {
           $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? [], $model);
+          $totalHits = $responses[1]['hits']['total']['value'] ?? 0;
         }
       }
 
       return new JsonResponse([
         'promoted' => $promoted,
         'results' => $searchResults,
+        'page' => $page,
+        'size' => $size,
+        'total_hits' => $totalHits,
       ]);
     }
     catch (EmbeddingsModelException | ElasticsearchException | TransportException) {

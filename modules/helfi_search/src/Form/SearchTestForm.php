@@ -10,6 +10,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\Core\Flood\FloodInterface;
+use Drupal\helfi_search\Controller\SearchController;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
 use Drupal\helfi_search\TokenUsageTracker;
@@ -33,6 +35,7 @@ class SearchTestForm extends FormBase {
     protected TokenUsageTracker $tokenUsageTracker,
     protected LanguageManagerInterface $languageManager,
     protected QueryBuilder $queryBuilder,
+    protected FloodInterface $flood,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
     protected Client $elasticClient,
   ) {
@@ -80,6 +83,16 @@ class SearchTestForm extends FormBase {
       '#maxlength' => 500,
     ];
 
+    $form['min_score'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Minimum Score'),
+      '#description' => $this->t('Results below this score are excluded.'),
+      '#default_value' => QueryBuilder::KNN_MIN_SCORE,
+      '#min' => 0,
+      '#max' => 1,
+      '#step' => 0.01,
+    ];
+
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
@@ -104,18 +117,6 @@ class SearchTestForm extends FormBase {
           '#markup' => '<strong>' . htmlspecialchars($result['query']) . '</strong>',
         ];
 
-        $form['results']['vector'] = [
-          '#type' => 'details',
-          '#title' => $this->t('Embedding Vector'),
-          '#open' => FALSE,
-          '#weight' => 20,
-        ];
-        $form['results']['vector']['vector_preview'] = [
-          '#type' => 'item',
-          '#title' => $this->t('Generated @dimensions-dimensional vector', ['@dimensions' => count($result['embeddings'])]),
-          '#markup' => '<code>[' . implode(', ', array_map(fn($v) => number_format($v, 6), $result['embeddings'])) . ']</code>',
-        ];
-
         // Display search results if available.
         if (!empty($result['search_results'])) {
           $rows = [];
@@ -126,7 +127,6 @@ class SearchTestForm extends FormBase {
               'score' => number_format($hit['score'], 4),
               'entity_type' => htmlspecialchars($hit['entity_type'] ?? ''),
               'url' => $hit['url'] ? Link::fromTextAndUrl(htmlspecialchars($hit['title']), Url::fromUri(parse_url($hit['url'], PHP_URL_SCHEME) ? $hit['url'] : 'internal:' . $hit['url'])) : '-',
-              'language' => htmlspecialchars($hit['language']),
               'content' => htmlspecialchars($excerpt),
             ];
           }
@@ -137,41 +137,75 @@ class SearchTestForm extends FormBase {
               $this->t('Score'),
               $this->t('Entity Type'),
               $this->t('URL'),
-              $this->t('Language'),
               $this->t('Content'),
             ],
             '#rows' => $rows,
             '#empty' => $this->t('No similar documents found.'),
           ];
         }
+
+        $page = $result['page'] ?? 1;
+        $totalHits = $result['total_hits'] ?? 0;
+        $totalPages = (int) ceil($totalHits / QueryBuilder::KNN_DEFAULT_SIZE);
+
+        $form['results']['pager_info'] = [
+          '#type' => 'item',
+          '#markup' => $this->t('Page @page of @total_pages (@total_hits total hits)', [
+            '@page' => $page,
+            '@total_pages' => max(1, $totalPages),
+            '@total_hits' => $totalHits,
+          ]),
+        ];
+
+        $form['results']['pager'] = [
+          '#type' => 'actions',
+        ];
+
+        if ($page > 1) {
+          $form['results']['pager']['prev'] = [
+            '#type' => 'submit',
+            '#value' => $this->t('Previous page'),
+            '#page_delta' => -1,
+          ];
+        }
+
+        if ($page < $totalPages) {
+          $form['results']['pager']['next'] = [
+            '#type' => 'submit',
+            '#value' => $this->t('Next page'),
+            '#page_delta' => 1,
+          ];
+        }
       }
     }
 
-    // Display token usage statistics.
-    $form['token_stats'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Token Usage Statistics'),
-      '#open' => FALSE,
-      '#weight' => 20,
-    ];
-
-    $usage_by_model = $this->tokenUsageTracker->getTokenUsage();
-    $items = [];
-    foreach ($this->getModels() as $model) {
-      $tokens = $usage_by_model[$model] ?? 0;
-      $items[] = $this->t('@model: @tokens tokens (approximate cost: @price @unit)', [
-        '@model' => $model,
-        '@tokens' => number_format($tokens),
-        '@price' => $this->tokenUsageTracker->getUsageCost($model, $tokens) ?: $this->t('N/A'),
-        '@unit' => '$',
-      ]);
-    }
-    if ($items) {
-      $form['token_stats']['by_model'] = [
-        '#type' => 'item',
-        '#title' => $this->t('Usage by Model'),
-        '#markup' => '<ul><li>' . implode('</li><li>', $items) . '</li></ul>',
+    // Display token usage statistics to authenticated users only.
+    if ($this->currentUser()->isAuthenticated()) {
+      $form['token_stats'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Token Usage Statistics'),
+        '#open' => FALSE,
+        '#weight' => 20,
       ];
+
+      $usage_by_model = $this->tokenUsageTracker->getTokenUsage();
+      $items = [];
+      foreach ($this->getModels() as $model) {
+        $tokens = $usage_by_model[$model] ?? 0;
+        $items[] = $this->t('@model: @tokens tokens (approximate cost: @price @unit)', [
+          '@model' => $model,
+          '@tokens' => number_format($tokens),
+          '@price' => $this->tokenUsageTracker->getUsageCost($model, $tokens) ?: $this->t('N/A'),
+          '@unit' => '$',
+        ]);
+      }
+      if ($items) {
+        $form['token_stats']['by_model'] = [
+          '#type' => 'item',
+          '#title' => $this->t('Usage by Model'),
+          '#markup' => '<ul><li>' . implode('</li><li>', $items) . '</li></ul>',
+        ];
+      }
     }
 
     return $form;
@@ -183,9 +217,26 @@ class SearchTestForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $query = $form_state->getValue('search_query');
     $model = $form_state->getValue('model');
+    $minScore = (float) $form_state->getValue('min_score');
+
+    $triggering = $form_state->getTriggeringElement();
+    if (isset($triggering['#page_delta'])) {
+      $currentPage = $form_state->get('current_page') ?? 1;
+      $page = max(1, $currentPage + $triggering['#page_delta']);
+    }
+    else {
+      $page = 1;
+    }
+    $form_state->set('current_page', $page);
+    $from = ($page - 1) * QueryBuilder::KNN_DEFAULT_SIZE;
 
     if (!$model) {
       $this->messenger()->addError($this->t('No embedding models configured.'));
+      return;
+    }
+
+    if (!$this->flood->isAllowed(SearchController::FLOOD_EVENT, SearchController::FLOOD_THRESHOLD, SearchController::FLOOD_WINDOW)) {
+      $this->messenger()->addError($this->t('Too many requests. Please try again later.'));
       return;
     }
 
@@ -193,12 +244,15 @@ class SearchTestForm extends FormBase {
       // Generate embeddings for the query.
       $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
 
+      // Register flood after the expensive embedding API call.
+      $this->flood->register(SearchController::FLOOD_EVENT, SearchController::FLOOD_WINDOW);
+
       // Get current language.
       $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
       // Build both queries for msearch.
       $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE, minScore: $minScore, from: $from);
 
       $msearchResponse = $this->elasticClient->msearch([
         'body' => [
@@ -243,7 +297,8 @@ class SearchTestForm extends FormBase {
         'query' => $query,
         'embeddings' => $embeddings,
         'search_results' => $search_results,
-        'total_hits' => ($responses[1]['hits']['total']['value'] ?? 0) + count($promotedUrls),
+        'total_hits' => $responses[1]['hits']['total']['value'] ?? 0,
+        'page' => $page,
       ]);
 
       $this->messenger()->addStatus($this->t('Successfully generated embeddings and found @count similar documents for "@query"', [
