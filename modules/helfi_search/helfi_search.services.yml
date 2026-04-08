@@ -23,3 +23,8 @@ services:
   Drupal\helfi_search\QueryBuilder: ~
 
   Drupal\helfi_search\EventSubscriber\SearchApiSubscriber: ~
+
+  Drupal\helfi_search\ClientBuilder: ~
+  helfi_search.etusivu_elastic_client:
+    class: Elastic\Elasticsearch\Client
+    factory: ['@Drupal\helfi_search\ClientBuilder', 'create']
