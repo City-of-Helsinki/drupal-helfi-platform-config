@@ -104,18 +104,6 @@ class SearchTestForm extends FormBase {
           '#markup' => '<strong>' . htmlspecialchars($result['query']) . '</strong>',
         ];
 
-        $form['results']['vector'] = [
-          '#type' => 'details',
-          '#title' => $this->t('Embedding Vector'),
-          '#open' => FALSE,
-          '#weight' => 20,
-        ];
-        $form['results']['vector']['vector_preview'] = [
-          '#type' => 'item',
-          '#title' => $this->t('Generated @dimensions-dimensional vector', ['@dimensions' => count($result['embeddings'])]),
-          '#markup' => '<code>[' . implode(', ', array_map(fn($v) => number_format($v, 6), $result['embeddings'])) . ']</code>',
-        ];
-
         // Display search results if available.
         if (!empty($result['search_results'])) {
           $rows = [];
@@ -147,31 +135,33 @@ class SearchTestForm extends FormBase {
       }
     }
 
-    // Display token usage statistics.
-    $form['token_stats'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Token Usage Statistics'),
-      '#open' => FALSE,
-      '#weight' => 20,
-    ];
-
-    $usage_by_model = $this->tokenUsageTracker->getTokenUsage();
-    $items = [];
-    foreach ($this->getModels() as $model) {
-      $tokens = $usage_by_model[$model] ?? 0;
-      $items[] = $this->t('@model: @tokens tokens (approximate cost: @price @unit)', [
-        '@model' => $model,
-        '@tokens' => number_format($tokens),
-        '@price' => $this->tokenUsageTracker->getUsageCost($model, $tokens) ?: $this->t('N/A'),
-        '@unit' => '$',
-      ]);
-    }
-    if ($items) {
-      $form['token_stats']['by_model'] = [
-        '#type' => 'item',
-        '#title' => $this->t('Usage by Model'),
-        '#markup' => '<ul><li>' . implode('</li><li>', $items) . '</li></ul>',
+    // Display token usage statistics to authenticated users only.
+    if ($this->currentUser()->isAuthenticated()) {
+      $form['token_stats'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Token Usage Statistics'),
+        '#open' => FALSE,
+        '#weight' => 20,
       ];
+
+      $usage_by_model = $this->tokenUsageTracker->getTokenUsage();
+      $items = [];
+      foreach ($this->getModels() as $model) {
+        $tokens = $usage_by_model[$model] ?? 0;
+        $items[] = $this->t('@model: @tokens tokens (approximate cost: @price @unit)', [
+          '@model' => $model,
+          '@tokens' => number_format($tokens),
+          '@price' => $this->tokenUsageTracker->getUsageCost($model, $tokens) ?: $this->t('N/A'),
+          '@unit' => '$',
+        ]);
+      }
+      if ($items) {
+        $form['token_stats']['by_model'] = [
+          '#type' => 'item',
+          '#title' => $this->t('Usage by Model'),
+          '#markup' => '<ul><li>' . implode('</li><li>', $items) . '</li></ul>',
+        ];
+      }
     }
 
     return $form;

@@ -1,12 +1,10 @@
 helfi_search.test_form:
-  path: '/admin/config/search/helfi-search/test'
+  path: '/search/new/test'
   defaults:
     _form: '\Drupal\helfi_search\Form\SearchTestForm'
     _title: 'Search Embeddings Test'
   requirements:
-    _user_is_logged_in: 'TRUE'
-  options:
-    _admin_route: TRUE
+    _permission: 'access content'
 
 helfi_search.semantic_search:
   path: '/api/v1/search'
