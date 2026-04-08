@@ -10,6 +10,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\Core\Flood\FloodInterface;
+use Drupal\helfi_search\Controller\SearchController;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
 use Drupal\helfi_search\TokenUsageTracker;
@@ -33,6 +35,7 @@ class SearchTestForm extends FormBase {
     protected TokenUsageTracker $tokenUsageTracker,
     protected LanguageManagerInterface $languageManager,
     protected QueryBuilder $queryBuilder,
+    protected FloodInterface $flood,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
     protected Client $elasticClient,
   ) {
@@ -179,9 +182,17 @@ class SearchTestForm extends FormBase {
       return;
     }
 
+    if (!$this->flood->isAllowed(SearchController::FLOOD_EVENT, SearchController::FLOOD_THRESHOLD, SearchController::FLOOD_WINDOW)) {
+      $this->messenger()->addError($this->t('Too many requests. Please try again later.'));
+      return;
+    }
+
     try {
       // Generate embeddings for the query.
       $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
+
+      // Register flood after the expensive embedding API call.
+      $this->flood->register(SearchController::FLOOD_EVENT, SearchController::FLOOD_WINDOW);
 
       // Get current language.
       $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
