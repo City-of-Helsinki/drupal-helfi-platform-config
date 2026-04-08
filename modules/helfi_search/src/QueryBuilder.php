@@ -14,7 +14,9 @@ final class QueryBuilder {
   const string EMBEDDINGS_INDEX = 'embeddings';
   const string PROMOTIONS_INDEX = 'search_promotions';
   const int PROMOTIONS_LIMIT = 3;
-  const float KNN_MIN_SCORE = 0.70;
+  const float KNN_MIN_SCORE = 0.68;
+  const int KNN_DEFAULT_SIZE = 10;
+  const int KNN_MAX_SIZE = 50;
 
   /**
    * Build a promotion search query for use in search() or msearch().
@@ -77,11 +79,17 @@ final class QueryBuilder {
    *   Whether to include inner_hits for content extraction.
    * @param array|null $bundles
    *   Filter only given bundles.
+   * @param float $minScore
+   *   Minimum score threshold.
+   * @param int $size
+   *   Number of results per page.
+   * @param int $from
+   *   Offset for pagination.
    *
    * @return array
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, bool $includeInnerHits = FALSE, ?array $bundles = NULL, float $minScore = self::KNN_MIN_SCORE): array {
+  public function buildKnnQuery(array $embeddings, string $language, string $model, bool $includeInnerHits = FALSE, ?array $bundles = NULL, float $minScore = self::KNN_MIN_SCORE, int $size = self::KNN_DEFAULT_SIZE, int $from = 0): array {
     $language = match($language) {
       "fi", "sv", "en" => $language,
       default => "en",
@@ -116,8 +124,8 @@ final class QueryBuilder {
     $knn = [
       'field' => $fieldPrefix . '.vector',
       'query_vector' => $embeddings,
-      'k' => 10,
-      'num_candidates' => 100,
+      'k' => 50,
+      'num_candidates' => 500,
       'filter' => $filter,
     ];
 
@@ -139,7 +147,8 @@ final class QueryBuilder {
       'body' => [
         'knn' => $knn,
         'min_score' => $minScore,
-        'size' => 10,
+        'size' => $size,
+        'from' => $from,
         '_source' => $source,
       ],
     ];

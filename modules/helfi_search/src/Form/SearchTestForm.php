@@ -127,7 +127,6 @@ class SearchTestForm extends FormBase {
               'score' => number_format($hit['score'], 4),
               'entity_type' => htmlspecialchars($hit['entity_type'] ?? ''),
               'url' => $hit['url'] ? Link::fromTextAndUrl(htmlspecialchars($hit['title']), Url::fromUri(parse_url($hit['url'], PHP_URL_SCHEME) ? $hit['url'] : 'internal:' . $hit['url'])) : '-',
-              'language' => htmlspecialchars($hit['language']),
               'content' => htmlspecialchars($excerpt),
             ];
           }
@@ -138,11 +137,43 @@ class SearchTestForm extends FormBase {
               $this->t('Score'),
               $this->t('Entity Type'),
               $this->t('URL'),
-              $this->t('Language'),
               $this->t('Content'),
             ],
             '#rows' => $rows,
             '#empty' => $this->t('No similar documents found.'),
+          ];
+        }
+
+        $page = $result['page'] ?? 1;
+        $totalHits = $result['total_hits'] ?? 0;
+        $totalPages = (int) ceil($totalHits / QueryBuilder::KNN_DEFAULT_SIZE);
+
+        $form['results']['pager_info'] = [
+          '#type' => 'item',
+          '#markup' => $this->t('Page @page of @total_pages (@total_hits total hits)', [
+            '@page' => $page,
+            '@total_pages' => max(1, $totalPages),
+            '@total_hits' => $totalHits,
+          ]),
+        ];
+
+        $form['results']['pager'] = [
+          '#type' => 'actions',
+        ];
+
+        if ($page > 1) {
+          $form['results']['pager']['prev'] = [
+            '#type' => 'submit',
+            '#value' => $this->t('Previous page'),
+            '#page_delta' => -1,
+          ];
+        }
+
+        if ($page < $totalPages) {
+          $form['results']['pager']['next'] = [
+            '#type' => 'submit',
+            '#value' => $this->t('Next page'),
+            '#page_delta' => 1,
           ];
         }
       }
@@ -188,6 +219,17 @@ class SearchTestForm extends FormBase {
     $model = $form_state->getValue('model');
     $minScore = (float) $form_state->getValue('min_score');
 
+    $triggering = $form_state->getTriggeringElement();
+    if (isset($triggering['#page_delta'])) {
+      $currentPage = $form_state->get('current_page') ?? 1;
+      $page = max(1, $currentPage + $triggering['#page_delta']);
+    }
+    else {
+      $page = 1;
+    }
+    $form_state->set('current_page', $page);
+    $from = ($page - 1) * QueryBuilder::KNN_DEFAULT_SIZE;
+
     if (!$model) {
       $this->messenger()->addError($this->t('No embedding models configured.'));
       return;
@@ -210,7 +252,7 @@ class SearchTestForm extends FormBase {
 
       // Build both queries for msearch.
       $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE, minScore: $minScore);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE, minScore: $minScore, from: $from);
 
       $msearchResponse = $this->elasticClient->msearch([
         'body' => [
@@ -255,7 +297,8 @@ class SearchTestForm extends FormBase {
         'query' => $query,
         'embeddings' => $embeddings,
         'search_results' => $search_results,
-        'total_hits' => ($responses[1]['hits']['total']['value'] ?? 0) + count($promotedUrls),
+        'total_hits' => $responses[1]['hits']['total']['value'] ?? 0,
+        'page' => $page,
       ]);
 
       $this->messenger()->addStatus($this->t('Successfully generated embeddings and found @count similar documents for "@query"', [

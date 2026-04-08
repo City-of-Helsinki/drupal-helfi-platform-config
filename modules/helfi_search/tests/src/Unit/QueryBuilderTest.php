@@ -108,10 +108,12 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals(QueryBuilder::EMBEDDINGS_INDEX, $query['index']);
     $this->assertEquals(self::TEST_MODEL_FIELD . '.vector', $query['body']['knn']['field']);
     $this->assertEquals($vector, $query['body']['knn']['query_vector']);
-    $this->assertEquals(10, $query['body']['knn']['k']);
+    $this->assertEquals(50, $query['body']['knn']['k']);
     $this->assertEquals('fi', $query['body']['knn']['filter']['term']['search_api_language']);
     $this->assertArrayNotHasKey('inner_hits', $query['body']['knn']);
     $this->assertEquals(['entity_type', 'entity_bundle', 'url', 'label', 'search_api_language'], $query['body']['_source']);
+    $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $query['body']['size']);
+    $this->assertEquals(0, $query['body']['from']);
   }
 
   /**
@@ -234,6 +236,19 @@ class QueryBuilderTest extends UnitTestCase {
     $query = (new QueryBuilder())->buildKnnQuery([0.1], 'fi', self::TEST_MODEL);
 
     $this->assertEquals(QueryBuilder::KNN_MIN_SCORE, $query['body']['min_score']);
+  }
+
+  /**
+   * Tests buildKnnQuery pagination parameters.
+   */
+  public function testBuildKnnQueryPagination(): void {
+    $query = (new QueryBuilder())->buildKnnQuery([0.1], 'fi', self::TEST_MODEL, size: 5, from: 10);
+
+    $this->assertEquals(5, $query['body']['size']);
+    $this->assertEquals(10, $query['body']['from']);
+    // K is fixed to retrieve a large pool of candidates for pagination.
+    $this->assertEquals(50, $query['body']['knn']['k']);
+    $this->assertEquals(500, $query['body']['knn']['num_candidates']);
   }
 
 }
