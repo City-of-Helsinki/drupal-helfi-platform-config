@@ -83,6 +83,16 @@ class SearchTestForm extends FormBase {
       '#maxlength' => 500,
     ];
 
+    $form['min_score'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Minimum Score'),
+      '#description' => $this->t('Results below this score are excluded.'),
+      '#default_value' => QueryBuilder::KNN_MIN_SCORE,
+      '#min' => 0,
+      '#max' => 1,
+      '#step' => 0.01,
+    ];
+
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
@@ -176,6 +186,7 @@ class SearchTestForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $query = $form_state->getValue('search_query');
     $model = $form_state->getValue('model');
+    $minScore = (float) $form_state->getValue('min_score');
 
     if (!$model) {
       $this->messenger()->addError($this->t('No embedding models configured.'));
@@ -199,7 +210,7 @@ class SearchTestForm extends FormBase {
 
       // Build both queries for msearch.
       $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE, minScore: $minScore);
 
       $msearchResponse = $this->elasticClient->msearch([
         'body' => [

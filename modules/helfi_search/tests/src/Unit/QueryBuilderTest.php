@@ -227,4 +227,13 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEmpty((new QueryBuilder())->parseKnnHits([], self::TEST_MODEL));
   }
 
+  /**
+   * Tests buildKnnQuery includes min_score in the query body.
+   */
+  public function testBuildKnnQueryIncludesMinScore(): void {
+    $query = (new QueryBuilder())->buildKnnQuery([0.1], 'fi', self::TEST_MODEL);
+
+    $this->assertEquals(QueryBuilder::KNN_MIN_SCORE, $query['body']['min_score']);
+  }
+
 }

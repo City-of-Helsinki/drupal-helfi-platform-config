@@ -14,6 +14,7 @@ final class QueryBuilder {
   const string EMBEDDINGS_INDEX = 'embeddings';
   const string PROMOTIONS_INDEX = 'search_promotions';
   const int PROMOTIONS_LIMIT = 3;
+  const float KNN_MIN_SCORE = 0.70;
 
   /**
    * Build a promotion search query for use in search() or msearch().
@@ -80,7 +81,7 @@ final class QueryBuilder {
    * @return array
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, bool $includeInnerHits = FALSE, ?array $bundles = NULL): array {
+  public function buildKnnQuery(array $embeddings, string $language, string $model, bool $includeInnerHits = FALSE, ?array $bundles = NULL, float $minScore = self::KNN_MIN_SCORE): array {
     $language = match($language) {
       "fi", "sv", "en" => $language,
       default => "en",
@@ -137,6 +138,7 @@ final class QueryBuilder {
       'index' => self::EMBEDDINGS_INDEX,
       'body' => [
         'knn' => $knn,
+        'min_score' => $minScore,
         'size' => 10,
         '_source' => $source,
       ],
