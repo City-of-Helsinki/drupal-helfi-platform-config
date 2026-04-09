@@ -36,7 +36,9 @@ class SearchTestForm extends FormBase {
     protected LanguageManagerInterface $languageManager,
     protected QueryBuilder $queryBuilder,
     protected FloodInterface $flood,
-    #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
+    // Use production client, because the
+    // test index gets cleared too often.
+    #[Autowire(service: 'helfi_search.etusivu_elastic_client')]
     protected Client $elasticClient,
   ) {
   }
@@ -70,7 +72,7 @@ class SearchTestForm extends FormBase {
         '#type' => 'select',
         '#title' => $this->t('Embedding Model'),
         '#options' => $modelOptions,
-        '#default_value' => $models[0],
+        '#default_value' => array_last($models),
         '#required' => TRUE,
       ];
     }
