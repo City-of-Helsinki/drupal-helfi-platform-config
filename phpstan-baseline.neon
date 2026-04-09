@@ -3546,21 +3546,6 @@ parameters:
 			path: modules/helfi_react_search/src/Plugin/search_api/processor/IsMaternityAndChildHealthClinic.php
 
 		-
-			message: "#^Constant Drupal\\\\helfi_react_search\\\\Plugin\\\\search_api\\\\processor\\\\IsSchool\\:\\:SCHOOL_SERVICE_IDS type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_react_search/src/Plugin/search_api/processor/IsSchool.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_react_search\\\\Plugin\\\\search_api\\\\processor\\\\IsSchool\\:\\:alterIndexedItems\\(\\) has parameter \\$items with no value type specified in iterable type Drupal\\\\search_api\\\\Item\\\\ItemInterface\\.$#"
-			count: 1
-			path: modules/helfi_react_search/src/Plugin/search_api/processor/IsSchool.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_react_search\\\\Plugin\\\\search_api\\\\processor\\\\IsSchool\\:\\:shouldIndex\\(\\) has parameter \\$item with no value type specified in iterable type Drupal\\\\search_api\\\\Item\\\\ItemInterface\\.$#"
-			count: 1
-			path: modules/helfi_react_search/src/Plugin/search_api/processor/IsSchool.php
-
-		-
 			message: "#^Cannot call method render\\(\\) on Drupal\\\\Core\\\\StringTranslation\\\\TranslatableMarkup\\|string\\.$#"
 			count: 1
 			path: modules/helfi_react_search/src/Plugin/search_api/processor/MediaReferenceToObject.php
