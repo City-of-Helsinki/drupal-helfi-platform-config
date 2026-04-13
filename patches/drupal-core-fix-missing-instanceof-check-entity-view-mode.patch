@@ -1,0 +1,15 @@
+diff --git a/core/lib/Drupal/Core/Entity/EntityDisplayBase.php b/core/lib/Drupal/Core/Entity/EntityDisplayBase.php
+index a23a97a570..204cf6e083 100644
+--- a/core/lib/Drupal/Core/Entity/EntityDisplayBase.php
++++ b/core/lib/Drupal/Core/Entity/EntityDisplayBase.php
+@@ -299,7 +299,9 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
+     // Depend on configured modes.
+     if ($this->mode != 'default') {
+       $mode_entity = $this->entityTypeManager()->getStorage('entity_' . $this->displayContext . '_mode')->load($target_entity_type->id() . '.' . $this->mode);
+-      $this->addDependency('config', $mode_entity->getConfigDependencyName());
++      if ($mode_entity instanceof EntityViewModeInterface) {
++        $this->addDependency('config', $mode_entity->getConfigDependencyName());
++      }
+     }
+     return $this;
+   }
