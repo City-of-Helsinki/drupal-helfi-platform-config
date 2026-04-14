@@ -43,11 +43,11 @@ final class LinkedEventsEvent extends ExternalEntity {
    *   The end time or null.
    */
   public function getEndTime(): ?DrupalDateTime {
-    $endTime = $this->get('end_time')?->value;
-
-    if (!$endTime) {
+    if ($this->get('end_time')->isEmpty()) {
       return NULL;
     }
+    $endTime = $this->get('end_time')->value;
+
     // The API returns UTC+0 dates.
     return new DrupalDateTime($endTime, 'UTC');
   }

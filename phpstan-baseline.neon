@@ -2536,11 +2536,6 @@ parameters:
 			path: modules/helfi_paragraphs_curated_event_list/src/Controller/HtmxController.php
 
 		-
-			message: "#^Using nullsafe property access on non\\-nullable type Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\<Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\>\\. Use \\-\\> instead\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_curated_event_list/src/Entity/LinkedEventsEvent.php
-
-		-
 			message: "#^Cannot access offset 'data' on array\\|bool\\|float\\|int\\|object\\|string\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_curated_event_list/src/Plugin/ExternalEntities/StorageClient/Events.php

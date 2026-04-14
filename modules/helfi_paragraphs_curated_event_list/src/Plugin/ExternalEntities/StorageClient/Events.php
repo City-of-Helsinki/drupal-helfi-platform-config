@@ -23,8 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class Events extends StorageClientBase {
-  protected const API_URL = 'https://api.hel.fi/linkedevents/v1';
-  protected const EVENTS_BASE_URL = 'https://tapahtumat.hel.fi';
+  protected const string API_URL = 'https://api.hel.fi/linkedevents/v1';
+  protected const string EVENTS_BASE_URL = 'https://tapahtumat.hel.fi';
 
   /**
    * The current language service.
@@ -77,6 +77,59 @@ class Events extends StorageClientBase {
   }
 
   /**
+   * Gets the URI for given language and query parameters.
+   *
+   * @param array<mixed> $parameters
+   *   The query parameters.
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return string
+   *   The URI.
+   */
+  private function getUri(array $parameters, string $langcode): string {
+    $uri = fn (string $endpoint, array $query) => sprintf('%s/%s?%s', self::API_URL, $endpoint, http_build_query($query));
+
+    // Run when loading a list of entities
+    // eg. when creating autocomplete optionlist.
+    if (isset($parameters['ids'])) {
+      $query = [
+        // We add language code to the ID to make it unique. Strip the
+        // language code when querying the API.
+        'ids' => implode(',', array_map(fn(string $id) => explode(',', $id)[0], $parameters['ids'])),
+        'language' => $langcode,
+      ];
+
+      return $uri('event', $query);
+    }
+
+    if (isset($parameters[0]['field']) && $parameters[0]['field'] === 'id') {
+      $query = [
+        'ids' => implode(',', $parameters[0]['value']),
+        'language' => $langcode,
+      ];
+      return $uri('event', $query);
+    }
+    // Enable searching directly with an event id.
+    if (preg_match('/.{0,15}:.{0,40}/i', $parameters[0]['value'])) {
+      $query = [
+        'ids' => $parameters[0]['value'],
+        'language' => $langcode,
+      ];
+      return $uri('event', $query);
+    }
+
+    // Run when receiving input from autocomplete field.
+    $query = [
+      'input' => $parameters[0]['value'],
+      'language' => $langcode,
+      'start' => date('Y-m-d'),
+      'type' => 'event',
+    ];
+    return $uri('search', $query);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function query(
@@ -90,84 +143,40 @@ class Events extends StorageClientBase {
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
 
-    // Run when loading a list of entities
-    // eg. when creating autocomplete optionlist.
-    if (isset($parameters['ids'])) {
-      $endpoint = 'event';
-      $query = http_build_query([
-        'ids' => implode(',', $parameters['ids']),
-        'language' => $langcode,
-      ]);
-    }
-    elseif (
-      isset($parameters[0]['field']) &&
-      $parameters[0]['field'] === 'id'
-    ) {
-      $endpoint = 'event';
-      $query = http_build_query([
-        'ids' => implode(',', $parameters[0]['value']),
-        'language' => $langcode,
-      ]);
-    }
-    // Enable searching directly with an event id.
-    elseif (preg_match('/.{0,15}:.{0,40}/i', $parameters[0]['value'])) {
-      $endpoint = 'event';
-      $query = http_build_query(
-        [
-          'ids' => $parameters[0]['value'],
-          'language' => $langcode,
-        ]
-      );
-    }
-    // Run when receiving input from autocomplete field.
-    else {
-      $endpoint = 'search';
-      $query = http_build_query([
-        'input' => $parameters[0]['value'],
-        'language' => $langcode,
-        'start' => date('Y-m-d'),
-        'type' => 'event',
-      ]);
-    }
-
-    $uri = sprintf('%s/%s?%s', self::API_URL, $endpoint, $query);
-
     try {
-      $content = $this->client->request('GET', $uri);
+      $content = $this->client->request('GET', $this->getUri($parameters, $langcode));
       $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
 
       if (empty($json['data'])) {
         return [];
       }
     }
-    catch (\Throwable $t) {
-      $this->logger->error(
-        'Linked Events external entity request failed with error: ' .
-        $t->getMessage()
-      );
-
+    catch (\Exception) {
       return [];
     }
 
     $prepared = [];
+
+    $paths = [
+      'sv' => 'kurser',
+      'en' => 'events',
+      'fi' => 'tapahtumat',
+    ];
     foreach ($json['data'] as $event) {
       if (!isset($event['name'][$langcode])) {
         continue;
       }
+      $originalId = $event['id'];
       $start = new \DateTime($event['start_time']);
-
-      $paths = [
-        'sv' => 'kurser',
-        'en' => 'events',
-        'fi' => 'tapahtumat',
-      ];
 
       $event['external_link'] = vsprintf('%s/%s/%s/%s', [
         self::EVENTS_BASE_URL,
         $langcode,
         $paths[$langcode],
-        $event['id'],
+        $originalId,
       ]);
+      // Make sure event id is unique per language.
+      $event['id'] = sprintf('%s,%s', $originalId, $langcode);
       $event['title'] = $event['name'][$langcode] . ' (' . $start->format('d.m.Y H:i') . ')';
       $event['name'] = $event['name'][$langcode];
 
