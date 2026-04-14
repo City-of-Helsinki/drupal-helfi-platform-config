@@ -1,0 +1,37 @@
+diff --git a/src/Plugin/Field/FieldWidget/ParagraphsWidget.php b/src/Plugin/Field/FieldWidget/ParagraphsWidget.php
+index cfc0361..3928b0c 100644
+--- a/src/Plugin/Field/FieldWidget/ParagraphsWidget.php
++++ b/src/Plugin/Field/FieldWidget/ParagraphsWidget.php
+@@ -479,7 +479,7 @@ class ParagraphsWidget extends WidgetBase {
+       if (\Drupal::moduleHandler()->moduleExists('content_translation')) {
+         $manager = \Drupal::service('content_translation.manager');
+         $settings = $manager->getBundleTranslationSettings('paragraph', $paragraphs_entity->getParagraphType()->id());
+-        if (!empty($settings['untranslatable_fields_hide']) && $this->isTranslating) {
++        if (!empty($settings['untranslatable_fields_hide']) && $this->isTranslating && !$this->supportsAsymmetricTranslations()) {
+           $translating_force_close = TRUE;
+           $display = EntityFormDisplay::collectRenderDisplay($paragraphs_entity, $this->getSetting('form_display_mode'));
+           // Check if the paragraph has translatable fields.
+@@ -2678,7 +2678,7 @@ class ParagraphsWidget extends WidgetBase {
+    *   TRUE if we can allow reference changes, otherwise FALSE.
+    */
+   protected function allowReferenceChanges() {
+-    return !$this->isTranslating;
++    return !$this->isTranslating || $this->supportsAsymmetricTranslations();
+   }
+
+   /**
+@@ -2758,4 +2758,14 @@ class ParagraphsWidget extends WidgetBase {
+     return FALSE;
+   }
+
++  /**
++   * Checks if asymmetric translation is supported or not.
++   *
++   * @return bool
++   *   TRUE if asymmetric translation is supported, otherwise FALSE.
++   */
++  protected function supportsAsymmetricTranslations() {
++    return FALSE;
++  }
++
+ }
