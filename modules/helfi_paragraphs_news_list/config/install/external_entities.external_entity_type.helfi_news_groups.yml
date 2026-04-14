@@ -13,6 +13,9 @@ content_class: Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\Term
 read_only: true
 debug_level: 0
 field_mappers:
+  default_langcode:
+    id: null
+    config: { }
   id:
     id: generic
     config:
@@ -29,6 +32,9 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
+  langcode:
+    id: null
+    config: { }
   tid:
     id: generic
     config:
@@ -77,12 +83,6 @@ field_mappers:
                 config: {  }
             description: ''
       debug_level: 0
-  default_langcode:
-    id: null
-    config: {  }
-  langcode:
-    id: null
-    config: {  }
 field_mapping_notes: ''
 data_aggregator:
   id: single
