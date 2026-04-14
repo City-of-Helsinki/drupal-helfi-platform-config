@@ -2626,21 +2626,6 @@ parameters:
 			path: modules/helfi_paragraphs_curated_event_list/tests/src/Kernel/EventEntityTest.php
 
 		-
-			message: "#^Parameter \\#2 \\$haystack of method PHPUnit\\\\Framework\\\\Assert\\:\\:assertStringContainsString\\(\\) expects string, string\\|false given\\.$#"
-			count: 3
-			path: modules/helfi_paragraphs_curated_event_list/tests/src/Kernel/HtmxControllerTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$haystack of method PHPUnit\\\\Framework\\\\Assert\\:\\:assertStringNotContainsString\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_curated_event_list/tests/src/Kernel/HtmxControllerTest.php
-
-		-
-			message: "#^Parameter \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
-			count: 5
-			path: modules/helfi_paragraphs_curated_event_list/tests/src/Kernel/HtmxControllerTest.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_paragraphs_hearings\\\\Hook\\\\HearingsParagraphHooks\\:\\:entityBundleFieldInfoAlter\\(\\) has parameter \\$bundle with no type specified\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_hearings/src/Hook/HearingsParagraphHooks.php

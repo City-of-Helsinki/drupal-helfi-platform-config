@@ -119,7 +119,7 @@ class HtmxControllerTest extends KernelTestBase {
   #[Test]
   public function testAccessDenied(): void {
     $client = $this->setupMockHttpClient([
-      new Response(body: json_encode([
+      new Response(body: (string) json_encode([
         'data' => [
           [
             'id' => 'helsinki:agnjd4b73u',
@@ -271,7 +271,7 @@ class HtmxControllerTest extends KernelTestBase {
     $paragraphs = $responses = [];
 
     foreach (['sv', 'fi', 'en'] as $langcode) {
-        // Each language is queried three times.
+      // Each language is queried three times.
       for ($i = 0; $i < 3; $i++) {
         $responses[] = new Response(body: (string) json_encode([
           'data' => [
