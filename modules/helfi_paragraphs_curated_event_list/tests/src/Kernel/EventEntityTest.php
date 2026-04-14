@@ -86,7 +86,7 @@ class EventEntityTest extends KernelTestBase {
     ]);
     $this->container->set('http_client', $client);
 
-    $entity = LinkedEventsEvent::load('helsinki:agnjd4b73u');
+    $entity = LinkedEventsEvent::load('helsinki:agnjd4b73u,en');
     $this->assertEquals($expected, $entity->hasEnded());
   }
 

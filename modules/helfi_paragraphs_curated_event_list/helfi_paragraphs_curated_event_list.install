@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Contains installation hooks for Curated events list module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+
+/**
+ * Convert Event ids to be unique per language.
+ */
+function helfi_paragraphs_curated_event_list_update_11001(): void {
+  /** @var \Drupal\paragraphs\ParagraphsStorage $storage */
+  $storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+
+  $query = $storage->getQuery();
+  $query->condition('type', 'curated_event_list')
+    ->exists('field_events');
+  $query->accessCheck(FALSE);
+
+  $results = $query->execute();
+
+  foreach ($results as $result) {
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+    $paragraph = $storage->load($result);
+
+    $events = $paragraph->get('field_events');
+    assert($events instanceof EntityReferenceFieldItemListInterface);
+
+    foreach ($events as $item) {
+      $parts = explode(',', (string) $item->target_id);
+
+      // Item is already migrated.
+      if (count($parts) > 1) {
+        continue;
+      }
+      $item->target_id = sprintf('%s,%s', $parts[0], $paragraph->language()->getId());
+    }
+    $paragraph->save();
+  }
+}

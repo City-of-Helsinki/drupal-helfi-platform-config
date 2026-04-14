@@ -119,7 +119,7 @@ class HtmxControllerTest extends KernelTestBase {
   #[Test]
   public function testAccessDenied(): void {
     $client = $this->setupMockHttpClient([
-      new Response(body: json_encode([
+      new Response(body: (string) json_encode([
         'data' => [
           [
             'id' => 'helsinki:agnjd4b73u',
@@ -169,7 +169,7 @@ class HtmxControllerTest extends KernelTestBase {
   #[Test]
   public function testExpiredEntity(): void {
     $client = $this->setupMockHttpClient([
-      new Response(body: json_encode([
+      new Response(body: (string) json_encode([
         'data' => [
           [
             'id' => 'helsinki:agnjd4b73u',
@@ -203,7 +203,7 @@ class HtmxControllerTest extends KernelTestBase {
     $response = $this->createHtmxRequest($paragraph);
     $cache = $response->getCacheableMetadata();
     $this->assertEquals(HtmxController::MAX_AGE, $cache->getCacheMaxAge());
-    $this->assertStringContainsString('Recommended events were not found', $response->getContent());
+    $this->assertStringContainsString('Recommended events were not found', (string) $response->getContent());
     $this->assertEquals(200, $response->getStatusCode());
   }
 
@@ -213,7 +213,7 @@ class HtmxControllerTest extends KernelTestBase {
   #[Test]
   public function testExpiredAndActive(): void {
     $client = $this->setupMockHttpClient([
-      new Response(body: json_encode([
+      new Response(body: (string) json_encode([
         'data' => [
           [
             'id' => 'helsinki:321',
@@ -239,8 +239,8 @@ class HtmxControllerTest extends KernelTestBase {
     $paragraph = Paragraph::create([
       'type' => 'curated_event_list',
       'field_events' => [
-        ['target_id' => 'helsinki:321'],
-        ['target_id' => 'helsinki:123'],
+        ['target_id' => 'helsinki:321,en'],
+        ['target_id' => 'helsinki:123,en'],
       ],
     ]);
     $paragraph->save();
@@ -253,8 +253,8 @@ class HtmxControllerTest extends KernelTestBase {
     $node->save();
 
     $response = $this->createHtmxRequest($paragraph);
-    $this->assertStringContainsString('Title active', $response->getContent());
-    $this->assertStringNotContainsString('Title expired', $response->getContent());
+    $this->assertStringContainsString('Title active', (string) $response->getContent());
+    $this->assertStringNotContainsString('Title expired', (string) $response->getContent());
     $cache = $response->getCacheableMetadata();
 
     // Make sure max age is 1d + 5 seconds because that's when the event
@@ -268,49 +268,30 @@ class HtmxControllerTest extends KernelTestBase {
    */
   #[Test]
   public function testTranslation(): void {
-    $enResponse = new Response(body: json_encode([
-      'data' => [
-        [
-          'id' => 'helsinki:123',
-          'name' => [
-            'en' => 'Title en',
-          ],
-          'start_time' => 'now',
-          'end_time' => '+1 day',
-        ],
-      ],
-    ]));
-    $fiResponse = new Response(body: json_encode([
-      'data' => [
-        [
-          'id' => 'helsinki:123',
-          'name' => [
-            'fi' => 'Title fi',
-          ],
-          'start_time' => 'now',
-          'end_time' => '+1 day',
-        ],
-      ],
-    ]));
-    $client = $this->setupMockHttpClient([
+    $paragraphs = $responses = [];
+
+    foreach (['sv', 'fi', 'en'] as $langcode) {
       // Each language is queried three times.
-      $enResponse,
-      $enResponse,
-      $enResponse,
-      $fiResponse,
-      $fiResponse,
-      $fiResponse,
-    ]);
-    $this->container->set('http_client', $client);
+      for ($i = 0; $i < 3; $i++) {
+        $responses[] = new Response(body: (string) json_encode([
+          'data' => [
+            [
+              'id' => 'helsinki:123',
+              'name' => [
+                $langcode => 'Title ' . $langcode,
+              ],
+              'start_time' => 'now',
+              'end_time' => '+1 day',
+            ],
+          ],
+        ]));
+      }
 
-    $paragraphs = [];
-
-    foreach (['en', 'fi'] as $langcode) {
       $paragraphs[$langcode] = Paragraph::create([
         'type' => 'curated_event_list',
         'langcode' => $langcode,
         'field_events' => [
-          ['target_id' => 'helsinki:123'],
+          ['target_id' => 'helsinki:123,' . $langcode],
         ],
       ]);
       $paragraphs[$langcode]->save();
@@ -328,13 +309,20 @@ class HtmxControllerTest extends KernelTestBase {
       'title' => 'Event list fi',
       'field_paragraphs' => [$paragraphs['fi']],
     ]);
+    $node->addTranslation('sv', [
+      'title' => 'Event list sv',
+      'field_paragraphs' => [$paragraphs['sv']],
+    ]);
     $node->save();
 
-    foreach (['en', 'fi'] as $langcode) {
+    $client = $this->setupMockHttpClient($responses);
+    $this->container->set('http_client', $client);
+
+    foreach (['sv', 'fi', 'en'] as $langcode) {
       $this->setOverrideLanguageCode($langcode);
       $response = $this->createHtmxRequest($paragraphs[$langcode]);
 
-      $this->assertStringContainsString('Title ' . $langcode, $response->getContent());
+      $this->assertStringContainsString('Title ' . $langcode, (string) $response->getContent());
       $cache = $response->getCacheableMetadata();
       $this->assertEquals(200, $response->getStatusCode());
 
