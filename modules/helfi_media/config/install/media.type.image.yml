@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - crop
+    - media
+    - image
 third_party_settings:
   crop:
     image_field: _none

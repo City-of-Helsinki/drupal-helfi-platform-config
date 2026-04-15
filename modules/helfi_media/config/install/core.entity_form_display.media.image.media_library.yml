@@ -10,6 +10,7 @@ dependencies:
     - media.type.image
   module:
     - focal_point
+    - media_library
 id: media.image.media_library
 targetEntityType: media
 bundle: image

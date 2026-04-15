@@ -8,6 +8,7 @@ dependencies:
     - media.type.hel_map
   module:
     - link
+    - media_library
 id: media.hel_map.media_library
 targetEntityType: media
 bundle: hel_map
