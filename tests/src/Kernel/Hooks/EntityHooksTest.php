@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
+use Drupal\Core\Config\ConfigInstallerInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\Entity\BaseFieldOverride;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\helfi_platform_config\Hook\EntityHooks;
 use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
@@ -93,6 +96,61 @@ final class EntityHooksTest extends KernelTestBase {
     $this->assertSame('image', $handlerSettings['target_bundles']['image']);
     $this->assertSame(['weight' => 1, 'enabled' => TRUE], $handlerSettings['target_bundles_drag_drop']['text']);
     $this->assertSame(['weight' => 2, 'enabled' => TRUE], $handlerSettings['target_bundles_drag_drop']['image']);
+  }
+
+  /**
+   * Tests that entityTypeAlter removes field_ui_base_route during config sync.
+   */
+  public function testEntityTypeAlterRemovesFieldUiBaseRouteDuringSync(): void {
+    $configInstaller = $this->createMock(ConfigInstallerInterface::class);
+    $configInstaller->method('isSyncing')->willReturn(TRUE);
+
+    $hooks = new EntityHooks(
+      $this->container->get('module_handler'),
+      $configInstaller,
+    );
+
+    $externalType = $this->createMock(EntityTypeInterface::class);
+    $externalType->method('get')->willReturnMap([
+      ['provider', 'external_entities'],
+      ['field_ui_base_route', 'entity.external_entity_type.helfi_announcements.edit_form'],
+    ]);
+    $externalType->expects($this->once())
+      ->method('set')
+      ->with('field_ui_base_route', NULL);
+
+    $otherType = $this->createMock(EntityTypeInterface::class);
+    $otherType->method('get')->willReturnMap([
+      ['provider', 'node'],
+      ['field_ui_base_route', 'entity.node_type.edit_form'],
+    ]);
+    $otherType->expects($this->never())->method('set');
+
+    $entityTypes = [
+      'helfi_announcements' => $externalType,
+      'node' => $otherType,
+    ];
+    $hooks->entityTypeAlter($entityTypes);
+  }
+
+  /**
+   * Tests that entityTypeAlter doesn't modify entity types outside config sync.
+   */
+  public function testEntityTypeAlterDoesNothingWhenNotSyncing(): void {
+    $configInstaller = $this->createMock(ConfigInstallerInterface::class);
+    $configInstaller->method('isSyncing')->willReturn(FALSE);
+
+    $hooks = new EntityHooks(
+      $this->container->get('module_handler'),
+      $configInstaller,
+    );
+
+    $externalType = $this->createMock(EntityTypeInterface::class);
+    $externalType->expects($this->never())->method('get');
+    $externalType->expects($this->never())->method('set');
+
+    $entityTypes = ['helfi_announcements' => $externalType];
+    $hooks->entityTypeAlter($entityTypes);
   }
 
   /**
