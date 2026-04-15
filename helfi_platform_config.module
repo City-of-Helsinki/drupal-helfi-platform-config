@@ -502,3 +502,9 @@ function helfi_platform_config_preprocess_page(array &$variables) : void {
     $variables['#attached']['library'][] = 'helfi_platform_config/heading_anchor_buttons';
   }
 }
+
+function helfi_platform_config_preprocess_form_element__helfi_location_autocomplete(&$variables) {
+  if (isset($variables['element']['#errors']) && empty($variables['errors'])) {
+    $variables['errors'] = $variables['element']['#errors'];
+  }
+}
