@@ -29,6 +29,7 @@ class EntityHooks {
    * Implements hook_entity_type_alter().
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface[] $entity_types
+   *   Entity types as an array.
    */
   #[Hook('entity_type_alter')]
   public function entityTypeAlter(array &$entity_types): void {
