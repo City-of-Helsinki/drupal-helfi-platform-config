@@ -15,7 +15,7 @@ debug_level: 0
 field_mappers:
   default_langcode:
     id: null
-    config: { }
+    config: {  }
   id:
     id: generic
     config:
@@ -34,7 +34,7 @@ field_mappers:
       debug_level: 0
   langcode:
     id: null
-    config: { }
+    config: {  }
   location:
     id: generic
     config:
