@@ -12,7 +12,7 @@ use Drupal\Core\Config\DefaultConfigMode;
 /**
  * Implements hook_install().
  */
-function helfi_media_install($is_syncing) : void {
+function helfi_media_install(bool $is_syncing): void {
   // Perform the following steps only during site installation.
   if (!$is_syncing) {
     return;
