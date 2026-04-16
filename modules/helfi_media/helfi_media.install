@@ -7,6 +7,29 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Config\DefaultConfigMode;
+
+/**
+ * Implements hook_install().
+ */
+function helfi_media_install($is_syncing) : void {
+  // Perform the following steps only during site installation.
+  if (!$is_syncing) {
+    return;
+  }
+
+  $module_handler = Drupal::service('module_handler');
+  $module = 'media_library';
+
+  // Enable media_library module if necessary.
+  if (!$module_handler->moduleExists($module)) {
+    Drupal::service('module_installer')->install([$module]);
+  }
+  // Install the default config.
+  $config_installer = \Drupal::service('config.installer');
+  $config_installer->installDefaultConfig('module', $module, DefaultConfigMode::InstallEntities);
+}
+
 /**
  * Install Focal Point 2.0 dependencies jquery_ui and jquery_ui_draggable.
  *
