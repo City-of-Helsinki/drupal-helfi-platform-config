@@ -23,8 +23,8 @@ content:
     type: options_buttons
     weight: 0
     region: content
-    settings: { }
-    third_party_settings: { }
+    settings: {  }
+    third_party_settings: {  }
   field_unit_contact_unit:
     type: entity_reference_autocomplete
     weight: 1

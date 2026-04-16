@@ -8,7 +8,7 @@ dependencies:
   module:
     - helfi_paragraphs_org_chart
     - text
-third_party_settings: { }
+third_party_settings: {  }
 id: paragraph.org_chart.field_org_chart_desc
 field_name: field_org_chart_desc
 entity_type: paragraph
@@ -19,5 +19,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: { }
+settings: {  }
 field_type: text_long
