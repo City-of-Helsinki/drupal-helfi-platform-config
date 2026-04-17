@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Config\DefaultConfigMode;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\user\Entity\Role;
 
@@ -18,18 +17,6 @@ function helfi_base_content_install($is_syncing) : void {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
-    // Perform these steps only during site installation.
-    $module_handler = Drupal::service('module_handler');
-    $module = 'node';
-
-    // Enable node module if necessary.
-    if (!$module_handler->moduleExists($module)) {
-      Drupal::service('module_installer')->install([$module]);
-    }
-
-    // Install the default config.
-    $config_installer = \Drupal::service('config.installer');
-    $config_installer->installDefaultConfig('module', $module, DefaultConfigMode::InstallEntities);
     return;
   }
 
