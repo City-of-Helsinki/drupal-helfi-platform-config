@@ -50,30 +50,6 @@ function helfi_tpr_config_install_metatag_settings(): void {
  * Implements hook_install().
  */
 function helfi_tpr_config_install($is_syncing) : void {
-  // Add TPR entity types to content lock settings to avoid errors during
-  // site-install.
-  if (\Drupal::moduleHandler()->moduleExists('content_lock')) {
-    $tpr_types = [
-      'tpr_service_channel' => [],
-      'tpr_errand_service' => [],
-      'tpr_ontology_word_details' => [],
-      'tpr_service' => ['*' => '*'],
-      'tpr_unit' => ['*' => '*'],
-    ];
-    $tpr_form_op_lock = [
-      'tpr_service_channel' => ['mode' => 0, 'values' => []],
-      'tpr_errand_service' => ['mode' => 0, 'values' => []],
-      'tpr_ontology_word_details' => ['mode' => 0, 'values' => []],
-      'tpr_service' => ['mode' => 0, 'values' => []],
-      'tpr_unit' => ['mode' => 0, 'values' => []],
-    ];
-    $content_lock_settings = \Drupal::configFactory()->getEditable('content_lock.settings');
-    $content_lock_settings
-      ->set('types', array_merge($content_lock_settings->get('types') ?? [], $tpr_types))
-      ->set('form_op_lock', array_merge($content_lock_settings->get('form_op_lock') ?? [], $tpr_form_op_lock))
-      ->save();
-  }
-
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
@@ -109,9 +85,22 @@ function helfi_tpr_config_install($is_syncing) : void {
     $pathauto_settings->set('enabled_entity_types', $pathauto_config)->save();
   }
 
+  // Add unit and service to content lock settings.
+  if ($module_handler->moduleExists('content_lock')) {
+    $types = [
+      'tpr_service' => ['*' => '*'],
+      'tpr_unit' => ['*' => '*'],
+    ];
+    $config_factory = \Drupal::configFactory();
+    $content_lock_settings = $config_factory->getEditable('content_lock.settings');
+    $content_lock_config = $content_lock_settings->get('types');
+    $content_lock_config = array_merge($content_lock_config, $types);
+    $content_lock_settings->set('types', $content_lock_config)->save();
+  }
+
   // Install metatag settings manually as customizations will be overridden
   // during default content installation.
-  if (\Drupal::moduleHandler()->moduleExists('metatag')) {
+  if ($module_handler->moduleExists('metatag')) {
     helfi_tpr_config_install_metatag_settings();
   }
 }
