@@ -26,32 +26,6 @@ class EntityHooks {
   }
 
   /**
-   * Implements hook_entity_type_alter().
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface[] $entity_types
-   */
-  #[Hook('entity_type_alter')]
-  public function entityTypeAlter(array &$entity_types): void {
-    if (!$this->configInstaller->isSyncing()) {
-      return;
-    }
-    // ExternalEntityType::postSave() rebuilds routes in the middle of
-    // configuration import and causes the ConfigMapperManager to serve
-    // unexistent field mapper definitions for external entity's field UI
-    // base routes. This makes getOverviewRoute() return NULL and crash.
-    foreach ($entity_types as $entity_type) {
-      // Remove the field_ui_base_routes for external entity types during
-      // configuration import during sync.
-      if (
-        $entity_type->get('provider') === 'external_entities' &&
-        $entity_type->get('field_ui_base_route')
-      ) {
-        $entity_type->set('field_ui_base_route', NULL);
-      }
-    }
-  }
-
-  /**
    * Implements hook_ENTITY_TYPE_presave().
    */
   #[Hook('base_field_override_presave')]
