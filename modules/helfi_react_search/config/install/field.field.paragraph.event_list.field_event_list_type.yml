@@ -19,5 +19,5 @@ default_value:
   -
     value: events
 default_value_callback: ''
-settings: { }
+settings: {  }
 field_type: list_string

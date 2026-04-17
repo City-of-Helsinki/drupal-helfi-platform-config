@@ -15,7 +15,7 @@ label: 'Hobby categories'
 description: 'Filter hobbies by category.'
 required: false
 translatable: false
-default_value: { }
+default_value: {  }
 default_value_callback: ''
 settings:
   allowed_values: {  }
