@@ -1,0 +1,150 @@
+diff --git a/core/lib/Drupal/Core/DrupalKernel.php b/core/lib/Drupal/Core/DrupalKernel.php
+index 32621ccba9f45907a939ac7966a0c0b9249fbbff..c0122353dd48d2099607d1fc88150d64489f2f6f 100644
+--- a/core/lib/Drupal/Core/DrupalKernel.php
++++ b/core/lib/Drupal/Core/DrupalKernel.php
+@@ -1333,9 +1333,20 @@ public function resetContainer(): ContainerInterface {
+
+     $all_messages = $this->container->get('messenger')->all();
+
++    // Track the config installer syncing flag for when multiple modules are
++    // installed and container is reset.
++    $config_is_syncing = $this->container->get('config.installer')->isSyncing();
++    $source_storage = $this->container->get('config.installer')->getSourceStorage();
+     $persist = $this->getServicesToPersist($this->container);
+     $this->container->reset();
+     $this->persistServices($this->container, $persist);
++    // Restore syncing flag to new container.
++    if ($config_is_syncing) {
++      $this->container->get('config.installer')->setSyncing(TRUE);
++      if ($source_storage) {
++        $this->container->get('config.installer')->setSourceStorage($source_storage);
++      }
++    }
+
+     $this->container->set('kernel', $this);
+
+diff --git a/core/modules/system/tests/modules/system_test/src/Hook/SystemTestHooks.php b/core/modules/system/tests/modules/system_test/src/Hook/SystemTestHooks.php
+index 48f0c6bc499895be5f00e6466293b270ed05d0ad..a70d241a6e247b3aab2d3ef9a9d91bf5f241b959 100644
+--- a/core/modules/system/tests/modules/system_test/src/Hook/SystemTestHooks.php
++++ b/core/modules/system/tests/modules/system_test/src/Hook/SystemTestHooks.php
+@@ -35,12 +35,18 @@ public function help($route_name, RouteMatchInterface $route_match): ?string {
+    * Implements hook_modules_installed().
+    */
+   #[Hook('modules_installed')]
+-  public function modulesInstalled($modules): void {
++  public function modulesInstalled(array $modules, bool $is_syncing): void {
+     if (\Drupal::state()->get('system_test.verbose_module_hooks')) {
+       foreach ($modules as $module) {
+         \Drupal::messenger()->addStatus($this->t('hook_modules_installed fired for @module', ['@module' => $module]));
+       }
+     }
++    // Save the config.installer isSyncing() value to state to check that it is
++    // correctly set when installing module during config import.
++    \Drupal::state()->set('system_test_modules_installed_module_config_installer_syncing', \Drupal::service('config.installer')->isSyncing());
++    // Save the $is_syncing parameter value to state to check that it is
++    // correctly set when installing module during config import.
++    \Drupal::state()->set('system_test_modules_installed_module_syncing_param', $is_syncing);
+   }
+
+   /**
+diff --git a/core/tests/Drupal/KernelTests/Core/Config/ConfigImporterTest.php b/core/tests/Drupal/KernelTests/Core/Config/ConfigImporterTest.php
+index c3621c33b3bc29a946e052e2b3d69a285eb56b0f..31c1a77c9663df165de47cb67e01dd534e87519e 100644
+--- a/core/tests/Drupal/KernelTests/Core/Config/ConfigImporterTest.php
++++ b/core/tests/Drupal/KernelTests/Core/Config/ConfigImporterTest.php
+@@ -834,8 +834,9 @@ public function testIsSyncingInHooks(): void {
+     $this->assertTrue($state['global_state::delete'], '\Drupal::isConfigSyncing() returns TRUE');
+     $this->assertTrue($state['entity_state::delete'], 'ConfigEntity::isSyncing() returns TRUE');
+
+-    // Test that isSyncing is TRUE in hook_module_preinstall() when installing
+-    // module via config import.
++    // Test that isSyncing is TRUE in hook_module_preinstall() and
++    // hook_modules_installed() when installing a single module via config
++    // import.
+     $extensions = $sync->read('core.extension');
+     // First, install system_test so that its hook_module_preinstall() will run
+     // when module_test is installed.
+@@ -853,6 +854,32 @@ public function testIsSyncingInHooks(): void {
+     // when module is installed via config import.
+     $this->assertTrue(\Drupal::state()->get('system_test_preinstall_module_config_installer_syncing'), '\Drupal::isConfigSyncing() in system_test_module_preinstall() returns TRUE');
+     $this->assertTrue(\Drupal::state()->get('system_test_preinstall_module_syncing_param'), 'system_test_module_preinstall() $is_syncing value is TRUE');
++    // Syncing values stored in state by hook_modules_installed should be TRUE
++    // when module is installed via config import.
++    $this->assertTrue(\Drupal::state()->get('system_test_modules_installed_module_config_installer_syncing'));
++    $this->assertTrue(\Drupal::state()->get('system_test_modules_installed_module_syncing_param'));
++
++    // Reset the state values before testing multiple module install.
++    \Drupal::state()->set('system_test_preinstall_module_config_installer_syncing', FALSE);
++    \Drupal::state()->set('system_test_preinstall_module_syncing_param', FALSE);
++    \Drupal::state()->set('system_test_modules_installed_module_config_installer_syncing', FALSE);
++    \Drupal::state()->set('system_test_modules_installed_module_syncing_param', FALSE);
++    // Test isSyncing is TRUE in hook_module_preinstall() and
++    // hook_modules_installed() when installing multiple module via config
++    // import.
++    $extensions['module']['generic_module1_test'] = 0;
++    $extensions['module']['generic_module2_test'] = 0;
++    $sync->write('core.extension', $extensions);
++    $this->configImporter()->import();
++
++    // Syncing values stored in state by hook_module_preinstall should be TRUE
++    // when multiple modules are installed via config import.
++    $this->assertTrue(\Drupal::state()->get('system_test_preinstall_module_config_installer_syncing'), '\Drupal::isConfigSyncing() in system_test_module_preinstall() returns TRUE');
++    $this->assertTrue(\Drupal::state()->get('system_test_preinstall_module_syncing_param'), 'system_test_module_preinstall() $is_syncing value is TRUE');
++    // Syncing values stored in state by hook_modules_installed should be TRUE
++    // when multiple modules are installed via config import.
++    $this->assertTrue(\Drupal::state()->get('system_test_modules_installed_module_config_installer_syncing'));
++    $this->assertTrue(\Drupal::state()->get('system_test_modules_installed_module_syncing_param'));
+
+     // Syncing value stored in state by uninstall hooks should be FALSE
+     // when uninstalling outside of config import.
+diff --git a/core/tests/Drupal/KernelTests/Core/DrupalKernel/DrupalKernelTest.php b/core/tests/Drupal/KernelTests/Core/DrupalKernel/DrupalKernelTest.php
+index 668382ad519917ce318b65d6bbb308f49db28d2a..ff37ba5c390f389ecc9a8204cde72ca6eee06ded 100644
+--- a/core/tests/Drupal/KernelTests/Core/DrupalKernel/DrupalKernelTest.php
++++ b/core/tests/Drupal/KernelTests/Core/DrupalKernel/DrupalKernelTest.php
+@@ -5,6 +5,7 @@
+ namespace Drupal\KernelTests\Core\DrupalKernel;
+
+ use Composer\Autoload\ClassLoader;
++use Drupal\Core\Config\ConfigInstallerInterface;
+ use Drupal\Core\DrupalKernel;
+ use Drupal\Core\DrupalKernelInterface;
+ use Drupal\KernelTests\KernelTestBase;
+@@ -15,6 +16,7 @@
+ use PHPUnit\Framework\Attributes\PreserveGlobalState;
+ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++use PHPUnit\Framework\Attributes\TestWith;
+ use Prophecy\Argument;
+ use Symfony\Component\HttpFoundation\Request;
+
+@@ -300,7 +302,9 @@ public function testClassLoaderAutoDetect(bool $value): void {
+   /**
+    * Tests reset container.
+    */
+-  public function testResetContainer(): void {
++  #[TestWith([TRUE])]
++  #[TestWith([FALSE])]
++  public function testResetContainer(bool $config_installer_syncing): void {
+     $modules_enabled = [
+       'system' => 'system',
+       'user' => 'user',
+@@ -324,6 +328,10 @@ public function testResetContainer(): void {
+     $container->get('messenger')->addMessage('Test reset', 'Container reset');
+     $this->assertSame(['Test reset'], $container->get('messenger')->messagesByType('Container reset'));
+
++    // Ensure config installer isSyncing status is maintained through a
++    // container reset.
++    \Drupal::service(ConfigInstallerInterface::class)->setSyncing($config_installer_syncing);
++
+     // Ensure persisted services are persisted.
+     $request_stack = $container->get('request_stack');
+
+@@ -351,6 +359,10 @@ public function testResetContainer(): void {
+     // Ensure messages are maintained through a container reset.
+     $this->assertSame(['Test reset'], $container->get('messenger')->messagesByType('Container reset'));
+
++    // Ensure config installer isSyncing status is maintained through a
++    // container reset.
++    $this->assertSame($config_installer_syncing, \Drupal::service(ConfigInstallerInterface::class)->isSyncing());
++
+     // Ensure persisted services are persisted.
+     $this->assertSame($request_stack, $container->get('request_stack'));

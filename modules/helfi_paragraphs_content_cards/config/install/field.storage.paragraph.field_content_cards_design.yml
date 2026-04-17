@@ -10,7 +10,7 @@ field_name: field_content_cards_design
 entity_type: paragraph
 type: list_string
 settings:
-  allowed_values: { }
+  allowed_values: {  }
   allowed_values_function: helfi_paragraphs_content_cards_allowed_values
 module: options
 locked: false

@@ -50,17 +50,22 @@ final readonly class HtmxController implements ContainerInjectionInterface {
     /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent[] $entities */
     $entities = $paragraph->get('field_events')->referencedEntities();
 
+    $numItems = 0;
     foreach ($entities as $entity) {
       $entity->addCacheableDependency($paragraph);
 
+      // Show maximum of three items.
+      if ($numItems >= 3) {
+        break;
+      }
       if ($entity->hasEnded()) {
         continue;
       }
       $build['items'][] = $this->entityTypeManager->getViewBuilder('linkedevents_event')
         ->view($entity);
+
+      $numItems++;
     }
-    // Show maximum of three items.
-    $build['items'] = array_slice($build['items'], 0, 3);
 
     if (empty($build['items'])) {
       $build['message'] = [

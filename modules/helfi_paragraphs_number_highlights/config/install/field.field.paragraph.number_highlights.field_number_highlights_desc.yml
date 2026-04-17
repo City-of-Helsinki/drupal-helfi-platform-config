@@ -7,7 +7,7 @@ dependencies:
     - paragraphs.paragraphs_type.number_highlights
   module:
     - text
-third_party_settings: { }
+third_party_settings: {  }
 id: paragraph.number_highlights.field_number_highlights_desc
 field_name: field_number_highlights_desc
 entity_type: paragraph
@@ -18,5 +18,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: { }
+settings: {  }
 field_type: text_long

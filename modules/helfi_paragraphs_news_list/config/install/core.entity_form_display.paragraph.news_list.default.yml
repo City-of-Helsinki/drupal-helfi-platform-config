@@ -74,4 +74,3 @@ content:
 hidden:
   created: true
   status: true
-  field_limit: true

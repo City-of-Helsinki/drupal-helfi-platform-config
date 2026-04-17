@@ -8,6 +8,7 @@ dependencies:
   - 'drupal:editor'
   - 'drupal:language'
   - 'drupal:link'
+  - 'drupal:options'
   - 'drupal:text'
   - 'drupal:taxonomy'
   - 'select2:select2'
