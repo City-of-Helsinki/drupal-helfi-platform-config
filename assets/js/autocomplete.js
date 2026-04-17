@@ -66,6 +66,7 @@ const getTranslation = (fullName) => {
       parent.classList.add('hds-text-input--invalid');
       const errorSpan = document.createElement('span');
       errorSpan.classList.add('hds-text-input__error-text');
+      errorSpan.id = 'js-locate-error';
       errorSpan.textContent = Drupal.t(
         "We couldn't retrieve your current location. Try entering an address.",
         {},
@@ -229,6 +230,11 @@ const getTranslation = (fullName) => {
     });
     // Hide location error input when changing input
     element.addEventListener('change', removeLocationError);
+
+    // Focus input if there is a validation error on page load.
+    if (element.classList.contains('error')) {
+      element.focus();
+    }
   };
 
   Drupal.behaviors.helfi_location_autocomplete = {
