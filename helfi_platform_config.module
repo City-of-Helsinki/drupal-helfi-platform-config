@@ -503,7 +503,13 @@ function helfi_platform_config_preprocess_page(array &$variables) : void {
   }
 }
 
-function helfi_platform_config_preprocess_form_element__helfi_location_autocomplete(&$variables) {
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * @param array<mixed> $variables
+ *   Variables as an array.
+ */
+function helfi_platform_config_preprocess_form_element__helfi_location_autocomplete(array &$variables):void {
   if (isset($variables['element']['#errors']) && empty($variables['errors'])) {
     $variables['errors'] = $variables['element']['#errors'];
   }
