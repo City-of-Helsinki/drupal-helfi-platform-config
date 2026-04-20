@@ -76,6 +76,11 @@ parameters:
 			path: helfi_platform_config.module
 
 		-
+			message: "#^Function helfi_platform_config_preprocess_form_element__helfi_location_autocomplete\\(\\) has parameter \\$variables with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_platform_config.module
+
+		-
 			message: "#^Function helfi_platform_config_preprocess_html\\(\\) has parameter \\$variables with no type specified\\.$#"
 			count: 1
 			path: helfi_platform_config.module
