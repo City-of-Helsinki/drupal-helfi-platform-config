@@ -213,7 +213,7 @@ const getTranslation = (fullName) => {
         return;
       }
 
-      if (autocompleteInstance.input.value === '' && defaultOptions.length) {
+      if (autocompleteInstance.input.value === '' && defaultOptions.length && !element.classList.contains('error')) {
         autocompleteInstance.displayResults(defaultOptions);
       }
     });
