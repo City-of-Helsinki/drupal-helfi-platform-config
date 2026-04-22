@@ -33,23 +33,30 @@ function helfi_base_content_install($is_syncing) : void {
     $prefixes[$language->getId()] = $language->getId();
   }
 
-  Drupal::configFactory()->getEditable('language.negotiation')
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('language.negotiation')
     ->set('selected_langcode', 'site_default')
     ->set('url.prefixes', $prefixes)
     ->save();
 
-  // Add unit and service to pathauto settings.
-  if (Drupal::moduleHandler()->moduleExists('content_lock')) {
+  $module_handler = Drupal::moduleHandler();
+  if ($module_handler->moduleExists('content_lock')) {
+    // Enable content locking for node types.
     $types = [
       'node' => ['*' => '*'],
-      'taxonomy_term' => ['*' => '*'],
     ];
 
-    if (Drupal::moduleHandler()->moduleExists('paragraphs_library')) {
+    // Enable content locking for taxonomy terms.
+    if ($module_handler->moduleExists('taxonomy')) {
+      $types['taxonomy_term'] = ['*' => '*'];
+    }
+
+    // Enable content locking for paragraphs_library entities.
+    if ($module_handler->moduleExists('paragraphs_library')) {
       $types['paragraphs_library_item'] = ['*' => '*'];
     }
 
-    $config_factory = \Drupal::configFactory();
+    // Save the content lock settings.
     $content_lock_settings = $config_factory->getEditable('content_lock.settings');
     $content_lock_config = $content_lock_settings->get('types');
     $content_lock_config = array_merge($content_lock_config, $types);
