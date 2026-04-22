@@ -1,0 +1,13 @@
+diff --git a/core/misc/htmx/htmx-assets.js b/core/misc/htmx/htmx-assets.js
+index 0a1533f5ea2..867cf49e5c9 100644
+--- a/core/misc/htmx/htmx-assets.js
++++ b/core/misc/htmx/htmx-assets.js
+@@ -130,7 +130,7 @@
+     // Helps with memory management.
+     responseHTML = null;
+ 
+-    requestAssetsLoaded.get(detail.xhr).then(() => Drupal.htmx.addAssets(data));
++    requestAssetsLoaded.get(detail.xhr)?.then(() => Drupal.htmx.addAssets(data));
+   });
+ 
+   // Trigger the Drupal processing once all assets have been loaded.
