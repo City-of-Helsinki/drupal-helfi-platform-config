@@ -8,8 +8,7 @@ dependencies:
     - image.style.medium
     - media.type.file
   module:
-    - file
-    - media_library
+    - image
 id: media.file.media_library
 targetEntityType: media
 bundle: file

@@ -7,8 +7,6 @@ dependencies:
     - field.field.media.remote_video.field_media_oembed_video
     - field.field.media.remote_video.field_remote_video_videographer
     - media.type.remote_video
-  module:
-    - media_library
 id: media.remote_video.media_library
 targetEntityType: media
 bundle: remote_video

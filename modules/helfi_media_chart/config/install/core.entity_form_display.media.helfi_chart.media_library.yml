@@ -10,7 +10,6 @@ dependencies:
     - media.type.helfi_chart
   module:
     - text
-    - media_library
 id: media.helfi_chart.media_library
 targetEntityType: media
 bundle: helfi_chart

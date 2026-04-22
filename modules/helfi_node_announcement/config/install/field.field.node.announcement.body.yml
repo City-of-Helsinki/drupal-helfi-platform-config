@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
-    - filter.format.minimal
     - node.type.announcement
   module:
     - text
