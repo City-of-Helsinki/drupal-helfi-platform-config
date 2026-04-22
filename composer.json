@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "require": {
         "ext-curl": "*",
-        "drupal/core": "~11.3",
+        "drupal/core": "11.3.5",
         "drupal/core-composer-scaffold": "~11.3",
         "drupal/action": "^0.2",
         "drupal/admin_toolbar": "^3.0",
