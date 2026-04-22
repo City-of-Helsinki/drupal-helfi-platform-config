@@ -45,8 +45,8 @@ function helfi_base_content_install($is_syncing) : void {
       'taxonomy_term' => ['*' => '*'],
     ];
 
-    if (Drupal::moduleHandler()->moduleExists('paragrahs_library')) {
-      $types['paragraph'] = ['*' => '*'];
+    if (Drupal::moduleHandler()->moduleExists('paragraphs_library')) {
+      $types['paragraphs_library_item'] = ['*' => '*'];
     }
 
     $config_factory = \Drupal::configFactory();
