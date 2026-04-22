@@ -42,9 +42,12 @@ function helfi_base_content_install($is_syncing) : void {
   if (Drupal::moduleHandler()->moduleExists('content_lock')) {
     $types = [
       'node' => ['*' => '*'],
-      'paragraphs_library_item' => ['*' => '*'],
       'taxonomy_term' => ['*' => '*'],
     ];
+
+    if (Drupal::moduleHandler()->moduleExists('paragrahs_library')) {
+      $types['paragraph'] = ['*' => '*'];
+    }
 
     $config_factory = \Drupal::configFactory();
     $content_lock_settings = $config_factory->getEditable('content_lock.settings');
